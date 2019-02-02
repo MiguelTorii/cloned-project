@@ -1,14 +1,10 @@
 // @flow
 
 import React from 'react';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -53,7 +49,11 @@ type ProvidedProps = {
 };
 
 type Props = {
-  classes: Object
+  classes: Object,
+  email: String,
+  password: String,
+  handleChange: Function,
+  handleSubmit: Function
 };
 
 type State = {};
@@ -62,7 +62,7 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const { classes } = this.props;
+    const { classes, email, password, handleSubmit, handleChange } = this.props;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -73,23 +73,30 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+          <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+            <TextValidator
+              label="Email Address"
+              margin="normal"
+              onChange={handleChange('email')}
+              name="email"
+              autoComplete="email"
+              autoFocus
+              fullWidth
+              value={email}
+              validators={['required', 'isEmail']}
+              errorMessages={['email is required', 'email is not valid']}
+            />
+            <TextValidator
+              label="Password"
+              margin="normal"
+              onChange={handleChange('password')}
+              name="password"
+              autoComplete="current-password"
+              fullWidth
+              type="password"
+              value={password}
+              validators={['required']}
+              errorMessages={['password is required']}
             />
             <Button
               type="submit"
@@ -100,7 +107,7 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
             >
               Sign in
             </Button>
-          </form>
+          </ValidatorForm>
         </Paper>
       </main>
     );

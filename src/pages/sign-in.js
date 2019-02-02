@@ -4,7 +4,7 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
-import SignInForm from '../components/sign-in-form';
+import SignIn from '../containers/sign-in';
 
 const styles = () => ({});
 
@@ -18,7 +18,7 @@ type Props = {
 
 type State = {};
 
-class SignIn extends React.Component<ProvidedProps & Props, State> {
+class SignInPage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
@@ -26,10 +26,10 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <SignInForm />
+        <SignIn />
       </main>
     );
   }
 }
 
-export default withRoot(withStyles(styles)(SignIn));
+export default withRoot(withStyles(styles)(SignInPage));
