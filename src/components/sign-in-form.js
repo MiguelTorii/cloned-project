@@ -58,7 +58,7 @@ type Props = {
 
 type State = {};
 
-class SignIn extends React.Component<ProvidedProps & Props, State> {
+class SignInForm extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
@@ -107,4 +107,4 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
   }
 }
 
-export default withRoot(withStyles(styles)(SignIn));
+export default withRoot(withStyles(styles)(SignInForm));

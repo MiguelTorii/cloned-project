@@ -8,7 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Index from './pages/index';
-import Login from './pages/login';
+import SignIn from './pages/sign-in';
 
 const store = configureStore();
 
@@ -17,7 +17,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path="/" render={Index} />
-        <Route exact path="/login" render={Login} />
+        <Route exact path="/login" render={SignIn} />
         <Route render={() => <div>Miss</div>} />
       </Switch>
     </ConnectedRouter>
