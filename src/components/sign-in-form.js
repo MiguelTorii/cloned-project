@@ -8,6 +8,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
 
@@ -39,8 +41,17 @@ const styles = theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
-  submit: {
-    marginTop: theme.spacing.unit * 3
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: 'relative'
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 
@@ -52,6 +63,7 @@ type Props = {
   classes: Object,
   email: String,
   password: String,
+  loading: boolean,
   handleChange: Function,
   handleSubmit: Function
 };
@@ -62,7 +74,14 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const { classes, email, password, handleSubmit, handleChange } = this.props;
+    const {
+      classes,
+      email,
+      password,
+      loading,
+      handleSubmit,
+      handleChange
+    } = this.props;
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -83,6 +102,7 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
               autoFocus
               fullWidth
               value={email}
+              disabled={loading}
               validators={['required', 'isEmail']}
               errorMessages={['email is required', 'email is not valid']}
             />
@@ -95,18 +115,28 @@ class SignInForm extends React.Component<ProvidedProps & Props, State> {
               fullWidth
               type="password"
               value={password}
+              disabled={loading}
               validators={['required']}
               errorMessages={['password is required']}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign in
-            </Button>
+            <div className={classes.wrapper}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={loading}
+                className={classes.submit}
+              >
+                Sign in
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
           </ValidatorForm>
         </Paper>
       </main>

@@ -1,10 +1,15 @@
 // @flow
 
+import { push } from 'connected-react-router';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser } from '../api/sign-in';
+
+const requestSignIn = (): Action => ({
+  type: signInActions.SIGN_IN_USER_REQUEST
+});
 
 const setUser = ({ user }: { user: User }): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
@@ -13,14 +18,21 @@ const setUser = ({ user }: { user: User }): Action => ({
   }
 });
 
-const signInError = ({ error }: { error: String }): Action => ({
+const signInError = ({
+  title,
+  body
+}: {
+  title: string,
+  body: string
+}): Action => ({
   type: signInActions.SIGN_IN_USER_ERROR,
   payload: {
-    error
+    title,
+    body
   }
 });
 
-export const requestSignIn = ({
+export const signIn = ({
   email,
   password
 }: {
@@ -28,6 +40,7 @@ export const requestSignIn = ({
   password: string
 }) => async (dispatch: Dispatch) => {
   try {
+    dispatch(requestSignIn());
     const result = await signInUser(email, password);
 
     const user = {
@@ -49,9 +62,20 @@ export const requestSignIn = ({
       updateProfile: result.update_profile || []
     };
 
-    return dispatch(setUser({ user }));
+    await dispatch(setUser({ user }));
+    return dispatch(push('/'));
   } catch (err) {
-    return dispatch(signInError({ error: err.message }));
+    const { response = {} } = err;
+    if (response.status === 401)
+      return dispatch(
+        signInError({
+          title: 'Invalid Credentials',
+          body: 'The credentials supplied are not valid, please try again.'
+        })
+      );
+    return dispatch(
+      signInError({ title: 'Unknown error', body: 'Please contact us' })
+    );
   }
 };
 

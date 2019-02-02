@@ -7,16 +7,12 @@ export const signInUser = async (
   email: string,
   password: string
 ): Promise<User> => {
-  try {
-    const result = await axios.post(API_ROUTES.LOGIN, {
-      email,
-      password
-    });
-    const { data } = result;
-    return data;
-  } catch (err) {
-    throw new Error(err);
-  }
+  const result = await axios.post(API_ROUTES.LOGIN, {
+    email,
+    password
+  });
+  const { data } = result;
+  return data;
 };
 
 export const asd = 'asd';
