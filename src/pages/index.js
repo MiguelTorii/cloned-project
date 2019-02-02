@@ -14,43 +14,45 @@ import withRoot from '../withRoot';
 const styles = (theme: Object) => ({
   root: {
     textAlign: 'center',
-    paddingTop: theme.spacing.unit * 20,
-  },
+    paddingTop: theme.spacing.unit * 20
+  }
 });
 
 type ProvidedProps = {
-  classes: Object,
+  classes: Object
 };
 
 type Props = {
-  classes: Object,
+  classes: Object
 };
 
 type State = {
-  open: boolean,
+  open: boolean
 };
 
 class Index extends React.Component<ProvidedProps & Props, State> {
   state = {
-    open: false,
+    open: false
   };
 
   handleClose = () => {
     this.setState({
-      open: false,
+      open: false
     });
   };
 
   handleClick = () => {
     this.setState({
-      open: true,
+      open: true
     });
   };
 
   render() {
+    const { classes } = this.props;
+    const { open } = this.state;
     return (
-      <div className={this.props.classes.root}>
-        <Dialog open={this.state.open} onClose={this.handleClose}>
+      <div className={classes.root}>
+        <Dialog open={open} onClose={this.handleClose}>
           <DialogTitle>Super Secret Password</DialogTitle>
           <DialogContent>
             <DialogContentText>1-2-3-4-5</DialogContentText>
@@ -67,7 +69,11 @@ class Index extends React.Component<ProvidedProps & Props, State> {
         <Typography variant="subtitle1" gutterBottom>
           example project
         </Typography>
-        <Button variant="contained" color="secondary" onClick={this.handleClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.handleClick}
+        >
           Super Secret Password
         </Button>
       </div>

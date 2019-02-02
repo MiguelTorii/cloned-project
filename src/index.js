@@ -1,13 +1,28 @@
 // @flow
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Index from './pages/index';
+import { Provider } from 'react-redux';
+import { Route, Switch } from 'react-router';
+import { ConnectedRouter } from 'connected-react-router';
+import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
+import Index from './pages/index';
+import Login from './pages/login';
 
-// $FlowIgnore - we don't want the missing dom element to be a silent error.
-ReactDOM.render(<Index />, document.getElementById('root'));
+const store = configureStore();
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route exact path="/" render={Index} />
+        <Route exact path="/login" render={Login} />
+        <Route render={() => <div>Miss</div>} />
+      </Switch>
+    </ConnectedRouter>
+  </Provider>,
+  document.getElementById('root')
+);
+
 serviceWorker.unregister();
