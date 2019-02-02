@@ -70,9 +70,7 @@ type Props = {
 
 type State = {};
 
-class SignInForm extends React.Component<ProvidedProps & Props, State> {
-  componentDidMount = () => {};
-
+class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
     const {
       classes,

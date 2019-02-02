@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
 import SignInForm from '../components/sign-in-form';
+import SimpleErrorDialog from '../components/simple-error-dialog';
 import type { State as StoreState } from '../types/state';
 import * as signInActions from '../actions/sign-in';
 
@@ -18,7 +19,8 @@ type ProvidedProps = {
 
 type Props = {
   classes: Object,
-  signIn: Function
+  signIn: Function,
+  clearError: Function
 };
 
 type State = {
@@ -43,11 +45,17 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
     signIn(this.state);
   };
 
+  handleErrorDialogClose = () => {
+    const { clearError } = this.props;
+    clearError();
+  };
+
   render() {
     const { classes, user } = this.props;
     const { email, password } = this.state;
     const { error, errorMessage, isLoading } = user;
-    console.log('ERROR: ', error, errorMessage);
+    const { title, body } = errorMessage;
+
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -57,6 +65,12 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
           loading={isLoading}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
+        />
+        <SimpleErrorDialog
+          open={error}
+          title={title}
+          body={body}
+          handleClose={this.handleErrorDialogClose}
         />
       </main>
     );
@@ -70,7 +84,8 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      signIn: signInActions.signIn
+      signIn: signInActions.signIn,
+      clearError: signInActions.clearSignInError
     },
     dispatch
   );

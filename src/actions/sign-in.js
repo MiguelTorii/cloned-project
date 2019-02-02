@@ -18,7 +18,7 @@ const setUser = ({ user }: { user: User }): Action => ({
   }
 });
 
-const signInError = ({
+const setError = ({
   title,
   body
 }: {
@@ -30,6 +30,10 @@ const signInError = ({
     title,
     body
   }
+});
+
+const clearError = (): Action => ({
+  type: signInActions.SIGN_IN_USER_CLEAR_ERROR
 });
 
 export const signIn = ({
@@ -68,15 +72,16 @@ export const signIn = ({
     const { response = {} } = err;
     if (response.status === 401)
       return dispatch(
-        signInError({
+        setError({
           title: 'Invalid Credentials',
           body: 'The credentials supplied are not valid, please try again.'
         })
       );
     return dispatch(
-      signInError({ title: 'Unknown error', body: 'Please contact us' })
+      setError({ title: 'Unknown error', body: 'Please contact us' })
     );
   }
 };
 
-export const hola = 'hola';
+export const clearSignInError = () => async (dispatch: Dispatch) =>
+  dispatch(clearError());

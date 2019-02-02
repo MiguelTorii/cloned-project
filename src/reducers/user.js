@@ -18,7 +18,24 @@ export type FiltersState = {
 };
 
 const defaultState = {
-  user: {},
+  user: {
+    userId: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    school: '',
+    schoolId: 0,
+    segment: '',
+    twilioToken: '',
+    canvasUser: false,
+    grade: 0,
+    jwtToken: '',
+    refreshToken: '',
+    profileImage: '',
+    rank: 0,
+    referralCode: '',
+    updateProfile: []
+  },
   isLoading: false,
   error: false,
   errorMessage: {
@@ -52,6 +69,11 @@ export default (
           body: { $set: action.payload.body }
         },
         isLoading: { $set: false }
+      });
+    case signInActions.SIGN_IN_USER_CLEAR_ERROR:
+      return update(state, {
+        error: { $set: defaultState.error },
+        errorMessage: { $set: defaultState.errorMessage }
       });
     case rootActions.CLEAR_STATE:
       return defaultState;
