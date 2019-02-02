@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
 import SignInForm from '../components/sign-in-form';
-import type { State as StoreState } from '../types/state';
+// import type { State as StoreState } from '../types/state';
 import * as signInActions from '../actions/sign-in';
 
 const styles = () => ({});
@@ -44,9 +44,8 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
   };
 
   render() {
-    const { classes, user } = this.props;
+    const { classes } = this.props;
     const { email, password } = this.state;
-    console.log(user);
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -61,9 +60,9 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
-});
+// const mapStateToProps = ({ user }: StoreState): {} => ({
+//   user
+// });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
@@ -74,6 +73,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
   );
 
 export default connect(
-  mapStateToProps,
+  // mapStateToProps,
   mapDispatchToProps
 )(withRoot(withStyles(styles)(SignIn)));
