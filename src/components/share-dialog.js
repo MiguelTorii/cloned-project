@@ -17,31 +17,25 @@ type ProvidedProps = {
 
 type Props = {
   //   classes: Object
-  open: boolean,
-  title: string,
-  body: string,
-  handleClose: Function
+  open: boolean
 };
 
 type State = {};
 
-class SimpleErrorDialog extends React.PureComponent<
-  ProvidedProps & Props,
-  State
-> {
+class ShareDialog extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
-    const { open, title, body, handleClose } = this.props;
+    const { open, handleClose } = this.props;
     return (
       <Dialog
         open={open}
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        onClose={handleClose}
+        aria-labelledby="share-dialog-title"
+        aria-describedby="share-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        <DialogTitle id="share-dialog-title">Share this Post</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {body}
+          <DialogContentText id="share-dialog-description">
+            Copy this link and send it to your friends.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -54,4 +48,4 @@ class SimpleErrorDialog extends React.PureComponent<
   }
 }
 
-export default withStyles(styles)(SimpleErrorDialog);
+export default withStyles(styles)(ShareDialog);

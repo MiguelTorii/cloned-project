@@ -5,7 +5,7 @@ type UpdateProfile = {
 };
 
 export type User = {
-  userId: string,
+  userId: number,
   email: string,
   firstName: string,
   lastName: string,

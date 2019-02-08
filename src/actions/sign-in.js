@@ -1,6 +1,7 @@
 // @flow
 
 import { push } from 'connected-react-router';
+import store from 'store';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -65,6 +66,10 @@ export const signIn = ({
       referralCode: result.referral_code || '',
       updateProfile: result.update_profile || []
     };
+
+    store.set('REFRESH_TOKEN', user.refreshToken);
+    store.set('USER_ID', user.userId);
+    store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
     return dispatch(push('/'));

@@ -4,14 +4,12 @@ import React from 'react';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../withRoot';
 
 const styles = theme => ({
   main: {
@@ -82,7 +80,6 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
     } = this.props;
     return (
       <main className={classes.main}>
-        <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -142,4 +139,4 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
   }
 }
 
-export default withRoot(withStyles(styles)(SignInForm));
+export default withStyles(styles)(SignInForm);

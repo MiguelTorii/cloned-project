@@ -3,9 +3,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../withRoot';
 import SignInForm from '../components/sign-in-form';
 import SimpleErrorDialog from '../components/simple-error-dialog';
 import type { State as StoreState } from '../types/state';
@@ -58,7 +56,6 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
 
     return (
       <main className={classes.main}>
-        <CssBaseline />
         <SignInForm
           email={email}
           password={password}
@@ -93,4 +90,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRoot(withStyles(styles)(SignIn)));
+)(withStyles(styles)(SignIn));

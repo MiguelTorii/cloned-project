@@ -9,7 +9,7 @@ import type { User } from '../types/models';
 
 export type FiltersState = {
   isLoading: boolean,
-  user: User,
+  data: User,
   error: boolean,
   errorMessage: {
     title: string,
@@ -18,8 +18,8 @@ export type FiltersState = {
 };
 
 const defaultState = {
-  user: {
-    userId: '',
+  data: {
+    userId: 0,
     email: '',
     firstName: '',
     lastName: '',
@@ -51,14 +51,14 @@ export default (
   switch (action.type) {
     case signInActions.SIGN_IN_USER_REQUEST:
       return update(state, {
-        user: { $set: defaultState.user },
+        data: { $set: defaultState.user },
         error: { $set: defaultState.error },
         errorMessage: { $set: defaultState.errorMessage },
         isLoading: { $set: true }
       });
     case signInActions.SIGN_IN_USER_SUCCESS:
       return update(state, {
-        user: { $set: action.payload.user },
+        data: { $set: action.payload.user },
         isLoading: { $set: false }
       });
     case signInActions.SIGN_IN_USER_ERROR:

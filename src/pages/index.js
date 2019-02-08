@@ -4,7 +4,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
-import Index from '../containers/index';
+import Layout from '../containers/layout';
+import HomeGrid from '../containers/home-grid';
 
 const styles = () => ({});
 
@@ -26,7 +27,9 @@ class IndexPage extends React.Component<ProvidedProps & Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <Index />
+        <Layout>
+          <HomeGrid />
+        </Layout>
       </main>
     );
   }

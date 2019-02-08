@@ -9,4 +9,16 @@ export type SignInUserSuccess = {
   }
 };
 
-export type Action = SignInUserSuccess;
+export type OpenShareLink = {
+  type: 'OPEN_SHARE_LINK',
+  paylod: {
+    userId: number,
+    feedId: number
+  }
+};
+
+export type CloseShareLink = {
+  type: 'CLOSE_SHARE_LINK'
+};
+
+export type Action = SignInUserSuccess | OpenShareLink | CloseShareLink;
