@@ -2,9 +2,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { UserProfile } from '../../types/models';
+import { getUserProfile } from '../../api/user';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -12,6 +16,13 @@ const styles = () => ({
     flex: 1,
     overflow: 'hidden',
     maxHeight: 'inherit'
+  },
+  loader: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing.unit * 2
   }
 });
 
@@ -20,12 +31,53 @@ type Props = {
   userId: string
 };
 
-type State = {};
+type State = {
+  userProfile: UserProfile,
+  isLoading: boolean,
+  error: boolean
+};
 
 class Profile extends React.PureComponent<Props, State> {
+  state = {
+    userProfile: {
+      userId: '',
+      firstName: '',
+      lastName: 'string',
+      grade: 0,
+      hours: 0,
+      inStudyCircle: false,
+      joined: '',
+      points: 0,
+      rank: 0,
+      school: '',
+      state: '',
+      userProfileUrl: ''
+    },
+    isLoading: true,
+    error: false
+  };
+
+  componentDidMount = async () => {
+    try {
+      const { userId } = this.props;
+      const userProfile = await getUserProfile({ userId });
+      this.setState({ userProfile, isLoading: false });
+    } catch (err) {
+      this.setState({ error: true, isLoading: false });
+    }
+  };
+
   render() {
-    const { classes, userId } = this.props;
-    return <div className={classes.root}>{`Profile: ${userId}`}</div>;
+    const { classes } = this.props;
+    const { userProfile, isLoading, error } = this.state;
+    if (isLoading)
+      return (
+        <div className={classes.loader}>
+          <CircularProgress />
+        </div>
+      );
+    if (error) return <Redirect to="/" />;
+    return <div className={classes.root}>{`Profile: ${userProfile}`}</div>;
   }
 }
 

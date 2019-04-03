@@ -22,3 +22,18 @@ export type User = {
   referralCode: string,
   updateProfile: Array<UpdateProfile>
 };
+
+export type UserProfile = {
+  userId: string,
+  firstName: string,
+  lastName: string,
+  grade: number,
+  hours: number,
+  inStudyCircle: boolean,
+  joined: string,
+  points: number,
+  rank: number,
+  school: string,
+  state: string,
+  userProfileUrl: string
+};

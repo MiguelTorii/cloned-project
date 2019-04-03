@@ -10,6 +10,7 @@ export const API_ROUTES = {
   SIGNUP: `${API_URL}/auth/register`,
   REFRESH: `${API_URL}/auth/refresh`,
   FEED: `${API_URL}/feed`,
+  USER: `${API_URL}/user`,
   USER_CLASSES: `${API_URL}/user/classes`,
   SEND_SMS_CODE: `${API_URL}/auth/send_sms_code`,
   VERIFY_CODE: `${API_URL}/auth/verify_sms_code`,
