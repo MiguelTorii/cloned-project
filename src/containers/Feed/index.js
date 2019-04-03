@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import FeedList from '../../components/feed-list';
+import FeedList from '../../components/FeedList';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { FeedState } from '../../reducers/feed';

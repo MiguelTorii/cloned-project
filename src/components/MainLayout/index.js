@@ -31,7 +31,7 @@ import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import logo from '../assets/svg/circlein_logo_beta.svg';
+import logo from '../../assets/svg/circlein_logo_beta.svg';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 

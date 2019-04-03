@@ -25,6 +25,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  // eslint-disable-next-line no-undef
   anchorEl: HTMLElement,
   handleNotificationClose: Function
 };

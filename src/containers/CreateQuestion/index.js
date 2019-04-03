@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import QuestionForm from '../../components/question-form';
+import QuestionForm from '../../components/QuestionForm';
 
 const styles = () => ({});
 

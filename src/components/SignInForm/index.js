@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
-import logo from '../assets/svg/circlein_logo_beta.svg';
+import logo from '../../assets/svg/circlein_logo_beta.svg';
 
 const styles = theme => ({
   main: {

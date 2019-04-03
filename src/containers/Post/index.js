@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import type { State as StoreState } from '../../types/state';
 // import type { FeedState } from '../../reducers/feed';
-import PostItem from '../../components/post-item';
+import PostItem from '../../components/PostItem';
 // import * as shareActions from '../actions/share';
 
 const styles = theme => ({
