@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -31,7 +31,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         <ListItemText
           primary="Brunch this weekend?"
           secondary={
-            <React.Fragment>
+            <Fragment>
               <Typography
                 component="span"
                 className={classes.inline}
@@ -40,7 +40,7 @@ class FeedItem extends React.PureComponent<Props, State> {
                 Ali Connors
               </Typography>
               {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
+            </Fragment>
           }
         />
       </ListItem>

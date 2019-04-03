@@ -3,6 +3,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import FeedList from '../components/feed-list';
 import type { State as StoreState } from '../types/state';
@@ -31,7 +32,8 @@ type Props = {
   user: UserState,
   feed: FeedState,
   fetchUserFeed: Function,
-  openShareDialog: Function
+  openShareDialog: Function,
+  push: Function
 };
 
 type State = {};
@@ -51,6 +53,11 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     openShareDialog({ userId, feedId });
   };
 
+  handlePostClick = (feedId: number) => () => {
+    const { push } = this.props;
+    push(`/feed/${feedId}`);
+  };
+
   render() {
     const {
       classes,
@@ -62,6 +69,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
           isLoading={isLoading}
           items={items}
           handleShare={this.handleShare}
+          handlePostClick={this.handlePostClick}
         />
       </div>
     );
@@ -77,7 +85,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       fetchUserFeed: feedActions.fetchUserFeed,
-      openShareDialog: shareActions.openShareDialog
+      openShareDialog: shareActions.openShareDialog,
+      push: routePush
     },
     dispatch
   );

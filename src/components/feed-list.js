@@ -26,8 +26,9 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    maxWidth: 500,
-    overflow: 'hidden',
+    // maxWidth: 500,
+    // maxHeight: '100%',
+    // overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
@@ -42,6 +43,8 @@ const styles = theme => ({
   },
   items: {
     overflowY: 'auto',
+    // height: '100%',
+    flex: 1,
     marginTop: theme.spacing.unit
   },
   margin: {
@@ -51,7 +54,8 @@ const styles = theme => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
+    minHeight: 48
   },
   input: {
     marginLeft: 8,
@@ -87,11 +91,14 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  handleShare: Function
+  items: Array<Object>,
+  isLoading: boolean,
+  handleShare: Function,
+  handlePostClick: Function
 };
 
 type State = {
-  anchorEl?: string,
+  anchorEl: ?string,
   from: string,
   userClasses: string,
   postType: string
@@ -134,7 +141,13 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, isLoading, items, handleShare } = this.props;
+    const {
+      classes,
+      isLoading,
+      items,
+      handleShare,
+      handlePostClick
+    } = this.props;
     const { anchorEl, from, userClasses, postType } = this.state;
     const open = Boolean(anchorEl);
     const filterCount = this.getFilterCount();
@@ -171,28 +184,13 @@ class FeedList extends React.PureComponent<Props, State> {
               items.map(item => (
                 <FeedItem
                   key={item.feed_id}
-                  userId={item.user_id}
-                  feedId={item.feed_id}
+                  data={item}
                   handleShareClick={handleShare}
+                  handlePostClick={handlePostClick}
                 />
               ))
             )}
           </div>
-          {/* <div className={classes.items}>
-            {[
-              { userId: 1, feedId: 1 },
-              { userId: 1, feedId: 2 },
-              { userId: 2, feedId: 3 },
-              { userId: 2, feedId: 4 }
-            ].map(item => (
-              <FeedItem
-                key={item.feedId}
-                userId={item.userId}
-                feedId={item.feedId}
-                handleShareClick={handleShare}
-              />
-            ))}
-          </div> */}
         </Paper>
         <Popover
           id="filter-popper"

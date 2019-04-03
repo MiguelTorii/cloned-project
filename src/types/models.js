@@ -1,11 +1,11 @@
 // @flow
 
-type UpdateProfile = {
+export type UpdateProfile = {
   field: string
 };
 
 export type User = {
-  userId: number,
+  userId: string,
   email: string,
   firstName: string,
   lastName: string,

@@ -5,11 +5,15 @@ import store from 'store';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import type { User } from '../types/models';
-import { signInUser } from '../api/sign-in';
+import type { User, UpdateProfile } from '../types/models';
+import { signInUser, checkUser } from '../api/sign-in';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
+});
+
+const requestUserCheck = (): Action => ({
+  type: signInActions.CHECK_USER_REQUEST
 });
 
 const setUser = ({ user }: { user: User }): Action => ({
@@ -46,27 +50,29 @@ export const signIn = ({
 }) => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignIn());
+    // $FlowFixMe
     const result = await signInUser(email, password);
 
-    const user = {
-      userId: result.user_id || '',
-      email: result.email || '',
-      firstName: result.first_name || '',
-      lastName: result.last_name || '',
-      school: result.school || '',
-      schoolId: result.school_id || 0,
-      segment: result.segment || '',
-      twilioToken: result.twilio_token || '',
-      canvasUser: result.canvas_user || false,
-      grade: result.grade_id || 0,
-      jwtToken: result.jwt_token || '',
-      refreshToken: result.refresh_token || '',
-      profileImage: result.profile_image_url || '',
-      rank: result.rank || 0,
-      referralCode: result.referral_code || '',
-      updateProfile: result.update_profile || []
+    const user: User = {
+      userId: (result.user_id: string) || '',
+      email: (result.email: string) || '',
+      firstName: (result.first_name: string) || '',
+      lastName: (result.last_name: string) || '',
+      school: (result.school: string) || '',
+      schoolId: (result.school_id: number) || 0,
+      segment: (result.segment: string) || '',
+      twilioToken: (result.twilio_token: string) || '',
+      canvasUser: (result.canvas_user: boolean) || false,
+      grade: (result.grade_id: number) || 0,
+      jwtToken: (result.jwt_token: string) || '',
+      refreshToken: (result.refresh_token: string) || '',
+      profileImage: (result.profile_image_url: string) || '',
+      rank: (result.rank: number) || 0,
+      referralCode: (result.referral_code: string) || '',
+      updateProfile: (result.update_profile: Array<UpdateProfile>) || []
     };
 
+    store.set('TOKEN', user.jwtToken);
     store.set('REFRESH_TOKEN', user.refreshToken);
     store.set('USER_ID', user.userId);
     store.set('SEGMENT', user.segment);
@@ -90,3 +96,54 @@ export const signIn = ({
 
 export const clearSignInError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
+
+export const checkUserSession = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(requestUserCheck());
+    // $FlowFixMe
+    const result = await checkUser();
+    const error =
+      Object.entries(result).length === 0 && result.constructor === Object;
+    if (!error) {
+      const user: User = {
+        userId: (result.user_id: string) || '',
+        email: (result.email: string) || '',
+        firstName: (result.first_name: string) || '',
+        lastName: (result.last_name: string) || '',
+        school: (result.school: string) || '',
+        schoolId: (result.school_id: number) || 0,
+        segment: (result.segment: string) || '',
+        twilioToken: (result.twilio_token: string) || '',
+        canvasUser: (result.canvas_user: boolean) || false,
+        grade: (result.grade_id: number) || 0,
+        jwtToken: (result.jwt_token: string) || '',
+        refreshToken: (result.refresh_token: string) || '',
+        profileImage: (result.profile_image_url: string) || '',
+        rank: (result.rank: number) || 0,
+        referralCode: (result.referral_code: string) || '',
+        updateProfile: (result.update_profile: Array<UpdateProfile>) || []
+      };
+
+      store.set('TOKEN', user.jwtToken);
+      store.set('REFRESH_TOKEN', user.refreshToken);
+      store.set('USER_ID', user.userId);
+      store.set('SEGMENT', user.segment);
+
+      dispatch(setUser({ user }));
+    } else {
+      store.remove('TOKEN');
+      store.remove('REFRESH_TOKEN');
+      store.remove('USER_ID');
+      store.remove('SEGMENT');
+      await dispatch(
+        setError({
+          title: 'Invalid User',
+          body: 'You have to login to see this page.'
+        })
+      );
+      dispatch(push('/login'));
+    }
+  } catch (err) {
+    dispatch(push('/login'));
+  }
+};

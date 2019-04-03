@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import { User } from '../types/models';
+import type { User } from '../types/models';
 import { getToken } from './utils';
 
 export const fetchFeed = async ({

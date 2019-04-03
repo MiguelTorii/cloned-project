@@ -20,6 +20,7 @@ export const fetchUserFeed = ({ userId }: { userId: number }) => async (
   dispatch: Dispatch
 ) => {
   dispatch(requestFetch());
+  // $FlowFixMe
   const items = await fetchFeed({ userId });
   dispatch(storeFeed({ items }));
 };

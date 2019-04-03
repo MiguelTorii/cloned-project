@@ -1,0 +1,17 @@
+<svg width="73" height="53" viewBox="0 0 73 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="73" height="53">
+<path d="M0 5C0 2.23858 2.23858 0 5 0H68C70.7614 0 73 2.23858 73 5V53H0V5Z" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 5C0 2.23858 2.23858 0 5 0H68C70.7614 0 73 2.23858 73 5V68.1905C73 70.9519 70.7614 73.1905 68 73.1905H5C2.23858 73.1905 0 70.9519 0 68.1905V5Z" fill="#65E3CE"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 3C0 1.34314 1.34315 0 3 0H32.2414C33.8982 0 35.2414 1.34315 35.2414 3V20.7238C35.2414 22.3807 33.8982 23.7238 32.2414 23.7238H3C1.34315 23.7238 0 22.3807 0 20.7238V3Z" transform="translate(19.6345 16.6572)" fill="white"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 20.3167)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 22.8405)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 25.3643)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 27.8881)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 30.4119)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 32.9357)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 0.504762H34.7379" transform="translate(19.8862 35.4595)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+<path d="M0 1.00952L34.0835 1.01458" transform="translate(20.2084 37.4735)" stroke="#03A9F4" stroke-opacity="0.3" stroke-width="0.5" stroke-linecap="square"/>
+</g>
+</svg>

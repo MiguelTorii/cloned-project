@@ -124,7 +124,20 @@ const styles = theme => ({
   }
 });
 
-class MainLayout extends React.Component {
+type Props = {
+  classes: Object,
+  theme: Object,
+  children: any,
+  handleNotificationOpen: Function
+};
+
+type State = {
+  open: boolean,
+  anchorEl: ?string,
+  mobileMoreAnchorEl: ?string
+}
+
+class MainLayout extends React.Component<Props, State> {
   state = {
     open: false,
     anchorEl: null,
@@ -306,7 +319,7 @@ class MainLayout extends React.Component {
               </ListItemIcon>
               <ListItemText primary="Feed" />
             </ListItem>
-            <ListItem button>
+            <ListItem button component={MyLink} link="/create/question">
               <ListItemIcon>
                 <ContactSupportIcon />
               </ListItemIcon>

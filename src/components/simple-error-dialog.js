@@ -34,7 +34,7 @@ class SimpleErrorDialog extends React.PureComponent<
     return (
       <Dialog
         open={open}
-        onClose={this.handleClose}
+        onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

@@ -2,25 +2,30 @@
 
 import React from 'react';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Button from '@material-ui/core/Button';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
-import logo from '../assets/svg/circlein_logo_beta.svg';
 
 const styles = theme => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
+    marginRight: theme.spacing.unit * 3
+    // [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+    //   width: 400,
+    //   marginLeft: 'auto',
+    //   marginRight: 'auto'
+    // }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
@@ -30,13 +35,11 @@ const styles = theme => ({
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`
   },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit,
+    display: 'flex',
+    flexDirection: 'column'
   },
   wrapper: {
     margin: theme.spacing.unit,
@@ -49,6 +52,12 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  quillLabel: {
+    marginTop: theme.spacing.unit * 3
+  },
+  quill: {
+    marginTop: theme.spacing.unit
   }
 });
 
@@ -58,69 +67,76 @@ type ProvidedProps = {
 
 type Props = {
   classes: Object,
-  email: String,
-  password: String,
+  title: String,
+  userClass: String,
+  description: String,
   loading: boolean,
   handleChange: Function,
+  handleDescriptionChange: Function,
   handleSubmit: Function
 };
 
 type State = {};
 
-class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
+class QuestionForm extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
     const {
       classes,
-      email,
-      password,
+      title,
+      userClass,
+      description,
       loading,
       handleSubmit,
-      handleChange
+      handleChange,
+      handleDescriptionChange
     } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <img src={logo} alt="Logo" className={classes.logo} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Ask a Question
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
             <TextValidator
-              label="Email Address"
+              label="What's your question?"
               margin="normal"
-              onChange={handleChange('email')}
-              name="email"
-              autoComplete="email"
+              onChange={handleChange('title')}
+              name="title"
               autoFocus
-              fullWidth
-              value={email}
-              disabled={loading}
-              validators={['required', 'isEmail']}
-              errorMessages={['email is required', 'email is not valid']}
-            />
-            <TextValidator
-              label="Password"
-              margin="normal"
-              onChange={handleChange('password')}
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              type="password"
-              value={password}
+              value={title}
               disabled={loading}
               validators={['required']}
-              errorMessages={['password is required']}
+              errorMessages={['title is required']}
+            />
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-helper">
+                Select a Class
+              </InputLabel>
+              <NativeSelect
+                value={userClass}
+                onChange={handleChange('userClass')}
+                input={<Input name="age" id="age-native-helper" />}
+              >
+                <option value="" />
+                <option value="algebra">Algebra</option>
+                <option value="history">History</option>
+              </NativeSelect>
+            </FormControl>
+            <InputLabel className={classes.quillLabel}>Description:</InputLabel>
+            <ReactQuill
+              className={classes.quill}
+              value={description}
+              onChange={handleDescriptionChange}
             />
             <div className={classes.wrapper}>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
                 color="primary"
                 disabled={loading}
                 className={classes.submit}
               >
-                Sign in
+                Create
               </Button>
               {loading && (
                 <CircularProgress
@@ -136,4 +152,4 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
   }
 }
 
-export default withStyles(styles)(SignInForm);
+export default withStyles(styles)(QuestionForm);

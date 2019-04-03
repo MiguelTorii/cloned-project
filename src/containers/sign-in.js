@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SignInForm from '../components/sign-in-form';
 import SimpleErrorDialog from '../components/simple-error-dialog';
 import type { State as StoreState } from '../types/state';
+import type { UserState } from '../reducers/user';
 import * as signInActions from '../actions/sign-in';
 
 const styles = () => ({});
@@ -16,14 +17,14 @@ type ProvidedProps = {
 };
 
 type Props = {
-  classes: Object,
+  user: UserState,
   signIn: Function,
   clearError: Function
 };
 
 type State = {
-  email: String,
-  password: String
+  email: string,
+  password: string
 };
 
 class SignIn extends React.Component<ProvidedProps & Props, State> {
@@ -32,9 +33,15 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
     password: ''
   };
 
-  handleChange = (field: string) => (event: string) => {
+  handleChange = (field: string) => (
+    event: SyntheticEvent<HTMLInputElement>
+  ) => {
+    const { target } = event;
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
     this.setState({
-      [field]: event.target.value
+      [field]: target.value
     });
   };
 

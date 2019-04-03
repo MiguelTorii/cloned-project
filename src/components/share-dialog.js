@@ -17,7 +17,8 @@ type ProvidedProps = {
 
 type Props = {
   //   classes: Object
-  open: boolean
+  open: boolean,
+  handleClose: Function
 };
 
 type State = {};

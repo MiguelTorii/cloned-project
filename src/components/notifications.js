@@ -23,18 +23,15 @@ const styles = theme => ({
   }
 });
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
   classes: Object,
+  anchorEl: HTMLElement,
   handleNotificationClose: Function
 };
 
 type State = { tab: number };
 
-class Notifications extends React.PureComponent<ProvidedProps & Props, State> {
+class Notifications extends React.PureComponent<Props, State> {
   state = {
     tab: 0
   };

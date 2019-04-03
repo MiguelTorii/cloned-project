@@ -25,6 +25,7 @@ export default (
   switch (action.type) {
     case notificationsActions.OPEN_NOTIFICATIONS:
       return update(state, {
+        // $FlowFixMe
         anchorEl: { $set: action.payload.anchorEl }
       });
     case notificationsActions.CLOSE_NOTIFICATIONS:

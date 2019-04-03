@@ -25,6 +25,7 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
       });
     case feedActions.FETCH_FEED_SUCCESS:
       return update(state, {
+        // $FlowFixMe
         items: { $set: action.payload.items },
         isLoading: { $set: false }
       });
