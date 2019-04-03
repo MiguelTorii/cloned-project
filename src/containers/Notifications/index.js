@@ -4,10 +4,10 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import type { State as StoreState } from '../types/state';
-import type { NotificationsState } from '../reducers/notifications';
-import Notifications from '../components/notifications';
-import * as notificationsActions from '../actions/notifications';
+import type { State as StoreState } from '../../types/state';
+import type { NotificationsState } from '../../reducers/notifications';
+import Notifications from '../../components/notifications';
+import * as notificationsActions from '../../actions/notifications';
 
 const styles = () => ({
   root: {}

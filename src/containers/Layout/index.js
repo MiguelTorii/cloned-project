@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MainLayout from '../components/main-layout';
-import type { State as StoreState } from '../types/state';
-import type { UserState } from '../reducers/user';
-import * as notificationsActions from '../actions/notifications';
-import * as signInActions from '../actions/sign-in';
-import Notifications from './notifications';
+import MainLayout from '../../components/main-layout';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import * as notificationsActions from '../../actions/notifications';
+import * as signInActions from '../../actions/sign-in';
+import Notifications from '../Notifications';
 
 const styles = theme => ({
   loader: {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import HomeGridList from '../components/home-grid-list';
+import HomeGridList from '../../components/home-grid-list';
 
 const styles = () => ({});
 

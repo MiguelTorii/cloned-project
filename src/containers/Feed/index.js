@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import FeedList from '../components/feed-list';
-import type { State as StoreState } from '../types/state';
-import type { UserState } from '../reducers/user';
-import type { FeedState } from '../reducers/feed';
-import * as feedActions from '../actions/feed';
-import * as shareActions from '../actions/share';
+import FeedList from '../../components/feed-list';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import type { FeedState } from '../../reducers/feed';
+import * as feedActions from '../../actions/feed';
+import * as shareActions from '../../actions/share';
 
 const styles = () => ({
   root: {

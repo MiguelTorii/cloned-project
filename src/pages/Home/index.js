@@ -4,8 +4,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/layout';
-import HomeGrid from '../../containers/home-grid';
+import Layout from '../../containers/Layout';
+import HomeGrid from '../../containers/HomeGrid';
 
 const styles = () => ({});
 

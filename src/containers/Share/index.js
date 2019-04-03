@@ -4,10 +4,10 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import ShareDialog from '../components/share-dialog';
-import type { State as StoreState } from '../types/state';
-import type { ShareState } from '../reducers/share';
-import * as shareActions from '../actions/share';
+import ShareDialog from '../../components/share-dialog';
+import type { State as StoreState } from '../../types/state';
+import type { ShareState } from '../../reducers/share';
+import * as shareActions from '../../actions/share';
 
 const styles = () => ({});
 

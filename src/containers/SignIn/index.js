@@ -4,11 +4,11 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import SignInForm from '../components/sign-in-form';
-import SimpleErrorDialog from '../components/simple-error-dialog';
-import type { State as StoreState } from '../types/state';
-import type { UserState } from '../reducers/user';
-import * as signInActions from '../actions/sign-in';
+import SignInForm from '../../components/sign-in-form';
+import SimpleErrorDialog from '../../components/simple-error-dialog';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({});
 
@@ -34,9 +34,11 @@ class SignIn extends React.Component<ProvidedProps & Props, State> {
   };
 
   handleChange = (field: string) => (
+    // eslint-disable-next-line no-undef
     event: SyntheticEvent<HTMLInputElement>
   ) => {
     const { target } = event;
+    // eslint-disable-next-line no-undef
     if (!(target instanceof HTMLInputElement)) {
       return;
     }

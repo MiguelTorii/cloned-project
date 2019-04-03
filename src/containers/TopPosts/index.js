@@ -4,7 +4,7 @@ import React from 'react';
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import PostsList from '../components/posts-list';
+import PostsList from '../../components/posts-list';
 
 const styles = () => ({
   root: {

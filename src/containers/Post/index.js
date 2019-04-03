@@ -4,10 +4,10 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import type { State as StoreState } from '../types/state';
-import type { FeedState } from '../reducers/feed';
-import PostItem from '../components/post-item';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+import type { State as StoreState } from '../../types/state';
+// import type { FeedState } from '../../reducers/feed';
+import PostItem from '../../components/post-item';
 // import * as shareActions from '../actions/share';
 
 const styles = theme => ({
@@ -33,9 +33,9 @@ type ProvidedProps = {
 };
 
 type Props = {
-  classes: Object,
-  feed: FeedState,
-  feedId: number
+  classes: Object
+  // feed: FeedState,
+  // feedId: number
 };
 
 type State = {};

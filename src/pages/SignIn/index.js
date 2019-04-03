@@ -4,7 +4,7 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
-import SignIn from '../../containers/sign-in';
+import SignIn from '../../containers/SignIn';
 
 const styles = () => ({});
 

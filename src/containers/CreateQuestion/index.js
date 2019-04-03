@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import QuestionForm from '../components/question-form';
+import QuestionForm from '../../components/question-form';
 
 const styles = () => ({});
 
@@ -25,9 +25,11 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   };
 
   handleChange = (field: string) => (
+    // eslint-disable-next-line no-undef
     event: SyntheticEvent<HTMLInputElement>
   ) => {
     const { target } = event;
+    // eslint-disable-next-line no-undef
     if (!(target instanceof HTMLInputElement)) {
       return;
     }
