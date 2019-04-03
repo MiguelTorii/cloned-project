@@ -6,11 +6,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import withWidth from '@material-ui/core/withWidth';
-import withRoot from '../withRoot';
-import Layout from '../containers/layout';
-import Feed from '../containers/feed';
-import Share from '../containers/share';
-import TopPosts from '../containers/top-posts';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/layout';
+import Feed from '../../containers/feed';
+import Share from '../../containers/share';
+import TopPosts from '../../containers/top-posts';
 
 const styles = () => ({
   item: {

@@ -5,10 +5,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import withRoot from '../withRoot';
-import Layout from '../containers/layout';
-import Post from '../containers/post';
-import TopPosts from '../containers/top-posts';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/layout';
+import Post from '../../containers/post';
+import TopPosts from '../../containers/top-posts';
 
 const styles = () => ({
   item: {

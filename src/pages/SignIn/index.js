@@ -3,9 +3,8 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../withRoot';
-import Layout from '../containers/layout';
-import HomeGrid from '../containers/home-grid';
+import withRoot from '../../withRoot';
+import SignIn from '../../containers/sign-in';
 
 const styles = () => ({});
 
@@ -19,7 +18,7 @@ type Props = {
 
 type State = {};
 
-class IndexPage extends React.Component<ProvidedProps & Props, State> {
+class SignInPage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
@@ -27,12 +26,10 @@ class IndexPage extends React.Component<ProvidedProps & Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <Layout>
-          <HomeGrid />
-        </Layout>
+        <SignIn />
       </main>
     );
   }
 }
 
-export default withRoot(withStyles(styles)(IndexPage));
+export default withRoot(withStyles(styles)(SignInPage));

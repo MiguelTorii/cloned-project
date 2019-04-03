@@ -7,11 +7,11 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
-import Index from './pages/index';
-import Feed from './pages/feed';
-import Post from './pages/post';
-import Create from './pages/create';
-import SignIn from './pages/sign-in';
+import Index from './pages/Home';
+import Feed from './pages/Feed';
+import Post from './pages/Post';
+import Create from './pages/Create';
+import SignIn from './pages/SignIn';
 
 const store = configureStore();
 
