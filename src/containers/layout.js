@@ -27,7 +27,8 @@ type Props = {
   children: Object,
   user: UserState,
   openNotifications: Function,
-  checkUserSession: Function
+  checkUserSession: Function,
+  signOut: Function
 };
 
 type State = {};
@@ -59,9 +60,13 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { signOut } = this.props;
     return (
       <Fragment>
-        <MainLayout handleNotificationOpen={this.handleNotificationOpen}>
+        <MainLayout
+          handleNotificationOpen={this.handleNotificationOpen}
+          handleSignOut={signOut}
+        >
           {this.renderChildren()}
         </MainLayout>
         <Notifications />
@@ -78,7 +83,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       openNotifications: notificationsActions.openNotifications,
-      checkUserSession: signInActions.checkUserSession
+      checkUserSession: signInActions.checkUserSession,
+      signOut: signInActions.signOut
     },
     dispatch
   );

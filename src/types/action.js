@@ -29,6 +29,14 @@ export type CheckUserRequest = {
   type: 'CHECK_USER_REQUEST'
 };
 
+export type SignOutUserRequest = {
+  type: 'SIGN_OUT_USER_REQUEST'
+};
+
+export type SignOutUserSuccess = {
+  type: 'SIGN_OUT_USER_SUCCESS'
+};
+
 export type OpenShareLink = {
   type: 'OPEN_SHARE_LINK',
   payload: {
@@ -47,5 +55,6 @@ export type Action =
   | SignInUserError
   | SignInUserClearError
   | CheckUserRequest
+  | SignOutUserRequest
   | OpenShareLink
   | CloseShareLink;

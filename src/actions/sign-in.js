@@ -23,6 +23,14 @@ const setUser = ({ user }: { user: User }): Action => ({
   }
 });
 
+const requestSignOut = (): Action => ({
+  type: signInActions.SIGN_OUT_USER_REQUEST
+});
+
+const clearUser = (): Action => ({
+  type: signInActions.SIGN_OUT_USER_SUCCESS
+});
+
 const setError = ({
   title,
   body
@@ -143,6 +151,20 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       );
       dispatch(push('/login'));
     }
+  } catch (err) {
+    dispatch(push('/login'));
+  }
+};
+
+export const signOut = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(requestSignOut());
+    store.remove('TOKEN');
+    store.remove('REFRESH_TOKEN');
+    store.remove('USER_ID');
+    store.remove('SEGMENT');
+    dispatch(clearUser());
+    dispatch(push('/login'));
   } catch (err) {
     dispatch(push('/login'));
   }

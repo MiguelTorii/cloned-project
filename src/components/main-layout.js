@@ -128,7 +128,8 @@ type Props = {
   classes: Object,
   theme: Object,
   children: any,
-  handleNotificationOpen: Function
+  handleNotificationOpen: Function,
+  handleSignOut: Function
 };
 
 type State = {
@@ -176,6 +177,13 @@ class MainLayout extends React.Component<Props, State> {
     this.handleMenuClose();
   };
 
+  handleSignOut = () => {
+    const {handleSignOut} = this.props;
+    handleSignOut();
+    this.handleMobileMenuClose();
+    this.handleMenuClose();
+  }
+
   render() {
     const { open, anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, theme, children } = this.props;
@@ -195,7 +203,7 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>How Do I Earn Points</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Unblock Users</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
     );
 
