@@ -126,6 +126,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   theme: Object,
   children: any,
   handleNotificationOpen: Function,
@@ -136,7 +137,7 @@ type State = {
   open: boolean,
   anchorEl: ?string,
   mobileMoreAnchorEl: ?string
-}
+};
 
 class MainLayout extends React.Component<Props, State> {
   state = {
@@ -178,15 +179,15 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   handleSignOut = () => {
-    const {handleSignOut} = this.props;
+    const { handleSignOut } = this.props;
     handleSignOut();
     this.handleMobileMenuClose();
     this.handleMenuClose();
-  }
+  };
 
   render() {
     const { open, anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes, theme, children } = this.props;
+    const { classes, userId, theme, children } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -198,7 +199,9 @@ class MainLayout extends React.Component<Props, State> {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>My Profile</MenuItem>
+        <MenuItem component={MyLink} link={`/profile/${userId}`}>
+          My Profile
+        </MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Add/Remove Classes</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>How Do I Earn Points</MenuItem>

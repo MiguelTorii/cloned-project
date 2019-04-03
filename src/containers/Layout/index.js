@@ -60,10 +60,15 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { signOut } = this.props;
+    const { user, signOut } = this.props;
+    const {
+      data: { userId }
+    } = user;
+
     return (
       <Fragment>
         <MainLayout
+          userId={userId}
           handleNotificationOpen={this.handleNotificationOpen}
           handleSignOut={signOut}
         >
