@@ -3,28 +3,44 @@
 import React from 'react';
 import type { ComponentType } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-// import purple from '@material-ui/core/colors/purple';
-// import green from '@material-ui/core/colors/green';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-// A theme with custom primary and secondary color.
-// It's optional.
+const circleInTheme = {
+  action: '#49afd9',
+  primaryBackground: '#1b2a32',
+  modalBackground: '#22343c',
+  primaryText1: '#e9ecef',
+  appBar: '#37474f',
+  navIcons: '#ffffff'
+};
 const theme = createMuiTheme({
-  // palette: {
-  //   primary: {
-  //     light: purple[300],
-  //     main: purple[500],
-  //     dark: purple[700],
-  //   },
-  //   secondary: {
-  //     light: green[300],
-  //     main: green[500],
-  //     dark: green[700],
-  //   },
-  // },
+  palette: {
+    primary: {
+      main: circleInTheme.action
+    },
+    background: {
+      paper: circleInTheme.modalBackground,
+      default: circleInTheme.primaryBackground
+    },
+    text: {
+      primary: circleInTheme.primaryText1
+    }
+  },
   typography: {
     useNextVariants: true,
-    htmlFontSize: 20
+    fontSize: 10
+  },
+  overrides: {
+    MuiAppBar: {
+      colorPrimary: {
+        backgroundColor: circleInTheme.appBar
+      }
+    },
+    MuiSvgIcon: {
+      root: {
+        color: circleInTheme.navIcons
+      }
+    }
   }
 });
 

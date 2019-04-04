@@ -7,6 +7,9 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserProfile } from '../../types/models';
 import { getUserProfile } from '../../api/user';
+import ProfileHeader from '../../components/Profile/header';
+import ProfileAbout from '../../components/Profile/about';
+import ProfileSeasons from '../../components/Profile/seasons';
 
 const styles = theme => ({
   root: {
@@ -77,7 +80,13 @@ class Profile extends React.PureComponent<Props, State> {
         </div>
       );
     if (error) return <Redirect to="/" />;
-    return <div className={classes.root}>{`Profile: ${userProfile}`}</div>;
+    return (
+      <div className={classes.root}>
+        <ProfileHeader />
+        <ProfileAbout />
+        <ProfileSeasons />
+      </div>
+    );
   }
 }
 
