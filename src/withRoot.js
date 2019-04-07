@@ -12,7 +12,8 @@ const circleInTheme = {
   primaryText1: '#e9ecef',
   appBar: '#37474f',
   navIcons: '#ffffff',
-  tabColor: '#ffffff'
+  tabColor: '#ffffff',
+  dividerColor: '#ffffff'
 };
 const theme = createMuiTheme({
   palette: {
@@ -55,6 +56,12 @@ const theme = createMuiTheme({
     MuiButton: {
       label: {
         textTransform: 'capitalize'
+      }
+    },
+    MuiDivider: {
+      light: {
+        backgroundColor: circleInTheme.dividerColor,
+        opacity: 0.5
       }
     }
   }

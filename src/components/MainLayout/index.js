@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import classNames from 'classnames';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,14 +12,14 @@ import Menu from '@material-ui/core/Menu';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link as RouterLink } from 'react-router-dom';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import RedeemIcon from '@material-ui/icons/Redeem';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
@@ -26,6 +27,7 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import DuoIcon from '@material-ui/icons/Duo';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LanguageIcon from '@material-ui/icons/Language';
+import StoreIcon from '@material-ui/icons/Store';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -40,8 +42,6 @@ const drawerWidth = 240;
 const styles = theme => ({
   root: {
     display: 'flex'
-    // overflow: 'hidden',
-    // maxHeight: '100vh'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -115,9 +115,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    // height: '100vh',
     padding: theme.spacing.unit,
-    // overflow: 'hidden',
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column'
@@ -136,14 +134,16 @@ type Props = {
 type State = {
   open: boolean,
   anchorEl: ?string,
-  mobileMoreAnchorEl: ?string
+  mobileMoreAnchorEl: ?string,
+  createPostAnchorEl: ?string
 };
 
 class MainLayout extends React.Component<Props, State> {
   state = {
     open: false,
     anchorEl: null,
-    mobileMoreAnchorEl: null
+    mobileMoreAnchorEl: null,
+    createPostAnchorEl: null
   };
 
   handleDrawerOpen = () => {
@@ -171,6 +171,14 @@ class MainLayout extends React.Component<Props, State> {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleCreatePostMenuOpen = event => {
+    this.setState({ createPostAnchorEl: event.currentTarget });
+  };
+
+  handleCreatePostMenuClose = () => {
+    this.setState({ createPostAnchorEl: null });
+  };
+
   handleNotificationOpen = event => {
     const { handleNotificationOpen } = this.props;
     handleNotificationOpen(event);
@@ -186,10 +194,16 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   render() {
-    const { open, anchorEl, mobileMoreAnchorEl } = this.state;
+    const {
+      open,
+      anchorEl,
+      mobileMoreAnchorEl,
+      createPostAnchorEl
+    } = this.state;
     const { classes, userId, theme, children } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
 
     const renderMenu = (
       <Menu
@@ -235,6 +249,60 @@ class MainLayout extends React.Component<Props, State> {
             <AccountCircleIcon />
           </IconButton>
           <p>Account</p>
+        </MenuItem>
+      </Menu>
+    );
+
+    const renderCreatePostMenu = (
+      <Menu
+        id="simple-menu"
+        anchorEl={createPostAnchorEl}
+        open={isCreatePostMenuOpen}
+        onClose={this.handleCreatePostMenuClose}
+      >
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/create/question"
+        >
+          <ListItemIcon>
+            <ContactSupportIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Ask a Question" />
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/create/notes"
+        >
+          <ListItemIcon>
+            <NoteAddIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Upload Notes" />
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/create/link"
+        >
+          <ListItemIcon>
+            <LanguageIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Share Link" />
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/create/flashcards"
+        >
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Create Flashcards" />
         </MenuItem>
       </Menu>
     );
@@ -293,6 +361,7 @@ class MainLayout extends React.Component<Props, State> {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
+        {renderCreatePostMenu}
         <Drawer
           variant="permanent"
           className={classNames(classes.drawer, {
@@ -318,6 +387,13 @@ class MainLayout extends React.Component<Props, State> {
           </div>
           <Divider />
           <List>
+            <ListItem button onClick={this.handleCreatePostMenuOpen}>
+              <ListItemIcon>
+                <AddBoxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create Post" />
+            </ListItem>
+            <Divider light />
             <ListItem button component={MyLink} link="/">
               <ListItemIcon>
                 <HomeIcon />
@@ -330,11 +406,23 @@ class MainLayout extends React.Component<Props, State> {
               </ListItemIcon>
               <ListItemText primary="Feed" />
             </ListItem>
-            <ListItem button component={MyLink} link="/create/question">
+            <ListItem button>
               <ListItemIcon>
-                <ContactSupportIcon />
+                <EventIcon />
               </ListItemIcon>
-              <ListItemText primary="Ask a Question" />
+              <ListItemText primary="Reminders" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <RedeemIcon />
+              </ListItemIcon>
+              <ListItemText primary="Leaderboard" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <StoreIcon />
+              </ListItemIcon>
+              <ListItemText primary="Store" />
             </ListItem>
             <ListItem button>
               <ListItemIcon>
@@ -344,39 +432,9 @@ class MainLayout extends React.Component<Props, State> {
             </ListItem>
             <ListItem button>
               <ListItemIcon>
-                <NoteAddIcon />
-              </ListItemIcon>
-              <ListItemText primary="Upload Notes" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <LanguageIcon />
-              </ListItemIcon>
-              <ListItemText primary="Share Link" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Flashcards" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText primary="Reminders" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
                 <AnnouncementIcon />
               </ListItemIcon>
               <ListItemText primary="Announcements" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <RedeemIcon />
-              </ListItemIcon>
-              <ListItemText primary="Leaderboard" />
             </ListItem>
           </List>
         </Drawer>
