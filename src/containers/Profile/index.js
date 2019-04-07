@@ -6,6 +6,8 @@ import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserProfile } from '../../types/models';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 import { getUserProfile } from '../../api/user';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
@@ -31,6 +33,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  user: UserState,
   userId: string
 };
 
@@ -63,16 +66,34 @@ class Profile extends React.PureComponent<Props, State> {
   componentDidMount = async () => {
     try {
       const { userId } = this.props;
-      const userProfile = await getUserProfile({ userId });
-      this.setState({ userProfile, isLoading: false });
+      if (userId !== '') {
+        const userProfile = await getUserProfile({ userId });
+        this.setState({ userProfile, isLoading: false });
+      }
     } catch (err) {
       this.setState({ error: true, isLoading: false });
     }
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      user: { data: userData }
+    } = this.props;
+    const { segment = '' } = userData;
     const { userProfile, isLoading, error } = this.state;
+    const {
+      userId,
+      firstName,
+      lastName,
+      userProfileUrl,
+      points,
+      school,
+      state,
+      grade,
+      joined
+    } = userProfile;
+
     if (isLoading)
       return (
         <div className={classes.loader}>
@@ -82,7 +103,18 @@ class Profile extends React.PureComponent<Props, State> {
     if (error) return <Redirect to="/" />;
     return (
       <div className={classes.root}>
-        <ProfileHeader />
+        <ProfileHeader
+          isMyProfile={userId === userData.userId}
+          firstName={firstName}
+          lastName={lastName}
+          userProfileUrl={userProfileUrl}
+          points={points}
+          school={school}
+          state={state}
+          segment={segment}
+          grade={grade}
+          joined={joined}
+        />
         <ProfileAbout />
         <ProfileSeasons />
       </div>
@@ -90,9 +122,9 @@ class Profile extends React.PureComponent<Props, State> {
   }
 }
 
-// const mapStateToProps = ({ feed }: StoreState): {} => ({
-//   feed
-// });
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
 
 // const mapDispatchToProps = (dispatch: *): {} =>
 //   bindActionCreators(
@@ -103,6 +135,6 @@ class Profile extends React.PureComponent<Props, State> {
 //   );
 
 export default connect(
-  null,
+  mapStateToProps,
   null
 )(withStyles(styles)(Profile));

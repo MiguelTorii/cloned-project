@@ -39,9 +39,9 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    overflow: 'hidden',
-    maxHeight: '100vh'
+    display: 'flex'
+    // overflow: 'hidden',
+    // maxHeight: '100vh'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -115,9 +115,9 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    height: '100vh',
+    // height: '100vh',
     padding: theme.spacing.unit,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column'

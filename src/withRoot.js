@@ -11,7 +11,8 @@ const circleInTheme = {
   modalBackground: '#22343c',
   primaryText1: '#e9ecef',
   appBar: '#37474f',
-  navIcons: '#ffffff'
+  navIcons: '#ffffff',
+  tabColor: '#ffffff'
 };
 const theme = createMuiTheme({
   palette: {
@@ -39,6 +40,21 @@ const theme = createMuiTheme({
     MuiSvgIcon: {
       root: {
         color: circleInTheme.navIcons
+      }
+    },
+    MuiTabs: {
+      indicator: {
+        height: 0
+      }
+    },
+    MuiTab: {
+      textColorPrimary: {
+        color: circleInTheme.tabColor
+      }
+    },
+    MuiButton: {
+      label: {
+        textTransform: 'capitalize'
       }
     }
   }

@@ -1,11 +1,13 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
+import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { gradeName } from '../../constants/common';
 
 const styles = theme => ({
   container: {
@@ -53,35 +55,74 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  isMyProfile: Boolean,
+  firstName: string,
+  lastName: string,
+  userProfileUrl: string,
+  points: number,
+  school: string,
+  state: string,
+  segment: string,
+  grade: number,
+  joined: string
 };
 
 class Header extends React.PureComponent<Props> {
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      isMyProfile = false,
+      firstName,
+      lastName,
+      userProfileUrl,
+      points,
+      school,
+      state,
+      segment = '',
+      grade,
+      joined
+    } = this.props;
+
+    const name = `${firstName} ${lastName}`;
+    const initials = name !== '' ? name.match(/\b(\w)/g).join('') : '';
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <Grid container>
             <Grid item xs={5} className={classes.gridAvatar}>
-              <Avatar alt="Camilo R" className={classes.bigAvatar}>
-                CR
-              </Avatar>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.button}
+              <Avatar
+                alt="Camilo R"
+                src={userProfileUrl}
+                className={classes.bigAvatar}
               >
-                Add to my study circle
-              </Button>
+                {initials}
+              </Avatar>
+              {!isMyProfile ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className={classes.button}
+                >
+                  add to my study circle
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className={classes.button}
+                >
+                  edit profile
+                </Button>
+              )}
             </Grid>
             <Grid item xs={7} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                Luke Cage
+                {name}
               </Typography>
               <div className={classes.status}>
-                <Typography variant="h4">10150</Typography>
+                <Typography variant="h4">{points}</Typography>
                 <Typography variant="body2" className={classes.statusLabel}>
                   points
                 </Typography>
@@ -95,20 +136,24 @@ class Header extends React.PureComponent<Props> {
                 </Typography>
               </div>
               <Typography variant="body2" gutterBottom>
-                University of Maryland, College Park
+                {`${school}, ${state}`}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Freshman
+                {gradeName(segment, grade)}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Member Since June 2016
+                {`Member Since ${moment(joined).format('MMMM YYYY')}`}
               </Typography>
-              <Button variant="text" color="primary">
-                Send Luke a message
-              </Button>
-              <Button variant="text" color="primary">
-                Start video study session
-              </Button>
+              {!isMyProfile && (
+                <Fragment>
+                  <Button variant="text" color="primary">
+                    Send Luke a message
+                  </Button>
+                  <Button variant="text" color="primary">
+                    Start video study session
+                  </Button>
+                </Fragment>
+              )}
             </Grid>
           </Grid>
         </Paper>
