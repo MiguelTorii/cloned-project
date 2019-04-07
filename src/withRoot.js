@@ -10,10 +10,11 @@ const circleInTheme = {
   primaryBackground: '#1b2a32',
   modalBackground: '#22343c',
   primaryText1: '#e9ecef',
-  appBar: '#37474f',
-  navIcons: '#ffffff',
-  tabColor: '#ffffff',
-  dividerColor: '#ffffff'
+  primaryText2: '#adbbc4',
+  appBar: '#37474f', // validate
+  navIcons: '#ffffff', // validate
+  tabColor: '#ffffff', // validate
+  dividerColor: '#ffffff' // validate
 };
 const theme = createMuiTheme({
   palette: {
@@ -62,6 +63,11 @@ const theme = createMuiTheme({
       light: {
         backgroundColor: circleInTheme.dividerColor,
         opacity: 0.5
+      }
+    },
+    MuiInputLabel: {
+      root: {
+        color: circleInTheme.primaryText2
       }
     }
   }
