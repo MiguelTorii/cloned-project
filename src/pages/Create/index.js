@@ -17,26 +17,8 @@ type Props = {
   }
 };
 
-type State = {
-  type: string
-};
-
-class CreatePage extends React.Component<Props, State> {
-  state = {
-    type: ''
-  };
-
-  componentDidMount = () => {
-    const {
-      match: {
-        params: { type = '' }
-      }
-    } = this.props;
-    if (type !== '') this.setState({ type });
-  };
-
-  renderType = () => {
-    const { type } = this.state;
+class CreatePage extends React.Component<Props> {
+  renderType = type => {
     switch (type) {
       case 'question':
         return <CreateQuestion />;
@@ -46,10 +28,15 @@ class CreatePage extends React.Component<Props, State> {
   };
 
   render() {
+    const {
+      match: {
+        params: { type = '' }
+      }
+    } = this.props;
     return (
       <main>
         <CssBaseline />
-        <Layout>{this.renderType()}</Layout>
+        <Layout>{this.renderType(type)}</Layout>
       </main>
     );
   }
