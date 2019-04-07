@@ -85,7 +85,7 @@ class Header extends React.PureComponent<Props> {
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
-    const initials = name !== '' ? name.match(/\b(\w)/g).join('') : '';
+    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
     return (
       <div className={classes.container}>

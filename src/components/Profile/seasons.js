@@ -76,7 +76,11 @@ type Props = {
   classes: Object
 };
 
-class Seasons extends React.PureComponent<Props> {
+type State = {
+  value: number
+};
+
+class Seasons extends React.PureComponent<Props, State> {
   state = {
     value: 0
   };
