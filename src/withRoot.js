@@ -11,12 +11,26 @@ const circleInTheme = {
   modalBackground: '#22343c',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
+  normalButtonText1: '#090909',
   appBar: '#37474f', // validate
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
   dividerColor: '#ffffff' // validate
 };
 const theme = createMuiTheme({
+  circleIn: {
+    palette: {
+      action: circleInTheme.action,
+      primaryBackground: circleInTheme.primaryBackground,
+      modalBackground: circleInTheme.modalBackground,
+      primaryText1: circleInTheme.primaryText1,
+      primaryText2: circleInTheme.primaryText2,
+      normalButtonText1: circleInTheme.normalButtonText1
+    },
+    customBackground: {
+      iconButton: 'rgba(173,187,196, 0.5)'
+    }
+  },
   palette: {
     primary: {
       main: circleInTheme.action
