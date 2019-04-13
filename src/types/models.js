@@ -37,3 +37,27 @@ export type UserProfile = {
   state: string,
   userProfileUrl: string
 };
+
+export type About = {
+  id: number,
+  section: string,
+  answer: string
+};
+
+export type UserStatistic = {
+  seasonId: number,
+  bestAnswers: number,
+  communityServiceHours: number,
+  currentSeason: boolean,
+  name: string,
+  points: number,
+  rankReached: number,
+  reach: number,
+  thanks: number
+};
+
+export type Profile = {
+  userProfile: UserProfile,
+  about: Array<About>,
+  userStatistics: Array<UserStatistic>
+};

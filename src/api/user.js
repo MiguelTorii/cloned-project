@@ -1,14 +1,14 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import type { UserProfile } from '../types/models';
+import type { Profile } from '../types/models';
 import { getToken } from './utils';
 
 export const getUserProfile = async ({
   userId
 }: {
   userId: string
-}): Promise<UserProfile> => {
+}): Promise<Profile> => {
   const token = await getToken();
   const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
     headers: {

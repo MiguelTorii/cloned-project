@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { UserProfile } from '../../types/models';
+import type { UserProfile, About, UserStatistic } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getUserProfile } from '../../api/user';
@@ -39,6 +39,8 @@ type Props = {
 
 type State = {
   userProfile: UserProfile,
+  about: Array<About>,
+  userStatistics: Array<UserStatistic>,
   isLoading: boolean,
   error: boolean
 };
