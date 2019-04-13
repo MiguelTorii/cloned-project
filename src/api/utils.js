@@ -22,7 +22,6 @@ export const getToken = async (): Promise<string> => {
   if (segment === '' || userId === '' || refreshToken === '' || !userId) {
     return '';
   }
-
   const result = await axios.post(API_ROUTES.REFRESH, {
     user_id: Number(userId),
     token: refreshToken,

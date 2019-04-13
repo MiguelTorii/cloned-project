@@ -22,12 +22,13 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  about: Array<Object>
 };
 
 class About extends React.PureComponent<Props> {
   render() {
-    const { classes } = this.props;
+    const { classes, about } = this.props;
 
     return (
       <div className={classes.container}>
@@ -36,22 +37,16 @@ class About extends React.PureComponent<Props> {
             <Typography variant="h4" gutterBottom>
               About Me
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Do you prefer to study in person or video meet up?
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Do you prefer to study in groups or individually?
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Do you like helping others with homework study help, if so, which
-              subjects?
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Are you in any clubs or organizations on campus?
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Major
-            </Typography>
+            {about.map(item => (
+              <div key={item.id}>
+                <Typography variant="subtitle2" gutterBottom>
+                  {item.section}
+                </Typography>
+                <Typography variant="body2" paragraph>
+                  {item.answer}
+                </Typography>
+              </div>
+            ))}
           </div>
         </Paper>
       </div>

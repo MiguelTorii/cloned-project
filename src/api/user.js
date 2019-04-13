@@ -10,18 +10,15 @@ export const getUserProfile = async ({
   userId: string
 }): Promise<UserProfile> => {
   const token = await getToken();
-  const result = await axios.get(
-    `${API_ROUTES.USER}/${userId}/profile?token=NA`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  );
-  const {
-    // eslint-disable-next-line camelcase
-    data: { user_profile = {} }
-  } = result;
+  });
+  const { data } = result;
+  // eslint-disable-next-line camelcase
+  const { user_profile = {}, about = [], user_statistics = [] } = data;
+
   const userProfile = {
     userId: String((user_profile.user_id: string) || ''),
     firstName: String((user_profile.first_name: string) || ''),
@@ -37,7 +34,19 @@ export const getUserProfile = async ({
     userProfileUrl: String((user_profile.user_profile_url: string) || '')
   };
 
-  return userProfile;
+  const userStatistics = user_statistics.map(stats => ({
+    seasonId: Number((stats.season_id: number) || 0),
+    bestAnswers: Number((stats.best_answers: number) || 0),
+    communityServiceHours: Number((stats.community_service_hours: number) || 0),
+    currentSeason: Boolean((stats.current_season: boolean) || false),
+    name: String((stats.name: string) || ''),
+    points: Number((stats.points: number) || 0),
+    rankReached: Number((stats.rank_reached: number) || 0),
+    reach: Number((stats.reach: number) || 0),
+    thanks: Number((stats.thanks: number) || 0)
+  }));
+
+  return { userProfile, about, userStatistics };
 };
 
 export const ads = () => 'asd';

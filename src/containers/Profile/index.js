@@ -59,6 +59,8 @@ class Profile extends React.PureComponent<Props, State> {
       state: '',
       userProfileUrl: ''
     },
+    about: [],
+    userStatistics: [],
     isLoading: true,
     error: false
   };
@@ -67,8 +69,10 @@ class Profile extends React.PureComponent<Props, State> {
     try {
       const { userId } = this.props;
       if (userId !== '') {
-        const userProfile = await getUserProfile({ userId });
-        this.setState({ userProfile, isLoading: false });
+        const { userProfile, about, userStatistics } = await getUserProfile({
+          userId: '995394'
+        });
+        this.setState({ userProfile, about, userStatistics, isLoading: false });
       }
     } catch (err) {
       this.setState({ error: true, isLoading: false });
@@ -81,7 +85,7 @@ class Profile extends React.PureComponent<Props, State> {
       user: { data: userData }
     } = this.props;
     const { segment = '' } = userData;
-    const { userProfile, isLoading, error } = this.state;
+    const { userProfile, about, userStatistics, isLoading, error } = this.state;
     const {
       userId,
       firstName,
@@ -115,8 +119,8 @@ class Profile extends React.PureComponent<Props, State> {
           grade={grade}
           joined={joined}
         />
-        <ProfileAbout />
-        <ProfileSeasons />
+        <ProfileAbout about={about} />
+        <ProfileSeasons stats={userStatistics} />
       </div>
     );
   }

@@ -73,7 +73,8 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  stats: Array<Object>
 };
 
 type State = {
@@ -89,9 +90,37 @@ class Seasons extends React.PureComponent<Props, State> {
     this.setState({ value });
   };
 
+  processSeasons = (stats: Array<Object>) => {
+    const seasons = [];
+    const all = {
+      seasonId: 0,
+      bestAnswers: 0,
+      communityServiceHours: 0,
+      currentSeason: false,
+      name: 'All',
+      points: 0,
+      rankReached: 0,
+      reach: 0,
+      thanks: 0
+    };
+    stats.forEach(item => {
+      seasons.push(item);
+      all.bestAnswers += item.bestAnswers;
+      all.communityServiceHours += item.communityServiceHours;
+      all.points += item.points;
+      all.rankReached = Math.max(all.rankReached, item.rankReached);
+      all.reach += item.reach;
+      all.thanks += item.thanks;
+    });
+    seasons.push(all);
+    return seasons;
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, stats } = this.props;
     const { value } = this.state;
+    const seasons = this.processSeasons(stats);
+
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
@@ -104,10 +133,9 @@ class Seasons extends React.PureComponent<Props, State> {
               variant="scrollable"
               scrollButtons="auto"
             >
-              <Tab label="Season 1" />
-              <Tab label="Season 2" />
-              <Tab label="Season 3" />
-              <Tab label="All" />
+              {seasons.map(item => (
+                <Tab key={item.seasonId} label={item.name} />
+              ))}
             </Tabs>
           </div>
           <Grid
@@ -118,31 +146,31 @@ class Seasons extends React.PureComponent<Props, State> {
           >
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                10
+                {seasons[value].thanks}
               </Typography>
               <Typography variant="body2">Thanks Received</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                10,000
+                {seasons[value].points}
               </Typography>
               <Typography variant="body2">Points</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                36
+                {seasons[value].communityServiceHours}
               </Typography>
               <Typography variant="body2">Community Service Hours</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                5
+                {seasons[value].bestAnswers}
               </Typography>
               <Typography variant="body2">Best Answers</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                5
+                {seasons[value].reach}
               </Typography>
               <Typography variant="body2">Reach</Typography>
             </Grid>
@@ -156,19 +184,43 @@ class Seasons extends React.PureComponent<Props, State> {
           >
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
-                <img alt="Bronze" src={bronze} className={classes.badge} />
+                <img
+                  alt="Bronze"
+                  src={bronze}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 0 &&
+                      classes.badgeSelected
+                  )}
+                />
               </div>
               <Typography variant="caption">Bronze</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
-                <img alt="Silver" src={silver} className={classes.badge} />
+                <img
+                  alt="Silver"
+                  src={silver}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 1 &&
+                      classes.badgeSelected
+                  )}
+                />
               </div>
               <Typography variant="caption">Silver</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
-                <img alt="Gold" src={gold} className={classes.badge} />
+                <img
+                  alt="Gold"
+                  src={gold}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 2 &&
+                      classes.badgeSelected
+                  )}
+                />
               </div>
               <Typography variant="caption">Gold</Typography>
             </Grid>
@@ -177,20 +229,40 @@ class Seasons extends React.PureComponent<Props, State> {
                 <img
                   alt="Platinum"
                   src={platinum}
-                  className={cx(classes.badge, classes.badgeSelected)}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 3 &&
+                      classes.badgeSelected
+                  )}
                 />
               </div>
               <Typography variant="body1">Platinum</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
-                <img alt="Diamond" src={diamond} className={classes.badge} />
+                <img
+                  alt="Diamond"
+                  src={diamond}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 4 &&
+                      classes.badgeSelected
+                  )}
+                />
               </div>
               <Typography variant="caption">Diamond</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
-                <img alt="Master" src={master} className={classes.badge} />
+                <img
+                  alt="Master"
+                  src={master}
+                  className={cx(
+                    classes.badge,
+                    seasons[value].rankReached - 1 === 5 &&
+                      classes.badgeSelected
+                  )}
+                />
               </div>
               <Typography variant="caption">Master</Typography>
             </Grid>
