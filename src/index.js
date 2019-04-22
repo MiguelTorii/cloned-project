@@ -14,12 +14,14 @@ import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
 import EditQuestion from './pages/Edit/Question';
 import Profile from './pages/Profile';
+import FloatingChat from './containers/FloatingChat';
 import SignIn from './pages/SignIn';
 
 const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
+    <FloatingChat />
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path="/" render={Index} />
