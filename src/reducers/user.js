@@ -48,8 +48,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
   switch (action.type) {
     case signInActions.SIGN_IN_USER_REQUEST:
       return update(state, {
-        // $FlowFixMe
-        data: { $set: defaultState.user },
+        data: { $set: defaultState.data },
         error: { $set: defaultState.error },
         errorMessage: { $set: defaultState.errorMessage },
         isLoading: { $set: true }
@@ -80,6 +79,8 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         error: { $set: defaultState.error },
         errorMessage: { $set: defaultState.errorMessage }
       });
+    case signInActions.SIGN_OUT_USER_REQUEST:
+    case signInActions.SIGN_OUT_USER_SUCCESS:
     case rootActions.CLEAR_STATE:
       return defaultState;
     default:

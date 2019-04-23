@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -54,23 +53,22 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object,
-  children: Node
+  classes: Object
 };
 
 type State = {
   open: boolean
 };
 
-class MainChat extends React.PureComponent<Props, State> {
+class ChatItem extends React.PureComponent<Props, State> {
   state = {
-    open: false
+    open: true
   };
 
   handleOpen = () => this.setState(prevState => ({ open: !prevState.open }));
 
   render() {
-    const { classes, children } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
     return (
       <Paper
@@ -98,11 +96,10 @@ class MainChat extends React.PureComponent<Props, State> {
         </div>
         <div className={cx(!open && classes.hide, classes.content)}>
           <Divider />
-          <div className={classes.items}>{children}</div>
         </div>
       </Paper>
     );
   }
 }
 
-export default withStyles(styles)(MainChat);
+export default withStyles(styles)(ChatItem);
