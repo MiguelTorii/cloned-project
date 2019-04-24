@@ -1,21 +1,30 @@
 // @flow
 
 import React from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import fetch from 'isomorphic-fetch';
 import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
+import arrayMove from 'array-move';
 import { withStyles } from '@material-ui/core/styles';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 import UploadImagesForm from '../../components/UploadImagesForm';
+import { getPresignedURLs } from '../../api/media';
 
 const styles = () => ({});
 
 type Props = {
-  classes: Object
+  classes: Object,
+  user: UserState
 };
 
 type Image = {
   id: string,
-  image: string
+  image: string,
+  file: Object,
+  type: string
 };
 
 type State = {
@@ -69,6 +78,8 @@ class UploadImages extends React.PureComponent<Props, State> {
   handleDrop = acceptedFiles => {
     acceptedFiles.forEach(file => {
       const url = URL.createObjectURL(file);
+      const { path, type } = file;
+      const extension = this.getFileExtension(path);
       fetch(url)
         .then(res => res.blob())
         .then(blob => {
@@ -78,10 +89,12 @@ class UploadImages extends React.PureComponent<Props, State> {
               ...prevState.images,
               {
                 image: newImage,
-                id: uuidv4(),
+                file,
+                id: `${uuidv4()}.${extension}`,
                 loaded: false,
                 loading: false,
-                error: false
+                error: false,
+                type
               }
             ]
           }));
@@ -91,34 +104,93 @@ class UploadImages extends React.PureComponent<Props, State> {
 
   handleDropRejected = () => {};
 
-  handleUploadImages = () => {
+  handleUploadImages = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const { images } = this.state;
+    if (images.length === 0) return false;
+    this.setImagesUploading();
+    const fileNames = images.map(image => image.id);
+    const result = await getPresignedURLs({
+      userId,
+      type: 3,
+      fileNames
+    });
+    console.log(images);
+    console.log(result);
+    return axios
+      .all(
+        images.map(item =>
+          this.uploadImageRequest(result[item.id].url, item.file, item.type)
+        )
+      )
+      .then(
+        axios.spread((...data) => {
+          console.log(data);
+          this.setImagesUploaded();
+          return true;
+        })
+      )
+      .catch(() => {
+        return false;
+      });
+  };
+
+  handleImageRetry = id => {
+    console.log('retry: ', id);
+  };
+
+  handleSortEnd = ({ oldIndex, newIndex }) => {
+    this.setState(({ images }) => ({
+      images: arrayMove(images, oldIndex, newIndex)
+    }));
+  };
+
+  setImagesUploading = () => {
     const newState = update(this.state, {
       images: {
         $apply: b => {
-          return b.map(item => ({ ...item, loading: true }));
+          return b.map(item => ({
+            ...item,
+            loading: true,
+            loaded: false,
+            error: false
+          }));
         }
       },
       isDropzoneDisabled: { $set: true }
     });
     this.setState(newState);
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const state = update(this.state, {
-          images: {
-            $apply: b => {
-              return b.map(item => ({ ...item, loading: false, error: true }));
-            }
-          },
-          isDropzoneDisabled: { $set: false }
-        });
-        this.setState(state);
-        resolve(state.images);
-      }, 3000);
-    });
   };
 
-  handleImageRetry = id => {
-    console.log('retry: ', id);
+  setImagesUploaded = () => {
+    const newState = update(this.state, {
+      images: {
+        $apply: b => {
+          return b.map(item => ({
+            ...item,
+            loading: false,
+            loaded: true,
+            error: false
+          }));
+        }
+      },
+      isDropzoneDisabled: { $set: false }
+    });
+    this.setState(newState);
+  };
+
+  getFileExtension = filename => filename.split('.').pop();
+
+  uploadImageRequest = (url, image, type) => {
+    return axios.put(url, image, {
+      headers: {
+        'Content-Type': type
+      }
+    });
   };
 
   render() {
@@ -134,10 +206,18 @@ class UploadImages extends React.PureComponent<Props, State> {
           onImageRetry={this.handleImageRetry}
           onDrop={this.handleDrop}
           onDropRejected={this.handleDropRejected}
+          onSortEnd={this.handleSortEnd}
         />
       </div>
     );
   }
 }
 
-export default withStyles(styles)(UploadImages);
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(UploadImages));

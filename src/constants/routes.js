@@ -17,5 +17,6 @@ export const API_ROUTES = {
   RESET_PASSWORD: `${API_URL}/auth/password_reset`,
   CHANGE_PASSWORD: `${API_URL}/auth/change_password`,
   VERIFY_EMAIL: `${API_URL}/auth/verify_code`,
-  SEND_CODE: `${API_URL}/auth/send_code`
+  SEND_CODE: `${API_URL}/auth/send_code`,
+  MEDIA_URL: `${API_URL}/media/url`
 };

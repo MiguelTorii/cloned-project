@@ -2,9 +2,16 @@
 
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import {
+  sortableContainer,
+  sortableElement,
+  sortableHandle
+} from 'react-sortable-hoc';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import EditPhotoThumbnail from '../EditPhotoThumbnail';
 
 const styles = theme => ({
@@ -31,6 +38,23 @@ const styles = theme => ({
   thumbnails: {
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  dragContainer: {
+    position: 'relative',
+    margin: theme.spacing.unit * 2
+  },
+  drag: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    padding: theme.spacing.unit
+  },
+  button: {
+    padding: 4,
+    backgroundColor: theme.circleIn.customBackground.iconButton
+  },
+  icon: {
+    color: theme.circleIn.palette.normalButtonText1
   }
 });
 
@@ -50,8 +74,17 @@ type Props = {
   onImageSave: Function,
   onDrop: Function,
   onDropRejected: Function,
-  onImageRetry: Function
+  onImageRetry: Function,
+  onSortEnd: Function
 };
+
+const DragHandle = sortableHandle(({ children }) => children);
+
+const SortableItem = sortableElement(({ children }) => children);
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return children;
+});
 
 class UploadImagesForm extends React.PureComponent<Props> {
   render() {
@@ -63,7 +96,8 @@ class UploadImagesForm extends React.PureComponent<Props> {
       onImageSave,
       onDrop,
       onDropRejected,
-      onImageRetry
+      onImageRetry,
+      onSortEnd
     } = this.props;
     return (
       <div>
@@ -88,21 +122,41 @@ class UploadImagesForm extends React.PureComponent<Props> {
             </section>
           )}
         </Dropzone>
-        <div className={classes.thumbnails}>
-          {images.map(item => (
-            <EditPhotoThumbnail
-              key={item.id}
-              id={item.id}
-              image={item.image}
-              loaded={item.loaded}
-              loading={item.loading}
-              error={item.error}
-              onSave={onImageSave}
-              onDelete={onImageDelete}
-              onImageRetry={onImageRetry}
-            />
-          ))}
-        </div>
+        <SortableContainer axis="xy" useDragHandle onSortEnd={onSortEnd}>
+          <div className={classes.thumbnails}>
+            {images.map((item, index) => (
+              <SortableItem key={item.id} index={index}>
+                <div className={classes.dragContainer}>
+                  <EditPhotoThumbnail
+                    key={item.id}
+                    id={item.id}
+                    image={item.image}
+                    loaded={item.loaded}
+                    loading={item.loading}
+                    error={item.error}
+                    onSave={onImageSave}
+                    onDelete={onImageDelete}
+                    onImageRetry={onImageRetry}
+                  />
+                  <DragHandle>
+                    <div className={classes.drag}>
+                      <IconButton
+                        color="inherit"
+                        aria-label="Drag"
+                        className={classes.button}
+                      >
+                        <DragIndicatorIcon
+                          className={classes.icon}
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </div>
+                  </DragHandle>
+                </div>
+              </SortableItem>
+            ))}
+          </div>
+        </SortableContainer>
       </div>
     );
   }

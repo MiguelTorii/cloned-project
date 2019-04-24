@@ -24,10 +24,11 @@ import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import DoneIcon from '@material-ui/icons/Done';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit * 2,
+    // margin: theme.spacing.unit * 2,
     backgroundColor: 'white',
     color: 'black',
     position: 'relative',
@@ -51,6 +52,16 @@ const styles = theme => ({
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
+    padding: theme.spacing.unit
+  },
+  uploaded: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: theme.spacing.unit
   },
   retry: {
@@ -91,6 +102,9 @@ const styles = theme => ({
   },
   green: {
     color: green[500]
+  },
+  uploadedIcon: {
+    opacity: 0.5
   }
 });
 
@@ -180,6 +194,18 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
     this.setState(prevState => ({ rotate: prevState.rotate - 45 }));
   };
 
+  renderCreateIcon = () => {
+    const { classes, loaded } = this.props;
+    if (loaded)
+      return (
+        <DoneIcon
+          className={cx(classes.icon, classes.green)}
+          fontSize="small"
+        />
+      );
+    return <CreateIcon className={classes.icon} fontSize="small" />;
+  };
+
   // eslint-disable-next-line no-undef
   editor: ?HTMLDivElement;
 
@@ -192,7 +218,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
         <Paper
           className={cx(
             classes.root,
-            loaded && classes.reverse,
+            (loaded || loading) && classes.reverse,
             error && classes.error
           )}
           elevation={8}
@@ -202,7 +228,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
               width: '100%',
               height: '100%',
               backgroundImage: `url(${image})`,
-              opacity: loaded || error ? 0.5 : 1,
+              opacity: loaded || loading || error ? 0.5 : 1,
               backgroundSize: 'cover',
               backgroundPosition: '50% 50%',
               display: 'flex',
@@ -219,14 +245,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
               className={classes.button}
               onClick={this.handleOpen}
             >
-              {!loaded || !error ? (
-                <CreateIcon className={classes.icon} fontSize="small" />
-              ) : (
-                <DoneIcon
-                  className={cx(classes.icon, classes.green)}
-                  fontSize="small"
-                />
-              )}
+              {this.renderCreateIcon()}
             </IconButton>
             <IconButton
               aria-label="Delete"
@@ -237,6 +256,14 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
               <ClearIcon className={classes.icon} fontSize="small" />
             </IconButton>
           </div>
+          {loaded && (
+            <div className={classes.uploaded}>
+              <CloudUploadIcon className={classes.uploadedIcon} />
+              <Typography variant="subtitle2" align="center">
+                Image Uploaded
+              </Typography>
+            </div>
+          )}
           {error && (
             <div className={classes.retry}>
               <Button
