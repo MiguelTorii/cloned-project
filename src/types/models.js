@@ -61,3 +61,17 @@ export type Profile = {
   about: Array<About>,
   userStatistics: Array<UserStatistic>
 };
+
+export type UserClass = {
+  className: string,
+  classId: number,
+  section: Array<number>,
+  subjectId: number
+};
+
+export type UserClasses = Array<UserClass>;
+
+export type SelectType = {
+  label: string,
+  value: string
+};

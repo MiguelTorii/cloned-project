@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import type { Profile } from '../types/models';
+import type { Profile, UserClasses } from '../types/models';
 import { getToken } from './utils';
 
 export const getUserProfile = async ({
@@ -49,4 +49,30 @@ export const getUserProfile = async ({
   return { userProfile, about, userStatistics };
 };
 
-export const ads = () => 'asd';
+export const getUserClasses = async ({
+  userId
+}: {
+  userId: string
+}): Promise<UserClasses> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.USER_CLASSES}?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const {
+    data: { classes = [] }
+  } = result;
+
+  const userClasses = classes.map(userClass => ({
+    className: String((userClass.class: string) || ''),
+    classId: Number((userClass.class_id: number) || 0),
+    section: userClass.section || [],
+    subjectId: Number((userClass.subject_id: number) || 0)
+  }));
+
+  return userClasses;
+};

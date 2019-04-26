@@ -15,7 +15,8 @@ const circleInTheme = {
   appBar: '#37474f', // validate
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
-  dividerColor: '#ffffff' // validate
+  dividerColor: '#ffffff', // validate
+  inputBorderColor: '#959595'
 };
 const theme = createMuiTheme({
   circleIn: {
@@ -82,6 +83,18 @@ const theme = createMuiTheme({
     MuiInputLabel: {
       root: {
         color: circleInTheme.primaryText2
+      }
+    },
+    MuiOutlinedInput: {
+      root: {
+        '& $notchedOutline': {
+          borderColor: circleInTheme.inputBorderColor
+        }
+      }
+    },
+    MuiSelect: {
+      icon: {
+        color: circleInTheme.inputBorderColor
       }
     }
   }

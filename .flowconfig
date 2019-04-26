@@ -3,6 +3,7 @@
 <PROJECT_ROOT>/build
 ; FIXME: we should be flow checking against jss
 .*/node_modules/jss/lib/.*\.js\.flow
+.*/node_modules/react-select/*
 
 [include]
 
