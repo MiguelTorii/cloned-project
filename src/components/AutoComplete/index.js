@@ -75,6 +75,18 @@ function NoOptionsMessage({ selectProps, innerProps, children }) {
   );
 }
 
+function LoadingMessage({ selectProps, innerProps, children }) {
+  return (
+    <Typography
+      color="textPrimary"
+      className={selectProps.classes.noOptionsMessage}
+      {...innerProps}
+    >
+      {children}
+    </Typography>
+  );
+}
+
 function inputComponent({ inputRef, ...props }) {
   return <div ref={inputRef} {...props} />;
 }
@@ -166,7 +178,8 @@ const components = {
   NoOptionsMessage,
   Option,
   Placeholder,
-  ValueContainer
+  ValueContainer,
+  LoadingMessage
 };
 
 type Props = {
