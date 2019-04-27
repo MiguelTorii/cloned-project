@@ -22,7 +22,8 @@ const styles = () => ({});
 
 type Props = {
   classes: Object,
-  user: UserState
+  user: UserState,
+  pushTo: Function
 };
 
 type State = {
@@ -31,7 +32,10 @@ type State = {
   userClass: number | string,
   summary: string,
   tags: Array<SelectType>,
-  tagsError: boolean
+  tagsError: boolean,
+  errorDialog: boolean,
+  errorTitle: string,
+  errorBody: string
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -67,11 +71,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
         const { title, userClass, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
         const fileNames = images.map(item => item.id);
-        const tagValues = tags.map(item => item.value);
+        const tagValues = tags.map(item => Number(item.value));
         await createPhotoNote({
           userId,
           title,
-          classId: userClass,
+          classId: Number(userClass),
           fileNames,
           comment: summary,
           tags: tagValues
