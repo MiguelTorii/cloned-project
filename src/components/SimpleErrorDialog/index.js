@@ -40,12 +40,17 @@ class SimpleErrorDialog extends React.PureComponent<
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText color="textPrimary" id="alert-dialog-description">
             {body}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button
+            variant="outlined"
+            onClick={handleClose}
+            color="primary"
+            autoFocus
+          >
             Ok
           </Button>
         </DialogActions>

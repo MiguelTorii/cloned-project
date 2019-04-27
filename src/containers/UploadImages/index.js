@@ -13,7 +13,11 @@ import type { State as StoreState } from '../../types/state';
 import UploadImagesForm from '../../components/UploadImagesForm';
 import { getPresignedURLs } from '../../api/media';
 
-const styles = () => ({});
+const styles = theme => ({
+  root: {
+    padding: theme.spacing.unit * 2
+  }
+});
 
 type Props = {
   classes: Object,
@@ -111,6 +115,7 @@ class UploadImages extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { images } = this.state;
+    if (images.length === 0) throw new Error('no images');
     if (images.length === 0) return false;
     this.setImagesUploading();
     const fileNames = images.map(image => image.id);
@@ -119,8 +124,6 @@ class UploadImages extends React.PureComponent<Props, State> {
       type: 3,
       fileNames
     });
-    console.log(images);
-    console.log(result);
     return axios
       .all(
         images.map(item =>
@@ -131,11 +134,11 @@ class UploadImages extends React.PureComponent<Props, State> {
         axios.spread((...data) => {
           console.log(data);
           this.setImagesUploaded();
-          return true;
+          return images;
         })
       )
       .catch(() => {
-        return false;
+        throw new Error('error uploading');
       });
   };
 

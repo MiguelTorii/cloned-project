@@ -18,7 +18,8 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 3
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 8,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -30,6 +31,11 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     display: 'flex',
     flexDirection: 'column'
+  },
+  actions: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
   wrapper: {
     margin: theme.spacing.unit,
@@ -69,22 +75,24 @@ class NotesForm extends React.PureComponent<ProvidedProps & Props, State> {
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
             {children}
-            <div className={classes.wrapper}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={loading}
-                className={classes.submit}
-              >
-                Create
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
+            <div className={classes.actions}>
+              <div className={classes.wrapper}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={loading}
+                  className={classes.submit}
+                >
+                  Create
+                </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
             </div>
           </ValidatorForm>
         </Paper>

@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import HomeGridList from '../../components/HomeGridList';
 
@@ -24,15 +23,4 @@ class HomeGrid extends React.PureComponent<Props, State> {
   }
 }
 
-// const mapDispatchToProps = (dispatch: *): {} =>
-//   bindActionCreators(
-//     {
-//       openNotifications: notificationsActions.openNotifications
-//     },
-//     dispatch
-//   );
-
-export default connect(
-  null,
-  null
-)(withStyles(styles)(HomeGrid));
+export default withStyles(styles)(HomeGrid);

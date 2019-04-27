@@ -11,6 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import type { SelectType } from '../../types/models';
@@ -58,8 +59,8 @@ const styles = theme => ({
     left: 0,
     right: 0
   },
-  divider: {
-    height: theme.spacing.unit * 2
+  errorLabel: {
+    paddingLeft: 12
   }
 });
 
@@ -188,6 +189,7 @@ type Props = {
   page: number,
   values: Array<SelectType>,
   inputValue: string,
+  error: boolean,
   onChange: Function,
   onLoadOptions: Function
 };
@@ -200,6 +202,7 @@ class AutoComplete extends React.PureComponent<Props> {
       page = 0,
       values,
       inputValue,
+      error,
       onChange,
       onLoadOptions
     } = this.props;
@@ -237,6 +240,11 @@ class AutoComplete extends React.PureComponent<Props> {
             placeholder="Search for tags"
             isMulti
           />
+          {error && (
+            <FormHelperText error className={classes.errorLabel}>
+              You must add at least 1 tag
+            </FormHelperText>
+          )}
         </NoSsr>
       </div>
     );

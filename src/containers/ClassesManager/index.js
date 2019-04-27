@@ -35,16 +35,21 @@ class ClassesManager extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    this.mounted = true;
     const {
       user: {
         data: { userId }
       }
     } = this.props;
     const userClasses = await getUserClasses({ userId });
-    this.setState({ userClasses });
+    if (this.mounted) this.setState({ userClasses });
   };
 
-  getUserClasses = () => {};
+  componentWillUnmount = () => {
+    this.mounted = false;
+  };
+
+  mounted: boolean;
 
   render() {
     const {

@@ -21,22 +21,19 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  error: boolean,
+  tags: Array<SelectType>,
+  onChange: Function
 };
 
 type State = {
-  values: Array<SelectType>,
   inputValue: string
 };
 
 class TagsAutoComplete extends React.PureComponent<Props, State> {
   state = {
-    values: [],
     inputValue: ''
-  };
-
-  handleChange = values => {
-    this.setState({ values });
   };
 
   handleLoadOptions = async (search, loadedOptions, { page }) => {
@@ -57,14 +54,15 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
-    const { values, inputValue } = this.state;
+    const { classes, error, tags, onChange } = this.props;
+    const { inputValue } = this.state;
     return (
       <div className={classes.root}>
         <AutoComplete
-          values={values}
+          values={tags}
           inputValue={inputValue}
-          onChange={this.handleChange}
+          error={error}
+          onChange={onChange}
           onLoadOptions={this.handleLoadOptions}
         />
       </div>
