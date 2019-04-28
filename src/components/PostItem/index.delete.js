@@ -5,8 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import PostItemLink from './post-item-link';
-import PostItemAddComment from './post-item-add-comment';
-import PostItemComment from './post-item-comment';
+import PostItemAddComment from './PostItemAddComment';
+import PostItemComment from './PostItemComment';
 
 const styles = theme => ({
   container: {
