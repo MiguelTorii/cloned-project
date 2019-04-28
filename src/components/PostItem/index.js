@@ -1,12 +1,8 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import PostItemLink from './post-item-link';
-import PostItemAddComment from './post-item-add-comment';
-import PostItemComment from './post-item-comment';
 
 const styles = theme => ({
   container: {
@@ -18,80 +14,30 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 8,
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'space-between',
     overflowY: 'auto'
-  },
-  postInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    height: 100,
-    padding: theme.spacing.unit
-  },
-  bigAvatar: {
-    width: 60,
-    height: 60
-  },
-  userInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginLeft: theme.spacing.unit * 2
-  },
-  body: {}
+  }
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  children: Node
 };
 
-type State = {};
-
-class PostItem extends React.PureComponent<Props, State> {
-  renderPostItem = () => {
-    const url = 'https://circleinapp.com';
-    return <PostItemLink url={url} />;
-  };
-
+class PostItem extends React.PureComponent<Props> {
   render() {
-    const { classes } = this.props;
+    const { classes, children } = this.props;
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
-          <div className={classes.body}>
-            <div className={classes.postInfo}>
-              <Avatar className={classes.bigAvatar}>CR</Avatar>
-              <div className={classes.userInfo}>
-                <Typography component="p" variant="subtitle2" noWrap>
-                  James M.
-                </Typography>
-                <Typography component="p" variant="caption" noWrap>
-                  Algebra 2
-                </Typography>
-                <Typography component="p" variant="caption" noWrap>
-                  25 days ago
-                </Typography>
-              </div>
-            </div>
-            <Typography component="p" variant="h6" noWrap>
-              The Post Title
-            </Typography>
-            <Typography component="p" variant="body1" noWrap>
-              The post body
-            </Typography>
-            {this.renderPostItem()}
-            <div className={classes.comments}>
-              <PostItemAddComment />
-              <PostItemComment />
-              <PostItemComment />
-            </div>
-          </div>
+          {children}
         </Paper>
       </div>
     );

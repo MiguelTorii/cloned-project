@@ -75,3 +75,41 @@ export type SelectType = {
   label: string,
   value: string
 };
+
+export type Note = {
+  fullNoteUrl: string,
+  note: string,
+  noteUrl: string
+};
+
+export type PhotoNote = {
+  body: string,
+  bookmarked: boolean,
+  classId: number,
+  classroomName: string,
+  created: string,
+  feedId: number,
+  grade: number,
+  inStudyCircle: boolean,
+  name: string,
+  notes: Array<Note>,
+  postId: number,
+  postInfo: {
+    date: string,
+    feedId: number,
+    postId: number,
+    questionsCount: number,
+    thanksCount: number,
+    userId: number,
+    viewCount: number
+  },
+  rank: number,
+  reports: number,
+  school: string,
+  subject: string,
+  thanked: boolean,
+  title: string,
+  typeId: number,
+  userId: string,
+  userProfileUrl: string
+};

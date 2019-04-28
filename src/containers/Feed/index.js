@@ -53,9 +53,17 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     openShareDialog({ userId, feedId });
   };
 
-  handlePostClick = (feedId: number) => () => {
+  handlePostClick = (typeId: number, postId: number) => () => {
     const { push } = this.props;
-    push(`/feed/${feedId}`);
+
+    switch (typeId) {
+      case 4:
+        push(`/notes/${postId}`);
+        break;
+      default:
+        console.log(typeId, postId);
+        break;
+    }
   };
 
   render() {

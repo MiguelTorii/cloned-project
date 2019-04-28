@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
-import Post from '../../containers/Post';
+import Post from '../../containers/Post_DELETE';
 import TopPosts from '../../containers/TopPosts';
 
 const styles = () => ({

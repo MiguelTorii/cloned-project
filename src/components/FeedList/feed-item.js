@@ -190,7 +190,6 @@ class FeedItem extends React.PureComponent<Props, State> {
     const { classes, data, handlePostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
-
     const initials =
       data.name !== '' ? data.name.match(/\b(\w)/g).join('') : '';
     const date = moment(data.created);
@@ -269,7 +268,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             </CardActionArea>
           }
         />
-        <CardActionArea onClick={handlePostClick(data.feed_id)}>
+        <CardActionArea onClick={handlePostClick(data.type_id, data.post_id)}>
           <CardContent className={classes.content}>
             <Typography component="p" variant="subtitle2" noWrap>
               {data.title}
