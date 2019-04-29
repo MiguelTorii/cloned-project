@@ -4,6 +4,7 @@ import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Markdown from './Markdown';
 
 const styles = theme => ({
   root: {
@@ -23,6 +24,10 @@ const styles = theme => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     marginLeft: theme.spacing.unit * 2
+  },
+  markdown: {
+    color: theme.palette.text.primary,
+    fontFamily: theme.typography.fontFamily
   }
 });
 
@@ -33,10 +38,15 @@ type Props = {
   classroomName: string,
   created: string,
   title: string,
-  body: string
+  body: string,
+  isMarkdown?: boolean
 };
 
 class PostItemHeader extends React.PureComponent<Props> {
+  static defaultProps = {
+    isMarkdown: false
+  };
+
   render() {
     const {
       classes,
@@ -45,7 +55,8 @@ class PostItemHeader extends React.PureComponent<Props> {
       classroomName,
       created,
       title,
-      body
+      body,
+      isMarkdown
     } = this.props;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
@@ -68,12 +79,18 @@ class PostItemHeader extends React.PureComponent<Props> {
             </Typography>
           </div>
         </div>
-        <Typography component="p" variant="h5" noWrap>
+        <Typography component="p" variant="h5" noWrap paragraph>
           {title}
         </Typography>
-        <Typography component="p" variant="body1" noWrap>
-          {body}
-        </Typography>
+        {!isMarkdown ? (
+          <Typography component="p" variant="body1" noWrap>
+            {body}
+          </Typography>
+        ) : (
+          <div className={classes.markdown}>
+            <Markdown>{body}</Markdown>
+          </div>
+        )}
       </Fragment>
     );
   }

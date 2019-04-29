@@ -37,7 +37,7 @@ class ImageGallery extends React.PureComponent<Props> {
           <Gallery
             items={images}
             lazyLoad
-            thumbnailPosition="left"
+            thumbnailPosition="bottom"
             showPlayButton={false}
             showBullets
             showIndex

@@ -1,8 +1,8 @@
 // @flow
 import axios from 'axios';
-import type { PhotoNote } from '../types/models';
+import type { PhotoNote, Question, Comments } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
-import { getToken } from './utils';
+import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
 
 export const createPhotoNote = async ({
   userId,
@@ -62,40 +62,95 @@ export const getNotes = async ({
   );
 
   const { data } = result;
-  const photoNote = {
-    body: String((data.body: string) || ''),
-    bookmarked: Boolean((data.bookmarked: boolean) || false),
-    classId: Number((data.class_id: number) || 0),
-    classroomName: String((data.classroom_name: string) || ''),
-    created: String((data.created: string) || ''),
-    feedId: Number((data.feed_id: number) || 0),
-    grade: Number((data.grade: number) || 0),
-    inStudyCircle: Boolean((data.in_study_circle: boolean) || false),
-    name: String((data.name: string) || ''),
-    notes: (data.notes || []).map(item => ({
-      fullNoteUrl: String((item.full_note_url: string) || ''),
-      note: String((item.note: string) || ''),
-      noteUrl: String((item.note_url: string) || '')
-    })),
-    postId: Number((data.post_id: number) || 0),
-    postInfo: {
-      date: String((data.post_info.date: string) || ''),
-      feedId: Number((data.post_info.feed_id: number) || 0),
-      postId: Number((data.post_info.post_id: number) || 0),
-      questionsCount: Number((data.post_info.questions_count: number) || 0),
-      thanksCount: Number((data.post_info.thanks_count: number) || 0),
-      userId: Number((data.post_info.user_id: number) || 0),
-      viewCount: Number((data.post_info.view_count: number) || 0)
-    },
-    rank: Number((data.rank: number) || 0),
-    reports: Number((data.reports: number) || 0),
-    school: String((data.school: string) || ''),
-    subject: String((data.subject: string) || ''),
-    thanked: Boolean((data.thanked: boolean) || false),
-    title: String((data.title: string) || ''),
-    typeId: Number((data.type_id: number) || 0),
-    userId: String((data.user_id: string) || ''),
-    userProfileUrl: String((data.user_profile_url: string) || '')
-  };
+  const photoNote = postToCamelCase(data);
+  const notes = (data.notes || []).map(item => ({
+    fullNoteUrl: String((item.full_note_url: string) || ''),
+    note: String((item.note: string) || ''),
+    noteUrl: String((item.note_url: string) || '')
+  }));
+  Object.assign(photoNote, { notes });
   return photoNote;
+};
+
+export const getQuestion = async ({
+  userId,
+  questionId
+}: {
+  userId: string,
+  questionId: number
+}): Promise<Question> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.QUESTION}/${questionId}?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  const question = postToCamelCase(data);
+  return question;
+};
+
+export const getPostComments = async ({
+  userId,
+  postId,
+  typeId
+}: {
+  userId: string,
+  postId: number,
+  typeId: number
+}): Promise<Comments> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.FEED}/${postId}/comments?user_id=${userId}&type_id=${typeId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+
+  const comments = commentsToCamelCase(data);
+  return comments;
+};
+
+export const createComment = async ({
+  userId,
+  postId,
+  typeId,
+  comment,
+  rootCommentId,
+  parentCommentId
+}: {
+  userId: string,
+  postId: number,
+  typeId: number,
+  comment: string,
+  rootCommentId: ?number,
+  parentCommentId: ?number
+}) => {
+  const token = await getToken();
+  const result = await axios.post(
+    `${API_ROUTES.FEED}/${postId}/comment`,
+    {
+      user_id: Number(userId),
+      type_id: typeId,
+      comment,
+      root_comment_id: rootCommentId,
+      parent_comment_id: parentCommentId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  console.log(data);
 };

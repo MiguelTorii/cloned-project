@@ -76,13 +76,7 @@ export type SelectType = {
   value: string
 };
 
-export type Note = {
-  fullNoteUrl: string,
-  note: string,
-  noteUrl: string
-};
-
-export type PhotoNote = {
+export type Post = {
   body: string,
   bookmarked: boolean,
   classId: number,
@@ -92,7 +86,6 @@ export type PhotoNote = {
   grade: number,
   inStudyCircle: boolean,
   name: string,
-  notes: Array<Note>,
   postId: number,
   postInfo: {
     date: string,
@@ -112,4 +105,47 @@ export type PhotoNote = {
   typeId: number,
   userId: string,
   userProfileUrl: string
+};
+
+export type Note = {
+  fullNoteUrl: string,
+  note: string,
+  noteUrl: string
+};
+
+export type PhotoNote = Post & {
+  notes: Array<Note>
+};
+
+export type Question = Post & {};
+
+export type CommentUser = {
+  userId: string,
+  firstName: string,
+  lastName: string,
+  profileImageUrl: string,
+  hours: number,
+  joined: string,
+  rank: number,
+  scholarshipPoints: number,
+  schoolId: number,
+  state: string
+};
+
+export type Comment = {
+  accepted: boolean,
+  comment: string,
+  created: string,
+  id: number,
+  parentCommentId: number,
+  reportsCount: number,
+  rootCommentId: number,
+  thanked: boolean,
+  thanksCount: number,
+  user: CommentUser
+};
+
+export type Comments = {
+  parentCommentsCount: number,
+  comments: Array<Comment>
 };

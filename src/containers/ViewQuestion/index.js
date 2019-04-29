@@ -6,13 +6,12 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { PhotoNote } from '../../types/models';
-import { getNotes } from '../../api/posts';
+import type { Question } from '../../types/models';
+import { getQuestion } from '../../api/posts';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
-import ImageGallery from '../../components/ImageGallery';
 
 const styles = theme => ({
   root: {
@@ -35,16 +34,16 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  noteId: number
+  questionId: number
 };
 
 type State = {
-  photoNote: ?PhotoNote
+  question: ?Question
 };
 
-class ViewNotes extends React.PureComponent<Props, State> {
+class ViewQuestion extends React.PureComponent<Props, State> {
   state = {
-    photoNote: null
+    question: null
   };
 
   componentDidMount = async () => {
@@ -52,24 +51,28 @@ class ViewNotes extends React.PureComponent<Props, State> {
       user: {
         data: { userId }
       },
-      noteId
+      questionId
     } = this.props;
-    const photoNote = await getNotes({ userId, noteId });
-    this.setState({ photoNote });
+    const question = await getQuestion({ userId, questionId });
+    this.setState({ question });
   };
 
   render() {
-    const { classes } = this.props;
-    const { photoNote } = this.state;
-    console.log(photoNote);
-    if (!photoNote)
+    const {
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const { question } = this.state;
+    console.log(question);
+    if (!question)
       return (
         <div className={classes.loader}>
           <CircularProgress />
         </div>
       );
     const {
-      userId,
       postId,
       typeId,
       name,
@@ -78,16 +81,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
       created,
       body,
       title,
-      notes,
       thanked,
       inStudyCircle,
       postInfo: { questionsCount, thanksCount, viewCount }
-    } = photoNote;
+    } = question;
 
-    const images = notes.map(item => ({
-      original: item.fullNoteUrl,
-      thumbnail: item.noteUrl
-    }));
     return (
       <div className={classes.root}>
         <PostItem>
@@ -98,8 +96,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
             created={created}
             body={body}
             title={title}
+            isMarkdown
           />
-          <ImageGallery images={images} />
           <PostItemActions
             thanked={thanked}
             inStudyCircle={inStudyCircle}
@@ -121,4 +119,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(ViewNotes));
+)(withStyles(styles)(ViewQuestion));

@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import Index from './pages/Home';
 import Feed from './pages/Feed';
 import PhotoNote from './pages/View/Notes';
+import Question from './pages/View/Question';
 // import Post from './pages/Post';
 import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
@@ -29,6 +30,7 @@ ReactDOM.render(
         <Route exact path="/feed" render={Feed} />
         {/* <Route exact path="/feed/:feedId" render={Post} /> */}
         <Route exact path="/notes/:noteId" render={PhotoNote} />
+        <Route exact path="/question/:questionId" render={Question} />
         <Route exact path="/create/question" render={CreateQuestion} />
         <Route exact path="/create/notes" render={CreateNotes} />
         <Route exact path="/edit/question/:id" render={EditQuestion} />

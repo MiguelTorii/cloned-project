@@ -60,6 +60,9 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       case 4:
         push(`/notes/${postId}`);
         break;
+      case 6:
+        push(`/question/${postId}`);
+        break;
       default:
         console.log(typeId, postId);
         break;
