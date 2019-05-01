@@ -35,7 +35,7 @@ export const getToken = async (): Promise<string> => {
   return jwt_token;
 };
 
-export const postToCamelCase = (post): Post => {
+export const postToCamelCase = (post: Object): Post => {
   return {
     body: String((post.body: string) || ''),
     bookmarked: Boolean((post.bookmarked: boolean) || false),
@@ -68,7 +68,7 @@ export const postToCamelCase = (post): Post => {
   };
 };
 
-export const commentsToCamelCase = (comments): Comments => {
+export const commentsToCamelCase = (comments: Object): Comments => {
   return {
     parentCommentsCount: Number((comments.parent_comments_count: number) || 0),
     comments: (comments.comments || []).map(item => ({

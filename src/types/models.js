@@ -119,6 +119,12 @@ export type PhotoNote = Post & {
 
 export type Question = Post & {};
 
+export type Flashcards = Post & {};
+
+export type ShareLink = Post & {
+  uri: string
+};
+
 export type CommentUser = {
   userId: string,
   firstName: string,

@@ -4,11 +4,9 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
-import Post from '../../containers/Post_DELETE';
-import TopPosts from '../../containers/TopPosts';
+import ViewFlashcards from '../../containers/ViewFlashcards';
 
 const styles = () => ({
   item: {
@@ -20,45 +18,40 @@ type Props = {
   classes: Object,
   match: {
     params: {
-      feedId: string
+      flashcardId: string
     }
   }
 };
 
 type State = {
-  feedId: ?number
+  flashcardId: ?number
 };
 
-class PostPage extends React.Component<Props, State> {
+class FlashcardsPage extends React.Component<Props, State> {
   state = {
-    feedId: null
+    flashcardId: null
   };
 
   componentDidMount = () => {
     const {
       match: {
-        params: { feedId = '' }
+        params: { flashcardId }
       }
     } = this.props;
-    if (feedId !== '') this.setState({ feedId: Number(feedId) });
+    this.setState({ flashcardId: Number(flashcardId) });
   };
 
   render() {
     const { classes } = this.props;
-    const { feedId } = this.state;
+    const { flashcardId } = this.state;
     return (
       <main>
         <CssBaseline />
         <Layout>
           <Grid container spacing={0}>
-            <Grid item xs={12} md={9} className={classes.item}>
-              <Post feedId={feedId} />
+            <Grid item xs={12} className={classes.item}>
+              {flashcardId && <ViewFlashcards flashcardId={flashcardId} />}
             </Grid>
-            <Hidden smDown>
-              <Grid item md={3} className={classes.item}>
-                <TopPosts />
-              </Grid>
-            </Hidden>
           </Grid>
         </Layout>
       </main>
@@ -66,4 +59,4 @@ class PostPage extends React.Component<Props, State> {
   }
 }
 
-export default withRoot(withStyles(styles)(PostPage));
+export default withRoot(withStyles(styles)(FlashcardsPage));

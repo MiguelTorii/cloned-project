@@ -33,7 +33,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     this.setState({ comments: result, items });
   };
 
-  handlePostComment = async ({ comment, rootCommentId, parentCommentId }) => {
+  handlePostComment = async ({ comment, rootCommentId, parentCommentId }: {comment: string, rootCommentId: number, parentCommentId: number}) => {
     if (comment.trim() === '') return;
     const { userId, postId, typeId } = this.props;
     this.setState({ isLoading: true });

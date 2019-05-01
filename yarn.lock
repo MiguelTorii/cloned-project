@@ -1010,12 +1010,12 @@
     prop-types "^15.6.0"
     react-is "^16.6.3"
 
-"@microlink/react@^3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@microlink/react/-/react-3.0.5.tgz#6f0d1b758bbf0bcde205a38744b8cdf31fb071b5"
-  integrity sha512-OFOdMdogNS8P05uT/bRscNyCpD76koO+IJA4Jan1jEhNRfOD9jGLpKJapT0p1J2e4SXxi//ivEop8cAHyKxjFA==
+"@microlink/react@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@microlink/react/-/react-4.0.0.tgz#5c1484d05b4d5fde858b5c6a5c55eb886f72cab5"
+  integrity sha512-LfTGXC8CuC0uK0K6x62aB9ZTjJ8v9WeEZi1fqsV9gW2f68DQUmyKtJs/tWONru/L2/ZMhOue3YKPm2b2oQOmJg==
   dependencies:
-    nanoclamp "~1.2.7"
+    nanoclamp "~1.2.11"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -7065,10 +7065,10 @@ nan@^2.9.2:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
   integrity sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
 
-nanoclamp@~1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/nanoclamp/-/nanoclamp-1.2.7.tgz#1d70def558897f73e21052509d5818f9608a159b"
-  integrity sha512-4b9Z5wGWyH0G7iy+wKjtgk6hkU633CNnmageQOf50dTlLCNKk5uNz897H0JiltIK/Jb7x3PAisMW187yAE9FdA==
+nanoclamp@~1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/nanoclamp/-/nanoclamp-1.2.11.tgz#2dc868fad1e31e0e02a0920bc4373c6ff2e74134"
+  integrity sha512-V/g1GXe7mwjR3JiZbs46HJz9gjk2/+uS+HbaxvxuAHwWVGuZx6fkEb+UfIscQ5ZtavYO584W14p+Y0E2RrM9Ag==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -7249,6 +7249,11 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+
+normalize-url@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.3.0.tgz#9c49e10fc1876aeb76dba88bf1b2b5d9fa57b2ee"
+  integrity sha512-0NLtR71o4k6GLP+mr6Ty34c5GA6CMoEsncKJxvQd8NzPxaHRJNnb5gZE8R1XF4CPIS7QPHLJ74IFszwtNVAHVQ==
 
 npm-bundled@^1.0.1:
   version "1.0.5"

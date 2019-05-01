@@ -42,7 +42,9 @@ type Props = {
   onCancelComment?: Function
 };
 
-type State = {};
+type State = {
+  value: string
+};
 
 class PostItemAddComment extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -63,13 +65,13 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
     const { value } = this.state;
     onPostComment({ comment: value });
     this.setState({ value: '' });
-    onCancelComment();
+    if (onCancelComment) onCancelComment();
   };
 
   handleCancel = () => {
     this.setState({ value: '' });
     const { onCancelComment } = this.props;
-    onCancelComment();
+    if (onCancelComment) onCancelComment();
   };
 
   render() {

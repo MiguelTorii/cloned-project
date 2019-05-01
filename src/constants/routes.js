@@ -25,5 +25,7 @@ export const API_ROUTES = {
   SEND_CODE: `${API_URL}/auth/send_code`,
   MEDIA_URL: `${API_URL}/media/url`,
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
-  QUESTION: `${API_URL}/question`
+  QUESTION: `${API_URL}/question`,
+  FLASHCARDS: `${API_URL}/deck`,
+  SHARELINK: `${API_URL}/link`
 };

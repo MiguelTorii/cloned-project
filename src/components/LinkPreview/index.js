@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import normalizeUrl from 'normalize-url';
 import MicrolinkCard from '@microlink/react';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -9,15 +10,15 @@ const styles = () => ({
 
 type Props = {
   classes: Object,
-  url: string
+  uri: string
 };
 
 type State = {};
 
-class PostItemLink extends React.PureComponent<Props, State> {
+class LinkPreview extends React.PureComponent<Props, State> {
   render() {
-    const { classes, url } = this.props;
-
+    const { classes, uri } = this.props;
+    const url = normalizeUrl(uri);
     return (
       <div className={classes.container}>
         <MicrolinkCard url={url} size="large" target="_blank" />
@@ -26,4 +27,4 @@ class PostItemLink extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(PostItemLink);
+export default withStyles(styles)(LinkPreview);

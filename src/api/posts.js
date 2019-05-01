@@ -1,6 +1,12 @@
 // @flow
 import axios from 'axios';
-import type { PhotoNote, Question, Comments } from '../types/models';
+import type {
+  PhotoNote,
+  Question,
+  Flashcards,
+  ShareLink,
+  Comments
+} from '../types/models';
 import { API_ROUTES } from '../constants/routes';
 import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
 
@@ -62,13 +68,13 @@ export const getNotes = async ({
   );
 
   const { data } = result;
-  const photoNote = postToCamelCase(data);
+  const post = postToCamelCase(data);
   const notes = (data.notes || []).map(item => ({
     fullNoteUrl: String((item.full_note_url: string) || ''),
     note: String((item.note: string) || ''),
     noteUrl: String((item.note_url: string) || '')
   }));
-  Object.assign(photoNote, { notes });
+  const photoNote = { ...post, notes };
   return photoNote;
 };
 
@@ -92,6 +98,52 @@ export const getQuestion = async ({
   const { data } = result;
   const question = postToCamelCase(data);
   return question;
+};
+
+export const getFlashcards = async ({
+  userId,
+  flashcardId
+}: {
+  userId: string,
+  flashcardId: number
+}): Promise<Flashcards> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.FLASHCARDS}/${flashcardId}?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  const flashcards = postToCamelCase(data);
+  return flashcards;
+};
+
+export const getShareLink = async ({
+  userId,
+  sharelinkId
+}: {
+  userId: string,
+  sharelinkId: number
+}): Promise<ShareLink> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.SHARELINK}/${sharelinkId}?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  const post = postToCamelCase(data);
+  const uri = String((data.uri: string) || '');
+  const shareLink = { ...post, uri };
+  return shareLink;
 };
 
 export const getPostComments = async ({
