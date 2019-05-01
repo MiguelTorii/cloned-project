@@ -59,7 +59,12 @@ class ViewShareLink extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
     const { shareLink } = this.state;
     console.log(shareLink);
     if (!shareLink)
@@ -69,7 +74,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
         </div>
       );
     const {
-      userId,
+      feedId,
       postId,
       typeId,
       name,
@@ -97,6 +102,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
           />
           <LinkPreview uri={uri} />
           <PostItemActions
+            feedId={feedId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}

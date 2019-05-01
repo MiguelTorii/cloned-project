@@ -59,7 +59,12 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
     const { photoNote } = this.state;
     console.log(photoNote);
     if (!photoNote)
@@ -69,7 +74,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         </div>
       );
     const {
-      userId,
+      feedId,
       postId,
       typeId,
       name,
@@ -101,6 +106,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
           />
           <ImageGallery images={images} />
           <PostItemActions
+            feedId={feedId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}

@@ -278,5 +278,32 @@ export const createComment = async ({
   );
 
   const { data } = result;
-  console.log(data);
+  return data;
+};
+
+export const createShareURL = async ({
+  userId,
+  feedId
+}: {
+  userId: string,
+  feedId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    API_ROUTES.CREATELINK,
+    {
+      user_id: Number(userId),
+      feed_id: feedId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  const { url } = data;
+  return url;
 };

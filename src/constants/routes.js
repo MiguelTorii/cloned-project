@@ -27,5 +27,6 @@ export const API_ROUTES = {
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
   QUESTION: `${API_URL}/question`,
   FLASHCARDS: `${API_URL}/deck`,
-  SHARELINK: `${API_URL}/link`
+  SHARELINK: `${API_URL}/link`,
+  CREATELINK: `${API_URL}/feed/link/post`
 };

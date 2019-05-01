@@ -73,6 +73,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
         </div>
       );
     const {
+      feedId,
       postId,
       typeId,
       name,
@@ -99,6 +100,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
             isMarkdown
           />
           <PostItemActions
+            feedId={feedId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}

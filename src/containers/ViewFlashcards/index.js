@@ -58,7 +58,12 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
     const { flashcards } = this.state;
     console.log(flashcards);
     if (!flashcards)
@@ -68,7 +73,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
         </div>
       );
     const {
-      userId,
+      feedId,
       postId,
       typeId,
       name,
@@ -94,6 +99,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
             title={title}
           />
           <PostItemActions
+            feedId={feedId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}
