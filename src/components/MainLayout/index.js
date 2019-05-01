@@ -286,7 +286,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/link"
+          link="/create/sharelink"
         >
           <ListItemIcon>
             <LanguageIcon />

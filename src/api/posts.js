@@ -87,6 +87,43 @@ export const createQuestion = async ({
   return data;
 };
 
+export const createShareLink = async ({
+  userId,
+  title,
+  uri,
+  classId,
+  sectionId,
+  tags
+}: {
+  userId: string,
+  title: string,
+  uri: string,
+  classId: number,
+  sectionId?: number,
+  tags: Array<number>
+}): Promise<Object> => {
+  const token = await getToken();
+  const result = await axios.post(
+    `${API_ROUTES.SHARELINK}`,
+    {
+      user_id: Number(userId),
+      title,
+      uri,
+      class_id: classId,
+      section_id: sectionId,
+      tags
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
 export const getNotes = async ({
   userId,
   noteId

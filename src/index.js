@@ -15,6 +15,7 @@ import ShareLink from './pages/View/ShareLink';
 import Question from './pages/View/Question';
 import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
+import CreateShareLink from './pages/Create/ShareLink';
 import EditQuestion from './pages/Edit/Question';
 import Profile from './pages/Profile';
 import FloatingChat from './containers/FloatingChat';
@@ -35,6 +36,7 @@ ReactDOM.render(
         <Route exact path="/question/:questionId" render={Question} />
         <Route exact path="/create/question" render={CreateQuestion} />
         <Route exact path="/create/notes" render={CreateNotes} />
+        <Route exact path="/create/sharelink" render={CreateShareLink} />
         <Route exact path="/edit/question/:id" render={EditQuestion} />
         <Route exact path="/profile/:userId" render={Profile} />
         <Route exact path="/login" render={SignIn} />
