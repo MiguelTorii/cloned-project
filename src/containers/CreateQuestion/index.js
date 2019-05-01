@@ -2,77 +2,202 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import QuestionForm from '../../components/QuestionForm';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import type { SelectType } from '../../types/models';
+import CreatePostForm from '../../components/CreatePostForm';
+import ClassesManager from '../ClassesManager';
+import OutlinedTextValidator from '../../components/OutlinedTextValidator';
+import RichTextEditor from '../RichTextEditor';
+import TagsAutoComplete from '../TagsAutoComplete';
+import SimpleErrorDialog from '../../components/SimpleErrorDialog';
+import { createQuestion } from '../../api/posts';
 
 const styles = () => ({});
 
 type Props = {
-  classes: Object
+  classes: Object,
+  user: UserState,
+  pushTo: Function
 };
 
 type State = {
+  loading: boolean,
   title: string,
-  userClass: string,
-  description: string
+  body: string,
+  userClass: number | string,
+  tags: Array<SelectType>,
+  tagsError: boolean,
+  errorDialog: boolean,
+  errorTitle: string,
+  errorBody: string
 };
 
 class CreateQuestion extends React.PureComponent<Props, State> {
   state = {
+    loading: false,
     title: '',
+    body: '',
     userClass: '',
-    description: ''
+    tags: [],
+    tagsError: false,
+    errorDialog: false,
+    errorTitle: '',
+    errorBody: ''
   };
 
-  handleChange = (field: string) => (
-    // eslint-disable-next-line no-undef
-    event: SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { target } = event;
-    // eslint-disable-next-line no-undef
-    if (!(target instanceof HTMLInputElement)) {
+  handleSubmit = async event => {
+    event.preventDefault();
+    const { tags } = this.state;
+    if (tags.length === 0) {
+      this.setState({ tagsError: true });
       return;
     }
-    this.setState({
-      [field]: target.value
-    });
+    this.setState({ tagsError: false });
+    this.setState({ loading: true });
+    try {
+      const {
+        user: {
+          data: { userId = '' }
+        },
+        pushTo
+      } = this.props;
+      const { title, body, userClass } = this.state;
+
+      const tagValues = tags.map(item => Number(item.value));
+      await createQuestion({
+        userId,
+        title,
+        body,
+        classId: Number(userClass),
+        tags: tagValues
+      });
+      pushTo('/feed');
+    } catch (err) {
+      this.setState({
+        loading: false,
+        errorDialog: true,
+        errorTitle: 'Unknown Error',
+        errorBody: 'Please try again'
+      });
+    }
   };
 
-  handleDescriptionChange = description => {
-    this.setState({ description });
+  handleTextChange = name => event => {
+    this.setState({ [name]: event.target.value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleRTEChange = value => {
+    this.setState({body: value})
+  }
+
+  handleClassChange = event => {
+    this.setState({ userClass: event.target.value });
+  };
+
+  handleTagsChange = values => {
+    this.setState({ tags: values });
+    if (values.length === 0) this.setState({ tagsError: true });
+    else this.setState({ tagsError: false });
+  };
+
+  handleErrorDialogClose = () => {
+    this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
   render() {
     const { classes } = this.props;
-    const { title, userClass, description } = this.state;
+    const {
+      loading,
+      title,
+      body,
+      userClass,
+      tags,
+      tagsError,
+      errorDialog,
+      errorTitle,
+      errorBody
+    } = this.state;
+
     return (
       <div className={classes.root}>
-        <QuestionForm
-          handleChange={this.handleChange}
-          handleDescriptionChange={this.handleDescriptionChange}
+        <CreatePostForm
+          title="Ask a Question"
+          loading={loading}
           handleSubmit={this.handleSubmit}
-          title={title}
-          userClass={userClass}
-          description={description}
+        >
+          <Grid container alignItems="center">
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">
+                {"What's your question?"}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <OutlinedTextValidator
+                label="Question"
+                onChange={this.handleTextChange}
+                name="title"
+                value={title}
+                validators={['required']}
+                errorMessages={['Title is required']}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">Description</Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <RichTextEditor placeholder="Add more details to your question to increase the chances of getting an answer" value={body} onChange={this.handleRTEChange} />
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">Class</Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <ClassesManager
+                value={userClass}
+                onChange={this.handleClassChange}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">Tags</Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <TagsAutoComplete
+                tags={tags}
+                error={tagsError}
+                onChange={this.handleTagsChange}
+              />
+            </Grid>
+          </Grid>
+        </CreatePostForm>
+        <SimpleErrorDialog
+          open={errorDialog}
+          title={errorTitle}
+          body={errorBody}
+          handleClose={this.handleErrorDialogClose}
         />
       </div>
     );
   }
 }
 
-// const mapDispatchToProps = (dispatch: *): {} =>
-//   bindActionCreators(
-//     {
-//       openNotifications: notificationsActions.openNotifications
-//     },
-//     dispatch
-//   );
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      pushTo: push
+    },
+    dispatch
+  );
 
 export default connect(
-  null,
-  null
+  mapStateToProps,
+  mapDispatchToProps
 )(withStyles(styles)(CreateQuestion));

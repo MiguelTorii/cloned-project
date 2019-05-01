@@ -51,12 +51,9 @@ const styles = theme => ({
   }
 });
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
   classes: Object,
+  title: string,
   children: Node,
   loading: boolean,
   handleSubmit: Function
@@ -64,14 +61,14 @@ type Props = {
 
 type State = {};
 
-class NotesForm extends React.PureComponent<ProvidedProps & Props, State> {
+class CreatePostForm extends React.PureComponent<Props, State> {
   render() {
-    const { classes, children, loading, handleSubmit } = this.props;
+    const { classes, title, children, loading, handleSubmit } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Share Notes
+            {title}
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
             {children}
@@ -101,4 +98,4 @@ class NotesForm extends React.PureComponent<ProvidedProps & Props, State> {
   }
 }
 
-export default withStyles(styles)(NotesForm);
+export default withStyles(styles)(CreatePostForm);

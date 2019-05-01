@@ -50,6 +50,43 @@ export const createPhotoNote = async ({
   return data;
 };
 
+export const createQuestion = async ({
+  userId,
+  title,
+  body,
+  classId,
+  sectionId,
+  tags
+}: {
+  userId: string,
+  title: string,
+  body: string,
+  classId: number,
+  sectionId?: number,
+  tags: Array<number>
+}): Promise<Object> => {
+  const token = await getToken();
+  const result = await axios.post(
+    `${API_ROUTES.QUESTION}`,
+    {
+      user_id: Number(userId),
+      question_title: title,
+      question_body: body,
+      class_id: classId,
+      section_id: sectionId,
+      tags
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
 export const getNotes = async ({
   userId,
   noteId

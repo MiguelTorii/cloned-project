@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
-import NotesForm from '../../components/NotesForm';
+import CreatePostForm from '../../components/CreatePostForm';
 import UploadImages from '../UploadImages';
 import ClassesManager from '../ClassesManager';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
@@ -138,7 +138,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <NotesForm loading={loading} handleSubmit={this.handleSubmit}>
+        <CreatePostForm
+          title="Share Notes"
+          loading={loading}
+          handleSubmit={this.handleSubmit}
+        >
           <Grid container alignItems="center">
             <Grid item xs={2}>
               <Typography variant="subtitle1">Title</Typography>
@@ -198,7 +202,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               />
             </Grid>
           </Grid>
-        </NotesForm>
+        </CreatePostForm>
         <SimpleErrorDialog
           open={errorDialog}
           title={errorTitle}

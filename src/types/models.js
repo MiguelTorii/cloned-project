@@ -155,3 +155,9 @@ export type Comments = {
   parentCommentsCount: number,
   comments: Array<Comment>
 };
+
+export type PresignedURL = {
+  url: string,
+  readUrl: string,
+  mediaId: string
+};
