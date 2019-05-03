@@ -47,6 +47,10 @@ class ViewQuestion extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    this.loadData();
+  };
+
+  loadData = async () => {
     const {
       user: {
         data: { userId }
@@ -65,7 +69,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { question } = this.state;
-    console.log(question);
+
     if (!question)
       return (
         <div className={classes.loader}>
@@ -84,7 +88,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       title,
       thanked,
       inStudyCircle,
-      postInfo: { questionsCount, thanksCount, viewCount }
+      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
     } = question;
 
     return (
@@ -100,14 +104,19 @@ class ViewQuestion extends React.PureComponent<Props, State> {
             isMarkdown
           />
           <PostItemActions
+            userId={userId}
+            ownerId={ownerId}
             feedId={feedId}
+            postId={postId}
+            typeId={typeId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}
             thanksCount={thanksCount}
             viewCount={viewCount}
+            onReload={this.loadData}
           />
-          <PostComments userId={userId} postId={postId} typeId={typeId} />
+          <PostComments feedId={feedId} postId={postId} typeId={typeId} />
         </PostItem>
       </div>
     );

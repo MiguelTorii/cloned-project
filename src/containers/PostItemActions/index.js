@@ -3,35 +3,66 @@
 import React, { Fragment } from 'react';
 import PostActions from '../../components/PostItem/PostItemActions';
 import SharePost from '../SharePost';
+import {
+  updateThanks,
+  addToStudyCircle,
+  removeFromStudyCircle
+} from '../../api/posts';
 
 type Props = {
+  userId: string,
   feedId: number,
+  postId: number,
+  typeId: number,
+  ownerId: string,
   thanked: boolean,
   inStudyCircle: boolean,
   questionsCount: number,
   thanksCount: number,
-  viewCount: number
+  viewCount: number,
+  onReload: Function
 };
 
 type State = {
-  open: boolean
+  open: boolean,
+  isThanksLoading: boolean,
+  isStudyCircleLoading: boolean
 };
 
 class PostItemActions extends React.PureComponent<Props, State> {
   state = {
-    open: false
+    open: false,
+    isThanksLoading: false,
+    isStudyCircleLoading: false
   };
 
   handleShare = () => {
     this.setState({ open: true });
   };
 
-  handleThanks = () => {
-    console.log('thanks');
+  handleThanks = async () => {
+    const { userId, postId, typeId, onReload } = this.props;
+    try {
+      this.setState({ isThanksLoading: true });
+      await updateThanks({ userId, postId, typeId });
+    } finally {
+      this.setState({ isThanksLoading: false });
+      onReload();
+    }
   };
 
-  handleStudyCircle = () => {
-    console.log('study circle');
+  handleStudyCircle = async () => {
+    const { userId, ownerId, feedId, inStudyCircle, onReload } = this.props;
+    try {
+      this.setState({ isStudyCircleLoading: true });
+      if (!inStudyCircle)
+        await addToStudyCircle({ userId, classmateId: ownerId, feedId });
+      else
+        await removeFromStudyCircle({ userId, classmateId: ownerId, feedId });
+    } finally {
+      this.setState({ isStudyCircleLoading: false });
+      onReload();
+    }
   };
 
   handleClose = () => {
@@ -40,6 +71,8 @@ class PostItemActions extends React.PureComponent<Props, State> {
 
   render() {
     const {
+      userId,
+      ownerId,
       feedId,
       thanked,
       inStudyCircle,
@@ -47,15 +80,20 @@ class PostItemActions extends React.PureComponent<Props, State> {
       thanksCount,
       viewCount
     } = this.props;
-    const { open } = this.state;
+    const { open, isThanksLoading, isStudyCircleLoading } = this.state;
+
     return (
       <Fragment>
         <PostActions
           thanked={thanked}
+          isOwner={Boolean(Number(userId) === Number(ownerId))}
           inStudyCircle={inStudyCircle}
           questionsCount={questionsCount}
           thanksCount={thanksCount}
           viewCount={viewCount}
+          isThanksLoading={isThanksLoading}
+          isStudyCircleLoading={isStudyCircleLoading}
+          noThanks={userId === ownerId}
           onShare={this.handleShare}
           onThanks={this.handleThanks}
           onStudyCircle={this.handleStudyCircle}

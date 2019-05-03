@@ -48,6 +48,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    this.loadData();
+  };
+
+  loadData = async () => {
     const {
       user: {
         data: { userId }
@@ -66,7 +70,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { photoNote } = this.state;
-    console.log(photoNote);
+
     if (!photoNote)
       return (
         <div className={classes.loader}>
@@ -86,7 +90,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       notes,
       thanked,
       inStudyCircle,
-      postInfo: { questionsCount, thanksCount, viewCount }
+      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
     } = photoNote;
 
     const images = notes.map(item => ({
@@ -106,14 +110,19 @@ class ViewNotes extends React.PureComponent<Props, State> {
           />
           <ImageGallery images={images} />
           <PostItemActions
+            userId={userId}
+            ownerId={ownerId}
             feedId={feedId}
+            postId={postId}
+            typeId={typeId}
             thanked={thanked}
             inStudyCircle={inStudyCircle}
             questionsCount={questionsCount}
             thanksCount={thanksCount}
             viewCount={viewCount}
+            onReload={this.loadData}
           />
-          <PostComments userId={userId} postId={postId} typeId={typeId} />
+          <PostComments feedId={feedId} postId={postId} typeId={typeId} />
         </PostItem>
       </div>
     );

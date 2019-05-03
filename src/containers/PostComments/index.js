@@ -1,14 +1,19 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import Divider from '@material-ui/core/Divider';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
 import PostItemComment from '../../components/PostItem/PostItemComment';
-import { getPostComments, createComment } from '../../api/posts';
+import { getPostComments, createComment, thankComment } from '../../api/posts';
 import type { Comments } from '../../types/models';
 import { processComments } from './processComments';
 
 type Props = {
-  userId: string,
+  user: UserState,
+  feedId: number,
   postId: number,
   typeId: number
 };
@@ -26,16 +31,27 @@ class ViewNotes extends React.PureComponent<Props, State> {
     isLoading: false
   };
 
-  componentDidMount = async () => {
-    const { userId, postId, typeId } = this.props;
-    const result = await getPostComments({ userId, postId, typeId });
-    const items = processComments(result.comments);
-    this.setState({ comments: result, items });
+  componentDidMount = () => {
+    this.loadData();
   };
 
-  handlePostComment = async ({ comment, rootCommentId, parentCommentId }: {comment: string, rootCommentId: number, parentCommentId: number}) => {
+  handlePostComment = async ({
+    comment,
+    rootCommentId,
+    parentCommentId
+  }: {
+    comment: string,
+    rootCommentId: number,
+    parentCommentId: number
+  }) => {
     if (comment.trim() === '') return;
-    const { userId, postId, typeId } = this.props;
+    const {
+      user: {
+        data: { userId }
+      },
+      postId,
+      typeId
+    } = this.props;
     this.setState({ isLoading: true });
     try {
       await createComment({
@@ -46,25 +62,68 @@ class ViewNotes extends React.PureComponent<Props, State> {
         rootCommentId,
         parentCommentId
       });
-      const result = await getPostComments({ userId, postId, typeId });
-      const items = processComments(result.comments);
-      this.setState({ comments: result, items });
+      await this.loadData();
     } finally {
       this.setState({ isLoading: false });
     }
   };
 
+  handleThanks = async ({ commentId }) => {
+    const {
+      user: {
+        data: { userId }
+      },
+      feedId
+    } = this.props;
+    this.setState({ isLoading: true });
+    try {
+      await thankComment({ userId, feedId, commentId });
+      await this.loadData();
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
+
+  handleDelete = () => {
+    console.log('delete');
+  };
+
+  loadData = async () => {
+    const {
+      user: {
+        data: { userId }
+      },
+      postId,
+      typeId
+    } = this.props;
+    const result = await getPostComments({ userId, postId, typeId });
+    const items = processComments(result.comments);
+    this.setState({ comments: result, items });
+  };
+
   render() {
+    const {
+      user: {
+        data: { userId, profileImage, firstName, lastName }
+      }
+    } = this.props;
     const { comments, items, isLoading } = this.state;
     if (!comments) return null;
-    console.log(items);
+
+    const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
-        <PostItemAddComment onPostComment={this.handlePostComment} />
-        {items.map(item => (
+        <PostItemAddComment
+          name={name}
+          profileImageUrl={profileImage}
+          onPostComment={this.handlePostComment}
+        />
+        {items.map((item, index) => (
           <Fragment key={item.id}>
             <PostItemComment
               id={item.id}
+              ownProfileUrl={profileImage}
+              ownName={name}
               firstName={item.user.firstName}
               lastName={item.user.lastName}
               profileImageUrl={item.user.profileImageUrl}
@@ -74,12 +133,18 @@ class ViewNotes extends React.PureComponent<Props, State> {
               thanked={item.thanked}
               rootCommentId={item.id}
               isLoading={isLoading}
+              isOwn={item.user.userId === userId}
               onPostComment={this.handlePostComment}
+              onThanks={this.handleThanks}
+              onDelete={this.handleDelete}
             />
             {item.children.map(reply => (
               <PostItemComment
                 key={reply.id}
                 id={reply.id}
+                ownProfileUrl={profileImage}
+                ownName={name}
+                replyTo={reply.replyTo}
                 firstName={reply.user.firstName}
                 lastName={reply.user.lastName}
                 profileImageUrl={reply.user.profileImageUrl}
@@ -88,10 +153,14 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 thanksCount={reply.thanksCount}
                 thanked={reply.thanked}
                 rootCommentId={item.id}
-                onPostComment={this.handlePostComment}
+                isOwn={reply.user.userId === userId}
                 isReply
+                onPostComment={this.handlePostComment}
+                onThanks={this.handleThanks}
+                onDelete={this.handleDelete}
               />
             ))}
+            {index + 1 < items.length && <Divider light />}
           </Fragment>
         ))}
       </Fragment>
@@ -99,4 +168,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
   }
 }
 
-export default ViewNotes;
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(ViewNotes);

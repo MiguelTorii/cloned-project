@@ -307,3 +307,117 @@ export const createShareURL = async ({
   const { url } = data;
   return url;
 };
+
+export const updateThanks = async ({
+  userId,
+  postId,
+  typeId
+}: {
+  userId: string,
+  postId: number,
+  typeId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.FEED}/${postId}/thank`,
+    {
+      user_id: Number(userId),
+      type_id: typeId,
+      token: 'abc'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
+export const addToStudyCircle = async ({
+  userId,
+  classmateId,
+  studyCircleTypeId = 1,
+  feedId
+}: {
+  userId: string,
+  classmateId: string,
+  studyCircleTypeId?: number,
+  feedId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.STUDY_CIRCLE}/${userId}`,
+    {
+      study_circle_id: Number(classmateId),
+      study_circle_type_id: studyCircleTypeId,
+      added_from_feed_id: feedId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
+export const removeFromStudyCircle = async ({
+  userId,
+  classmateId,
+  studyCircleTypeId = 1
+}: {
+  userId: string,
+  classmateId: string,
+  studyCircleTypeId?: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.delete(
+    `${
+      API_ROUTES.STUDY_CIRCLE
+    }/${userId}?study_circle_id=${classmateId}&study_circle_type_id=${studyCircleTypeId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
+export const thankComment = async ({
+  userId,
+  feedId,
+  commentId
+}: {
+  userId: string,
+  feedId: number,
+  commentId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.COMMENT}/${commentId}/thank`,
+    {
+      user_id: Number(userId),
+      feed_id: feedId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};

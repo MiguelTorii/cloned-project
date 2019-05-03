@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 // @flow
 import React, { Fragment } from 'react';
 import cx from 'classnames';
@@ -11,21 +12,23 @@ import Collapse from '@material-ui/core/Collapse';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+import ReplyIcon from '@material-ui/icons/Reply';
 import PostItemAddComent from './PostItemAddComment';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import Markdown from './Markdown';
 
 const styles = theme => ({
   container: {
+    width: '100%',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     marginTop: theme.spacing.unit * 2
   },
   reply: {
-    marginLeft: theme.spacing.unit * 4
+    marginLeft: theme.spacing.unit * 4,
+    paddingRight: theme.spacing.unit * 4
   },
   info: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -50,21 +53,27 @@ const styles = theme => ({
     width: '100%'
   },
   actions: {
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-end'
   },
   thanks: {
     marginLeft: theme.spacing.unit
+  },
+  replyTo: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   }
-  // icon: {
-  //   marginLeft: theme.spacing.unit * 2
-  // }
 });
 
 type Props = {
   classes: Object,
   id: number,
+  ownProfileUrl: string,
+  ownName: string,
+  replyTo?: string,
   firstName: string,
   lastName: string,
   profileImageUrl: string,
@@ -73,9 +82,12 @@ type Props = {
   thanksCount: number,
   thanked: boolean,
   rootCommentId: number,
+  isOwn: boolean,
   isReply?: boolean,
   isLoading?: boolean,
-  onPostComment: Function
+  onPostComment: Function,
+  onThanks: Function,
+  onDelete: Function
 };
 
 type State = {
@@ -84,6 +96,7 @@ type State = {
 
 class PostItemComment extends React.PureComponent<Props, State> {
   static defaultProps = {
+    replyTo: '',
     isReply: false,
     isLoading: false
   };
@@ -103,9 +116,17 @@ class PostItemComment extends React.PureComponent<Props, State> {
     }));
   };
 
+  handleThanks = () => {
+    const { id, onThanks } = this.props;
+    onThanks({ commentId: id });
+  };
+
   render() {
     const {
       classes,
+      ownProfileUrl,
+      ownName,
+      replyTo,
       firstName,
       lastName,
       profileImageUrl,
@@ -113,8 +134,10 @@ class PostItemComment extends React.PureComponent<Props, State> {
       comment,
       thanksCount,
       thanked,
+      isOwn,
       isReply,
-      isLoading
+      isLoading,
+      onDelete
     } = this.props;
     const { showAddComment } = this.state;
     const date = moment(created);
@@ -140,6 +163,14 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 {fromNow}
               </Typography>
             </div>
+            {replyTo !== '' && (
+              <div className={classes.replyTo}>
+                <ReplyIcon />
+                <Typography component="p" variant="subtitle2" noWrap>
+                  {`Replying to ${replyTo || ''}`}
+                </Typography>
+              </div>
+            )}
             {isLoading && (
               <div className={classes.progress}>
                 <LinearProgress variant="query" />
@@ -150,30 +181,35 @@ class PostItemComment extends React.PureComponent<Props, State> {
               {/* <Markdown>{comment}</Markdown> */}
             </div>
             <div className={classes.actions}>
-              <IconButton>
-                {thanked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
-              </IconButton>
               <Typography
                 component="p"
                 variant="subtitle2"
                 className={classes.thanks}
               >
-                {thanksCount}
+                {`${thanksCount} ${thanksCount === 1 ? 'thank' : 'thanks'}`}
               </Typography>
+              {!isOwn && (
+                <IconButton onClick={this.handleThanks}>
+                  {thanked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+                </IconButton>
+              )}
               <Button color="primary" onClick={this.handleShowAddComment}>
                 Reply
               </Button>
-              <Button color="primary">Report</Button>
+              {!isOwn && <Button color="primary">Report</Button>}
+              {isOwn && !isReply && false && (
+                <Button color="primary" onClick={onDelete}>
+                  Delete
+                </Button>
+              )}
             </div>
-            {/* <Button>
-            See 10 Answers
-            <ExpandMoreIcon className={classes.icon} />
-          </Button> */}
           </div>
         </div>
         <Collapse in={showAddComment}>
           <PostItemAddComent
-            isReply={isReply}
+            profileImageUrl={ownProfileUrl}
+            name={ownName}
+            isReply
             onPostComment={this.handlePostComment}
             onCancelComment={this.handleShowAddComment}
           />

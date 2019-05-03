@@ -37,6 +37,8 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  profileImageUrl: string,
+  name: string,
   isReply?: boolean,
   onPostComment: Function,
   onCancelComment?: Function
@@ -75,13 +77,13 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, isReply } = this.props;
+    const { classes, profileImageUrl, name, isReply } = this.props;
     const { value } = this.state;
-
+    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
       <div className={cx(classes.container, isReply && classes.reply)}>
         <div className={classes.body}>
-          <Avatar>CR</Avatar>
+          <Avatar src={profileImageUrl}>{initials}</Avatar>
           <TextField
             id="outlined-bare"
             placeholder="Have a question? Ask here"

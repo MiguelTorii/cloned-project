@@ -53,7 +53,7 @@ export const postToCamelCase = (post: Object): Post => {
       postId: Number((post.post_info.post_id: number) || 0),
       questionsCount: Number((post.post_info.questions_count: number) || 0),
       thanksCount: Number((post.post_info.thanks_count: number) || 0),
-      userId: Number((post.post_info.user_id: number) || 0),
+      userId: String((post.post_info.user_id: string) || ''),
       viewCount: Number((post.post_info.view_count: number) || 0)
     },
     rank: Number((post.rank: number) || 0),

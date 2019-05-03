@@ -93,7 +93,7 @@ export type Post = {
     postId: number,
     questionsCount: number,
     thanksCount: number,
-    userId: number,
+    userId: string,
     viewCount: number
   },
   rank: number,
