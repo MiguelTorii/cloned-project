@@ -7,6 +7,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
 import PostItemComment from '../../components/PostItem/PostItemComment';
+import Report from '../Report';
 import { getPostComments, createComment, thankComment } from '../../api/posts';
 import type { Comments } from '../../types/models';
 import { processComments } from './processComments';
@@ -21,14 +22,16 @@ type Props = {
 type State = {
   comments: ?Comments,
   items: Array<Object>,
-  isLoading: boolean
+  isLoading: boolean,
+  report: ?Object
 };
 
 class ViewNotes extends React.PureComponent<Props, State> {
   state = {
     comments: null,
     items: [],
-    isLoading: false
+    isLoading: false,
+    report: null
   };
 
   componentDidMount = () => {
@@ -84,9 +87,15 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleDelete = () => {
-    console.log('delete');
+  handleReport = async ({ commentId, ownerId }) => {
+    this.setState({ report: { commentId, ownerId } });
   };
+
+  handleReportClose = () => {
+    this.setState({ report: null });
+  };
+
+  handleDelete = () => {};
 
   loadData = async () => {
     const {
@@ -107,7 +116,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         data: { userId, profileImage, firstName, lastName }
       }
     } = this.props;
-    const { comments, items, isLoading } = this.state;
+    const { comments, items, isLoading, report } = this.state;
     if (!comments) return null;
 
     const name = `${firstName} ${lastName}`;
@@ -124,6 +133,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
               id={item.id}
               ownProfileUrl={profileImage}
               ownName={name}
+              ownerId={item.user.userId}
               firstName={item.user.firstName}
               lastName={item.user.lastName}
               profileImageUrl={item.user.profileImageUrl}
@@ -137,6 +147,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
               onPostComment={this.handlePostComment}
               onThanks={this.handleThanks}
               onDelete={this.handleDelete}
+              onReport={this.handleReport}
             />
             {item.children.map(reply => (
               <PostItemComment
@@ -158,11 +169,18 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 onPostComment={this.handlePostComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
+                onReport={this.handleReport}
               />
             ))}
             {index + 1 < items.length && <Divider light />}
           </Fragment>
         ))}
+        <Report
+          open={Boolean(report)}
+          ownerId={(report || {}).ownerId || ''}
+          objectId={(report || {}).commentId || -1}
+          onClose={this.handleReportClose}
+        />
       </Fragment>
     );
   }

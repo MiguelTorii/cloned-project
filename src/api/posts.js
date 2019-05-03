@@ -421,3 +421,41 @@ export const thankComment = async ({
   const { data } = result;
   return data;
 };
+
+export const report = async ({
+  reportCreatorId,
+  objectCreatorId,
+  reasonId,
+  objectId,
+  reportTypeId,
+  description
+}: {
+  reportCreatorId: string,
+  objectCreatorId: string,
+  reasonId: string,
+  objectId: number,
+  reportTypeId: number,
+  description: string
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    API_ROUTES.REPORT,
+    {
+      report_creator_id: Number(reportCreatorId),
+      object_creator_id: Number(objectCreatorId),
+      reason_id: Number(reasonId),
+      object_id: objectId,
+      report_type_id: reportTypeId,
+      description
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};

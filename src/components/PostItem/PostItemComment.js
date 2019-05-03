@@ -73,6 +73,7 @@ type Props = {
   id: number,
   ownProfileUrl: string,
   ownName: string,
+  ownerId: string,
   replyTo?: string,
   firstName: string,
   lastName: string,
@@ -87,6 +88,7 @@ type Props = {
   isLoading?: boolean,
   onPostComment: Function,
   onThanks: Function,
+  onReport: Function,
   onDelete: Function
 };
 
@@ -119,6 +121,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
   handleThanks = () => {
     const { id, onThanks } = this.props;
     onThanks({ commentId: id });
+  };
+
+  handleReport = () => {
+    const { id, ownerId, onReport } = this.props;
+    onReport({ commentId: id, ownerId });
   };
 
   render() {
@@ -196,7 +203,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
               <Button color="primary" onClick={this.handleShowAddComment}>
                 Reply
               </Button>
-              {!isOwn && <Button color="primary">Report</Button>}
+              {!isOwn && (
+                <Button color="primary" onClick={this.handleReport}>
+                  Report
+                </Button>
+              )}
               {isOwn && !isReply && false && (
                 <Button color="primary" onClick={onDelete}>
                   Delete
