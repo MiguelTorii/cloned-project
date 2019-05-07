@@ -156,6 +156,17 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
   }
 };
 
+export const updateUser = ({ user }: { user: User }) => async (
+  dispatch: Dispatch
+) => {
+  store.set('TOKEN', user.jwtToken);
+  store.set('REFRESH_TOKEN', user.refreshToken);
+  store.set('USER_ID', user.userId);
+  store.set('SEGMENT', user.segment);
+
+  dispatch(setUser({ user }));
+};
+
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignOut());

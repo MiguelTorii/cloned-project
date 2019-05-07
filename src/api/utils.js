@@ -4,7 +4,7 @@ import store from 'store';
 import decode from 'jwt-decode';
 import moment from 'moment';
 import { API_ROUTES } from '../constants/routes';
-import type { Post, Comments } from '../types/models';
+import type { Post, Comments, User, UpdateProfile } from '../types/models';
 
 export const getToken = async (): Promise<string> => {
   const token = store.get('TOKEN');
@@ -94,5 +94,26 @@ export const commentsToCamelCase = (comments: Object): Comments => {
         state: String((item.user.state: string) || '')
       }
     }))
+  };
+};
+
+export const userToCamelCase = (user: Object): User => {
+  return {
+    userId: (user.user_id: string) || '',
+    email: (user.email: string) || '',
+    firstName: (user.first_name: string) || '',
+    lastName: (user.last_name: string) || '',
+    school: (user.school: string) || '',
+    schoolId: (user.school_id: number) || 0,
+    segment: (user.segment: string) || '',
+    twilioToken: (user.twilio_token: string) || '',
+    canvasUser: (user.canvas_user: boolean) || false,
+    grade: (user.grade_id: number) || 0,
+    jwtToken: (user.jwt_token: string) || '',
+    refreshToken: (user.refresh_token: string) || '',
+    profileImage: (user.profile_image_url: string) || '',
+    rank: (user.rank: number) || 0,
+    referralCode: (user.referral_code: string) || '',
+    updateProfile: (user.update_profile: Array<UpdateProfile>) || []
   };
 };

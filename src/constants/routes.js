@@ -32,5 +32,6 @@ export const API_ROUTES = {
   STUDY_CIRCLE: `${API_URL}/study_circle`,
   COMMENT: `${API_URL}/comment`,
   REPORT: `${API_URL}/log/report`,
-  CANVAS_SCHOOLS: `${API_URL}/canvas/schools`
+  CANVAS_SCHOOLS: `${API_URL}/canvas/schools`,
+  CANVAS_USER: `${API_URL}/canvas/oauth2/token`
 };
