@@ -10,3 +10,8 @@ export const ALGOLIA_API_KEY =
 
 export const ALGOLIA_INDEX =
   process.env.REACT_APP_STAGE === 'production' ? 'dev_tags' : 'dev_tags';
+
+export const REDIRECT_URI =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'https://app.circleinapp.com/oauth'
+    : 'https://dev-app2.circleinapp.com/oauth';

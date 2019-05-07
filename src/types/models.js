@@ -161,3 +161,11 @@ export type PresignedURL = {
   readUrl: string,
   mediaId: string
 };
+
+export type LMSSchool = {
+  clientId: string,
+  school: string,
+  uri: string
+};
+
+export type LMSSchools = Array<LMSSchool>;

@@ -150,6 +150,18 @@ function ValueContainer({ selectProps, children }) {
   return <div className={selectProps.classes.valueContainer}>{children}</div>;
 }
 
+function SingleValue({ selectProps, innerProps, children }) {
+  return (
+    <Typography
+      color="textPrimary"
+      className={selectProps.classes.singleValue}
+      {...innerProps}
+    >
+      {children}
+    </Typography>
+  );
+}
+
 function MultiValue({ children, selectProps, isFocused, removeProps }) {
   return (
     <Chip
@@ -175,6 +187,7 @@ function Menu({ selectProps, children, innerProps }) {
 const components = {
   Control,
   Menu,
+  SingleValue,
   MultiValue,
   NoOptionsMessage,
   Option,
@@ -189,7 +202,11 @@ type Props = {
   page: number,
   values: Array<SelectType>,
   inputValue: string,
+  label: string,
+  placeholder: string,
+  isMulti: boolean,
   error: boolean,
+  errorText: string,
   onChange: Function,
   onLoadOptions: Function
 };
@@ -202,7 +219,11 @@ class AutoComplete extends React.PureComponent<Props> {
       page = 0,
       values,
       inputValue,
+      label,
+      placeholder,
+      isMulti,
       error,
+      errorText,
       onChange,
       onLoadOptions
     } = this.props;
@@ -224,7 +245,7 @@ class AutoComplete extends React.PureComponent<Props> {
             classes={classes}
             styles={selectStyles}
             textFieldProps={{
-              label: 'Tags',
+              label,
               InputLabelProps: {
                 shrink: true
               }
@@ -237,12 +258,13 @@ class AutoComplete extends React.PureComponent<Props> {
             additional={{
               page
             }}
-            placeholder="Search for tags"
-            isMulti
+            placeholder={placeholder}
+            isMulti={isMulti}
+            isClearable
           />
           {error && (
             <FormHelperText error className={classes.errorLabel}>
-              You must add at least 1 tag
+              {errorText}
             </FormHelperText>
           )}
         </NoSsr>

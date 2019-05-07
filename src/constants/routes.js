@@ -31,5 +31,6 @@ export const API_ROUTES = {
   CREATELINK: `${API_URL}/feed/link/post`,
   STUDY_CIRCLE: `${API_URL}/study_circle`,
   COMMENT: `${API_URL}/comment`,
-  REPORT: `${API_URL}/log/report`
+  REPORT: `${API_URL}/log/report`,
+  CANVAS_SCHOOLS: `${API_URL}/canvas/schools`
 };

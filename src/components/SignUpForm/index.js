@@ -2,9 +2,12 @@
 
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
@@ -42,6 +45,12 @@ const styles = theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
+  actions: {
+    display: 'flex'
+  },
+  button: {
+    margin: theme.spacing.unit
+  },
   wrapper: {
     margin: theme.spacing.unit,
     position: 'relative'
@@ -63,75 +72,85 @@ const styles = theme => ({
   }
 });
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
   classes: Object,
-  email: String,
-  password: String,
   loading: boolean,
-  handleChange: Function,
   handleSubmit: Function
 };
 
-type State = {};
+type State = {
+  activeStep: number
+};
 
-class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
+class SignUpForm extends React.PureComponent<Props, State> {
+  state = {
+    activeStep: 0
+  };
+
+  handleBack = () => {
+    this.setState(({ activeStep }) => ({
+      activeStep: activeStep === 0 ? 0 : activeStep - 1
+    }));
+  };
+
+  handleNext = () => {
+    this.setState(({ activeStep }) => ({ activeStep: activeStep + 1 }));
+  };
+
   render() {
-    const {
-      classes,
-      email,
-      password,
-      loading,
-      handleSubmit,
-      handleChange
-    } = this.props;
+    const { classes, loading, handleSubmit } = this.props;
+    const { activeStep } = this.state;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
           <img src={logo} alt="Logo" className={classes.logo} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Create your CircleIn Account
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
-            <TextValidator
-              label="Email Address"
-              margin="normal"
-              onChange={handleChange('email')}
-              name="email"
-              autoComplete="email"
-              autoFocus
-              fullWidth
-              value={email}
-              disabled={loading}
-              validators={['required', 'isEmail']}
-              errorMessages={['email is required', 'email is not valid']}
-            />
-            <TextValidator
-              label="Password"
-              margin="normal"
-              onChange={handleChange('password')}
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              type="password"
-              value={password}
-              disabled={loading}
-              validators={['required']}
-              errorMessages={['password is required']}
-            />
+            <Stepper activeStep={activeStep} alternativeLabel>
+              <Step>
+                <StepLabel>Account Setup</StepLabel>
+              </Step>
+              <Step>
+                <StepLabel>Verification</StepLabel>
+              </Step>
+              <Step>
+                <StepLabel>Profile Setup</StepLabel>
+              </Step>
+            </Stepper>
+            <div className={classes.actions}>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="default"
+                disabled={activeStep === 0 || loading}
+                onClick={this.handleBack}
+                className={classes.button}
+              >
+                Back
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                onClick={this.handleNext}
+                disabled={loading}
+                className={classes.button}
+              >
+                Next
+              </Button>
+            </div>
             <div className={classes.wrapper}>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                disabled={loading}
+                disabled={activeStep < 2 || loading}
                 className={classes.submit}
               >
-                Sign in
+                Submit
               </Button>
               {loading && (
                 <CircularProgress
@@ -143,25 +162,14 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           </ValidatorForm>
           <div className={classes.links}>
             <Typography variant="subtitle1" gutterBottom>
-              {"Don't have an account? "}
+              {'Already have an account? '}
               <Link
                 component={MyLink}
-                link="/signup"
-                href="/signup"
+                link="/login"
+                href="/login"
                 className={classes.link}
               >
-                Get Started
-              </Link>
-            </Typography>
-            <Typography variant="subtitle1">
-              {"Don't remember your password? "}
-              <Link
-                component={MyLink}
-                link="/recover"
-                href="/recover"
-                className={classes.link}
-              >
-                Recover
+                Sign in
               </Link>
             </Typography>
           </div>
@@ -171,4 +179,4 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
   }
 }
 
-export default withStyles(styles)(SignInForm);
+export default withStyles(styles)(SignUpForm);

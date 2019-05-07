@@ -4,9 +4,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import FederatedLogin from '../FederatedLogin';
-import SignInForm from '../../components/SignInForm';
+import SignUpForm from '../../components/SignUpForm';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -14,10 +12,13 @@ import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({});
 
+type ProvidedProps = {
+  classes: Object
+};
+
 type Props = {
-  classes: Object,
   user: UserState,
-  signIn: Function,
+  //   signIn: Function,
   clearError: Function
 };
 
@@ -26,7 +27,7 @@ type State = {
   password: string
 };
 
-class SignIn extends React.Component<Props, State> {
+class SignUp extends React.Component<ProvidedProps & Props, State> {
   state = {
     email: '',
     password: ''
@@ -47,8 +48,8 @@ class SignIn extends React.Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { signIn } = this.props;
-    signIn(this.state);
+    // const { signIn } = this.props;
+    // signIn(this.state);
   };
 
   handleErrorDialogClose = () => {
@@ -64,20 +65,13 @@ class SignIn extends React.Component<Props, State> {
 
     return (
       <main className={classes.main}>
-        <Grid container justify="space-around">
-          <Grid item lg={6}>
-            <SignInForm
-              email={email}
-              password={password}
-              loading={isLoading}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-            />
-          </Grid>
-          <Grid item lg={6}>
-            <FederatedLogin />
-          </Grid>
-        </Grid>
+        <SignUpForm
+          email={email}
+          password={password}
+          loading={isLoading}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+        />
         <SimpleErrorDialog
           open={error}
           title={title}
@@ -105,4 +99,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(SignIn));
+)(withStyles(styles)(SignUp));

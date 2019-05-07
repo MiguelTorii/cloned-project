@@ -61,7 +61,11 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
         <AutoComplete
           values={tags}
           inputValue={inputValue}
+          label="Tags"
+          placeholder="Search for tags"
           error={error}
+          errorText="You must add at least 1 tag"
+          isMulti
           onChange={onChange}
           onLoadOptions={this.handleLoadOptions}
         />

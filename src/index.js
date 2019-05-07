@@ -20,6 +20,7 @@ import EditQuestion from './pages/Edit/Question';
 import Profile from './pages/Profile';
 import FloatingChat from './containers/FloatingChat';
 import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 const store = configureStore();
 
@@ -40,6 +41,7 @@ ReactDOM.render(
         <Route exact path="/edit/question/:id" render={EditQuestion} />
         <Route exact path="/profile/:userId" render={Profile} />
         <Route exact path="/login" render={SignIn} />
+        <Route exact path="/signup" render={SignUp} />
         <Route render={() => <div>Miss</div>} />
       </Switch>
     </ConnectedRouter>
