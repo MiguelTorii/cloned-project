@@ -3,12 +3,54 @@ import axios from 'axios';
 import type {
   PhotoNote,
   Question,
+  Flashcard,
   Flashcards,
   ShareLink,
   Comments
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
 import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
+
+export const createFlashcards = async ({
+  userId,
+  title,
+  deck,
+  classId,
+  sectionId,
+  tags,
+  grade
+}: {
+  userId: string,
+  title: string,
+  deck: Array<Flashcard>,
+  classId: number,
+  sectionId?: number,
+  tags: Array<number>,
+  grade: number
+}): Promise<Object> => {
+  const token = await getToken();
+  const result = await axios.post(
+    `${API_ROUTES.DECK}`,
+    {
+      user_id: Number(userId),
+      title,
+      deck,
+      grade_level: grade,
+      token: 'NA',
+      class_id: classId,
+      section_id: sectionId,
+      tags
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
 
 export const createPhotoNote = async ({
   userId,
@@ -192,7 +234,9 @@ export const getFlashcards = async ({
   );
 
   const { data } = result;
-  const flashcards = postToCamelCase(data);
+  const post = postToCamelCase(data);
+  const deck = data.deck || [];
+  const flashcards = { ...post, deck };
   return flashcards;
 };
 

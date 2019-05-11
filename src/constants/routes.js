@@ -26,6 +26,7 @@ export const API_ROUTES = {
   MEDIA_URL: `${API_URL}/media/url`,
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
   QUESTION: `${API_URL}/question`,
+  DECK: `${API_URL}/deck`,
   FLASHCARDS: `${API_URL}/temporary_deck`,
   SHARELINK: `${API_URL}/link`,
   CREATELINK: `${API_URL}/feed/link/post`,

@@ -13,6 +13,7 @@ import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
 import ShareLink from './pages/View/ShareLink';
 import Question from './pages/View/Question';
+import CreateFlashcards from './pages/Create/Flashcards';
 import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
 import CreateShareLink from './pages/Create/ShareLink';
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route exact path="/notes/:noteId" render={PhotoNote} />
         <Route exact path="/sharelink/:sharelinkId" render={ShareLink} />
         <Route exact path="/question/:questionId" render={Question} />
+        <Route exact path="/create/flashcards" render={CreateFlashcards} />
         <Route exact path="/create/question" render={CreateQuestion} />
         <Route exact path="/create/notes" render={CreateNotes} />
         <Route exact path="/create/sharelink" render={CreateShareLink} />

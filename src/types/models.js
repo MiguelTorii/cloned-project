@@ -119,7 +119,14 @@ export type PhotoNote = Post & {
 
 export type Question = Post & {};
 
-export type Flashcards = Post & {};
+export type Flashcard = {
+  question: string,
+  answer: string
+};
+
+export type Flashcards = Post & {
+  deck: Array<Flashcard>
+};
 
 export type ShareLink = Post & {
   uri: string

@@ -89,6 +89,5 @@ export const createAccount = async ({
     segment
   });
   const { data = {} } = result;
-  console.log(data);
   return data;
 };
