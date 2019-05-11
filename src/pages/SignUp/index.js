@@ -8,21 +8,16 @@ import SignUp from '../../containers/SignUp';
 
 const styles = () => ({});
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
   classes: Object
 };
 
-type State = {};
-
-class SignUpPage extends React.Component<ProvidedProps & Props, State> {
+class SignUpPage extends React.Component<Props> {
   componentDidMount = () => {};
 
   render() {
     const { classes } = this.props;
+
     return (
       <main className={classes.main}>
         <CssBaseline />

@@ -54,7 +54,7 @@ const styles = theme => ({
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 100,
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0
@@ -119,6 +119,7 @@ function Option({
   children
   // data: { description = '' }
 }) {
+  // const { onMouseMove, onMouseOver, ...newInnerProps } = innerProps;
   return (
     <MenuItem
       buttonRef={innerRef}
@@ -207,11 +208,16 @@ type Props = {
   isMulti: boolean,
   error: boolean,
   errorText: string,
+  isDisabled?: boolean,
   onChange: Function,
   onLoadOptions: Function
 };
 
 class AutoComplete extends React.PureComponent<Props> {
+  static defaultProps = {
+    isDisabled: false
+  };
+
   render() {
     const {
       classes,
@@ -224,6 +230,7 @@ class AutoComplete extends React.PureComponent<Props> {
       isMulti,
       error,
       errorText,
+      isDisabled,
       onChange,
       onLoadOptions
     } = this.props;
@@ -261,6 +268,7 @@ class AutoComplete extends React.PureComponent<Props> {
             placeholder={placeholder}
             isMulti={isMulti}
             isClearable
+            isDisabled={isDisabled}
           />
           {error && (
             <FormHelperText error className={classes.errorLabel}>

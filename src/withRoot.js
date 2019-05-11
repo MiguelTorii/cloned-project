@@ -4,6 +4,7 @@ import React from 'react';
 import type { ComponentType } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { SnackbarProvider } from 'notistack';
 
 const circleInTheme = {
   action: '#49afd9',
@@ -106,9 +107,11 @@ function withRoot(Component: ComponentType<*>) {
     // thanks to React context.
     return (
       <MuiThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...props} />
+        <SnackbarProvider maxSnack={3}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Component {...props} />
+        </SnackbarProvider>
       </MuiThemeProvider>
     );
   }

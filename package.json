@@ -19,6 +19,7 @@
     "markdown-to-jsx": "^6.9.4",
     "moment": "^2.24.0",
     "normalize-url": "^4.3.0",
+    "notistack": "^0.8.2",
     "prop-types": "^15.6.2",
     "query-string": "^6.5.0",
     "react": "^16.8.6",

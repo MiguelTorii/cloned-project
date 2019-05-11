@@ -33,5 +33,6 @@ export const API_ROUTES = {
   COMMENT: `${API_URL}/comment`,
   REPORT: `${API_URL}/log/report`,
   CANVAS_SCHOOLS: `${API_URL}/canvas/schools`,
-  CANVAS_USER: `${API_URL}/canvas/oauth2/token`
+  CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
+  FETCH_SCHOOLS: `${API_URL}/schools`
 };
