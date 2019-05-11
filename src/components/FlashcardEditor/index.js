@@ -74,6 +74,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
+    // $FlowIgnore
     this.myRef = React.createRef();
   }
 
@@ -174,6 +175,8 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
       </Card>
     );
   };
+
+  myRef: Object;
 
   render() {
     const { question, answer, isFlipped, open } = this.state;
