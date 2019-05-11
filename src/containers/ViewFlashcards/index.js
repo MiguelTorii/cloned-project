@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import uuidv4 from 'uuid/v4';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,6 +11,8 @@ import type { Flashcards } from '../../types/models';
 import { getFlashcards } from '../../api/posts';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
+import FlashcardViewer from '../../components/FlashcardViewer';
+import Flashcard from '../../components/Flashcard';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 
@@ -28,6 +31,10 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing.unit * 2
+  },
+  flashcards: {
+    display: 'flex',
+    flexWrap: 'wrap'
   }
 });
 
@@ -57,8 +64,20 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       },
       flashcardId
     } = this.props;
-    const flashcards = await getFlashcards({ userId, flashcardId });
-    this.setState({ flashcards });
+    const { deck = [], ...flashcards } = await getFlashcards({
+      userId,
+      flashcardId
+    });
+    this.setState({
+      flashcards: {
+        ...flashcards,
+        deck: deck.map(item => ({
+          question: item.question,
+          answer: item.answer,
+          id: uuidv4()
+        }))
+      }
+    });
   };
 
   render() {
@@ -88,6 +107,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       title,
       thanked,
       inStudyCircle,
+      deck,
       postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
     } = flashcards;
 
@@ -102,6 +122,18 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
             body={body}
             title={title}
           />
+          <FlashcardViewer title={title} flashcards={deck} />
+          <div className={classes.flashcards}>
+            {// $FlowIgnore
+            deck.map(({ id, question, answer }, index) => (
+              <Flashcard
+                key={id}
+                index={index + 1}
+                question={question}
+                answer={answer}
+              />
+            ))}
+          </div>
           <PostItemActions
             userId={userId}
             ownerId={ownerId}
