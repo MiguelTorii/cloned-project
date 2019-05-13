@@ -12,8 +12,8 @@ import SendIcon from '@material-ui/icons/Send';
 const styles = theme => ({
   root: {
     padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
+    // display: 'flex',
+    // alignItems: 'center',
     width: '95%',
     margin: '0 auto',
     marginTop: theme.spacing.unit,
@@ -22,6 +22,10 @@ const styles = theme => ({
     borderColor: theme.circleIn.palette.borderColor
   },
   form: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  textfield: {
     marginLeft: 8,
     flex: 1
   },
@@ -92,41 +96,43 @@ class ChatTextField extends React.PureComponent<Props, State> {
     const { message } = this.state;
     return (
       <Paper className={classes.root} elevation={1}>
-        <IconButton
-          onClick={this.handleOpenInputFile}
-          className={classes.iconButton}
-          aria-label="Insert Photo"
-        >
-          <InsertPhotoIcon />
-        </IconButton>
-        <input
-          accept="image/*"
-          className={classes.input}
-          ref={fileInput => {
-            this.fileInput = fileInput;
-          }}
-          onChange={this.handleInputChange}
-          type="file"
-        />
         <form
           autoComplete="off"
           className={classes.form}
           onSubmit={this.handleSubmit}
         >
+          <IconButton
+            onClick={this.handleOpenInputFile}
+            className={classes.iconButton}
+            aria-label="Insert Photo"
+          >
+            <InsertPhotoIcon />
+          </IconButton>
+          <input
+            accept="image/*"
+            className={classes.input}
+            ref={fileInput => {
+              this.fileInput = fileInput;
+            }}
+            onChange={this.handleInputChange}
+            type="file"
+          />
           <InputBase
             value={message}
             onChange={this.handleChange}
+            className={classes.textfield}
             placeholder="Type a message"
           />
+          <Divider light className={classes.divider} />
+          <IconButton
+            color="primary"
+            type="submit"
+            className={classes.iconButton}
+            aria-label="Send"
+          >
+            <SendIcon />
+          </IconButton>
         </form>
-        <Divider light className={classes.divider} />
-        <IconButton
-          color="primary"
-          className={classes.iconButton}
-          aria-label="Send"
-        >
-          <SendIcon />
-        </IconButton>
       </Paper>
     );
   }
