@@ -6,6 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
+import GroupIcon from '@material-ui/icons/Group';
 
 const styles = theme => ({
   root: {
@@ -32,10 +33,9 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  roomId: string,
   isLoading: boolean,
   imageProfile: string,
-  initials: string,
+  name: string,
   roomName: string,
   lastMessage: string,
   unReadCount: number,
@@ -43,20 +43,16 @@ type Props = {
 };
 
 class MainChatItem extends React.PureComponent<Props> {
-  handleClick = () => {
-    const { roomId, onClick } = this.props;
-    onClick(roomId);
-  };
-
   render() {
     const {
       classes,
       isLoading,
       imageProfile,
-      initials,
+      name,
       roomName,
       lastMessage,
-      unReadCount
+      unReadCount,
+      onClick
     } = this.props;
     if (isLoading)
       return (
@@ -64,9 +60,12 @@ class MainChatItem extends React.PureComponent<Props> {
           <CircularProgress size={20} color="secondary" />
         </div>
       );
+    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
-      <ButtonBase className={classes.root} onClick={this.handleClick}>
-        <Avatar src={imageProfile}>{initials}</Avatar>
+      <ButtonBase className={classes.root} onClick={onClick}>
+        <Avatar src={imageProfile}>
+          {initials !== '' ? initials : <GroupIcon />}
+        </Avatar>
         <div className={classes.grow}>
           <Typography variant="subtitle1" noWrap>
             {roomName}

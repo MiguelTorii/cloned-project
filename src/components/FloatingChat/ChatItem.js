@@ -1,14 +1,23 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
+import type { Node } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Badge from '@material-ui/core/Badge';
+import VideoCamIcon from '@material-ui/icons/Videocam';
+import SettingsIcon from '@material-ui/icons/Settings';
 import RemoveIcon from '@material-ui/icons/Remove';
+import ClearIcon from '@material-ui/icons/Clear';
+import GroupIcon from '@material-ui/icons/Group';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const styles = theme => ({
   paper: {
@@ -35,6 +44,9 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 2,
     height: 40
   },
+  title: {
+    maxWidth: 140
+  },
   iconButton: {
     padding: theme.spacing.unit
   },
@@ -49,55 +61,128 @@ const styles = theme => ({
     height: 'inherit',
     paddingBottom: 60,
     overflowY: 'auto'
+  },
+  menu: {
+    zIndex: 2100
+  },
+  badge: {
+    // marginRight: -100
   }
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  children: Node,
+  title: string,
+  open: boolean,
+  unread: number,
+  onOpen: Function,
+  onClose: Function
 };
 
 type State = {
-  open: boolean
+  anchorEl: ?Object
 };
 
 class ChatItem extends React.PureComponent<Props, State> {
   state = {
-    open: true
+    anchorEl: null
   };
 
-  handleOpen = () => this.setState(prevState => ({ open: !prevState.open }));
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   render() {
-    const { classes } = this.props;
-    const { open } = this.state;
+    const {
+      classes,
+      children,
+      title,
+      open,
+      unread,
+      onVideo,
+      onOpen,
+      onClose
+    } = this.props;
+    const { anchorEl } = this.state;
     return (
-      <Paper
-        className={cx(classes.paper, open && classes.paperOpen)}
-        elevation={24}
-      >
-        <div className={classes.header}>
-          <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
-            <Typography variant="h6">Chat</Typography>
-          </ButtonBase>
-          <ButtonBase className={classes.iconButton}>
-            <PersonAddIcon />
-          </ButtonBase>
-          <ButtonBase className={classes.iconButton}>
-            <GroupAddIcon />
-          </ButtonBase>
-          {open && (
-            <ButtonBase
-              className={classes.iconButton}
-              onClick={this.handleOpen}
-            >
-              <RemoveIcon />
+      <Fragment>
+        <Paper
+          className={cx(classes.paper, open && classes.paperOpen)}
+          elevation={24}
+        >
+          <Badge
+            color="secondary"
+            badgeContent={unread}
+            className={classes.badge}
+          >
+            <span />
+          </Badge>
+          <div className={classes.header}>
+            <ButtonBase className={classes.headerTitle} onClick={onOpen}>
+              <Typography variant="h6" className={classes.title} noWrap>
+                {title}
+              </Typography>
             </ButtonBase>
-          )}
-        </div>
-        <div className={cx(!open && classes.hide, classes.content)}>
-          <Divider />
-        </div>
-      </Paper>
+            {open ? (
+              <Fragment>
+                <ButtonBase className={classes.iconButton} onClick={onVideo}>
+                  <VideoCamIcon />
+                </ButtonBase>
+                <ButtonBase
+                  className={classes.iconButton}
+                  aria-owns={anchorEl ? 'simple-menu' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleClick}
+                >
+                  <SettingsIcon />
+                </ButtonBase>
+                <ButtonBase className={classes.iconButton} onClick={onOpen}>
+                  <RemoveIcon />
+                </ButtonBase>
+              </Fragment>
+            ) : (
+              <ButtonBase className={classes.iconButton} onClick={onClose}>
+                <ClearIcon />
+              </ButtonBase>
+            )}
+          </div>
+          <div className={cx(!open && classes.hide, classes.content)}>
+            <Divider />
+            {children}
+          </div>
+        </Paper>
+        <Menu
+          id="simple-menu"
+          className={classes.menu}
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleClose}
+        >
+          <MenuItem onClick={this.handleClose}>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            Members
+          </MenuItem>
+          <MenuItem onClick={this.handleClose}>
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            Edit
+          </MenuItem>
+          <MenuItem onClick={this.handleClose}>
+            <ListItemIcon>
+              <DeleteForeverIcon />
+            </ListItemIcon>
+            Remove
+          </MenuItem>
+        </Menu>
+      </Fragment>
     );
   }
 }

@@ -35,5 +35,6 @@ export const API_ROUTES = {
   REPORT: `${API_URL}/log/report`,
   CANVAS_SCHOOLS: `${API_URL}/canvas/schools`,
   CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
-  FETCH_SCHOOLS: `${API_URL}/schools`
+  FETCH_SCHOOLS: `${API_URL}/schools`,
+  TWILIO_TOKEN: `${API_URL}/twilio/access_token`
 };

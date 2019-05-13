@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MainLayout from '../../components/MainLayout';
+// import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as notificationsActions from '../../actions/notifications';
 import * as signInActions from '../../actions/sign-in';
-import Notifications from '../Notifications';
+// import Notifications from '../Notifications';
 
 const styles = theme => ({
   loader: {
@@ -27,8 +27,8 @@ type Props = {
   children: Object,
   user: UserState,
   openNotifications: Function,
-  checkUserSession: Function,
-  signOut: Function
+  checkUserSession: Function
+  // signOut: Function
 };
 
 type State = {};
@@ -60,21 +60,21 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { user, signOut } = this.props;
-    const {
-      data: { userId }
-    } = user;
+    // const { user, signOut } = this.props;
+    // const {
+    //   data: { userId }
+    // } = user;
 
     return (
       <Fragment>
-        <MainLayout
+        {/* <MainLayout
           userId={userId}
           handleNotificationOpen={this.handleNotificationOpen}
           handleSignOut={signOut}
         >
           {this.renderChildren()}
         </MainLayout>
-        <Notifications />
+        <Notifications /> */}
       </Fragment>
     );
   }

@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
+import Badge from '@material-ui/core/Badge';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -50,12 +51,16 @@ const styles = theme => ({
     height: 'inherit',
     paddingBottom: 60,
     overflowY: 'auto'
+  },
+  margin: {
+    marginLeft: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  children: Node
+  children: Node,
+  unread: number
 };
 
 type State = {
@@ -70,8 +75,9 @@ class MainChat extends React.PureComponent<Props, State> {
   handleOpen = () => this.setState(prevState => ({ open: !prevState.open }));
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, unread } = this.props;
     const { open } = this.state;
+
     return (
       <Paper
         className={cx(classes.paper, open && classes.paperOpen)}
@@ -80,6 +86,13 @@ class MainChat extends React.PureComponent<Props, State> {
         <div className={classes.header}>
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
             <Typography variant="h6">Chat</Typography>
+            <Badge
+              className={classes.margin}
+              badgeContent={unread}
+              color="secondary"
+            >
+              <span />
+            </Badge>
           </ButtonBase>
           <ButtonBase className={classes.iconButton}>
             <PersonAddIcon />
