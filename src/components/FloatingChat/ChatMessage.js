@@ -127,7 +127,6 @@ class ChatMessageDate extends React.PureComponent<Props> {
     createdAt,
     isOwn
   }: {
-    sid: string,
     imageKey: string,
     body: string,
     isVideoNotification: boolean,
@@ -182,7 +181,8 @@ class ChatMessageDate extends React.PureComponent<Props> {
 
   render() {
     const { classes, name, avatar, isOwn, messageList } = this.props;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials =
+      name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
     return (
       <ListItem
@@ -211,7 +211,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 firstName: message.firstName,
                 lastName: message.lastName,
                 createdAt: message.createdAt,
-                isOwn
+                isOwn: Boolean(isOwn)
               })}
             </div>
           ))}

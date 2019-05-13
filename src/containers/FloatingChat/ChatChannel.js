@@ -27,6 +27,7 @@ const styles = () => ({
 });
 
 type Props = {
+  classes: Object,
   user: UserState,
   channel: Object,
   onClose: Function
@@ -40,7 +41,8 @@ type State = {
   profileURLs: Array<Object>,
   unread: number,
   typing: string,
-  open: boolean
+  open: boolean,
+  scroll: boolean
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -164,7 +166,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     //   event: 'Chat- Send Message',
     //   props: { Content: 'Text' }
     // });
-    this.setState(prevState => ({ count: prevState.count + 1 }));
+    // this.setState(prevState => ({ count: prevState.count + 1 }));
     // this.handleMessageCount();
   };
 
@@ -202,7 +204,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     //   event: 'Chat- Send Message',
     //   props: { Content: 'Image' }
     // });
-    this.setState(prevState => ({ count: prevState.count + 1 }));
+    // this.setState(prevState => ({ count: prevState.count + 1 }));
     // this.handleMessageCount();
   };
 
@@ -233,14 +235,18 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleScrollToBottom = () => {
     const { scroll } = this.state;
-    if (scroll) {
+    if (scroll && this.end) {
       this.end.scrollIntoView({ behavior: 'instant' });
     }
   };
 
   mounted: boolean;
 
-  end: Object;
+  // eslint-disable-next-line no-undef
+  end: ?HTMLDivElement;
+
+  // eslint-disable-next-line no-undef
+  scrollParentRef: ?HTMLDivElement;
 
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;
@@ -312,7 +318,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
         title={title}
         open={open}
         unread={unread}
-        onVideo={this.handleScrollToBottom}
         onOpen={this.handleChatOpen}
         onClose={this.handleClose}
       >

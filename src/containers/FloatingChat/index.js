@@ -14,6 +14,7 @@ import MainChat from '../../components/FloatingChat/MainChat';
 import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import { renewTwilioToken } from '../../api/chat';
+import type { ChatChannels } from '../../types/models';
 
 const styles = () => ({
   root: {
@@ -28,11 +29,12 @@ const styles = () => ({
 
 type Props = {
   classes: Object,
-  user: UserState
+  user: UserState,
+  enqueueSnackbar: Function
 };
 
 type State = {
-  openChannels: Array<string>,
+  openChannels: ChatChannels,
   client: ?Object,
   channels: Array<Object>,
   unread: number

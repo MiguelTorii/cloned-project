@@ -68,15 +68,21 @@ class ChatTextField extends React.PureComponent<Props, State> {
   };
 
   handleOpenInputFile = () => {
-    this.fileInput.click();
+    if (this.fileInput) this.fileInput.click();
   };
 
   handleInputChange = () => {
     const { onSendInput } = this.props;
-    onSendInput(this.fileInput.files[0]);
+    if (
+      this.fileInput &&
+      this.fileInput.files &&
+      this.fileInput.files.length > 0
+    )
+      onSendInput(this.fileInput.files[0]);
   };
 
-  fileInput: Object;
+  // eslint-disable-next-line no-undef
+  fileInput: ?HTMLInputElement;
 
   render() {
     const { classes } = this.props;

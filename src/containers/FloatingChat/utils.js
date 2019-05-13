@@ -4,8 +4,9 @@
 
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
+import type { ChatMessages } from '../../types/models';
 
-export const getTitle = (channel, userId) => {
+export const getTitle = (channel: Object, userId: string) => {
   const {
     state: { attributes = {} }
   } = channel;
@@ -28,7 +29,7 @@ export const getTitle = (channel, userId) => {
   return 'NN';
 };
 
-export const getSubTitle = (message, userId) => {
+export const getSubTitle = (message: Object, userId: string) => {
   const { state } = message;
   const { attributes, author, body } = state;
   const { firstName, lastName } = attributes;
@@ -69,7 +70,7 @@ export const processMessages = ({
   items: Array<Object>,
   userId: string
 }) => {
-  const data = [];
+  const data: ChatMessages = [];
   for (const item of items) {
     const { state } = item;
     const { attributes, author, body, sid, timestamp } = state;
@@ -80,15 +81,21 @@ export const processMessages = ({
       data.push({
         type: 'date',
         id: uuidv4(),
+        name: '',
+        author: '',
         body: date,
         imageKey: '',
+        date: '',
         messageList: []
       });
       data.push({
         type: Number(author) === Number(userId) ? 'own' : 'message',
+        id: `${author}-${uuidv4()}`,
         name: `${firstName} ${lastName}`,
         author,
-        id: `${author}-${uuidv4()}`,
+        body: '',
+        imageKey: '',
+        date,
         messageList: [
           {
             sid,
@@ -99,22 +106,27 @@ export const processMessages = ({
             lastName,
             createdAt
           }
-        ],
-        date
+        ]
       });
     } else if (data[data.length - 1].date !== date) {
       data.push({
         type: 'date',
         id: uuidv4(),
+        name: '',
+        author: '',
         body: date,
         imageKey: '',
+        date: '',
         messageList: []
       });
       data.push({
         type: Number(author) === Number(userId) ? 'own' : 'message',
+        id: `${author}-${uuidv4()}`,
         name: `${firstName} ${lastName}`,
         author,
-        id: `${author}-${uuidv4()}`,
+        body: '',
+        imageKey: '',
+        date,
         messageList: [
           {
             sid,
@@ -125,8 +137,7 @@ export const processMessages = ({
             lastName,
             createdAt
           }
-        ],
-        date
+        ]
       });
     } else {
       const previous = data[data.length - 1];
@@ -143,9 +154,12 @@ export const processMessages = ({
       } else {
         data.push({
           type: Number(author) === Number(userId) ? 'own' : 'message',
+          id: `${author}-${uuidv4()}`,
           name: `${firstName} ${lastName}`,
           author,
-          id: `${author}-${uuidv4()}`,
+          body: '',
+          imageKey: '',
+          date,
           messageList: [
             {
               sid,
@@ -156,8 +170,7 @@ export const processMessages = ({
               lastName,
               createdAt
             }
-          ],
-          date
+          ]
         });
       }
     }
@@ -165,11 +178,13 @@ export const processMessages = ({
 
   data.push({
     type: 'end',
+    id: `end-scroll-${uuidv4()}`,
     name: '',
     author: '',
-    id: `end-scroll-${uuidv4()}`,
-    messageList: [],
-    date: ''
+    body: '',
+    imageKey: '',
+    date: '',
+    messageList: []
   });
   return data;
 };

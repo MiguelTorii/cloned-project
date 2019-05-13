@@ -176,3 +176,32 @@ export type LMSSchool = {
 };
 
 export type LMSSchools = Array<LMSSchool>;
+
+export type ChatMessageListItem = {
+  sid: string,
+  body: string,
+  imageKey: string,
+  isVideoNotification: boolean,
+  firstName: string,
+  lastName: string,
+  createdAt: string
+};
+
+export type ChatMessage = {
+  type: string,
+  id: string,
+  name: string,
+  author: string,
+  body: string,
+  imageKey: string,
+  date: string,
+  messageList: Array<Object>
+};
+
+export type ChatMessages = Array<ChatMessage>;
+
+export type ChatChannel = {
+  sid: string
+};
+
+export type ChatChannels = Array<ChatChannel>;

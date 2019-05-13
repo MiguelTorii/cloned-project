@@ -104,7 +104,6 @@ class ChatItem extends React.PureComponent<Props, State> {
       title,
       open,
       unread,
-      onVideo,
       onOpen,
       onClose
     } = this.props;
@@ -130,7 +129,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             </ButtonBase>
             {open ? (
               <Fragment>
-                <ButtonBase className={classes.iconButton} onClick={onVideo}>
+                <ButtonBase className={classes.iconButton}>
                   <VideoCamIcon />
                 </ButtonBase>
                 <ButtonBase
