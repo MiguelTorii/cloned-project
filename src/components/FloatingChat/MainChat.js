@@ -21,6 +21,10 @@ const styles = theme => ({
     flexDirection: 'column',
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderBottomWidth: 0,
+    borderColor: theme.circleIn.palette.borderColor,
     transition: 'width 0.25s, height 0.25s'
   },
   paperOpen: {

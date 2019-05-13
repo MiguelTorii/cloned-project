@@ -27,7 +27,8 @@ const theme = createMuiTheme({
       modalBackground: circleInTheme.modalBackground,
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
-      normalButtonText1: circleInTheme.normalButtonText1
+      normalButtonText1: circleInTheme.normalButtonText1,
+      borderColor: circleInTheme.inputBorderColor
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

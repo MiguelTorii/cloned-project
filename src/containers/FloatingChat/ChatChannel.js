@@ -324,8 +324,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
         <div
           style={{
             overflowY: 'auto',
-            height: 'calc(100% - 80px)',
-            maxHeight: 'calc(100% - 80px)'
+            height: 'calc(100% - 82px)',
+            maxHeight: 'calc(100% - 82px)'
           }}
           ref={node => {
             this.scrollParentRef = node;

@@ -16,7 +16,10 @@ const styles = theme => ({
     alignItems: 'center',
     width: '95%',
     margin: '0 auto',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.circleIn.palette.borderColor
   },
   form: {
     marginLeft: 8,
