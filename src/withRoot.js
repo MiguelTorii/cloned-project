@@ -28,7 +28,8 @@ const theme = createMuiTheme({
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
       normalButtonText1: circleInTheme.normalButtonText1,
-      borderColor: circleInTheme.inputBorderColor
+      borderColor: circleInTheme.inputBorderColor,
+      appBar: circleInTheme.appBar
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

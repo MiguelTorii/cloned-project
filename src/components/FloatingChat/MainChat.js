@@ -21,6 +21,7 @@ const styles = theme => ({
     flexDirection: 'column',
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+    backgroundColor: theme.circleIn.palette.appBar,
     borderWidth: 1,
     borderStyle: 'solid',
     borderBottomWidth: 0,

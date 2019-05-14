@@ -57,6 +57,9 @@ const styles = theme => ({
     marginLeft: 5,
     color: 'grey'
   },
+  createdAtRight: {
+    marginRight: 5
+  },
   video: {
     flex: 1,
     borderRadius: 20,
@@ -100,7 +103,8 @@ type Props = {
   avatar?: string,
   isOwn?: boolean,
   messageList: Array<Object>,
-  onImageLoaded: Function
+  onImageLoaded: Function,
+  onStartVideoCall: Function
 };
 
 class ChatMessageDate extends React.PureComponent<Props> {
@@ -135,7 +139,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     createdAt: string,
     isOwn: boolean
   }) => {
-    const { classes, onImageLoaded } = this.props;
+    const { classes, onImageLoaded, onStartVideoCall } = this.props;
     if (imageKey !== '') {
       return (
         <div className={classes.bodyWrapper}>
@@ -155,7 +159,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     if (isVideoNotification && !isOwn) {
       return (
         <div className={classes.bodyWrapper}>
-          <ButtonBase className={classes.video}>
+          <ButtonBase className={classes.video} onClick={onStartVideoCall}>
             <img src={bell} alt="bell" />
             <Typography
               className={classes.videoTitle}
@@ -174,7 +178,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
           className={cx(classes.body, isOwn && classes.right)}
           dangerouslySetInnerHTML={{ __html: this.linkify(body) }}
         />
-        <Typography className={classes.createdAt}>{createdAt}</Typography>
+        <Typography
+          className={cx(classes.createdAt, isOwn && classes.createdAtRight)}
+        >
+          {createdAt}
+        </Typography>
       </div>
     );
   };

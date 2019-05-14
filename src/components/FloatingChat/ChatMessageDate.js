@@ -25,7 +25,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       <ListItem alignItems="center">
         <ListItemText
           className={classes.date}
-          primary={<Chip label={body} variant="outlined" />}
+          primary={<Chip label={body} color="primary" variant="outlined" />}
         />
       </ListItem>
     );

@@ -37,7 +37,8 @@ type State = {
   openChannels: ChatChannels,
   client: ?Object,
   channels: Array<Object>,
-  unread: number
+  unread: number,
+  online: boolean
 };
 
 class FloatingChat extends React.PureComponent<Props, State> {
@@ -45,14 +46,24 @@ class FloatingChat extends React.PureComponent<Props, State> {
     openChannels: [],
     client: null,
     channels: [],
-    unread: 0
+    unread: 0,
+    online: true
   };
 
   componentDidMount = () => {
     window.addEventListener('resize', this.updateOpenChannels);
+    window.addEventListener('offline', () => {
+      console.log('**** offline ****');
+      this.setState({ online: false });
+      this.handleShutdownChat();
+    });
+    window.addEventListener('online', () => {
+      console.log('**** online ****');
+      this.setState({ online: true });
+    });
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps, prevState) => {
     const {
       user: {
         data: { userId }
@@ -63,9 +74,13 @@ class FloatingChat extends React.PureComponent<Props, State> {
         data: { userId: prevUserId }
       }
     } = prevProps;
+    const { online } = this.state;
     if (prevUserId !== '' && userId === '') {
       this.handleShutdownChat();
-    } else if (prevUserId === '' && userId !== '') {
+    } else if (
+      (prevUserId === '' && userId !== '' && online) ||
+      (userId !== '' && online && !prevState.online)
+    ) {
       this.handleInitChat();
     }
   };
@@ -253,14 +268,75 @@ class FloatingChat extends React.PureComponent<Props, State> {
     this.setState({ client: null, channels: [], openChannels: [], unread: 0 });
   };
 
+  handleRemoveChannel = ({ channel, users }) => {
+    channel.updateAttributes({ ...channel.state.attributes, users });
+    channel.leave();
+  };
+
+  handleKickUser = ({
+    channel,
+    users,
+    blockedUserId
+  }: {
+    channel: Object,
+    users: Array<Object>,
+    blockedUserId: string
+  }) => {
+    channel.updateAttributes({
+      ...channel.state.attributes,
+      users
+    });
+    channel.removeMember(String(blockedUserId));
+  };
+
+  handleRemoveChannels = async blockedUserId => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+
+    const { channels } = this.state;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const channel of channels) {
+      const { state = {} } = channel;
+      const { createdBy = '', attributes = {} } = state;
+      const { groupType = '', users = [] } = attributes;
+      if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
+        const newUsers = users.filter(
+          o => o.userId.toString() !== blockedUserId.toString()
+        );
+        if (groupType === '' || users.length <= 2) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.handleRemoveChannel({ channel, users: newUsers });
+        } else if (Number(createdBy) === Number(userId)) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.handleKickUser({
+            channel,
+            users: newUsers,
+            blockedUserId
+          });
+          if (newUsers.length <= 1) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.handleRemoveChannel({ channel, users: newUsers });
+          }
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          await this.handleRemoveChannel({ channel, users: newUsers });
+        }
+      }
+    }
+  };
+
   render() {
     const { classes, user } = this.props;
-    const { openChannels, channels, unread } = this.state;
+    const { client, openChannels, channels, unread } = this.state;
     const {
       data: { userId }
     } = user;
 
-    if (userId === '') return null;
+    if (userId === '' || !client) return null;
 
     return (
       <div className={classes.root}>
@@ -270,6 +346,8 @@ class FloatingChat extends React.PureComponent<Props, State> {
             user={user}
             channel={item}
             onClose={this.handleChannelClose}
+            onRemove={this.handleRemoveChannel}
+            onBlock={this.handleRemoveChannels}
           />
         ))}
         <MainChat unread={unread}>

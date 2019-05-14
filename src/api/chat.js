@@ -22,3 +22,28 @@ export const renewTwilioToken = async ({
   const { accessToken = '' } = data;
   return accessToken;
 };
+
+export const blockUser = async ({
+  userId,
+  blockedUserId
+}: {
+  userId: string,
+  blockedUserId: string
+}): Promise<string> => {
+  const token = await getToken();
+  const result = await axios.post(
+    `${API_ROUTES.BLOCK_USER}/${userId}`,
+    {
+      blocked_user_id: Number(blockedUserId),
+      token: 'NA'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+  console.log(data);
+  return data;
+};

@@ -8,6 +8,7 @@ import type { ChatMessages } from '../../types/models';
 
 export const getTitle = (channel: Object, userId: string) => {
   const {
+    state,
     state: { attributes = {} }
   } = channel;
   const friendlyName = channel.state.attributes.friendlyName || '';
@@ -26,6 +27,7 @@ export const getTitle = (channel: Object, userId: string) => {
         .join(', ');
     }
   } else if (friendlyName !== '') return friendlyName;
+  else if (state && state.friendlyName !== '') return state.friendlyName;
   return 'NN';
 };
 
@@ -59,7 +61,7 @@ export const getAvatar = ({
   id: string,
   profileURLs: Array<Object>
 }) => {
-  const item = profileURLs.find(user => user.identity === id);
+  const item = profileURLs.find(user => Number(user.identity) === Number(id));
   return item ? item.profileImageUrl : '';
 };
 
@@ -187,4 +189,8 @@ export const processMessages = ({
     messageList: []
   });
   return data;
+};
+
+export const getInitials = ({ name = '' }) => {
+  return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 };

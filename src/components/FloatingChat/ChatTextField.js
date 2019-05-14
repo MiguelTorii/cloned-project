@@ -12,14 +12,13 @@ import SendIcon from '@material-ui/icons/Send';
 const styles = theme => ({
   root: {
     padding: '2px 4px',
-    // display: 'flex',
-    // alignItems: 'center',
     width: '95%',
     margin: '0 auto',
     marginTop: theme.spacing.unit,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: theme.circleIn.palette.borderColor
+    borderColor: theme.circleIn.palette.borderColor,
+    backgroundColor: theme.circleIn.palette.appBar
   },
   form: {
     display: 'flex',

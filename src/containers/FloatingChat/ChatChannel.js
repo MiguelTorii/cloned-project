@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +11,7 @@ import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
+import ChatChannelViewMembers from './ChatChannelViewMembers';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 
@@ -30,7 +31,9 @@ type Props = {
   classes: Object,
   user: UserState,
   channel: Object,
-  onClose: Function
+  onClose: Function,
+  onBlock: Function,
+  onRemove: Function
 };
 
 type State = {
@@ -42,7 +45,8 @@ type State = {
   unread: number,
   typing: string,
   open: boolean,
-  scroll: boolean
+  scroll: boolean,
+  viewMembers: boolean
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -55,7 +59,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     unread: 0,
     typing: '',
     open: true,
-    scroll: true
+    scroll: true,
+    viewMembers: false
   };
 
   componentDidMount = async () => {
@@ -240,6 +245,37 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
   };
 
+  handleDelete = () => {
+    const {
+      channel,
+      user: {
+        data: { userId }
+      },
+      onRemove
+    } = this.props;
+    const { state } = channel;
+    const { attributes = {} } = state;
+    const { users = [] } = attributes;
+    const newUsers = users.filter(
+      o => o.userId.toString() !== userId.toString()
+    );
+    onRemove({ channel, users: newUsers });
+  };
+
+  handleStartVideoCall = () => {
+    const { channel } = this.props;
+    const win = window.open(`video-call/${channel.sid}`, '_blank');
+    win.focus();
+  };
+
+  handleViewMembers = () => {
+    this.setState({ viewMembers: true });
+  };
+
+  handleCloseViewMembers = () => {
+    this.setState({ viewMembers: false });
+  };
+
   mounted: boolean;
 
   // eslint-disable-next-line no-undef
@@ -262,6 +298,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             messageList={item.messageList}
             avatar={getAvatar({ id: item.author, profileURLs })}
             onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
           />
         );
       case 'own':
@@ -271,6 +308,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             messageList={item.messageList}
             isOwn
             onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
           />
         );
       case 'end':
@@ -296,8 +334,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
       classes,
       user: {
         data: { userId }
-      }
+      },
+      channel: {
+        state: {
+          attributes: { groupType = '', users = [] }
+        }
+      },
+      onBlock
     } = this.props;
+
     const {
       title,
       messages,
@@ -305,7 +350,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       hasMore,
       profileURLs,
       typing,
-      open
+      open,
+      viewMembers
     } = this.state;
 
     const messageItems = processMessages({
@@ -314,49 +360,63 @@ class ChatChannel extends React.PureComponent<Props, State> {
     });
 
     return (
-      <ChatItem
-        title={title}
-        open={open}
-        unread={unread}
-        onOpen={this.handleChatOpen}
-        onClose={this.handleClose}
-      >
-        <div
-          style={{
-            overflowY: 'auto',
-            height: 'calc(100% - 82px)',
-            maxHeight: 'calc(100% - 82px)'
-          }}
-          ref={node => {
-            this.scrollParentRef = node;
-          }}
+      <Fragment>
+        <ChatItem
+          title={title}
+          open={open}
+          unread={unread}
+          isGroup={groupType !== ''}
+          onOpen={this.handleChatOpen}
+          onClose={this.handleClose}
+          onDelete={this.handleDelete}
+          onStartVideoCall={this.handleStartVideoCall}
+          onViewMembers={this.handleViewMembers}
         >
-          <InfiniteScroll
-            threshold={50}
-            pageStart={0}
-            loadMore={this.handleLoadMore}
-            hasMore={hasMore}
-            useWindow={false}
-            initialLoad={false}
-            isReverse
-            getScrollParent={() => this.scrollParentRef}
+          <div
+            style={{
+              overflowY: 'auto',
+              height: 'calc(100% - 82px)',
+              maxHeight: 'calc(100% - 82px)'
+            }}
+            ref={node => {
+              this.scrollParentRef = node;
+            }}
           >
-            {messageItems.map(item => this.renderMessage(item, profileURLs))}
-            {typing !== '' && (
-              <div className={classes.typing}>
-                <Typography
-                  className={classes.typingText}
-                >{`${typing} is typing ...`}</Typography>
-              </div>
-            )}
-          </InfiniteScroll>
-        </div>
-        <ChatTextField
-          onSendMessage={this.handleSendMessage}
-          onSendInput={this.handleSendInput}
-          onTyping={this.handleTyping}
+            <InfiniteScroll
+              threshold={50}
+              pageStart={0}
+              loadMore={this.handleLoadMore}
+              hasMore={hasMore}
+              useWindow={false}
+              initialLoad={false}
+              isReverse
+              getScrollParent={() => this.scrollParentRef}
+            >
+              {messageItems.map(item => this.renderMessage(item, profileURLs))}
+              {typing !== '' && (
+                <div className={classes.typing}>
+                  <Typography
+                    className={classes.typingText}
+                  >{`${typing} is typing ...`}</Typography>
+                </div>
+              )}
+            </InfiniteScroll>
+          </div>
+          <ChatTextField
+            onSendMessage={this.handleSendMessage}
+            onSendInput={this.handleSendInput}
+            onTyping={this.handleTyping}
+          />
+        </ChatItem>
+        <ChatChannelViewMembers
+          open={viewMembers}
+          userId={userId}
+          members={users}
+          profileURLs={profileURLs}
+          onClose={this.handleCloseViewMembers}
+          onBlock={onBlock}
         />
-      </ChatItem>
+      </Fragment>
     );
   }
 }

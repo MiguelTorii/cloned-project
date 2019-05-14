@@ -6,11 +6,17 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Badge from '@material-ui/core/Badge';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import VideoCamIcon from '@material-ui/icons/Videocam';
 import SettingsIcon from '@material-ui/icons/Settings';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -31,6 +37,7 @@ const styles = theme => ({
     borderWidth: 1,
     borderStyle: 'solid',
     borderBottomWidth: 0,
+    backgroundColor: theme.circleIn.palette.appBar,
     borderColor: theme.circleIn.palette.borderColor,
     transition: 'width 0.25s, height 0.25s'
   },
@@ -68,8 +75,8 @@ const styles = theme => ({
   menu: {
     zIndex: 2100
   },
-  badge: {
-    // marginRight: -100
+  dialog: {
+    zIndex: 2100
   }
 });
 
@@ -79,17 +86,23 @@ type Props = {
   title: string,
   open: boolean,
   unread: number,
+  isGroup: boolean,
   onOpen: Function,
-  onClose: Function
+  onClose: Function,
+  onDelete: Function,
+  onStartVideoCall: Function,
+  onViewMembers: Function
 };
 
 type State = {
-  anchorEl: ?Object
+  anchorEl: ?Object,
+  openRemove: boolean
 };
 
 class ChatItem extends React.PureComponent<Props, State> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    openRemove: false
   };
 
   handleClick = event => {
@@ -100,6 +113,27 @@ class ChatItem extends React.PureComponent<Props, State> {
     this.setState({ anchorEl: null });
   };
 
+  handleRemoveClick = () => {
+    this.handleClose();
+    this.setState({ openRemove: true });
+  };
+
+  handleRemoveClose = () => {
+    this.setState({ openRemove: false });
+  };
+
+  handleRemoveSubmit = () => {
+    this.setState({ openRemove: false });
+    const { onDelete } = this.props;
+    onDelete();
+  };
+
+  handleViewMembers = () => {
+    const { onViewMembers } = this.props;
+    this.handleClose();
+    onViewMembers();
+  };
+
   render() {
     const {
       classes,
@@ -107,21 +141,19 @@ class ChatItem extends React.PureComponent<Props, State> {
       title,
       open,
       unread,
+      isGroup,
       onOpen,
-      onClose
+      onClose,
+      onStartVideoCall
     } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, openRemove } = this.state;
     return (
       <Fragment>
         <Paper
           className={cx(classes.paper, open && classes.paperOpen)}
           elevation={24}
         >
-          <Badge
-            color="secondary"
-            badgeContent={unread}
-            className={classes.badge}
-          >
+          <Badge color="secondary" badgeContent={unread}>
             <span />
           </Badge>
           <div className={classes.header}>
@@ -132,7 +164,10 @@ class ChatItem extends React.PureComponent<Props, State> {
             </ButtonBase>
             {open ? (
               <Fragment>
-                <ButtonBase className={classes.iconButton}>
+                <ButtonBase
+                  className={classes.iconButton}
+                  onClick={onStartVideoCall}
+                >
                   <VideoCamIcon />
                 </ButtonBase>
                 <ButtonBase
@@ -165,25 +200,55 @@ class ChatItem extends React.PureComponent<Props, State> {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>
+          <MenuItem onClick={this.handleViewMembers}>
             <ListItemIcon>
               <GroupIcon />
             </ListItemIcon>
             Members
           </MenuItem>
-          <MenuItem onClick={this.handleClose}>
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            Edit
-          </MenuItem>
-          <MenuItem onClick={this.handleClose}>
+          {isGroup && (
+            <MenuItem onClick={this.handleClose}>
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              Edit
+            </MenuItem>
+          )}
+          <MenuItem onClick={this.handleRemoveClick}>
             <ListItemIcon>
               <DeleteForeverIcon />
             </ListItemIcon>
             Remove
           </MenuItem>
         </Menu>
+        <Dialog
+          open={openRemove}
+          onClose={this.handleRemoveClose}
+          className={classes.dialog}
+          aria-labelledby="remove-dialog-title"
+          aria-describedby="remove-dialog-description"
+        >
+          <DialogTitle id="remove-dialog-title">Delete Chat</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              color="textPrimary"
+              id="remove-dialog-description"
+            >
+              Are you sure you want to delete this chat?
+              <br />
+              <br />
+              {"Deleting this chat can't be undone"}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleRemoveClose} color="primary" autoFocus>
+              Cancel
+            </Button>
+            <Button onClick={this.handleRemoveSubmit} color="primary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Fragment>
     );
   }
