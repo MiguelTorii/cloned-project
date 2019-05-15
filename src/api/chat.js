@@ -27,7 +27,7 @@ export const getBlockedUsers = async ({
   userId
 }: {
   userId: string
-}): Promise<string> => {
+}): Promise<Array<Object>> => {
   const token = await getToken();
 
   const result = await axios.get(
@@ -49,7 +49,7 @@ export const blockUser = async ({
 }: {
   userId: string,
   blockedUserId: string
-}): Promise<string> => {
+}): Promise<Object> => {
   const token = await getToken();
   const result = await axios.post(
     `${API_ROUTES.BLOCK_USER}/${userId}`,
@@ -75,7 +75,7 @@ export const searchUsers = async ({
   schoolId?: number,
   userId: string,
   query: string
-}): Promise<string> => {
+}): Promise<Array<Object>> => {
   const token = await getToken();
   const url = schoolId
     ? `${API_ROUTES.SEARCH_USERS}/${schoolId}/users`

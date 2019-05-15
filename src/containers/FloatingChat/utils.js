@@ -191,6 +191,6 @@ export const processMessages = ({
   return data;
 };
 
-export const getInitials = ({ name = '' }) => {
+export const getInitials = ({ name = '' }: { name: string }) => {
   return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 };

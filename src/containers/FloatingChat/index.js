@@ -40,7 +40,7 @@ type State = {
   channels: Array<Object>,
   unread: number,
   online: boolean,
-  createChannel: string
+  createChannel: ?string
 };
 
 class FloatingChat extends React.PureComponent<Props, State> {

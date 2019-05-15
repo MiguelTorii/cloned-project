@@ -46,7 +46,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     const users = await searchUsers({
       userId,
       query,
-      schoolId: from === 'school' ? Number(schoolId) : null
+      schoolId: from === 'school' ? Number(schoolId) : undefined
     });
 
     const options = users.map(user => {

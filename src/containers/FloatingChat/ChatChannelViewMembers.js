@@ -74,7 +74,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     this.handleConfirmClose();
     this.setState({ loading: true });
     try {
-      await blockUser({ userId, blockedUserId });
+      await blockUser({ userId, blockedUserId: String(blockedUserId) });
       await onBlock(blockedUserId);
     } catch (err) {
       this.setState({ loading: false });
