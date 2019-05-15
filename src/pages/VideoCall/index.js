@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
+import VideoCall from '../../containers/VideoCall';
 
 const styles = () => ({});
 
@@ -25,7 +26,7 @@ type State = {
   roomId: string
 };
 
-class VideoCall extends React.Component<ProvidedProps & Props, State> {
+class VideoCallPage extends React.Component<ProvidedProps & Props, State> {
   state = {
     roomId: ''
   };
@@ -45,10 +46,12 @@ class VideoCall extends React.Component<ProvidedProps & Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <Layout>{roomId}</Layout>
+        <Layout isNaked>
+          {roomId !== '' && <VideoCall roomId={roomId} />}
+        </Layout>
       </main>
     );
   }
 }
 
-export default withRoot(withStyles(styles)(VideoCall));
+export default withRoot(withStyles(styles)(VideoCallPage));

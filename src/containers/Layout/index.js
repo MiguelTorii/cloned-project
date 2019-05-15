@@ -26,6 +26,7 @@ type Props = {
   classes: Object,
   children: Object,
   user: UserState,
+  isNaked?: boolean,
   openNotifications: Function,
   checkUserSession: Function,
   signOut: Function
@@ -34,6 +35,10 @@ type Props = {
 type State = {};
 
 class Layout extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    isNaked: false
+  };
+
   componentDidMount = () => {
     const { checkUserSession } = this.props;
     checkUserSession();
@@ -60,11 +65,11 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { user, signOut } = this.props;
+    const { user, signOut, isNaked } = this.props;
     const {
       data: { userId }
     } = user;
-
+    if (isNaked) return this.renderChildren();
     return (
       <Fragment>
         <MainLayout

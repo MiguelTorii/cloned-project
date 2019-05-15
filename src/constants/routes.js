@@ -10,6 +10,11 @@ export const API_URL_V1_1 =
     ? 'https://api.circleinapp.com/v1.1'
     : 'https://dev-api.circleinapp.com/v1.1';
 
+export const VIDEO_SHARE_URL =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'https://app.circleinapp.com/video-call'
+    : 'https://dev-app2.circleinapp.com/video-call';
+
 export const API_ROUTES = {
   LOGIN: `${API_URL}/auth/login`,
   SIGNUP: `${API_URL}/auth/register`,
