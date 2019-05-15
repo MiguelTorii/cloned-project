@@ -264,7 +264,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleStartVideoCall = () => {
     const { channel } = this.props;
-    const win = window.open(`video-call/${channel.sid}`, '_blank');
+    const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   };
 

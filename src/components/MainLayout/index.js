@@ -424,7 +424,7 @@ class MainLayout extends React.Component<Props, State> {
               </ListItemIcon>
               <ListItemText primary="Store" />
             </ListItem>
-            <ListItem button>
+            <ListItem button component={MyLink} link="/video-call">
               <ListItemIcon>
                 <DuoIcon />
               </ListItemIcon>

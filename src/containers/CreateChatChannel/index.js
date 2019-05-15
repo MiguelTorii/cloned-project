@@ -136,7 +136,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       }
 
       if (exist) {
-        onChannelCreated(channelFound.sid);
+        onChannelCreated({ channel: channelFound, isNew: false });
         onClose();
       } else {
         const blockedBy = await getBlockedUsers({ userId });
@@ -165,7 +165,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
           await channel.add(String(user.userId));
         }
 
-        onChannelCreated(channel.sid);
+        onChannelCreated({ channel, isNew: true });
         onClose();
       }
     } finally {

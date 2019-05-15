@@ -340,6 +340,10 @@ class FloatingChat extends React.PureComponent<Props, State> {
     this.setState({ createChannel: null });
   };
 
+  handleChannelCreated = ({ channel }: { channel: Object }) => {
+    this.handleRoomClick(channel.sid);
+  };
+
   render() {
     const { classes, user } = this.props;
     const {
@@ -388,7 +392,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
           client={client}
           channels={channels}
           onClose={this.handleCreateChannelClose}
-          onChannelCreated={this.handleRoomClick}
+          onChannelCreated={this.handleChannelCreated}
         />
       </Fragment>
     );
