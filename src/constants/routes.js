@@ -37,5 +37,7 @@ export const API_ROUTES = {
   CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
   FETCH_SCHOOLS: `${API_URL}/schools`,
   TWILIO_TOKEN: `${API_URL}/twilio/access_token`,
-  BLOCK_USER: `${API_URL}/user/blocks/create`
+  GET_BLOCKED_USERS: `${API_URL}/user/blocks`,
+  BLOCK_USER: `${API_URL}/user/blocks/create`,
+  SEARCH_USERS: `${API_URL}/search`
 };

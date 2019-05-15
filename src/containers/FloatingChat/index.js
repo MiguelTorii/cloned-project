@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import update from 'immutability-helper';
 import Chat from 'twilio-chat';
 import { withSnackbar } from 'notistack';
@@ -10,18 +10,19 @@ import Button from '@material-ui/core/Button';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
+import type { ChatChannels } from '../../types/models';
+import { renewTwilioToken } from '../../api/chat';
 import MainChat from '../../components/FloatingChat/MainChat';
 import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
-import { renewTwilioToken } from '../../api/chat';
-import type { ChatChannels } from '../../types/models';
+import CreateChatChannel from '../CreateChatChannel';
 
 const styles = () => ({
   root: {
     position: 'fixed',
     bottom: 0,
     right: 0,
-    zIndex: 2000,
+    zIndex: 1000,
     display: 'flex',
     alignItems: 'flex-end'
   }
@@ -38,7 +39,8 @@ type State = {
   client: ?Object,
   channels: Array<Object>,
   unread: number,
-  online: boolean
+  online: boolean,
+  createChannel: string
 };
 
 class FloatingChat extends React.PureComponent<Props, State> {
@@ -47,7 +49,8 @@ class FloatingChat extends React.PureComponent<Props, State> {
     client: null,
     channels: [],
     unread: 0,
-    online: true
+    online: true,
+    createChannel: null
   };
 
   componentDidMount = () => {
@@ -329,9 +332,23 @@ class FloatingChat extends React.PureComponent<Props, State> {
     }
   };
 
+  handleCreateChannelOpen = type => {
+    this.setState({ createChannel: type });
+  };
+
+  handleCreateChannelClose = () => {
+    this.setState({ createChannel: null });
+  };
+
   render() {
     const { classes, user } = this.props;
-    const { client, openChannels, channels, unread } = this.state;
+    const {
+      client,
+      openChannels,
+      channels,
+      unread,
+      createChannel
+    } = this.state;
     const {
       data: { userId }
     } = user;
@@ -339,29 +356,41 @@ class FloatingChat extends React.PureComponent<Props, State> {
     if (userId === '' || !client) return null;
 
     return (
-      <div className={classes.root}>
-        {openChannels.map(item => (
-          <ChatChannel
-            key={item.sid}
-            user={user}
-            channel={item}
-            onClose={this.handleChannelClose}
-            onRemove={this.handleRemoveChannel}
-            onBlock={this.handleRemoveChannels}
-          />
-        ))}
-        <MainChat unread={unread}>
-          {channels.map(item => (
-            <ChatListItem
+      <Fragment>
+        <div className={classes.root}>
+          {openChannels.map(item => (
+            <ChatChannel
               key={item.sid}
+              user={user}
               channel={item}
-              userId={userId}
-              onOpenChannel={this.handleRoomClick}
-              onUpdateUnreadCount={this.handleUpdateUnreadCount}
+              onClose={this.handleChannelClose}
+              onRemove={this.handleRemoveChannel}
+              onBlock={this.handleRemoveChannels}
             />
           ))}
-        </MainChat>
-      </div>
+          <MainChat
+            unread={unread}
+            onCreateChannel={this.handleCreateChannelOpen}
+          >
+            {channels.map(item => (
+              <ChatListItem
+                key={item.sid}
+                channel={item}
+                userId={userId}
+                onOpenChannel={this.handleRoomClick}
+                onUpdateUnreadCount={this.handleUpdateUnreadCount}
+              />
+            ))}
+          </MainChat>
+        </div>
+        <CreateChatChannel
+          type={createChannel}
+          client={client}
+          channels={channels}
+          onClose={this.handleCreateChannelClose}
+          onChannelCreated={this.handleRoomClick}
+        />
+      </Fragment>
     );
   }
 }

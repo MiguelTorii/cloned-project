@@ -86,7 +86,7 @@ type Props = {
   title: string,
   open: boolean,
   unread: number,
-  isGroup: boolean,
+  // isGroup: boolean,
   onOpen: Function,
   onClose: Function,
   onDelete: Function,
@@ -141,7 +141,7 @@ class ChatItem extends React.PureComponent<Props, State> {
       title,
       open,
       unread,
-      isGroup,
+      // isGroup,
       onOpen,
       onClose,
       onStartVideoCall
@@ -206,7 +206,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             </ListItemIcon>
             Members
           </MenuItem>
-          {isGroup && (
+          {false && (
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
                 <EditIcon />

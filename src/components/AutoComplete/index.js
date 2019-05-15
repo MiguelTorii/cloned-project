@@ -11,7 +11,11 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import type { SelectType } from '../../types/models';
@@ -116,10 +120,33 @@ function Option({
   innerProps,
   isFocused,
   isSelected,
-  children
-  // data: { description = '' }
+  children,
+  data
 }) {
-  // const { onMouseMove, onMouseOver, ...newInnerProps } = innerProps;
+  const { avatar = '', initials = '', school = '' } = data || {};
+  if (avatar !== '' || initials !== '' || school !== '')
+    return (
+      <ListItem
+        alignItems="flex-start"
+        button
+        selected={isFocused}
+        style={{
+          fontWeight: isSelected ? 500 : 400
+        }}
+        {...innerProps}
+      >
+        <ListItemAvatar>
+          <Avatar alt={initials} src={avatar}>
+            {initials}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={children}
+          secondary={school}
+          secondaryTypographyProps={{ color: 'textPrimary' }}
+        />
+      </ListItem>
+    );
   return (
     <MenuItem
       buttonRef={innerRef}
@@ -163,7 +190,25 @@ function SingleValue({ selectProps, innerProps, children }) {
   );
 }
 
-function MultiValue({ children, selectProps, isFocused, removeProps }) {
+function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
+  const { avatar = '', initials = '' } = data || {};
+  if (avatar !== '' || initials !== '')
+    return (
+      <Chip
+        avatar={
+          <Avatar alt={initials} src={avatar}>
+            {initials}
+          </Avatar>
+        }
+        tabIndex={-1}
+        label={children}
+        className={cx(selectProps.classes.chip, {
+          [selectProps.classes.chipFocused]: isFocused
+        })}
+        onDelete={removeProps.onClick}
+        deleteIcon={<CancelIcon {...removeProps} />}
+      />
+    );
   return (
     <Chip
       tabIndex={-1}
@@ -209,13 +254,15 @@ type Props = {
   error: boolean,
   errorText: string,
   isDisabled?: boolean,
+  cacheUniq?: any,
   onChange: Function,
   onLoadOptions: Function
 };
 
 class AutoComplete extends React.PureComponent<Props> {
   static defaultProps = {
-    isDisabled: false
+    isDisabled: false,
+    cacheUniq: ''
   };
 
   render() {
@@ -231,6 +278,7 @@ class AutoComplete extends React.PureComponent<Props> {
       error,
       errorText,
       isDisabled,
+      cacheUniq,
       onChange,
       onLoadOptions
     } = this.props;
@@ -269,6 +317,7 @@ class AutoComplete extends React.PureComponent<Props> {
             isMulti={isMulti}
             isClearable
             isDisabled={isDisabled}
+            cacheUniq={cacheUniq}
           />
           {error && (
             <FormHelperText error className={classes.errorLabel}>

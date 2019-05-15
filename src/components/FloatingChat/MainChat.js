@@ -64,7 +64,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   children: Node,
-  unread: number
+  unread: number,
+  onCreateChannel: Function
 };
 
 type State = {
@@ -77,6 +78,11 @@ class MainChat extends React.PureComponent<Props, State> {
   };
 
   handleOpen = () => this.setState(prevState => ({ open: !prevState.open }));
+
+  handleCreateChannel = type => () => {
+    const { onCreateChannel } = this.props;
+    onCreateChannel(type);
+  };
 
   render() {
     const { classes, children, unread } = this.props;
@@ -98,10 +104,16 @@ class MainChat extends React.PureComponent<Props, State> {
               <span />
             </Badge>
           </ButtonBase>
-          <ButtonBase className={classes.iconButton}>
+          <ButtonBase
+            className={classes.iconButton}
+            onClick={this.handleCreateChannel('single')}
+          >
             <PersonAddIcon />
           </ButtonBase>
-          <ButtonBase className={classes.iconButton}>
+          <ButtonBase
+            className={classes.iconButton}
+            onClick={this.handleCreateChannel('group')}
+          >
             <GroupAddIcon />
           </ButtonBase>
           {open && (
