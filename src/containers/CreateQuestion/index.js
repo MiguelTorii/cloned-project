@@ -11,7 +11,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
-import ClassesManager from '../ClassesManager';
+import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import RichTextEditor from '../RichTextEditor';
 import TagsAutoComplete from '../TagsAutoComplete';
@@ -93,8 +93,8 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   };
 
   handleRTEChange = value => {
-    this.setState({body: value})
-  }
+    this.setState({ body: value });
+  };
 
   handleClassChange = event => {
     this.setState({ userClass: event.target.value });
@@ -151,13 +151,17 @@ class CreateQuestion extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
             <Grid item xs={10}>
-              <RichTextEditor placeholder="Add more details to your question to increase the chances of getting an answer" value={body} onChange={this.handleRTEChange} />
+              <RichTextEditor
+                placeholder="Add more details to your question to increase the chances of getting an answer"
+                value={body}
+                onChange={this.handleRTEChange}
+              />
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesManager
+              <ClassesSelector
                 value={userClass}
                 onChange={this.handleClassChange}
               />

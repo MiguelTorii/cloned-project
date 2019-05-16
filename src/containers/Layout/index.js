@@ -11,6 +11,7 @@ import type { UserState } from '../../reducers/user';
 import * as notificationsActions from '../../actions/notifications';
 import * as signInActions from '../../actions/sign-in';
 import Notifications from '../Notifications';
+import ClassesManager from '../ClassesManager';
 
 const styles = theme => ({
   loader: {
@@ -32,11 +33,17 @@ type Props = {
   signOut: Function
 };
 
-type State = {};
+type State = {
+  manageClasses: boolean
+};
 
 class Layout extends React.PureComponent<Props, State> {
   static defaultProps = {
     isNaked: false
+  };
+
+  state = {
+    manageClasses: false
   };
 
   componentDidMount = () => {
@@ -48,6 +55,14 @@ class Layout extends React.PureComponent<Props, State> {
     const { currentTarget } = event;
     const { openNotifications } = this.props;
     openNotifications({ anchorEl: currentTarget });
+  };
+
+  handleOpenManageClasses = () => {
+    this.setState({ manageClasses: true });
+  };
+
+  handleCloseManageClasses = () => {
+    this.setState({ manageClasses: false });
   };
 
   renderChildren = () => {
@@ -69,6 +84,7 @@ class Layout extends React.PureComponent<Props, State> {
     const {
       data: { userId }
     } = user;
+    const { manageClasses } = this.state;
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
@@ -76,10 +92,15 @@ class Layout extends React.PureComponent<Props, State> {
           userId={userId}
           handleNotificationOpen={this.handleNotificationOpen}
           handleSignOut={signOut}
+          onManageClasses={this.handleOpenManageClasses}
         >
           {this.renderChildren()}
         </MainLayout>
         <Notifications />
+        <ClassesManager
+          open={manageClasses}
+          onClose={this.handleCloseManageClasses}
+        />
       </Fragment>
     );
   }

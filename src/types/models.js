@@ -62,14 +62,26 @@ export type Profile = {
   userStatistics: Array<UserStatistic>
 };
 
+export type ClassSection = {
+  firstName: string,
+  lastName: string,
+  section: string,
+  sectionId: number,
+  subject: string
+};
+
 export type UserClass = {
   className: string,
   classId: number,
-  section: Array<number>,
+  section: Array<ClassSection>,
   subjectId: number
 };
 
 export type UserClasses = Array<UserClass>;
+
+export type AvailableClasses = {
+  [key: string]: UserClasses
+};
 
 export type SelectType = {
   label: string,

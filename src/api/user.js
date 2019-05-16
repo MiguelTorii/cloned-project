@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import type { Profile, UserClasses } from '../types/models';
+import type { Profile, UserClasses, AvailableClasses } from '../types/models';
 import { getToken } from './utils';
 
 export const getUserProfile = async ({
@@ -70,9 +70,117 @@ export const getUserClasses = async ({
   const userClasses = classes.map(userClass => ({
     className: String((userClass.class: string) || ''),
     classId: Number((userClass.class_id: number) || 0),
-    section: userClass.section || [],
+    section: (userClass.section || []).map(item => ({
+      firstName: String((item.first_name: string) || ''),
+      lastName: String((item.last_name: string) || ''),
+      section: String((item.section: string) || ''),
+      sectionId: Number((item.section_id: number) || 0),
+      subject: String((item.subject: string) || '')
+    })),
     subjectId: Number((userClass.subject_id: number) || 0)
   }));
 
   return userClasses;
+};
+
+export const getAvailableClasses = async ({
+  userId,
+  schoolId
+}: {
+  userId: string,
+  schoolId: number
+}): Promise<AvailableClasses> => {
+  const token = await getToken();
+  const result = await axios.get(
+    `${API_ROUTES.CLASSES}?user_id=${userId}&school_id=${schoolId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const {
+    data: { classes = {} }
+  } = result;
+
+  const keys = Object.keys(classes);
+
+  const classesList = {};
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key of keys) {
+    classesList[key] = classes[key].map(item => ({
+      class: String((item.class: string) || ''),
+      classId: Number((item.class_id: number) || 0),
+      section: (item.section || []).map(o => ({
+        firstName: String((o.first_name: string) || ''),
+        lastName: String((o.last_name: string) || ''),
+        section: String((o.section: string) || ''),
+        sectionId: Number((o.section_id: number) || 0),
+        subject: String((o.subject: string) || '')
+      })),
+      subjectId: Number((item.subject_id: number) || 0)
+    }));
+  }
+
+  return classesList;
+};
+
+export const leaveUserClass = async ({
+  classId,
+  sectionId,
+  userId
+}: {
+  classId: number,
+  sectionId?: number,
+  userId: string
+}) => {
+  const token = await getToken();
+
+  let url = '';
+  if (sectionId) {
+    url = `${
+      API_ROUTES.USER_CLASS
+    }/${classId}?user_id=${userId}&section_id=${sectionId}`;
+  } else {
+    url = `${API_ROUTES.USER_CLASS}/${classId}?user_id=${userId}`;
+  }
+
+  const result = await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  const {
+    data: { success }
+  } = result;
+  return success;
+};
+
+export const joinClass = async ({
+  classId,
+  sectionId,
+  userId
+}: {
+  classId: number,
+  sectionId?: number,
+  userId: string
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.USER_CLASS}/${classId}`,
+    {
+      user_id: Number(userId),
+      section_id: sectionId,
+      token: 'NA'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+  return data;
 };

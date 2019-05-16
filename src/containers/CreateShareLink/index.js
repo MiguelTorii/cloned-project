@@ -12,7 +12,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
-import ClassesManager from '../ClassesManager';
+import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
 import TagsAutoComplete from '../TagsAutoComplete';
@@ -164,7 +164,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesManager
+              <ClassesSelector
                 value={userClass}
                 onChange={this.handleClassChange}
               />

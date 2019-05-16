@@ -12,7 +12,7 @@ import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
 import UploadImages from '../UploadImages';
-import ClassesManager from '../ClassesManager';
+import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
@@ -161,7 +161,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesManager
+              <ClassesSelector
                 value={userClass}
                 onChange={this.handleClassChange}
               />

@@ -128,7 +128,8 @@ type Props = {
   theme: Object,
   children: any,
   handleNotificationOpen: Function,
-  handleSignOut: Function
+  handleSignOut: Function,
+  onManageClasses: Function
 };
 
 type State = {
@@ -193,6 +194,12 @@ class MainLayout extends React.Component<Props, State> {
     this.handleMenuClose();
   };
 
+  handleManageClasses = () => {
+    const { onManageClasses } = this.props;
+    this.handleMenuClose();
+    onManageClasses();
+  };
+
   render() {
     const {
       open,
@@ -216,7 +223,9 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem component={MyLink} link={`/profile/${userId}`}>
           My Profile
         </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Add/Remove Classes</MenuItem>
+        <MenuItem onClick={this.handleManageClasses}>
+          Add/Remove Classes
+        </MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>How Do I Earn Points</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Unblock Users</MenuItem>
