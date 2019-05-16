@@ -4,13 +4,12 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
+// import Hidden from '@material-ui/core/Hidden';
 import withWidth from '@material-ui/core/withWidth';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import Feed from '../../containers/Feed';
-import Share from '../../containers/Share';
-import TopPosts from '../../containers/TopPosts';
+// import TopPosts from '../../containers/TopPosts';
 
 const styles = () => ({
   item: {
@@ -34,17 +33,16 @@ class FeedPage extends React.PureComponent<ProvidedProps & Props> {
       <main>
         <CssBaseline />
         <Layout>
-          <Grid container spacing={0}>
+          <Grid container spacing={0} justify="center">
             <Grid item xs={12} md={9} className={classes.item}>
               <Feed />
             </Grid>
-            <Hidden smDown>
+            {/* <Hidden smDown>
               <Grid item md={3} className={classes.item}>
                 <TopPosts />
               </Grid>
-            </Hidden>
+            </Hidden> */}
           </Grid>
-          <Share />
         </Layout>
       </main>
     );

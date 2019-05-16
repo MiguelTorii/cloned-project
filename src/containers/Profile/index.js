@@ -50,7 +50,7 @@ class Profile extends React.PureComponent<Props, State> {
     userProfile: {
       userId: '',
       firstName: '',
-      lastName: 'string',
+      lastName: '',
       grade: 0,
       hours: 0,
       inStudyCircle: false,
@@ -72,7 +72,7 @@ class Profile extends React.PureComponent<Props, State> {
       const { userId } = this.props;
       if (userId !== '') {
         const { userProfile, about, userStatistics } = await getUserProfile({
-          userId: '995394'
+          userId
         });
         this.setState({ userProfile, about, userStatistics, isLoading: false });
       }

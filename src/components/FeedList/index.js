@@ -91,10 +91,14 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   items: Array<Object>,
   isLoading: boolean,
   handleShare: Function,
-  handlePostClick: Function
+  handlePostClick: Function,
+  onBookmark: Function,
+  onReport: Function,
+  onDelete: Function
 };
 
 type State = {
@@ -143,10 +147,14 @@ class FeedList extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      userId,
       isLoading,
       items,
       handleShare,
-      handlePostClick
+      handlePostClick,
+      onBookmark,
+      onReport,
+      onDelete
     } = this.props;
     const { anchorEl, from, userClasses, postType } = this.state;
     const open = Boolean(anchorEl);
@@ -183,10 +191,14 @@ class FeedList extends React.PureComponent<Props, State> {
             ) : (
               items.map(item => (
                 <FeedItem
-                  key={item.feed_id}
+                  key={item.feedId}
+                  userId={userId}
                   data={item}
                   handleShareClick={handleShare}
                   handlePostClick={handlePostClick}
+                  onBookmark={onBookmark}
+                  onReport={onReport}
+                  onDelete={onDelete}
                 />
               ))
             )}

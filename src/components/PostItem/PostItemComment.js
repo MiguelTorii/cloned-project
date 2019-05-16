@@ -13,7 +13,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ReplyIcon from '@material-ui/icons/Reply';
-import PostItemAddComent from './PostItemAddComment';
+import PostItemAddComment from './PostItemAddComment';
 
 const styles = theme => ({
   container: {
@@ -217,7 +217,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
           </div>
         </div>
         <Collapse in={showAddComment}>
-          <PostItemAddComent
+          <PostItemAddComment
             profileImageUrl={ownProfileUrl}
             name={ownName}
             isReply

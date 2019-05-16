@@ -503,3 +503,66 @@ export const report = async ({
   const { data } = result;
   return data;
 };
+
+export const bookmark = async ({
+  feedId,
+  userId,
+  remove
+}: {
+  feedId: number,
+  userId: string,
+  remove: boolean
+}) => {
+  const token = await getToken();
+
+  if (remove) {
+    const result = await axios.delete(
+      `${API_ROUTES.FEED}/${feedId}/bookmark?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    return data;
+  }
+
+  const result = await axios.post(
+    `${API_ROUTES.FEED}/${feedId}/bookmark`,
+    {
+      user_id: Number(userId)
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
+export const deletePost = async ({
+  feedId,
+  userId
+}: {
+  feedId: number,
+  userId: string
+}) => {
+  const token = await getToken();
+
+  const result = await axios.delete(
+    `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};

@@ -36,7 +36,7 @@ class SharePost extends React.PureComponent<Props, State> {
     } = this.props;
     const { link } = this.state;
 
-    if (open !== prevProps.open && link === '') {
+    if ((open !== prevProps.open && link === '' && open === true) || (open !== prevProps.open && feedId !== prevProps.feedId && open === true)) {
       try {
         this.setState({ loading: true });
         const url = await createShareURL({ userId, feedId });

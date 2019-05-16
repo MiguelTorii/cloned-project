@@ -88,6 +88,16 @@ export type SelectType = {
   value: string
 };
 
+export type PostInfo = {
+  date: string,
+  feedId: number,
+  postId: number,
+  questionsCount: number,
+  thanksCount: number,
+  userId: string,
+  viewCount: number
+};
+
 export type Post = {
   body: string,
   bookmarked: boolean,
@@ -99,15 +109,7 @@ export type Post = {
   inStudyCircle: boolean,
   name: string,
   postId: number,
-  postInfo: {
-    date: string,
-    feedId: number,
-    postId: number,
-    questionsCount: number,
-    thanksCount: number,
-    userId: string,
-    viewCount: number
-  },
+  postInfo: PostInfo,
   rank: number,
   reports: number,
   school: string,
@@ -225,3 +227,22 @@ export type BlockedUser = {
 };
 
 export type BlockedUsers = Array<BlockedUser>;
+
+export type FeedItem = {
+  userId: string,
+  typeId: number,
+  feedId: number,
+  postId: number,
+  bookmarked: boolean,
+  deck: Array<Flashcard>,
+  noteUrl: string,
+  name: string,
+  created: string,
+  userProfileUrl: string,
+  rank: number,
+  classroomName: string,
+  title: string,
+  postInfo: PostInfo
+};
+
+export type Feed = Array<FeedItem>;

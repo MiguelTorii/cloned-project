@@ -6,6 +6,8 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -17,6 +19,8 @@ import grey from '@material-ui/core/colors/grey';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
+import DeleteIcon from '@material-ui/icons/Delete';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
@@ -27,6 +31,7 @@ import gold from '../../assets/svg/rank_gold.svg';
 import platinum from '../../assets/svg/rank_platinum.svg';
 import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
+import type { FeedItem as Item } from '../../types/models';
 
 const ranks = [bronze, silver, gold, platinum, diamond, master];
 
@@ -113,9 +118,13 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  data: Object,
+  userId: string,
+  data: Item,
   handleShareClick: Function,
-  handlePostClick: Function
+  handlePostClick: Function,
+  onBookmark: Function,
+  onReport: Function,
+  onDelete: Function
 };
 
 type State = {
@@ -137,16 +146,42 @@ class FeedItem extends React.PureComponent<Props, State> {
 
   handleShareClick = () => {
     const {
-      // eslint-disable-next-line camelcase
-      data: { user_id, feed_id },
+      data: { feedId },
       handleShareClick
     } = this.props;
-    handleShareClick({ userId: user_id, feedId: feed_id });
+    handleShareClick({ feedId });
+  };
+
+  handleBookmark = () => {
+    const {
+      data: { feedId, bookmarked },
+      onBookmark
+    } = this.props;
+    this.handleMenuClose();
+    onBookmark({ feedId, bookmarked });
+  };
+
+  handleReport = () => {
+    const {
+      data: { feedId, userId },
+      onReport
+    } = this.props;
+    this.handleMenuClose();
+    onReport({ feedId, ownerId: userId });
+  };
+
+  handleDelete = () => {
+    const {
+      data: { feedId },
+      onDelete
+    } = this.props;
+    this.handleMenuClose();
+    onDelete({ feedId });
   };
 
   renderImage = () => {
-    const { data, classes } = this.props;
-    switch (data.type_id) {
+    const { classes, data } = this.props;
+    switch (data.typeId) {
       case 3:
         return (
           <div className={classes.flashCardsImage}>
@@ -165,7 +200,7 @@ class FeedItem extends React.PureComponent<Props, State> {
           <div
             className={classes.notePost}
             style={{
-              background: `url(${data.note_url})`,
+              background: `url(${data.noteUrl})`,
               backgroundSize: 'cover',
               borderRadius: 10
             }}
@@ -187,34 +222,45 @@ class FeedItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, data, handlePostClick } = this.props;
+    const { classes, userId, data, handlePostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials =
-      data.name !== '' ? data.name.match(/\b(\w)/g).join('') : '';
+      data.name !== '' ? (data.name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(data.created);
     const fromNow = date ? date.fromNow() : '';
+    const ownerId = data.userId;
 
     const renderMenu = (
       <Menu
+        disableAutoFocusItem
         anchorEl={moreAnchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem>
-          <IconButton color="inherit">
-            <BookmarkBorderIcon />
-          </IconButton>
-          <p>Bookmark</p>
+        <MenuItem onClick={this.handleBookmark}>
+          <ListItemIcon color="inherit">
+            {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </ListItemIcon>
+          <ListItemText inset primary="Bookmark" />
         </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <ReportIcon />
-          </IconButton>
-          <p>Report</p>
-        </MenuItem>
+        {userId !== ownerId ? (
+          <MenuItem onClick={this.handleReport}>
+            <ListItemIcon color="inherit">
+              <ReportIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Report" />
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={this.handleDelete}>
+            <ListItemIcon color="inherit">
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Delete" />
+          </MenuItem>
+        )}
       </Menu>
     );
 
@@ -229,7 +275,7 @@ class FeedItem extends React.PureComponent<Props, State> {
           avatar={
             <Avatar
               aria-label="Recipe"
-              src={data.user_profile_url}
+              src={data.userProfileUrl}
               className={classes.avatar}
             >
               {initials}
@@ -263,12 +309,12 @@ class FeedItem extends React.PureComponent<Props, State> {
           subheader={
             <CardActionArea>
               <Typography component="p" noWrap>
-                {data.classroom_name}
+                {data.classroomName}
               </Typography>
             </CardActionArea>
           }
         />
-        <CardActionArea onClick={handlePostClick(data.type_id, data.post_id)}>
+        <CardActionArea onClick={handlePostClick(data.typeId, data.postId)}>
           <CardContent className={classes.content}>
             <Typography component="p" variant="subtitle2" noWrap>
               {data.title}
@@ -280,27 +326,30 @@ class FeedItem extends React.PureComponent<Props, State> {
           <IconButton aria-label="Share" onClick={this.handleShareClick}>
             <ShareIcon />
           </IconButton>
+          <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
+            {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </IconButton>
           <div className={classes.stats}>
             <Typography
               component="p"
               variant="caption"
               className={classes.stat}
             >
-              <strong>{data.post_info.questions_count}</strong> questions
+              <strong>{data.postInfo.questionsCount}</strong> questions
             </Typography>
             <Typography
               component="p"
               variant="caption"
               className={classes.stat}
             >
-              <strong>{data.post_info.thanks_count}</strong> thanks
+              <strong>{data.postInfo.thanksCount}</strong> thanks
             </Typography>
             <Typography
               component="p"
               variant="caption"
               className={classes.stat}
             >
-              <strong>{data.post_info.view_count}</strong> views
+              <strong>{data.postInfo.viewCount}</strong> views
             </Typography>
           </div>
         </CardActions>
