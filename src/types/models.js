@@ -217,3 +217,11 @@ export type ChatChannel = {
 };
 
 export type ChatChannels = Array<ChatChannel>;
+
+export type BlockedUser = {
+  userId: string,
+  profileImageUrl: string,
+  name: string
+};
+
+export type BlockedUsers = Array<BlockedUser>;

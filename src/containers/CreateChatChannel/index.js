@@ -8,7 +8,7 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreateChatChannelDialog from '../../components/CreateChatChannelDialog';
-import { searchUsers, getBlockedUsers } from '../../api/chat';
+import { getBlockedUsers, searchUsers } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
 
 type Props = {

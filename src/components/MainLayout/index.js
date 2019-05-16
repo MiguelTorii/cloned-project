@@ -129,7 +129,8 @@ type Props = {
   children: any,
   handleNotificationOpen: Function,
   handleSignOut: Function,
-  onManageClasses: Function
+  onManageClasses: Function,
+  onManageBlockedUsers: Function
 };
 
 type State = {
@@ -200,6 +201,12 @@ class MainLayout extends React.Component<Props, State> {
     onManageClasses();
   };
 
+  handleBlockedUsers = () => {
+    const { onManageBlockedUsers } = this.props;
+    this.handleMenuClose();
+    onManageBlockedUsers();
+  };
+
   render() {
     const {
       open,
@@ -228,7 +235,7 @@ class MainLayout extends React.Component<Props, State> {
         </MenuItem>
         <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>How Do I Earn Points</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Unblock Users</MenuItem>
+        <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
     );

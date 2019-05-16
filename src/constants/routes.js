@@ -45,6 +45,7 @@ export const API_ROUTES = {
   FETCH_SCHOOLS: `${API_URL}/schools`,
   TWILIO_TOKEN: `${API_URL}/twilio/access_token`,
   GET_BLOCKED_USERS: `${API_URL}/user/blocks`,
+  UNBLOCK_USER: `${API_URL}/user/blocks/destroy`,
   BLOCK_USER: `${API_URL}/user/blocks/create`,
   SEARCH_USERS: `${API_URL}/search`
 };

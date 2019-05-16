@@ -12,6 +12,7 @@ import * as notificationsActions from '../../actions/notifications';
 import * as signInActions from '../../actions/sign-in';
 import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
+import BlockedUsersManager from '../BlockedUsersManager';
 
 const styles = theme => ({
   loader: {
@@ -34,7 +35,8 @@ type Props = {
 };
 
 type State = {
-  manageClasses: boolean
+  manageClasses: boolean,
+  manageBlockedUsers: boolean
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -43,7 +45,8 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   state = {
-    manageClasses: false
+    manageClasses: false,
+    manageBlockedUsers: false
   };
 
   componentDidMount = () => {
@@ -61,8 +64,16 @@ class Layout extends React.PureComponent<Props, State> {
     this.setState({ manageClasses: true });
   };
 
+  handleOpenBlockedUsers = () => {
+    this.setState({ manageBlockedUsers: true });
+  };
+
   handleCloseManageClasses = () => {
     this.setState({ manageClasses: false });
+  };
+
+  handleCloseManageBlockedUsers = () => {
+    this.setState({ manageBlockedUsers: false });
   };
 
   renderChildren = () => {
@@ -84,7 +95,7 @@ class Layout extends React.PureComponent<Props, State> {
     const {
       data: { userId }
     } = user;
-    const { manageClasses } = this.state;
+    const { manageClasses, manageBlockedUsers } = this.state;
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
@@ -93,6 +104,7 @@ class Layout extends React.PureComponent<Props, State> {
           handleNotificationOpen={this.handleNotificationOpen}
           handleSignOut={signOut}
           onManageClasses={this.handleOpenManageClasses}
+          onManageBlockedUsers={this.handleOpenBlockedUsers}
         >
           {this.renderChildren()}
         </MainLayout>
@@ -100,6 +112,10 @@ class Layout extends React.PureComponent<Props, State> {
         <ClassesManager
           open={manageClasses}
           onClose={this.handleCloseManageClasses}
+        />
+        <BlockedUsersManager
+          open={manageBlockedUsers}
+          onClose={this.handleCloseManageBlockedUsers}
         />
       </Fragment>
     );
