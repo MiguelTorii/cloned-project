@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -34,6 +34,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import logo from '../../assets/svg/circlein_logo_beta.svg';
+import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 
@@ -137,7 +138,8 @@ type State = {
   open: boolean,
   anchorEl: ?string,
   mobileMoreAnchorEl: ?string,
-  createPostAnchorEl: ?string
+  createPostAnchorEl: ?string,
+  openHowEarnPoints: boolean
 };
 
 class MainLayout extends React.Component<Props, State> {
@@ -145,7 +147,8 @@ class MainLayout extends React.Component<Props, State> {
     open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
-    createPostAnchorEl: null
+    createPostAnchorEl: null,
+    openHowEarnPoints: false
   };
 
   handleDrawerOpen = () => {
@@ -207,12 +210,22 @@ class MainLayout extends React.Component<Props, State> {
     onManageBlockedUsers();
   };
 
+  handleOpenHowEarnPoints = () => {
+    this.setState({ openHowEarnPoints: true });
+    this.handleMenuClose();
+  };
+
+  handleCloseHowEarnPoints = () => {
+    this.setState({ openHowEarnPoints: false });
+  };
+
   render() {
     const {
       open,
       anchorEl,
       mobileMoreAnchorEl,
-      createPostAnchorEl
+      createPostAnchorEl,
+      openHowEarnPoints
     } = this.state;
     const { classes, userId, theme, children } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -233,8 +246,10 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem onClick={this.handleManageClasses}>
           Add/Remove Classes
         </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>How Do I Earn Points</MenuItem>
+        {/* <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem> */}
+        <MenuItem onClick={this.handleOpenHowEarnPoints}>
+          How Do I Earn Points
+        </MenuItem>
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
@@ -324,141 +339,147 @@ class MainLayout extends React.Component<Props, State> {
     );
 
     return (
-      <div className={classes.root}>
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: open
-          })}
-        >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, {
-                [classes.hide]: open
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <img src={logo} alt="Logo" className={classes.logo} />
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
+      <Fragment>
+        <div className={classes.root}>
+          <AppBar
+            position="fixed"
+            className={classNames(classes.appBar, {
+              [classes.appBarShift]: open
+            })}
+          >
+            <Toolbar disableGutters={!open}>
               <IconButton
                 color="inherit"
-                onClick={this.handleNotificationOpen}
-                aria-owns={open ? 'notifications-popper' : undefined}
-                aria-haspopup="true"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(classes.menuButton, {
+                  [classes.hide]: open
+                })}
               >
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+                <MenuIcon />
               </IconButton>
-              <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircleIcon />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={this.handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-        {renderMobileMenu}
-        {renderCreatePostMenu}
-        <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open
-          })}
-          classes={{
-            paper: classNames({
+              <img src={logo} alt="Logo" className={classes.logo} />
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  color="inherit"
+                  onClick={this.handleNotificationOpen}
+                  aria-owns={open ? 'notifications-popper' : undefined}
+                  aria-haspopup="true"
+                >
+                  <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-haspopup="true"
+                  onClick={this.handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMenu}
+          {renderMobileMenu}
+          {renderCreatePostMenu}
+          <Drawer
+            variant="permanent"
+            className={classNames(classes.drawer, {
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open
-            })
-          }}
-          open={open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? (
-                <ChevronRightIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            <ListItem button onClick={this.handleCreatePostMenuOpen}>
-              <ListItemIcon>
-                <AddBoxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Post" />
-            </ListItem>
-            <Divider light />
-            <ListItem button component={MyLink} link="/">
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem button component={MyLink} link="/feed">
-              <ListItemIcon>
-                <ViewListIcon />
-              </ListItemIcon>
-              <ListItemText primary="Feed" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText primary="Reminders" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <RedeemIcon />
-              </ListItemIcon>
-              <ListItemText primary="Leaderboard" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <StoreIcon />
-              </ListItemIcon>
-              <ListItemText primary="Store" />
-            </ListItem>
-            <ListItem button component={MyLink} link="/video-call">
-              <ListItemIcon>
-                <DuoIcon />
-              </ListItemIcon>
-              <ListItemText primary="Video Meet Up" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <AnnouncementIcon />
-              </ListItemIcon>
-              <ListItemText primary="Announcements" />
-            </ListItem>
-          </List>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          {children}
-        </main>
-      </div>
+            })}
+            classes={{
+              paper: classNames({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open
+              })
+            }}
+            open={open}
+          >
+            <div className={classes.toolbar}>
+              <IconButton onClick={this.handleDrawerClose}>
+                {theme.direction === 'rtl' ? (
+                  <ChevronRightIcon />
+                ) : (
+                  <ChevronLeftIcon />
+                )}
+              </IconButton>
+            </div>
+            <Divider />
+            <List>
+              <ListItem button onClick={this.handleCreatePostMenuOpen}>
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Post" />
+              </ListItem>
+              <Divider light />
+              <ListItem button component={MyLink} link="/">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button component={MyLink} link="/feed">
+                <ListItemIcon>
+                  <ViewListIcon />
+                </ListItemIcon>
+                <ListItemText primary="Feed" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <EventIcon />
+                </ListItemIcon>
+                <ListItemText primary="Reminders" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <RedeemIcon />
+                </ListItemIcon>
+                <ListItemText primary="Leaderboard" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <StoreIcon />
+                </ListItemIcon>
+                <ListItemText primary="Store" />
+              </ListItem>
+              <ListItem button component={MyLink} link="/video-call">
+                <ListItemIcon>
+                  <DuoIcon />
+                </ListItemIcon>
+                <ListItemText primary="Video Meet Up" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <AnnouncementIcon />
+                </ListItemIcon>
+                <ListItemText primary="Announcements" />
+              </ListItem>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
+          </main>
+        </div>
+        <HowDoIEarnPoints
+          open={openHowEarnPoints}
+          onClose={this.handleCloseHowEarnPoints}
+        />
+      </Fragment>
     );
   }
 }
