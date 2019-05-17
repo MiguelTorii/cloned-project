@@ -99,7 +99,7 @@ type Props = {
   userClass: string,
   defaultClass: string,
   postType: string,
-  classesList: Array<{value: string, label: string}>,
+  classesList: Array<{ value: string, label: string }>,
   isLoading: boolean,
   handleShare: Function,
   handlePostClick: Function,
@@ -190,20 +190,18 @@ class FeedList extends React.PureComponent<Props, State> {
           </Paper>
           {isLoading && <LinearProgress />}
           <div className={classes.items}>
-            {
-              items.map(item => (
-                <FeedItem
-                  key={item.feedId}
-                  userId={userId}
-                  data={item}
-                  handleShareClick={handleShare}
-                  handlePostClick={handlePostClick}
-                  onBookmark={onBookmark}
-                  onReport={onReport}
-                  onDelete={onDelete}
-                />
-              ))
-            }
+            {items.map(item => (
+              <FeedItem
+                key={item.feedId}
+                userId={userId}
+                data={item}
+                handleShareClick={handleShare}
+                handlePostClick={handlePostClick}
+                onBookmark={onBookmark}
+                onReport={onReport}
+                onDelete={onDelete}
+              />
+            ))}
           </div>
         </Paper>
         <Popover
@@ -233,9 +231,7 @@ class FeedList extends React.PureComponent<Props, State> {
               <NativeSelect
                 value={userClass}
                 onChange={onChange('userClass')}
-                input={
-                  <Input name="userClass" id="userClass-native-helper" />
-                }
+                input={<Input name="userClass" id="userClass-native-helper" />}
               >
                 <option value={defaultClass}>All</option>
                 {classesList.map(item => (

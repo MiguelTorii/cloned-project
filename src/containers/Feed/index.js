@@ -18,7 +18,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import { processUserClasses } from './utils';
 
-const defaultClass = JSON.stringify({classId: 0, sectionId: 0})
+const defaultClass = JSON.stringify({ classId: 0, sectionId: 0 });
 
 const styles = () => ({
   root: {
@@ -46,7 +46,7 @@ type State = {
   from: string,
   userClass: string,
   postType: number,
-  classesList: Array<{value: string, label: string}>,
+  classesList: Array<{ value: string, label: string }>,
   query: string
 };
 
@@ -89,16 +89,26 @@ class Feed extends React.PureComponent<Props, State> {
         data: { userId, schoolId }
       }
     } = this.props;
-    const {from, userClass, postType, query} = this.state;
-    const {classId, sectionId} = JSON.parse(userClass);
-    this.setState({loading: true})
+    const { from, userClass, postType, query } = this.state;
+    const { classId, sectionId } = JSON.parse(userClass);
+    this.setState({ loading: true });
     try {
-      const feed = await fetchFeed({ userId, schoolId, classId, sectionId, index:0, limit: 50, postType, from, query });
+      const feed = await fetchFeed({
+        userId,
+        schoolId,
+        classId,
+        sectionId,
+        index: 0,
+        limit: 50,
+        postType,
+        from,
+        query
+      });
       this.setState({ feed });
     } catch (err) {
       console.log(err);
     } finally {
-      this.setState({loading: false})
+      this.setState({ loading: false });
     }
   };
 
@@ -161,7 +171,7 @@ class Feed extends React.PureComponent<Props, State> {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
-    this.handleFetchFeed()
+    this.handleFetchFeed();
   };
 
   handleClearFilters = () => {
@@ -170,7 +180,7 @@ class Feed extends React.PureComponent<Props, State> {
       userClass: defaultClass,
       postType: 0
     });
-    this.handleFetchFeed()
+    this.handleFetchFeed();
   };
 
   handlePostClick = (typeId: number, postId: number) => () => {
