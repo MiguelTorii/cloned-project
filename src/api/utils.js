@@ -4,7 +4,13 @@ import store from 'store';
 import decode from 'jwt-decode';
 import moment from 'moment';
 import { API_ROUTES } from '../constants/routes';
-import type { Post, Comments, User, UpdateProfile } from '../types/models';
+import type {
+  Post,
+  Comments,
+  User,
+  UpdateProfile,
+  Feed
+} from '../types/models';
 
 export const getToken = async (): Promise<string> => {
   const token = store.get('TOKEN');
@@ -116,4 +122,88 @@ export const userToCamelCase = (user: Object): User => {
     referralCode: (user.referral_code: string) || '',
     updateProfile: (user.update_profile: Array<UpdateProfile>) || []
   };
+};
+
+export const feedToCamelCase = (posts: Array<Object>): Feed => {
+  return posts.map(item => ({
+    userId: String((item.user_id: string) || ''),
+    typeId: Number((item.type_id: number) || 0),
+    feedId: Number((item.feed_id: number) || 0),
+    postId: Number((item.post_id: number) || 0),
+    bookmarked: Boolean((item.bookmarked: boolean) || false),
+    deck: item.deck || [],
+    noteUrl: String((item.note_url: string) || ''),
+    name: String((item.name: string) || ''),
+    created: String((item.created: string) || ''),
+    userProfileUrl: String((item.user_profile_url: string) || ''),
+    rank: Number((item.rank: number) || 0),
+    classroomName: String((item.classroom_name: string) || ''),
+    title: String((item.title: string) || ''),
+    postInfo: {
+      date: String((item.post_info.date: string) || ''),
+      feedId: Number((item.post_info.feed_id: number) || 0),
+      postId: Number((item.post_info.post_id: number) || 0),
+      questionsCount: Number((item.post_info.questions_count: number) || 0),
+      thanksCount: Number((item.post_info.thanks_count: number) || 0),
+      userId: String((item.post_info.user_id: string) || ''),
+      viewCount: Number((item.post_info.view_count: number) || 0)
+    }
+  }));
+};
+
+export const generateFeedURL = ({
+  userId,
+  schoolId,
+  classId,
+  sectionId,
+  index,
+  limit,
+  postType,
+  from,
+  query
+}: {
+  userId: string,
+  schoolId: number,
+  classId: number,
+  sectionId: number,
+  index: number,
+  limit: number,
+  postType: number,
+  from: string,
+  query: string
+}) => {
+  let url = '';
+  let queryString = `?index=${index}&limit=${limit}`;
+
+  if (from === 'bookmarks') {
+    return `${url}/${userId}/bookmark`;
+  }
+
+  if (query !== '' && from !== 'my_posts') {
+    queryString = `${queryString}&query=${query}`;
+  }
+
+  if (from === 'classmates' || query !== '') {
+    queryString = `${queryString}&school_id=${schoolId}`;
+  }
+
+  if (postType !== 0) {
+    queryString = `${queryString}&tool_type_id=${postType}`;
+  }
+
+  if (classId !== 0) {
+    queryString = `${queryString}&class_id=${classId}`;
+  }
+
+  if (sectionId && sectionId !== 0) {
+    queryString = `${queryString}&section_id=${sectionId}`;
+  }
+
+  if (from === 'my_posts') {
+    url = `${url}/user/${userId}${queryString}`;
+  } else {
+    url = `${url}/${userId}${queryString}`;
+  }
+
+  return url;
 };

@@ -177,12 +177,15 @@ class FloatingChat extends React.PureComponent<Props, State> {
   handleInitChat = async () => {
     const {
       user: {
-        data: { twilioToken }
+        data: { userId }
       }
     } = this.props;
 
     try {
-      const client = await Chat.create(twilioToken);
+      const accessToken = await renewTwilioToken({
+        userId
+      });
+      const client = await Chat.create(accessToken);
 
       let paginator = await client.getSubscribedChannels();
       while (paginator.hasNextPage) {
@@ -228,9 +231,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
         const { author, attributes, body } = state;
         const { firstName, lastName } = attributes;
         const {
-          user: {
-            data: { userId }
-          },
           enqueueSnackbar
         } = this.props;
         if (Number(author) !== Number(userId)) {
@@ -248,15 +248,10 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
 
       client.on('tokenAboutToExpire', async () => {
-        const {
-          user: {
-            data: { userId }
-          }
-        } = this.props;
-        const accessToken = await renewTwilioToken({
+        const newToken = await renewTwilioToken({
           userId
         });
-        await client.updateToken(accessToken);
+        await client.updateToken(newToken);
       });
     } catch (err) {
       console.log(err);

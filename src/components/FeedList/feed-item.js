@@ -68,7 +68,7 @@ const styles = theme => ({
   content: {
     padding: theme.spacing.unit,
     display: 'flex',
-    '& > :first-child': {
+    '& > :nth-child(2)': {
       flex: 1
     }
   },
@@ -316,9 +316,10 @@ class FeedItem extends React.PureComponent<Props, State> {
         />
         <CardActionArea onClick={handlePostClick(data.typeId, data.postId)}>
           <CardContent className={classes.content}>
-            <Typography component="p" variant="subtitle2" noWrap>
+            <Typography component="p" variant="subtitle2" style={{maxWidth: 200}} noWrap>
               {data.title}
             </Typography>
+            <span />
             {this.renderImage()}
           </CardContent>
         </CardActionArea>

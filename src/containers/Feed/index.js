@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import debounce from 'lodash/debounce';
 import update from 'immutability-helper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -11,9 +12,13 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import { fetchFeed } from '../../api/feed';
 import { bookmark } from '../../api/posts';
+import { getUserClasses } from '../../api/user';
 import SharePost from '../SharePost';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
+import { processUserClasses } from './utils';
+
+const defaultClass = JSON.stringify({classId: 0, sectionId: 0})
 
 const styles = () => ({
   root: {
@@ -37,7 +42,12 @@ type State = {
   feedId: ?number,
   loading: boolean,
   report: ?Object,
-  deletePost: ?Object
+  deletePost: ?Object,
+  from: string,
+  userClass: string,
+  postType: number,
+  classesList: Array<{value: string, label: string}>,
+  query: string
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -46,21 +56,49 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: null,
     loading: false,
     report: null,
-    deletePost: null
+    deletePost: null,
+    from: 'everyone',
+    userClass: defaultClass,
+    postType: 0,
+    classesList: [],
+    query: ''
   };
 
   componentDidMount = async () => {
+    this.handleFetchFeed = debounce(this.handleFetchFeed, 500);
+    this.handleFetchUserClasses();
+    await this.handleFetchFeed();
+  };
+
+  handleFetchUserClasses = () => {
     const {
       user: {
-        data: { userId }
+        data: { userId, segment }
       }
     } = this.props;
-    this.setState({ loading: true });
+
+    getUserClasses({ userId }).then(classes => {
+      const classesList = processUserClasses({ classes, segment });
+      this.setState({ classesList });
+    });
+  };
+
+  handleFetchFeed = async () => {
+    const {
+      user: {
+        data: { userId, schoolId }
+      }
+    } = this.props;
+    const {from, userClass, postType, query} = this.state;
+    const {classId, sectionId} = JSON.parse(userClass);
+    this.setState({loading: true})
     try {
-      const feed = await fetchFeed({ userId });
+      const feed = await fetchFeed({ userId, schoolId, classId, sectionId, index:0, limit: 50, postType, from, query });
       this.setState({ feed });
+    } catch (err) {
+      console.log(err);
     } finally {
-      this.setState({ loading: false });
+      this.setState({loading: false})
     }
   };
 
@@ -117,7 +155,22 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleDeleteClose = () => {
+    // update feed list
     this.setState({ deletePost: null });
+  };
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+    this.handleFetchFeed()
+  };
+
+  handleClearFilters = () => {
+    this.setState({
+      from: 'everyone',
+      userClass: defaultClass,
+      postType: 0
+    });
+    this.handleFetchFeed()
   };
 
   handlePostClick = (typeId: number, postId: number) => () => {
@@ -148,7 +201,18 @@ class Feed extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    const { feed, feedId, loading, report, deletePost } = this.state;
+    const {
+      feed,
+      feedId,
+      loading,
+      report,
+      deletePost,
+      query,
+      from,
+      userClass,
+      postType,
+      classesList
+    } = this.state;
 
     return (
       <Fragment>
@@ -157,11 +221,19 @@ class Feed extends React.PureComponent<Props, State> {
             isLoading={loading}
             userId={userId}
             items={feed}
+            query={query}
+            from={from}
+            userClass={userClass}
+            defaultClass={defaultClass}
+            postType={postType}
+            classesList={classesList}
             handleShare={this.handleShare}
             handlePostClick={this.handlePostClick}
             onBookmark={this.handleBookmark}
             onReport={this.handleReport}
             onDelete={this.handleDelete}
+            onChange={this.handleChange}
+            onClearFilters={this.handleClearFilters}
           />
         </div>
         <SharePost

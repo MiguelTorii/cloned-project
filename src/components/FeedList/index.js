@@ -12,7 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import FeedItem from './feed-item';
 
@@ -55,7 +55,8 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    minHeight: 48
+    minHeight: 48,
+    backgroundColor: theme.circleIn.palette.appBar
   },
   input: {
     marginLeft: 8,
@@ -93,27 +94,29 @@ type Props = {
   classes: Object,
   userId: string,
   items: Array<Object>,
+  query: string,
+  from: string,
+  userClass: string,
+  defaultClass: string,
+  postType: string,
+  classesList: Array<{value: string, label: string}>,
   isLoading: boolean,
   handleShare: Function,
   handlePostClick: Function,
   onBookmark: Function,
   onReport: Function,
-  onDelete: Function
+  onDelete: Function,
+  onChange: Function,
+  onClearFilters: Function
 };
 
 type State = {
-  anchorEl: ?string,
-  from: string,
-  userClasses: string,
-  postType: string
+  anchorEl: ?string
 };
 
 class FeedList extends React.PureComponent<Props, State> {
   state = {
-    anchorEl: null,
-    from: 'everyone',
-    userClasses: 'all',
-    postType: 'all'
+    anchorEl: null
   };
 
   handleClick = event => {
@@ -127,20 +130,12 @@ class FeedList extends React.PureComponent<Props, State> {
     this.setState({ anchorEl: null });
   };
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
-  handleClearFilters = () => {
-    this.setState({ from: 'everyone', userClasses: 'all', postType: 'all' });
-  };
-
   getFilterCount = () => {
-    const { from, userClasses, postType } = this.state;
+    const { from, userClass, postType, defaultClass } = this.props;
     let count = 0;
     if (from !== 'everyone') count += 1;
-    if (userClasses !== 'all') count += 1;
-    if (postType !== 'all') count += 1;
+    if (userClass !== defaultClass) count += 1;
+    if (postType !== 0) count += 1;
     return count;
   };
 
@@ -150,13 +145,21 @@ class FeedList extends React.PureComponent<Props, State> {
       userId,
       isLoading,
       items,
+      classesList,
       handleShare,
       handlePostClick,
       onBookmark,
       onReport,
-      onDelete
+      onDelete,
+      query,
+      from,
+      userClass,
+      defaultClass,
+      postType,
+      onChange,
+      onClearFilters
     } = this.props;
-    const { anchorEl, from, userClasses, postType } = this.state;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const filterCount = this.getFilterCount();
 
@@ -168,6 +171,8 @@ class FeedList extends React.PureComponent<Props, State> {
               className={classes.input}
               type="search"
               placeholder="Search Classmates"
+              value={query}
+              onChange={onChange('query')}
             />
             <Divider className={classes.divider} />
             <IconButton
@@ -183,12 +188,9 @@ class FeedList extends React.PureComponent<Props, State> {
               </Badge>
             </IconButton>
           </Paper>
+          {isLoading && <LinearProgress />}
           <div className={classes.items}>
-            {isLoading ? (
-              <div className={classes.loader}>
-                <CircularProgress />
-              </div>
-            ) : (
+            {
               items.map(item => (
                 <FeedItem
                   key={item.feedId}
@@ -201,7 +203,7 @@ class FeedList extends React.PureComponent<Props, State> {
                   onDelete={onDelete}
                 />
               ))
-            )}
+            }
           </div>
         </Paper>
         <Popover
@@ -215,7 +217,7 @@ class FeedList extends React.PureComponent<Props, State> {
               <InputLabel htmlFor="from-native-helper">From</InputLabel>
               <NativeSelect
                 value={from}
-                onChange={this.handleChange('from')}
+                onChange={onChange('from')}
                 input={<Input name="from" id="from-native-helper" />}
               >
                 <option value="everyone">Everyone</option>
@@ -229,13 +231,18 @@ class FeedList extends React.PureComponent<Props, State> {
                 Classes
               </InputLabel>
               <NativeSelect
-                value={userClasses}
-                onChange={this.handleChange('userClasses')}
+                value={userClass}
+                onChange={onChange('userClass')}
                 input={
-                  <Input name="userClasses" id="userClasses-native-helper" />
+                  <Input name="userClass" id="userClass-native-helper" />
                 }
               >
-                <option value="all">All</option>
+                <option value={defaultClass}>All</option>
+                {classesList.map(item => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
               </NativeSelect>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -244,14 +251,14 @@ class FeedList extends React.PureComponent<Props, State> {
               </InputLabel>
               <NativeSelect
                 value={postType}
-                onChange={this.handleChange('postType')}
-                input={<Input name="userClasses" id="postType-native-helper" />}
+                onChange={onChange('postType')}
+                input={<Input name="postType" id="postType-native-helper" />}
               >
-                <option value="all">All</option>
-                <option value="flashcards">Flashcards</option>
-                <option value="classnotes">Class notes</option>
-                <option value="links">Links</option>
-                <option value="questions">Questions</option>
+                <option value={0}>All</option>
+                <option value={3}>Flashcards</option>
+                <option value={4}>Class notes</option>
+                <option value={5}>Links</option>
+                <option value={6}>Questions</option>
               </NativeSelect>
             </FormControl>
             <Button
@@ -259,7 +266,7 @@ class FeedList extends React.PureComponent<Props, State> {
               color="primary"
               disabled={filterCount === 0}
               className={classes.button}
-              onClick={this.handleClearFilters}
+              onClick={onClearFilters}
             >
               Clear Filters
             </Button>
