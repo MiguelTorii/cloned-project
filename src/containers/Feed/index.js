@@ -47,7 +47,9 @@ type State = {
   userClass: string,
   postType: number,
   classesList: Array<{ value: string, label: string }>,
-  query: string
+  query: string,
+  limit: number,
+  hasMore: boolean
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -61,7 +63,9 @@ class Feed extends React.PureComponent<Props, State> {
     userClass: defaultClass,
     postType: 0,
     classesList: [],
-    query: ''
+    query: '',
+    limit: 50,
+    hasMore: false
   };
 
   componentDidMount = async () => {
@@ -89,22 +93,28 @@ class Feed extends React.PureComponent<Props, State> {
         data: { userId, schoolId }
       }
     } = this.props;
-    const { from, userClass, postType, query } = this.state;
+    const { from, userClass, postType, query, limit } = this.state;
     const { classId, sectionId } = JSON.parse(userClass);
     this.setState({ loading: true });
     try {
-      const feed = await fetchFeed({
+      const newFeed = await fetchFeed({
         userId,
         schoolId,
         classId,
         sectionId,
         index: 0,
-        limit: 50,
+        limit,
         postType,
         from,
         query
       });
-      this.setState({ feed });
+      this.setState(({ feed }) => ({
+        feed: newFeed,
+        hasMore:
+          newFeed.length === 50 ||
+          (feed[feed.length - 1] || {}).feedId !==
+            (newFeed[newFeed.length - 1] || {}).feedId
+      }));
     } catch (err) {
       console.log(err);
     } finally {
@@ -170,7 +180,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value, limit: 50 });
     this.handleFetchFeed();
   };
 
@@ -178,8 +188,14 @@ class Feed extends React.PureComponent<Props, State> {
     this.setState({
       from: 'everyone',
       userClass: defaultClass,
-      postType: 0
+      postType: 0,
+      limit: 50
     });
+    this.handleFetchFeed();
+  };
+
+  handleLoadMore = () => {
+    this.setState(({ limit }) => ({ limit: limit + 50 }));
     this.handleFetchFeed();
   };
 
@@ -221,7 +237,8 @@ class Feed extends React.PureComponent<Props, State> {
       from,
       userClass,
       postType,
-      classesList
+      classesList,
+      hasMore
     } = this.state;
 
     return (
@@ -237,6 +254,7 @@ class Feed extends React.PureComponent<Props, State> {
             defaultClass={defaultClass}
             postType={postType}
             classesList={classesList}
+            hasMore={hasMore}
             handleShare={this.handleShare}
             handlePostClick={this.handlePostClick}
             onBookmark={this.handleBookmark}
@@ -244,6 +262,7 @@ class Feed extends React.PureComponent<Props, State> {
             onDelete={this.handleDelete}
             onChange={this.handleChange}
             onClearFilters={this.handleClearFilters}
+            onLoadMore={this.handleLoadMore}
           />
         </div>
         <SharePost

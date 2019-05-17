@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
@@ -12,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import FeedItem from './feed-item';
 
@@ -20,7 +22,9 @@ const styles = theme => ({
   container: {
     maxHeight: 'inherit',
     display: 'flex',
-    padding: theme.spacing.unit
+    padding: theme.spacing.unit,
+    position: 'relative',
+    minHeight: 400
   },
   root: {
     ...theme.mixins.gutters(),
@@ -43,7 +47,7 @@ const styles = theme => ({
   },
   items: {
     overflowY: 'auto',
-    // height: '100%',
+    maxHeight: 'calc(100vh - 170px)',
     flex: 1,
     marginTop: theme.spacing.unit
   },
@@ -82,11 +86,23 @@ const styles = theme => ({
     margin: theme.spacing.unit
   },
   loader: {
+    position: 'absolute',
+    bottom: 0,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    justifyContent: 'center'
+  },
+  progress: {
+    width: 180,
+    height: 100,
+    borderRadius: 6,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: theme.spacing.unit,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -101,13 +117,15 @@ type Props = {
   postType: string,
   classesList: Array<{ value: string, label: string }>,
   isLoading: boolean,
+  hasMore: boolean,
   handleShare: Function,
   handlePostClick: Function,
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
   onChange: Function,
-  onClearFilters: Function
+  onClearFilters: Function,
+  onLoadMore: Function
 };
 
 type State = {
@@ -139,6 +157,9 @@ class FeedList extends React.PureComponent<Props, State> {
     return count;
   };
 
+  // eslint-disable-next-line no-undef
+  scrollParentRef: ?HTMLDivElement;
+
   render() {
     const {
       classes,
@@ -156,8 +177,10 @@ class FeedList extends React.PureComponent<Props, State> {
       userClass,
       defaultClass,
       postType,
+      hasMore,
       onChange,
-      onClearFilters
+      onClearFilters,
+      onLoadMore
     } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -165,6 +188,16 @@ class FeedList extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.container}>
+        {isLoading && (
+          <div className={classes.loader}>
+            <div className={classes.progress}>
+              <Typography align="center" variant="subtitle1" paragraph>
+                Loading Posts
+              </Typography>
+              <CircularProgress size={20} />
+            </div>
+          </div>
+        )}
         <Paper className={classes.root} elevation={0}>
           <Paper className={classes.header} elevation={1}>
             <InputBase
@@ -188,20 +221,34 @@ class FeedList extends React.PureComponent<Props, State> {
               </Badge>
             </IconButton>
           </Paper>
-          {isLoading && <LinearProgress />}
-          <div className={classes.items}>
-            {items.map(item => (
-              <FeedItem
-                key={item.feedId}
-                userId={userId}
-                data={item}
-                handleShareClick={handleShare}
-                handlePostClick={handlePostClick}
-                onBookmark={onBookmark}
-                onReport={onReport}
-                onDelete={onDelete}
-              />
-            ))}
+          <div
+            className={classes.items}
+            ref={node => {
+              this.scrollParentRef = node;
+            }}
+          >
+            <InfiniteScroll
+              threshold={50}
+              pageStart={0}
+              loadMore={onLoadMore}
+              hasMore={hasMore}
+              useWindow={false}
+              initialLoad={false}
+              getScrollParent={() => this.scrollParentRef}
+            >
+              {items.map(item => (
+                <FeedItem
+                  key={item.feedId}
+                  userId={userId}
+                  data={item}
+                  handleShareClick={handleShare}
+                  handlePostClick={handlePostClick}
+                  onBookmark={onBookmark}
+                  onReport={onReport}
+                  onDelete={onDelete}
+                />
+              ))}
+            </InfiniteScroll>
           </div>
         </Paper>
         <Popover
