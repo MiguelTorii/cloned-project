@@ -65,7 +65,7 @@ class DeletePost extends React.PureComponent<Props, State> {
       });
     } finally {
       this.setState({ loading: false });
-      onClose();
+      onClose({ deleted: true });
     }
   };
 
@@ -99,7 +99,10 @@ class DeletePost extends React.PureComponent<Props, State> {
       >
         <DialogTitle id="confirmation-dialog-title">Delete Post</DialogTitle>
         <DialogContent>
-          <DialogContentText id="confirmation-dialog-description">
+          <DialogContentText
+            color="textPrimary"
+            id="confirmation-dialog-description"
+          >
             Are you sure you want to delete this post?
           </DialogContentText>
         </DialogContent>

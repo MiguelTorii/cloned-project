@@ -174,8 +174,11 @@ class Feed extends React.PureComponent<Props, State> {
     this.setState({ deletePost: { feedId } });
   };
 
-  handleDeleteClose = () => {
+  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     // update feed list
+    if (deleted && deleted === true) {
+      this.handleFetchFeed();
+    }
     this.setState({ deletePost: null });
   };
 
