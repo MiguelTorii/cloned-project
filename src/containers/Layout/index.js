@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import type { Node } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +9,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
-import * as notificationsActions from '../../actions/notifications';
 import * as signInActions from '../../actions/sign-in';
 import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
@@ -29,14 +29,14 @@ type Props = {
   children: Object,
   user: UserState,
   isNaked?: boolean,
-  openNotifications: Function,
   checkUserSession: Function,
   signOut: Function
 };
 
 type State = {
   manageClasses: boolean,
-  manageBlockedUsers: boolean
+  manageBlockedUsers: boolean,
+  anchorEl: Node
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -46,7 +46,8 @@ class Layout extends React.PureComponent<Props, State> {
 
   state = {
     manageClasses: false,
-    manageBlockedUsers: false
+    manageBlockedUsers: false,
+    anchorEl: null
   };
 
   componentDidMount = () => {
@@ -56,8 +57,11 @@ class Layout extends React.PureComponent<Props, State> {
 
   handleNotificationOpen = event => {
     const { currentTarget } = event;
-    const { openNotifications } = this.props;
-    openNotifications({ anchorEl: currentTarget });
+    this.setState({ anchorEl: currentTarget });
+  };
+
+  handleNotificationClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   handleOpenManageClasses = () => {
@@ -95,7 +99,7 @@ class Layout extends React.PureComponent<Props, State> {
     const {
       data: { userId }
     } = user;
-    const { manageClasses, manageBlockedUsers } = this.state;
+    const { manageClasses, manageBlockedUsers, anchorEl } = this.state;
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
@@ -108,7 +112,10 @@ class Layout extends React.PureComponent<Props, State> {
         >
           {this.renderChildren()}
         </MainLayout>
-        <Notifications />
+        <Notifications
+          anchorEl={anchorEl}
+          onClose={this.handleNotificationClose}
+        />
         <ClassesManager
           open={manageClasses}
           onClose={this.handleCloseManageClasses}
@@ -129,7 +136,6 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      openNotifications: notificationsActions.openNotifications,
       checkUserSession: signInActions.checkUserSession,
       signOut: signInActions.signOut
     },

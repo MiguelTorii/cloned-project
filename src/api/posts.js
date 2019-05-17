@@ -6,7 +6,8 @@ import type {
   Flashcard,
   Flashcards,
   ShareLink,
-  Comments
+  Comments,
+  PostMetaData
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
 import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
@@ -565,4 +566,46 @@ export const deletePost = async ({
 
   const { data } = result;
   return data;
+};
+
+export const getPostMetadata = async ({
+  feedId,
+  userId
+}: {
+  feedId: number,
+  userId: string
+}): Promise<PostMetaData> => {
+  const token = await getToken();
+
+  const result = await axios.get(
+    `${API_ROUTES.FEED}/${feedId}/info?user_id=${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data = {} } = result;
+  const recommendedPosts = (data.recommended_posts || []).map(item => ({
+    id: Number((item.id: number) || 0),
+    postId: Number((item.post_id: number) || 0),
+    typeId: Number((item.type_id: number) || 0),
+    userId: String((item.user_id: string) || ''),
+    firstName: String((item.first_name: string) || ''),
+    lastName: String((item.last_name: string) || ''),
+    title: String((item.title: string) || ''),
+    description: String((item.description: string) || ''),
+    created: String((item.created: string) || ''),
+    thanksCount: Number((item.thanks_count: number) || 0),
+    viewCount: Number((item.view_count: number) || 0)
+  }));
+
+  const tags = (data.tags || []).map(item => ({
+    description: String((item.description: string) || ''),
+    id: Number((item.id: number) || 0),
+    name: String((item.name: string) || '')
+  }));
+
+  return { recommendedPosts, tags };
 };

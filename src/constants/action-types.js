@@ -19,21 +19,6 @@ export const signUpActions = {
   SIGN_UP_USER_CLEAR_ERROR: 'SIGN_UP_USER_CLEAR_ERROR'
 };
 
-export const shareActions = {
-  OPEN_SHARE_LINK: 'OPEN_SHARE_LINK',
-  CLOSE_SHARE_LINK: 'CLOSE_SHARE_LINK'
-};
-
-export const notificationsActions = {
-  OPEN_NOTIFICATIONS: 'OPEN_NOTIFICATIONS',
-  CLOSE_NOTIFICATIONS: 'CLOSE_NOTIFICATIONS'
-};
-
-export const feedActions = {
-  FETCH_FEED_REQUEST: 'FETCH_FEED_REQUEST',
-  FETCH_FEED_SUCCESS: 'FETCH_FEED_SUCCESS'
-};
-
 export const rootActions = {
   CLEAR_STATE: 'CLEAR_STATE'
 };

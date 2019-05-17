@@ -121,6 +121,31 @@ export type Post = {
   userProfileUrl: string
 };
 
+export type RecommendedPost = {
+  id: number,
+  postId: number,
+  typeId: number,
+  userId: string,
+  firstName: string,
+  lastName: string,
+  title: string,
+  description: string,
+  created: string,
+  thanksCount: number,
+  viewCount: number
+};
+
+export type Tag = {
+  description: string,
+  id: number,
+  name: string
+};
+
+export type PostMetaData = {
+  recommendedPosts: Array<RecommendedPost>,
+  tags: Array<Tag>
+};
+
 export type Note = {
   fullNoteUrl: string,
   note: string,
@@ -246,3 +271,40 @@ export type FeedItem = {
 };
 
 export type Feed = Array<FeedItem>;
+
+export type LeaderboardItem = {
+  userId: string,
+  points: number,
+  username: string
+};
+
+export type Leaderboard = Array<LeaderboardItem>;
+
+export type ToDo = {
+  due: number,
+  dueDate: number,
+  id: number,
+  label: number,
+  status: number,
+  title: string
+};
+
+export type ToDos = Array<ToDo>;
+
+export type StudyCircleItem = {
+  firstName: string,
+  lastName: string,
+  profileImageUrl: string,
+  userId: string,
+  typeId: number
+};
+
+export type StudyCircle = Array<StudyCircleItem>;
+
+export type UserStats = {
+  communityServiceHours: number,
+  reach: number,
+  scholarshipPoints: number,
+  weeklyNotesGoal: number,
+  weeklyNotesGoalProgress: number
+};

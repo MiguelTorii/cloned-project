@@ -1,13 +1,14 @@
 // @flow
 
 import React from 'react';
-import { bindActionCreators } from 'redux';
+import type { Node } from 'react';
+import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import type { State as StoreState } from '../../types/state';
-import type { NotificationsState } from '../../reducers/notifications';
+import type { UserState } from '../../reducers/user';
 import Notifications from '../../components/Notifications';
-import * as notificationsActions from '../../actions/notifications';
+import { getNotifications } from '../../api/notifications';
 
 const styles = () => ({
   root: {}
@@ -19,40 +20,56 @@ type ProvidedProps = {
 
 type Props = {
   classes: Object,
-  notifications: NotificationsState,
-  closeNotifications: Function
+  user: UserState,
+  anchorEl: Node,
+  onClose: Function
 };
 
 type State = {};
 
 class Feed extends React.PureComponent<ProvidedProps & Props, State> {
+  state = {};
+
+  componentDidMount = () => {
+    this.handleFetchNotifications = debounce(
+      this.handleFetchNotifications,
+      1000
+    );
+    this.handleFetchNotifications();
+  };
+
+  handleFetchNotifications = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    if (userId !== '') {
+      const notifications = await getNotifications({
+        userId,
+        isStudyCircle: true
+      });
+      console.log(notifications);
+    } else {
+      this.handleFetchNotifications();
+    }
+  };
+
   render() {
-    const { classes, notifications, closeNotifications } = this.props;
-    const { anchorEl } = notifications;
+    const { classes, anchorEl, onClose } = this.props;
     return (
       <div className={classes.root}>
-        <Notifications
-          anchorEl={anchorEl}
-          handleNotificationClose={closeNotifications}
-        />
+        <Notifications anchorEl={anchorEl} handleNotificationClose={onClose} />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ notifications }: StoreState): {} => ({
-  notifications
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
-
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      closeNotifications: notificationsActions.closeNotifications
-    },
-    dispatch
-  );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withStyles(styles)(Feed));

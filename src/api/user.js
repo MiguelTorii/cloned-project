@@ -5,7 +5,10 @@ import type {
   Profile,
   UserClasses,
   AvailableClasses,
-  BlockedUsers
+  BlockedUsers,
+  Leaderboard,
+  StudyCircle,
+  UserStats
 } from '../types/models';
 import { getToken } from './utils';
 
@@ -295,4 +298,90 @@ export const unblockUser = async ({
   );
   const { data = {} } = result;
   return data;
+};
+
+export const getLeaderboard = async ({
+  userId,
+  rankId,
+  schoolId,
+  index,
+  limit
+}: {
+  userId: string,
+  rankId: number,
+  schoolId: number,
+  index: number,
+  limit: number
+}): Promise<Leaderboard> => {
+  const token = await getToken();
+
+  const result = await axios.get(
+    `${
+      API_ROUTES.LEADERBOARD
+    }?user_id=${userId}&rank_id=${rankId}&school_id=${schoolId}&index=${index}&limit=${limit}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+  const { leaderboard = [] } = data;
+
+  return leaderboard.map(item => ({
+    userId: String((item.user_id: string) || ''),
+    points: Number((item.points: number) || 0),
+    username: String((item.username: string) || '')
+  }));
+};
+
+export const getStudyCircle = async ({
+  userId
+}: {
+  userId: string
+}): Promise<StudyCircle> => {
+  const token = await getToken();
+
+  const result = await axios.get(
+    `${API_ROUTES.STUDY_CIRCLE}/${userId}?study_circle_type_id=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+  return (data.study_circle || []).map(item => ({
+    firstName: String((item.first_name: string) || ''),
+    lastName: String((item.last_name: string) || ''),
+    profileImageUrl: String((item.profile_image_url: string) || ''),
+    userId: String((item.study_circle_id: string) || ''),
+    typeId: Number((item.study_circle_type_id: number) || 0)
+  }));
+};
+
+export const getUserStats = async ({
+  userId
+}: {
+  userId: string
+}): Promise<UserStats> => {
+  const token = await getToken();
+
+  const result = await axios.get(`${API_ROUTES.HOME}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  const { data = {} } = result;
+  return {
+    communityServiceHours: Number(
+      (data.user_community_service_hours: number) || 0
+    ),
+    reach: Number((data.user_reach: number) || 0),
+    scholarshipPoints: Number((data.user_scholarship_points: number) || 0),
+    weeklyNotesGoal: Number((data.weekly_notes_goal: number) || 0),
+    weeklyNotesGoalProgress: Number(
+      (data.weekly_notes_goal_progress: number) || 0
+    )
+  };
 };
