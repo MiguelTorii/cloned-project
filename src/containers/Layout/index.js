@@ -13,6 +13,7 @@ import * as signInActions from '../../actions/sign-in';
 import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
+import Leaderboard from '../Leaderboard';
 
 const styles = theme => ({
   loader: {
@@ -36,7 +37,8 @@ type Props = {
 type State = {
   manageClasses: boolean,
   manageBlockedUsers: boolean,
-  anchorEl: Node
+  anchorEl: Node,
+  leaderboard: boolean
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -47,7 +49,8 @@ class Layout extends React.PureComponent<Props, State> {
   state = {
     manageClasses: false,
     manageBlockedUsers: false,
-    anchorEl: null
+    anchorEl: null,
+    leaderboard: false
   };
 
   componentDidMount = () => {
@@ -80,6 +83,14 @@ class Layout extends React.PureComponent<Props, State> {
     this.setState({ manageBlockedUsers: false });
   };
 
+  handleOpenLeaderboard = () => {
+    this.setState({ leaderboard: true });
+  };
+
+  handleCloseLeaderboard = () => {
+    this.setState({ leaderboard: false });
+  };
+
   renderChildren = () => {
     const {
       user: { data, isLoading },
@@ -99,7 +110,12 @@ class Layout extends React.PureComponent<Props, State> {
     const {
       data: { userId }
     } = user;
-    const { manageClasses, manageBlockedUsers, anchorEl } = this.state;
+    const {
+      manageClasses,
+      manageBlockedUsers,
+      anchorEl,
+      leaderboard
+    } = this.state;
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
@@ -109,6 +125,7 @@ class Layout extends React.PureComponent<Props, State> {
           handleSignOut={signOut}
           onManageClasses={this.handleOpenManageClasses}
           onManageBlockedUsers={this.handleOpenBlockedUsers}
+          onOpenLeaderboard={this.handleOpenLeaderboard}
         >
           {this.renderChildren()}
         </MainLayout>
@@ -124,6 +141,7 @@ class Layout extends React.PureComponent<Props, State> {
           open={manageBlockedUsers}
           onClose={this.handleCloseManageBlockedUsers}
         />
+        <Leaderboard open={leaderboard} onClose={this.handleCloseLeaderboard} />
       </Fragment>
     );
   }

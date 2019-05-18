@@ -131,7 +131,8 @@ type Props = {
   handleNotificationOpen: Function,
   handleSignOut: Function,
   onManageClasses: Function,
-  onManageBlockedUsers: Function
+  onManageBlockedUsers: Function,
+  onOpenLeaderboard: Function
 };
 
 type State = {
@@ -227,7 +228,7 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openHowEarnPoints
     } = this.state;
-    const { classes, userId, theme, children } = this.props;
+    const { classes, userId, theme, children, onOpenLeaderboard } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -444,7 +445,7 @@ class MainLayout extends React.Component<Props, State> {
                 </ListItemIcon>
                 <ListItemText primary="Reminders" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={onOpenLeaderboard}>
                 <ListItemIcon>
                   <RedeemIcon />
                 </ListItemIcon>

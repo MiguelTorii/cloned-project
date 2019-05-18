@@ -35,7 +35,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       this.handleFetchNotifications,
       1000
     );
-    this.handleFetchNotifications();
+    // this.handleFetchNotifications();
   };
 
   handleFetchNotifications = async () => {
