@@ -19,6 +19,7 @@ import CreateNotes from './pages/Create/Notes';
 import CreateShareLink from './pages/Create/ShareLink';
 import EditQuestion from './pages/Edit/Question';
 import Profile from './pages/Profile';
+import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 import FloatingChat from './containers/FloatingChat';
@@ -45,6 +46,7 @@ ReactDOM.render(
         <Route exact path="/create/sharelink" render={CreateShareLink} />
         <Route exact path="/edit/question/:id" render={EditQuestion} />
         <Route exact path="/profile/:userId" render={Profile} />
+        <Route exact path="/reminders" render={Reminders} />
         <Route exact path="/video-call/:roomId" render={VideoCall} />
         <Route exact path="/video-call" render={StartVideo} />
         <Route exact path="/login" render={SignIn} />

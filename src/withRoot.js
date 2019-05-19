@@ -3,6 +3,8 @@
 import React from 'react';
 import type { ComponentType } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'notistack';
 
@@ -109,11 +111,13 @@ function withRoot(Component: ComponentType<*>) {
     // thanks to React context.
     return (
       <MuiThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...props} />
-        </SnackbarProvider>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <SnackbarProvider maxSnack={3}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component {...props} />
+          </SnackbarProvider>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     );
   }

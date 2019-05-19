@@ -308,3 +308,13 @@ export type UserStats = {
   weeklyNotesGoal: number,
   weeklyNotesGoalProgress: number
 };
+
+export type CalendarEvent = {
+  id: number,
+  title: string,
+  start: Object,
+  end: Object,
+  label: number
+};
+
+export type CalendarEvents = Array<CalendarEvent>;

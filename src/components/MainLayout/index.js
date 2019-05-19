@@ -145,7 +145,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    open: false,
+    open: true,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -439,7 +439,7 @@ class MainLayout extends React.Component<Props, State> {
                 </ListItemIcon>
                 <ListItemText primary="Feed" />
               </ListItem>
-              <ListItem button>
+              <ListItem button component={MyLink} link="/reminders">
                 <ListItemIcon>
                   <EventIcon />
                 </ListItemIcon>
