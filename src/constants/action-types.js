@@ -19,6 +19,11 @@ export const signUpActions = {
   SIGN_UP_USER_CLEAR_ERROR: 'SIGN_UP_USER_CLEAR_ERROR'
 };
 
+export const chatActions = {
+  OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
+    'OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST'
+};
+
 export const rootActions = {
   CLEAR_STATE: 'CLEAR_STATE'
 };

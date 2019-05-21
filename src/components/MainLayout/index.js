@@ -132,7 +132,8 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  onOpenLeaderboard: Function
+  onOpenLeaderboard: Function,
+  onOpenAnnouncements: Function
 };
 
 type State = {
@@ -228,7 +229,7 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openHowEarnPoints
     } = this.state;
-    const { classes, userId, theme, children, onOpenLeaderboard } = this.props;
+    const { classes, userId, theme, children, onOpenLeaderboard, onOpenAnnouncements } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -463,7 +464,7 @@ class MainLayout extends React.Component<Props, State> {
                 </ListItemIcon>
                 <ListItemText primary="Video Meet Up" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={onOpenAnnouncements}>
                 <ListItemIcon>
                   <AnnouncementIcon />
                 </ListItemIcon>

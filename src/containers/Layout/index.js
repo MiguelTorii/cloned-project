@@ -10,10 +10,12 @@ import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as signInActions from '../../actions/sign-in';
+import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import Leaderboard from '../Leaderboard';
+import Announcements from '../../components/Announcements';
 
 const styles = theme => ({
   loader: {
@@ -31,14 +33,16 @@ type Props = {
   user: UserState,
   isNaked?: boolean,
   checkUserSession: Function,
-  signOut: Function
+  signOut: Function,
+  openCreateChatGroup: Function
 };
 
 type State = {
   manageClasses: boolean,
   manageBlockedUsers: boolean,
   anchorEl: Node,
-  leaderboard: boolean
+  leaderboard: boolean,
+  announcements: boolean
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -50,7 +54,8 @@ class Layout extends React.PureComponent<Props, State> {
     manageClasses: false,
     manageBlockedUsers: false,
     anchorEl: null,
-    leaderboard: false
+    leaderboard: false,
+    announcements: false
   };
 
   componentDidMount = () => {
@@ -91,6 +96,20 @@ class Layout extends React.PureComponent<Props, State> {
     this.setState({ leaderboard: false });
   };
 
+  handleOpenAnnouncements = () => {
+    this.setState({ announcements: true });
+  };
+
+  handleCloseAnnouncements = () => {
+    this.setState({ announcements: false });
+  };
+
+  handleCreateChatGroupChannel = () => {
+    this.handleCloseAnnouncements();
+    const { openCreateChatGroup } = this.props;
+    openCreateChatGroup();
+  };
+
   renderChildren = () => {
     const {
       user: { data, isLoading },
@@ -114,7 +133,8 @@ class Layout extends React.PureComponent<Props, State> {
       manageClasses,
       manageBlockedUsers,
       anchorEl,
-      leaderboard
+      leaderboard,
+      announcements
     } = this.state;
     if (isNaked) return this.renderChildren();
     return (
@@ -126,6 +146,7 @@ class Layout extends React.PureComponent<Props, State> {
           onManageClasses={this.handleOpenManageClasses}
           onManageBlockedUsers={this.handleOpenBlockedUsers}
           onOpenLeaderboard={this.handleOpenLeaderboard}
+          onOpenAnnouncements={this.handleOpenAnnouncements}
         >
           {this.renderChildren()}
         </MainLayout>
@@ -142,6 +163,11 @@ class Layout extends React.PureComponent<Props, State> {
           onClose={this.handleCloseManageBlockedUsers}
         />
         <Leaderboard open={leaderboard} onClose={this.handleCloseLeaderboard} />
+        <Announcements
+          open={announcements}
+          onClose={this.handleCloseAnnouncements}
+          onCreate={this.handleCreateChatGroupChannel}
+        />
       </Fragment>
     );
   }
@@ -155,7 +181,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       checkUserSession: signInActions.checkUserSession,
-      signOut: signInActions.signOut
+      signOut: signInActions.signOut,
+      openCreateChatGroup: chatActions.openCreateChatGroup
     },
     dispatch
   );

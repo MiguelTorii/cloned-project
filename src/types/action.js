@@ -37,16 +37,11 @@ export type SignOutUserSuccess = {
   type: 'SIGN_OUT_USER_SUCCESS'
 };
 
-export type OpenShareLink = {
-  type: 'OPEN_SHARE_LINK',
+export type OpenCreateChatGroupChannelRequest = {
+  type: 'OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST',
   payload: {
-    userId: number,
-    feedId: number
+    stamp: string
   }
-};
-
-export type CloseShareLink = {
-  type: 'CLOSE_SHARE_LINK'
 };
 
 export type Action =
@@ -56,5 +51,4 @@ export type Action =
   | SignInUserClearError
   | CheckUserRequest
   | SignOutUserRequest
-  | OpenShareLink
-  | CloseShareLink;
+  | OpenCreateChatGroupChannelRequest;

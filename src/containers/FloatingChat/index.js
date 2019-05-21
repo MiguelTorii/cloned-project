@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
+import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
 import type { ChatChannels } from '../../types/models';
 import { renewTwilioToken } from '../../api/chat';
@@ -31,6 +32,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   user: UserState,
+  chat: ChatState,
   enqueueSnackbar: Function
 };
 
@@ -70,11 +72,17 @@ class FloatingChat extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
+      },
+      chat: {
+        data: { uuid }
       }
     } = this.props;
     const {
       user: {
         data: { userId: prevUserId }
+      },
+      chat: {
+        data: { uuid: prevUuid }
       }
     } = prevProps;
     const { online } = this.state;
@@ -86,6 +94,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
     ) {
       this.handleInitChat();
     }
+    if (uuid !== prevUuid && uuid !== '') this.handleCreateChannelOpen('group');
   };
 
   componentWillUnmount = () => {
@@ -392,8 +401,9 @@ class FloatingChat extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+  user,
+  chat
 });
 
 export default connect(
