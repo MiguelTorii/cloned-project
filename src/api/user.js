@@ -8,7 +8,8 @@ import type {
   BlockedUsers,
   Leaderboard,
   StudyCircle,
-  UserStats
+  UserStats,
+  DailyRewards
 } from '../types/models';
 import { getToken } from './utils';
 
@@ -383,5 +384,32 @@ export const getUserStats = async ({
     weeklyNotesGoalProgress: Number(
       (data.weekly_notes_goal_progress: number) || 0
     )
+  };
+};
+
+export const getDailyRewards = async ({
+  userId
+}: {
+  userId: string
+}): Promise<DailyRewards> => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.USER}/${userId}/check_in`,
+    {
+      user_id: Number(userId)
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+  const { reward = {} } = data;
+  return {
+    givenPoints: Number((reward.given_points: number) || 0),
+    pointsLeft: Number((reward.points_left: number) || 0),
+    stage: Number((reward.stage: number) || 0)
   };
 };

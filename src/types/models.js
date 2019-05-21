@@ -318,3 +318,9 @@ export type CalendarEvent = {
 };
 
 export type CalendarEvents = Array<CalendarEvent>;
+
+export type DailyRewards = {
+  givenPoints: number,
+  pointsLeft: number,
+  stage: number
+};

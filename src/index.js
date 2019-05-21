@@ -23,6 +23,7 @@ import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 import FloatingChat from './containers/FloatingChat';
+import DailyRewards from './containers/DailyRewards';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import OAuth from './pages/OAuth';
@@ -32,6 +33,7 @@ const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
     <FloatingChat />
+    <DailyRewards />
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path="/" render={Index} />
