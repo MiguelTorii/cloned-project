@@ -19,10 +19,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Leaderboard as LeaderboardType } from '../../types/models';
 import { getLeaderboard } from '../../api/user';
+
+const ranks = {
+  '1': 'Bronze',
+  '2': 'Silver',
+  '3': 'Gold',
+  '4': 'Platinum',
+  '5': 'Diamond',
+  '6': 'Master'
+};
 
 const styles = theme => ({
   root: {},
@@ -36,6 +46,12 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: theme.palette.primary.main
+  },
+  empty: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing.unit * 2
   }
 });
 
@@ -188,6 +204,16 @@ class Leaderboard extends React.PureComponent<Props, State> {
                   </ListItem>
                 ))}
               </List>
+              {leaderboard.length === 0 && (
+                <div className={classes.empty}>
+                  <Typography
+                    variant="h5"
+                    align="center"
+                  >{`There aren't any students with a ${
+                    ranks[rankId]
+                  } ranking yet.`}</Typography>
+                </div>
+              )}
             </Fragment>
           )}
         </DialogContent>
