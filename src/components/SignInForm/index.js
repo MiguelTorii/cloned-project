@@ -95,7 +95,11 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+          <ValidatorForm
+            instantValidate={false}
+            onSubmit={handleSubmit}
+            className={classes.form}
+          >
             <TextValidator
               label="Email Address"
               margin="normal"

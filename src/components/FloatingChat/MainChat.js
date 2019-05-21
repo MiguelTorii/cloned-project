@@ -33,7 +33,8 @@ const styles = theme => ({
     width: 300
   },
   header: {
-    display: 'flex'
+    display: 'flex',
+    minHeight: 40
   },
   headerTitle: {
     flex: 1,

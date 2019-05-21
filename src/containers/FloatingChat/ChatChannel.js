@@ -6,6 +6,7 @@ import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -16,6 +17,11 @@ import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 
 const styles = () => ({
+  list: {
+    overflowY: 'auto',
+    flex: 1,
+    maxHeight: 290
+  },
   typing: {
     width: '100%',
     display: 'flex',
@@ -24,6 +30,11 @@ const styles = () => ({
   },
   typingText: {
     color: 'black'
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -46,7 +57,8 @@ type State = {
   typing: string,
   open: boolean,
   scroll: boolean,
-  viewMembers: boolean
+  viewMembers: boolean,
+  loading: boolean
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -60,7 +72,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     typing: '',
     open: true,
     scroll: true,
-    viewMembers: false
+    viewMembers: false,
+    loading: false
   };
 
   componentDidMount = async () => {
@@ -153,7 +166,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     });
   };
 
-  handleSendMessage = message => {
+  handleSendMessage = async message => {
     const {
       channel,
       user: {
@@ -166,13 +179,19 @@ class ChatChannel extends React.PureComponent<Props, State> {
       imageKey: '',
       isVideoNotification: false
     };
-    channel.sendMessage(message, messageAttributes);
-    // logEvent({
-    //   event: 'Chat- Send Message',
-    //   props: { Content: 'Text' }
-    // });
-    // this.setState(prevState => ({ count: prevState.count + 1 }));
-    // this.handleMessageCount();
+    this.setState({ loading: true });
+    try {
+      await channel.sendMessage(message, messageAttributes);
+
+      // logEvent({
+      //   event: 'Chat- Send Message',
+      //   props: { Content: 'Text' }
+      // });
+      // this.setState(prevState => ({ count: prevState.count + 1 }));
+      // this.handleMessageCount();
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   handleSendInput = async file => {
@@ -183,34 +202,40 @@ class ChatChannel extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    const result = await getPresignedURL({
-      userId,
-      type: 4,
-      mediaType: file.type
-    });
+    this.setState({ loading: true });
 
-    const { readUrl, url } = result;
+    try {
+      const result = await getPresignedURL({
+        userId,
+        type: 4,
+        mediaType: file.type
+      });
 
-    await axios.put(url, file, {
-      headers: {
-        'Content-Type': file.type
-      }
-    });
+      const { readUrl, url } = result;
 
-    const messageAttributes = {
-      firstName,
-      lastName,
-      imageKey: readUrl,
-      isVideoNotification: false
-    };
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': file.type
+        }
+      });
 
-    await channel.sendMessage('Uploaded a image', messageAttributes);
-    // logEvent({
-    //   event: 'Chat- Send Message',
-    //   props: { Content: 'Image' }
-    // });
-    // this.setState(prevState => ({ count: prevState.count + 1 }));
-    // this.handleMessageCount();
+      const messageAttributes = {
+        firstName,
+        lastName,
+        imageKey: readUrl,
+        isVideoNotification: false
+      };
+
+      await channel.sendMessage('Uploaded a image', messageAttributes);
+      // logEvent({
+      //   event: 'Chat- Send Message',
+      //   props: { Content: 'Image' }
+      // });
+      // this.setState(prevState => ({ count: prevState.count + 1 }));
+      // this.handleMessageCount();
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   handleImageLoaded = () => {
@@ -351,7 +376,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       profileURLs,
       typing,
       open,
-      viewMembers
+      viewMembers,
+      loading
     } = this.state;
 
     const messageItems = processMessages({
@@ -373,11 +399,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           onViewMembers={this.handleViewMembers}
         >
           <div
-            style={{
-              overflowY: 'auto',
-              height: 'calc(100% - 82px)',
-              maxHeight: 'calc(100% - 82px)'
-            }}
+            className={classes.list}
             ref={node => {
               this.scrollParentRef = node;
             }}
@@ -398,6 +420,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
                   <Typography
                     className={classes.typingText}
                   >{`${typing} is typing ...`}</Typography>
+                </div>
+              )}
+              {loading && (
+                <div className={classes.progress}>
+                  <CircularProgress size={20} />
                 </div>
               )}
             </InfiniteScroll>

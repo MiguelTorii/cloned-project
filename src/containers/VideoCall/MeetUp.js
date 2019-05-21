@@ -391,7 +391,7 @@ class MeetUp extends React.Component<Props, State> {
             Screen Sharing Not Supported
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText id="alert-dialog-description" color="textPrimary">
               {
                 "Your current browser doesn't support screen sharing, consider using Chrome or Firefox"
               }

@@ -25,7 +25,7 @@ export const createFlashcards = async ({
   title: string,
   deck: Array<Flashcard>,
   classId: number,
-  sectionId?: number,
+  sectionId: ?number,
   tags: Array<number>,
   grade: number
 }): Promise<Object> => {
@@ -65,7 +65,7 @@ export const createPhotoNote = async ({
   userId: string,
   title: string,
   classId: number,
-  sectionId?: number,
+  sectionId: ?number,
   fileNames: Array<string>,
   comment: string,
   tags: Array<number>
@@ -105,7 +105,7 @@ export const createQuestion = async ({
   title: string,
   body: string,
   classId: number,
-  sectionId?: number,
+  sectionId: ?number,
   tags: Array<number>
 }): Promise<Object> => {
   const token = await getToken();
@@ -142,7 +142,7 @@ export const createShareLink = async ({
   title: string,
   uri: string,
   classId: number,
-  sectionId?: number,
+  sectionId: ?number,
   tags: Array<number>
 }): Promise<Object> => {
   const token = await getToken();

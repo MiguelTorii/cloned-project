@@ -14,7 +14,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
 import grey from '@material-ui/core/colors/grey';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -75,9 +74,6 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     padding: 0
-  },
-  avatar: {
-    backgroundColor: red[500]
   },
   stats: {
     display: 'flex',
@@ -273,11 +269,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         <CardHeader
           className={classes.header}
           avatar={
-            <Avatar
-              aria-label="Recipe"
-              src={data.userProfileUrl}
-              className={classes.avatar}
-            >
+            <Avatar aria-label="Recipe" src={data.userProfileUrl}>
               {initials}
             </Avatar>
           }
@@ -316,7 +308,12 @@ class FeedItem extends React.PureComponent<Props, State> {
         />
         <CardActionArea onClick={handlePostClick(data.typeId, data.postId)}>
           <CardContent className={classes.content}>
-            <Typography component="p" variant="subtitle2" style={{maxWidth: 200}} noWrap>
+            <Typography
+              component="p"
+              variant="subtitle2"
+              style={{ maxWidth: 200 }}
+              noWrap
+            >
               {data.title}
             </Typography>
             <span />

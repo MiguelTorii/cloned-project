@@ -7,6 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
+import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import List from '@material-ui/core/List';
@@ -360,7 +361,9 @@ class MainLayout extends React.Component<Props, State> {
               >
                 <MenuIcon />
               </IconButton>
-              <img src={logo} alt="Logo" className={classes.logo} />
+              <Link href="/" component={MyLink} link="/">
+                <img src={logo} alt="Logo" className={classes.logo} />
+              </Link>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
                 <IconButton

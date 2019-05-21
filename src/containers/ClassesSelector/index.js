@@ -9,8 +9,9 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { UserClasses } from '../../types/models';
+import type { SelectType } from '../../types/models';
 import { getUserClasses } from '../../api/user';
+import { processClasses } from './utils';
 
 const styles = theme => ({
   root: {
@@ -21,32 +22,41 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  value: number,
   onChange: Function
 };
 
 type State = {
-  userClasses: UserClasses
+  userClasses: Array<SelectType>,
+  value: string
 };
 
 class ClassesSelector extends React.PureComponent<Props, State> {
   state = {
-    userClasses: []
+    userClasses: [],
+    value: ''
   };
 
   componentDidMount = async () => {
     this.mounted = true;
     const {
       user: {
-        data: { userId }
+        data: { userId, segment }
       }
     } = this.props;
-    const userClasses = await getUserClasses({ userId });
+    const classes = await getUserClasses({ userId });
+    const userClasses = processClasses({ classes, segment });
     if (this.mounted) this.setState({ userClasses });
   };
 
   componentWillUnmount = () => {
     this.mounted = false;
+  };
+
+  handleChange = event => {
+    const { classId, sectionId } = JSON.parse(event.target.value);
+    this.setState({ value: event.target.value });
+    const { onChange } = this.props;
+    onChange({ classId, sectionId });
   };
 
   mounted: boolean;
@@ -58,11 +68,9 @@ class ClassesSelector extends React.PureComponent<Props, State> {
         isLoading,
         error,
         data: { userId }
-      },
-      value,
-      onChange
+      }
     } = this.props;
-    const { userClasses } = this.state;
+    const { userClasses, value } = this.state;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
       return 'Oops, there was an error loading your data, please try again.';
@@ -75,15 +83,15 @@ class ClassesSelector extends React.PureComponent<Props, State> {
             value={value}
             name="userClasses"
             label="User Classes"
-            onChange={onChange}
+            onChange={this.handleChange}
             variant="outlined"
             validators={['required']}
-            errorMessages={['this field is required']}
+            errorMessages={['User Classes is required']}
           >
             <MenuItem value="" />
             {userClasses.map(userClass => (
-              <MenuItem key={userClass.classId} value={userClass.classId}>
-                {userClass.className}
+              <MenuItem key={userClass.value} value={userClass.value}>
+                {userClass.label}
               </MenuItem>
             ))}
           </SelectValidator>

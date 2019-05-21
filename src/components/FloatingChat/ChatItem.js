@@ -46,7 +46,8 @@ const styles = theme => ({
     width: 300
   },
   header: {
-    display: 'flex'
+    display: 'flex',
+    minHeight: 40
   },
   headerTitle: {
     flex: 1,
@@ -62,7 +63,9 @@ const styles = theme => ({
   },
   content: {
     overflow: 'none',
-    height: 'inherit'
+    height: 'inherit',
+    display: 'flex',
+    flexDirection: 'column'
   },
   hide: {
     display: 'none'

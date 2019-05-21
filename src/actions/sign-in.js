@@ -143,12 +143,7 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       store.remove('REFRESH_TOKEN');
       store.remove('USER_ID');
       store.remove('SEGMENT');
-      await dispatch(
-        setError({
-          title: 'Invalid User',
-          body: 'You have to login to see this page.'
-        })
-      );
+      await dispatch(clearError());
       dispatch(push('/login'));
     }
   } catch (err) {

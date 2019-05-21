@@ -37,7 +37,8 @@ type Props = {
 type State = {
   loading: boolean,
   title: string,
-  userClass: number | string,
+  classId: number,
+  sectionId: ?number,
   tags: Array<SelectType>,
   tagsError: boolean,
   flashcards: Array<Flashcard & { id: string }>,
@@ -51,7 +52,8 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     title: '',
-    userClass: '',
+    classId: 0,
+    sectionId: null,
     tags: [],
     tagsError: false,
     flashcards: [],
@@ -80,7 +82,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         },
         pushTo
       } = this.props;
-      const { title, userClass } = this.state;
+      const { title, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
       await createFlashcards({
@@ -91,7 +93,8 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
           answer: item.answer
         })),
         grade,
-        classId: Number(userClass),
+        classId,
+        sectionId,
         tags: tagValues
       });
       pushTo('/feed');
@@ -109,8 +112,14 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     this.setState({ [name]: event.target.value });
   };
 
-  handleClassChange = event => {
-    this.setState({ userClass: event.target.value });
+  handleClassChange = ({
+    classId,
+    sectionId
+  }: {
+    classId: number,
+    sectionId: number
+  }) => {
+    this.setState({ classId, sectionId });
   };
 
   handleTagsChange = values => {
@@ -169,7 +178,6 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     const {
       loading,
       title,
-      userClass,
       tags,
       tagsError,
       flashcards,
@@ -205,7 +213,6 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={10}>
               <ClassesSelector
-                value={userClass}
                 onChange={this.handleClassChange}
               />
             </Grid>

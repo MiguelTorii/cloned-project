@@ -36,7 +36,8 @@ type State = {
   title: string,
   url: string,
   preview: string,
-  userClass: number | string,
+  classId: number,
+  sectionId: ?number,
   tags: Array<SelectType>,
   tagsError: boolean,
   errorDialog: boolean,
@@ -50,7 +51,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     title: '',
     url: '',
     preview: '',
-    userClass: '',
+    classId: 0,
+    sectionId: null,
     tags: [],
     tagsError: false,
     errorDialog: false,
@@ -78,14 +80,15 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         },
         pushTo
       } = this.props;
-      const { title, url, userClass } = this.state;
+      const { title, url, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
       await createShareLink({
         userId,
         title,
         uri: url,
-        classId: Number(userClass),
+        classId,
+        sectionId,
         tags: tagValues
       });
       pushTo('/feed');
@@ -104,8 +107,14 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     if (name === 'url') this.updatePreview(event.target.value);
   };
 
-  handleClassChange = event => {
-    this.setState({ userClass: event.target.value });
+  handleClassChange = ({
+    classId,
+    sectionId
+  }: {
+    classId: number,
+    sectionId: number
+  }) => {
+    this.setState({ classId, sectionId });
   };
 
   handleTagsChange = values => {
@@ -129,7 +138,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       title,
       url,
       preview,
-      userClass,
       tags,
       tagsError,
       errorDialog,
@@ -164,10 +172,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesSelector
-                value={userClass}
-                onChange={this.handleClassChange}
-              />
+              <ClassesSelector onChange={this.handleClassChange} />
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Url</Typography>

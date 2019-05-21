@@ -85,7 +85,8 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     case signInActions.SIGN_IN_USER_CLEAR_ERROR:
       return update(state, {
         error: { $set: defaultState.error },
-        errorMessage: { $set: defaultState.errorMessage }
+        errorMessage: { $set: defaultState.errorMessage },
+        isLoading: { $set: false }
       });
     case signInActions.SIGN_OUT_USER_REQUEST:
     case signInActions.SIGN_OUT_USER_SUCCESS:

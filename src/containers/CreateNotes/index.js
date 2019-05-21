@@ -29,7 +29,8 @@ type Props = {
 type State = {
   loading: boolean,
   title: string,
-  userClass: number | string,
+  classId: number,
+  sectionId: ?number,
   summary: string,
   tags: Array<SelectType>,
   tagsError: boolean,
@@ -42,7 +43,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     title: '',
-    userClass: '',
+    classId: 0,
+    sectionId: null,
     summary: '',
     tags: [],
     tagsError: false,
@@ -68,14 +70,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
           },
           pushTo
         } = this.props;
-        const { title, userClass, summary } = this.state;
+        const { title, classId, sectionId, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
         const fileNames = images.map(item => item.id);
         const tagValues = tags.map(item => Number(item.value));
         await createPhotoNote({
           userId,
           title,
-          classId: Number(userClass),
+          classId,
+          sectionId,
           fileNames,
           comment: summary,
           tags: tagValues
@@ -104,8 +107,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ [name]: event.target.value });
   };
 
-  handleClassChange = event => {
-    this.setState({ userClass: event.target.value });
+  handleClassChange = ({
+    classId,
+    sectionId
+  }: {
+    classId: number,
+    sectionId: number
+  }) => {
+    this.setState({ classId, sectionId });
   };
 
   handleTagsChange = values => {
@@ -127,7 +136,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const {
       loading,
       title,
-      userClass,
       summary,
       tags,
       tagsError,
@@ -161,10 +169,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesSelector
-                value={userClass}
-                onChange={this.handleClassChange}
-              />
+              <ClassesSelector onChange={this.handleClassChange} />
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Summary</Typography>
