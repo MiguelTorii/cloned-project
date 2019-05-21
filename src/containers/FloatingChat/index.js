@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import debounce from 'lodash/debounce';
 import update from 'immutability-helper';
 import Chat from 'twilio-chat';
 import { withSnackbar } from 'notistack';
@@ -56,6 +57,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
+    this.updateOpenChannels = debounce(this.updateOpenChannels, 250)
     window.addEventListener('resize', this.updateOpenChannels);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
