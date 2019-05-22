@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import queryString from 'query-string';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -17,17 +18,33 @@ const styles = () => ({
   }
 });
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
-  classes: Object
+  classes: Object,
+  location: {
+    search: string
+  }
 };
 
-class FeedPage extends React.PureComponent<ProvidedProps & Props> {
+type State = {
+  feedId: ?number
+};
+
+class FeedPage extends React.PureComponent<Props, State> {
+  state = {
+    feedId: null
+  };
+
+  componentDidMount = () => {
+    const {
+      location: { search = '' }
+    } = this.props;
+    const { id = null } = queryString.parse(search);
+    this.setState({ feedId: id ? Number(id) : null });
+  };
+
   render() {
     const { classes } = this.props;
+    const { feedId } = this.state;
 
     return (
       <main>
@@ -35,7 +52,7 @@ class FeedPage extends React.PureComponent<ProvidedProps & Props> {
         <Layout>
           <Grid container spacing={0} justify="center">
             <Grid item xs={12} md={9} className={classes.item}>
-              <Feed />
+              <Feed feedId={feedId} />
             </Grid>
             {/* <Hidden smDown>
               <Grid item md={3} className={classes.item}>

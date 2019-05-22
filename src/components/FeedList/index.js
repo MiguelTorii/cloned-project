@@ -118,8 +118,9 @@ type Props = {
   classesList: Array<{ value: string, label: string }>,
   isLoading: boolean,
   hasMore: boolean,
+  fromFeedId: ?number,
   handleShare: Function,
-  handlePostClick: Function,
+  onPostClick: Function,
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
@@ -135,6 +136,24 @@ type State = {
 class FeedList extends React.PureComponent<Props, State> {
   state = {
     anchorEl: null
+  };
+
+  componentDidMount = () => {
+    this.mounted = true;
+  };
+
+  componentDidUpdate = () => {
+    if (this.mounted && this.selectedRef) this.handleScrollToRef();
+  };
+
+  componentWillUnmount = () => {
+    this.mounted = false;
+  };
+
+  handleScrollToRef = () => {
+    if (this.selectedRef && this.selectedRef.el) {
+      this.selectedRef.el.scrollIntoView({ behavior: 'instant' });
+    }
   };
 
   handleClick = event => {
@@ -160,6 +179,13 @@ class FeedList extends React.PureComponent<Props, State> {
   // eslint-disable-next-line no-undef
   scrollParentRef: ?HTMLDivElement;
 
+  selectedRef: {
+    // eslint-disable-next-line no-undef
+    el: ?HTMLDivElement
+  };
+
+  mounted: boolean;
+
   render() {
     const {
       classes,
@@ -168,7 +194,7 @@ class FeedList extends React.PureComponent<Props, State> {
       items,
       classesList,
       handleShare,
-      handlePostClick,
+      onPostClick,
       onBookmark,
       onReport,
       onDelete,
@@ -178,6 +204,7 @@ class FeedList extends React.PureComponent<Props, State> {
       defaultClass,
       postType,
       hasMore,
+      fromFeedId,
       onChange,
       onClearFilters,
       onLoadMore
@@ -242,7 +269,10 @@ class FeedList extends React.PureComponent<Props, State> {
                   userId={userId}
                   data={item}
                   handleShareClick={handleShare}
-                  handlePostClick={handlePostClick}
+                  innerRef={node => {
+                    if (fromFeedId === item.feedId) this.selectedRef = node;
+                  }}
+                  onPostClick={onPostClick}
                   onBookmark={onBookmark}
                   onReport={onReport}
                   onDelete={onDelete}

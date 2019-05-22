@@ -34,6 +34,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   user: UserState,
+  feedId: ?number,
   push: Function
 };
 
@@ -64,7 +65,7 @@ class Feed extends React.PureComponent<Props, State> {
     postType: 0,
     classesList: [],
     query: '',
-    limit: 50,
+    limit: 100,
     hasMore: false
   };
 
@@ -202,9 +203,17 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed();
   };
 
-  handlePostClick = (typeId: number, postId: number) => () => {
+  handlePostClick = ({
+    typeId,
+    postId,
+    feedId
+  }: {
+    typeId: number,
+    postId: number,
+    feedId: number
+  }) => () => {
     const { push } = this.props;
-
+    push(`/feed?id=${feedId}`);
     switch (typeId) {
       case 3:
         push(`/flashcards/${postId}`);
@@ -228,7 +237,8 @@ class Feed extends React.PureComponent<Props, State> {
       classes,
       user: {
         data: { userId }
-      }
+      },
+      feedId: fromFeedId
     } = this.props;
     const {
       feed,
@@ -258,8 +268,9 @@ class Feed extends React.PureComponent<Props, State> {
             postType={postType}
             classesList={classesList}
             hasMore={hasMore}
+            fromFeedId={fromFeedId}
             handleShare={this.handleShare}
-            handlePostClick={this.handlePostClick}
+            onPostClick={this.handlePostClick}
             onBookmark={this.handleBookmark}
             onReport={this.handleReport}
             onDelete={this.handleDelete}

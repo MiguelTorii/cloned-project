@@ -117,7 +117,7 @@ type Props = {
   userId: string,
   data: Item,
   handleShareClick: Function,
-  handlePostClick: Function,
+  onPostClick: Function,
   onBookmark: Function,
   onReport: Function,
   onDelete: Function
@@ -217,8 +217,11 @@ class FeedItem extends React.PureComponent<Props, State> {
     }
   };
 
+  // eslint-disable-next-line no-undef
+  el: ?HTMLDivElement;
+
   render() {
-    const { classes, userId, data, handlePostClick } = this.props;
+    const { classes, userId, data, onPostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials =
@@ -261,98 +264,110 @@ class FeedItem extends React.PureComponent<Props, State> {
     );
 
     return (
-      <Card
-        className={classes.card}
-        elevation={0}
-        classes={{ root: classes.root }}
+      <div
+        ref={node => {
+          this.el = node;
+        }}
       >
-        <CardHeader
-          className={classes.header}
-          avatar={
-            <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-              {initials}
-            </Avatar>
-          }
-          action={
-            <IconButton onClick={this.handleMenuOpen}>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={
-            <CardActionArea>
-              <div className={classes.title}>
-                <Typography component="p" variant="subtitle2" noWrap>
-                  {data.name}{' '}
-                  <img
-                    src={ranks[data.rank - 1]}
-                    alt="Rank"
-                    className={classes.rank}
-                  />
+        <Card
+          className={classes.card}
+          elevation={0}
+          classes={{ root: classes.root }}
+        >
+          <CardHeader
+            className={classes.header}
+            avatar={
+              <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                {initials}
+              </Avatar>
+            }
+            action={
+              <IconButton onClick={this.handleMenuOpen}>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={
+              <CardActionArea>
+                <div className={classes.title}>
+                  <Typography component="p" variant="subtitle2" noWrap>
+                    {data.name}{' '}
+                    <img
+                      src={ranks[data.rank - 1]}
+                      alt="Rank"
+                      className={classes.rank}
+                    />
+                  </Typography>
+                  <Typography component="p" variant="caption" noWrap>
+                    <strong>•</strong>
+                  </Typography>
+                  <Typography component="p" variant="caption" noWrap>
+                    {fromNow}
+                  </Typography>
+                </div>
+              </CardActionArea>
+            }
+            subheader={
+              <CardActionArea>
+                <Typography component="p" noWrap>
+                  {data.classroomName}
                 </Typography>
-                <Typography component="p" variant="caption" noWrap>
-                  <strong>•</strong>
-                </Typography>
-                <Typography component="p" variant="caption" noWrap>
-                  {fromNow}
-                </Typography>
-              </div>
-            </CardActionArea>
-          }
-          subheader={
-            <CardActionArea>
-              <Typography component="p" noWrap>
-                {data.classroomName}
+              </CardActionArea>
+            }
+          />
+          <CardActionArea
+            onClick={onPostClick({
+              typeId: data.typeId,
+              postId: data.postId,
+              feedId: data.feedId
+            })}
+          >
+            <CardContent className={classes.content}>
+              <Typography
+                component="p"
+                variant="subtitle2"
+                style={{ maxWidth: 200 }}
+                noWrap
+              >
+                {data.title}
               </Typography>
-            </CardActionArea>
-          }
-        />
-        <CardActionArea onClick={handlePostClick(data.typeId, data.postId)}>
-          <CardContent className={classes.content}>
-            <Typography
-              component="p"
-              variant="subtitle2"
-              style={{ maxWidth: 200 }}
-              noWrap
-            >
-              {data.title}
-            </Typography>
-            <span />
-            {this.renderImage()}
-          </CardContent>
-        </CardActionArea>
-        <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Share" onClick={this.handleShareClick}>
-            <ShareIcon />
-          </IconButton>
-          <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
-            {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
-          <div className={classes.stats}>
-            <Typography
-              component="p"
-              variant="caption"
-              className={classes.stat}
-            >
-              <strong>{data.postInfo.questionsCount}</strong> questions
-            </Typography>
-            <Typography
-              component="p"
-              variant="caption"
-              className={classes.stat}
-            >
-              <strong>{data.postInfo.thanksCount}</strong> thanks
-            </Typography>
-            <Typography
-              component="p"
-              variant="caption"
-              className={classes.stat}
-            >
-              <strong>{data.postInfo.viewCount}</strong> views
-            </Typography>
-          </div>
-        </CardActions>
-        {renderMenu}
-      </Card>
+              <span />
+              {this.renderImage()}
+            </CardContent>
+          </CardActionArea>
+          <CardActions className={classes.actions} disableActionSpacing>
+            <IconButton aria-label="Share" onClick={this.handleShareClick}>
+              <ShareIcon />
+            </IconButton>
+            <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
+              {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            </IconButton>
+            <div className={classes.stats}>
+              <Typography
+                component="p"
+                variant="caption"
+                className={classes.stat}
+              >
+                <strong>{data.postInfo.questionsCount}</strong> questions
+              </Typography>
+              <Typography
+                component="p"
+                variant="caption"
+                className={classes.stat}
+              >
+                <strong>{data.postInfo.thanksCount}</strong> thanks
+              </Typography>
+              <Typography
+                component="p"
+                variant="caption"
+                className={classes.stat}
+              >
+                <strong>{data.postInfo.viewCount}</strong> views
+              </Typography>
+            </div>
+          </CardActions>
+          {renderMenu}
+        </Card>
+      </div>
     );
   }
 }
