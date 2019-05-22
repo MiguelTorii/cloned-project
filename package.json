@@ -31,7 +31,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.3",
-    "react-image-gallery": "^0.8.16",
+    "react-images": "^0.5.19",
     "react-infinite-scroller": "^1.2.4",
     "react-material-ui-form-validator": "^2.0.8",
     "react-quill": "^1.3.3",

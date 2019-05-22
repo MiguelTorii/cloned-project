@@ -94,7 +94,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     } = photoNote;
 
     const images = notes.map(item => ({
-      original: item.fullNoteUrl,
+      src: item.fullNoteUrl,
       thumbnail: item.noteUrl
     }));
     return (
