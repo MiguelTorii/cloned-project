@@ -9,7 +9,10 @@ import type { State as StoreState } from '../../types/state';
 import type { Notification as NotificationState } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import Notifications from '../../components/Notifications';
-import { getNotifications } from '../../api/notifications';
+import {
+  getNotifications,
+  setNotificationsRead
+} from '../../api/notifications';
 
 const styles = () => ({
   root: {}
@@ -38,15 +41,45 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   state = {
     notifications: [],
     tab: 0,
-    loading: false
+    loading: true
   };
 
   componentDidMount = () => {
-    this.handleFetchNotifications = debounce(
-      this.handleFetchNotifications,
+    this.handleDebounceFetchNotifications = debounce(
+      this.handleDebounceFetchNotifications,
       10000
     );
-    this.handleFetchNotifications();
+    this.handleDebounceFetchNotifications();
+  };
+
+  componentDidUpdate = prevProps => {
+    const {
+      user: {
+        data: { userId }
+      },
+      anchorEl
+    } = this.props;
+    const { anchorEl: prevAnchorEl } = prevProps;
+
+    if (
+      anchorEl !== prevAnchorEl &&
+      Boolean(anchorEl) === true &&
+      Boolean(prevAnchorEl) === false
+    ) {
+      try {
+        setNotificationsRead({ userId });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  handleDebounceFetchNotifications = async () => {
+    try {
+      await this.handleFetchNotifications();
+    } finally {
+      this.handleDebounceFetchNotifications();
+    }
   };
 
   handleFetchNotifications = async () => {
@@ -70,7 +103,6 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
         this.setState({ loading: false });
       }
     }
-    this.handleFetchNotifications();
   };
 
   handleTabChange = async (event, tab) => {

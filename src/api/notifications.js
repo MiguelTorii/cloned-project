@@ -50,3 +50,24 @@ export const getNotifications = async ({
 
   return { notifications, unreadCount };
 };
+
+export const setNotificationsRead = async ({
+  userId
+}: {
+  userId: string
+}): Promise<Object> => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.NOTIFICATIONS}/${userId}/read/`,
+    null,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};

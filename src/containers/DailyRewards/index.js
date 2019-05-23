@@ -122,17 +122,20 @@ class DailyRewards extends React.PureComponent<Props, State> {
   };
 
   handleGetDailyRewards = async () => {
-    const {
-      user: {
-        data: { userId }
+    try {
+      const {
+        user: {
+          data: { userId }
+        }
+      } = this.props;
+      const { open } = this.state;
+      if (userId !== '' && !open) {
+        const dailyRewards = await getDailyRewards({ userId });
+        this.setState({ dailyRewards, open: dailyRewards.givenPoints > 0 });
       }
-    } = this.props;
-    const { open } = this.state;
-    if (userId !== '' && !open) {
-      const dailyRewards = await getDailyRewards({ userId });
-      this.setState({ dailyRewards, open: dailyRewards.givenPoints > 0 });
+    } finally {
+      this.handleGetDailyRewards();
     }
-    this.handleGetDailyRewards();
   };
 
   handleClose = () => {
