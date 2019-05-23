@@ -129,6 +129,7 @@ type Props = {
   userId: string,
   theme: Object,
   children: any,
+  unreadCount: number,
   handleNotificationOpen: Function,
   handleSignOut: Function,
   onManageClasses: Function,
@@ -230,7 +231,7 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openHowEarnPoints
     } = this.state;
-    const { classes, userId, theme, children, onOpenLeaderboard, onOpenAnnouncements } = this.props;
+    const { classes, userId, theme, children, unreadCount, onOpenLeaderboard, onOpenAnnouncements } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -272,7 +273,7 @@ class MainLayout extends React.Component<Props, State> {
           aria-owns={open ? 'notifications-popper' : undefined}
         >
           <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
+            <Badge badgeContent={unreadCount} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -372,7 +373,7 @@ class MainLayout extends React.Component<Props, State> {
                   aria-owns={open ? 'notifications-popper' : undefined}
                   aria-haspopup="true"
                 >
-                  <Badge badgeContent={17} color="secondary">
+                  <Badge badgeContent={unreadCount} color="secondary">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>

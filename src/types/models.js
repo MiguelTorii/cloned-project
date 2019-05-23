@@ -346,3 +346,28 @@ export type Rewards = {
   availableRewards: Array<AvailableReward>,
   slots: Array<Slot>
 };
+
+export type Notification = {
+  actorFirstName: string,
+  actorId: string,
+  actorLastName: string,
+  createdOn: string,
+  entityId: number,
+  entityType: number,
+  feedPostTitle: string,
+  fileName: string,
+  fullNoteUrl: string,
+  id: number,
+  noteUrl: string,
+  notificationText: string,
+  postId: number,
+  postTypeId: number,
+  deckSize: number,
+  profileImageUrl: string,
+  state: number
+};
+
+export type Notifications = {
+  notifications: Array<Notification>,
+  unreadCount: number
+};

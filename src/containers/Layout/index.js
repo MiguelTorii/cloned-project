@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import type { Node } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MainLayout from '../../components/MainLayout';
@@ -34,7 +35,8 @@ type Props = {
   isNaked?: boolean,
   checkUserSession: Function,
   signOut: Function,
-  openCreateChatGroup: Function
+  openCreateChatGroup: Function,
+  push: Function
 };
 
 type State = {
@@ -42,7 +44,8 @@ type State = {
   manageBlockedUsers: boolean,
   anchorEl: Node,
   leaderboard: boolean,
-  announcements: boolean
+  announcements: boolean,
+  unreadCount: number
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -55,7 +58,8 @@ class Layout extends React.PureComponent<Props, State> {
     manageBlockedUsers: false,
     anchorEl: null,
     leaderboard: false,
-    announcements: false
+    announcements: false,
+    unreadCount: 0
   };
 
   componentDidMount = () => {
@@ -110,6 +114,36 @@ class Layout extends React.PureComponent<Props, State> {
     openCreateChatGroup();
   };
 
+  handleUpdateUnreadCount = unreadCount => {
+    this.setState({ unreadCount });
+  };
+
+  handleNotificationClick = ({
+    typeId,
+    postId
+  }: {
+    typeId: number,
+    postId: number
+  }) => {
+    const { push } = this.props;
+    switch (typeId) {
+      case 3:
+        push(`/flashcards/${postId}`);
+        break;
+      case 4:
+        push(`/notes/${postId}`);
+        break;
+      case 5:
+        push(`/sharelink/${postId}`);
+        break;
+      case 6:
+        push(`/question/${postId}`);
+        break;
+      default:
+        break;
+    }
+  };
+
   renderChildren = () => {
     const {
       user: { data, isLoading },
@@ -134,13 +168,15 @@ class Layout extends React.PureComponent<Props, State> {
       manageBlockedUsers,
       anchorEl,
       leaderboard,
-      announcements
+      announcements,
+      unreadCount
     } = this.state;
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
         <MainLayout
           userId={userId}
+          unreadCount={unreadCount}
           handleNotificationOpen={this.handleNotificationOpen}
           handleSignOut={signOut}
           onManageClasses={this.handleOpenManageClasses}
@@ -153,6 +189,8 @@ class Layout extends React.PureComponent<Props, State> {
         <Notifications
           anchorEl={anchorEl}
           onClose={this.handleNotificationClose}
+          onUpdateUnreadCount={this.handleUpdateUnreadCount}
+          onClick={this.handleNotificationClick}
         />
         <ClassesManager
           open={manageClasses}
@@ -182,7 +220,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       checkUserSession: signInActions.checkUserSession,
       signOut: signInActions.signOut,
-      openCreateChatGroup: chatActions.openCreateChatGroup
+      openCreateChatGroup: chatActions.openCreateChatGroup,
+      push: routePush
     },
     dispatch
   );
