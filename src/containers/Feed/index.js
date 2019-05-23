@@ -70,7 +70,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
-    this.handleFetchFeed = debounce(this.handleFetchFeed, 500);
+    this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
     this.handleFetchUserClasses();
     await this.handleFetchFeed();
   };
@@ -203,6 +203,11 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed();
   };
 
+  handleUserClick = ({userId}: {userId: string}) => {
+    const {push} = this.props;
+    push(`/profile/${userId}`);
+  }
+
   handlePostClick = ({
     typeId,
     postId,
@@ -277,6 +282,7 @@ class Feed extends React.PureComponent<Props, State> {
             onChange={this.handleChange}
             onClearFilters={this.handleClearFilters}
             onLoadMore={this.handleLoadMore}
+            onUserClick={this.handleUserClick}
           />
         </div>
         <SharePost

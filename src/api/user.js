@@ -413,3 +413,55 @@ export const getDailyRewards = async ({
     stage: Number((reward.stage: number) || 0)
   };
 };
+
+export const updateProfile = async ({
+  userId,
+  fields
+}: {
+  userId: string,
+  fields: Array<{ field: string, updated_value: string }>
+}): Promise<Object> => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.USER}/${userId}/profile`,
+    {
+      fields
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+
+  return data;
+};
+
+export const updateUserProfileUrl = async ({
+  userId,
+  mediaId
+}: {
+  userId: string,
+  mediaId: string
+}): Promise<Object> => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.USER}/${userId}/profile_image`,
+    {
+      is_set: true,
+      object_id: mediaId,
+      token: 'NA'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const { data = {} } = result;
+
+  return data;
+};

@@ -120,7 +120,8 @@ type Props = {
   onPostClick: Function,
   onBookmark: Function,
   onReport: Function,
-  onDelete: Function
+  onDelete: Function,
+  onUserClick: Function
 };
 
 type State = {
@@ -173,6 +174,14 @@ class FeedItem extends React.PureComponent<Props, State> {
     } = this.props;
     this.handleMenuClose();
     onDelete({ feedId });
+  };
+
+  handleUserClick = () => {
+    const {
+      data: { userId },
+      onUserClick
+    } = this.props;
+    onUserClick({ userId });
   };
 
   renderImage = () => {
@@ -287,7 +296,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               </IconButton>
             }
             title={
-              <CardActionArea>
+              <CardActionArea onClick={this.handleUserClick}>
                 <div className={classes.title}>
                   <Typography component="p" variant="subtitle2" noWrap>
                     {data.name}{' '}
@@ -307,9 +316,11 @@ class FeedItem extends React.PureComponent<Props, State> {
               </CardActionArea>
             }
             subheader={
-              <CardActionArea>
+              <CardActionArea disabled>
                 <Typography component="p" noWrap>
-                  {data.subject !== '' ? `${data.subject} ${data.classroomName}` : data.classroomName}
+                  {data.subject !== ''
+                    ? `${data.subject} ${data.classroomName}`
+                    : data.classroomName}
                 </Typography>
               </CardActionArea>
             }

@@ -22,13 +22,16 @@ export const getToken = async (): Promise<string> => {
     const decoded = decode(token);
     const { exp } = decoded;
     const date = moment().subtract(2, 'minutes');
-    if (exp > date.format('X')) {
+    if (exp > Number(date.format('X'))) {
       return token;
     }
   }
+  console.log('no Token');
   if (segment === '' || userId === '' || refreshToken === '' || !userId) {
+    console.log('invalid user');
     return '';
   }
+  console.log('get new token');
   const result = await axios.post(API_ROUTES.REFRESH, {
     user_id: Number(userId),
     token: refreshToken,
@@ -36,7 +39,10 @@ export const getToken = async (): Promise<string> => {
   });
   const { data = {} } = result;
   // eslint-disable-next-line camelcase
-  const { jwt_token = '' } = data;
+  const { jwt_token = '', refresh_token = '' } = data;
+  store.set('TOKEN', jwt_token);
+  store.set('REFRESH_TOKEN', refresh_token);
+  console.log('new token');
   // eslint-disable-next-line camelcase
   return jwt_token;
 };

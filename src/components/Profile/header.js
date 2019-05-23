@@ -40,6 +40,9 @@ const styles = theme => ({
     fontSize: theme.typography.h1.fontSize,
     margin: theme.spacing.unit * 2
   },
+  img: {
+    textAlign: 'center'
+  },
   button: {
     margin: theme.spacing.unit * 2
   },
@@ -65,7 +68,8 @@ type Props = {
   state: string,
   segment: string,
   grade: number,
-  joined: string
+  joined: string,
+  onOpenEdit: Function
 };
 
 class Header extends React.PureComponent<Props> {
@@ -81,7 +85,8 @@ class Header extends React.PureComponent<Props> {
       state,
       segment = '',
       grade,
-      joined
+      joined,
+      onOpenEdit
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
@@ -93,9 +98,10 @@ class Header extends React.PureComponent<Props> {
           <Grid container>
             <Grid item xs={5} className={classes.gridAvatar}>
               <Avatar
-                alt="Camilo R"
+                alt={initials}
                 src={userProfileUrl}
                 className={classes.bigAvatar}
+                classes={{ img: classes.img }}
               >
                 {initials}
               </Avatar>
@@ -105,15 +111,16 @@ class Header extends React.PureComponent<Props> {
                   color="primary"
                   className={classes.button}
                 >
-                  add to my study circle
+                  Add to Study Circle
                 </Button>
               ) : (
                 <Button
                   variant="outlined"
                   color="primary"
                   className={classes.button}
+                  onClick={onOpenEdit}
                 >
-                  edit profile
+                  Edit Profile
                 </Button>
               )}
             </Grid>

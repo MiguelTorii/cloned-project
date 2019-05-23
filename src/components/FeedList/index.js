@@ -126,7 +126,8 @@ type Props = {
   onDelete: Function,
   onChange: Function,
   onClearFilters: Function,
-  onLoadMore: Function
+  onLoadMore: Function,
+  onUserClick: Function
 };
 
 type State = {
@@ -207,7 +208,8 @@ class FeedList extends React.PureComponent<Props, State> {
       fromFeedId,
       onChange,
       onClearFilters,
-      onLoadMore
+      onLoadMore,
+      onUserClick
     } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -276,6 +278,7 @@ class FeedList extends React.PureComponent<Props, State> {
                   onBookmark={onBookmark}
                   onReport={onReport}
                   onDelete={onDelete}
+                  onUserClick={onUserClick}
                 />
               ))}
             </InfiniteScroll>

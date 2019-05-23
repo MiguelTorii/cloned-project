@@ -1,10 +1,14 @@
 // @flow
 import React, { Fragment } from 'react';
 import moment from 'moment';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import Markdown from './Markdown';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   root: {
@@ -33,6 +37,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   name: string,
   userProfileUrl: string,
   classroomName: string,
@@ -50,6 +55,7 @@ class PostItemHeader extends React.PureComponent<Props> {
   render() {
     const {
       classes,
+      userId,
       name,
       userProfileUrl,
       classroomName,
@@ -61,6 +67,7 @@ class PostItemHeader extends React.PureComponent<Props> {
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
+
     return (
       <Fragment>
         <div className={classes.root}>
@@ -69,7 +76,13 @@ class PostItemHeader extends React.PureComponent<Props> {
           </Avatar>
           <div className={classes.userInfo}>
             <Typography component="p" variant="h6" noWrap>
-              {name}
+              <Link
+                component={MyLink}
+                href={`/profile/${userId}`}
+                className={classes.link}
+              >
+                {name}
+              </Link>
             </Typography>
             <Typography component="p" variant="subtitle1" noWrap>
               {classroomName}

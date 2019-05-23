@@ -98,6 +98,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <PostItem>
           <PostItemHeader
+          userId={ownerId}
             name={name}
             userProfileUrl={userProfileUrl}
             classroomName={

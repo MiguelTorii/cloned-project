@@ -100,7 +100,7 @@ class DailyRewards extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    this.handleGetDailyRewards = debounce(this.handleGetDailyRewards, 600000, {
+    this.handleGetDailyRewards = debounce(this.handleGetDailyRewards, 600233, {
       leading: true
     });
     if (userId !== '') this.handleGetDailyRewards();

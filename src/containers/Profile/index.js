@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,10 +9,16 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserProfile, About, UserStatistic } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import { getUserProfile } from '../../api/user';
+import {
+  getUserProfile,
+  updateProfile,
+  updateUserProfileUrl
+} from '../../api/user';
+import { getPresignedURL } from '../../api/media';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
+import ProfileEdit from '../../components/ProfileEdit';
 
 const styles = theme => ({
   root: {
@@ -42,7 +49,9 @@ type State = {
   about: Array<About>,
   userStatistics: Array<UserStatistic>,
   isLoading: boolean,
-  error: boolean
+  error: boolean,
+  edit: boolean,
+  uploading: boolean
 };
 
 class Profile extends React.PureComponent<Props, State> {
@@ -64,10 +73,16 @@ class Profile extends React.PureComponent<Props, State> {
     about: [],
     userStatistics: [],
     isLoading: true,
-    error: false
+    error: false,
+    edit: false,
+    uploading: false
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.handleGetProfile();
+  };
+
+  handleGetProfile = async () => {
     try {
       const { userId } = this.props;
       if (userId !== '') {
@@ -81,13 +96,73 @@ class Profile extends React.PureComponent<Props, State> {
     }
   };
 
+  handleOpenEdit = () => {
+    this.setState({ edit: true });
+  };
+
+  handleCloseEdit = () => {
+    this.setState({ edit: false });
+  };
+
+  handleSubmit = async fields => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    this.handleCloseEdit();
+    this.setState({ isLoading: true });
+    try {
+      await updateProfile({ userId, fields });
+    } finally {
+      this.handleGetProfile();
+    }
+  };
+
+  handleUpdateProfileImage = async file => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    this.setState({ uploading: true });
+    try {
+      const result = await getPresignedURL({
+        userId,
+        type: 2,
+        mediaType: file.type
+      });
+
+      const { mediaId, url } = result;
+
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': file.type
+        }
+      });
+
+      await updateUserProfileUrl({ userId, mediaId });
+      await this.handleGetProfile();
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
+
   render() {
     const {
       classes,
       user: { data: userData }
     } = this.props;
     const { segment = '' } = userData;
-    const { userProfile, about, userStatistics, isLoading, error } = this.state;
+    const {
+      userProfile,
+      about,
+      userStatistics,
+      isLoading,
+      error,
+      edit,
+      uploading
+    } = this.state;
     const {
       userId,
       firstName,
@@ -120,9 +195,22 @@ class Profile extends React.PureComponent<Props, State> {
           segment={segment}
           grade={grade}
           joined={joined}
+          onOpenEdit={this.handleOpenEdit}
         />
         <ProfileAbout about={about} />
         <ProfileSeasons stats={userStatistics} />
+        <ProfileEdit
+          key={`${userId}-${userProfileUrl}`}
+          open={edit}
+          about={about}
+          firstName={firstName}
+          lastName={lastName}
+          userProfileUrl={userProfileUrl}
+          uploading={uploading}
+          onClose={this.handleCloseEdit}
+          onSubmit={this.handleSubmit}
+          onUpdateProfileImage={this.handleUpdateProfileImage}
+        />
       </div>
     );
   }
@@ -131,14 +219,6 @@ class Profile extends React.PureComponent<Props, State> {
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
-
-// const mapDispatchToProps = (dispatch: *): {} =>
-//   bindActionCreators(
-//     {
-//       //   closeShareDialog: shareActions.closeShareDialog
-//     },
-//     dispatch
-//   );
 
 export default connect(
   mapStateToProps,

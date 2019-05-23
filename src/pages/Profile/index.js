@@ -41,6 +41,22 @@ class ProfilePage extends React.Component<Props, State> {
     if (userId !== '') this.setState({ userId: String(userId) });
   };
 
+  componentDidUpdate = prevProps => {
+    const {
+      match: {
+        params: { userId = '' }
+      }
+    } = this.props;
+    const {
+      match: {
+        params: { userId: prevUserId }
+      }
+    } = prevProps;
+    if (userId !== '' && prevUserId !== '' && userId !== prevUserId) {
+      this.setState({ userId: String(userId) });
+    }
+  };
+
   render() {
     const { classes } = this.props;
     const { userId } = this.state;
@@ -50,7 +66,7 @@ class ProfilePage extends React.Component<Props, State> {
         <Layout>
           <Grid container spacing={0}>
             <Grid item xs={12} className={classes.item}>
-              <Profile userId={userId} />
+              <Profile key={userId} userId={userId} />
             </Grid>
           </Grid>
         </Layout>
