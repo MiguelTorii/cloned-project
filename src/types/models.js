@@ -324,3 +324,25 @@ export type DailyRewards = {
   pointsLeft: number,
   stage: number
 };
+
+export type AvailableReward = {
+  bgColor: string,
+  displayName: string,
+  imageUrl: string,
+  isSelected: boolean,
+  rewardId: number,
+  rewardValue: number
+};
+
+export type Slot = {
+  displayName: string,
+  imageUrl: string,
+  rewardId: number,
+  rewardValue: number,
+  slot: number
+};
+
+export type Rewards = {
+  availableRewards: Array<AvailableReward>,
+  slots: Array<Slot>
+};

@@ -53,6 +53,7 @@ export const API_ROUTES = {
   CHAT: `${API_URL}/chat`,
   LEADERBOARD: `${API_URL}/leaderboard`,
   HOME: `${API_URL}/home`,
+  STORE: `${API_URL}/store`,
   VIDEO_INITIATOR: `${API_URL}/video/initiator`,
   VIDEO_SESSION: `${API_URL}/video/session`,
   VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`

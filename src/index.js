@@ -8,6 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Index from './pages/Home';
+import Store from './pages/Store';
 import Feed from './pages/Feed';
 import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
@@ -37,6 +38,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path="/" render={Index} />
+        <Route exact path="/store" render={Store} />
         <Route exact path="/feed" render={Feed} />
         <Route exact path="/flashcards/:flashcardId" render={FlashCards} />
         <Route exact path="/notes/:noteId" render={PhotoNote} />

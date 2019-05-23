@@ -455,7 +455,7 @@ class MainLayout extends React.Component<Props, State> {
                 </ListItemIcon>
                 <ListItemText primary="Leaderboard" />
               </ListItem>
-              <ListItem button>
+              <ListItem button component={MyLink} link="/store">
                 <ListItemIcon>
                   <StoreIcon />
                 </ListItemIcon>
