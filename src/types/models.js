@@ -265,6 +265,7 @@ export type FeedItem = {
   created: string,
   userProfileUrl: string,
   rank: number,
+  subject: string,
   classroomName: string,
   title: string,
   postInfo: PostInfo

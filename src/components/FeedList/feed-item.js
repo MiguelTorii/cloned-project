@@ -309,7 +309,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             subheader={
               <CardActionArea>
                 <Typography component="p" noWrap>
-                  {data.classroomName}
+                  {data.subject !== '' ? `${data.subject} ${data.classroomName}` : data.classroomName}
                 </Typography>
               </CardActionArea>
             }

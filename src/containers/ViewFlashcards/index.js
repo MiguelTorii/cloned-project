@@ -101,6 +101,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       typeId,
       name,
       userProfileUrl,
+      subject,
       classroomName,
       created,
       body,
@@ -117,7 +118,9 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
           <PostItemHeader
             name={name}
             userProfileUrl={userProfileUrl}
-            classroomName={classroomName}
+            classroomName={
+              subject !== '' ? `${subject} ${classroomName}` : classroomName
+            }
             created={created}
             body={body}
             title={title}
