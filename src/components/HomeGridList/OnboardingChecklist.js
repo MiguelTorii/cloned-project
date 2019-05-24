@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -28,6 +29,9 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginTop: theme.spacing.unit * 2
+  },
+  item: {
+    textDecoration: 'line-through'
   },
   avatar: {
     backgroundColor: theme.palette.primary.main,
@@ -79,7 +83,11 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
             {quests.map((quest, index) => (
               <div key={quest.item} className={classes.quest}>
                 <Avatar className={classes.avatar}>{index + 1}</Avatar>
-                <Typography variant="subtitle2" color="primary">
+                <Typography
+                  variant="subtitle2"
+                  color="primary"
+                  className={cx(quest.status === 'complete' && classes.item)}
+                >
                   {quest.item}
                 </Typography>
               </div>
