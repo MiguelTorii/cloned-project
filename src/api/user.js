@@ -9,7 +9,8 @@ import type {
   Leaderboard,
   StudyCircle,
   UserStats,
-  DailyRewards
+  DailyRewards,
+  HomeCards
 } from '../types/models';
 import { getToken } from './utils';
 
@@ -464,4 +465,60 @@ export const updateUserProfileUrl = async ({
   const { data = {} } = result;
 
   return data;
+};
+
+export const getHome = async ({
+  userId
+}: {
+  userId: string
+}): Promise<HomeCards> => {
+  const token = await getToken();
+
+  const result = await axios.get(`${API_ROUTES.HOME_V1_1}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  const { data: cardData = {} } = result;
+  const { cards = [] } = cardData;
+
+  return cards.map(item => {
+    const { data = {} } = item;
+
+    const message = {
+      text: String(((data.message || {}).text: string) || ''),
+      style: ((data.message || {}).style || []).map(s => ({
+        substring: String((s.substring: string) || ''),
+        textColor: String((s.text_color: string) || ''),
+        weight: String((s.weight: string) || '')
+      }))
+    };
+
+    const progressMessage = {
+      text: String(((data.progress_message || {}).text: string) || ''),
+      style: ((data.progress_message || {}).style || []).map(s => ({
+        substring: String((s.substring: string) || ''),
+        textColor: String((s.text_color: string) || ''),
+        weight: String((s.weight: string) || '')
+      }))
+    };
+
+    const quests = (data.quests || []).map(quest => ({
+      item: String((quest.item: string) || ''),
+      status: String((quest.status: string) || '')
+    }));
+
+    const imageUrl = String((data.image_url: string) || '');
+
+    return {
+      cardId: String((item.card_id: string) || ''),
+      title: String((item.title: string) || ''),
+      data: {
+        message,
+        progressMessage,
+        quests,
+        imageUrl
+      }
+    };
+  });
 };

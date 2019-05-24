@@ -114,6 +114,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
+        {/* <fieldset disabled="disabled" style={{borderStyle: 'none', padding: 0, margin: 0}}> */}
         <PostItem>
           <PostItemHeader
             userId={ownerId}
@@ -153,6 +154,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
           />
           <PostComments feedId={feedId} postId={postId} typeId={typeId} />
         </PostItem>
+        {/* </fieldset> */}
       </div>
     );
   }

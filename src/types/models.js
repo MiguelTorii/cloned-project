@@ -372,3 +372,33 @@ export type Notifications = {
   notifications: Array<Notification>,
   unreadCount: number
 };
+
+export type HomeCardStyle = {
+  substring: string,
+  textColor: string,
+  weight: string
+};
+
+export type HomeCardQuest = {
+  item: string,
+  status: string
+};
+
+export type HomeCard = {
+  cardId: string,
+  title: string,
+  data: {
+    message: {
+      text: string,
+      style: Array<HomeCardStyle>
+    },
+    progressMessage: {
+      text: string,
+      style: Array<HomeCardStyle>
+    },
+    quests: Array<HomeCardQuest>,
+    imageUrl: string
+  }
+};
+
+export type HomeCards = Array<HomeCard>;
