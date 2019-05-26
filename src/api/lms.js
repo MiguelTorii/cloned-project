@@ -39,3 +39,15 @@ export const signLMSUser = async ({
   const { data = {} } = result;
   return userToCamelCase(data);
 };
+
+export const checkCanvasUser = async ({
+  nonce
+}: {
+  nonce: string
+}): Promise<Object> => {
+  const result = await axios.post(API_ROUTES.CANVAS_LOGIN, {
+    nonce
+  });
+  const { data = {} } = result;
+  return userToCamelCase(data);
+};

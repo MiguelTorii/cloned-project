@@ -31,6 +31,7 @@ import DailyRewards from './containers/DailyRewards';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import OAuth from './pages/OAuth';
+import Canvas from './pages/Canvas';
 import { init as analyticsInit } from './api/analytics';
 import {
   AMPLITUDE,
@@ -116,6 +117,7 @@ ReactDOM.render(
         <Route exact path="/login" component={withTracker(SignIn)} />
         <Route exact path="/signup" component={withTracker(SignUp)} />
         <Route exact path="/oauth" component={withTracker(OAuth)} />
+        <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
         <Route render={() => <div>Miss</div>} />
       </Switch>
     </ConnectedRouter>
