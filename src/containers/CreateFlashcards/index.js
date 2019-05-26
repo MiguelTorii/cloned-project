@@ -20,6 +20,7 @@ import NewFlashcard from '../../components/FlashcardEditor/NewFlashcard';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createFlashcards } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 const styles = () => ({
   flashcards: {
@@ -96,6 +97,10 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         classId,
         sectionId,
         tags: tagValues
+      });
+      logEvent({
+        event: 'Feed- Create Flashcards',
+        props: { 'Number of cards': flashcards.length, Title: title }
       });
       pushTo('/feed');
     } catch (err) {
@@ -212,9 +217,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={10}>
-              <ClassesSelector
-                onChange={this.handleClassChange}
-              />
+              <ClassesSelector onChange={this.handleClassChange} />
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Tags</Typography>

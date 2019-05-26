@@ -17,6 +17,7 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createPhotoNote } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 const styles = () => ({});
 
@@ -84,6 +85,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           tags: tagValues
         });
         pushTo('/feed');
+        logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
       } catch (err) {
         if (err.message === 'no images')
           this.setState({

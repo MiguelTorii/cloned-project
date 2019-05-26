@@ -24,6 +24,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Leaderboard as LeaderboardType } from '../../types/models';
 import { getLeaderboard } from '../../api/user';
+import { logEvent } from '../../api/analytics';
 
 const ranks = {
   '1': 'Bronze',
@@ -87,6 +88,10 @@ class Leaderboard extends React.PureComponent<Props, State> {
         await this.setState({ rankId: rank });
         this.handleGetLeaderboard();
       }
+      logEvent({
+        event: 'Leaderboard- Opened',
+        props: {}
+      });
     }
   };
 
@@ -117,6 +122,18 @@ class Leaderboard extends React.PureComponent<Props, State> {
     this.handleGetLeaderboard();
   };
 
+  handleClose = () => {
+    const { onClose } = this.props;
+    try {
+      logEvent({
+        event: 'Leaderboard- Closed',
+        props: {}
+      });
+    } finally {
+      onClose();
+    }
+  };
+
   render() {
     const {
       classes,
@@ -125,8 +142,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
         error,
         data: { userId }
       },
-      open,
-      onClose
+      open
     } = this.props;
     const { loading, leaderboard, rankId } = this.state;
     if (!open) return null;
@@ -138,7 +154,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
       <Dialog
         open={open}
         className={classes.root}
-        onClose={onClose}
+        onClose={this.handleClose}
         aria-labelledby="leaderboard-dialog-title"
         aria-describedby="leaderboard-dialog-description"
       >
@@ -218,7 +234,11 @@ class Leaderboard extends React.PureComponent<Props, State> {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary" variant="contained">
+          <Button
+            onClick={this.handleClose}
+            color="primary"
+            variant="contained"
+          >
             Great!
           </Button>
         </DialogActions>

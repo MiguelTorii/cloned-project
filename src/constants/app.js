@@ -15,3 +15,13 @@ export const REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
     ? 'https://app.circleinapp.com/oauth'
     : 'https://dev-app2.circleinapp.com/oauth';
+
+export const AMPLITUDE =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'ce9b8375920be83a09140c26bec6384f'
+    : '06c93d893f3b14995223804062799b99';
+
+export const AMPLITUDE_NEW =
+  process.env.REACT_APP_STAGE === 'production'
+    ? '4fa052782766cac0dd349d2ba4ff6aae'
+    : '43f28fcb53bd0ad98609f28d1567dcba';

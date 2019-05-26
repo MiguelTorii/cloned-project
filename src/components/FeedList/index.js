@@ -133,7 +133,8 @@ type Props = {
   onChange: Function,
   onClearFilters: Function,
   onLoadMore: Function,
-  onUserClick: Function
+  onUserClick: Function,
+  onOpenFilter: Function
 };
 
 type State = {
@@ -164,10 +165,12 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   handleClick = event => {
+    const{onOpenFilter} = this.props;
     const { currentTarget } = event;
     this.setState({
       anchorEl: currentTarget
     });
+    onOpenFilter()
   };
 
   handleClose = () => {

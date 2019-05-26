@@ -16,6 +16,7 @@ import ChatTextField from '../../components/FloatingChat/ChatTextField';
 import ChatChannelViewMembers from './ChatChannelViewMembers';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
+import { logEvent } from '../../api/analytics';
 
 const styles = () => ({
   list: {
@@ -117,16 +118,19 @@ class ChatChannel extends React.PureComponent<Props, State> {
       }
       this.handleScrollToBottom();
     });
-    channel.on('updated', async ({ channel: updatedChannel, updateReasons }) => {
-      if (!this.mounted) return;
-      if (updateReasons.indexOf('attributes') > -1) {
-        profileURLs = await fetchAvatars(updatedChannel);
-        this.setState({
-          title: getTitle(updatedChannel, userId),
-          profileURLs
-        });
+    channel.on(
+      'updated',
+      async ({ channel: updatedChannel, updateReasons }) => {
+        if (!this.mounted) return;
+        if (updateReasons.indexOf('attributes') > -1) {
+          profileURLs = await fetchAvatars(updatedChannel);
+          this.setState({
+            title: getTitle(updatedChannel, userId),
+            profileURLs
+          });
+        }
       }
-    });
+    );
     channel.on('typingStarted', member => {
       if (!this.mounted) return;
       member.getUser().then(user => {
@@ -139,6 +143,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
     channel.on('typingEnded', () => {
       if (!this.mounted) return;
       this.setState({ typing: '' });
+    });
+
+    logEvent({
+      event: 'User- View Chat Room',
+      props: {}
     });
   };
 
@@ -188,10 +197,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
     try {
       await channel.sendMessage(message, messageAttributes);
 
-      // logEvent({
-      //   event: 'Chat- Send Message',
-      //   props: { Content: 'Text' }
-      // });
+      logEvent({
+        event: 'Chat- Send Message',
+        props: { Content: 'Text' }
+      });
       // this.setState(prevState => ({ count: prevState.count + 1 }));
       // this.handleMessageCount();
     } finally {
@@ -232,10 +241,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
       };
 
       await channel.sendMessage('Uploaded a image', messageAttributes);
-      // logEvent({
-      //   event: 'Chat- Send Message',
-      //   props: { Content: 'Image' }
-      // });
+      logEvent({
+        event: 'Chat- Send Message',
+        props: { Content: 'Image' }
+      });
       // this.setState(prevState => ({ count: prevState.count + 1 }));
       // this.handleMessageCount();
     } finally {
@@ -294,6 +303,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleStartVideoCall = () => {
     const { channel } = this.props;
+    logEvent({
+      event: 'Video- Start Video',
+      props: { 'Initiated From': 'Chat' }
+    });
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   };

@@ -8,7 +8,13 @@ import type { State as StoreState } from '../../types/state';
 import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
 import PostItemComment from '../../components/PostItem/PostItemComment';
 import Report from '../Report';
-import { getPostComments, createComment, thankComment, bestAnswer } from '../../api/posts';
+import {
+  getPostComments,
+  createComment,
+  thankComment,
+  bestAnswer
+} from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
 import { processComments } from './utils';
 
@@ -73,6 +79,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
       await this.loadData();
     } finally {
       this.setState({ isLoading: false });
+      logEvent({
+        event: 'Feed- Ask Question',
+        props: {}
+      });
     }
   };
 
@@ -89,6 +99,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
       await this.loadData();
     } finally {
       this.setState({ isLoading: false });
+      logEvent({
+        event: 'Feed- Thank Post',
+        props: { 'Internal ID': feedId }
+      });
     }
   };
 
@@ -117,10 +131,14 @@ class ViewNotes extends React.PureComponent<Props, State> {
     } = this.props;
     this.setState({ isLoading: true });
     try {
-      await bestAnswer({userId, feedId, commentId})
+      await bestAnswer({ userId, feedId, commentId });
       await this.loadData();
     } finally {
       this.setState({ isLoading: false });
+      logEvent({
+        event: 'Feed- Best Answer',
+        props: {}
+      });
     }
   };
 

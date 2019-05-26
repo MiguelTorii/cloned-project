@@ -18,6 +18,7 @@ import {
   updateReminder,
   deleteReminder
 } from '../../api/reminders';
+import { logEvent } from '../../api/analytics';
 
 const styles = () => ({});
 
@@ -135,6 +136,10 @@ class Reminders extends React.PureComponent<Props, State> {
       await this.handleFetchReminders();
     } finally {
       this.setState({ loading: false });
+      logEvent({
+        event: 'Reminders- Create Reminder',
+        props: { Label: label }
+      });
     }
   };
 

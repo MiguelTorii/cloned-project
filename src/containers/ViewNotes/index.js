@@ -8,6 +8,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { PhotoNote } from '../../types/models';
 import { getNotes } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
@@ -60,6 +61,14 @@ class ViewNotes extends React.PureComponent<Props, State> {
     } = this.props;
     const photoNote = await getNotes({ userId, noteId });
     this.setState({ photoNote });
+    const {
+      postInfo: { feedId }
+    } = photoNote;
+
+    logEvent({
+      event: 'Feed- View Photo Note',
+      props: { 'Internal ID': feedId }
+    });
   };
 
   render() {

@@ -17,6 +17,7 @@ import StartVideoForm from '../../components/StartVideoForm';
 import CreateChatChannel from '../CreateChatChannel';
 import { getTitle } from '../FloatingChat/utils';
 import { renewTwilioToken } from '../../api/chat';
+import { logEvent } from '../../api/analytics';
 
 const styles = theme => ({
   actions: {
@@ -156,6 +157,10 @@ class StartVideo extends React.PureComponent<Props, State> {
 
   handleSubmit = () => {
     const { channel } = this.state;
+    logEvent({
+      event: 'Video- Start Video',
+      props: { 'Initiated From': 'Video' }
+    });
     const win = window.open(`/video-call/${channel}`, '_blank');
     win.focus();
   };

@@ -29,8 +29,12 @@ import DailyRewards from './containers/DailyRewards';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import OAuth from './pages/OAuth';
+import { init as analyticsInit } from './api/analytics';
+import { AMPLITUDE, AMPLITUDE_NEW } from './constants/app';
 
 const store = configureStore();
+
+analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
 ReactDOM.render(
   <Provider store={store}>

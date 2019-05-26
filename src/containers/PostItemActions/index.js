@@ -9,6 +9,7 @@ import {
   removeFromStudyCircle,
   updatePostView
 } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 type Props = {
   userId: string,
@@ -61,10 +62,19 @@ class PostItemActions extends React.PureComponent<Props, State> {
     const { userId, ownerId, feedId, inStudyCircle, onReload } = this.props;
     try {
       this.setState({ isStudyCircleLoading: true });
-      if (!inStudyCircle)
+      if (!inStudyCircle) {
         await addToStudyCircle({ userId, classmateId: ownerId, feedId });
-      else
+        logEvent({
+          event: 'Feed- Added to Study Circle',
+          props: { Source: 'Feed Post' }
+        });
+      } else {
         await removeFromStudyCircle({ userId, classmateId: ownerId, feedId });
+        logEvent({
+          event: 'Feed- Removed from Study Circle',
+          props: { Source: 'Feed Post' }
+        });
+      }
     } finally {
       this.setState({ isStudyCircleLoading: false });
       onReload();

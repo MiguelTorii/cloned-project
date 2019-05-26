@@ -8,6 +8,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Question } from '../../types/models';
 import { getQuestion } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
@@ -60,6 +61,14 @@ class ViewQuestion extends React.PureComponent<Props, State> {
     } = this.props;
     const question = await getQuestion({ userId, questionId });
     this.setState({ question });
+    const {
+      postInfo: { feedId }
+    } = question;
+
+    logEvent({
+      event: 'Feed- View Question',
+      props: { 'Internal ID': feedId }
+    });
   };
 
   render() {

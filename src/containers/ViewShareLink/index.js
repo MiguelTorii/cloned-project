@@ -8,6 +8,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { ShareLink } from '../../types/models';
 import { getShareLink } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
@@ -60,6 +61,14 @@ class ViewShareLink extends React.PureComponent<Props, State> {
     } = this.props;
     const shareLink = await getShareLink({ userId, sharelinkId });
     this.setState({ shareLink });
+    const {
+      postInfo: { feedId }
+    } = shareLink;
+
+    logEvent({
+      event: 'Feed- View Link',
+      props: { 'Internal ID': feedId }
+    });
   };
 
   render() {
@@ -98,7 +107,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <PostItem>
           <PostItemHeader
-          userId={ownerId}
+            userId={ownerId}
             name={name}
             userProfileUrl={userProfileUrl}
             classroomName={

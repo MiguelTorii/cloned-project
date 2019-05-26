@@ -17,6 +17,7 @@ import RichTextEditor from '../RichTextEditor';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createQuestion } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 const styles = () => ({});
 
@@ -51,6 +52,13 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     errorDialog: false,
     errorTitle: '',
     errorBody: ''
+  };
+
+  componentDidMount = () => {
+    logEvent({
+      event: 'Home- Start Ask Question',
+      props: {}
+    });
   };
 
   handleSubmit = async event => {

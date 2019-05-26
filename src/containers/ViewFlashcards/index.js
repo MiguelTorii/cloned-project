@@ -9,6 +9,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Flashcards } from '../../types/models';
 import { getFlashcards } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import FlashcardViewer from '../../components/FlashcardViewer';
@@ -77,6 +78,14 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
           id: uuidv4()
         }))
       }
+    });
+    const {
+      postInfo: { feedId }
+    } = flashcards;
+
+    logEvent({
+      event: 'Feed- View Flashcards',
+      props: { 'Internal ID': feedId }
     });
   };
 

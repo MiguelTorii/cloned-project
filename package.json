@@ -8,6 +8,7 @@
     "@material-ui/icons": "^3.0.2",
     "@microlink/react": "^4.0.0",
     "algoliasearch": "^3.32.1",
+    "amplitude-js": "^5.2.2",
     "array-move": "^2.1.0",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",

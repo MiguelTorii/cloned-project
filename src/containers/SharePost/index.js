@@ -6,6 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { createShareURL } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 import ShareDialog from '../../components/ShareDialog';
 
 type Props = {
@@ -36,13 +37,20 @@ class SharePost extends React.PureComponent<Props, State> {
     } = this.props;
     const { link } = this.state;
 
-    if ((open !== prevProps.open && link === '' && open === true) || (open !== prevProps.open && feedId !== prevProps.feedId && open === true)) {
+    if (
+      (open !== prevProps.open && link === '' && open === true) ||
+      (open !== prevProps.open && feedId !== prevProps.feedId && open === true)
+    ) {
       try {
         this.setState({ loading: true });
         const url = await createShareURL({ userId, feedId });
         this.setState({ link: url });
       } finally {
         this.setState({ loading: false });
+        logEvent({
+          event: 'User- Generated Link',
+          props: { 'Internal ID': feedId }
+        });
       }
     }
   };

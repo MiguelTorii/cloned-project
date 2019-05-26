@@ -13,6 +13,7 @@ import type { UserState } from '../../reducers/user';
 import { fetchFeed } from '../../api/feed';
 import { bookmark } from '../../api/posts';
 import { getUserClasses } from '../../api/user';
+import { logEvent } from '../../api/analytics';
 import SharePost from '../SharePost';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
@@ -186,6 +187,12 @@ class Feed extends React.PureComponent<Props, State> {
   handleChange = name => event => {
     this.setState({ [name]: event.target.value, limit: 50 });
     this.handleFetchFeed();
+    if (name === 'query') {
+      logEvent({
+        event: 'Feed- Start Search',
+        props: { Query: event.target.value }
+      });
+    }
   };
 
   handleClearFilters = () => {
@@ -203,10 +210,17 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed();
   };
 
-  handleUserClick = ({userId}: {userId: string}) => {
-    const {push} = this.props;
+  handleUserClick = ({ userId }: { userId: string }) => {
+    const { push } = this.props;
     push(`/profile/${userId}`);
-  }
+  };
+
+  handleOpenFilter = () => {
+    logEvent({
+      event: 'Feed- Open Filter',
+      props: {}
+    });
+  };
 
   handlePostClick = ({
     typeId,
@@ -283,6 +297,7 @@ class Feed extends React.PureComponent<Props, State> {
             onClearFilters={this.handleClearFilters}
             onLoadMore={this.handleLoadMore}
             onUserClick={this.handleUserClick}
+            onOpenFilter={this.handleOpenFilter}
           />
         </div>
         <SharePost

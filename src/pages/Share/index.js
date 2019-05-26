@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import { getPostInfo } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 const styles = theme => ({
   progress: {
@@ -47,7 +48,7 @@ class SharePage extends React.PureComponent<Props, State> {
     try {
       const {
         typeId,
-        postInfo: { postId }
+        postInfo: { postId, feedId }
       } = await getPostInfo({ hid: code });
       switch (typeId) {
         case 3:
@@ -65,6 +66,10 @@ class SharePage extends React.PureComponent<Props, State> {
         default:
           break;
       }
+      logEvent({
+        event: 'User- Opened Generated Link',
+        props: { 'Internal ID': feedId }
+      });
     } catch (err) {
       this.setState({ error: true });
     }

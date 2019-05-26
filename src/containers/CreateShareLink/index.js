@@ -18,6 +18,7 @@ import LinkPreview from '../../components/LinkPreview';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createShareLink } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
 const styles = theme => ({
   preview: {
@@ -62,6 +63,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     this.updatePreview = debounce(this.updatePreview, 1000);
+    logEvent({
+      event: 'Home- Start Share Link',
+      props: {}
+    });
   };
 
   handleSubmit = async event => {
@@ -92,6 +97,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         tags: tagValues
       });
       pushTo('/feed');
+      logEvent({
+        event: 'Feed- Share Link',
+        props: {}
+      });
     } catch (err) {
       this.setState({
         loading: false,
