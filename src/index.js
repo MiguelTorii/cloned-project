@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import Index from './pages/Home';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
+import Share from './pages/Share';
 import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
 import ShareLink from './pages/View/ShareLink';
@@ -40,6 +41,7 @@ ReactDOM.render(
         <Route exact path="/" render={Index} />
         <Route exact path="/store" render={Store} />
         <Route exact path="/feed" render={Feed} />
+        <Route exact path="/share/:code" render={Share} />
         <Route exact path="/flashcards/:flashcardId" render={FlashCards} />
         <Route exact path="/notes/:noteId" render={PhotoNote} />
         <Route exact path="/sharelink/:sharelinkId" render={ShareLink} />

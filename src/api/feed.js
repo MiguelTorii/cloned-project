@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
@@ -25,7 +26,8 @@ export const fetchFeed = async ({
   from: string,
   query: string
 }): Promise<Feed> => {
-  const url = generateFeedURL({userId,
+  const url = generateFeedURL({
+    userId,
     schoolId,
     classId,
     sectionId,
@@ -33,8 +35,9 @@ export const fetchFeed = async ({
     limit,
     postType,
     from,
-    query})
-    
+    query
+  });
+
   const token = await getToken();
   const result = await axios.get(`${API_ROUTES.FEED}${url}`, {
     headers: {
@@ -49,5 +52,3 @@ export const fetchFeed = async ({
 
   return feed;
 };
-
-export const asd = 'asd';

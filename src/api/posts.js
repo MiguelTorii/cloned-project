@@ -1,6 +1,7 @@
 // @flow
 import axios from 'axios';
 import type {
+  Post,
   PhotoNote,
   Question,
   Flashcard,
@@ -665,4 +666,20 @@ export const updatePostView = async ({
 
   const { data } = result;
   return data;
+};
+
+export const getPostInfo = async ({ hid }: { hid: string }): Promise<Post> => {
+  const token = await getToken();
+
+  const result = await axios.get(`${API_ROUTES.FEED}/link/post?hid=${hid}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const { data = {} } = result;
+
+  const post = postToCamelCase(data);
+
+  return post;
 };
