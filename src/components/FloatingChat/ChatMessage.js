@@ -104,7 +104,8 @@ type Props = {
   isOwn?: boolean,
   messageList: Array<Object>,
   onImageLoaded: Function,
-  onStartVideoCall: Function
+  onStartVideoCall: Function,
+  onImageClick: Function
 };
 
 class ChatMessageDate extends React.PureComponent<Props> {
@@ -121,6 +122,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
       return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
     });
   };
+
+  handleImageClick = url => () => {
+    const {onImageClick} = this.props;
+    onImageClick(url)
+  }
 
   renderItem = ({
     imageKey,
@@ -143,7 +149,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     if (imageKey !== '') {
       return (
         <div className={classes.bodyWrapper}>
-          <ButtonBase>
+          <ButtonBase onClick={this.handleImageClick(imageKey)}>
             <img
               className={classes.image}
               src={imageKey}

@@ -36,7 +36,13 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2
   },
   gridContainer: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing.unit * 2,
+    height: '100%'
+  },
+  rankContainer: {
+    marginBottom: theme.spacing.unit * 2,
+    height: '100%',
+    minHeight: 146
   },
   data: {
     display: 'flex',
@@ -180,7 +186,7 @@ class Seasons extends React.PureComponent<Props, State> {
             justify="center"
             alignItems="stretch"
             spacing={16}
-            className={classes.gridContainer}
+            className={classes.rankContainer}
           >
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>

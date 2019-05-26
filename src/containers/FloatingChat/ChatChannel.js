@@ -3,6 +3,7 @@
 import React, { Fragment } from 'react';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
+import Lightbox from 'react-images';
 import { withStyles } from '@material-ui/core/styles';
 import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
@@ -58,7 +59,8 @@ type State = {
   open: boolean,
   scroll: boolean,
   viewMembers: boolean,
-  loading: boolean
+  loading: boolean,
+  images: Array<{ src: string }>
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -73,7 +75,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     open: true,
     scroll: true,
     viewMembers: false,
-    loading: false
+    loading: false,
+    images: []
   };
 
   componentDidMount = async () => {
@@ -301,6 +304,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState({ viewMembers: false });
   };
 
+  handleImageClick = src => {
+    this.setState({ images: [{ src }] });
+  };
+
+  handleImageClose = () => {
+    this.setState({ images: [] });
+  };
+
   mounted: boolean;
 
   // eslint-disable-next-line no-undef
@@ -324,6 +335,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             avatar={getAvatar({ id: item.author, profileURLs })}
             onImageLoaded={this.handleImageLoaded}
             onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
           />
         );
       case 'own':
@@ -334,6 +346,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             isOwn
             onImageLoaded={this.handleImageLoaded}
             onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
           />
         );
       case 'end':
@@ -377,7 +390,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       typing,
       open,
       viewMembers,
-      loading
+      loading,
+      images
     } = this.state;
 
     const messageItems = processMessages({
@@ -442,6 +456,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
           profileURLs={profileURLs}
           onClose={this.handleCloseViewMembers}
           onBlock={onBlock}
+        />
+        <Lightbox
+          images={images}
+          currentImage={0}
+          isOpen={images.length > 0}
+          onClose={this.handleImageClose}
         />
       </Fragment>
     );

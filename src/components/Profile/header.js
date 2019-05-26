@@ -53,6 +53,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2
   },
   statusLabel: {
+    marginLeft: theme.spacing.unit / 2,
     marginRight: theme.spacing.unit * 2
   }
 });
