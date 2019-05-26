@@ -47,7 +47,11 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.fontFamily
+    fontFamily: theme.typography.fontFamily,
+    '& img': {
+      maxHeight: '100px !important',
+      width: 'auto'
+    }
   },
   progress: {
     width: '100%'
@@ -249,6 +253,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
             profileImageUrl={ownProfileUrl}
             name={ownName}
             isReply
+            rte
             onPostComment={this.handlePostComment}
             onCancelComment={this.handleShowAddComment}
           />

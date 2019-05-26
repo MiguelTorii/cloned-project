@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import RichTextEditor from '../../containers/RichTextEditor';
 
 const styles = theme => ({
   container: {
@@ -40,6 +41,7 @@ type Props = {
   profileImageUrl: string,
   name: string,
   isReply?: boolean,
+  rte?: boolean,
   onPostComment: Function,
   onCancelComment?: Function
 };
@@ -51,6 +53,7 @@ type State = {
 class PostItemAddComment extends React.PureComponent<Props, State> {
   static defaultProps = {
     isReply: false,
+    rte: false,
     onCancelComment: () => {}
   };
 
@@ -60,6 +63,10 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
 
   handleChange = event => {
     this.setState({ value: event.target.value });
+  };
+
+  handleRTEChange = value => {
+    this.setState({ value });
   };
 
   handleClick = () => {
@@ -77,23 +84,31 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, profileImageUrl, name, isReply } = this.props;
+    const { classes, rte, profileImageUrl, name, isReply } = this.props;
     const { value } = this.state;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
       <div className={cx(classes.container, isReply && classes.reply)}>
         <div className={classes.body}>
           <Avatar src={profileImageUrl}>{initials}</Avatar>
-          <TextField
-            id="outlined-bare"
-            placeholder="Have a question? Ask here"
-            value={value}
-            margin="normal"
-            variant="outlined"
-            className={classes.textField}
-            fullWidth
-            onChange={this.handleChange}
-          />
+          {rte ? (
+            <RichTextEditor
+              placeholder="Have a question? Ask here"
+              value={value}
+              onChange={this.handleRTEChange}
+            />
+          ) : (
+            <TextField
+              id="outlined-bare"
+              placeholder="Have a question? Ask here"
+              value={value}
+              margin="normal"
+              variant="outlined"
+              className={classes.textField}
+              fullWidth
+              onChange={this.handleChange}
+            />
+          )}
         </div>
         <div className={classes.actions}>
           <Button onClick={this.handleCancel}>Cancel</Button>

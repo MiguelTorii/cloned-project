@@ -143,6 +143,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
+  handleRTEChange = value => {
+    console.log(value);
+  };
+
   loadData = async () => {
     const {
       user: {
@@ -173,6 +177,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
           <PostItemAddComment
             name={name}
             profileImageUrl={profileImage}
+            rte
             onPostComment={this.handlePostComment}
           />
         </ErrorBoundary>
