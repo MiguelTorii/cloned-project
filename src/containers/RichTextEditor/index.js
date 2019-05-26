@@ -9,6 +9,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getPresignedURL } from '../../api/media';
 import CustomQuill from '../../components/CustomQuill';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -140,32 +141,34 @@ class RichTextEditor extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <div className={classes.root}>
-        <div className={classes.quill}>
-          <CustomQuill
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            ref={element => {
-              this.rte = element;
-            }}
-          />
-        </div>
-        <input
-          accept="image/*"
-          className={classes.input}
-          ref={fileInput => {
-            this.fileInput = fileInput;
-          }}
-          onChange={this.handleInputChange}
-          type="file"
-        />
-        {loading && (
-          <div className={classes.loader}>
-            <CircularProgress />
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <div className={classes.quill}>
+            <CustomQuill
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              ref={element => {
+                this.rte = element;
+              }}
+            />
           </div>
-        )}
-      </div>
+          <input
+            accept="image/*"
+            className={classes.input}
+            ref={fileInput => {
+              this.fileInput = fileInput;
+            }}
+            onChange={this.handleInputChange}
+            type="file"
+          />
+          {loading && (
+            <div className={classes.loader}>
+              <CircularProgress />
+            </div>
+          )}
+        </div>
+      </ErrorBoundary>
     );
   }
 }

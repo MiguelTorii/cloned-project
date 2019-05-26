@@ -30,3 +30,11 @@ export const GOOGLE_ANALYTICS =
   process.env.REACT_APP_STAGE === 'production'
     ? 'UA-124636271-1'
     : 'UA-124026444-1';
+
+export const SENTRY =
+  'https://300ac9c2204b4d1eb492ca7bbf75f052@sentry.io/1263172';
+
+export const ENV =
+  process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
+
+export const RELEASE = 'v2.0.0-beta1';

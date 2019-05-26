@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { deletePost } from '../../api/posts';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   paper: {
@@ -86,46 +87,51 @@ class DeletePost extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <Dialog
-        maxWidth="md"
-        disableBackdropClick={loading}
-        aria-labelledby="confirmation-dialog-title"
-        aria-describedby="confirmation-dialog-description"
-        classes={{
-          paper: classes.paper
-        }}
-        open={open}
-        onClose={onClose}
-      >
-        <DialogTitle id="confirmation-dialog-title">Delete Post</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            color="textPrimary"
-            id="confirmation-dialog-description"
-          >
-            Are you sure you want to delete this post?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button disabled={loading} onClick={onClose} color="primary">
-            Cancel
-          </Button>
-          <div className={classes.wrapper}>
-            <Button
-              disabled={loading}
-              onClick={this.handleSubmit}
-              type="submit"
-              color="primary"
-              variant="contained"
+      <ErrorBoundary>
+        <Dialog
+          maxWidth="md"
+          disableBackdropClick={loading}
+          aria-labelledby="confirmation-dialog-title"
+          aria-describedby="confirmation-dialog-description"
+          classes={{
+            paper: classes.paper
+          }}
+          open={open}
+          onClose={onClose}
+        >
+          <DialogTitle id="confirmation-dialog-title">Delete Post</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              color="textPrimary"
+              id="confirmation-dialog-description"
             >
-              Delete
+              Are you sure you want to delete this post?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button disabled={loading} onClick={onClose} color="primary">
+              Cancel
             </Button>
-            {loading && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-        </DialogActions>
-      </Dialog>
+            <div className={classes.wrapper}>
+              <Button
+                disabled={loading}
+                onClick={this.handleSubmit}
+                type="submit"
+                color="primary"
+                variant="contained"
+              >
+                Delete
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </DialogActions>
+        </Dialog>
+      </ErrorBoundary>
     );
   }
 }

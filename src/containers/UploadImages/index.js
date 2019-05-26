@@ -12,6 +12,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import UploadImagesForm from '../../components/UploadImagesForm';
 import { getPresignedURLs } from '../../api/media';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -200,18 +201,20 @@ class UploadImages extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { images, isDropzoneDisabled } = this.state;
     return (
-      <div className={classes.root}>
-        <UploadImagesForm
-          images={images}
-          isDropzoneDisabled={isDropzoneDisabled}
-          onImageDelete={this.handleImageDelete}
-          onImageSave={this.handleImageSave}
-          onImageRetry={this.handleImageRetry}
-          onDrop={this.handleDrop}
-          onDropRejected={this.handleDropRejected}
-          onSortEnd={this.handleSortEnd}
-        />
-      </div>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <UploadImagesForm
+            images={images}
+            isDropzoneDisabled={isDropzoneDisabled}
+            onImageDelete={this.handleImageDelete}
+            onImageSave={this.handleImageSave}
+            onImageRetry={this.handleImageRetry}
+            onDrop={this.handleDrop}
+            onDropRejected={this.handleDropRejected}
+            onSortEnd={this.handleSortEnd}
+          />
+        </div>
+      </ErrorBoundary>
     );
   }
 }

@@ -19,6 +19,7 @@ import {
   deleteReminder
 } from '../../api/reminders';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -161,22 +162,24 @@ class Reminders extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <ReactCardFlip isFlipped={!list}>
-          <RemidersList
-            key="front"
-            loading={loading}
-            reminders={reminders}
-            onSwitch={this.handleSwitch}
-            onSubmit={this.handleSubmit}
-            onUpdate={this.handleUpdate}
-            onDelete={this.handleDelete}
-          />
-          <RemindersCalendar
-            key="back"
-            loading={loading}
-            reminders={reminders}
-            onSwitch={this.handleSwitch}
-            onSubmit={this.handleSubmit}
-          />
+          <ErrorBoundary key="front">
+            <RemidersList
+              loading={loading}
+              reminders={reminders}
+              onSwitch={this.handleSwitch}
+              onSubmit={this.handleSubmit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary key="back">
+            <RemindersCalendar
+              loading={loading}
+              reminders={reminders}
+              onSwitch={this.handleSwitch}
+              onSubmit={this.handleSubmit}
+            />
+          </ErrorBoundary>
         </ReactCardFlip>
       </div>
     );

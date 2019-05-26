@@ -12,6 +12,7 @@ import { getRewards, updateRewards } from '../../api/store';
 import StoreLayout from '../../components/StoreLayout';
 import SelectedRewards from '../../components/SelectedRewards';
 import AvailableRewards from '../../components/AvailableRewards';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   divider: {
@@ -90,13 +91,17 @@ class Store extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <StoreLayout>
-          <SelectedRewards slots={slots} loading={loading} />
+          <ErrorBoundary>
+            <SelectedRewards slots={slots} loading={loading} />
+          </ErrorBoundary>
           <Divider light className={classes.divider} />
-          <AvailableRewards
-            rewards={availableRewards}
-            loading={loading}
-            onClick={this.handleSelection}
-          />
+          <ErrorBoundary>
+            <AvailableRewards
+              rewards={availableRewards}
+              loading={loading}
+              onClick={this.handleSelection}
+            />
+          </ErrorBoundary>
         </StoreLayout>
       </div>
     );

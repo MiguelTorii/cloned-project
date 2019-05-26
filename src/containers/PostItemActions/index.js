@@ -10,6 +10,7 @@ import {
   updatePostView
 } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   userId: string,
@@ -100,21 +101,25 @@ class PostItemActions extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <PostActions
-          thanked={thanked}
-          isOwner={Boolean(Number(userId) === Number(ownerId))}
-          inStudyCircle={inStudyCircle}
-          questionsCount={questionsCount}
-          thanksCount={thanksCount}
-          viewCount={viewCount}
-          isThanksLoading={isThanksLoading}
-          isStudyCircleLoading={isStudyCircleLoading}
-          noThanks={userId === ownerId}
-          onShare={this.handleShare}
-          onThanks={this.handleThanks}
-          onStudyCircle={this.handleStudyCircle}
-        />
-        <SharePost feedId={feedId} open={open} onClose={this.handleClose} />
+        <ErrorBoundary>
+          <PostActions
+            thanked={thanked}
+            isOwner={Boolean(Number(userId) === Number(ownerId))}
+            inStudyCircle={inStudyCircle}
+            questionsCount={questionsCount}
+            thanksCount={thanksCount}
+            viewCount={viewCount}
+            isThanksLoading={isThanksLoading}
+            isStudyCircleLoading={isStudyCircleLoading}
+            noThanks={userId === ownerId}
+            onShare={this.handleShare}
+            onThanks={this.handleThanks}
+            onStudyCircle={this.handleStudyCircle}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SharePost feedId={feedId} open={open} onClose={this.handleClose} />
+        </ErrorBoundary>
       </Fragment>
     );
   }

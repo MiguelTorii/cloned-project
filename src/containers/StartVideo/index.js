@@ -18,6 +18,7 @@ import CreateChatChannel from '../CreateChatChannel';
 import { getTitle } from '../FloatingChat/utils';
 import { renewTwilioToken } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   actions: {
@@ -222,76 +223,80 @@ class StartVideo extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <div className={classes.root}>
-          <StartVideoForm
-            title="Start a Video Meet Up"
-            loading={loading}
-            handleSubmit={this.handleSubmit}
-          >
-            <Grid container alignItems="center">
-              <Grid item xs={2}>
-                <Typography variant="subtitle1">Select a Channel</Typography>
-              </Grid>
-              <Grid item xs={10}>
-                <FormControl variant="outlined" fullWidth>
-                  <SelectValidator
-                    disabled={loading}
-                    value={channel}
-                    name="channel"
-                    label="Channel"
-                    onChange={this.handleChange}
+        <ErrorBoundary>
+          <div className={classes.root}>
+            <StartVideoForm
+              title="Start a Video Meet Up"
+              loading={loading}
+              handleSubmit={this.handleSubmit}
+            >
+              <Grid container alignItems="center">
+                <Grid item xs={2}>
+                  <Typography variant="subtitle1">Select a Channel</Typography>
+                </Grid>
+                <Grid item xs={10}>
+                  <FormControl variant="outlined" fullWidth>
+                    <SelectValidator
+                      disabled={loading}
+                      value={channel}
+                      name="channel"
+                      label="Channel"
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      validators={['required']}
+                      errorMessages={['You have to select a channel']}
+                    >
+                      <MenuItem value="" />
+                      {channelList.map(item => (
+                        <MenuItem key={item.value} value={item.value}>
+                          {item.label}
+                        </MenuItem>
+                      ))}
+                    </SelectValidator>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography variant="subtitle1">Or Create a New</Typography>
+                </Grid>
+                <Grid item xs={10} className={classes.actions}>
+                  <Button
+                    className={classes.margin}
                     variant="outlined"
-                    validators={['required']}
-                    errorMessages={['You have to select a channel']}
+                    color="primary"
+                    disabled={loading}
+                    onClick={this.handleCreateChannelOpen('single')}
                   >
-                    <MenuItem value="" />
-                    {channelList.map(item => (
-                      <MenuItem key={item.value} value={item.value}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                  </SelectValidator>
-                </FormControl>
+                    1-to-1 Channel
+                  </Button>
+                  <Button
+                    className={classes.margin}
+                    variant="outlined"
+                    color="primary"
+                    disabled={loading}
+                    onClick={this.handleCreateChannelOpen('group')}
+                  >
+                    Group Channel
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle1">Or Create a New</Typography>
-              </Grid>
-              <Grid item xs={10} className={classes.actions}>
-                <Button
-                  className={classes.margin}
-                  variant="outlined"
-                  color="primary"
-                  disabled={loading}
-                  onClick={this.handleCreateChannelOpen('single')}
-                >
-                  1-to-1 Channel
-                </Button>
-                <Button
-                  className={classes.margin}
-                  variant="outlined"
-                  color="primary"
-                  disabled={loading}
-                  onClick={this.handleCreateChannelOpen('group')}
-                >
-                  Group Channel
-                </Button>
-              </Grid>
-            </Grid>
-          </StartVideoForm>
-          <SimpleErrorDialog
-            open={errorDialog}
-            title={errorTitle}
-            body={errorBody}
-            handleClose={this.handleErrorDialogClose}
+            </StartVideoForm>
+            <SimpleErrorDialog
+              open={errorDialog}
+              title={errorTitle}
+              body={errorBody}
+              handleClose={this.handleErrorDialogClose}
+            />
+          </div>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <CreateChatChannel
+            type={createChannel}
+            client={client}
+            channels={channels}
+            onClose={this.handleCreateChannelClose}
+            onChannelCreated={this.handleChannelCreated}
           />
-        </div>
-        <CreateChatChannel
-          type={createChannel}
-          client={client}
-          channels={channels}
-          onClose={this.handleCreateChannelClose}
-          onChannelCreated={this.handleChannelCreated}
-        />
+        </ErrorBoundary>
       </Fragment>
     );
   }

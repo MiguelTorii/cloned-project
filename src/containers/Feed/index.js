@@ -18,6 +18,7 @@ import SharePost from '../SharePost';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
 import { processUserClasses } from './utils';
+import ErrorBoundary from '../ErrorBoundary';
 
 const defaultClass = JSON.stringify({ classId: 0, sectionId: 0 });
 
@@ -275,47 +276,55 @@ class Feed extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <div className={classes.root}>
-          <FeedList
-            isLoading={loading}
-            userId={userId}
-            items={feed}
-            query={query}
-            from={from}
-            userClass={userClass}
-            defaultClass={defaultClass}
-            postType={postType}
-            classesList={classesList}
-            hasMore={hasMore}
-            fromFeedId={fromFeedId}
-            handleShare={this.handleShare}
-            onPostClick={this.handlePostClick}
-            onBookmark={this.handleBookmark}
-            onReport={this.handleReport}
-            onDelete={this.handleDelete}
-            onChange={this.handleChange}
-            onClearFilters={this.handleClearFilters}
-            onLoadMore={this.handleLoadMore}
-            onUserClick={this.handleUserClick}
-            onOpenFilter={this.handleOpenFilter}
+        <ErrorBoundary>
+          <div className={classes.root}>
+            <FeedList
+              isLoading={loading}
+              userId={userId}
+              items={feed}
+              query={query}
+              from={from}
+              userClass={userClass}
+              defaultClass={defaultClass}
+              postType={postType}
+              classesList={classesList}
+              hasMore={hasMore}
+              fromFeedId={fromFeedId}
+              handleShare={this.handleShare}
+              onPostClick={this.handlePostClick}
+              onBookmark={this.handleBookmark}
+              onReport={this.handleReport}
+              onDelete={this.handleDelete}
+              onChange={this.handleChange}
+              onClearFilters={this.handleClearFilters}
+              onLoadMore={this.handleLoadMore}
+              onUserClick={this.handleUserClick}
+              onOpenFilter={this.handleOpenFilter}
+            />
+          </div>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SharePost
+            feedId={feedId}
+            open={Boolean(feedId)}
+            onClose={this.handleShareClose}
           />
-        </div>
-        <SharePost
-          feedId={feedId}
-          open={Boolean(feedId)}
-          onClose={this.handleShareClose}
-        />
-        <Report
-          open={Boolean(report)}
-          ownerId={(report || {}).ownerId || ''}
-          objectId={(report || {}).feedId || -1}
-          onClose={this.handleReportClose}
-        />
-        <DeletePost
-          open={Boolean(deletePost)}
-          feedId={(deletePost || {}).feedId || -1}
-          onClose={this.handleDeleteClose}
-        />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Report
+            open={Boolean(report)}
+            ownerId={(report || {}).ownerId || ''}
+            objectId={(report || {}).feedId || -1}
+            onClose={this.handleReportClose}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <DeletePost
+            open={Boolean(deletePost)}
+            feedId={(deletePost || {}).feedId || -1}
+            onClose={this.handleDeleteClose}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

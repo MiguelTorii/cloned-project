@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
+import { init as sentryInit } from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
@@ -31,12 +32,25 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import OAuth from './pages/OAuth';
 import { init as analyticsInit } from './api/analytics';
-import { AMPLITUDE, AMPLITUDE_NEW, GOOGLE_ANALYTICS } from './constants/app';
+import {
+  AMPLITUDE,
+  AMPLITUDE_NEW,
+  GOOGLE_ANALYTICS,
+  SENTRY,
+  ENV,
+  RELEASE
+} from './constants/app';
 import withTracker from './withTracker';
 
 const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
+
+sentryInit({
+  dsn: SENTRY,
+  environment: ENV,
+  release: RELEASE
+});
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 

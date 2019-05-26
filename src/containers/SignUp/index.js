@@ -17,6 +17,7 @@ import ProfileSetup from '../../components/SignUpForm/ProfileSetup';
 import * as signUpActions from '../../actions/sign-up';
 import { fetchSchools, sendCode, verifyCode } from '../../api/sign-up';
 import { colleges } from '../../constants/clients';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -185,40 +186,44 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
     return (
       <main className={classes.main}>
-        <SignUpForm type={type} onReset={this.handleReset}>
-          <Steps activeStep={activeStep} hide={Boolean(type === '')} />
-          <TypeSelect
-            onTypeChange={this.handleTypeChange}
-            hide={Boolean(type !== '')}
+        <ErrorBoundary>
+          <SignUpForm type={type} onReset={this.handleReset}>
+            <Steps activeStep={activeStep} hide={Boolean(type === '')} />
+            <TypeSelect
+              onTypeChange={this.handleTypeChange}
+              hide={Boolean(type !== '')}
+            />
+            <AccountForm
+              loading={isLoading || loading}
+              hide={Boolean(type === '' || activeStep !== 0)}
+              onSubmit={this.handleSubmit}
+            />
+            <VerifyAccount
+              email={email}
+              loading={isLoading || loading}
+              hide={Boolean(type === '' || activeStep !== 1)}
+              onBack={this.handleBack}
+              onResend={this.handleResendCode}
+              onSubmit={this.handleSubmit}
+            />
+            <ProfileSetup
+              type={type}
+              loading={isLoading || loading}
+              hide={Boolean(type === '' || activeStep !== 2)}
+              onLoadOptions={this.handleLoadSchools}
+              onBack={this.handleBack}
+              onSubmit={this.handleSubmit}
+            />
+          </SignUpForm>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SimpleErrorDialog
+            open={error}
+            title={title}
+            body={body}
+            handleClose={this.handleErrorDialogClose}
           />
-          <AccountForm
-            loading={isLoading || loading}
-            hide={Boolean(type === '' || activeStep !== 0)}
-            onSubmit={this.handleSubmit}
-          />
-          <VerifyAccount
-            email={email}
-            loading={isLoading || loading}
-            hide={Boolean(type === '' || activeStep !== 1)}
-            onBack={this.handleBack}
-            onResend={this.handleResendCode}
-            onSubmit={this.handleSubmit}
-          />
-          <ProfileSetup
-            type={type}
-            loading={isLoading || loading}
-            hide={Boolean(type === '' || activeStep !== 2)}
-            onLoadOptions={this.handleLoadSchools}
-            onBack={this.handleBack}
-            onSubmit={this.handleSubmit}
-          />
-        </SignUpForm>
-        <SimpleErrorDialog
-          open={error}
-          title={title}
-          body={body}
-          handleClose={this.handleErrorDialogClose}
-        />
+        </ErrorBoundary>
       </main>
     );
   }

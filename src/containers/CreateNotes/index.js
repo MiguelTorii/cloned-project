@@ -18,6 +18,7 @@ import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createPhotoNote } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -148,74 +149,78 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <CreatePostForm
-          title="Share Notes"
-          loading={loading}
-          handleSubmit={this.handleSubmit}
-        >
-          <Grid container alignItems="center">
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Title</Typography>
+        <ErrorBoundary>
+          <CreatePostForm
+            title="Share Notes"
+            loading={loading}
+            handleSubmit={this.handleSubmit}
+          >
+            <Grid container alignItems="center">
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Title</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <OutlinedTextValidator
+                  label="Title"
+                  onChange={this.handleTextChange}
+                  name="title"
+                  value={title}
+                  validators={['required']}
+                  errorMessages={['Title is required']}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Class</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <ClassesSelector onChange={this.handleClassChange} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Summary</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <OutlinedTextValidator
+                  label="Summary"
+                  onChange={this.handleTextChange}
+                  name="summary"
+                  multiline
+                  rows={4}
+                  value={summary}
+                  validators={['required']}
+                  errorMessages={['Summary is required']}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Tags</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <TagsAutoComplete
+                  tags={tags}
+                  error={tagsError}
+                  onChange={this.handleTagsChange}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Notes</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <UploadImages
+                  innerRef={node => {
+                    this.uploadImages = node;
+                  }}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={10}>
-              <OutlinedTextValidator
-                label="Title"
-                onChange={this.handleTextChange}
-                name="title"
-                value={title}
-                validators={['required']}
-                errorMessages={['Title is required']}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Class</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <ClassesSelector onChange={this.handleClassChange} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Summary</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <OutlinedTextValidator
-                label="Summary"
-                onChange={this.handleTextChange}
-                name="summary"
-                multiline
-                rows={4}
-                value={summary}
-                validators={['required']}
-                errorMessages={['Summary is required']}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Tags</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <TagsAutoComplete
-                tags={tags}
-                error={tagsError}
-                onChange={this.handleTagsChange}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Notes</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <UploadImages
-                innerRef={node => {
-                  this.uploadImages = node;
-                }}
-              />
-            </Grid>
-          </Grid>
-        </CreatePostForm>
-        <SimpleErrorDialog
-          open={errorDialog}
-          title={errorTitle}
-          body={errorBody}
-          handleClose={this.handleErrorDialogClose}
-        />
+          </CreatePostForm>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SimpleErrorDialog
+            open={errorDialog}
+            title={errorTitle}
+            body={errorBody}
+            handleClose={this.handleErrorDialogClose}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

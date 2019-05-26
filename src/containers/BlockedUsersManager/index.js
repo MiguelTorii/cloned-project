@@ -20,6 +20,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { BlockedUsers } from '../../types/models';
 import { getBlockedUsers, unblockUser } from '../../api/user';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -108,56 +109,60 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <Dialog
-        open={open}
-        className={classes.root}
-        onClose={onClose}
-        aria-labelledby="blocked-users-dialog-title"
-        aria-describedby="blocked-users-dialog-description"
-      >
-        <DialogTitle id="blocked-users-dialog-title">Blocked Users</DialogTitle>
-        <DialogContent>
-          {loading && <CircularProgress size={12} />}
-          {!loading && blockedUsers.length === 0 && (
-            <DialogContentText
-              color="textPrimary"
-              id="blocked-users-dialog-description"
-            >
-              {"You don't have blocked users"}
-            </DialogContentText>
-          )}
-          {!loading && (
-            <List className={classes.list}>
-              {blockedUsers.map(user => (
-                <ListItem key={user.userId} dense>
-                  <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImageUrl}>
-                      {user.name !== ''
-                        ? (user.name.match(/\b(\w)/g) || []).join('')
-                        : ''}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={user.name} />
-                  <ListItemSecondaryAction>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={this.handleUnBlock(user.userId)}
-                    >
-                      Unblock
-                    </Button>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary" variant="contained">
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ErrorBoundary>
+        <Dialog
+          open={open}
+          className={classes.root}
+          onClose={onClose}
+          aria-labelledby="blocked-users-dialog-title"
+          aria-describedby="blocked-users-dialog-description"
+        >
+          <DialogTitle id="blocked-users-dialog-title">
+            Blocked Users
+          </DialogTitle>
+          <DialogContent>
+            {loading && <CircularProgress size={12} />}
+            {!loading && blockedUsers.length === 0 && (
+              <DialogContentText
+                color="textPrimary"
+                id="blocked-users-dialog-description"
+              >
+                {"You don't have blocked users"}
+              </DialogContentText>
+            )}
+            {!loading && (
+              <List className={classes.list}>
+                {blockedUsers.map(user => (
+                  <ListItem key={user.userId} dense>
+                    <ListItemAvatar>
+                      <Avatar alt={user.name} src={user.profileImageUrl}>
+                        {user.name !== ''
+                          ? (user.name.match(/\b(\w)/g) || []).join('')
+                          : ''}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={user.name} />
+                    <ListItemSecondaryAction>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={this.handleUnBlock(user.userId)}
+                      >
+                        Unblock
+                      </Button>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose} color="primary" variant="contained">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ErrorBoundary>
     );
   }
 }

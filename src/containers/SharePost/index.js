@@ -8,6 +8,7 @@ import type { State as StoreState } from '../../types/state';
 import { createShareURL } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import ShareDialog from '../../components/ShareDialog';
+import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   user: UserState,
@@ -77,13 +78,15 @@ class SharePost extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <ShareDialog
-        open={open}
-        link={link}
-        isLoading={loading}
-        onLinkCopied={this.handleLinkCopied}
-        onClose={onClose}
-      />
+      <ErrorBoundary>
+        <ShareDialog
+          open={open}
+          link={link}
+          isLoading={loading}
+          onLinkCopied={this.handleLinkCopied}
+          onClose={onClose}
+        />
+      </ErrorBoundary>
     );
   }
 }

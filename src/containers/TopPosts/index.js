@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import PostsList from '../../components/PostsList';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -31,9 +32,11 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <PostsList />
-      </div>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <PostsList />
+        </div>
+      </ErrorBoundary>
     );
   }
 }

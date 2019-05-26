@@ -16,6 +16,8 @@ import FlashcardViewer from '../../components/FlashcardViewer';
 import Flashcard from '../../components/Flashcard';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
+import PostTags from '../PostTags';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -124,45 +126,60 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         {/* <fieldset disabled="disabled" style={{borderStyle: 'none', padding: 0, margin: 0}}> */}
-        <PostItem>
-          <PostItemHeader
-            userId={ownerId}
-            name={name}
-            userProfileUrl={userProfileUrl}
-            classroomName={
-              subject !== '' ? `${subject} ${classroomName}` : classroomName
-            }
-            created={created}
-            body={body}
-            title={title}
-          />
-          <FlashcardViewer title={title} flashcards={deck} />
-          <div className={classes.flashcards}>
-            {// $FlowIgnore
-            deck.map(({ id, question, answer }, index) => (
-              <Flashcard
-                key={id}
-                index={index + 1}
-                question={question}
-                answer={answer}
+        <ErrorBoundary>
+          <PostItem>
+            <ErrorBoundary>
+              <PostItemHeader
+                userId={ownerId}
+                name={name}
+                userProfileUrl={userProfileUrl}
+                classroomName={
+                  subject !== '' ? `${subject} ${classroomName}` : classroomName
+                }
+                created={created}
+                body={body}
+                title={title}
               />
-            ))}
-          </div>
-          <PostItemActions
-            userId={userId}
-            ownerId={ownerId}
-            feedId={feedId}
-            postId={postId}
-            typeId={typeId}
-            thanked={thanked}
-            inStudyCircle={inStudyCircle}
-            questionsCount={questionsCount}
-            thanksCount={thanksCount}
-            viewCount={viewCount}
-            onReload={this.loadData}
-          />
-          <PostComments feedId={feedId} postId={postId} typeId={typeId} />
-        </PostItem>
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <FlashcardViewer title={title} flashcards={deck} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div className={classes.flashcards}>
+                {// $FlowIgnore
+                deck.map(({ id, question, answer }, index) => (
+                  <Flashcard
+                    key={id}
+                    index={index + 1}
+                    question={question}
+                    answer={answer}
+                  />
+                ))}
+              </div>
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostTags userId={userId} feedId={feedId} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostItemActions
+                userId={userId}
+                ownerId={ownerId}
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                thanked={thanked}
+                inStudyCircle={inStudyCircle}
+                questionsCount={questionsCount}
+                thanksCount={thanksCount}
+                viewCount={viewCount}
+                onReload={this.loadData}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostComments feedId={feedId} postId={postId} typeId={typeId} />
+            </ErrorBoundary>
+          </PostItem>
+        </ErrorBoundary>
         {/* </fieldset> */}
       </div>
     );

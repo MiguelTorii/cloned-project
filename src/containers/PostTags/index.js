@@ -6,6 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Chip from '@material-ui/core/Chip';
 import type { Tag } from '../../types/models';
 import { getPostMetadata } from '../../api/posts';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -67,14 +68,16 @@ class PostTags extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        {tags.map(tag => (
-          <Chip
-            key={tag.id}
-            label={tag.name}
-            color="primary"
-            className={classes.chip}
-          />
-        ))}
+        <ErrorBoundary>
+          {tags.map(tag => (
+            <Chip
+              key={tag.id}
+              label={tag.name}
+              color="primary"
+              className={classes.chip}
+            />
+          ))}
+        </ErrorBoundary>
       </div>
     );
   }

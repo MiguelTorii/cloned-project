@@ -19,6 +19,7 @@ import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
 import ProfileEdit from '../../components/ProfileEdit';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -184,33 +185,41 @@ class Profile extends React.PureComponent<Props, State> {
     if (error) return <Redirect to="/" />;
     return (
       <div className={classes.root}>
-        <ProfileHeader
-          isMyProfile={userId === userData.userId}
-          firstName={firstName}
-          lastName={lastName}
-          userProfileUrl={userProfileUrl}
-          points={points}
-          school={school}
-          state={state}
-          segment={segment}
-          grade={grade}
-          joined={joined}
-          onOpenEdit={this.handleOpenEdit}
-        />
-        <ProfileAbout about={about} />
-        <ProfileSeasons stats={userStatistics} />
-        <ProfileEdit
-          key={`${userId}-${userProfileUrl}`}
-          open={edit}
-          about={about}
-          firstName={firstName}
-          lastName={lastName}
-          userProfileUrl={userProfileUrl}
-          uploading={uploading}
-          onClose={this.handleCloseEdit}
-          onSubmit={this.handleSubmit}
-          onUpdateProfileImage={this.handleUpdateProfileImage}
-        />
+        <ErrorBoundary>
+          <ProfileHeader
+            isMyProfile={userId === userData.userId}
+            firstName={firstName}
+            lastName={lastName}
+            userProfileUrl={userProfileUrl}
+            points={points}
+            school={school}
+            state={state}
+            segment={segment}
+            grade={grade}
+            joined={joined}
+            onOpenEdit={this.handleOpenEdit}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ProfileAbout about={about} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ProfileSeasons stats={userStatistics} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ProfileEdit
+            key={`${userId}-${userProfileUrl}`}
+            open={edit}
+            about={about}
+            firstName={firstName}
+            lastName={lastName}
+            userProfileUrl={userProfileUrl}
+            uploading={uploading}
+            onClose={this.handleCloseEdit}
+            onSubmit={this.handleSubmit}
+            onUpdateProfileImage={this.handleUpdateProfileImage}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

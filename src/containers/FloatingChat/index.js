@@ -19,6 +19,7 @@ import MainChat from '../../components/FloatingChat/MainChat';
 import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -242,7 +243,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
             })
           }));
         } else {
-          console.log('update reasons: ', updateReasons)
+          console.log('update reasons: ', updateReasons);
         }
       });
 
@@ -374,47 +375,51 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <div className={classes.root}>
-          {openChannels.map(item => (
-            <ChatChannel
-              key={item.sid}
-              user={user}
-              channel={item}
-              onClose={this.handleChannelClose}
-              onRemove={this.handleRemoveChannel}
-              onBlock={this.handleRemoveChannels}
-            />
-          ))}
-          <MainChat
-            unread={unread}
-            onCreateChannel={this.handleCreateChannelOpen}
-          >
-            {channels.length === 0 ? (
-              <div className={classes.noMessages}>
-                <Typography variant="subtitle1" align="center">
-                  Start a study session by tapping on the icons above
-                </Typography>
-              </div>
-            ) : (
-              channels.map(item => (
-                <ChatListItem
-                  key={item.sid}
-                  channel={item}
-                  userId={userId}
-                  onOpenChannel={this.handleRoomClick}
-                  onUpdateUnreadCount={this.handleUpdateUnreadCount}
-                />
-              ))
-            )}
-          </MainChat>
-        </div>
-        <CreateChatChannel
-          type={createChannel}
-          client={client}
-          channels={channels}
-          onClose={this.handleCreateChannelClose}
-          onChannelCreated={this.handleChannelCreated}
-        />
+        <ErrorBoundary>
+          <div className={classes.root}>
+            {openChannels.map(item => (
+              <ChatChannel
+                key={item.sid}
+                user={user}
+                channel={item}
+                onClose={this.handleChannelClose}
+                onRemove={this.handleRemoveChannel}
+                onBlock={this.handleRemoveChannels}
+              />
+            ))}
+            <MainChat
+              unread={unread}
+              onCreateChannel={this.handleCreateChannelOpen}
+            >
+              {channels.length === 0 ? (
+                <div className={classes.noMessages}>
+                  <Typography variant="subtitle1" align="center">
+                    Start a study session by tapping on the icons above
+                  </Typography>
+                </div>
+              ) : (
+                channels.map(item => (
+                  <ChatListItem
+                    key={item.sid}
+                    channel={item}
+                    userId={userId}
+                    onOpenChannel={this.handleRoomClick}
+                    onUpdateUnreadCount={this.handleUpdateUnreadCount}
+                  />
+                ))
+              )}
+            </MainChat>
+          </div>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <CreateChatChannel
+            type={createChannel}
+            client={client}
+            channels={channels}
+            onClose={this.handleCreateChannelClose}
+            onChannelCreated={this.handleChannelCreated}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

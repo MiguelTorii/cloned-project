@@ -10,6 +10,7 @@ import {
   ALGOLIA_API_KEY,
   ALGOLIA_INDEX
 } from '../../constants/app';
+import ErrorBoundary from '../ErrorBoundary';
 
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = searchClient.initIndex(ALGOLIA_INDEX);
@@ -57,19 +58,21 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
     const { classes, error, tags, onChange } = this.props;
     const { inputValue } = this.state;
     return (
-      <div className={classes.root}>
-        <AutoComplete
-          values={tags}
-          inputValue={inputValue}
-          label="Tags"
-          placeholder="Search for tags"
-          error={error}
-          errorText="You must add at least 1 tag"
-          isMulti
-          onChange={onChange}
-          onLoadOptions={this.handleLoadOptions}
-        />
-      </div>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <AutoComplete
+            values={tags}
+            inputValue={inputValue}
+            label="Tags"
+            placeholder="Search for tags"
+            error={error}
+            errorText="You must add at least 1 tag"
+            isMulti
+            onChange={onChange}
+            onLoadOptions={this.handleLoadOptions}
+          />
+        </div>
+      </ErrorBoundary>
     );
   }
 }

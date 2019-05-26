@@ -13,6 +13,7 @@ import {
   getNotifications,
   setNotificationsRead
 } from '../../api/notifications';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {}
@@ -118,15 +119,17 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     const { notifications, tab, loading } = this.state;
     return (
       <div className={classes.root}>
-        <Notifications
-          notifications={notifications}
-          tab={tab}
-          loading={loading}
-          anchorEl={anchorEl}
-          onNotificationClose={onClose}
-          onTabChange={this.handleTabChange}
-          onClick={onClick}
-        />
+        <ErrorBoundary>
+          <Notifications
+            notifications={notifications}
+            tab={tab}
+            loading={loading}
+            anchorEl={anchorEl}
+            onNotificationClose={onClose}
+            onTabChange={this.handleTabChange}
+            onClick={onClick}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

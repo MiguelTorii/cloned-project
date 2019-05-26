@@ -17,6 +17,7 @@ import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import Leaderboard from '../Leaderboard';
 import Announcements from '../../components/Announcements';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   loader: {
@@ -174,38 +175,53 @@ class Layout extends React.PureComponent<Props, State> {
     if (isNaked) return this.renderChildren();
     return (
       <Fragment>
-        <MainLayout
-          userId={userId}
-          unreadCount={unreadCount}
-          handleNotificationOpen={this.handleNotificationOpen}
-          handleSignOut={signOut}
-          onManageClasses={this.handleOpenManageClasses}
-          onManageBlockedUsers={this.handleOpenBlockedUsers}
-          onOpenLeaderboard={this.handleOpenLeaderboard}
-          onOpenAnnouncements={this.handleOpenAnnouncements}
-        >
-          {this.renderChildren()}
-        </MainLayout>
-        <Notifications
-          anchorEl={anchorEl}
-          onClose={this.handleNotificationClose}
-          onUpdateUnreadCount={this.handleUpdateUnreadCount}
-          onClick={this.handleNotificationClick}
-        />
-        <ClassesManager
-          open={manageClasses}
-          onClose={this.handleCloseManageClasses}
-        />
-        <BlockedUsersManager
-          open={manageBlockedUsers}
-          onClose={this.handleCloseManageBlockedUsers}
-        />
-        <Leaderboard open={leaderboard} onClose={this.handleCloseLeaderboard} />
-        <Announcements
-          open={announcements}
-          onClose={this.handleCloseAnnouncements}
-          onCreate={this.handleCreateChatGroupChannel}
-        />
+        <ErrorBoundary>
+          <MainLayout
+            userId={userId}
+            unreadCount={unreadCount}
+            handleNotificationOpen={this.handleNotificationOpen}
+            handleSignOut={signOut}
+            onManageClasses={this.handleOpenManageClasses}
+            onManageBlockedUsers={this.handleOpenBlockedUsers}
+            onOpenLeaderboard={this.handleOpenLeaderboard}
+            onOpenAnnouncements={this.handleOpenAnnouncements}
+          >
+            {this.renderChildren()}
+          </MainLayout>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Notifications
+            anchorEl={anchorEl}
+            onClose={this.handleNotificationClose}
+            onUpdateUnreadCount={this.handleUpdateUnreadCount}
+            onClick={this.handleNotificationClick}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ClassesManager
+            open={manageClasses}
+            onClose={this.handleCloseManageClasses}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <BlockedUsersManager
+            open={manageBlockedUsers}
+            onClose={this.handleCloseManageBlockedUsers}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Leaderboard
+            open={leaderboard}
+            onClose={this.handleCloseLeaderboard}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Announcements
+            open={announcements}
+            onClose={this.handleCloseAnnouncements}
+            onCreate={this.handleCreateChatGroupChannel}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

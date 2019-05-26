@@ -25,6 +25,7 @@ import type { State as StoreState } from '../../types/state';
 import type { Leaderboard as LeaderboardType } from '../../types/models';
 import { getLeaderboard } from '../../api/user';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const ranks = {
   '1': 'Bronze',
@@ -151,98 +152,102 @@ class Leaderboard extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <Dialog
-        open={open}
-        className={classes.root}
-        onClose={this.handleClose}
-        aria-labelledby="leaderboard-dialog-title"
-        aria-describedby="leaderboard-dialog-description"
-      >
-        <DialogTitle id="leaderboard-dialog-title">Leaderboard</DialogTitle>
-        <DialogContent style={{ width: 490, height: 400 }}>
-          {loading && <CircularProgress size={12} />}
-          {!loading && (
-            <Fragment>
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-              >
-                <Select
-                  value={rankId}
-                  onChange={this.handleChange}
-                  input={
-                    <OutlinedInput
-                      labelWidth={0}
-                      name="rank"
-                      id="outlined-rank-simple"
-                    />
-                  }
+      <ErrorBoundary>
+        <Dialog
+          open={open}
+          className={classes.root}
+          onClose={this.handleClose}
+          aria-labelledby="leaderboard-dialog-title"
+          aria-describedby="leaderboard-dialog-description"
+        >
+          <DialogTitle id="leaderboard-dialog-title">Leaderboard</DialogTitle>
+          <DialogContent style={{ width: 490, height: 400 }}>
+            {loading && <CircularProgress size={12} />}
+            {!loading && (
+              <Fragment>
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  className={classes.formControl}
                 >
-                  <MenuItem value={1}>Bronze</MenuItem>
-                  <MenuItem value={2}>Silver</MenuItem>
-                  <MenuItem value={3}>Gold</MenuItem>
-                  <MenuItem value={4}>Platinum</MenuItem>
-                  <MenuItem value={5}>Diamond</MenuItem>
-                  <MenuItem value={6}>Master</MenuItem>
-                </Select>
-              </FormControl>
-              <List className={classes.list}>
-                {leaderboard.map((user, index) => (
-                  <ListItem
-                    key={user.userId}
-                    selected={user.userId === userId}
-                    style={{ display: 'flex' }}
+                  <Select
+                    value={rankId}
+                    onChange={this.handleChange}
+                    input={
+                      <OutlinedInput
+                        labelWidth={0}
+                        name="rank"
+                        id="outlined-rank-simple"
+                      />
+                    }
                   >
-                    <ListItemAvatar>
-                      <Avatar
-                        className={cx(user.userId === userId && classes.avatar)}
-                      >
-                        {index + 1}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primaryTypographyProps={{
-                        variant: 'subtitle1'
-                      }}
-                      primary={user.userId === userId ? 'You' : user.username}
-                      style={{
-                        flex: 1,
-                        minWidth: 300
-                      }}
-                    />
-                    <ListItemText
-                      primaryTypographyProps={{
-                        variant: 'subtitle1'
-                      }}
-                      primary={user.points}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-              {leaderboard.length === 0 && (
-                <div className={classes.empty}>
-                  <Typography
-                    variant="h5"
-                    align="center"
-                  >{`There aren't any students with a ${
-                    ranks[rankId]
-                  } ranking yet.`}</Typography>
-                </div>
-              )}
-            </Fragment>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={this.handleClose}
-            color="primary"
-            variant="contained"
-          >
-            Great!
-          </Button>
-        </DialogActions>
-      </Dialog>
+                    <MenuItem value={1}>Bronze</MenuItem>
+                    <MenuItem value={2}>Silver</MenuItem>
+                    <MenuItem value={3}>Gold</MenuItem>
+                    <MenuItem value={4}>Platinum</MenuItem>
+                    <MenuItem value={5}>Diamond</MenuItem>
+                    <MenuItem value={6}>Master</MenuItem>
+                  </Select>
+                </FormControl>
+                <List className={classes.list}>
+                  {leaderboard.map((user, index) => (
+                    <ListItem
+                      key={user.userId}
+                      selected={user.userId === userId}
+                      style={{ display: 'flex' }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          className={cx(
+                            user.userId === userId && classes.avatar
+                          )}
+                        >
+                          {index + 1}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primaryTypographyProps={{
+                          variant: 'subtitle1'
+                        }}
+                        primary={user.userId === userId ? 'You' : user.username}
+                        style={{
+                          flex: 1,
+                          minWidth: 300
+                        }}
+                      />
+                      <ListItemText
+                        primaryTypographyProps={{
+                          variant: 'subtitle1'
+                        }}
+                        primary={user.points}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+                {leaderboard.length === 0 && (
+                  <div className={classes.empty}>
+                    <Typography
+                      variant="h5"
+                      align="center"
+                    >{`There aren't any students with a ${
+                      ranks[rankId]
+                    } ranking yet.`}</Typography>
+                  </div>
+                )}
+              </Fragment>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={this.handleClose}
+              color="primary"
+              variant="contained"
+            >
+              Great!
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ErrorBoundary>
     );
   }
 }

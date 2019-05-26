@@ -12,6 +12,7 @@ import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import { getUserClasses } from '../../api/user';
 import { processClasses } from './utils';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -76,27 +77,29 @@ class ClassesSelector extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <div className={classes.root}>
-        <FormControl variant="outlined" fullWidth>
-          <SelectValidator
-            // native
-            value={value}
-            name="userClasses"
-            label="User Classes"
-            onChange={this.handleChange}
-            variant="outlined"
-            validators={['required']}
-            errorMessages={['User Classes is required']}
-          >
-            <MenuItem value="" />
-            {userClasses.map(userClass => (
-              <MenuItem key={userClass.value} value={userClass.value}>
-                {userClass.label}
-              </MenuItem>
-            ))}
-          </SelectValidator>
-        </FormControl>
-      </div>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <FormControl variant="outlined" fullWidth>
+            <SelectValidator
+              // native
+              value={value}
+              name="userClasses"
+              label="User Classes"
+              onChange={this.handleChange}
+              variant="outlined"
+              validators={['required']}
+              errorMessages={['User Classes is required']}
+            >
+              <MenuItem value="" />
+              {userClasses.map(userClass => (
+                <MenuItem key={userClass.value} value={userClass.value}>
+                  {userClass.label}
+                </MenuItem>
+              ))}
+            </SelectValidator>
+          </FormControl>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

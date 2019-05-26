@@ -17,6 +17,7 @@ import ChatChannelViewMembers from './ChatChannelViewMembers';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   list: {
@@ -416,68 +417,76 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <ChatItem
-          title={title}
-          open={open}
-          unread={unread}
-          isGroup={groupType !== ''}
-          onOpen={this.handleChatOpen}
-          onClose={this.handleClose}
-          onDelete={this.handleDelete}
-          onStartVideoCall={this.handleStartVideoCall}
-          onViewMembers={this.handleViewMembers}
-        >
-          <div
-            className={classes.list}
-            ref={node => {
-              this.scrollParentRef = node;
-            }}
+        <ErrorBoundary>
+          <ChatItem
+            title={title}
+            open={open}
+            unread={unread}
+            isGroup={groupType !== ''}
+            onOpen={this.handleChatOpen}
+            onClose={this.handleClose}
+            onDelete={this.handleDelete}
+            onStartVideoCall={this.handleStartVideoCall}
+            onViewMembers={this.handleViewMembers}
           >
-            <InfiniteScroll
-              threshold={50}
-              pageStart={0}
-              loadMore={this.handleLoadMore}
-              hasMore={hasMore}
-              useWindow={false}
-              initialLoad={false}
-              isReverse
-              getScrollParent={() => this.scrollParentRef}
+            <div
+              className={classes.list}
+              ref={node => {
+                this.scrollParentRef = node;
+              }}
             >
-              {messageItems.map(item => this.renderMessage(item, profileURLs))}
-              {typing !== '' && (
-                <div className={classes.typing}>
-                  <Typography
-                    className={classes.typingText}
-                  >{`${typing} is typing ...`}</Typography>
-                </div>
-              )}
-              {loading && (
-                <div className={classes.progress}>
-                  <CircularProgress size={20} />
-                </div>
-              )}
-            </InfiniteScroll>
-          </div>
-          <ChatTextField
-            onSendMessage={this.handleSendMessage}
-            onSendInput={this.handleSendInput}
-            onTyping={this.handleTyping}
+              <InfiniteScroll
+                threshold={50}
+                pageStart={0}
+                loadMore={this.handleLoadMore}
+                hasMore={hasMore}
+                useWindow={false}
+                initialLoad={false}
+                isReverse
+                getScrollParent={() => this.scrollParentRef}
+              >
+                {messageItems.map(item =>
+                  this.renderMessage(item, profileURLs)
+                )}
+                {typing !== '' && (
+                  <div className={classes.typing}>
+                    <Typography
+                      className={classes.typingText}
+                    >{`${typing} is typing ...`}</Typography>
+                  </div>
+                )}
+                {loading && (
+                  <div className={classes.progress}>
+                    <CircularProgress size={20} />
+                  </div>
+                )}
+              </InfiniteScroll>
+            </div>
+            <ChatTextField
+              onSendMessage={this.handleSendMessage}
+              onSendInput={this.handleSendInput}
+              onTyping={this.handleTyping}
+            />
+          </ChatItem>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ChatChannelViewMembers
+            open={viewMembers}
+            userId={userId}
+            members={users}
+            profileURLs={profileURLs}
+            onClose={this.handleCloseViewMembers}
+            onBlock={onBlock}
           />
-        </ChatItem>
-        <ChatChannelViewMembers
-          open={viewMembers}
-          userId={userId}
-          members={users}
-          profileURLs={profileURLs}
-          onClose={this.handleCloseViewMembers}
-          onBlock={onBlock}
-        />
-        <Lightbox
-          images={images}
-          currentImage={0}
-          isOpen={images.length > 0}
-          onClose={this.handleImageClose}
-        />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Lightbox
+            images={images}
+            currentImage={0}
+            isOpen={images.length > 0}
+            onClose={this.handleImageClose}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

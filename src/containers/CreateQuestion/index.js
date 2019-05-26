@@ -18,6 +18,7 @@ import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createQuestion } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -142,61 +143,65 @@ class CreateQuestion extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <CreatePostForm
-          title="Ask a Question"
-          loading={loading}
-          handleSubmit={this.handleSubmit}
-        >
-          <Grid container alignItems="center">
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">
-                {"What's your question?"}
-              </Typography>
+        <ErrorBoundary>
+          <CreatePostForm
+            title="Ask a Question"
+            loading={loading}
+            handleSubmit={this.handleSubmit}
+          >
+            <Grid container alignItems="center">
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">
+                  {"What's your question?"}
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <OutlinedTextValidator
+                  label="Question"
+                  onChange={this.handleTextChange}
+                  name="title"
+                  value={title}
+                  validators={['required']}
+                  errorMessages={['Title is required']}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Description</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <RichTextEditor
+                  placeholder="Add more details to your question to increase the chances of getting an answer"
+                  value={body}
+                  onChange={this.handleRTEChange}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Class</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <ClassesSelector onChange={this.handleClassChange} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Tags</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <TagsAutoComplete
+                  tags={tags}
+                  error={tagsError}
+                  onChange={this.handleTagsChange}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={10}>
-              <OutlinedTextValidator
-                label="Question"
-                onChange={this.handleTextChange}
-                name="title"
-                value={title}
-                validators={['required']}
-                errorMessages={['Title is required']}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Description</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <RichTextEditor
-                placeholder="Add more details to your question to increase the chances of getting an answer"
-                value={body}
-                onChange={this.handleRTEChange}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Class</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <ClassesSelector onChange={this.handleClassChange} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Tags</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <TagsAutoComplete
-                tags={tags}
-                error={tagsError}
-                onChange={this.handleTagsChange}
-              />
-            </Grid>
-          </Grid>
-        </CreatePostForm>
-        <SimpleErrorDialog
-          open={errorDialog}
-          title={errorTitle}
-          body={errorBody}
-          handleClose={this.handleErrorDialogClose}
-        />
+          </CreatePostForm>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SimpleErrorDialog
+            open={errorDialog}
+            title={errorTitle}
+            body={errorBody}
+            handleClose={this.handleErrorDialogClose}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

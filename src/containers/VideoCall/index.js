@@ -11,6 +11,7 @@ import { renewTwilioToken } from '../../api/chat';
 import Preview from './Preview';
 import MeetUp from './MeetUp';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -184,18 +185,22 @@ class VideoCall extends React.Component<Props, State> {
     return (
       <div className={classes.root}>
         <Fragment>
-          {loading && (
-            <div className={classes.loading}>
-              <CircularProgress />
-            </div>
-          )}
-          {this.renderComponent()}
-          <SimpleErrorDialog
-            open={errorDialog}
-            title={errorTitle}
-            body={errorBody}
-            handleClose={this.handleErrorDialogClose}
-          />
+          <ErrorBoundary>
+            {loading && (
+              <div className={classes.loading}>
+                <CircularProgress />
+              </div>
+            )}
+          </ErrorBoundary>
+          <ErrorBoundary>{this.renderComponent()}</ErrorBoundary>
+          <ErrorBoundary>
+            <SimpleErrorDialog
+              open={errorDialog}
+              title={errorTitle}
+              body={errorBody}
+              handleClose={this.handleErrorDialogClose}
+            />
+          </ErrorBoundary>
         </Fragment>
       </div>
     );

@@ -14,6 +14,7 @@ import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 import PostTags from '../PostTags';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -104,40 +105,50 @@ class ViewQuestion extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <PostItem>
-          <PostItemHeader
-            userId={ownerId}
-            name={name}
-            userProfileUrl={userProfileUrl}
-            classroomName={
-              subject !== '' ? `${subject} ${classroomName}` : classroomName
-            }
-            created={created}
-            body={body}
-            title={title}
-            isMarkdown
-          />
-          <PostTags userId={userId} feedId={feedId} />
-          <PostItemActions
-            userId={userId}
-            ownerId={ownerId}
-            feedId={feedId}
-            postId={postId}
-            typeId={typeId}
-            thanked={thanked}
-            inStudyCircle={inStudyCircle}
-            questionsCount={questionsCount}
-            thanksCount={thanksCount}
-            viewCount={viewCount}
-            onReload={this.loadData}
-          />
-          <PostComments
-            feedId={feedId}
-            postId={postId}
-            typeId={typeId}
-            isQuestion
-          />
-        </PostItem>
+        <ErrorBoundary>
+          <PostItem>
+            <ErrorBoundary>
+              <PostItemHeader
+                userId={ownerId}
+                name={name}
+                userProfileUrl={userProfileUrl}
+                classroomName={
+                  subject !== '' ? `${subject} ${classroomName}` : classroomName
+                }
+                created={created}
+                body={body}
+                title={title}
+                isMarkdown
+              />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostTags userId={userId} feedId={feedId} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostItemActions
+                userId={userId}
+                ownerId={ownerId}
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                thanked={thanked}
+                inStudyCircle={inStudyCircle}
+                questionsCount={questionsCount}
+                thanksCount={thanksCount}
+                viewCount={viewCount}
+                onReload={this.loadData}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <PostComments
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                isQuestion
+              />
+            </ErrorBoundary>
+          </PostItem>
+        </ErrorBoundary>
       </div>
     );
   }

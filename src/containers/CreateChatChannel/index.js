@@ -10,6 +10,7 @@ import type { State as StoreState } from '../../types/state';
 import CreateChatChannelDialog from '../../components/CreateChatChannelDialog';
 import { getBlockedUsers, searchUsers } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
+import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   user: UserState,
@@ -182,15 +183,17 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     const { type } = this.props;
     const { thumbnail, isLoading } = this.state;
     return (
-      <CreateChatChannelDialog
-        chatType={type}
-        thumbnail={thumbnail}
-        isLoading={isLoading}
-        onClose={this.handleClose}
-        onSubmit={this.handleSubmit}
-        onLoadOptions={this.handleLoadOptions}
-        onSendInput={this.handleUploadThumbnail}
-      />
+      <ErrorBoundary>
+        <CreateChatChannelDialog
+          chatType={type}
+          thumbnail={thumbnail}
+          isLoading={isLoading}
+          onClose={this.handleClose}
+          onSubmit={this.handleSubmit}
+          onLoadOptions={this.handleLoadOptions}
+          onSendInput={this.handleUploadThumbnail}
+        />
+      </ErrorBoundary>
     );
   }
 }

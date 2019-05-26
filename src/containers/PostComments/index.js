@@ -17,6 +17,7 @@ import {
 import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
 import { processComments } from './utils';
+import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   user: UserState,
@@ -168,68 +169,74 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
-        <PostItemAddComment
-          name={name}
-          profileImageUrl={profileImage}
-          onPostComment={this.handlePostComment}
-        />
-        {items.map((item, index) => (
-          <Fragment key={item.id}>
-            <PostItemComment
-              id={item.id}
-              ownProfileUrl={profileImage}
-              ownName={name}
-              ownerId={item.user.userId}
-              firstName={item.user.firstName}
-              lastName={item.user.lastName}
-              profileImageUrl={item.user.profileImageUrl}
-              created={item.created}
-              comment={item.comment}
-              thanksCount={item.thanksCount}
-              thanked={item.thanked}
-              rootCommentId={item.id}
-              isLoading={isLoading}
-              isQuestion={isQuestion}
-              isOwn={item.user.userId === userId}
-              onPostComment={this.handlePostComment}
-              onThanks={this.handleThanks}
-              onDelete={this.handleDelete}
-              onReport={this.handleReport}
-              onBestAnswer={this.handleBestAnswer}
-            />
-            {item.children.map(reply => (
+        <ErrorBoundary>
+          <PostItemAddComment
+            name={name}
+            profileImageUrl={profileImage}
+            onPostComment={this.handlePostComment}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          {items.map((item, index) => (
+            <Fragment key={item.id}>
               <PostItemComment
-                key={reply.id}
-                id={reply.id}
+                id={item.id}
                 ownProfileUrl={profileImage}
                 ownName={name}
-                replyTo={reply.replyTo}
-                firstName={reply.user.firstName}
-                lastName={reply.user.lastName}
-                profileImageUrl={reply.user.profileImageUrl}
-                created={reply.created}
-                comment={reply.comment}
-                thanksCount={reply.thanksCount}
-                thanked={reply.thanked}
+                ownerId={item.user.userId}
+                firstName={item.user.firstName}
+                lastName={item.user.lastName}
+                profileImageUrl={item.user.profileImageUrl}
+                created={item.created}
+                comment={item.comment}
+                thanksCount={item.thanksCount}
+                thanked={item.thanked}
                 rootCommentId={item.id}
-                isOwn={reply.user.userId === userId}
-                isReply
+                isLoading={isLoading}
+                isQuestion={isQuestion}
+                isOwn={item.user.userId === userId}
                 onPostComment={this.handlePostComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
                 onReport={this.handleReport}
                 onBestAnswer={this.handleBestAnswer}
               />
-            ))}
-            {index + 1 < items.length && <Divider light />}
-          </Fragment>
-        ))}
-        <Report
-          open={Boolean(report)}
-          ownerId={(report || {}).ownerId || ''}
-          objectId={(report || {}).commentId || -1}
-          onClose={this.handleReportClose}
-        />
+              {item.children.map(reply => (
+                <PostItemComment
+                  key={reply.id}
+                  id={reply.id}
+                  ownProfileUrl={profileImage}
+                  ownName={name}
+                  replyTo={reply.replyTo}
+                  firstName={reply.user.firstName}
+                  lastName={reply.user.lastName}
+                  profileImageUrl={reply.user.profileImageUrl}
+                  created={reply.created}
+                  comment={reply.comment}
+                  thanksCount={reply.thanksCount}
+                  thanked={reply.thanked}
+                  rootCommentId={item.id}
+                  isOwn={reply.user.userId === userId}
+                  isReply
+                  onPostComment={this.handlePostComment}
+                  onThanks={this.handleThanks}
+                  onDelete={this.handleDelete}
+                  onReport={this.handleReport}
+                  onBestAnswer={this.handleBestAnswer}
+                />
+              ))}
+              {index + 1 < items.length && <Divider light />}
+            </Fragment>
+          ))}
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Report
+            open={Boolean(report)}
+            ownerId={(report || {}).ownerId || ''}
+            objectId={(report || {}).commentId || -1}
+            onClose={this.handleReportClose}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

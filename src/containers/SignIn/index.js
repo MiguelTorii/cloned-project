@@ -11,6 +11,7 @@ import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as signInActions from '../../actions/sign-in';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -66,24 +67,30 @@ class SignIn extends React.Component<Props, State> {
       <main className={classes.main}>
         <Grid container justify="space-around">
           <Grid item lg={6}>
-            <SignInForm
-              email={email}
-              password={password}
-              loading={isLoading}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-            />
+            <ErrorBoundary>
+              <SignInForm
+                email={email}
+                password={password}
+                loading={isLoading}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+              />
+            </ErrorBoundary>
           </Grid>
           <Grid item lg={6}>
-            <FederatedLogin />
+            <ErrorBoundary>
+              <FederatedLogin />
+            </ErrorBoundary>
           </Grid>
         </Grid>
-        <SimpleErrorDialog
-          open={error}
-          title={title}
-          body={body}
-          handleClose={this.handleErrorDialogClose}
-        />
+        <ErrorBoundary>
+          <SimpleErrorDialog
+            open={error}
+            title={title}
+            body={body}
+            handleClose={this.handleErrorDialogClose}
+          />
+        </ErrorBoundary>
       </main>
     );
   }

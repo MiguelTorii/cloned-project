@@ -17,6 +17,7 @@ import Thumbnails from '../../components/MeetUp/Thumbnails';
 import NoParticipants from '../../components/MeetUp/NoParticipants';
 import ActiveParticipant from '../../components/MeetUp/ActiveParticipant';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -346,64 +347,71 @@ class MeetUp extends React.Component<Props, State> {
     } = this.state;
 
     return (
-      <div className={classes.root}>
-        {participants.length < 2 && !isWhiteboardEnabled && <NoParticipants />}
-        <MeetUpControls
-          isConnected={Boolean(videoRoom)}
-          isVideoEnabled={isVideoEnabled}
-          isAudioEnabled={isAudioEnabled}
-          isScreenSharingSupported={Boolean(
-            navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
+      <ErrorBoundary>
+        <div className={classes.root}>
+          {participants.length < 2 && !isWhiteboardEnabled && (
+            <NoParticipants />
           )}
-          isSharing={Boolean(screenTrack)}
-          isSharingData={isWhiteboardEnabled}
-          endCall={this.leaveRoom}
-          disableVideo={this.disableVideo}
-          disableAudio={this.disableAudio}
-          shareScreen={this.shareScreen}
-          shareData={this.shareData}
-        />
-        <Thumbnails
-          participants={participants}
-          isSharing={Boolean(screenTrack)}
-          isSharingData={isWhiteboardEnabled}
-          dataReceived={this.dataReceived}
-        />
-        {activeParticipant && !isWhiteboardEnabled && (
-          <ActiveParticipant
-            key={activeParticipant.sid}
-            participant={activeParticipant}
+          <MeetUpControls
+            isConnected={Boolean(videoRoom)}
+            isVideoEnabled={isVideoEnabled}
+            isAudioEnabled={isAudioEnabled}
+            isScreenSharingSupported={Boolean(
+              navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
+            )}
+            isSharing={Boolean(screenTrack)}
+            isSharingData={isWhiteboardEnabled}
+            endCall={this.leaveRoom}
+            disableVideo={this.disableVideo}
+            disableAudio={this.disableAudio}
+            shareScreen={this.shareScreen}
+            shareData={this.shareData}
           />
-        )}
-        {isWhiteboardEnabled && false && (
-          <Whiteboard
-            drawData={drawData}
-            sendDataMessage={this.sendDataMessage}
+          <Thumbnails
+            participants={participants}
+            isSharing={Boolean(screenTrack)}
+            isSharingData={isWhiteboardEnabled}
+            dataReceived={this.dataReceived}
           />
-        )}
-        <Dialog
-          open={open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            Screen Sharing Not Supported
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description" color="textPrimary">
-              {
-                "Your current browser doesn't support screen sharing, consider using Chrome or Firefox"
-              }
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          {activeParticipant && !isWhiteboardEnabled && (
+            <ActiveParticipant
+              key={activeParticipant.sid}
+              participant={activeParticipant}
+            />
+          )}
+          {isWhiteboardEnabled && false && (
+            <Whiteboard
+              drawData={drawData}
+              sendDataMessage={this.sendDataMessage}
+            />
+          )}
+          <Dialog
+            open={open}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              Screen Sharing Not Supported
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText
+                id="alert-dialog-description"
+                color="textPrimary"
+              >
+                {
+                  "Your current browser doesn't support screen sharing, consider using Chrome or Firefox"
+                }
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

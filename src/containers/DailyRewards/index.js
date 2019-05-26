@@ -33,6 +33,7 @@ import gold from '../../assets/svg/rank_gold.svg';
 import platinum from '../../assets/svg/rank_platinum.svg';
 import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
+import ErrorBoundary from '../ErrorBoundary';
 
 const ranks = [
   { label: 'Bronze', value: bronze },
@@ -159,117 +160,122 @@ class DailyRewards extends React.PureComponent<Props, State> {
     } = this.state;
 
     return (
-      <Dialog
-        open={open}
-        fullWidth
-        maxWidth="xs"
-        onClose={this.handleClose}
-        aria-labelledby="daily-rewards-dialog-title"
-        aria-describedby="daily-rewards-dialog-description"
-      >
-        <DialogTitle id="daily-rewards-dialog-title">Daily Rewards</DialogTitle>
-        <div className={classes.root}>
-          <List className={classes.list}>
-            <ListItem className={cx(stage !== 0 && classes.opacity)}>
-              <ListItemIcon className={classes.itemIcon}>
-                <img alt="Coin1" src={coin1} className={classes.coin} />
-              </ListItemIcon>
-              <ListItemText
-                primary="+100 Points"
-                secondary="Day 1"
-                secondaryTypographyProps={{ color: 'textPrimary' }}
-              />
-              {stage === 0 && (
-                <ListItemIcon>
-                  <CheckCircleIcon />
+      <ErrorBoundary>
+        <Dialog
+          open={open}
+          fullWidth
+          maxWidth="xs"
+          onClose={this.handleClose}
+          aria-labelledby="daily-rewards-dialog-title"
+          aria-describedby="daily-rewards-dialog-description"
+        >
+          <DialogTitle id="daily-rewards-dialog-title">
+            Daily Rewards
+          </DialogTitle>
+          <div className={classes.root}>
+            <List className={classes.list}>
+              <ListItem className={cx(stage !== 0 && classes.opacity)}>
+                <ListItemIcon className={classes.itemIcon}>
+                  <img alt="Coin1" src={coin1} className={classes.coin} />
                 </ListItemIcon>
-              )}
-            </ListItem>
-            <ListItem className={cx(stage !== 1 && classes.opacity)}>
-              <ListItemIcon className={classes.itemIcon}>
-                <img alt="Coin2" src={coin2} className={classes.coin} />
-              </ListItemIcon>
-              <ListItemText
-                primary="+200 Points"
-                secondary="Day 2"
-                secondaryTypographyProps={{ color: 'textPrimary' }}
-              />
-              {stage === 1 && (
-                <ListItemIcon>
-                  <CheckCircleIcon />
+                <ListItemText
+                  primary="+100 Points"
+                  secondary="Day 1"
+                  secondaryTypographyProps={{ color: 'textPrimary' }}
+                />
+                {stage === 0 && (
+                  <ListItemIcon>
+                    <CheckCircleIcon />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              <ListItem className={cx(stage !== 1 && classes.opacity)}>
+                <ListItemIcon className={classes.itemIcon}>
+                  <img alt="Coin2" src={coin2} className={classes.coin} />
                 </ListItemIcon>
-              )}
-            </ListItem>
-            <ListItem className={cx(stage !== 2 && classes.opacity)}>
-              <ListItemIcon className={classes.itemIcon}>
-                <img alt="Coin3" src={coin3} className={classes.coin} />
-              </ListItemIcon>
-              <ListItemText
-                primary="+300 Points"
-                secondary="Day 3"
-                secondaryTypographyProps={{ color: 'textPrimary' }}
-              />
-              {stage === 2 && (
-                <ListItemIcon>
-                  <CheckCircleIcon />
+                <ListItemText
+                  primary="+200 Points"
+                  secondary="Day 2"
+                  secondaryTypographyProps={{ color: 'textPrimary' }}
+                />
+                {stage === 1 && (
+                  <ListItemIcon>
+                    <CheckCircleIcon />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              <ListItem className={cx(stage !== 2 && classes.opacity)}>
+                <ListItemIcon className={classes.itemIcon}>
+                  <img alt="Coin3" src={coin3} className={classes.coin} />
                 </ListItemIcon>
-              )}
-            </ListItem>
-            <ListItem className={cx(stage !== 3 && classes.opacity)}>
-              <ListItemIcon className={classes.itemIcon}>
-                <img alt="Coin4" src={coin4} className={classes.coin} />
-              </ListItemIcon>
-              <ListItemText
-                primary="+400 Points"
-                secondary="Day 4"
-                secondaryTypographyProps={{ color: 'textPrimary' }}
-              />
-              {stage === 3 && (
-                <ListItemIcon>
-                  <CheckCircleIcon />
+                <ListItemText
+                  primary="+300 Points"
+                  secondary="Day 3"
+                  secondaryTypographyProps={{ color: 'textPrimary' }}
+                />
+                {stage === 2 && (
+                  <ListItemIcon>
+                    <CheckCircleIcon />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              <ListItem className={cx(stage !== 3 && classes.opacity)}>
+                <ListItemIcon className={classes.itemIcon}>
+                  <img alt="Coin4" src={coin4} className={classes.coin} />
                 </ListItemIcon>
-              )}
-            </ListItem>
-            <ListItem className={cx(stage !== 4 && classes.opacity)}>
-              <ListItemIcon className={classes.itemIcon}>
-                <img alt="Coin5" src={coin5} className={classes.coin} />
-              </ListItemIcon>
-              <ListItemText
-                primary="+500 Points"
-                secondary="Day 5"
-                secondaryTypographyProps={{ color: 'textPrimary' }}
-              />
-              {stage === 4 && (
-                <ListItemIcon>
-                  <CheckCircleIcon />
+                <ListItemText
+                  primary="+400 Points"
+                  secondary="Day 4"
+                  secondaryTypographyProps={{ color: 'textPrimary' }}
+                />
+                {stage === 3 && (
+                  <ListItemIcon>
+                    <CheckCircleIcon />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              <ListItem className={cx(stage !== 4 && classes.opacity)}>
+                <ListItemIcon className={classes.itemIcon}>
+                  <img alt="Coin5" src={coin5} className={classes.coin} />
                 </ListItemIcon>
-              )}
-            </ListItem>
-            <Divider light variant="middle" />
-          </List>
-        </div>
-        <div className={classes.footer}>
-          <Typography color="textPrimary" align="center" variant="h5">
-            {`${pointsLeft.toLocaleString()} points until ${(ranks[rank] || {})
-              .label || ''}`}
-          </Typography>
-          <img
-            className={classes.rank}
-            alt={(ranks[rank] || {}).label || ''}
-            src={(ranks[rank] || {}).value || ''}
-          />
-        </div>
-        <DialogActions>
-          <Button
-            onClick={this.handleClose}
-            variant="contained"
-            color="primary"
-            autoFocus
-          >
-            Great!
-          </Button>
-        </DialogActions>
-      </Dialog>
+                <ListItemText
+                  primary="+500 Points"
+                  secondary="Day 5"
+                  secondaryTypographyProps={{ color: 'textPrimary' }}
+                />
+                {stage === 4 && (
+                  <ListItemIcon>
+                    <CheckCircleIcon />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              <Divider light variant="middle" />
+            </List>
+          </div>
+          <div className={classes.footer}>
+            <Typography color="textPrimary" align="center" variant="h5">
+              {`${pointsLeft.toLocaleString()} points until ${(
+                ranks[rank] || {}
+              ).label || ''}`}
+            </Typography>
+            <img
+              className={classes.rank}
+              alt={(ranks[rank] || {}).label || ''}
+              src={(ranks[rank] || {}).value || ''}
+            />
+          </div>
+          <DialogActions>
+            <Button
+              onClick={this.handleClose}
+              variant="contained"
+              color="primary"
+              autoFocus
+            >
+              Great!
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ErrorBoundary>
     );
   }
 }

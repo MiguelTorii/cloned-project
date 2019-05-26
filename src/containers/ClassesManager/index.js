@@ -32,6 +32,7 @@ import {
   leaveUserClass,
   joinClass
 } from '../../api/user';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -429,6 +430,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
+      <ErrorBoundary>
       <Dialog
         open={open}
         className={classes.root}
@@ -465,6 +467,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
           </Button>
         </DialogActions>
       </Dialog>
+      </ErrorBoundary>
     );
   }
 }

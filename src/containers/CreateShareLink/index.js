@@ -19,6 +19,7 @@ import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createShareLink } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   preview: {
@@ -156,68 +157,72 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <CreatePostForm
-          title="Share Link"
-          loading={loading}
-          handleSubmit={this.handleSubmit}
-        >
-          <Grid container alignItems="center">
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">
-                {"What's the title of your link??"}
-              </Typography>
+        <ErrorBoundary>
+          <CreatePostForm
+            title="Share Link"
+            loading={loading}
+            handleSubmit={this.handleSubmit}
+          >
+            <Grid container alignItems="center">
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">
+                  {"What's the title of your link??"}
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <OutlinedTextValidator
+                  label="Title"
+                  onChange={this.handleTextChange}
+                  name="title"
+                  value={title}
+                  validators={['required']}
+                  errorMessages={['Title is required']}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Class</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <ClassesSelector onChange={this.handleClassChange} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Url</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <OutlinedTextValidator
+                  label="Url"
+                  onChange={this.handleTextChange}
+                  name="url"
+                  value={url}
+                  validators={['required']}
+                  errorMessages={['URL is required']}
+                />
+              </Grid>
+              <Grid item xs={2} />
+              <Grid item xs={10} className={classes.preview}>
+                <LinkPreview uri={preview} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Tags</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <TagsAutoComplete
+                  tags={tags}
+                  error={tagsError}
+                  onChange={this.handleTagsChange}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={10}>
-              <OutlinedTextValidator
-                label="Title"
-                onChange={this.handleTextChange}
-                name="title"
-                value={title}
-                validators={['required']}
-                errorMessages={['Title is required']}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Class</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <ClassesSelector onChange={this.handleClassChange} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Url</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <OutlinedTextValidator
-                label="Url"
-                onChange={this.handleTextChange}
-                name="url"
-                value={url}
-                validators={['required']}
-                errorMessages={['URL is required']}
-              />
-            </Grid>
-            <Grid item xs={2} />
-            <Grid item xs={10} className={classes.preview}>
-              <LinkPreview uri={preview} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Tags</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <TagsAutoComplete
-                tags={tags}
-                error={tagsError}
-                onChange={this.handleTagsChange}
-              />
-            </Grid>
-          </Grid>
-        </CreatePostForm>
-        <SimpleErrorDialog
-          open={errorDialog}
-          title={errorTitle}
-          body={errorBody}
-          handleClose={this.handleErrorDialogClose}
-        />
+          </CreatePostForm>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SimpleErrorDialog
+            open={errorDialog}
+            title={errorTitle}
+            body={errorBody}
+            handleClose={this.handleErrorDialogClose}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

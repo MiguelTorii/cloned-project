@@ -6,6 +6,7 @@ import type { SelectType } from '../../types/models';
 import FederatedIdentities from '../../components/FederatedIdentities';
 import { getLMSSchools } from '../../api/lms';
 import { REDIRECT_URI } from '../../constants/app';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -75,16 +76,18 @@ class FederatedLogin extends React.Component<Props, State> {
     const { lms, school, error } = this.state;
     return (
       <main className={classes.main}>
-        <FederatedIdentities
-          key={lms}
-          lms={lms}
-          school={school}
-          error={error}
-          onClick={this.handleClick}
-          onChange={this.handleChange}
-          onLoad={this.handleLoadOptions}
-          onSubmit={this.handleSubmit}
-        />
+        <ErrorBoundary>
+          <FederatedIdentities
+            key={lms}
+            lms={lms}
+            school={school}
+            error={error}
+            onClick={this.handleClick}
+            onChange={this.handleChange}
+            onLoad={this.handleLoadOptions}
+            onSubmit={this.handleSubmit}
+          />
+        </ErrorBoundary>
       </main>
     );
   }

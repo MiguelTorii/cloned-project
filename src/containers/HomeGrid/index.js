@@ -9,6 +9,7 @@ import type { UserState } from '../../reducers/user';
 import HomeGridList from '../../components/HomeGridList';
 import Leaderboard from '../Leaderboard';
 import { getHome } from '../../api/user';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
 
@@ -58,12 +59,19 @@ class HomeGrid extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <HomeGridList
-          cards={cards}
-          loading={loading}
-          onOpenLeaderboard={this.handleOpenLeaderboard}
-        />
-        <Leaderboard open={leaderboard} onClose={this.handleCloseLeaderboard} />
+        <ErrorBoundary>
+          <HomeGridList
+            cards={cards}
+            loading={loading}
+            onOpenLeaderboard={this.handleOpenLeaderboard}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Leaderboard
+            open={leaderboard}
+            onClose={this.handleCloseLeaderboard}
+          />
+        </ErrorBoundary>
       </div>
     );
   }

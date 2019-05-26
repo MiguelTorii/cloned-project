@@ -16,6 +16,7 @@ import TextField from '@material-ui/core/TextField';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { report } from '../../api/posts';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   paper: {
@@ -115,87 +116,92 @@ class Report extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
 
     return (
-      <Dialog
-        maxWidth="md"
-        disableBackdropClick={loading}
-        onEntering={this.handleEntering}
-        aria-labelledby="confirmation-dialog-title"
-        classes={{
-          paper: classes.paper
-        }}
-        open={open}
-        onClose={onClose}
-      >
-        <DialogTitle id="confirmation-dialog-title">Report</DialogTitle>
-        <DialogContent>
-          <RadioGroup
-            ref={ref => {
-              this.radioGroupRef = ref;
-            }}
-            aria-label="Reason"
-            name="reason"
-            value={reasonId}
-            onChange={this.handleChange}
-          >
-            <FormControlLabel
-              value="1"
-              disabled={loading}
-              control={<Radio />}
-              label="Inappropriate"
-            />
-            <FormControlLabel
-              value="2"
-              disabled={loading}
-              control={<Radio />}
-              label="Irrelevant"
-            />
-            <FormControlLabel
-              value="3"
-              disabled={loading}
-              control={<Radio />}
-              label="Bullying or Harassment- this post is bullying me"
-            />
-            <FormControlLabel
-              value="4"
-              disabled={loading}
-              control={<Radio />}
-              label="Bullying or Harassment- this post is bullying someone else"
-            />
-          </RadioGroup>
-          <TextField
-            id="report-description"
-            label="Description"
-            placeholder="Add more details"
-            disabled={loading}
-            fullWidth
-            multiline
-            rowsMax="4"
-            value={description}
-            onChange={this.handleTextChange}
-            variant="outlined"
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button disabled={loading} onClick={onClose} color="primary">
-            Cancel
-          </Button>
-          <div className={classes.wrapper}>
-            <Button
-              disabled={loading}
-              onClick={this.handleSubmit}
-              type="submit"
-              color="primary"
-              variant="contained"
+      <ErrorBoundary>
+        <Dialog
+          maxWidth="md"
+          disableBackdropClick={loading}
+          onEntering={this.handleEntering}
+          aria-labelledby="confirmation-dialog-title"
+          classes={{
+            paper: classes.paper
+          }}
+          open={open}
+          onClose={onClose}
+        >
+          <DialogTitle id="confirmation-dialog-title">Report</DialogTitle>
+          <DialogContent>
+            <RadioGroup
+              ref={ref => {
+                this.radioGroupRef = ref;
+              }}
+              aria-label="Reason"
+              name="reason"
+              value={reasonId}
+              onChange={this.handleChange}
             >
-              Report
+              <FormControlLabel
+                value="1"
+                disabled={loading}
+                control={<Radio />}
+                label="Inappropriate"
+              />
+              <FormControlLabel
+                value="2"
+                disabled={loading}
+                control={<Radio />}
+                label="Irrelevant"
+              />
+              <FormControlLabel
+                value="3"
+                disabled={loading}
+                control={<Radio />}
+                label="Bullying or Harassment- this post is bullying me"
+              />
+              <FormControlLabel
+                value="4"
+                disabled={loading}
+                control={<Radio />}
+                label="Bullying or Harassment- this post is bullying someone else"
+              />
+            </RadioGroup>
+            <TextField
+              id="report-description"
+              label="Description"
+              placeholder="Add more details"
+              disabled={loading}
+              fullWidth
+              multiline
+              rowsMax="4"
+              value={description}
+              onChange={this.handleTextChange}
+              variant="outlined"
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button disabled={loading} onClick={onClose} color="primary">
+              Cancel
             </Button>
-            {loading && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-        </DialogActions>
-      </Dialog>
+            <div className={classes.wrapper}>
+              <Button
+                disabled={loading}
+                onClick={this.handleSubmit}
+                type="submit"
+                color="primary"
+                variant="contained"
+              >
+                Report
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </DialogActions>
+        </Dialog>
+      </ErrorBoundary>
     );
   }
 }

@@ -24,6 +24,7 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
 import type { User } from '../../types/models';
 import { VIDEO_SHARE_URL } from '../../constants/routes';
+import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
@@ -306,130 +307,134 @@ class Preview extends React.Component<Props, State> {
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
     return (
-      <div className={classes.root}>
-        <Paper className={classes.paper} elevation={1}>
-          <div className={classes.videoWrapper}>
-            <audio ref={this.audioinput} id="audioinputpreview" autoPlay />
-            <video
-              className={classes.video}
-              ref={this.videoinput}
-              id="videoinputpreview"
-              autoPlay
-            />
-            <div className={classes.mediaDevices}>
-              <Fab
-                color="primary"
-                className={classes.fab}
-                aria-label="Settings"
-                onClick={this.openSettings}
-                size="small"
-              >
-                <SettingsIcon />
-              </Fab>
-            </div>
-            <div className={classes.mediaControls}>
-              <Fab
-                color={isVideoEnabled ? 'primary' : 'default'}
-                aria-label="disable-video"
-                onClick={this.disableCamera}
-                className={classes.fab}
-                size="small"
-              >
-                {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
-              </Fab>
-              <Fab
-                color={isAudioEnabled ? 'primary' : 'default'}
-                aria-label="disable-audio"
-                onClick={this.disableAudio}
-                className={classes.fab}
-                size="small"
-              >
-                {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
-              </Fab>
-            </div>
-            {!isVideoEnabled && (
-              <div className={classes.profile}>
-                <Avatar
-                  alt={initials}
-                  src={profileImage !== '' && profileImage}
-                  style={{ width: 60, height: 60 }}
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <Paper className={classes.paper} elevation={1}>
+            <div className={classes.videoWrapper}>
+              <audio ref={this.audioinput} id="audioinputpreview" autoPlay />
+              <video
+                className={classes.video}
+                ref={this.videoinput}
+                id="videoinputpreview"
+                autoPlay
+              />
+              <div className={classes.mediaDevices}>
+                <Fab
+                  color="primary"
+                  className={classes.fab}
+                  aria-label="Settings"
+                  onClick={this.openSettings}
+                  size="small"
                 >
-                  {initials}
-                </Avatar>
-                {firstName !== '' && (
-                  <Typography
-                    color="textPrimary"
-                    variant="subtitle2"
-                  >{`${firstName} ${lastName}`}</Typography>
-                )}
+                  <SettingsIcon />
+                </Fab>
               </div>
-            )}
-          </div>
-          <Typography component="p" variant="h4" className={classes.margin}>
-            Ready to Join?
-          </Typography>
-          <Typography component="p" variant="h5" className={classes.margin}>
-            First, share the link to invite others to join you
-          </Typography>
-          <Typography component="p" variant="h6" className={classes.margin}>
-            {`${VIDEO_SHARE_URL}/${roomName}`}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={joinRoom}
-          >
-            Join Meet up
-          </Button>
-        </Paper>
-        <Dialog
-          open={open}
-          onClose={this.closeSettings}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">General</DialogTitle>
-          <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-            <FormControl>
-              <InputLabel htmlFor="videoinput-native-helper">Video</InputLabel>
-              <NativeSelect
-                value={selectedvideoinput}
-                onChange={this.handleChange('selectedvideoinput')}
-                input={
-                  <Input name="videoinput" id="videoinput-native-helper" />
-                }
-              >
-                {videoinput.map(item => (
-                  <option key={item.deviceId} value={item.deviceId}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="audioinput-native-helper">Mic</InputLabel>
-              <NativeSelect
-                value={selectedaudioinput}
-                onChange={this.handleChange('selectedaudioinput')}
-                input={
-                  <Input name="audioinput" id="audioinput-native-helper" />
-                }
-              >
-                {audioinput.map(item => (
-                  <option key={item.deviceId} value={item.deviceId}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeSettings} color="primary">
-              Done
+              <div className={classes.mediaControls}>
+                <Fab
+                  color={isVideoEnabled ? 'primary' : 'default'}
+                  aria-label="disable-video"
+                  onClick={this.disableCamera}
+                  className={classes.fab}
+                  size="small"
+                >
+                  {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
+                </Fab>
+                <Fab
+                  color={isAudioEnabled ? 'primary' : 'default'}
+                  aria-label="disable-audio"
+                  onClick={this.disableAudio}
+                  className={classes.fab}
+                  size="small"
+                >
+                  {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
+                </Fab>
+              </div>
+              {!isVideoEnabled && (
+                <div className={classes.profile}>
+                  <Avatar
+                    alt={initials}
+                    src={profileImage !== '' && profileImage}
+                    style={{ width: 60, height: 60 }}
+                  >
+                    {initials}
+                  </Avatar>
+                  {firstName !== '' && (
+                    <Typography
+                      color="textPrimary"
+                      variant="subtitle2"
+                    >{`${firstName} ${lastName}`}</Typography>
+                  )}
+                </div>
+              )}
+            </div>
+            <Typography component="p" variant="h4" className={classes.margin}>
+              Ready to Join?
+            </Typography>
+            <Typography component="p" variant="h5" className={classes.margin}>
+              First, share the link to invite others to join you
+            </Typography>
+            <Typography component="p" variant="h6" className={classes.margin}>
+              {`${VIDEO_SHARE_URL}/${roomName}`}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={joinRoom}
+            >
+              Join Meet up
             </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          </Paper>
+          <Dialog
+            open={open}
+            onClose={this.closeSettings}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">General</DialogTitle>
+            <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+              <FormControl>
+                <InputLabel htmlFor="videoinput-native-helper">
+                  Video
+                </InputLabel>
+                <NativeSelect
+                  value={selectedvideoinput}
+                  onChange={this.handleChange('selectedvideoinput')}
+                  input={
+                    <Input name="videoinput" id="videoinput-native-helper" />
+                  }
+                >
+                  {videoinput.map(item => (
+                    <option key={item.deviceId} value={item.deviceId}>
+                      {item.label}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </FormControl>
+              <FormControl>
+                <InputLabel htmlFor="audioinput-native-helper">Mic</InputLabel>
+                <NativeSelect
+                  value={selectedaudioinput}
+                  onChange={this.handleChange('selectedaudioinput')}
+                  input={
+                    <Input name="audioinput" id="audioinput-native-helper" />
+                  }
+                >
+                  {audioinput.map(item => (
+                    <option key={item.deviceId} value={item.deviceId}>
+                      {item.label}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.closeSettings} color="primary">
+                Done
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

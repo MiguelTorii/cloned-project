@@ -3,6 +3,7 @@
 import React from 'react';
 import MainChatItem from '../../components/FloatingChat/MainChatItem';
 import { getTitle, getSubTitle } from './utils';
+import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   channel: Object,
@@ -104,16 +105,18 @@ class ChatListItem extends React.PureComponent<Props, State> {
     const { channel } = this.props;
     const { loading, name, unread, title, subTitle, groupImage } = this.state;
     return (
-      <MainChatItem
-        roomId={channel.sid}
-        isLoading={loading}
-        imageProfile={groupImage}
-        name={name}
-        roomName={title}
-        lastMessage={subTitle}
-        unReadCount={unread}
-        onClick={this.handleOpenChannel}
-      />
+      <ErrorBoundary>
+        <MainChatItem
+          roomId={channel.sid}
+          isLoading={loading}
+          imageProfile={groupImage}
+          name={name}
+          roomName={title}
+          lastMessage={subTitle}
+          unReadCount={unread}
+          onClick={this.handleOpenChannel}
+        />
+      </ErrorBoundary>
     );
   }
 }
