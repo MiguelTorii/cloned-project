@@ -609,3 +609,60 @@ export const getPostMetadata = async ({
 
   return { recommendedPosts, tags };
 };
+
+export const bestAnswer = async ({
+  feedId,
+  userId,
+  commentId
+}: {
+  feedId: number,
+  userId: string,
+  commentId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.COMMENT}/${commentId}/accept`,
+    {
+      user_id: Number(userId),
+      feed_id: feedId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};
+
+export const updatePostView = async ({
+  userId,
+  postId,
+  typeId
+}: {
+  userId: string,
+  postId: number,
+  typeId: number
+}) => {
+  const token = await getToken();
+
+  const result = await axios.post(
+    `${API_ROUTES.FEED}/${postId}/view`,
+    {
+      user_id: Number(userId),
+      type_id: typeId,
+      token: 'NA'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const { data } = result;
+  return data;
+};

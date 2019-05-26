@@ -12,6 +12,7 @@ import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
+import PostTags from '../PostTags';
 
 const styles = theme => ({
   root: {
@@ -107,6 +108,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
             title={title}
             isMarkdown
           />
+          <PostTags userId={userId} feedId={feedId} />
           <PostItemActions
             userId={userId}
             ownerId={ownerId}
@@ -120,7 +122,12 @@ class ViewQuestion extends React.PureComponent<Props, State> {
             viewCount={viewCount}
             onReload={this.loadData}
           />
-          <PostComments feedId={feedId} postId={postId} typeId={typeId} />
+          <PostComments
+            feedId={feedId}
+            postId={postId}
+            typeId={typeId}
+            isQuestion
+          />
         </PostItem>
       </div>
     );

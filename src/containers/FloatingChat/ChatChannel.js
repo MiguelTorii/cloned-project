@@ -99,7 +99,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
     });
 
-    const profileURLs = await fetchAvatars(channel);
+    let profileURLs = await fetchAvatars(channel);
     this.setState({ profileURLs });
 
     channel.on('messageAdded', message => {
@@ -117,11 +117,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
       }
       this.handleScrollToBottom();
     });
-    channel.on('updated', ({ channel: updatedChannel, updateReasons }) => {
+    channel.on('updated', async ({ channel: updatedChannel, updateReasons }) => {
       if (!this.mounted) return;
       if (updateReasons.indexOf('attributes') > -1) {
+        profileURLs = await fetchAvatars(updatedChannel);
         this.setState({
-          title: getTitle(updatedChannel, userId)
+          title: getTitle(updatedChannel, userId),
+          profileURLs
         });
       }
     });

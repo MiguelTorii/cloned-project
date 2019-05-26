@@ -6,7 +6,8 @@ import SharePost from '../SharePost';
 import {
   updateThanks,
   addToStudyCircle,
-  removeFromStudyCircle
+  removeFromStudyCircle,
+  updatePostView
 } from '../../api/posts';
 
 type Props = {
@@ -34,6 +35,11 @@ class PostItemActions extends React.PureComponent<Props, State> {
     open: false,
     isThanksLoading: false,
     isStudyCircleLoading: false
+  };
+
+  componentDidMount = () => {
+    const { userId, postId, typeId } = this.props;
+    updatePostView({ userId, postId, typeId });
   };
 
   handleShare = () => {

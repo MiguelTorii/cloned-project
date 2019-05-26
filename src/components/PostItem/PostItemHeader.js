@@ -92,11 +92,11 @@ class PostItemHeader extends React.PureComponent<Props> {
             </Typography>
           </div>
         </div>
-        <Typography component="p" variant="h5" noWrap paragraph>
+        <Typography component="p" variant="h5" paragraph>
           {title}
         </Typography>
         {!isMarkdown ? (
-          <Typography component="p" variant="body1" noWrap>
+          <Typography component="p" variant="body1">
             {body}
           </Typography>
         ) : (

@@ -241,6 +241,8 @@ class FloatingChat extends React.PureComponent<Props, State> {
               return x.sid === first ? -1 : y.sid === first ? 1 : 0;
             })
           }));
+        } else {
+          console.log('update reasons: ', updateReasons)
         }
       });
 

@@ -8,15 +8,16 @@ import type { State as StoreState } from '../../types/state';
 import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
 import PostItemComment from '../../components/PostItem/PostItemComment';
 import Report from '../Report';
-import { getPostComments, createComment, thankComment } from '../../api/posts';
+import { getPostComments, createComment, thankComment, bestAnswer } from '../../api/posts';
 import type { Comments } from '../../types/models';
-import { processComments } from './processComments';
+import { processComments } from './utils';
 
 type Props = {
   user: UserState,
   feedId: number,
   postId: number,
-  typeId: number
+  typeId: number,
+  isQuestion?: boolean
 };
 
 type State = {
@@ -27,6 +28,10 @@ type State = {
 };
 
 class ViewNotes extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    isQuestion: false
+  };
+
   state = {
     comments: null,
     items: [],
@@ -87,7 +92,13 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleReport = async ({ commentId, ownerId }) => {
+  handleReport = async ({
+    commentId,
+    ownerId
+  }: {
+    commentId: number,
+    ownerId: number
+  }) => {
     this.setState({ report: { commentId, ownerId } });
   };
 
@@ -96,6 +107,22 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   handleDelete = () => {};
+
+  handleBestAnswer = async ({ commentId }: { commentId: number }) => {
+    const {
+      user: {
+        data: { userId }
+      },
+      feedId
+    } = this.props;
+    this.setState({ isLoading: true });
+    try {
+      await bestAnswer({userId, feedId, commentId})
+      await this.loadData();
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
 
   loadData = async () => {
     const {
@@ -114,7 +141,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId, profileImage, firstName, lastName }
-      }
+      },
+      isQuestion
     } = this.props;
     const { comments, items, isLoading, report } = this.state;
     if (!comments) return null;
@@ -143,11 +171,13 @@ class ViewNotes extends React.PureComponent<Props, State> {
               thanked={item.thanked}
               rootCommentId={item.id}
               isLoading={isLoading}
+              isQuestion={isQuestion}
               isOwn={item.user.userId === userId}
               onPostComment={this.handlePostComment}
               onThanks={this.handleThanks}
               onDelete={this.handleDelete}
               onReport={this.handleReport}
+              onBestAnswer={this.handleBestAnswer}
             />
             {item.children.map(reply => (
               <PostItemComment
@@ -170,6 +200,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
                 onReport={this.handleReport}
+                onBestAnswer={this.handleBestAnswer}
               />
             ))}
             {index + 1 < items.length && <Divider light />}

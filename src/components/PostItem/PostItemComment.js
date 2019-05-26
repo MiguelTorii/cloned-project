@@ -58,6 +58,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
+  bestAnswer: {
+    justifyContent: 'space-between'
+  },
+  grow: {
+    flex: 1
+  },
   thanks: {
     marginLeft: theme.spacing.unit
   },
@@ -86,10 +92,12 @@ type Props = {
   isOwn: boolean,
   isReply?: boolean,
   isLoading?: boolean,
+  isQuestion?: boolean,
   onPostComment: Function,
   onThanks: Function,
   onReport: Function,
-  onDelete: Function
+  onDelete: Function,
+  onBestAnswer: Function
 };
 
 type State = {
@@ -100,7 +108,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
   static defaultProps = {
     replyTo: '',
     isReply: false,
-    isLoading: false
+    isLoading: false,
+    isQuestion: false
   };
 
   state = {
@@ -128,6 +137,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
     onReport({ commentId: id, ownerId });
   };
 
+  handleBestAnswer = () => {
+    const { id, onBestAnswer } = this.props;
+    onBestAnswer({ commentId: id });
+  };
+
   render() {
     const {
       classes,
@@ -144,6 +158,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isOwn,
       isReply,
       isLoading,
+      isQuestion,
       onDelete
     } = this.props;
     const { showAddComment } = this.state;
@@ -187,7 +202,20 @@ class PostItemComment extends React.PureComponent<Props, State> {
               <span dangerouslySetInnerHTML={{ __html: comment }} />
               {/* <Markdown>{comment}</Markdown> */}
             </div>
-            <div className={classes.actions}>
+            <div
+              className={cx(
+                classes.actions,
+                isQuestion && !isOwn && classes.bestAnswer
+              )}
+            >
+              {isQuestion && !isOwn && (
+                <Fragment>
+                  <Button color="primary" onClick={this.handleBestAnswer}>
+                    Best Answer
+                  </Button>
+                  <span className={classes.grow} />
+                </Fragment>
+              )}
               <Typography
                 component="p"
                 variant="subtitle2"
