@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import type { HomeCard } from '../../types/models';
+import { renderText } from './utils';
 
 const styles = theme => ({
   paper: {
@@ -66,9 +67,9 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
     const {
       title,
       data: {
-        message: { text },
+        message: { text, style },
         quests,
-        progressMessage: { text: progressText }
+        progressMessage: { text: progressText, style: progressStyle }
       }
     } = card;
 
@@ -78,7 +79,7 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
           <Typography variant="h4" className={classes.title} paragraph>
             {title}
           </Typography>
-          <Typography variant="subtitle1">{text}</Typography>
+          <Typography variant="subtitle1">{renderText(text, style)}</Typography>
           <div className={classes.quests}>
             {quests.map((quest, index) => (
               <div key={quest.item} className={classes.quest}>
@@ -95,7 +96,9 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
           </div>
           <div className={classes.progress}>
             <Divider className={classes.divider} light />
-            <Typography variant="subtitle1">{progressText}</Typography>
+            <Typography variant="subtitle1">
+              {renderText(progressText, progressStyle)}
+            </Typography>
           </div>
         </Paper>
       </Grid>

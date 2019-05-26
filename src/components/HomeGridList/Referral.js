@@ -43,7 +43,7 @@ class Referral extends React.PureComponent<Props, State> {
         imageUrl
       }
     } = card;
-    
+
     return (
       <Grid item xs={6}>
         <Paper className={classes.paper} elevation={0}>

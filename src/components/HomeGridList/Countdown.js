@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import type { HomeCard } from '../../types/models';
+import { renderText } from './utils';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -48,7 +49,7 @@ class Countdown extends React.PureComponent<Props, State> {
     const {
       title,
       data: {
-        message: { text }
+        message: { text, style }
       }
     } = card;
 
@@ -60,7 +61,7 @@ class Countdown extends React.PureComponent<Props, State> {
           <Typography variant="h4" className={classes.title} paragraph>
             {title}
           </Typography>
-          <Typography variant="h5">{text}</Typography>
+          <Typography variant="h5">{renderText(text, style)}</Typography>
           <div className={classes.links}>
             <Typography>
               <Link
