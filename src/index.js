@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
@@ -30,9 +31,12 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import OAuth from './pages/OAuth';
 import { init as analyticsInit } from './api/analytics';
-import { AMPLITUDE, AMPLITUDE_NEW } from './constants/app';
+import { AMPLITUDE, AMPLITUDE_NEW, GOOGLE_ANALYTICS } from './constants/app';
+import withTracker from './withTracker';
 
 const store = configureStore();
+
+ReactGA.initialize(GOOGLE_ANALYTICS);
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
@@ -42,26 +46,62 @@ ReactDOM.render(
     <DailyRewards />
     <ConnectedRouter history={history}>
       <Switch>
-        <Route exact path="/" render={Index} />
-        <Route exact path="/store" render={Store} />
-        <Route exact path="/feed" render={Feed} />
-        <Route exact path="/share/:code" render={Share} />
-        <Route exact path="/flashcards/:flashcardId" render={FlashCards} />
-        <Route exact path="/notes/:noteId" render={PhotoNote} />
-        <Route exact path="/sharelink/:sharelinkId" render={ShareLink} />
-        <Route exact path="/question/:questionId" render={Question} />
-        <Route exact path="/create/flashcards" render={CreateFlashcards} />
-        <Route exact path="/create/question" render={CreateQuestion} />
-        <Route exact path="/create/notes" render={CreateNotes} />
-        <Route exact path="/create/sharelink" render={CreateShareLink} />
-        <Route exact path="/edit/question/:id" render={EditQuestion} />
-        <Route exact path="/profile/:userId" render={Profile} />
-        <Route exact path="/reminders" render={Reminders} />
-        <Route exact path="/video-call/:roomId" render={VideoCall} />
-        <Route exact path="/video-call" render={StartVideo} />
-        <Route exact path="/login" render={SignIn} />
-        <Route exact path="/signup" render={SignUp} />
-        <Route exact path="/oauth" render={OAuth} />
+        <Route exact path="/" component={withTracker(Index)} />
+        <Route exact path="/store" component={withTracker(Store)} />
+        <Route exact path="/feed" component={withTracker(Feed)} />
+        <Route exact path="/share/:code" component={withTracker(Share)} />
+        <Route
+          exact
+          path="/flashcards/:flashcardId"
+          component={withTracker(FlashCards)}
+        />
+        <Route exact path="/notes/:noteId" component={withTracker(PhotoNote)} />
+        <Route
+          exact
+          path="/sharelink/:sharelinkId"
+          component={withTracker(ShareLink)}
+        />
+        <Route
+          exact
+          path="/question/:questionId"
+          component={withTracker(Question)}
+        />
+        <Route
+          exact
+          path="/create/flashcards"
+          component={withTracker(CreateFlashcards)}
+        />
+        <Route
+          exact
+          path="/create/question"
+          component={withTracker(CreateQuestion)}
+        />
+        <Route
+          exact
+          path="/create/notes"
+          component={withTracker(CreateNotes)}
+        />
+        <Route
+          exact
+          path="/create/sharelink"
+          component={withTracker(CreateShareLink)}
+        />
+        <Route
+          exact
+          path="/edit/question/:id"
+          component={withTracker(EditQuestion)}
+        />
+        <Route exact path="/profile/:userId" component={withTracker(Profile)} />
+        <Route exact path="/reminders" component={withTracker(Reminders)} />
+        <Route
+          exact
+          path="/video-call/:roomId"
+          component={withTracker(VideoCall)}
+        />
+        <Route exact path="/video-call" component={withTracker(StartVideo)} />
+        <Route exact path="/login" component={withTracker(SignIn)} />
+        <Route exact path="/signup" component={withTracker(SignUp)} />
+        <Route exact path="/oauth" component={withTracker(OAuth)} />
         <Route render={() => <div>Miss</div>} />
       </Switch>
     </ConnectedRouter>

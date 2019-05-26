@@ -25,3 +25,8 @@ export const AMPLITUDE_NEW =
   process.env.REACT_APP_STAGE === 'production'
     ? '4fa052782766cac0dd349d2ba4ff6aae'
     : '43f28fcb53bd0ad98609f28d1567dcba';
+
+export const GOOGLE_ANALYTICS =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'UA-124636271-1'
+    : 'UA-124026444-1';
