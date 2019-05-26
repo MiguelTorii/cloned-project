@@ -4,6 +4,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserProfile, About, UserStatistic } from '../../types/models';
@@ -15,6 +16,7 @@ import {
   updateUserProfileUrl
 } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
+import * as signInActions from '../../actions/sign-in';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
@@ -42,7 +44,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  userId: string
+  userId: string,
+  checkUserSession: Function
 };
 
 type State = {
@@ -124,7 +127,8 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
-      }
+      },
+      checkUserSession
     } = this.props;
     this.setState({ uploading: true });
     try {
@@ -144,6 +148,7 @@ class Profile extends React.PureComponent<Props, State> {
 
       await updateUserProfileUrl({ userId, mediaId });
       await this.handleGetProfile();
+      checkUserSession();
     } finally {
       this.setState({ uploading: false });
     }
@@ -229,7 +234,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      checkUserSession: signInActions.checkUserSession
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(Profile));
