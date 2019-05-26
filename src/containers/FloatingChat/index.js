@@ -8,6 +8,7 @@ import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -19,7 +20,7 @@ import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     position: 'fixed',
     bottom: 0,
@@ -27,6 +28,12 @@ const styles = () => ({
     zIndex: 1000,
     display: 'flex',
     alignItems: 'flex-end'
+  },
+  noMessages: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
@@ -57,7 +64,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
-    this.updateOpenChannels = debounce(this.updateOpenChannels, 250)
+    this.updateOpenChannels = debounce(this.updateOpenChannels, 250);
     window.addEventListener('resize', this.updateOpenChannels);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
@@ -380,15 +387,23 @@ class FloatingChat extends React.PureComponent<Props, State> {
             unread={unread}
             onCreateChannel={this.handleCreateChannelOpen}
           >
-            {channels.map(item => (
-              <ChatListItem
-                key={item.sid}
-                channel={item}
-                userId={userId}
-                onOpenChannel={this.handleRoomClick}
-                onUpdateUnreadCount={this.handleUpdateUnreadCount}
-              />
-            ))}
+            {channels.length === 0 ? (
+              <div className={classes.noMessages}>
+                <Typography variant="subtitle1" align="center">
+                  Start a study session by tapping on the icons above
+                </Typography>
+              </div>
+            ) : (
+              channels.map(item => (
+                <ChatListItem
+                  key={item.sid}
+                  channel={item}
+                  userId={userId}
+                  onOpenChannel={this.handleRoomClick}
+                  onUpdateUnreadCount={this.handleUpdateUnreadCount}
+                />
+              ))
+            )}
           </MainChat>
         </div>
         <CreateChatChannel

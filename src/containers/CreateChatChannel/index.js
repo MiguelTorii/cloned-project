@@ -102,8 +102,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       user: {
         data: { userId, firstName, lastName }
       },
-      onChannelCreated,
-      onClose
+      onChannelCreated
     } = this.props;
     const { thumbnail } = this.state;
     this.setState({ isLoading: true });
@@ -137,7 +136,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
 
       if (exist) {
         onChannelCreated({ channel: channelFound, isNew: false });
-        onClose();
+        this.handleClose();
       } else {
         const blockedBy = await getBlockedUsers({ userId });
 
@@ -145,7 +144,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
           user => !some(blockedBy, { user_id: user.userId })
         );
         if (result.length !== userList.length) {
-          onClose();
+          this.handleClose();
           return;
         }
         const channel = await client.createChannel({
@@ -166,22 +165,28 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         }
 
         onChannelCreated({ channel, isNew: true });
-        onClose();
+        this.handleClose();
       }
     } finally {
       this.setState({ isLoading: false });
     }
   };
 
+  handleClose = () => {
+    const { onClose } = this.props;
+    this.setState({ thumbnail: null, isLoading: false });
+    onClose();
+  };
+
   render() {
-    const { type, onClose } = this.props;
+    const { type } = this.props;
     const { thumbnail, isLoading } = this.state;
     return (
       <CreateChatChannelDialog
         chatType={type}
         thumbnail={thumbnail}
         isLoading={isLoading}
-        onClose={onClose}
+        onClose={this.handleClose}
         onSubmit={this.handleSubmit}
         onLoadOptions={this.handleLoadOptions}
         onSendInput={this.handleUploadThumbnail}

@@ -152,6 +152,13 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
     else {
       this.setState({ error: false });
       onSubmit({ chatType, name, type, selectedUsers: users });
+      this.setState({
+        name: '',
+        type: '',
+        users: [],
+        inputValue: '',
+        from: 'school'
+      });
     }
   };
 
@@ -169,17 +176,23 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
       onSendInput(this.fileInput.files[0]);
   };
 
+  handleClose = () => {
+    const { onClose } = this.props;
+    this.setState({
+      name: '',
+      type: '',
+      users: [],
+      inputValue: '',
+      from: 'school'
+    });
+    onClose();
+  };
+
   // eslint-disable-next-line no-undef
   fileInput: ?HTMLInputElement;
 
   render() {
-    const {
-      classes,
-      chatType: open,
-      thumbnail,
-      isLoading,
-      onClose
-    } = this.props;
+    const { classes, chatType: open, thumbnail, isLoading } = this.props;
     const { chatType, name, type, inputValue, from, users, error } = this.state;
 
     return (
@@ -189,7 +202,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
         style={{ maxWidth: 600, margin: '0 auto' }}
         fullScreen
         open={Boolean(open)}
-        onClose={onClose}
+        onClose={this.handleClose}
         fullWidth
         scroll="body"
         aria-labelledby="create-chat-dialog-title"
@@ -315,7 +328,11 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
             </div>
           </DialogContent>
           <DialogActions>
-            <Button disabled={isLoading} onClick={onClose} color="secondary">
+            <Button
+              disabled={isLoading}
+              onClick={this.handleClose}
+              color="secondary"
+            >
               Cancel
             </Button>
 

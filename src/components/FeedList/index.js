@@ -103,6 +103,12 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  noMessages: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
@@ -265,22 +271,30 @@ class FeedList extends React.PureComponent<Props, State> {
               initialLoad={false}
               getScrollParent={() => this.scrollParentRef}
             >
-              {items.map(item => (
-                <FeedItem
-                  key={item.feedId}
-                  userId={userId}
-                  data={item}
-                  handleShareClick={handleShare}
-                  innerRef={node => {
-                    if (fromFeedId === item.feedId) this.selectedRef = node;
-                  }}
-                  onPostClick={onPostClick}
-                  onBookmark={onBookmark}
-                  onReport={onReport}
-                  onDelete={onDelete}
-                  onUserClick={onUserClick}
-                />
-              ))}
+              {items.length === 0 ? (
+                <div className={classes.noMessages}>
+                  <Typography variant="subtitle1" align="center">
+                    No posts for the selected Filters.
+                  </Typography>
+                </div>
+              ) : (
+                items.map(item => (
+                  <FeedItem
+                    key={item.feedId}
+                    userId={userId}
+                    data={item}
+                    handleShareClick={handleShare}
+                    innerRef={node => {
+                      if (fromFeedId === item.feedId) this.selectedRef = node;
+                    }}
+                    onPostClick={onPostClick}
+                    onBookmark={onBookmark}
+                    onReport={onReport}
+                    onDelete={onDelete}
+                    onUserClick={onUserClick}
+                  />
+                ))
+              )}
             </InfiniteScroll>
           </div>
         </Paper>

@@ -57,19 +57,20 @@ class Toolbar extends React.PureComponent<Props, State> {
       <main className={classes.main}>
         <Typography variant="h5">{label}</Typography>
         <div>
-          {views.map(name => (
-            <Fab
-              size="small"
-              key={name}
-              aria-label={name}
-              variant="extended"
-              disabled={view === name}
-              className={classes.fab}
-              onClick={this.handleView(name)}
-            >
-              {messages[name]}
-            </Fab>
-          ))}
+          {false &&
+            views.map(name => (
+              <Fab
+                size="small"
+                key={name}
+                aria-label={name}
+                variant="extended"
+                disabled={view === name}
+                className={classes.fab}
+                onClick={this.handleView(name)}
+              >
+                {messages[name]}
+              </Fab>
+            ))}
         </div>
         <div>
           <Fab

@@ -323,6 +323,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
           </Button>
           <Button
             disabled={uploading}
+            onClick={this.handleSubmit}
             type="submit"
             variant="contained"
             color="primary"

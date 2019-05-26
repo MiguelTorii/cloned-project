@@ -14,6 +14,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import grey from '@material-ui/core/colors/grey';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -94,8 +95,10 @@ const styles = theme => ({
     maxWidth: 75
   },
   imagePost: {
-    width: 75,
-    height: 75
+    minHeight: 75,
+    maxHeight: 75,
+    minWidth: 75,
+    maxWidth: 75
   },
   flashCardsImage: {
     display: 'flex',
@@ -109,6 +112,14 @@ const styles = theme => ({
     padding: 2,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
+  },
+  avatar: {
+    display:'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: '50%'
   }
 });
 
@@ -286,9 +297,11 @@ class FeedItem extends React.PureComponent<Props, State> {
           <CardHeader
             className={classes.header}
             avatar={
+              <ButtonBase className={classes.avatar} onClick={this.handleUserClick}>
               <Avatar aria-label="Recipe" src={data.userProfileUrl}>
                 {initials}
               </Avatar>
+              </ButtonBase>
             }
             action={
               <IconButton onClick={this.handleMenuOpen}>
@@ -336,8 +349,8 @@ class FeedItem extends React.PureComponent<Props, State> {
               <Typography
                 component="p"
                 variant="subtitle2"
-                style={{ maxWidth: 200 }}
-                noWrap
+                style={{ maxWidth: 'inherit' }}
+                // noWrap
               >
                 {data.title}
               </Typography>
