@@ -32,6 +32,8 @@ class HomeGrid extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    this.mounted = true;
+
     const {
       user: {
         data: { userId }
@@ -39,10 +41,14 @@ class HomeGrid extends React.PureComponent<Props, State> {
     } = this.props;
     try {
       const cards = await getHome({ userId });
-      this.setState({ cards });
+      if (this.mounted) this.setState({ cards });
     } finally {
-      this.setState({ loading: false });
+      if (this.mounted) this.setState({ loading: false });
     }
+  };
+
+  componentWillUnmount = () => {
+    this.mounted = false;
   };
 
   handleOpenLeaderboard = () => {
@@ -52,6 +58,8 @@ class HomeGrid extends React.PureComponent<Props, State> {
   handleCloseLeaderboard = () => {
     this.setState({ leaderboard: false });
   };
+
+  mounted: boolean;
 
   render() {
     const { classes } = this.props;

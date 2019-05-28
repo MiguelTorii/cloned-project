@@ -203,6 +203,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                   <OutlinedTextValidator
                     label="Question"
                     onChange={this.handleTextChange}
+                    autoFocus
                     name="question"
                     multiline
                     rows={4}
@@ -230,7 +231,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancel} color="primary">
-                Cancel
+                Close
               </Button>
               <Button
                 onClick={this.handleSubmit}

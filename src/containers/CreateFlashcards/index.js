@@ -3,6 +3,7 @@
 import React from 'react';
 import uuidv4 from 'uuid/v4';
 import update from 'immutability-helper';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -33,7 +34,8 @@ const styles = () => ({
 type Props = {
   classes: Object,
   user: UserState,
-  pushTo: Function
+  pushTo: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -173,6 +175,17 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
       }
     });
     this.setState(newState);
+
+    const { enqueueSnackbar } = this.props;
+    enqueueSnackbar('Flashcards Updated', {
+      variant: 'success',
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left'
+      },
+      autoHideDuration: 2000
+    });
+    this.handleAddNew();
   };
 
   handleErrorDialogClose = () => {
@@ -284,4 +297,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateFlashcards));
+)(withStyles(styles)(withSnackbar(CreateFlashcards)));

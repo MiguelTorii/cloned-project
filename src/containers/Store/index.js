@@ -40,11 +40,13 @@ class Store extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
+    this.mounted = true;
     this.handleFetchRewards = debounce(this.handleFetchRewards, 250);
     this.handleFetchRewards();
   };
 
   componentWillUnmount = () => {
+    this.mounted = false;
     if (
       this.handleFetchRewards.cancel &&
       typeof this.handleFetchRewards.cancel === 'function'
@@ -59,12 +61,12 @@ class Store extends React.PureComponent<Props, State> {
       }
     } = this.props;
     if (userId !== '') {
-      this.setState({ loading: true });
+      if (this.mounted) this.setState({ loading: true });
       try {
         const { availableRewards, slots } = await getRewards({ userId });
-        this.setState({ availableRewards, slots });
+        if (this.mounted) this.setState({ availableRewards, slots });
       } finally {
-        this.setState({ loading: false });
+        if (this.mounted) this.setState({ loading: false });
       }
     } else {
       this.handleFetchRewards();
@@ -91,6 +93,8 @@ class Store extends React.PureComponent<Props, State> {
       this.setState({ loading: false });
     }
   };
+
+  mounted: boolean;
 
   render() {
     const { classes } = this.props;

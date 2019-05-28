@@ -17,6 +17,7 @@ type Props = {
   value: string,
   multiline?: boolean,
   rows?: number,
+  autoFocus?: boolean,
   validators: Array<string>,
   errorMessages: Array<string>,
   onChange: Function
@@ -25,7 +26,8 @@ type Props = {
 class OutlinedTextValidator extends React.PureComponent<Props> {
   static defaultProps = {
     multiline: false,
-    rows: 4
+    rows: 4,
+    autoFocus: false
   };
 
   render() {
@@ -38,6 +40,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
       rows,
       validators,
       errorMessages,
+      autoFocus,
       onChange
     } = this.props;
 
@@ -48,6 +51,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
             label={label}
             multiline={multiline}
             rows={rows}
+            autoFocus={autoFocus}
             variant="outlined"
             onChange={onChange(name)}
             name={name}
