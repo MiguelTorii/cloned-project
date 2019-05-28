@@ -78,7 +78,11 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    if (this.handleFetchFeed.cancel) this.handleFetchFeed.cancel();
+    if (
+      this.handleFetchFeed.cancel &&
+      typeof this.handleFetchFeed.cancel === 'function'
+    )
+      this.handleFetchFeed.cancel();
   };
 
   handleFetchUserClasses = () => {

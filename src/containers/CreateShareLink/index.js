@@ -71,7 +71,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    if (this.updatePreview.cancel) this.updatePreview.cancel();
+    if (
+      this.updatePreview.cancel &&
+      typeof this.updatePreview.cancel === 'function'
+    )
+      this.updatePreview.cancel();
   };
 
   handleSubmit = async event => {

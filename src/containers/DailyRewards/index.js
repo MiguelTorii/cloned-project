@@ -123,7 +123,11 @@ class DailyRewards extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    if (this.handleGetDailyRewards.cancel) this.handleGetDailyRewards.cancel();
+    if (
+      this.handleGetDailyRewards.cancel &&
+      typeof this.handleGetDailyRewards.cancel === 'function'
+    )
+      this.handleGetDailyRewards.cancel();
   };
 
   handleGetDailyRewards = async () => {

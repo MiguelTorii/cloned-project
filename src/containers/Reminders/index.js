@@ -48,8 +48,16 @@ class Reminders extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    if (this.handleFetchReminders.cancel) this.handleFetchReminders.cancel();
-    if (this.handleUpdateDB.cancel) this.handleUpdateDB.cancel();
+    if (
+      this.handleFetchReminders.cancel &&
+      typeof this.handleFetchReminders.cancel === 'function'
+    )
+      this.handleFetchReminders.cancel();
+    if (
+      this.handleUpdateDB.cancel &&
+      typeof this.handleUpdateDB.cancel === 'function'
+    )
+      this.handleUpdateDB.cancel();
   };
 
   handleFetchReminders = async () => {
