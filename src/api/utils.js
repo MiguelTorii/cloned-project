@@ -74,7 +74,8 @@ export const postToCamelCase = (post: Object): Post => {
     title: String((post.title: string) || ''),
     typeId: Number((post.type_id: number) || 0),
     userId: String((post.user_id: string) || ''),
-    userProfileUrl: String((post.user_profile_url: string) || '')
+    userProfileUrl: String((post.user_profile_url: string) || ''),
+    readOnly: Boolean((post.read_only: boolean) || false)
   };
 };
 
@@ -144,6 +145,7 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     classroomName: String((item.classroom_name: string) || ''),
     subject: String((item.subject: string) || ''),
     title: String((item.title: string) || ''),
+    readOnly: Boolean((item.read_only: boolean) || false),
     postInfo: {
       date: String((item.post_info.date: string) || ''),
       feedId: Number((item.post_info.feed_id: number) || 0),

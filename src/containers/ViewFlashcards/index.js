@@ -120,12 +120,12 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       thanked,
       inStudyCircle,
       deck,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
+      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+      readOnly
     } = flashcards;
 
     return (
       <div className={classes.root}>
-        {/* <fieldset disabled="disabled" style={{borderStyle: 'none', padding: 0, margin: 0}}> */}
         <ErrorBoundary>
           <PostItem>
             <ErrorBoundary>
@@ -176,11 +176,15 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
               />
             </ErrorBoundary>
             <ErrorBoundary>
-              <PostComments feedId={feedId} postId={postId} typeId={typeId} />
+              <PostComments
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                readOnly={readOnly}
+              />
             </ErrorBoundary>
           </PostItem>
         </ErrorBoundary>
-        {/* </fieldset> */}
       </div>
     );
   }

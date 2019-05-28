@@ -24,7 +24,8 @@ type Props = {
   feedId: number,
   postId: number,
   typeId: number,
-  isQuestion?: boolean
+  isQuestion?: boolean,
+  readOnly: boolean
 };
 
 type State = {
@@ -143,10 +144,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleRTEChange = value => {
-    console.log(value);
-  };
-
   loadData = async () => {
     const {
       user: {
@@ -165,7 +162,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       user: {
         data: { userId, profileImage, firstName, lastName }
       },
-      isQuestion
+      isQuestion,
+      readOnly
     } = this.props;
     const { comments, items, isLoading, report } = this.state;
     if (!comments) return null;
@@ -178,6 +176,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
             name={name}
             profileImageUrl={profileImage}
             rte
+            readOnly={readOnly}
             onPostComment={this.handlePostComment}
           />
         </ErrorBoundary>

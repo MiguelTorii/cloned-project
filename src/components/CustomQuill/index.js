@@ -6,13 +6,18 @@ import './quill.custom.css';
 
 const modules = {
   toolbar: [
-    [{ 'header': [1, 2, false] }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+    [{ header: [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' }
+    ],
     ['link', 'image'],
     ['clean']
-  ],
-}
+  ]
+};
 
 type Props = {
   placeholder: string,
@@ -22,12 +27,20 @@ type Props = {
 
 class CustomQuill extends React.PureComponent<Props> {
   editor: ?Object;
+
   render() {
     const { placeholder, value, onChange } = this.props;
     return (
-        <ReactQuill disabled modules={modules} placeholder={placeholder} value={value} onChange={onChange} ref={element => {
+      <ReactQuill
+        disabled
+        modules={modules}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        ref={element => {
           this.editor = element;
-        }} />
+        }}
+      />
     );
   }
 }

@@ -73,6 +73,9 @@ export type ClassSection = {
 export type UserClass = {
   className: string,
   classId: number,
+  permissions: {
+    canLeave: boolean
+  },
   section: Array<ClassSection>,
   subjectId: number
 };
@@ -118,7 +121,8 @@ export type Post = {
   title: string,
   typeId: number,
   userId: string,
-  userProfileUrl: string
+  userProfileUrl: string,
+  readOnly: boolean
 };
 
 export type RecommendedPost = {
@@ -268,6 +272,7 @@ export type FeedItem = {
   subject: string,
   classroomName: string,
   title: string,
+  readOnly: boolean,
   postInfo: PostInfo
 };
 

@@ -114,6 +114,11 @@ export const getUserClasses = async ({
   const userClasses = classes.map(userClass => ({
     className: String((userClass.class: string) || ''),
     classId: Number((userClass.class_id: number) || 0),
+    permissions: {
+      canLeave: Boolean(
+        ((userClass.permissions || {}).can_leave: boolean) || false
+      )
+    },
     section: (userClass.section || []).map(item => ({
       firstName: String((item.first_name: string) || ''),
       lastName: String((item.last_name: string) || ''),

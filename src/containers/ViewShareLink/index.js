@@ -102,7 +102,8 @@ class ViewShareLink extends React.PureComponent<Props, State> {
       thanked,
       inStudyCircle,
       postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      uri
+      uri,
+      readOnly
     } = shareLink;
 
     return (
@@ -144,7 +145,12 @@ class ViewShareLink extends React.PureComponent<Props, State> {
               />
             </ErrorBoundary>
             <ErrorBoundary>
-              <PostComments feedId={feedId} postId={postId} typeId={typeId} />
+              <PostComments
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                readOnly={readOnly}
+              />
             </ErrorBoundary>
           </PostItem>
         </ErrorBoundary>

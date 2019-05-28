@@ -193,6 +193,7 @@ export const getNotes = async ({
     noteUrl: String((item.note_url: string) || '')
   }));
   const photoNote = { ...post, notes };
+
   return photoNote;
 };
 
@@ -650,7 +651,7 @@ export const updatePostView = async ({
 }) => {
   const token = await getToken();
 
-  if(process.env.REACT_APP_STAGE !== 'production') return null;
+  if (process.env.REACT_APP_STAGE !== 'production') return null;
 
   const result = await axios.post(
     `${API_ROUTES.FEED}/${postId}/view`,

@@ -100,7 +100,8 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       title,
       thanked,
       inStudyCircle,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
+      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+      readOnly
     } = question;
 
     return (
@@ -145,6 +146,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 postId={postId}
                 typeId={typeId}
                 isQuestion
+                readOnly={readOnly}
               />
             </ErrorBoundary>
           </PostItem>

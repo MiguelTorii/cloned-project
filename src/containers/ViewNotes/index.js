@@ -102,7 +102,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       notes,
       thanked,
       inStudyCircle,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount }
+      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+      readOnly
     } = photoNote;
 
     const images = notes.map(item => ({
@@ -148,7 +149,12 @@ class ViewNotes extends React.PureComponent<Props, State> {
               />
             </ErrorBoundary>
             <ErrorBoundary>
-              <PostComments feedId={feedId} postId={postId} typeId={typeId} />
+              <PostComments
+                feedId={feedId}
+                postId={postId}
+                typeId={typeId}
+                readOnly={readOnly}
+              />
             </ErrorBoundary>
           </PostItem>
         </ErrorBoundary>

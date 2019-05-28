@@ -42,6 +42,7 @@ type Props = {
   name: string,
   isReply?: boolean,
   rte?: boolean,
+  readOnly: boolean,
   onPostComment: Function,
   onCancelComment?: Function
 };
@@ -66,7 +67,8 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
   };
 
   handleRTEChange = value => {
-    this.setState({ value });
+    if (value.trim() === '<p><br></p>') this.setState({ value: '' });
+    else this.setState({ value });
   };
 
   handleClick = () => {
@@ -84,14 +86,21 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, rte, profileImageUrl, name, isReply } = this.props;
+    const {
+      classes,
+      rte,
+      profileImageUrl,
+      name,
+      isReply,
+      readOnly
+    } = this.props;
     const { value } = this.state;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
       <div className={cx(classes.container, isReply && classes.reply)}>
         <div className={classes.body}>
           <Avatar src={profileImageUrl}>{initials}</Avatar>
-          {rte ? (
+          {rte && !readOnly ? (
             <RichTextEditor
               placeholder="Have a question? Ask here"
               value={value}
@@ -106,16 +115,19 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
               variant="outlined"
               className={classes.textField}
               fullWidth
+              disabled={readOnly}
               onChange={this.handleChange}
             />
           )}
         </div>
         <div className={classes.actions}>
-          <Button onClick={this.handleCancel}>Cancel</Button>
+          <Button onClick={this.handleCancel} disabled={readOnly}>
+            Cancel
+          </Button>
           <Button
             color="primary"
             variant="contained"
-            disabled={value.trim() === ''}
+            disabled={value.trim() === '' || readOnly}
             onClick={this.handleClick}
           >
             Reply
