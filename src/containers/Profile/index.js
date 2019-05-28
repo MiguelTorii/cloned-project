@@ -206,7 +206,7 @@ class Profile extends React.PureComponent<Props, State> {
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          <ProfileAbout about={about} />
+          <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
         </ErrorBoundary>
         <ErrorBoundary>
           <ProfileSeasons stats={userStatistics} />

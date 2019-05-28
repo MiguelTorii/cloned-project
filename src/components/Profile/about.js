@@ -2,6 +2,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
@@ -23,12 +24,13 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  about: Array<Object>
+  about: Array<Object>,
+  onOpenEdit: Function
 };
 
 class About extends React.PureComponent<Props> {
   render() {
-    const { classes, about } = this.props;
+    const { classes, about, onOpenEdit } = this.props;
 
     return (
       <div className={classes.container}>
@@ -37,16 +39,22 @@ class About extends React.PureComponent<Props> {
             <Typography variant="h4" gutterBottom>
               About Me
             </Typography>
-            {about.map(item => (
-              <div key={item.id}>
-                <Typography variant="subtitle2" gutterBottom>
-                  {item.section}
-                </Typography>
-                <Typography variant="body2" paragraph>
-                  {item.answer}
-                </Typography>
-              </div>
-            ))}
+            {about.length === 0 ? (
+              <Button variant="outlined" color="primary" onClick={onOpenEdit}>
+                Help your classmates learn more about you
+              </Button>
+            ) : (
+              about.map(item => (
+                <div key={item.id}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    {item.section}
+                  </Typography>
+                  <Typography variant="body2" paragraph>
+                    {item.answer}
+                  </Typography>
+                </div>
+              ))
+            )}
           </div>
         </Paper>
       </div>
