@@ -9,7 +9,11 @@ import type { Action } from '../types/action';
 export type ChatState = {
   isLoading: boolean,
   data: {
-    uuid: string
+    uuid: string,
+    entityId: string,
+    entityFirstName: string,
+    entityLastName: string,
+    entityUuid: string
   },
   error: boolean,
   errorMessage: {
@@ -20,7 +24,11 @@ export type ChatState = {
 
 const defaultState = {
   data: {
-    uuid: ''
+    uuid: '',
+    entityId: '',
+    entityFirstName: '',
+    entityLastName: '',
+    entityUuid: ''
   },
   isLoading: false,
   error: false,
@@ -37,6 +45,19 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           // $FlowIgnore
           uuid: { $set: action.payload.uuid }
+        }
+      });
+    case chatActions.START_CHANNEL_WITH_ENTITY_REQUEST:
+      return update(state, {
+        data: {
+          // $FlowIgnore
+          entityId: { $set: action.payload.entityId },
+          // $FlowIgnore
+          entityFirstName: { $set: action.payload.entityFirstName },
+          // $FlowIgnore
+          entityLastName: { $set: action.payload.entityLastName },
+          // $FlowIgnore
+          entityUuid: { $set: action.payload.entityUuid }
         }
       });
     case rootActions.CLEAR_STATE:

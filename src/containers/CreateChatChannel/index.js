@@ -6,6 +6,7 @@ import some from 'lodash/some';
 import { connect } from 'react-redux';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import type { UserState } from '../../reducers/user';
+import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
 import CreateChatChannelDialog from '../../components/CreateChatChannelDialog';
 import { getBlockedUsers, searchUsers } from '../../api/user';
@@ -14,6 +15,7 @@ import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   user: UserState,
+  chat: ChatState,
   type: ?string,
   client: Object,
   channels: Array<Object>,
@@ -30,6 +32,34 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   state = {
     thumbnail: null,
     isLoading: false
+  };
+
+  componentDidUpdate = prevProps => {
+    const {
+      chat: {
+        data: { entityId, entityFirstName, entityLastName, entityUuid }
+      }
+    } = this.props;
+    const {
+      chat: {
+        data: { entityUuid: prevEntityUuid }
+      }
+    } = prevProps;
+
+    if (entityId !== '' && entityUuid !== prevEntityUuid) {
+      this.handleSubmit({
+        chatType: 'single',
+        name: '',
+        type: '',
+        selectedUsers: [
+          {
+            userId: entityId,
+            firstName: entityFirstName,
+            lastName: entityLastName
+          }
+        ]
+      });
+    }
   };
 
   handleLoadOptions = async ({ query, from }) => {
@@ -198,8 +228,9 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+  user,
+  chat
 });
 
 export default connect(

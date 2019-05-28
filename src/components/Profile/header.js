@@ -70,7 +70,9 @@ type Props = {
   segment: string,
   grade: number,
   joined: string,
-  onOpenEdit: Function
+  onOpenEdit: Function,
+  onStartChat: Function,
+  onStartVideo: Function
 };
 
 class Header extends React.PureComponent<Props> {
@@ -87,7 +89,9 @@ class Header extends React.PureComponent<Props> {
       segment = '',
       grade,
       joined,
-      onOpenEdit
+      onOpenEdit,
+      onStartChat,
+      onStartVideo
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
@@ -154,10 +158,10 @@ class Header extends React.PureComponent<Props> {
               </Typography>
               {!isMyProfile && (
                 <Fragment>
-                  <Button variant="text" color="primary">
+                  <Button variant="text" color="primary" onClick={onStartChat}>
                     Send Luke a message
                   </Button>
-                  <Button variant="text" color="primary">
+                  <Button variant="text" color="primary" onClick={onStartVideo}>
                     Start video study session
                   </Button>
                 </Fragment>

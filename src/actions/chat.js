@@ -17,6 +17,45 @@ const requestOpenCreateChatGroupChannel = ({
   }
 });
 
+const requestStartChannelWithEntity = ({
+  entityId,
+  entityFirstName,
+  entityLastName,
+  entityUuid
+}: {
+  entityId: string,
+  entityFirstName: string,
+  entityLastName: string,
+  entityUuid: string
+}): Action => ({
+  type: chatActions.START_CHANNEL_WITH_ENTITY_REQUEST,
+  payload: {
+    entityId,
+    entityFirstName,
+    entityLastName,
+    entityUuid
+  }
+});
+
 export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
+};
+
+export const openChannelWithEntity = ({
+  entityId,
+  entityFirstName,
+  entityLastName
+}: {
+  entityId: string,
+  entityFirstName: string,
+  entityLastName: string
+}) => async (dispatch: Dispatch) => {
+  dispatch(
+    requestStartChannelWithEntity({
+      entityId,
+      entityFirstName,
+      entityLastName,
+      entityUuid: uuidv4()
+    })
+  );
 };

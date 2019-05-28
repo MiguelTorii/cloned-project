@@ -17,6 +17,7 @@ import {
 } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
 import * as signInActions from '../../actions/sign-in';
+import * as chatActions from '../../actions/chat';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
@@ -45,7 +46,8 @@ type Props = {
   classes: Object,
   user: UserState,
   userId: string,
-  checkUserSession: Function
+  checkUserSession: Function,
+  openChannelWithEntity: Function
 };
 
 type State = {
@@ -154,6 +156,22 @@ class Profile extends React.PureComponent<Props, State> {
     }
   };
 
+  handleStartChat = () => {
+    const { openChannelWithEntity } = this.props;
+    const {
+      userProfile: { userId, firstName, lastName }
+    } = this.state;
+    openChannelWithEntity({
+      entityId: userId,
+      entityFirstName: firstName,
+      entityLastName: lastName
+    });
+  };
+
+  handleStartVideo = () => {
+    // redirect to start video with query parameter set to userId
+  };
+
   render() {
     const {
       classes,
@@ -203,6 +221,8 @@ class Profile extends React.PureComponent<Props, State> {
             grade={grade}
             joined={joined}
             onOpenEdit={this.handleOpenEdit}
+            onStartChat={this.handleStartChat}
+            onStartVideo={this.handleStartVideo}
           />
         </ErrorBoundary>
         <ErrorBoundary>
@@ -237,7 +257,8 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      checkUserSession: signInActions.checkUserSession
+      checkUserSession: signInActions.checkUserSession,
+      openChannelWithEntity: chatActions.openChannelWithEntity
     },
     dispatch
   );
