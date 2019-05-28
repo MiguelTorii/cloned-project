@@ -37,7 +37,13 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   componentDidUpdate = prevProps => {
     const {
       chat: {
-        data: { entityId, entityFirstName, entityLastName, entityUuid }
+        data: {
+          entityId,
+          entityFirstName,
+          entityLastName,
+          entityVideo,
+          entityUuid
+        }
       }
     } = this.props;
     const {
@@ -57,7 +63,8 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
             firstName: entityFirstName,
             lastName: entityLastName
           }
-        ]
+        ],
+        startVideo: entityVideo
       });
     }
   };
@@ -126,7 +133,13 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     this.setState({ thumbnail: readUrl });
   };
 
-  handleSubmit = async ({ chatType, name, type, selectedUsers }) => {
+  handleSubmit = async ({
+    chatType,
+    name,
+    type,
+    selectedUsers,
+    startVideo = false
+  }) => {
     const {
       client,
       channels,
@@ -166,7 +179,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       }
 
       if (exist) {
-        onChannelCreated({ channel: channelFound, isNew: false });
+        onChannelCreated({ channel: channelFound, isNew: false, startVideo });
         this.handleClose();
       } else {
         const blockedBy = await getBlockedUsers({ userId });
@@ -195,7 +208,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
           await channel.add(String(user.userId));
         }
 
-        onChannelCreated({ channel, isNew: true });
+        onChannelCreated({ channel, isNew: true, startVideo });
         this.handleClose();
       }
     } finally {

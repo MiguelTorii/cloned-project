@@ -164,12 +164,22 @@ class Profile extends React.PureComponent<Props, State> {
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
-      entityLastName: lastName
+      entityLastName: lastName,
+      entityVideo: false
     });
   };
 
   handleStartVideo = () => {
-    // redirect to start video with query parameter set to userId
+    const { openChannelWithEntity } = this.props;
+    const {
+      userProfile: { userId, firstName, lastName }
+    } = this.state;
+    openChannelWithEntity({
+      entityId: userId,
+      entityFirstName: firstName,
+      entityLastName: lastName,
+      entityVideo: true
+    });
   };
 
   render() {

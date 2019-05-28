@@ -21,11 +21,13 @@ const requestStartChannelWithEntity = ({
   entityId,
   entityFirstName,
   entityLastName,
+  entityVideo,
   entityUuid
 }: {
   entityId: string,
   entityFirstName: string,
   entityLastName: string,
+  entityVideo: boolean,
   entityUuid: string
 }): Action => ({
   type: chatActions.START_CHANNEL_WITH_ENTITY_REQUEST,
@@ -33,6 +35,7 @@ const requestStartChannelWithEntity = ({
     entityId,
     entityFirstName,
     entityLastName,
+    entityVideo,
     entityUuid
   }
 });
@@ -44,17 +47,20 @@ export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
 export const openChannelWithEntity = ({
   entityId,
   entityFirstName,
-  entityLastName
+  entityLastName,
+  entityVideo
 }: {
   entityId: string,
   entityFirstName: string,
-  entityLastName: string
+  entityLastName: string,
+  entityVideo: boolean
 }) => async (dispatch: Dispatch) => {
   dispatch(
     requestStartChannelWithEntity({
       entityId,
       entityFirstName,
       entityLastName,
+      entityVideo,
       entityUuid: uuidv4()
     })
   );

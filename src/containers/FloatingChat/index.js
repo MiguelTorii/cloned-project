@@ -15,6 +15,7 @@ import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
 import type { ChatChannels } from '../../types/models';
 import { renewTwilioToken } from '../../api/chat';
+import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
 import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
@@ -119,7 +120,11 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   componentWillUnmount = () => {
     this.handleShutdownChat();
-    if (this.updateOpenChannels.cancel && typeof this.updateOpenChannels.cancel === 'function') this.updateOpenChannels.cancel();
+    if (
+      this.updateOpenChannels.cancel &&
+      typeof this.updateOpenChannels.cancel === 'function'
+    )
+      this.updateOpenChannels.cancel();
   };
 
   handleRoomClick = roomId => {
@@ -365,8 +370,22 @@ class FloatingChat extends React.PureComponent<Props, State> {
     this.setState({ createChannel: null });
   };
 
-  handleChannelCreated = ({ channel }: { channel: Object }) => {
+  handleChannelCreated = ({
+    channel,
+    startVideo = false
+  }: {
+    channel: Object,
+    startVideo: boolean
+  }) => {
     this.handleRoomClick(channel.sid);
+    if (startVideo) {
+      logEvent({
+        event: 'Video- Start Video',
+        props: { 'Initiated From': 'Profile' }
+      });
+      const win = window.open(`/video-call/${channel.sid}`, '_blank');
+      win.focus();
+    }
   };
 
   render() {

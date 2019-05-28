@@ -13,6 +13,7 @@ export type ChatState = {
     entityId: string,
     entityFirstName: string,
     entityLastName: string,
+    entityVideo: boolean,
     entityUuid: string
   },
   error: boolean,
@@ -28,6 +29,7 @@ const defaultState = {
     entityId: '',
     entityFirstName: '',
     entityLastName: '',
+    entityVideo: false,
     entityUuid: ''
   },
   isLoading: false,
@@ -56,6 +58,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           entityFirstName: { $set: action.payload.entityFirstName },
           // $FlowIgnore
           entityLastName: { $set: action.payload.entityLastName },
+          // $FlowIgnore
+          entityVideo: { $set: action.payload.entityVideo },
           // $FlowIgnore
           entityUuid: { $set: action.payload.entityUuid }
         }
