@@ -97,6 +97,7 @@ type Props = {
   isReply?: boolean,
   isLoading?: boolean,
   isQuestion?: boolean,
+  readOnly: boolean,
   onPostComment: Function,
   onThanks: Function,
   onReport: Function,
@@ -163,6 +164,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isReply,
       isLoading,
       isQuestion,
+      readOnly,
       onDelete
     } = this.props;
     const { showAddComment } = this.state;
@@ -254,6 +256,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
             name={ownName}
             isReply
             rte
+            readOnly={readOnly}
             onPostComment={this.handlePostComment}
             onCancelComment={this.handleShowAddComment}
           />

@@ -199,6 +199,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 isLoading={isLoading}
                 isQuestion={isQuestion}
                 isOwn={item.user.userId === userId}
+                readOnly={readOnly}
                 onPostComment={this.handlePostComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
@@ -222,6 +223,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   rootCommentId={item.id}
                   isOwn={reply.user.userId === userId}
                   isReply
+                  readOnly={readOnly}
                   onPostComment={this.handlePostComment}
                   onThanks={this.handleThanks}
                   onDelete={this.handleDelete}
