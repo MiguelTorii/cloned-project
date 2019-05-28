@@ -44,6 +44,10 @@ class Store extends React.PureComponent<Props, State> {
     this.handleFetchRewards();
   };
 
+  componentWillUnmount = () => {
+    if (this.handleFetchRewards.cancel) this.handleFetchRewards.cancel();
+  };
+
   handleFetchRewards = async () => {
     const {
       user: {

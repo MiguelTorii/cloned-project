@@ -77,6 +77,10 @@ class Feed extends React.PureComponent<Props, State> {
     await this.handleFetchFeed();
   };
 
+  componentWillUnmount = () => {
+    if (this.handleFetchFeed.cancel) this.handleFetchFeed.cancel();
+  };
+
   handleFetchUserClasses = () => {
     const {
       user: {

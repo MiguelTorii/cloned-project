@@ -75,6 +75,11 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     }
   };
 
+  componentWillUnmount = () => {
+    if (this.handleDebounceFetchNotifications.cancel)
+      this.handleDebounceFetchNotifications.cancel();
+  };
+
   handleDebounceFetchNotifications = async () => {
     try {
       await this.handleFetchNotifications();

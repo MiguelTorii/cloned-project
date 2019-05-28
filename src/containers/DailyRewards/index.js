@@ -122,6 +122,10 @@ class DailyRewards extends React.PureComponent<Props, State> {
     if (userId !== '' && prevUserId === '') this.handleGetDailyRewards();
   };
 
+  componentWillUnmount = () => {
+    if (this.handleGetDailyRewards.cancel) this.handleGetDailyRewards.cancel();
+  };
+
   handleGetDailyRewards = async () => {
     try {
       const {
