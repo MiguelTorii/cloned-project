@@ -230,15 +230,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
               </Grid>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancel} color="primary">
-                Close
-              </Button>
               <Button
                 onClick={this.handleSubmit}
                 variant="outlined"
                 color="primary"
               >
                 Save
+              </Button>
+              <Button onClick={this.handleCancel} color="primary">
+                Close
               </Button>
             </DialogActions>
           </ValidatorForm>
