@@ -110,10 +110,14 @@ class FloatingChat extends React.PureComponent<Props, State> {
     if (profileImage !== prevProfileImage && prevProfileImage !== '') {
       const { client } = this.state;
       if (client) {
-        client.user.updateAttributes({
-          ...client.user.attributes,
-          profileImageUrl: profileImage
-        });
+        try {
+          client.user.updateAttributes({
+            ...client.user.attributes,
+            profileImageUrl: profileImage
+          });
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   };
@@ -128,75 +132,98 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   handleRoomClick = roomId => {
-    const availableSlots = this.getAvailableSlots(window.innerWidth);
-    if (availableSlots === 0) {
-      return;
-    }
+    try {
+      const availableSlots = this.getAvailableSlots(window.innerWidth);
+      if (availableSlots === 0) {
+        return;
+      }
 
-    const { channels } = this.state;
+      const { channels } = this.state;
 
-    const channel = channels.find(item => item.sid === roomId);
+      const channel = channels.find(item => item.sid === roomId);
 
-    if (!channel) return;
+      if (!channel) return;
 
-    const newState = update(this.state, {
-      openChannels: {
-        $apply: b => {
-          if (availableSlots === 0) return [];
-          const index = b.findIndex(item => item.sid === roomId);
-          if (index > -1) {
-            let newB = update(b, { $splice: [[index, 1]] });
-            newB = update(newB, { $splice: [[availableSlots - 1]] });
+      const newState = update(this.state, {
+        openChannels: {
+          $apply: b => {
+            if (availableSlots === 0) return [];
+            const index = b.findIndex(item => item.sid === roomId);
+            if (index > -1) {
+              let newB = update(b, { $splice: [[index, 1]] });
+              newB = update(newB, { $splice: [[availableSlots - 1]] });
+              return [channel, ...newB];
+            }
+            const newB = update(b, { $splice: [[availableSlots - 1]] });
             return [channel, ...newB];
           }
-          const newB = update(b, { $splice: [[availableSlots - 1]] });
-          return [channel, ...newB];
         }
-      }
-    });
-    this.setState(newState);
+      });
+      this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleChannelClose = channelId => {
-    const newState = update(this.state, {
-      openChannels: {
-        $apply: b => {
-          const index = b.findIndex(item => item.sid === channelId);
-          if (index > -1) {
-            return update(b, { $splice: [[index, 1]] });
+    try {
+      const newState = update(this.state, {
+        openChannels: {
+          $apply: b => {
+            const index = b.findIndex(item => item.sid === channelId);
+            if (index > -1) {
+              return update(b, { $splice: [[index, 1]] });
+            }
+            return b;
           }
-          return b;
         }
-      }
-    });
-    this.setState(newState);
+      });
+      this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleUpdateUnreadCount = unread => {
-    this.setState(prevState => ({ unread: prevState.unread + Number(unread) }));
+    try {
+      this.setState(prevState => ({
+        unread: prevState.unread + Number(unread)
+      }));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   updateOpenChannels = () => {
-    const availableSlots = this.getAvailableSlots(window.innerWidth);
-    if (availableSlots === 0) {
-      this.setState({ openChannels: [] });
-      return;
-    }
-
-    const newState = update(this.state, {
-      openChannels: {
-        $apply: b => {
-          const newB = update(b, { $splice: [[availableSlots]] });
-          return [...newB];
-        }
+    try {
+      const availableSlots = this.getAvailableSlots(window.innerWidth);
+      if (availableSlots === 0) {
+        this.setState({ openChannels: [] });
+        return;
       }
-    });
-    this.setState(newState);
+
+      const newState = update(this.state, {
+        openChannels: {
+          $apply: b => {
+            const newB = update(b, { $splice: [[availableSlots]] });
+            return [...newB];
+          }
+        }
+      });
+      this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   getAvailableSlots = width => {
-    const chatSize = 320;
-    return Math.trunc((width - chatSize) / chatSize);
+    try {
+      const chatSize = 320;
+      return Math.trunc((width - chatSize) / chatSize);
+    } catch (err) {
+      console.log(err);
+      return 0;
+    }
   };
 
   handleMessageReceived = id => () => (
@@ -296,14 +323,27 @@ class FloatingChat extends React.PureComponent<Props, State> {
   handleShutdownChat = () => {
     const { client } = this.state;
     if (client) {
-      client.shutdown();
+      try {
+        client.shutdown();
+      } catch (err) {
+        console.log(err);
+      }
     }
     this.setState({ client: null, channels: [], openChannels: [], unread: 0 });
   };
 
   handleRemoveChannel = ({ channel, users }) => {
-    channel.updateAttributes({ ...channel.state.attributes, users });
-    channel.leave();
+    try {
+      channel.updateAttributes({ ...channel.state.attributes, users });
+    } catch (err) {
+      console.log('err');
+    }
+
+    try {
+      channel.leave();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleKickUser = ({
@@ -315,11 +355,19 @@ class FloatingChat extends React.PureComponent<Props, State> {
     users: Array<Object>,
     blockedUserId: string
   }) => {
-    channel.updateAttributes({
-      ...channel.state.attributes,
-      users
-    });
-    channel.removeMember(String(blockedUserId));
+    try {
+      channel.updateAttributes({
+        ...channel.state.attributes,
+        users
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    try {
+      channel.removeMember(String(blockedUserId));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleRemoveChannels = async blockedUserId => {
@@ -330,35 +378,38 @@ class FloatingChat extends React.PureComponent<Props, State> {
     } = this.props;
 
     const { channels } = this.state;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const channel of channels) {
-      const { state = {} } = channel;
-      const { createdBy = '', attributes = {} } = state;
-      const { groupType = '', users = [] } = attributes;
-      if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
-        const newUsers = users.filter(
-          o => o.userId.toString() !== blockedUserId.toString()
-        );
-        if (groupType === '' || users.length <= 2) {
-          // eslint-disable-next-line no-await-in-loop
-          await this.handleRemoveChannel({ channel, users: newUsers });
-        } else if (Number(createdBy) === Number(userId)) {
-          // eslint-disable-next-line no-await-in-loop
-          await this.handleKickUser({
-            channel,
-            users: newUsers,
-            blockedUserId
-          });
-          if (newUsers.length <= 1) {
+    try {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const channel of channels) {
+        const { state = {} } = channel;
+        const { createdBy = '', attributes = {} } = state;
+        const { groupType = '', users = [] } = attributes;
+        if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
+          const newUsers = users.filter(
+            o => o.userId.toString() !== blockedUserId.toString()
+          );
+          if (groupType === '' || users.length <= 2) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.handleRemoveChannel({ channel, users: newUsers });
+          } else if (Number(createdBy) === Number(userId)) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.handleKickUser({
+              channel,
+              users: newUsers,
+              blockedUserId
+            });
+            if (newUsers.length <= 1) {
+              // eslint-disable-next-line no-await-in-loop
+              await this.handleRemoveChannel({ channel, users: newUsers });
+            }
+          } else {
             // eslint-disable-next-line no-await-in-loop
             await this.handleRemoveChannel({ channel, users: newUsers });
           }
-        } else {
-          // eslint-disable-next-line no-await-in-loop
-          await this.handleRemoveChannel({ channel, users: newUsers });
         }
       }
+    } catch (err) {
+      console.log(err);
     }
   };
 
