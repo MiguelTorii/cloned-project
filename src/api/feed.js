@@ -37,18 +37,22 @@ export const fetchFeed = async ({
     from,
     query
   });
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.FEED}${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const {
+      data: { posts }
+    } = result;
 
-  const token = await getToken();
-  const result = await axios.get(`${API_ROUTES.FEED}${url}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  const {
-    data: { posts }
-  } = result;
+    const feed = feedToCamelCase(posts);
 
-  const feed = feedToCamelCase(posts);
-
-  return feed;
+    return feed;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };

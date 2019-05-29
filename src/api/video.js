@@ -10,17 +10,22 @@ export const checkVideoSession = async ({
 }: {
   userId: string
 }): Promise<boolean> => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const result = await axios.get(
-    `${API_ROUTES.VIDEO_SESSION_CHECK}?user_id=${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.get(
+      `${API_ROUTES.VIDEO_SESSION_CHECK}?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
-  const { data = {} } = result;
-  const { success = false } = data;
-  return success;
+    );
+    const { data = {} } = result;
+    const { success = false } = data;
+    return success;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 };

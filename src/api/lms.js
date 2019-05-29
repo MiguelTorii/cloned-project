@@ -6,14 +6,19 @@ import type { LMSSchools } from '../types/models';
 import { userToCamelCase } from './utils';
 
 export const getLMSSchools = async (): Promise<LMSSchools> => {
-  const result = await axios.get(API_ROUTES.CANVAS_SCHOOLS);
-  const { data = {} } = result;
-  const { schools = [] } = data;
-  return schools.map(school => ({
-    clientId: String((school.client_id: string) || ''),
-    school: String((school.school: string) || ''),
-    uri: String((school.uri: string) || '')
-  }));
+  try {
+    const result = await axios.get(API_ROUTES.CANVAS_SCHOOLS);
+    const { data = {} } = result;
+    const { schools = [] } = data;
+    return schools.map(school => ({
+      clientId: String((school.client_id: string) || ''),
+      school: String((school.school: string) || ''),
+      uri: String((school.uri: string) || '')
+    }));
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 
 export const signLMSUser = async ({
@@ -29,15 +34,20 @@ export const signLMSUser = async ({
   clientId: string,
   redirectUri: string
 }): Promise<Object> => {
-  const result = await axios.post(API_ROUTES.CANVAS_USER, {
-    code,
-    uri,
-    grant_type: grantType,
-    client_id: clientId,
-    redirect_uri: redirectUri
-  });
-  const { data = {} } = result;
-  return userToCamelCase(data);
+  try {
+    const result = await axios.post(API_ROUTES.CANVAS_USER, {
+      code,
+      uri,
+      grant_type: grantType,
+      client_id: clientId,
+      redirect_uri: redirectUri
+    });
+    const { data = {} } = result;
+    return userToCamelCase(data);
+  } catch (err) {
+    console.log(err);
+    return userToCamelCase({});
+  }
 };
 
 export const checkCanvasUser = async ({
@@ -45,9 +55,14 @@ export const checkCanvasUser = async ({
 }: {
   nonce: string
 }): Promise<Object> => {
-  const result = await axios.post(API_ROUTES.CANVAS_LOGIN, {
-    nonce
-  });
-  const { data = {} } = result;
-  return userToCamelCase(data);
+  try {
+    const result = await axios.post(API_ROUTES.CANVAS_LOGIN, {
+      nonce
+    });
+    const { data = {} } = result;
+    return userToCamelCase(data);
+  } catch (err) {
+    console.log(err);
+    return userToCamelCase({});
+  }
 };

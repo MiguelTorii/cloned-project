@@ -13,19 +13,24 @@ export const getPresignedURLs = async ({
   type: number,
   fileNames: Array<string>
 }): Promise<Object> => {
-  const token = await getToken();
-  const fileArray = fileNames.map(item => `&file_name=${item}`).join('');
-  const result = await axios.get(
-    `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}${fileArray}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+  try {
+    const token = await getToken();
+    const fileArray = fileNames.map(item => `&file_name=${item}`).join('');
+    const result = await axios.get(
+      `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}${fileArray}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  const { data } = result;
-  return data;
+    const { data } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
 };
 
 export const getPresignedURL = async ({
@@ -37,21 +42,32 @@ export const getPresignedURL = async ({
   type: number,
   mediaType: string
 }): Promise<PresignedURL> => {
-  const token = await getToken();
-  const result = await axios.get(
-    `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}&media_type=${mediaType}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${
+        API_ROUTES.MEDIA_URL
+      }/${type}?user_id=${userId}&media_type=${mediaType}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  const { data } = result;
-  const presignedURL = {
-    url: String((data.url: string) || ''),
-    readUrl: String((data.read_url: string) || ''),
-    mediaId: String((data.media_id: string) || '')
-  };
-  return presignedURL;
+    const { data } = result;
+    const presignedURL = {
+      url: String((data.url: string) || ''),
+      readUrl: String((data.read_url: string) || ''),
+      mediaId: String((data.media_id: string) || '')
+    };
+    return presignedURL;
+  } catch (err) {
+    console.log(err);
+    return {
+      url: '',
+      readUrl: '',
+      mediaId: ''
+    };
+  }
 };

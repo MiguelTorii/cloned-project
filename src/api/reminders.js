@@ -10,24 +10,32 @@ export const getReminders = async ({
 }: {
   userId: string
 }): Promise<ToDos> => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const result = await axios.get(`${API_ROUTES.USER}/${userId}/todo?token=NA`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  const { data = {} } = result;
-  const { todos = [] } = data;
+    const result = await axios.get(
+      `${API_ROUTES.USER}/${userId}/todo?token=NA`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    const { todos = [] } = data;
 
-  return todos.map(item => ({
-    due: Number((item.due: number) || 0),
-    dueDate: Number((item.due_date: number) || 0),
-    id: Number((item.id: number) || 0),
-    label: Number((item.label: number) || 0),
-    status: Number((item.status: number) || 0),
-    title: String((item.title: string) || '')
-  }));
+    return todos.map(item => ({
+      due: Number((item.due: number) || 0),
+      dueDate: Number((item.due_date: number) || 0),
+      id: Number((item.id: number) || 0),
+      label: Number((item.label: number) || 0),
+      status: Number((item.status: number) || 0),
+      title: String((item.title: string) || '')
+    }));
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 
 export const createReminder = async ({
@@ -43,26 +51,31 @@ export const createReminder = async ({
   dueDate: number,
   status?: number
 }) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const result = await axios.post(
-    `${API_ROUTES.USER}/${userId}/todo`,
-    {
-      title,
-      label,
-      due_date: dueDate,
-      token: 'NA',
-      status
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo`,
+      {
+        title,
+        label,
+        due_date: dueDate,
+        token: 'NA',
+        status
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  const { data } = result;
-  return data;
+    const { data } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
 };
 
 export const updateReminder = async ({
@@ -74,24 +87,29 @@ export const updateReminder = async ({
   id: number,
   status: number
 }) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const result = await axios.post(
-    `${API_ROUTES.USER}/${userId}/todo/${id}/status`,
-    {
-      user_id: Number(userId),
-      token: 'NA',
-      status
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo/${id}/status`,
+      {
+        user_id: Number(userId),
+        token: 'NA',
+        status
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  const { data } = result;
-  return data;
+    const { data } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
 };
 
 export const deleteReminder = async ({
@@ -101,21 +119,26 @@ export const deleteReminder = async ({
   userId: string,
   id: number
 }) => {
-  const token = await getToken();
+  try {
+    const token = await getToken();
 
-  const result = await axios.post(
-    `${API_ROUTES.USER}/${userId}/todo/${id}/destroy`,
-    {
-      user_id: Number(userId),
-      token: 'NA'
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo/${id}/destroy`,
+      {
+        user_id: Number(userId),
+        token: 'NA'
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  const { data } = result;
-  return data;
+    const { data } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
 };

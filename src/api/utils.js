@@ -13,36 +13,41 @@ import type {
 } from '../types/models';
 
 export const getToken = async (): Promise<string> => {
-  const token = store.get('TOKEN');
-  const refreshToken = store.get('REFRESH_TOKEN');
-  const userId = store.get('USER_ID');
-  const segment = store.get('SEGMENT');
+  try {
+    const token = store.get('TOKEN');
+    const refreshToken = store.get('REFRESH_TOKEN');
+    const userId = store.get('USER_ID');
+    const segment = store.get('SEGMENT');
 
-  if (token) {
-    const decoded = decode(token);
-    const { exp } = decoded;
-    const date = moment().add(2, 'minutes');
-    if (exp > Number(date.format('X'))) {
-      return token;
+    if (token) {
+      const decoded = decode(token);
+      const { exp } = decoded;
+      const date = moment().add(2, 'minutes');
+      if (exp > Number(date.format('X'))) {
+        return token;
+      }
     }
-  }
 
-  if (segment === '' || userId === '' || refreshToken === '' || !userId) {
+    if (segment === '' || userId === '' || refreshToken === '' || !userId) {
+      return '';
+    }
+
+    const result = await axios.post(API_ROUTES.REFRESH, {
+      user_id: Number(userId),
+      token: refreshToken,
+      segment
+    });
+    const { data = {} } = result;
+    // eslint-disable-next-line camelcase
+    const { jwt_token = '', refresh_token = '' } = data;
+    store.set('TOKEN', jwt_token);
+    store.set('REFRESH_TOKEN', refresh_token);
+    // eslint-disable-next-line camelcase
+    return jwt_token;
+  } catch (err) {
+    console.log(err);
     return '';
   }
-
-  const result = await axios.post(API_ROUTES.REFRESH, {
-    user_id: Number(userId),
-    token: refreshToken,
-    segment
-  });
-  const { data = {} } = result;
-  // eslint-disable-next-line camelcase
-  const { jwt_token = '', refresh_token = '' } = data;
-  store.set('TOKEN', jwt_token);
-  store.set('REFRESH_TOKEN', refresh_token);
-  // eslint-disable-next-line camelcase
-  return jwt_token;
 };
 
 export const postToCamelCase = (post: Object): Post => {
