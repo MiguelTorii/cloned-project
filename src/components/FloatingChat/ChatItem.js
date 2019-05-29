@@ -17,6 +17,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import VideoCamIcon from '@material-ui/icons/Videocam';
 import SettingsIcon from '@material-ui/icons/Settings';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -45,6 +47,10 @@ const styles = theme => ({
     height: 400,
     width: 300
   },
+  paperExpanded: {
+    height: 500,
+    width: 500
+  },
   header: {
     display: 'flex',
     minHeight: 40
@@ -57,6 +63,9 @@ const styles = theme => ({
   },
   title: {
     maxWidth: 140
+  },
+  titleExpanded: {
+    maxWidth: 340
   },
   iconButton: {
     padding: theme.spacing.unit
@@ -89,12 +98,14 @@ type Props = {
   title: string,
   open: boolean,
   unread: number,
+  expanded: boolean,
   // isGroup: boolean,
   onOpen: Function,
   onClose: Function,
   onDelete: Function,
   onStartVideoCall: Function,
-  onViewMembers: Function
+  onViewMembers: Function,
+  onExpand: Function
 };
 
 type State = {
@@ -144,16 +155,22 @@ class ChatItem extends React.PureComponent<Props, State> {
       title,
       open,
       unread,
+      expanded,
       // isGroup,
       onOpen,
       onClose,
-      onStartVideoCall
+      onStartVideoCall,
+      onExpand
     } = this.props;
     const { anchorEl, openRemove } = this.state;
     return (
       <Fragment>
         <Paper
-          className={cx(classes.paper, open && classes.paperOpen)}
+          className={cx(
+            classes.paper,
+            open && classes.paperOpen,
+            open && expanded && classes.paperExpanded
+          )}
           elevation={24}
         >
           <Badge color="secondary" badgeContent={unread}>
@@ -161,12 +178,22 @@ class ChatItem extends React.PureComponent<Props, State> {
           </Badge>
           <div className={classes.header}>
             <ButtonBase className={classes.headerTitle} onClick={onOpen}>
-              <Typography variant="h6" className={classes.title} noWrap>
+              <Typography
+                variant="h6"
+                className={cx(
+                  classes.title,
+                  open && expanded && classes.titleExpanded
+                )}
+                noWrap
+              >
                 {title}
               </Typography>
             </ButtonBase>
             {open ? (
               <Fragment>
+                <ButtonBase className={classes.iconButton} onClick={onExpand}>
+                  {expanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+                </ButtonBase>
                 <ButtonBase
                   className={classes.iconButton}
                   onClick={onStartVideoCall}

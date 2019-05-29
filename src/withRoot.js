@@ -53,6 +53,11 @@ const theme = createMuiTheme({
     useNextVariants: true,
     fontSize: 10
   },
+  zIndex: {
+    mobileStepper: 700,
+    appBar: 800,
+    drawer: 900
+  },
   overrides: {
     MuiAppBar: {
       colorPrimary: {

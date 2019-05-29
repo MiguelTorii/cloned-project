@@ -3,6 +3,7 @@
 import React, { Fragment } from 'react';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
+import cx from 'classnames';
 import Lightbox from 'react-images';
 import { withStyles } from '@material-ui/core/styles';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -23,7 +24,11 @@ const styles = () => ({
   list: {
     overflowY: 'auto',
     flex: 1,
-    maxHeight: 290
+    maxHeight: 290,
+    transition: 'width 0.25s, height 0.25s'
+  },
+  listExpanded: {
+    maxHeight: 390
   },
   typing: {
     width: '100%',
@@ -62,7 +67,8 @@ type State = {
   scroll: boolean,
   viewMembers: boolean,
   loading: boolean,
-  images: Array<{ src: string }>
+  images: Array<{ src: string }>,
+  expanded: boolean
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -78,7 +84,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     scroll: true,
     viewMembers: false,
     loading: false,
-    images: []
+    images: [],
+    expanded: false
   };
 
   componentDidMount = async () => {
@@ -367,6 +374,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState({ images: [] });
   };
 
+  handleExpand = () => {
+    this.setState(({ expanded }) => ({ expanded: !expanded }));
+  };
+
   mounted: boolean;
 
   // eslint-disable-next-line no-undef
@@ -450,7 +461,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       open,
       viewMembers,
       loading,
-      images
+      images,
+      expanded
     } = this.state;
 
     const messageItems = processMessages({
@@ -466,14 +478,16 @@ class ChatChannel extends React.PureComponent<Props, State> {
             open={open}
             unread={unread}
             isGroup={groupType !== ''}
+            expanded={expanded}
             onOpen={this.handleChatOpen}
             onClose={this.handleClose}
             onDelete={this.handleDelete}
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
+            onExpand={this.handleExpand}
           >
             <div
-              className={classes.list}
+              className={cx(classes.list, expanded && classes.listExpanded)}
               ref={node => {
                 this.scrollParentRef = node;
               }}
