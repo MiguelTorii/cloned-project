@@ -21,7 +21,9 @@ type Props = {
   participants: Array<Object>,
   isSharing: boolean,
   isSharingData: boolean,
-  dataReceived: Function
+  pinnedParticipant: ?Object,
+  dataReceived: Function,
+  onPin: Function
 };
 
 type State = {};
@@ -33,7 +35,9 @@ class Thumbnails extends React.PureComponent<Props, State> {
       participants,
       isSharing,
       isSharingData,
-      dataReceived
+      dataReceived,
+      pinnedParticipant,
+      onPin
     } = this.props;
 
     return (
@@ -45,6 +49,11 @@ class Thumbnails extends React.PureComponent<Props, State> {
             isSharing={item.type === 'local' ? isSharing : false}
             isSharingData={item.type === 'local' ? isSharingData : false}
             dataReceived={dataReceived}
+            isPinned={
+              pinnedParticipant &&
+              pinnedParticipant.sid === item.participant.sid
+            }
+            onPin={onPin}
           />
         ))}
       </div>

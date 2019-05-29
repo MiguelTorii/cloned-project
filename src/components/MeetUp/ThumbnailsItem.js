@@ -2,8 +2,10 @@
 import React from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import LockIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
@@ -37,6 +39,19 @@ const styles = () => ({
     flexDirection: 'column',
     zIndex: 100
   },
+  isPinned: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    zIndex: 200
+  },
   column: {
     flexDirection: 'column'
   },
@@ -64,7 +79,9 @@ type Props = {
   participant: Object,
   isSharing: boolean,
   isSharingData: boolean,
-  dataReceived: Function
+  dataReceived: Function,
+  isPinned: boolean,
+  onPin: Function
 };
 
 type State = {
@@ -195,6 +212,13 @@ class ThumbnailsItem extends React.Component<Props, State> {
     }
   };
 
+  handlePin = () => {
+    const { participant, onPin } = this.props;
+    if (participant) {
+      onPin(participant)
+    }
+  };
+
   detachTrack = (track: Object) => {
     const attachedElements = track.detach();
     attachedElements.forEach(element => element.remove());
@@ -206,7 +230,8 @@ class ThumbnailsItem extends React.Component<Props, State> {
     const {
       classes,
       isSharing,
-      isSharingData: isSharingDataProps
+      isSharingData: isSharingDataProps,
+      isPinned
     } = this.props;
     const {
       isVideoEnabled,
@@ -221,7 +246,7 @@ class ThumbnailsItem extends React.Component<Props, State> {
     }`;
 
     return (
-      <div className={classes.root}>
+      <ButtonBase className={classes.root} onClick={this.handlePin}>
         <div ref={this.mediainput} className={classes.wrapper} />
         {isSharing && (
           <div className={cx(classes.overlay, classes.column)}>
@@ -231,6 +256,12 @@ class ThumbnailsItem extends React.Component<Props, State> {
             <ScreenShareIcon />
           </div>
         )}
+        {
+          isPinned && (
+            <div className={classes.isPinned}>
+              <LockIcon />
+            </div>)
+        }
         {!isVideoEnabled && !isSharing && (
           <div className={classes.overlay}>
             <Avatar
@@ -241,9 +272,9 @@ class ThumbnailsItem extends React.Component<Props, State> {
               {initials === '' ? <PersonIcon /> : initials}
             </Avatar>
             {firstName !== '' && (
-              <p
+              <Typography
                 style={{ color: 'white', fontWeight: 'bold' }}
-              >{`${firstName} ${lastName}`}</p>
+              >{`${firstName} ${lastName}`}</Typography>
             )}
           </div>
         )}
@@ -257,7 +288,7 @@ class ThumbnailsItem extends React.Component<Props, State> {
             <CastForEducationIcon style={{ color: 'white' }} />
           </div>
         )}
-      </div>
+      </ButtonBase>
     );
   }
 }

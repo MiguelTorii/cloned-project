@@ -2,6 +2,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import { getUserProfile } from '../../api/user';
@@ -81,6 +82,7 @@ class ActiveParticipant extends React.Component<Props, State> {
   componentDidMount = async () => {
     this.mounted = true;
     const { participant } = this.props;
+
     const { userProfile } = await getUserProfile({
       userId: participant.identity
     });
@@ -90,7 +92,7 @@ class ActiveParticipant extends React.Component<Props, State> {
       lastName,
       profileImage: userProfileUrl
     });
-
+    
     participant.on('trackEnabled', track => {
       if (!this.mounted) return;
       const { kind } = track;
@@ -192,9 +194,9 @@ class ActiveParticipant extends React.Component<Props, State> {
               {initials === '' ? <PersonIcon /> : initials}
             </Avatar>
             {firstName !== '' && (
-              <p
+              <Typography variant="h6"
                 style={{ color: 'white', fontWeight: 'bold' }}
-              >{`${firstName} ${lastName}`}</p>
+              >{`${firstName} ${lastName}`}</Typography>
             )}
           </div>
         )}

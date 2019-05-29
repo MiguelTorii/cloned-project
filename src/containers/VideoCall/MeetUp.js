@@ -57,7 +57,8 @@ type State = {
   drawData: string,
   dataTrack: ?Object,
   isWhiteboardEnabled: boolean,
-  open: boolean
+  open: boolean,
+  pinnedParticipant: ?Object
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -77,7 +78,8 @@ class MeetUp extends React.Component<Props, State> {
       drawData: '',
       dataTrack: null,
       isWhiteboardEnabled: false,
-      open: false
+      open: false,
+      pinnedParticipant: null
     };
   }
 
@@ -179,6 +181,10 @@ class MeetUp extends React.Component<Props, State> {
       videoRoom.disconnect();
     }
   };
+
+  handlePin = participant => {
+    this.setState(({pinnedParticipant}) => ({pinnedParticipant: pinnedParticipant && pinnedParticipant.sid === participant.sid ? null : participant}))
+  }
 
   addParticipant = participant => {
     const newState = update(this.state, {
@@ -343,7 +349,8 @@ class MeetUp extends React.Component<Props, State> {
       isWhiteboardEnabled,
       activeParticipant,
       drawData,
-      open
+      open,
+      pinnedParticipant
     } = this.state;
 
     return (
@@ -372,11 +379,13 @@ class MeetUp extends React.Component<Props, State> {
             isSharing={Boolean(screenTrack)}
             isSharingData={isWhiteboardEnabled}
             dataReceived={this.dataReceived}
+            pinnedParticipant={pinnedParticipant}
+            onPin={this.handlePin}
           />
           {activeParticipant && !isWhiteboardEnabled && (
             <ActiveParticipant
-              key={activeParticipant.sid}
-              participant={activeParticipant}
+              key={pinnedParticipant ? pinnedParticipant.sid : activeParticipant.sid}
+              participant={pinnedParticipant || activeParticipant}
             />
           )}
           {isWhiteboardEnabled && false && (
