@@ -83,71 +83,88 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    const {
-      channel,
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-    channel.setAllMessagesConsumed();
-    const title = getTitle(channel, userId);
-    this.setState({ title });
-
-    channel.getMessages(10).then(paginator => {
-      this.setState({
-        messages: paginator.items,
-        paginator,
-        hasMore: !(paginator.items.length < 10)
-      });
-    });
-
-    const profileURLs = await fetchAvatars(channel);
-    this.setState({ profileURLs });
-
-    channel.on('messageAdded', message => {
-      if (!this.mounted) return;
-      this.setState(prevState => ({
-        messages: [...prevState.messages, message]
-      }));
-      const { open } = this.state;
-      if (!open) {
-        this.setState(prevState => ({
-          unread: prevState.unread + 1
-        }));
-      } else {
-        channel.setAllMessagesConsumed();
-      }
-      this.handleScrollToBottom();
-    });
-    channel.on(
-      'updated',
-      async ({ channel: updatedChannel, updateReasons }) => {
-        if (!this.mounted) return;
-        if (updateReasons.indexOf('attributes') > -1) {
-          this.setState({
-            title: getTitle(updatedChannel, userId)
-          });
+    try {
+      const {
+        channel,
+        user: {
+          data: { userId }
         }
+      } = this.props;
+      try {
+        channel.setAllMessagesConsumed();
+      } catch (err) {
+        console.log(err);
       }
-    );
-    channel.on('typingStarted', member => {
-      if (!this.mounted) return;
-      member.getUser().then(user => {
-        const { state } = user;
-        const { friendlyName } = state;
-        this.setState({ typing: friendlyName });
+
+      const title = getTitle(channel, userId);
+      this.setState({ title });
+
+      try {
+        channel.getMessages(10).then(paginator => {
+          this.setState({
+            messages: paginator.items,
+            paginator,
+            hasMore: !(paginator.items.length < 10)
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      try {
+        const profileURLs = await fetchAvatars(channel);
+        this.setState({ profileURLs });
+      } catch (err) {
+        console.log(err);
+      }
+
+      channel.on('messageAdded', message => {
+        if (!this.mounted) return;
+        this.setState(prevState => ({
+          messages: [...prevState.messages, message]
+        }));
+        const { open } = this.state;
+        if (!open) {
+          this.setState(prevState => ({
+            unread: prevState.unread + 1
+          }));
+        } else {
+          channel.setAllMessagesConsumed();
+        }
+        this.handleScrollToBottom();
       });
-    });
+      channel.on(
+        'updated',
+        async ({ channel: updatedChannel, updateReasons }) => {
+          if (!this.mounted) return;
+          if (updateReasons.indexOf('attributes') > -1) {
+            this.setState({
+              title: getTitle(updatedChannel, userId)
+            });
+          }
+        }
+      );
+      channel.on('typingStarted', member => {
+        if (!this.mounted) return;
+        member.getUser().then(user => {
+          const { state } = user;
+          const { friendlyName } = state;
+          this.setState({ typing: friendlyName });
+        });
+      });
 
-    channel.on('typingEnded', () => {
-      if (!this.mounted) return;
-      this.setState({ typing: '' });
-    });
+      channel.on('typingEnded', () => {
+        if (!this.mounted) return;
+        this.setState({ typing: '' });
+      });
 
-    logEvent({
-      event: 'User- View Chat Room',
-      props: {}
-    });
+      logEvent({
+        event: 'User- View Chat Room',
+        props: {}
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   componentDidUpdate = () => {
@@ -171,7 +188,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
       return;
     }
 
-    channel.setAllMessagesConsumed();
+    try {
+      channel.setAllMessagesConsumed();
+    } catch (err) {
+      console.log(err);
+    }
 
     this.setState({
       open: true,
@@ -202,6 +223,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
       // this.setState(prevState => ({ count: prevState.count + 1 }));
       // this.handleMessageCount();
+    } catch (err) {
+      console.log(err);
     } finally {
       this.setState({ loading: false });
     }
@@ -246,6 +269,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
       // this.setState(prevState => ({ count: prevState.count + 1 }));
       // this.handleMessageCount();
+    } catch (err) {
+      console.log(err);
     } finally {
       this.setState({ loading: false });
     }
@@ -257,29 +282,41 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleLoadMore = () => {
     const { paginator } = this.state;
-    if (paginator.hasPrevPage) {
-      paginator.prevPage().then(result => {
-        this.setState(prevState => {
-          return {
-            messages: [...result.items, ...prevState.messages],
-            paginator: result,
-            hasMore: !(!result.hasPrevPage || result.items.length < 10),
-            scroll: false
-          };
+    try {
+      if (paginator.hasPrevPage) {
+        paginator.prevPage().then(result => {
+          this.setState(prevState => {
+            return {
+              messages: [...result.items, ...prevState.messages],
+              paginator: result,
+              hasMore: !(!result.hasPrevPage || result.items.length < 10),
+              scroll: false
+            };
+          });
         });
-      });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   handleTyping = () => {
     const { channel } = this.props;
-    channel.typing();
+    try {
+      channel.typing();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleScrollToBottom = () => {
     const { scroll } = this.state;
-    if (scroll && this.end) {
-      this.end.scrollIntoView({ behavior: 'instant' });
+    try {
+      if (scroll && this.end) {
+        this.end.scrollIntoView({ behavior: 'instant' });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -291,13 +328,17 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onRemove
     } = this.props;
-    const { state } = channel;
-    const { attributes = {} } = state;
-    const { users = [] } = attributes;
-    const newUsers = users.filter(
-      o => o.userId.toString() !== userId.toString()
-    );
-    onRemove({ channel, users: newUsers });
+    try {
+      const { state } = channel;
+      const { attributes = {} } = state;
+      const { users = [] } = attributes;
+      const newUsers = users.filter(
+        o => o.userId.toString() !== userId.toString()
+      );
+      onRemove({ channel, users: newUsers });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleStartVideoCall = () => {
@@ -336,48 +377,52 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;
-
-    switch (type) {
-      case 'date':
-        return <ChatMessageDate key={id} body={item.body} />;
-      case 'message':
-        return (
-          <ChatMessage
-            key={id}
-            name={item.name}
-            messageList={item.messageList}
-            avatar={getAvatar({ id: item.author, profileURLs })}
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'own':
-        return (
-          <ChatMessage
-            key={id}
-            messageList={item.messageList}
-            isOwn
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'end':
-        return (
-          <div
-            key={uuidv4()}
-            style={{
-              float: 'left',
-              clear: 'both'
-            }}
-            ref={el => {
-              this.end = el;
-            }}
-          />
-        );
-      default:
-        return null;
+    try {
+      switch (type) {
+        case 'date':
+          return <ChatMessageDate key={id} body={item.body} />;
+        case 'message':
+          return (
+            <ChatMessage
+              key={id}
+              name={item.name}
+              messageList={item.messageList}
+              avatar={getAvatar({ id: item.author, profileURLs })}
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
+        case 'own':
+          return (
+            <ChatMessage
+              key={id}
+              messageList={item.messageList}
+              isOwn
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
+        case 'end':
+          return (
+            <div
+              key={uuidv4()}
+              style={{
+                float: 'left',
+                clear: 'both'
+              }}
+              ref={el => {
+                this.end = el;
+              }}
+            />
+          );
+        default:
+          return null;
+      }
+    } catch (err) {
+      console.log(err);
+      return null;
     }
   };
 
