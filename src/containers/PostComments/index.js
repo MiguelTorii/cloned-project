@@ -2,7 +2,10 @@
 
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
@@ -19,7 +22,20 @@ import type { Comments } from '../../types/models';
 import { processComments } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 
+const styles = theme => ({
+  readOnly: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
+
 type Props = {
+  classes: Object,
   user: UserState,
   feedId: number,
   postId: number,
@@ -159,6 +175,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
   render() {
     const {
+      classes,
       user: {
         data: { userId, profileImage, firstName, lastName }
       },
@@ -171,6 +188,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
+        <Paper className={classes.readOnly} elevation={8}>
+          <Typography variant="h6">
+            Commenting and replying have been disabled for CircleIn101 post
+          </Typography>
+        </Paper>
         <ErrorBoundary>
           <PostItemAddComment
             name={name}
@@ -255,4 +277,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(ViewNotes);
+)(withStyles(styles)(ViewNotes));

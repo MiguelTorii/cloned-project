@@ -41,7 +41,7 @@ export const API_ROUTES = {
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
   QUESTION: `${API_URL}/question`,
   DECK: `${API_URL}/deck`,
-  FLASHCARDS: `${API_URL}/temporary_deck`,
+  FLASHCARDS: `${API_URL_V1_1}/deck`,
   SHARELINK: `${API_URL}/link`,
   STUDY_CIRCLE: `${API_URL}/study_circle`,
   COMMENT: `${API_URL}/comment`,

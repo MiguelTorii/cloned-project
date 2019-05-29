@@ -124,7 +124,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    this.handleShutdownChat();
     if (
       this.updateOpenChannels.cancel &&
       typeof this.updateOpenChannels.cancel === 'function'
@@ -136,6 +135,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
       typeof this.handleInitChat.cancel === 'function'
     )
       this.handleInitChat.cancel();
+    this.handleShutdownChat();
   };
 
   handleRoomClick = roomId => {
