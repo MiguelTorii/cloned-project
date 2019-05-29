@@ -103,7 +103,7 @@ class Feed extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    getUserClasses({ userId }).then(classes => {
+    getUserClasses({ userId }).then(({ classes }) => {
       const classesList = processUserClasses({ classes, segment });
       this.setState({ classesList });
     });

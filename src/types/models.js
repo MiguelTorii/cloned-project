@@ -80,7 +80,14 @@ export type UserClass = {
   subjectId: number
 };
 
-export type UserClasses = Array<UserClass>;
+export type Permissions = {
+  canAddClasses: boolean
+};
+
+export type UserClasses = {
+  classes: Array<UserClass>,
+  permissions: Permissions
+};
 
 export type AvailableClasses = {
   [key: string]: UserClasses

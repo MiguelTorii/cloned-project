@@ -29,7 +29,7 @@ export const getUserProfile = async ({
     const { data } = result;
     // eslint-disable-next-line camelcase
     const { user_profile = {}, about = [], user_statistics = [] } = data;
-  
+
     const userProfile = {
       userId: String((user_profile.user_id: string) || ''),
       firstName: String((user_profile.first_name: string) || ''),
@@ -44,11 +44,13 @@ export const getUserProfile = async ({
       state: String((user_profile.state: string) || ''),
       userProfileUrl: String((user_profile.user_profile_url: string) || '')
     };
-  
+
     const userStatistics = user_statistics.map(stats => ({
       seasonId: Number((stats.season_id: number) || 0),
       bestAnswers: Number((stats.best_answers: number) || 0),
-      communityServiceHours: Number((stats.community_service_hours: number) || 0),
+      communityServiceHours: Number(
+        (stats.community_service_hours: number) || 0
+      ),
       currentSeason: Boolean((stats.current_season: boolean) || false),
       name: String((stats.name: string) || ''),
       points: Number((stats.points: number) || 0),
@@ -56,26 +58,29 @@ export const getUserProfile = async ({
       reach: Number((stats.reach: number) || 0),
       thanks: Number((stats.thanks: number) || 0)
     }));
-  
+
     return { userProfile, about, userStatistics };
   } catch (err) {
-    console.log(err)
-    return { userProfile: {
-      userId: '',
-      firstName: '',
-      lastName: '',
-      grade: 0,
-      hours: 0,
-      inStudyCircle: false,
-      joined: '',
-      points: 0,
-      rank: 0,
-      school: '',
-      state: '',
-      userProfileUrl: ''
-    }, about: [], userStatistics: [] }
+    console.log(err);
+    return {
+      userProfile: {
+        userId: '',
+        firstName: '',
+        lastName: '',
+        grade: 0,
+        hours: 0,
+        inStudyCircle: false,
+        joined: '',
+        points: 0,
+        rank: 0,
+        school: '',
+        state: '',
+        userProfileUrl: ''
+      },
+      about: [],
+      userStatistics: []
+    };
   }
-  
 };
 
 export const searchUsers = async ({
@@ -92,7 +97,7 @@ export const searchUsers = async ({
     const url = schoolId
       ? `${API_ROUTES.SEARCH_USERS}/${schoolId}/users`
       : `${API_ROUTES.SEARCH_USERS}/users`;
-  
+
     const result = await axios.get(
       `${url}?user_id=${userId}&token=NA&index=0&limit=50&query=${query}`,
       {
@@ -112,10 +117,9 @@ export const searchUsers = async ({
       userId: user.user_id
     }));
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return [];
   }
-  
 };
 
 export const getUserClasses = async ({
@@ -134,9 +138,9 @@ export const getUserClasses = async ({
       }
     );
     const {
-      data: { classes = [] }
+      data: { classes = [], permissions = {} }
     } = result;
-  
+
     const userClasses = classes.map(userClass => ({
       className: String((userClass.class: string) || ''),
       classId: Number((userClass.class_id: number) || 0),
@@ -154,13 +158,16 @@ export const getUserClasses = async ({
       })),
       subjectId: Number((userClass.subject_id: number) || 0)
     }));
-  
-    return userClasses;
+
+    const userPermissions = {
+      canAddClasses: Boolean((permissions.can_add_classes: boolean) || false)
+    };
+
+    return { classes: userClasses, permissions: userPermissions };
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return { classes: [], permissions: { canAddClasses: false } };
   }
-  
 };
 
 export const getAvailableClasses = async ({
@@ -183,11 +190,11 @@ export const getAvailableClasses = async ({
     const {
       data: { classes = {} }
     } = result;
-  
+
     const keys = Object.keys(classes);
-  
+
     const classesList = {};
-  
+
     // eslint-disable-next-line no-restricted-syntax
     for (const key of keys) {
       classesList[key] = classes[key].map(item => ({
@@ -203,13 +210,12 @@ export const getAvailableClasses = async ({
         subjectId: Number((item.subject_id: number) || 0)
       }));
     }
-  
+
     return classesList;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const leaveUserClass = async ({
@@ -232,7 +238,7 @@ export const leaveUserClass = async ({
     } else {
       url = `${API_ROUTES.USER_CLASS}/${classId}?user_id=${userId}`;
     }
-  
+
     const result = await axios.delete(url, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -243,10 +249,9 @@ export const leaveUserClass = async ({
     } = result;
     return success;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const joinClass = async ({
@@ -277,10 +282,9 @@ export const joinClass = async ({
     const { data = {} } = result;
     return data;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const getBlockedUsers = async ({
@@ -307,10 +311,9 @@ export const getBlockedUsers = async ({
       name: String((item.name: string) || '')
     }));
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return [];
   }
-  
 };
 
 export const blockUser = async ({
@@ -337,10 +340,9 @@ export const blockUser = async ({
     const { data = {} } = result;
     return data;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const unblockUser = async ({
@@ -368,10 +370,9 @@ export const unblockUser = async ({
     const { data = {} } = result;
     return data;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const getLeaderboard = async ({
@@ -402,17 +403,16 @@ export const getLeaderboard = async ({
     );
     const { data = {} } = result;
     const { leaderboard = [] } = data;
-  
+
     return leaderboard.map(item => ({
       userId: String((item.user_id: string) || ''),
       points: Number((item.points: number) || 0),
       username: String((item.username: string) || '')
     }));
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return [];
   }
-  
 };
 
 export const getStudyCircle = async ({
@@ -440,10 +440,9 @@ export const getStudyCircle = async ({
       typeId: Number((item.study_circle_type_id: number) || 0)
     }));
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return [];
   }
-  
 };
 
 export const getUserStats = async ({
@@ -472,16 +471,15 @@ export const getUserStats = async ({
       )
     };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return {
       communityServiceHours: 0,
       reach: 0,
       scholarshipPoints: 0,
       weeklyNotesGoal: 0,
       weeklyNotesGoalProgress: 0
-    }
+    };
   }
-  
 };
 
 export const getDailyRewards = async ({
@@ -511,14 +509,13 @@ export const getDailyRewards = async ({
       stage: Number((reward.stage: number) || 0)
     };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return {
       givenPoints: 0,
       pointsLeft: 0,
       stage: 0
-    }
+    };
   }
-  
 };
 
 export const updateProfile = async ({
@@ -543,13 +540,12 @@ export const updateProfile = async ({
       }
     );
     const { data = {} } = result;
-  
+
     return data;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const updateUserProfileUrl = async ({
@@ -576,13 +572,12 @@ export const updateUserProfileUrl = async ({
       }
     );
     const { data = {} } = result;
-  
+
     return data;
   } catch (err) {
-    console.log(err)
-    return {}
+    console.log(err);
+    return {};
   }
-  
 };
 
 export const getHome = async ({
@@ -600,10 +595,10 @@ export const getHome = async ({
     });
     const { data: cardData = {} } = result;
     const { cards = [] } = cardData;
-  
+
     return cards.map(item => {
       const { data = {} } = item;
-  
+
       const message = {
         text: String(((data.message || {}).text: string) || ''),
         style: ((data.message || {}).style || []).map(s => ({
@@ -612,7 +607,7 @@ export const getHome = async ({
           weight: String((s.weight: string) || '')
         }))
       };
-  
+
       const progressMessage = {
         text: String(((data.progress_message || {}).text: string) || ''),
         style: ((data.progress_message || {}).style || []).map(s => ({
@@ -621,14 +616,14 @@ export const getHome = async ({
           weight: String((s.weight: string) || '')
         }))
       };
-  
+
       const quests = (data.quests || []).map(quest => ({
         item: String((quest.item: string) || ''),
         status: String((quest.status: string) || '')
       }));
-  
+
       const imageUrl = String((data.image_url: string) || '');
-  
+
       return {
         cardId: String((item.card_id: string) || ''),
         title: String((item.title: string) || ''),
@@ -641,8 +636,7 @@ export const getHome = async ({
       };
     });
   } catch (err) {
-    console.log(err)
-    return []
+    console.log(err);
+    return [];
   }
-  
 };

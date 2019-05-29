@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/prefer-default-export */
 // @flow
-import type { UserClasses, SelectType } from '../../types/models';
+import type { UserClass, SelectType } from '../../types/models';
 
 export const processClasses = ({
   classes,
   segment
 }: {
-  classes: UserClasses,
+  classes: Array<UserClass>,
   segment: string
 }): Array<SelectType> => {
   if (segment === 'K12')

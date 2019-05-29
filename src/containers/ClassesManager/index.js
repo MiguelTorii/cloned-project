@@ -25,7 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { UserClasses } from '../../types/models';
+import type { UserClass, Permissions } from '../../types/models';
 import {
   getUserClasses,
   getAvailableClasses,
@@ -55,7 +55,8 @@ type Props = {
 };
 
 type State = {
-  userClasses: UserClasses,
+  userClasses: Array<UserClass>,
+  permissions: Permissions,
   availableClasses: Array<Object>,
   search: string,
   loading: boolean,
@@ -66,6 +67,9 @@ type State = {
 class ClassesManager extends React.PureComponent<Props, State> {
   state = {
     userClasses: [],
+    permissions: {
+      canAddClasses: false
+    },
     availableClasses: [],
     search: '',
     loading: false,
@@ -98,9 +102,11 @@ class ClassesManager extends React.PureComponent<Props, State> {
         for (const key of keys) {
           availableClasses.push({ name: key, classes: result[1][key] });
         }
+        const { classes = [], permissions } = result[0] || {};
 
         this.setState({
-          userClasses: result[0],
+          userClasses: classes,
+          permissions,
           availableClasses,
           loading: false
         });
@@ -156,8 +162,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, userId });
-      const userClasses = await getUserClasses({ userId });
-      this.setState({ userClasses });
+      const { classes } = await getUserClasses({ userId });
+      this.setState({ userClasses: classes });
     } finally {
       this.setState({ loading: false });
     }
@@ -178,8 +184,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, sectionId, userId });
-      const userClasses = await getUserClasses({ userId });
-      this.setState({ userClasses });
+      const { classes } = await getUserClasses({ userId });
+      this.setState({ userClasses: classes });
     } finally {
       this.setState({ loading: false });
     }
@@ -204,8 +210,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
         // eslint-disable-next-line no-await-in-loop
         await joinClass({ classId, sectionId, userId });
       }
-      const userClasses = await getUserClasses({ userId });
-      this.setState({ userClasses, loading: false });
+      const { classes } = await getUserClasses({ userId });
+      this.setState({ userClasses: classes, loading: false });
     } catch (err) {
       this.setState({ loading: false });
     }
@@ -218,6 +224,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { userClasses } = this.state;
+
     if (userClasses.length === 0) {
       return (
         <ListItem>
@@ -230,7 +237,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       return userClasses.map(item => (
         <ListItem key={item.classId}>
           <ListItemText primary={item.className} />
-          {!canvasUser && (
+          {!canvasUser && (item.permissions || {}).canLeave && (
             <ListItemSecondaryAction>
               <Button
                 variant="outlined"
@@ -254,7 +261,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 section.firstName
               } ${section.lastName} - ${section.section}`}
             />
-            {!canvasUser && (
+            {!canvasUser && (item.permissions || {}).canLeave && (
               <ListItemSecondaryAction>
                 <Button
                   variant="outlined"
@@ -418,12 +425,16 @@ class ClassesManager extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: { userId }
+        data: { userId, canvasUser }
       },
       open,
       onClose
     } = this.props;
-    const { loading, errorText } = this.state;
+    const {
+      permissions: { canAddClasses },
+      loading,
+      errorText
+    } = this.state;
     if (!open) return null;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
@@ -431,42 +442,46 @@ class ClassesManager extends React.PureComponent<Props, State> {
 
     return (
       <ErrorBoundary>
-      <Dialog
-        open={open}
-        className={classes.root}
-        onClose={onClose}
-        aria-labelledby="manage-classes-dialog-title"
-        aria-describedby="manage-classes-dialog-description"
-      >
-        <DialogTitle id="manage-classes-dialog-title">
-          Add/Remove Classes
-        </DialogTitle>
-        <DialogContent>
-          {loading && <CircularProgress size={12} />}
-          {!loading && (
-            <List className={classes.list}>{this.renderUserClasses()}</List>
-          )}
-          {!loading && <Typography>List of available classes</Typography>}
-          {errorText && (
-            <FormHelperText error>
-              You have to select at least 1 class
-            </FormHelperText>
-          )}
-          {!loading && this.renderAvailableClasses()}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary" variant="outlined">
-            Cancel
-          </Button>
-          <Button
-            onClick={this.handleSubmit}
-            color="primary"
-            variant="contained"
-          >
-            Join
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog
+          open={open}
+          className={classes.root}
+          onClose={onClose}
+          aria-labelledby="manage-classes-dialog-title"
+          aria-describedby="manage-classes-dialog-description"
+        >
+          <DialogTitle id="manage-classes-dialog-title">
+            Add/Remove Classes
+          </DialogTitle>
+          <DialogContent>
+            {loading && <CircularProgress size={12} />}
+            {!loading && (
+              <List className={classes.list}>{this.renderUserClasses()}</List>
+            )}
+            {!canvasUser && canAddClasses && !loading && (
+              <Typography>List of available classes</Typography>
+            )}
+            {!canvasUser && canAddClasses && errorText && (
+              <FormHelperText error>
+                You have to select at least 1 class
+              </FormHelperText>
+            )}
+            {!canvasUser && canAddClasses && !loading && this.renderAvailableClasses()}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose} color="primary" variant="outlined">
+              Close
+            </Button>
+            {canAddClasses && (
+              <Button
+                onClick={this.handleSubmit}
+                color="primary"
+                variant="contained"
+              >
+                Join
+              </Button>
+            )}
+          </DialogActions>
+        </Dialog>
       </ErrorBoundary>
     );
   }

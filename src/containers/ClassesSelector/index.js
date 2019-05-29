@@ -44,7 +44,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
         data: { userId, segment }
       }
     } = this.props;
-    const classes = await getUserClasses({ userId });
+    const { classes } = await getUserClasses({ userId });
     const userClasses = processClasses({ classes, segment });
     if (this.mounted) this.setState({ userClasses });
   };
