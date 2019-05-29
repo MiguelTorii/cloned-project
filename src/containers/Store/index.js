@@ -40,6 +40,17 @@ class Store extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
+    window.addEventListener('offline', () => {
+      if (
+        this.handleFetchRewards.cancel &&
+        typeof this.handleFetchRewards.cancel === 'function'
+      )
+        this.handleFetchRewards.cancel();
+    });
+    window.addEventListener('online', () => {
+      this.handleFetchRewards();
+    });
+
     this.mounted = true;
     this.handleFetchRewards = debounce(this.handleFetchRewards, 250);
     this.handleFetchRewards();

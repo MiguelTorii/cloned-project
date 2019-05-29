@@ -72,6 +72,17 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    window.addEventListener('offline', () => {
+      if (
+        this.handleFetchFeed.cancel &&
+        typeof this.handleFetchFeed.cancel === 'function'
+      )
+        this.handleFetchFeed.cancel();
+    });
+    window.addEventListener('online', () => {
+      this.handleFetchFeed();
+    });
+
     this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
     this.handleFetchUserClasses();
     await this.handleFetchFeed();

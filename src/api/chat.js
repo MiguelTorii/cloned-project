@@ -9,16 +9,21 @@ export const renewTwilioToken = async ({
 }: {
   userId: string
 }): Promise<string> => {
-  const token = await getToken();
-  const result = await axios.get(
-    `${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    }
-  );
-  const { data = {} } = result;
-  const { accessToken = '' } = data;
-  return accessToken;
+    );
+    const { data = {} } = result;
+    const { accessToken = '' } = data;
+    return accessToken;
+  } catch (err) {
+    console.log(err);
+    return '';
+  }
 };

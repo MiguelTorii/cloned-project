@@ -67,6 +67,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     this.updateOpenChannels = debounce(this.updateOpenChannels, 250);
+    this.handleInitChat = debounce(this.handleInitChat, 1000);
     window.addEventListener('resize', this.updateOpenChannels);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
@@ -129,6 +130,12 @@ class FloatingChat extends React.PureComponent<Props, State> {
       typeof this.updateOpenChannels.cancel === 'function'
     )
       this.updateOpenChannels.cancel();
+
+    if (
+      this.handleInitChat.cancel &&
+      typeof this.handleInitChat.cancel === 'function'
+    )
+      this.handleInitChat.cancel();
   };
 
   handleRoomClick = roomId => {
@@ -247,6 +254,12 @@ class FloatingChat extends React.PureComponent<Props, State> {
       const accessToken = await renewTwilioToken({
         userId
       });
+
+      if (accessToken === '') {
+        this.handleInitChat();
+        return;
+      }
+
       const client = await Chat.create(accessToken);
 
       let paginator = await client.getSubscribedChannels();

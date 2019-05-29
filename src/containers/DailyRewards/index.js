@@ -101,6 +101,17 @@ class DailyRewards extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
+    window.addEventListener('offline', () => {
+      if (
+        this.handleGetDailyRewards.cancel &&
+        typeof this.handleGetDailyRewards.cancel === 'function'
+      )
+        this.handleGetDailyRewards.cancel();
+    });
+    window.addEventListener('online', () => {
+      if (userId !== '') this.handleGetDailyRewards();
+    });
+
     this.handleGetDailyRewards = debounce(this.handleGetDailyRewards, 600233, {
       leading: true
     });

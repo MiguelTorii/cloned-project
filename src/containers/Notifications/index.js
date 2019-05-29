@@ -46,6 +46,17 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   componentDidMount = () => {
+    window.addEventListener('offline', () => {
+      if (
+        this.handleDebounceFetchNotifications.cancel &&
+        typeof this.handleDebounceFetchNotifications.cancel === 'function'
+      )
+        this.handleDebounceFetchNotifications.cancel();
+    });
+    window.addEventListener('online', () => {
+      this.handleDebounceFetchNotifications();
+    });
+
     this.handleDebounceFetchNotifications = debounce(
       this.handleDebounceFetchNotifications,
       10181
