@@ -353,7 +353,7 @@ class Preview extends React.Component<Props, State> {
                 <div className={classes.profile}>
                   <Avatar
                     alt={initials}
-                    src={profileImage !== '' && profileImage}
+                    src={profileImage !== '' ? profileImage : ''}
                     style={{ width: 60, height: 60 }}
                   >
                     {initials}

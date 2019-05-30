@@ -20,6 +20,7 @@ type Props = {
   autoFocus?: boolean,
   validators: Array<string>,
   errorMessages: Array<string>,
+  disabled?: boolean,
   onChange: Function
 };
 
@@ -27,7 +28,8 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
   static defaultProps = {
     multiline: false,
     rows: 4,
-    autoFocus: false
+    autoFocus: false,
+    disabled: false
   };
 
   render() {
@@ -41,6 +43,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
       validators,
       errorMessages,
       autoFocus,
+      disabled,
       onChange
     } = this.props;
 
@@ -59,6 +62,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
             value={value}
             validators={validators}
             errorMessages={errorMessages}
+            disabled={disabled}
           />
         </FormControl>
       </div>
