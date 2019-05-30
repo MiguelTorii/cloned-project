@@ -132,6 +132,8 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 feedId={feedId}
                 postId={postId}
                 typeId={typeId}
+                name={name}
+                userProfileUrl={userProfileUrl}
                 thanked={thanked}
                 inStudyCircle={inStudyCircle}
                 questionsCount={questionsCount}

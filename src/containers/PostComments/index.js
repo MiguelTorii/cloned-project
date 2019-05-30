@@ -188,11 +188,13 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
-        <Paper className={classes.readOnly} elevation={8}>
-          <Typography variant="h6">
-            Commenting and replying have been disabled for CircleIn101 post
-          </Typography>
-        </Paper>
+        {readOnly && (
+          <Paper className={classes.readOnly} elevation={8}>
+            <Typography variant="h6">
+              Commenting and replying have been disabled for CircleIn101 post
+            </Typography>
+          </Paper>
+        )}
         <ErrorBoundary>
           <PostItemAddComment
             name={name}

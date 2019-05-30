@@ -2,6 +2,7 @@
 
 import React, { Fragment } from 'react';
 import PostActions from '../../components/PostItem/PostItemActions';
+import StudyCircleDialog from '../../components/StudyCircleDialog';
 import SharePost from '../SharePost';
 import {
   updateThanks,
@@ -9,6 +10,8 @@ import {
   removeFromStudyCircle,
   updatePostView
 } from '../../api/posts';
+import { getStudyCircle } from '../../api/user';
+import type { StudyCircle } from '../../types/models';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -18,6 +21,8 @@ type Props = {
   postId: number,
   typeId: number,
   ownerId: string,
+  name: string,
+  userProfileUrl: string,
   thanked: boolean,
   inStudyCircle: boolean,
   questionsCount: number,
@@ -28,15 +33,21 @@ type Props = {
 
 type State = {
   open: boolean,
+  studyCircle: boolean,
   isThanksLoading: boolean,
-  isStudyCircleLoading: boolean
+  isStudyCircleLoading: boolean,
+  loading: boolean,
+  circle: StudyCircle
 };
 
 class PostItemActions extends React.PureComponent<Props, State> {
   state = {
     open: false,
+    studyCircle: false,
     isThanksLoading: false,
-    isStudyCircleLoading: false
+    isStudyCircleLoading: false,
+    loading: false,
+    circle: []
   };
 
   componentDidMount = () => {
@@ -69,6 +80,9 @@ class PostItemActions extends React.PureComponent<Props, State> {
           event: 'Feed- Added to Study Circle',
           props: { Source: 'Feed Post' }
         });
+        this.setState({ studyCircle: true, loading: true });
+        const circle = await getStudyCircle({ userId });
+        this.setState({ circle });
       } else {
         await removeFromStudyCircle({ userId, classmateId: ownerId, feedId });
         logEvent({
@@ -77,13 +91,17 @@ class PostItemActions extends React.PureComponent<Props, State> {
         });
       }
     } finally {
-      this.setState({ isStudyCircleLoading: false });
+      this.setState({ isStudyCircleLoading: false, loading: false });
       onReload();
     }
   };
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleStudyCircleClose = () => {
+    this.setState({ studyCircle: false });
   };
 
   render() {
@@ -95,9 +113,18 @@ class PostItemActions extends React.PureComponent<Props, State> {
       inStudyCircle,
       questionsCount,
       thanksCount,
-      viewCount
+      viewCount,
+      name,
+      userProfileUrl
     } = this.props;
-    const { open, isThanksLoading, isStudyCircleLoading } = this.state;
+    const {
+      open,
+      studyCircle,
+      isThanksLoading,
+      isStudyCircleLoading,
+      loading,
+      circle
+    } = this.state;
 
     return (
       <Fragment>
@@ -119,6 +146,16 @@ class PostItemActions extends React.PureComponent<Props, State> {
         </ErrorBoundary>
         <ErrorBoundary>
           <SharePost feedId={feedId} open={open} onClose={this.handleClose} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <StudyCircleDialog
+            open={studyCircle}
+            name={name}
+            loading={loading}
+            userProfileUrl={userProfileUrl}
+            circle={circle}
+            onClose={this.handleStudyCircleClose}
+          />
         </ErrorBoundary>
       </Fragment>
     );

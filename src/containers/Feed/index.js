@@ -72,6 +72,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = async () => {
+    this.mounted = true;
     window.addEventListener('offline', () => {
       if (
         this.handleFetchFeed.cancel &&
@@ -89,6 +90,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
+    this.mounted = false
     if (
       this.handleFetchFeed.cancel &&
       typeof this.handleFetchFeed.cancel === 'function'
@@ -105,7 +107,7 @@ class Feed extends React.PureComponent<Props, State> {
 
     getUserClasses({ userId }).then(({ classes }) => {
       const classesList = processUserClasses({ classes, segment });
-      this.setState({ classesList });
+      if(this.mounted) this.setState({ classesList });
     });
   };
 
@@ -117,7 +119,7 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props;
     const { from, userClass, postType, query, limit } = this.state;
     const { classId, sectionId } = JSON.parse(userClass);
-    this.setState({ loading: true });
+    if(this.mounted) this.setState({ loading: true });
     try {
       const newFeed = await fetchFeed({
         userId,
@@ -130,7 +132,7 @@ class Feed extends React.PureComponent<Props, State> {
         from,
         query
       });
-      this.setState(({ feed }) => ({
+      if(this.mounted) this.setState(({ feed }) => ({
         feed: newFeed,
         hasMore:
           newFeed.length === 50 ||
@@ -140,7 +142,7 @@ class Feed extends React.PureComponent<Props, State> {
     } catch (err) {
       console.log(err);
     } finally {
-      this.setState({ loading: false });
+      if(this.mounted) this.setState({ loading: false });
     }
   };
 
@@ -270,6 +272,8 @@ class Feed extends React.PureComponent<Props, State> {
         break;
     }
   };
+
+  mounted: boolean
 
   render() {
     const {
