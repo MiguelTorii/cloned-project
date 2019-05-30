@@ -1,12 +1,14 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import debounce from 'lodash/debounce';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import cx from 'classnames';
 import Lightbox from 'react-images';
-import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 import InfiniteScroll from 'react-infinite-scroller';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
@@ -18,6 +20,7 @@ import ChatChannelViewMembers from './ChatChannelViewMembers';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
+import { postMessageCount } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
@@ -52,7 +55,8 @@ type Props = {
   channel: Object,
   onClose: Function,
   onBlock: Function,
-  onRemove: Function
+  onRemove: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -68,7 +72,8 @@ type State = {
   viewMembers: boolean,
   loading: boolean,
   images: Array<{ src: string }>,
-  expanded: boolean
+  expanded: boolean,
+  count: number
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -85,11 +90,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
     viewMembers: false,
     loading: false,
     images: [],
-    expanded: false
+    expanded: false,
+    count: 0
   };
 
   componentDidMount = async () => {
     this.mounted = true;
+    this.handleMessageCount = debounce(this.handleMessageCount, 5000);
     try {
       const {
         channel,
@@ -228,8 +235,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
         event: 'Chat- Send Message',
         props: { Content: 'Text' }
       });
-      // this.setState(prevState => ({ count: prevState.count + 1 }));
-      // this.handleMessageCount();
+      this.setState(({ count }) => ({ count: count + 1 }));
+      this.handleMessageCount();
     } catch (err) {
       console.log(err);
     } finally {
@@ -274,8 +281,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
         event: 'Chat- Send Message',
         props: { Content: 'Image' }
       });
-      // this.setState(prevState => ({ count: prevState.count + 1 }));
-      // this.handleMessageCount();
+      this.setState(({ count }) => ({ count: count + 1 }));
+      this.handleMessageCount();
     } catch (err) {
       console.log(err);
     } finally {
@@ -376,6 +383,35 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleExpand = () => {
     this.setState(({ expanded }) => ({ expanded: !expanded }));
+  };
+
+  handleMessageCount = async () => {
+    const { count } = this.state;
+    const {
+      user: {
+        data: { userId }
+      },
+      channel
+    } = this.props;
+    const { sid } = channel;
+    const { points } = await postMessageCount({
+      userId,
+      count,
+      sid
+    });
+    if (points > 0) {
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(`Awesome! You've earned ${points} points for messages`, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        autoHideDuration: 2000
+      });
+    }
+
+    this.setState({ count: 0 });
   };
 
   mounted: boolean;
@@ -549,4 +585,4 @@ class ChatChannel extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(ChatChannel);
+export default withStyles(styles)(withSnackbar(ChatChannel));

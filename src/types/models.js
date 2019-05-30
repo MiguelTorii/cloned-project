@@ -414,3 +414,9 @@ export type HomeCard = {
 };
 
 export type HomeCards = Array<HomeCard>;
+
+export type ChatPoints = {
+  currentWeekCount: number,
+  logId: number,
+  points: number
+};
