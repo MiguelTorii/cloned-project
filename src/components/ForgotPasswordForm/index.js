@@ -69,41 +69,36 @@ type ProvidedProps = {
 
 type Props = {
   classes: Object,
-  email: String,
-  password: String,
+  email: string,
   loading: boolean,
-  handleChange: Function,
-  handleSubmit: Function
+  onChange: Function,
+  onSubmit: Function
 };
 
 type State = {};
 
-class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
+class ForgotPasswordForm extends React.PureComponent<
+  ProvidedProps & Props,
+  State
+> {
   render() {
-    const {
-      classes,
-      email,
-      password,
-      loading,
-      handleSubmit,
-      handleChange
-    } = this.props;
+    const { classes, email, loading, onSubmit, onChange } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
           <img src={logo} alt="Logo" className={classes.logo} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Recover Password
           </Typography>
           <ValidatorForm
             instantValidate={false}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             className={classes.form}
           >
             <TextValidator
               label="Email Address"
               margin="normal"
-              onChange={handleChange('email')}
+              onChange={onChange('email')}
               name="email"
               autoComplete="email"
               autoFocus
@@ -112,19 +107,6 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
               disabled={loading}
               validators={['required', 'isEmail']}
               errorMessages={['email is required', 'email is not valid']}
-            />
-            <TextValidator
-              label="Password"
-              margin="normal"
-              onChange={handleChange('password')}
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              type="password"
-              value={password}
-              disabled={loading}
-              validators={['required']}
-              errorMessages={['password is required']}
             />
             <div className={classes.wrapper}>
               <Button
@@ -135,7 +117,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
                 disabled={loading}
                 className={classes.submit}
               >
-                Sign in
+                Recover
               </Button>
               {loading && (
                 <CircularProgress
@@ -147,25 +129,9 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           </ValidatorForm>
           <div className={classes.links}>
             <Typography variant="subtitle1" gutterBottom>
-              {"Don't have an account? "}
-              <Link
-                component={MyLink}
-                link="/signup"
-                href="/signup"
-                className={classes.link}
-              >
-                Get Started
-              </Link>
-            </Typography>
-            <Typography variant="subtitle1">
-              {"Don't remember your password? "}
-              <Link
-                component={MyLink}
-                link="/forgot_password"
-                href="/forgot_password"
-                className={classes.link}
-              >
-                Recover
+              {'Already have an account? '}
+              <Link component={MyLink} link="/login" href="/login">
+                Sign in
               </Link>
             </Typography>
           </div>
@@ -175,4 +141,4 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
   }
 }
 
-export default withStyles(styles)(SignInForm);
+export default withStyles(styles)(ForgotPasswordForm);

@@ -42,3 +42,45 @@ export const checkUser = async (): User | {} => {
     return {};
   }
 };
+
+export const recoverPassword = async ({
+  email
+}: {
+  email: string
+}): Promise<boolean> => {
+  try {
+    const result = await axios.post(API_ROUTES.RESET_PASSWORD, {
+      email
+    });
+    const { data = {} } = result;
+    const { sent = false } = data;
+    return sent;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export const changePassword = async ({
+  email,
+  password,
+  resetToken
+}: {
+  email: string,
+  password: string,
+  resetToken: string
+}): Promise<boolean> => {
+  try {
+    const result = await axios.post(API_ROUTES.CHANGE_PASSWORD, {
+      email,
+      new_password: password,
+      reset_token: resetToken
+    });
+    const { data = {} } = result;
+    const { password_updated: passwordUpdated = false } = data;
+    return passwordUpdated;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};

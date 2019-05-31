@@ -187,3 +187,13 @@ export const signOut = () => async (dispatch: Dispatch) => {
     dispatch(push('/login'));
   }
 };
+
+export const updateError = ({
+  title,
+  body
+}: {
+  title: string,
+  body: string
+}) => async (dispatch: Dispatch) => {
+  dispatch(setError({ title, body }));
+};

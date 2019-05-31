@@ -30,6 +30,8 @@ import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import OAuth from './pages/OAuth';
 import Canvas from './pages/Canvas';
 import { init as analyticsInit } from './api/analytics';
@@ -116,6 +118,8 @@ ReactDOM.render(
         <Route exact path="/video-call" component={withTracker(StartVideo)} />
         <Route exact path="/login" component={withTracker(SignIn)} />
         <Route exact path="/signup" component={withTracker(SignUp)} />
+        <Route exact path="/forgot_password" component={withTracker(ForgotPassword)} />
+        ç<Route exact path="/reset_password" component={withTracker(ResetPassword)} />
         <Route exact path="/oauth" component={withTracker(OAuth)} />
         <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
         <Route render={() => <div>Miss</div>} />
