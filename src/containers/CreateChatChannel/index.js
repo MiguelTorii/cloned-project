@@ -11,6 +11,7 @@ import type { State as StoreState } from '../../types/state';
 import CreateChatChannelDialog from '../../components/CreateChatChannelDialog';
 import { getBlockedUsers, searchUsers } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
+// import { createChannel } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
@@ -151,6 +152,26 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     const { thumbnail } = this.state;
     this.setState({ isLoading: true });
     try {
+      // const users = selectedUsers.map(item => Number(item.userId));
+      // const { chatId, isNewChat } = await createChannel({
+      //   users,
+      //   groupName: chatType === 'group' ? name : '',
+      //   type: chatType === 'group' ? type : '',
+      //   thumbnailUrl: chatType === 'group' ? thumbnail : ''
+      // });
+
+      // if (chatId !== '') {
+      //   const channel = await client.getChannelBySid(chatId);
+      //   onChannelCreated({
+      //     channel,
+      //     isNew: isNewChat,
+      //     startVideo
+      //   });
+      //   this.handleClose();
+      // } else {
+      //   this.setState({ isLoading: false });
+      // }
+
       const userList = selectedUsers.map(item => ({
         userId: Number(item.userId),
         firstName: item.firstName,

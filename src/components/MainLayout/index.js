@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -33,7 +34,6 @@ import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import logo from '../../assets/svg/circlein_logo_beta.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
@@ -127,6 +127,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   userId: string,
+  initials: string,
+  userProfileUrl: string,
   theme: Object,
   children: any,
   unreadCount: number,
@@ -231,7 +233,7 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openHowEarnPoints
     } = this.state;
-    const { classes, userId, theme, children, unreadCount, onOpenLeaderboard, onOpenAnnouncements } = this.props;
+    const { classes, userId, initials, userProfileUrl, theme, children, unreadCount, onOpenLeaderboard, onOpenAnnouncements } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -281,7 +283,11 @@ class MainLayout extends React.Component<Props, State> {
         </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
-            <AccountCircleIcon />
+          <Avatar
+                src={userProfileUrl}
+              >
+                {initials}
+              </Avatar>
           </IconButton>
           <p>Account</p>
         </MenuItem>
@@ -383,7 +389,11 @@ class MainLayout extends React.Component<Props, State> {
                   onClick={this.handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <AccountCircleIcon />
+                  <Avatar
+                src={userProfileUrl}
+              >
+                {initials}
+              </Avatar>
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>

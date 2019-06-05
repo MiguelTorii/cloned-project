@@ -2,7 +2,7 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import type { ChatPoints } from '../types/models';
+import type { ChatPoints, CreateChat } from '../types/models';
 import { getToken } from './utils';
 
 export const renewTwilioToken = async ({
@@ -26,6 +26,53 @@ export const renewTwilioToken = async ({
   } catch (err) {
     console.log(err);
     return '';
+  }
+};
+
+export const createChannel = async ({
+  users,
+  groupName,
+  type,
+  thumbnailUrl
+}: {
+  users: Array<number>,
+  groupName: string,
+  type: string,
+  thumbnailUrl: string
+}): Promise<CreateChat> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      API_ROUTES.CHAT,
+      {
+        users,
+        group_name: groupName,
+        type,
+        thumbnail_url: thumbnailUrl
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    return {
+      chatId: String((data.chat_id: string) || ''),
+      groupName: String((data.group_name: string) || ''),
+      isNewChat: Boolean((data.is_new_chat: boolean) || false),
+      thumbnailUrl: String((data.thumbnail_url: string) || ''),
+      type: String((data.type: string) || '')
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      chatId: '',
+      groupName: '',
+      isNewChat: false,
+      thumbnailUrl: '',
+      type: ''
+    };
   }
 };
 

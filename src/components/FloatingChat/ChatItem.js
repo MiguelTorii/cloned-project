@@ -62,10 +62,10 @@ const styles = theme => ({
     height: 40
   },
   title: {
-    maxWidth: 140
+    maxWidth: 120
   },
   titleExpanded: {
-    maxWidth: 340
+    maxWidth: 320
   },
   iconButton: {
     padding: theme.spacing.unit

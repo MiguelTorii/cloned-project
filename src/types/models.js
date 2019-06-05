@@ -420,3 +420,11 @@ export type ChatPoints = {
   logId: number,
   points: number
 };
+
+export type CreateChat = {
+  chatId: string,
+  groupName: string,
+  isNewChat: boolean,
+  thumbnailUrl: string,
+  type: string
+};

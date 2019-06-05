@@ -262,15 +262,16 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
       const client = await Chat.create(accessToken);
 
-      let paginator = await client.getSubscribedChannels();
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
-      }
-      const channels = await client.getLocalChannels({
-        criteria: 'lastMessage',
-        order: 'descending'
-      });
+      // let paginator = await client.getSubscribedChannels();
+      // while (paginator.hasNextPage) {
+      //   // eslint-disable-next-line no-await-in-loop
+      //   paginator = await paginator.nextPage();
+      // }
+      // const channels = await client.getLocalChannels({
+      //   criteria: 'lastMessage',
+      //   order: 'descending'
+      // });
+      const channels = [];
       this.setState({ client, channels });
 
       client.on('channelJoined', async channel => {
