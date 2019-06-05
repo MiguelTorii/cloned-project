@@ -162,7 +162,7 @@ class Layout extends React.PureComponent<Props, State> {
   render() {
     const { user, signOut, isNaked } = this.props;
     const {
-      data: { userId }
+      data: { userId, firstName, lastName, profileImage }
     } = user;
     const {
       manageClasses,
@@ -173,11 +173,15 @@ class Layout extends React.PureComponent<Props, State> {
       unreadCount
     } = this.state;
     if (isNaked) return this.renderChildren();
+    const name = `${firstName} ${lastName}`;
+    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
       <Fragment>
         <ErrorBoundary>
           <MainLayout
             userId={userId}
+            initials={initials}
+            userProfileUrl={profileImage}
             unreadCount={unreadCount}
             handleNotificationOpen={this.handleNotificationOpen}
             handleSignOut={signOut}
