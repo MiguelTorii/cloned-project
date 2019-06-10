@@ -9,21 +9,23 @@ const styles = () => ({
     height: '100%',
     position: 'relative',
     overflow: 'hidden',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    cursor: 'crosshair'
   }
 });
 
 type Props = {
   classes: Object,
   drawData: string,
+  lineWidth: number,
+  color: string,
   sendDataMessage: Function
 };
 
 type State = {
   current: Object,
   drawing: boolean,
-  context: ?Object,
-  color: string
+  context: ?Object
 };
 
 class Index extends React.Component<Props, State> {
@@ -32,7 +34,6 @@ class Index extends React.Component<Props, State> {
       x: 0,
       y: 0
     },
-    color: 'black',
     drawing: false,
     context: null
   };
@@ -73,7 +74,8 @@ class Index extends React.Component<Props, State> {
   };
 
   handleMouseUp = e => {
-    const { drawing, current, color } = this.state;
+    const { lineWidth, color } = this.props;
+    const { drawing, current } = this.state;
     if (!drawing) {
       return;
     }
@@ -84,13 +86,15 @@ class Index extends React.Component<Props, State> {
       current.y,
       e.clientX || (e.touches ? e.touches[0].clientX : 0),
       e.clientY || (e.touches ? e.touches[0].clientY : 0),
+      lineWidth,
       color,
       true
     );
   };
 
   handleMouseMove = e => {
-    const { drawing, current, color } = this.state;
+    const { lineWidth, color } = this.props;
+    const { drawing, current } = this.state;
     if (!drawing) {
       return;
     }
@@ -100,6 +104,7 @@ class Index extends React.Component<Props, State> {
       current.y,
       e.clientX || (e.touches ? e.touches[0].clientX : 0),
       e.clientY || (e.touches ? e.touches[0].clientY : 0),
+      lineWidth,
       color,
       true
     );
@@ -116,17 +121,19 @@ class Index extends React.Component<Props, State> {
     this.canvas.current.height = window.innerHeight;
   };
 
-  drawLine = (x0, y0, x1, y1, color, emit) => {
+  drawLine = (x0, y0, x1, y1, lineWidth, color, emit) => {
     const { context } = this.state;
     const { sendDataMessage } = this.props;
     if (!context) return null;
+    context.lineJoin = 'round';
+    context.lineCap = 'round';
+    context.strokeStyle = color;
+    context.lineWidth = lineWidth;
     context.beginPath();
     context.moveTo(x0, y0);
     context.lineTo(x1, y1);
-    context.strokeStyle = color;
-    context.lineWidth = 2;
     context.stroke();
-    context.closePath();
+    // context.closePath();
     this.setState({ context });
 
     if (!emit) {
@@ -141,6 +148,7 @@ class Index extends React.Component<Props, State> {
       y0: y0 / h,
       x1: x1 / w,
       y1: y1 / h,
+      lineWidth,
       color,
       type: 'drawing'
     };
@@ -171,6 +179,7 @@ class Index extends React.Component<Props, State> {
       data.y0 * h,
       data.x1 * w,
       data.y1 * h,
+      data.lineWidth,
       data.color
     );
   };

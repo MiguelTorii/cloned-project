@@ -89,7 +89,6 @@ class Controls extends React.PureComponent<Props, State> {
         >
           {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
         </Fab>
-        {false && (
           <Fab
             color={!isSharingData ? 'primary' : 'default'}
             aria-label="share-data"
@@ -99,7 +98,6 @@ class Controls extends React.PureComponent<Props, State> {
           >
             <CastForEducationIcon />
           </Fab>
-        )}
         <Fab
           color="primary"
           aria-label="call-end"

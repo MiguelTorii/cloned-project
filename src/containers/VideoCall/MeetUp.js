@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import Video from 'twilio-video';
 import first from 'lodash/first';
 import debounce from 'lodash/debounce';
@@ -25,6 +25,7 @@ import Thumbnails from '../../components/MeetUp/Thumbnails';
 import NoParticipants from '../../components/MeetUp/NoParticipants';
 import ActiveParticipant from '../../components/MeetUp/ActiveParticipant';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
+import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
 import VideoPointsDialog from '../../components/VideoPointsDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -67,6 +68,14 @@ const styles = theme => ({
       '-moz-box-shadow': '0 0 0 0 rgba(73, 175, 217, 0)',
       'box-shadow': '0 0 0 0 rgba(73, 175, 217, 0)'
     }
+  },
+  canvasWrapper: {
+    backgroundColor: 'white',
+    padding: theme.spacing.unit
+  },
+  canvasImg: {
+    width: '300px !important',
+    height: 'auto !important'
   }
 });
 
@@ -101,7 +110,10 @@ type State = {
   noPointsAllowed: boolean,
   earned: boolean,
   openVideoPoints: boolean,
-  postingPoints: boolean
+  postingPoints: boolean,
+  lineWidth: number,
+  color: string,
+  canvasImg: string
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -127,7 +139,10 @@ class MeetUp extends React.Component<Props, State> {
       noPointsAllowed: false,
       earned: false,
       openVideoPoints: false,
-      postingPoints: false
+      postingPoints: false,
+      lineWidth: 1,
+      color: 'black',
+      canvasImg: ''
     };
   }
 
@@ -507,6 +522,42 @@ class MeetUp extends React.Component<Props, State> {
     }
   };
 
+  handlePencilChange = size => {
+    this.setState({lineWidth: size})
+  }
+
+  handleColorChange = color => {
+    this.setState({color})
+  }
+
+  handleErase = () => {
+    this.setState({lineWidth: 20, color: 'white'})
+  }
+
+  handleSave = () => {
+    const {current} = this.whiteboard;
+    if(current) {
+      const {canvas} = current;
+      if(canvas) {
+        const {current: currentCanvas} = canvas;
+        if(currentCanvas) {
+          const canvasImg = currentCanvas.toDataURL("image/png");
+          this.setState({canvasImg})
+          // document.write(`<a href="${img}" download="download" >Download as jpeg</a>`);
+  //         img.style.display = 'block';
+  //  img.style.width= "200px";
+  //  img.style.height="200px";
+  //  var url=img.getAttribute('src');
+  //  window.open(img,'Image','width=img.stylewidth,height=img.style.height,resizable=1');
+        }
+      }
+    }
+  }
+
+  handleCanvasClose = () => {
+    this.setState({canvasImg: ''})
+  }
+
   detachTrack(trackName) {
     // eslint-disable-next-line react/destructuring-assignment
     const track = this.state[trackName];
@@ -546,13 +597,16 @@ class MeetUp extends React.Component<Props, State> {
       pinnedParticipant,
       points,
       openVideoPoints,
-      postingPoints
+      postingPoints,
+      lineWidth,
+      color,
+      canvasImg
     } = this.state;
 
     return (
       <ErrorBoundary>
         <div className={classes.root}>
-          {participants.length < 2 && !isWhiteboardEnabled && (
+          {false && participants.length < 2 && !isWhiteboardEnabled && (
             <NoParticipants />
           )}
           <MeetUpControls
@@ -588,11 +642,16 @@ class MeetUp extends React.Component<Props, State> {
               participant={pinnedParticipant || activeParticipant}
             />
           )}
-          {isWhiteboardEnabled && false && (
-            <Whiteboard
+          {isWhiteboardEnabled && (
+            <Fragment><Whiteboard
+            innerRef={this.whiteboard}
               drawData={drawData}
+              lineWidth={lineWidth}
+              color={color}
               sendDataMessage={this.sendDataMessage}
             />
+            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onSave={this.handleSave} />
+            </Fragment>
           )}
           <Dialog
             open={open}
@@ -615,6 +674,24 @@ class MeetUp extends React.Component<Props, State> {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={Boolean(canvasImg !== '')}
+            onClose={this.handleClose}
+            aria-labelledby="canvas-img-dialog-title"
+            aria-describedby="canvas-img-dialog-description"
+          >
+            <DialogTitle id="canvas-img-dialog-title">
+              Whiteboard Screenshot
+            </DialogTitle>
+            <DialogContent className={classes.canvasWrapper}>
+              <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot"/>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCanvasClose} color="primary">
                 Ok
               </Button>
             </DialogActions>
