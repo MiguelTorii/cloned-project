@@ -157,6 +157,7 @@ class ThumbnailsItem extends React.Component<Props, State> {
             const message = JSON.parse(data);
             const { type = '' } = message;
             if (type === 'drawing') dataReceived(data);
+            else if (type === 'texting') dataReceived(data);
             else if (type === 'start_whiteboard') {
               this.setState({ isSharingData: true });
             } else if (type === 'stop_whiteboard') {
@@ -215,7 +216,7 @@ class ThumbnailsItem extends React.Component<Props, State> {
   handlePin = () => {
     const { participant, onPin } = this.props;
     if (participant) {
-      onPin(participant)
+      onPin(participant);
     }
   };
 
@@ -256,12 +257,11 @@ class ThumbnailsItem extends React.Component<Props, State> {
             <ScreenShareIcon />
           </div>
         )}
-        {
-          isPinned && (
-            <div className={classes.isPinned}>
-              <LockIcon />
-            </div>)
-        }
+        {isPinned && (
+          <div className={classes.isPinned}>
+            <LockIcon />
+          </div>
+        )}
         {!isVideoEnabled && !isSharing && (
           <div className={classes.overlay}>
             <Avatar

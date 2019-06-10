@@ -86,7 +86,8 @@ type Props = {
   onPencilChange: Function,
   onColorChange: Function,
   onErase: Function,
-  onSave: Function
+  onSave: Function,
+  onText: Function
 };
 
 type State = {
@@ -143,7 +144,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
   pencilAnchorEl: Object;
 
   render() {
-    const { classes, onErase, onSave } = this.props;
+    const { classes, onErase, onText, onSave } = this.props;
     const { openPencil, openColor } = this.state;
 
     return (
@@ -268,6 +269,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
               color="primary"
               aria-label="add-text"
               className={classes.button}
+              onClick={onText}
             >
               <TitleIcon />
             </ButtonBase>

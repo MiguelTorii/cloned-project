@@ -113,7 +113,8 @@ type State = {
   postingPoints: boolean,
   lineWidth: number,
   color: string,
-  canvasImg: string
+  canvasImg: string,
+  isText: boolean
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -142,7 +143,8 @@ class MeetUp extends React.Component<Props, State> {
       postingPoints: false,
       lineWidth: 1,
       color: 'black',
-      canvasImg: ''
+      canvasImg: '',
+      isText: false
     };
   }
 
@@ -523,7 +525,11 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handlePencilChange = size => {
-    this.setState({lineWidth: size})
+    this.setState({lineWidth: size, isText: false})
+  }
+
+  handleTextChange = () => {
+    this.setState({isText: true})
   }
 
   handleColorChange = color => {
@@ -600,7 +606,8 @@ class MeetUp extends React.Component<Props, State> {
       postingPoints,
       lineWidth,
       color,
-      canvasImg
+      canvasImg,
+      isText
     } = this.state;
 
     return (
@@ -648,9 +655,10 @@ class MeetUp extends React.Component<Props, State> {
               drawData={drawData}
               lineWidth={lineWidth}
               color={color}
+              isText={isText}
               sendDataMessage={this.sendDataMessage}
             />
-            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onSave={this.handleSave} />
+            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onText={this.handleTextChange} onSave={this.handleSave} />
             </Fragment>
           )}
           <Dialog
