@@ -589,7 +589,7 @@ class MeetUp extends React.Component<Props, State> {
   started: number;
 
   render() {
-    const { classes } = this.props;
+    const { classes, user: {userId, firstName, lastName} } = this.props;
     const {
       videoRoom,
       isVideoEnabled,
@@ -652,6 +652,8 @@ class MeetUp extends React.Component<Props, State> {
           {isWhiteboardEnabled && (
             <Fragment><Whiteboard
             innerRef={this.whiteboard}
+            userId={userId}
+            name={`${firstName} ${lastName}`}
               drawData={drawData}
               lineWidth={lineWidth}
               color={color}

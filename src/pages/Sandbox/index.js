@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 
 import React from 'react';
-import cx from 'classnames';
+import throttle from 'lodash/throttle';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
 
-const styles = () => ({
+const styles = theme => ({
   main: {
     position: 'relative'
   },
@@ -19,16 +19,15 @@ const styles = () => ({
     backgroundColor: 'white',
     cursor: 'crosshair'
   },
-  input: {
-    position: 'absolute',
-    display: 'none',
-    color: 'black',
-    width: 200,
-    top: 0,
-    left: 0
-  },
-  showInput: {
-    display: 'inline'
+  participant: {
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: theme.palette.primary.main,
+    borderRadius: 8,
+    borderBottomLeftRadius: 0,
+    padding: theme.spacing.unit / 2
   }
 });
 
@@ -43,15 +42,7 @@ type Props = {
 type State = {};
 
 class SignInPage extends React.Component<ProvidedProps & Props, State> {
-  state = {
-    showInput: false,
-    inputPos: {
-      top: 0,
-      left: 0
-    },
-    inputValue: '',
-    context: null
-  };
+  state = {};
 
   constructor(props) {
     super(props);
@@ -62,48 +53,33 @@ class SignInPage extends React.Component<ProvidedProps & Props, State> {
 
   componentDidMount = () => {
     this.handleResize();
-    const context = this.canvas.current.getContext('2d');
-    this.setState({ context });
+    this.handleCursor = throttle(this.handleCursor, 1000);
   };
 
-  componentDidUpdate = () => {
-    this.input.focus();
-  };
+  handleClick = () => {};
 
-  handleClick = e => {
-    const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-    const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-    this.setState(() => ({
-      showInput: true,
-      inputPos: { top: y, left: x }
-    }));
-  };
+  handleChange = () => {};
 
-  handleChange = event => {
-    this.setState({ inputValue: event.target.value });
-  };
-
-  handleKeyDown = event => {
-    const { key = '' } = event;
-    const { inputValue, inputPos } = this.state;
-    if (key === 'Enter') {
-      const { context } = this.state;
-      context.fillStyle = 'black';
-      context.font = '16px Roboto';
-      context.fillText(inputValue, inputPos.left, inputPos.top);
-      this.setState({ inputValue: '', showInput: false });
-    }
-  };
+  handleKeyDown = () => {};
 
   handleMouseDown = () => {};
 
   handleMouseUp = () => {};
 
-  handleMouseMove = () => {};
+  handleMouseMove = e => {
+    this.handleCursor(
+      e.clientX || (e.touches ? e.touches[0].clientX : 0),
+      e.clientY || (e.touches ? e.touches[0].clientY : 0)
+    );
+  };
 
   handleResize = () => {
     this.canvas.current.width = window.innerWidth;
     this.canvas.current.height = window.innerHeight;
+  };
+
+  handleCursor = (x, y) => {
+    console.log(x, y);
   };
 
   throttle = (callback, delay) => {
@@ -122,7 +98,12 @@ class SignInPage extends React.Component<ProvidedProps & Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { showInput, inputPos, inputValue } = this.state;
+
+    const participants = [
+      { name: 'Camilo', x: 21, y: 50 },
+      { name: 'Jon', x: 300, y: 200 }
+    ];
+
     return (
       <main className={classes.main}>
         <CssBaseline />
@@ -135,18 +116,20 @@ class SignInPage extends React.Component<ProvidedProps & Props, State> {
           onMouseOut={this.handleMouseUp}
           onMouseMove={this.throttle(this.handleMouseMove, 10)}
         />
-        <OutlinedInput
-          inputRef={input => {
-            this.input = input;
-          }}
-          placeholder="Add your text"
-          className={cx(classes.input, showInput && classes.showInput)}
-          style={{ ...inputPos }}
-          labelWidth={0}
-          value={inputValue}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-        />
+        {participants.map(item => (
+          <Typography
+            key={item.name}
+            className={classes.participant}
+            style={{
+              position: 'absolute',
+              top: item.y,
+              left: item.x,
+              color: 'black'
+            }}
+          >
+            {item.name}
+          </Typography>
+        ))}
       </main>
     );
   }

@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 // @flow
 import React from 'react';
+import update from 'immutability-helper';
 import cx from 'classnames';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = () => ({
+const styles = theme => ({
   main: {
     position: 'relative',
     display: 'flex',
@@ -30,11 +32,23 @@ const styles = () => ({
   },
   showInput: {
     display: 'inline'
+  },
+  participant: {
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: theme.palette.primary.main,
+    borderRadius: 8,
+    borderBottomLeftRadius: 0,
+    padding: theme.spacing.unit / 2
   }
 });
 
 type Props = {
   classes: Object,
+  userId: string,
+  name: string,
   drawData: string,
   lineWidth: number,
   color: string,
@@ -51,7 +65,8 @@ type State = {
     top: number,
     left: number
   },
-  inputValue: string
+  inputValue: string,
+  participants: Array<{ userId: string, name: string, x: number, y: number }>
 };
 
 class Index extends React.Component<Props, State> {
@@ -67,7 +82,8 @@ class Index extends React.Component<Props, State> {
       top: 0,
       left: 0
     },
-    inputValue: ''
+    inputValue: '',
+    participants: []
   };
 
   constructor(props) {
@@ -81,6 +97,7 @@ class Index extends React.Component<Props, State> {
     this.handleResize();
     const context = this.canvas.current.getContext('2d');
     this.setState({ context });
+    this.handleCursor = this.throttle(this.handleCursor, 500);
   };
 
   componentDidUpdate = () => {
@@ -94,6 +111,7 @@ class Index extends React.Component<Props, State> {
       const { type = '' } = data;
       if (type === 'drawing') this.handleDrawingEvent(data);
       else if (type === 'texting') this.handleTextingEvent(data);
+      else if (type === 'cursor') this.handleCursorEvent(data);
     }
     if (!isText) {
       this.setState({ showInput: false, inputValue: '' });
@@ -138,6 +156,13 @@ class Index extends React.Component<Props, State> {
   };
 
   handleMouseMove = e => {
+    this.handleCursor(
+      // $FlowIgnore
+      e.clientX || (e.touches ? e.touches[0].clientX : 0),
+      // $FlowIgnore
+      e.clientY || (e.touches ? e.touches[0].clientY : 0)
+    );
+
     const { isText } = this.props;
     if (isText) return;
     const { lineWidth, color } = this.props;
@@ -184,7 +209,7 @@ class Index extends React.Component<Props, State> {
     const { color } = this.props;
     const { inputValue, inputPos } = this.state;
     if (key === 'Enter') {
-      this.drawText(inputValue, color, inputPos.left, inputPos.top);
+      this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
       this.setState({ inputValue: '', showInput: false });
     }
   };
@@ -194,8 +219,25 @@ class Index extends React.Component<Props, State> {
     this.canvas.current.height = window.innerHeight;
   };
 
+  handleCursor = (x, y) => {
+    const { userId, name, sendDataMessage } = this.props;
+    const w = this.canvas.current.width;
+    const h = this.canvas.current.height;
+
+    const data = {
+      userId,
+      name,
+      x: x / w,
+      y: y / h,
+      type: 'cursor'
+    };
+
+    sendDataMessage(JSON.stringify(data));
+  };
+
   drawLine = (x0, y0, x1, y1, lineWidth, color, emit) => {
-    const { context } = this.state;
+    // const { context } = this.state;
+    const context = this.canvas.current.getContext('2d');
     const { sendDataMessage } = this.props;
     if (!context) return null;
     context.lineJoin = 'round';
@@ -237,6 +279,8 @@ class Index extends React.Component<Props, State> {
     context.fillStyle = color;
     context.font = '16px Roboto';
     context.fillText(text, x, y);
+
+    this.setState({ context });
 
     if (!emit) {
       return null;
@@ -290,13 +334,34 @@ class Index extends React.Component<Props, State> {
     this.drawText(data.text, data.color, data.x * w, data.y * h);
   };
 
+  handleCursorEvent = data => {
+    const { userId, name, x, y } = data;
+    const w = this.canvas.current.width;
+    const h = this.canvas.current.height;
+    const newState = update(this.state, {
+      participants: {
+        $apply: b => {
+          // console.log(b);
+          const index = b.findIndex(item => item.userId === userId);
+          if (index > -1) {
+            return update(b, {
+              [index]: { $set: { userId, name, x: x * w, y: y * h } }
+            });
+          }
+          return [...b, { userId, name, x: x * w, y: y * h }];
+        }
+      }
+    });
+    this.setState(newState);
+  };
+
   canvas: Object;
 
   input: Object;
 
   render() {
     const { classes } = this.props;
-    const { showInput, inputPos, inputValue } = this.state;
+    const { showInput, inputPos, inputValue, participants } = this.state;
 
     return (
       <div className={classes.main}>
@@ -321,6 +386,20 @@ class Index extends React.Component<Props, State> {
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
         />
+        {participants.map(item => (
+          <Typography
+            key={item.userId}
+            className={classes.participant}
+            style={{
+              position: 'absolute',
+              top: item.y,
+              left: item.x,
+              color: 'black'
+            }}
+          >
+            {item.name}
+          </Typography>
+        ))}
       </div>
     );
   }

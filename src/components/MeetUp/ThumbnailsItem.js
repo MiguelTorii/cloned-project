@@ -156,8 +156,10 @@ class ThumbnailsItem extends React.Component<Props, State> {
             // this.setState({ isSharingData: true });
             const message = JSON.parse(data);
             const { type = '' } = message;
+            console.log(1, message)
             if (type === 'drawing') dataReceived(data);
             else if (type === 'texting') dataReceived(data);
+            else if (type === 'cursor') dataReceived(data);
             else if (type === 'start_whiteboard') {
               this.setState({ isSharingData: true });
             } else if (type === 'stop_whiteboard') {
@@ -181,8 +183,11 @@ class ThumbnailsItem extends React.Component<Props, State> {
         track.on('message', data => {
           // this.setState({ isSharingData: true });
           const message = JSON.parse(data);
+          console.log(2, message)
           const { type = '' } = message;
           if (type === 'drawing') dataReceived(data);
+          else if (type === 'texting') dataReceived(data);
+          else if (type === 'cursor') dataReceived(data);
           else if (type === 'start_whiteboard') {
             this.setState({ isSharingData: true });
           } else if (type === 'stop_whiteboard') {
