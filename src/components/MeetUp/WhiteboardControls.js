@@ -15,6 +15,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 // import CategoryIcon from '@material-ui/icons/Category';
 import CropPortraitIcon from '@material-ui/icons/CropPortrait';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const styles = theme => ({
   root: {
@@ -87,7 +88,8 @@ type Props = {
   onColorChange: Function,
   onErase: Function,
   onSave: Function,
-  onText: Function
+  onText: Function,
+  onClear: Function
 };
 
 type State = {
@@ -144,7 +146,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
   pencilAnchorEl: Object;
 
   render() {
-    const { classes, onErase, onText, onSave } = this.props;
+    const { classes, onErase, onText, onSave, onClear } = this.props;
     const { openPencil, openColor } = this.state;
 
     return (
@@ -300,6 +302,16 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
               onClick={onSave}
             >
               <SaveIcon />
+            </ButtonBase>
+          </Tooltip>
+          <Tooltip title="Clear Screen" placement="left">
+            <ButtonBase
+              color="primary"
+              aria-label="clear-canvas"
+              className={classes.button}
+              onClick={onClear}
+            >
+              <DeleteForeverIcon />
             </ButtonBase>
           </Tooltip>
         </Paper>

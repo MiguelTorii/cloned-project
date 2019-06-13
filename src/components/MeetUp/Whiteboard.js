@@ -26,14 +26,16 @@ const styles = theme => ({
     position: 'absolute',
     display: 'none',
     color: 'black',
-    width: 200,
+    width: 'auto',
     top: 0,
-    left: 0
+    left: 0,
+    backgroundColor: 'white'
   },
   showInput: {
     display: 'inline'
   },
   participant: {
+    backgroundColor: 'white',
     borderStyle: 'solid',
     borderWidth: 1,
     borderBottomWidth: 4,
@@ -53,6 +55,7 @@ type Props = {
   lineWidth: number,
   color: string,
   isText: boolean,
+  eraser: boolean,
   sendDataMessage: Function
 };
 
@@ -100,12 +103,11 @@ class Index extends React.Component<Props, State> {
     this.handleCursor = this.throttle(this.handleCursor, 500);
   };
 
-  componentDidUpdate = () => {
-    this.input.focus();
-  };
-
-  componentWillReceiveProps = prevProps => {
+  componentDidUpdate = prevProps => {
     const { drawData, isText } = this.props;
+    if(isText) {
+      this.input.focus();
+    }
     if (drawData !== prevProps.drawData && drawData !== '') {
       const data = JSON.parse(drawData);
       const { type = '' } = data;
@@ -113,10 +115,26 @@ class Index extends React.Component<Props, State> {
       else if (type === 'texting') this.handleTextingEvent(data);
       else if (type === 'cursor') this.handleCursorEvent(data);
     }
-    if (!isText) {
+    if (prevProps.isText && !isText) {
       this.setState({ showInput: false, inputValue: '' });
     }
   };
+
+  // componentWillReceiveProps = prevProps => {
+  //   const { drawData, isText } = this.props;
+  //   console.log(isText)
+  //   if (drawData !== prevProps.drawData && drawData !== '') {
+  //     const data = JSON.parse(drawData);
+  //     const { type = '' } = data;
+  //     if (type === 'drawing') this.handleDrawingEvent(data);
+  //     else if (type === 'texting') this.handleTextingEvent(data);
+  //     else if (type === 'cursor') this.handleCursorEvent(data);
+  //   }
+  //   if (!isText) {
+  //     console.log('hide')
+  //     this.setState({ showInput: false, inputValue: '' });
+  //   }
+  // };
 
   componentWillUnmount = () => {
     window.removeEventListener('resize', this.handleResize, false);
@@ -137,7 +155,7 @@ class Index extends React.Component<Props, State> {
   handleMouseUp = e => {
     const { isText } = this.props;
     if (isText) return;
-    const { lineWidth, color } = this.props;
+    const { lineWidth, color, eraser } = this.props;
     const { drawing, current } = this.state;
     if (!drawing) {
       return;
@@ -150,7 +168,7 @@ class Index extends React.Component<Props, State> {
       e.clientX || (e.touches ? e.touches[0].clientX : 0),
       e.clientY || (e.touches ? e.touches[0].clientY : 0),
       lineWidth,
-      color,
+      eraser ? 'white' : color,
       true
     );
   };
@@ -165,7 +183,7 @@ class Index extends React.Component<Props, State> {
 
     const { isText } = this.props;
     if (isText) return;
-    const { lineWidth, color } = this.props;
+    const { lineWidth, color, eraser } = this.props;
     const { drawing, current } = this.state;
     if (!drawing) {
       return;
@@ -177,7 +195,7 @@ class Index extends React.Component<Props, State> {
       e.clientX || (e.touches ? e.touches[0].clientX : 0),
       e.clientY || (e.touches ? e.touches[0].clientY : 0),
       lineWidth,
-      color,
+      eraser ? 'white' : color,
       true
     );
     this.setState({
@@ -382,6 +400,7 @@ class Index extends React.Component<Props, State> {
           className={cx(classes.input, showInput && classes.showInput)}
           style={{ ...inputPos }}
           labelWidth={0}
+          multiline
           value={inputValue}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}

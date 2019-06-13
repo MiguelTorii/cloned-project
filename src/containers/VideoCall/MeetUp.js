@@ -71,7 +71,8 @@ const styles = theme => ({
   },
   canvasWrapper: {
     backgroundColor: 'white',
-    padding: theme.spacing.unit
+    padding: theme.spacing.unit,
+    minHeight: 100
   },
   canvasImg: {
     width: '300px !important',
@@ -114,7 +115,8 @@ type State = {
   lineWidth: number,
   color: string,
   canvasImg: string,
-  isText: boolean
+  isText: boolean,
+  eraser: boolean
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -144,7 +146,8 @@ class MeetUp extends React.Component<Props, State> {
       lineWidth: 1,
       color: 'black',
       canvasImg: '',
-      isText: false
+      isText: false,
+      eraser: false
     };
   }
 
@@ -525,11 +528,11 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handlePencilChange = size => {
-    this.setState({lineWidth: size, isText: false})
+    this.setState({lineWidth: size, isText: false, eraser: false})
   }
 
   handleTextChange = () => {
-    this.setState({isText: true})
+    this.setState({isText: true, eraser: false})
   }
 
   handleColorChange = color => {
@@ -537,7 +540,7 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleErase = () => {
-    this.setState({lineWidth: 20, color: 'white'})
+    this.setState({lineWidth: 20, isText: false, eraser: true})
   }
 
   handleSave = () => {
@@ -562,6 +565,20 @@ class MeetUp extends React.Component<Props, State> {
 
   handleCanvasClose = () => {
     this.setState({canvasImg: ''})
+  }
+
+  handleClear = () => {
+    const {current} = this.whiteboard;
+    if(current) {
+      const {canvas} = current;
+      if(canvas) {
+        const {current: currentCanvas} = canvas;
+        if(currentCanvas) {
+          const context = currentCanvas.getContext('2d');
+          context.clearRect(0, 0, currentCanvas.width, currentCanvas.height);
+        }
+      }
+    }
   }
 
   detachTrack(trackName) {
@@ -607,7 +624,8 @@ class MeetUp extends React.Component<Props, State> {
       lineWidth,
       color,
       canvasImg,
-      isText
+      isText,
+      eraser
     } = this.state;
 
     return (
@@ -658,9 +676,10 @@ class MeetUp extends React.Component<Props, State> {
               lineWidth={lineWidth}
               color={color}
               isText={isText}
+              eraser={eraser}
               sendDataMessage={this.sendDataMessage}
             />
-            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onText={this.handleTextChange} onSave={this.handleSave} />
+            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onText={this.handleTextChange} onSave={this.handleSave} onClear={this.handleClear} />
             </Fragment>
           )}
           <Dialog
@@ -698,7 +717,7 @@ class MeetUp extends React.Component<Props, State> {
               Whiteboard Screenshot
             </DialogTitle>
             <DialogContent className={classes.canvasWrapper}>
-              <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot"/>
+              {canvasImg !== '' && <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot"/>}
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCanvasClose} color="primary">
