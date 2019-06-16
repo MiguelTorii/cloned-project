@@ -15,7 +15,7 @@ type Props = {
 };
 
 type State = {
-  school: ?(SelectType & { uri: string }),
+  school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
   error: boolean
 };
 
