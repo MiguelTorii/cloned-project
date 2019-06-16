@@ -40,9 +40,9 @@ class OAuth extends React.Component<Props> {
 
       const user = await signLMSUser({
         code,
-        uri: jRes.uri,
         grantType,
         clientId: jRes.client_id,
+        lmsTypeId: jRes.lms_type_id,
         redirectUri: jRes.redirect_uri
       });
       updateUser({ user });

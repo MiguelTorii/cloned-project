@@ -7,13 +7,16 @@ import { userToCamelCase } from './utils';
 
 export const getLMSSchools = async (): Promise<LMSSchools> => {
   try {
-    const result = await axios.get(API_ROUTES.CANVAS_SCHOOLS);
+    const result = await axios.get(API_ROUTES.LMS_SCHOOLS);
     const { data = {} } = result;
     const { schools = [] } = data;
+
     return schools.map(school => ({
       clientId: String((school.client_id: string) || ''),
       school: String((school.school: string) || ''),
-      uri: String((school.uri: string) || '')
+      uri: String((school.uri: string) || ''),
+      authUri: String((school.auth_uri: string) || ''),
+      lmsTypeId: Number((school.lms_type_id: number) || 0)
     }));
   } catch (err) {
     console.log(err);
@@ -23,23 +26,23 @@ export const getLMSSchools = async (): Promise<LMSSchools> => {
 
 export const signLMSUser = async ({
   code,
-  uri,
   grantType,
   clientId,
+  lmsTypeId,
   redirectUri
 }: {
   code: string,
-  uri: string,
   grantType: string,
   clientId: string,
+  lmsTypeId: number,
   redirectUri: string
 }): Promise<Object> => {
   try {
-    const result = await axios.post(API_ROUTES.CANVAS_USER, {
+    const result = await axios.post(API_ROUTES.LMS_USER, {
       code,
-      uri,
       grant_type: grantType,
       client_id: clientId,
+      lms_type_id: lmsTypeId,
       redirect_uri: redirectUri
     });
     const { data = {} } = result;

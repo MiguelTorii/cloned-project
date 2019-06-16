@@ -5,11 +5,9 @@ import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import AutoComplete from '../AutoComplete';
 import type { SelectType } from '../../types/models';
-import canvasLogo from '../../assets/img/canvas-logo-01.png';
 
 const styles = theme => ({
   main: {
@@ -48,7 +46,8 @@ const styles = theme => ({
     borderColor: theme.circleIn.palette.action
   },
   options: {
-    display: 'none'
+    display: 'none',
+    marginTop: theme.spacing.unit * 2
   },
   show: {
     display: 'flex',
@@ -64,55 +63,28 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  lms: string,
   school: ?SelectType,
   error: boolean,
-  onClick: Function,
   onChange: Function,
   onLoad: Function,
   onSubmit: Function
 };
 
 class FederatedIdentities extends React.PureComponent<Props> {
-  handleClick = name => () => {
-    const { onClick } = this.props;
-    onClick(name);
-  };
-
   render() {
-    const {
-      classes,
-      lms,
-      school,
-      error,
-      onChange,
-      onLoad,
-      onSubmit
-    } = this.props;
+    const { classes, school, error, onChange, onLoad, onSubmit } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
             Log in with your LMS
           </Typography>
-          <div className={classes.logos}>
-            <ButtonBase
-              className={cx(lms === 'canvas' && classes.selected)}
-              onClick={this.handleClick('canvas')}
-            >
-              <img
-                src={canvasLogo}
-                alt="Canvas Logo"
-                className={classes.logo}
-              />
-            </ButtonBase>
-          </div>
-          <div className={cx(classes.options, lms !== '' && classes.show)}>
+          <div className={cx(classes.options, classes.show)}>
             <AutoComplete
               values={school}
               inputValue=""
               label=""
-              placeholder="Select your school/college from the list"
+              placeholder="Search your school/college"
               error={error}
               errorText="You must select an option"
               onChange={onChange}

@@ -15,14 +15,12 @@ type Props = {
 };
 
 type State = {
-  lms: string,
   school: ?(SelectType & { uri: string }),
   error: boolean
 };
 
 class FederatedLogin extends React.Component<Props, State> {
   state = {
-    lms: '',
     school: null,
     error: false
   };
@@ -38,16 +36,14 @@ class FederatedLogin extends React.Component<Props, State> {
     const options = schools.map(school => ({
       value: school.clientId,
       label: school.school,
-      uri: school.uri
+      uri: school.uri,
+      authUri: school.authUri,
+      lmsTypeId: school.lmsTypeId
     }));
     return {
       options,
       hasMore: false
     };
-  };
-
-  handleClick = name => {
-    this.setState({ lms: name });
   };
 
   handleSubmit = () => {
@@ -57,6 +53,7 @@ class FederatedLogin extends React.Component<Props, State> {
       const responseType = 'code';
       const obj = {
         uri: school.uri,
+        lms_type_id: school.lmsTypeId,
         response_type: responseType,
         client_id: school.value,
         redirect_uri: REDIRECT_URI
@@ -64,7 +61,7 @@ class FederatedLogin extends React.Component<Props, State> {
 
       const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
 
-      const uri = `https://${school.uri}/login/oauth2/auth?client_id=${
+      const uri = `https://${school.authUri}?client_id=${
         school.value
       }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
       window.location.replace(uri);
@@ -73,16 +70,13 @@ class FederatedLogin extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { lms, school, error } = this.state;
+    const { school, error } = this.state;
     return (
       <main className={classes.main}>
         <ErrorBoundary>
           <FederatedIdentities
-            key={lms}
-            lms={lms}
             school={school}
             error={error}
-            onClick={this.handleClick}
             onChange={this.handleChange}
             onLoad={this.handleLoadOptions}
             onSubmit={this.handleSubmit}

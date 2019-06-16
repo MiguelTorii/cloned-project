@@ -222,7 +222,9 @@ export type PresignedURL = {
 export type LMSSchool = {
   clientId: string,
   school: string,
-  uri: string
+  uri: string,
+  authUri: string,
+  lmsTypeId: number
 };
 
 export type LMSSchools = Array<LMSSchool>;
