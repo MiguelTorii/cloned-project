@@ -619,7 +619,19 @@ export const getHome = async ({
 
       const quests = (data.quests || []).map(quest => ({
         item: String((quest.item: string) || ''),
-        status: String((quest.status: string) || '')
+        status: String((quest.status: string) || ''),
+        action: {
+          name: String(((quest.action || {}).name: string) || ''),
+          value: String(((quest.action || {}).value: string) || ''),
+          attributes: {
+            feedFilter: {
+              classId: Number(
+                ((((quest.action || {}).attributes || {}).feed_filter || {})
+                  .class_id: number) || 0
+              )
+            }
+          }
+        }
       }));
 
       const imageUrl = String((data.image_url: string) || '');

@@ -192,6 +192,12 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
+  handleDrop = ({ id, image, type }) => {
+    console.log(id, image, type);
+  };
+
+  handleDropRejected = () => {};
+
   render() {
     const { classes } = this.props;
     const {
@@ -258,6 +264,8 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
                     answer={flashcard.answer}
                     onDelete={this.handleDelete}
                     onSubmit={this.handleUpdate}
+                    onDrop={this.handleDrop}
+                    onDropRejected={this.handleDropRejected}
                   />
                 ))}
                 <NewFlashcard

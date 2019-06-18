@@ -271,6 +271,7 @@ export type FeedItem = {
   typeId: number,
   feedId: number,
   postId: number,
+  courseDisplayName: string,
   bookmarked: boolean,
   deck: Array<Flashcard>,
   noteUrl: string,
@@ -395,7 +396,16 @@ export type HomeCardStyle = {
 
 export type HomeCardQuest = {
   item: string,
-  status: string
+  status: string,
+  action: {
+    name: string,
+    value: string,
+    attributes: {
+      feedFilter: {
+        classId: number
+      }
+    }
+  }
 };
 
 export type HomeCard = {

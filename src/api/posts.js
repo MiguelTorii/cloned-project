@@ -208,6 +208,7 @@ export const getNotes = async ({
 
     const { data } = result;
     const post = postToCamelCase(data);
+
     const notes = (data.notes || []).map(item => ({
       fullNoteUrl: String((item.full_note_url: string) || ''),
       note: String((item.note: string) || ''),

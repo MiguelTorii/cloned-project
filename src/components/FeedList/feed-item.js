@@ -114,7 +114,7 @@ const styles = theme => ({
     borderBottomRightRadius: 5
   },
   avatar: {
-    display:'flex',
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
@@ -297,10 +297,13 @@ class FeedItem extends React.PureComponent<Props, State> {
           <CardHeader
             className={classes.header}
             avatar={
-              <ButtonBase className={classes.avatar} onClick={this.handleUserClick}>
-              <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                {initials}
-              </Avatar>
+              <ButtonBase
+                className={classes.avatar}
+                onClick={this.handleUserClick}
+              >
+                <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                  {initials}
+                </Avatar>
               </ButtonBase>
             }
             action={
@@ -331,9 +334,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             subheader={
               <CardActionArea disabled>
                 <Typography component="p" noWrap>
-                  {data.subject !== ''
-                    ? `${data.subject} ${data.classroomName}`
-                    : data.classroomName}
+                  {data.courseDisplayName}
                 </Typography>
               </CardActionArea>
             }

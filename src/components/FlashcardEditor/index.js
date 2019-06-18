@@ -9,14 +9,19 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import OutlinedTextValidator from '../OutlinedTextValidator';
+import DropImage from './DropImage';
 
 const styles = theme => ({
   root: {
@@ -43,6 +48,18 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  inputActions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingRight: theme.spacing.unit * 2
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit
+  },
+  divider: {
+    marginBottom: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2
   }
 });
 
@@ -54,14 +71,18 @@ type Props = {
   answer: string,
   loading: boolean,
   onDelete: Function,
-  onSubmit: Function
+  onSubmit: Function,
+  onDrop: Function,
+  onDropRejected: Function
 };
 
 type State = {
   question: string,
   answer: string,
   isFlipped: boolean,
-  open: boolean
+  open: boolean,
+  questionImage: boolean,
+  answerImage: boolean
 };
 
 class FlashcardEditor extends React.PureComponent<Props, State> {
@@ -69,7 +90,9 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
     question: '',
     answer: '',
     isFlipped: false,
-    open: true
+    open: true,
+    questionImage: false,
+    answerImage: false
   };
 
   constructor(props) {
@@ -132,6 +155,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
     }
   };
 
+  handleInputType = name => () => {
+    this.setState(prevState => ({ [name]: !prevState[name] }));
+  };
+
+  handleDrop = type => acceptedFiles => {
+    const { id, onDrop } = this.props;
+    onDrop({ id, image: acceptedFiles[0], type });
+  };
+
   renderContent = isQuestion => {
     const { classes, index, question, answer, loading } = this.props;
     return (
@@ -179,7 +211,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
   myRef: Object;
 
   render() {
-    const { question, answer, isFlipped, open } = this.state;
+    const { classes, onDropRejected } = this.props;
+    const {
+      question,
+      answer,
+      isFlipped,
+      open,
+      questionImage,
+      answerImage
+    } = this.state;
 
     return (
       <Fragment>
@@ -199,33 +239,99 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                 <Grid item xs={2}>
                   <Typography variant="subtitle1">Question</Typography>
                 </Grid>
-                <Grid item xs={10}>
-                  <OutlinedTextValidator
-                    label="Question"
-                    onChange={this.handleTextChange}
-                    autoFocus
-                    name="question"
-                    multiline
-                    rows={4}
-                    value={question}
-                    validators={['required']}
-                    errorMessages={['Question is required']}
-                  />
+                <Grid container item xs={10}>
+                  <Grid item xs={12} className={classes.inputActions}>
+                    <Fab
+                      variant="extended"
+                      color="primary"
+                      size="small"
+                      aria-label="Change Type"
+                      onClick={this.handleInputType('questionImage')}
+                    >
+                      {!questionImage ? (
+                        <>
+                          <InsertPhotoIcon className={classes.extendedIcon} />
+                          Insert Image
+                        </>
+                      ) : (
+                        <>
+                          <TextFieldsIcon className={classes.extendedIcon} />
+                          Insert Text
+                        </>
+                      )}
+                    </Fab>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!questionImage ? (
+                      <OutlinedTextValidator
+                        label="Question"
+                        onChange={this.handleTextChange}
+                        autoFocus
+                        name="question"
+                        multiline
+                        rows={4}
+                        value={question}
+                        fullWidth
+                        validators={['required']}
+                        errorMessages={['Question is required']}
+                      />
+                    ) : (
+                      <DropImage
+                        isDropzoneDisabled={false}
+                        onDrop={this.handleDrop('question')}
+                        onDropRejected={onDropRejected}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider light className={classes.divider} />
                 </Grid>
                 <Grid item xs={2}>
                   <Typography variant="subtitle1">Answer</Typography>
                 </Grid>
-                <Grid item xs={10}>
-                  <OutlinedTextValidator
-                    label="Answer"
-                    onChange={this.handleTextChange}
-                    name="answer"
-                    multiline
-                    rows={4}
-                    value={answer}
-                    validators={['required']}
-                    errorMessages={['Answer is required']}
-                  />
+                <Grid container item xs={10}>
+                  <Grid item xs={12} className={classes.inputActions}>
+                    <Fab
+                      variant="extended"
+                      color="primary"
+                      size="small"
+                      aria-label="Change Type"
+                      onClick={this.handleInputType('answerImage')}
+                    >
+                      {!answerImage ? (
+                        <>
+                          <InsertPhotoIcon className={classes.extendedIcon} />
+                          Insert Image
+                        </>
+                      ) : (
+                        <>
+                          <TextFieldsIcon className={classes.extendedIcon} />
+                          Insert Text
+                        </>
+                      )}
+                    </Fab>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!answerImage ? (
+                      <OutlinedTextValidator
+                        label="Answer"
+                        onChange={this.handleTextChange}
+                        name="answer"
+                        multiline
+                        rows={4}
+                        value={answer}
+                        validators={['required']}
+                        errorMessages={['Answer is required']}
+                      />
+                    ) : (
+                      <DropImage
+                        isDropzoneDisabled={false}
+                        onDrop={this.handleDrop('answer')}
+                        onDropRejected={onDropRejected}
+                      />
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
             </DialogContent>
