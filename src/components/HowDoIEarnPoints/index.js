@@ -42,8 +42,8 @@ const options = [
 const styles = () => ({
   root: {
     width: '100%',
-    maxWidth: 360,
-    minWidth: 300
+    maxWidth: 360
+    // minWidth: 300
   }
 });
 

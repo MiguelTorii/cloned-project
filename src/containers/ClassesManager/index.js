@@ -12,7 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+// import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -40,7 +40,7 @@ const styles = () => ({
   },
   list: {
     width: '100%',
-    minWidth: 360,
+    // minWidth: 360,
     position: 'relative',
     overflow: 'auto',
     maxHeight: 200
@@ -236,8 +236,22 @@ class ClassesManager extends React.PureComponent<Props, State> {
     if (segment === 'K12') {
       return userClasses.map(item => (
         <ListItem key={item.classId}>
-          <ListItemText primary={item.className} />
+          <ListItemText
+            primary={item.className}
+            primaryTypographyProps={{
+              noWrap: true
+            }}
+          />
           {!canvasUser && (item.permissions || {}).canLeave && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={this.handleRemoveClass({ classId: item.classId })}
+            >
+              Remove
+            </Button>
+          )}
+          {/* {!canvasUser && (item.permissions || {}).canLeave && (
             <ListItemSecondaryAction>
               <Button
                 variant="outlined"
@@ -247,7 +261,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 Remove
               </Button>
             </ListItemSecondaryAction>
-          )}
+          )} */}
         </ListItem>
       ));
     }
@@ -260,8 +274,23 @@ class ClassesManager extends React.PureComponent<Props, State> {
               primary={`${section.subject} ${item.className}: ${
                 section.firstName
               } ${section.lastName} - ${section.section}`}
+              primaryTypographyProps={{
+                noWrap: true
+              }}
             />
             {!canvasUser && (item.permissions || {}).canLeave && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={this.handleRemoveSection({
+                  classId: item.classId,
+                  sectionId: section.sectionId
+                })}
+              >
+                Remove
+              </Button>
+            )}
+            {/* {false && !canvasUser && (item.permissions || {}).canLeave && (
               <ListItemSecondaryAction>
                 <Button
                   variant="outlined"
@@ -274,7 +303,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                   Remove
                 </Button>
               </ListItemSecondaryAction>
-            )}
+            )} */}
           </ListItem>
         ))
       );
@@ -465,7 +494,10 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 You have to select at least 1 class
               </FormHelperText>
             )}
-            {!canvasUser && canAddClasses && !loading && this.renderAvailableClasses()}
+            {!canvasUser &&
+              canAddClasses &&
+              !loading &&
+              this.renderAvailableClasses()}
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose} color="primary" variant="outlined">

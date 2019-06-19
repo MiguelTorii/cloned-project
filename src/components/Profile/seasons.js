@@ -42,7 +42,10 @@ const styles = theme => ({
   rankContainer: {
     marginBottom: theme.spacing.unit * 2,
     height: '100%',
-    minHeight: 146
+    minHeight: 146,
+    [theme.breakpoints.down('xs')]: {
+      minHeight: 300
+    }
   },
   data: {
     display: 'flex',
@@ -273,7 +276,7 @@ class Seasons extends React.PureComponent<Props, State> {
               <Typography variant="caption">Master</Typography>
             </Grid>
           </Grid>
-          <Grid container item xs={6}>
+          <Grid container item xs={12} sm={6}>
             <LinearProgress
               variant="determinate"
               value={30}

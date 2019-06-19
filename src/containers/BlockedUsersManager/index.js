@@ -28,7 +28,7 @@ const styles = () => ({
   },
   list: {
     width: '100%',
-    minWidth: 360,
+    // minWidth: 360,
     position: 'relative',
     overflow: 'auto',
     maxHeight: 200

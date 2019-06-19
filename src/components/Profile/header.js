@@ -35,8 +35,12 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   bigAvatar: {
-    width: 170,
-    height: 170,
+    width: 90,
+    height: 90,
+    [theme.breakpoints.up('sm')]: {
+      width: 170,
+      height: 170
+    },
     fontSize: theme.typography.h1.fontSize,
     margin: theme.spacing.unit * 2
   },
@@ -133,20 +137,26 @@ class Header extends React.PureComponent<Props> {
               <Typography variant="h2" gutterBottom>
                 {name}
               </Typography>
-              <div className={classes.status}>
-                <Typography variant="h4">{points}</Typography>
-                <Typography variant="body2" className={classes.statusLabel}>
-                  points
-                </Typography>
-                <Typography variant="h4">60</Typography>
-                <Typography variant="body2" className={classes.statusLabel}>
-                  thanks
-                </Typography>
-                <Typography variant="h4">10</Typography>
-                <Typography variant="body2" className={classes.statusLabel}>
-                  best answers
-                </Typography>
-              </div>
+              <Grid container>
+                <Grid item xs={12} md={4} className={classes.status}>
+                  <Typography variant="h4">{points}</Typography>
+                  <Typography variant="body2" className={classes.statusLabel}>
+                    points
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={4} className={classes.status}>
+                  <Typography variant="h4">60</Typography>
+                  <Typography variant="body2" className={classes.statusLabel}>
+                    thanks
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={4} className={classes.status}>
+                  <Typography variant="h4">10</Typography>
+                  <Typography variant="body2" className={classes.statusLabel}>
+                    best answers
+                  </Typography>
+                </Grid>
+              </Grid>
               <Typography variant="body2" gutterBottom>
                 {`${school}, ${state}`}
               </Typography>
