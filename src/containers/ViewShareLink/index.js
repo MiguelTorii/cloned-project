@@ -109,7 +109,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <ErrorBoundary>
-          <PostItem>
+          <PostItem feedId={feedId}>
             <ErrorBoundary>
               <PostItemHeader
                 userId={ownerId}

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Hidden from '@material-ui/core/Hidden';
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -17,6 +18,7 @@ import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import Leaderboard from '../Leaderboard';
 import Announcements from '../../components/Announcements';
+import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -193,6 +195,9 @@ class Layout extends React.PureComponent<Props, State> {
             {this.renderChildren()}
           </MainLayout>
         </ErrorBoundary>
+        <Hidden smUp implementation="css">
+          <BottomNav />
+        </Hidden>
         <ErrorBoundary>
           <Notifications
             anchorEl={anchorEl}

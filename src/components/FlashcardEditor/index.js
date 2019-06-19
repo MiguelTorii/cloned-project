@@ -249,15 +249,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                       onClick={this.handleInputType('questionImage')}
                     >
                       {!questionImage ? (
-                        <>
+                        <Fragment>
                           <InsertPhotoIcon className={classes.extendedIcon} />
                           Insert Image
-                        </>
+                        </Fragment>
                       ) : (
-                        <>
+                        <Fragment>
                           <TextFieldsIcon className={classes.extendedIcon} />
                           Insert Text
-                        </>
+                        </Fragment>
                       )}
                     </Fab>
                   </Grid>
@@ -300,15 +300,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                       onClick={this.handleInputType('answerImage')}
                     >
                       {!answerImage ? (
-                        <>
+                        <Fragment>
                           <InsertPhotoIcon className={classes.extendedIcon} />
                           Insert Image
-                        </>
+                        </Fragment>
                       ) : (
-                        <>
+                        <Fragment>
                           <TextFieldsIcon className={classes.extendedIcon} />
                           Insert Text
-                        </>
+                        </Fragment>
                       )}
                     </Fab>
                   </Grid>

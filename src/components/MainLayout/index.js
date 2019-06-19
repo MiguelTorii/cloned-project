@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,9 +18,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import RedeemIcon from '@material-ui/icons/Redeem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
@@ -54,15 +55,21 @@ const styles = theme => ({
   },
   appBarShift: {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`
+    },
+    // width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
   },
   menuButton: {
-    marginLeft: 12,
-    marginRight: 36
+    marginRight: 20,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 12,
+      marginRight: 36
+    }
   },
   grow: {
     flexGrow: 1
@@ -70,11 +77,15 @@ const styles = theme => ({
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex'
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   },
   sectionMobile: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     [theme.breakpoints.up('md')]: {
       display: 'none'
     }
@@ -83,12 +94,17 @@ const styles = theme => ({
     maxWidth: 120
   },
   hide: {
-    display: 'none'
+    [theme.breakpoints.up('sm')]: {
+      display: 'none'
+    }
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap'
+  },
+  drawerPaper: {
+    width: drawerWidth
   },
   drawerOpen: {
     width: drawerWidth,
@@ -120,16 +136,19 @@ const styles = theme => ({
     padding: theme.spacing.unit,
     display: 'flex',
     justifyContent: 'flex-start',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing.unit * 8
+    }
   }
 });
 
 type Props = {
   classes: Object,
+  width: string,
   userId: string,
   initials: string,
   userProfileUrl: string,
-  theme: Object,
   children: any,
   unreadCount: number,
   handleNotificationOpen: Function,
@@ -150,7 +169,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    open: true,
+    open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -233,7 +252,17 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openHowEarnPoints
     } = this.state;
-    const { classes, userId, initials, userProfileUrl, theme, children, unreadCount, onOpenLeaderboard, onOpenAnnouncements } = this.props;
+    const {
+      classes,
+      userId,
+      initials,
+      userProfileUrl,
+      width,
+      children,
+      unreadCount,
+      onOpenLeaderboard,
+      onOpenAnnouncements
+    } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -283,11 +312,7 @@ class MainLayout extends React.Component<Props, State> {
         </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
-          <Avatar
-                src={userProfileUrl}
-              >
-                {initials}
-              </Avatar>
+            <Avatar src={userProfileUrl}>{initials}</Avatar>
           </IconButton>
           <p>Account</p>
         </MenuItem>
@@ -348,6 +373,68 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
+    const drawer = (
+      <Fragment>
+        <div className={classes.toolbar}>
+          <IconButton onClick={this.handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          <ListItem button onClick={this.handleCreatePostMenuOpen}>
+            <ListItemIcon>
+              <AddBoxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create Post" />
+          </ListItem>
+          <Divider light />
+          <ListItem button component={MyLink} link="/">
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button component={MyLink} link="/feed">
+            <ListItemIcon>
+              <ViewListIcon />
+            </ListItemIcon>
+            <ListItemText primary="Feed" />
+          </ListItem>
+          <ListItem button component={MyLink} link="/reminders">
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reminders" />
+          </ListItem>
+          <ListItem button onClick={onOpenLeaderboard}>
+            <ListItemIcon>
+              <RedeemIcon />
+            </ListItemIcon>
+            <ListItemText primary="Leaderboard" />
+          </ListItem>
+          <ListItem button component={MyLink} link="/store">
+            <ListItemIcon>
+              <StoreIcon />
+            </ListItemIcon>
+            <ListItemText primary="Store" />
+          </ListItem>
+          <ListItem button component={MyLink} link="/video-call">
+            <ListItemIcon>
+              <DuoIcon />
+            </ListItemIcon>
+            <ListItemText primary="Video Meet Up" />
+          </ListItem>
+          <ListItem button onClick={onOpenAnnouncements}>
+            <ListItemIcon>
+              <AnnouncementIcon />
+            </ListItemIcon>
+            <ListItemText primary="Announcements" />
+          </ListItem>
+        </List>
+      </Fragment>
+    );
+
     return (
       <Fragment>
         <div className={classes.root}>
@@ -389,11 +476,7 @@ class MainLayout extends React.Component<Props, State> {
                   onClick={this.handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Avatar
-                src={userProfileUrl}
-              >
-                {initials}
-              </Avatar>
+                  <Avatar src={userProfileUrl}>{initials}</Avatar>
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>
@@ -410,82 +493,36 @@ class MainLayout extends React.Component<Props, State> {
           {renderMenu}
           {renderMobileMenu}
           {renderCreatePostMenu}
-          <Drawer
-            variant="permanent"
-            className={classNames(classes.drawer, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open
-            })}
-            classes={{
-              paper: classNames({
+          <Hidden smUp implementation="css">
+            <Drawer
+              variant="temporary"
+              open={open && width === 'xs'}
+              onClose={this.handleDrawerClose}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              variant="permanent"
+              className={classNames(classes.drawer, {
                 [classes.drawerOpen]: open,
                 [classes.drawerClose]: !open
-              })
-            }}
-            open={open}
-          >
-            <div className={classes.toolbar}>
-              <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === 'rtl' ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-              <ListItem button onClick={this.handleCreatePostMenuOpen}>
-                <ListItemIcon>
-                  <AddBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Create Post" />
-              </ListItem>
-              <Divider light />
-              <ListItem button component={MyLink} link="/">
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem button component={MyLink} link="/feed">
-                <ListItemIcon>
-                  <ViewListIcon />
-                </ListItemIcon>
-                <ListItemText primary="Feed" />
-              </ListItem>
-              <ListItem button component={MyLink} link="/reminders">
-                <ListItemIcon>
-                  <EventIcon />
-                </ListItemIcon>
-                <ListItemText primary="Reminders" />
-              </ListItem>
-              <ListItem button onClick={onOpenLeaderboard}>
-                <ListItemIcon>
-                  <RedeemIcon />
-                </ListItemIcon>
-                <ListItemText primary="Leaderboard" />
-              </ListItem>
-              <ListItem button component={MyLink} link="/store">
-                <ListItemIcon>
-                  <StoreIcon />
-                </ListItemIcon>
-                <ListItemText primary="Store" />
-              </ListItem>
-              <ListItem button component={MyLink} link="/video-call">
-                <ListItemIcon>
-                  <DuoIcon />
-                </ListItemIcon>
-                <ListItemText primary="Video Meet Up" />
-              </ListItem>
-              <ListItem button onClick={onOpenAnnouncements}>
-                <ListItemIcon>
-                  <AnnouncementIcon />
-                </ListItemIcon>
-                <ListItemText primary="Announcements" />
-              </ListItem>
-            </List>
-          </Drawer>
+              })}
+              classes={{
+                paper: classNames({
+                  [classes.drawerOpen]: open,
+                  [classes.drawerClose]: !open
+                })
+              }}
+              open={open}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {children}
@@ -500,4 +537,4 @@ class MainLayout extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(MainLayout);
+export default withStyles(styles)(withWidth()(MainLayout));

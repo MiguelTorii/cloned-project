@@ -111,6 +111,11 @@ const theme = createMuiTheme({
       icon: {
         color: circleInTheme.inputBorderColor
       }
+    },
+    MuiBottomNavigationAction: {
+      label: {
+        color: circleInTheme.primaryText2
+      }
     }
   }
 });
