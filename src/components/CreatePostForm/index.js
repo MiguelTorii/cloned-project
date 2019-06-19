@@ -14,12 +14,16 @@ const styles = theme => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing.unit * 3,
+      marginRight: theme.spacing.unit * 3
+    }
   },
   paper: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 8,
+    [theme.breakpoints.up('sm')]: {
+      marginTop: theme.spacing.unit * 2,
+      marginBottom: theme.spacing.unit * 8
+    },
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

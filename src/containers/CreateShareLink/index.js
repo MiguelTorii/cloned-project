@@ -172,12 +172,12 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">
                   {"What's the title of your link??"}
                 </Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <OutlinedTextValidator
                   label="Title"
                   onChange={this.handleTextChange}
@@ -187,16 +187,16 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['Title is required']}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <ClassesSelector onChange={this.handleClassChange} />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Url</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <OutlinedTextValidator
                   label="Url"
                   onChange={this.handleTextChange}
@@ -206,14 +206,14 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['URL is required']}
                 />
               </Grid>
-              <Grid item xs={2} />
-              <Grid item xs={10} className={classes.preview}>
+              <Grid item xs={12} sm={2} />
+              <Grid item xs={12} sm={10} className={classes.preview}>
                 <LinkPreview uri={preview} />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <TagsAutoComplete
                   tags={tags}
                   error={tagsError}

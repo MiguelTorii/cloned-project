@@ -221,10 +221,10 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Title</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <OutlinedTextValidator
                   label="Title"
                   onChange={this.handleTextChange}
@@ -234,26 +234,26 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
                   errorMessages={['Title is required']}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <ClassesSelector onChange={this.handleClassChange} />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <TagsAutoComplete
                   tags={tags}
                   error={tagsError}
                   onChange={this.handleTagsChange}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Flashcards</Typography>
               </Grid>
-              <Grid item xs={10} className={classes.flashcards}>
+              <Grid item xs={12} sm={10} className={classes.flashcards}>
                 {flashcards.map((flashcard, index) => (
                   <FlashcardEditor
                     key={flashcard.id}

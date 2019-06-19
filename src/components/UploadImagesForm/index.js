@@ -113,7 +113,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
-                  <Typography variant="h6">
+                  <Typography variant="h6" align="center">
                     {"Drag 'n' drop some files here, or click to select files"}
                   </Typography>
                   <CloudUploadIcon className={classes.uploadIconSize} />

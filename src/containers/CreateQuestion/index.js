@@ -150,12 +150,12 @@ class CreateQuestion extends React.PureComponent<Props, State> {
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">
                   {"What's your question?"}
                 </Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <OutlinedTextValidator
                   label="Question"
                   onChange={this.handleTextChange}
@@ -165,26 +165,26 @@ class CreateQuestion extends React.PureComponent<Props, State> {
                   errorMessages={['Title is required']}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Description</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <RichTextEditor
                   placeholder="Add more details to your question to increase the chances of getting an answer"
                   value={body}
                   onChange={this.handleRTEChange}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <ClassesSelector onChange={this.handleClassChange} />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>
               </Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12} sm={10}>
                 <TagsAutoComplete
                   tags={tags}
                   error={tagsError}
