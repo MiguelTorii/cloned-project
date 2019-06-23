@@ -12,6 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import Index from './pages/Home';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
+import Chat from './pages/Chat';
 import Share from './pages/Share';
 import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
@@ -67,6 +68,7 @@ ReactDOM.render(
         <Route exact path="/" component={withTracker(Index)} />
         <Route exact path="/store" component={withTracker(Store)} />
         <Route exact path="/feed" component={withTracker(Feed)} />
+        <Route exact path="/chat" component={withTracker(Chat)} />
         <Route exact path="/share/:code" component={withTracker(Share)} />
         <Route
           exact

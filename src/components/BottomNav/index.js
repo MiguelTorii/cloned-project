@@ -83,7 +83,12 @@ class BottomNav extends React.PureComponent<Props, State> {
             icon={<AddCircleOutlineIcon />}
             onClick={this.handleOpen}
           />
-          <BottomNavigationAction label="Messages" icon={<ChatIcon />} />
+          <BottomNavigationAction
+            label="Messages"
+            icon={<ChatIcon />}
+            component={MyLink}
+            href="/chat"
+          />
           <BottomNavigationAction
             label="Notifications"
             icon={<NotificationsIcon />}
