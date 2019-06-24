@@ -3,9 +3,11 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { isMobile } from 'react-device-detect';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import VideoCall from '../../containers/VideoCall';
+import OpenApp from '../../components/OpenApp';
 
 const styles = () => ({});
 
@@ -43,12 +45,20 @@ class VideoCallPage extends React.Component<ProvidedProps & Props, State> {
   render() {
     const { classes } = this.props;
     const { roomId } = this.state;
+
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <Layout isNaked>
-          {roomId !== '' && <VideoCall roomId={roomId} />}
-        </Layout>
+        {roomId !== '' && !isMobile && (
+          <Layout isNaked>
+            <VideoCall roomId={roomId} />
+          </Layout>
+        )}
+        {isMobile && (
+          <Layout>
+            <OpenApp />
+          </Layout>
+        )}
       </main>
     );
   }
