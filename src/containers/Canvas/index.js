@@ -32,7 +32,7 @@ type Props = {
 class Canvas extends React.Component<Props> {
   componentDidMount = async () => {
     const { nonce, updateUser, pushTo } = this.props;
-    console.log(nonce);
+
     try {
       const user = await checkLMSUser({
         nonce
