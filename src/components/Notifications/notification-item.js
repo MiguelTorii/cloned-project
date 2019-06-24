@@ -15,7 +15,7 @@ import linkImage from '../../assets/svg/ic_link_post.svg';
 
 const styles = () => ({
   primary: {
-    width: 200
+    // width: 200
   },
   image: {
     height: 40,

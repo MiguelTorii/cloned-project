@@ -13,6 +13,7 @@ import Index from './pages/Home';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
 import Chat from './pages/Chat';
+import Notifications from './pages/Notifications';
 import Share from './pages/Share';
 import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
@@ -69,6 +70,7 @@ ReactDOM.render(
         <Route exact path="/store" component={withTracker(Store)} />
         <Route exact path="/feed" component={withTracker(Feed)} />
         <Route exact path="/chat" component={withTracker(Chat)} />
+        <Route exact path="/notifications" component={withTracker(Notifications)} />
         <Route exact path="/share/:code" component={withTracker(Share)} />
         <Route
           exact

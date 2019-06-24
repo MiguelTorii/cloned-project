@@ -15,7 +15,7 @@ import type { Notification as NotificationState } from '../../types/models';
 
 const styles = theme => ({
   root: {
-    width: 376,
+    // width: 376,
     padding: theme.spacing.unit,
     display: 'flex',
     flexDirection: 'column',
@@ -54,6 +54,7 @@ type Props = {
   loading: boolean,
   // eslint-disable-next-line no-undef
   anchorEl: HTMLElement,
+  isPage: boolean,
   onNotificationClose: Function,
   onTabChange: Function,
   onClick: Function
@@ -69,50 +70,57 @@ class Notifications extends React.PureComponent<Props, State> {
       notifications,
       tab,
       loading,
+      isPage,
       onNotificationClose,
       onTabChange,
       onClick
     } = this.props;
     const open = Boolean(anchorEl);
-    return (
+    const notificationPaper = (
+      <Paper className={classes.root}>
+        <Tabs
+          value={tab}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={onTabChange}
+        >
+          <Tab label="Study Circle" />
+          <Tab label="All" />
+        </Tabs>
+        <List className={classes.root}>
+          {notifications.map(item => (
+            <NotificationItem
+              key={item.id}
+              notification={item}
+              onClick={onClick}
+            />
+          ))}
+        </List>
+        {notifications.length === 0 && (
+          <div className={classes.empty}>
+            <Typography align="center" variant="h6">
+              No notifications yet. We will keep you posted
+            </Typography>
+          </div>
+        )}
+        <div className={cx(classes.progress, !loading && classes.hide)}>
+          <CircularProgress />
+        </div>
+      </Paper>
+    );
+
+    const popper = (
       <Popover
         id="notifications-popper"
         open={open}
         anchorEl={anchorEl}
         onClose={onNotificationClose}
       >
-        <Paper className={classes.root}>
-          <Tabs
-            value={tab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={onTabChange}
-          >
-            <Tab label="Study Circle" />
-            <Tab label="All" />
-          </Tabs>
-          <List className={classes.root}>
-            {notifications.map(item => (
-              <NotificationItem
-                key={item.id}
-                notification={item}
-                onClick={onClick}
-              />
-            ))}
-          </List>
-          {notifications.length === 0 && (
-            <div className={classes.empty}>
-              <Typography align="center" variant="h6">
-                No notifications yet. We will keep you posted
-              </Typography>
-            </div>
-          )}
-          <div className={cx(classes.progress, !loading && classes.hide)}>
-            <CircularProgress />
-          </div>
-        </Paper>
+        {notificationPaper}
       </Popover>
     );
+    if (isPage) return notificationPaper;
+    return popper;
   }
 }
 

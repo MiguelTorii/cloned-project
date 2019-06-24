@@ -92,6 +92,8 @@ class BottomNav extends React.PureComponent<Props, State> {
           <BottomNavigationAction
             label="Notifications"
             icon={<NotificationsIcon />}
+            component={MyLink}
+            href="/notifications"
           />
         </BottomNavigation>
         <Dialog open={open} fullWidth onClose={this.handleClose}>

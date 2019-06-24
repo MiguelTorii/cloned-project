@@ -28,7 +28,8 @@ type Props = {
   user: UserState,
   anchorEl: Node,
   onClose: Function,
-  onUpdateUnreadCount: Function,
+  onUpdateUnreadCount?: Function,
+  isPage?: boolean,
   onClick: Function
 };
 
@@ -39,6 +40,11 @@ type State = {
 };
 
 class Feed extends React.PureComponent<ProvidedProps & Props, State> {
+  static defaultProps = {
+    isPage: false,
+    onUpdateUnreadCount: () => {}
+  };
+
   state = {
     notifications: [],
     tab: 0,
@@ -134,7 +140,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   render() {
-    const { classes, anchorEl, onClose, onClick } = this.props;
+    const { classes, isPage, anchorEl, onClose, onClick } = this.props;
     const { notifications, tab, loading } = this.state;
     return (
       <div className={classes.root}>
@@ -144,6 +150,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
             tab={tab}
             loading={loading}
             anchorEl={anchorEl}
+            isPage={isPage}
             onNotificationClose={onClose}
             onTabChange={this.handleTabChange}
             onClick={onClick}

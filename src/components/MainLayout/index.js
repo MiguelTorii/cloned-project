@@ -298,18 +298,18 @@ class MainLayout extends React.Component<Props, State> {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem
-          onClick={this.handleNotificationOpen}
-          aria-haspopup="true"
-          aria-owns={open ? 'notifications-popper' : undefined}
-        >
-          <IconButton color="inherit">
-            <Badge badgeContent={unreadCount} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
+          {width !== 'xs' && <MenuItem
+            onClick={this.handleNotificationOpen}
+            aria-haspopup="true"
+            aria-owns={open ? 'notifications-popper' : undefined}
+          >
+            <IconButton color="inherit">
+              <Badge badgeContent={unreadCount} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>}
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <Avatar src={userProfileUrl}>{initials}</Avatar>
