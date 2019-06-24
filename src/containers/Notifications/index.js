@@ -123,7 +123,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
           userId,
           isStudyCircle: !tab
         });
-        onUpdateUnreadCount(unreadCount);
+        if (onUpdateUnreadCount) onUpdateUnreadCount(unreadCount);
         this.setState({ notifications });
       } finally {
         this.setState({ loading: false });
