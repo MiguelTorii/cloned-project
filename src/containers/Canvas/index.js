@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import { checkCanvasUser } from '../../api/lms';
+import { checkLMSUser } from '../../api/lms';
 import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({
@@ -32,8 +32,9 @@ type Props = {
 class Canvas extends React.Component<Props> {
   componentDidMount = async () => {
     const { nonce, updateUser, pushTo } = this.props;
+    console.log(nonce);
     try {
-      const user = await checkCanvasUser({
+      const user = await checkLMSUser({
         nonce
       });
       updateUser({ user });
@@ -50,6 +51,7 @@ class Canvas extends React.Component<Props> {
       }
     } = this.props;
     if (userId !== '') return <Redirect to="/" />;
+
     return (
       <main className={classes.main}>
         <CircularProgress />

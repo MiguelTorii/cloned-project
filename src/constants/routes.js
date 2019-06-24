@@ -27,6 +27,7 @@ export const API_ROUTES = {
   CHANGE_PASSWORD: `${API_URL}/auth/change_password`,
   LMS_SCHOOLS: `${API_URL}/lms/schools`,
   LMS_USER: `${API_URL}/lms/oauth2/token`,
+  LMS_LOGIN: `${API_URL}/lms/auth/login`,
   CANVAS_SCHOOLS: `${API_URL}/canvas/schools`,
   CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
   CANVAS_LOGIN: `${API_URL}/canvas/auth/login`,

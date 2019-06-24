@@ -5,12 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withRoot from '../../withRoot';
 import Canvas from '../../containers/Canvas';
 
-type ProvidedProps = {
-  classes: Object
-};
-
 type Props = {
-  classes: Object,
   match: {
     params: {
       nonce: string
@@ -22,7 +17,7 @@ type State = {
   nonce: string
 };
 
-class CanvasPage extends React.Component<ProvidedProps & Props, State> {
+class CanvasPage extends React.Component<Props, State> {
   state = {
     nonce: ''
   };
@@ -37,10 +32,9 @@ class CanvasPage extends React.Component<ProvidedProps & Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
     const { nonce } = this.state;
     return (
-      <main className={classes.main}>
+      <main>
         <CssBaseline />
         {nonce !== '' && <Canvas nonce={nonce} />}
       </main>
