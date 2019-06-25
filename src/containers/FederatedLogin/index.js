@@ -61,7 +61,7 @@ class FederatedLogin extends React.Component<Props, State> {
 
       const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
 
-      const uri = `https://${school.authUri}?client_id=${
+      const uri = `${school.authUri}?client_id=${
         school.value
       }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
       window.location.replace(uri);
