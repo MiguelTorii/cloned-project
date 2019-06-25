@@ -5,10 +5,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import type { SelectType } from '../../types/models';
 import FederatedIdentities from '../../components/FederatedIdentities';
 import { getLMSSchools } from '../../api/lms';
-// import { REDIRECT_URI } from '../../constants/app';
+import { REDIRECT_URI } from '../../constants/app';
 import ErrorBoundary from '../ErrorBoundary';
 
-const REDIRECT_URI = 'http://localhost:2000/oauth';
+// const REDIRECT_URI = 'http://localhost:2000/oauth';
 
 const styles = () => ({});
 
