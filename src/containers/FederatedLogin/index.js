@@ -5,8 +5,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import type { SelectType } from '../../types/models';
 import FederatedIdentities from '../../components/FederatedIdentities';
 import { getLMSSchools } from '../../api/lms';
-import { REDIRECT_URI } from '../../constants/app';
+// import { REDIRECT_URI } from '../../constants/app';
 import ErrorBoundary from '../ErrorBoundary';
+
+const REDIRECT_URI = 'http://localhost:2000/oauth';
 
 const styles = () => ({});
 
@@ -61,9 +63,14 @@ class FederatedLogin extends React.Component<Props, State> {
 
       const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
 
-      const uri = `${school.authUri}?client_id=${
+      let uri = `${school.authUri}?client_id=${
         school.value
       }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
+
+      if (school.lmsTypeId === 1) {
+        uri = `${uri}&scope=url:GET|/api/v1/courses`;
+      }
+
       window.location.replace(uri);
     }
   };

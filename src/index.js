@@ -30,6 +30,7 @@ import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
+import UpdateLMSUser from './containers/UpdateLMSUser';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
@@ -64,13 +65,18 @@ ReactDOM.render(
   <Provider store={store}>
     <FloatingChat />
     <DailyRewards />
+    <UpdateLMSUser />
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path="/" component={withTracker(Index)} />
         <Route exact path="/store" component={withTracker(Store)} />
         <Route exact path="/feed" component={withTracker(Feed)} />
         <Route exact path="/chat" component={withTracker(Chat)} />
-        <Route exact path="/notifications" component={withTracker(Notifications)} />
+        <Route
+          exact
+          path="/notifications"
+          component={withTracker(Notifications)}
+        />
         <Route exact path="/share/:code" component={withTracker(Share)} />
         <Route
           exact
@@ -123,8 +129,17 @@ ReactDOM.render(
         <Route exact path="/video-call" component={withTracker(StartVideo)} />
         <Route exact path="/login" component={withTracker(SignIn)} />
         <Route exact path="/signup" component={withTracker(SignUp)} />
-        <Route exact path="/forgot_password" component={withTracker(ForgotPassword)} />
-        ç<Route exact path="/reset_password" component={withTracker(ResetPassword)} />
+        <Route
+          exact
+          path="/forgot_password"
+          component={withTracker(ForgotPassword)}
+        />
+        ç
+        <Route
+          exact
+          path="/reset_password"
+          component={withTracker(ResetPassword)}
+        />
         <Route exact path="/oauth" component={withTracker(OAuth)} />
         <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
         <Route exact path="/sandbox" component={Sandbox} />

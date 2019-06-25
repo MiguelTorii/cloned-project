@@ -20,7 +20,9 @@ export type User = {
   profileImage: string,
   rank: number,
   referralCode: string,
-  updateProfile: Array<UpdateProfile>
+  updateProfile: Array<UpdateProfile>,
+  lmsTypeId: number,
+  lmsUser: boolean
 };
 
 export type UserProfile = {

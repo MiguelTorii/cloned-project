@@ -220,7 +220,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
   renderUserClasses = () => {
     const {
       user: {
-        data: { segment, canvasUser }
+        data: { segment, lmsTypeId }
       }
     } = this.props;
     const { userClasses } = this.state;
@@ -242,7 +242,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
               noWrap: true
             }}
           />
-          {!canvasUser && (item.permissions || {}).canLeave && (
+          {lmsTypeId === -1 && (item.permissions || {}).canLeave && (
             <Button
               variant="outlined"
               color="secondary"
@@ -278,7 +278,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 noWrap: true
               }}
             />
-            {!canvasUser && (item.permissions || {}).canLeave && (
+            {lmsTypeId === -1 && (item.permissions || {}).canLeave && (
               <Button
                 variant="outlined"
                 color="secondary"
@@ -454,7 +454,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: { userId, canvasUser }
+        data: { userId, lmsTypeId }
       },
       open,
       onClose
@@ -486,15 +486,15 @@ class ClassesManager extends React.PureComponent<Props, State> {
             {!loading && (
               <List className={classes.list}>{this.renderUserClasses()}</List>
             )}
-            {!canvasUser && canAddClasses && !loading && (
+            {lmsTypeId === -1 && canAddClasses && !loading && (
               <Typography>List of available classes</Typography>
             )}
-            {!canvasUser && canAddClasses && errorText && (
+            {lmsTypeId === -1 && canAddClasses && errorText && (
               <FormHelperText error>
                 You have to select at least 1 class
               </FormHelperText>
             )}
-            {!canvasUser &&
+            {lmsTypeId === -1 &&
               canAddClasses &&
               !loading &&
               this.renderAvailableClasses()}

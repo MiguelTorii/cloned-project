@@ -78,7 +78,9 @@ export const signIn = ({
       profileImage: (result.profile_image_url: string) || '',
       rank: (result.rank: number) || 0,
       referralCode: (result.referral_code: string) || '',
-      updateProfile: (result.update_profile: Array<UpdateProfile>) || []
+      updateProfile: (result.update_profile: Array<UpdateProfile>) || [],
+      lmsTypeId: (result.lms_type_id: number) || -1,
+      lmsUser: (result.lms_user: boolean) || false
     };
 
     store.set('TOKEN', user.jwtToken);
@@ -130,7 +132,9 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
         profileImage: (result.profile_image_url: string) || '',
         rank: (result.rank: number) || 0,
         referralCode: (result.referral_code: string) || '',
-        updateProfile: (result.update_profile: Array<UpdateProfile>) || []
+        updateProfile: (result.update_profile: Array<UpdateProfile>) || [],
+        lmsTypeId: (result.lms_type_id: number) || -1,
+        lmsUser: (result.lms_user: boolean) || false
       };
 
       store.set('TOKEN', user.jwtToken);
