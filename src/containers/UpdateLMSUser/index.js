@@ -8,6 +8,7 @@ import {
   SelectValidator
 } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,6 +22,7 @@ import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
+import * as signInActions from '../../actions/sign-in';
 
 const styles = theme => ({
   root: {
@@ -44,7 +46,8 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  user: UserState
+  user: UserState,
+  checkUserSession: Function
 };
 
 type State = {
@@ -136,6 +139,8 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
         fields.push(item);
       }
       await updateUserProfile({ userId, fields });
+      const { checkUserSession } = this.props;
+      await checkUserSession();
 
       this.setState({ open: false, loading: false });
     } catch (err) {
@@ -295,7 +300,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      checkUserSession: signInActions.checkUserSession
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withRoot(withStyles(styles)(UpdateLMSUser)));

@@ -12,8 +12,30 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as signInActions from '../../actions/sign-in';
 import ErrorBoundary from '../ErrorBoundary';
+import loginBackground from '../../assets/img/login-background.png';
+import logo from '../../assets/svg/circlein_logo_beta.svg';
 
-const styles = () => ({});
+const styles = theme => ({
+  main: {
+    backgroundImage: `url(${loginBackground})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '50% 0',
+    '-ms-background-size': 'cover',
+    '-o-background-size': 'cover',
+    '-moz-background-size': 'cover',
+    '-webkit-background-size': 'cover',
+    backgroundSize: 'cover'
+  },
+  grid: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  logo: {
+    marginTop: theme.spacing.unit * 8
+  }
+});
 
 type Props = {
   classes: Object,
@@ -65,23 +87,26 @@ class SignIn extends React.Component<Props, State> {
 
     return (
       <main className={classes.main}>
+        <div className={classes.overlay} />
         <Grid container justify="space-around">
-          <Grid item lg={6}>
+          <Grid item xs={12} lg={6} className={classes.grid}>
+            <img src={logo} alt="Logo" className={classes.logo} />
             <ErrorBoundary>
               <SignInForm
                 email={email}
                 password={password}
                 loading={isLoading}
+                federatedLogin={<FederatedLogin />}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
               />
             </ErrorBoundary>
           </Grid>
-          <Grid item lg={6}>
+          {/* <Grid item lg={6}>
             <ErrorBoundary>
               <FederatedLogin />
             </ErrorBoundary>
-          </Grid>
+          </Grid> */}
         </Grid>
         <ErrorBoundary>
           <SimpleErrorDialog

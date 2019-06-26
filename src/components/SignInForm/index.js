@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
@@ -8,9 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
+import Divider from '@material-ui/core/Divider';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 
@@ -24,10 +25,11 @@ const styles = theme => ({
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto'
-    }
+    },
+    marginBottom: theme.spacing.unit * 4
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 4,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -59,7 +61,11 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-end'
+    alignItems: 'center'
+  },
+  divider: {
+    marginTop: theme.spacing.unit * 2,
+    width: '100%'
   }
 });
 
@@ -72,6 +78,7 @@ type Props = {
   email: String,
   password: String,
   loading: boolean,
+  federatedLogin: Node,
   handleChange: Function,
   handleSubmit: Function
 };
@@ -85,15 +92,15 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
       email,
       password,
       loading,
+      federatedLogin,
       handleSubmit,
       handleChange
     } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <img src={logo} alt="Logo" className={classes.logo} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
           <ValidatorForm
             instantValidate={false}
@@ -147,28 +154,30 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           </ValidatorForm>
           <div className={classes.links}>
             <Typography variant="subtitle1" gutterBottom>
-              {"Don't have an account? "}
               <Link
                 component={MyLink}
                 link="/signup"
                 href="/signup"
                 className={classes.link}
+                disabled={loading}
               >
-                Get Started
+                Create new account
               </Link>
             </Typography>
             <Typography variant="subtitle1">
-              {"Don't remember your password? "}
               <Link
                 component={MyLink}
                 link="/forgot_password"
                 href="/forgot_password"
                 className={classes.link}
+                disabled={loading}
               >
-                Recover
+                Forgot my password
               </Link>
             </Typography>
           </div>
+          <Divider className={classes.divider} />
+          {federatedLogin}
         </Paper>
       </main>
     );

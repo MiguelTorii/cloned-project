@@ -3,7 +3,6 @@
 import React from 'react';
 import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AutoComplete from '../AutoComplete';
@@ -22,7 +21,7 @@ const styles = theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 2,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -75,7 +74,7 @@ class FederatedIdentities extends React.PureComponent<Props> {
     const { classes, school, error, onChange, onLoad, onSubmit } = this.props;
     return (
       <main className={classes.main}>
-        <Paper className={classes.paper}>
+        <div className={classes.paper}>
           <Typography component="h1" variant="h5">
             Log in with your LMS
           </Typography>
@@ -100,7 +99,7 @@ class FederatedIdentities extends React.PureComponent<Props> {
               Log In
             </Button>
           </div>
-        </Paper>
+        </div>
       </main>
     );
   }
