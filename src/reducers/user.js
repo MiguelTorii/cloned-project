@@ -38,7 +38,9 @@ const defaultState = {
     profileImage: '',
     rank: 0,
     referralCode: '',
-    updateProfile: []
+    updateProfile: [],
+    lmsTypeId: -1,
+    lmsUser: false
   },
   isLoading: false,
   error: false,

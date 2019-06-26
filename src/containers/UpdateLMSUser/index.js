@@ -118,7 +118,8 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       const { firstName, lastName, grade, email } = this.state;
       const fields = [];
       for (const profileItem of updateProfile) {
-        const item = { field: profileItem.field };
+        const item = { field: profileItem.field, updated_value: '' };
+
         switch (profileItem.field) {
           case 'first_name':
             item.updated_value = firstName;

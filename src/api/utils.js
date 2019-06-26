@@ -131,7 +131,9 @@ export const userToCamelCase = (user: Object): User => {
     profileImage: (user.profile_image_url: string) || '',
     rank: (user.rank: number) || 0,
     referralCode: (user.referral_code: string) || '',
-    updateProfile: (user.update_profile: Array<UpdateProfile>) || []
+    updateProfile: (user.update_profile: Array<UpdateProfile>) || [],
+    lmsTypeId: (user.lms_type_id: number) || -1,
+    lmsUser: (user.lms_user: boolean) || false
   };
 };
 
