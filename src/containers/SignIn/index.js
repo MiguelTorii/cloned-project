@@ -17,6 +17,7 @@ import logo from '../../assets/svg/circlein_logo_beta.svg';
 
 const styles = theme => ({
   main: {
+    minHeight: '100vh',
     backgroundImage: `url(${loginBackground})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '50% 0',
