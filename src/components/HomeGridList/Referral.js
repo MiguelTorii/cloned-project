@@ -12,17 +12,25 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    textAlign: 'center'
+    textAlign: 'left'
   },
   title: {
     fontWeight: 'bold'
   },
   img: {
-    width: 60,
-    margin: theme.spacing.unit
+    width: 90,
+    margin: theme.spacing.unit * 2
   },
   button: {
     margin: theme.spacing.unit
+  },
+  referal: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 2,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -47,19 +55,28 @@ class Referral extends React.PureComponent<Props, State> {
     return (
       <Grid item xs={6}>
         <Paper className={classes.paper} elevation={0}>
-          <Typography variant="h5" className={classes.title}>
+          <Typography
+            variant="h4"
+            className={classes.title}
+            align="left"
+            paragraph
+          >
             {title}
           </Typography>
-          <img alt={title} src={imageUrl} className={classes.img} />
-          <Typography variant="subtitle1">{text}</Typography>
-          <Fab
-            variant="extended"
-            color="primary"
-            size="small"
-            className={classes.button}
-          >
-            Get Referral Code
-          </Fab>
+          <Typography variant="subtitle1" align="left">
+            {text}
+          </Typography>
+          <div className={classes.referal}>
+            <img alt={title} src={imageUrl} className={classes.img} />
+            <Fab
+              variant="extended"
+              color="primary"
+              size="small"
+              className={classes.button}
+            >
+              Get Referral Code
+            </Fab>
+          </div>
         </Paper>
       </Grid>
     );

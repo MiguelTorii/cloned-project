@@ -349,7 +349,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             <CardContent className={classes.content}>
               <Typography
                 component="p"
-                variant="subtitle2"
+                variant="h6"
                 style={{ maxWidth: 'inherit' }}
                 // noWrap
               >
