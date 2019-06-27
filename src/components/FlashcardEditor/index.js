@@ -9,7 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
+// import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,8 +18,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
+// import TextFieldsIcon from '@material-ui/icons/TextFields';
+// import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import OutlinedTextValidator from '../OutlinedTextValidator';
 import DropImage from './DropImage';
 
@@ -240,7 +240,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                   <Typography variant="subtitle1">Question</Typography>
                 </Grid>
                 <Grid container item xs={10}>
-                  <Grid item xs={12} className={classes.inputActions}>
+                  {/* <Grid item xs={12} className={classes.inputActions}>
                     <Fab
                       variant="extended"
                       color="primary"
@@ -260,7 +260,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                         </Fragment>
                       )}
                     </Fab>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     {!questionImage ? (
                       <OutlinedTextValidator
@@ -291,7 +291,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                   <Typography variant="subtitle1">Answer</Typography>
                 </Grid>
                 <Grid container item xs={10}>
-                  <Grid item xs={12} className={classes.inputActions}>
+                  {/* <Grid item xs={12} className={classes.inputActions}>
                     <Fab
                       variant="extended"
                       color="primary"
@@ -311,7 +311,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
                         </Fragment>
                       )}
                     </Fab>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     {!answerImage ? (
                       <OutlinedTextValidator
