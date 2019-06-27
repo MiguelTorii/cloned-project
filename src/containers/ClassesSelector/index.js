@@ -45,6 +45,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { classes } = await getUserClasses({ userId });
+
     const userClasses = processClasses({ classes, segment });
     if (this.mounted) this.setState({ userClasses });
   };
@@ -54,10 +55,14 @@ class ClassesSelector extends React.PureComponent<Props, State> {
   };
 
   handleChange = event => {
-    const { classId, sectionId } = JSON.parse(event.target.value);
-    this.setState({ value: event.target.value });
     const { onChange } = this.props;
-    onChange({ classId, sectionId });
+    try {
+      this.setState({ value: event.target.value });
+      const { classId, sectionId } = JSON.parse(event.target.value);
+      onChange({ classId, sectionId });
+    } catch (err) {
+      onChange({ classId: 0, sectionId: null });
+    }
   };
 
   mounted: boolean;

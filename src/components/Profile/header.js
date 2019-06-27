@@ -8,6 +8,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { gradeName } from '../../constants/common';
+import calendarIcon from '../../assets/svg/ic_calendar.svg';
+import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
+import schoolIcon from '../../assets/svg/ic_school.svg';
 
 const styles = theme => ({
   container: {
@@ -59,6 +62,14 @@ const styles = theme => ({
   statusLabel: {
     marginLeft: theme.spacing.unit / 2,
     marginRight: theme.spacing.unit * 2
+  },
+  typoData: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  icon: {
+    width: 20,
+    height: 20
   }
 });
 
@@ -157,13 +168,36 @@ class Header extends React.PureComponent<Props> {
                   </Typography>
                 </Grid>
               </Grid>
-              <Typography variant="body2" gutterBottom>
+              <Typography
+                variant="body2"
+                gutterBottom
+                className={classes.typoData}
+              >
+                <img src={schoolIcon} alt="School" className={classes.icon} />
                 {`${school}, ${state}`}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography
+                variant="body2"
+                gutterBottom
+                className={classes.typoData}
+              >
+                <img
+                  src={gradCapIcon}
+                  alt="Grad Cap"
+                  className={classes.icon}
+                />
                 {gradeName(segment, grade)}
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              <Typography
+                variant="body2"
+                gutterBottom
+                className={classes.typoData}
+              >
+                <img
+                  src={calendarIcon}
+                  alt="Calendar"
+                  className={classes.icon}
+                />
                 {`Member Since ${moment(joined).format('MMMM YYYY')}`}
               </Typography>
               {!isMyProfile && (

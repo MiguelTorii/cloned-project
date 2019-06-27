@@ -62,13 +62,19 @@ class HomeGrid extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
     const { cards, loading, leaderboard } = this.state;
 
     return (
       <div className={classes.root}>
         <ErrorBoundary>
           <HomeGridList
+            userId={userId}
             cards={cards}
             loading={loading}
             onOpenLeaderboard={this.handleOpenLeaderboard}

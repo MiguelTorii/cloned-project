@@ -147,6 +147,9 @@ export const getUserClasses = async ({
       permissions: {
         canLeave: Boolean(
           ((userClass.permissions || {}).can_leave: boolean) || false
+        ),
+        canCreate: Boolean(
+          ((userClass.permissions || {}).can_create: boolean) || false
         )
       },
       section: (userClass.section || []).map(item => ({

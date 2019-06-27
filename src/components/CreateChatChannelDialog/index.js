@@ -24,6 +24,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import GroupIcon from '@material-ui/icons/Group';
 import AutoComplete from '../AutoComplete';
 
 const styles = theme => ({
@@ -59,6 +60,10 @@ const styles = theme => ({
   avatar: {
     height: 120,
     width: 120
+  },
+  groupIcon: {
+    height: 80,
+    width: 80
   },
   marginTop: {
     marginTop: theme.spacing.unit * 2
@@ -213,7 +218,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
           className={classes.title}
         >
           <Typography variant="h6" className={classes.grow}>
-            {`Create ${chatType === 'single' ? '1-to-1' : 'Group'} Channel`}
+            {`Create ${chatType === 'single' ? '1-to-1' : 'Group'} Chat`}
           </Typography>
           <Button
             disabled={isLoading}
@@ -221,7 +226,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
             onClick={this.handleChatTypeChange}
           >{`Create ${
             chatType === 'single' ? 'group' : '1-to-1'
-          } channel instead`}</Button>
+          } chat instead`}</Button>
         </DialogTitle>
         <ValidatorForm
           onSubmit={this.handleSubmit}
@@ -238,7 +243,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
                       onClick={this.handleOpenInputFile}
                     >
                       <Avatar className={classes.avatar} src={thumbnail || ''}>
-                        HA
+                        <GroupIcon className={classes.groupIcon} />
                       </Avatar>
                     </ButtonBase>
                     <input

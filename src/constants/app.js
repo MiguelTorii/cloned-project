@@ -12,8 +12,11 @@ export const ALGOLIA_INDEX =
   process.env.REACT_APP_STAGE === 'production' ? 'dev_tags' : 'dev_tags';
 
 export const REDIRECT_URI =
+  // eslint-disable-next-line no-nested-ternary
   process.env.REACT_APP_STAGE === 'production'
     ? 'https://app.circleinapp.com/oauth'
+    : process.env.REACT_APP_STAGE === 'demo'
+    ? 'https://demo.circleinapp.com/oauth'
     : 'https://dev-app2.circleinapp.com/oauth';
 
 export const AMPLITUDE =

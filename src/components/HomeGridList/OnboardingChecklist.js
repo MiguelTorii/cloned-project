@@ -1,14 +1,18 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import Link from '@material-ui/core/Link';
 import type { HomeCard } from '../../types/models';
 import { renderText } from './utils';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   paper: {
@@ -56,12 +60,38 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   card: HomeCard
 };
 
 type State = {};
 
 class OnboardingChecklist extends React.PureComponent<Props, State> {
+  renderQuestLink = action => {
+    const {
+      name,
+      value,
+      attributes: {
+        feedFilter: { classId }
+      }
+    } = action;
+    const { userId } = this.props;
+    if (name === 'GotoScreen') {
+      switch (value) {
+        case 'EditProfile':
+          return `/profile/${userId}?edit=true`;
+        case 'RewardsStore':
+          return '/store';
+        case 'Feed':
+          return `/feed?classId=${classId}&sectionId=${0}`;
+        default:
+          return '/';
+      }
+    }
+
+    return '/';
+  };
+
   render() {
     const { classes, card } = this.props;
     const {
@@ -89,7 +119,12 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
                   color="primary"
                   className={cx(quest.status === 'complete' && classes.item)}
                 >
-                  {quest.item}
+                  <Link
+                    component={MyLink}
+                    href={this.renderQuestLink(quest.action)}
+                  >
+                    {quest.item}
+                  </Link>
                 </Typography>
               </div>
             ))}

@@ -140,6 +140,9 @@ const styles = theme => ({
     [theme.breakpoints.down('xs')]: {
       marginBottom: theme.spacing.unit * 8
     }
+  },
+  currentRoute: {
+    color: theme.palette.primary.main
   }
 });
 
@@ -151,6 +154,7 @@ type Props = {
   userProfileUrl: string,
   children: any,
   unreadCount: number,
+  pathname: string,
   handleNotificationOpen: Function,
   handleSignOut: Function,
   onManageClasses: Function,
@@ -169,7 +173,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    open: false,
+    open: true,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -260,6 +264,7 @@ class MainLayout extends React.Component<Props, State> {
       width,
       children,
       unreadCount,
+      pathname,
       onOpenLeaderboard,
       onOpenAnnouncements
     } = this.props;
@@ -298,7 +303,8 @@ class MainLayout extends React.Component<Props, State> {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-          {width !== 'xs' && <MenuItem
+        {width !== 'xs' && (
+          <MenuItem
             onClick={this.handleNotificationOpen}
             aria-haspopup="true"
             aria-owns={open ? 'notifications-popper' : undefined}
@@ -309,7 +315,8 @@ class MainLayout extends React.Component<Props, State> {
               </Badge>
             </IconButton>
             <p>Notifications</p>
-          </MenuItem>}
+          </MenuItem>
+        )}
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <Avatar src={userProfileUrl}>{initials}</Avatar>
@@ -384,28 +391,35 @@ class MainLayout extends React.Component<Props, State> {
         <List>
           <ListItem button onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
-              <AddBoxIcon />
+              <AddBoxIcon className={classNames(pathname.includes('/create') && classes.currentRoute)} />
             </ListItemIcon>
-            <ListItemText primary="Create Post" />
+            <ListItemText primary="Create Post"
+            primaryTypographyProps={{ color: pathname.includes('/create') ? 'primary' : 'textPrimary' }}
+            />
           </ListItem>
           <Divider light />
           <ListItem button component={MyLink} link="/">
             <ListItemIcon>
-              <HomeIcon />
+              <HomeIcon className={classNames(pathname === '/' && classes.currentRoute)} />
             </ListItemIcon>
-            <ListItemText primary="Home" />
+            <ListItemText primary="Home" primaryTypographyProps={{ color: pathname === '/' ? 'primary' : 'textPrimary' }} />
           </ListItem>
           <ListItem button component={MyLink} link="/feed">
             <ListItemIcon>
-              <ViewListIcon />
+              <ViewListIcon className={classNames(pathname === '/feed' && classes.currentRoute)} />
             </ListItemIcon>
-            <ListItemText primary="Feed" />
+            <ListItemText
+              primary="Feed"
+              primaryTypographyProps={{ color: pathname === '/feed' ? 'primary' : 'textPrimary' }}
+            />
           </ListItem>
           <ListItem button component={MyLink} link="/reminders">
             <ListItemIcon>
-              <EventIcon />
+              <EventIcon className={classNames(pathname === '/reminders' && classes.currentRoute)} />
             </ListItemIcon>
-            <ListItemText primary="Reminders" />
+            <ListItemText primary="Reminders"
+            primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
+            />
           </ListItem>
           <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
@@ -415,15 +429,19 @@ class MainLayout extends React.Component<Props, State> {
           </ListItem>
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>
-              <StoreIcon />
+              <StoreIcon className={classNames(pathname === '/store' && classes.currentRoute)}/>
             </ListItemIcon>
-            <ListItemText primary="Store" />
+            <ListItemText primary="Store"
+            primaryTypographyProps={{ color: pathname === '/store' ? 'primary' : 'textPrimary' }}
+            />
           </ListItem>
           <ListItem button component={MyLink} link="/video-call">
             <ListItemIcon>
-              <DuoIcon />
+              <DuoIcon className={classNames(pathname === '/video-call' && classes.currentRoute)}/>
             </ListItemIcon>
-            <ListItemText primary="Video Meet Up" />
+            <ListItemText primary="Video Meet Up"
+            primaryTypographyProps={{ color: pathname === '/video-call' ? 'primary' : 'textPrimary' }}
+            />
           </ListItem>
           <ListItem button onClick={onOpenAnnouncements}>
             <ListItemIcon>

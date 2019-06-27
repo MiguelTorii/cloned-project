@@ -46,6 +46,7 @@ type Props = {
   classes: Object,
   user: UserState,
   userId: string,
+  edit: boolean,
   checkUserSession: Function,
   openChannelWithEntity: Function
 };
@@ -86,6 +87,8 @@ class Profile extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     this.handleGetProfile();
+    const { edit } = this.props;
+    this.setState({ edit });
   };
 
   handleGetProfile = async () => {
@@ -244,7 +247,7 @@ class Profile extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <ProfileEdit
             key={`${userId}-${userProfileUrl}`}
-            open={edit}
+            open={edit && userId === userData.userId}
             about={about}
             firstName={firstName}
             lastName={lastName}

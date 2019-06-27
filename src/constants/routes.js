@@ -11,8 +11,11 @@ export const API_URL_V1_1 =
     : 'https://dev-api.circleinapp.com/v1.1';
 
 export const VIDEO_SHARE_URL =
+  // eslint-disable-next-line no-nested-ternary
   process.env.REACT_APP_STAGE === 'production'
     ? 'https://app.circleinapp.com/video-call'
+    : process.env.REACT_APP_STAGE === 'demo'
+    ? 'https://demo.circleinapp.com/video-call'
     : 'https://dev-app2.circleinapp.com/video-call';
 
 export const API_ROUTES = {

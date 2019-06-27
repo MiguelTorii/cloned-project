@@ -26,25 +26,35 @@ type Props = {
 };
 
 type State = {
-  feedId: ?number
+  feedId: ?number,
+  classId: number,
+  sectionId: number
 };
 
 class FeedPage extends React.PureComponent<Props, State> {
   state = {
-    feedId: null
+    feedId: null,
+    classId: -1,
+    sectionId: -1
   };
 
   componentDidMount = () => {
     const {
       location: { search = '' }
     } = this.props;
-    const { id = null } = queryString.parse(search);
-    this.setState({ feedId: id ? Number(id) : null });
+    const { id = null, classId = -1, sectionId = -1 } = queryString.parse(
+      search
+    );
+    this.setState({
+      feedId: id ? Number(id) : null,
+      classId,
+      sectionId
+    });
   };
 
   render() {
     const { classes } = this.props;
-    const { feedId } = this.state;
+    const { feedId, classId, sectionId } = this.state;
 
     return (
       <main>
@@ -52,7 +62,7 @@ class FeedPage extends React.PureComponent<Props, State> {
         <Layout>
           <Grid container spacing={0} justify="center">
             <Grid item xs={12} md={9} className={classes.item}>
-              <Feed feedId={feedId} />
+              <Feed feedId={feedId} classId={classId} sectionId={sectionId} />
             </Grid>
             {/* <Hidden smDown>
               <Grid item md={3} className={classes.item}>

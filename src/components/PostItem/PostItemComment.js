@@ -227,7 +227,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 variant="subtitle2"
                 className={classes.thanks}
               >
-                {`${thanksCount} ${thanksCount === 1 ? 'thank' : 'thanks'}`}
+                {`${thanksCount} thanks`}
               </Typography>
               {!isOwn && (
                 <IconButton onClick={this.handleThanks}>

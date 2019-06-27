@@ -20,7 +20,7 @@ import DeletePost from '../DeletePost';
 import { processUserClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 
-const defaultClass = JSON.stringify({ classId: 0, sectionId: 0 });
+const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({
   root: {
@@ -37,6 +37,8 @@ type Props = {
   classes: Object,
   user: UserState,
   feedId: ?number,
+  classId: number,
+  sectionId: number,
   push: Function
 };
 
@@ -73,6 +75,10 @@ class Feed extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
+    const { classId, sectionId } = this.props;
+    if (classId >= 0 && sectionId >= 0) {
+      this.setState({ userClass: JSON.stringify({ classId, sectionId }) });
+    }
     window.addEventListener('offline', () => {
       if (
         this.handleFetchFeed.cancel &&
@@ -90,7 +96,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    this.mounted = false
+    this.mounted = false;
     if (
       this.handleFetchFeed.cancel &&
       typeof this.handleFetchFeed.cancel === 'function'
@@ -107,7 +113,7 @@ class Feed extends React.PureComponent<Props, State> {
 
     getUserClasses({ userId }).then(({ classes }) => {
       const classesList = processUserClasses({ classes, segment });
-      if(this.mounted) this.setState({ classesList });
+      if (this.mounted) this.setState({ classesList });
     });
   };
 
@@ -119,7 +125,7 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props;
     const { from, userClass, postType, query, limit } = this.state;
     const { classId, sectionId } = JSON.parse(userClass);
-    if(this.mounted) this.setState({ loading: true });
+    if (this.mounted) this.setState({ loading: true });
     try {
       const newFeed = await fetchFeed({
         userId,
@@ -132,17 +138,18 @@ class Feed extends React.PureComponent<Props, State> {
         from,
         query
       });
-      if(this.mounted) this.setState(({ feed }) => ({
-        feed: newFeed,
-        hasMore:
-          newFeed.length === 50 ||
-          (feed[feed.length - 1] || {}).feedId !==
-            (newFeed[newFeed.length - 1] || {}).feedId
-      }));
+      if (this.mounted)
+        this.setState(({ feed }) => ({
+          feed: newFeed,
+          hasMore:
+            newFeed.length === 50 ||
+            (feed[feed.length - 1] || {}).feedId !==
+              (newFeed[newFeed.length - 1] || {}).feedId
+        }));
     } catch (err) {
       console.log(err);
     } finally {
-      if(this.mounted) this.setState({ loading: false });
+      if (this.mounted) this.setState({ loading: false });
     }
   };
 
@@ -273,7 +280,7 @@ class Feed extends React.PureComponent<Props, State> {
     }
   };
 
-  mounted: boolean
+  mounted: boolean;
 
   render() {
     const {

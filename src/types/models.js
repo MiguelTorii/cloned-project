@@ -76,7 +76,8 @@ export type UserClass = {
   className: string,
   classId: number,
   permissions: {
-    canLeave: boolean
+    canLeave: boolean,
+    canCreate: boolean
   },
   section: Array<ClassSection>,
   subjectId: number
@@ -353,6 +354,7 @@ export type AvailableReward = {
 };
 
 export type Slot = {
+  bgColor: string,
   displayName: string,
   imageUrl: string,
   rewardId: number,

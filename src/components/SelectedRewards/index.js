@@ -79,7 +79,10 @@ class SelectedRewards extends React.PureComponent<Props> {
             {!item.displayName ? (
               <Typography variant="subtitle1">Select a reward below</Typography>
             ) : (
-              <Paper className={classes.card}>
+              <Paper
+                className={classes.card}
+                style={{ backgroundColor: item.bgColor }}
+              >
                 <img
                   src={item.imageUrl}
                   alt={item.displayName}

@@ -207,11 +207,11 @@ export const generateFeedURL = ({
     queryString = `${queryString}&tool_type_id=${postType}`;
   }
 
-  if (classId !== 0) {
+  if (classId >= 0) {
     queryString = `${queryString}&class_id=${classId}`;
   }
 
-  if (sectionId && sectionId !== 0) {
+  if (sectionId && sectionId >= 0) {
     queryString = `${queryString}&section_id=${sectionId}`;
   }
 

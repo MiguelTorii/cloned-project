@@ -3,6 +3,7 @@
 import React, { Fragment } from 'react';
 import type { Node } from 'react';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
@@ -36,6 +37,7 @@ type Props = {
   children: Object,
   user: UserState,
   isNaked?: boolean,
+  location: {pathname: string},
   checkUserSession: Function,
   signOut: Function,
   openCreateChatGroup: Function,
@@ -162,10 +164,16 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { user, signOut, isNaked } = this.props;
+    const {
+      user,
+      signOut,
+      isNaked,
+      location: { pathname }
+    } = this.props;
     const {
       data: { userId, firstName, lastName, profileImage }
     } = user;
+
     const {
       manageClasses,
       manageBlockedUsers,
@@ -185,6 +193,7 @@ class Layout extends React.PureComponent<Props, State> {
             initials={initials}
             userProfileUrl={profileImage}
             unreadCount={unreadCount}
+            pathname={pathname}
             handleNotificationOpen={this.handleNotificationOpen}
             handleSignOut={signOut}
             onManageClasses={this.handleOpenManageClasses}
@@ -254,4 +263,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Layout));
+)(withStyles(styles)(withRouter(Layout)));
