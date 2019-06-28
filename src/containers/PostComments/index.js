@@ -220,6 +220,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 thanksCount={item.thanksCount}
                 thanked={item.thanked}
                 rootCommentId={item.id}
+                accepted={item.accepted}
                 isLoading={isLoading}
                 isQuestion={isQuestion}
                 isOwn={item.user.userId === userId}

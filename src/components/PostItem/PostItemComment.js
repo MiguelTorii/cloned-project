@@ -13,6 +13,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ReplyIcon from '@material-ui/icons/Reply';
+import green from '@material-ui/core/colors/green';
 import PostItemAddComment from './PostItemAddComment';
 
 const styles = theme => ({
@@ -75,6 +76,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'
+  },
+  accepted: {
+    '&:disabled': {
+    backgroundColor: green[500],
+    color: 'white'}
   }
 });
 
@@ -98,6 +104,7 @@ type Props = {
   isLoading?: boolean,
   isQuestion?: boolean,
   readOnly: boolean,
+  accepted: boolean,
   onPostComment: Function,
   onThanks: Function,
   onReport: Function,
@@ -165,6 +172,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isLoading,
       isQuestion,
       readOnly,
+      accepted,
       onDelete
     } = this.props;
     const { showAddComment } = this.state;
@@ -216,7 +224,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
             >
               {isQuestion && !isOwn && (
                 <Fragment>
-                  <Button color="primary" onClick={this.handleBestAnswer}>
+                  <Button className={classes.accepted} color="primary" variant={accepted ? 'contained' : 'text'} onClick={this.handleBestAnswer} disabled={accepted}>
                     Best Answer
                   </Button>
                   <span className={classes.grow} />
