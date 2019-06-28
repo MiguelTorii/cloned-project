@@ -631,7 +631,7 @@ class MeetUp extends React.Component<Props, State> {
     return (
       <ErrorBoundary>
         <div className={classes.root}>
-          {false && participants.length < 2 && !isWhiteboardEnabled && (
+          {participants.length < 2 && !isWhiteboardEnabled && (
             <NoParticipants />
           )}
           <MeetUpControls

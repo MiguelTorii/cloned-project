@@ -29,7 +29,8 @@ const styles = theme => ({
     width: 200,
     height: 200,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: '#334A54'
   },
   content: {
     flex: 1,

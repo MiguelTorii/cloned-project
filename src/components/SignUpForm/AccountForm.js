@@ -111,20 +111,22 @@ class AccountForm extends React.PureComponent<Props, State> {
         onSubmit={this.handleSubmit}
         className={cx(classes.form, hide && classes.hide)}
       >
-        <TextValidator
-          variant="outlined"
-          label="First Name"
-          margin="normal"
-          onChange={this.handleChange('firstName')}
-          name="firstName"
-          autoComplete="firstName"
-          autoFocus
-          fullWidth
-          value={firstName}
-          disabled={loading}
-          validators={['required']}
-          errorMessages={['First Name is required']}
-        />
+        <FormControl variant="outlined" fullWidth>
+          <TextValidator
+            variant="outlined"
+            label="First Name"
+            margin="normal"
+            onChange={this.handleChange('firstName')}
+            name="firstName"
+            autoComplete="firstName"
+            autoFocus
+            fullWidth
+            value={firstName}
+            disabled={loading}
+            validators={['required']}
+            errorMessages={['First Name is required']}
+          />
+        </FormControl>
         <TextValidator
           variant="outlined"
           label="Last Name"
