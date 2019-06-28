@@ -58,12 +58,12 @@ class Countdown extends React.PureComponent<Props, State> {
     return (
       <Grid item xs={12}>
         <Paper className={classes.paper} elevation={0}>
-          <Typography variant="h4" className={classes.title} paragraph>
+          <Typography variant="h3" className={classes.title} paragraph>
             {title}
           </Typography>
-          <Typography variant="h5">{renderText(text, style)}</Typography>
+          <Typography variant="h4">{renderText(text, style)}</Typography>
           <div className={classes.links}>
-            <Typography>
+            <Typography variant="h6">
               <Link
                 href="/store"
                 component={MyLink}
@@ -73,7 +73,7 @@ class Countdown extends React.PureComponent<Props, State> {
                 Reward Store
               </Link>
             </Typography>
-            <Typography>
+            <Typography variant="h6">
               <Link
                 href={dudUrl}
                 onClick={onOpenLeaderboard}

@@ -106,16 +106,16 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
     return (
       <Grid item xs={12}>
         <Paper className={classes.paper} elevation={0}>
-          <Typography variant="h4" className={classes.title} paragraph>
+          <Typography variant="h3" className={classes.title} paragraph>
             {title}
           </Typography>
-          <Typography variant="subtitle1">{renderText(text, style)}</Typography>
+          <Typography variant="h6">{renderText(text, style)}</Typography>
           <div className={classes.quests}>
             {quests.map((quest, index) => (
               <div key={quest.item} className={classes.quest}>
                 <Avatar className={classes.avatar}>{index + 1}</Avatar>
                 <Typography
-                  variant="subtitle2"
+                  variant="h6"
                   color="primary"
                   className={cx(quest.status === 'complete' && classes.item)}
                 >
@@ -131,7 +131,7 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
           </div>
           <div className={classes.progress}>
             <Divider className={classes.divider} light />
-            <Typography variant="subtitle1">
+            <Typography variant="h6">
               {renderText(progressText, progressStyle)}
             </Typography>
           </div>

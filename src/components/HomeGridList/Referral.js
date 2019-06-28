@@ -56,14 +56,14 @@ class Referral extends React.PureComponent<Props, State> {
       <Grid item xs={6}>
         <Paper className={classes.paper} elevation={0}>
           <Typography
-            variant="h4"
+            variant="h3"
             className={classes.title}
             align="left"
             paragraph
           >
             {title}
           </Typography>
-          <Typography variant="subtitle1" align="left">
+          <Typography variant="h6" align="left">
             {text}
           </Typography>
           <div className={classes.referal}>

@@ -369,21 +369,21 @@ class FeedItem extends React.PureComponent<Props, State> {
             <div className={classes.stats}>
               <Typography
                 component="p"
-                variant="caption"
+                variant="subtitle1"
                 className={classes.stat}
               >
                 <strong>{data.postInfo.questionsCount}</strong> questions
               </Typography>
               <Typography
                 component="p"
-                variant="caption"
+                variant="subtitle1"
                 className={classes.stat}
               >
                 <strong>{data.postInfo.thanksCount}</strong> thanks
               </Typography>
               <Typography
                 component="p"
-                variant="caption"
+                variant="subtitle1"
                 className={classes.stat}
               >
                 <strong>{data.postInfo.viewCount}</strong> views
