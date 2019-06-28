@@ -52,6 +52,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   componentDidMount = () => {
+    this.mounted = true;
     window.addEventListener('offline', () => {
       if (
         this.handleDebounceFetchNotifications.cancel &&
@@ -93,6 +94,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   componentWillUnmount = () => {
+    this.mounted = false;
     if (
       this.handleDebounceFetchNotifications.cancel &&
       typeof this.handleDebounceFetchNotifications.cancel === 'function'
@@ -104,7 +106,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     try {
       await this.handleFetchNotifications();
     } finally {
-      this.handleDebounceFetchNotifications();
+      if (this.mounted) this.handleDebounceFetchNotifications();
     }
   };
 
@@ -138,6 +140,8 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       this.handleFetchNotifications();
     }
   };
+
+  mounted: boolean;
 
   render() {
     const { classes, isPage, anchorEl, onClose, onClick } = this.props;

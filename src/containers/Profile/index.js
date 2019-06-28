@@ -152,6 +152,8 @@ class Profile extends React.PureComponent<Props, State> {
       });
 
       await updateUserProfileUrl({ userId, mediaId });
+      // eslint-disable-next-line func-names
+      await setTimeout(function() {}, 1000);
       await this.handleGetProfile();
       checkUserSession();
     } finally {
