@@ -229,7 +229,9 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
         </ReactCardFlip>
         <Dialog
           open={open}
-          onClose={this.handleClose}
+          onClose={this.handleCancel}
+          onBackdropClick={this.handleCancel}
+          onEscapeKeyDown={this.handleCancel}
           aria-labelledby="form-dialog-title"
         >
           <ValidatorForm onSubmit={this.handleSubmit} ref={this.myRef}>

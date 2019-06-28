@@ -200,6 +200,7 @@ class StartVideo extends React.PureComponent<Props, State> {
         channelList: [newChannel, ...channelList],
         channel: channel.sid
       }));
+      this.handleSubmit();
     } else {
       this.setState({ channel: channel.sid });
     }
@@ -232,7 +233,7 @@ class StartVideo extends React.PureComponent<Props, State> {
             >
               <Grid container alignItems="center">
                 <Grid item xs={2}>
-                  <Typography variant="subtitle1">Select a Channel</Typography>
+                  <Typography variant="subtitle1">Select a Chat</Typography>
                 </Grid>
                 <Grid item xs={10}>
                   <FormControl variant="outlined" fullWidth>
@@ -240,11 +241,11 @@ class StartVideo extends React.PureComponent<Props, State> {
                       disabled={loading}
                       value={channel}
                       name="channel"
-                      label="Channel"
+                      label="Chat"
                       onChange={this.handleChange}
                       variant="outlined"
                       validators={['required']}
-                      errorMessages={['You have to select a channel']}
+                      errorMessages={['You have to select a chat']}
                     >
                       <MenuItem value="" />
                       {channelList.map(item => (
@@ -266,7 +267,7 @@ class StartVideo extends React.PureComponent<Props, State> {
                     disabled={loading}
                     onClick={this.handleCreateChannelOpen('single')}
                   >
-                    1-to-1 Channel
+                    1-to-1 Chat
                   </Button>
                   <Button
                     className={classes.margin}
@@ -275,7 +276,7 @@ class StartVideo extends React.PureComponent<Props, State> {
                     disabled={loading}
                     onClick={this.handleCreateChannelOpen('group')}
                   >
-                    Group Channel
+                    Group Chat
                   </Button>
                 </Grid>
               </Grid>

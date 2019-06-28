@@ -223,6 +223,7 @@ export type PresignedURL = {
 };
 
 export type LMSSchool = {
+  id: number,
   clientId: string,
   school: string,
   uri: string,

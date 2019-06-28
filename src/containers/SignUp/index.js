@@ -170,7 +170,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     return {
       options: result.map(item => ({
         label: item.school,
-        value: item.clientId
+        value: item.id
       })),
       hasMore: false
     };
