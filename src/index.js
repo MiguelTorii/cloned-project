@@ -61,6 +61,9 @@ sentryInit({
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
+console.log(process.env.REACT_APP_STAGE)
+console.log(process.env)
+
 ReactDOM.render(
   <Provider store={store}>
     <FloatingChat />
