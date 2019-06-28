@@ -93,6 +93,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
   };
 
   handleAutoComplete = value => {
+    console.log(value);
     this.setState({ school: value });
     if (!value) this.setState({ error: true });
     else this.setState({ error: false });

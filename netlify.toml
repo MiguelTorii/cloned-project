@@ -8,6 +8,9 @@
 [context.production]
   command = "REACT_APP_STAGE=prod npm run build"
 
+[context.deploy-preview]
+  command = "REACT_APP_STAGE=dev npm run build"
+
 # Deploy Preview context: All Deploy Previews
 # will inherit these settings.
 [context.deploy-preview]

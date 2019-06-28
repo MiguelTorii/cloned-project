@@ -16,7 +16,7 @@ import VerifyAccount from '../../components/SignUpForm/VerifyAccount';
 import ProfileSetup from '../../components/SignUpForm/ProfileSetup';
 import * as signUpActions from '../../actions/sign-up';
 import { fetchSchools, sendCode, verifyCode } from '../../api/sign-up';
-import { colleges } from '../../constants/clients';
+import { getLMSSchools } from '../../api/lms';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({});
@@ -109,8 +109,6 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       case 'ProfileSetup':
         this.setState({ loading: true });
         try {
-          console.log(firstName, lastName, email, gender, password, birthdate);
-          console.log(data);
           await signUp({
             state: data.state,
             grade: data.grade,
@@ -167,8 +165,13 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       };
     }
 
+    const result = await getLMSSchools();
+
     return {
-      options: colleges,
+      options: result.map(item => ({
+        label: item.school,
+        value: item.clientId
+      })),
       hasMore: false
     };
   };
