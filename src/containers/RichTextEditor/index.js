@@ -13,10 +13,13 @@ import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   root: {
-    position: 'relative'
+    position: 'relative',
+    maxWidth: 'inherit',
+    maxHeight: 200
   },
   quill: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    maxHeight: 200
   },
   input: {
     display: 'none'

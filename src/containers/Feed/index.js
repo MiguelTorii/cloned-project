@@ -251,6 +251,10 @@ class Feed extends React.PureComponent<Props, State> {
     });
   };
 
+  handleRefresh = () => {
+    this.handleFetchFeed();
+  };
+
   handlePostClick = ({
     typeId,
     postId,
@@ -330,6 +334,7 @@ class Feed extends React.PureComponent<Props, State> {
               onLoadMore={this.handleLoadMore}
               onUserClick={this.handleUserClick}
               onOpenFilter={this.handleOpenFilter}
+              onRefresh={this.handleRefresh}
             />
           </div>
         </ErrorBoundary>

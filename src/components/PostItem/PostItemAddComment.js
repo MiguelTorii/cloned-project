@@ -23,7 +23,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%'
+    width: '100%',
+    maxWidth: 200,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: 600
+    }
   },
   textField: {
     marginLeft: theme.spacing.unit * 2

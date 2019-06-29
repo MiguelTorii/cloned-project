@@ -91,7 +91,7 @@ const styles = theme => ({
     }
   },
   logo: {
-    maxWidth: 120
+    maxWidth: 160
   },
   hide: {
     [theme.breakpoints.up('sm')]: {

@@ -6,6 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Markdown from './Markdown';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
@@ -23,6 +26,7 @@ const styles = theme => ({
     height: 60
   },
   userInfo: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -44,7 +48,9 @@ type Props = {
   created: string,
   title: string,
   body: string,
-  isMarkdown?: boolean
+  isMarkdown?: boolean,
+  bookmarked: boolean,
+  onBookmark: Function
 };
 
 class PostItemHeader extends React.PureComponent<Props> {
@@ -62,7 +68,9 @@ class PostItemHeader extends React.PureComponent<Props> {
       created,
       title,
       body,
-      isMarkdown
+      isMarkdown,
+      bookmarked,
+      onBookmark
     } = this.props;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
@@ -91,6 +99,9 @@ class PostItemHeader extends React.PureComponent<Props> {
               {fromNow}
             </Typography>
           </div>
+          <IconButton aria-label="Bookmark" onClick={onBookmark}>
+            {bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </IconButton>
         </div>
         <Typography component="p" variant="h4" paragraph>
           {title}

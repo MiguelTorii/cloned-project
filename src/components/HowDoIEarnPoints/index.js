@@ -6,12 +6,12 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import DialogTitle from '../DialogTitle';
 
 const options = [
   { id: uuidv4(), title: 'Uploading Class Notes', subtitle: '500 points' },
@@ -63,7 +63,7 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
         aria-labelledby="how-earn-points-dialog-title"
         aria-describedby="how-earn-points-dialog-description"
       >
-        <DialogTitle id="how-earn-points-dialog-title">
+        <DialogTitle id="how-earn-points-dialog-title" onClose={onClose}>
           {'How do I earn points?'}
         </DialogTitle>
         <DialogContent>

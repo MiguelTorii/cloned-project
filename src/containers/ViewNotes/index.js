@@ -1,13 +1,14 @@
 // @flow
 
 import React from 'react';
+import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { PhotoNote } from '../../types/models';
-import { getNotes } from '../../api/posts';
+import { getNotes, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
@@ -52,6 +53,32 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.loadData();
+  };
+
+  handleBookmark = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const { photoNote } = this.state;
+    const { feedId, bookmarked } = photoNote;
+    try {
+      const newState = update(this.state, {
+        photoNote: {
+          bookmarked: { $set: !bookmarked }
+        }
+      });
+      this.setState(newState);
+      await bookmark({ feedId, userId, remove: bookmarked });
+    } catch (err) {
+      const newState = update(this.state, {
+        photoNote: {
+          bookmarked: { $set: bookmarked }
+        }
+      });
+      this.setState(newState);
+    }
   };
 
   loadData = async () => {
@@ -103,7 +130,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       thanked,
       inStudyCircle,
       postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      readOnly
+      readOnly,
+      bookmarked
     } = photoNote;
 
     const images = notes.map(item => ({
@@ -125,6 +153,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 created={created}
                 body={body}
                 title={title}
+                bookmarked={bookmarked}
+                onBookmark={this.handleBookmark}
               />
             </ErrorBoundary>
             <ErrorBoundary>

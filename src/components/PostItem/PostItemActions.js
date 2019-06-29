@@ -5,8 +5,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import AddIcon from '@material-ui/icons/Add';
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 
 const styles = theme => ({
   root: {
@@ -40,15 +42,15 @@ class PostItemActions extends React.PureComponent<Props> {
   renderThanks = () => {
     const { thanked, isThanksLoading } = this.props;
     if (isThanksLoading) return <CircularProgress size={24} />;
-    if (thanked) return <FavoriteIcon />;
-    return <FavoriteBorderIcon />;
+    if (thanked) return <ThumbUpIcon />;
+    return <ThumbUpOutlinedIcon />;
   };
 
   renderStudyCircle = () => {
     const { inStudyCircle, isStudyCircleLoading } = this.props;
     if (isStudyCircleLoading) return <CircularProgress size={24} />;
-    if (inStudyCircle) return <FavoriteIcon />;
-    return <FavoriteBorderIcon />;
+    if (inStudyCircle) return <AddIcon />;
+    return <AddOutlinedIcon />;
   };
 
   render() {

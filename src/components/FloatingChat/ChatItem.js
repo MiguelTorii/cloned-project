@@ -16,7 +16,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import VideoCamIcon from '@material-ui/icons/Videocam';
@@ -26,6 +25,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import GroupIcon from '@material-ui/icons/Group';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   paper: {
@@ -258,7 +258,12 @@ class ChatItem extends React.PureComponent<Props, State> {
           aria-labelledby="remove-dialog-title"
           aria-describedby="remove-dialog-description"
         >
-          <DialogTitle id="remove-dialog-title">Delete Chat</DialogTitle>
+          <DialogTitle
+            id="remove-dialog-title"
+            onClose={this.handleRemoveClose}
+          >
+            Delete Chat
+          </DialogTitle>
           <DialogContent>
             <DialogContentText
               color="textPrimary"

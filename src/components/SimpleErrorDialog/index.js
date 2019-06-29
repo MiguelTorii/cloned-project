@@ -6,8 +6,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import withStyles from '@material-ui/core/styles/withStyles';
+import DialogTitle from '../DialogTitle';
 
 const styles = () => ({});
 
@@ -38,7 +38,9 @@ class SimpleErrorDialog extends React.PureComponent<
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" onClose={handleClose}>
+          {title}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText color="textPrimary" id="alert-dialog-description">
             {body}

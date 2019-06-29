@@ -72,8 +72,7 @@ class PostTags extends React.PureComponent<Props, State> {
           {tags.map(tag => (
             <Chip
               key={tag.id}
-              label={tag.name}
-              color="primary"
+              label={`#${tag.name}`}
               className={classes.chip}
             />
           ))}

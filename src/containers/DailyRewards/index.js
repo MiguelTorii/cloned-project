@@ -14,9 +14,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DialogTitle from '../../components/DialogTitle';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -188,7 +188,10 @@ class DailyRewards extends React.PureComponent<Props, State> {
           aria-labelledby="daily-rewards-dialog-title"
           aria-describedby="daily-rewards-dialog-description"
         >
-          <DialogTitle id="daily-rewards-dialog-title">
+          <DialogTitle
+            id="daily-rewards-dialog-title"
+            onClose={this.handleClose}
+          >
             Daily Rewards
           </DialogTitle>
           <div className={classes.root}>

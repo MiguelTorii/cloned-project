@@ -13,12 +13,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogTitle from '../DialogTitle';
 import ClassesSelector from '../../containers/ClassesSelector';
 import OutlinedTextValidator from '../OutlinedTextValidator';
 
@@ -92,9 +92,16 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
   };
 
   handleSubmit = () => {
-    const {onSubmit} = this.props;
-    const {purpose, classId, sectionId, meeting, selectedDate, help} = this.state;
-    onSubmit({purpose, classId, sectionId, meeting, selectedDate, help})
+    const { onSubmit } = this.props;
+    const {
+      purpose,
+      classId,
+      sectionId,
+      meeting,
+      selectedDate,
+      help
+    } = this.state;
+    onSubmit({ purpose, classId, sectionId, meeting, selectedDate, help });
   };
 
   getLeftCharts = () => {
@@ -115,7 +122,9 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
         aria-labelledby="video-points-title"
         aria-describedby="video-points-description"
       >
-        <DialogTitle id="video-points-title">Congratulations!</DialogTitle>
+        <DialogTitle id="video-points-title" onClose={onClose}>
+          Congratulations!
+        </DialogTitle>
         <DialogContent className={classes.content}>
           <DialogContentText id="video-points-description" color="textPrimary">
             {
@@ -129,7 +138,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
               className={classes.formControl}
             >
               <SelectValidator
-              disabled={loading}
+                disabled={loading}
                 value={purpose}
                 name="purpose"
                 label="Purpose of the Meetup"
@@ -149,7 +158,10 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
             {(Number(purpose) === 1 ||
               Number(purpose) === 2 ||
               Number(purpose) === 3) && (
-              <ClassesSelector disabled={loading} onChange={this.handleClassesChange} />
+              <ClassesSelector
+                disabled={loading}
+                onChange={this.handleClassesChange}
+              />
             )}
             <DialogContentText color="textPrimary">
               Do you want to schedule another meeting for the next 7 days?
@@ -157,7 +169,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Switch
-                disabled={loading}
+                  disabled={loading}
                   checked={meeting}
                   onChange={this.handleSwitchChange('meeting')}
                   value="meeting"
@@ -168,7 +180,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
             />
             {meeting && (
               <DateTimePicker
-              disabled={loading}
+                disabled={loading}
                 value={selectedDate}
                 onChange={this.handleDateChange}
                 variant="outlined"
@@ -193,16 +205,21 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
                 Cancel
               </Button>
               <div className={classes.wrapper}>
-              <Button variant="contained" disabled={loading} type="submit" color="primary">
-                Submit
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
+                <Button
+                  variant="contained"
+                  disabled={loading}
+                  type="submit"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
             </DialogActions>
           </ValidatorForm>
         </DialogContent>

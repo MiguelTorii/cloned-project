@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Flashcards } from '../../types/models';
-import { getFlashcards } from '../../api/posts';
+import { getFlashcards, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
@@ -58,6 +59,32 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.loadData();
+  };
+
+  handleBookmark = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const { flashcards } = this.state;
+    const { feedId, bookmarked } = flashcards;
+    try {
+      const newState = update(this.state, {
+        flashcards: {
+          bookmarked: { $set: !bookmarked }
+        }
+      });
+      this.setState(newState);
+      await bookmark({ feedId, userId, remove: bookmarked });
+    } catch (err) {
+      const newState = update(this.state, {
+        flashcards: {
+          bookmarked: { $set: bookmarked }
+        }
+      });
+      this.setState(newState);
+    }
   };
 
   loadData = async () => {
@@ -121,7 +148,8 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       inStudyCircle,
       deck,
       postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      readOnly
+      readOnly,
+      bookmarked
     } = flashcards;
 
     return (
@@ -139,6 +167,8 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
                 created={created}
                 body={body}
                 title={title}
+                bookmarked={bookmarked}
+                onBookmark={this.handleBookmark}
               />
             </ErrorBoundary>
             <ErrorBoundary>

@@ -3,7 +3,6 @@
 import React, { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -15,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogTitle from '../../components/DialogTitle';
 import { getAvatar, getInitials } from './utils';
 import { blockUser } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
@@ -102,7 +102,9 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             className={classes.dialog}
             aria-labelledby="members-dialog-title"
           >
-            <DialogTitle id="members-dialog-title">Members</DialogTitle>
+            <DialogTitle id="members-dialog-title" onClose={onClose}>
+              Members
+            </DialogTitle>
             <DialogContent>
               <List className={classes.list}>
                 {members.map(value => (
@@ -172,7 +174,12 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-description"
           >
-            <DialogTitle id="confirm-dialog-title">Block User</DialogTitle>
+            <DialogTitle
+              id="confirm-dialog-title"
+              onClose={this.handleConfirmClose}
+            >
+              Block User
+            </DialogTitle>
             <DialogContent>
               <DialogContentText
                 color="textPrimary"

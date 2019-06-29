@@ -11,7 +11,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import type { User } from '../../types/models';
 import { renewTwilioToken } from '../../api/chat';
@@ -20,6 +19,7 @@ import {
   setVideoInitiator,
   postVideoPoints
 } from '../../api/video';
+import DialogTitle from '../../components/DialogTitle';
 import MeetUpControls from '../../components/MeetUp/Controls';
 import Thumbnails from '../../components/MeetUp/Thumbnails';
 import NoParticipants from '../../components/MeetUp/NoParticipants';
@@ -688,9 +688,9 @@ class MeetUp extends React.Component<Props, State> {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">
-              Screen Sharing Not Supported
-            </DialogTitle>
+            <DialogTitle id="alert-dialog-title" onClose={this.handleClose}>
+            Screen Sharing Not Supported
+          </DialogTitle>
             <DialogContent>
               <DialogContentText
                 id="alert-dialog-description"
@@ -713,9 +713,9 @@ class MeetUp extends React.Component<Props, State> {
             aria-labelledby="canvas-img-dialog-title"
             aria-describedby="canvas-img-dialog-description"
           >
-            <DialogTitle id="canvas-img-dialog-title">
-              Whiteboard Screenshot
-            </DialogTitle>
+            <DialogTitle id="canvas-img-dialog-title" onClose={this.handleClose}>
+            Whiteboard Screenshot
+          </DialogTitle>
             <DialogContent className={classes.canvasWrapper}>
               {canvasImg !== '' && <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot"/>}
             </DialogContent>
