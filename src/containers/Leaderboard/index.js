@@ -47,6 +47,10 @@ const styles = theme => ({
     overflow: 'auto'
   },
   avatar: {
+    width: 30,
+    height: 30
+  },
+  avatarSelected: {
     backgroundColor: theme.palette.primary.main
   },
   empty: {
@@ -201,7 +205,8 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       <ListItemAvatar>
                         <Avatar
                           className={cx(
-                            user.userId === userId && classes.avatar
+                            classes.avatar,
+                            user.userId === userId && classes.avatarSelected
                           )}
                         >
                           {index + 1}
@@ -219,7 +224,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       />
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'subtitle1'
+                          variant: 'h6'
                         }}
                         primary={user.points}
                       />

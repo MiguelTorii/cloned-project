@@ -53,6 +53,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: 520,
     marginTop: theme.spacing.unit * 2,
     backgroundColor: theme.circleIn.palette.appBar
   },

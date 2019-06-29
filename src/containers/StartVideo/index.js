@@ -233,7 +233,7 @@ class StartVideo extends React.PureComponent<Props, State> {
             >
               <Grid container alignItems="center">
                 <Grid item xs={2}>
-                  <Typography variant="subtitle1">Select a Chat</Typography>
+                  <Typography variant="subtitle1">Select People</Typography>
                 </Grid>
                 <Grid item xs={10}>
                   <FormControl variant="outlined" fullWidth>

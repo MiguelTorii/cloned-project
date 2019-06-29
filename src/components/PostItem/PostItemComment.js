@@ -52,6 +52,9 @@ const styles = theme => ({
     '& img': {
       maxHeight: '100px !important',
       width: 'auto'
+    },
+    '& a': {
+      color: theme.palette.primary.main
     }
   },
   progress: {
@@ -79,8 +82,9 @@ const styles = theme => ({
   },
   accepted: {
     '&:disabled': {
-    backgroundColor: green[500],
-    color: 'white'}
+      backgroundColor: green[500],
+      color: 'white'
+    }
   }
 });
 
@@ -224,7 +228,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
             >
               {isQuestion && !isOwn && (
                 <Fragment>
-                  <Button className={classes.accepted} color="primary" variant={accepted ? 'contained' : 'text'} onClick={this.handleBestAnswer} disabled={accepted}>
+                  <Button
+                    className={classes.accepted}
+                    color="primary"
+                    variant={accepted ? 'contained' : 'text'}
+                    onClick={this.handleBestAnswer}
+                    disabled={accepted}
+                  >
                     Best Answer
                   </Button>
                   <span className={classes.grow} />
