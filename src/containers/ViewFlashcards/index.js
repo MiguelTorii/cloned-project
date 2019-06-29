@@ -68,6 +68,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { flashcards } = this.state;
+    if (!flashcards) return;
     const { feedId, bookmarked } = flashcards;
     try {
       const newState = update(this.state, {

@@ -62,6 +62,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { shareLink } = this.state;
+    if (!shareLink) return;
     const { feedId, bookmarked } = shareLink;
     try {
       const newState = update(this.state, {

@@ -61,6 +61,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { question } = this.state;
+    if (!question) return;
     const { feedId, bookmarked } = question;
     try {
       const newState = update(this.state, {

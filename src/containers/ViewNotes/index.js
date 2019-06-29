@@ -62,6 +62,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { photoNote } = this.state;
+    if (!photoNote) return;
     const { feedId, bookmarked } = photoNote;
     try {
       const newState = update(this.state, {
