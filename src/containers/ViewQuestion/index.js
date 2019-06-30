@@ -2,7 +2,9 @@
 
 import React from 'react';
 import update from 'immutability-helper';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
@@ -15,6 +17,8 @@ import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 import PostTags from '../PostTags';
+import Report from '../Report';
+import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -38,16 +42,21 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  questionId: number
+  questionId: number,
+  push: Function
 };
 
 type State = {
-  question: ?Question
+  question: ?Question,
+  report: boolean,
+  deletePost: boolean
 };
 
 class ViewQuestion extends React.PureComponent<Props, State> {
   state = {
-    question: null
+    question: null,
+    report: false,
+    deletePost: false
   };
 
   componentDidMount = async () => {
@@ -81,6 +90,26 @@ class ViewQuestion extends React.PureComponent<Props, State> {
     }
   };
 
+  handleReport = () => {
+    this.setState({ report: true });
+  };
+
+  handleReportClose = () => {
+    this.setState({ report: false });
+  };
+
+  handleDelete = () => {
+    this.setState({ deletePost: true });
+  };
+
+  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+    if (deleted && deleted === true) {
+      const { push } = this.props;
+      push('/feed');
+    }
+    this.setState({ deletePost: false });
+  };
+
   loadData = async () => {
     const {
       user: {
@@ -107,7 +136,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    const { question } = this.state;
+    const { question, report, deletePost } = this.state;
 
     if (!question)
       return (
@@ -139,6 +168,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
           <PostItem feedId={feedId}>
             <ErrorBoundary>
               <PostItemHeader
+                currentUserId={userId}
                 userId={ownerId}
                 name={name}
                 userProfileUrl={userProfileUrl}
@@ -151,6 +181,8 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 isMarkdown
                 bookmarked={bookmarked}
                 onBookmark={this.handleBookmark}
+                onReport={this.handleReport}
+                onDelete={this.handleDelete}
               />
             </ErrorBoundary>
             <ErrorBoundary>
@@ -182,6 +214,21 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 readOnly={readOnly}
               />
             </ErrorBoundary>
+            <ErrorBoundary>
+              <Report
+                open={report}
+                ownerId={ownerId}
+                objectId={feedId}
+                onClose={this.handleReportClose}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <DeletePost
+                open={deletePost}
+                feedId={feedId}
+                onClose={this.handleDeleteClose}
+              />
+            </ErrorBoundary>
           </PostItem>
         </ErrorBoundary>
       </div>
@@ -193,7 +240,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      push: routePush
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(ViewQuestion));

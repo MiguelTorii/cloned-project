@@ -173,7 +173,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    open: true,
+    open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
