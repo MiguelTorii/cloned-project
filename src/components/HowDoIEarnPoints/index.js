@@ -10,7 +10,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import InfoIcon from '@material-ui/icons/Info';
 import DialogTitle from '../DialogTitle';
 
 const options = [
@@ -71,7 +71,7 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
             {options.map(item => (
               <ListItem key={item.id} dense>
                 <ListItemIcon>
-                  <CheckCircleOutlineIcon />
+                  <InfoIcon />
                 </ListItemIcon>
                 <ListItemText
                   primary={item.title}

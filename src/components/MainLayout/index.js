@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+// import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -443,6 +444,7 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/video-call' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
+          {/* <ListSubheader>Help</ListSubheader> */}
           <ListItem button onClick={onOpenAnnouncements}>
             <ListItemIcon>
               <AnnouncementIcon />
