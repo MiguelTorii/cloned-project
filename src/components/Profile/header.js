@@ -1,16 +1,20 @@
 // @flow
 import React, { Fragment } from 'react';
 import moment from 'moment';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
+
+const MyLink = props => <RouterLink to="/feed?bookmarks=true" {...props} />;
 
 const styles = theme => ({
   container: {
@@ -70,6 +74,16 @@ const styles = theme => ({
   icon: {
     width: 20,
     height: 20
+  },
+  bookmarks: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: theme.spacing.unit * 2
+  },
+  bookmarkIcon: {
+    marginLeft: theme.spacing.unit
   }
 });
 
@@ -116,7 +130,7 @@ class Header extends React.PureComponent<Props> {
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <Grid container>
-            <Grid item xs={5} className={classes.gridAvatar}>
+            <Grid item xs={4} className={classes.gridAvatar}>
               <Avatar
                 alt={initials}
                 src={userProfileUrl}
@@ -144,7 +158,7 @@ class Header extends React.PureComponent<Props> {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={7} className={classes.gridInfo}>
+            <Grid item xs={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
                 {name}
               </Typography>
@@ -168,39 +182,51 @@ class Header extends React.PureComponent<Props> {
                   </Typography>
                 </Grid>
               </Grid>
-              <Typography
-                variant="body2"
-                gutterBottom
-                className={classes.typoData}
-              >
-                <img src={schoolIcon} alt="School" className={classes.icon} />
-                {`${school}, ${state}`}
-              </Typography>
-              <Typography
-                variant="body2"
-                gutterBottom
-                className={classes.typoData}
-              >
-                <img
-                  src={gradCapIcon}
-                  alt="Grad Cap"
-                  className={classes.icon}
-                />
-                {gradeName(segment, grade)}
-              </Typography>
-              <Typography
-                variant="body2"
-                gutterBottom
-                className={classes.typoData}
-              >
-                <img
-                  src={calendarIcon}
-                  alt="Calendar"
-                  className={classes.icon}
-                />
-                {`Member Since ${moment(joined).format('MMMM YYYY')}`}
-              </Typography>
-              {!isMyProfile && (
+              <Grid container>
+                <Grid item xs={12} md={4}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    className={classes.typoData}
+                  >
+                    <img
+                      src={schoolIcon}
+                      alt="School"
+                      className={classes.icon}
+                    />
+                    {`${school}, ${state}`}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    className={classes.typoData}
+                  >
+                    <img
+                      src={gradCapIcon}
+                      alt="Grad Cap"
+                      className={classes.icon}
+                    />
+                    {gradeName(segment, grade)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    className={classes.typoData}
+                  >
+                    <img
+                      src={calendarIcon}
+                      alt="Calendar"
+                      className={classes.icon}
+                    />
+                    {`Member Since ${moment(joined).format('MMMM YYYY')}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+              {!isMyProfile ? (
                 <Fragment>
                   <Button variant="text" color="primary" onClick={onStartChat}>
                     Send Luke a message
@@ -209,6 +235,13 @@ class Header extends React.PureComponent<Props> {
                     Start video study session
                   </Button>
                 </Fragment>
+              ) : (
+                <div className={classes.bookmarks}>
+                  <Button variant="outlined" color="primary" component={MyLink}>
+                    View my bookmarks
+                    <BookmarkIcon className={classes.bookmarkIcon} />
+                  </Button>
+                </div>
               )}
             </Grid>
           </Grid>

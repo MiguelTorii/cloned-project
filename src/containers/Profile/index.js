@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import type { UserProfile, About, UserStatistic } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -223,26 +224,32 @@ class Profile extends React.PureComponent<Props, State> {
     if (error) return <Redirect to="/" />;
     return (
       <div className={classes.root}>
-        <ErrorBoundary>
-          <ProfileHeader
-            isMyProfile={userId === userData.userId}
-            firstName={firstName}
-            lastName={lastName}
-            userProfileUrl={userProfileUrl}
-            points={points}
-            school={school}
-            state={state}
-            segment={segment}
-            grade={grade}
-            joined={joined}
-            onOpenEdit={this.handleOpenEdit}
-            onStartChat={this.handleStartChat}
-            onStartVideo={this.handleStartVideo}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
-        </ErrorBoundary>
+        <Grid container>
+          <Grid item xs={12} md={7}>
+            <ErrorBoundary>
+              <ProfileHeader
+                isMyProfile={userId === userData.userId}
+                firstName={firstName}
+                lastName={lastName}
+                userProfileUrl={userProfileUrl}
+                points={points}
+                school={school}
+                state={state}
+                segment={segment}
+                grade={grade}
+                joined={joined}
+                onOpenEdit={this.handleOpenEdit}
+                onStartChat={this.handleStartChat}
+                onStartVideo={this.handleStartVideo}
+              />
+            </ErrorBoundary>
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <ErrorBoundary>
+              <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
+            </ErrorBoundary>
+          </Grid>
+        </Grid>
         <ErrorBoundary>
           <ProfileSeasons stats={userStatistics} />
         </ErrorBoundary>

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   container: {
+    height: '100%',
     maxHeight: 'inherit',
     display: 'flex',
     padding: theme.spacing.unit
