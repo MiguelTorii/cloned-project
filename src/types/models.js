@@ -334,7 +334,9 @@ export type CalendarEvent = {
   title: string,
   start: Object,
   end: Object,
-  label: number
+  label: number,
+  status: number,
+  due: string
 };
 
 export type CalendarEvents = Array<CalendarEvent>;
