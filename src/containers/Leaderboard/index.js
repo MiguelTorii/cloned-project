@@ -214,7 +214,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       </ListItemAvatar>
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'subtitle1'
+                          variant: 'h6'
                         }}
                         primary={user.userId === userId ? 'You' : user.username}
                         style={{

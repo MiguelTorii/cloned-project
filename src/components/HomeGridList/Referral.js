@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import type { HomeCard } from '../../types/models';
 
 const styles = theme => ({
@@ -24,18 +26,35 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit
   },
-  referal: {
+  referral: {
     width: '100%',
     marginTop: theme.spacing.unit * 2,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  referralCode: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  link: {
+    padding: theme.spacing.unit,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: theme.circleIn.palette.primaryText1,
+    borderRadius: 4,
+    marginRight: theme.spacing.unit * 2
+  },
+  icon: {
+    marginRight: theme.spacing.unit
   }
 });
 
 type Props = {
   classes: Object,
+  referralCode: string,
   card: HomeCard
 };
 
@@ -43,7 +62,7 @@ type State = {};
 
 class Referral extends React.PureComponent<Props, State> {
   render() {
-    const { classes, card } = this.props;
+    const { classes, referralCode, card } = this.props;
     const {
       title,
       data: {
@@ -56,7 +75,7 @@ class Referral extends React.PureComponent<Props, State> {
       <Grid item xs={6}>
         <Paper className={classes.paper} elevation={0}>
           <Typography
-            variant="h3"
+            variant="h4"
             className={classes.title}
             align="left"
             paragraph
@@ -66,16 +85,19 @@ class Referral extends React.PureComponent<Props, State> {
           <Typography variant="h6" align="left">
             {text}
           </Typography>
-          <div className={classes.referal}>
+          <div className={classes.referral}>
             <img alt={title} src={imageUrl} className={classes.img} />
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              className={classes.button}
-            >
-              Get Referral Code
-            </Fab>
+            <div className={classes.referralCode}>
+              <div className={classes.link}>
+                <Typography variant="subtitle1">{referralCode}</Typography>
+              </div>
+              <CopyToClipboard text={referralCode}>
+                <Button variant="outlined" color="primary" autoFocus>
+                  <FileCopyIcon className={classes.icon} />
+                  Copy
+                </Button>
+              </CopyToClipboard>
+            </div>
           </div>
         </Paper>
       </Grid>

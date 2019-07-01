@@ -331,7 +331,7 @@ class FeedList extends React.PureComponent<Props, State> {
                 <option value="everyone">Everyone</option>
                 <option value="classmates">Classmates</option>
                 <option value="my_posts">My Posts</option>
-                <option value="bookmarks">Bookmards</option>
+                <option value="bookmarks">Bookmarks</option>
               </NativeSelect>
             </FormControl>
             <FormControl className={classes.formControl}>

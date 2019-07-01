@@ -34,7 +34,7 @@ class Announcements extends React.PureComponent<Props, State> {
             id="announcements-dialog-description"
             color="textPrimary"
           >
-            Start a group chat with your classmates to let them know about
+            Start a study hall with your classmates to let them know about
             upcoming tests, homework, after-school events or really anything you
             can think of.
           </DialogContentText>

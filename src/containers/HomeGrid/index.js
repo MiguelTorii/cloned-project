@@ -65,7 +65,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: { userId }
+        data: { userId, referralCode }
       }
     } = this.props;
     const { cards, loading, leaderboard } = this.state;
@@ -75,6 +75,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <HomeGridList
             userId={userId}
+            referralCode={referralCode}
             cards={cards}
             loading={loading}
             onOpenLeaderboard={this.handleOpenLeaderboard}

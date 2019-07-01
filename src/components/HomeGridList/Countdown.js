@@ -16,9 +16,10 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.primary.main,
-    backgroundImage:
-      'linear-gradient(160.22deg, #1B2A32 -7.42%, rgba(0, 166, 255, 0) 404.32%)'
+    backgroundColor: '#22343C'
+    // backgroundColor: theme.palette.primary.main
+    // backgroundImage:
+    //   'linear-gradient(160.22deg, #1B2A32 -7.42%, rgba(0, 166, 255, 0) 404.32%)'
   },
   title: {
     color: '#fec04f',

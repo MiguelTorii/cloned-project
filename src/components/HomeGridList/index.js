@@ -18,6 +18,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   userId: string,
+  referralCode: string,
   cards: HomeCards,
   onOpenLeaderboard: Function
 };
@@ -26,7 +27,7 @@ type State = {};
 
 class HomeGridList extends React.PureComponent<Props, State> {
   renderCards = () => {
-    const { userId, cards, onOpenLeaderboard } = this.props;
+    const { userId, referralCode, cards, onOpenLeaderboard } = this.props;
     return cards.map(card => {
       const { cardId } = card;
       switch (cardId) {
@@ -43,7 +44,9 @@ class HomeGridList extends React.PureComponent<Props, State> {
             <OnboardingChecklist key={cardId} userId={userId} card={card} />
           );
         case 'referral':
-          return <Referral key={cardId} card={card} />;
+          return (
+            <Referral key={cardId} referralCode={referralCode} card={card} />
+          );
         default:
           return null;
       }

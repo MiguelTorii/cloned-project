@@ -36,6 +36,7 @@ import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import HelpIcon from '@material-ui/icons/Help'
 import logo from '../../assets/svg/circlein_logo_beta.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
@@ -288,9 +289,9 @@ class MainLayout extends React.Component<Props, State> {
           Add/Remove Classes
         </MenuItem>
         {/* <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem> */}
-        <MenuItem onClick={this.handleOpenHowEarnPoints}>
+        {/* <MenuItem onClick={this.handleOpenHowEarnPoints}>
           How Do I Earn Points
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
@@ -450,6 +451,12 @@ class MainLayout extends React.Component<Props, State> {
               <AnnouncementIcon />
             </ListItemIcon>
             <ListItemText primary="Announcements" />
+          </ListItem>
+          <ListItem button onClick={this.handleOpenHowEarnPoints}>
+            <ListItemIcon>
+              <HelpIcon />
+            </ListItemIcon>
+            <ListItemText primary="How Do I Earn Points" />
           </ListItem>
         </List>
       </Fragment>

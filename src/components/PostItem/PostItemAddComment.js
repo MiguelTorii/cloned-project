@@ -134,7 +134,7 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
             disabled={value.trim() === '' || readOnly}
             onClick={this.handleClick}
           >
-            Reply
+            Comment
           </Button>
         </div>
       </div>

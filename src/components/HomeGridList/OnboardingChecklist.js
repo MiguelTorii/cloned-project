@@ -104,9 +104,9 @@ class OnboardingChecklist extends React.PureComponent<Props, State> {
     } = card;
 
     return (
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <Paper className={classes.paper} elevation={0}>
-          <Typography variant="h3" className={classes.title} paragraph>
+          <Typography variant="h4" className={classes.title} paragraph>
             {title}
           </Typography>
           <Typography variant="h6">{renderText(text, style)}</Typography>

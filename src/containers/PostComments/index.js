@@ -31,6 +31,9 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  divider: {
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -188,6 +191,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
+        <Divider light className={classes.divider} />
         {readOnly && (
           <Paper className={classes.readOnly} elevation={8}>
             <Typography variant="h6">

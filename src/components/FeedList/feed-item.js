@@ -314,7 +314,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             title={
               <CardActionArea onClick={this.handleUserClick}>
                 <div className={classes.title}>
-                  <Typography component="p" variant="subtitle2" noWrap>
+                  <Typography component="p" variant="h6" noWrap>
                     {data.name}{' '}
                     <img
                       src={ranks[data.rank - 1]}
@@ -322,10 +322,10 @@ class FeedItem extends React.PureComponent<Props, State> {
                       className={classes.rank}
                     />
                   </Typography>
-                  <Typography component="p" variant="caption" noWrap>
+                  <Typography component="p" variant="subtitle1" noWrap>
                     <strong>•</strong>
                   </Typography>
-                  <Typography component="p" variant="caption" noWrap>
+                  <Typography component="p" variant="subtitle1" noWrap>
                     {fromNow}
                   </Typography>
                 </div>
@@ -349,7 +349,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             <CardContent className={classes.content}>
               <Typography
                 component="p"
-                variant="h6"
+                variant="h5"
                 style={{ maxWidth: 'inherit' }}
                 // noWrap
               >
