@@ -32,7 +32,7 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   tabs: {
-    maxWidth: 600,
+    // maxWidth: 600,
     marginBottom: theme.spacing.unit * 2
   },
   gridContainer: {
@@ -40,6 +40,7 @@ const styles = theme => ({
     height: '100%'
   },
   rankContainer: {
+    width: '100%',
     marginBottom: theme.spacing.unit * 2,
     height: '100%',
     minHeight: 146,
@@ -83,7 +84,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  stats: Array<Object>
+  seasons: Array<Object>
 };
 
 type State = {
@@ -99,36 +100,9 @@ class Seasons extends React.PureComponent<Props, State> {
     this.setState({ value });
   };
 
-  processSeasons = (stats: Array<Object>) => {
-    const seasons = [];
-    const all = {
-      seasonId: 0,
-      bestAnswers: 0,
-      communityServiceHours: 0,
-      currentSeason: false,
-      name: 'All',
-      points: 0,
-      rankReached: 0,
-      reach: 0,
-      thanks: 0
-    };
-    stats.forEach(item => {
-      seasons.push(item);
-      all.bestAnswers += item.bestAnswers;
-      all.communityServiceHours += item.communityServiceHours;
-      all.points += item.points;
-      all.rankReached = Math.max(all.rankReached, item.rankReached);
-      all.reach += item.reach;
-      all.thanks += item.thanks;
-    });
-    seasons.push(all);
-    return seasons;
-  };
-
   render() {
-    const { classes, stats } = this.props;
+    const { classes, seasons } = this.props;
     const { value } = this.state;
-    const seasons = this.processSeasons(stats);
 
     return (
       <div className={classes.container}>
@@ -149,47 +123,53 @@ class Seasons extends React.PureComponent<Props, State> {
           </div>
           <Grid
             container
-            justify="center"
+            justify="space-evenly"
             spacing={16}
             className={classes.gridContainer}
+            item
+            xs={12}
+            sm={8}
           >
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].thanks}
+                {seasons[value].thanks.toLocaleString()}
               </Typography>
-              <Typography variant="body2">Thanks Received</Typography>
+              <Typography variant="h6">Thanks Received</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].points}
+                {seasons[value].points.toLocaleString()}
               </Typography>
-              <Typography variant="body2">Points</Typography>
+              <Typography variant="h6">Points</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].communityServiceHours}
+                {seasons[value].communityServiceHours.toLocaleString()}
               </Typography>
-              <Typography variant="body2">Community Service Hours</Typography>
+              <Typography variant="h6">Community Service Hours</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].bestAnswers}
+                {seasons[value].bestAnswers.toLocaleString()}
               </Typography>
-              <Typography variant="body2">Best Answers</Typography>
+              <Typography variant="h6">Best Answers</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].reach}
+                {seasons[value].reach.toLocaleString()}
               </Typography>
-              <Typography variant="body2">Reach</Typography>
+              <Typography variant="h6">Reach</Typography>
             </Grid>
           </Grid>
           <Grid
             container
-            justify="center"
+            justify="space-evenly"
             alignItems="stretch"
             spacing={16}
             className={classes.rankContainer}
+            item
+            xs={12}
+            sm={8}
           >
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -203,7 +183,7 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="caption">Bronze</Typography>
+              <Typography variant="h6">Bronze</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -217,7 +197,7 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="caption">Silver</Typography>
+              <Typography variant="h6">Silver</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -231,7 +211,7 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="caption">Gold</Typography>
+              <Typography variant="h6">Gold</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -245,7 +225,7 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="body1">Platinum</Typography>
+              <Typography variant="h6">Platinum</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -259,7 +239,7 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="caption">Diamond</Typography>
+              <Typography variant="h6">Diamond</Typography>
             </Grid>
             <Grid item className={classes.badgeGridItem}>
               <div className={classes.badgeWrapper}>
@@ -273,10 +253,10 @@ class Seasons extends React.PureComponent<Props, State> {
                   )}
                 />
               </div>
-              <Typography variant="caption">Master</Typography>
+              <Typography variant="h6">Master</Typography>
             </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6}>
+          <Grid container item xs={12} sm={8}>
             <LinearProgress
               variant="determinate"
               value={30}

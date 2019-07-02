@@ -58,7 +58,12 @@ class HomeGridList extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Grid container className={classes.root} spacing={16}>
+        <Grid
+          container
+          className={classes.root}
+          spacing={16}
+          alignItems="stretch"
+        >
           {this.renderCards()}
         </Grid>
       </div>

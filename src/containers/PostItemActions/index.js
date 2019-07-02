@@ -28,6 +28,7 @@ type Props = {
   questionsCount: number,
   thanksCount: number,
   viewCount: number,
+  isQuestion?: boolean,
   onReload: Function
 };
 
@@ -41,6 +42,10 @@ type State = {
 };
 
 class PostItemActions extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    isQuestion: false
+  };
+
   state = {
     open: false,
     studyCircle: false,
@@ -115,7 +120,8 @@ class PostItemActions extends React.PureComponent<Props, State> {
       thanksCount,
       viewCount,
       name,
-      userProfileUrl
+      userProfileUrl,
+      isQuestion
     } = this.props;
     const {
       open,
@@ -139,6 +145,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
             isThanksLoading={isThanksLoading}
             isStudyCircleLoading={isStudyCircleLoading}
             noThanks={userId === ownerId}
+            isQuestion={isQuestion}
             onShare={this.handleShare}
             onThanks={this.handleThanks}
             onStudyCircle={this.handleStudyCircle}

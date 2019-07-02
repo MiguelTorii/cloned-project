@@ -275,6 +275,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
             isReply
             rte
             readOnly={readOnly}
+            isQuestion={isQuestion}
             onPostComment={this.handlePostComment}
             onCancelComment={this.handleShowAddComment}
           />

@@ -24,6 +24,7 @@ import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
 import ProfileEdit from '../../components/ProfileEdit';
 import ErrorBoundary from '../ErrorBoundary';
+import { processSeasons } from './utils';
 
 const styles = theme => ({
   root: {
@@ -222,9 +223,11 @@ class Profile extends React.PureComponent<Props, State> {
         </div>
       );
     if (error) return <Redirect to="/" />;
+    const seasons = processSeasons(userStatistics);
+
     return (
       <div className={classes.root}>
-        <Grid container>
+        <Grid container alignItems="stretch">
           <Grid item xs={12} md={7}>
             <ErrorBoundary>
               <ProfileHeader
@@ -233,6 +236,14 @@ class Profile extends React.PureComponent<Props, State> {
                 lastName={lastName}
                 userProfileUrl={userProfileUrl}
                 points={points}
+                thanks={
+                  seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0
+                }
+                bestAnswers={
+                  seasons.length > 0
+                    ? seasons[seasons.length - 1].bestAnswers
+                    : 0
+                }
                 school={school}
                 state={state}
                 segment={segment}
@@ -251,7 +262,7 @@ class Profile extends React.PureComponent<Props, State> {
           </Grid>
         </Grid>
         <ErrorBoundary>
-          <ProfileSeasons stats={userStatistics} />
+          <ProfileSeasons seasons={seasons} />
         </ErrorBoundary>
         <ErrorBoundary>
           <ProfileEdit

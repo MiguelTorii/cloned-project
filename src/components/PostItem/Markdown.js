@@ -14,22 +14,22 @@ const styles = theme => ({
 const options = {
   overrides: {
     h1: {
-      component: props => <Typography gutterBottom variant="h4" {...props} />
+      component: props => <Typography gutterBottom variant="h1" {...props} />
     },
     h2: {
-      component: props => <Typography gutterBottom variant="h6" {...props} />
+      component: props => <Typography gutterBottom variant="h2" {...props} />
     },
     h3: {
-      component: props => (
-        <Typography gutterBottom variant="subtitle1" {...props} />
-      )
+      component: props => <Typography gutterBottom variant="h3" {...props} />
     },
     h4: {
       component: props => (
-        <Typography gutterBottom variant="caption" paragraph {...props} />
+        <Typography gutterBottom variant="h4" paragraph {...props} />
       )
     },
-    p: { component: props => <Typography paragraph {...props} /> },
+    p: {
+      component: props => <Typography variant="h6" paragraph {...props} />
+    },
     li: {
       component: withStyles(styles)(({ classes, ...props }) => (
         <li className={classes.listItem}>

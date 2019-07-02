@@ -47,10 +47,10 @@ class About extends React.PureComponent<Props> {
             ) : (
               about.map(item => (
                 <div key={item.id}>
-                  <Typography variant="subtitle2" gutterBottom>
+                  <Typography variant="h6" gutterBottom>
                     {item.section}
                   </Typography>
-                  <Typography variant="body2" paragraph>
+                  <Typography variant="subtitle1" paragraph>
                     {item.answer}
                   </Typography>
                 </div>

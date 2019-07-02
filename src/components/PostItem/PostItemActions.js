@@ -32,6 +32,7 @@ type Props = {
   viewCount: number,
   isThanksLoading: boolean,
   isStudyCircleLoading: boolean,
+  isQuestion: boolean,
   noThanks: boolean,
   onShare: Function,
   onThanks: Function,
@@ -63,6 +64,7 @@ class PostItemActions extends React.PureComponent<Props> {
       thanksCount,
       viewCount,
       noThanks,
+      isQuestion,
       onShare,
       onThanks,
       onStudyCircle
@@ -101,7 +103,7 @@ class PostItemActions extends React.PureComponent<Props> {
         </div>
         <div className={classes.root}>
           <Typography variant="h6" className={classes.buttonText}>
-            {`${questionsCount} answers`}
+            {`${questionsCount} ${isQuestion ? 'answers' : 'comments'}`}
           </Typography>
           <Typography variant="h6" className={classes.buttonText}>
             {`${thanksCount} thanks`}

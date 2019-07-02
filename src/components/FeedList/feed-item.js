@@ -372,7 +372,8 @@ class FeedItem extends React.PureComponent<Props, State> {
                 variant="subtitle1"
                 className={classes.stat}
               >
-                <strong>{data.postInfo.questionsCount}</strong> questions
+                <strong>{data.postInfo.questionsCount}</strong>{' '}
+                {data.typeId === 6 ? 'answers' : 'comments'}
               </Typography>
               <Typography
                 component="p"

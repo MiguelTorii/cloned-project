@@ -205,6 +205,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
             profileImageUrl={profileImage}
             rte
             readOnly={readOnly}
+            isQuestion={isQuestion}
             onPostComment={this.handlePostComment}
           />
         </ErrorBoundary>

@@ -202,6 +202,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 questionsCount={questionsCount}
                 thanksCount={thanksCount}
                 viewCount={viewCount}
+                isQuestion
                 onReload={this.loadData}
               />
             </ErrorBoundary>
