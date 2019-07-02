@@ -78,6 +78,7 @@ export const postToCamelCase = (post: Object): Post => {
     school: String((post.school: string) || ''),
     subject: String((post.subject: string) || ''),
     thanked: Boolean((post.thanked: boolean) || false),
+    bestAnswer: Boolean((post.best_answer: boolean) || false),
     title: String((post.title: string) || ''),
     typeId: Number((post.type_id: number) || 0),
     userId: String((post.user_id: string) || ''),

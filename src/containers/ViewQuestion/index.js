@@ -159,7 +159,8 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       inStudyCircle,
       postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
       readOnly,
-      bookmarked
+      bookmarked,
+      bestAnswer
     } = question;
 
     return (
@@ -212,6 +213,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 postId={postId}
                 typeId={typeId}
                 isQuestion
+                hasBestAnswer={bestAnswer}
                 readOnly={readOnly}
               />
             </ErrorBoundary>

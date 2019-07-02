@@ -132,7 +132,8 @@ export type Post = {
   typeId: number,
   userId: string,
   userProfileUrl: string,
-  readOnly: boolean
+  readOnly: boolean,
+  bestAnswer: boolean
 };
 
 export type RecommendedPost = {

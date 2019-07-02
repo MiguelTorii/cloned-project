@@ -109,6 +109,7 @@ type Props = {
   isQuestion?: boolean,
   readOnly: boolean,
   accepted: boolean,
+  hasBestAnswer: boolean,
   onPostComment: Function,
   onThanks: Function,
   onReport: Function,
@@ -177,6 +178,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       accepted,
+      hasBestAnswer,
       onDelete
     } = this.props;
     const { showAddComment } = this.state;
@@ -226,7 +228,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 isQuestion && !isOwn && classes.bestAnswer
               )}
             >
-              {isQuestion && !isOwn && (
+              {isQuestion && !isOwn && (!hasBestAnswer || accepted) ? (
                 <Fragment>
                   <Button
                     className={classes.accepted}
@@ -239,6 +241,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   </Button>
                   <span className={classes.grow} />
                 </Fragment>
+              ) : (
+                <span className={classes.grow} />
               )}
               <Typography
                 component="p"
