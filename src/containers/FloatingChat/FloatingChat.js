@@ -455,7 +455,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
         props: { 'Initiated From': 'Profile' }
       });
       const win = window.open(`/video-call/${channel.sid}`, '_blank');
-      win.focus();
+      if (win && win.focus) win.focus();
     }
   };
 

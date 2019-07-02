@@ -105,6 +105,10 @@ class Layout extends React.PureComponent<Props, State> {
     this.setState({ leaderboard: false });
   };
 
+  handleOpenStartVideoMeetUp = () => {}
+
+  handleCloseStartVideoMeetUp = () => {}
+
   handleOpenAnnouncements = () => {
     this.setState({ announcements: true });
   };

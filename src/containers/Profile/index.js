@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // @flow
 
 import React from 'react';
@@ -58,6 +59,7 @@ type State = {
   about: Array<About>,
   userStatistics: Array<UserStatistic>,
   isLoading: boolean,
+  chatLoading: boolean,
   error: boolean,
   edit: boolean,
   uploading: boolean
@@ -82,6 +84,7 @@ class Profile extends React.PureComponent<Props, State> {
     about: [],
     userStatistics: [],
     isLoading: true,
+    chatLoading: false,
     error: false,
     edit: false,
     uploading: false
@@ -168,12 +171,16 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false
     });
+    setTimeout(() => {
+      this.setState({ chatLoading: false });
+    }, 2000);
   };
 
   handleStartVideo = () => {
@@ -181,12 +188,16 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: true
     });
+    setTimeout(() => {
+      this.setState({ chatLoading: false });
+    }, 2000);
   };
 
   render() {
@@ -200,6 +211,7 @@ class Profile extends React.PureComponent<Props, State> {
       about,
       userStatistics,
       isLoading,
+      chatLoading,
       error,
       edit,
       uploading
@@ -249,6 +261,7 @@ class Profile extends React.PureComponent<Props, State> {
                 segment={segment}
                 grade={grade}
                 joined={joined}
+                chatLoading={chatLoading}
                 onOpenEdit={this.handleOpenEdit}
                 onStartChat={this.handleStartChat}
                 onStartVideo={this.handleStartVideo}

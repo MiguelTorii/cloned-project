@@ -89,6 +89,7 @@ type Props = {
   chatType: string,
   thumbnail: ?string,
   isLoading: boolean,
+  isVideo: boolean,
   onClose: Function,
   onSubmit: Function,
   onLoadOptions: Function,
@@ -197,7 +198,13 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
   fileInput: ?HTMLInputElement;
 
   render() {
-    const { classes, chatType: open, thumbnail, isLoading } = this.props;
+    const {
+      classes,
+      chatType: open,
+      thumbnail,
+      isLoading,
+      isVideo
+    } = this.props;
     const { chatType, name, type, inputValue, from, users, error } = this.state;
 
     return (
@@ -218,15 +225,17 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
           className={classes.title}
         >
           <Typography variant="h6" className={classes.grow}>
-            {`Create ${chatType === 'single' ? '1-to-1' : 'Group'} Chat`}
+            {`Create ${chatType === 'single' ? '1-to-1' : 'Group'} ${
+              isVideo ? 'Video Room' : 'Chat'
+            }`}
           </Typography>
           <Button
             disabled={isLoading}
             color="primary"
             onClick={this.handleChatTypeChange}
-          >{`Create ${
-            chatType === 'single' ? 'group' : '1-to-1'
-          } chat instead`}</Button>
+          >{`Create ${chatType === 'single' ? 'group' : '1-to-1'} ${
+            isVideo ? 'video room' : 'chat'
+          } instead`}</Button>
         </DialogTitle>
         <ValidatorForm
           onSubmit={this.handleSubmit}

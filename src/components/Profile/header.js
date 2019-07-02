@@ -98,6 +98,7 @@ type Props = {
   segment: string,
   grade: number,
   joined: string,
+  chatLoading: boolean,
   onOpenEdit: Function,
   onStartChat: Function,
   onStartVideo: Function
@@ -119,6 +120,7 @@ class Header extends React.PureComponent<Props> {
       segment = '',
       grade,
       joined,
+      chatLoading,
       onOpenEdit,
       onStartChat,
       onStartVideo
@@ -155,13 +157,17 @@ class Header extends React.PureComponent<Props> {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={4} className={classes.status}>
-                  <Typography variant="h4">{thanks.toLocaleString()}</Typography>
+                  <Typography variant="h4">
+                    {thanks.toLocaleString()}
+                  </Typography>
                   <Typography variant="body2" className={classes.statusLabel}>
                     thanks
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={4} className={classes.status}>
-                  <Typography variant="h4">{bestAnswers.toLocaleString()}</Typography>
+                  <Typography variant="h4">
+                    {bestAnswers.toLocaleString()}
+                  </Typography>
                   <Typography variant="body2" className={classes.statusLabel}>
                     best answers
                   </Typography>
@@ -213,10 +219,20 @@ class Header extends React.PureComponent<Props> {
               </Grid>
               {!isMyProfile && (
                 <Fragment>
-                  <Button variant="text" color="primary" onClick={onStartChat}>
-                    Send Luke a message
+                  <Button
+                    variant="text"
+                    color="primary"
+                    disabled={chatLoading}
+                    onClick={onStartChat}
+                  >
+                    Send {firstName} a message
                   </Button>
-                  <Button variant="text" color="primary" onClick={onStartVideo}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    disabled={chatLoading}
+                    onClick={onStartVideo}
+                  >
                     Start video study session
                   </Button>
                 </Fragment>
