@@ -37,7 +37,7 @@ type State = {
 class Reminders extends React.PureComponent<Props, State> {
   state = {
     reminders: [],
-    list: false,
+    list: true,
     loading: false
   };
 

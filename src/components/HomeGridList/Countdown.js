@@ -38,15 +38,19 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  card: HomeCard,
-  onOpenLeaderboard: Function
+  card: HomeCard
+  // onOpenLeaderboard: Function
 };
 
 type State = {};
 
 class Countdown extends React.PureComponent<Props, State> {
   render() {
-    const { classes, card, onOpenLeaderboard } = this.props;
+    const {
+      classes,
+      card
+      // onOpenLeaderboard
+    } = this.props;
     const {
       title,
       data: {
@@ -55,7 +59,7 @@ class Countdown extends React.PureComponent<Props, State> {
     } = card;
 
     // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
+    // const dudUrl = 'javascript:;';
     return (
       <Grid item xs={12}>
         <Paper className={classes.paper} elevation={0}>
@@ -74,7 +78,7 @@ class Countdown extends React.PureComponent<Props, State> {
                 Reward Store
               </Link>
             </Typography>
-            <Typography variant="h6">
+            {/* <Typography variant="h6">
               <Link
                 href={dudUrl}
                 onClick={onOpenLeaderboard}
@@ -83,7 +87,7 @@ class Countdown extends React.PureComponent<Props, State> {
               >
                 Leaderboard
               </Link>
-            </Typography>
+            </Typography> */}
           </div>
         </Paper>
       </Grid>

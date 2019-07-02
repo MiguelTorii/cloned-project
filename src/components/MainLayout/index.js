@@ -22,7 +22,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import RedeemIcon from '@material-ui/icons/Redeem';
+// import RedeemIcon from '@material-ui/icons/Redeem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -32,7 +32,7 @@ import DuoIcon from '@material-ui/icons/Duo';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LanguageIcon from '@material-ui/icons/Language';
 import StoreIcon from '@material-ui/icons/Store';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+// import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -161,8 +161,8 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  onOpenLeaderboard: Function,
-  onOpenAnnouncements: Function
+  // onOpenLeaderboard: Function,
+  // onOpenAnnouncements: Function
 };
 
 type State = {
@@ -267,8 +267,8 @@ class MainLayout extends React.Component<Props, State> {
       children,
       unreadCount,
       pathname,
-      onOpenLeaderboard,
-      onOpenAnnouncements
+      // onOpenLeaderboard,
+      // onOpenAnnouncements
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -423,12 +423,12 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          <ListItem button onClick={onOpenLeaderboard}>
+          {/* <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
               <RedeemIcon />
             </ListItemIcon>
             <ListItemText primary="Leaderboard" />
-          </ListItem>
+          </ListItem> */}
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>
               <StoreIcon className={classNames(pathname === '/store' && classes.currentRoute)}/>
@@ -446,12 +446,12 @@ class MainLayout extends React.Component<Props, State> {
             />
           </ListItem>
           {/* <ListSubheader>Help</ListSubheader> */}
-          <ListItem button onClick={onOpenAnnouncements}>
+          {/* <ListItem button onClick={onOpenAnnouncements}>
             <ListItemIcon>
               <AnnouncementIcon />
             </ListItemIcon>
             <ListItemText primary="Announcements" />
-          </ListItem>
+          </ListItem> */}
           <ListItem button onClick={this.handleOpenHowEarnPoints}>
             <ListItemIcon>
               <HelpIcon />
