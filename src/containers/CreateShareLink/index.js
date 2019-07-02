@@ -2,6 +2,7 @@
 
 import React from 'react';
 import debounce from 'lodash/debounce';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -30,7 +31,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  pushTo: Function
+  pushTo: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -97,7 +99,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const { title, url, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
-      await createShareLink({
+
+      const {
+        points,
+        user: { firstName }
+      } = await createShareLink({
         userId,
         title,
         uri: url,
@@ -105,11 +111,28 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sectionId,
         tags: tagValues
       });
-      pushTo('/feed');
+
       logEvent({
         event: 'Feed- Share Link',
         props: {}
       });
+
+      if (points > 0) {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(
+          `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+          {
+            variant: 'success',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 2000
+          }
+        );
+      }
+
+      pushTo('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -251,4 +274,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateShareLink));
+)(withStyles(styles)(withSnackbar(CreateShareLink)));

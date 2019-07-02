@@ -9,7 +9,8 @@ import type {
   Comments,
   User,
   UpdateProfile,
-  Feed
+  Feed,
+  PostResponse
 } from '../types/models';
 
 export const getToken = async (): Promise<string> => {
@@ -82,6 +83,40 @@ export const postToCamelCase = (post: Object): Post => {
     userId: String((post.user_id: string) || ''),
     userProfileUrl: String((post.user_profile_url: string) || ''),
     readOnly: Boolean((post.read_only: boolean) || false)
+  };
+};
+
+export const postResponseToCamelCase = (response: Object): PostResponse => {
+  return {
+    communityServiceHours: Number(
+      (response.community_service_hours: number) || 0
+    ),
+    linkId: Number((response.link_id: number) || 0),
+    linksLeft: Number((response.links_left: number) || 0),
+    points: Number((response.points: number) || 0),
+    questionId: Number((response.question_id: number) || 0),
+    questionsLeft: Number((response.questions_left: number) || 0),
+    isFirstNote: Boolean((response.is_first_note: boolean) || false),
+    notesLeft: Number((response.notes_left: number) || 0),
+    photoNoteId: Number((response.photo_note_id: number) || 0),
+    decksLeft: Number((response.decks_left: number) || 0),
+    fcId: Number((response.fc_id: number) || 0),
+    user: {
+      firstName: String(((response.user || {}).first_name: string) || ''),
+      hours: Number(((response.user || {}).hours: number) || 0),
+      joined: String(((response.user || {}).joined: string) || ''),
+      lastName: String(((response.user || {}).last_name: string) || ''),
+      profileImageUrl: String(
+        ((response.user || {}).profile_image_url: string) || ''
+      ),
+      rank: Number(((response.user || {}).number: number) || 0),
+      scholarshipPoints: Number(
+        ((response.user || {}).scholarship_points: number) || 0
+      ),
+      schoolId: Number(((response.user || {}).school_id: number) || 0),
+      state: String(((response.user || {}).state: string) || ''),
+      userId: String(((response.user || {}).user_id: string) || '')
+    }
   };
 };
 

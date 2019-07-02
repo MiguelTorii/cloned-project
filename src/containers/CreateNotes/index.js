@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -25,7 +26,8 @@ const styles = () => ({});
 type Props = {
   classes: Object,
   user: UserState,
-  pushTo: Function
+  pushTo: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -76,7 +78,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
         const images = await this.uploadImages.handleUploadImages();
         const fileNames = images.map(item => item.id);
         const tagValues = tags.map(item => Number(item.value));
-        await createPhotoNote({
+
+        const {
+          points,
+          user: { firstName }
+        } = await createPhotoNote({
           userId,
           title,
           classId,
@@ -85,6 +91,22 @@ class CreateNotes extends React.PureComponent<Props, State> {
           comment: summary,
           tags: tagValues
         });
+
+        if (points > 0) {
+          const { enqueueSnackbar } = this.props;
+          enqueueSnackbar(
+            `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            {
+              variant: 'success',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'left'
+              },
+              autoHideDuration: 2000
+            }
+          );
+        }
+
         pushTo('/feed');
         logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
       } catch (err) {
@@ -241,4 +263,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateNotes));
+)(withStyles(styles)(withSnackbar(CreateNotes)));

@@ -216,6 +216,32 @@ export type Comments = {
   comments: Array<Comment>
 };
 
+export type PostResponse = {
+  communityServiceHours: number,
+  linkId: number,
+  linksLeft: number,
+  points: number,
+  questionId: number,
+  questionsLeft: number,
+  isFirstNote: boolean,
+  notesLeft: number,
+  photoNoteId: number,
+  decksLeft: number,
+  fcId: number,
+  user: {
+    firstName: string,
+    hours: number,
+    joined: string,
+    lastName: string,
+    profileImageUrl: string,
+    rank: number,
+    scholarshipPoints: number,
+    schoolId: number,
+    state: string,
+    userId: string
+  }
+};
+
 export type PresignedURL = {
   url: string,
   readUrl: string,

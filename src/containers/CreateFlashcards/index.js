@@ -89,7 +89,10 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
       const { title, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
-      await createFlashcards({
+      const {
+        points,
+        user: { firstName }
+      } = await createFlashcards({
         userId,
         title,
         deck: flashcards.map(item => ({
@@ -105,6 +108,22 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         event: 'Feed- Create Flashcards',
         props: { 'Number of cards': flashcards.length, Title: title }
       });
+
+      if (points > 0) {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(
+          `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+          {
+            variant: 'success',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 2000
+          }
+        );
+      }
+
       pushTo('/feed');
     } catch (err) {
       this.setState({

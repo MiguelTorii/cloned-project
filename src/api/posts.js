@@ -8,10 +8,16 @@ import type {
   Flashcards,
   ShareLink,
   Comments,
-  PostMetaData
+  PostMetaData,
+  PostResponse
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
-import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
+import {
+  getToken,
+  postToCamelCase,
+  commentsToCamelCase,
+  postResponseToCamelCase
+} from './utils';
 
 export const createFlashcards = async ({
   userId,
@@ -29,7 +35,7 @@ export const createFlashcards = async ({
   sectionId: ?number,
   tags: Array<number>,
   grade: number
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -52,10 +58,11 @@ export const createFlashcards = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -75,7 +82,7 @@ export const createPhotoNote = async ({
   fileNames: Array<string>,
   comment: string,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -97,10 +104,11 @@ export const createPhotoNote = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -118,7 +126,7 @@ export const createQuestion = async ({
   classId: number,
   sectionId: ?number,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -138,11 +146,13 @@ export const createQuestion = async ({
       }
     );
 
-    const { data } = result;
-    return data;
+    const { data = {} } = result;
+    const { id = {} } = data;
+    const response = postResponseToCamelCase(id);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -160,7 +170,7 @@ export const createShareLink = async ({
   classId: number,
   sectionId: ?number,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -181,10 +191,11 @@ export const createShareLink = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 

@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -25,7 +26,8 @@ const styles = () => ({});
 type Props = {
   classes: Object,
   user: UserState,
-  pushTo: Function
+  pushTo: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -81,7 +83,10 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       const { title, body, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
-      await createQuestion({
+      const {
+        points,
+        user: { firstName }
+      } = await createQuestion({
         userId,
         title,
         body,
@@ -89,6 +94,22 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         sectionId,
         tags: tagValues
       });
+
+      if (points > 0) {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(
+          `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+          {
+            variant: 'success',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 2000
+          }
+        );
+      }
+
       pushTo('/feed');
     } catch (err) {
       this.setState({
@@ -222,4 +243,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateQuestion));
+)(withStyles(styles)(withSnackbar(CreateQuestion)));
