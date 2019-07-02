@@ -44,7 +44,7 @@ type State = {
   channel: string,
   client: ?Object,
   channels: Array<Object>,
-  channelList: Array<Object>,
+  // channelList: Array<Object>,
   errorDialog: boolean,
   errorTitle: string,
   errorBody: string,
