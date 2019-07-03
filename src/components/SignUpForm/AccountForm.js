@@ -7,11 +7,13 @@ import {
   TextValidator,
   SelectValidator
 } from 'react-material-ui-form-validator';
+import { DatePicker } from 'material-ui-pickers';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
@@ -56,7 +58,8 @@ type State = {
   confirmEmail: string,
   gender: string,
   password: string,
-  birthdate: string
+  birthdate: ?Object,
+  birthdateError: boolean
 };
 
 class AccountForm extends React.PureComponent<Props, State> {
@@ -67,7 +70,8 @@ class AccountForm extends React.PureComponent<Props, State> {
     confirmEmail: '',
     gender: '',
     password: '',
-    birthdate: ''
+    birthdate: null,
+    birthdateError: false
   };
 
   componentDidMount = () => {
@@ -84,12 +88,35 @@ class AccountForm extends React.PureComponent<Props, State> {
     this.setState({ [name]: event.target.value });
   };
 
+  handleDateChange = selectedDate => {
+    this.setState({ birthdate: selectedDate, birthdateError: false });
+  };
+
   handleSubmit = () => {
     const { onSubmit } = this.props;
+    const {
+      firstName,
+      lastName,
+      email,
+      confirmEmail,
+      gender,
+      password,
+      birthdate
+    } = this.state;
+    if (!birthdate) {
+      this.setState({ birthdateError: true });
+      return;
+    }
     const data = {
       action: 'Account',
       data: {
-        ...this.state
+        firstName,
+        lastName,
+        email,
+        confirmEmail,
+        gender,
+        password,
+        birthdate: birthdate && birthdate.format('YYYY-MM-DD')
       }
     };
     onSubmit(data);
@@ -104,7 +131,8 @@ class AccountForm extends React.PureComponent<Props, State> {
       confirmEmail,
       gender,
       password,
-      birthdate
+      birthdate,
+      birthdateError
     } = this.state;
     return (
       <ValidatorForm
@@ -199,7 +227,7 @@ class AccountForm extends React.PureComponent<Props, State> {
           validators={['required']}
           errorMessages={['Password is required']}
         />
-        <TextValidator
+        {/* <TextValidator
           variant="outlined"
           label="Birth Date"
           type="date"
@@ -214,7 +242,26 @@ class AccountForm extends React.PureComponent<Props, State> {
           disabled={loading}
           validators={['required']}
           errorMessages={['Birth Date is required']}
+        /> */}
+        <DatePicker
+          value={birthdate}
+          fullWidth
+          onChange={this.handleDateChange}
+          variant="outlined"
+          label="Birth Date"
+          margin="normal"
+          name="birthdate"
+          disableFuture
+          openTo="year"
+          format="DD/MM/YYYY"
+          views={['year', 'month', 'day']}
+          disabled={loading}
+          className={classes.picker}
+          error={birthdateError}
         />
+        {birthdateError && (
+          <FormHelperText error>Birth Date is required</FormHelperText>
+        )}
         <div className={classes.wrapper}>
           <Button
             type="submit"
