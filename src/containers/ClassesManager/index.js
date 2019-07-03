@@ -473,6 +473,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       <ErrorBoundary>
         <Dialog
           open={open}
+          fullWidth
           className={classes.root}
           onClose={onClose}
           aria-labelledby="manage-classes-dialog-title"
