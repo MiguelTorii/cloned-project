@@ -22,6 +22,7 @@ import {
 export const createFlashcards = async ({
   userId,
   title,
+  summary,
   deck,
   classId,
   sectionId,
@@ -30,6 +31,7 @@ export const createFlashcards = async ({
 }: {
   userId: string,
   title: string,
+  summary: string,
   deck: Array<Flashcard>,
   classId: number,
   sectionId: ?number,
@@ -43,6 +45,7 @@ export const createFlashcards = async ({
       {
         user_id: Number(userId),
         title,
+        summary,
         deck,
         grade_level: grade,
         token: 'NA',
@@ -159,6 +162,7 @@ export const createQuestion = async ({
 export const createShareLink = async ({
   userId,
   title,
+  summary,
   uri,
   classId,
   sectionId,
@@ -166,6 +170,7 @@ export const createShareLink = async ({
 }: {
   userId: string,
   title: string,
+  summary: string,
   uri: string,
   classId: number,
   sectionId: ?number,
@@ -178,6 +183,7 @@ export const createShareLink = async ({
       {
         user_id: Number(userId),
         title,
+        summary,
         uri,
         class_id: classId,
         section_id: sectionId,

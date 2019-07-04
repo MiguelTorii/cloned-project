@@ -93,7 +93,7 @@ class Referral extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">{referralCode}</Typography>
               </div>
               <CopyToClipboard text={referralCode}>
-                <Button variant="outlined" color="primary" autoFocus>
+                <Button variant="contained" color="primary" autoFocus>
                   <FileCopyIcon className={classes.icon} />
                   Copy
                 </Button>

@@ -49,7 +49,6 @@ export const fetchFeed = async ({
     } = result;
 
     const feed = feedToCamelCase(posts);
-
     return feed;
   } catch (err) {
     console.log(err);

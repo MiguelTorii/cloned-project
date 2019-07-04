@@ -120,6 +120,8 @@ class ChatTextField extends React.PureComponent<Props, State> {
             value={message}
             onChange={this.handleChange}
             className={classes.textfield}
+            multiline
+            rowsMax={2}
             placeholder="Type a message"
           />
           <Divider light className={classes.divider} />

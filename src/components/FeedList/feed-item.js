@@ -15,6 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Chip from '@material-ui/core/Chip';
 import grey from '@material-ui/core/colors/grey';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -120,6 +121,18 @@ const styles = theme => ({
     width: 40,
     height: 40,
     borderRadius: '50%'
+  },
+  tags: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap'
+  },
+  chip: {
+    margin: theme.spacing.unit
+  },
+  label: {
+    fontSize: 10
   }
 });
 
@@ -195,6 +208,14 @@ class FeedItem extends React.PureComponent<Props, State> {
     onUserClick({ userId });
   };
 
+  handleDescription = (typeId, body) => {
+    if(typeId === 6) return '';
+
+    if(body.length < 100) return body;
+    
+    return `${body.substring(0,99)}...`
+  }
+
   renderImage = () => {
     const { classes, data } = this.props;
     switch (data.typeId) {
@@ -249,6 +270,8 @@ class FeedItem extends React.PureComponent<Props, State> {
     const date = moment(data.created);
     const fromNow = date ? date.fromNow() : '';
     const ownerId = data.userId;
+
+    const description = this.handleDescription(data.typeId, data.body)
 
     const renderMenu = (
       <Menu
@@ -346,17 +369,27 @@ class FeedItem extends React.PureComponent<Props, State> {
               feedId: data.feedId
             })}
           >
-            <CardContent className={classes.content}>
-              <Typography
-                component="p"
-                variant="h5"
-                style={{ maxWidth: 'inherit' }}
-                // noWrap
-              >
+            <CardContent>
+              <Typography component="p" variant="h5">
                 {data.title}
+              </Typography>
+            </CardContent>
+            <CardContent className={classes.content}>
+              <Typography component="p" variant="h6">
+                {description}
               </Typography>
               <span />
               {this.renderImage()}
+            </CardContent>
+            <CardContent className={classes.tags}>
+              {data.tags.map(tag => (
+                <Chip
+                  key={tag.id}
+                  label={`#${tag.name}`}
+                  className={classes.chip}
+                  classes={{ label: classes.label }}
+                />
+              ))}
             </CardContent>
           </CardActionArea>
           <CardActions className={classes.actions} disableActionSpacing>

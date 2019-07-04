@@ -23,15 +23,21 @@ import { logEvent } from '../../api/analytics';
 import { postMessageCount } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({
+const styles = theme => ({
   list: {
     overflowY: 'auto',
     flex: 1,
     maxHeight: 290,
     transition: 'width 0.25s, height 0.25s'
   },
+  listTyping: {
+    maxHeight: 270
+  },
   listExpanded: {
     maxHeight: 390
+  },
+  listTypingExpanded: {
+    maxHeight: 370
   },
   typing: {
     width: '100%',
@@ -40,7 +46,8 @@ const styles = () => ({
     justifyContent: 'flex-start'
   },
   typingText: {
-    color: 'black'
+    // color: 'black'
+    marginLeft: theme.spacing.unit
   },
   progress: {
     display: 'flex',
@@ -523,7 +530,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onExpand={this.handleExpand}
           >
             <div
-              className={cx(classes.list, expanded && classes.listExpanded)}
+              className={cx(
+                classes.list,
+                typing !== '' && classes.listTyping,
+                expanded && classes.listExpanded,
+                expanded && typing !== '' && classes.listTypingExpanded
+              )}
               ref={node => {
                 this.scrollParentRef = node;
               }}
@@ -541,13 +553,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 {messageItems.map(item =>
                   this.renderMessage(item, profileURLs)
                 )}
-                {typing !== '' && (
-                  <div className={classes.typing}>
-                    <Typography
-                      className={classes.typingText}
-                    >{`${typing} is typing ...`}</Typography>
-                  </div>
-                )}
                 {loading && (
                   <div className={classes.progress}>
                     <CircularProgress size={20} />
@@ -555,6 +560,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 )}
               </InfiniteScroll>
             </div>
+            {typing !== '' && (
+              <div className={classes.typing}>
+                <Typography
+                  className={classes.typingText}
+                  variant="subtitle1"
+                >{`${typing} is typing ...`}</Typography>
+              </div>
+            )}
             <ChatTextField
               onSendMessage={this.handleSendMessage}
               onSendInput={this.handleSendInput}

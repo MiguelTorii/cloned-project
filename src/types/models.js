@@ -313,8 +313,10 @@ export type FeedItem = {
   subject: string,
   classroomName: string,
   title: string,
+  body: string,
   readOnly: boolean,
-  postInfo: PostInfo
+  postInfo: PostInfo,
+  tags: Array<Tag>
 };
 
 export type Feed = Array<FeedItem>;

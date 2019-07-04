@@ -38,6 +38,7 @@ type Props = {
 type State = {
   loading: boolean,
   title: string,
+  summary: string,
   url: string,
   preview: string,
   classId: number,
@@ -53,6 +54,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     title: '',
+    summary: '',
     url: '',
     preview: '',
     classId: 0,
@@ -96,7 +98,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         },
         pushTo
       } = this.props;
-      const { title, url, classId, sectionId } = this.state;
+      const { title, summary, url, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
 
@@ -106,6 +108,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       } = await createShareLink({
         userId,
         title,
+        summary,
         uri: url,
         classId,
         sectionId,
@@ -177,6 +180,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const {
       loading,
       title,
+      summary,
       url,
       preview,
       tags,
@@ -215,6 +219,21 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} sm={10}>
                 <ClassesSelector onChange={this.handleClassChange} />
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Typography variant="subtitle1">Description</Typography>
+              </Grid>
+              <Grid item xs={12} sm={10}>
+                <OutlinedTextValidator
+                  label="Description"
+                  onChange={this.handleTextChange}
+                  name="summary"
+                  multiline
+                  rows={4}
+                  value={summary}
+                  validators={['required']}
+                  errorMessages={['Description is required']}
+                />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Url</Typography>

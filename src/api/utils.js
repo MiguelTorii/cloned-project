@@ -190,7 +190,13 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     classroomName: String((item.classroom_name: string) || ''),
     subject: String((item.subject: string) || ''),
     title: String((item.title: string) || ''),
+    body: String((item.body: string) || ''),
     readOnly: Boolean((item.read_only: boolean) || false),
+    tags: (item.tags || []).map(tag => ({
+      description: String((tag.description: string) || ''),
+      id: Number((tag.id: number) || 0),
+      name: String((tag.name: string) || '')
+    })),
     postInfo: {
       date: String((item.post_info.date: string) || ''),
       feedId: Number((item.post_info.feed_id: number) || 0),
