@@ -113,6 +113,7 @@ export type PostInfo = {
 
 export type Post = {
   body: string,
+  summary: string,
   bookmarked: boolean,
   classId: number,
   classroomName: string,

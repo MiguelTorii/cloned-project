@@ -286,6 +286,7 @@ export const getFlashcards = async ({
     );
 
     const { data } = result;
+    
     const post = postToCamelCase(data);
     const deck = data.deck || [];
     const flashcards = { ...post, deck };

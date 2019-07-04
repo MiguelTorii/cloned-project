@@ -54,6 +54,7 @@ export const getToken = async (): Promise<string> => {
 export const postToCamelCase = (post: Object): Post => {
   return {
     body: String((post.body: string) || ''),
+    summary: String((post.summary: string) || ''),
     bookmarked: Boolean((post.bookmarked: boolean) || false),
     classId: Number((post.class_id: number) || 0),
     courseDisplayName: String((post.course_display_name: string) || ''),

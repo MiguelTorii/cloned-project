@@ -172,7 +172,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       subject,
       classroomName,
       created,
-      body,
+      summary,
       title,
       thanked,
       inStudyCircle,
@@ -196,7 +196,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
                   subject !== '' ? `${subject} ${classroomName}` : classroomName
                 }
                 created={created}
-                body={body}
+                body={summary}
                 title={title}
                 bookmarked={bookmarked}
                 onBookmark={this.handleBookmark}
