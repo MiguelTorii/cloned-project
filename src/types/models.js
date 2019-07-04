@@ -117,6 +117,7 @@ export type Post = {
   bookmarked: boolean,
   classId: number,
   classroomName: string,
+  courseDisplayName: string,
   created: string,
   feedId: number,
   grade: number,

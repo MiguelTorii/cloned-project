@@ -73,6 +73,9 @@ const styles = theme => ({
       flex: 1
     }
   },
+  postTitle: {
+    paddingLeft: theme.spacing.unit
+  },
   actions: {
     display: 'flex',
     padding: 0
@@ -209,12 +212,12 @@ class FeedItem extends React.PureComponent<Props, State> {
   };
 
   handleDescription = (typeId, body) => {
-    if(typeId === 6) return '';
+    if (typeId === 6) return '';
 
-    if(body.length < 100) return body;
-    
-    return `${body.substring(0,99)}...`
-  }
+    if (body.length < 100) return body;
+
+    return `${body.substring(0, 99)}...`;
+  };
 
   renderImage = () => {
     const { classes, data } = this.props;
@@ -271,7 +274,7 @@ class FeedItem extends React.PureComponent<Props, State> {
     const fromNow = date ? date.fromNow() : '';
     const ownerId = data.userId;
 
-    const description = this.handleDescription(data.typeId, data.body)
+    const description = this.handleDescription(data.typeId, data.body);
 
     const renderMenu = (
       <Menu
@@ -369,7 +372,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               feedId: data.feedId
             })}
           >
-            <CardContent>
+            <CardContent className={classes.postTitle}>
               <Typography component="p" variant="h5">
                 {data.title}
               </Typography>

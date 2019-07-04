@@ -316,6 +316,7 @@ export const getShareLink = async ({
     );
 
     const { data } = result;
+    
     const post = postToCamelCase(data);
     const uri = String((data.uri: string) || '');
     const shareLink = { ...post, uri };

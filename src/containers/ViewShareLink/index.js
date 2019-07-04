@@ -151,8 +151,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
       typeId,
       name,
       userProfileUrl,
-      subject,
-      classroomName,
+      courseDisplayName,
       created,
       summary,
       title,
@@ -175,7 +174,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
                 name={name}
                 userProfileUrl={userProfileUrl}
                 classroomName={
-                  subject !== '' ? `${subject} ${classroomName}` : classroomName
+                  courseDisplayName
                 }
                 created={created}
                 body={summary}

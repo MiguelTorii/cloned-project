@@ -169,8 +169,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       typeId,
       name,
       userProfileUrl,
-      subject,
-      classroomName,
+      courseDisplayName,
       created,
       summary,
       title,
@@ -192,9 +191,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
                 userId={ownerId}
                 name={name}
                 userProfileUrl={userProfileUrl}
-                classroomName={
-                  subject !== '' ? `${subject} ${classroomName}` : classroomName
-                }
+                classroomName={courseDisplayName}
                 created={created}
                 body={summary}
                 title={title}

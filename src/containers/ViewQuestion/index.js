@@ -150,8 +150,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       typeId,
       name,
       userProfileUrl,
-      subject,
-      classroomName,
+      courseDisplayName,
       created,
       body,
       title,
@@ -173,9 +172,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 userId={ownerId}
                 name={name}
                 userProfileUrl={userProfileUrl}
-                classroomName={
-                  subject !== '' ? `${subject} ${classroomName}` : classroomName
-                }
+                classroomName={courseDisplayName}
                 created={created}
                 body={body}
                 title={title}
