@@ -49,12 +49,14 @@ type Props = {
 };
 
 type State = {
-  message: string
+  message: string,
+  addNextLine: boolean
 };
 
 class ChatTextField extends React.PureComponent<Props, State> {
   state = {
-    message: ''
+    message: '',
+    addNextLine: false
   };
 
   handleSubmit = event => {
@@ -75,6 +77,28 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
   handleOpenInputFile = () => {
     if (this.fileInput) this.fileInput.click();
+  };
+
+  handleKeyDown = event => {
+    const { addNextLine } = this.state;
+    if (event.keyCode === 13 && !addNextLine) {
+      event.preventDefault();
+      const { onSendMessage } = this.props;
+      const { message } = this.state;
+      if (message.trim() !== '') {
+        onSendMessage(message);
+        this.setState({ message: '' });
+      }
+    }
+    if (event.keyCode === 16) {
+      this.setState({ addNextLine: true });
+    }
+  };
+
+  handleKeyUp = event => {
+    if (event.keyCode === 16) {
+      this.setState({ addNextLine: false });
+    }
   };
 
   handleInputChange = () => {
@@ -119,6 +143,8 @@ class ChatTextField extends React.PureComponent<Props, State> {
           <InputBase
             value={message}
             onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+            onKeyUp={this.handleKeyUp}
             className={classes.textfield}
             multiline
             rowsMax={2}
