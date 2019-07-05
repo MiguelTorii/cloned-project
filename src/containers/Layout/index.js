@@ -18,6 +18,7 @@ import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import Leaderboard from '../Leaderboard';
+import WebNotifications from '../WebNotifications'
 import Announcements from '../../components/Announcements';
 import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
@@ -243,6 +244,9 @@ class Layout extends React.PureComponent<Props, State> {
             onClose={this.handleCloseAnnouncements}
             onCreate={this.handleCreateChatGroupChannel}
           />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <WebNotifications />
         </ErrorBoundary>
       </Fragment>
     );

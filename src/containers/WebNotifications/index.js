@@ -1,20 +1,27 @@
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Notification from 'react-web-notification';
 import withRoot from '../../withRoot';
+import type { WebNotificationsState } from '../../reducers/web-notifications';
+import type { State as StoreState } from '../../types/state';
 import mp3Sound from '../../assets/media/sound.mp3';
 import oggSound from '../../assets/media/sound.ogg';
 import icon from '../../assets/img/circlein-web-notification.png';
+import * as webNotificationsActions from '../../actions/web-notifications';
 
-type Props = {};
+type Props = {
+  webNotifications: WebNotificationsState,
+  updateTitle: Function
+};
 
 type State = {};
 
 class WebNotification extends React.Component<Props, State> {
   state = {
-    ignore: true,
-    title: ''
+    ignore: true
   };
 
   handlePermissionGranted = () => {
@@ -40,7 +47,10 @@ class WebNotification extends React.Component<Props, State> {
 
   handleNotificationOnError = () => {};
 
-  handleNotificationOnClose = () => {};
+  handleNotificationOnClose = () => {
+    const { updateTitle } = this.props;
+    updateTitle({ title: '' });
+  };
 
   handleNotificationOnShow = () => {
     this.playSound();
@@ -50,34 +60,46 @@ class WebNotification extends React.Component<Props, State> {
     document.getElementById('sound').play();
   };
 
-  handleButtonClick = () => {
+  // handleButtonClick = () => {
+  //   const { ignore } = this.state;
+  //   if (ignore) {
+  //     return;
+  //   }
+
+  //   const now = Date.now();
+
+  //   const title = `React-Web-Notification${now}`;
+  //   const body = `Hello${new Date()}`;
+  //   const tag = now;
+  // const options = {
+  //   tag,
+  //   body,
+  //   icon,
+  //   lang: 'en',
+  //   dir: 'ltr',
+  //   sound: mp3Sound
+  // };
+  //   this.setState({
+  //     title,
+  //     options
+  //   });
+  // };
+
+  render() {
+    const {
+      webNotifications: {
+        data: { title, body }
+      }
+    } = this.props;
     const { ignore } = this.state;
-    if (ignore) {
-      return;
-    }
-
-    const now = Date.now();
-
-    const title = `React-Web-Notification${now}`;
-    const body = `Hello${new Date()}`;
-    const tag = now;
     const options = {
-      tag,
+      tag: Date.now(),
       body,
       icon,
       lang: 'en',
       dir: 'ltr',
       sound: mp3Sound
     };
-    this.setState({
-      title,
-      options
-    });
-  };
-
-  render() {
-    const { ignore, title, options } = this.state;
-
     return (
       <Fragment>
         <Notification
@@ -104,4 +126,21 @@ class WebNotification extends React.Component<Props, State> {
   }
 }
 
-export default withRoot(WebNotification);
+const mapStateToProps = ({ webNotifications }: StoreState): {} => ({
+  webNotifications
+});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      updateTitle: webNotificationsActions.updateTitle
+    },
+    dispatch
+  );
+
+export default withRoot(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(WebNotification)
+);
