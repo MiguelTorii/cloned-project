@@ -3834,6 +3834,11 @@ core-js@2.5.7:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
 
+core-js@3:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
+  integrity sha512-YNZN8lt82XIMLnLirj9MhKDFZHalwzzrL9YLt6eb0T5D0EDl4IQ90IGkua8mHbnxNrkj1d8hbdizMc0Qmg1WnQ==
+
 core-js@^1.0.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
@@ -11657,6 +11662,13 @@ react-transition-group@^2.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
+
+react-web-notification@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/react-web-notification/-/react-web-notification-0.6.0.tgz#710238c3a55a08570e44d5e9c5e4f6c4c51a8dbd"
+  integrity sha512-9YppsxoVe/Rlk3oJgLAFPjgGo6EGggAlmymRvajtI+r1qzJWo16gwStlXBOPkiJ9UCvGIrHveNzJ7eFyoyQLhQ==
+  dependencies:
+    core-js "3"
 
 react@^16.8.6:
   version "16.8.6"
