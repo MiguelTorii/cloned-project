@@ -51,7 +51,7 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    fontSize: 14
+    fontSize: 10
   },
   zIndex: {
     mobileStepper: 700,

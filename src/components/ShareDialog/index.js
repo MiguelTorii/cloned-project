@@ -7,11 +7,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   icon: {
@@ -21,7 +21,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit * 2
   },
   link: {
     padding: theme.spacing.unit,
@@ -61,10 +61,16 @@ class ShareDialog extends React.PureComponent<Props, State> {
         aria-labelledby="share-dialog-title"
         aria-describedby="share-dialog-description"
       >
-        <DialogTitle id="share-dialog-title">Share this Post</DialogTitle>
+        <DialogTitle variant="h5" id="share-dialog-title" onClose={onClose}>
+          Share this Post
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText id="share-dialog-description" color="textPrimary">
-            Copy this link and send it to your friends.
+          <DialogContentText
+            variant="h6"
+            id="share-dialog-description"
+            color="textPrimary"
+          >
+            Copy this link and send it to your classmates.
           </DialogContentText>
           <div className={classes.content}>
             {isLoading ? (
@@ -72,7 +78,7 @@ class ShareDialog extends React.PureComponent<Props, State> {
             ) : (
               <Fragment>
                 <div className={classes.link}>
-                  <Typography>{link}</Typography>
+                  <Typography variant="subtitle1">{link}</Typography>
                 </div>
                 <CopyToClipboard text={link} onCopy={onLinkCopied}>
                   <Button variant="outlined" color="primary" autoFocus>

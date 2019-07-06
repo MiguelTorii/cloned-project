@@ -52,6 +52,7 @@ const styles = theme => ({
   overlay: {
     position: 'absolute',
     top: 0,
+    borderRadius: 4,
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -63,6 +64,10 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit / 2
   }
+  // elevation: {
+  //   boxShadow:
+  //     '0px 3px 5px -1px rgba(192,192,192,0.2),0px 6px 10px 0px rgba(192,192,192,0.14),0px 1px 18px 0px rgba(192,192,192,0.12)'
+  // }
 });
 
 type Props = {
@@ -110,7 +115,9 @@ class AvailableRewardsItem extends React.PureComponent<Props, State> {
     return (
       <Paper
         key={rewardId}
+        elevation={4}
         style={{ backgroundColor: bgColor }}
+        // classes={{ elevation24: classes.elevation }}
         className={cx(classes.item, isSelected && classes.selected)}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}

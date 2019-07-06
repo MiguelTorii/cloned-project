@@ -6,7 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogTitle from '../DialogTitle';
 
 type Props = {
   open: boolean,
@@ -26,13 +26,15 @@ class Announcements extends React.PureComponent<Props, State> {
         aria-labelledby="announcements-dialog-title"
         aria-describedby="announcements-dialog-description"
       >
-        <DialogTitle id="announcements-dialog-title">Announcement</DialogTitle>
+        <DialogTitle id="announcements-dialog-title" onClose={onClose}>
+          Announcement
+        </DialogTitle>
         <DialogContent>
           <DialogContentText
             id="announcements-dialog-description"
             color="textPrimary"
           >
-            Start a group chat with your classmates to let them know about
+            Start a study hall with your classmates to let them know about
             upcoming tests, homework, after-school events or really anything you
             can think of.
           </DialogContentText>

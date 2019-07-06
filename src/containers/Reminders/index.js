@@ -37,7 +37,7 @@ type State = {
 class Reminders extends React.PureComponent<Props, State> {
   state = {
     reminders: [],
-    list: false,
+    list: true,
     loading: false
   };
 
@@ -191,6 +191,8 @@ class Reminders extends React.PureComponent<Props, State> {
               reminders={reminders}
               onSwitch={this.handleSwitch}
               onSubmit={this.handleSubmit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
             />
           </ErrorBoundary>
         </ReactCardFlip>

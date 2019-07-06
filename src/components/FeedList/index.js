@@ -16,6 +16,8 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import SearchIcon from '@material-ui/icons/Search';
+import RefreshIcon from '@material-ui/icons/Refresh'
 import FeedItem from './feed-item';
 
 const styles = theme => ({
@@ -134,7 +136,8 @@ type Props = {
   onClearFilters: Function,
   onLoadMore: Function,
   onUserClick: Function,
-  onOpenFilter: Function
+  onOpenFilter: Function,
+  onRefresh: Function
 };
 
 type State = {
@@ -218,7 +221,8 @@ class FeedList extends React.PureComponent<Props, State> {
       onChange,
       onClearFilters,
       onLoadMore,
-      onUserClick
+      onUserClick,
+      onRefresh
     } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -245,11 +249,20 @@ class FeedList extends React.PureComponent<Props, State> {
               value={query}
               onChange={onChange('query')}
             />
+            <SearchIcon />
             <Divider className={classes.divider} />
             <IconButton
               color="primary"
               className={classes.iconButton}
-              aria-label="Directions"
+              aria-label="Refresh"
+              onClick={onRefresh}
+            >
+              <RefreshIcon />
+            </IconButton>
+            <IconButton
+              color="primary"
+              className={classes.iconButton}
+              aria-label="Filter"
               aria-owns={open ? 'filter-popper' : undefined}
               aria-haspopup="true"
               onClick={this.handleClick}
@@ -318,7 +331,7 @@ class FeedList extends React.PureComponent<Props, State> {
                 <option value="everyone">Everyone</option>
                 <option value="classmates">Classmates</option>
                 <option value="my_posts">My Posts</option>
-                <option value="bookmarks">Bookmards</option>
+                <option value="bookmarks">Bookmarks</option>
               </NativeSelect>
             </FormControl>
             <FormControl className={classes.formControl}>

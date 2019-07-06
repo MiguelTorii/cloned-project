@@ -16,9 +16,10 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.primary.main,
-    backgroundImage:
-      'linear-gradient(160.22deg, #1B2A32 -7.42%, rgba(0, 166, 255, 0) 404.32%)'
+    backgroundColor: '#22343C'
+    // backgroundColor: theme.palette.primary.main
+    // backgroundImage:
+    //   'linear-gradient(160.22deg, #1B2A32 -7.42%, rgba(0, 166, 255, 0) 404.32%)'
   },
   title: {
     color: '#fec04f',
@@ -37,15 +38,19 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  card: HomeCard,
-  onOpenLeaderboard: Function
+  card: HomeCard
+  // onOpenLeaderboard: Function
 };
 
 type State = {};
 
 class Countdown extends React.PureComponent<Props, State> {
   render() {
-    const { classes, card, onOpenLeaderboard } = this.props;
+    const {
+      classes,
+      card
+      // onOpenLeaderboard
+    } = this.props;
     const {
       title,
       data: {
@@ -54,16 +59,16 @@ class Countdown extends React.PureComponent<Props, State> {
     } = card;
 
     // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
+    // const dudUrl = 'javascript:;';
     return (
       <Grid item xs={12}>
         <Paper className={classes.paper} elevation={0}>
-          <Typography variant="h4" className={classes.title} paragraph>
+          <Typography variant="h3" className={classes.title} paragraph>
             {title}
           </Typography>
-          <Typography variant="h5">{renderText(text, style)}</Typography>
+          <Typography variant="h4">{renderText(text, style)}</Typography>
           <div className={classes.links}>
-            <Typography>
+            <Typography variant="h6">
               <Link
                 href="/store"
                 component={MyLink}
@@ -73,7 +78,7 @@ class Countdown extends React.PureComponent<Props, State> {
                 Reward Store
               </Link>
             </Typography>
-            <Typography>
+            {/* <Typography variant="h6">
               <Link
                 href={dudUrl}
                 onClick={onOpenLeaderboard}
@@ -82,7 +87,7 @@ class Countdown extends React.PureComponent<Props, State> {
               >
                 Leaderboard
               </Link>
-            </Typography>
+            </Typography> */}
           </div>
         </Paper>
       </Grid>

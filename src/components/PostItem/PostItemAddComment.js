@@ -23,7 +23,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%'
+    width: '100%',
+    maxWidth: 200,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: 600
+    }
   },
   textField: {
     marginLeft: theme.spacing.unit * 2
@@ -43,6 +47,7 @@ type Props = {
   isReply?: boolean,
   rte?: boolean,
   readOnly: boolean,
+  isQuestion: boolean,
   onPostComment: Function,
   onCancelComment?: Function
 };
@@ -92,7 +97,8 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
       profileImageUrl,
       name,
       isReply,
-      readOnly
+      readOnly,
+      isQuestion
     } = this.props;
     const { value } = this.state;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
@@ -102,14 +108,22 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
           <Avatar src={profileImageUrl}>{initials}</Avatar>
           {rte && !readOnly ? (
             <RichTextEditor
-              placeholder="Have a question? Ask here"
+              placeholder={
+                isQuestion
+                  ? 'Know the answer? Reply here'
+                  : 'Have a question? Ask here'
+              }
               value={value}
               onChange={this.handleRTEChange}
             />
           ) : (
             <TextField
               id="outlined-bare"
-              placeholder="Have a question? Ask here"
+              placeholder={
+                isQuestion
+                  ? 'Know the answer? Reply here'
+                  : 'Have a question? Ask here'
+              }
               value={value}
               margin="normal"
               variant="outlined"
@@ -130,7 +144,7 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
             disabled={value.trim() === '' || readOnly}
             onClick={this.handleClick}
           >
-            Reply
+            Comment
           </Button>
         </div>
       </div>

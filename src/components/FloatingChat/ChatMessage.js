@@ -124,9 +124,9 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   handleImageClick = url => () => {
-    const {onImageClick} = this.props;
-    onImageClick(url)
-  }
+    const { onImageClick } = this.props;
+    onImageClick(url);
+  };
 
   renderItem = ({
     imageKey,
@@ -146,6 +146,9 @@ class ChatMessageDate extends React.PureComponent<Props> {
     isOwn: boolean
   }) => {
     const { classes, onImageLoaded, onStartVideoCall } = this.props;
+
+    const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
+
     if (imageKey !== '') {
       return (
         <div className={classes.bodyWrapper}>
@@ -182,7 +185,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       <div className={cx(classes.bodyWrapper, isOwn && classes.reverse)}>
         <Typography
           className={cx(classes.body, isOwn && classes.right)}
-          dangerouslySetInnerHTML={{ __html: this.linkify(body) }}
+          dangerouslySetInnerHTML={{ __html: this.linkify(message) }}
         />
         <Typography
           className={cx(classes.createdAt, isOwn && classes.createdAtRight)}

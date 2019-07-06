@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // @flow
 
 import React from 'react';
@@ -7,6 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import type { UserProfile, About, UserStatistic } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -23,6 +25,7 @@ import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
 import ProfileEdit from '../../components/ProfileEdit';
 import ErrorBoundary from '../ErrorBoundary';
+import { processSeasons } from './utils';
 
 const styles = theme => ({
   root: {
@@ -56,6 +59,7 @@ type State = {
   about: Array<About>,
   userStatistics: Array<UserStatistic>,
   isLoading: boolean,
+  chatLoading: boolean,
   error: boolean,
   edit: boolean,
   uploading: boolean
@@ -80,6 +84,7 @@ class Profile extends React.PureComponent<Props, State> {
     about: [],
     userStatistics: [],
     isLoading: true,
+    chatLoading: false,
     error: false,
     edit: false,
     uploading: false
@@ -152,6 +157,8 @@ class Profile extends React.PureComponent<Props, State> {
       });
 
       await updateUserProfileUrl({ userId, mediaId });
+      // eslint-disable-next-line func-names
+      await setTimeout(function() {}, 1000);
       await this.handleGetProfile();
       checkUserSession();
     } finally {
@@ -164,12 +171,16 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false
     });
+    setTimeout(() => {
+      this.setState({ chatLoading: false });
+    }, 2000);
   };
 
   handleStartVideo = () => {
@@ -177,12 +188,16 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: true
     });
+    setTimeout(() => {
+      this.setState({ chatLoading: false });
+    }, 2000);
   };
 
   render() {
@@ -196,6 +211,7 @@ class Profile extends React.PureComponent<Props, State> {
       about,
       userStatistics,
       isLoading,
+      chatLoading,
       error,
       edit,
       uploading
@@ -219,30 +235,47 @@ class Profile extends React.PureComponent<Props, State> {
         </div>
       );
     if (error) return <Redirect to="/" />;
+    const seasons = processSeasons(userStatistics);
+
     return (
       <div className={classes.root}>
+        <Grid container alignItems="stretch">
+          <Grid item xs={12} md={7}>
+            <ErrorBoundary>
+              <ProfileHeader
+                isMyProfile={userId === userData.userId}
+                firstName={firstName}
+                lastName={lastName}
+                userProfileUrl={userProfileUrl}
+                points={points}
+                thanks={
+                  seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0
+                }
+                bestAnswers={
+                  seasons.length > 0
+                    ? seasons[seasons.length - 1].bestAnswers
+                    : 0
+                }
+                school={school}
+                state={state}
+                segment={segment}
+                grade={grade}
+                joined={joined}
+                chatLoading={chatLoading}
+                onOpenEdit={this.handleOpenEdit}
+                onStartChat={this.handleStartChat}
+                onStartVideo={this.handleStartVideo}
+              />
+            </ErrorBoundary>
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <ErrorBoundary>
+              <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
+            </ErrorBoundary>
+          </Grid>
+        </Grid>
         <ErrorBoundary>
-          <ProfileHeader
-            isMyProfile={userId === userData.userId}
-            firstName={firstName}
-            lastName={lastName}
-            userProfileUrl={userProfileUrl}
-            points={points}
-            school={school}
-            state={state}
-            segment={segment}
-            grade={grade}
-            joined={joined}
-            onOpenEdit={this.handleOpenEdit}
-            onStartChat={this.handleStartChat}
-            onStartVideo={this.handleStartVideo}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <ProfileSeasons stats={userStatistics} />
+          <ProfileSeasons seasons={seasons} />
         </ErrorBoundary>
         <ErrorBoundary>
           <ProfileEdit

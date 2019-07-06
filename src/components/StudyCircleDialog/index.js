@@ -7,9 +7,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogTitle from '../DialogTitle';
 import type { StudyCircle } from '../../types/models';
 
 const styles = theme => ({
@@ -104,7 +104,9 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
         aria-labelledby="study-circle-title"
         aria-describedby="study-circle-description"
       >
-        <DialogTitle id="study-circle-title">Congratulations</DialogTitle>
+        <DialogTitle id="study-circle-title" onClose={onClose}>
+          Congratulations
+        </DialogTitle>
         <DialogContent className={classes.content}>
           <DialogContentText
             align="center"

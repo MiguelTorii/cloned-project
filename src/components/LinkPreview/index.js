@@ -5,8 +5,10 @@ import normalizeUrl from 'normalize-url';
 import MicrolinkCard from '@microlink/react';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = () => ({
-  container: {}
+const styles = theme => ({
+  container: {
+    marginTop: theme.spacing.unit * 2
+  }
 });
 
 type Props = {

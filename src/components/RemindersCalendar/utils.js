@@ -10,7 +10,9 @@ export const getEvents = (items: ToDos): CalendarEvents => {
     title: item.title,
     start: moment(item.due),
     end: moment(item.due).add(1, 'hours'),
-    label: item.label
+    label: item.label,
+    status: item.status,
+    due: moment(item.due).format('ddd MMM DD @HH:mm')
   }));
 };
 

@@ -9,7 +9,8 @@ import type {
   Comments,
   User,
   UpdateProfile,
-  Feed
+  Feed,
+  PostResponse
 } from '../types/models';
 
 export const getToken = async (): Promise<string> => {
@@ -53,6 +54,7 @@ export const getToken = async (): Promise<string> => {
 export const postToCamelCase = (post: Object): Post => {
   return {
     body: String((post.body: string) || ''),
+    summary: String((post.summary: string) || ''),
     bookmarked: Boolean((post.bookmarked: boolean) || false),
     classId: Number((post.class_id: number) || 0),
     courseDisplayName: String((post.course_display_name: string) || ''),
@@ -77,11 +79,46 @@ export const postToCamelCase = (post: Object): Post => {
     school: String((post.school: string) || ''),
     subject: String((post.subject: string) || ''),
     thanked: Boolean((post.thanked: boolean) || false),
+    bestAnswer: Boolean((post.best_answer: boolean) || false),
     title: String((post.title: string) || ''),
     typeId: Number((post.type_id: number) || 0),
     userId: String((post.user_id: string) || ''),
     userProfileUrl: String((post.user_profile_url: string) || ''),
     readOnly: Boolean((post.read_only: boolean) || false)
+  };
+};
+
+export const postResponseToCamelCase = (response: Object): PostResponse => {
+  return {
+    communityServiceHours: Number(
+      (response.community_service_hours: number) || 0
+    ),
+    linkId: Number((response.link_id: number) || 0),
+    linksLeft: Number((response.links_left: number) || 0),
+    points: Number((response.points: number) || 0),
+    questionId: Number((response.question_id: number) || 0),
+    questionsLeft: Number((response.questions_left: number) || 0),
+    isFirstNote: Boolean((response.is_first_note: boolean) || false),
+    notesLeft: Number((response.notes_left: number) || 0),
+    photoNoteId: Number((response.photo_note_id: number) || 0),
+    decksLeft: Number((response.decks_left: number) || 0),
+    fcId: Number((response.fc_id: number) || 0),
+    user: {
+      firstName: String(((response.user || {}).first_name: string) || ''),
+      hours: Number(((response.user || {}).hours: number) || 0),
+      joined: String(((response.user || {}).joined: string) || ''),
+      lastName: String(((response.user || {}).last_name: string) || ''),
+      profileImageUrl: String(
+        ((response.user || {}).profile_image_url: string) || ''
+      ),
+      rank: Number(((response.user || {}).number: number) || 0),
+      scholarshipPoints: Number(
+        ((response.user || {}).scholarship_points: number) || 0
+      ),
+      schoolId: Number(((response.user || {}).school_id: number) || 0),
+      state: String(((response.user || {}).state: string) || ''),
+      userId: String(((response.user || {}).user_id: string) || '')
+    }
   };
 };
 
@@ -154,7 +191,13 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     classroomName: String((item.classroom_name: string) || ''),
     subject: String((item.subject: string) || ''),
     title: String((item.title: string) || ''),
+    body: String((item.body: string) || ''),
     readOnly: Boolean((item.read_only: boolean) || false),
+    tags: (item.tags || []).map(tag => ({
+      description: String((tag.description: string) || ''),
+      id: Number((tag.id: number) || 0),
+      name: String((tag.name: string) || '')
+    })),
     postInfo: {
       date: String((item.post_info.date: string) || ''),
       feedId: Number((item.post_info.feed_id: number) || 0),

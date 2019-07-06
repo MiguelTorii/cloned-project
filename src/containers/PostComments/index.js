@@ -31,6 +31,9 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  divider: {
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -41,7 +44,8 @@ type Props = {
   postId: number,
   typeId: number,
   isQuestion?: boolean,
-  readOnly: boolean
+  readOnly: boolean,
+  hasBestAnswer?: boolean
 };
 
 type State = {
@@ -53,7 +57,8 @@ type State = {
 
 class ViewNotes extends React.PureComponent<Props, State> {
   static defaultProps = {
-    isQuestion: false
+    isQuestion: false,
+    hasBestAnswer: false
   };
 
   state = {
@@ -180,7 +185,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
         data: { userId, profileImage, firstName, lastName }
       },
       isQuestion,
-      readOnly
+      readOnly,
+      hasBestAnswer
     } = this.props;
     const { comments, items, isLoading, report } = this.state;
     if (!comments) return null;
@@ -188,6 +194,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
+        <Divider light className={classes.divider} />
         {readOnly && (
           <Paper className={classes.readOnly} elevation={8}>
             <Typography variant="h6">
@@ -201,6 +208,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
             profileImageUrl={profileImage}
             rte
             readOnly={readOnly}
+            isQuestion={isQuestion}
             onPostComment={this.handlePostComment}
           />
         </ErrorBoundary>
@@ -220,10 +228,12 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 thanksCount={item.thanksCount}
                 thanked={item.thanked}
                 rootCommentId={item.id}
+                accepted={item.accepted}
                 isLoading={isLoading}
                 isQuestion={isQuestion}
                 isOwn={item.user.userId === userId}
                 readOnly={readOnly}
+                hasBestAnswer={hasBestAnswer}
                 onPostComment={this.handlePostComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
@@ -248,6 +258,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   isOwn={reply.user.userId === userId}
                   isReply
                   readOnly={readOnly}
+                  hasBestAnswer={hasBestAnswer}
                   onPostComment={this.handlePostComment}
                   onThanks={this.handleThanks}
                   onDelete={this.handleDelete}

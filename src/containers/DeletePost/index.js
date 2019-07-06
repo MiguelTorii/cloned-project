@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { deletePost } from '../../api/posts';
@@ -99,7 +99,9 @@ class DeletePost extends React.PureComponent<Props, State> {
           open={open}
           onClose={onClose}
         >
-          <DialogTitle id="confirmation-dialog-title">Delete Post</DialogTitle>
+          <DialogTitle id="confirmation-dialog-title" onClose={onClose}>
+            Delete Post
+          </DialogTitle>
           <DialogContent>
             <DialogContentText
               color="textPrimary"

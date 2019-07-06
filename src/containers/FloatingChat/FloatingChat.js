@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 import Chat from 'twilio-chat';
 import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +22,7 @@ import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
+import * as webNotificationsActions from '../../actions/web-notifications';
 
 const styles = theme => ({
   root: {
@@ -43,7 +45,8 @@ type Props = {
   classes: Object,
   user: UserState,
   chat: ChatState,
-  enqueueSnackbar: Function
+  enqueueSnackbar: Function,
+  updateTitle: Function
 };
 
 type State = {
@@ -326,6 +329,8 @@ class FloatingChat extends React.PureComponent<Props, State> {
             action: this.handleMessageReceived(channel.sid),
             autoHideDuration: 3000
           });
+          const { updateTitle } = this.props;
+          updateTitle({ title: `${firstName} ${lastName} sent you a message:`, body });
         }
       });
 
@@ -455,7 +460,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
         props: { 'Initiated From': 'Profile' }
       });
       const win = window.open(`/video-call/${channel.sid}`, '_blank');
-      win.focus();
+      if (win && win.focus) win.focus();
     }
   };
 
@@ -533,7 +538,15 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   chat
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      updateTitle: webNotificationsActions.updateTitle
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withRoot(withSnackbar(withStyles(styles)(FloatingChat))));

@@ -12,6 +12,7 @@ export const getLMSSchools = async (): Promise<LMSSchools> => {
     const { schools = [] } = data;
 
     return schools.map(school => ({
+      id: Number((school.id: number) || 0),
       clientId: String((school.client_id: string) || ''),
       school: String((school.school: string) || ''),
       uri: String((school.uri: string) || ''),

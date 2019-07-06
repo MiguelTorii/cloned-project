@@ -39,6 +39,7 @@ type Props = {
   feedId: ?number,
   classId: number,
   sectionId: number,
+  bookmarks: boolean,
   push: Function
 };
 
@@ -75,9 +76,12 @@ class Feed extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    const { classId, sectionId } = this.props;
+    const { classId, sectionId, bookmarks } = this.props;
     if (classId >= 0 && sectionId >= 0) {
       this.setState({ userClass: JSON.stringify({ classId, sectionId }) });
+    }
+    if(bookmarks) {
+      this.setState({from: 'bookmarks'})
     }
     window.addEventListener('offline', () => {
       if (
@@ -251,6 +255,10 @@ class Feed extends React.PureComponent<Props, State> {
     });
   };
 
+  handleRefresh = () => {
+    this.handleFetchFeed();
+  };
+
   handlePostClick = ({
     typeId,
     postId,
@@ -330,6 +338,7 @@ class Feed extends React.PureComponent<Props, State> {
               onLoadMore={this.handleLoadMore}
               onUserClick={this.handleUserClick}
               onOpenFilter={this.handleOpenFilter}
+              onRefresh={this.handleRefresh}
             />
           </div>
         </ErrorBoundary>

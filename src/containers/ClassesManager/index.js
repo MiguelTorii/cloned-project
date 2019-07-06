@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 // import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -23,6 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { UserClass, Permissions } from '../../types/models';
@@ -473,12 +473,13 @@ class ClassesManager extends React.PureComponent<Props, State> {
       <ErrorBoundary>
         <Dialog
           open={open}
+          fullWidth
           className={classes.root}
           onClose={onClose}
           aria-labelledby="manage-classes-dialog-title"
           aria-describedby="manage-classes-dialog-description"
         >
-          <DialogTitle id="manage-classes-dialog-title">
+          <DialogTitle id="manage-classes-dialog-title" onClose={onClose}>
             Add/Remove Classes
           </DialogTitle>
           <DialogContent>

@@ -3,7 +3,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import type { ToDos } from '../../types/models';
@@ -59,7 +59,7 @@ type Props = {
   classes: Object,
   reminders: ToDos,
   loading: boolean,
-  onSwitch: Function,
+  // onSwitch: Function,
   onSubmit: Function,
   onUpdate: Function,
   onDelete: Function
@@ -73,7 +73,7 @@ class RemindersList extends React.PureComponent<Props, State> {
       classes,
       reminders,
       loading,
-      onSwitch,
+      // onSwitch,
       onSubmit,
       onUpdate,
       onDelete
@@ -95,13 +95,13 @@ class RemindersList extends React.PureComponent<Props, State> {
             <Typography component="h1" variant="h5">
               Reminders - List
             </Typography>
-            <Button
+            {/* <Button
               color="primary"
               className={classes.marginLeft}
               onClick={onSwitch}
             >
               Switch to Calendar View
-            </Button>
+            </Button> */}
           </div>
           <div className={classes.content}>
             <RemindersAddNew loading={loading} onSubmit={onSubmit} />

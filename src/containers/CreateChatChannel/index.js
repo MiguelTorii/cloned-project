@@ -20,6 +20,7 @@ type Props = {
   type: ?string,
   client: Object,
   channels: Array<Object>,
+  isVideo?: boolean,
   onClose: Function,
   onChannelCreated: Function
 };
@@ -30,6 +31,10 @@ type State = {
 };
 
 class CreateChatChannel extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    isVideo: false
+  };
+
   state = {
     thumbnail: null,
     isLoading: false
@@ -149,6 +154,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       },
       onChannelCreated
     } = this.props;
+
     const { thumbnail } = this.state;
     this.setState({ isLoading: true });
     try {
@@ -244,7 +250,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { type } = this.props;
+    const { type, isVideo } = this.props;
     const { thumbnail, isLoading } = this.state;
     return (
       <ErrorBoundary>
@@ -252,6 +258,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
           chatType={type}
           thumbnail={thumbnail}
           isLoading={isLoading}
+          isVideo={isVideo}
           onClose={this.handleClose}
           onSubmit={this.handleSubmit}
           onLoadOptions={this.handleLoadOptions}

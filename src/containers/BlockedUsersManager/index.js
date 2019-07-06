@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,6 +15,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { BlockedUsers } from '../../types/models';
@@ -117,7 +117,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
           aria-labelledby="blocked-users-dialog-title"
           aria-describedby="blocked-users-dialog-description"
         >
-          <DialogTitle id="blocked-users-dialog-title">
+          <DialogTitle id="blocked-users-dialog-title" onClose={onClose}>
             Blocked Users
           </DialogTitle>
           <DialogContent>

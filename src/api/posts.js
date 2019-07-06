@@ -8,14 +8,21 @@ import type {
   Flashcards,
   ShareLink,
   Comments,
-  PostMetaData
+  PostMetaData,
+  PostResponse
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
-import { getToken, postToCamelCase, commentsToCamelCase } from './utils';
+import {
+  getToken,
+  postToCamelCase,
+  commentsToCamelCase,
+  postResponseToCamelCase
+} from './utils';
 
 export const createFlashcards = async ({
   userId,
   title,
+  summary,
   deck,
   classId,
   sectionId,
@@ -24,12 +31,13 @@ export const createFlashcards = async ({
 }: {
   userId: string,
   title: string,
+  summary: string,
   deck: Array<Flashcard>,
   classId: number,
   sectionId: ?number,
   tags: Array<number>,
   grade: number
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -37,6 +45,7 @@ export const createFlashcards = async ({
       {
         user_id: Number(userId),
         title,
+        summary,
         deck,
         grade_level: grade,
         token: 'NA',
@@ -52,10 +61,11 @@ export const createFlashcards = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -75,7 +85,7 @@ export const createPhotoNote = async ({
   fileNames: Array<string>,
   comment: string,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -97,10 +107,11 @@ export const createPhotoNote = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -118,7 +129,7 @@ export const createQuestion = async ({
   classId: number,
   sectionId: ?number,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -138,17 +149,20 @@ export const createQuestion = async ({
       }
     );
 
-    const { data } = result;
-    return data;
+    const { data = {} } = result;
+    const { id = {} } = data;
+    const response = postResponseToCamelCase(id);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
 export const createShareLink = async ({
   userId,
   title,
+  summary,
   uri,
   classId,
   sectionId,
@@ -156,11 +170,12 @@ export const createShareLink = async ({
 }: {
   userId: string,
   title: string,
+  summary: string,
   uri: string,
   classId: number,
   sectionId: ?number,
   tags: Array<number>
-}): Promise<Object> => {
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -168,6 +183,7 @@ export const createShareLink = async ({
       {
         user_id: Number(userId),
         title,
+        summary,
         uri,
         class_id: classId,
         section_id: sectionId,
@@ -181,10 +197,11 @@ export const createShareLink = async ({
     );
 
     const { data } = result;
-    return data;
+    const response = postResponseToCamelCase(data);
+    return response;
   } catch (err) {
     console.log(err);
-    return {};
+    return postResponseToCamelCase({});
   }
 };
 
@@ -269,6 +286,7 @@ export const getFlashcards = async ({
     );
 
     const { data } = result;
+    
     const post = postToCamelCase(data);
     const deck = data.deck || [];
     const flashcards = { ...post, deck };
@@ -298,6 +316,7 @@ export const getShareLink = async ({
     );
 
     const { data } = result;
+    
     const post = postToCamelCase(data);
     const uri = String((data.uri: string) || '');
     const shareLink = { ...post, uri };

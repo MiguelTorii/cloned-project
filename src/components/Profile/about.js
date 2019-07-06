@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   container: {
+    height: '100%',
     maxHeight: 'inherit',
     display: 'flex',
     padding: theme.spacing.unit
@@ -46,10 +47,10 @@ class About extends React.PureComponent<Props> {
             ) : (
               about.map(item => (
                 <div key={item.id}>
-                  <Typography variant="subtitle2" gutterBottom>
+                  <Typography variant="h6" gutterBottom>
                     {item.section}
                   </Typography>
-                  <Typography variant="body2" paragraph>
+                  <Typography variant="subtitle1" paragraph>
                     {item.answer}
                   </Typography>
                 </div>

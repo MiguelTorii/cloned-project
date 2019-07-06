@@ -3,19 +3,19 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import Chat from 'twilio-chat';
-import { SelectValidator } from 'react-material-ui-form-validator';
+// import { SelectValidator } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
+// import Grid from '@material-ui/core/Grid';
+// import Typography from '@material-ui/core/Typography';
+// import FormControl from '@material-ui/core/FormControl';
+// import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import StartVideoForm from '../../components/StartVideoForm';
 import CreateChatChannel from '../CreateChatChannel';
-import { getTitle } from '../FloatingChat/utils';
+// import { getTitle } from '../FloatingChat/utils';
 import { renewTwilioToken } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
@@ -23,10 +23,12 @@ import ErrorBoundary from '../ErrorBoundary';
 const styles = theme => ({
   actions: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'space-around'
+    // flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  margin: {
+  start: {
+    maxWidth: 200,
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
   }
@@ -42,7 +44,7 @@ type State = {
   channel: string,
   client: ?Object,
   channels: Array<Object>,
-  channelList: Array<Object>,
+  // channelList: Array<Object>,
   errorDialog: boolean,
   errorTitle: string,
   errorBody: string,
@@ -56,11 +58,11 @@ class StartVideo extends React.PureComponent<Props, State> {
     channel: '',
     client: null,
     channels: [],
-    channelList: [],
+    // channelList: [],
     errorDialog: false,
     errorTitle: '',
     errorBody: '',
-    createChannel: null,
+    createChannel: 'single',
     online: true
   };
 
@@ -142,11 +144,15 @@ class StartVideo extends React.PureComponent<Props, State> {
         criteria: 'lastMessage',
         order: 'descending'
       });
-      const channelList = channels.map(channel => ({
-        value: channel.sid,
-        label: getTitle(channel, userId)
-      }));
-      this.setState({ client, channels, channelList });
+      // const channelList = channels.map(channel => ({
+      //   value: channel.sid,
+      //   label: getTitle(channel, userId)
+      // }));
+      this.setState({
+        client,
+        channels
+        // channelList
+      });
     } finally {
       this.setState({ loading: false });
     }
@@ -186,22 +192,25 @@ class StartVideo extends React.PureComponent<Props, State> {
     isNew: boolean
   }) => {
     if (isNew) {
-      const {
-        user: {
-          data: { userId }
-        }
-      } = this.props;
-      const newChannel = {
-        value: channel.sid,
-        label: getTitle(channel, userId)
-      };
-      this.setState(({ channels, channelList }) => ({
+      // const {
+      //   user: {
+      //     data: { userId }
+      //   }
+      // } = this.props;
+      // const newChannel = {
+      //   value: channel.sid,
+      //   label: getTitle(channel, userId)
+      // };
+      this.setState(({ channels }) => ({
+        // channelList
         channels: [channel, ...channels],
-        channelList: [newChannel, ...channelList],
+        // channelList: [newChannel, ...channelList],
         channel: channel.sid
       }));
+      this.handleSubmit();
     } else {
-      this.setState({ channel: channel.sid });
+      this.setState(() => ({ channel: channel.sid }));
+      this.handleSubmit();
     }
   };
 
@@ -213,9 +222,9 @@ class StartVideo extends React.PureComponent<Props, State> {
       loading,
       createChannel,
       client,
-      channel,
+      // channel,
       channels,
-      channelList,
+      // channelList,
       errorDialog,
       errorTitle,
       errorBody
@@ -226,13 +235,25 @@ class StartVideo extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <div className={classes.root}>
             <StartVideoForm
-              title="Start a Video Meet Up"
+              title="Video Meet Up"
               loading={loading}
               handleSubmit={this.handleSubmit}
             >
-              <Grid container alignItems="center">
+              <div className={classes.actions}>
+                <Button
+                  className={classes.start}
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  disabled={loading}
+                  onClick={this.handleCreateChannelOpen('single')}
+                >
+                  Start a Meet Up with your classmates
+                </Button>
+              </div>
+              {/* <Grid container alignItems="center">
                 <Grid item xs={2}>
-                  <Typography variant="subtitle1">Select a Channel</Typography>
+                  <Typography variant="subtitle1">Select People</Typography>
                 </Grid>
                 <Grid item xs={10}>
                   <FormControl variant="outlined" fullWidth>
@@ -240,11 +261,11 @@ class StartVideo extends React.PureComponent<Props, State> {
                       disabled={loading}
                       value={channel}
                       name="channel"
-                      label="Channel"
+                      label="Chat"
                       onChange={this.handleChange}
                       variant="outlined"
                       validators={['required']}
-                      errorMessages={['You have to select a channel']}
+                      errorMessages={['You have to select a chat']}
                     >
                       <MenuItem value="" />
                       {channelList.map(item => (
@@ -266,7 +287,7 @@ class StartVideo extends React.PureComponent<Props, State> {
                     disabled={loading}
                     onClick={this.handleCreateChannelOpen('single')}
                   >
-                    1-to-1 Channel
+                    1-to-1 Chat
                   </Button>
                   <Button
                     className={classes.margin}
@@ -275,10 +296,10 @@ class StartVideo extends React.PureComponent<Props, State> {
                     disabled={loading}
                     onClick={this.handleCreateChannelOpen('group')}
                   >
-                    Group Channel
+                    Group Chat
                   </Button>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </StartVideoForm>
             <SimpleErrorDialog
               open={errorDialog}
@@ -290,9 +311,10 @@ class StartVideo extends React.PureComponent<Props, State> {
         </ErrorBoundary>
         <ErrorBoundary>
           <CreateChatChannel
-            type={createChannel}
+            type={loading ? null : createChannel}
             client={client}
             channels={channels}
+            isVideo
             onClose={this.handleCreateChannelClose}
             onChannelCreated={this.handleChannelCreated}
           />

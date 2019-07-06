@@ -6,6 +6,16 @@ import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import ReportIcon from '@material-ui/icons/Report';
+import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Markdown from './Markdown';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
@@ -23,6 +33,7 @@ const styles = theme => ({
     height: 60
   },
   userInfo: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -37,6 +48,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  currentUserId: string,
   userId: string,
   name: string,
   userProfileUrl: string,
@@ -44,17 +56,50 @@ type Props = {
   created: string,
   title: string,
   body: string,
-  isMarkdown?: boolean
+  isMarkdown?: boolean,
+  bookmarked: boolean,
+  onBookmark: Function,
+  onReport: Function,
+  onDelete: Function
 };
 
-class PostItemHeader extends React.PureComponent<Props> {
+type State = {
+  moreAnchorEl: ?string
+};
+
+class PostItemHeader extends React.PureComponent<Props, State> {
   static defaultProps = {
     isMarkdown: false
+  };
+
+  state = {
+    moreAnchorEl: null
+  };
+
+  handleMenuOpen = event => {
+    this.setState({ moreAnchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ moreAnchorEl: null });
+  };
+
+  handleReport = () => {
+    const { onReport } = this.props;
+    this.handleMenuClose();
+    onReport();
+  };
+
+  handleDelete = () => {
+    const { onDelete } = this.props;
+    this.handleMenuClose();
+    onDelete();
   };
 
   render() {
     const {
       classes,
+      currentUserId,
       userId,
       name,
       userProfileUrl,
@@ -62,11 +107,48 @@ class PostItemHeader extends React.PureComponent<Props> {
       created,
       title,
       body,
-      isMarkdown
+      isMarkdown,
+      bookmarked,
+      onBookmark
     } = this.props;
+    const { moreAnchorEl } = this.state;
+    const isMenuOpen = Boolean(moreAnchorEl);
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
+
+    const renderMenu = (
+      <Menu
+        disableAutoFocusItem
+        anchorEl={moreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={onBookmark}>
+          <ListItemIcon color="inherit">
+            {bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </ListItemIcon>
+          <ListItemText inset primary="Bookmark" />
+        </MenuItem>
+        {userId !== currentUserId ? (
+          <MenuItem onClick={this.handleReport}>
+            <ListItemIcon color="inherit">
+              <ReportIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Report" />
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={this.handleDelete}>
+            <ListItemIcon color="inherit">
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Delete" />
+          </MenuItem>
+        )}
+      </Menu>
+    );
 
     return (
       <Fragment>
@@ -91,12 +173,15 @@ class PostItemHeader extends React.PureComponent<Props> {
               {fromNow}
             </Typography>
           </div>
+          <IconButton onClick={this.handleMenuOpen}>
+            <MoreVertIcon />
+          </IconButton>
         </div>
-        <Typography component="p" variant="h5" paragraph>
+        <Typography component="p" variant="h4" paragraph>
           {title}
         </Typography>
         {!isMarkdown ? (
-          <Typography component="p" variant="body1">
+          <Typography component="p" variant="h6">
             {body}
           </Typography>
         ) : (
@@ -104,6 +189,7 @@ class PostItemHeader extends React.PureComponent<Props> {
             <Markdown>{body}</Markdown>
           </div>
         )}
+        {renderMenu}
       </Fragment>
     );
   }

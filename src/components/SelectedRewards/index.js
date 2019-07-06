@@ -29,8 +29,8 @@ const styles = theme => ({
     marginRight: theme.spacing.unit
   },
   card: {
-    width: 140,
-    height: 100,
+    width: 180,
+    height: 120,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -39,7 +39,7 @@ const styles = theme => ({
     width: 'auto',
     maxWidth: 120,
     height: 'auto',
-    maxHeight: 80
+    maxHeight: 50
   },
   progress: {
     display: 'flex',

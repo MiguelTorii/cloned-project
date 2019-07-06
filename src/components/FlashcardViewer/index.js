@@ -13,7 +13,10 @@ import Slide from '@material-ui/core/Slide';
 import type { Flashcard } from '../../types/models';
 import FlashcardItem from '../Flashcard';
 
-const styles = () => ({
+const styles = theme => ({
+  root: {
+    marginTop: theme.spacing.unit * 2
+  },
   appBar: {
     position: 'relative'
   },

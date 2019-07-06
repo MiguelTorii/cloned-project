@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -20,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { Leaderboard as LeaderboardType } from '../../types/models';
@@ -47,6 +47,10 @@ const styles = theme => ({
     overflow: 'auto'
   },
   avatar: {
+    width: 30,
+    height: 30
+  },
+  avatarSelected: {
     backgroundColor: theme.palette.primary.main
   },
   empty: {
@@ -160,7 +164,9 @@ class Leaderboard extends React.PureComponent<Props, State> {
           aria-labelledby="leaderboard-dialog-title"
           aria-describedby="leaderboard-dialog-description"
         >
-          <DialogTitle id="leaderboard-dialog-title">Leaderboard</DialogTitle>
+          <DialogTitle id="leaderboard-dialog-title" onClose={this.handleClose}>
+            Leaderboard
+          </DialogTitle>
           <DialogContent style={{ width: 490, height: 400 }}>
             {loading && <CircularProgress size={12} />}
             {!loading && (
@@ -199,7 +205,8 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       <ListItemAvatar>
                         <Avatar
                           className={cx(
-                            user.userId === userId && classes.avatar
+                            classes.avatar,
+                            user.userId === userId && classes.avatarSelected
                           )}
                         >
                           {index + 1}
@@ -207,7 +214,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       </ListItemAvatar>
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'subtitle1'
+                          variant: 'h6'
                         }}
                         primary={user.userId === userId ? 'You' : user.username}
                         style={{
@@ -217,7 +224,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
                       />
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'subtitle1'
+                          variant: 'h6'
                         }}
                         primary={user.points}
                       />

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +12,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
+import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { report } from '../../api/posts';
@@ -128,7 +128,9 @@ class Report extends React.PureComponent<Props, State> {
           open={open}
           onClose={onClose}
         >
-          <DialogTitle id="confirmation-dialog-title">Report</DialogTitle>
+          <DialogTitle id="confirmation-dialog-title" onClose={onClose}>
+            Report
+          </DialogTitle>
           <DialogContent>
             <RadioGroup
               ref={ref => {

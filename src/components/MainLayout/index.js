@@ -17,11 +17,12 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+// import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import RedeemIcon from '@material-ui/icons/Redeem';
+// import RedeemIcon from '@material-ui/icons/Redeem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -31,10 +32,11 @@ import DuoIcon from '@material-ui/icons/Duo';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LanguageIcon from '@material-ui/icons/Language';
 import StoreIcon from '@material-ui/icons/Store';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+// import AnnouncementIcon from '@material-ui/icons/Announcement';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import HelpIcon from '@material-ui/icons/Help'
 import logo from '../../assets/svg/circlein_logo_beta.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
@@ -91,7 +93,7 @@ const styles = theme => ({
     }
   },
   logo: {
-    maxWidth: 120
+    maxWidth: 160
   },
   hide: {
     [theme.breakpoints.up('sm')]: {
@@ -159,8 +161,8 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  onOpenLeaderboard: Function,
-  onOpenAnnouncements: Function
+  // onOpenLeaderboard: Function,
+  // onOpenAnnouncements: Function
 };
 
 type State = {
@@ -173,7 +175,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    open: true,
+    open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -265,8 +267,8 @@ class MainLayout extends React.Component<Props, State> {
       children,
       unreadCount,
       pathname,
-      onOpenLeaderboard,
-      onOpenAnnouncements
+      // onOpenLeaderboard,
+      // onOpenAnnouncements
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -287,9 +289,9 @@ class MainLayout extends React.Component<Props, State> {
           Add/Remove Classes
         </MenuItem>
         {/* <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem> */}
-        <MenuItem onClick={this.handleOpenHowEarnPoints}>
+        {/* <MenuItem onClick={this.handleOpenHowEarnPoints}>
           How Do I Earn Points
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
@@ -421,12 +423,12 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          <ListItem button onClick={onOpenLeaderboard}>
+          {/* <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
               <RedeemIcon />
             </ListItemIcon>
             <ListItemText primary="Leaderboard" />
-          </ListItem>
+          </ListItem> */}
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>
               <StoreIcon className={classNames(pathname === '/store' && classes.currentRoute)}/>
@@ -443,11 +445,18 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/video-call' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          <ListItem button onClick={onOpenAnnouncements}>
+          {/* <ListSubheader>Help</ListSubheader> */}
+          {/* <ListItem button onClick={onOpenAnnouncements}>
             <ListItemIcon>
               <AnnouncementIcon />
             </ListItemIcon>
             <ListItemText primary="Announcements" />
+          </ListItem> */}
+          <ListItem button onClick={this.handleOpenHowEarnPoints}>
+            <ListItemIcon>
+              <HelpIcon />
+            </ListItemIcon>
+            <ListItemText primary="How Do I Earn Points" />
           </ListItem>
         </List>
       </Fragment>

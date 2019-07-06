@@ -16,7 +16,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import VideoCamIcon from '@material-ui/icons/Videocam';
@@ -26,6 +25,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import GroupIcon from '@material-ui/icons/Group';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   paper: {
@@ -89,6 +89,9 @@ const styles = theme => ({
   },
   dialog: {
     zIndex: 2100
+  },
+  expandIcon: {
+    transform: 'rotate(45deg)'
   }
 });
 
@@ -119,6 +122,37 @@ class ChatItem extends React.PureComponent<Props, State> {
     openRemove: false
   };
 
+  // handleCheckBoundingRect = () => {
+  //   if (!this.el) return;
+  //   const bounding = this.el.getBoundingClientRect();
+
+  //   if (bounding) {
+  //     const { top, left, bottom, right } = bounding;
+  //     console.log(bounding);
+  //     if (top < 0) {
+  //       // Top is out of viewport
+  //       console.log('close');
+  //     }
+
+  //     if (left < 0) {
+  //       // Left side is out of viewoprt
+  //       console.log('close');
+  //     }
+
+  //     if (
+  //       bottom > (window.innerHeight || document.documentElement.clientHeight)
+  //     ) {
+  //       // Bottom is out of viewport
+  //       console.log('close');
+  //     }
+
+  //     if (right > (window.innerWidth || document.documentElement.clientWidth)) {
+  //       // Right side is out of viewport
+  //       console.log('close');
+  //     }
+  //   }
+  // };
+
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -148,6 +182,9 @@ class ChatItem extends React.PureComponent<Props, State> {
     onViewMembers();
   };
 
+  // eslint-disable-next-line no-undef
+  // el: HTMLDivElement;
+
   render() {
     const {
       classes,
@@ -165,64 +202,74 @@ class ChatItem extends React.PureComponent<Props, State> {
     const { anchorEl, openRemove } = this.state;
     return (
       <Fragment>
-        <Paper
-          className={cx(
-            classes.paper,
-            open && classes.paperOpen,
-            open && expanded && classes.paperExpanded
-          )}
-          elevation={24}
+        <div
+          // ref={node => {
+          //   this.el = node;
+          // }}
         >
-          <Badge color="secondary" badgeContent={unread}>
-            <span />
-          </Badge>
-          <div className={classes.header}>
-            <ButtonBase className={classes.headerTitle} onClick={onOpen}>
-              <Typography
-                variant="h6"
-                className={cx(
-                  classes.title,
-                  open && expanded && classes.titleExpanded
-                )}
-                noWrap
-              >
-                {title}
-              </Typography>
-            </ButtonBase>
-            {open ? (
-              <Fragment>
-                <ButtonBase className={classes.iconButton} onClick={onExpand}>
-                  {expanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
-                </ButtonBase>
-                <ButtonBase
-                  className={classes.iconButton}
-                  onClick={onStartVideoCall}
-                >
-                  <VideoCamIcon />
-                </ButtonBase>
-                <ButtonBase
-                  className={classes.iconButton}
-                  aria-owns={anchorEl ? 'simple-menu' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleClick}
-                >
-                  <SettingsIcon />
-                </ButtonBase>
-                <ButtonBase className={classes.iconButton} onClick={onOpen}>
-                  <RemoveIcon />
-                </ButtonBase>
-              </Fragment>
-            ) : (
-              <ButtonBase className={classes.iconButton} onClick={onClose}>
-                <ClearIcon />
-              </ButtonBase>
+          <Paper
+            className={cx(
+              classes.paper,
+              open && classes.paperOpen,
+              open && expanded && classes.paperExpanded
             )}
-          </div>
-          <div className={cx(!open && classes.hide, classes.content)}>
-            <Divider />
-            {children}
-          </div>
-        </Paper>
+            elevation={24}
+          >
+            <Badge color="secondary" badgeContent={unread}>
+              <span />
+            </Badge>
+            <div className={classes.header}>
+              <ButtonBase className={classes.headerTitle} onClick={onOpen}>
+                <Typography
+                  variant="h6"
+                  className={cx(
+                    classes.title,
+                    open && expanded && classes.titleExpanded
+                  )}
+                  noWrap
+                >
+                  {title}
+                </Typography>
+              </ButtonBase>
+              {open ? (
+                <Fragment>
+                  <ButtonBase className={classes.iconButton} onClick={onExpand}>
+                    {expanded ? (
+                      <UnfoldLessIcon className={classes.expandIcon} />
+                    ) : (
+                      <UnfoldMoreIcon className={classes.expandIcon} />
+                    )}
+                  </ButtonBase>
+                  <ButtonBase
+                    className={classes.iconButton}
+                    onClick={onStartVideoCall}
+                  >
+                    <VideoCamIcon />
+                  </ButtonBase>
+                  <ButtonBase
+                    className={classes.iconButton}
+                    aria-owns={anchorEl ? 'simple-menu' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleClick}
+                  >
+                    <SettingsIcon />
+                  </ButtonBase>
+                  <ButtonBase className={classes.iconButton} onClick={onOpen}>
+                    <RemoveIcon />
+                  </ButtonBase>
+                </Fragment>
+              ) : (
+                <ButtonBase className={classes.iconButton} onClick={onClose}>
+                  <ClearIcon />
+                </ButtonBase>
+              )}
+            </div>
+            <div className={cx(!open && classes.hide, classes.content)}>
+              <Divider />
+              {children}
+            </div>
+          </Paper>
+        </div>
         <Menu
           id="simple-menu"
           className={classes.menu}
@@ -258,7 +305,12 @@ class ChatItem extends React.PureComponent<Props, State> {
           aria-labelledby="remove-dialog-title"
           aria-describedby="remove-dialog-description"
         >
-          <DialogTitle id="remove-dialog-title">Delete Chat</DialogTitle>
+          <DialogTitle
+            id="remove-dialog-title"
+            onClose={this.handleRemoveClose}
+          >
+            Delete Chat
+          </DialogTitle>
           <DialogContent>
             <DialogContentText
               color="textPrimary"

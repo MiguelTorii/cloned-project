@@ -41,6 +41,7 @@ type Props = {
 type State = {
   loading: boolean,
   title: string,
+  summary: string,
   classId: number,
   sectionId: ?number,
   tags: Array<SelectType>,
@@ -56,6 +57,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     title: '',
+    summary: '',
     classId: 0,
     sectionId: null,
     tags: [],
@@ -86,12 +88,16 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         },
         pushTo
       } = this.props;
-      const { title, classId, sectionId } = this.state;
+      const { title, summary, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
-      await createFlashcards({
+      const {
+        points,
+        user: { firstName }
+      } = await createFlashcards({
         userId,
         title,
+        summary,
         deck: flashcards.map(item => ({
           question: item.question,
           answer: item.answer
@@ -105,6 +111,22 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         event: 'Feed- Create Flashcards',
         props: { 'Number of cards': flashcards.length, Title: title }
       });
+
+      if (points > 0) {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(
+          `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+          {
+            variant: 'success',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 2000
+          }
+        );
+      }
+
       pushTo('/feed');
     } catch (err) {
       this.setState({
@@ -203,6 +225,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     const {
       loading,
       title,
+      summary,
       tags,
       tagsError,
       flashcards,
@@ -239,6 +262,21 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} sm={10}>
                 <ClassesSelector onChange={this.handleClassChange} />
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Typography variant="subtitle1">Description</Typography>
+              </Grid>
+              <Grid item xs={12} sm={10}>
+                <OutlinedTextValidator
+                  label="Description"
+                  onChange={this.handleTextChange}
+                  name="summary"
+                  multiline
+                  rows={4}
+                  value={summary}
+                  validators={['required']}
+                  errorMessages={['Description is required']}
+                />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>

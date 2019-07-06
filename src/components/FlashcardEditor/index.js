@@ -14,12 +14,12 @@ import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import TextFieldsIcon from '@material-ui/icons/TextFields';
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
+import DialogTitle from '../DialogTitle';
 import OutlinedTextValidator from '../OutlinedTextValidator';
 import DropImage from './DropImage';
 
@@ -29,7 +29,8 @@ const styles = theme => ({
     width: 200,
     height: 200,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: '#334A54'
   },
   content: {
     flex: 1,
@@ -229,11 +230,15 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
         </ReactCardFlip>
         <Dialog
           open={open}
-          onClose={this.handleClose}
+          onClose={this.handleCancel}
+          onBackdropClick={this.handleCancel}
+          onEscapeKeyDown={this.handleCancel}
           aria-labelledby="form-dialog-title"
         >
           <ValidatorForm onSubmit={this.handleSubmit} ref={this.myRef}>
-            <DialogTitle id="form-dialog-title">Flashcard</DialogTitle>
+            <DialogTitle id="form-dialog-title" onClose={this.handleCancel}>
+              Flashcard
+            </DialogTitle>
             <DialogContent>
               <Grid container alignItems="center">
                 <Grid item xs={2}>

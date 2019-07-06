@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -22,6 +21,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
+import DialogTitle from '../../components/DialogTitle';
 import type { User } from '../../types/models';
 import { VIDEO_SHARE_URL } from '../../constants/routes';
 import ErrorBoundary from '../ErrorBoundary';
@@ -390,7 +390,9 @@ class Preview extends React.Component<Props, State> {
             onClose={this.closeSettings}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">General</DialogTitle>
+            <DialogTitle id="form-dialog-title" onClose={this.closeSettings}>
+              General
+            </DialogTitle>
             <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
               <FormControl>
                 <InputLabel htmlFor="videoinput-native-helper">

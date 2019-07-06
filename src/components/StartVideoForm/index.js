@@ -5,9 +5,9 @@ import type { Node } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
@@ -55,7 +55,7 @@ type Props = {
   classes: Object,
   title: string,
   children: Node,
-  loading: boolean,
+  // loading: boolean,
   handleSubmit: Function
 };
 
@@ -63,7 +63,13 @@ type State = {};
 
 class CreatePostForm extends React.PureComponent<Props, State> {
   render() {
-    const { classes, title, children, loading, handleSubmit } = this.props;
+    const {
+      classes,
+      title,
+      children,
+      // loading,
+      handleSubmit
+    } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
@@ -72,7 +78,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
             {children}
-            <div className={classes.actions}>
+            {/* <div className={classes.actions}>
               <div className={classes.wrapper}>
                 <Button
                   type="submit"
@@ -90,7 +96,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                   />
                 )}
               </div>
-            </div>
+            </div> */}
           </ValidatorForm>
         </Paper>
       </main>

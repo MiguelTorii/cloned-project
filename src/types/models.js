@@ -113,9 +113,11 @@ export type PostInfo = {
 
 export type Post = {
   body: string,
+  summary: string,
   bookmarked: boolean,
   classId: number,
   classroomName: string,
+  courseDisplayName: string,
   created: string,
   feedId: number,
   grade: number,
@@ -132,7 +134,8 @@ export type Post = {
   typeId: number,
   userId: string,
   userProfileUrl: string,
-  readOnly: boolean
+  readOnly: boolean,
+  bestAnswer: boolean
 };
 
 export type RecommendedPost = {
@@ -216,6 +219,32 @@ export type Comments = {
   comments: Array<Comment>
 };
 
+export type PostResponse = {
+  communityServiceHours: number,
+  linkId: number,
+  linksLeft: number,
+  points: number,
+  questionId: number,
+  questionsLeft: number,
+  isFirstNote: boolean,
+  notesLeft: number,
+  photoNoteId: number,
+  decksLeft: number,
+  fcId: number,
+  user: {
+    firstName: string,
+    hours: number,
+    joined: string,
+    lastName: string,
+    profileImageUrl: string,
+    rank: number,
+    scholarshipPoints: number,
+    schoolId: number,
+    state: string,
+    userId: string
+  }
+};
+
 export type PresignedURL = {
   url: string,
   readUrl: string,
@@ -223,6 +252,7 @@ export type PresignedURL = {
 };
 
 export type LMSSchool = {
+  id: number,
   clientId: string,
   school: string,
   uri: string,
@@ -285,8 +315,10 @@ export type FeedItem = {
   subject: string,
   classroomName: string,
   title: string,
+  body: string,
   readOnly: boolean,
-  postInfo: PostInfo
+  postInfo: PostInfo,
+  tags: Array<Tag>
 };
 
 export type Feed = Array<FeedItem>;
@@ -333,7 +365,9 @@ export type CalendarEvent = {
   title: string,
   start: Object,
   end: Object,
-  label: number
+  label: number,
+  status: number,
+  due: string
 };
 
 export type CalendarEvents = Array<CalendarEvent>;
