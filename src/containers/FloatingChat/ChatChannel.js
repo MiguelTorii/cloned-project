@@ -344,19 +344,19 @@ class ChatChannel extends React.PureComponent<Props, State> {
   handleDelete = () => {
     const {
       channel,
-      user: {
-        data: { userId }
-      },
+      // user: {
+      //   data: { userId }
+      // },
       onRemove
     } = this.props;
     try {
-      const { state } = channel;
-      const { attributes = {} } = state;
-      const { users = [] } = attributes;
-      const newUsers = users.filter(
-        o => o.userId.toString() !== userId.toString()
-      );
-      onRemove({ channel, users: newUsers });
+      // const { state } = channel;
+      // const { attributes = {} } = state;
+      // const { users = [] } = attributes;
+      // const newUsers = users.filter(
+      //   o => o.userId.toString() !== userId.toString()
+      // );
+      onRemove({ sid: channel.sid });
     } catch (err) {
       console.log(err);
     }

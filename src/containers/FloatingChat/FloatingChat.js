@@ -15,7 +15,7 @@ import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
 import type { ChatChannels } from '../../types/models';
-import { renewTwilioToken } from '../../api/chat';
+import { renewTwilioToken, leaveChat, blockChatUser } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
 import ChatChannel from './ChatChannel';
@@ -330,7 +330,10 @@ class FloatingChat extends React.PureComponent<Props, State> {
             autoHideDuration: 3000
           });
           const { updateTitle } = this.props;
-          updateTitle({ title: `${firstName} ${lastName} sent you a message:`, body });
+          updateTitle({
+            title: `${firstName} ${lastName} sent you a message:`,
+            body
+          });
         }
       });
 
@@ -357,86 +360,95 @@ class FloatingChat extends React.PureComponent<Props, State> {
     this.setState({ client: null, channels: [], openChannels: [], unread: 0 });
   };
 
-  handleRemoveChannel = ({ channel, users }) => {
-    try {
-      channel.updateAttributes({ ...channel.state.attributes, users });
-    } catch (err) {
-      console.log('err');
-    }
+  handleRemoveChannel = async ({ sid }) => {
+    // try {
+    //   channel.updateAttributes({ ...channel.state.attributes, users });
+    // } catch (err) {
+    //   console.log('err');
+    // }
 
     try {
-      channel.leave();
+      // channel.leave();
+      await leaveChat({ sid });
     } catch (err) {
       console.log(err);
     }
   };
 
-  handleKickUser = ({
-    channel,
-    users,
-    blockedUserId
-  }: {
-    channel: Object,
-    users: Array<Object>,
-    blockedUserId: string
-  }) => {
+  // handleKickUser = ({
+  //   channel,
+  //   users,
+  //   blockedUserId
+  // }: {
+  //   channel: Object,
+  //   users: Array<Object>,
+  //   blockedUserId: string
+  // }) => {
+  //   try {
+  //     channel.updateAttributes({
+  //       ...channel.state.attributes,
+  //       users
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   try {
+  //     channel.removeMember(String(blockedUserId));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  handleBlock = async blockedUserId => {
     try {
-      channel.updateAttributes({
-        ...channel.state.attributes,
-        users
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    try {
-      channel.removeMember(String(blockedUserId));
+      await blockChatUser({ blockedUserId });
     } catch (err) {
       console.log(err);
     }
   };
 
-  handleRemoveChannels = async blockedUserId => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
+  // handleRemoveChannels = async blockedUserId => {
+  //   const {
+  //     user: {
+  //       data: { userId }
+  //     }
+  //   } = this.props;
 
-    const { channels } = this.state;
-    try {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const channel of channels) {
-        const { state = {} } = channel;
-        const { createdBy = '', attributes = {} } = state;
-        const { groupType = '', users = [] } = attributes;
-        if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
-          const newUsers = users.filter(
-            o => o.userId.toString() !== blockedUserId.toString()
-          );
-          if (groupType === '' || users.length <= 2) {
-            // eslint-disable-next-line no-await-in-loop
-            await this.handleRemoveChannel({ channel, users: newUsers });
-          } else if (Number(createdBy) === Number(userId)) {
-            // eslint-disable-next-line no-await-in-loop
-            await this.handleKickUser({
-              channel,
-              users: newUsers,
-              blockedUserId
-            });
-            if (newUsers.length <= 1) {
-              // eslint-disable-next-line no-await-in-loop
-              await this.handleRemoveChannel({ channel, users: newUsers });
-            }
-          } else {
-            // eslint-disable-next-line no-await-in-loop
-            await this.handleRemoveChannel({ channel, users: newUsers });
-          }
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //   const { channels } = this.state;
+  //   try {
+  //     // eslint-disable-next-line no-restricted-syntax
+  //     for (const channel of channels) {
+  //       const { state = {} } = channel;
+  //       const { createdBy = '', attributes = {} } = state;
+  //       const { groupType = '', users = [] } = attributes;
+  //       if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
+  //         const newUsers = users.filter(
+  //           o => o.userId.toString() !== blockedUserId.toString()
+  //         );
+  //         if (groupType === '' || users.length <= 2) {
+  //           // eslint-disable-next-line no-await-in-loop
+  //           await this.handleRemoveChannel({ channel, users: newUsers });
+  //         } else if (Number(createdBy) === Number(userId)) {
+  //           // eslint-disable-next-line no-await-in-loop
+  //           await this.handleKickUser({
+  //             channel,
+  //             users: newUsers,
+  //             blockedUserId
+  //           });
+  //           if (newUsers.length <= 1) {
+  //             // eslint-disable-next-line no-await-in-loop
+  //             await this.handleRemoveChannel({ channel, users: newUsers });
+  //           }
+  //         } else {
+  //           // eslint-disable-next-line no-await-in-loop
+  //           await this.handleRemoveChannel({ channel, users: newUsers });
+  //         }
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   handleCreateChannelOpen = type => {
     this.setState({ createChannel: type });
@@ -492,7 +504,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
                 channel={item}
                 onClose={this.handleChannelClose}
                 onRemove={this.handleRemoveChannel}
-                onBlock={this.handleRemoveChannels}
+                onBlock={this.handleBlock}
               />
             ))}
             <MainChat

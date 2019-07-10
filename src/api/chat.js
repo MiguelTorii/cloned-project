@@ -38,7 +38,7 @@ export const createChannel = async ({
   users: Array<number>,
   groupName: string,
   type: string,
-  thumbnailUrl: string
+  thumbnailUrl: ?string
 }): Promise<CreateChat> => {
   try {
     const token = await getToken();
@@ -48,7 +48,7 @@ export const createChannel = async ({
         users,
         group_name: groupName,
         type,
-        thumbnail_url: thumbnailUrl
+        thumbnail: thumbnailUrl !== '' ? thumbnailUrl : null
       },
       {
         headers: {
@@ -73,6 +73,54 @@ export const createChannel = async ({
       thumbnailUrl: '',
       type: ''
     };
+  }
+};
+
+export const leaveChat = async ({ sid }: { sid: string }): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.CHAT}/${sid}/leave`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+};
+
+export const blockChatUser = async ({
+  blockedUserId
+}: {
+  blockedUserId: string
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.CHAT}/block`,
+      {
+        blocked_user_id: blockedUserId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
   }
 };
 

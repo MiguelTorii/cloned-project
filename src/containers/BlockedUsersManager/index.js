@@ -114,6 +114,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
           open={open}
           className={classes.root}
           onClose={onClose}
+          fullWidth
           aria-labelledby="blocked-users-dialog-title"
           aria-describedby="blocked-users-dialog-description"
         >
