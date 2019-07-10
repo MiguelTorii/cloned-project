@@ -144,7 +144,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
                     <ListItemText primary={user.name} />
                     <ListItemSecondaryAction>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         onClick={this.handleUnBlock(user.userId)}
                       >

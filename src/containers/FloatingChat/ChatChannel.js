@@ -513,8 +513,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
       userId
     });
 
-    console.log(messages)
-
     return (
       <Fragment>
         <ErrorBoundary>

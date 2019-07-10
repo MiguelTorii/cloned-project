@@ -220,7 +220,7 @@ class Header extends React.PureComponent<Props> {
               {!isMyProfile && (
                 <Fragment>
                   <Button
-                    variant="text"
+                    variant="contained"
                     color="primary"
                     disabled={chatLoading}
                     onClick={onStartChat}
@@ -228,7 +228,7 @@ class Header extends React.PureComponent<Props> {
                     Send {firstName} a message
                   </Button>
                   <Button
-                    variant="text"
+                    variant="contained"
                     color="primary"
                     disabled={chatLoading}
                     onClick={onStartVideo}
@@ -241,7 +241,7 @@ class Header extends React.PureComponent<Props> {
             <Grid item xs={12} className={classes.actions}>
               {!isMyProfile ? (
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
                   className={classes.button}
                 >
@@ -249,7 +249,7 @@ class Header extends React.PureComponent<Props> {
                 </Button>
               ) : (
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
                   className={classes.button}
                   onClick={onOpenEdit}
@@ -257,7 +257,7 @@ class Header extends React.PureComponent<Props> {
                   Edit About Me
                 </Button>
               )}
-              <Button variant="outlined" color="primary" component={MyLink}>
+              <Button variant="contained" color="primary" component={MyLink}>
                 View my bookmarks
               </Button>
             </Grid>

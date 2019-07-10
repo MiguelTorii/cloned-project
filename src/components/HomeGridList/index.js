@@ -20,14 +20,21 @@ type Props = {
   userId: string,
   referralCode: string,
   cards: HomeCards,
-  onOpenLeaderboard: Function
+  onOpenLeaderboard: Function,
+  onCopy: Function
 };
 
 type State = {};
 
 class HomeGridList extends React.PureComponent<Props, State> {
   renderCards = () => {
-    const { userId, referralCode, cards, onOpenLeaderboard } = this.props;
+    const {
+      userId,
+      referralCode,
+      cards,
+      onOpenLeaderboard,
+      onCopy
+    } = this.props;
     return cards.map(card => {
       const { cardId } = card;
       switch (cardId) {
@@ -45,7 +52,12 @@ class HomeGridList extends React.PureComponent<Props, State> {
           );
         case 'referral':
           return (
-            <Referral key={cardId} referralCode={referralCode} card={card} />
+            <Referral
+              key={cardId}
+              referralCode={referralCode}
+              card={card}
+              onCopy={onCopy}
+            />
           );
         default:
           return null;

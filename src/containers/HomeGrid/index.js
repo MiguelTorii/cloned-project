@@ -3,6 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 import type { State as StoreState } from '../../types/state';
 import type { HomeCards } from '../../types/models';
 import type { UserState } from '../../reducers/user';
@@ -15,7 +16,8 @@ const styles = () => ({});
 
 type Props = {
   classes: Object,
-  user: UserState
+  user: UserState,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -59,6 +61,18 @@ class HomeGrid extends React.PureComponent<Props, State> {
     this.setState({ leaderboard: false });
   };
 
+  handleCopy = () => {
+    const { enqueueSnackbar } = this.props;
+    enqueueSnackbar('Referral code copied to Clipboard', {
+      variant: 'info',
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left'
+      },
+      autoHideDuration: 3000
+    });
+  };
+
   mounted: boolean;
 
   render() {
@@ -79,6 +93,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
             cards={cards}
             loading={loading}
             onOpenLeaderboard={this.handleOpenLeaderboard}
+            onCopy={this.handleCopy}
           />
         </ErrorBoundary>
         <ErrorBoundary>
@@ -99,4 +114,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(HomeGrid));
+)(withStyles(styles)(withSnackbar(HomeGrid)));

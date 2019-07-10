@@ -234,6 +234,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
             onClick={this.handleOpenInputFile}
             className={classes.upload}
             color="primary"
+            variant="contained"
           >
             Upload Profile Photo
           </Button>
@@ -315,9 +316,9 @@ class ProfileEdit extends React.PureComponent<Props, State> {
         <DialogActions>
           <Button
             disabled={uploading}
-            variant="outlined"
+            variant="contained"
             onClick={onClose}
-            color="primary"
+            color="secondary"
           >
             Cancel
           </Button>

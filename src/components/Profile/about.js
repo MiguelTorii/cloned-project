@@ -41,7 +41,7 @@ class About extends React.PureComponent<Props> {
               About Me
             </Typography>
             {about.length === 0 ? (
-              <Button variant="outlined" color="primary" onClick={onOpenEdit}>
+              <Button variant="contained" color="primary" onClick={onOpenEdit}>
                 Help your classmates learn more about you
               </Button>
             ) : (

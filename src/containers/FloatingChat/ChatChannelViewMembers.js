@@ -137,7 +137,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                             disabled={loading}
                             color="secondary"
                             aria-label="Block"
-                            variant="outlined"
+                            variant="contained"
                           >
                             Block
                           </Button>

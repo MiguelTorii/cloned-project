@@ -51,7 +51,8 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    fontSize: 10
+    fontSize: 10,
+    fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
   },
   zIndex: {
     mobileStepper: 700,

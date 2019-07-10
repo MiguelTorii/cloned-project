@@ -501,7 +501,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
               this.renderAvailableClasses()}
           </DialogContent>
           <DialogActions>
-            <Button onClick={onClose} color="primary" variant="outlined">
+            <Button onClick={onClose} color="secondary" variant="contained">
               Close
             </Button>
             {canAddClasses && (

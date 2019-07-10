@@ -56,14 +56,15 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   referralCode: string,
-  card: HomeCard
+  card: HomeCard,
+  onCopy: Function
 };
 
 type State = {};
 
 class Referral extends React.PureComponent<Props, State> {
   render() {
-    const { classes, referralCode, card } = this.props;
+    const { classes, referralCode, card, onCopy } = this.props;
     const {
       title,
       data: {
@@ -92,7 +93,7 @@ class Referral extends React.PureComponent<Props, State> {
               <div className={classes.link}>
                 <Typography variant="subtitle1">{referralCode}</Typography>
               </div>
-              <CopyToClipboard text={referralCode}>
+              <CopyToClipboard text={referralCode} onCopy={onCopy}>
                 <Button variant="contained" color="primary" autoFocus>
                   <FileCopyIcon className={classes.icon} />
                   Copy

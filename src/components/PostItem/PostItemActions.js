@@ -73,7 +73,7 @@ class PostItemActions extends React.PureComponent<Props> {
     return (
       <Fragment>
         <div className={classes.root}>
-          <Button aria-label="Share" onClick={onShare}>
+          <Button aria-label="Share" onClick={onShare} variant="contained">
             <ShareIcon />
             <Typography variant="subtitle1" className={classes.buttonText}>
               Share
@@ -82,7 +82,11 @@ class PostItemActions extends React.PureComponent<Props> {
           {!isOwner && (
             <Fragment>
               {!noThanks && (
-                <Button aria-label="Thanks" onClick={onThanks}>
+                <Button
+                  aria-label="Thanks"
+                  onClick={onThanks}
+                  variant="contained"
+                >
                   {this.renderThanks()}
                   <Typography
                     variant="subtitle1"
@@ -92,7 +96,11 @@ class PostItemActions extends React.PureComponent<Props> {
                   </Typography>
                 </Button>
               )}
-              <Button aria-label="Add to Study Circle" onClick={onStudyCircle}>
+              <Button
+                aria-label="Add to Study Circle"
+                onClick={onStudyCircle}
+                variant="contained"
+              >
                 {this.renderStudyCircle()}
                 <Typography variant="subtitle1" className={classes.buttonText}>
                   {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle

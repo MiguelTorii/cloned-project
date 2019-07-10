@@ -411,6 +411,10 @@ class MeetUp extends React.Component<Props, State> {
       });
       const newScreenTrack = first(stream.getVideoTracks());
 
+      newScreenTrack.addEventListener('ended', () => {
+        this.shareScreen()
+      })
+
       this.setState({
         screenTrack: new Video.LocalVideoTrack(newScreenTrack)
       });
