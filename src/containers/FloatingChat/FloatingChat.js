@@ -38,6 +38,9 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: theme.spacing.unit * 2
+  },
+  info: {
+    backgroundColor: 'red'
   }
 });
 
@@ -83,6 +86,19 @@ class FloatingChat extends React.PureComponent<Props, State> {
       this.setState({ online: true });
     });
     this.handleInitChat();
+
+    // const { enqueueSnackbar, classes } = this.props;
+    // enqueueSnackbar(`MESSAGE RECEIVED`, {
+    //   variant: 'info',
+    //   anchorOrigin: {
+    //     vertical: 'bottom',
+    //     horizontal: 'left'
+    //   },
+    //   autoHideDuration: 2000,
+    //   classes: {
+    //     root: classes.info
+    //   }
+    // });
   };
 
   componentDidUpdate = (prevProps, prevState) => {

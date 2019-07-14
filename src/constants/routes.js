@@ -64,5 +64,6 @@ export const API_ROUTES = {
   STORE: `${API_URL}/store`,
   VIDEO_INITIATOR: `${API_URL}/video/initiator`,
   VIDEO_SESSION: `${API_URL}/video/session`,
-  VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`
+  VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`,
+  SEARCH: `${API_URL}/search`
 };

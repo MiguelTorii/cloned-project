@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import FeedList from '../../components/FeedList';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
-import { fetchFeed } from '../../api/feed';
+import { fetchFeed, queryFeed } from '../../api/feed';
 import { bookmark } from '../../api/posts';
 import { getUserClasses } from '../../api/user';
 import { logEvent } from '../../api/analytics';
@@ -80,8 +80,8 @@ class Feed extends React.PureComponent<Props, State> {
     if (classId >= 0 && sectionId >= 0) {
       this.setState({ userClass: JSON.stringify({ classId, sectionId }) });
     }
-    if(bookmarks) {
-      this.setState({from: 'bookmarks'})
+    if (bookmarks) {
+      this.setState({ from: 'bookmarks' });
     }
     window.addEventListener('offline', () => {
       if (
@@ -97,6 +97,7 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
     this.handleFetchUserClasses();
     await this.handleFetchFeed();
+    const query = await queryFeed({ query: 'sample' });
   };
 
   componentWillUnmount = () => {

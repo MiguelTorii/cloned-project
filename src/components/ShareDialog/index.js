@@ -81,7 +81,7 @@ class ShareDialog extends React.PureComponent<Props, State> {
                   <Typography variant="subtitle1">{link}</Typography>
                 </div>
                 <CopyToClipboard text={link} onCopy={onLinkCopied}>
-                  <Button variant="outlined" color="primary" autoFocus>
+                  <Button variant="contained" color="primary" autoFocus>
                     <FileCopyIcon className={classes.icon} />
                     Copy
                   </Button>

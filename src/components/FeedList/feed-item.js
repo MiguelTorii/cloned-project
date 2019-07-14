@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Chip from '@material-ui/core/Chip';
 import grey from '@material-ui/core/colors/grey';
+import green from '@material-ui/core/colors/green';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
@@ -136,6 +137,9 @@ const styles = theme => ({
   },
   label: {
     fontSize: 10
+  },
+  bookmarked: {
+    color: green[500]
   }
 });
 
@@ -287,7 +291,7 @@ class FeedItem extends React.PureComponent<Props, State> {
       >
         <MenuItem onClick={this.handleBookmark}>
           <ListItemIcon color="inherit">
-            {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            {data.bookmarked ? <BookmarkIcon className={classes.bookmarked} /> : <BookmarkBorderIcon />}
           </ListItemIcon>
           <ListItemText inset primary="Bookmark" />
         </MenuItem>
@@ -400,7 +404,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               <ShareIcon />
             </IconButton>
             <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
-              {data.bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+              {data.bookmarked ? <BookmarkIcon className={classes.bookmarked}/> : <BookmarkBorderIcon />}
             </IconButton>
             <div className={classes.stats}>
               <Typography

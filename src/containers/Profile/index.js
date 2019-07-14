@@ -262,15 +262,20 @@ class Profile extends React.PureComponent<Props, State> {
                 grade={grade}
                 joined={joined}
                 chatLoading={chatLoading}
-                onOpenEdit={this.handleOpenEdit}
+                uploading={uploading}
                 onStartChat={this.handleStartChat}
                 onStartVideo={this.handleStartVideo}
+                onUpdateProfileImage={this.handleUpdateProfileImage}
               />
             </ErrorBoundary>
           </Grid>
           <Grid item xs={12} md={5}>
             <ErrorBoundary>
-              <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
+              <ProfileAbout
+                isMyProfile={userId === userData.userId}
+                about={about}
+                onOpenEdit={this.handleOpenEdit}
+              />
             </ErrorBoundary>
           </Grid>
         </Grid>

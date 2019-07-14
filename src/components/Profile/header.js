@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
@@ -40,6 +41,26 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center'
+  },
+  avatar: {
+    // borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 170,
+    height: 170,
+    position: 'relative'
+  },
+  progress: {
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 170,
+    height: 170,
+    borderRadius: '50%',
+    top: 0,
+    backgroundColor: 'rgba(0,0,0,0.8)'
   },
   bigAvatar: {
     width: 90,
@@ -79,8 +100,14 @@ const styles = theme => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     marginTop: theme.spacing.unit * 2
+  },
+  upload: {
+    margin: theme.spacing.unit * 2
+  },
+  input: {
+    display: 'none'
   }
 });
 
@@ -99,12 +126,30 @@ type Props = {
   grade: number,
   joined: string,
   chatLoading: boolean,
-  onOpenEdit: Function,
+  uploading: boolean,
   onStartChat: Function,
-  onStartVideo: Function
+  onStartVideo: Function,
+  onUpdateProfileImage: Function
 };
 
 class Header extends React.PureComponent<Props> {
+  handleOpenInputFile = () => {
+    if (this.fileInput) this.fileInput.click();
+  };
+
+  handleInputChange = () => {
+    const { onUpdateProfileImage } = this.props;
+    if (
+      this.fileInput &&
+      this.fileInput.files &&
+      this.fileInput.files.length > 0
+    )
+      onUpdateProfileImage(this.fileInput.files[0]);
+  };
+
+  // eslint-disable-next-line no-undef
+  fileInput: ?HTMLInputElement;
+
   render() {
     const {
       classes,
@@ -121,7 +166,7 @@ class Header extends React.PureComponent<Props> {
       grade,
       joined,
       chatLoading,
-      onOpenEdit,
+      uploading,
       onStartChat,
       onStartVideo
     } = this.props;
@@ -134,14 +179,43 @@ class Header extends React.PureComponent<Props> {
         <Paper className={classes.root} elevation={0}>
           <Grid container>
             <Grid item xs={4} className={classes.gridAvatar}>
-              <Avatar
-                alt={initials}
-                src={userProfileUrl}
-                className={classes.bigAvatar}
-                classes={{ img: classes.img }}
-              >
-                {initials}
-              </Avatar>
+              <div className={classes.avatar}>
+                <Avatar
+                  alt={initials}
+                  src={userProfileUrl}
+                  className={classes.bigAvatar}
+                  classes={{ img: classes.img }}
+                >
+                  {initials}
+                </Avatar>
+                {uploading && (
+                  <div className={classes.progress}>
+                    <CircularProgress />
+                  </div>
+                )}
+              </div>
+              {isMyProfile && (
+                <Fragment>
+                  <input
+                    accept="image/*"
+                    className={classes.input}
+                    ref={fileInput => {
+                      this.fileInput = fileInput;
+                    }}
+                    onChange={this.handleInputChange}
+                    type="file"
+                  />
+                  <Button
+                    onClick={this.handleOpenInputFile}
+                    className={classes.upload}
+                    disabled={uploading}
+                    color="primary"
+                    variant="text"
+                  >
+                    Upload Profile Photo
+                  </Button>
+                </Fragment>
+              )}
             </Grid>
             <Grid item xs={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
@@ -219,22 +293,26 @@ class Header extends React.PureComponent<Props> {
               </Grid>
               {!isMyProfile && (
                 <Fragment>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={chatLoading}
-                    onClick={onStartChat}
-                  >
-                    Send {firstName} a message
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={chatLoading}
-                    onClick={onStartVideo}
-                  >
-                    Start video study session
-                  </Button>
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={chatLoading}
+                      onClick={onStartChat}
+                      className={classes.button}
+                    >
+                      Send {firstName} a message
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={chatLoading}
+                      onClick={onStartVideo}
+                      className={classes.button}
+                    >
+                      Start video study session
+                    </Button>
+                  </div>
                 </Fragment>
               )}
             </Grid>
@@ -248,18 +326,10 @@ class Header extends React.PureComponent<Props> {
                   Add to Study Circle
                 </Button>
               ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={onOpenEdit}
-                >
-                  Edit About Me
+                <Button variant="contained" color="primary" component={MyLink}>
+                  View my bookmarks
                 </Button>
               )}
-              <Button variant="contained" color="primary" component={MyLink}>
-                View my bookmarks
-              </Button>
             </Grid>
           </Grid>
         </Paper>

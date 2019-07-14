@@ -55,3 +55,28 @@ export const fetchFeed = async ({
     return [];
   }
 };
+
+export const queryFeed = async ({
+  query
+}: {
+  query: string
+}): Promise<Array<Object>> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const {
+      data: { results }
+    } = result;
+
+    const feed = feedToCamelCase(results);
+    console.log(feed);
+    return feed;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};

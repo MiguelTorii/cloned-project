@@ -20,27 +20,48 @@ const styles = theme => ({
   },
   content: {
     marginLeft: theme.spacing.unit * 4
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  grow: {
+    flex: 1
   }
 });
 
 type Props = {
   classes: Object,
   about: Array<Object>,
+  isMyProfile: boolean,
   onOpenEdit: Function
 };
 
 class About extends React.PureComponent<Props> {
   render() {
-    const { classes, about, onOpenEdit } = this.props;
+    const { classes, about, isMyProfile, onOpenEdit } = this.props;
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <div className={classes.content}>
-            <Typography variant="h4" gutterBottom>
-              About Me
-            </Typography>
-            {about.length === 0 ? (
+            <div className={classes.header}>
+              <Typography variant="h4" gutterBottom className={classes.grow}>
+                About Me
+              </Typography>
+              {isMyProfile && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={onOpenEdit}
+                >
+                  Edit About Me
+                </Button>
+              )}
+            </div>
+            {about.length === 0 && isMyProfile ? (
               <Button variant="contained" color="primary" onClick={onOpenEdit}>
                 Help your classmates learn more about you
               </Button>

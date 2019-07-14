@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
 import type { HomeCard } from '../../types/models';
 
 const styles = theme => ({
@@ -21,17 +20,13 @@ const styles = theme => ({
     fontWeight: 'bold'
   },
   img: {
-    width: 90,
+    width: 65,
     margin: theme.spacing.unit * 2
-  },
-  button: {
-    margin: theme.spacing.unit
   },
   referral: {
     width: '100%',
     marginTop: theme.spacing.unit * 2,
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -41,15 +36,19 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   link: {
+    flex: 1,
+    height: 40,
     padding: theme.spacing.unit,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: theme.circleIn.palette.primaryText1,
-    borderRadius: 4,
-    marginRight: theme.spacing.unit * 2
+    borderRadius: 10,
+    marginRight: theme.spacing.unit * 2,
+    backgroundColor: theme.circleIn.palette.appBar
   },
   icon: {
     marginRight: theme.spacing.unit
+  },
+  button: {
+    height: 40,
+    backgroundColor: theme.circleIn.palette.success
   }
 });
 
@@ -89,17 +88,21 @@ class Referral extends React.PureComponent<Props, State> {
           </Typography>
           <div className={classes.referral}>
             <img alt={title} src={imageUrl} className={classes.img} />
-            <div className={classes.referralCode}>
-              <div className={classes.link}>
-                <Typography variant="subtitle1">{referralCode}</Typography>
-              </div>
-              <CopyToClipboard text={referralCode} onCopy={onCopy}>
-                <Button variant="contained" color="primary" autoFocus>
-                  <FileCopyIcon className={classes.icon} />
-                  Copy
-                </Button>
-              </CopyToClipboard>
+            <div className={classes.link}>
+              <Typography variant="h6" align="center">
+                {referralCode}
+              </Typography>
             </div>
+            <CopyToClipboard text={referralCode} onCopy={onCopy}>
+              <Button
+                variant="contained"
+                color="primary"
+                autoFocus
+                className={classes.button}
+              >
+                Share
+              </Button>
+            </CopyToClipboard>
           </div>
         </Paper>
       </Grid>

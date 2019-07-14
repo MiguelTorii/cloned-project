@@ -93,7 +93,7 @@ class FlashcardViewer extends React.PureComponent<Props, State> {
         <div className={classes.root}>
           <Button
             color="primary"
-            variant="outlined"
+            variant="contained"
             onClick={this.handleClickOpen}
           >
             Study Now
@@ -123,7 +123,7 @@ class FlashcardViewer extends React.PureComponent<Props, State> {
               </Typography>
               <Button
                 color="primary"
-                variant="outlined"
+                variant="contained"
                 onClick={this.handleShuffle}
               >
                 Shuffle
