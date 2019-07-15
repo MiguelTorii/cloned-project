@@ -2,7 +2,6 @@
 
 import React, { Fragment } from 'react';
 import debounce from 'lodash/debounce';
-import update from 'immutability-helper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
@@ -10,8 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import FeedList from '../../components/FeedList';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
-import { fetchFeed, queryFeed } from '../../api/feed';
-import { bookmark } from '../../api/posts';
+import type { FeedState } from '../../reducers/feed';
 import { getUserClasses } from '../../api/user';
 import { logEvent } from '../../api/analytics';
 import SharePost from '../SharePost';
@@ -19,6 +17,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import { processUserClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
+import * as feedActions from '../../actions/feed';
 
 const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
@@ -36,17 +35,19 @@ const styles = () => ({
 type Props = {
   classes: Object,
   user: UserState,
+  feed: FeedState,
   feedId: ?number,
   classId: number,
   sectionId: number,
   bookmarks: boolean,
-  push: Function
+  push: Function,
+  fetchFeed: Function,
+  updateBookmark: Function,
+  searchFeed: Function
 };
 
 type State = {
-  feed: Array<Object>,
   feedId: ?number,
-  loading: boolean,
   report: ?Object,
   deletePost: ?Object,
   from: string,
@@ -54,15 +55,12 @@ type State = {
   postType: number,
   classesList: Array<{ value: string, label: string }>,
   query: string,
-  limit: number,
-  hasMore: boolean
+  limit: number
 };
 
 class Feed extends React.PureComponent<Props, State> {
   state = {
-    feed: [],
     feedId: null,
-    loading: false,
     report: null,
     deletePost: null,
     from: 'everyone',
@@ -70,8 +68,7 @@ class Feed extends React.PureComponent<Props, State> {
     postType: 0,
     classesList: [],
     query: '',
-    limit: 100,
-    hasMore: false
+    limit: 100
   };
 
   componentDidMount = async () => {
@@ -97,7 +94,6 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
     this.handleFetchUserClasses();
     await this.handleFetchFeed();
-    const query = await queryFeed({ query: 'sample' });
   };
 
   componentWillUnmount = () => {
@@ -122,17 +118,22 @@ class Feed extends React.PureComponent<Props, State> {
     });
   };
 
-  handleFetchFeed = async () => {
+  handleFetchFeed = () => {
     const {
       user: {
         data: { userId, schoolId }
-      }
+      },
+      fetchFeed,
+      searchFeed
     } = this.props;
-    const { from, userClass, postType, query, limit } = this.state;
+    const { from, userClass, postType, limit, query } = this.state;
+
     const { classId, sectionId } = JSON.parse(userClass);
-    if (this.mounted) this.setState({ loading: true });
     try {
-      const newFeed = await fetchFeed({
+      if (query.trim() !== '') {
+        searchFeed({ query });
+      } else{
+      fetchFeed({
         userId,
         schoolId,
         classId,
@@ -141,20 +142,10 @@ class Feed extends React.PureComponent<Props, State> {
         limit,
         postType,
         from,
-        query
-      });
-      if (this.mounted)
-        this.setState(({ feed }) => ({
-          feed: newFeed,
-          hasMore:
-            newFeed.length === 50 ||
-            (feed[feed.length - 1] || {}).feedId !==
-              (newFeed[newFeed.length - 1] || {}).feedId
-        }));
+        query: ''
+      });}
     } catch (err) {
       console.log(err);
-    } finally {
-      if (this.mounted) this.setState({ loading: false });
     }
   };
 
@@ -176,26 +167,11 @@ class Feed extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
-      }
+      },
+      updateBookmark
     } = this.props;
-    bookmark({ feedId, userId, remove: bookmarked });
-    const newState = update(this.state, {
-      feed: {
-        $apply: b => {
-          const index = b.findIndex(item => item.feedId === feedId);
-          if (index > -1) {
-            return update(b, {
-              [index]: {
-                bookmarked: { $set: !bookmarked }
-              }
-            });
-          }
-          return b;
-        }
-      }
-    });
 
-    this.setState(newState);
+    updateBookmark({ feedId, userId, bookmarked });
   };
 
   handleReport = ({ feedId, ownerId }) => {
@@ -219,7 +195,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value, limit: 50 });
+    this.setState({ [name]: event.target.value, limit: 100 });
     this.handleFetchFeed();
     if (name === 'query') {
       logEvent({
@@ -234,13 +210,13 @@ class Feed extends React.PureComponent<Props, State> {
       from: 'everyone',
       userClass: defaultClass,
       postType: 0,
-      limit: 50
+      limit: 100
     });
     this.handleFetchFeed();
   };
 
   handleLoadMore = () => {
-    this.setState(({ limit }) => ({ limit: limit + 50 }));
+    this.setState(({ limit }) => ({ limit: limit + 100 }));
     this.handleFetchFeed();
   };
 
@@ -297,20 +273,21 @@ class Feed extends React.PureComponent<Props, State> {
       user: {
         data: { userId }
       },
+      feed: {
+        data: { items, hasMore },
+        isLoading
+      },
       feedId: fromFeedId
     } = this.props;
     const {
-      feed,
       feedId,
-      loading,
       report,
       deletePost,
       query,
       from,
       userClass,
       postType,
-      classesList,
-      hasMore
+      classesList
     } = this.state;
 
     return (
@@ -318,9 +295,9 @@ class Feed extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <div className={classes.root}>
             <FeedList
-              isLoading={loading}
+              isLoading={isLoading}
               userId={userId}
-              items={feed}
+              items={items}
               query={query}
               from={from}
               userClass={userClass}
@@ -370,14 +347,18 @@ class Feed extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, feed }: StoreState): {} => ({
+  user,
+  feed
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush
+      push: routePush,
+      fetchFeed: feedActions.fetchFeed,
+      updateBookmark: feedActions.updateBookmark,
+      searchFeed: feedActions.searchFeed
     },
     dispatch
   );

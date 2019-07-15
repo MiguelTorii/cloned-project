@@ -73,7 +73,6 @@ export const queryFeed = async ({
     } = result;
 
     const feed = feedToCamelCase(results);
-    console.log(feed);
     return feed;
   } catch (err) {
     console.log(err);
