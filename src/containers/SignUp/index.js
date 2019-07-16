@@ -19,7 +19,12 @@ import { fetchSchools, sendCode, verifyCode } from '../../api/sign-up';
 import { getLMSSchools } from '../../api/lms';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({});
+const styles = theme => ({
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  }
+});
 
 const schools = {};
 
@@ -141,9 +146,14 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
   };
 
   handleResendCode = email => {
-    const { enqueueSnackbar } = this.props;
+    const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar(`New code sent to ${email}`, {
-      variant: 'success'
+      variant: 'success',
+      ContentProps: {
+        classes: {
+          root: classes.stackbar
+        }
+      }
     });
   };
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
+import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -11,7 +12,15 @@ import { logEvent } from '../../api/analytics';
 import ShareDialog from '../../components/ShareDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
+const styles = theme => ({
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  }
+});
+
 type Props = {
+  classes: Object,
   user: UserState,
   feedId: number,
   open: boolean,
@@ -59,14 +68,19 @@ class SharePost extends React.PureComponent<Props, State> {
   };
 
   handleLinkCopied = () => {
-    const { enqueueSnackbar } = this.props;
+    const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar('Shareable Link has been copied.', {
       variant: 'info',
       anchorOrigin: {
         vertical: 'bottom',
         horizontal: 'left'
       },
-      autoHideDuration: 3000
+      autoHideDuration: 3000,
+      ContentProps: {
+        classes: {
+          root: classes.stackbar
+        }
+      }
     });
   };
 
@@ -108,4 +122,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(withSnackbar(SharePost));
+)(withSnackbar(withStyles(styles)(SharePost)));

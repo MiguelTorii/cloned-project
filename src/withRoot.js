@@ -21,7 +21,8 @@ const circleInTheme = {
   dividerColor: '#ffffff', // validate
   inputBorderColor: '#959595',
   // v2
-  success: '#60b515'
+  success: '#60b515',
+  snackbar: '#114255'
 };
 const theme = createMuiTheme({
   circleIn: {
@@ -34,7 +35,8 @@ const theme = createMuiTheme({
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
       appBar: circleInTheme.appBar,
-      success: circleInTheme.success
+      success: circleInTheme.success,
+      snackbar: circleInTheme.snackbar
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

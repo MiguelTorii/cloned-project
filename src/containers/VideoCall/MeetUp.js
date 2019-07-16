@@ -77,6 +77,10 @@ const styles = theme => ({
   canvasImg: {
     width: '300px !important',
     height: 'auto !important'
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
   }
 });
 
@@ -233,7 +237,7 @@ class MeetUp extends React.Component<Props, State> {
             sid
           });
           if (success) {
-            const { enqueueSnackbar } = this.props;
+            const { enqueueSnackbar, classes } = this.props;
             enqueueSnackbar(
               'Congratulations, you have just earned some points because you initiated a Video meet-up. Good Work!',
               {
@@ -242,7 +246,12 @@ class MeetUp extends React.Component<Props, State> {
                   vertical: 'bottom',
                   horizontal: 'left'
                 },
-                autoHideDuration: 5000
+                autoHideDuration: 5000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
+                }
               }
             );
           }

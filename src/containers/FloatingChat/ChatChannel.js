@@ -53,6 +53,10 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
   }
 });
 
@@ -407,14 +411,19 @@ class ChatChannel extends React.PureComponent<Props, State> {
       sid
     });
     if (points > 0) {
-      const { enqueueSnackbar } = this.props;
+      const { enqueueSnackbar, classes } = this.props;
       enqueueSnackbar(`Awesome! You've earned ${points} points for messages`, {
         variant: 'success',
         anchorOrigin: {
           vertical: 'bottom',
           horizontal: 'left'
         },
-        autoHideDuration: 2000
+        autoHideDuration: 2000,
+        ContentProps: {
+                classes: {
+                  root: classes.stackbar
+                }
+              }
       });
     }
 

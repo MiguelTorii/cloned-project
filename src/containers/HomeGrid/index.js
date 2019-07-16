@@ -12,7 +12,12 @@ import Leaderboard from '../Leaderboard';
 import { getHome } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({});
+const styles = theme => ({
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  }
+});
 
 type Props = {
   classes: Object,
@@ -62,14 +67,19 @@ class HomeGrid extends React.PureComponent<Props, State> {
   };
 
   handleCopy = () => {
-    const { enqueueSnackbar } = this.props;
+    const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar('Referral code copied to Clipboard', {
       variant: 'info',
       anchorOrigin: {
         vertical: 'bottom',
         horizontal: 'left'
       },
-      autoHideDuration: 3000
+      autoHideDuration: 3000,
+      ContentProps: {
+        classes: {
+          root: classes.stackbar
+        }
+      }
     });
   };
 

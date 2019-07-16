@@ -41,6 +41,10 @@ const styles = theme => ({
   },
   info: {
     backgroundColor: 'red'
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
   }
 });
 
@@ -333,7 +337,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
         const { state, channel } = message;
         const { author, attributes, body } = state;
         const { firstName, lastName } = attributes;
-        const { enqueueSnackbar } = this.props;
+        const { enqueueSnackbar, classes } = this.props;
         if (Number(author) !== Number(userId)) {
           const msg = `${firstName} ${lastName} sent you a message:`;
           enqueueSnackbar(`${msg} ${body}`, {
@@ -343,7 +347,12 @@ class FloatingChat extends React.PureComponent<Props, State> {
               horizontal: 'right'
             },
             action: this.handleMessageReceived(channel.sid),
-            autoHideDuration: 3000
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
           });
           const { updateTitle } = this.props;
           updateTitle({
