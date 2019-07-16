@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { withSnackbar } from 'notistack';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -14,7 +15,8 @@ type Props = {
   user: UserState,
   feedId: number,
   open: boolean,
-  onClose: Function
+  onClose: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -57,7 +59,15 @@ class SharePost extends React.PureComponent<Props, State> {
   };
 
   handleLinkCopied = () => {
-    console.log('link copied to clipboard');
+    const { enqueueSnackbar } = this.props;
+    enqueueSnackbar('Shareable Link has been copied.', {
+      variant: 'info',
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left'
+      },
+      autoHideDuration: 3000
+    });
   };
 
   render() {
@@ -98,4 +108,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(SharePost);
+)(withSnackbar(SharePost));
