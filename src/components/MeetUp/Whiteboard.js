@@ -107,6 +107,7 @@ class Index extends React.Component<Props, State> {
     super(props);
     // $FlowIgnore
     this.canvas = React.createRef();
+    // $FlowIgnore
     this.canvasTemp = React.createRef();
     window.addEventListener('resize', this.handleResize, false);
   }
@@ -419,6 +420,8 @@ class Index extends React.Component<Props, State> {
 
   canvas: Object;
 
+  canvasTemp: Object;
+
   input: Object;
 
   render() {
@@ -444,7 +447,6 @@ class Index extends React.Component<Props, State> {
           <OutlinedInput
             inputRef={input => {
               this.input = input;
-              this.inputAnchorEl = input;
             }}
             className={classes.input}
             placeholder="Add your text"
@@ -453,7 +455,6 @@ class Index extends React.Component<Props, State> {
             value={inputValue}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
-            aria-owns={showInput ? 'input-list-grow' : undefined}
           />
           <Paper className={classes.inputOptions}>
             <ButtonBase
