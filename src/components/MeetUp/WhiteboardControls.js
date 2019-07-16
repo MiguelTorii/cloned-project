@@ -94,13 +94,15 @@ type Props = {
 
 type State = {
   openPencil: boolean,
-  openColor: boolean
+  openColor: boolean,
+  openErase: boolean
 };
 
 class WhiteboardControls extends React.PureComponent<Props, State> {
   state = {
     openPencil: false,
-    openColor: false
+    openColor: false,
+    openErase: false
   };
 
   handleToggle = name => () => {
@@ -124,6 +126,14 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
       return;
     }
 
+    if (
+      name === 'openErase' &&
+      this.eraseAnchorEl &&
+      this.eraseAnchorEl.contains(event.target)
+    ) {
+      return;
+    }
+
     this.setState({ [name]: false });
   };
 
@@ -141,13 +151,22 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
     onColorChange(color);
   };
 
+  handleEraseChange = size => () => {
+    const { onErase } = this.props;
+    this.handleToggle('openErase');
+    this.setState({ openErase: false });
+    onErase(size);
+  };
+
   colorAnchorEl: Object;
 
   pencilAnchorEl: Object;
 
+  eraseAnchorEl: Object;
+
   render() {
-    const { classes, onErase, onText, onSave, onClear } = this.props;
-    const { openPencil, openColor } = this.state;
+    const { classes, onText, onSave, onClear } = this.props;
+    const { openPencil, openColor, openErase } = this.state;
 
     return (
       <div className={classes.root}>
@@ -256,16 +275,55 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
               </Grow>
             )}
           </Popper>
-          <Tooltip title="Eraser" placement="left">
-            <ButtonBase
-              color="primary"
-              aria-label="eraser"
-              className={cx(classes.button, classes.buttonLast)}
-              onClick={onErase}
-            >
-              <CropPortraitIcon />
-            </ButtonBase>
-          </Tooltip>
+          <ButtonBase
+            color="primary"
+            aria-label="eraser"
+            className={cx(classes.button, classes.buttonLast)}
+            buttonRef={node => {
+              this.eraseAnchorEl = node;
+            }}
+            aria-owns={openErase ? 'erase-list-grow' : undefined}
+            aria-haspopup="true"
+            onClick={this.handleToggle('openErase')}
+          >
+            <CropPortraitIcon />
+          </ButtonBase>
+          <Popper
+            open={openErase}
+            anchorEl={this.eraseAnchorEl}
+            placement="left"
+            transition
+            disablePortal
+          >
+            {({ TransitionProps }) => (
+              <Grow {...TransitionProps} id="erase-list-grow">
+                <Paper className={classes.menu}>
+                  <ClickAwayListener
+                    onClickAway={this.handleClose('openErase')}
+                  >
+                    <div className={classes.menuList}>
+                      {[
+                        { className: classes.iconXS, size: 2 },
+                        { className: classes.iconSM, size: 4 },
+                        { className: classes.iconMD, size: 8 },
+                        { className: classes.iconLG, size: 16 },
+                        { className: classes.iconXL, size: 32 }
+                      ].map(item => (
+                        <ButtonBase
+                          key={item.className}
+                          color="primary"
+                          className={cx(classes.button)}
+                          onClick={this.handleEraseChange(item.size)}
+                        >
+                          <CropPortraitIcon className={item.className} />
+                        </ButtonBase>
+                      ))}
+                    </div>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
           <Tooltip title="Add Text" placement="left">
             <ButtonBase
               color="primary"

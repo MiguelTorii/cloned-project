@@ -543,9 +543,9 @@ class MeetUp extends React.Component<Props, State> {
     this.setState({color})
   }
 
-  handleErase = () => {
-    this.setState({lineWidth: 20, isText: false, eraser: true})
-  }
+  handleErase = size => {
+    this.setState({ lineWidth: size, isText: false, eraser: true });
+  };
 
   handleSave = () => {
     const {current} = this.whiteboard;
