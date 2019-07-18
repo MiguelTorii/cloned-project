@@ -87,7 +87,9 @@ class FloatingChat extends React.PureComponent<Props, State> {
     });
     window.addEventListener('online', () => {
       console.log('**** online ****');
-      this.setState({ online: true });
+      const {online} = this.state;
+      if(!online) window.location.reload()
+      // this.setState({ online: true });
     });
     this.handleInitChat();
 
