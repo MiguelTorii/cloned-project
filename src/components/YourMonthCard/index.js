@@ -159,7 +159,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
   render() {
     const { classes, slots, rank } = this.props;
     const newItems = items.map((item, index) => {
-      const slot = slots.find(o => o.slot === index);
+      const slot = slots && slots.find(o => o.slot === index);
       if (slot) return { ...item, ...slot };
       return item;
     });
@@ -171,8 +171,8 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             Your Month
           </Typography>
           <img
-            alt={ranks[rank].label}
-            src={ranks[rank].icon}
+            alt={rank ? ranks[rank].label : ''}
+            src={rank ? ranks[rank].icon : ''}
             className={classes.badge}
           />
           <span className={classes.grow} />
