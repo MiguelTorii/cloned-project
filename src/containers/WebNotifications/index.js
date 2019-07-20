@@ -57,33 +57,8 @@ class WebNotification extends React.Component<Props, State> {
   };
 
   playSound = () => {
-    document.getElementById('sound').play();
+    // document.getElementById('sound').play();
   };
-
-  // handleButtonClick = () => {
-  //   const { ignore } = this.state;
-  //   if (ignore) {
-  //     return;
-  //   }
-
-  //   const now = Date.now();
-
-  //   const title = `React-Web-Notification${now}`;
-  //   const body = `Hello${new Date()}`;
-  //   const tag = now;
-  // const options = {
-  //   tag,
-  //   body,
-  //   icon,
-  //   lang: 'en',
-  //   dir: 'ltr',
-  //   sound: mp3Sound
-  // };
-  //   this.setState({
-  //     title,
-  //     options
-  //   });
-  // };
 
   render() {
     const {
