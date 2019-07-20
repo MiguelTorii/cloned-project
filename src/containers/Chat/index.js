@@ -127,7 +127,7 @@ class ChatContainer extends React.PureComponent<Props, State> {
         userId
       });
 
-      if (accessToken === '') {
+      if (!accessToken || (accessToken && accessToken === '')) {
         this.handleInitChat();
         return;
       }

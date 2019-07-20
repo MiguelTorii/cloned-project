@@ -89,6 +89,11 @@ const styles = theme => ({
   video: {
     width: '320px    !important',
     height: 'auto   !important'
+    // backgroundColor: 'black',
+    // '& video': {
+    //   width: '320px    !important',
+    //   height: 'auto   !important',
+    // }
   },
   margin: {
     marginTop: theme.spacing.unit * 2
@@ -251,11 +256,17 @@ class Preview extends React.Component<Props, State> {
   };
 
   disableCamera = () => {
-    if (this.previewVideo) {
-      const { updateMediaState } = this.props;
-      const newState = !this.previewVideo.isEnabled;
-      this.previewVideo.enable(newState);
-      updateMediaState('isVideoEnabled', newState);
+    const { selectedvideoinput, updateMediaState, isVideoEnabled } = this.props;
+
+    if (this.previewVideo && isVideoEnabled) {
+      this.previewVideo.stop();
+      updateMediaState('isVideoEnabled', false);
+    } else {
+      this.applyVideoInputDeviceSelection(
+        selectedvideoinput,
+        this.videoinput.current
+      );
+      updateMediaState('isVideoEnabled', true);
     }
   };
 
@@ -312,6 +323,7 @@ class Preview extends React.Component<Props, State> {
           <Paper className={classes.paper} elevation={1}>
             <div className={classes.videoWrapper}>
               <audio ref={this.audioinput} id="audioinputpreview" autoPlay />
+              {/* <div ref={this.videoinput} className={classes.video} /> */}
               <video
                 className={classes.video}
                 ref={this.videoinput}

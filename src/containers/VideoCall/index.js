@@ -86,6 +86,11 @@ class VideoCall extends React.Component<Props, State> {
       const accessToken = await renewTwilioToken({
         userId
       });
+
+      if (!accessToken || (accessToken && accessToken === '')) {
+        return;
+      }
+
       const client = await Chat.create(accessToken);
       const channel = await client.getChannelBySid(roomId);
       const messageAttributes = {
