@@ -496,8 +496,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
         data: { userId }
       },
       channel: {
+        sid,
         state: {
-          attributes: { groupType = '', users = [] }
+          attributes: { groupType = '' }
         }
       },
       onBlock
@@ -588,8 +589,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           <ChatChannelViewMembers
             open={viewMembers}
             userId={userId}
-            members={users}
-            profileURLs={profileURLs}
+            chatId={sid}
             onClose={this.handleCloseViewMembers}
             onBlock={onBlock}
           />

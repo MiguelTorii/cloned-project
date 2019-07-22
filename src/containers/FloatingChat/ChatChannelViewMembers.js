@@ -15,8 +15,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogTitle from '../../components/DialogTitle';
-import { getAvatar, getInitials } from './utils';
+import { getInitials } from './utils';
+import type { ChatUser } from '../../types/models';
 import { blockUser } from '../../api/user';
+import { getGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -43,8 +45,7 @@ type Props = {
   classes: Object,
   open: boolean,
   userId: string,
-  members: Array<Object>,
-  profileURLs: Array<Object>,
+  chatId: string,
   onClose: Function,
   onBlock: Function
 };
@@ -52,14 +53,24 @@ type Props = {
 type State = {
   loading: boolean,
   blockedUserId: ?string,
-  name: ?string
+  name: ?string,
+  members: Array<ChatUser>
 };
 
 class ChatChannelViewMembers extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     blockedUserId: null,
-    name: null
+    name: null,
+    members: []
+  };
+
+  componentDidUpdate = async prevProps => {
+    const { chatId, open } = this.props;
+    if (open && !prevProps.open) {
+      const members = await getGroupMembers({ chatId });
+      this.setState({ members });
+    }
   };
 
   handleOpenConfirm = ({ blockedUserId, name }) => () => {
@@ -86,8 +97,8 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, open, userId, members, profileURLs, onClose } = this.props;
-    const { loading, blockedUserId, name } = this.state;
+    const { classes, open, userId, onClose } = this.props;
+    const { loading, blockedUserId, name, members } = this.state;
 
     return (
       <Fragment>
@@ -112,7 +123,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                     <ListItemAvatar>
                       <Avatar
                         alt={`${value.firstName} ${value.lastName}`}
-                        src={getAvatar({ id: value.userId, profileURLs })}
+                        src={value.profileImageUrl}
                       >
                         {getInitials({
                           name: `${value.firstName} ${value.lastName}`

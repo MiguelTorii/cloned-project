@@ -285,6 +285,19 @@ export type ChatMessage = {
 
 export type ChatMessages = Array<ChatMessage>;
 
+export type ChatUser = {
+  firstName: string,
+  hours: number,
+  joined: string,
+  lastName: string,
+  profileImageUrl: string,
+  rank: number,
+  scholarshipPoints: number,
+  schoolId: number,
+  state: string,
+  userId: string
+};
+
 export type ChatChannel = {
   sid: string
 };
