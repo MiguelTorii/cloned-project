@@ -11,7 +11,15 @@ export type FeedState = {
   isLoading: boolean,
   data: {
     items: Feed,
-    hasMore: boolean
+    hasMore: boolean,
+    filters: {
+      userClass: string,
+      index: number,
+      limit: number,
+      postType: number,
+      from: string,
+      query: string
+    }
   },
   error: boolean,
   errorMessage: {
@@ -23,7 +31,15 @@ export type FeedState = {
 const defaultState = {
   data: {
     items: [],
-    hasMore: false
+    hasMore: false,
+    filters: {
+      userClass: JSON.stringify({ classId: -1, sectionId: -1 }),
+      index: 0,
+      limit: 100,
+      postType: 0,
+      from: 'everyone',
+      query: ''
+    }
   },
   isLoading: false,
   error: false,
@@ -99,6 +115,30 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
               return b;
             }
           }
+        }
+      });
+    case feedActions.UPDATE_FEED_FILTER_FIELD_REQUEST:
+      return update(state, {
+        data: {
+          filters: {
+            // $FlowFixMe
+            [action.payload.field]: { $set: action.payload.value }
+          }
+        }
+      });
+    case feedActions.UPDATE_FEED_LIMIT_REQUEST:
+      return update(state, {
+        data: {
+          filters: {
+            // $FlowFixMe
+            limit: { $set: action.payload.limit }
+          }
+        }
+      });
+    case feedActions.CLEAR_FEED_FILTER_REQUEST:
+      return update(state, {
+        data: {
+          filters: { $set: defaultState.data.filters }
         }
       });
     case rootActions.CLEAR_STATE:

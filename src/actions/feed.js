@@ -68,28 +68,49 @@ const updateSearchFeed = ({ feed }: { feed: Feed }): Action => ({
   }
 });
 
-export const fetchFeed = ({
-  userId,
-  schoolId,
-  classId,
-  sectionId,
-  index = 0,
-  limit,
-  postType,
-  from,
-  query
+const updateFeedFilterFieldRequest = ({
+  field,
+  value
 }: {
-  userId: string,
-  schoolId: number,
-  classId: number,
-  sectionId: number,
-  index: number,
-  limit: number,
-  postType: number,
-  from: string,
-  query: string
-}) => async (dispatch: Dispatch) => {
+  field: string,
+  value: string | number
+}) => ({
+  type: feedActions.UPDATE_FEED_FILTER_FIELD_REQUEST,
+  payload: {
+    field,
+    value
+  }
+});
+
+const updateFeedLimitRequest = ({ limit }: { limit: number }) => ({
+  type: feedActions.UPDATE_FEED_LIMIT_REQUEST,
+  payload: {
+    limit
+  }
+});
+
+const clearFeedFilterRequest = () => ({
+  type: feedActions.CLEAR_FEED_FILTER_REQUEST
+});
+
+export const fetchFeed = () => async (
+  dispatch: Dispatch,
+  getState: Function
+) => {
   try {
+    const {
+      feed: {
+        data: { filters }
+      },
+      user: {
+        data: { userId, schoolId }
+      }
+    } = getState();
+
+    const { userClass, index, limit, postType, query, from } = filters;
+
+    const { classId, sectionId } = JSON.parse(userClass);
+
     dispatch(requestFetchFeed());
     const feed = await feedApi.fetchFeed({
       userId,
@@ -155,6 +176,66 @@ export const searchFeed = ({ query }: { query: string }) => async (
     dispatch(
       setError({
         title: 'Error Fetching Feed',
+        body: 'Please contact us if the issue persists'
+      })
+    );
+  }
+};
+
+export const updateFilter = ({
+  field,
+  value
+}: {
+  field: string,
+  value: string | number
+}) => async (dispatch: Dispatch) => {
+  try {
+    await dispatch(updateFeedLimitRequest({ limit: 100 }));
+    await dispatch(
+      updateFeedFilterFieldRequest({
+        field,
+        value
+      })
+    );
+    dispatch(fetchFeed());
+  } catch (err) {
+    dispatch(
+      setError({
+        title: 'Error Updating Filter',
+        body: 'Please contact us if the issue persists'
+      })
+    );
+  }
+};
+
+export const updateFeedLimit = ({ limit }: { limit: number }) => async (
+  dispatch: Dispatch
+) => {
+  try {
+    await dispatch(
+      updateFeedLimitRequest({
+        limit
+      })
+    );
+    dispatch(fetchFeed());
+  } catch (err) {
+    dispatch(
+      setError({
+        title: 'Error Updating Limit',
+        body: 'Please contact us if the issue persists'
+      })
+    );
+  }
+};
+
+export const clearFilter = () => async (dispatch: Dispatch) => {
+  try {
+    await dispatch(clearFeedFilterRequest());
+    dispatch(fetchFeed());
+  } catch (err) {
+    dispatch(
+      setError({
+        title: 'Error Clearing Filter',
         body: 'Please contact us if the issue persists'
       })
     );

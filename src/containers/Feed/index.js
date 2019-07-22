@@ -42,19 +42,17 @@ type Props = {
   bookmarks: boolean,
   push: Function,
   fetchFeed: Function,
-  updateBookmark: Function
+  updateBookmark: Function,
+  updateFilter: Function,
+  clearFilter: Function,
+  updateFeedLimit: Function
 };
 
 type State = {
   feedId: ?number,
   report: ?Object,
   deletePost: ?Object,
-  from: string,
-  userClass: string,
-  postType: number,
-  classesList: Array<{ value: string, label: string }>,
-  query: string,
-  limit: number
+  classesList: Array<{ value: string, label: string }>
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -62,22 +60,20 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: null,
     report: null,
     deletePost: null,
-    from: 'everyone',
-    userClass: defaultClass,
-    postType: 0,
-    classesList: [],
-    query: '',
-    limit: 100
+    classesList: []
   };
 
   componentDidMount = async () => {
     this.mounted = true;
-    const { classId, sectionId, bookmarks } = this.props;
+    const { classId, sectionId, bookmarks, updateFilter } = this.props;
     if (classId >= 0 && sectionId >= 0) {
-      this.setState({ userClass: JSON.stringify({ classId, sectionId }) });
+      updateFilter({
+        field: 'userClass',
+        value: JSON.stringify({ classId, sectionId })
+      });
     }
     if (bookmarks) {
-      this.setState({ from: 'bookmarks' });
+      updateFilter({ field: 'from', value: 'bookmarks' });
     }
     window.addEventListener('offline', () => {
       if (
@@ -118,27 +114,9 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleFetchFeed = () => {
-    const {
-      user: {
-        data: { userId, schoolId }
-      },
-      fetchFeed
-    } = this.props;
-    const { from, userClass, postType, limit, query } = this.state;
-
-    const { classId, sectionId } = JSON.parse(userClass);
+    const { fetchFeed } = this.props;
     try {
-      fetchFeed({
-        userId,
-        schoolId,
-        classId,
-        sectionId,
-        index: 0,
-        limit,
-        postType,
-        from,
-        query
-      })
+      fetchFeed();
     } catch (err) {
       console.log(err);
     }
@@ -182,7 +160,6 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
-    // update feed list
     if (deleted && deleted === true) {
       this.handleFetchFeed();
     }
@@ -190,29 +167,25 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value, limit: 100 });
-    this.handleFetchFeed();
-    if (name === 'query') {
-      logEvent({
-        event: 'Feed- Start Search',
-        props: { Query: event.target.value }
-      });
-    }
+    const { updateFilter } = this.props;
+    updateFilter({ field: name, value: event.target.value });
   };
 
   handleClearFilters = () => {
-    this.setState({
-      from: 'everyone',
-      userClass: defaultClass,
-      postType: 0,
-      limit: 100
-    });
-    this.handleFetchFeed();
+    const { clearFilter } = this.props;
+    clearFilter();
   };
 
   handleLoadMore = () => {
-    this.setState(({ limit }) => ({ limit: limit + 100 }));
-    this.handleFetchFeed();
+    const {
+      feed: {
+        data: {
+          filters: { limit }
+        }
+      },
+      updateFeedLimit
+    } = this.props;
+    updateFeedLimit({ limit: limit + 100 });
   };
 
   handleUserClick = ({ userId }: { userId: string }) => {
@@ -269,21 +242,16 @@ class Feed extends React.PureComponent<Props, State> {
         data: { userId }
       },
       feed: {
-        data: { items, hasMore },
+        data: {
+          items,
+          hasMore,
+          filters: { postType, query, from, userClass }
+        },
         isLoading
       },
       feedId: fromFeedId
     } = this.props;
-    const {
-      feedId,
-      report,
-      deletePost,
-      query,
-      from,
-      userClass,
-      postType,
-      classesList
-    } = this.state;
+    const { feedId, report, deletePost, classesList } = this.state;
 
     return (
       <Fragment>
@@ -352,7 +320,10 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       push: routePush,
       fetchFeed: feedActions.fetchFeed,
-      updateBookmark: feedActions.updateBookmark
+      updateBookmark: feedActions.updateBookmark,
+      updateFilter: feedActions.updateFilter,
+      clearFilter: feedActions.clearFilter,
+      updateFeedLimit: feedActions.updateFeedLimit
     },
     dispatch
   );
