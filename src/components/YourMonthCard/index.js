@@ -51,9 +51,7 @@ const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    margin: theme.spacing.unit,
-    marginBottom: 0
+    paddingBottom: theme.spacing.unit * 2
   },
   header: {
     display: 'flex',
@@ -135,8 +133,7 @@ const styles = theme => ({
   },
   link: {
     margin: theme.spacing.unit,
-    color: theme.palette.primary.main,
-    fontWeight: 'bold'
+    color: theme.palette.primary.main
   }
 });
 

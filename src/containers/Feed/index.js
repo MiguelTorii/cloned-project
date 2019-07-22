@@ -42,8 +42,7 @@ type Props = {
   bookmarks: boolean,
   push: Function,
   fetchFeed: Function,
-  updateBookmark: Function,
-  searchFeed: Function
+  updateBookmark: Function
 };
 
 type State = {
@@ -123,16 +122,12 @@ class Feed extends React.PureComponent<Props, State> {
       user: {
         data: { userId, schoolId }
       },
-      fetchFeed,
-      searchFeed
+      fetchFeed
     } = this.props;
     const { from, userClass, postType, limit, query } = this.state;
 
     const { classId, sectionId } = JSON.parse(userClass);
     try {
-      if (query.trim() !== '') {
-        searchFeed({ query });
-      } else{
       fetchFeed({
         userId,
         schoolId,
@@ -142,8 +137,8 @@ class Feed extends React.PureComponent<Props, State> {
         limit,
         postType,
         from,
-        query: ''
-      });}
+        query
+      })
     } catch (err) {
       console.log(err);
     }
@@ -357,8 +352,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       push: routePush,
       fetchFeed: feedActions.fetchFeed,
-      updateBookmark: feedActions.updateBookmark,
-      searchFeed: feedActions.searchFeed
+      updateBookmark: feedActions.updateBookmark
     },
     dispatch
   );
