@@ -80,9 +80,10 @@ class Quests extends React.PureComponent<Props, State> {
         >
           {quests.map((item, index) => (
             <QuestItem
-              key={item.key}
-              title={item.title}
-              body={item.body}
+              key={item.id}
+              iconUrl={item.iconUrl}
+              pointsAvailable={item.pointsAvailable}
+              task={item.task}
               isHidden={
                 index !== currentSlide - 1 &&
                 index !== currentSlide &&

@@ -3,9 +3,9 @@
 // @flow
 import React from 'react';
 import reactStringReplace from 'react-string-replace';
-import type {HomeCardStyle} from '../../types/models';
+import type { CardStyle } from '../../types/models';
 
-export const renderText = (text: string, textStyles: Array<HomeCardStyle>) => {
+export const renderText = (text: string, textStyles: Array<CardStyle>) => {
   let result = text;
   for (const style of textStyles) {
     result = reactStringReplace(result, style.substring, match => (

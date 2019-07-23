@@ -7,14 +7,16 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
-import type { Slot } from '../../types/models';
+import type { HomeCard } from '../../types/models';
 import bronze from '../../assets/svg/rank_bronze.svg';
 import silver from '../../assets/svg/rank_silver.svg';
 import gold from '../../assets/svg/rank_gold.svg';
 import platinum from '../../assets/svg/rank_platinum.svg';
 import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
+import { renderText } from '../HomeGridList/utils';
 
 const ranks = [
   {
@@ -134,29 +136,39 @@ const styles = theme => ({
   link: {
     margin: theme.spacing.unit,
     color: theme.palette.primary.main
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  slots?: Array<Slot>,
-  rank?: number
+  data: HomeCard,
+  rank: number,
+  isLoading: boolean
 };
 
 type State = {};
 
 class YourMonthCard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    slots: [],
-    rank: 1
-  };
-
   state = {};
 
   render() {
-    const { classes, slots, rank } = this.props;
+    const { classes, data, rank, isLoading } = this.props;
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
     const newItems = items.map((item, index) => {
-      const slot = slots && slots.find(o => o.slot === index);
+      const slot = data.slots.find(o => o.slot === index);
       if (slot) return { ...item, ...slot };
       return item;
     });
@@ -165,7 +177,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
       <Paper className={classes.root} elevation={1}>
         <div className={classes.header}>
           <Typography variant="h3" className={classes.title} paragraph>
-            Your Month
+            {data.title}
           </Typography>
           <img
             alt={rank ? ranks[rank].label : ''}
@@ -178,7 +190,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
           </ButtonBase>
         </div>
         <Typography variant="h6" paragraph>
-          You have 350 Points and 17 days left before 1st Tuesday Rewards
+          {renderText(data.subtitle.text, data.subtitle.style)}
         </Typography>
         <Typography variant="h6" paragraph>
           Your Top Picks

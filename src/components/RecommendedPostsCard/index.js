@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import ReplyIcon from '@material-ui/icons/Reply';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -56,11 +57,18 @@ const styles = theme => ({
     width: 86,
     height: 86,
     backgroundColor: theme.circleIn.palette.appBar
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  isLoading: boolean
 };
 
 type State = {};
@@ -69,7 +77,16 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
   state = {};
 
   render() {
-    const { classes } = this.props;
+    const { classes, isLoading } = this.props;
+
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
 
     return (
       <Paper className={classes.root} elevation={1}>

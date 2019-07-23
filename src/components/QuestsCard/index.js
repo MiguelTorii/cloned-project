@@ -5,7 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Quests from './Quests';
+import type { QuestsCard as QuestsCardState } from '../../types/models';
+import { renderText } from '../HomeGridList/utils';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -31,59 +34,53 @@ const styles = theme => ({
   },
   link: {
     color: theme.palette.primary.main
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  quests?: Array<Object>
+  data: QuestsCardState,
+  isLoading: boolean
 };
 
 type State = {};
 
 class QuestsCard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    quests: [
-      {
-        key: '1',
-        title: '1000 points',
-        body: 'Help your classmates get to know you better'
-      },
-      {
-        key: '2',
-        title: '2000 points',
-        body: 'Help your classmates get to know you better'
-      },
-      {
-        key: '3',
-        title: '3000 points',
-        body: 'Help your classmates get to know you better'
-      },
-      {
-        key: '4',
-        title: '4000 points',
-        body: 'Help your classmates get to know you better'
-      }
-    ]
-  };
-
   state = {};
 
   render() {
-    const { classes, quests } = this.props;
+    const { classes, data, isLoading } = this.props;
+
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
 
     return (
       <Paper className={classes.root} elevation={1}>
         <Typography variant="h4" paragraph>
           Quests
         </Typography>
-        <Quests quests={quests} />
+        <Quests quests={data.activeQuests} />
         <div className={classes.status}>
           <Typography variant="subtitle1" align="center">
-            0 of 3 available quests complete
+            {renderText(
+              data.availablePointsText.text,
+              data.availablePointsText.style
+            )}
           </Typography>
           <Typography variant="subtitle1" align="center">
-            0 of 3,000 available points earned
+            {renderText(data.progressText.text, data.progressText.style)}
           </Typography>
         </div>
         <div className={classes.links}>

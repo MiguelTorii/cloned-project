@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-import bronze from '../../assets/svg/rank_bronze.svg';
 
 const styles = theme => ({
   root: {
@@ -79,8 +78,9 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  title: string,
-  body: string,
+  iconUrl: string,
+  pointsAvailable: number,
+  task: string,
   isCurrent: boolean,
   isHidden: boolean
 };
@@ -93,7 +93,14 @@ class QuestItem extends React.PureComponent<Props, State> {
   state = {};
 
   render() {
-    const { classes, title, body, isCurrent, isHidden } = this.props;
+    const {
+      classes,
+      iconUrl,
+      pointsAvailable,
+      task,
+      isCurrent,
+      isHidden
+    } = this.props;
 
     return (
       <Paper
@@ -109,7 +116,7 @@ class QuestItem extends React.PureComponent<Props, State> {
             variant={isCurrent ? 'subtitle2' : 'caption'}
             className={classes.headerTitle}
           >
-            {title}
+            {`${pointsAvailable} points`}
           </Typography>
           <IconButton aria-label="Remove" className={classes.removeButton}>
             <ClearIcon fontSize="small" />
@@ -119,7 +126,7 @@ class QuestItem extends React.PureComponent<Props, State> {
           variant="caption"
           className={cx(classes.body, isCurrent && classes.bodyCurrent)}
         >
-          {body}
+          {task}
         </Typography>
         <div
           className={cx(
@@ -128,7 +135,7 @@ class QuestItem extends React.PureComponent<Props, State> {
           )}
         >
           <img
-            src={bronze}
+            src={iconUrl}
             alt="Quest"
             className={cx(classes.image, !isCurrent && classes.imageSmall)}
           />

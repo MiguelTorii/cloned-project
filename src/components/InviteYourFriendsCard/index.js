@@ -5,6 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { InviteCard } from '../../types/models';
+import { renderText } from '../HomeGridList/utils';
 
 const styles = theme => ({
   root: {
@@ -43,52 +46,55 @@ const styles = theme => ({
   button: {
     height: 40,
     backgroundColor: theme.circleIn.palette.success
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  title?: string,
-  text?: string,
-  imageUrl?: string,
-  referralCode?: string,
-  onCopy?: Function
+  data: InviteCard,
+  isLoading: boolean,
+  onCopy: Function
 };
 
 type State = {};
 
 class InviteYourFriendsCard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    title: 'Invite Your Friends',
-    text:
-      'Get 5 classmates to sign up on CircleIn using your referral code and you’ll earn a $10 Starbucks Giftcard!',
-    imageUrl:
-      'https://media.circleinapp.com/reward_images/starbucks-store-logo.png',
-    referralCode: '',
-    onCopy: () => {}
-  };
-
   state = {};
 
   render() {
-    const { classes, title, text, imageUrl, referralCode, onCopy } = this.props;
+    const { classes, data, onCopy, isLoading } = this.props;
+
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
 
     return (
       <Paper className={classes.root} elevation={1}>
         <Typography variant="h5" paragraph>
-          {title}
+          {data.title}
         </Typography>
         <Typography variant="h6" align="left">
-          {text}
+          {renderText(data.subtitle.text, data.subtitle.style)}
         </Typography>
         <div className={classes.referral}>
-          <img alt={title} src={imageUrl} className={classes.img} />
+          <img alt={data.title} src={data.imageUrl} className={classes.img} />
           <div className={classes.link}>
             <Typography variant="h6" align="center">
-              {referralCode}
+              {data.referralCode}
             </Typography>
           </div>
-          <CopyToClipboard text={referralCode} onCopy={onCopy}>
+          <CopyToClipboard text={data.referralCode} onCopy={onCopy}>
             <Button
               variant="contained"
               color="primary"

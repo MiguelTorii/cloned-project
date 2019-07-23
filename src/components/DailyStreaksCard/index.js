@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import type { DailyStreaksCard as StreaksCard } from '../../types/models';
 
 const size = 150;
 const thickness = 10;
@@ -40,36 +41,42 @@ const styles = theme => ({
   dayText: {
     color: '#fec04f',
     fontWeight: 'bold'
+  },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  progress?: number,
-  day?: string,
-  points?: number,
-  pointsTomorrow?: number
+  data: StreaksCard,
+  isLoading: boolean
 };
 
 type State = {};
 
 class DailyStreaksCard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    progress: 0,
-    day: 'Day 1',
-    points: 0,
-    pointsTomorrow: 0
-  };
-
   state = {};
 
   render() {
-    const { classes, progress, day, points, pointsTomorrow } = this.props;
+    const { classes, data, isLoading } = this.props;
+
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.loading}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
 
     return (
       <Paper className={classes.root} elevation={1}>
         <Typography variant="h4" paragraph>
-          Daily Streaks
+          {data.title}
         </Typography>
         <div className={classes.progressWrapper}>
           <div className={classes.progress}>
@@ -85,22 +92,25 @@ class DailyStreaksCard extends React.PureComponent<Props, State> {
             <CircularProgress
               className={classes.main}
               variant="static"
-              value={progress}
+              value={(data.currentDay * 100) / 5}
               size={size}
               thickness={thickness}
             />
           </div>
           <div className={classes.progress}>
             <Typography variant="h6" className={classes.dayText} align="center">
-              {day}
+              {`Day ${data.currentDay}`}
             </Typography>
             <Typography variant="subtitle1" align="center">
-              {`+${points || 0} SP`}
+              {`+${(data.tiers.find(o => o.day === data.currentDay) || {})
+                .points || 0} SP`}
             </Typography>
           </div>
         </div>
         <Typography variant="h6" align="center">
-          {`Tomorrow: Earn ${pointsTomorrow || 0} SP!`}
+          {`Tomorrow: Earn ${(
+            data.tiers.find(o => o.day === data.currentDay + 1) || {}
+          ).points || 0} SP!`}
         </Typography>
       </Paper>
     );

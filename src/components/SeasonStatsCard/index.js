@@ -3,6 +3,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { CurrentSeasonCard } from '../../types/models';
 
 const styles = theme => ({
   root: {
@@ -46,9 +48,7 @@ const styles = theme => ({
   image: {
     width: 76,
     height: 76,
-    margin: theme.spacing.unit,
-    backgroundColor: 'white',
-    borderRadius: 8
+    margin: theme.spacing.unit
   },
   texts: {
     display: 'flex',
@@ -59,46 +59,44 @@ const styles = theme => ({
   },
   title: {
     fontWeight: 'bold'
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
-  thanks?: string,
-  reach?: string,
-  bestAnswers?: string,
-  points?: string,
-  serviceHours?: string
+  data: CurrentSeasonCard,
+  isLoading: boolean
 };
 
 type State = {};
 
 class SeasonStatsCard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    thanks: '0',
-    reach: '0',
-    bestAnswers: '0',
-    points: '0',
-    serviceHours: '0'
-  };
-
   state = {};
 
   render() {
-    const {
-      classes,
-      thanks,
-      reach,
-      bestAnswers,
-      points,
-      serviceHours
-    } = this.props;
+    const { classes, data, isLoading } = this.props;
+
+    if (isLoading)
+      return (
+        <Paper className={classes.root} elevation={1}>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Paper>
+      );
+
     const options = [
-      { label: 'Thanks', value: thanks },
-      { label: 'Reach', value: reach },
-      { label: 'Best Answers', value: bestAnswers },
-      { label: 'Points', value: points },
-      { label: 'Service Hours', value: serviceHours }
+      { label: 'Thanks', value: data.thanks },
+      { label: 'Reach', value: data.reach },
+      { label: 'Best Answers', value: data.bestAnswers },
+      { label: 'Points', value: data.points },
+      { label: 'Service Hours', value: data.serviceHours }
     ];
 
     return (
@@ -119,14 +117,12 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
           ))}
         </div>
         <div className={classes.grandPrize}>
-          <div className={classes.image} />
+          <img className={classes.image} alt="Prize" src={data.logoUrl} />
           <div className={classes.texts}>
             <Typography variant="h6" className={classes.title}>
               Season Grand Prize
             </Typography>
-            <Typography variant="subtitle1">
-              Check back here to find out the season grand prize!
-            </Typography>
+            <Typography variant="subtitle1">{data.grandPrizeText}</Typography>
           </div>
         </div>
       </Paper>

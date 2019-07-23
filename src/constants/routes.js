@@ -65,5 +65,9 @@ export const API_ROUTES = {
   VIDEO_INITIATOR: `${API_URL}/video/initiator`,
   VIDEO_SESSION: `${API_URL}/video/session`,
   VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`,
-  SEARCH: `${API_URL}/search`
+  SEARCH: `${API_URL}/search`,
+  STREAKS: `${API_URL}/streaks`,
+  QUESTS: `${API_URL}/quests`,
+  INVITE: `${API_URL}/invite`,
+  CURRENT_SEASON: `${API_URL}/season/current`
 };
