@@ -8,7 +8,8 @@ import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
-import Popover from '@material-ui/core/Popover';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -17,8 +18,9 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
-import RefreshIcon from '@material-ui/icons/Refresh'
+import RefreshIcon from '@material-ui/icons/Refresh';
 import FeedItem from './feed-item';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   container: {
@@ -111,6 +113,14 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: theme.spacing.unit * 2
+  },
+  actions: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  grow: {
+    flex: 1
   }
 });
 
@@ -141,12 +151,12 @@ type Props = {
 };
 
 type State = {
-  anchorEl: ?string
+  open: boolean
 };
 
 class FeedList extends React.PureComponent<Props, State> {
   state = {
-    anchorEl: null
+    open: false
   };
 
   componentDidMount = () => {
@@ -167,17 +177,16 @@ class FeedList extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClick = event => {
-    const{onOpenFilter} = this.props;
-    const { currentTarget } = event;
+  handleClick = () => {
+    const { onOpenFilter } = this.props;
     this.setState({
-      anchorEl: currentTarget
+      open: true
     });
-    onOpenFilter()
+    onOpenFilter();
   };
 
   handleClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ open: false });
   };
 
   getFilterCount = () => {
@@ -224,8 +233,7 @@ class FeedList extends React.PureComponent<Props, State> {
       onUserClick,
       onRefresh
     } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    const { open } = this.state;
     const filterCount = this.getFilterCount();
 
     return (
@@ -245,7 +253,7 @@ class FeedList extends React.PureComponent<Props, State> {
             <InputBase
               className={classes.input}
               type="search"
-              placeholder="Search Classmates"
+              placeholder="Search for posts"
               value={query}
               onChange={onChange('query')}
             />
@@ -314,70 +322,87 @@ class FeedList extends React.PureComponent<Props, State> {
             </InfiniteScroll>
           </div>
         </Paper>
-        <Popover
-          id="filter-popper"
+        <Dialog
           open={open}
-          anchorEl={anchorEl}
           onClose={this.handleClose}
+          fullWidth
+          maxWidth="xs"
+          aria-labelledby="filter-dialog-title"
+          aria-describedby="filter-dialog-description"
         >
-          <Paper className={classes.popover}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="from-native-helper">From</InputLabel>
-              <NativeSelect
-                value={from}
-                onChange={onChange('from')}
-                input={<Input name="from" id="from-native-helper" />}
-              >
-                <option value="everyone">Everyone</option>
-                <option value="classmates">Classmates</option>
-                <option value="my_posts">My Posts</option>
-                <option value="bookmarks">Bookmarks</option>
-              </NativeSelect>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="userClasses-native-helper">
-                Classes
-              </InputLabel>
-              <NativeSelect
-                value={userClass}
-                onChange={onChange('userClass')}
-                input={<Input name="userClass" id="userClass-native-helper" />}
-              >
-                <option value={defaultClass}>All</option>
-                {classesList.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="postType-native-helper">
-                Type of Post
-              </InputLabel>
-              <NativeSelect
-                value={postType}
-                onChange={onChange('postType')}
-                input={<Input name="postType" id="postType-native-helper" />}
-              >
-                <option value={0}>All</option>
-                <option value={3}>Flashcards</option>
-                <option value={4}>Class notes</option>
-                <option value={5}>Links</option>
-                <option value={6}>Questions</option>
-              </NativeSelect>
-            </FormControl>
+          <DialogTitle id="filter-dialog-title" onClose={this.handleClose}>
+            {'Filter Posts by:'}
+          </DialogTitle>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="from-native-helper">From</InputLabel>
+            <NativeSelect
+              value={from}
+              onChange={onChange('from')}
+              input={<Input name="from" id="from-native-helper" />}
+            >
+              <option value="everyone">Everyone</option>
+              <option value="classmates">Classmates</option>
+              <option value="my_posts">My Posts</option>
+              <option value="bookmarks">Bookmarks</option>
+            </NativeSelect>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="userClasses-native-helper">Classes</InputLabel>
+            <NativeSelect
+              value={userClass}
+              onChange={onChange('userClass')}
+              input={<Input name="userClass" id="userClass-native-helper" />}
+            >
+              <option value={defaultClass}>All</option>
+              {classesList.map(item => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </NativeSelect>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="postType-native-helper">
+              Type of Post
+            </InputLabel>
+            <NativeSelect
+              value={postType}
+              onChange={onChange('postType')}
+              input={<Input name="postType" id="postType-native-helper" />}
+            >
+              <option value={0}>All</option>
+              <option value={3}>Flashcards</option>
+              <option value={4}>Class notes</option>
+              <option value={5}>Links</option>
+              <option value={6}>Questions</option>
+            </NativeSelect>
+          </FormControl>
+          <DialogActions className={classes.actions}>
             <Button
-              variant="contained"
               color="primary"
-              disabled={filterCount === 0}
+              // disabled={filterCount === 0}
               className={classes.button}
               onClick={onClearFilters}
             >
-              Clear Filters
+              Reset Filters
             </Button>
-          </Paper>
-        </Popover>
+            <span className={classes.grow} />
+            <Button
+              color="primary"
+              className={classes.button}
+              onClick={this.handleClose}
+            >
+              cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Search
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
