@@ -24,7 +24,7 @@ const styles = theme => ({
     transition: 'width 0.5s, height 0.5s, opacity 0.5s'
   },
   current: {
-    zIndex: 1000,
+    zIndex: 100,
     opacity: 1,
     height: 156,
     width: 156,

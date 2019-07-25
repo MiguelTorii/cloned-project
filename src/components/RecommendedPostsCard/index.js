@@ -10,29 +10,6 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
-const posts = [
-  {
-    label: 'Most Viewed',
-    href: '',
-    icon: <VisibilityIcon />
-  },
-  {
-    label: 'Most Shared',
-    href: '',
-    icon: <ReplyIcon />
-  },
-  {
-    label: 'Most Thanks',
-    href: '',
-    icon: <FavoriteBorderIcon />
-  },
-  {
-    label: 'Most Saved',
-    href: '',
-    icon: <BookmarkBorderIcon />
-  }
-];
-
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -51,7 +28,12 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     margin: theme.spacing.unit,
     padding: theme.spacing.unit,
     width: 86,
@@ -63,6 +45,10 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: theme.spacing.unit * 2
+  },
+  icon: {
+    height: 40,
+    width: 40
   }
 });
 
@@ -78,6 +64,28 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, isLoading } = this.props;
+    const posts = [
+      {
+        label: 'Most Viewed',
+        href: '',
+        icon: <VisibilityIcon className={classes.icon} />
+      },
+      {
+        label: 'Most Shared',
+        href: '',
+        icon: <ReplyIcon className={classes.icon} />
+      },
+      {
+        label: 'Most Thanks',
+        href: '',
+        icon: <FavoriteBorderIcon className={classes.icon} />
+      },
+      {
+        label: 'Most Saved',
+        href: '',
+        icon: <BookmarkBorderIcon className={classes.icon} />
+      }
+    ];
 
     if (isLoading)
       return (
@@ -90,19 +98,21 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
 
     return (
       <Paper className={classes.root} elevation={1}>
-        <Typography variant="h5" paragraph>
+        <Typography variant="h4" paragraph>
           Recommended Posts
         </Typography>
         <div className={classes.cards}>
           {posts.map(item => (
-            <ButtonBase key={item.label}>
-              <Paper className={classes.card} elevation={12}>
-                {item.icon}
-                <Typography variant="h6" align="center">
-                  {item.label}
-                </Typography>
-              </Paper>
-            </ButtonBase>
+            <div key={item.label} className={classes.card}>
+              <ButtonBase>
+                <Paper className={classes.button} elevation={12}>
+                  {item.icon}
+                </Paper>
+              </ButtonBase>
+              <Typography variant="h5" align="center">
+                {item.label}
+              </Typography>
+            </div>
           ))}
         </div>
       </Paper>

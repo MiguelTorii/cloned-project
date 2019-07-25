@@ -16,6 +16,7 @@ const styles = theme => ({
   stats: {
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
     justifyContent: 'space-between'
   },
   stat: {
@@ -48,6 +49,8 @@ const styles = theme => ({
   image: {
     width: 76,
     height: 76,
+    minWidth: 76,
+    minHeight: 76,
     margin: theme.spacing.unit
   },
   texts: {
@@ -119,10 +122,10 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
         <div className={classes.grandPrize}>
           <img className={classes.image} alt="Prize" src={data.logoUrl} />
           <div className={classes.texts}>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h5" className={classes.title}>
               Season Grand Prize
             </Typography>
-            <Typography variant="subtitle1">{data.grandPrizeText}</Typography>
+            <Typography variant="h6">{data.grandPrizeText}</Typography>
           </div>
         </div>
       </Paper>

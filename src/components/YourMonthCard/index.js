@@ -189,10 +189,10 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             <Avatar className={classes.helpIcon}>?</Avatar>
           </ButtonBase>
         </div>
-        <Typography variant="h6" paragraph>
+        <Typography variant="h5" paragraph>
           {renderText(data.subtitle.text, data.subtitle.style)}
         </Typography>
-        <Typography variant="h6" paragraph>
+        <Typography variant="h5" paragraph>
           Your Top Picks
         </Typography>
         <div className={classes.slots}>

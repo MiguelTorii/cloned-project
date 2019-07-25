@@ -16,7 +16,7 @@ const styles = () => ({
     position: 'relative'
   },
   button: {
-    zIndex: 1000
+    zIndex: 100
   },
   slider: {
     display: 'flex',
@@ -69,7 +69,7 @@ class Quests extends React.PureComponent<Props, State> {
           onClick={this.handlePrevious}
           className={classes.button}
         >
-          <KeyboardArrowLeftIcon />
+          <KeyboardArrowLeftIcon fontSize="large" />
         </IconButton>
         <div
           className={cx(
@@ -98,7 +98,7 @@ class Quests extends React.PureComponent<Props, State> {
           onClick={this.handleNext}
           className={classes.button}
         >
-          <KeyboardArrowRightIcon />
+          <KeyboardArrowRightIcon fontSize="large" />
         </IconButton>
       </div>
     );

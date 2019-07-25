@@ -32,12 +32,19 @@ import RecommendedPostsCard from '../../components/RecommendedPostsCard';
 import InviteYourFriendsCard from '../../components/InviteYourFriendsCard';
 
 const styles = theme => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   },
   grid: {
-    padding: theme.spacing.unit
+    padding: theme.spacing.unit,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '90%'
+    }
   }
 });
 

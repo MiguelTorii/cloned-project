@@ -368,6 +368,9 @@ class FloatingChat extends React.PureComponent<Props, State> {
         const newToken = await renewTwilioToken({
           userId
         });
+        if (!newToken || (newToken && newToken === '')) {
+          return;
+        }
         await client.updateToken(newToken);
       });
     } catch (err) {

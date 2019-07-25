@@ -4,15 +4,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
-import YourMonthCard from '../../components/YourMonthCard';
-import DailyStreaksCard from '../../components/DailyStreaksCard';
-import WeeklyStudyPackCard from '../../components/WeeklyStudyPackCard';
-import QuestsCard from '../../components/QuestsCard';
-import SeasonStatsCard from '../../components/SeasonStatsCard';
-import RecommendedPostsCard from '../../components/RecommendedPostsCard';
-import InviteYourFriendsCard from '../../components/InviteYourFriendsCard';
+import TermsOfUse from '../../components/TermsOfUse';
 
 const styles = theme => ({
   main: {
@@ -35,29 +28,7 @@ class Sandbox extends React.Component<Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <Grid container spacing={8}>
-          <Grid item xs={12}>
-            <YourMonthCard />
-          </Grid>
-          <Grid item xs={6}>
-            <DailyStreaksCard />
-          </Grid>
-          <Grid item xs={6}>
-            <WeeklyStudyPackCard />
-          </Grid>
-          <Grid item xs={6}>
-            <QuestsCard />
-          </Grid>
-          <Grid item xs={6}>
-            <SeasonStatsCard />
-          </Grid>
-          <Grid item xs={6}>
-            <RecommendedPostsCard />
-          </Grid>
-          <Grid item xs={6}>
-            <InviteYourFriendsCard />
-          </Grid>
-        </Grid>
+        <TermsOfUse />
       </main>
     );
   }

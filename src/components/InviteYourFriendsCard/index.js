@@ -81,7 +81,7 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
 
     return (
       <Paper className={classes.root} elevation={1}>
-        <Typography variant="h5" paragraph>
+        <Typography variant="h4" paragraph>
           {data.title}
         </Typography>
         <Typography variant="h6" align="left">

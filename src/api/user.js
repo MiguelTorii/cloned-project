@@ -24,6 +24,7 @@ export const getUserProfile = async ({
   userId: string
 }): Promise<Profile> => {
   try {
+    if(!userId) throw new Error('No userId specified')
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
       headers: {
