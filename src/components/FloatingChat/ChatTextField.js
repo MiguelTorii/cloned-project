@@ -1,6 +1,7 @@
 /* eslint-disable react/no-danger */
 // @flow
 import React from 'react';
+import Textarea from 'react-textarea-autosize';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -17,6 +18,7 @@ const styles = theme => ({
     width: '95%',
     margin: '0 auto',
     marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: theme.circleIn.palette.borderColor,
@@ -24,7 +26,7 @@ const styles = theme => ({
   },
   form: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'flex-end'
   },
   textfield: {
     marginLeft: 8,
@@ -215,34 +217,46 @@ class ChatTextField extends React.PureComponent<Props, State> {
             onChange={this.handleInputChange}
             type="file"
           />
-          <InputBase
-            value={message}
-            onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
-            onKeyUp={this.handleKeyUp}
-            className={classes.textfield}
-            multiline
-            rowsMax={2}
-            placeholder="Type a message"
-            autoComplete="off"
-            endAdornment={
-              image && (
-                <ButtonBase
-                  className={classes.imgContainer}
-                  onClick={this.handleRemoveImg}
-                  onMouseEnter={this.handleMouseEnter}
-                  onMouseLeave={this.handleMouseLeave}
-                >
-                  <img className={classes.img} src={image} alt="test" />
-                  {isHover && (
-                    <div className={classes.clearIcon}>
-                      <ClearIcon fontSize="small" />
-                    </div>
-                  )}
-                </ButtonBase>
-              )
-            }
-          />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+              minHeight: 44
+            }}
+          >
+            <InputBase
+              value={message}
+              onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown}
+              onKeyUp={this.handleKeyUp}
+              className={classes.textfield}
+              inputComponent={Textarea}
+              inputProps={{ style: { maxHeight: 60 } }}
+              multiline
+              rowsMax={2}
+              placeholder="Type a message"
+              autoComplete="off"
+              endAdornment={
+                image && (
+                  <ButtonBase
+                    className={classes.imgContainer}
+                    onClick={this.handleRemoveImg}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
+                  >
+                    <img className={classes.img} src={image} alt="test" />
+                    {isHover && (
+                      <div className={classes.clearIcon}>
+                        <ClearIcon fontSize="small" />
+                      </div>
+                    )}
+                  </ButtonBase>
+                )
+              }
+            />
+          </div>
           <Divider light className={classes.divider} />
           <IconButton
             color="primary"
