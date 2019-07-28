@@ -84,14 +84,15 @@ class FloatingChat extends React.PureComponent<Props, State> {
     window.addEventListener('resize', this.updateOpenChannels);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
-      this.setState({ online: false });
-      if(this.mounted) this.handleShutdownChat();
+      if(this.mounted) {
+        this.setState({ online: false });
+        this.handleShutdownChat();
+      }
     });
     window.addEventListener('online', () => {
       console.log('**** online ****');
       const {online} = this.state;
       if(!online && this.mounted) window.location.reload()
-      // this.setState({ online: true });
     });
     this.handleInitChat();
   };
@@ -157,7 +158,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
   handleRoomClick = roomId => {
     try {
       const availableSlots = this.getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0) {
+      if (availableSlots === 0 || !this.mounted) {
         return;
       }
 
@@ -189,6 +190,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   handleChannelClose = channelId => {
     try {
+      if(!this.mounted) return
       const newState = update(this.state, {
         openChannels: {
           $apply: b => {
@@ -207,6 +209,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   handleUpdateUnreadCount = unread => {
     try {
+      if(!this.mounted) return
       this.setState(prevState => ({
         unread: prevState.unread + Number(unread)
       }));
@@ -216,6 +219,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   updateOpenChannels = () => {
     try {
+      if(!this.mounted) return
       const availableSlots = this.getAvailableSlots(window.innerWidth);
       if (availableSlots === 0) {
         this.setState({ openChannels: [] });
@@ -290,12 +294,14 @@ class FloatingChat extends React.PureComponent<Props, State> {
       this.setState({ client, channels });
 
       client.on('channelJoined', async channel => {
+        if(!this.mounted) return
         this.setState(prevState => ({
           channels: [...prevState.channels, channel]
         }));
       });
 
       client.on('channelLeft', async channel => {
+        if(!this.mounted) return
         this.setState(prevState => ({
           channels: prevState.channels.filter(c => c.sid !== channel.sid)
         }));
@@ -303,6 +309,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
 
       client.on('channelUpdated', async ({ channel, updateReasons }) => {
+        if(!this.mounted) return
         if (
           updateReasons.length > 0 &&
           updateReasons.indexOf('lastMessage') > -1
@@ -318,6 +325,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
 
       client.on('messageAdded', async message => {
+        if(!this.mounted) return
         const { state, channel } = message;
         const { author, attributes, body } = state;
         const { firstName, lastName } = attributes;
@@ -347,6 +355,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
 
       client.on('tokenAboutToExpire', async () => {
+        if(!this.mounted) return
         const newToken = await renewTwilioToken({
           userId
         });
@@ -360,6 +369,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   handleShutdownChat = () => {
+    if(!this.mounted) return
     const { client } = this.state;
     if (client) {
       try {
@@ -385,10 +395,12 @@ class FloatingChat extends React.PureComponent<Props, State> {
   };
 
   handleCreateChannelOpen = type => {
+    if(!this.mounted) return
     this.setState({ createChannel: type });
   };
 
   handleCreateChannelClose = () => {
+    if(!this.mounted) return
     this.setState({ createChannel: null });
   };
 
