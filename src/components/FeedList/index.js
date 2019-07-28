@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import update from 'immutability-helper';
 import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -10,17 +11,39 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import FeedItem from './feed-item';
 import DialogTitle from '../DialogTitle';
+
+const types = [
+  {
+    value: '4',
+    label: 'Notes'
+  },
+  {
+    value: '6',
+    label: 'Questions'
+  },
+  {
+    value: '3',
+    label: 'Flashcards'
+  },
+  {
+    value: '5',
+    label: 'Link'
+  }
+];
 
 const styles = theme => ({
   container: {
@@ -34,9 +57,6 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    // maxWidth: 500,
-    // maxHeight: '100%',
-    // overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
@@ -83,8 +103,17 @@ const styles = theme => ({
     flexDirection: 'column',
     padding: theme.spacing.unit * 2
   },
+  option: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
   formControl: {
     margin: theme.spacing.unit * 2
+  },
+  formButton: {
+    marginLeft: theme.spacing.unit * 2,
+    textDecoration: 'none'
   },
   button: {
     margin: theme.spacing.unit
@@ -130,9 +159,8 @@ type Props = {
   items: Array<Object>,
   query: string,
   from: string,
-  userClass: string,
-  defaultClass: string,
-  postType: string,
+  userClasses: Array<string>,
+  postTypes: Array<string>,
   classesList: Array<{ value: string, label: string }>,
   isLoading: boolean,
   hasMore: boolean,
@@ -143,6 +171,7 @@ type Props = {
   onReport: Function,
   onDelete: Function,
   onChange: Function,
+  onApplyFilters: Function,
   onClearFilters: Function,
   onLoadMore: Function,
   onUserClick: Function,
@@ -151,20 +180,29 @@ type Props = {
 };
 
 type State = {
-  open: boolean
+  open: boolean,
+  postTypes: Array<string>,
+  userClasses: Array<string>
 };
 
 class FeedList extends React.PureComponent<Props, State> {
   state = {
-    open: false
+    open: false,
+    postTypes: [],
+    userClasses: []
   };
 
   componentDidMount = () => {
     this.mounted = true;
   };
 
-  componentDidUpdate = () => {
+  componentDidUpdate = (prevProps, prevState) => {
+    const { postTypes, userClasses } = this.props;
+    const { open } = this.state;
     if (this.mounted && this.selectedRef) this.handleScrollToRef();
+    if (open !== prevState.open && open) {
+      this.setState({ postTypes, userClasses });
+    }
   };
 
   componentWillUnmount = () => {
@@ -189,12 +227,82 @@ class FeedList extends React.PureComponent<Props, State> {
     this.setState({ open: false });
   };
 
+  handleChange = name => event => {
+    const { value } = event.target;
+    const newState = update(this.state, {
+      [name]: {
+        $apply: b => {
+          const index = b.findIndex(o => o === value);
+          if (event.target.checked && index === -1) {
+            return [...b, value];
+          }
+          if (!event.target.checked && index > -1) {
+            return update(b, { $splice: [[index, 1]] });
+          }
+          return b;
+        }
+      }
+    });
+    this.setState(newState);
+  };
+
+  handleSelectAll = name => () => {
+    const { classesList } = this.props;
+    const values = [];
+    switch (name) {
+      case 'postTypes':
+        values.push(...types.map(item => item.value));
+        break;
+      case 'userClasses':
+        values.push(...classesList.map(item => item.value));
+        break;
+      default:
+        break;
+    }
+    if (values.length > 0) {
+      const newState = update(this.state, {
+        [name]: { $set: values }
+      });
+      this.setState(newState);
+    }
+  };
+
+  handleDeselectAll = name => () => {
+    const newState = update(this.state, {
+      [name]: { $set: [] }
+    });
+    this.setState(newState);
+  };
+
+  handleApplyFilters = () => {
+    const { onApplyFilters } = this.props;
+    const { postTypes, userClasses } = this.state;
+    const filters = [
+      {
+        name: 'postTypes',
+        value: postTypes
+      },
+      {
+        name: 'userClasses',
+        value: userClasses
+      }
+    ];
+    onApplyFilters(filters);
+    this.handleClose();
+  };
+
+  handleClearFilters = () => {
+    const { onClearFilters } = this.props;
+    onClearFilters();
+    this.handleClose();
+  };
+
   getFilterCount = () => {
-    const { from, userClass, postType, defaultClass } = this.props;
+    const { from, userClasses, postTypes } = this.props;
     let count = 0;
     if (from !== 'everyone') count += 1;
-    if (userClass !== defaultClass) count += 1;
-    if (postType !== 0) count += 1;
+    if (userClasses.length > 0) count += 1;
+    if (postTypes.length > 0) count += 1;
     return count;
   };
 
@@ -221,20 +329,19 @@ class FeedList extends React.PureComponent<Props, State> {
       onReport,
       onDelete,
       query,
-      from,
-      userClass,
-      defaultClass,
-      postType,
       hasMore,
       fromFeedId,
       onChange,
-      onClearFilters,
       onLoadMore,
       onUserClick,
       onRefresh
     } = this.props;
-    const { open } = this.state;
+    const { open, postTypes, userClasses } = this.state;
     const filterCount = this.getFilterCount();
+    // eslint-disable-next-line no-script-url
+    const dudUrl = 'javascript:;';
+    const isPostTypesSelected = postTypes.length > 0;
+    const isUserClassesSelected = userClasses.length > 0;
 
     return (
       <div className={classes.container}>
@@ -326,18 +433,106 @@ class FeedList extends React.PureComponent<Props, State> {
           open={open}
           onClose={this.handleClose}
           fullWidth
-          maxWidth="xs"
+          maxWidth="sm"
           aria-labelledby="filter-dialog-title"
           aria-describedby="filter-dialog-description"
         >
           <DialogTitle id="filter-dialog-title" onClose={this.handleClose}>
             {'Filter Posts by:'}
           </DialogTitle>
-          <FormControl className={classes.formControl}>
+          <Grid container>
+            <Grid item xs={12} sm={6} className={classes.option}>
+              <FormControl className={classes.formControl}>
+                <FormLabel component="legend">Post Type</FormLabel>
+                <FormGroup>
+                  {classesList.map(item => (
+                    <FormControlLabel
+                      key={item.label}
+                      control={
+                        <Checkbox
+                          checked={
+                            userClasses.findIndex(o => o === item.value) > -1
+                          }
+                          onChange={this.handleChange('userClasses')}
+                          value={item.value}
+                        />
+                      }
+                      label={item.label}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+              {isUserClassesSelected ? (
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleDeselectAll('userClasses')}
+                >
+                  Deselect All
+                </Link>
+              ) : (
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleSelectAll('userClasses')}
+                >
+                  Select All
+                </Link>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.option}>
+              <FormControl className={classes.formControl}>
+                <FormLabel component="legend">Post Type</FormLabel>
+                <FormGroup>
+                  {types.map(type => (
+                    <FormControlLabel
+                      key={type.label}
+                      control={
+                        <Checkbox
+                          checked={
+                            postTypes.findIndex(o => o === type.value) > -1
+                          }
+                          onChange={this.handleChange('postTypes')}
+                          value={type.value}
+                        />
+                      }
+                      label={type.label}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+              {isPostTypesSelected ? (
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleDeselectAll('postTypes')}
+                >
+                  Deselect All
+                </Link>
+              ) : (
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleSelectAll('postTypes')}
+                >
+                  Select All
+                </Link>
+              )}
+            </Grid>
+          </Grid>
+          {/* <FormControl className={classes.formControl}>
             <InputLabel htmlFor="from-native-helper">From</InputLabel>
             <NativeSelect
               value={from}
-              onChange={onChange('from')}
+              // onChange={onChange('from')}
               input={<Input name="from" id="from-native-helper" />}
             >
               <option value="everyone">Everyone</option>
@@ -345,44 +540,13 @@ class FeedList extends React.PureComponent<Props, State> {
               <option value="my_posts">My Posts</option>
               <option value="bookmarks">Bookmarks</option>
             </NativeSelect>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="userClasses-native-helper">Classes</InputLabel>
-            <NativeSelect
-              value={userClass}
-              onChange={onChange('userClass')}
-              input={<Input name="userClass" id="userClass-native-helper" />}
-            >
-              <option value={defaultClass}>All</option>
-              {classesList.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="postType-native-helper">
-              Type of Post
-            </InputLabel>
-            <NativeSelect
-              value={postType}
-              onChange={onChange('postType')}
-              input={<Input name="postType" id="postType-native-helper" />}
-            >
-              <option value={0}>All</option>
-              <option value={3}>Flashcards</option>
-              <option value={4}>Class notes</option>
-              <option value={5}>Links</option>
-              <option value={6}>Questions</option>
-            </NativeSelect>
-          </FormControl>
+          </FormControl> */}
           <DialogActions className={classes.actions}>
             <Button
               color="primary"
-              // disabled={filterCount === 0}
               className={classes.button}
-              onClick={onClearFilters}
+              disabled={filterCount === 0}
+              onClick={this.handleClearFilters}
             >
               Reset Filters
             </Button>
@@ -397,7 +561,9 @@ class FeedList extends React.PureComponent<Props, State> {
             <Button
               variant="contained"
               color="primary"
+              disabled={!isPostTypesSelected && !isUserClassesSelected}
               className={classes.button}
+              onClick={this.handleApplyFilters}
             >
               Search
             </Button>

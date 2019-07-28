@@ -130,6 +130,11 @@ const theme = createMuiTheme({
       label: {
         color: circleInTheme.primaryText2
       }
+    },
+    MuiFormLabel: {
+      root: {
+        color: circleInTheme.primaryText1
+      }
     }
   }
 });

@@ -107,19 +107,18 @@ export const fetchFeed = () => async (
       }
     } = getState();
 
-    const { userClass, index, limit, postType, query, from } = filters;
+    const { userClasses, index, limit, postTypes, query, from } = filters;
 
-    const { classId, sectionId } = JSON.parse(userClass);
+    // const { classId, sectionId } = JSON.parse(userClass);
 
     dispatch(requestFetchFeed());
     const feed = await feedApi.fetchFeed({
       userId,
       schoolId,
-      classId,
-      sectionId,
+      userClasses,
       index,
       limit,
-      postType,
+      postTypes,
       from,
       query
     });

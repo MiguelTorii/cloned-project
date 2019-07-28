@@ -13,10 +13,10 @@ export type FeedState = {
     items: Feed,
     hasMore: boolean,
     filters: {
-      userClass: string,
+      userClasses: Array<string>,
       index: number,
       limit: number,
-      postType: number,
+      postTypes: Array<string>,
       from: string,
       query: string
     }
@@ -33,10 +33,11 @@ const defaultState = {
     items: [],
     hasMore: false,
     filters: {
-      userClass: JSON.stringify({ classId: -1, sectionId: -1 }),
+      // userClass: JSON.stringify({ classId: -1, sectionId: -1 }),
+      userClasses: [],
       index: 0,
       limit: 100,
-      postType: 0,
+      postTypes: [],
       from: 'everyone',
       query: ''
     }

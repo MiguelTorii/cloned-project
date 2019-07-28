@@ -19,7 +19,7 @@ import { processUserClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 
-const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
+// const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({
   root: {
@@ -171,6 +171,14 @@ class Feed extends React.PureComponent<Props, State> {
     updateFilter({ field: name, value: event.target.value });
   };
 
+  handleApplyFilters = filters => {
+    const { updateFilter } = this.props;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const filter of filters) {
+      updateFilter({ field: filter.name, value: filter.value });
+    }
+  };
+
   handleClearFilters = () => {
     const { clearFilter } = this.props;
     clearFilter();
@@ -245,7 +253,7 @@ class Feed extends React.PureComponent<Props, State> {
         data: {
           items,
           hasMore,
-          filters: { postType, query, from, userClass }
+          filters: { postTypes, query, from, userClasses }
         },
         isLoading
       },
@@ -263,9 +271,9 @@ class Feed extends React.PureComponent<Props, State> {
               items={items}
               query={query}
               from={from}
-              userClass={userClass}
-              defaultClass={defaultClass}
-              postType={postType}
+              userClasses={userClasses}
+              // defaultClass={defaultClass}
+              postTypes={postTypes}
               classesList={classesList}
               hasMore={hasMore}
               fromFeedId={fromFeedId}
@@ -275,6 +283,7 @@ class Feed extends React.PureComponent<Props, State> {
               onReport={this.handleReport}
               onDelete={this.handleDelete}
               onChange={this.handleChange}
+              onApplyFilters={this.handleApplyFilters}
               onClearFilters={this.handleClearFilters}
               onLoadMore={this.handleLoadMore}
               onUserClick={this.handleUserClick}

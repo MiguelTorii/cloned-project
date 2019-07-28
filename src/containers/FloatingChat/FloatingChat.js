@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 // @flow
 
 import React, { Fragment } from 'react';
@@ -77,34 +78,22 @@ class FloatingChat extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     this.initiated = false;
+    this.mounted = true;
     this.updateOpenChannels = debounce(this.updateOpenChannels, 250);
     this.handleInitChat = debounce(this.handleInitChat, 1000);
     window.addEventListener('resize', this.updateOpenChannels);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
       this.setState({ online: false });
-      this.handleShutdownChat();
+      if(this.mounted) this.handleShutdownChat();
     });
     window.addEventListener('online', () => {
       console.log('**** online ****');
       const {online} = this.state;
-      if(!online) window.location.reload()
+      if(!online && this.mounted) window.location.reload()
       // this.setState({ online: true });
     });
     this.handleInitChat();
-
-    // const { enqueueSnackbar, classes } = this.props;
-    // enqueueSnackbar(`MESSAGE RECEIVED`, {
-    //   variant: 'info',
-    //   anchorOrigin: {
-    //     vertical: 'bottom',
-    //     horizontal: 'left'
-    //   },
-    //   autoHideDuration: 2000,
-    //   classes: {
-    //     root: classes.info
-    //   }
-    // });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -125,32 +114,32 @@ class FloatingChat extends React.PureComponent<Props, State> {
       }
     } = prevProps;
     const { online } = this.state;
-    if (prevUserId !== '' && userId === '') {
+    if (prevUserId !== '' && userId === '' && this.mounted) {
       this.handleShutdownChat();
     } else if (
-      (prevUserId === '' && userId !== '' && online) ||
-      (userId !== '' && online && !prevState.online)
+      ((prevUserId === '' && userId !== '' && online) ||
+      (userId !== '' && online && !prevState.online)) && this.mounted
     ) {
       this.handleInitChat();
     }
-    if (uuid !== prevUuid && uuid !== '') this.handleCreateChannelOpen('group');
+    if (uuid !== prevUuid && uuid !== '' && this.mounted) this.handleCreateChannelOpen('group');
 
     if (profileImage !== prevProfileImage && prevProfileImage !== '') {
       const { client } = this.state;
-      if (client) {
+      if (client && this.mounted) {
         try {
           client.user.updateAttributes({
             ...client.user.attributes,
             profileImageUrl: profileImage
           });
         } catch (err) {
-          console.log(err);
         }
       }
     }
   };
 
   componentWillUnmount = () => {
+    this.mounted = false;
     if (
       this.updateOpenChannels.cancel &&
       typeof this.updateOpenChannels.cancel === 'function'
@@ -195,7 +184,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
       this.setState(newState);
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -214,7 +202,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
       this.setState(newState);
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -224,7 +211,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
         unread: prevState.unread + Number(unread)
       }));
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -246,7 +232,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
       });
       this.setState(newState);
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -255,7 +240,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
       const chatSize = 320;
       return Math.trunc((width - chatSize) / chatSize);
     } catch (err) {
-      console.log(err);
       return 0;
     }
   };
@@ -277,7 +261,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    if (userId === '' || this.initiated) return;
+    if (userId === '' || this.initiated || !this.mounted) return;
 
     this.initiated = true;
 
@@ -330,8 +314,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
               return x.sid === first ? -1 : y.sid === first ? 1 : 0;
             })
           }));
-        } else {
-          console.log('update reasons: ', updateReasons);
         }
       });
 
@@ -374,7 +356,6 @@ class FloatingChat extends React.PureComponent<Props, State> {
         await client.updateToken(newToken);
       });
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -384,101 +365,24 @@ class FloatingChat extends React.PureComponent<Props, State> {
       try {
         client.shutdown();
       } catch (err) {
-        console.log(err);
       }
     }
     this.setState({ client: null, channels: [], openChannels: [], unread: 0 });
   };
 
   handleRemoveChannel = async ({ sid }) => {
-    // try {
-    //   channel.updateAttributes({ ...channel.state.attributes, users });
-    // } catch (err) {
-    //   console.log('err');
-    // }
-
     try {
-      // channel.leave();
       await leaveChat({ sid });
     } catch (err) {
-      console.log(err);
     }
   };
-
-  // handleKickUser = ({
-  //   channel,
-  //   users,
-  //   blockedUserId
-  // }: {
-  //   channel: Object,
-  //   users: Array<Object>,
-  //   blockedUserId: string
-  // }) => {
-  //   try {
-  //     channel.updateAttributes({
-  //       ...channel.state.attributes,
-  //       users
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   try {
-  //     channel.removeMember(String(blockedUserId));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   handleBlock = async blockedUserId => {
     try {
       await blockChatUser({ blockedUserId });
     } catch (err) {
-      console.log(err);
     }
   };
-
-  // handleRemoveChannels = async blockedUserId => {
-  //   const {
-  //     user: {
-  //       data: { userId }
-  //     }
-  //   } = this.props;
-
-  //   const { channels } = this.state;
-  //   try {
-  //     // eslint-disable-next-line no-restricted-syntax
-  //     for (const channel of channels) {
-  //       const { state = {} } = channel;
-  //       const { createdBy = '', attributes = {} } = state;
-  //       const { groupType = '', users = [] } = attributes;
-  //       if (users.some(o => Number(o.userId) === Number(blockedUserId))) {
-  //         const newUsers = users.filter(
-  //           o => o.userId.toString() !== blockedUserId.toString()
-  //         );
-  //         if (groupType === '' || users.length <= 2) {
-  //           // eslint-disable-next-line no-await-in-loop
-  //           await this.handleRemoveChannel({ channel, users: newUsers });
-  //         } else if (Number(createdBy) === Number(userId)) {
-  //           // eslint-disable-next-line no-await-in-loop
-  //           await this.handleKickUser({
-  //             channel,
-  //             users: newUsers,
-  //             blockedUserId
-  //           });
-  //           if (newUsers.length <= 1) {
-  //             // eslint-disable-next-line no-await-in-loop
-  //             await this.handleRemoveChannel({ channel, users: newUsers });
-  //           }
-  //         } else {
-  //           // eslint-disable-next-line no-await-in-loop
-  //           await this.handleRemoveChannel({ channel, users: newUsers });
-  //         }
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   handleCreateChannelOpen = type => {
     this.setState({ createChannel: type });
@@ -506,6 +410,8 @@ class FloatingChat extends React.PureComponent<Props, State> {
     }
   };
 
+  mounted: boolean;
+  
   initiated: boolean;
 
   render() {

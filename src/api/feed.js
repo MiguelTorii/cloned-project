@@ -8,32 +8,29 @@ import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 export const fetchFeed = async ({
   userId,
   schoolId,
-  classId,
-  sectionId,
+  userClasses,
   index,
   limit,
-  postType,
+  postTypes,
   from,
   query
 }: {
   userId: string,
   schoolId: number,
-  classId: number,
-  sectionId: number,
+  userClasses: Array<string>,
   index: number,
   limit: number,
-  postType: number,
+  postTypes: Array<string>,
   from: string,
   query: string
 }): Promise<Feed> => {
   const url = generateFeedURL({
     userId,
     schoolId,
-    classId,
-    sectionId,
+    userClasses,
     index,
     limit,
-    postType,
+    postTypes,
     from,
     query
   });

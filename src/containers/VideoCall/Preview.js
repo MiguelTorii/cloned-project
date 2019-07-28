@@ -138,28 +138,42 @@ class Preview extends React.Component<Props, State> {
   }
 
   componentDidMount = async () => {
-    const { updateLoading, updateMediaInput } = this.props;
-    updateLoading(true);
-    const deviceOptions = await this.getDeviceSelectionOptions();
-    const keys = Object.keys(deviceOptions);
+    try {
+      const { updateLoading, updateMediaInput } = this.props;
+      updateLoading(true);
+      const deviceOptions = await this.getDeviceSelectionOptions();
+      const keys = Object.keys(deviceOptions);
+      const inputs = {
+        audioinput: [],
+        videoinput: []
+      };
 
-    for (const key of keys) {
-      this.setState({ [key]: deviceOptions[key] });
-      const device = deviceOptions[key].find(
-        item => item.deviceId === 'default'
-      );
-      if (device) {
-        updateMediaInput(`selected${device.kind}`, device.deviceId);
-      } else if (deviceOptions[key].length > 0) {
-        const selectedDevice = deviceOptions[key][0];
-        updateMediaInput(
-          `selected${selectedDevice.kind}`,
-          selectedDevice.deviceId
+      for (const key of keys) {
+        // this.setState({ [key]: deviceOptions[key] });
+        const device = deviceOptions[key].find(
+          item => item.deviceId === 'default'
         );
+        if (device && device.label !== '') {
+          inputs[key].push(device);
+          updateMediaInput(`selected${device.kind}`, device.deviceId);
+        } else if (
+          deviceOptions[key].length > 0 &&
+          deviceOptions[key][0].label !== ''
+        ) {
+          const selectedDevice = deviceOptions[key][0];
+          inputs[key].push(selectedDevice);
+          updateMediaInput(
+            `selected${selectedDevice.kind}`,
+            selectedDevice.deviceId
+          );
+        }
       }
+      this.setState({ ...inputs });
+      updateLoading(false);
+    } catch (err) {
+      console.log('ERROR');
+      console.log(err);
     }
-
-    updateLoading(false);
   };
 
   componentDidUpdate = prevProps => {
@@ -208,13 +222,12 @@ class Preview extends React.Component<Props, State> {
     updateMediaInput(kind, event.target.value);
   };
 
-  getDeviceSelectionOptions = () => {
+  getDeviceSelectionOptions = async () => {
     return (
       (navigator &&
         navigator.mediaDevices &&
-        navigator.mediaDevices
-          .enumerateDevices()
-          .then((deviceInfos: Array<Object>) => {
+        navigator.mediaDevices.enumerateDevices().then(
+          (deviceInfos: Array<Object>) => {
             const kinds = ['audioinput', 'videoinput'];
             return kinds.reduce(
               (deviceSelectionOptions: Object, kind: string) => {
@@ -227,7 +240,11 @@ class Preview extends React.Component<Props, State> {
               },
               {}
             );
-          })) ||
+          },
+          err => {
+            console.log('MEDIA ERROR: ', err);
+          }
+        )) ||
       {}
     );
   };
@@ -257,7 +274,7 @@ class Preview extends React.Component<Props, State> {
 
   disableCamera = () => {
     const { selectedvideoinput, updateMediaState, isVideoEnabled } = this.props;
-
+    if (selectedvideoinput === '') return;
     if (this.previewVideo && isVideoEnabled) {
       this.previewVideo.stop();
       updateMediaState('isVideoEnabled', false);
@@ -271,8 +288,9 @@ class Preview extends React.Component<Props, State> {
   };
 
   disableAudio = () => {
+    const { selectedaudioinput, updateMediaState } = this.props;
+    if (selectedaudioinput === '') return;
     if (this.previewAudio) {
-      const { updateMediaState } = this.props;
       const newState = !this.previewAudio.isEnabled;
       this.previewAudio.enable(newState);
       updateMediaState('isAudioEnabled', newState);
@@ -317,6 +335,7 @@ class Preview extends React.Component<Props, State> {
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
+
     return (
       <ErrorBoundary>
         <div className={classes.root}>
@@ -345,6 +364,7 @@ class Preview extends React.Component<Props, State> {
                 <Fab
                   color={isVideoEnabled ? 'primary' : 'default'}
                   aria-label="disable-video"
+                  disabled={selectedvideoinput === ''}
                   onClick={this.disableCamera}
                   className={classes.fab}
                   size="small"
@@ -354,6 +374,7 @@ class Preview extends React.Component<Props, State> {
                 <Fab
                   color={isAudioEnabled ? 'primary' : 'default'}
                   aria-label="disable-audio"
+                  disabled={selectedaudioinput === ''}
                   onClick={this.disableAudio}
                   className={classes.fab}
                   size="small"
@@ -400,6 +421,7 @@ class Preview extends React.Component<Props, State> {
           <Dialog
             open={open}
             onClose={this.closeSettings}
+            fullWidth
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title" onClose={this.closeSettings}>

@@ -184,7 +184,7 @@ class MeetUp extends React.Component<Props, State> {
       updateLoading(true);
       const tracks = []
 
-      if (isVideoEnabled) {
+      if (isVideoEnabled && videoinput !== '') {
         const localVideoTrack = await Video.createLocalVideoTrack({
           deviceId: videoinput
         });
@@ -192,31 +192,33 @@ class MeetUp extends React.Component<Props, State> {
         tracks.push(localVideoTrack);
       }
 
-      const localAudioTrack = await Video.createLocalAudioTrack({
-        deviceId: audioinput
-      });
-      localAudioTrack.enable(isAudioEnabled);
-      this.setState({ localAudioTrack });
-      tracks.push(localAudioTrack)
+      if(isAudioEnabled && audioinput !== '') {
+        const localAudioTrack = await Video.createLocalAudioTrack({
+          deviceId: audioinput
+        });
+        localAudioTrack.enable(isAudioEnabled);
+        this.setState({ localAudioTrack });
+        tracks.push(localAudioTrack)
+      }
 
       const localDataTrack = new Video.LocalDataTrack();
       this.setState({
         dataTrack: localDataTrack
       });
 
-      tracks.push(localDataTrack)
-
-      
+      tracks.push(localDataTrack)      
 
       const accessToken = await renewTwilioToken({
         userId
       });
+
       const videoRoom = await Video.connect(accessToken, {
         name: roomName,
         tracks,
         dominantSpeaker: true,
         insights: false,
-        video: isVideoEnabled
+        video: isVideoEnabled && videoinput !== '',
+        audio: isAudioEnabled && audioinput !== ''
       });
       const { localParticipant } = videoRoom;
       this.setState(prevState => ({
@@ -299,7 +301,6 @@ class MeetUp extends React.Component<Props, State> {
       this.setState({ videoRoom });
       updateLoading(false);
     } catch (err) {
-      console.log(err);
       updateLoading(false);
       this.leaveRoom();
     }
@@ -400,8 +401,8 @@ class MeetUp extends React.Component<Props, State> {
     const { leaveRoom } = this.props;
     if (videoRoom) {
       await videoRoom.disconnect();
-      leaveRoom();
     }
+    leaveRoom();
   };
 
   disableVideo = async () => {
@@ -475,17 +476,6 @@ class MeetUp extends React.Component<Props, State> {
       };
       dataTrack.send(JSON.stringify(message));
     }
-    // const { videoRoom, dataTrack } = this.state;
-    // if (!dataTrack) {
-    //   const newDataTrack = new Video.LocalDataTrack();
-    //   this.setState({
-    //     dataTrack: newDataTrack
-    //   });
-    //   videoRoom.localParticipant.publishTrack(newDataTrack);
-    // } else {
-    //   videoRoom.localParticipant.unpublishTrack(dataTrack);
-    //   this.setState({ dataTrack: null });
-    // }
   };
 
   sendDataMessage = data => {
@@ -562,7 +552,6 @@ class MeetUp extends React.Component<Props, State> {
         postingPoints: false
       });
     } catch (err) {
-      console.log(err);
       this.setState({ postingPoints: false });
     }
   };
