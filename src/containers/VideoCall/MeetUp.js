@@ -433,7 +433,7 @@ class MeetUp extends React.Component<Props, State> {
   disableAudio = () => {
     const { localAudioTrack } = this.state;
     if (localAudioTrack) {
-      const isEnabled = !localAudioTrack.isEnabled;
+      const isEnabled = localAudioTrack ? !localAudioTrack.isEnabled : false;
       localAudioTrack.enable(!localAudioTrack.isEnabled);
       this.setState({ isAudioEnabled: isEnabled });
     }
