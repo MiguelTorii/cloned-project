@@ -35,6 +35,7 @@ export const API_ROUTES = {
   CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
   CANVAS_LOGIN: `${API_URL}/canvas/auth/login`,
   FEED: `${API_URL}/feed`,
+  FEED_V1_1: `${API_URL_V1_1}/feed`,
   CREATELINK: `${API_URL}/feed/link/post`,
   USER: `${API_URL}/user`,
   USER_CLASS: `${API_URL}/user/class`,
