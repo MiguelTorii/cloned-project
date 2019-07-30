@@ -116,6 +116,7 @@ class Profile extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     this.handleGetProfile();
+    this.handleFetchFeed();
     const { edit } = this.props;
     this.setState({ edit });
   };
@@ -127,14 +128,11 @@ class Profile extends React.PureComponent<Props, State> {
         const { userProfile, about, userStatistics } = await getUserProfile({
           userId
         });
-        const feed = await fetchFeedv2({
-          userId
-        });
+        
         this.setState({
           userProfile,
           about,
           userStatistics,
-          feed,
           isLoading: false
         });
       }
@@ -142,6 +140,15 @@ class Profile extends React.PureComponent<Props, State> {
       this.setState({ error: true, isLoading: false });
     }
   };
+
+  handleFetchFeed = () => {
+    const { userId } = this.props;
+    if(userId !== '') {
+      fetchFeedv2({
+        userId
+      }).then(feed => {this.setState({feed})})
+    }
+  }
 
   handleOpenEdit = () => {
     this.setState({ edit: true });

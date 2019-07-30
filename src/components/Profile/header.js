@@ -124,9 +124,11 @@ type Props = {
   joined: string,
   chatLoading: boolean,
   uploading: boolean,
+  tab: number,
   onStartChat: Function,
   onStartVideo: Function,
-  onUpdateProfileImage: Function
+  onUpdateProfileImage: Function,
+  onChange: Function
 };
 
 class Header extends React.PureComponent<Props> {
