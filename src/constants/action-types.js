@@ -45,6 +45,10 @@ export const feedActions = {
   CLEAR_FEED_FILTER_REQUEST: 'CLEAR_FEED_FILTER_REQUEST'
 };
 
+export const authActions = {
+  UPDATE_AUTH_SCHOOL_REQUEST: 'UPDATE_AUTH_SCHOOL_REQUEST'
+};
+
 export const rootActions = {
   CLEAR_STATE: 'CLEAR_STATE'
 };

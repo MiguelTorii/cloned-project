@@ -262,6 +262,20 @@ export type LMSSchool = {
 
 export type LMSSchools = Array<LMSSchool>;
 
+export type School = {
+  id: number,
+  clientId: string,
+  school: string,
+  uri: string,
+  authUri: string,
+  lmsTypeId: number,
+  emailRestriction: boolean,
+  emailDomain: Array<string>,
+  scope: string
+};
+
+export type Schools = Array<School>;
+
 export type ChatMessageListItem = {
   sid: string,
   body: string,

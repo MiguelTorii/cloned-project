@@ -3,14 +3,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import FederatedLogin from '../FederatedLogin';
 import SignInForm from '../../components/SignInForm';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
+import type { AuthState } from '../../reducers/auth';
 import * as signInActions from '../../actions/sign-in';
+import * as authActions from '../../actions/auth';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
 import logo from '../../assets/svg/circlein_logo_beta.svg';
@@ -41,8 +43,10 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
+  auth: AuthState,
   signIn: Function,
-  clearError: Function
+  clearError: Function,
+  updateSchool: Function
 };
 
 type State = {
@@ -80,15 +84,27 @@ class SignIn extends React.Component<Props, State> {
     clearError();
   };
 
+  handleChangeSchool = () => {
+    const { updateSchool } = this.props;
+    updateSchool({ school: null });
+  };
+
   render() {
-    const { classes, user } = this.props;
+    const {
+      classes,
+      user,
+      auth: {
+        data: { school }
+      }
+    } = this.props;
     const { email, password } = this.state;
     const { error, errorMessage, isLoading } = user;
     const { title, body } = errorMessage;
 
+    if (!school) return <Redirect to="/auth" />;
+
     return (
       <main className={classes.main}>
-        <div className={classes.overlay} />
         <Grid container justify="space-around">
           <Grid item xs={12} lg={6} className={classes.grid}>
             <img src={logo} alt="Logo" className={classes.logo} />
@@ -97,17 +113,12 @@ class SignIn extends React.Component<Props, State> {
                 email={email}
                 password={password}
                 loading={isLoading}
-                federatedLogin={<FederatedLogin />}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
+                onChangeSchool={this.handleChangeSchool}
               />
             </ErrorBoundary>
           </Grid>
-          {/* <Grid item lg={6}>
-            <ErrorBoundary>
-              <FederatedLogin />
-            </ErrorBoundary>
-          </Grid> */}
         </Grid>
         <ErrorBoundary>
           <SimpleErrorDialog
@@ -122,15 +133,17 @@ class SignIn extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, auth }: StoreState): {} => ({
+  user,
+  auth
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       signIn: signInActions.signIn,
-      clearError: signInActions.clearSignInError
+      clearError: signInActions.clearSignInError,
+      updateSchool: authActions.updateSchool
     },
     dispatch
   );

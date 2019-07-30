@@ -18,7 +18,7 @@ type Props = {
 
 type State = {};
 
-class Sandbox extends React.Component<ProvidedProps & Props, State> {
+class AuthPage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
@@ -32,4 +32,4 @@ class Sandbox extends React.Component<ProvidedProps & Props, State> {
   }
 }
 
-export default withRoot(withStyles(styles)(Sandbox));
+export default withRoot(withStyles(styles)(AuthPage));

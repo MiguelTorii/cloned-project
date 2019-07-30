@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
@@ -78,9 +77,9 @@ type Props = {
   email: String,
   password: String,
   loading: boolean,
-  federatedLogin: Node,
   handleChange: Function,
-  handleSubmit: Function
+  handleSubmit: Function,
+  onChangeSchool: Function
 };
 
 type State = {};
@@ -92,9 +91,9 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
       email,
       password,
       loading,
-      federatedLogin,
       handleSubmit,
-      handleChange
+      handleChange,
+      onChangeSchool
     } = this.props;
     return (
       <main className={classes.main}>
@@ -154,6 +153,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           </ValidatorForm>
           <div className={classes.links}>
             <Typography variant="subtitle1" gutterBottom>
+              {"Don't have an account? "}
               <Link
                 component={MyLink}
                 link="/signup"
@@ -161,10 +161,10 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
                 className={classes.link}
                 disabled={loading}
               >
-                Create new account
+                Sign Up
               </Link>
             </Typography>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" gutterBottom>
               <Link
                 component={MyLink}
                 link="/forgot_password"
@@ -172,12 +172,14 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
                 className={classes.link}
                 disabled={loading}
               >
-                Forgot my password
+                Forgot Password
               </Link>
             </Typography>
+            <Button variant="outlined" color="primary" onClick={onChangeSchool}>
+              Select a Different School
+            </Button>
           </div>
           <Divider className={classes.divider} />
-          {federatedLogin}
         </Paper>
       </main>
     );

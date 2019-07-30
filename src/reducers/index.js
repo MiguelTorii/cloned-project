@@ -6,12 +6,14 @@ import type { BrowserHistory } from 'history';
 import user from './user';
 import chat from './chat';
 import feed from './feed';
+import auth from './auth';
 import webNotifications from './web-notifications';
 
 const reducers = {
   user,
   chat,
   feed,
+  auth,
   webNotifications
 };
 

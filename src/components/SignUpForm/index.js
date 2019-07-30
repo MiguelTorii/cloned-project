@@ -7,8 +7,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 
@@ -25,8 +25,8 @@ const styles = theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
-    marginBottom: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -48,35 +48,35 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  type: string,
+  // type: string,
   children: Node,
-  onReset: Function
+  // onReset: Function
+  onChangeSchool: Function
 };
 
 type State = {};
 
 class SignUpForm extends React.PureComponent<Props, State> {
-  renderTypeLink = () => {
-    const { type, onReset } = this.props;
-    if (type === '') return null;
+  // renderTypeLink = () => {
+  //   const { type, onReset } = this.props;
+  //   if (type === '') return null;
 
-    return (
-      <Typography variant="subtitle1" gutterBottom>
-        {`Signing up as a ${type} student `}
-        <Link component="button" onClick={onReset}>
-          Change
-        </Link>
-      </Typography>
-    );
-  };
+  //   return (
+  //     <Typography variant="subtitle1" gutterBottom>
+  //       {`Signing up as a ${type} student `}
+  //       <Link component="button" onClick={onReset}>
+  //         Change
+  //       </Link>
+  //     </Typography>
+  //   );
+  // };
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, onChangeSchool } = this.props;
 
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <img src={logo} alt="Logo" />
           <Typography component="h1" variant="h5">
             Create your CircleIn Account
           </Typography>
@@ -88,7 +88,10 @@ class SignUpForm extends React.PureComponent<Props, State> {
                 Sign in
               </Link>
             </Typography>
-            {this.renderTypeLink()}
+            <Button variant="outlined" color="primary" onClick={onChangeSchool}>
+              Select a Different School
+            </Button>
+            {/* {this.renderTypeLink()} */}
           </div>
         </Paper>
       </main>

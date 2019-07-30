@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import cx from 'classnames';
 import {
   ValidatorForm,
@@ -12,12 +12,12 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+// import Typography from '@material-ui/core/Typography';
+// import Divider from '@material-ui/core/Divider';
 import green from '@material-ui/core/colors/green';
-import AutoComplete from '../AutoComplete';
-import type { SelectType } from '../../types/models';
-import { states, grades } from '../../constants/clients';
+// import AutoComplete from '../AutoComplete';
+// import type { SelectType } from '../../types/models';
+import { states } from '../../constants/clients';
 
 const styles = theme => ({
   form: {
@@ -58,81 +58,88 @@ type Props = {
   type: string,
   loading: boolean,
   hide: boolean,
-  onLoadOptions: Function,
+  // onLoadOptions: Function,
   onBack: Function,
   onSubmit: Function
 };
 
 type State = {
   state: string,
-  grade: string | number,
-  school: ?SelectType,
-  studentId: string,
-  parentFirstName: string,
-  parentLastName: string,
-  parentEmail: string,
-  parentPhone: string,
-  error: boolean
+  // grade: string | number,
+  // school: ?SelectType,
+  studentId: string
+  // parentFirstName: string,
+  // parentLastName: string,
+  // parentEmail: string,
+  // parentPhone: string,
+  // error: boolean
 };
 
 class ProfileSetup extends React.PureComponent<Props, State> {
   state = {
     state: '',
-    grade: '',
-    school: null,
-    studentId: '',
-    parentFirstName: '',
-    parentLastName: '',
-    parentEmail: '',
-    parentPhone: '',
-    error: false
+    // grade: '',
+    // school: null,
+    studentId: ''
+    // parentFirstName: '',
+    // parentLastName: '',
+    // parentEmail: '',
+    // parentPhone: '',
+    // error: false
   };
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
 
-  handleAutoComplete = value => {
-    this.setState({ school: value });
-    if (!value) this.setState({ error: true });
-    else this.setState({ error: false });
-  };
+  // handleAutoComplete = value => {
+  //   this.setState({ school: value });
+  //   if (!value) this.setState({ error: true });
+  //   else this.setState({ error: false });
+  // };
 
-  handleLoadOptions = () => {
-    const { state } = this.state;
-    const { type, onLoadOptions } = this.props;
-    return onLoadOptions({ type, stateId: state });
-  };
+  // handleLoadOptions = () => {
+  //   const { state } = this.state;
+  //   const { type, onLoadOptions } = this.props;
+  //   return onLoadOptions({ type, stateId: state });
+  // };
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const { school, error, ...newState } = this.state;
-    if (school) {
-      const data = {
-        action: 'ProfileSetup',
-        data: {
-          school: Number(school.value),
-          ...newState
-        }
-      };
-      onSubmit(data);
-    } else {
-      this.setState({ error: true });
-    }
+    // const { error, ...newState } = this.state;
+    const data = {
+      action: 'ProfileSetup',
+      data: {
+        ...this.state
+      }
+    };
+    onSubmit(data);
+    // if (school) {
+    //   const data = {
+    //     action: 'ProfileSetup',
+    //     data: {
+    //       school: Number(school.value),
+    //       ...newState
+    //     }
+    //   };
+    //   onSubmit(data);
+    // } else {
+    //   this.setState({ error: true });
+    // }
   };
 
   render() {
     const { classes, type, hide, loading, onBack } = this.props;
     const {
       state,
-      grade,
-      school,
-      studentId,
-      parentFirstName,
-      parentLastName,
-      parentEmail,
-      parentPhone,
-      error
+      // grade,
+      // school,
+      studentId
+      // parentFirstName,
+      // parentLastName,
+      // parentEmail,
+      // parentPhone,
+      // error
     } = this.state;
 
     return (
@@ -162,7 +169,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
             ))}
           </SelectValidator>
         </FormControl>
-        <FormControl
+        {/* <FormControl
           variant="outlined"
           fullWidth
           className={classes.formControl}
@@ -183,8 +190,8 @@ class ProfileSetup extends React.PureComponent<Props, State> {
               </MenuItem>
             ))}
           </SelectValidator>
-        </FormControl>
-        <AutoComplete
+        </FormControl> */}
+        {/* <AutoComplete
           style={{ zIndex: 9999 }}
           values={school}
           isDisabled={state === ''}
@@ -199,7 +206,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
           }`}
           onChange={this.handleAutoComplete}
           onLoadOptions={this.handleLoadOptions}
-        />
+        /> */}
         <TextValidator
           variant="outlined"
           label="Student ID"
@@ -211,7 +218,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
           value={studentId}
           disabled={loading}
         />
-        {type === 'K-12' && grade !== '' && Number(grade) <= 8 && (
+        {/* {type === 'K-12' && grade !== '' && Number(grade) <= 8 && (
           <Fragment>
             <Typography variant="subtitle1" className={classes.title}>
               Parent Info
@@ -270,7 +277,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
               errorMessages={['Phone Number is required']}
             />
           </Fragment>
-        )}
+        )} */}
         <div className={classes.actions}>
           <Button
             variant="contained"
