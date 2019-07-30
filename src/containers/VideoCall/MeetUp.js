@@ -458,11 +458,11 @@ class MeetUp extends React.Component<Props, State> {
 
       if (videoRoom && videoRoom.localParticipant) {
         videoRoom.localParticipant.publishTrack(newScreenTrack);
-        videoRoom.localParticipant.unpublishTrack(localVideoTrack);
+        if(localVideoTrack) videoRoom.localParticipant.unpublishTrack(localVideoTrack);
       }
     } else if (videoRoom && videoRoom.localParticipant) {
       videoRoom.localParticipant.unpublishTrack(screenTrack);
-      videoRoom.localParticipant.publishTrack(localVideoTrack);
+      if(localVideoTrack) videoRoom.localParticipant.publishTrack(localVideoTrack);
       this.stopScreenTrack();
     }
   };
