@@ -262,6 +262,20 @@ export type LMSSchool = {
 
 export type LMSSchools = Array<LMSSchool>;
 
+export type School = {
+  id: number,
+  clientId: string,
+  school: string,
+  uri: string,
+  authUri: string,
+  lmsTypeId: number,
+  emailRestriction: boolean,
+  emailDomain: Array<string>,
+  scope: string
+};
+
+export type Schools = Array<School>;
+
 export type ChatMessageListItem = {
   sid: string,
   body: string,
@@ -284,6 +298,19 @@ export type ChatMessage = {
 };
 
 export type ChatMessages = Array<ChatMessage>;
+
+export type ChatUser = {
+  firstName: string,
+  hours: number,
+  joined: string,
+  lastName: string,
+  profileImageUrl: string,
+  rank: number,
+  scholarshipPoints: number,
+  schoolId: number,
+  state: string,
+  userId: string
+};
 
 export type ChatChannel = {
   sid: string
@@ -426,15 +453,58 @@ export type Notifications = {
   unreadCount: number
 };
 
-export type HomeCardStyle = {
+export type CardStyle = {
   substring: string,
   textColor: string,
   weight: string
 };
 
-export type HomeCardQuest = {
-  item: string,
+export type HomeCardSlot = {
+  bgColor: string,
+  company: string,
+  displayName: string,
+  imageUrl: string,
+  rewardId: number,
+  rewardValue: number,
+  slot: number,
+  thumbnailUrl: string
+};
+
+export type HomeCardOrder = {
+  cardId: number,
+  hidden: boolean
+};
+
+export type HomeCard = {
+  title: string,
+  subtitle: {
+    text: string,
+    style: Array<CardStyle>
+  },
+  slots: Array<HomeCardSlot>,
+  order: Array<HomeCardOrder>
+};
+
+export type DailyStreaksCard = {
+  title: string,
+  currentDay: number,
+  hasSeen: boolean,
+  subtitle: {
+    text: string,
+    style: Array<CardStyle>
+  },
+  tiers: Array<{
+    day: number,
+    points: number
+  }>
+};
+
+export type Quest = {
+  id: number,
+  iconUrl: string,
+  pointsAvailable: number,
   status: string,
+  task: string,
   action: {
     name: string,
     value: string,
@@ -446,24 +516,38 @@ export type HomeCardQuest = {
   }
 };
 
-export type HomeCard = {
-  cardId: string,
-  title: string,
-  data: {
-    message: {
-      text: string,
-      style: Array<HomeCardStyle>
-    },
-    progressMessage: {
-      text: string,
-      style: Array<HomeCardStyle>
-    },
-    quests: Array<HomeCardQuest>,
-    imageUrl: string
+export type QuestsCard = {
+  activeQuests: Array<Quest>,
+  availablePointsText: {
+    text: string,
+    style: Array<CardStyle>
+  },
+  progressText: {
+    text: string,
+    style: Array<CardStyle>
   }
 };
 
-export type HomeCards = Array<HomeCard>;
+export type CurrentSeasonCard = {
+  seasonId: number,
+  bestAnswers: string,
+  grandPrizeText: string,
+  logoUrl: string,
+  points: string,
+  reach: string,
+  serviceHours: string,
+  thanks: string
+};
+
+export type InviteCard = {
+  imageUrl: string,
+  referralCode: string,
+  subtitle: {
+    text: string,
+    style: Array<CardStyle>
+  },
+  title: string
+};
 
 export type ChatPoints = {
   currentWeekCount: number,

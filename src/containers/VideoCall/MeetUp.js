@@ -77,6 +77,10 @@ const styles = theme => ({
   canvasImg: {
     width: '300px !important',
     height: 'auto !important'
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
   }
 });
 
@@ -178,30 +182,43 @@ class MeetUp extends React.Component<Props, State> {
       this.setState({ noPointsAllowed });
 
       updateLoading(true);
-      const localVideoTrack = await Video.createLocalVideoTrack({
-        deviceId: videoinput
-      });
-      this.setState({ localVideoTrack });
-      const localAudioTrack = await Video.createLocalAudioTrack({
-        deviceId: audioinput
-      });
-      this.setState({ localAudioTrack });
+      const tracks = []
+
+      if (isVideoEnabled && videoinput !== '') {
+        const localVideoTrack = await Video.createLocalVideoTrack({
+          deviceId: videoinput
+        });
+        this.setState({ localVideoTrack });
+        tracks.push(localVideoTrack);
+      }
+
+      if(isAudioEnabled && audioinput !== '') {
+        const localAudioTrack = await Video.createLocalAudioTrack({
+          deviceId: audioinput
+        });
+        localAudioTrack.enable(isAudioEnabled);
+        this.setState({ localAudioTrack });
+        tracks.push(localAudioTrack)
+      }
+
       const localDataTrack = new Video.LocalDataTrack();
       this.setState({
         dataTrack: localDataTrack
       });
 
-      localVideoTrack.enable(isVideoEnabled);
-      localAudioTrack.enable(isAudioEnabled);
+      tracks.push(localDataTrack)      
 
       const accessToken = await renewTwilioToken({
         userId
       });
+
       const videoRoom = await Video.connect(accessToken, {
         name: roomName,
-        tracks: [localVideoTrack, localAudioTrack, localDataTrack],
+        tracks,
         dominantSpeaker: true,
-        insights: false
+        insights: false,
+        video: isVideoEnabled && videoinput !== '',
+        audio: isAudioEnabled && audioinput !== ''
       });
       const { localParticipant } = videoRoom;
       this.setState(prevState => ({
@@ -233,7 +250,7 @@ class MeetUp extends React.Component<Props, State> {
             sid
           });
           if (success) {
-            const { enqueueSnackbar } = this.props;
+            const { enqueueSnackbar, classes } = this.props;
             enqueueSnackbar(
               'Congratulations, you have just earned some points because you initiated a Video meet-up. Good Work!',
               {
@@ -242,7 +259,12 @@ class MeetUp extends React.Component<Props, State> {
                   vertical: 'bottom',
                   horizontal: 'left'
                 },
-                autoHideDuration: 5000
+                autoHideDuration: 5000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
+                }
               }
             );
           }
@@ -279,7 +301,6 @@ class MeetUp extends React.Component<Props, State> {
       this.setState({ videoRoom });
       updateLoading(false);
     } catch (err) {
-      console.log(err);
       updateLoading(false);
       this.leaveRoom();
     }
@@ -380,23 +401,39 @@ class MeetUp extends React.Component<Props, State> {
     const { leaveRoom } = this.props;
     if (videoRoom) {
       await videoRoom.disconnect();
-      leaveRoom();
     }
+    leaveRoom();
   };
 
-  disableVideo = () => {
-    const { localVideoTrack } = this.state;
-    if (localVideoTrack) {
-      const isEnabled = !localVideoTrack.isEnabled;
-      localVideoTrack.enable(isEnabled);
-      this.setState({ isVideoEnabled: isEnabled });
+  disableVideo = async () => {
+    const { videoinput } = this.props;
+    const { videoRoom, localVideoTrack, isVideoEnabled } = this.state;
+    if (localVideoTrack && isVideoEnabled) {
+      
+      // localVideoTrack.enable(false);
+      localVideoTrack.stop();
+      if (videoRoom && videoRoom.localParticipant) {
+        videoRoom.localParticipant.unpublishTrack(localVideoTrack);
+      }
+      this.setState({ isVideoEnabled: false });
+    } else {
+      const newLocalVideoTrack = await Video.createLocalVideoTrack({
+        deviceId: videoinput
+      });
+
+      if (videoRoom && videoRoom.localParticipant) {
+        videoRoom.localParticipant.publishTrack(newLocalVideoTrack);
+      }
+
+      this.setState({ localVideoTrack: newLocalVideoTrack });
+      this.setState({ isVideoEnabled: true });
     }
   };
 
   disableAudio = () => {
     const { localAudioTrack } = this.state;
     if (localAudioTrack) {
-      const isEnabled = !localAudioTrack.isEnabled;
+      const isEnabled = localAudioTrack ? !localAudioTrack.isEnabled : false;
       localAudioTrack.enable(!localAudioTrack.isEnabled);
       this.setState({ isAudioEnabled: isEnabled });
     }
@@ -411,17 +448,21 @@ class MeetUp extends React.Component<Props, State> {
       });
       const newScreenTrack = first(stream.getVideoTracks());
 
+      newScreenTrack.addEventListener('ended', () => {
+        this.shareScreen();
+      });
+
       this.setState({
         screenTrack: new Video.LocalVideoTrack(newScreenTrack)
       });
 
       if (videoRoom && videoRoom.localParticipant) {
         videoRoom.localParticipant.publishTrack(newScreenTrack);
-        videoRoom.localParticipant.unpublishTrack(localVideoTrack);
+        if(localVideoTrack) videoRoom.localParticipant.unpublishTrack(localVideoTrack);
       }
     } else if (videoRoom && videoRoom.localParticipant) {
       videoRoom.localParticipant.unpublishTrack(screenTrack);
-      videoRoom.localParticipant.publishTrack(localVideoTrack);
+      if(localVideoTrack) videoRoom.localParticipant.publishTrack(localVideoTrack);
       this.stopScreenTrack();
     }
   };
@@ -435,17 +476,6 @@ class MeetUp extends React.Component<Props, State> {
       };
       dataTrack.send(JSON.stringify(message));
     }
-    // const { videoRoom, dataTrack } = this.state;
-    // if (!dataTrack) {
-    //   const newDataTrack = new Video.LocalDataTrack();
-    //   this.setState({
-    //     dataTrack: newDataTrack
-    //   });
-    //   videoRoom.localParticipant.publishTrack(newDataTrack);
-    // } else {
-    //   videoRoom.localParticipant.unpublishTrack(dataTrack);
-    //   this.setState({ dataTrack: null });
-    // }
   };
 
   sendDataMessage = data => {
@@ -522,64 +552,57 @@ class MeetUp extends React.Component<Props, State> {
         postingPoints: false
       });
     } catch (err) {
-      console.log(err);
       this.setState({ postingPoints: false });
     }
   };
 
   handlePencilChange = size => {
-    this.setState({lineWidth: size, isText: false, eraser: false})
-  }
+    this.setState({ lineWidth: size, isText: false, eraser: false });
+  };
 
   handleTextChange = () => {
-    this.setState({isText: true, eraser: false})
-  }
+    this.setState({ isText: true, eraser: false });
+  };
 
   handleColorChange = color => {
-    this.setState({color})
-  }
+    this.setState({ color });
+  };
 
-  handleErase = () => {
-    this.setState({lineWidth: 20, isText: false, eraser: true})
-  }
+  handleErase = size => {
+    this.setState({ lineWidth: size, isText: false, eraser: true });
+  };
 
   handleSave = () => {
-    const {current} = this.whiteboard;
-    if(current) {
-      const {canvas} = current;
-      if(canvas) {
-        const {current: currentCanvas} = canvas;
-        if(currentCanvas) {
-          const canvasImg = currentCanvas.toDataURL("image/png");
-          this.setState({canvasImg})
-          // document.write(`<a href="${img}" download="download" >Download as jpeg</a>`);
-  //         img.style.display = 'block';
-  //  img.style.width= "200px";
-  //  img.style.height="200px";
-  //  var url=img.getAttribute('src');
-  //  window.open(img,'Image','width=img.stylewidth,height=img.style.height,resizable=1');
+    const { current } = this.whiteboard;
+    if (current) {
+      const { canvas } = current;
+      if (canvas) {
+        const { current: currentCanvas } = canvas;
+        if (currentCanvas) {
+          const canvasImg = currentCanvas.toDataURL('image/png');
+          this.setState({ canvasImg });
         }
       }
     }
-  }
+  };
 
   handleCanvasClose = () => {
-    this.setState({canvasImg: ''})
-  }
+    this.setState({ canvasImg: '' });
+  };
 
   handleClear = () => {
-    const {current} = this.whiteboard;
-    if(current) {
-      const {canvas} = current;
-      if(canvas) {
-        const {current: currentCanvas} = canvas;
-        if(currentCanvas) {
+    const { current } = this.whiteboard;
+    if (current) {
+      const { canvas } = current;
+      if (canvas) {
+        const { current: currentCanvas } = canvas;
+        if (currentCanvas) {
           const context = currentCanvas.getContext('2d');
           context.clearRect(0, 0, currentCanvas.width, currentCanvas.height);
         }
       }
     }
-  }
+  };
 
   detachTrack(trackName) {
     // eslint-disable-next-line react/destructuring-assignment
@@ -606,7 +629,10 @@ class MeetUp extends React.Component<Props, State> {
   started: number;
 
   render() {
-    const { classes, user: {userId, firstName, lastName} } = this.props;
+    const {
+      classes,
+      user: { userId, firstName, lastName }
+    } = this.props;
     const {
       videoRoom,
       isVideoEnabled,
@@ -668,18 +694,26 @@ class MeetUp extends React.Component<Props, State> {
             />
           )}
           {isWhiteboardEnabled && (
-            <Fragment><Whiteboard
-            innerRef={this.whiteboard}
-            userId={userId}
-            name={`${firstName} ${lastName}`}
-              drawData={drawData}
-              lineWidth={lineWidth}
-              color={color}
-              isText={isText}
-              eraser={eraser}
-              sendDataMessage={this.sendDataMessage}
-            />
-            <WhiteboardControls onPencilChange={this.handlePencilChange} onColorChange={this.handleColorChange} onErase={this.handleErase} onText={this.handleTextChange} onSave={this.handleSave} onClear={this.handleClear} />
+            <Fragment>
+              <Whiteboard
+                innerRef={this.whiteboard}
+                userId={userId}
+                name={`${firstName} ${lastName}`}
+                drawData={drawData}
+                lineWidth={lineWidth}
+                color={color}
+                isText={isText}
+                eraser={eraser}
+                sendDataMessage={this.sendDataMessage}
+              />
+              <WhiteboardControls
+                onPencilChange={this.handlePencilChange}
+                onColorChange={this.handleColorChange}
+                onErase={this.handleErase}
+                onText={this.handleTextChange}
+                onSave={this.handleSave}
+                onClear={this.handleClear}
+              />
             </Fragment>
           )}
           <Dialog
@@ -689,8 +723,8 @@ class MeetUp extends React.Component<Props, State> {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title" onClose={this.handleClose}>
-            Screen Sharing Not Supported
-          </DialogTitle>
+              Screen Sharing Not Supported
+            </DialogTitle>
             <DialogContent>
               <DialogContentText
                 id="alert-dialog-description"
@@ -713,11 +747,20 @@ class MeetUp extends React.Component<Props, State> {
             aria-labelledby="canvas-img-dialog-title"
             aria-describedby="canvas-img-dialog-description"
           >
-            <DialogTitle id="canvas-img-dialog-title" onClose={this.handleClose}>
-            Whiteboard Screenshot
-          </DialogTitle>
+            <DialogTitle
+              id="canvas-img-dialog-title"
+              onClose={this.handleClose}
+            >
+              Whiteboard Screenshot
+            </DialogTitle>
             <DialogContent className={classes.canvasWrapper}>
-              {canvasImg !== '' && <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot"/>}
+              {canvasImg !== '' && (
+                <img
+                  src={canvasImg}
+                  className={classes.canvasImg}
+                  alt="Canvas screenshot"
+                />
+              )}
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCanvasClose} color="primary">

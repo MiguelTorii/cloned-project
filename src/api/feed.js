@@ -8,42 +8,90 @@ import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 export const fetchFeed = async ({
   userId,
   schoolId,
-  classId,
-  sectionId,
+  userClasses,
   index,
   limit,
-  postType,
+  postTypes,
   from,
   query
 }: {
   userId: string,
   schoolId: number,
-  classId: number,
-  sectionId: number,
+  userClasses: Array<string>,
   index: number,
   limit: number,
-  postType: number,
+  postTypes: Array<string>,
   from: string,
   query: string
 }): Promise<Feed> => {
   const url = generateFeedURL({
     userId,
     schoolId,
-    classId,
-    sectionId,
+    userClasses,
     index,
     limit,
-    postType,
+    postTypes,
     from,
     query
   });
   try {
     const token = await getToken();
-    const result = await axios.get(`${API_ROUTES.FEED}${url}`, {
+    const result = await axios.get(`${API_ROUTES.FEED_V1_1}${url}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+    const {
+      data: { posts }
+    } = result;
+
+    const feed = feedToCamelCase(posts);
+    return feed;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+export const queryFeed = async ({
+  query
+}: {
+  query: string
+}): Promise<Array<Object>> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const {
+      data: { results }
+    } = result;
+
+    const feed = feedToCamelCase(results);
+    return feed;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+export const fetchFeedv2 = async ({
+  userId
+}: {
+  userId: string
+}): Promise<Feed> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.FEED_V1_1}?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
     const {
       data: { posts }
     } = result;

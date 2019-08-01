@@ -10,7 +10,11 @@ import type {
   StudyCircle,
   UserStats,
   DailyRewards,
-  HomeCards
+  HomeCard,
+  DailyStreaksCard,
+  QuestsCard,
+  CurrentSeasonCard,
+  InviteCard
 } from '../types/models';
 import { getToken } from './utils';
 
@@ -20,6 +24,7 @@ export const getUserProfile = async ({
   userId: string
 }): Promise<Profile> => {
   try {
+    if(!userId) throw new Error('No userId specified')
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
       headers: {
@@ -413,7 +418,6 @@ export const getLeaderboard = async ({
       username: String((item.username: string) || '')
     }));
   } catch (err) {
-    console.log(err);
     return [];
   }
 };
@@ -443,7 +447,6 @@ export const getStudyCircle = async ({
       typeId: Number((item.study_circle_type_id: number) || 0)
     }));
   } catch (err) {
-    console.log(err);
     return [];
   }
 };
@@ -474,7 +477,6 @@ export const getUserStats = async ({
       )
     };
   } catch (err) {
-    console.log(err);
     return {
       communityServiceHours: 0,
       reach: 0,
@@ -512,7 +514,6 @@ export const getDailyRewards = async ({
       stage: Number((reward.stage: number) || 0)
     };
   } catch (err) {
-    console.log(err);
     return {
       givenPoints: 0,
       pointsLeft: 0,
@@ -546,7 +547,6 @@ export const updateProfile = async ({
 
     return data;
   } catch (err) {
-    console.log(err);
     return {};
   }
 };
@@ -578,80 +578,235 @@ export const updateUserProfileUrl = async ({
 
     return data;
   } catch (err) {
-    console.log(err);
     return {};
   }
 };
 
-export const getHome = async ({
-  userId
-}: {
-  userId: string
-}): Promise<HomeCards> => {
+export const getHome = async (): Promise<HomeCard> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(`${API_ROUTES.HOME_V1_1}/${userId}`, {
+    const result = await axios.get(API_ROUTES.HOME_V1_1, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-    const { data: cardData = {} } = result;
-    const { cards = [] } = cardData;
 
-    return cards.map(item => {
-      const { data = {} } = item;
+    const {
+      data: { order = [], slots = [], subtitle = {}, title = '' }
+    } = result;
 
-      const message = {
-        text: String(((data.message || {}).text: string) || ''),
-        style: ((data.message || {}).style || []).map(s => ({
+    return {
+      order: order.map(item => ({
+        cardId: Number((item.card_id: number) || 0),
+        hidden: Boolean((item.hidden: boolean) || false)
+      })),
+      slots: slots.map(item => ({
+        bgColor: String((item.bg_color: string) || ''),
+        company: String((item.company: string) || ''),
+        displayName: String((item.display_name: string) || ''),
+        imageUrl: String((item.image_url: string) || ''),
+        rewardId: Number((item.reward_id: number) || 0),
+        rewardValue: Number((item.reward_value: number) || 0),
+        slot: Number((item.slot: number) || 0),
+        thumbnailUrl: String((item.thumbnail_url: string) || '')
+      })),
+      subtitle: {
+        text: String((subtitle.text: string) || ''),
+        style: (subtitle.style || []).map(s => ({
           substring: String((s.substring: string) || ''),
           textColor: String((s.text_color: string) || ''),
           weight: String((s.weight: string) || '')
         }))
-      };
+      },
+      title: String((title: string) || '')
+    };
+  } catch (err) {
+    return {
+      order: [],
+      slots: [],
+      subtitle: {
+        text: '',
+        style: []
+      },
+      title: ''
+    };
+  }
+};
 
-      const progressMessage = {
-        text: String(((data.progress_message || {}).text: string) || ''),
-        style: ((data.progress_message || {}).style || []).map(s => ({
+export const getDailyStreaks = async (): Promise<DailyStreaksCard> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(API_ROUTES.STREAKS, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const { data } = result;
+
+    return {
+      title: String((data.title: string) || ''),
+      currentDay: Number((data.current_day: number) || 0),
+      hasSeen: Boolean((data.has_seen: boolean) || false),
+      subtitle: {
+        text: String(((data.subtitle || {}).text: string) || ''),
+        style: ((data.subtitle || {}).style || []).map(s => ({
           substring: String((s.substring: string) || ''),
           textColor: String((s.text_color: string) || ''),
           weight: String((s.weight: string) || '')
         }))
-      };
+      },
+      tiers: data.tiers.map(tier => ({
+        day: Number((tier.day: number) || 0),
+        points: Number((tier.points: number) || 0)
+      }))
+    };
+  } catch (err) {
+    return {
+      title: '',
+      currentDay: 0,
+      hasSeen: false,
+      subtitle: {
+        text: '',
+        style: []
+      },
+      tiers: []
+    };
+  }
+};
 
-      const quests = (data.quests || []).map(quest => ({
-        item: String((quest.item: string) || ''),
-        status: String((quest.status: string) || ''),
+export const getQuests = async (): Promise<QuestsCard> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(API_ROUTES.QUESTS, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const { data } = result;
+
+    return {
+      activeQuests: (data.active_quests || []).map(item => ({
+        id: Number((item.id: number) || 0),
+        iconUrl: String((item.icon_url: string) || ''),
+        pointsAvailable: Number((item.points_available: number) || 0),
+        status: String((item.status: string) || ''),
+        task: String((item.task: string) || ''),
         action: {
-          name: String(((quest.action || {}).name: string) || ''),
-          value: String(((quest.action || {}).value: string) || ''),
+          name: String(((item.action || {}).name: string) || ''),
+          value: String(((item.action || {}).value: string) || ''),
           attributes: {
             feedFilter: {
               classId: Number(
-                ((((quest.action || {}).attributes || {}).feed_filter || {})
-                  .class_id: number) || 0
+                ((((item.action || {}).attributes || {}).feedFilter || {})
+                  .classId: number) || 0
               )
             }
           }
         }
-      }));
-
-      const imageUrl = String((data.image_url: string) || '');
-
-      return {
-        cardId: String((item.card_id: string) || ''),
-        title: String((item.title: string) || ''),
-        data: {
-          message,
-          progressMessage,
-          quests,
-          imageUrl
-        }
-      };
-    });
+      })),
+      availablePointsText: {
+        text: String(((data.available_points_text || {}).text: string) || ''),
+        style: ((data.available_points_text || {}).style || []).map(s => ({
+          substring: String((s.substring: string) || ''),
+          textColor: String((s.text_color: string) || ''),
+          weight: String((s.weight: string) || '')
+        }))
+      },
+      progressText: {
+        text: String(((data.progress_text || {}).text: string) || ''),
+        style: ((data.progress_text || {}).style || []).map(s => ({
+          substring: String((s.substring: string) || ''),
+          textColor: String((s.text_color: string) || ''),
+          weight: String((s.weight: string) || '')
+        }))
+      }
+    };
   } catch (err) {
-    console.log(err);
-    return [];
+    return {
+      activeQuests: [],
+      availablePointsText: {
+        text: '',
+        style: []
+      },
+      progressText: {
+        text: '',
+        style: []
+      }
+    };
+  }
+};
+
+export const getCurrentSeason = async (): Promise<CurrentSeasonCard> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(API_ROUTES.CURRENT_SEASON, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const { data } = result;
+
+    return {
+      seasonId: Number((data.season_id: number) || 0),
+      bestAnswers: String((data.best_answers: string) || ''),
+      grandPrizeText: String((data.grand_prize_text: string) || ''),
+      logoUrl: String((data.logo_url: string) || ''),
+      points: String((data.points: string) || ''),
+      reach: String((data.reach: string) || ''),
+      serviceHours: String((data.service_hours: string) || ''),
+      thanks: String((data.thanks: string) || '')
+    };
+  } catch (err) {
+    return {
+      seasonId: 0,
+      bestAnswers: '',
+      grandPrizeText: '',
+      logoUrl: '',
+      points: '',
+      reach: '',
+      serviceHours: '',
+      thanks: ''
+    };
+  }
+};
+
+export const getInvite = async (): Promise<InviteCard> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(API_ROUTES.INVITE, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const { data } = result;
+
+    return {
+      imageUrl: String((data.image_url: string) || ''),
+      referralCode: String((data.referral_code: string) || ''),
+      subtitle: {
+        text: String(((data.subtitle || {}).text: string) || ''),
+        style: ((data.subtitle || {}).style || []).map(s => ({
+          substring: String((s.substring: string) || ''),
+          textColor: String((s.text_color: string) || ''),
+          weight: String((s.weight: string) || '')
+        }))
+      },
+      title: String((data.title: string) || '')
+    };
+  } catch (err) {
+    return {
+      imageUrl: '',
+      referralCode: '',
+      subtitle: {
+        text: '',
+        style: []
+      },
+      title: ''
+    };
   }
 };

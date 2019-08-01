@@ -19,7 +19,11 @@ const circleInTheme = {
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
   dividerColor: '#ffffff', // validate
-  inputBorderColor: '#959595'
+  inputBorderColor: '#959595',
+  // v2
+  success: '#60b515',
+  snackbar: '#114255',
+  disabled: '#6d7884'
 };
 const theme = createMuiTheme({
   circleIn: {
@@ -31,10 +35,19 @@ const theme = createMuiTheme({
       primaryText2: circleInTheme.primaryText2,
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
-      appBar: circleInTheme.appBar
+      appBar: circleInTheme.appBar,
+      success: circleInTheme.success,
+      snackbar: circleInTheme.snackbar,
+      disabled: circleInTheme.disabled
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'
+    }
+  },
+  snackbar: {
+    info: {
+      backgroundColor: '#114255',
+      color: '#E9ECEF'
     }
   },
   palette: {
@@ -51,7 +64,8 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    fontSize: 10
+    fontSize: 10,
+    fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
   },
   zIndex: {
     mobileStepper: 700,
@@ -77,6 +91,9 @@ const theme = createMuiTheme({
     MuiTab: {
       textColorPrimary: {
         color: circleInTheme.tabColor
+      },
+      label: {
+        textTransform: 'capitalize'
       }
     },
     MuiFab: {
@@ -115,6 +132,11 @@ const theme = createMuiTheme({
     MuiBottomNavigationAction: {
       label: {
         color: circleInTheme.primaryText2
+      }
+    },
+    MuiFormLabel: {
+      root: {
+        color: circleInTheme.primaryText1
       }
     }
   }

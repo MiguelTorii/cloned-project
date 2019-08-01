@@ -92,7 +92,9 @@ class ActiveParticipant extends React.Component<Props, State> {
       lastName,
       profileImage: userProfileUrl
     });
-    
+
+    if (!participant || !participant.on) return;
+
     participant.on('trackEnabled', track => {
       if (!this.mounted) return;
       const { kind } = track;
@@ -194,7 +196,8 @@ class ActiveParticipant extends React.Component<Props, State> {
               {initials === '' ? <PersonIcon /> : initials}
             </Avatar>
             {firstName !== '' && (
-              <Typography variant="h6"
+              <Typography
+                variant="h6"
                 style={{ color: 'white', fontWeight: 'bold' }}
               >{`${firstName} ${lastName}`}</Typography>
             )}

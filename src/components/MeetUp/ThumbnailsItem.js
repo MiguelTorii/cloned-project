@@ -95,8 +95,8 @@ type State = {
 
 class ThumbnailsItem extends React.Component<Props, State> {
   state = {
-    isVideoEnabled: true,
-    isAudioEnabled: true,
+    isVideoEnabled: false,
+    isAudioEnabled: false,
     firstName: '',
     lastName: '',
     profileImage: '',
@@ -138,6 +138,24 @@ class ThumbnailsItem extends React.Component<Props, State> {
       }
     });
 
+    participant.on('trackPublished', publication => {
+      const { track, kind } = publication;
+      if (kind === 'video') {
+        this.setState({ isVideoEnabled: track.isEnabled });
+        this.mediainput.current.appendChild(track.attach());
+      }
+    });
+
+    participant.on('trackStopped', track => {
+      const { kind } = track;
+      if (kind === 'video') {
+        this.setState({ isVideoEnabled: false });
+      } else if (kind === 'audio') {
+        this.setState({ isAudioEnabled: false });
+      }
+      this.detachTrack(track);
+    });
+
     participant.tracks.forEach(publication => {
       if (
         publication.isSubscribed ||
@@ -156,7 +174,6 @@ class ThumbnailsItem extends React.Component<Props, State> {
             // this.setState({ isSharingData: true });
             const message = JSON.parse(data);
             const { type = '' } = message;
-            console.log(1, message)
             if (type === 'drawing') dataReceived(data);
             else if (type === 'texting') dataReceived(data);
             else if (type === 'cursor') dataReceived(data);
@@ -183,7 +200,6 @@ class ThumbnailsItem extends React.Component<Props, State> {
         track.on('message', data => {
           // this.setState({ isSharingData: true });
           const message = JSON.parse(data);
-          console.log(2, message)
           const { type = '' } = message;
           if (type === 'drawing') dataReceived(data);
           else if (type === 'texting') dataReceived(data);

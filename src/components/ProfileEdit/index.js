@@ -12,9 +12,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import ButtonBase from '@material-ui/core/ButtonBase';
+// import Avatar from '@material-ui/core/Avatar';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import type { About } from '../../types/models';
 
 const styles = theme => ({
@@ -66,9 +66,9 @@ type Props = {
   classes: Object,
   about: Array<About>,
   open: boolean,
-  userProfileUrl: string,
-  firstName: string,
-  lastName: string,
+  // userProfileUrl: string,
+  // firstName: string,
+  // lastName: string,
   onClose: Function,
   onSubmit: Function,
   onUpdateProfileImage: Function,
@@ -177,9 +177,9 @@ class ProfileEdit extends React.PureComponent<Props, State> {
     const {
       classes,
       open,
-      userProfileUrl,
-      firstName,
-      lastName,
+      // userProfileUrl,
+      // firstName,
+      // lastName,
       uploading,
       onClose
     } = this.props;
@@ -190,8 +190,8 @@ class ProfileEdit extends React.PureComponent<Props, State> {
       clubsOrOrganizations,
       major
     } = this.state;
-    const name = `${firstName} ${lastName}`;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    // const name = `${firstName} ${lastName}`;
+    // const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     return (
       <Dialog
         open={open}
@@ -201,7 +201,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
         aria-labelledby="profile-edit-dialog-title"
         aria-describedby="profile-edit-dialog-description"
       >
-        <div className={classes.header}>
+        {/* <div className={classes.header}>
           <ButtonBase
             disabled={uploading}
             className={classes.avatarButton}
@@ -234,10 +234,11 @@ class ProfileEdit extends React.PureComponent<Props, State> {
             onClick={this.handleOpenInputFile}
             className={classes.upload}
             color="primary"
+            variant="contained"
           >
             Upload Profile Photo
           </Button>
-        </div>
+        </div> */}
         <DialogContent>
           <div className={classes.form}>
             <FormControl fullWidth margin="normal">
@@ -315,9 +316,9 @@ class ProfileEdit extends React.PureComponent<Props, State> {
         <DialogActions>
           <Button
             disabled={uploading}
-            variant="outlined"
+            variant="contained"
             onClick={onClose}
-            color="primary"
+            color="secondary"
           >
             Cancel
           </Button>

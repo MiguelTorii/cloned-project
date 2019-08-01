@@ -114,6 +114,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
           open={open}
           className={classes.root}
           onClose={onClose}
+          fullWidth
           aria-labelledby="blocked-users-dialog-title"
           aria-describedby="blocked-users-dialog-description"
         >
@@ -144,7 +145,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
                     <ListItemText primary={user.name} />
                     <ListItemSecondaryAction>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         onClick={this.handleUnBlock(user.userId)}
                       >

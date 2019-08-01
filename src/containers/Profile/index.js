@@ -1,15 +1,21 @@
 /* eslint-disable func-names */
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import type { UserProfile, About, UserStatistic } from '../../types/models';
+import type {
+  UserProfile,
+  About,
+  UserStatistic,
+  FeedItem
+} from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import {
@@ -18,11 +24,17 @@ import {
   updateUserProfileUrl
 } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
+import { fetchFeedv2 } from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
+import * as feedActions from '../../actions/feed';
+import SharePost from '../SharePost';
+import Report from '../Report';
+import DeletePost from '../DeletePost';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
+import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
 import ErrorBoundary from '../ErrorBoundary';
 import { processSeasons } from './utils';
@@ -50,19 +62,26 @@ type Props = {
   user: UserState,
   userId: string,
   edit: boolean,
+  push: Function,
   checkUserSession: Function,
-  openChannelWithEntity: Function
+  openChannelWithEntity: Function,
+  updateBookmark: Function
 };
 
 type State = {
   userProfile: UserProfile,
   about: Array<About>,
   userStatistics: Array<UserStatistic>,
+  feed: Array<FeedItem>,
   isLoading: boolean,
   chatLoading: boolean,
   error: boolean,
   edit: boolean,
-  uploading: boolean
+  uploading: boolean,
+  tab: number,
+  feedId: ?number,
+  report: ?Object,
+  deletePost: ?Object,
 };
 
 class Profile extends React.PureComponent<Props, State> {
@@ -83,15 +102,21 @@ class Profile extends React.PureComponent<Props, State> {
     },
     about: [],
     userStatistics: [],
+    feed: [],
     isLoading: true,
     chatLoading: false,
     error: false,
     edit: false,
-    uploading: false
+    uploading: false,
+    tab: 1,
+    feedId: null,
+    report: null,
+    deletePost: null
   };
 
   componentDidMount = () => {
     this.handleGetProfile();
+    this.handleFetchFeed();
     const { edit } = this.props;
     this.setState({ edit });
   };
@@ -103,12 +128,27 @@ class Profile extends React.PureComponent<Props, State> {
         const { userProfile, about, userStatistics } = await getUserProfile({
           userId
         });
-        this.setState({ userProfile, about, userStatistics, isLoading: false });
+        
+        this.setState({
+          userProfile,
+          about,
+          userStatistics,
+          isLoading: false
+        });
       }
     } catch (err) {
       this.setState({ error: true, isLoading: false });
     }
   };
+
+  handleFetchFeed = () => {
+    const { userId } = this.props;
+    if(userId !== '') {
+      fetchFeedv2({
+        userId
+      }).then(feed => {this.setState({feed})})
+    }
+  }
 
   handleOpenEdit = () => {
     this.setState({ edit: true });
@@ -200,6 +240,88 @@ class Profile extends React.PureComponent<Props, State> {
     }, 2000);
   };
 
+  handleTabChange = (event, value) => {
+    this.setState({ tab: value });
+  };
+
+  handleShare = ({ feedId }: { feedId: number }) => {
+    this.setState({ feedId });
+  };
+  
+  handleShareClose = () => {
+    this.setState({ feedId: null });
+  };
+
+  handleBookmark = ({
+    feedId,
+    bookmarked
+  }: {
+    feedId: number,
+    bookmarked: boolean
+  }) => {
+    const {
+      user: {
+        data: { userId }
+      },
+      updateBookmark
+    } = this.props;
+
+    updateBookmark({ feedId, userId, bookmarked });
+  };
+
+  handleReport = ({ feedId, ownerId }) => {
+    this.setState({ report: { feedId, ownerId } });
+  };
+
+  handleReportClose = () => {
+    this.setState({ report: null });
+  };
+
+  handleDelete = ({ feedId }) => {
+    this.setState({ deletePost: { feedId } });
+  };
+
+  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+    if (deleted && deleted === true) {
+      this.handleFetchFeed();
+    }
+    this.setState({ deletePost: null });
+  };
+
+  handleUserClick = ({ userId }: { userId: string }) => {
+    const { push } = this.props;
+    push(`/profile/${userId}`);
+  };
+
+  handlePostClick = ({
+    typeId,
+    postId,
+    feedId
+  }: {
+    typeId: number,
+    postId: number,
+    feedId: number
+  }) => () => {
+    const { push } = this.props;
+    push(`/feed?id=${feedId}`);
+    switch (typeId) {
+      case 3:
+        push(`/flashcards/${postId}`);
+        break;
+      case 4:
+        push(`/notes/${postId}`);
+        break;
+      case 5:
+        push(`/sharelink/${postId}`);
+        break;
+      case 6:
+        push(`/question/${postId}`);
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
     const {
       classes,
@@ -210,11 +332,16 @@ class Profile extends React.PureComponent<Props, State> {
       userProfile,
       about,
       userStatistics,
+      feed,
       isLoading,
       chatLoading,
       error,
       edit,
-      uploading
+      uploading,
+      tab,
+      feedId,
+      report,
+      deletePost
     } = this.state;
     const {
       userId,
@@ -238,9 +365,10 @@ class Profile extends React.PureComponent<Props, State> {
     const seasons = processSeasons(userStatistics);
 
     return (
-      <div className={classes.root}>
+      <Fragment>
+        <div className={classes.root}>
         <Grid container alignItems="stretch">
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} md={12}>
             <ErrorBoundary>
               <ProfileHeader
                 isMyProfile={userId === userData.userId}
@@ -262,21 +390,42 @@ class Profile extends React.PureComponent<Props, State> {
                 grade={grade}
                 joined={joined}
                 chatLoading={chatLoading}
-                onOpenEdit={this.handleOpenEdit}
+                uploading={uploading}
+                tab={tab}
                 onStartChat={this.handleStartChat}
                 onStartVideo={this.handleStartVideo}
+                onUpdateProfileImage={this.handleUpdateProfileImage}
+                onChange={this.handleTabChange}
               />
             </ErrorBoundary>
           </Grid>
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={12} hidden={tab !== 0}>
             <ErrorBoundary>
-              <ProfileAbout about={about} onOpenEdit={this.handleOpenEdit} />
+              <ProfileAbout
+                isMyProfile={userId === userData.userId}
+                about={about}
+                onOpenEdit={this.handleOpenEdit}
+              />
+            </ErrorBoundary>
+          </Grid>
+          <Grid item xs={12} md={12} hidden={tab !== 0}>
+            <ErrorBoundary>
+              <ProfileSeasons seasons={seasons} />
+            </ErrorBoundary>
+          </Grid>
+          <Grid item xs={12} md={12} hidden={tab !== 1}>
+            <ErrorBoundary>
+              <ProfilePosts userId={userData.userId} posts={feed}
+              onShare={this.handleShare}
+              onPostClick={this.handlePostClick}
+              onBookmark={this.handleBookmark}
+              onReport={this.handleReport}
+              onDelete={this.handleDelete}
+              onUserClick={this.handleUserClick}
+              />
             </ErrorBoundary>
           </Grid>
         </Grid>
-        <ErrorBoundary>
-          <ProfileSeasons seasons={seasons} />
-        </ErrorBoundary>
         <ErrorBoundary>
           <ProfileEdit
             key={`${userId}-${userProfileUrl}`}
@@ -292,6 +441,29 @@ class Profile extends React.PureComponent<Props, State> {
           />
         </ErrorBoundary>
       </div>
+        <ErrorBoundary>
+          <SharePost
+            feedId={feedId}
+            open={Boolean(feedId)}
+            onClose={this.handleShareClose}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Report
+            open={Boolean(report)}
+            ownerId={(report || {}).ownerId || ''}
+            objectId={(report || {}).feedId || -1}
+            onClose={this.handleReportClose}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <DeletePost
+            open={Boolean(deletePost)}
+            feedId={(deletePost || {}).feedId || -1}
+            onClose={this.handleDeleteClose}
+          />
+        </ErrorBoundary>
+      </Fragment>
     );
   }
 }
@@ -303,8 +475,10 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
+      push: routePush,
       checkUserSession: signInActions.checkUserSession,
-      openChannelWithEntity: chatActions.openChannelWithEntity
+      openChannelWithEntity: chatActions.openChannelWithEntity,
+      updateBookmark: feedActions.updateBookmark,
     },
     dispatch
   );

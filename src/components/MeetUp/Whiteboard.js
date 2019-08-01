@@ -5,6 +5,9 @@ import update from 'immutability-helper';
 import cx from 'classnames';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import ClearIcon from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -22,17 +25,28 @@ const styles = theme => ({
     backgroundColor: 'white',
     cursor: 'crosshair'
   },
-  input: {
+  inputWrapper: {
     position: 'absolute',
     display: 'none',
-    color: 'black',
     width: 'auto',
     top: 0,
-    left: 0,
-    backgroundColor: 'white'
+    left: 0
   },
   showInput: {
     display: 'inline'
+  },
+  input: {
+    color: 'black',
+    backgroundColor: 'white'
+  },
+  inputOptions: {
+    position: 'absolute',
+    top: -50,
+    left: 0
+  },
+  button: {
+    height: 40,
+    width: 40
   },
   participant: {
     backgroundColor: 'white',
@@ -93,6 +107,8 @@ class Index extends React.Component<Props, State> {
     super(props);
     // $FlowIgnore
     this.canvas = React.createRef();
+    // $FlowIgnore
+    this.canvasTemp = React.createRef();
     window.addEventListener('resize', this.handleResize, false);
   }
 
@@ -105,9 +121,17 @@ class Index extends React.Component<Props, State> {
 
   componentDidUpdate = prevProps => {
     const { drawData, isText } = this.props;
-    if(isText) {
+    if (isText) {
       this.input.focus();
+    } else if (prevProps.isText && !isText) {
+      const { color } = this.props;
+      const { inputValue, inputPos } = this.state;
+      if (inputValue.trim() !== '') {
+        this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
+        this.setState({ inputValue: '' });
+      }
     }
+
     if (drawData !== prevProps.drawData && drawData !== '') {
       const data = JSON.parse(drawData);
       const { type = '' } = data;
@@ -209,6 +233,13 @@ class Index extends React.Component<Props, State> {
   handleClick = e => {
     const { isText } = this.props;
     if (isText) {
+      const { color } = this.props;
+      const { showInput, inputValue, inputPos } = this.state;
+      if (inputValue.trim() !== '' && showInput === true) {
+        this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
+        this.setState({ inputValue: '' });
+      }
+
       const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
       const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
       this.setState(() => ({
@@ -233,8 +264,18 @@ class Index extends React.Component<Props, State> {
   };
 
   handleResize = () => {
+    this.canvasTemp.current.width = this.canvas.current.width;
+    this.canvasTemp.current.height = this.canvas.current.height;
+    const inMemCtx = this.canvasTemp.current.getContext('2d');
+
+    inMemCtx.drawImage(this.canvas.current, 0, 0);
+
     this.canvas.current.width = window.innerWidth;
     this.canvas.current.height = window.innerHeight;
+
+    const ctx = this.canvas.current.getContext('2d');
+
+    ctx.drawImage(this.canvasTemp.current, 0, 0);
   };
 
   handleCursor = (x, y) => {
@@ -373,7 +414,13 @@ class Index extends React.Component<Props, State> {
     this.setState(newState);
   };
 
+  handleCancelInput = () => {
+    this.setState({ showInput: false });
+  };
+
   canvas: Object;
+
+  canvasTemp: Object;
 
   input: Object;
 
@@ -392,19 +439,33 @@ class Index extends React.Component<Props, State> {
           onMouseOut={this.handleMouseUp}
           onMouseMove={this.throttle(this.handleMouseMove, 10)}
         />
-        <OutlinedInput
-          inputRef={input => {
-            this.input = input;
-          }}
-          placeholder="Add your text"
-          className={cx(classes.input, showInput && classes.showInput)}
+        <canvas ref={this.canvasTemp} style={{ display: 'none' }} />
+        <div
+          className={cx(classes.inputWrapper, showInput && classes.showInput)}
           style={{ ...inputPos }}
-          labelWidth={0}
-          multiline
-          value={inputValue}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-        />
+        >
+          <OutlinedInput
+            inputRef={input => {
+              this.input = input;
+            }}
+            className={classes.input}
+            placeholder="Add your text"
+            labelWidth={0}
+            multiline
+            value={inputValue}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+          />
+          <Paper className={classes.inputOptions}>
+            <ButtonBase
+              color="primary"
+              className={cx(classes.button)}
+              onClick={this.handleCancelInput}
+            >
+              <ClearIcon />
+            </ButtonBase>
+          </Paper>
+        </div>
         {participants.map(item => (
           <Typography
             key={item.userId}

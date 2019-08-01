@@ -163,7 +163,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
 
   handleConfirmBestAnswer = () => {
     const { id, onBestAnswer } = this.props;
-    this.handleCloseBestAnswer()
+    this.handleCloseBestAnswer();
     onBestAnswer({ commentId: id });
   };
 
@@ -272,16 +272,28 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   {thanked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
                 </IconButton>
               )}
-              <Button color="primary" onClick={this.handleShowAddComment}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={this.handleShowAddComment}
+              >
                 Reply
               </Button>
               {!isOwn && (
-                <Button color="primary" onClick={this.handleReport}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={this.handleReport}
+                >
                   Report
                 </Button>
               )}
               {isOwn && !isReply && false && (
-                <Button color="primary" onClick={onDelete}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={onDelete}
+                >
                   Delete
                 </Button>
               )}
@@ -326,12 +338,17 @@ class PostItemComment extends React.PureComponent<Props, State> {
           <DialogActions>
             <Button
               onClick={this.handleCloseBestAnswer}
-              color="primary"
+              color="secondary"
+              variant="contained"
               autoFocus
             >
               Cancel
             </Button>
-            <Button onClick={this.handleConfirmBestAnswer} color="primary">
+            <Button
+              onClick={this.handleConfirmBestAnswer}
+              variant="contained"
+              color="primary"
+            >
               Confirm
             </Button>
           </DialogActions>

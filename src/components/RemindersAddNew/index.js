@@ -214,7 +214,7 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
             className={classes.button}
             disabled={value.trim() === '' || loading}
             color="primary"
-            variant="outlined"
+            variant="contained"
             onClick={this.handleSubmit}
           >
             Add

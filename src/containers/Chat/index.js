@@ -20,7 +20,7 @@ import CreateChatChannel from '../CreateChatChannel';
 import { renewTwilioToken } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     position: 'relative'
   },
@@ -29,6 +29,10 @@ const styles = () => ({
     bottom: 70,
     right: 15,
     zIndex: 9999
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
   }
 });
 
@@ -123,7 +127,7 @@ class ChatContainer extends React.PureComponent<Props, State> {
         userId
       });
 
-      if (accessToken === '') {
+      if (!accessToken || (accessToken && accessToken === '')) {
         this.handleInitChat();
         return;
       }
@@ -165,7 +169,7 @@ class ChatContainer extends React.PureComponent<Props, State> {
         const { state, channel } = message;
         const { author, attributes, body } = state;
         const { firstName, lastName } = attributes;
-        const { enqueueSnackbar } = this.props;
+        const { enqueueSnackbar, classes } = this.props;
         if (Number(author) !== Number(userId)) {
           const msg = `${firstName} ${lastName} sent you a message:`;
           enqueueSnackbar(`${msg} ${body}`, {
@@ -175,7 +179,12 @@ class ChatContainer extends React.PureComponent<Props, State> {
               horizontal: 'right'
             },
             action: this.handleMessageReceived(channel.sid),
-            autoHideDuration: 3000
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
           });
         }
       });

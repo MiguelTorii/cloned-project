@@ -35,6 +35,7 @@ export const API_ROUTES = {
   CANVAS_USER: `${API_URL}/canvas/oauth2/token`,
   CANVAS_LOGIN: `${API_URL}/canvas/auth/login`,
   FEED: `${API_URL}/feed`,
+  FEED_V1_1: `${API_URL_V1_1}/feed`,
   CREATELINK: `${API_URL}/feed/link/post`,
   USER: `${API_URL}/user`,
   USER_CLASS: `${API_URL}/user/class`,
@@ -64,5 +65,11 @@ export const API_ROUTES = {
   STORE: `${API_URL}/store`,
   VIDEO_INITIATOR: `${API_URL}/video/initiator`,
   VIDEO_SESSION: `${API_URL}/video/session`,
-  VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`
+  VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`,
+  SEARCH: `${API_URL}/search`,
+  SEARCH_SCHOOLS: `${API_URL}/search/school`,
+  STREAKS: `${API_URL}/streaks`,
+  QUESTS: `${API_URL}/quests`,
+  INVITE: `${API_URL}/invite`,
+  CURRENT_SEASON: `${API_URL}/season/current`
 };

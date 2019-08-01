@@ -12,11 +12,15 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
     width: 200,
     height: 200,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: theme.circleIn.palette.primaryText1,
+    color: theme.circleIn.palette.normalButtonText1
   },
   big: {
     width: 400,
@@ -28,12 +32,13 @@ const styles = theme => ({
     paddingBottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   cardText: {
     width: '100%',
     height: 60,
+    fontWeight: 'bold',
     overflowY: 'auto'
   },
   actions: {
@@ -73,13 +78,22 @@ class Flashcard extends React.PureComponent<Props, State> {
       <Card
         className={cx(classes.root, studyMode && classes.big)}
         key={isQuestion ? 'front' : 'back'}
+        raised
       >
-        <CardHeader title={`Flashcard #${index}`} />
+        <CardHeader
+          titleTypographyProps={{ color: 'inherit', variant: 'h6' }}
+          title={`Flashcard #${index}`}
+        />
         <CardContent className={classes.content}>
-          <Typography variant="subtitle1">
+          <Typography variant="h6" color="inherit" align="center">
             {isQuestion ? 'Question:' : 'Answer:'}
           </Typography>
-          <Typography className={classes.cardText}>
+          <Typography
+            variant="h5"
+            className={classes.cardText}
+            color="inherit"
+            align="center"
+          >
             {isQuestion ? question : answer}
           </Typography>
         </CardContent>
@@ -87,8 +101,8 @@ class Flashcard extends React.PureComponent<Props, State> {
           <Button
             onClick={this.handleFlip}
             size="small"
-            color="default"
-            variant="outlined"
+            color="primary"
+            variant="contained"
           >
             {isQuestion ? 'View Answer' : 'View Question'}
           </Button>

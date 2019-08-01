@@ -21,7 +21,12 @@ import { createQuestion } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({});
+const styles = theme => ({
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  }
+});
 
 type Props = {
   classes: Object,
@@ -96,7 +101,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       });
 
       if (points > 0) {
-        const { enqueueSnackbar } = this.props;
+        const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar(
           `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
           {
@@ -105,7 +110,12 @@ class CreateQuestion extends React.PureComponent<Props, State> {
               vertical: 'bottom',
               horizontal: 'left'
             },
-            autoHideDuration: 2000
+            autoHideDuration: 2000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
           }
         );
       }

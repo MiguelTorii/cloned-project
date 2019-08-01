@@ -21,7 +21,7 @@ class Chat extends React.PureComponent<Props> {
       },
       width
     } = this.props;
-    if (userId === '') return null;
+    if (!userId || userId === '') return null;
     return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
   }
 }

@@ -1,25 +1,26 @@
 // @flow
 import React, { Fragment } from 'react';
 import moment from 'moment';
-import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
 
-const MyLink = props => <RouterLink to="/feed?bookmarks=true" {...props} />;
-
 const styles = theme => ({
   container: {
     height: '100%',
     maxHeight: 'inherit',
-    display: 'flex',
+    // display: 'flex',
+    // flexDirection: ''
     padding: theme.spacing.unit
   },
   root: {
@@ -39,7 +40,28 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: theme.spacing.unit * 2
+  },
+  avatar: {
+    // borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 170,
+    height: 170,
+    position: 'relative'
+  },
+  progress: {
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 170,
+    height: 170,
+    borderRadius: '50%',
+    top: 0,
+    backgroundColor: 'rgba(0,0,0,0.8)'
   },
   bigAvatar: {
     width: 90,
@@ -75,12 +97,14 @@ const styles = theme => ({
     width: 20,
     height: 20
   },
-  actions: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.spacing.unit * 2
+  upload: {
+    margin: theme.spacing.unit * 2
+  },
+  input: {
+    display: 'none'
+  },
+  tabs: {
+    backgroundColor: theme.circleIn.palette.appBar
   }
 });
 
@@ -99,12 +123,32 @@ type Props = {
   grade: number,
   joined: string,
   chatLoading: boolean,
-  onOpenEdit: Function,
+  uploading: boolean,
+  tab: number,
   onStartChat: Function,
-  onStartVideo: Function
+  onStartVideo: Function,
+  onUpdateProfileImage: Function,
+  onChange: Function
 };
 
 class Header extends React.PureComponent<Props> {
+  handleOpenInputFile = () => {
+    if (this.fileInput) this.fileInput.click();
+  };
+
+  handleInputChange = () => {
+    const { onUpdateProfileImage } = this.props;
+    if (
+      this.fileInput &&
+      this.fileInput.files &&
+      this.fileInput.files.length > 0
+    )
+      onUpdateProfileImage(this.fileInput.files[0]);
+  };
+
+  // eslint-disable-next-line no-undef
+  fileInput: ?HTMLInputElement;
+
   render() {
     const {
       classes,
@@ -121,9 +165,11 @@ class Header extends React.PureComponent<Props> {
       grade,
       joined,
       chatLoading,
-      onOpenEdit,
+      uploading,
+      tab,
       onStartChat,
-      onStartVideo
+      onStartVideo,
+      onChange
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
@@ -134,16 +180,53 @@ class Header extends React.PureComponent<Props> {
         <Paper className={classes.root} elevation={0}>
           <Grid container>
             <Grid item xs={4} className={classes.gridAvatar}>
-              <Avatar
-                alt={initials}
-                src={userProfileUrl}
-                className={classes.bigAvatar}
-                classes={{ img: classes.img }}
-              >
-                {initials}
-              </Avatar>
+              <div className={classes.avatar}>
+                <Avatar
+                  alt={initials}
+                  src={userProfileUrl}
+                  className={classes.bigAvatar}
+                  classes={{ img: classes.img }}
+                >
+                  {initials}
+                </Avatar>
+                {uploading && (
+                  <div className={classes.progress}>
+                    <CircularProgress />
+                  </div>
+                )}
+              </div>
+              {isMyProfile ? (
+                <Fragment>
+                  <input
+                    accept="image/*"
+                    className={classes.input}
+                    ref={fileInput => {
+                      this.fileInput = fileInput;
+                    }}
+                    onChange={this.handleInputChange}
+                    type="file"
+                  />
+                  <Button
+                    onClick={this.handleOpenInputFile}
+                    className={classes.upload}
+                    disabled={uploading}
+                    color="primary"
+                    variant="text"
+                  >
+                    Upload Profile Photo
+                  </Button>
+                </Fragment>
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Add to Study Circle
+                </Button>
+              )}
             </Grid>
-            <Grid item xs={8} className={classes.gridInfo}>
+            <Grid item xs={8} sm={6} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
                 {name}
               </Typography>
@@ -174,7 +257,7 @@ class Header extends React.PureComponent<Props> {
                 </Grid>
               </Grid>
               <Grid container>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     variant="body2"
                     gutterBottom
@@ -188,7 +271,7 @@ class Header extends React.PureComponent<Props> {
                     {`${school}, ${state}`}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     variant="body2"
                     gutterBottom
@@ -202,7 +285,7 @@ class Header extends React.PureComponent<Props> {
                     {gradeName(segment, grade)}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12}>
                   <Typography
                     variant="body2"
                     gutterBottom
@@ -216,53 +299,37 @@ class Header extends React.PureComponent<Props> {
                     {`Member Since ${moment(joined).format('MMMM YYYY')}`}
                   </Typography>
                 </Grid>
-              </Grid>
-              {!isMyProfile && (
-                <Fragment>
+                <Grid item xs={12} md={12} hidden={isMyProfile}>
                   <Button
-                    variant="text"
                     color="primary"
                     disabled={chatLoading}
                     onClick={onStartChat}
                   >
                     Send {firstName} a message
                   </Button>
+                </Grid>
+                <Grid item xs={12} md={12} hidden={isMyProfile}>
                   <Button
-                    variant="text"
                     color="primary"
                     disabled={chatLoading}
                     onClick={onStartVideo}
                   >
                     Start video study session
                   </Button>
-                </Fragment>
-              )}
-            </Grid>
-            <Grid item xs={12} className={classes.actions}>
-              {!isMyProfile ? (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  className={classes.button}
-                >
-                  Add to Study Circle
-                </Button>
-              ) : (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  className={classes.button}
-                  onClick={onOpenEdit}
-                >
-                  Edit About Me
-                </Button>
-              )}
-              <Button variant="outlined" color="primary" component={MyLink}>
-                View my bookmarks
-              </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Paper>
+        <Tabs
+          value={tab}
+          textColor="primary"
+          onChange={onChange}
+          classes={{ root: classes.tabs }}
+        >
+          <Tab label="Profile" />
+          <Tab label="Posts" />
+        </Tabs>
       </div>
     );
   }

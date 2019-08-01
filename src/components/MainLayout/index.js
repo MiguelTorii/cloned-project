@@ -37,7 +37,7 @@ import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpIcon from '@material-ui/icons/Help'
-import logo from '../../assets/svg/circlein_logo_beta.svg';
+import logo from '../../assets/svg/circlein_logo.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;

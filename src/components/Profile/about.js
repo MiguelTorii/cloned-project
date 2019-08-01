@@ -20,42 +20,57 @@ const styles = theme => ({
   },
   content: {
     marginLeft: theme.spacing.unit * 4
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  grow: {
+    flex: 1
   }
 });
 
 type Props = {
   classes: Object,
   about: Array<Object>,
+  isMyProfile: boolean,
   onOpenEdit: Function
 };
 
 class About extends React.PureComponent<Props> {
   render() {
-    const { classes, about, onOpenEdit } = this.props;
+    const { classes, about, isMyProfile, onOpenEdit } = this.props;
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <div className={classes.content}>
-            <Typography variant="h4" gutterBottom>
-              About Me
-            </Typography>
-            {about.length === 0 ? (
-              <Button variant="outlined" color="primary" onClick={onOpenEdit}>
-                Help your classmates learn more about you
-              </Button>
-            ) : (
-              about.map(item => (
-                <div key={item.id}>
-                  <Typography variant="h6" gutterBottom>
-                    {item.section}
-                  </Typography>
-                  <Typography variant="subtitle1" paragraph>
-                    {item.answer}
-                  </Typography>
-                </div>
-              ))
-            )}
+            <div className={classes.header}>
+              <Typography variant="h4" gutterBottom className={classes.grow}>
+                About Me
+              </Typography>
+              {isMyProfile && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className={classes.button}
+                  onClick={onOpenEdit}
+                >
+                  Edit About Me
+                </Button>
+              )}
+            </div>
+            {about.map(item => (
+              <div key={item.id}>
+                <Typography variant="h6" gutterBottom>
+                  {item.section}
+                </Typography>
+                <Typography variant="subtitle1" paragraph>
+                  {item.answer}
+                </Typography>
+              </div>
+            ))}
           </div>
         </Paper>
       </div>

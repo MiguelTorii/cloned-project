@@ -3,6 +3,7 @@
 import React from 'react';
 import update from 'immutability-helper';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
@@ -33,6 +34,7 @@ import {
   joinClass
 } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
+import * as feedActions from '../../actions/feed';
 
 const styles = () => ({
   root: {
@@ -51,7 +53,8 @@ type Props = {
   classes: Object,
   user: UserState,
   open: boolean,
-  onClose: Function
+  onClose: Function,
+  fetchFeed: Function
 };
 
 type State = {
@@ -157,13 +160,15 @@ class ClassesManager extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
-      }
+      },
+      fetchFeed
     } = this.props;
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, userId });
       const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes });
+      fetchFeed()
     } finally {
       this.setState({ loading: false });
     }
@@ -179,13 +184,15 @@ class ClassesManager extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
-      }
+      },
+      fetchFeed
     } = this.props;
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, sectionId, userId });
       const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes });
+      fetchFeed()
     } finally {
       this.setState({ loading: false });
     }
@@ -202,7 +209,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
       const {
         user: {
           data: { userId }
-        }
+        },
+        fetchFeed
       } = this.props;
       // eslint-disable-next-line no-restricted-syntax
       for (const userClass of selectedClasses) {
@@ -212,6 +220,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       }
       const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes, loading: false });
+      fetchFeed()
     } catch (err) {
       this.setState({ loading: false });
     }
@@ -501,7 +510,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
               this.renderAvailableClasses()}
           </DialogContent>
           <DialogActions>
-            <Button onClick={onClose} color="primary" variant="outlined">
+            <Button onClick={onClose} color="secondary" variant="contained">
               Close
             </Button>
             {canAddClasses && (
@@ -524,7 +533,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      fetchFeed: feedActions.fetchFeed
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(ClassesManager));

@@ -133,6 +133,12 @@ class StartVideo extends React.PureComponent<Props, State> {
       const accessToken = await renewTwilioToken({
         userId
       });
+
+      if (!accessToken || (accessToken && accessToken === '')) {
+        this.handleInitChat();
+        return;
+      }
+
       const client = await Chat.create(accessToken);
 
       let paginator = await client.getSubscribedChannels();

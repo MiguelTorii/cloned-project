@@ -232,10 +232,19 @@ class DialogChatItem extends React.PureComponent<Props, State> {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleRemoveClose} color="primary" autoFocus>
+            <Button
+              onClick={this.handleRemoveClose}
+              color="primary"
+              autoFocus
+              variant="contained"
+            >
               Cancel
             </Button>
-            <Button onClick={this.handleRemoveSubmit} color="primary">
+            <Button
+              onClick={this.handleRemoveSubmit}
+              color="secondary"
+              variant="contained"
+            >
               Delete
             </Button>
           </DialogActions>

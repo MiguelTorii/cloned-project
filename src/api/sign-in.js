@@ -2,7 +2,7 @@
 import axios from 'axios';
 import store from 'store';
 import { API_ROUTES } from '../constants/routes';
-import type { User } from '../types/models';
+import type { User, Schools } from '../types/models';
 
 export const signInUser = async (
   email: string,
@@ -82,5 +82,33 @@ export const changePassword = async ({
   } catch (err) {
     console.log(err);
     return false;
+  }
+};
+
+export const searchSchools = async ({
+  query
+}: {
+  query: string
+}): Promise<Schools> => {
+  try {
+    const result = await axios.get(
+      `${API_ROUTES.SEARCH_SCHOOLS}?query=${query}`
+    );
+    const { data = {} } = result;
+    const { schools = [] } = data;
+
+    return schools.map(school => ({
+      id: Number((school.id: number) || 0),
+      clientId: String((school.client_id: string) || ''),
+      school: String((school.school: string) || ''),
+      uri: String((school.uri: string) || ''),
+      authUri: String((school.auth_uri: string) || ''),
+      lmsTypeId: Number((school.lms_type_id: number) || 0),
+      emailRestriction: Boolean((school.email_restriction: boolean) || false),
+      emailDomain: school.email_domain || [],
+      scope: String((school.scope: string) || '')
+    }));
+  } catch (err) {
+    return [];
   }
 };

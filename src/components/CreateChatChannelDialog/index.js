@@ -232,6 +232,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
           <Button
             disabled={isLoading}
             color="primary"
+            variant="contained"
             onClick={this.handleChatTypeChange}
           >{`Create ${chatType === 'single' ? 'group' : '1-to-1'} ${
             isVideo ? 'video room' : 'chat'
@@ -346,6 +347,7 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
               disabled={isLoading}
               onClick={this.handleClose}
               color="secondary"
+              variant="contained"
             >
               Cancel
             </Button>

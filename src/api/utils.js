@@ -213,21 +213,19 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
 export const generateFeedURL = ({
   userId,
   schoolId,
-  classId,
-  sectionId,
+  userClasses,
   index,
   limit,
-  postType,
+  postTypes,
   from,
   query
 }: {
   userId: string,
   schoolId: number,
-  classId: number,
-  sectionId: number,
+  userClasses: Array<string>,
   index: number,
   limit: number,
-  postType: number,
+  postTypes: Array<string>,
   from: string,
   query: string
 }) => {
@@ -246,23 +244,31 @@ export const generateFeedURL = ({
     queryString = `${queryString}&school_id=${schoolId}`;
   }
 
-  if (postType !== 0) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const postType of postTypes) {
     queryString = `${queryString}&tool_type_id=${postType}`;
   }
 
-  if (classId >= 0) {
-    queryString = `${queryString}&class_id=${classId}`;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const userClass of userClasses) {
+    console.log(userClass);
+    // queryString = `${queryString}&class_id=${userClass}`;
   }
 
-  if (sectionId && sectionId >= 0) {
-    queryString = `${queryString}&section_id=${sectionId}`;
-  }
+  // if (classId >= 0) {
+  //   queryString = `${queryString}&class_id=${classId}`;
+  // }
 
-  if (from === 'my_posts') {
-    url = `${url}/user/${userId}${queryString}`;
-  } else {
-    url = `${url}/${userId}${queryString}`;
-  }
+  // if (sectionId && sectionId >= 0) {
+  //   queryString = `${queryString}&section_id=${sectionId}`;
+  // }
+
+  // if (from === 'my_posts') {
+  //   url = `${url}/user/${userId}${queryString}`;
+  // } else {
+  //   url = `${url}/${userId}${queryString}`;
+  // }
+  url = `${url}${queryString}`;
 
   return url;
 };

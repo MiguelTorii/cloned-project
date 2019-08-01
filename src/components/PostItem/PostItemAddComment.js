@@ -135,7 +135,12 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
           )}
         </div>
         <div className={classes.actions}>
-          <Button onClick={this.handleCancel} disabled={readOnly}>
+          <Button
+            onClick={this.handleCancel}
+            disabled={readOnly}
+            color="secondary"
+            variant="contained"
+          >
             Cancel
           </Button>
           <Button

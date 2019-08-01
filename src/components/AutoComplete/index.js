@@ -123,8 +123,9 @@ function Option({
   children,
   data
 }) {
-  const { avatar = '', initials = '', school = '' } = data || {};
-  if (avatar !== '' || initials !== '' || school !== '')
+  const { avatar = '', initials = '', school = '', noAvatar = false } =
+    data || {};
+  if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
     return (
       <ListItem
         alignItems="flex-start"
