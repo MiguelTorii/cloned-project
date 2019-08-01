@@ -263,11 +263,12 @@ export const generateFeedURL = ({
   //   queryString = `${queryString}&section_id=${sectionId}`;
   // }
 
-  if (from === 'my_posts') {
-    url = `${url}/user/${userId}${queryString}`;
-  } else {
-    url = `${url}/${userId}${queryString}`;
-  }
+  // if (from === 'my_posts') {
+  //   url = `${url}/user/${userId}${queryString}`;
+  // } else {
+  //   url = `${url}/${userId}${queryString}`;
+  // }
+  url = `${url}${queryString}`;
 
   return url;
 };

@@ -36,7 +36,7 @@ export const fetchFeed = async ({
   });
   try {
     const token = await getToken();
-    const result = await axios.get(`${API_ROUTES.FEED}${url}`, {
+    const result = await axios.get(`${API_ROUTES.FEED_V1_1}${url}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
