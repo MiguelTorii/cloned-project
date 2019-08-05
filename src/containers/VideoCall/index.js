@@ -8,8 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
-import Preview from './Preview';
-import MeetUp from './MeetUp';
+import Preview from './Preview2';
+import MeetUp from './MeetUp2';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -40,8 +40,6 @@ type State = {
   join: boolean,
   selectedaudioinput: string,
   selectedvideoinput: string,
-  isVideoEnabled: boolean,
-  isAudioEnabled: boolean,
   errorDialog: boolean,
   errorTitle: string,
   errorBody: string
@@ -50,11 +48,10 @@ type State = {
 class VideoCall extends React.Component<Props, State> {
   state = {
     loading: true,
-    join: false,
-    selectedaudioinput: '',
-    selectedvideoinput: '',
-    isVideoEnabled: true,
-    isAudioEnabled: true,
+    join: true,
+    selectedaudioinput: 'default',
+    selectedvideoinput:
+      '087b5fabfe22031636162fc11d83471ce2f45316403485a3974ffa9042cd8789',
     errorDialog: false,
     errorTitle: '',
     errorBody: ''
@@ -66,15 +63,7 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleMediaInput = (input, mediaId) => {
-    this.setState({ [input]: mediaId });
-  };
-
-  handlePreviewMediaState = (media, state) => {
-    this.setState({ [media]: state });
-  };
-
-  handleJoinRoom = async () => {
+  handleJoinRoom = async ({ audioinput, videoinput }) => {
     const {
       user: {
         data: { userId, firstName, lastName }
@@ -100,7 +89,11 @@ class VideoCall extends React.Component<Props, State> {
         isVideoNotification: true
       };
       channel.sendMessage('Joined Video', messageAttributes);
-      this.setState({ join: true });
+      this.setState({
+        join: true,
+        selectedaudioinput: audioinput,
+        selectedvideoinput: videoinput
+      });
     } catch (err) {
       this.setState({
         errorDialog: true,
@@ -116,9 +109,7 @@ class VideoCall extends React.Component<Props, State> {
     this.setState({
       join: false,
       selectedaudioinput: '',
-      selectedvideoinput: '',
-      isVideoEnabled: true,
-      isAudioEnabled: true
+      selectedvideoinput: ''
     });
   };
 
@@ -135,26 +126,14 @@ class VideoCall extends React.Component<Props, State> {
       roomId,
       user: { data }
     } = this.props;
-    const {
-      join,
-      selectedvideoinput,
-      selectedaudioinput,
-      isVideoEnabled,
-      isAudioEnabled
-    } = this.state;
+    const { join, selectedvideoinput, selectedaudioinput } = this.state;
     if (!join) {
       return (
         <Preview
           user={data}
-          selectedvideoinput={selectedvideoinput}
-          selectedaudioinput={selectedaudioinput}
-          isVideoEnabled={isVideoEnabled}
-          isAudioEnabled={isAudioEnabled}
           roomName={roomId}
-          updateMediaInput={this.handleMediaInput}
-          updateMediaState={this.handlePreviewMediaState}
-          joinRoom={this.handleJoinRoom}
           updateLoading={this.handleUpdateLoading}
+          onJoin={this.handleJoinRoom}
         />
       );
     }
@@ -163,8 +142,6 @@ class VideoCall extends React.Component<Props, State> {
         user={data}
         videoinput={selectedvideoinput}
         audioinput={selectedaudioinput}
-        isVideoEnabled={isVideoEnabled}
-        isAudioEnabled={isAudioEnabled}
         roomName={roomId}
         leaveRoom={this.handleLeaveRoom}
         updateLoading={this.handleUpdateLoading}

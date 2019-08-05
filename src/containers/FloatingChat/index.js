@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import withWidth from '@material-ui/core/withWidth';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -10,7 +11,10 @@ import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   width: string,
-  user: UserState
+  user: UserState,
+  location: {
+    pathname: string
+  }
 };
 
 class Chat extends React.PureComponent<Props> {
@@ -19,9 +23,12 @@ class Chat extends React.PureComponent<Props> {
       user: {
         data: { userId }
       },
-      width
+      width,
+      location: { pathname }
     } = this.props;
+
     if (!userId || userId === '') return null;
+    if (pathname.includes('video-call')) return null;
     return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
   }
 }
@@ -30,7 +37,9 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withWidth()(Chat));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    null
+  )(withWidth()(Chat))
+);

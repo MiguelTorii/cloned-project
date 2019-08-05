@@ -1124,10 +1124,10 @@
     "@svgr/core" "^2.4.1"
     loader-utils "^1.1.0"
 
-"@twilio/webrtc@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@twilio/webrtc/-/webrtc-4.0.0.tgz#d170e1b9e2055728b94758085303dfa8e086c3c6"
-  integrity sha512-ZKAJ7g2dMhfbfmtSjFI7+u00NG1vbLUYD51vQzLy03MlO1pWM2JCtH8vdu6p6ejyoZBB7AE8dy0d6Oo/agpYsw==
+"@twilio/webrtc@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@twilio/webrtc/-/webrtc-4.1.0.tgz#fc7663d0957042acd911570800b0c51eaf6c5cb3"
+  integrity sha512-Tk6HhTxeThmb/vsZDu5yD8gbFXyRBdKypFRA/VGgxCkDQNqEFqsX8mmYRF1YvzOF7P/mhZ+t871zdAPzJvZ3aQ==
 
 "@types/jss@^9.5.6":
   version "9.5.8"
@@ -13626,12 +13626,12 @@ twilio-transport@^0.3.3:
     loglevel "^1.6.1"
     xmlhttprequest "^1.8.0"
 
-twilio-video@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/twilio-video/-/twilio-video-2.0.0-beta9.tgz#84932b3c7eca8991ee93d95341c92b6d269494ba"
-  integrity sha512-A4oQazb8kJTgz14bA9QFvCed1BUTPr18oYg1LNp83T++Lz64SfhuNsPRASmn9aQWNpuv8meIY453tFlZkXCqLg==
+twilio-video@^2.0.0-beta12:
+  version "2.0.0-beta12"
+  resolved "https://registry.yarnpkg.com/twilio-video/-/twilio-video-2.0.0-beta12.tgz#e22e530eb361cb859da717a97fb517c3350cf2e4"
+  integrity sha512-S7yRUoNpuNzZnkeBIRWkcS5/7RngI4TtePNrHFz/QxMUVBRcF8rClZVjLC7wvwZVA8pG3HxYYvsiGWNSXiFLPg==
   dependencies:
-    "@twilio/webrtc" "4.0.0"
+    "@twilio/webrtc" "4.1.0"
     ws "^3.3.1"
     xmlhttprequest "^1.8.0"
 
