@@ -10,6 +10,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import Controls from '../../components/MeetUp2/Controls';
 import LeftPanel from '../../components/MeetUp2/LeftPanel';
 import Thumbnails from '../../components/MeetUp2/Thumbnails';
+import VideoGrid from '../../components/MeetUp2/VideoGrid';
 import { renewTwilioToken } from '../../api/chat';
 import * as utils from './utils';
 
@@ -55,6 +56,7 @@ class MeetUp extends React.Component<Props, State> {
     participants: [],
     videoRoom: null,
     isVideoSharing: false,
+    sharingTrackId: '',
     screenTrack: null,
     dominantSpeaker: ''
   };
@@ -133,9 +135,9 @@ class MeetUp extends React.Component<Props, State> {
         participant.tracks.forEach(publication => {
           const { track } = publication;
           this.handleAddParticipant(participant, track);
-          const { name = '' } = track || {};
+          const { name = '', sid = '' } = track || {};
           if (name === 'screenSharing') {
-            this.setState({ isVideoSharing: true });
+            this.setState({ isVideoSharing: true, sharingTrackId: sid });
           }
         });
       });
@@ -146,9 +148,9 @@ class MeetUp extends React.Component<Props, State> {
 
       videoRoom.on('trackSubscribed', (track, publication, participant) => {
         this.handleAddParticipant(participant, track);
-        const { name = '' } = track;
+        const { name = '', sid = '' } = track;
         if (name === 'screenSharing') {
-          this.setState({ isVideoSharing: true });
+          this.setState({ isVideoSharing: true, sharingTrackId: sid });
         }
       });
 
@@ -156,7 +158,7 @@ class MeetUp extends React.Component<Props, State> {
         this.handleRemoveTrack(participant, track);
         const { name = '' } = track;
         if (name === 'screenSharing') {
-          this.setState({ isVideoSharing: false });
+          this.setState({ isVideoSharing: false, sharingTrackId: '' });
         }
       });
 
@@ -303,7 +305,9 @@ class MeetUp extends React.Component<Props, State> {
       videoRoom,
       lockedParticipant,
       participants,
-      isVideoSharing
+      isVideoSharing,
+      dominantSpeaker,
+      sharingTrackId
     } = this.state;
     const localPartcipant = participants.find(item => item.type === 'local');
 
@@ -314,6 +318,7 @@ class MeetUp extends React.Component<Props, State> {
       <ErrorBoundary>
         <div className={classes.root}>
           <LeftPanel
+            participants={participants.length}
             thumbnails={
               <Thumbnails
                 participants={participants}
@@ -337,6 +342,7 @@ class MeetUp extends React.Component<Props, State> {
             shareScreen={this.handleShareScreen}
             shareData={this.handleShareData}
           />
+          <VideoGrid participants={participants} lockedParticipant={lockedParticipant} dominantSpeaker={dominantSpeaker} sharingTrackId={sharingTrackId} />
         </div>
       </ErrorBoundary>
     );

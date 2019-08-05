@@ -9,10 +9,11 @@ import Drawer from '@material-ui/core/Drawer';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Divider from '@material-ui/core/Divider';
+import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/Group';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     position: 'absolute',
     top: 0,
@@ -60,11 +61,15 @@ const styles = () => ({
   },
   hide: {
     display: 'none'
+  },
+  margin: {
+    margin: theme.spacing.unit * 2
   }
 });
 
 type Props = {
   classes: Object,
+  participants: number,
   thumbnails: Node
 };
 
@@ -86,7 +91,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
   handleChange = () => {};
 
   render() {
-    const { classes, thumbnails } = this.props;
+    const { classes, participants, thumbnails } = this.props;
     const { type } = this.state;
 
     return (
@@ -100,7 +105,13 @@ class LeftPanel extends React.PureComponent<Props, State> {
               className={classes.iconButton}
               onClick={this.handleOpen('participants')}
             >
-              <GroupIcon className={classes.icon} />
+              <Badge
+                className={classes.margin}
+                badgeContent={participants}
+                color="primary"
+              >
+                <GroupIcon className={classes.icon} />
+              </Badge>
             </ButtonBase>
             <ButtonBase
               className={classes.iconButton}

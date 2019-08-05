@@ -27,14 +27,6 @@ type State = {};
 class Thumbnails extends React.PureComponent<Props, State> {
   state = {};
 
-  componentDidMount = () => {
-    console.log('thumbnails mounted');
-  };
-
-  componentWillUnmount = () => {
-    console.log('thumbnails unmounted');
-  };
-
   handleClick = sid => () => {
     const { onLockParticipant } = this.props;
     onLockParticipant(sid);
@@ -67,14 +59,14 @@ class Thumbnails extends React.PureComponent<Props, State> {
           key={item.type === 'local' ? track.id : track.sid}
           button
           className={classes.item}
-          onClick={this.handleClick(item.participant.sid)}
+          onClick={this.handleClick(item.type === 'local' ? track.id : track.sid)}
         >
           <ThumbnailItem
             firstName="Camilo"
             lastName="Rios"
             profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
             video={track}
-            isPinned={lockedParticipant === item.participant.sid}
+            isPinned={item.type === 'local' ? lockedParticipant === track.id : lockedParticipant === track.sid}
             isVideo
             isMic={item.audio.length > 0}
           />
@@ -100,26 +92,7 @@ class Thumbnails extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <List component="nav">
-          {this.renderParticipants()}
-          {/* {[0, 1].map(item => (
-            <ListItem
-              key={item}
-              button
-              className={classes.item}
-              onClick={this.handleClick(item)}
-            >
-              <ThumbnailItem
-                firstName="Camilo"
-                lastName="Rios"
-                profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
-                isPinned={false}
-                isVideo={false}
-                isMic={false}
-              />
-            </ListItem>
-          ))} */}
-        </List>
+        <List component="nav">{this.renderParticipants()}</List>
         {this.renderAudio()}
       </div>
     );
