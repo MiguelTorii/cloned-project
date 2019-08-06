@@ -3,6 +3,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import MicOffIcon from '@material-ui/icons/MicOff';
 
@@ -46,6 +47,12 @@ const styles = () => ({
   icon: {
     height: 40,
     width: 40
+  },
+  avatar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
   }
 });
 
@@ -81,7 +88,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
-      if(video.stop) video.stop();
+      if (video.stop) video.stop();
       const attachedElements = video.detach();
       attachedElements.forEach(element => element.remove());
     }
@@ -119,6 +126,12 @@ class VideoGridItem extends React.PureComponent<Props, State> {
                 >
                   {initials === '' ? <PersonIcon /> : initials}
                 </Avatar>
+                {firstName !== '' && (
+                  <Typography
+                    variant="h6"
+                    style={{ color: 'white', fontWeight: 'bold' }}
+                  >{`${firstName} ${lastName}`}</Typography>
+                )}
               </div>
             )}
           </div>

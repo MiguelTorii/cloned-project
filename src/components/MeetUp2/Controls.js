@@ -35,6 +35,8 @@ type Props = {
   isScreenSharingSupported: boolean,
   isSharing: boolean,
   isSharingData: boolean,
+  isVideoSwitching: boolean,
+  isAudioSwitching: boolean,
   endCall: Function,
   disableVideo: Function,
   disableAudio: Function,
@@ -54,6 +56,8 @@ class Controls extends React.PureComponent<Props, State> {
       isScreenSharingSupported,
       isSharing,
       isSharingData,
+      isVideoSwitching,
+      isAudioSwitching,
       disableVideo,
       disableAudio,
       endCall,
@@ -69,7 +73,7 @@ class Controls extends React.PureComponent<Props, State> {
           aria-label="disable-video"
           onClick={disableVideo}
           className={classes.fab}
-          disabled={!isConnected}
+          disabled={!isConnected || isVideoSwitching}
         >
           {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
         </Fab>
@@ -79,7 +83,7 @@ class Controls extends React.PureComponent<Props, State> {
           aria-label="disable-audio"
           className={classes.fab}
           onClick={disableAudio}
-          disabled={!isConnected}
+          disabled={!isConnected || isAudioSwitching}
         >
           {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
         </Fab>

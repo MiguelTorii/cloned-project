@@ -17,6 +17,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   participants: Array<Object>,
+  profiles: Object,
   lockedParticipant: string,
   dominantSpeaker: string,
   sharingTrackId: string
@@ -28,18 +29,21 @@ class VideoGrid extends React.PureComponent<Props, State> {
   renderParticipants = () => {
     const {
       participants,
+      profiles,
       lockedParticipant,
       dominantSpeaker,
       sharingTrackId
     } = this.props;
     return participants.map(item => {
+      const profile = profiles[item.participant.identity] || {};
+      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
       if (item.video.length === 0) {
         return (
           <VideoGridItem
             key={item.participant.sid}
-            firstName="Camilo"
-            lastName="Rios"
-            profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={userProfileUrl}
             isVideo={false}
             isMic={item.audio.length > 0}
             isVisible={
@@ -56,9 +60,9 @@ class VideoGrid extends React.PureComponent<Props, State> {
         return (
           <VideoGridItem
             key={item.type === 'local' ? track.id : track.sid}
-            firstName="Camilo"
-            lastName="Rios"
-            profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={userProfileUrl}
             video={track}
             isVideo
             isMic={item.audio.length > 0}

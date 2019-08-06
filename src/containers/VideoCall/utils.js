@@ -170,3 +170,16 @@ export const removeTrack = (state, participant, track) => {
     }
   });
 };
+
+export const addProfile = (
+  state,
+  { userId, firstName, lastName, userProfileUrl }
+) => {
+  return update(state, {
+    profiles: {
+      $apply: b => {
+        return { ...b, [userId]: { firstName, lastName, userProfileUrl } };
+      }
+    }
+  });
+};

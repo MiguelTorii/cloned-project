@@ -18,6 +18,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   participants: Array<Object>,
+  profiles: Object,
   lockedParticipant: string,
   onLockParticipant: Function
 };
@@ -33,8 +34,11 @@ class Thumbnails extends React.PureComponent<Props, State> {
   };
 
   renderParticipants = () => {
-    const { classes, participants, lockedParticipant } = this.props;
+    const { classes, participants, profiles, lockedParticipant } = this.props;
     return participants.map(item => {
+      const profile = profiles[item.participant.identity] || {};
+      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+
       if (item.video.length === 0) {
         return (
           <ListItem
@@ -44,9 +48,9 @@ class Thumbnails extends React.PureComponent<Props, State> {
             onClick={this.handleClick(item.participant.sid)}
           >
             <ThumbnailItem
-              firstName="Camilo"
-              lastName="Rios"
-              profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
+              firstName={firstName}
+              lastName={lastName}
+              profileImage={userProfileUrl}
               isPinned={lockedParticipant === item.participant.sid}
               isVideo={false}
               isMic={item.audio.length > 0}
@@ -59,14 +63,20 @@ class Thumbnails extends React.PureComponent<Props, State> {
           key={item.type === 'local' ? track.id : track.sid}
           button
           className={classes.item}
-          onClick={this.handleClick(item.type === 'local' ? track.id : track.sid)}
+          onClick={this.handleClick(
+            item.type === 'local' ? track.id : track.sid
+          )}
         >
           <ThumbnailItem
-            firstName="Camilo"
-            lastName="Rios"
-            profileImage="https://dev-media.circleinapp.com/profile_images/11qFZR1KKs0hxzQiH2YSWplr3rOvonIwyL.jpg"
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={userProfileUrl}
             video={track}
-            isPinned={item.type === 'local' ? lockedParticipant === track.id : lockedParticipant === track.sid}
+            isPinned={
+              item.type === 'local'
+                ? lockedParticipant === track.id
+                : lockedParticipant === track.sid
+            }
             isVideo
             isMic={item.audio.length > 0}
           />
