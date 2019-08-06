@@ -39,11 +39,10 @@ type Props = {
 
 type State = {
   lockedParticipant: string,
-  // localVideoTrack: ?Object,
-  // localAudioTrack: ?Object,
   participants: Array<Object>,
   videoRoom: ?Object,
   isVideoSharing: boolean,
+  sharingTrackId: string,
   screenTrack: ?Object,
   dominantSpeaker: string
 };
@@ -51,8 +50,6 @@ type State = {
 class MeetUp extends React.Component<Props, State> {
   state = {
     lockedParticipant: '',
-    // localVideoTrack: null,
-    // localAudioTrack: null,
     participants: [],
     videoRoom: null,
     isVideoSharing: false,
@@ -291,8 +288,10 @@ class MeetUp extends React.Component<Props, State> {
         });
       }
     } else if (videoRoom && videoRoom.localParticipant) {
-      screenTrack.stop();
-      videoRoom.localParticipant.unpublishTrack(screenTrack);
+      if (screenTrack) {
+        screenTrack.stop();
+        videoRoom.localParticipant.unpublishTrack(screenTrack);
+      }
       this.setState({ screenTrack: null });
     }
   };
@@ -342,7 +341,12 @@ class MeetUp extends React.Component<Props, State> {
             shareScreen={this.handleShareScreen}
             shareData={this.handleShareData}
           />
-          <VideoGrid participants={participants} lockedParticipant={lockedParticipant} dominantSpeaker={dominantSpeaker} sharingTrackId={sharingTrackId} />
+          <VideoGrid
+            participants={participants}
+            lockedParticipant={lockedParticipant}
+            dominantSpeaker={dominantSpeaker}
+            sharingTrackId={sharingTrackId}
+          />
         </div>
       </ErrorBoundary>
     );

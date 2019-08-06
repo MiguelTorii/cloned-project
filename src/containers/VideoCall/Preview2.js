@@ -37,7 +37,19 @@ type Props = {
   onJoin: Function
 };
 
-type State = {};
+type State = {
+  videoinput: Array<Object>,
+  audioinput: Array<Object>,
+  audiooutput: Array<Object>,
+  selectedvideoinput: string,
+  selectedaudioinput: string,
+  selectedaudiooutput: string,
+  videoinputtrack: ?Object,
+  audioinputtrack: ?Object,
+  videoinputEnabled: boolean,
+  audioinputEnabled: boolean,
+  error: boolean
+};
 
 class Preview extends React.Component<Props, State> {
   state = {
@@ -62,10 +74,12 @@ class Preview extends React.Component<Props, State> {
 
   componentDidMount = async () => {
     try {
-      navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
-      const deviceSelectionOptions = await this.handleUpdateDeviceSelectionOptions();
+      if (navigator && navigator.mediaDevices)
+        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
+      const deviceSelectionOptions =
+        (await this.handleUpdateDeviceSelectionOptions()) || {};
       for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
-        const kindDeviceInfos = deviceSelectionOptions[kind];
+        const kindDeviceInfos = deviceSelectionOptions[kind] || [];
         const devices = [];
         kindDeviceInfos.forEach(kindDeviceInfo => {
           const { deviceId } = kindDeviceInfo;
@@ -101,12 +115,16 @@ class Preview extends React.Component<Props, State> {
   };
 
   handleUpdateDeviceSelectionOptions = () => {
-    return navigator.mediaDevices
-      .getUserMedia({ audio: true, video: true })
-      .then(utils.getDeviceSelectionOptions)
-      .catch(err => {
-        throw err;
-      });
+    return (
+      navigator &&
+      navigator.mediaDevices &&
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: true })
+        .then(utils.getDeviceSelectionOptions)
+        .catch(err => {
+          throw err;
+        })
+    );
   };
 
   handleUpdateDeviceSelection = async (kind, deviceId) => {
@@ -157,6 +175,8 @@ class Preview extends React.Component<Props, State> {
       videoinput: videoinputEnabled ? selectedvideoinput : ''
     });
   };
+
+  meetupPreview: Object;
 
   render() {
     const {

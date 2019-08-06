@@ -38,6 +38,8 @@ class AudioTrack extends React.PureComponent<Props, State> {
     }
   };
 
+  audioinput: Object;
+
   render() {
     const { classes } = this.props;
 

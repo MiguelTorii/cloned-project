@@ -73,7 +73,9 @@ type Props = {
   thumbnails: Node
 };
 
-type State = {};
+type State = {
+  type: string
+};
 
 class LeftPanel extends React.PureComponent<Props, State> {
   state = {

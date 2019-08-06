@@ -48,10 +48,11 @@ type State = {
 class VideoCall extends React.Component<Props, State> {
   state = {
     loading: true,
-    join: true,
-    selectedaudioinput: 'default',
-    selectedvideoinput:
-      '087b5fabfe22031636162fc11d83471ce2f45316403485a3974ffa9042cd8789',
+    join: false,
+    selectedaudioinput: '',
+    // selectedaudioinput: 'default',
+    selectedvideoinput: '',
+    // '087b5fabfe22031636162fc11d83471ce2f45316403485a3974ffa9042cd8789',
     errorDialog: false,
     errorTitle: '',
     errorBody: ''

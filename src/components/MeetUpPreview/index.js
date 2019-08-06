@@ -99,11 +99,17 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  roomName: string,
+  firstName: string,
+  lastName: string,
+  profileImage: string,
   selectedaudioinput: string,
   selectedvideoinput: string,
   audioinput: Array<Object>,
   videoinput: Array<Object>,
   error: boolean,
+  isVideoEnabled: boolean,
+  isAudioEnabled: boolean,
   onUpdateDeviceSelection: Function,
   onDisableDevice: Function,
   onJoin: Function

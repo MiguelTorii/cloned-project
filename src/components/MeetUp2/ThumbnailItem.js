@@ -35,9 +35,9 @@ const styles = theme => ({
     position: 'relative'
   },
   video: {
-      height: '100%   !important',
-      width: 'auto    !important',
-      maxWidth: '80px !important',
+    height: '100%   !important',
+    width: 'auto    !important',
+    maxWidth: '80px !important',
     '& video': {
       width: 'auto    !important',
       maxWidth: '80px !important',
@@ -112,10 +112,13 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
+      video.stop();
       const attachedElements = video.detach();
       attachedElements.forEach(element => element.remove());
     }
   };
+
+  videoinput: Object;
 
   render() {
     const {
