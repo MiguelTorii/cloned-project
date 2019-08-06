@@ -112,7 +112,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
-      video.stop();
+      if(video.stop) video.stop();
       const attachedElements = video.detach();
       attachedElements.forEach(element => element.remove());
     }
