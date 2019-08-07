@@ -54,6 +54,7 @@ class Thumbnails extends React.PureComponent<Props, State> {
               isPinned={lockedParticipant === item.participant.sid}
               isVideo={false}
               isMic={item.audio.length > 0}
+              isDataSharing={item.data.length > 0}
             />
           </ListItem>
         );
@@ -79,6 +80,7 @@ class Thumbnails extends React.PureComponent<Props, State> {
             }
             isVideo
             isMic={item.audio.length > 0}
+            isDataSharing={item.data.length > 0}
           />
         </ListItem>
       ));

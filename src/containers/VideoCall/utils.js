@@ -98,7 +98,8 @@ export const addParticipant = (state, participant, track, local = false) => {
               type: 'remote',
               participant,
               video: track && track.kind === 'video' ? [track] : [],
-              audio: track && track.kind === 'audio' ? [track] : []
+              audio: track && track.kind === 'audio' ? [track] : [],
+              data: track && track.kind === 'data' ? [track] : []
             }
           ];
         }

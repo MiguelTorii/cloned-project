@@ -20,7 +20,8 @@ type Props = {
   profiles: Object,
   lockedParticipant: string,
   dominantSpeaker: string,
-  sharingTrackId: string
+  sharingTrackId: string,
+  isDataSharing: boolean
 };
 
 type State = {};
@@ -61,7 +62,8 @@ class VideoGrid extends React.PureComponent<Props, State> {
       profiles,
       lockedParticipant,
       dominantSpeaker,
-      sharingTrackId
+      sharingTrackId,
+      isDataSharing
     } = this.props;
     return participants.map(item => {
       const profile = profiles[item.participant.identity] || {};
@@ -84,7 +86,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
             profileImage={userProfileUrl}
             isVideo={false}
             isMic={item.audio.length > 0}
-            isVisible={visibleId === item.participant.sid}
+            isVisible={!isDataSharing && visibleId === item.participant.sid}
           />
         );
       }
@@ -99,7 +101,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
             video={track}
             isVideo
             isMic={item.audio.length > 0}
-            isVisible={visibleId === id}
+            isVisible={!isDataSharing && visibleId === id}
           />
         );
       });

@@ -11,7 +11,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 // import ScreenShareIcon from '@material-ui/icons/ScreenShare';
-// import CastForEducationIcon from '@material-ui/icons/CastForEducation';
+import CastForEducationIcon from '@material-ui/icons/CastForEducation';
 
 const styles = theme => ({
   root: {
@@ -88,7 +88,8 @@ type Props = {
   video: ?Object,
   isPinned: boolean,
   isVideo: boolean,
-  isMic: boolean
+  isMic: boolean,
+  isDataSharing: boolean
 };
 
 type State = {};
@@ -112,7 +113,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
-      if(video.stop) video.stop();
+      if (video.stop) video.stop();
       const attachedElements = video.detach();
       attachedElements.forEach(element => element.remove());
     }
@@ -128,7 +129,8 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       profileImage,
       isPinned,
       isVideo,
-      isMic
+      isMic,
+      isDataSharing
     } = this.props;
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
       lastName !== '' ? lastName.charAt(0) : ''
@@ -156,6 +158,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
             {`${firstName} ${lastName}`}
           </Typography>
           <div className={classes.media}>
+            {isDataSharing && <CastForEducationIcon className={classes.icon} />}
             {isVideo ? (
               <VideocamIcon className={classes.icon} />
             ) : (
