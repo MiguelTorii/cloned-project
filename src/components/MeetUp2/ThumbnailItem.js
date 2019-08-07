@@ -64,8 +64,8 @@ const styles = theme => ({
   },
   icon: {
     color: 'black',
-    width: 16,
-    height: 16
+    width: 24,
+    height: 24
   },
   overlay: {
     position: 'absolute',
