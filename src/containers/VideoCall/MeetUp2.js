@@ -15,6 +15,7 @@ import Thumbnails from '../../components/MeetUp2/Thumbnails';
 import LocalThumbnail from '../../components/MeetUp2/LocalThumbnail';
 import VideoGrid from '../../components/MeetUp2/VideoGrid';
 import SharingScreenControl from '../../components/MeetUp2/SharingScreenControl';
+import NoParticipants from '../../components/MeetUp2/NoParticipants';
 import { renewTwilioToken } from '../../api/chat';
 import { getUserProfile } from '../../api/user';
 import * as utils from './utils';
@@ -409,6 +410,9 @@ class MeetUp extends React.Component<Props, State> {
     return (
       <ErrorBoundary>
         <div className={classes.root}>
+        {participants.length < 2 && (
+            <NoParticipants />
+          )}
           <LeftPanel
             participants={participants.length}
             localParticipant={

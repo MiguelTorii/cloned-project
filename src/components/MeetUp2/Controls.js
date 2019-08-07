@@ -15,11 +15,11 @@ const styles = theme => ({
   root: {
     position: 'absolute',
     bottom: 0,
-    width: '100%',
+    // width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 1200
+    zIndex: 1400
     // backgroundColor: 'white'
   },
   fab: {

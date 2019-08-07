@@ -39,7 +39,7 @@ const styles = theme => ({
     maxHeight: '100%'
   },
   listTyping: {
-    maxHeight: 270
+    // maxHeight: 270
   },
   typing: {
     width: '100%',
@@ -48,7 +48,7 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   typingText: {
-    // color: 'black'
+    color: 'black',
     marginLeft: theme.spacing.unit
   },
   progress: {
@@ -138,6 +138,7 @@ class VideoChatChannel extends React.Component<Props, State> {
           //     unread: prevState.unread + 1
           //   }));
         } else {
+          console.log('update')
           channel.setAllMessagesConsumed();
           onUnreadUpdate();
         }
