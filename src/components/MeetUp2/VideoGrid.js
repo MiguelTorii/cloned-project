@@ -26,6 +26,35 @@ type Props = {
 type State = {};
 
 class VideoGrid extends React.PureComponent<Props, State> {
+  handleVerifyVisibility = (
+    participant,
+    numberOfParticipants,
+    lockedParticipant,
+    dominantSpeaker,
+    sharingTrackId
+  ) => {
+    if (lockedParticipant === participant.participant.sid)
+      return lockedParticipant;
+    if (numberOfParticipants === 1) {
+      if (participant.video.length === 0) return participant.participant.sid;
+      const isTrackLocked = participant.video.find(
+        track => track.id === lockedParticipant
+      );
+      if (isTrackLocked) return isTrackLocked.id;
+      if (sharingTrackId !== '') return sharingTrackId;
+      return participant.video[0].id;
+    }
+    if (numberOfParticipants > 1) {
+      if (lockedParticipant !== '') return lockedParticipant;
+      if (sharingTrackId !== '') return sharingTrackId;
+      if (dominantSpeaker === participant.participant.sid) {
+        if (participant.video.length === 0) return participant.participant.sid;
+        return participant.video[0].sid;
+      }
+    }
+    return '';
+  };
+
   renderParticipants = () => {
     const {
       participants,
@@ -37,6 +66,15 @@ class VideoGrid extends React.PureComponent<Props, State> {
     return participants.map(item => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+
+      const visibleId = this.handleVerifyVisibility(
+        item,
+        participants.length,
+        lockedParticipant,
+        dominantSpeaker,
+        sharingTrackId
+      );
+
       if (item.video.length === 0) {
         return (
           <VideoGridItem
@@ -46,12 +84,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
             profileImage={userProfileUrl}
             isVideo={false}
             isMic={item.audio.length > 0}
-            isVisible={
-              lockedParticipant === item.participant.sid ||
-              (lockedParticipant === '' &&
-                sharingTrackId === '' &&
-                dominantSpeaker === item.participant.sid)
-            }
+            isVisible={visibleId === item.participant.sid}
           />
         );
       }
@@ -66,13 +99,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
             video={track}
             isVideo
             isMic={item.audio.length > 0}
-            isVisible={
-              lockedParticipant === id ||
-              (lockedParticipant === '' &&
-                sharingTrackId === '' &&
-                dominantSpeaker === item.participant.sid) ||
-              (lockedParticipant === '' && sharingTrackId === id)
-            }
+            isVisible={visibleId === id}
           />
         );
       });

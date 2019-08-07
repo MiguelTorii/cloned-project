@@ -27,11 +27,14 @@ const styles = theme => ({
     position: 'relative',
     width: '100%',
     minWidth: 120,
+    maxWidth: 120,
     backgroundColor: 'white',
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 0,
-    transition: 'margin-left 0.5s'
+    transition: 'margin-left 0.5s',
+    display: 'flex',
+    flexDirection: ' column'
   },
   paperHide: {
     marginLeft: -120
@@ -44,7 +47,7 @@ const styles = theme => ({
     color: 'black'
   },
   drawer: {
-    width: 200,
+    width: 250,
     backgroundColor: 'white',
     overflowY: 'hidden'
   },
@@ -70,7 +73,11 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   participants: number,
-  thumbnails: Node
+  thumbnails: Node,
+  localParticipant: Node,
+  chat: Node,
+  unread: number,
+  onTabChange: Function
 };
 
 type State = {
@@ -84,16 +91,20 @@ class LeftPanel extends React.PureComponent<Props, State> {
 
   handleOpen = type => () => {
     this.setState({ type });
+    const {onTabChange} = this.props
+    onTabChange(type)
   };
 
   handleClose = () => {
     this.setState({ type: '' });
+    const {onTabChange} = this.props
+    onTabChange('')
   };
 
   handleChange = () => {};
 
   render() {
-    const { classes, participants, thumbnails } = this.props;
+    const { classes, participants, thumbnails, localParticipant, chat, unread } = this.props;
     const { type } = this.state;
 
     return (
@@ -103,29 +114,41 @@ class LeftPanel extends React.PureComponent<Props, State> {
             className={cx(classes.paper, Boolean(type) && classes.paperHide)}
             elevation={1}
           >
-            <ButtonBase
-              className={classes.iconButton}
-              onClick={this.handleOpen('participants')}
-            >
-              <Badge
-                className={classes.margin}
-                badgeContent={participants}
-                color="primary"
+            <div>
+              <ButtonBase
+                className={classes.iconButton}
+                onClick={this.handleOpen('participants')}
               >
-                <GroupIcon className={classes.icon} />
-              </Badge>
-            </ButtonBase>
-            <ButtonBase
-              className={classes.iconButton}
-              onClick={this.handleOpen('chat')}
-            >
-              <ChatBubbleIcon className={classes.icon} />
-            </ButtonBase>
+                <Badge
+                  className={classes.margin}
+                  badgeContent={participants}
+                  color="primary"
+                >
+                  <GroupIcon className={classes.icon} />
+                </Badge>
+              </ButtonBase>
+              <ButtonBase
+                className={classes.iconButton}
+                onClick={this.handleOpen('chat')}
+              >
+                <Badge
+                  className={classes.margin}
+                  badgeContent={unread}
+                  color="primary"
+                >
+                <ChatBubbleIcon className={classes.icon} />
+                </Badge>
+              </ButtonBase>
+            </div>
+            {localParticipant}
           </Paper>
         </div>
         <Drawer
           open={Boolean(type)}
-          ModalProps={{ BackdropProps: { invisible: true }, keepMounted: true }}
+          ModalProps={{
+            BackdropProps: { invisible: true },
+            keepMounted: true
+          }}
           classes={{ paper: classes.drawer }}
           onClose={this.handleClose}
         >
@@ -156,6 +179,14 @@ class LeftPanel extends React.PureComponent<Props, State> {
             )}
           >
             {thumbnails}
+          </div>
+          <div
+            className={cx(
+              classes.section,
+              type !== 'chat' && classes.hide
+            )}
+          >
+            {chat}
           </div>
         </Drawer>
       </Fragment>

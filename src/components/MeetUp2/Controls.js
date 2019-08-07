@@ -19,7 +19,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 800
+    zIndex: 1200
     // backgroundColor: 'white'
   },
   fab: {

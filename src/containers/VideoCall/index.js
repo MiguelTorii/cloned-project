@@ -42,7 +42,8 @@ type State = {
   selectedvideoinput: string,
   errorDialog: boolean,
   errorTitle: string,
-  errorBody: string
+  errorBody: string,
+  channel: ?Object
 };
 
 class VideoCall extends React.Component<Props, State> {
@@ -55,7 +56,8 @@ class VideoCall extends React.Component<Props, State> {
     // '087b5fabfe22031636162fc11d83471ce2f45316403485a3974ffa9042cd8789',
     errorDialog: false,
     errorTitle: '',
-    errorBody: ''
+    errorBody: '',
+    channel: null
   };
 
   componentDidMount = () => {
@@ -92,6 +94,7 @@ class VideoCall extends React.Component<Props, State> {
       channel.sendMessage('Joined Video', messageAttributes);
       this.setState({
         join: true,
+        channel,
         selectedaudioinput: audioinput,
         selectedvideoinput: videoinput
       });
@@ -127,7 +130,7 @@ class VideoCall extends React.Component<Props, State> {
       roomId,
       user: { data }
     } = this.props;
-    const { join, selectedvideoinput, selectedaudioinput } = this.state;
+    const { join, selectedvideoinput, selectedaudioinput, channel } = this.state;
     if (!join) {
       return (
         <Preview
@@ -144,6 +147,7 @@ class VideoCall extends React.Component<Props, State> {
         videoinput={selectedvideoinput}
         audioinput={selectedaudioinput}
         roomName={roomId}
+        channel={channel}
         leaveRoom={this.handleLeaveRoom}
         updateLoading={this.handleUpdateLoading}
       />

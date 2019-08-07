@@ -84,7 +84,7 @@ export const detachTrack = track => {
   track.stop();
 };
 
-export const addParticipant = (state, participant, track) => {
+export const addParticipant = (state, participant, track, local = false) => {
   return update(state, {
     participants: {
       $apply: b => {
@@ -107,8 +107,8 @@ export const addParticipant = (state, participant, track) => {
             [index]: {
               [track.kind]: {
                 $apply: t => {
-                  const trackIndex = t.findIndex(
-                    item => item.sid === track.sid
+                  const trackIndex = t.findIndex(item =>
+                    local ? item.id === track.id : item.sid === track.sid
                   );
                   if (trackIndex === -1) {
                     return [...t, track];
@@ -141,7 +141,7 @@ export const removeParticipant = (state, participant) => {
   });
 };
 
-export const removeTrack = (state, participant, track) => {
+export const removeTrack = (state, participant, track, local = false) => {
   return update(state, {
     participants: {
       $apply: b => {
@@ -153,8 +153,8 @@ export const removeTrack = (state, participant, track) => {
             [index]: {
               [track.kind]: {
                 $apply: t => {
-                  const trackIndex = t.findIndex(
-                    item => item.sid === track.sid
+                  const trackIndex = t.findIndex(item =>
+                    local ? item.id === track.id : item.sid === track.sid
                   );
                   if (trackIndex > -1) {
                     return update(t, { $splice: [[trackIndex, 1]] });
