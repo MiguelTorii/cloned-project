@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -32,6 +33,15 @@ const styles = () => ({
     '& video': {
       width: 'auto    !important',
       height: '100%   !important'
+    }
+  },
+  screen: {
+    height: 'auto   !important',
+    width: '100%    !important',
+    '& video': {
+      width: '100%    !important',
+      height: 'auto   !important',
+      maxHeight: '100%    !important'
     }
   },
   mic: {
@@ -102,6 +112,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       firstName,
       lastName,
       profileImage,
+      video,
       isVideo,
       isMic,
       isVisible
@@ -111,12 +122,17 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
 
+    const isScreen = video && video.name === 'screenSharing';
+
     return (
       <Grid item xs hidden={!isVisible}>
         <div className={classes.root}>
           <div className={classes.videoWrapper}>
             {isVideo ? (
-              <div className={classes.video} ref={this.videoinput} />
+              <div
+                className={cx(classes.video, isScreen && classes.screen)}
+                ref={this.videoinput}
+              />
             ) : (
               <div className={classes.avatar}>
                 <Avatar

@@ -138,6 +138,12 @@ export const removeParticipant = (state, participant) => {
         }
         return b;
       }
+    },
+    lockedParticipant: {
+      $apply: b => {
+        if (b === participant.sid) return '';
+        return b;
+      }
     }
   });
 };
@@ -166,6 +172,13 @@ export const removeTrack = (state, participant, track, local = false) => {
             }
           });
         }
+        return b;
+      }
+    },
+    lockedParticipant: {
+      $apply: b => {
+        const id = local ? track.id : track.sid;
+        if (b === id || b === participant.sid) return '';
         return b;
       }
     }

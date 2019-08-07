@@ -98,6 +98,16 @@ class VideoCall extends React.Component<Props, State> {
         selectedaudioinput: audioinput,
         selectedvideoinput: videoinput
       });
+      client.on('tokenAboutToExpire', async () => {
+        if (!this.mounted) return;
+        const newToken = await renewTwilioToken({
+          userId
+        });
+        if (!newToken || (newToken && newToken === '')) {
+          return;
+        }
+        await client.updateToken(newToken);
+      });
     } catch (err) {
       this.setState({
         errorDialog: true,
@@ -130,7 +140,12 @@ class VideoCall extends React.Component<Props, State> {
       roomId,
       user: { data }
     } = this.props;
-    const { join, selectedvideoinput, selectedaudioinput, channel } = this.state;
+    const {
+      join,
+      selectedvideoinput,
+      selectedaudioinput,
+      channel
+    } = this.state;
     if (!join) {
       return (
         <Preview
