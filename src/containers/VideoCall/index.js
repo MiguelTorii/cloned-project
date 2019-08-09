@@ -61,9 +61,14 @@ class VideoCall extends React.Component<Props, State> {
   };
 
   componentDidMount = () => {
+    this.mounted = true;
     if (adapter.browserDetails.browser === 'firefox') {
       adapter.browserShim.shimGetDisplayMedia(window, 'screen');
     }
+  };
+
+  componentWillUnmount = () => {
+    this.mounted = false;
   };
 
   handleJoinRoom = async ({ audioinput, videoinput }) => {
@@ -134,6 +139,8 @@ class VideoCall extends React.Component<Props, State> {
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
+
+  mounted: boolean;
 
   renderComponent = () => {
     const {
