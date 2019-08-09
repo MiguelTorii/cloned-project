@@ -326,7 +326,7 @@ class MeetUp extends React.Component<Props, State> {
             deviceId: videoinput
           });
 
-          if (videoRoom && videoRoom.localParticipant) {
+          if (videoRoom && videoRoom.localParticipant && newLocalVideoTrack) {
             await videoRoom.localParticipant.publishTrack(newLocalVideoTrack);
             await this.handleAddParticipant(
               videoRoom.localParticipant,
@@ -366,7 +366,7 @@ class MeetUp extends React.Component<Props, State> {
             deviceId: audioinput
           });
 
-          if (videoRoom && videoRoom.localParticipant) {
+          if (videoRoom && videoRoom.localParticipant && newLocalAudioTrack) {
             videoRoom.localParticipant.publishTrack(newLocalAudioTrack);
             this.handleAddParticipant(
               videoRoom.localParticipant,
