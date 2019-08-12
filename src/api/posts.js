@@ -286,7 +286,7 @@ export const getFlashcards = async ({
     );
 
     const { data } = result;
-    
+
     const post = postToCamelCase(data);
     const deck = data.deck || [];
     const flashcards = { ...post, deck };
@@ -316,7 +316,7 @@ export const getShareLink = async ({
     );
 
     const { data } = result;
-    
+
     const post = postToCamelCase(data);
     const uri = String((data.uri: string) || '');
     const shareLink = { ...post, uri };
@@ -475,7 +475,7 @@ export const addToStudyCircle = async ({
   userId: string,
   classmateId: string,
   studyCircleTypeId?: number,
-  feedId: number
+  feedId: ?number
 }) => {
   try {
     const token = await getToken();
@@ -816,5 +816,31 @@ export const getPostInfo = async ({ hid }: { hid: string }): Promise<Post> => {
   } catch (err) {
     console.log(err);
     return postToCamelCase({});
+  }
+};
+
+export const deleteComment = async ({
+  userId,
+  id
+}: {
+  userId: string,
+  id: number
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.delete(
+      `${API_ROUTES.COMMENT}/${id}?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
   }
 };

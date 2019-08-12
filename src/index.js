@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
+// import axios from 'axios';
 import { init as sentryInit } from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
@@ -61,6 +62,8 @@ sentryInit({
 });
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
+
+// axios.defaults.headers.common['x-client-version'] = '1.0.0';
 
 ReactDOM.render(
   <Provider store={store}>

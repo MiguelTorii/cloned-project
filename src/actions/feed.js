@@ -107,7 +107,16 @@ export const fetchFeed = () => async (
       }
     } = getState();
 
-    const { userClasses, index, limit, postTypes, query, from } = filters;
+    const {
+      userClasses,
+      index,
+      limit,
+      postTypes,
+      query,
+      from,
+      fromDate,
+      toDate
+    } = filters;
 
     // const { classId, sectionId } = JSON.parse(userClass);
 
@@ -120,7 +129,9 @@ export const fetchFeed = () => async (
       limit,
       postTypes,
       from,
-      query
+      query,
+      fromDate,
+      toDate
     });
 
     const hasMore = feed.length === limit;

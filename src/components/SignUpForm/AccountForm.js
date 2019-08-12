@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 // @flow
 
 import React from 'react';
@@ -50,6 +51,8 @@ type Props = {
   type: string,
   loading: boolean,
   hide: boolean,
+  emailDomain: Array<string>,
+  emailRestriction: boolean,
   onSubmit: Function
 };
 
@@ -83,6 +86,18 @@ class AccountForm extends React.PureComponent<Props, State> {
       const { email } = this.state;
       if (value !== email) {
         return false;
+      }
+      return true;
+    });
+    ValidatorForm.addValidationRule('isEmailRestricted', value => {
+      const { emailDomain, emailRestriction } = this.props;
+      if (emailRestriction) {
+        let match = false;
+        for (const domain of emailDomain) {
+          if (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))
+            match = true;
+        }
+        return match;
       }
       return true;
     });
@@ -129,7 +144,7 @@ class AccountForm extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, type, hide, loading } = this.props;
+    const { classes, type, hide, loading, emailDomain } = this.props;
     const {
       firstName,
       lastName,
@@ -185,8 +200,12 @@ class AccountForm extends React.PureComponent<Props, State> {
           fullWidth
           value={email}
           disabled={loading}
-          validators={['required', 'isEmail']}
-          errorMessages={['Email Address is required', 'email is not valid']}
+          validators={['required', 'isEmail', 'isEmailRestricted']}
+          errorMessages={[
+            'Email Address is required',
+            'Email is not valid',
+            `Allowed domains: ${emailDomain.join(', ')}`
+          ]}
         />
         <TextValidator
           variant="outlined"

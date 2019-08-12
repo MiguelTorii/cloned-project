@@ -55,7 +55,7 @@ const styles = theme => ({
   },
   createdAt: {
     marginLeft: 5,
-    color: 'grey'
+    color: theme.circleIn.palette.primaryText1
   },
   createdAtRight: {
     marginRight: 5
@@ -86,14 +86,15 @@ const styles = theme => ({
     borderRadius: 20,
     padding: '5px 20px 5px 20px',
     textAlign: 'left',
-    backgroundColor: 'grey',
-    color: 'white',
+    backgroundColor: '#f5f5f5',
+    color: '#303030',
     wordWrap: 'break-word',
-    maxWidth: 250,
-    'word-break': 'break-all'
+    maxWidth: 180
+    // 'word-break': 'break-all'
   },
   right: {
-    textAlign: 'right'
+    textAlign: 'right',
+    backgroundColor: '#5dcbfd'
   }
 });
 

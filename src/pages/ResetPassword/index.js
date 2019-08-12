@@ -50,7 +50,7 @@ class ResetPasswordPage extends React.Component<ProvidedProps & Props, State> {
     const { email = '', reset_token: resetToken = '' } = values;
     if (email === '' || resetToken === '')
       this.setState({ redirect: '/login' });
-    this.setState({ email, resetToken });
+    this.setState({ email: email.replace(' ', '+'), resetToken });
   };
 
   render() {

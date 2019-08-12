@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import FeedList from '../../components/FeedList';
+import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { FeedState } from '../../reducers/feed';
@@ -212,6 +213,11 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed();
   };
 
+  handleChangeDateRange = (range, date) => {
+    const { updateFilter } = this.props;
+    updateFilter({ field: range, value: date });
+  };
+
   handlePostClick = ({
     typeId,
     postId,
@@ -253,7 +259,7 @@ class Feed extends React.PureComponent<Props, State> {
         data: {
           items,
           hasMore,
-          filters: { postTypes, query, from, userClasses }
+          filters: { postTypes, query, from, userClasses, fromDate, toDate }
         },
         isLoading
       },
@@ -265,16 +271,25 @@ class Feed extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
+            <FeedFilter
+              query={query}
+              from={from}
+              userClasses={userClasses}
+              postTypes={postTypes}
+              classesList={classesList}
+              fromDate={fromDate}
+              toDate={toDate}
+              onChange={this.handleChange}
+              onApplyFilters={this.handleApplyFilters}
+              onClearFilters={this.handleClearFilters}
+              onOpenFilter={this.handleOpenFilter}
+              onRefresh={this.handleRefresh}
+              onChangeDateRange={this.handleChangeDateRange}
+            />
             <FeedList
               isLoading={isLoading}
               userId={userId}
               items={items}
-              query={query}
-              from={from}
-              userClasses={userClasses}
-              // defaultClass={defaultClass}
-              postTypes={postTypes}
-              classesList={classesList}
               hasMore={hasMore}
               fromFeedId={fromFeedId}
               handleShare={this.handleShare}
@@ -282,13 +297,8 @@ class Feed extends React.PureComponent<Props, State> {
               onBookmark={this.handleBookmark}
               onReport={this.handleReport}
               onDelete={this.handleDelete}
-              onChange={this.handleChange}
-              onApplyFilters={this.handleApplyFilters}
-              onClearFilters={this.handleClearFilters}
               onLoadMore={this.handleLoadMore}
               onUserClick={this.handleUserClick}
-              onOpenFilter={this.handleOpenFilter}
-              onRefresh={this.handleRefresh}
             />
           </div>
         </ErrorBoundary>

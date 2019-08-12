@@ -22,7 +22,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import RedeemIcon from '@material-ui/icons/Redeem';
+import RedeemIcon from '@material-ui/icons/Redeem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -161,7 +161,7 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  // onOpenLeaderboard: Function,
+  onOpenLeaderboard: Function,
   // onOpenAnnouncements: Function
 };
 
@@ -267,7 +267,7 @@ class MainLayout extends React.Component<Props, State> {
       children,
       unreadCount,
       pathname,
-      // onOpenLeaderboard,
+      onOpenLeaderboard,
       // onOpenAnnouncements
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -423,12 +423,12 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          {/* <ListItem button onClick={onOpenLeaderboard}>
+          <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
               <RedeemIcon />
             </ListItemIcon>
             <ListItemText primary="Leaderboard" />
-          </ListItem> */}
+          </ListItem>
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>
               <StoreIcon className={classNames(pathname === '/store' && classes.currentRoute)}/>

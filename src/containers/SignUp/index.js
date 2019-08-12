@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 // @flow
 
 import React from 'react';
@@ -16,15 +17,10 @@ import Steps from '../../components/SignUpForm/Steps';
 import TypeSelect from '../../components/SignUpForm/TypeSelect';
 import AccountForm from '../../components/SignUpForm/AccountForm';
 import VerifyAccount from '../../components/SignUpForm/VerifyAccount';
-// import ProfileSetup from '../../components/SignUpForm/ProfileSetup';
+import ReferralCode from '../../components/SignUpForm/ReferralCode';
 import * as signUpActions from '../../actions/sign-up';
 import * as authActions from '../../actions/auth';
-import {
-  // fetchSchools,
-  sendCode,
-  verifyCode
-} from '../../api/sign-up';
-// import { getLMSSchools } from '../../api/lms';
+import { sendCode, verifyCode } from '../../api/sign-up';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
 import logo from '../../assets/svg/circlein_logo_beta.svg';
@@ -56,8 +52,6 @@ const styles = theme => ({
   }
 });
 
-// const schools = {};
-
 type ProvidedProps = {
   classes: Object
 };
@@ -67,6 +61,7 @@ type Props = {
   auth: AuthState,
   signUp: Function,
   enqueueSnackbar: Function,
+  updateError: Function,
   clearError: Function,
   updateSchool: Function
 };
@@ -78,9 +73,7 @@ type State = {
   firstName: string,
   lastName: string,
   email: string,
-  // gender: string,
   password: string,
-  // birthdate: string,
   grade: string | number
 };
 
@@ -92,10 +85,8 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     firstName: '',
     lastName: '',
     email: '',
-    // gender: '',
     password: '',
     grade: ''
-    // birthdate: ''
   };
 
   handleTypeChange = type => {
@@ -108,16 +99,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
   handleSubmit = async formData => {
     const { action, data } = formData;
-    const {
-      type,
-      firstName,
-      lastName,
-      email,
-      // gender,
-      password,
-      grade
-      // birthdate
-    } = this.state;
+    const { type, firstName, lastName, email, password, grade } = this.state;
     const {
       auth: {
         data: { school }
@@ -130,10 +112,8 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
           firstName: data.firstName || '',
           lastName: data.lastName || '',
           email: data.email || '',
-          // gender: data.gender || '',
           password: data.password || '',
           grade: data.grade || '',
-          // birthdate: data.birthdate || '',
           loading: true
         });
         try {
@@ -147,54 +127,35 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
         this.setState({ loading: true });
         try {
           await verifyCode({ email: data.email, code: data.code });
-          // this.setState({ activeStep: 2 });
+          this.setState({ activeStep: 2 });
+        } catch (err) {
+          const { updateError } = this.props;
+          updateError({
+            title: 'Verification Error',
+            body: "We couldn't verify your code, please try again."
+          });
+        } finally {
+          this.setState({ loading: false });
+        }
+        break;
+      case 'ReferralCode':
+        try {
+          this.setState({ loading: true });
           await signUp({
-            // state: data.state,
             grade,
             school: school && school.id,
-            // studentId: data.studentId,
             firstName,
             lastName,
-            // gender,
             password,
-            // birthday: birthdate,
             email,
             phone: '',
-            // parentFirstName: data.parentFirstName,
-            // parentLastName: data.parentLastName,
-            // parentPhone: data.parentPhone,
-            // parentEmail: data.parentEmail,
-            segment: type
+            segment: type,
+            referralCode: data.code
           });
         } catch (err) {
           this.setState({ loading: false });
         }
         break;
-      // case 'ProfileSetup':
-      //   this.setState({ loading: true });
-      //   try {
-      //     await signUp({
-      //       state: data.state,
-      //       grade: data.grade,
-      //       school: data.school,
-      //       studentId: data.studentId,
-      //       firstName,
-      //       lastName,
-      //       // gender,
-      //       password,
-      //       // birthday: birthdate,
-      //       email,
-      //       phone: '',
-      //       parentFirstName: data.parentFirstName,
-      //       parentLastName: data.parentLastName,
-      //       parentPhone: data.parentPhone,
-      //       parentEmail: data.parentEmail,
-      //       segment: type === 'K-12' ? 'K12' : 'College'
-      //     });
-      //   } catch (err) {
-      //     this.setState({ loading: false });
-      //   }
-      //   break;
       default:
         break;
     }
@@ -215,35 +176,6 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       }
     });
   };
-
-  // handleLoadSchools = async ({ type, stateId }) => {
-  //   if (type === 'K-12') {
-  //     if (stateId === '') return { options: [], hasMore: false };
-  //     let result = [];
-  //     if (schools[stateId]) result = schools[stateId];
-  //     else {
-  //       result = await fetchSchools({ stateId });
-  //       schools[stateId] = result;
-  //     }
-  //     return {
-  //       options: result.map(school => ({
-  //         label: school.value,
-  //         value: school.data
-  //       })),
-  //       hasMore: false
-  //     };
-  //   }
-
-  //   const result = await getLMSSchools();
-
-  //   return {
-  //     options: result.map(item => ({
-  //       label: item.school,
-  //       value: item.id
-  //     })),
-  //     hasMore: false
-  //   };
-  // };
 
   handleErrorDialogClose = () => {
     const { clearError } = this.props;
@@ -268,6 +200,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     const { title, body } = errorMessage;
 
     if (!school) return <Redirect to="/auth" />;
+    const { emailDomain, emailRestriction } = school;
 
     return (
       <main className={classes.main}>
@@ -275,11 +208,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
           <Grid item xs={12} lg={6} className={classes.grid}>
             <img src={logo} alt="Logo" className={classes.logo} />
             <ErrorBoundary>
-              <SignUpForm
-                // type={type}
-                // onReset={this.handleReset}
-                onChangeSchool={this.handleChangeSchool}
-              >
+              <SignUpForm onChangeSchool={this.handleChangeSchool}>
                 <Steps activeStep={activeStep} hide={Boolean(type === '')} />
                 <TypeSelect
                   onTypeChange={this.handleTypeChange}
@@ -289,6 +218,8 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
                   type={type}
                   loading={isLoading || loading}
                   hide={Boolean(type === '' || activeStep !== 0)}
+                  emailDomain={emailDomain}
+                  emailRestriction={emailRestriction}
                   onSubmit={this.handleSubmit}
                 />
                 <VerifyAccount
@@ -299,14 +230,12 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
                   onResend={this.handleResendCode}
                   onSubmit={this.handleSubmit}
                 />
-                {/* <ProfileSetup
-                  type={type}
+                <ReferralCode
                   loading={isLoading || loading}
                   hide={Boolean(type === '' || activeStep !== 2)}
-                  onLoadOptions={this.handleLoadSchools}
                   onBack={this.handleBack}
                   onSubmit={this.handleSubmit}
-                /> */}
+                />
               </SignUpForm>
             </ErrorBoundary>
           </Grid>
@@ -333,6 +262,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       signUp: signUpActions.signUp,
+      updateError: signUpActions.updateError,
       clearError: signUpActions.clearSignUpError,
       updateSchool: authActions.updateSchool
     },

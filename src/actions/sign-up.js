@@ -6,7 +6,7 @@ import { signUpActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User, UpdateProfile } from '../types/models';
-import { createAccount } from '../api/sign-up';
+import { createAccount, setReferral } from '../api/sign-up';
 
 const requestSignUp = (): Action => ({
   type: signUpActions.SIGN_UP_USER_REQUEST
@@ -38,59 +38,37 @@ const clearError = (): Action => ({
 });
 
 export const signUp = ({
-  // state,
   grade,
   school,
-  // studentId,
   firstName,
   lastName,
-  // gender,
   password,
-  // birthday,
   email,
   phone,
-  // parentFirstName,
-  // parentLastName,
-  // parentPhone,
-  // parentEmail,
-  segment
+  segment,
+  referralCode
 }: {
-  // state: number,
   grade: number,
   school: string,
-  // studentId: string,
   firstName: string,
   lastName: string,
-  // gender: number,
   password: string,
-  // birthday: string,
   email: string,
   phone: string,
-  // parentFirstName: string,
-  // parentLastName: string,
-  // parentPhone: string,
-  // parentEmail: string,
-  segment: string
+  segment: string,
+  referralCode: string
 }) => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignUp());
     // $FlowFixMe
     const result = await createAccount({
-      // state,
       grade,
       school,
-      // studentId,
       firstName,
       lastName,
-      // gender,
       password,
-      // birthday,
       email,
       phone,
-      // parentFirstName,
-      // parentLastName,
-      // parentPhone,
-      // parentEmail,
       segment
     });
 
@@ -121,6 +99,13 @@ export const signUp = ({
     store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
+    try {
+      if (referralCode !== '') {
+        setReferral({ userId: user.userId, referralCode });
+      }
+    } catch (err) {
+      console.log(err);
+    }
     return dispatch(push('/'));
   } catch (err) {
     //   const { response = {} } = err;
@@ -128,6 +113,16 @@ export const signUp = ({
       setError({ title: 'Unknown error', body: 'Please contact us' })
     );
   }
+};
+
+export const updateError = ({
+  title,
+  body
+}: {
+  title: string,
+  body: string
+}) => async (dispatch: Dispatch) => {
+  return dispatch(setError({ title, body }));
 };
 
 export const clearSignUpError = () => async (dispatch: Dispatch) =>

@@ -36,7 +36,7 @@ class Steps extends React.PureComponent<Props> {
             <StepLabel>Verification</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Profile Setup</StepLabel>
+            <StepLabel>Referral Code</StepLabel>
           </Step>
         </Stepper>
       </div>

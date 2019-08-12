@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import AddIcon from '@material-ui/icons/Add';
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
@@ -105,6 +107,9 @@ const styles = theme => ({
   },
   tabs: {
     backgroundColor: theme.circleIn.palette.appBar
+  },
+  buttonText: {
+    marginLeft: theme.spacing.unit
   }
 });
 
@@ -125,10 +130,13 @@ type Props = {
   chatLoading: boolean,
   uploading: boolean,
   tab: number,
+  inStudyCircle: boolean,
+  isStudyCircleLoading: boolean,
   onStartChat: Function,
   onStartVideo: Function,
   onUpdateProfileImage: Function,
-  onChange: Function
+  onChange: Function,
+  onStudyCircle: Function
 };
 
 class Header extends React.PureComponent<Props> {
@@ -149,6 +157,13 @@ class Header extends React.PureComponent<Props> {
   // eslint-disable-next-line no-undef
   fileInput: ?HTMLInputElement;
 
+  renderStudyCircle = () => {
+    const { inStudyCircle, isStudyCircleLoading } = this.props;
+    if (isStudyCircleLoading) return <CircularProgress size={24} />;
+    if (inStudyCircle) return <AddIcon />;
+    return <AddOutlinedIcon />;
+  };
+
   render() {
     const {
       classes,
@@ -167,9 +182,11 @@ class Header extends React.PureComponent<Props> {
       chatLoading,
       uploading,
       tab,
+      inStudyCircle,
       onStartChat,
       onStartVideo,
-      onChange
+      onChange,
+      onStudyCircle
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
@@ -221,8 +238,15 @@ class Header extends React.PureComponent<Props> {
                   variant="outlined"
                   color="primary"
                   className={classes.button}
+                  onClick={onStudyCircle}
                 >
-                  Add to Study Circle
+                  {this.renderStudyCircle()}
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.buttonText}
+                  >
+                    {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle
+                  </Typography>
                 </Button>
               )}
             </Grid>
