@@ -13,7 +13,9 @@ export const fetchFeed = async ({
   limit,
   postTypes,
   from,
-  query
+  query,
+  fromDate,
+  toDate
 }: {
   userId: string,
   schoolId: number,
@@ -22,7 +24,9 @@ export const fetchFeed = async ({
   limit: number,
   postTypes: Array<string>,
   from: string,
-  query: string
+  query: string,
+  fromDate: ?Object,
+  toDate: ?Object
 }): Promise<Feed> => {
   const url = generateFeedURL({
     userId,
@@ -32,7 +36,9 @@ export const fetchFeed = async ({
     limit,
     postTypes,
     from,
-    query
+    query,
+    fromDate,
+    toDate
   });
   try {
     const token = await getToken();

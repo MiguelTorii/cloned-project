@@ -38,6 +38,10 @@ const styles = theme => ({
   background: {
     color: theme.circleIn.palette.disabled
   },
+  circle: {
+    // boxShadow: '10px 10px 5px 0px rgba(0,0,0,0.75)',
+    filter: 'drop-shadow(-3px 5px 5px rgba(0, 0, 0, .7))'
+  },
   dayText: {
     color: '#fec04f',
     fontWeight: 'bold'
@@ -86,6 +90,7 @@ class DailyStreaksCard extends React.PureComponent<Props, State> {
               value={100}
               size={size}
               thickness={thickness}
+              classes={{ svg: classes.circle }}
             />
           </div>
           <div className={classes.progress}>

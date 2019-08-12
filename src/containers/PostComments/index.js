@@ -15,7 +15,8 @@ import {
   getPostComments,
   createComment,
   thankComment,
-  bestAnswer
+  bestAnswer,
+  deleteComment
 } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
@@ -143,7 +144,20 @@ class ViewNotes extends React.PureComponent<Props, State> {
     this.setState({ report: null });
   };
 
-  handleDelete = () => {};
+  handleDelete = async id => {
+    try {
+      this.setState({ isLoading: true });
+      const {
+        user: {
+          data: { userId }
+        }
+      } = this.props;
+      await deleteComment({ userId, id });
+      await this.loadData();
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
 
   handleBestAnswer = async ({ commentId }: { commentId: number }) => {
     const {
@@ -255,6 +269,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   thanksCount={reply.thanksCount}
                   thanked={reply.thanked}
                   rootCommentId={item.id}
+                  isLoading={isLoading}
                   isOwn={reply.user.userId === userId}
                   isReply
                   readOnly={readOnly}

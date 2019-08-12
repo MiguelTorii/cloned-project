@@ -11,13 +11,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+// import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+// import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
@@ -26,6 +26,12 @@ import type { Leaderboard as LeaderboardType } from '../../types/models';
 import { getLeaderboard } from '../../api/user';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
+import bronze from '../../assets/svg/rank_bronze.svg';
+import silver from '../../assets/svg/rank_silver.svg';
+import gold from '../../assets/svg/rank_gold.svg';
+import platinum from '../../assets/svg/rank_platinum.svg';
+import diamond from '../../assets/svg/rank_diamond.svg';
+import master from '../../assets/svg/rank_master.svg';
 
 const ranks = {
   '1': 'Bronze',
@@ -39,7 +45,11 @@ const ranks = {
 const styles = theme => ({
   root: {},
   formControl: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
   },
   list: {
     width: '100%',
@@ -58,6 +68,33 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing.unit * 2
+  },
+  select: {
+    width: 120,
+    borderBottom: '1px solid rgba(255, 255, 255, 0.42)'
+  },
+  input: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: theme.spacing.unit * 2
+  },
+  item: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit * 2
+  },
+  selected: {
+    backgroundColor: theme.circleIn.palette.action
+  },
+  top: {
+    backgroundColor: '#29414e'
   }
 });
 
@@ -171,62 +208,95 @@ class Leaderboard extends React.PureComponent<Props, State> {
             {loading && <CircularProgress size={12} />}
             {!loading && (
               <Fragment>
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  className={classes.formControl}
-                >
+                <FormControl variant="outlined" className={classes.formControl}>
                   <Select
                     value={rankId}
                     onChange={this.handleChange}
-                    input={
-                      <OutlinedInput
-                        labelWidth={0}
-                        name="rank"
-                        id="outlined-rank-simple"
-                      />
-                    }
+                    className={classes.select}
+                    SelectDisplayProps={{ className: classes.input }}
                   >
-                    <MenuItem value={1}>Bronze</MenuItem>
-                    <MenuItem value={2}>Silver</MenuItem>
-                    <MenuItem value={3}>Gold</MenuItem>
-                    <MenuItem value={4}>Platinum</MenuItem>
-                    <MenuItem value={5}>Diamond</MenuItem>
-                    <MenuItem value={6}>Master</MenuItem>
+                    <MenuItem value={1} className={classes.item}>
+                      Bronze
+                      <img alt="Bronze" src={bronze} className={classes.icon} />
+                    </MenuItem>
+                    <MenuItem value={2}>
+                      Silver
+                      <img alt="Silver" src={silver} className={classes.icon} />
+                    </MenuItem>
+                    <MenuItem value={3}>
+                      Gold
+                      <img alt="Gold" src={gold} className={classes.icon} />
+                    </MenuItem>
+                    <MenuItem value={4}>
+                      Platinum
+                      <img
+                        alt="Platinum"
+                        src={platinum}
+                        className={classes.icon}
+                      />
+                    </MenuItem>
+                    <MenuItem value={5}>
+                      Diamond
+                      <img
+                        alt="Diamond"
+                        src={diamond}
+                        className={classes.icon}
+                      />
+                    </MenuItem>
+                    <MenuItem value={6}>
+                      Master
+                      <img alt="Master" src={master} className={classes.icon} />
+                    </MenuItem>
                   </Select>
                 </FormControl>
                 <List className={classes.list}>
                   {leaderboard.map((user, index) => (
                     <ListItem
                       key={user.userId}
-                      selected={user.userId === userId}
                       style={{ display: 'flex' }}
+                      className={cx(
+                        index < 10 && user.userId !== userId && classes.top,
+                        user.userId === userId && classes.selected
+                      )}
                     >
-                      <ListItemAvatar>
-                        <Avatar
-                          className={cx(
-                            classes.avatar,
-                            user.userId === userId && classes.avatarSelected
-                          )}
-                        >
-                          {index + 1}
-                        </Avatar>
-                      </ListItemAvatar>
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'h6'
+                          variant: 'h6',
+                          color: 'textPrimary',
+                          style: {
+                            color: user.userId === userId && 'black',
+                            fontWeight: 'bold'
+                          }
+                        }}
+                        primary={index + 1}
+                      />
+                      <ListItemText
+                        primaryTypographyProps={{
+                          variant: 'h6',
+                          style: {
+                            color: user.userId === userId && 'black',
+                            fontWeight: 'bold'
+                          }
                         }}
                         primary={user.userId === userId ? 'You' : user.username}
                         style={{
                           flex: 1,
-                          minWidth: 300
+                          minWidth: 300,
+                          fontWeight: 'bold'
                         }}
                       />
                       <ListItemText
                         primaryTypographyProps={{
-                          variant: 'h6'
+                          variant: 'h6',
+                          style: {
+                            color: user.userId === userId && 'black',
+                            fontWeight: 'bold'
+                          }
                         }}
-                        primary={user.points}
+                        primary={user.points.toLocaleString()}
+                        style={{
+                          fontWeight: 'bold'
+                        }}
                       />
                     </ListItem>
                   ))}

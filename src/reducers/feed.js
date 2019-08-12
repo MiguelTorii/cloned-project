@@ -18,7 +18,9 @@ export type FeedState = {
       limit: number,
       postTypes: Array<string>,
       from: string,
-      query: string
+      query: string,
+      fromDate: ?Object,
+      toDate: ?Object
     }
   },
   error: boolean,
@@ -39,7 +41,9 @@ const defaultState = {
       limit: 100,
       postTypes: [],
       from: 'everyone',
-      query: ''
+      query: '',
+      fromDate: null,
+      toDate: null
     }
   },
   isLoading: false,

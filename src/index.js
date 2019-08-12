@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
+// import axios from 'axios';
 import { init as sentryInit } from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
@@ -62,91 +63,103 @@ sentryInit({
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
+// axios.defaults.headers.common['x-client-version'] = '1.0.0';
+
 ReactDOM.render(
   <Provider store={store}>
-    <FloatingChat />
     <DailyRewards />
     <UpdateLMSUser />
     <ConnectedRouter history={history}>
-      <Switch>
-        <Route exact path="/" component={withTracker(Index)} />
-        <Route exact path="/store" component={withTracker(Store)} />
-        <Route exact path="/feed" component={withTracker(Feed)} />
-        <Route exact path="/chat" component={withTracker(Chat)} />
-        <Route
-          exact
-          path="/notifications"
-          component={withTracker(Notifications)}
-        />
-        <Route exact path="/share/:code" component={withTracker(Share)} />
-        <Route
-          exact
-          path="/flashcards/:flashcardId"
-          component={withTracker(FlashCards)}
-        />
-        <Route exact path="/notes/:noteId" component={withTracker(PhotoNote)} />
-        <Route
-          exact
-          path="/sharelink/:sharelinkId"
-          component={withTracker(ShareLink)}
-        />
-        <Route
-          exact
-          path="/question/:questionId"
-          component={withTracker(Question)}
-        />
-        <Route
-          exact
-          path="/create/flashcards"
-          component={withTracker(CreateFlashcards)}
-        />
-        <Route
-          exact
-          path="/create/question"
-          component={withTracker(CreateQuestion)}
-        />
-        <Route
-          exact
-          path="/create/notes"
-          component={withTracker(CreateNotes)}
-        />
-        <Route
-          exact
-          path="/create/sharelink"
-          component={withTracker(CreateShareLink)}
-        />
-        <Route
-          exact
-          path="/edit/question/:id"
-          component={withTracker(EditQuestion)}
-        />
-        <Route exact path="/profile/:userId" component={withTracker(Profile)} />
-        <Route exact path="/reminders" component={withTracker(Reminders)} />
-        <Route
-          exact
-          path="/video-call/:roomId"
-          component={withTracker(VideoCall)}
-        />
-        <Route exact path="/video-call" component={withTracker(StartVideo)} />
-        <Route exact path="/auth" component={withTracker(Auth)} />
-        <Route exact path="/login" component={withTracker(SignIn)} />
-        <Route exact path="/signup" component={withTracker(SignUp)} />
-        <Route
-          exact
-          path="/forgot_password"
-          component={withTracker(ForgotPassword)}
-        />
-        ç
-        <Route
-          exact
-          path="/reset_password"
-          component={withTracker(ResetPassword)}
-        />
-        <Route exact path="/oauth" component={withTracker(OAuth)} />
-        <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
-        <Route exact path="/sandbox" component={Sandbox} />
-        <Route render={() => <div>Miss</div>} />
-      </Switch>
+      <div>
+        <FloatingChat />
+        <Switch>
+          <Route exact path="/" component={withTracker(Index)} />
+          <Route exact path="/store" component={withTracker(Store)} />
+          <Route exact path="/feed" component={withTracker(Feed)} />
+          <Route exact path="/chat" component={withTracker(Chat)} />
+          <Route
+            exact
+            path="/notifications"
+            component={withTracker(Notifications)}
+          />
+          <Route exact path="/share/:code" component={withTracker(Share)} />
+          <Route
+            exact
+            path="/flashcards/:flashcardId"
+            component={withTracker(FlashCards)}
+          />
+          <Route
+            exact
+            path="/notes/:noteId"
+            component={withTracker(PhotoNote)}
+          />
+          <Route
+            exact
+            path="/sharelink/:sharelinkId"
+            component={withTracker(ShareLink)}
+          />
+          <Route
+            exact
+            path="/question/:questionId"
+            component={withTracker(Question)}
+          />
+          <Route
+            exact
+            path="/create/flashcards"
+            component={withTracker(CreateFlashcards)}
+          />
+          <Route
+            exact
+            path="/create/question"
+            component={withTracker(CreateQuestion)}
+          />
+          <Route
+            exact
+            path="/create/notes"
+            component={withTracker(CreateNotes)}
+          />
+          <Route
+            exact
+            path="/create/sharelink"
+            component={withTracker(CreateShareLink)}
+          />
+          <Route
+            exact
+            path="/edit/question/:id"
+            component={withTracker(EditQuestion)}
+          />
+          <Route
+            exact
+            path="/profile/:userId"
+            component={withTracker(Profile)}
+          />
+          <Route exact path="/reminders" component={withTracker(Reminders)} />
+          <Route
+            exact
+            path="/video-call/:roomId"
+            component={withTracker(VideoCall)}
+          />
+          <Route exact path="/video-call" component={withTracker(StartVideo)} />
+          <Route exact path="/auth" component={withTracker(Auth)} />
+          <Route exact path="/login" component={withTracker(SignIn)} />
+          <Route exact path="/signup" component={withTracker(SignUp)} />
+          <Route
+            exact
+            path="/forgot_password"
+            component={withTracker(ForgotPassword)}
+          />
+          ç
+          <Route
+            exact
+            path="/reset_password"
+            component={withTracker(ResetPassword)}
+          />
+          <Route exact path="/oauth" component={withTracker(OAuth)} />
+          <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
+          <Route exact path="/sandbox" component={Sandbox} />
+          <Route render={() => <div>Miss</div>} />
+        </Switch>
+      </div>
     </ConnectedRouter>
   </Provider>,
   // $FlowIgnore

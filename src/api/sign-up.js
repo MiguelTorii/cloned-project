@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
+import { getToken } from './utils';
 
 export const fetchSchools = async ({ stateId }: { stateId: number }) => {
   try {
@@ -45,8 +46,7 @@ export const verifyCode = async ({
     const { data = {} } = result;
     return data;
   } catch (err) {
-    console.log(err);
-    return {};
+    throw err;
   }
 };
 
@@ -109,5 +109,35 @@ export const createAccount = async ({
   } catch (err) {
     console.log(err);
     return {};
+  }
+};
+
+export const setReferral = async ({
+  userId,
+  referralCode
+}: {
+  userId: string,
+  referralCode: string
+}) => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.post(
+      API_ROUTES.REFERRAL,
+      {
+        user_id: Number(userId),
+        referral_code: referralCode
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    throw err;
   }
 };

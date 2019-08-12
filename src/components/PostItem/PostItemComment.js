@@ -3,6 +3,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import moment from 'moment';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -14,12 +15,15 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Link from '@material-ui/core/Link';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ReplyIcon from '@material-ui/icons/Reply';
 import green from '@material-ui/core/colors/green';
 import PostItemAddComment from './PostItemAddComment';
 import DialogTitle from '../DialogTitle';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   container: {
@@ -175,9 +179,15 @@ class PostItemComment extends React.PureComponent<Props, State> {
     this.setState({ open: false });
   };
 
+  handleDelete = () => {
+    const { id, onDelete } = this.props;
+    onDelete(id);
+  };
+
   render() {
     const {
       classes,
+      ownerId,
       ownProfileUrl,
       ownName,
       replyTo,
@@ -194,8 +204,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       accepted,
-      hasBestAnswer,
-      onDelete
+      hasBestAnswer
     } = this.props;
     const { showAddComment, open } = this.state;
     const date = moment(created);
@@ -210,7 +219,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
           <div className={classes.info}>
             <div className={classes.header}>
               <Typography component="p" variant="subtitle2" noWrap>
-                {name}
+                <Link
+                  component={MyLink}
+                  href={`/profile/${ownerId}`}
+                  className={classes.link}
+                >
+                  {name}
+                </Link>
               </Typography>
               <Typography
                 component="p"
@@ -251,7 +266,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                     color="primary"
                     variant={accepted ? 'contained' : 'text'}
                     onClick={this.handleOpenBestAnswer}
-                    disabled={accepted}
+                    disabled={accepted || isLoading}
                   >
                     Best Answer
                   </Button>
@@ -268,13 +283,14 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 {`${thanksCount} thanks`}
               </Typography>
               {!isOwn && (
-                <IconButton onClick={this.handleThanks}>
+                <IconButton onClick={this.handleThanks} disabled={isLoading}>
                   {thanked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
                 </IconButton>
               )}
               <Button
                 color="primary"
-                variant="contained"
+                disabled={isLoading}
+                // variant="contained"
                 onClick={this.handleShowAddComment}
               >
                 Reply
@@ -282,17 +298,19 @@ class PostItemComment extends React.PureComponent<Props, State> {
               {!isOwn && (
                 <Button
                   color="primary"
-                  variant="contained"
+                  disabled={isLoading}
+                  // variant="contained"
                   onClick={this.handleReport}
                 >
                   Report
                 </Button>
               )}
-              {isOwn && !isReply && false && (
+              {isOwn && !isReply && (
                 <Button
                   color="secondary"
-                  variant="contained"
-                  onClick={onDelete}
+                  disabled={isLoading}
+                  // variant="contained"
+                  onClick={this.handleDelete}
                 >
                   Delete
                 </Button>

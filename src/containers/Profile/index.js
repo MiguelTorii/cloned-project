@@ -14,15 +14,18 @@ import type {
   UserProfile,
   About,
   UserStatistic,
-  FeedItem
+  FeedItem,
+  StudyCircle
 } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import {
   getUserProfile,
   updateProfile,
-  updateUserProfileUrl
+  updateUserProfileUrl,
+  getStudyCircle
 } from '../../api/user';
+import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
 import { getPresignedURL } from '../../api/media';
 import { fetchFeedv2 } from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
@@ -36,8 +39,10 @@ import ProfileAbout from '../../components/Profile/about';
 import ProfileSeasons from '../../components/Profile/seasons';
 import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
+import StudyCircleDialog from '../../components/StudyCircleDialog';
 import ErrorBoundary from '../ErrorBoundary';
 import { processSeasons } from './utils';
+import { logEvent } from '../../api/analytics';
 
 const styles = theme => ({
   root: {
@@ -82,6 +87,10 @@ type State = {
   feedId: ?number,
   report: ?Object,
   deletePost: ?Object,
+  studyCircle: boolean,
+  isStudyCircleLoading: boolean,
+  loading: boolean,
+  circle: StudyCircle
 };
 
 class Profile extends React.PureComponent<Props, State> {
@@ -108,10 +117,14 @@ class Profile extends React.PureComponent<Props, State> {
     error: false,
     edit: false,
     uploading: false,
-    tab: 1,
+    tab: 0,
     feedId: null,
     report: null,
-    deletePost: null
+    deletePost: null,
+    studyCircle: false,
+    isStudyCircleLoading: false,
+    loading: false,
+    circle: []
   };
 
   componentDidMount = () => {
@@ -128,7 +141,7 @@ class Profile extends React.PureComponent<Props, State> {
         const { userProfile, about, userStatistics } = await getUserProfile({
           userId
         });
-        
+
         this.setState({
           userProfile,
           about,
@@ -143,12 +156,14 @@ class Profile extends React.PureComponent<Props, State> {
 
   handleFetchFeed = () => {
     const { userId } = this.props;
-    if(userId !== '') {
+    if (userId !== '') {
       fetchFeedv2({
         userId
-      }).then(feed => {this.setState({feed})})
+      }).then(feed => {
+        this.setState({ feed });
+      });
     }
-  }
+  };
 
   handleOpenEdit = () => {
     this.setState({ edit: true });
@@ -247,7 +262,7 @@ class Profile extends React.PureComponent<Props, State> {
   handleShare = ({ feedId }: { feedId: number }) => {
     this.setState({ feedId });
   };
-  
+
   handleShareClose = () => {
     this.setState({ feedId: null });
   };
@@ -286,6 +301,47 @@ class Profile extends React.PureComponent<Props, State> {
       this.handleFetchFeed();
     }
     this.setState({ deletePost: null });
+  };
+
+  handleStudyCircle = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const {
+      userProfile: { userId: ownerId, inStudyCircle }
+    } = this.state;
+    try {
+      this.setState({ isStudyCircleLoading: true });
+      if (!inStudyCircle) {
+        await addToStudyCircle({ userId, classmateId: ownerId, feedId: null });
+        logEvent({
+          event: 'Profile- Added to Study Circle',
+          props: { Source: 'Profile' }
+        });
+        this.setState({ studyCircle: true, loading: true });
+        const circle = await getStudyCircle({ userId });
+        this.setState({ circle });
+      } else {
+        await removeFromStudyCircle({
+          userId,
+          classmateId: ownerId,
+          feedId: null
+        });
+        logEvent({
+          event: 'Profile- Removed from Study Circle',
+          props: { Source: 'Profile' }
+        });
+      }
+    } finally {
+      await this.handleGetProfile();
+      this.setState({ isStudyCircleLoading: false, loading: false });
+    }
+  };
+
+  handleStudyCircleClose = () => {
+    this.setState({ studyCircle: false });
   };
 
   handleUserClick = ({ userId }: { userId: string }) => {
@@ -341,7 +397,11 @@ class Profile extends React.PureComponent<Props, State> {
       tab,
       feedId,
       report,
-      deletePost
+      deletePost,
+      studyCircle,
+      loading,
+      circle,
+      isStudyCircleLoading
     } = this.state;
     const {
       userId,
@@ -367,80 +427,85 @@ class Profile extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <div className={classes.root}>
-        <Grid container alignItems="stretch">
-          <Grid item xs={12} md={12}>
-            <ErrorBoundary>
-              <ProfileHeader
-                isMyProfile={userId === userData.userId}
-                firstName={firstName}
-                lastName={lastName}
-                userProfileUrl={userProfileUrl}
-                points={points}
-                thanks={
-                  seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0
-                }
-                bestAnswers={
-                  seasons.length > 0
-                    ? seasons[seasons.length - 1].bestAnswers
-                    : 0
-                }
-                school={school}
-                state={state}
-                segment={segment}
-                grade={grade}
-                joined={joined}
-                chatLoading={chatLoading}
-                uploading={uploading}
-                tab={tab}
-                onStartChat={this.handleStartChat}
-                onStartVideo={this.handleStartVideo}
-                onUpdateProfileImage={this.handleUpdateProfileImage}
-                onChange={this.handleTabChange}
-              />
-            </ErrorBoundary>
+          <Grid container alignItems="stretch">
+            <Grid item xs={12} md={12}>
+              <ErrorBoundary>
+                <ProfileHeader
+                  isMyProfile={userId === userData.userId}
+                  firstName={firstName}
+                  lastName={lastName}
+                  userProfileUrl={userProfileUrl}
+                  points={points}
+                  thanks={
+                    seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0
+                  }
+                  bestAnswers={
+                    seasons.length > 0
+                      ? seasons[seasons.length - 1].bestAnswers
+                      : 0
+                  }
+                  school={school}
+                  state={state}
+                  segment={segment}
+                  grade={grade}
+                  joined={joined}
+                  chatLoading={chatLoading}
+                  uploading={uploading}
+                  tab={tab}
+                  inStudyCircle={false}
+                  isStudyCircleLoading={isStudyCircleLoading}
+                  onStartChat={this.handleStartChat}
+                  onStartVideo={this.handleStartVideo}
+                  onUpdateProfileImage={this.handleUpdateProfileImage}
+                  onChange={this.handleTabChange}
+                  onStudyCircle={this.handleStudyCircle}
+                />
+              </ErrorBoundary>
+            </Grid>
+            <Grid item xs={12} md={12} hidden={tab !== 0}>
+              <ErrorBoundary>
+                <ProfileAbout
+                  isMyProfile={userId === userData.userId}
+                  about={about}
+                  onOpenEdit={this.handleOpenEdit}
+                />
+              </ErrorBoundary>
+            </Grid>
+            <Grid item xs={12} md={12} hidden={tab !== 0}>
+              <ErrorBoundary>
+                <ProfileSeasons seasons={seasons} />
+              </ErrorBoundary>
+            </Grid>
+            <Grid item xs={12} md={12} hidden={tab !== 1}>
+              <ErrorBoundary>
+                <ProfilePosts
+                  userId={userData.userId}
+                  posts={feed}
+                  onShare={this.handleShare}
+                  onPostClick={this.handlePostClick}
+                  onBookmark={this.handleBookmark}
+                  onReport={this.handleReport}
+                  onDelete={this.handleDelete}
+                  onUserClick={this.handleUserClick}
+                />
+              </ErrorBoundary>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={12} hidden={tab !== 0}>
-            <ErrorBoundary>
-              <ProfileAbout
-                isMyProfile={userId === userData.userId}
-                about={about}
-                onOpenEdit={this.handleOpenEdit}
-              />
-            </ErrorBoundary>
-          </Grid>
-          <Grid item xs={12} md={12} hidden={tab !== 0}>
-            <ErrorBoundary>
-              <ProfileSeasons seasons={seasons} />
-            </ErrorBoundary>
-          </Grid>
-          <Grid item xs={12} md={12} hidden={tab !== 1}>
-            <ErrorBoundary>
-              <ProfilePosts userId={userData.userId} posts={feed}
-              onShare={this.handleShare}
-              onPostClick={this.handlePostClick}
-              onBookmark={this.handleBookmark}
-              onReport={this.handleReport}
-              onDelete={this.handleDelete}
-              onUserClick={this.handleUserClick}
-              />
-            </ErrorBoundary>
-          </Grid>
-        </Grid>
-        <ErrorBoundary>
-          <ProfileEdit
-            key={`${userId}-${userProfileUrl}`}
-            open={edit && userId === userData.userId}
-            about={about}
-            firstName={firstName}
-            lastName={lastName}
-            userProfileUrl={userProfileUrl}
-            uploading={uploading}
-            onClose={this.handleCloseEdit}
-            onSubmit={this.handleSubmit}
-            onUpdateProfileImage={this.handleUpdateProfileImage}
-          />
-        </ErrorBoundary>
-      </div>
+          <ErrorBoundary>
+            <ProfileEdit
+              key={`${userId}-${userProfileUrl}`}
+              open={edit && userId === userData.userId}
+              about={about}
+              firstName={firstName}
+              lastName={lastName}
+              userProfileUrl={userProfileUrl}
+              uploading={uploading}
+              onClose={this.handleCloseEdit}
+              onSubmit={this.handleSubmit}
+              onUpdateProfileImage={this.handleUpdateProfileImage}
+            />
+          </ErrorBoundary>
+        </div>
         <ErrorBoundary>
           <SharePost
             feedId={feedId}
@@ -463,6 +528,16 @@ class Profile extends React.PureComponent<Props, State> {
             onClose={this.handleDeleteClose}
           />
         </ErrorBoundary>
+        <ErrorBoundary>
+          <StudyCircleDialog
+            open={studyCircle}
+            name={`${firstName} ${lastName}`}
+            loading={loading}
+            userProfileUrl={userProfileUrl}
+            circle={circle}
+            onClose={this.handleStudyCircleClose}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }
@@ -478,7 +553,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       push: routePush,
       checkUserSession: signInActions.checkUserSession,
       openChannelWithEntity: chatActions.openChannelWithEntity,
-      updateBookmark: feedActions.updateBookmark,
+      updateBookmark: feedActions.updateBookmark
     },
     dispatch
   );

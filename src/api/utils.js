@@ -218,7 +218,9 @@ export const generateFeedURL = ({
   limit,
   postTypes,
   from,
-  query
+  query,
+  fromDate,
+  toDate
 }: {
   userId: string,
   schoolId: number,
@@ -227,7 +229,9 @@ export const generateFeedURL = ({
   limit: number,
   postTypes: Array<string>,
   from: string,
-  query: string
+  query: string,
+  fromDate: ?Object,
+  toDate: ?Object
 }) => {
   let url = '';
   let queryString = `?index=${index}&limit=${limit}`;
@@ -251,23 +255,22 @@ export const generateFeedURL = ({
 
   // eslint-disable-next-line no-restricted-syntax
   for (const userClass of userClasses) {
-    console.log(userClass);
-    // queryString = `${queryString}&class_id=${userClass}`;
+    try {
+      const { sectionId } = JSON.parse(userClass);
+      queryString = `${queryString}&section_id=${sectionId}`;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  // if (classId >= 0) {
-  //   queryString = `${queryString}&class_id=${classId}`;
-  // }
+  if (fromDate) {
+    queryString = `${queryString}&from_date=${fromDate.format('x')}`;
+  }
 
-  // if (sectionId && sectionId >= 0) {
-  //   queryString = `${queryString}&section_id=${sectionId}`;
-  // }
+  if (toDate) {
+    queryString = `${queryString}&to_date=${toDate.format('x')}`;
+  }
 
-  // if (from === 'my_posts') {
-  //   url = `${url}/user/${userId}${queryString}`;
-  // } else {
-  //   url = `${url}/${userId}${queryString}`;
-  // }
   url = `${url}${queryString}`;
 
   return url;

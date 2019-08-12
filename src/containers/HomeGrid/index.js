@@ -228,28 +228,28 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 isLoading={isHomeCardLoading}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <DailyStreaksCard
                 data={dailyStreaksCard}
                 isLoading={isDailyStreaksCardLoading}
               />
             </Grid>
-            <Grid item xs={6} hidden>
+            <Grid item xs={12} md={6} hidden>
               <WeeklyStudyPackCard />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <QuestsCard data={questsCard} isLoading={isQuestsCardLoading} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <SeasonStatsCard
                 data={currentSeasonCard}
                 isLoading={isCurrentSeasonCardLoading}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <RecommendedPostsCard isLoading={isHomeCardLoading} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <InviteYourFriendsCard
                 data={inviteCard}
                 isLoading={isInviteCardLoading}
