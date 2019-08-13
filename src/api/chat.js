@@ -197,3 +197,32 @@ export const getGroupMembers = async ({
     return [];
   }
 };
+
+export const addGroupMembers = async ({
+  chatId,
+  users
+}: {
+  chatId: string,
+  users: Array<number>
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.CHAT}/${chatId}/members`,
+      {
+        users
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+};

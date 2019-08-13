@@ -83,9 +83,6 @@ type Props = {
 };
 
 type State = {
-  chatType: string,
-  name: string,
-  type: string,
   from: string,
   users: Array<Object>,
   error: boolean,
@@ -94,20 +91,10 @@ type State = {
 
 class AddMembers extends React.PureComponent<Props, State> {
   state = {
-    chatType: 'single',
-    name: '',
-    type: '',
     from: 'school',
     users: [],
     error: false,
     inputValue: ''
-  };
-
-  componentDidUpdate = prevProps => {
-    const { chatType } = this.props;
-    if (chatType && prevProps.chatType !== chatType) {
-      this.setState({ chatType });
-    }
   };
 
   handleChange = name => event => {
@@ -115,10 +102,7 @@ class AddMembers extends React.PureComponent<Props, State> {
   };
 
   handleAutoComplete = values => {
-    const { chatType } = this.state;
-    if (chatType === 'single' && values.length > 1)
-      this.setState({ users: [values[values.length - 1]] });
-    else this.setState({ users: values });
+    this.setState({ users: values });
     if (values.length === 0) this.setState({ error: true });
     else this.setState({ error: false });
   };
@@ -129,24 +113,14 @@ class AddMembers extends React.PureComponent<Props, State> {
     return onLoadOptions({ query, from });
   };
 
-  handleChatTypeChange = () => {
-    this.setState(({ chatType }) => ({
-      chatType: chatType === 'single' ? 'group' : 'single'
-    }));
-  };
-
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const { chatType, name, type, users } = this.state;
+    const { users } = this.state;
     if (users.length === 0) this.setState({ error: true });
-    else if (chatType === 'single' && users.length > 1)
-      this.setState({ error: true });
     else {
       this.setState({ error: false });
-      onSubmit({ chatType, name, type, selectedUsers: users });
+      onSubmit({ selectedUsers: users });
       this.setState({
-        name: '',
-        type: '',
         users: [],
         inputValue: '',
         from: 'school'
@@ -154,34 +128,15 @@ class AddMembers extends React.PureComponent<Props, State> {
     }
   };
 
-  handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
-  };
-
-  handleInputChange = () => {
-    const { onSendInput } = this.props;
-    if (
-      this.fileInput &&
-      this.fileInput.files &&
-      this.fileInput.files.length > 0
-    )
-      onSendInput(this.fileInput.files[0]);
-  };
-
   handleClose = () => {
     const { onClose } = this.props;
     this.setState({
-      name: '',
-      type: '',
       users: [],
       inputValue: '',
       from: 'school'
     });
     onClose();
   };
-
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
 
   render() {
     const { classes, open, isLoading } = this.props;
@@ -191,8 +146,8 @@ class AddMembers extends React.PureComponent<Props, State> {
       <Dialog
         disableBackdropClick={isLoading}
         disableEscapeKeyDown={isLoading}
-        // style={{ maxWidth: 600, margin: '0 auto' }}
-        // fullScreen
+        style={{ maxWidth: 600, margin: '0 auto' }}
+        fullScreen
         fullWidth
         open={open}
         onClose={this.handleClose}
@@ -266,7 +221,7 @@ class AddMembers extends React.PureComponent<Props, State> {
                 color="primary"
                 variant="contained"
               >
-                Create
+                Add
               </Button>
               {isLoading && (
                 <CircularProgress

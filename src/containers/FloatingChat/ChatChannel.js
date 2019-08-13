@@ -17,6 +17,7 @@ import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
 import ChatChannelViewMembers from './ChatChannelViewMembers';
+import ChatChannelAddMembers from './ChatChannelAddMembers';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
@@ -84,7 +85,8 @@ type State = {
   loading: boolean,
   images: Array<{ src: string }>,
   expanded: boolean,
-  count: number
+  count: number,
+  addMembers: boolean
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -102,7 +104,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     loading: false,
     images: [],
     expanded: false,
-    count: 0
+    count: 0,
+    addMembers: false
   };
 
   componentDidMount = async () => {
@@ -384,6 +387,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState({ viewMembers: false });
   };
 
+  handleOpenAddMembers = () => {
+    this.setState({ addMembers: true });
+    this.handleCloseViewMembers();
+  };
+
+  handleCloseAddMembers = () => {
+    this.setState({ addMembers: false });
+  };
+
   handleImageClick = src => {
     this.setState({ images: [{ src }] });
   };
@@ -420,10 +432,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
         },
         autoHideDuration: 2000,
         ContentProps: {
-                classes: {
-                  root: classes.stackbar
-                }
-              }
+          classes: {
+            root: classes.stackbar
+          }
+        }
       });
     }
 
@@ -515,7 +527,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       viewMembers,
       loading,
       images,
-      expanded
+      expanded,
+      addMembers
     } = this.state;
 
     const messageItems = processMessages({
@@ -592,6 +605,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
             chatId={sid}
             onClose={this.handleCloseViewMembers}
             onBlock={onBlock}
+            onAddMember={this.handleOpenAddMembers}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ChatChannelAddMembers
+            chatId={sid}
+            open={addMembers}
+            onClose={this.handleCloseAddMembers}
           />
         </ErrorBoundary>
         <ErrorBoundary>

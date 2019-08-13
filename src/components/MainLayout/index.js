@@ -379,6 +379,28 @@ class MainLayout extends React.Component<Props, State> {
           </ListItemIcon>
           <ListItemText inset primary="Create Flashcards" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="500 points" />
         </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/video-call"
+        >
+          <ListItemIcon>
+            <DuoIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Video Meet Up" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="250 points" />
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/reminders"
+        >
+          <ListItemIcon>
+            <EventIcon />
+          </ListItemIcon>
+          <ListItemText inset primary="Create Reminders" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="20 points" />
+        </MenuItem>
       </Menu>
     );
 
@@ -415,14 +437,14 @@ class MainLayout extends React.Component<Props, State> {
               primaryTypographyProps={{ color: pathname === '/feed' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          <ListItem button component={MyLink} link="/reminders">
+          {/* <ListItem button component={MyLink} link="/reminders">
             <ListItemIcon>
               <EventIcon className={classNames(pathname === '/reminders' && classes.currentRoute)} />
             </ListItemIcon>
             <ListItemText primary="Reminders"
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
-          </ListItem>
+          </ListItem> */}
           <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
               <RedeemIcon />
@@ -437,14 +459,14 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/store' ? 'primary' : 'textPrimary' }}
             />
           </ListItem>
-          <ListItem button component={MyLink} link="/video-call">
+          {/* <ListItem button component={MyLink} link="/video-call">
             <ListItemIcon>
               <DuoIcon className={classNames(pathname === '/video-call' && classes.currentRoute)}/>
             </ListItemIcon>
             <ListItemText primary="Video Meet Up"
             primaryTypographyProps={{ color: pathname === '/video-call' ? 'primary' : 'textPrimary' }}
             />
-          </ListItem>
+          </ListItem> */}
           {/* <ListSubheader>Help</ListSubheader> */}
           {/* <ListItem button onClick={onOpenAnnouncements}>
             <ListItemIcon>

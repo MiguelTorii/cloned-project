@@ -7,10 +7,12 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import AddMembers from '../../components/FloatingChat/AddMembers';
 import { searchUsers } from '../../api/user';
+import { addGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 type Props = {
   user: UserState,
+  chatId: string,
   open: boolean,
   onClose: Function
 };
@@ -64,12 +66,16 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
     };
   };
 
-  handleSubmit = async () => {
+  handleSubmit = async ({ selectedUsers }) => {
     this.setState({ isLoading: true });
+    const { chatId } = this.props;
     try {
-      console.log(1);
+      await addGroupMembers({
+        chatId,
+        users: selectedUsers.map(user => Number(user.userId))
+      });
     } finally {
-      this.setState({ isLoading: false });
+      this.handleClose();
     }
   };
 

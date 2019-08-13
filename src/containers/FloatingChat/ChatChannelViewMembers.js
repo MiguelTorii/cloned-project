@@ -47,7 +47,8 @@ type Props = {
   userId: string,
   chatId: string,
   onClose: Function,
-  onBlock: Function
+  onBlock: Function,
+  onAddMember: Function
 };
 
 type State = {
@@ -97,7 +98,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, open, userId, onClose } = this.props;
+    const { classes, open, userId, onClose, onAddMember } = this.props;
     const { loading, blockedUserId, name, members } = this.state;
 
     return (
@@ -166,6 +167,14 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
               </List>
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={onAddMember}
+                disabled={loading}
+                color="primary"
+                variant="outlined"
+              >
+                Add Member
+              </Button>
               <Button
                 onClick={onClose}
                 disabled={loading}

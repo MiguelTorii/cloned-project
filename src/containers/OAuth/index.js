@@ -47,7 +47,6 @@ class OAuth extends React.Component<Props> {
       });
       updateUser({ user });
     } catch (err) {
-      console.log(err);
       pushTo('/login');
     }
   };

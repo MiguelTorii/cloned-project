@@ -32,7 +32,6 @@ class OAuthPage extends React.Component<Props, State> {
       location: { search = {} }
     } = this.props;
     const values = queryString.parse(search);
-    console.log(values);
     const { code = '', state = '' } = values;
     this.setState({ code, state });
   };
