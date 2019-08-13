@@ -103,10 +103,10 @@ class DailyStreaksCard extends React.PureComponent<Props, State> {
             />
           </div>
           <div className={classes.progress}>
-            <Typography variant="h5" className={classes.dayText} align="center">
+            <Typography variant="h6" className={classes.dayText} align="center">
               {`Day ${data.currentDay}`}
             </Typography>
-            <Typography variant="h6" align="center">
+            <Typography variant="subtitle1" align="center">
               {`+${(data.tiers.find(o => o.day === data.currentDay) || {})
                 .points || 0} SP`}
             </Typography>

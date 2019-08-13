@@ -110,10 +110,10 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
         <div className={classes.stats}>
           {options.map(item => (
             <div key={item.label} className={classes.stat}>
-              <Typography variant="h6" align="center">
+              <Typography variant="subtitle1" align="center">
                 {item.value}
               </Typography>
-              <Typography variant="subtitle1" align="center">
+              <Typography variant="caption" align="center">
                 {item.label}
               </Typography>
             </div>

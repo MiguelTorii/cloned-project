@@ -8,7 +8,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import bell from '../../assets/img/bell.png';
+import Link from '@material-ui/core/Link';
+// import bell from '../../assets/img/bell.png';
 
 const styles = theme => ({
   paper: {
@@ -62,19 +63,20 @@ const styles = theme => ({
   },
   video: {
     flex: 1,
-    borderRadius: 20,
-    padding: '5px 20px 5px 20px',
-    backgroundColor: 'grey',
-    wordWrap: 'break-word',
-    maxWidth: 300,
+    // borderRadius: 20,
+    padding: '5px 10px 5px 10px',
+    // backgroundColor: 'grey',
+    // wordWrap: 'break-word',
+    minWidth: 270,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    cursor: 'pointer'
+    marginLeft: -55
+    // cursor: 'pointer'
   },
   videoTitle: {
-    textAlign: 'center',
+    // textAlign: 'center',
     color: 'white'
   },
   videoSubTitle: {
@@ -89,12 +91,15 @@ const styles = theme => ({
     backgroundColor: '#f5f5f5',
     color: '#303030',
     wordWrap: 'break-word',
-    maxWidth: 180
+    maxWidth: 160
     // 'word-break': 'break-all'
   },
   right: {
     textAlign: 'right',
     backgroundColor: '#5dcbfd'
+  },
+  link: {
+    color: theme.palette.primary.main
   }
 });
 
@@ -150,6 +155,9 @@ class ChatMessageDate extends React.PureComponent<Props> {
 
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
 
+    // eslint-disable-next-line no-script-url
+    const dudUrl = 'javascript:;';
+
     if (imageKey !== '') {
       return (
         <div className={classes.bodyWrapper}>
@@ -169,19 +177,34 @@ class ChatMessageDate extends React.PureComponent<Props> {
     if (isVideoNotification && !isOwn) {
       return (
         <div className={classes.bodyWrapper}>
-          <ButtonBase className={classes.video} onClick={onStartVideoCall}>
-            <img src={bell} alt="bell" />
+          <div className={classes.video}>
+            <Typography
+              className={classes.createdAt}
+              style={{ fontStyle: 'italic' }}
+              align="center"
+            >
+              {createdAt}
+            </Typography>
             <Typography
               className={classes.videoTitle}
-            >{`${firstName} ${lastName} has invited you to a video meet-up.`}</Typography>
-            <Typography className={classes.videoSubTitle}>
-              Tap here to join!
+              align="center"
+              style={{ fontStyle: 'italic' }}
+            >
+              {`${firstName} ${lastName} has invited you to a video call. `}
+              <Link
+                href={dudUrl}
+                color="inherit"
+                className={classes.link}
+                onClick={onStartVideoCall}
+              >
+                Join now!
+              </Link>
             </Typography>
-          </ButtonBase>
-          <Typography className={classes.createdAt}>{createdAt}</Typography>
+          </div>
         </div>
       );
     }
+
     return (
       <div className={cx(classes.bodyWrapper, isOwn && classes.reverse)}>
         <Typography

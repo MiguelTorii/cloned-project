@@ -344,7 +344,7 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <ContactSupportIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Ask a Question" />
+          <ListItemText inset primary="Ask a Question" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="1,000 points for best answer"/>
         </MenuItem>
         <MenuItem
           button
@@ -355,7 +355,7 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <NoteAddIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Upload Notes" />
+          <ListItemText inset primary="Upload Notes" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="500 points for initial page, 100 points for each additional page"/>
         </MenuItem>
         <MenuItem
           button
@@ -366,7 +366,7 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <LanguageIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Share Link" />
+          <ListItemText inset primary="Share Link" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="200 - 500 points" />
         </MenuItem>
         <MenuItem
           button
@@ -377,7 +377,7 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Create Flashcards" />
+          <ListItemText inset primary="Create Flashcards" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="500 points" />
         </MenuItem>
       </Menu>
     );
