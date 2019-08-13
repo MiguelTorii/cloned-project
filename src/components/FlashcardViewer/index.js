@@ -43,12 +43,12 @@ function Transition(props) {
 type Props = {
   classes: Object,
   title: string,
-  flashcards: Array<Flashcard>
+  flashcards: Array<Flashcard & { id: string }>
 };
 
 type State = {
   open: boolean,
-  flashcards: Array<Flashcard>,
+  flashcards: Array<Flashcard & { id: string }>,
   current: number
 };
 
@@ -86,8 +86,9 @@ class FlashcardViewer extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, title } = this.props;
+    const { classes, title, flashcards: orgFlashcards } = this.props;
     const { open, flashcards, current } = this.state;
+
     return (
       <Fragment>
         <div className={classes.root}>
@@ -133,7 +134,11 @@ class FlashcardViewer extends React.PureComponent<Props, State> {
           <div className={classes.flashcard}>
             {flashcards && flashcards.length > 0 && (
               <FlashcardItem
-                index={current + 1}
+                index={
+                  orgFlashcards.findIndex(
+                    o => o.id === flashcards[current].id
+                  ) + 1
+                }
                 question={flashcards[current].question}
                 answer={flashcards[current].answer}
                 studyMode

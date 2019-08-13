@@ -36,6 +36,7 @@ const styles = () => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   quests: Array<Object>
 };
 
@@ -59,7 +60,7 @@ class Quests extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, quests } = this.props;
+    const { classes, userId, quests } = this.props;
     const { currentSlide } = this.state;
 
     return (
@@ -81,9 +82,11 @@ class Quests extends React.PureComponent<Props, State> {
           {quests.map((item, index) => (
             <QuestItem
               key={item.id}
+              userId={userId}
               iconUrl={item.iconUrl}
               pointsAvailable={item.pointsAvailable}
               task={item.task}
+              action={item.action}
               isHidden={
                 index !== currentSlide - 1 &&
                 index !== currentSlide &&

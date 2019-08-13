@@ -2,7 +2,7 @@
 import React from 'react';
 import Iframe from 'react-iframe';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -14,7 +14,7 @@ const styles = theme => ({
   iframe: {
     backgroundColor: 'white',
     width: '100%',
-    height: 400,
+    height: 500,
     borderRadius: 15
   },
   actions: {
@@ -47,14 +47,14 @@ class TermsOfUse extends React.PureComponent<Props, State> {
           display="initial"
           position="relative"
         />
-        <div className={classes.actions}>
+        {/* <div className={classes.actions}>
           <Button variant="outlined" color="primary">
             Disagree
           </Button>
           <Button variant="contained" color="primary">
             Agree
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   }

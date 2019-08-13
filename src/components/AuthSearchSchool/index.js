@@ -1,11 +1,17 @@
 // @flow
 
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import AutoComplete from '../AutoComplete';
 import type { SelectType } from '../../types/models';
+
+const MyLink = props => (
+  <RouterLink to="/terms-of-use" target="_blank" {...props} />
+);
 
 const styles = theme => ({
   root: {
@@ -67,8 +73,11 @@ class AuthSearchSchool extends React.PureComponent<Props> {
           </div>
           <Typography variant="subtitle1" align="center">
             {
-              "By searching for and selecting your school, I agree to CircleIn's Terms of Service and Privacy Policy"
+              "By searching for and selecting your school, I agree to CircleIn's  "
             }
+            <Link href="/terms-of-use" component={MyLink}>
+              Terms of Service and Privacy Policy
+            </Link>
           </Typography>
         </Paper>
       </div>

@@ -1,11 +1,15 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import ClearIcon from '@material-ui/icons/Clear';
+import ButtonBase from '@material-ui/core/ButtonBase';
+// import IconButton from '@material-ui/core/IconButton';
+// import ClearIcon from '@material-ui/icons/Clear';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   root: {
@@ -21,7 +25,9 @@ const styles = theme => ({
     borderRadius: 8,
     position: 'relative',
     opacity: 0.35,
-    transition: 'width 0.5s, height 0.5s, opacity 0.5s'
+    transition: 'width 0.5s, height 0.5s, opacity 0.5s',
+    display: 'flex',
+    flexDirection: 'column'
   },
   current: {
     zIndex: 100,
@@ -78,9 +84,11 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   iconUrl: string,
   pointsAvailable: number,
   task: string,
+  action: Object,
   isCurrent: boolean,
   isHidden: boolean
 };
@@ -92,24 +100,53 @@ class QuestItem extends React.PureComponent<Props, State> {
 
   state = {};
 
+  renderQuestLink = action => {
+    const {
+      name,
+      value,
+      attributes: {
+        feedFilter: { classId }
+      }
+    } = action;
+    const { userId } = this.props;
+    if (name === 'GotoScreen') {
+      switch (value) {
+        case 'EditProfile':
+          return `/profile/${userId}?edit=true`;
+        case 'RewardsStore':
+          return '/store';
+        case 'Feed':
+          return `/feed?classId=${classId}&sectionId=${0}`;
+        default:
+          return '/';
+      }
+    }
+
+    return '/';
+  };
+
   render() {
     const {
       classes,
       iconUrl,
       pointsAvailable,
       task,
+      action,
       isCurrent,
       isHidden
     } = this.props;
 
     return (
-      <Paper
+      <ButtonBase
         className={cx(
           classes.root,
           isCurrent && classes.current,
           isHidden && classes.hiden
         )}
-        elevation={1}
+        disabled={!isCurrent}
+        component={MyLink}
+        href={this.renderQuestLink(action)}
+        // elevation={1}
       >
         <div className={classes.header}>
           <Typography
@@ -118,9 +155,9 @@ class QuestItem extends React.PureComponent<Props, State> {
           >
             {`${pointsAvailable} points`}
           </Typography>
-          <IconButton aria-label="Remove" className={classes.removeButton}>
+          {/* <IconButton aria-label="Remove" className={classes.removeButton}>
             <ClearIcon fontSize="small" />
-          </IconButton>
+          </IconButton> */}
         </div>
         <Typography
           variant="caption"
@@ -140,7 +177,7 @@ class QuestItem extends React.PureComponent<Props, State> {
             className={cx(classes.image, !isCurrent && classes.imageSmall)}
           />
         </div>
-      </Paper>
+      </ButtonBase>
     );
   }
 }

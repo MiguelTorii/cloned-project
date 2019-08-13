@@ -40,7 +40,7 @@ const styles = theme => ({
   },
   circle: {
     // boxShadow: '10px 10px 5px 0px rgba(0,0,0,0.75)',
-    filter: 'drop-shadow(-3px 5px 5px rgba(0, 0, 0, .7))'
+    filter: 'drop-shadow(-3px 2px 4px rgba(0, 0, 0, .5))'
   },
   dayText: {
     color: '#fec04f',

@@ -201,7 +201,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: { rank }
+        data: { userId, rank }
       }
     } = this.props;
     const {
@@ -238,7 +238,11 @@ class HomeGrid extends React.PureComponent<Props, State> {
               <WeeklyStudyPackCard />
             </Grid>
             <Grid item xs={12} md={6}>
-              <QuestsCard data={questsCard} isLoading={isQuestsCardLoading} />
+              <QuestsCard
+                userId={userId}
+                data={questsCard}
+                isLoading={isQuestsCardLoading}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <SeasonStatsCard
@@ -246,7 +250,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 isLoading={isCurrentSeasonCardLoading}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} hidden>
               <RecommendedPostsCard isLoading={isHomeCardLoading} />
             </Grid>
             <Grid item xs={12} md={6}>
