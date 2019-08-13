@@ -36,7 +36,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import HelpIcon from '@material-ui/icons/Help'
+import HelpIcon from '@material-ui/icons/Help';
 import logo from '../../assets/svg/circlein_logo.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
@@ -161,7 +161,7 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  onOpenLeaderboard: Function,
+  onOpenLeaderboard: Function
   // onOpenAnnouncements: Function
 };
 
@@ -267,7 +267,7 @@ class MainLayout extends React.Component<Props, State> {
       children,
       unreadCount,
       pathname,
-      onOpenLeaderboard,
+      onOpenLeaderboard
       // onOpenAnnouncements
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -344,7 +344,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <ContactSupportIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Ask a Question" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="1,000 points for best answer"/>
+          <ListItemText
+            inset
+            primary="Ask a Question"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="1,000 points for best answer"
+          />
         </MenuItem>
         <MenuItem
           button
@@ -355,7 +363,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <NoteAddIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Upload Notes" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="500 points for initial page, 100 points for each additional page"/>
+          <ListItemText
+            inset
+            primary="Upload Notes"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="500 points for initial page, 100 points for each additional page"
+          />
         </MenuItem>
         <MenuItem
           button
@@ -366,7 +382,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <LanguageIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Share Link" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="200 - 500 points" />
+          <ListItemText
+            inset
+            primary="Share Link"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="200 - 500 points"
+          />
         </MenuItem>
         <MenuItem
           button
@@ -377,7 +401,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Create Flashcards" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="500 points" />
+          <ListItemText
+            inset
+            primary="Create Flashcards"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="500 points"
+          />
         </MenuItem>
         <MenuItem
           button
@@ -388,7 +420,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <DuoIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Video Meet Up" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="250 points" />
+          <ListItemText
+            inset
+            primary="Video Meet Up"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="250 points for initiating a session, 800 additional points after a 5-minute session"
+          />
         </MenuItem>
         <MenuItem
           button
@@ -399,7 +439,15 @@ class MainLayout extends React.Component<Props, State> {
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Create Reminders" secondaryTypographyProps={{variant: "caption", color: "textPrimary"}} secondary="20 points" />
+          <ListItemText
+            inset
+            primary="Create Reminders"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="20 points"
+          />
         </MenuItem>
       </Menu>
     );
@@ -415,26 +463,46 @@ class MainLayout extends React.Component<Props, State> {
         <List>
           <ListItem button onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
-              <AddBoxIcon className={classNames(pathname.includes('/create') && classes.currentRoute)} />
+              <AddBoxIcon
+                className={classNames(
+                  pathname.includes('/create') && classes.currentRoute
+                )}
+              />
             </ListItemIcon>
-            <ListItemText primary="Create Post"
-            primaryTypographyProps={{ color: pathname.includes('/create') ? 'primary' : 'textPrimary' }}
+            <ListItemText
+              primary="Create"
+              primaryTypographyProps={{
+                color: pathname.includes('/create') ? 'primary' : 'textPrimary'
+              }}
             />
           </ListItem>
           <Divider light />
           <ListItem button component={MyLink} link="/">
             <ListItemIcon>
-              <HomeIcon className={classNames(pathname === '/' && classes.currentRoute)} />
+              <HomeIcon
+                className={classNames(pathname === '/' && classes.currentRoute)}
+              />
             </ListItemIcon>
-            <ListItemText primary="Home" primaryTypographyProps={{ color: pathname === '/' ? 'primary' : 'textPrimary' }} />
+            <ListItemText
+              primary="Home"
+              primaryTypographyProps={{
+                color: pathname === '/' ? 'primary' : 'textPrimary'
+              }}
+            />
           </ListItem>
           <ListItem button component={MyLink} link="/feed">
             <ListItemIcon>
-              <ViewListIcon className={classNames(pathname === '/feed' && classes.currentRoute)} />
+              <ViewListIcon
+                className={classNames(
+                  pathname === '/feed' && classes.currentRoute
+                )}
+              />
             </ListItemIcon>
             <ListItemText
               primary="Feed"
-              primaryTypographyProps={{ color: pathname === '/feed' ? 'primary' : 'textPrimary' }}
+              primaryTypographyProps={{
+                color: pathname === '/feed' ? 'primary' : 'textPrimary'
+              }}
             />
           </ListItem>
           {/* <ListItem button component={MyLink} link="/reminders">
@@ -453,10 +521,17 @@ class MainLayout extends React.Component<Props, State> {
           </ListItem>
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>
-              <StoreIcon className={classNames(pathname === '/store' && classes.currentRoute)}/>
+              <StoreIcon
+                className={classNames(
+                  pathname === '/store' && classes.currentRoute
+                )}
+              />
             </ListItemIcon>
-            <ListItemText primary="Store"
-            primaryTypographyProps={{ color: pathname === '/store' ? 'primary' : 'textPrimary' }}
+            <ListItemText
+              primary="Store"
+              primaryTypographyProps={{
+                color: pathname === '/store' ? 'primary' : 'textPrimary'
+              }}
             />
           </ListItem>
           {/* <ListItem button component={MyLink} link="/video-call">

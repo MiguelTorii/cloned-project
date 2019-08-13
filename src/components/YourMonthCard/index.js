@@ -62,11 +62,13 @@ const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingBottom: theme.spacing.unit * 2,
+    position: 'relative'
   },
   header: {
+    width: '100%',
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
@@ -82,6 +84,8 @@ const styles = theme => ({
   },
   slots: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap'
   },
   item: {
@@ -89,9 +93,13 @@ const styles = theme => ({
     display: 'flex'
   },
   helpButton: {
+    margin: theme.spacing.unit * 2,
     width: 20,
     height: 20,
-    borderRadius: '100%'
+    borderRadius: '100%',
+    position: 'absolute',
+    top: 0,
+    right: 0
   },
   helpIcon: {
     width: 20,
@@ -139,7 +147,7 @@ const styles = theme => ({
   links: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     marginTop: theme.spacing.unit * 2
   },
   link: {
@@ -157,8 +165,8 @@ const styles = theme => ({
   },
   content: {
     display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   contentIcon: {
     marginRight: theme.spacing.unit,
@@ -217,7 +225,12 @@ class YourMonthCard extends React.PureComponent<Props, State> {
       <Fragment>
         <Paper className={classes.root} elevation={1}>
           <div className={classes.header}>
-            <Typography variant="h3" className={classes.title} paragraph>
+            <Typography
+              variant="h3"
+              className={classes.title}
+              paragraph
+              align="center"
+            >
               {data.title}
             </Typography>
             <img
@@ -225,18 +238,15 @@ class YourMonthCard extends React.PureComponent<Props, State> {
               src={rank ? ranks[rank].icon : ''}
               className={classes.badge}
             />
-            <span className={classes.grow} />
-            <ButtonBase
-              className={classes.helpButton}
-              onClick={this.handleOpen}
-            >
-              <Avatar className={classes.helpIcon}>?</Avatar>
-            </ButtonBase>
+            {/* <span className={classes.grow} /> */}
           </div>
-          <Typography variant="h5" paragraph>
+          <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
+            <Avatar className={classes.helpIcon}>?</Avatar>
+          </ButtonBase>
+          <Typography variant="h5" paragraph align="center">
             {renderText(data.subtitle.text, data.subtitle.style)}
           </Typography>
-          <Typography variant="h5" paragraph>
+          <Typography variant="h5" paragraph align="center">
             Your Top Picks
           </Typography>
           <div className={classes.slots}>
@@ -267,7 +277,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             ))}
           </div>
           <div className={classes.links}>
-            <Typography variant="h6">
+            <Typography variant="h6" align="center">
               <Link
                 href="/store"
                 component={MyLink}
@@ -277,7 +287,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 Reward Store
               </Link>
             </Typography>
-            <Typography variant="h6">
+            <Typography variant="h6" align="center">
               <Link
                 href={dudUrl}
                 onClick={onOpenLeaderboard}
