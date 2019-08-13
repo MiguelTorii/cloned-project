@@ -23,6 +23,7 @@ import {
   getInvite
 } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
+import Leaderboard from '../Leaderboard';
 import YourMonthCard from '../../components/YourMonthCard';
 import DailyStreaksCard from '../../components/DailyStreaksCard';
 import WeeklyStudyPackCard from '../../components/WeeklyStudyPackCard';
@@ -64,7 +65,8 @@ type State = {
   isDailyStreaksCardLoading: boolean,
   isQuestsCardLoading: boolean,
   isCurrentSeasonCardLoading: boolean,
-  isInviteCardLoading: boolean
+  isInviteCardLoading: boolean,
+  leaderboard: boolean
 };
 
 class HomeGrid extends React.PureComponent<Props, State> {
@@ -122,7 +124,8 @@ class HomeGrid extends React.PureComponent<Props, State> {
     isDailyStreaksCardLoading: true,
     isQuestsCardLoading: true,
     isCurrentSeasonCardLoading: true,
-    isInviteCardLoading: true
+    isInviteCardLoading: true,
+    leaderboard: false
   };
 
   componentDidMount = async () => {
@@ -195,6 +198,14 @@ class HomeGrid extends React.PureComponent<Props, State> {
     });
   };
 
+  handleOpenLeaderboard = () => {
+    this.setState({ leaderboard: true });
+  };
+
+  handleCloseLeaderboard = () => {
+    this.setState({ leaderboard: false });
+  };
+
   mounted: boolean;
 
   render() {
@@ -214,7 +225,8 @@ class HomeGrid extends React.PureComponent<Props, State> {
       isDailyStreaksCardLoading,
       isQuestsCardLoading,
       isCurrentSeasonCardLoading,
-      isInviteCardLoading
+      isInviteCardLoading,
+      leaderboard
     } = this.state;
 
     return (
@@ -226,6 +238,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 data={homeCard}
                 rank={rank}
                 isLoading={isHomeCardLoading}
+                onOpenLeaderboard={this.handleOpenLeaderboard}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -261,6 +274,12 @@ class HomeGrid extends React.PureComponent<Props, State> {
               />
             </Grid>
           </Grid>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Leaderboard
+            open={leaderboard}
+            onClose={this.handleCloseLeaderboard}
+          />
         </ErrorBoundary>
       </div>
     );

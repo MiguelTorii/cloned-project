@@ -64,7 +64,7 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    fontSize: 10,
+    fontSize: 14,
     fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
   },
   zIndex: {
