@@ -3,12 +3,14 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import store from 'store';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Fab from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
 import type { State as StoreState } from '../../types/state';
 import type {
   HomeCard,
@@ -52,15 +54,31 @@ const styles = theme => ({
       maxWidth: '90%'
     }
   },
+  bannerContainer: {
+    position: 'relative'
+  },
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    backgroundColor: theme.circleIn.palette.action
+    borderRadius: 4,
+    backgroundColor: theme.circleIn.palette.action,
+    width: '100%'
   },
   link: {
     margin: theme.spacing.unit,
     color: theme.palette.primary.main
+  },
+  banner: {
+    color: 'black',
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
+  },
+  clear: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1
   }
 });
 
@@ -233,6 +251,12 @@ class HomeGrid extends React.PureComponent<Props, State> {
     this.setState({ manageClasses: false });
   };
 
+  handleClearManageClassesBanner = event => {
+    event.stopPropagation();
+    store.set('MANAGE_CLASSES', true);
+    this.forceUpdate();
+  };
+
   handleOpenRequestClass = () => {
     this.handleCloseManageClasses();
     this.setState({ openRequestClass: true });
@@ -267,29 +291,40 @@ class HomeGrid extends React.PureComponent<Props, State> {
       openRequestClass
     } = this.state;
 
-    // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
+    const isManageClassesClicked = store.get('MANAGE_CLASSES');
 
     return (
       <div className={classes.root}>
         <ErrorBoundary>
           <Grid container spacing={8} className={classes.grid}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Typography style={{ color: 'black' }}>
+            <Grid
+              item
+              xs={12}
+              hidden={Boolean(isManageClassesClicked)}
+              className={classes.bannerContainer}
+            >
+              <ButtonBase
+                className={classes.paper}
+                onClick={this.handleOpenManageClasses}
+                disableRipple
+              >
+                <Typography className={classes.banner} align="center">
                   Hey! You’re one of the lucky students with access to CircleIn
                   for one or more of your courses this year. View those courses
                   by clicking{' '}
-                  <Link
-                    href={dudUrl}
-                    onClick={this.handleOpenManageClasses}
-                    color="inherit"
-                    // className={classes.link}
-                  >
+                  <span style={{ fontWeight: 'bolder', fontSize: 16 }}>
                     here!
-                  </Link>
+                  </span>
                 </Typography>
-              </Paper>
+              </ButtonBase>
+              <Fab
+                className={classes.clear}
+                aria-label="Clear"
+                size="small"
+                onClick={this.handleClearManageClassesBanner}
+              >
+                <ClearIcon fontSize="small" />
+              </Fab>
             </Grid>
             <Grid item xs={12}>
               <YourMonthCard

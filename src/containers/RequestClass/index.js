@@ -91,7 +91,7 @@ class RequestClass extends React.PureComponent<Props, State> {
             We are adding more classes soon. Please enter the class you are
             attempting to access below. Add up to five classes.
           </Typography>
-          <Typography variant="h6">Class Name and Section</Typography>
+          <Typography variant="h6">Class Name</Typography>
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
               id="standard-name"
