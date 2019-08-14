@@ -22,6 +22,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
@@ -36,7 +37,7 @@ import {
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     // padding: theme.spacing.unit * 2
   },
@@ -46,6 +47,10 @@ const styles = () => ({
     position: 'relative',
     overflow: 'auto',
     maxHeight: 200
+  },
+  link: {
+    margin: theme.spacing.unit,
+    color: theme.palette.primary.main
   }
 });
 
@@ -54,7 +59,8 @@ type Props = {
   user: UserState,
   open: boolean,
   onClose: Function,
-  fetchFeed: Function
+  fetchFeed: Function,
+  onOpenRequestClass: Function
 };
 
 type State = {
@@ -466,13 +472,17 @@ class ClassesManager extends React.PureComponent<Props, State> {
         data: { userId, lmsTypeId }
       },
       open,
-      onClose
+      onClose,
+      onOpenRequestClass
     } = this.props;
     const {
       permissions: { canAddClasses },
       loading,
       errorText
     } = this.state;
+    
+    // eslint-disable-next-line no-script-url
+    const dudUrl = 'javascript:;';
     if (!open) return null;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
@@ -508,6 +518,16 @@ class ClassesManager extends React.PureComponent<Props, State> {
               canAddClasses &&
               !loading &&
               this.renderAvailableClasses()}
+          </DialogContent>
+          <DialogContent>
+            <Typography>Can’t find your classes? <Link
+                href={dudUrl}
+                onClick={onOpenRequestClass}
+                color="inherit"
+                className={classes.link}
+              >
+                Click here
+              </Link></Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose} color="secondary" variant="contained">

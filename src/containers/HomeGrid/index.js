@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import type { State as StoreState } from '../../types/state';
 import type {
   HomeCard,
@@ -24,6 +27,8 @@ import {
 } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
 import Leaderboard from '../Leaderboard';
+import ClassesManager from '../ClassesManager';
+import RequestClass from '../RequestClass';
 import YourMonthCard from '../../components/YourMonthCard';
 import DailyStreaksCard from '../../components/DailyStreaksCard';
 import WeeklyStudyPackCard from '../../components/WeeklyStudyPackCard';
@@ -46,6 +51,16 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       maxWidth: '90%'
     }
+  },
+  paper: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    backgroundColor: theme.circleIn.palette.action
+  },
+  link: {
+    margin: theme.spacing.unit,
+    color: theme.palette.primary.main
   }
 });
 
@@ -66,7 +81,9 @@ type State = {
   isQuestsCardLoading: boolean,
   isCurrentSeasonCardLoading: boolean,
   isInviteCardLoading: boolean,
-  leaderboard: boolean
+  leaderboard: boolean,
+  openRequestClass: boolean,
+  manageClasses: boolean
 };
 
 class HomeGrid extends React.PureComponent<Props, State> {
@@ -125,7 +142,9 @@ class HomeGrid extends React.PureComponent<Props, State> {
     isQuestsCardLoading: true,
     isCurrentSeasonCardLoading: true,
     isInviteCardLoading: true,
-    leaderboard: false
+    leaderboard: false,
+    manageClasses: false,
+    openRequestClass: false
   };
 
   componentDidMount = async () => {
@@ -206,6 +225,23 @@ class HomeGrid extends React.PureComponent<Props, State> {
     this.setState({ leaderboard: false });
   };
 
+  handleOpenManageClasses = () => {
+    this.setState({ manageClasses: true });
+  };
+
+  handleCloseManageClasses = () => {
+    this.setState({ manageClasses: false });
+  };
+
+  handleOpenRequestClass = () => {
+    this.handleCloseManageClasses();
+    this.setState({ openRequestClass: true });
+  };
+
+  handleCloseRequestClass = () => {
+    this.setState({ openRequestClass: false });
+  };
+
   mounted: boolean;
 
   render() {
@@ -226,13 +262,35 @@ class HomeGrid extends React.PureComponent<Props, State> {
       isQuestsCardLoading,
       isCurrentSeasonCardLoading,
       isInviteCardLoading,
-      leaderboard
+      leaderboard,
+      manageClasses,
+      openRequestClass
     } = this.state;
+
+    // eslint-disable-next-line no-script-url
+    const dudUrl = 'javascript:;';
 
     return (
       <div className={classes.root}>
         <ErrorBoundary>
           <Grid container spacing={8} className={classes.grid}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Typography style={{ color: 'black' }}>
+                  Hey! You’re one of the lucky students with access to CircleIn
+                  for one or more of your courses this year. View those courses
+                  by clicking{' '}
+                  <Link
+                    href={dudUrl}
+                    onClick={this.handleOpenManageClasses}
+                    color="inherit"
+                    // className={classes.link}
+                  >
+                    here!
+                  </Link>
+                </Typography>
+              </Paper>
+            </Grid>
             <Grid item xs={12}>
               <YourMonthCard
                 data={homeCard}
@@ -279,6 +337,19 @@ class HomeGrid extends React.PureComponent<Props, State> {
           <Leaderboard
             open={leaderboard}
             onClose={this.handleCloseLeaderboard}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ClassesManager
+            open={manageClasses}
+            onClose={this.handleCloseManageClasses}
+            onOpenRequestClass={this.handleOpenRequestClass}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <RequestClass
+            open={openRequestClass}
+            onClose={this.handleCloseRequestClass}
           />
         </ErrorBoundary>
       </div>

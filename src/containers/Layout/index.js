@@ -19,6 +19,7 @@ import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import Leaderboard from '../Leaderboard';
 import WebNotifications from '../WebNotifications'
+import RequestClass from '../RequestClass'
 import Announcements from '../../components/Announcements';
 import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
@@ -51,7 +52,8 @@ type State = {
   anchorEl: Node,
   leaderboard: boolean,
   announcements: boolean,
-  unreadCount: number
+  unreadCount: number,
+  openRequestClass: boolean
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -65,7 +67,8 @@ class Layout extends React.PureComponent<Props, State> {
     anchorEl: null,
     leaderboard: false,
     announcements: false,
-    unreadCount: 0
+    unreadCount: 0,
+    openRequestClass: false
   };
 
   componentDidMount = () => {
@@ -128,6 +131,15 @@ class Layout extends React.PureComponent<Props, State> {
     this.setState({ unreadCount });
   };
 
+  handleOpenRequestClass = () => {
+    this.handleCloseManageClasses();
+    this.setState({openRequestClass: true})
+  }
+
+  handleCloseRequestClass = () => {
+    this.setState({openRequestClass: false})
+  }
+
   handleNotificationClick = ({
     typeId,
     postId
@@ -185,7 +197,8 @@ class Layout extends React.PureComponent<Props, State> {
       anchorEl,
       leaderboard,
       announcements,
-      unreadCount
+      unreadCount,
+      openRequestClass
     } = this.state;
     if (isNaked) return this.renderChildren();
     const name = `${firstName} ${lastName}`;
@@ -224,6 +237,7 @@ class Layout extends React.PureComponent<Props, State> {
           <ClassesManager
             open={manageClasses}
             onClose={this.handleCloseManageClasses}
+            onOpenRequestClass={this.handleOpenRequestClass}
           />
         </ErrorBoundary>
         <ErrorBoundary>
@@ -247,6 +261,9 @@ class Layout extends React.PureComponent<Props, State> {
         </ErrorBoundary>
         <ErrorBoundary>
           <WebNotifications />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <RequestClass open={openRequestClass} onClose={this.handleCloseRequestClass} />
         </ErrorBoundary>
       </Fragment>
     );

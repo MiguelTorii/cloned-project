@@ -108,14 +108,14 @@ class DailyStreaksCard extends React.PureComponent<Props, State> {
             </Typography>
             <Typography variant="subtitle1" align="center">
               {`+${(data.tiers.find(o => o.day === data.currentDay) || {})
-                .points || 0} SP`}
+                .points || 0}`}
             </Typography>
           </div>
         </div>
         <Typography variant="h5" align="center">
           {`Tomorrow: Earn ${(
             data.tiers.find(o => o.day === data.currentDay + 1) || {}
-          ).points || 0} SP!`}
+          ).points || 0} Points!`}
         </Typography>
       </Paper>
     );
