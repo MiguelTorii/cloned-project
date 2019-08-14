@@ -30,6 +30,7 @@ type Props = {
   classes: Object,
   userId: string,
   posts: Array<FeedItemState>,
+  isMyProfile: boolean,
   onShare: Function,
   onPostClick: Function,
   onBookmark: Function,
@@ -44,6 +45,7 @@ class Posts extends React.PureComponent<Props> {
       classes,
       userId,
       posts,
+      isMyProfile,
       onShare,
       onPostClick,
       onBookmark,
@@ -56,7 +58,9 @@ class Posts extends React.PureComponent<Props> {
       return (
         <div className={cx(classes.container, classes.nothing)}>
           <Typography variant="h6" color="textPrimary" align="center">
-            Nothing to see here... yet
+            {isMyProfile
+              ? 'You do not have any posts yet. Once you create a post you can come back here to view them'
+              : "Please check back later. They haven't created any posts yet."}
           </Typography>
         </div>
       );

@@ -60,6 +60,7 @@ class Auth extends React.Component<Props, State> {
   };
 
   handleChange = value => {
+    if (!value) return;
     const { lmsTypeId } = value;
     if (lmsTypeId === 0) {
       const { updateSchool } = this.props;
@@ -89,16 +90,22 @@ class Auth extends React.Component<Props, State> {
   };
 
   handleLoadOptions = async value => {
-    const schools = await searchSchools({ query: value });
+    if (value.trim().length > 3) {
+      const schools = await searchSchools({ query: value });
 
-    const options = schools.map(school => ({
-      value: school.clientId,
-      label: school.school,
-      noAvatar: true,
-      ...school
-    }));
+      const options = schools.map(school => ({
+        value: school.clientId,
+        label: school.school,
+        noAvatar: true,
+        ...school
+      }));
+      return {
+        options,
+        hasMore: false
+      };
+    }
     return {
-      options,
+      options: [],
       hasMore: false
     };
   };

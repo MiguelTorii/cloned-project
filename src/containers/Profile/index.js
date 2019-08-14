@@ -481,6 +481,7 @@ class Profile extends React.PureComponent<Props, State> {
                 <ProfilePosts
                   userId={userData.userId}
                   posts={feed}
+                  isMyProfile={userId === userData.userId}
                   onShare={this.handleShare}
                   onPostClick={this.handlePostClick}
                   onBookmark={this.handleBookmark}

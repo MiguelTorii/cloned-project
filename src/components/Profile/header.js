@@ -352,7 +352,7 @@ class Header extends React.PureComponent<Props> {
           classes={{ root: classes.tabs }}
         >
           <Tab label="Profile" />
-          <Tab label="Posts" />
+          <Tab label={isMyProfile ? 'My Stuff' : 'Posts'} />
         </Tabs>
       </div>
     );
