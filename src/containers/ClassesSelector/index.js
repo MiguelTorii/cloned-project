@@ -114,7 +114,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                 // native
                 value={value}
                 name="userClasses"
-                label="User Classes"
+                label="Select a Class"
                 onChange={this.handleChange}
                 variant="outlined"
                 validators={['required']}

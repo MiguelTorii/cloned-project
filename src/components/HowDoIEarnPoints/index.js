@@ -63,13 +63,6 @@ const options = [
   {
     id: uuidv4(),
     title: 'Video Meet Up',
-    subtitle: '250 points for initiating a meet up (once per day)',
-    icon: <DuoIcon />,
-    href: '/video-call'
-  },
-  {
-    id: uuidv4(),
-    title: 'Video Meet Up',
     subtitle: '800 points for a 5-minute meet up (once per day)',
     icon: <DuoIcon />,
     href: '/video-call'

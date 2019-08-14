@@ -16,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 // import Avatar from '@material-ui/core/Avatar';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 import type { About } from '../../types/models';
+import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   form: {
@@ -201,6 +202,9 @@ class ProfileEdit extends React.PureComponent<Props, State> {
         aria-labelledby="profile-edit-dialog-title"
         aria-describedby="profile-edit-dialog-description"
       >
+        <DialogTitle id="profile-edit-dialog-title" onClose={onClose}>
+          About Me
+        </DialogTitle>
         {/* <div className={classes.header}>
           <ButtonBase
             disabled={uploading}

@@ -79,6 +79,9 @@ const styles = theme => ({
     height: 20,
     borderRadius: 10,
     marginBottom: theme.spacing.unit * 2
+  },
+  tab: {
+    fontSize: 20
   }
 });
 
@@ -117,7 +120,11 @@ class Seasons extends React.PureComponent<Props, State> {
               scrollButtons="auto"
             >
               {seasons.map(item => (
-                <Tab key={item.seasonId} label={item.name} />
+                <Tab
+                  key={item.seasonId}
+                  label={item.name}
+                  classes={{ textColorPrimary: classes.tab }}
+                />
               ))}
             </Tabs>
           </div>
@@ -132,21 +139,15 @@ class Seasons extends React.PureComponent<Props, State> {
           >
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].thanks.toLocaleString()}
-              </Typography>
-              <Typography variant="h6">Thanks Received</Typography>
-            </Grid>
-            <Grid item className={classes.data}>
-              <Typography variant="h3" gutterBottom>
                 {seasons[value].points.toLocaleString()}
               </Typography>
               <Typography variant="h6">Points</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].communityServiceHours.toLocaleString()}
+                {seasons[value].thanks.toLocaleString()}
               </Typography>
-              <Typography variant="h6">Community Service Hours</Typography>
+              <Typography variant="h6">Thanks Received</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
@@ -159,6 +160,12 @@ class Seasons extends React.PureComponent<Props, State> {
                 {seasons[value].reach.toLocaleString()}
               </Typography>
               <Typography variant="h6">Reach</Typography>
+            </Grid>
+            <Grid item className={classes.data}>
+              <Typography variant="h3" gutterBottom>
+                {seasons[value].communityServiceHours.toLocaleString()}
+              </Typography>
+              <Typography variant="h6">Community Service Hours</Typography>
             </Grid>
           </Grid>
           <Grid
