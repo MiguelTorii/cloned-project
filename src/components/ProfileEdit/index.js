@@ -60,6 +60,9 @@ const styles = theme => ({
     borderRadius: '50%',
     top: 0,
     backgroundColor: 'rgba(0,0,0,0.8)'
+  },
+  shrink: {
+    fontSize: 20
   }
 });
 
@@ -246,7 +249,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
         <DialogContent>
           <div className={classes.form}>
             <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="studyGroupPreference">
+              <InputLabel
+                htmlFor="studyGroupPreference"
+                classes={{ shrink: classes.shrink }}
+              >
                 Do you prefer to study in groups or individually?
               </InputLabel>
               <Select
@@ -263,7 +269,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="studyLocationPreference">
+              <InputLabel
+                htmlFor="studyLocationPreference"
+                classes={{ shrink: classes.shrink }}
+              >
                 Do you prefer to study in person or virtually?
               </InputLabel>
               <Select
@@ -280,7 +289,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="subjectsPreference">
+              <InputLabel
+                htmlFor="subjectsPreference"
+                classes={{ shrink: classes.shrink }}
+              >
                 Do you enjoy getting involved in helping classmates?
               </InputLabel>
               <Select
@@ -304,9 +316,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
               fullWidth
               label="What is your major/concentration of study?"
               placeholder="Answer"
-              // InputLabelProps={{
-              //   shrink: true
-              // }}
+              InputLabelProps={{
+                shrink: true,
+                classes: { shrink: classes.shrink }
+              }}
               onChange={this.handleChange('major')}
               name="major"
               value={major}
@@ -316,9 +329,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
               fullWidth
               label="List any clubs or organizations that you're a part of"
               placeholder="Answer"
-              // InputLabelProps={{
-              //   shrink: true
-              // }}
+              InputLabelProps={{
+                shrink: true,
+                classes: { shrink: classes.shrink }
+              }}
               onChange={this.handleChange('clubsOrOrganizations')}
               name="clubsOrOrganizations"
               value={clubsOrOrganizations}
