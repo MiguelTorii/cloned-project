@@ -153,7 +153,7 @@ class QuestItem extends React.PureComponent<Props, State> {
             variant={isCurrent ? 'subtitle2' : 'caption'}
             className={classes.headerTitle}
           >
-            {`${pointsAvailable} points`}
+            {`${pointsAvailable.toLocaleString()} points`}
           </Typography>
           {/* <IconButton aria-label="Remove" className={classes.removeButton}>
             <ClearIcon fontSize="small" />

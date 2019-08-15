@@ -348,6 +348,7 @@ class Header extends React.PureComponent<Props> {
         <Tabs
           value={tab}
           textColor="primary"
+          centered
           onChange={onChange}
           classes={{ root: classes.tabs }}
         >

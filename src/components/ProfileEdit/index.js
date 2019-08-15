@@ -279,26 +279,34 @@ class ProfileEdit extends React.PureComponent<Props, State> {
                 <MenuItem value="Virtually">Virtually</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              margin="normal"
-              fullWidth
-              label="Do you like helping others with homework study help, if so, which subjects?"
-              placeholder="Answer"
-              InputLabelProps={{
-                shrink: true
-              }}
-              onChange={this.handleChange('subjectsPreference')}
-              name="subjectsPreference"
-              value={subjectsPreference}
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel htmlFor="subjectsPreference">
+                Do you enjoy getting involved in helping classmates?
+              </InputLabel>
+              <Select
+                value={subjectsPreference}
+                onChange={this.handleChange('subjectsPreference')}
+                inputProps={{
+                  id: 'subjectsPreference',
+                  name: 'subjectsPreference'
+                }}
+              >
+                <MenuItem value="" />
+                <MenuItem value="Always">Always</MenuItem>
+                <MenuItem value="Most of the Time">Most of the Time</MenuItem>
+                <MenuItem value="Sometimes">Sometimes</MenuItem>
+                <MenuItem value="When I Can">When I Can</MenuItem>
+                <MenuItem value="It’s Not My Thing">It’s Not My Thing</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               margin="normal"
               fullWidth
               label="What is your major/concentration of study?"
               placeholder="Answer"
-              InputLabelProps={{
-                shrink: true
-              }}
+              // InputLabelProps={{
+              //   shrink: true
+              // }}
               onChange={this.handleChange('major')}
               name="major"
               value={major}
@@ -308,9 +316,9 @@ class ProfileEdit extends React.PureComponent<Props, State> {
               fullWidth
               label="List any clubs or organizations that you're a part of"
               placeholder="Answer"
-              InputLabelProps={{
-                shrink: true
-              }}
+              // InputLabelProps={{
+              //   shrink: true
+              // }}
               onChange={this.handleChange('clubsOrOrganizations')}
               name="clubsOrOrganizations"
               value={clubsOrOrganizations}
