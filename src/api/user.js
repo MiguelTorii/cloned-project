@@ -64,7 +64,12 @@ export const getUserProfile = async ({
       thanks: Number((stats.thanks: number) || 0)
     }));
 
-    return { userProfile, about, userStatistics };
+    const newabout = about.map(item => ({
+      ...item,
+      section: item.section === 'Do you like helping others with homework study help, if so, which subjects?' ? 'Do you enjoy getting involved in helping classmates?' : item.section
+    }))
+
+    return { userProfile, about: newabout, userStatistics };
   } catch (err) {
     console.log(err);
     return {
