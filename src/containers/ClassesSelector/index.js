@@ -14,6 +14,7 @@ import { getUserClasses } from '../../api/user';
 import { processClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import ClassesManager from '../ClassesManager';
+import RequestClass from '../RequestClass';
 
 const styles = theme => ({
   root: {
@@ -33,14 +34,16 @@ type Props = {
 type State = {
   userClasses: Array<SelectType>,
   value: string,
-  open: boolean
+  open: boolean,
+  openRequestClass: boolean
 };
 
 class ClassesSelector extends React.PureComponent<Props, State> {
   state = {
     userClasses: [],
     value: '',
-    open: false
+    open: false,
+    openRequestClass: false
   };
 
   componentDidMount = async () => {
@@ -89,6 +92,15 @@ class ClassesSelector extends React.PureComponent<Props, State> {
     await this.handleLoadClasses();
   };
 
+  handleOpenRequestClass = () => {
+    this.handleCloseManageClasses();
+    this.setState({ openRequestClass: true });
+  };
+
+  handleCloseRequestClass = () => {
+    this.setState({ openRequestClass: false });
+  };
+
   mounted: boolean;
 
   render() {
@@ -100,7 +112,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    const { userClasses, value, open } = this.state;
+    const { userClasses, value, open, openRequestClass } = this.state;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
       return 'Oops, there was an error loading your data, please try again.';
@@ -134,7 +146,13 @@ class ClassesSelector extends React.PureComponent<Props, State> {
           </div>
         </ErrorBoundary>
         <ErrorBoundary>
-          <ClassesManager open={open} onClose={this.handleCloseManageClasses} />
+          <ClassesManager open={open} onClose={this.handleCloseManageClasses} onOpenRequestClass={this.handleOpenRequestClass}/>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <RequestClass
+            open={openRequestClass}
+            onClose={this.handleCloseRequestClass}
+          />
         </ErrorBoundary>
       </Fragment>
     );
