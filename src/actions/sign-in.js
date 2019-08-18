@@ -52,15 +52,17 @@ const clearError = (): Action => ({
 
 export const signIn = ({
   email,
-  password
+  password,
+  schoolId
 }: {
   email: string,
-  password: string
+  password: string,
+  schoolId: number
 }) => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignIn());
     // $FlowFixMe
-    const result = await signInUser(email, password);
+    const result = await signInUser(email, password, schoolId);
 
     const user: User = {
       userId: (result.user_id: string) || '',

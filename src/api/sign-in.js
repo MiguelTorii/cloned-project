@@ -6,12 +6,14 @@ import type { User, Schools } from '../types/models';
 
 export const signInUser = async (
   email: string,
-  password: string
+  password: string,
+  schoolId: number
 ): Promise<User | {}> => {
   try {
     const result = await axios.post(API_ROUTES.LOGIN, {
       email,
-      password
+      password,
+      school_id: schoolId
     });
     const { data } = result;
     return data;

@@ -75,8 +75,16 @@ class SignIn extends React.Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { signIn } = this.props;
-    signIn(this.state);
+    const {
+      auth: {
+        data: { school }
+      },
+      signIn
+    } = this.props;
+    if (!school) return;
+    const { id } = school;
+    const { email, password } = this.state;
+    signIn({ email, password, schoolId: id });
   };
 
   handleErrorDialogClose = () => {
