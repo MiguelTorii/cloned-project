@@ -90,7 +90,7 @@ class Auth extends React.Component<Props, State> {
   };
 
   handleLoadOptions = async value => {
-    if (value.trim().length > 3) {
+    if (value.trim().length > 1) {
       const schools = await searchSchools({ query: value });
 
       const options = schools.map(school => ({

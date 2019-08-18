@@ -22,7 +22,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import RedeemIcon from '@material-ui/icons/Redeem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
@@ -38,6 +37,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpIcon from '@material-ui/icons/Help';
 import logo from '../../assets/svg/circlein_logo.svg';
+// $FlowIgnore
+import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
@@ -515,7 +516,7 @@ class MainLayout extends React.Component<Props, State> {
           </ListItem> */}
           <ListItem button onClick={onOpenLeaderboard}>
             <ListItemIcon>
-              <RedeemIcon />
+              <LeaderboardIcon />
             </ListItemIcon>
             <ListItemText primary="Leaderboard" />
           </ListItem>

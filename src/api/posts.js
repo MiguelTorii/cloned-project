@@ -774,14 +774,14 @@ export const updatePostView = async ({
   try {
     const token = await getToken();
 
-    if (process.env.REACT_APP_STAGE !== 'production') return null;
+    // if (process.env.REACT_APP_STAGE !== 'production') return null;
 
     const result = await axios.post(
       `${API_ROUTES.FEED}/${postId}/view`,
       {
         user_id: Number(userId),
         type_id: typeId,
-        token: 'NA'
+        // token: 'NA'
       },
       {
         headers: {
