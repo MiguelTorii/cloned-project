@@ -23,7 +23,7 @@ import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
 import amazonLogo from '../../assets/svg/amazon_logo.svg';
 import trophy from '../../assets/svg/trophy.svg';
-import studyPacketCard from '../../assets/svg/study_packet_card.svg';
+// import studyPacketCard from '../../assets/svg/study_packet_card.svg';
 import ring from '../../assets/svg/ring.svg';
 import appLogo from '../../assets/svg/app-logo.svg';
 import { renderText } from '../HomeGridList/utils';
@@ -373,7 +373,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 season stats, head to the Profile.
               </DialogContentText>
             </div>
-            <DialogContentText
+            {/* <DialogContentText
               id="video-points-description"
               color="textPrimary"
               variant="h5"
@@ -396,7 +396,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 by your classmates and turns them into a study packet just for
                 you!
               </DialogContentText>
-            </div>
+            </div> */}
             <DialogContentText
               id="video-points-description"
               color="textPrimary"
