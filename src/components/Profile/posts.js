@@ -31,6 +31,7 @@ type Props = {
   userId: string,
   posts: Array<FeedItemState>,
   isMyProfile: boolean,
+  isBookmarks: boolean,
   onShare: Function,
   onPostClick: Function,
   onBookmark: Function,
@@ -46,6 +47,7 @@ class Posts extends React.PureComponent<Props> {
       userId,
       posts,
       isMyProfile,
+      isBookmarks,
       onShare,
       onPostClick,
       onBookmark,
@@ -54,7 +56,18 @@ class Posts extends React.PureComponent<Props> {
       onUserClick
     } = this.props;
 
-    if (posts.length === 0)
+    if (posts.length === 0) {
+      if (isBookmarks)
+        return (
+          <div className={cx(classes.container, classes.nothing)}>
+            <Typography variant="h6" color="textPrimary" align="center">
+              {
+                'It looks like you have no bookmarks yet. Explore the Feed and bookmark your favorite posts.'
+              }
+            </Typography>
+          </div>
+        );
+
       return (
         <div className={cx(classes.container, classes.nothing)}>
           <Typography variant="h6" color="textPrimary" align="center">
@@ -64,6 +77,7 @@ class Posts extends React.PureComponent<Props> {
           </Typography>
         </div>
       );
+    }
 
     return (
       <div className={classes.container}>

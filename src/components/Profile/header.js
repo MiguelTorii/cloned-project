@@ -10,12 +10,23 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import AddIcon from '@material-ui/icons/Add';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
+import bronze from '../../assets/svg/rank_bronze.svg';
+import silver from '../../assets/svg/rank_silver.svg';
+import gold from '../../assets/svg/rank_gold.svg';
+import platinum from '../../assets/svg/rank_platinum.svg';
+import diamond from '../../assets/svg/rank_diamond.svg';
+import master from '../../assets/svg/rank_master.svg';
 
 const styles = theme => ({
   container: {
@@ -29,7 +40,26 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    flex: 1
+    flex: 1,
+    position: 'relative'
+  },
+  helpButton: {
+    margin: theme.spacing.unit * 2,
+    width: 20,
+    height: 20,
+    borderRadius: '100%',
+    position: 'absolute',
+    top: 0,
+    right: 0
+  },
+  helpIcon: {
+    width: 20,
+    height: 20,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: theme.circleIn.palette.primaryText1,
+    backgroundColor: 'transparent',
+    color: theme.circleIn.palette.primaryText1
   },
   gridAvatar: {
     display: 'flex',
@@ -110,6 +140,16 @@ const styles = theme => ({
   },
   buttonText: {
     marginLeft: theme.spacing.unit
+  },
+  content: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  contentIcon: {
+    marginRight: theme.spacing.unit,
+    marginBottom: theme.spacing.unit * 2,
+    height: 40
   }
 });
 
@@ -139,7 +179,15 @@ type Props = {
   onStudyCircle: Function
 };
 
-class Header extends React.PureComponent<Props> {
+type State = {
+  open: boolean
+};
+
+class Header extends React.PureComponent<Props, State> {
+  state = {
+    open: false
+  };
+
   handleOpenInputFile = () => {
     if (this.fileInput) this.fileInput.click();
   };
@@ -152,6 +200,14 @@ class Header extends React.PureComponent<Props> {
       this.fileInput.files.length > 0
     )
       onUpdateProfileImage(this.fileInput.files[0]);
+  };
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   // eslint-disable-next-line no-undef
@@ -189,12 +245,17 @@ class Header extends React.PureComponent<Props> {
       onStudyCircle
     } = this.props;
 
+    const { open } = this.state;
+
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
+          <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
+            <Avatar className={classes.helpIcon}>?</Avatar>
+          </ButtonBase>
           <Grid container>
             <Grid item xs={4} className={classes.gridAvatar}>
               <div className={classes.avatar}>
@@ -354,7 +415,129 @@ class Header extends React.PureComponent<Props> {
         >
           <Tab label="Profile" />
           <Tab label={isMyProfile ? 'My Stuff' : 'Posts'} />
+          {isMyProfile && <Tab label="Bookmarks" />}
         </Tabs>
+        <Dialog
+          open={open}
+          onClose={this.handleClose}
+          fullWidth
+          maxWidth="md"
+          aria-labelledby="ranks-info-title"
+          aria-describedby="ranks-info-description"
+        >
+          <DialogContent>
+            <DialogContentText
+              id="ranks-points-description"
+              variant="h3"
+              paragraph
+              color="textPrimary"
+            >
+              What do ranks mean?
+            </DialogContentText>
+            <DialogContentText color="textPrimary" paragraph>
+              Ranks are a quick and easy way to see how active classmates are on
+              CircleIn. Check the breakdown below to learn what each rank means
+              and the perks of achieving each rank!
+            </DialogContentText>
+            <div className={classes.content}>
+              <img src={bronze} alt="Bronze" className={classes.contentIcon} />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Bronze
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  0 - 248,000 Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +5% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+            <div className={classes.content}>
+              <img src={silver} alt="Silver" className={classes.contentIcon} />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Silver
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  248,001 - 630,000 Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +10% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+            <div className={classes.content}>
+              <img src={gold} alt="Gold" className={classes.contentIcon} />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Gold
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  630,001 - 1,630,000 Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +15% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+            <div className={classes.content}>
+              <img
+                src={platinum}
+                alt="Platinum"
+                className={classes.contentIcon}
+              />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Platinum
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  1,630,001 - 4,130,000 Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +20% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+            <div className={classes.content}>
+              <img
+                src={diamond}
+                alt="Diamond"
+                className={classes.contentIcon}
+              />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Diamond
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  4,130,001 - 6,830,000 Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +25% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+            <div className={classes.content}>
+              <img src={master} alt="Master" className={classes.contentIcon} />
+              <div>
+                <DialogContentText color="textPrimary" variant="h5">
+                  Master
+                </DialogContentText>
+                <DialogContentText color="textPrimary">
+                  6,830,000+ Points
+                </DialogContentText>
+                <DialogContentText color="textPrimary" paragraph>
+                  +30% additional community service hours
+                </DialogContentText>
+              </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

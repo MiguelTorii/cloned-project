@@ -78,6 +78,7 @@ type State = {
   about: Array<About>,
   userStatistics: Array<UserStatistic>,
   feed: Array<FeedItem>,
+  bookmarks: Array<FeedItem>,
   isLoading: boolean,
   chatLoading: boolean,
   error: boolean,
@@ -112,6 +113,7 @@ class Profile extends React.PureComponent<Props, State> {
     about: [],
     userStatistics: [],
     feed: [],
+    bookmarks: [],
     isLoading: true,
     chatLoading: false,
     error: false,
@@ -130,6 +132,7 @@ class Profile extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     this.handleGetProfile();
     this.handleFetchFeed();
+    this.handleFetchBookmarks();
     const { edit } = this.props;
     this.setState({ edit });
   };
@@ -161,6 +164,23 @@ class Profile extends React.PureComponent<Props, State> {
         userId
       }).then(feed => {
         this.setState({ feed });
+      });
+    }
+  };
+
+  handleFetchBookmarks = () => {
+    const {
+      user: {
+        data: { userId: ownId }
+      },
+      userId
+    } = this.props;
+    if (ownId === userId && userId !== '') {
+      fetchFeedv2({
+        userId,
+        bookmarked: true
+      }).then(bookmarks => {
+        this.setState({ bookmarks });
       });
     }
   };
@@ -389,6 +409,7 @@ class Profile extends React.PureComponent<Props, State> {
       about,
       userStatistics,
       feed,
+      bookmarks,
       isLoading,
       chatLoading,
       error,
@@ -482,6 +503,22 @@ class Profile extends React.PureComponent<Props, State> {
                   userId={userData.userId}
                   posts={feed}
                   isMyProfile={userId === userData.userId}
+                  onShare={this.handleShare}
+                  onPostClick={this.handlePostClick}
+                  onBookmark={this.handleBookmark}
+                  onReport={this.handleReport}
+                  onDelete={this.handleDelete}
+                  onUserClick={this.handleUserClick}
+                />
+              </ErrorBoundary>
+            </Grid>
+            <Grid item xs={12} md={12} hidden={tab !== 2}>
+              <ErrorBoundary>
+                <ProfilePosts
+                  userId={userData.userId}
+                  posts={bookmarks}
+                  isMyProfile={userId === userData.userId}
+                  isBookmarks
                   onShare={this.handleShare}
                   onPostClick={this.handlePostClick}
                   onBookmark={this.handleBookmark}

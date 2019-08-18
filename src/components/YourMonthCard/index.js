@@ -25,6 +25,7 @@ import amazonLogo from '../../assets/svg/amazon_logo.svg';
 import trophy from '../../assets/svg/trophy.svg';
 import studyPacketCard from '../../assets/svg/study_packet_card.svg';
 import ring from '../../assets/svg/ring.svg';
+import appLogo from '../../assets/svg/app-logo.svg';
 import { renderText } from '../HomeGridList/utils';
 
 const ranks = [
@@ -311,7 +312,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             <DialogContentText
               id="video-points-description"
               className={classes.circleIn}
-              variant="h3"
+              variant="h4"
               paragraph
             >
               CircleIn
@@ -416,6 +417,30 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 Streak Ring represents an entire week using CircleIn. Every time
                 you complete the ring, we give you a total of 1,500 scholarship
                 points to let you know you’re awesome!
+              </DialogContentText>
+            </div>
+            <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              variant="h5"
+              paragraph
+            >
+              CircleIn App
+            </DialogContentText>
+            <div className={classes.content}>
+              <img
+                src={appLogo}
+                alt="CircleIn App"
+                className={classes.contentIcon}
+              />
+              <DialogContentText
+                id="video-points-description"
+                color="textPrimary"
+                paragraph
+              >
+                Just like you enjoy our web version, you can download the app by
+                going to your app store, searching CircleIn and then just login.
+                Much success!
               </DialogContentText>
             </div>
             <DialogActions>
