@@ -28,42 +28,45 @@ const options = [
   {
     id: uuidv4(),
     title: 'Uploading Class Notes',
-    subtitle: '10,000 points',
+    subtitle:
+      '10K points for initial page, 5K for second page and more points for more pages',
     icon: <NoteAddIcon />,
     href: '/create/notes'
   },
   {
     id: uuidv4(),
     title: 'Asking a Question',
-    subtitle: '25,000 for a Best Answer',
+    subtitle:
+      '1K fore replying with an answer, 25K points for being selected as best answer',
     icon: <ContactSupportIcon />,
     href: '/create/question'
   },
   {
     id: uuidv4(),
     title: 'Sharing a Link ',
-    subtitle: '2,000 points for Accepted Links',
+    subtitle: '2K points',
     icon: <LanguageIcon />,
     href: '/create/sharelink'
   },
   {
     id: uuidv4(),
     title: 'Creating Flashcards',
-    subtitle: '5,000 points',
+    subtitle: '5K points for first 4 cards, 2.5K points more per cards',
     icon: <DashboardIcon />,
     href: '/create/flashcards'
   },
   {
     id: uuidv4(),
-    title: 'Completing Reminders',
-    subtitle: '400 points',
+    title: 'Create a Reminder',
+    subtitle: '300 points for creating, 400 points for completing',
     icon: <EventIcon />,
     href: '/reminders'
   },
   {
     id: uuidv4(),
     title: 'Video Meet Up',
-    subtitle: '50,000 points for a 10-minute meet up (once per day)',
+    subtitle:
+      '20K points for initiating a session, 50K additional points after a 10-minute session',
     icon: <DuoIcon />,
     href: '/video-call'
   }

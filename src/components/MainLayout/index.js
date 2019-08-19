@@ -352,7 +352,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="25,000 points for best answer"
+            secondary="1K fore replying with an answer, 25K points for being selected as best answer"
           />
         </MenuItem>
         <MenuItem
@@ -371,7 +371,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="10,000 points"
+            secondary="10K points for initial page, 5K for second page and more points for more pages"
           />
         </MenuItem>
         <MenuItem
@@ -390,7 +390,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="2,000 points for Accepted Links"
+            secondary="2K points"
           />
         </MenuItem>
         <MenuItem
@@ -409,7 +409,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="5,000 points"
+            secondary="5K points for first 4 cards, 2.5K points more per cards"
           />
         </MenuItem>
         <MenuItem
@@ -428,7 +428,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="50,000 points for a 10-minute meet up (once per day)"
+            secondary="20K points for initiating a session, 50K additional points after a 10-minute session"
           />
         </MenuItem>
         <MenuItem
@@ -447,7 +447,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="400 points"
+            secondary="300 points for creating, 400 points for completing"
           />
         </MenuItem>
       </Menu>
