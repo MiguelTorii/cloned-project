@@ -415,8 +415,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 Students are studying Sunday through Saturday. That’s why we
                 reward you when you log in every day of the week. The Daily
                 Streak Ring represents an entire week using CircleIn. Every time
-                you complete the ring, we give you a total of 1,500 scholarship
-                points to let you know you’re awesome!
+                you complete the ring, we give you a total of 1,500 points to let you know you’re awesome!
               </DialogContentText>
             </div>
             <DialogContentText

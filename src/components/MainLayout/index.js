@@ -352,7 +352,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="1,000 points for best answer"
+            secondary="25,000 points for best answer"
           />
         </MenuItem>
         <MenuItem
@@ -371,7 +371,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="500 points for initial page, 100 points for each additional page"
+            secondary="10,000 points"
           />
         </MenuItem>
         <MenuItem
@@ -390,7 +390,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="200 - 500 points"
+            secondary="2,000 points for Accepted Links"
           />
         </MenuItem>
         <MenuItem
@@ -409,7 +409,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="500 points"
+            secondary="5,000 points"
           />
         </MenuItem>
         <MenuItem
@@ -428,7 +428,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="250 points for initiating a session, 800 additional points after a 5-minute session"
+            secondary="50,000 points for a 10-minute meet up (once per day)"
           />
         </MenuItem>
         <MenuItem
@@ -447,7 +447,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="20 points"
+            secondary="400 points"
           />
         </MenuItem>
       </Menu>

@@ -448,9 +448,6 @@ class Header extends React.PureComponent<Props, State> {
                 <DialogContentText color="textPrimary">
                   0 - 248,000 Points
                 </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +5% additional community service hours
-                </DialogContentText>
               </div>
             </div>
             <div className={classes.content}>
@@ -462,9 +459,6 @@ class Header extends React.PureComponent<Props, State> {
                 <DialogContentText color="textPrimary">
                   248,001 - 630,000 Points
                 </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +10% additional community service hours
-                </DialogContentText>
               </div>
             </div>
             <div className={classes.content}>
@@ -475,9 +469,6 @@ class Header extends React.PureComponent<Props, State> {
                 </DialogContentText>
                 <DialogContentText color="textPrimary">
                   630,001 - 1,630,000 Points
-                </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +15% additional community service hours
                 </DialogContentText>
               </div>
             </div>
@@ -494,9 +485,6 @@ class Header extends React.PureComponent<Props, State> {
                 <DialogContentText color="textPrimary">
                   1,630,001 - 4,130,000 Points
                 </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +20% additional community service hours
-                </DialogContentText>
               </div>
             </div>
             <div className={classes.content}>
@@ -512,9 +500,6 @@ class Header extends React.PureComponent<Props, State> {
                 <DialogContentText color="textPrimary">
                   4,130,001 - 6,830,000 Points
                 </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +25% additional community service hours
-                </DialogContentText>
               </div>
             </div>
             <div className={classes.content}>
@@ -525,9 +510,6 @@ class Header extends React.PureComponent<Props, State> {
                 </DialogContentText>
                 <DialogContentText color="textPrimary">
                   6,830,000+ Points
-                </DialogContentText>
-                <DialogContentText color="textPrimary" paragraph>
-                  +30% additional community service hours
                 </DialogContentText>
               </div>
             </div>

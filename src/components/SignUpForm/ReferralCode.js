@@ -81,7 +81,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
       >
         <Typography align="center" variant="subtitle1">
           Did a friend invite you to CircleIn? Enter their referral code and
-          your friend will receive 1,000 bonus points. Brilliant!
+          your friend will receive 10,000 bonus points. Brilliant!
         </Typography>
         <TextValidator
           variant="outlined"
