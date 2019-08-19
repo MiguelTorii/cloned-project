@@ -40,4 +40,4 @@ export const SENTRY =
 export const ENV =
   process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
 
-export const RELEASE = 'V2.0.11';
+export const RELEASE = 'V2.0.12';
