@@ -9,8 +9,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/IconButton';
-import ClearIcon from '@material-ui/icons/Clear';
+// import Fab from '@material-ui/core/IconButton';
+// import ClearIcon from '@material-ui/icons/Clear';
 import type { State as StoreState } from '../../types/state';
 import type {
   HomeCard,
@@ -317,14 +317,14 @@ class HomeGrid extends React.PureComponent<Props, State> {
                   </span>
                 </Typography>
               </ButtonBase>
-              <Fab
+              {/* <Fab
                 className={classes.clear}
                 aria-label="Clear"
                 size="small"
                 onClick={this.handleClearManageClassesBanner}
               >
                 <ClearIcon fontSize="small" />
-              </Fab>
+              </Fab> */}
             </Grid>
             <Grid item xs={12}>
               <YourMonthCard
