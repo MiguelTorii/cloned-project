@@ -235,7 +235,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
   renderUserClasses = () => {
     const {
       user: {
-        data: { segment, lmsTypeId }
+        data: { segment }
       }
     } = this.props;
     const { userClasses } = this.state;
@@ -257,7 +257,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
               noWrap: true
             }}
           />
-          {lmsTypeId === -1 && (item.permissions || {}).canLeave && (
+          {(item.permissions || {}).canLeave && (
             <Button
               variant="outlined"
               color="secondary"
@@ -293,7 +293,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 noWrap: true
               }}
             />
-            {lmsTypeId === -1 && (item.permissions || {}).canLeave && (
+            {(item.permissions || {}).canLeave && (
               <Button
                 variant="outlined"
                 color="secondary"
@@ -469,7 +469,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: { userId, lmsTypeId }
+        data: { userId }
       },
       open,
       onClose,
@@ -506,16 +506,18 @@ class ClassesManager extends React.PureComponent<Props, State> {
             {!loading && (
               <List className={classes.list}>{this.renderUserClasses()}</List>
             )}
-            {lmsTypeId === -1 && canAddClasses && !loading && (
+            {/* {lmsTypeId === -1 && canAddClasses && !loading && (
+              <Typography>List of available classes</Typography>
+            )} */}
+            {canAddClasses && !loading && (
               <Typography>List of available classes</Typography>
             )}
-            {lmsTypeId === -1 && canAddClasses && errorText && (
+            {canAddClasses && errorText && (
               <FormHelperText error>
                 You have to select at least 1 class
               </FormHelperText>
             )}
-            {lmsTypeId === -1 &&
-              canAddClasses &&
+            {canAddClasses &&
               !loading &&
               this.renderAvailableClasses()}
           </DialogContent>
