@@ -98,7 +98,8 @@ export const signIn = ({
       return dispatch(
         setError({
           title: 'Invalid Credentials',
-          body: 'The credentials supplied are not valid, please try again.'
+          body:
+            'The email or password is incorrect. Please make sure you have an account and try again.'
         })
       );
     return dispatch(

@@ -18,8 +18,7 @@ export const signInUser = async (
     const { data } = result;
     return data;
   } catch (err) {
-    console.log(err);
-    return {};
+    throw err;
   }
 };
 
