@@ -107,7 +107,7 @@ class SignIn extends React.Component<Props, State> {
     } = this.props;
     const { email, password } = this.state;
     const { error, errorMessage, isLoading } = user;
-    const { title, body } = errorMessage;
+    const { title, body, showSignup } = errorMessage;
 
     if (!school) return <Redirect to="/auth" />;
 
@@ -133,6 +133,7 @@ class SignIn extends React.Component<Props, State> {
             open={error}
             title={title}
             body={body}
+            showSignup={showSignup}
             handleClose={this.handleErrorDialogClose}
           />
         </ErrorBoundary>

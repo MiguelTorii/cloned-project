@@ -34,15 +34,18 @@ const clearUser = (): Action => ({
 
 const setError = ({
   title,
-  body
+  body,
+  showSignup = false
 }: {
   title: string,
-  body: string
+  body: string,
+  showSignup?: boolean
 }): Action => ({
   type: signInActions.SIGN_IN_USER_ERROR,
   payload: {
     title,
-    body
+    body,
+    showSignup
   }
 });
 
@@ -94,12 +97,14 @@ export const signIn = ({
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;
-    if (response.status === 401)
+    const { data = {} } = response;
+
+    if (data.code === 401)
       return dispatch(
         setError({
-          title: 'Invalid Credentials',
-          body:
-            'The email or password is incorrect. Please make sure you have an account and try again.'
+          title: "Something doesn't look right",
+          body: data.message,
+          showSignup: true
         })
       );
     return dispatch(

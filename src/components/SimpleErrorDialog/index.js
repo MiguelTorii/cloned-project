@@ -1,6 +1,9 @@
 // @flow
 
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,7 +23,9 @@ type Props = {
   open: boolean,
   title: string,
   body: string,
-  handleClose: Function
+  showSignup?: boolean,
+  handleClose: Function,
+  pushTo: Function
 };
 
 type State = {};
@@ -29,8 +34,18 @@ class SimpleErrorDialog extends React.PureComponent<
   ProvidedProps & Props,
   State
 > {
+  static defaultProps = {
+    showSignup: false
+  };
+
+  handleSignUp = () => {
+    const { handleClose, pushTo } = this.props;
+    handleClose();
+    pushTo('/signup');
+  };
+
   render() {
-    const { open, title, body, handleClose } = this.props;
+    const { open, title, body, showSignup, handleClose } = this.props;
     return (
       <Dialog
         open={open}
@@ -47,8 +62,18 @@ class SimpleErrorDialog extends React.PureComponent<
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          {showSignup && (
+            <Button
+              variant="outlined"
+              onClick={this.handleSignUp}
+              color="primary"
+              autoFocus
+            >
+              Sign up
+            </Button>
+          )}
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={handleClose}
             color="primary"
             autoFocus
@@ -61,4 +86,15 @@ class SimpleErrorDialog extends React.PureComponent<
   }
 }
 
-export default withStyles(styles)(SimpleErrorDialog);
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      pushTo: push
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(SimpleErrorDialog));

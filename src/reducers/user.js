@@ -17,7 +17,8 @@ export type UserState = {
   error: boolean,
   errorMessage: {
     title: string,
-    body: string
+    body: string,
+    showSignup: boolean
   }
 };
 
@@ -46,7 +47,8 @@ const defaultState = {
   error: false,
   errorMessage: {
     title: '',
-    body: ''
+    body: '',
+    showSignup: false
   }
 };
 
@@ -79,7 +81,9 @@ export default (state: UserState = defaultState, action: Action): UserState => {
           // $FlowFixMe
           title: { $set: action.payload.title },
           // $FlowFixMe
-          body: { $set: action.payload.body }
+          body: { $set: action.payload.body },
+          // $FlowFixMe
+          showSignup: { $set: action.payload.showSignup }
         },
         isLoading: { $set: false }
       });
