@@ -78,7 +78,7 @@ class SimpleErrorDialog extends React.PureComponent<
             color="primary"
             autoFocus
           >
-            Ok
+            {showSignup ? 'Try Again' : 'Ok'}
           </Button>
         </DialogActions>
       </Dialog>
