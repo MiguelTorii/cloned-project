@@ -17,9 +17,11 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import ClearIcon from '@material-ui/icons/Clear';
 import DialogTitle from '../DialogTitle';
 import DateRange from '../DateRange';
 
@@ -117,7 +119,8 @@ type Props = {
   onClearFilters: Function,
   onOpenFilter: Function,
   onRefresh: Function,
-  onChangeDateRange: Function
+  onChangeDateRange: Function,
+  onClearSearch: Function
 };
 
 type State = {
@@ -243,7 +246,17 @@ class FeedFilter extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   render() {
-    const { classes, classesList, query, fromDate, toDate, onChange, onRefresh, onChangeDateRange } = this.props;
+    const {
+      classes,
+      classesList,
+      query,
+      fromDate,
+      toDate,
+      onChange,
+      onRefresh,
+      onChangeDateRange,
+      onClearSearch
+    } = this.props;
     const { open, postTypes, userClasses } = this.state;
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
@@ -257,10 +270,22 @@ class FeedFilter extends React.PureComponent<Props, State> {
           <div className={classes.filtersHeader}>
             <InputBase
               className={classes.input}
-              type="search"
+              // type="search"
               placeholder="Search for posts"
               value={query}
               onChange={onChange('query')}
+              endAdornment={
+                query !== '' && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={onClearSearch}
+                    >
+                      <ClearIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }
             />
             <SearchIcon />
             <Divider className={classes.divider} />
@@ -286,7 +311,11 @@ class FeedFilter extends React.PureComponent<Props, State> {
             </IconButton>
           </div>
           <div className={classes.filtersFooter}>
-            <DateRange from={fromDate} to={toDate} onChange={onChangeDateRange} />
+            <DateRange
+              from={fromDate}
+              to={toDate}
+              onChange={onChangeDateRange}
+            />
           </div>
         </Paper>
         <Dialog

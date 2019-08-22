@@ -185,6 +185,11 @@ class Feed extends React.PureComponent<Props, State> {
     clearFilter();
   };
 
+  handleClearSearch = () => {
+    const { updateFilter } = this.props;
+    updateFilter({ field: 'query', value: '' });
+  }
+
   handleLoadMore = () => {
     const {
       feed: {
@@ -285,6 +290,7 @@ class Feed extends React.PureComponent<Props, State> {
               onOpenFilter={this.handleOpenFilter}
               onRefresh={this.handleRefresh}
               onChangeDateRange={this.handleChangeDateRange}
+              onClearSearch={this.handleClearSearch}
             />
             <FeedList
               isLoading={isLoading}
