@@ -93,6 +93,7 @@ class Quests extends React.PureComponent<Props, State> {
                 index !== currentSlide + 1
               }
               isCurrent={currentSlide === index}
+              status={item.status}
             />
           ))}
         </div>

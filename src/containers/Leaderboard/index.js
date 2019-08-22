@@ -9,41 +9,44 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-// import OutlinedInput from '@material-ui/core/OutlinedInput';
-import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-// import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { Leaderboard as LeaderboardType } from '../../types/models';
-import { getLeaderboard } from '../../api/user';
+import type {
+  Leaderboard as LeaderboardType,
+  UserClass
+} from '../../types/models';
+import { getLeaderboard, getUserClasses } from '../../api/user';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
-
-const ranks = {
-  '1': 'Bronze',
-  '2': 'Silver',
-  '3': 'Gold',
-  '4': 'Platinum',
-  '5': 'Diamond',
-  '6': 'Master'
-};
 
 const styles = theme => ({
-  root: {},
+  root: {
+    display: 'flex'
+  },
+  menu: {
+    flex: 1,
+    width: '100%',
+    padding: theme.spacing.unit * 2
+  },
+  button: {
+    marginBottom: theme.spacing.unit * 2
+  },
+  buttonDisabled: {
+    '&:disabled': {
+      backgroundColor: '#49afd9',
+      opacity: 0.55,
+      marginBottom: theme.spacing.unit * 2
+    }
+  },
+  leaderboard: {
+    width: 490,
+    height: 400,
+    overflowY: 'auto'
+  },
   formControl: {
     margin: theme.spacing.unit,
     display: 'flex',
@@ -108,28 +111,23 @@ type Props = {
 type State = {
   loading: boolean,
   leaderboard: LeaderboardType,
-  rankId: number
+  sectionId: number,
+  userClasses: Array<UserClass>
 };
 
 class Leaderboard extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     leaderboard: [],
-    rankId: 1
+    sectionId: -1,
+    userClasses: []
   };
 
   componentDidUpdate = async prevProps => {
-    const {
-      open,
-      user: {
-        data: { rank }
-      }
-    } = this.props;
+    const { open } = this.props;
     if (open !== prevProps.open && open === true) {
-      if (rank !== 0) {
-        await this.setState({ rankId: rank });
-        this.handleGetLeaderboard();
-      }
+      await this.handleGetClasses();
+      this.handleGetLeaderboard();
       logEvent({
         event: 'Leaderboard- Opened',
         props: {}
@@ -138,18 +136,11 @@ class Leaderboard extends React.PureComponent<Props, State> {
   };
 
   handleGetLeaderboard = async () => {
-    const {
-      user: {
-        data: { userId, schoolId }
-      }
-    } = this.props;
-    const { rankId } = this.state;
     this.setState({ loading: true });
+    const { sectionId } = this.state;
     try {
       const leaderboard = await getLeaderboard({
-        userId,
-        schoolId,
-        rankId,
+        sectionId,
         index: 0,
         limit: 50
       });
@@ -159,9 +150,14 @@ class Leaderboard extends React.PureComponent<Props, State> {
     }
   };
 
-  handleChange = async event => {
-    await this.setState({ rankId: event.target.value });
-    this.handleGetLeaderboard();
+  handleGetClasses = async () => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const { classes } = await getUserClasses({ userId });
+    this.setState({ userClasses: classes });
   };
 
   handleClose = () => {
@@ -176,6 +172,11 @@ class Leaderboard extends React.PureComponent<Props, State> {
     }
   };
 
+  handleChangeSection = sectionId => async () => {
+    await this.setState({ sectionId });
+    this.handleGetLeaderboard();
+  };
+
   render() {
     const {
       classes,
@@ -186,7 +187,7 @@ class Leaderboard extends React.PureComponent<Props, State> {
       },
       open
     } = this.props;
-    const { loading, leaderboard, rankId } = this.state;
+    const { loading, leaderboard, userClasses, sectionId } = this.state;
     if (!open) return null;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
@@ -196,123 +197,116 @@ class Leaderboard extends React.PureComponent<Props, State> {
       <ErrorBoundary>
         <Dialog
           open={open}
-          className={classes.root}
+          // fullWidth
+          maxWidth="md"
+          // className={classes.root}
           onClose={this.handleClose}
           aria-labelledby="leaderboard-dialog-title"
           aria-describedby="leaderboard-dialog-description"
         >
-          <DialogTitle id="leaderboard-dialog-title" onClose={this.handleClose}>
-            Leaderboard
-          </DialogTitle>
-          <DialogContent style={{ width: 490, height: 400 }}>
-            {loading && <CircularProgress size={12} />}
-            {!loading && (
-              <Fragment>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <Select
-                    value={rankId}
-                    onChange={this.handleChange}
-                    className={classes.select}
-                    SelectDisplayProps={{ className: classes.input }}
+          <DialogContent className={classes.root}>
+            <div className={classes.menu}>
+              <Typography variant="h5" align="center" paragraph>
+                Leaderboards
+              </Typography>
+              {userClasses.map(item =>
+                item.section.map(section => (
+                  <Button
+                    key={section.sectionId}
+                    className={classes.button}
+                    color="primary"
+                    variant="contained"
+                    disabled={sectionId === section.sectionId}
+                    fullWidth
+                    classes={{ disabled: classes.buttonDisabled }}
+                    onClick={this.handleChangeSection(section.sectionId)}
                   >
-                    <MenuItem value={1} className={classes.item}>
-                      Bronze
-                      <img alt="Bronze" src={bronze} className={classes.icon} />
-                    </MenuItem>
-                    <MenuItem value={2}>
-                      Silver
-                      <img alt="Silver" src={silver} className={classes.icon} />
-                    </MenuItem>
-                    <MenuItem value={3}>
-                      Gold
-                      <img alt="Gold" src={gold} className={classes.icon} />
-                    </MenuItem>
-                    <MenuItem value={4}>
-                      Platinum
-                      <img
-                        alt="Platinum"
-                        src={platinum}
-                        className={classes.icon}
-                      />
-                    </MenuItem>
-                    <MenuItem value={5}>
-                      Diamond
-                      <img
-                        alt="Diamond"
-                        src={diamond}
-                        className={classes.icon}
-                      />
-                    </MenuItem>
-                    <MenuItem value={6}>
-                      Master
-                      <img alt="Master" src={master} className={classes.icon} />
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <List className={classes.list}>
-                  {leaderboard.map((user, index) => (
-                    <ListItem
-                      key={user.userId}
-                      style={{ display: 'flex' }}
-                      className={cx(
-                        index < 10 && user.userId !== userId && classes.top,
-                        user.userId === userId && classes.selected
-                      )}
-                    >
-                      <ListItemText
-                        primaryTypographyProps={{
-                          variant: 'h6',
-                          color: 'textPrimary',
-                          style: {
-                            color: user.userId === userId && 'black',
-                            fontWeight: 'bold'
+                    {`${section.subject} - ${item.className}`}
+                  </Button>
+                ))
+              )}
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                disabled={sectionId === -1}
+                fullWidth
+                classes={{ disabled: classes.buttonDisabled }}
+                onClick={this.handleChangeSection(-1)}
+              >
+                Entire School
+              </Button>
+            </div>
+            <div className={classes.leaderboard}>
+              {loading && <CircularProgress size={12} />}
+              {!loading && (
+                <Fragment>
+                  <List className={classes.list}>
+                    {leaderboard.map((user, index) => (
+                      <ListItem
+                        key={user.userId}
+                        style={{ display: 'flex' }}
+                        className={cx(
+                          index < 10 && user.userId !== userId && classes.top,
+                          user.userId === userId && classes.selected
+                        )}
+                      >
+                        <ListItemText
+                          primaryTypographyProps={{
+                            variant: 'h6',
+                            color: 'textPrimary',
+                            style: {
+                              color: user.userId === userId && 'black',
+                              fontWeight: 'bold'
+                            }
+                          }}
+                          primary={index + 1}
+                        />
+                        <ListItemText
+                          primaryTypographyProps={{
+                            variant: 'h6',
+                            style: {
+                              color: user.userId === userId && 'black',
+                              fontWeight: 'bold'
+                            }
+                          }}
+                          primary={
+                            user.userId === userId ? 'You' : user.username
                           }
-                        }}
-                        primary={index + 1}
-                      />
-                      <ListItemText
-                        primaryTypographyProps={{
-                          variant: 'h6',
-                          style: {
-                            color: user.userId === userId && 'black',
+                          style={{
+                            flex: 1,
+                            minWidth: 300,
                             fontWeight: 'bold'
-                          }
-                        }}
-                        primary={user.userId === userId ? 'You' : user.username}
-                        style={{
-                          flex: 1,
-                          minWidth: 300,
-                          fontWeight: 'bold'
-                        }}
-                      />
-                      <ListItemText
-                        primaryTypographyProps={{
-                          variant: 'h6',
-                          style: {
-                            color: user.userId === userId && 'black',
+                          }}
+                        />
+                        <ListItemText
+                          primaryTypographyProps={{
+                            variant: 'h6',
+                            style: {
+                              color: user.userId === userId && 'black',
+                              fontWeight: 'bold'
+                            }
+                          }}
+                          primary={user.points.toLocaleString()}
+                          style={{
                             fontWeight: 'bold'
-                          }
-                        }}
-                        primary={user.points.toLocaleString()}
-                        style={{
-                          fontWeight: 'bold'
-                        }}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-                {leaderboard.length === 0 && (
-                  <div className={classes.empty}>
-                    <Typography
-                      variant="h5"
-                      align="center"
-                    >{`There aren't any students with a ${
-                      ranks[rankId]
-                    } ranking yet.`}</Typography>
-                  </div>
-                )}
-              </Fragment>
-            )}
+                          }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                  {leaderboard.length === 0 && (
+                    <div className={classes.empty}>
+                      <Typography variant="h5" align="center">
+                        {
+                          "There aren't any students here yet, be the first one!"
+                        }
+                      </Typography>
+                    </div>
+                  )}
+                </Fragment>
+              )}
+            </div>
           </DialogContent>
           <DialogActions>
             <Button

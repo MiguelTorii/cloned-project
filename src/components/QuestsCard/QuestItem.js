@@ -6,8 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import green from '@material-ui/core/colors/green';
 // import IconButton from '@material-ui/core/IconButton';
-// import ClearIcon from '@material-ui/icons/Clear';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -79,6 +80,18 @@ const styles = theme => ({
   imageSmall: {
     height: 20,
     width: 20
+  },
+  completed: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    margin: theme.spacing.unit,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  completedIcon: {
+    color: green[500]
   }
 });
 
@@ -90,7 +103,8 @@ type Props = {
   task: string,
   action: Object,
   isCurrent: boolean,
-  isHidden: boolean
+  isHidden: boolean,
+  status: string
 };
 
 type State = {};
@@ -133,7 +147,8 @@ class QuestItem extends React.PureComponent<Props, State> {
       task,
       action,
       isCurrent,
-      isHidden
+      isHidden,
+      status
     } = this.props;
 
     return (
@@ -177,6 +192,14 @@ class QuestItem extends React.PureComponent<Props, State> {
             className={cx(classes.image, !isCurrent && classes.imageSmall)}
           />
         </div>
+        {status === 'complete' && (
+          <div className={classes.completed}>
+            <CheckCircleIcon
+              className={classes.completedIcon}
+              fontSize="small"
+            />
+          </div>
+        )}
       </ButtonBase>
     );
   }

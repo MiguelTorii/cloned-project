@@ -60,7 +60,7 @@ export const API_ROUTES = {
   NOTIFICATIONS: `${API_URL}/notifications`,
   SCHOOL_USERS: `${API_URL}/school`,
   CHAT: `${API_URL}/chat`,
-  LEADERBOARD: `${API_URL}/leaderboard`,
+  LEADERBOARD: `${API_URL_V1_1}/leaderboard`,
   HOME: `${API_URL}/home`,
   HOME_V1_1: `${API_URL_V1_1}/home`,
   STORE: `${API_URL}/store`,

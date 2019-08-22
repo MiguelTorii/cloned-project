@@ -24,7 +24,7 @@ export const getUserProfile = async ({
   userId: string
 }): Promise<Profile> => {
   try {
-    if(!userId) throw new Error('No userId specified')
+    if (!userId) throw new Error('No userId specified');
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
       headers: {
@@ -66,8 +66,12 @@ export const getUserProfile = async ({
 
     const newabout = about.map(item => ({
       ...item,
-      section: item.section === 'Do you like helping others with homework study help, if so, which subjects?' ? 'Do you enjoy getting involved in helping classmates?' : item.section
-    }))
+      section:
+        item.section ===
+        'Do you like helping others with homework study help, if so, which subjects?'
+          ? 'Do you enjoy getting involved in helping classmates?'
+          : item.section
+    }));
 
     return { userProfile, about: newabout, userStatistics };
   } catch (err) {
@@ -389,31 +393,28 @@ export const unblockUser = async ({
 };
 
 export const getLeaderboard = async ({
-  userId,
-  rankId,
-  schoolId,
+  sectionId,
   index,
   limit
 }: {
-  userId: string,
-  rankId: number,
-  schoolId: number,
+  sectionId: number,
   index: number,
   limit: number
 }): Promise<Leaderboard> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${
-        API_ROUTES.LEADERBOARD
-      }?user_id=${userId}&rank_id=${rankId}&school_id=${schoolId}&index=${index}&limit=${limit}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    let url = `${API_ROUTES.LEADERBOARD}?index=${index}&limit=${limit}`;
+
+    if (sectionId > -1) {
+      url = `${url}&section_id=${sectionId}`;
+    }
+
+    const result = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
     const { leaderboard = [] } = data;
 
