@@ -352,7 +352,7 @@ class MainLayout extends React.Component<Props, State> {
               variant: 'caption',
               color: 'textPrimary'
             }}
-            secondary="1K fore replying with an answer, 25K points for being selected as best answer"
+            secondary="1K for replying with an answer, 25K points for being selected as best answer"
           />
         </MenuItem>
         <MenuItem

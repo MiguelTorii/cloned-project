@@ -19,7 +19,7 @@ const texts = {
       'Earn 150 points when a classmate bookmarks your post',
       'Earn 20 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1.000+ points when you schedule a video session about a post or topic'
+      'Earn 1,000+ points when you schedule a video session about a post or topic'
     ]
   },
   notes: {
@@ -34,7 +34,7 @@ const texts = {
       'Earn 150 points when a classmate bookmarks your post',
       'Earn 20 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1.000+ points when you schedule a video session about a post or topic'
+      'Earn 1,000+ points when you schedule a video session about a post or topic'
     ]
   },
   question: {
@@ -48,7 +48,7 @@ const texts = {
       'Earn 150 points when a classmate bookmarks your post',
       'Earn 20 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1.000+ points when you schedule a video session about a post or topic'
+      'Earn 1,000+ points when you schedule a video session about a post or topic'
     ]
   },
   shareLink: {
@@ -64,7 +64,7 @@ const texts = {
       'Earn 150 points when a classmate bookmarks your post',
       'Earn 20 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1.000+ points when you schedule a video session about a post or topic'
+      'Earn 1,000+ points when you schedule a video session about a post or topic'
     ]
   }
 };
