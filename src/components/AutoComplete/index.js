@@ -224,6 +224,8 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
 }
 
 function Menu({ selectProps, children, innerProps }) {
+  const { inputValue, options = [] } = selectProps;
+  if (options.length === 0 && inputValue === '') return null;
   return (
     <Paper square className={selectProps.classes.paper} {...innerProps}>
       {children}
@@ -319,6 +321,10 @@ class AutoComplete extends React.PureComponent<Props> {
             isClearable
             isDisabled={isDisabled}
             cacheUniq={cacheUniq}
+            noOptionsMessage={({ inputValue: input }) => {
+              if (input !== '') return 'No results, please try again';
+              return '';
+            }}
           />
           {error && (
             <FormHelperText error className={classes.errorLabel}>
