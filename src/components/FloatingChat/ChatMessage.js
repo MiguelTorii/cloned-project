@@ -221,6 +221,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
         />
         <Typography
           className={cx(classes.createdAt, isOwn && classes.createdAtRight)}
+          variant="caption"
         >
           {createdAt}
         </Typography>
@@ -251,7 +252,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
         )}
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
           {!isOwn && (
-            <Typography variant="subtitle1" className={classes.name}>
+            <Typography variant="caption" className={classes.name}>
               <Link
                 className={classes.link}
                 component={MyLink}
