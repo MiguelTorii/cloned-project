@@ -81,15 +81,15 @@ class Flashcard extends React.PureComponent<Props, State> {
         raised
       >
         <CardHeader
-          titleTypographyProps={{ color: 'inherit', variant: 'h6' }}
+          titleTypographyProps={{ color: 'inherit', variant: 'subtitle2' }}
           title={`Flashcard #${index}`}
         />
         <CardContent className={classes.content}>
-          <Typography variant="h6" color="inherit" align="center">
+          <Typography variant="subtitle2" color="inherit" align="center">
             {isQuestion ? 'Question:' : 'Answer:'}
           </Typography>
           <Typography
-            variant="h5"
+            variant="subtitle1"
             className={classes.cardText}
             color="inherit"
             align="center"
