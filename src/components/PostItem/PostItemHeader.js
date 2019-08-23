@@ -28,6 +28,14 @@ const styles = theme => ({
     height: 100,
     padding: theme.spacing.unit
   },
+  avatar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
+    borderRadius: '50%'
+  },
   bigAvatar: {
     width: 60,
     height: 60
@@ -153,9 +161,15 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <div className={classes.root}>
-          <Avatar src={userProfileUrl} className={classes.bigAvatar}>
-            {initials}
-          </Avatar>
+          <Link
+            className={classes.avatar}
+            component={MyLink}
+            href={`/profile/${userId}`}
+          >
+            <Avatar src={userProfileUrl} className={classes.bigAvatar}>
+              {initials}
+            </Avatar>
+          </Link>
           <div className={classes.userInfo}>
             <Typography component="p" variant="h6" noWrap>
               <Link

@@ -2,6 +2,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -10,6 +11,8 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 // import bell from '../../assets/img/bell.png';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   paper: {
@@ -98,6 +101,9 @@ const styles = theme => ({
     textAlign: 'right',
     backgroundColor: '#5dcbfd'
   },
+  avatarLink: {
+    textDecoration: 'none'
+  },
   link: {
     color: theme.palette.primary.main
   }
@@ -105,6 +111,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId?: string,
   name?: string,
   avatar?: string,
   isOwn?: boolean,
@@ -116,6 +123,7 @@ type Props = {
 
 class ChatMessageDate extends React.PureComponent<Props> {
   static defaultProps = {
+    userId: '',
     name: '',
     avatar: '',
     isOwn: false
@@ -221,7 +229,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { classes, name, avatar, isOwn, messageList } = this.props;
+    const { classes, userId, name, avatar, isOwn, messageList } = this.props;
     const initials =
       name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
@@ -231,7 +239,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
         className={cx(classes.root, isOwn && classes.justifyEnd)}
       >
         {!isOwn && (
-          <ListItemAvatar>
+          <ListItemAvatar
+            className={classes.avatarLink}
+            component={MyLink}
+            href={`/profile/${userId}`}
+          >
             <Avatar alt={name} src={avatar}>
               {initials}
             </Avatar>
@@ -240,7 +252,13 @@ class ChatMessageDate extends React.PureComponent<Props> {
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
           {!isOwn && (
             <Typography variant="subtitle1" className={classes.name}>
-              {name}
+              <Link
+                className={classes.link}
+                component={MyLink}
+                href={`/profile/${userId}`}
+              >
+                {name}
+              </Link>
             </Typography>
           )}
           {messageList.map(message => (

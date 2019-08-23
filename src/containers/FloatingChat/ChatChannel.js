@@ -460,6 +460,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           return (
             <ChatMessage
               key={id}
+              userId={item.author}
               name={item.name}
               messageList={item.messageList}
               avatar={getAvatar({ id: item.author, profileURLs })}

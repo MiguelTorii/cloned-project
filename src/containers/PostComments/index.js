@@ -218,6 +218,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         )}
         <ErrorBoundary>
           <PostItemAddComment
+            userId={userId}
             name={name}
             profileImageUrl={profileImage}
             rte

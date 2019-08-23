@@ -1,11 +1,15 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import RichTextEditor from '../../containers/RichTextEditor';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const styles = theme => ({
   container: {
@@ -42,6 +46,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  userId: string,
   profileImageUrl: string,
   name: string,
   isReply?: boolean,
@@ -93,6 +98,7 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      userId,
       rte,
       profileImageUrl,
       name,
@@ -105,7 +111,13 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
     return (
       <div className={cx(classes.container, isReply && classes.reply)}>
         <div className={classes.body}>
-          <Avatar src={profileImageUrl}>{initials}</Avatar>
+          <Link
+            // className={classes.avatar}
+            component={MyLink}
+            href={`/profile/${userId}`}
+          >
+            <Avatar src={profileImageUrl}>{initials}</Avatar>
+          </Link>
           {rte && !readOnly ? (
             <RichTextEditor
               placeholder={
@@ -139,7 +151,7 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
             onClick={this.handleCancel}
             disabled={readOnly}
             color="secondary"
-            variant="contained"
+            // variant="contained"
           >
             Cancel
           </Button>

@@ -215,7 +215,9 @@ class PostItemComment extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <div className={cx(classes.container, isReply && classes.reply)}>
-          <Avatar src={profileImageUrl}>{initials}</Avatar>
+          <Link component={MyLink} href={`/profile/${ownerId}`}>
+            <Avatar src={profileImageUrl}>{initials}</Avatar>
+          </Link>
           <div className={classes.info}>
             <div className={classes.header}>
               <Typography component="p" variant="subtitle2" noWrap>
