@@ -61,16 +61,27 @@ class About extends React.PureComponent<Props> {
                 </Button>
               )}
             </div>
-            {about.map(item => (
-              <div key={item.id}>
-                <Typography variant="h6" gutterBottom>
-                  {item.section}
-                </Typography>
-                <Typography variant="subtitle1" paragraph>
-                  {item.answer}
-                </Typography>
-              </div>
-            ))}
+            {about.length === 0 && isMyProfile ? (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={onOpenEdit}
+              >
+                Help your classmates learn more about you
+              </Button>
+            ) : (
+              about.map(item => (
+                <div key={item.id}>
+                  <Typography variant="h6" gutterBottom>
+                    {item.section}
+                  </Typography>
+                  <Typography variant="subtitle1" paragraph>
+                    {item.answer}
+                  </Typography>
+                </div>
+              ))
+            )}
           </div>
         </Paper>
       </div>
