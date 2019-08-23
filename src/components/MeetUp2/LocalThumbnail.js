@@ -106,11 +106,7 @@ class LocalThumbnail extends React.PureComponent<Props, State> {
             <div className={classes.video} ref={this.videoinput} />
           ) : (
             <div className={classes.avatar}>
-              <Avatar
-                alt="You"
-                src={profileImage}
-                style={{ width: 30, height: 30 }}
-              >
+              <Avatar alt="You" src={profileImage} sizes="small">
                 You
               </Avatar>
             </div>
