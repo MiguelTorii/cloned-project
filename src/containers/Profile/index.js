@@ -403,7 +403,7 @@ class Profile extends React.PureComponent<Props, State> {
       classes,
       user: { data: userData }
     } = this.props;
-    const { segment = '' } = userData;
+    const { segment = '', profileImage } = userData;
     const {
       userProfile,
       about,
@@ -571,7 +571,8 @@ class Profile extends React.PureComponent<Props, State> {
             open={studyCircle}
             name={`${firstName} ${lastName}`}
             loading={loading}
-            userProfileUrl={userProfileUrl}
+            userProfileUrl={profileImage}
+            ownName={`${userData.firstName} ${userData.lastName}`}
             circle={circle}
             onClose={this.handleStudyCircleClose}
           />

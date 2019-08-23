@@ -29,6 +29,7 @@ type Props = {
   thanksCount: number,
   viewCount: number,
   isQuestion?: boolean,
+  ownName: string,
   onReload: Function
 };
 
@@ -121,7 +122,8 @@ class PostItemActions extends React.PureComponent<Props, State> {
       viewCount,
       name,
       userProfileUrl,
-      isQuestion
+      isQuestion,
+      ownName
     } = this.props;
     const {
       open,
@@ -161,6 +163,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
             loading={loading}
             userProfileUrl={userProfileUrl}
             circle={circle}
+            ownName={ownName}
             onClose={this.handleStudyCircleClose}
           />
         </ErrorBoundary>

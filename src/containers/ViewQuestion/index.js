@@ -133,7 +133,12 @@ class ViewQuestion extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: { userId }
+        data: {
+          userId,
+          firstName: myFirstName,
+          lastName: myLastName,
+          profileImage
+        }
       }
     } = this.props;
     const { question, report, deletePost } = this.state;
@@ -194,13 +199,14 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 postId={postId}
                 typeId={typeId}
                 name={name}
-                userProfileUrl={userProfileUrl}
+                userProfileUrl={profileImage}
                 thanked={thanked}
                 inStudyCircle={inStudyCircle}
                 questionsCount={questionsCount}
                 thanksCount={thanksCount}
                 viewCount={viewCount}
                 isQuestion
+                ownName={`${myFirstName} ${myLastName}`}
                 onReload={this.loadData}
               />
             </ErrorBoundary>

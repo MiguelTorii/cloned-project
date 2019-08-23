@@ -75,6 +75,7 @@ type Props = {
   userProfileUrl: string,
   loading: boolean,
   circle: StudyCircle,
+  ownName: string,
   onClose: Function
 };
 
@@ -92,9 +93,10 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
       userProfileUrl,
       loading,
       circle,
+      ownName,
       onClose
     } = this.props;
-    const initials = this.getInitials(name);
+    const initials = this.getInitials(ownName);
     const degreeAngle = circle.length === 0 ? 0 : 360 / circle.length;
 
     return (

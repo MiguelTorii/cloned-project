@@ -134,7 +134,10 @@ class ViewShareLink extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: { userId }
+        data: { userId,
+          firstName: myFirstName,
+          lastName: myLastName,
+          profileImage }
       }
     } = this.props;
     const { shareLink, report, deletePost } = this.state;
@@ -199,12 +202,13 @@ class ViewShareLink extends React.PureComponent<Props, State> {
                 postId={postId}
                 typeId={typeId}
                 name={name}
-                userProfileUrl={userProfileUrl}
+                userProfileUrl={profileImage}
                 thanked={thanked}
                 inStudyCircle={inStudyCircle}
                 questionsCount={questionsCount}
                 thanksCount={thanksCount}
                 viewCount={viewCount}
+                ownName={`${myFirstName} ${myLastName}`}
                 onReload={this.loadData}
               />
             </ErrorBoundary>
