@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
-// import axios from 'axios';
+import axios from 'axios';
 import { init as sentryInit } from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
@@ -64,7 +64,7 @@ sentryInit({
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
-// axios.defaults.headers.common['x-client-version'] = '1.0.0';
+axios.defaults.headers.common['x-client-version'] = RELEASE;
 
 ReactDOM.render(
   <Provider store={store}>
@@ -156,7 +156,11 @@ ReactDOM.render(
             component={withTracker(ResetPassword)}
           />
           <Route exact path="/oauth" component={withTracker(OAuth)} />
-          <Route exact path="/terms-of-use" component={withTracker(TermsOfUse)} />
+          <Route
+            exact
+            path="/terms-of-use"
+            component={withTracker(TermsOfUse)}
+          />
           <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
           <Route exact path="/sandbox" component={Sandbox} />
           <Route render={() => <div>Miss</div>} />
