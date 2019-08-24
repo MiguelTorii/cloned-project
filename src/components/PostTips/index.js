@@ -14,12 +14,12 @@ const texts = {
       'Read your flashcards outloud to commit them to memory!'
     ],
     maximize: [
-      'Earn 500 points for flashcards',
-      "Earn 120 points when classmates says 'Thanks!'",
-      'Earn 150 points when a classmate bookmarks your post',
-      'Earn 20 points when you set a reminder to review your post later',
+      'Earn 5K points for flashcards',
+      "Earn 20K points when classmates says 'Thanks!'",
+      'Earn 30K points when a classmate bookmarks your post',
+      'Earn 300 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1,000+ points when you schedule a video session about a post or topic'
+      'Earn 20K+ points when you schedule a video session about a post or topic'
     ]
   },
   notes: {
@@ -30,11 +30,11 @@ const texts = {
     ],
     maximize: [
       'Earn 1,000 points for posting notes',
-      'Earn 120 points when classmates says ‘Thanks!’',
-      'Earn 150 points when a classmate bookmarks your post',
-      'Earn 20 points when you set a reminder to review your post later',
+      "Earn 20K points when classmates says 'Thanks!'",
+      'Earn 30K points when a classmate bookmarks your post',
+      'Earn 300 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1,000+ points when you schedule a video session about a post or topic'
+      'Earn 20K+ points when you schedule a video session about a post or topic'
     ]
   },
   question: {
@@ -44,11 +44,12 @@ const texts = {
       "You have the ability to add an image or link in your question's description to add even more context!"
     ],
     maximize: [
-      "Earn 120 points when classmates says 'Thanks!'",
-      'Earn 150 points when a classmate bookmarks your post',
-      'Earn 20 points when you set a reminder to review your post later',
+      '1K for replying with an answer, 25K points for being selected as best answer',
+      "Earn 20K points when classmates says 'Thanks!'",
+      'Earn 30K points when a classmate bookmarks your post',
+      'Earn 300 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1,000+ points when you schedule a video session about a post or topic'
+      'Earn 20K+ points when you schedule a video session about a post or topic'
     ]
   },
   shareLink: {
@@ -59,12 +60,12 @@ const texts = {
       'Did you know you can share links to helpful posts inside of CircleIn?'
     ],
     maximize: [
-      'Earn 200-500 points for links',
-      "Earn 120 points when classmates says 'Thanks!'",
-      'Earn 150 points when a classmate bookmarks your post',
-      'Earn 20 points when you set a reminder to review your post later',
+      'Earn 2K points for links',
+      "Earn 20K points when classmates says 'Thanks!'",
+      'Earn 30K points when a classmate bookmarks your post',
+      'Earn 300 points when you set a reminder to review your post later',
       'Earn daily rewards during review',
-      'Earn 1,000+ points when you schedule a video session about a post or topic'
+      'Earn 20K+ points when you schedule a video session about a post or topic'
     ]
   }
 };
