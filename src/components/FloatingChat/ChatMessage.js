@@ -243,7 +243,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           <ListItemAvatar
             className={classes.avatarLink}
             component={MyLink}
-            href={`/profile/${userId}`}
+            href={`/profile/${userId || ''}`}
           >
             <Avatar alt={name} src={avatar}>
               {initials}
@@ -256,7 +256,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               <Link
                 className={classes.link}
                 component={MyLink}
-                href={`/profile/${userId}`}
+                href={`/profile/${userId || ''}`}
               >
                 {name}
               </Link>

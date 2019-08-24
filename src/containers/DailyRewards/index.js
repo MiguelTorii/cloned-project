@@ -8,73 +8,103 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogTitle from '../../components/DialogTitle';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { DailyRewards as DailyRewardsState } from '../../types/models';
-import { getDailyRewards } from '../../api/user';
-import coin1 from '../../assets/svg/coin_1.svg';
-import coin2 from '../../assets/svg/coin_2.svg';
-import coin3 from '../../assets/svg/coin_3.svg';
-import coin4 from '../../assets/svg/coin_4.svg';
-import coin5 from '../../assets/svg/coin_5.svg';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
+import type { DailyStreaksCard } from '../../types/models';
+import { getDailyStreaks, getDailyRewards } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
 
-const ranks = [
-  { label: 'Bronze', value: bronze },
-  { label: 'Silver', value: silver },
-  { label: 'Gold', value: gold },
-  { label: 'Platinum', value: platinum },
-  { label: 'Diamond', value: diamond },
-  { label: 'Master', value: master }
-];
+const size = 150;
+const thickness = 10;
 
 const styles = theme => ({
-  root: {
+  progressWrapper: {
+    position: 'relative',
     width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    minHeight: 170
   },
-  list: {
-    width: 360
-  },
-  opacity: {
-    opacity: 0.3
-  },
-  itemIcon: {
-    width: 100,
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  coin: {
-    height: 30
-  },
-  footer: {
+  progress: {
+    position: 'absolute',
     width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
   },
-  rank: {
-    margin: theme.spacing.unit,
-    height: 60
+  main: {
+    color: theme.circleIn.palette.success
+  },
+  completed: {
+    color: '#efc448'
+  },
+  background: {
+    color: theme.circleIn.palette.disabled
+  },
+  circle: {
+    filter: 'drop-shadow(-3px 2px 4px rgba(0, 0, 0, .5))'
+  },
+  dayText: {
+    color: '#fec04f',
+    fontWeight: 'bold'
+  },
+  dayTextCompleted: {
+    color: '#e9ecef'
+  },
+  tiers: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    marginTop: theme.spacing.unit
+  },
+  tierItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 80
+  },
+  tierShapes: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    marginBottom: theme.spacing.unit
+  },
+  tierCircle: {
+    background: '#60b515',
+    width: 25,
+    height: 25,
+    borderRadius: '50%',
+    zIndex: 2
+  },
+  tierLine: {
+    background: '#60b515',
+    width: 40,
+    height: 6,
+    zIndex: 1,
+    position: 'absolute',
+    right: -20,
+    top: 'calc(50%-3px)'
+  },
+  left: {
+    left: -20
+  },
+  disabled: {
+    background: '#6d7884',
+    zIndex: 1
+  },
+  hidden: {
+    display: 'none'
   }
 });
 
@@ -84,13 +114,22 @@ type Props = {
 };
 
 type State = {
-  dailyRewards: DailyRewardsState,
+  dailyStreaks: DailyStreaksCard,
   open: boolean
 };
 
 class DailyRewards extends React.PureComponent<Props, State> {
   state = {
-    dailyRewards: { givenPoints: 0, pointsLeft: 0, stage: 0 },
+    dailyStreaks: {
+      title: '',
+      currentDay: 0,
+      hasSeen: false,
+      subtitle: {
+        text: '',
+        style: []
+      },
+      tiers: []
+    },
     open: false
   };
 
@@ -150,8 +189,12 @@ class DailyRewards extends React.PureComponent<Props, State> {
       } = this.props;
       const { open } = this.state;
       if (userId !== '' && !open) {
+        const dailyStreaks = await getDailyStreaks();
         const dailyRewards = await getDailyRewards({ userId });
-        this.setState({ dailyRewards, open: dailyRewards.givenPoints > 0 });
+        this.setState({
+          dailyStreaks,
+          open: dailyRewards.givenPoints > 0
+        });
       }
     } finally {
       this.handleGetDailyRewards();
@@ -167,14 +210,14 @@ class DailyRewards extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: { userId, rank }
+        data: { userId }
       }
     } = this.props;
 
     if (userId === '') return null;
 
     const {
-      dailyRewards: { stage, pointsLeft },
+      dailyStreaks: { currentDay, tiers },
       open
     } = this.state;
 
@@ -192,100 +235,132 @@ class DailyRewards extends React.PureComponent<Props, State> {
             id="daily-rewards-dialog-title"
             onClose={this.handleClose}
           >
-            Daily Rewards
+            {currentDay !== 5 ? 'You’re heating up!' : 'You’re AMAZING!'}
           </DialogTitle>
-          <div className={classes.root}>
-            <List className={classes.list}>
-              <ListItem className={cx(stage !== 0 && classes.opacity)}>
-                <ListItemIcon className={classes.itemIcon}>
-                  <img alt="Coin1" src={coin1} className={classes.coin} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="+100 Points"
-                  secondary="Day 1"
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
+          <DialogContent>
+            <div className={classes.progressWrapper}>
+              <div className={classes.progress}>
+                <CircularProgress
+                  className={classes.background}
+                  variant="static"
+                  value={100}
+                  size={size}
+                  thickness={thickness}
+                  classes={{ svg: classes.circle }}
                 />
-                {stage === 0 && (
-                  <ListItemIcon>
-                    <CheckCircleIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-              <ListItem className={cx(stage !== 1 && classes.opacity)}>
-                <ListItemIcon className={classes.itemIcon}>
-                  <img alt="Coin2" src={coin2} className={classes.coin} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="+200 Points"
-                  secondary="Day 2"
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
+              </div>
+              <div className={classes.progress}>
+                <CircularProgress
+                  className={cx(
+                    classes.main,
+                    currentDay === 5 && classes.completed
+                  )}
+                  variant="static"
+                  value={(currentDay * 100) / 5}
+                  size={size}
+                  thickness={thickness}
                 />
-                {stage === 1 && (
-                  <ListItemIcon>
-                    <CheckCircleIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-              <ListItem className={cx(stage !== 2 && classes.opacity)}>
-                <ListItemIcon className={classes.itemIcon}>
-                  <img alt="Coin3" src={coin3} className={classes.coin} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="+300 Points"
-                  secondary="Day 3"
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
-                />
-                {stage === 2 && (
-                  <ListItemIcon>
-                    <CheckCircleIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-              <ListItem className={cx(stage !== 3 && classes.opacity)}>
-                <ListItemIcon className={classes.itemIcon}>
-                  <img alt="Coin4" src={coin4} className={classes.coin} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="+400 Points"
-                  secondary="Day 4"
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
-                />
-                {stage === 3 && (
-                  <ListItemIcon>
-                    <CheckCircleIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-              <ListItem className={cx(stage !== 4 && classes.opacity)}>
-                <ListItemIcon className={classes.itemIcon}>
-                  <img alt="Coin5" src={coin5} className={classes.coin} />
-                </ListItemIcon>
-                <ListItemText
-                  primary="+500 Points"
-                  secondary="Day 5"
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
-                />
-                {stage === 4 && (
-                  <ListItemIcon>
-                    <CheckCircleIcon />
-                  </ListItemIcon>
-                )}
-              </ListItem>
-              <Divider light variant="middle" />
-            </List>
-          </div>
-          <div className={classes.footer}>
-            <Typography color="textPrimary" align="center" variant="h5">
-              {`${pointsLeft.toLocaleString()} points until ${(
-                ranks[rank] || {}
-              ).label || ''}`}
-            </Typography>
-            <img
-              className={classes.rank}
-              alt={(ranks[rank] || {}).label || ''}
-              src={(ranks[rank] || {}).value || ''}
-            />
-          </div>
+              </div>
+              <div className={classes.progress}>
+                <Typography
+                  variant="h6"
+                  className={cx(
+                    classes.dayText,
+                    currentDay === 5 && classes.dayTextCompleted
+                  )}
+                  align="center"
+                >
+                  {`Day ${currentDay}`}
+                </Typography>
+                <Typography variant="subtitle1" align="center">
+                  {`+${(tiers.find(o => o.day === currentDay) || {}).points ||
+                    0}`}
+                </Typography>
+              </div>
+            </div>
+            <div className={classes.tiers}>
+              {tiers.map(tier => (
+                <div key={tier.day} className={classes.tierItem}>
+                  <div className={classes.tierShapes}>
+                    <div
+                      className={cx(
+                        classes.tierCircle,
+                        tier.day > currentDay && classes.disabled
+                      )}
+                    />
+                    <div
+                      className={cx(
+                        classes.tierLine,
+                        tier.day >= currentDay && classes.disabled,
+                        tier.day === 5 && classes.hidden
+                      )}
+                    />
+                    <div
+                      className={cx(
+                        classes.tierLine,
+                        classes.left,
+                        tier.day > currentDay && classes.disabled,
+                        tier.day === 1 && classes.hidden
+                      )}
+                    />
+                  </div>
+                  <Typography>{`+${tier.points.toLocaleString()}`}</Typography>
+                </div>
+              ))}
+              {/* <div className={classes.tierItem}>
+                <div className={classes.tierShapes}>
+                  <div className={classes.tierCircle} />
+                  <div className={classes.tierLine} />
+                  <div
+                    className={cx(
+                      classes.tierLine,
+                      classes.left,
+                      classes.hidden
+                    )}
+                  />
+                </div>
+                <Typography>+10000</Typography>
+              </div>
+              <div className={classes.tierItem}>
+                <div className={classes.tierShapes}>
+                  <div className={classes.tierCircle} />
+                  <div className={classes.tierLine} />
+                  <div className={cx(classes.tierLine, classes.left)} />
+                </div>
+                <Typography>+20000</Typography>
+              </div>
+              <div className={classes.tierItem}>
+                <div className={classes.tierShapes}>
+                  <div className={classes.tierCircle} />
+                  <div className={classes.tierLine} />
+                  <div className={cx(classes.tierLine, classes.left)} />
+                </div>
+                <Typography>+30000</Typography>
+              </div>
+              <div className={classes.tierItem}>
+                <div className={classes.tierShapes}>
+                  <div className={classes.tierCircle} />
+                  <div className={cx(classes.tierLine, classes.disabled)} />
+                  <div className={cx(classes.tierLine, classes.left)} />
+                </div>
+                <Typography>+40000</Typography>
+              </div>
+              <div className={classes.tierItem}>
+                <div className={classes.tierShapes}>
+                  <div className={cx(classes.tierCircle, classes.disabled)} />
+                  <div className={cx(classes.tierLine, classes.hidden)} />
+                  <div
+                    className={cx(
+                      classes.tierLine,
+                      classes.left,
+                      classes.disabled
+                    )}
+                  />
+                </div>
+                <Typography>+50000</Typography>
+              </div> */}
+            </div>
+          </DialogContent>
           <DialogActions>
             <Button
               onClick={this.handleClose}
@@ -293,7 +368,7 @@ class DailyRewards extends React.PureComponent<Props, State> {
               color="primary"
               autoFocus
             >
-              Great!
+              Got It!
             </Button>
           </DialogActions>
         </Dialog>
