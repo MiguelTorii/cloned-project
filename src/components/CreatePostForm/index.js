@@ -58,6 +58,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   title: string,
+  subtitle: string,
   children: Node,
   loading: boolean,
   handleSubmit: Function
@@ -67,12 +68,22 @@ type State = {};
 
 class CreatePostForm extends React.PureComponent<Props, State> {
   render() {
-    const { classes, title, children, loading, handleSubmit } = this.props;
+    const {
+      classes,
+      title,
+      subtitle,
+      children,
+      loading,
+      handleSubmit
+    } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" paragraph>
             {title}
+          </Typography>
+          <Typography variant="subtitle1" paragraph align="center">
+            {subtitle}
           </Typography>
           <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
             {children}

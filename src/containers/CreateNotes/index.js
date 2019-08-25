@@ -184,6 +184,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Share Notes"
+            subtitle="When you upload your notes, it’s your classmates who can see them. You can help others by sharing and also get feedback too."
             loading={loading}
             handleSubmit={this.handleSubmit}
           >

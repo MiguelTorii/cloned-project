@@ -254,6 +254,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Create Flashcards"
+            subtitle="Yes, tests are make or break. Take a little time to get prepared, and when you create your cards, they will go on the feed where classmates can also view them."
             loading={loading}
             handleSubmit={this.handleSubmit}
           >

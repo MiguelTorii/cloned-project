@@ -204,6 +204,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Share Link"
+            subtitle="If you find something helpful or insightful, get the link, and share with your classmates. You’ll find out quickly that other students will benefit like you."
             loading={loading}
             handleSubmit={this.handleSubmit}
           >

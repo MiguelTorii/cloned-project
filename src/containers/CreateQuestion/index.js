@@ -177,6 +177,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Ask a Question"
+            subtitle="When you enter a question here, the question gets sent to your classmates to provide you with the hep you need"
             loading={loading}
             handleSubmit={this.handleSubmit}
           >
