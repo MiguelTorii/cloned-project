@@ -188,7 +188,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} sm={10}>
                 <OutlinedTextValidator
-                  label="Question"
+                  label="Enter your question here"
                   onChange={this.handleTextChange}
                   name="title"
                   value={title}

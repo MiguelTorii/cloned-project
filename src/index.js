@@ -29,6 +29,7 @@ import Profile from './pages/Profile';
 import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
+import StudyCircle from './pages/StudyCircle';
 import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
 import UpdateLMSUser from './containers/UpdateLMSUser';
@@ -141,6 +142,11 @@ ReactDOM.render(
             component={withTracker(VideoCall)}
           />
           <Route exact path="/video-call" component={withTracker(StartVideo)} />
+          <Route
+            exact
+            path="/study-circle"
+            component={withTracker(StudyCircle)}
+          />
           <Route exact path="/auth" component={withTracker(Auth)} />
           <Route exact path="/login" component={withTracker(SignIn)} />
           <Route exact path="/signup" component={withTracker(SignUp)} />

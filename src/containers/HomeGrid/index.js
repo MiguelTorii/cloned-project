@@ -291,8 +291,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
       openRequestClass
     } = this.state;
 
-    const isManageClassesClicked = store.get('MANAGE_CLASSES');
-
     return (
       <div className={classes.root}>
         <ErrorBoundary>
@@ -300,7 +298,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
             <Grid
               item
               xs={12}
-              hidden={Boolean(isManageClassesClicked)}
+              hidden={false}
               className={classes.bannerContainer}
             >
               <ButtonBase
@@ -317,14 +315,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
                   </span>
                 </Typography>
               </ButtonBase>
-              {/* <Fab
-                className={classes.clear}
-                aria-label="Clear"
-                size="small"
-                onClick={this.handleClearManageClassesBanner}
-              >
-                <ClearIcon fontSize="small" />
-              </Fab> */}
             </Grid>
             <Grid item xs={12}>
               <YourMonthCard

@@ -20,6 +20,12 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import type { SelectType } from '../../types/models';
 
+const Link = props => (
+  <a href="https://www.circleinapp.com/waitlist" {...props}>
+    {"Can't find your school? Click Here"}
+  </a>
+);
+
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -224,11 +230,24 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
 }
 
 function Menu({ selectProps, children, innerProps }) {
-  const { inputValue, options = [] } = selectProps;
+  const { inputValue, options = [], isSchoolSearch } = selectProps;
+
   if (options.length === 0 && inputValue === '') return null;
   return (
     <Paper square className={selectProps.classes.paper} {...innerProps}>
       {children}
+      {isSchoolSearch && (
+        <MenuItem
+          component={Link}
+          style={{
+            fontWeight: 400,
+            color: '#5dcbfd'
+          }}
+          {...innerProps}
+        >
+          {"Can't find your school? Click Here"}
+        </MenuItem>
+      )}
     </Paper>
   );
 }
@@ -258,6 +277,7 @@ type Props = {
   errorText: string,
   isDisabled?: boolean,
   cacheUniq?: any,
+  isSchoolSearch?: boolean,
   onChange: Function,
   onLoadOptions: Function
 };
@@ -265,7 +285,8 @@ type Props = {
 class AutoComplete extends React.PureComponent<Props> {
   static defaultProps = {
     isDisabled: false,
-    cacheUniq: ''
+    cacheUniq: '',
+    isSchoolSearch: false
   };
 
   render() {
@@ -282,6 +303,7 @@ class AutoComplete extends React.PureComponent<Props> {
       errorText,
       isDisabled,
       cacheUniq,
+      isSchoolSearch,
       onChange,
       onLoadOptions
     } = this.props;
@@ -325,6 +347,7 @@ class AutoComplete extends React.PureComponent<Props> {
               if (input !== '') return 'No results, please try again';
               return '';
             }}
+            isSchoolSearch={isSchoolSearch}
           />
           {error && (
             <FormHelperText error className={classes.errorLabel}>

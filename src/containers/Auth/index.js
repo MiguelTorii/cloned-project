@@ -66,6 +66,8 @@ class Auth extends React.Component<Props, State> {
       const { updateSchool } = this.props;
       const { label, value: selectValue, ...school } = value;
       updateSchool({ school });
+    } else if (lmsTypeId === -1) {
+      window.location.replace('https://circleinapp.com/whitelist');
     } else {
       const responseType = 'code';
       const obj = {
@@ -99,6 +101,7 @@ class Auth extends React.Component<Props, State> {
         noAvatar: true,
         ...school
       }));
+
       return {
         options,
         hasMore: false

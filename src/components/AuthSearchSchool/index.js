@@ -67,6 +67,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
               placeholder="Search your school/college"
               error={error}
               errorText="You must select an option"
+              isSchoolSearch
               onChange={onChange}
               onLoadOptions={onLoad}
             />
