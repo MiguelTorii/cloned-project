@@ -75,7 +75,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
 
   handleSubmit = async () => {
     const { tags, flashcards } = this.state;
-    if (tags.length === 0) {
+    if (tags.length < 0) {
       this.setState({ tagsError: true });
       return;
     }

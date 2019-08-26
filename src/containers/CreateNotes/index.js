@@ -65,7 +65,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   handleSubmit = async event => {
     event.preventDefault();
     const { tags } = this.state;
-    if (tags.length === 0) {
+    if (tags.length < 0) {
       this.setState({ tagsError: true });
       return;
     }
