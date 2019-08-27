@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
 import type { ToDos } from '../types/models';
+import { logEvent } from './analytics';
 import { getToken } from './utils';
 
 export const getReminders = async ({
@@ -71,6 +72,14 @@ export const createReminder = async ({
     );
 
     const { data } = result;
+    try {
+      logEvent({
+        event: 'Reminders- Create Reminder',
+        props: { Label: label }
+      });
+    } catch (err) {
+      console.log(err);
+    }
     return data;
   } catch (err) {
     console.log(err);

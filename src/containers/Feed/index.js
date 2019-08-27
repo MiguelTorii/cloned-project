@@ -167,9 +167,10 @@ class Feed extends React.PureComponent<Props, State> {
     this.setState({ deletePost: null });
   };
 
-  handleChange = name => event => {
+  handleChange = name => async event => {
     const { updateFilter } = this.props;
-    updateFilter({ field: name, value: event.target.value });
+    await updateFilter({ field: name, value: event.target.value });
+    this.handleFetchFeed()
   };
 
   handleApplyFilters = filters => {

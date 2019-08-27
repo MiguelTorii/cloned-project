@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
 import type { Feed } from '../types/models';
+import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 
 export const fetchFeed = async ({
@@ -52,6 +53,13 @@ export const fetchFeed = async ({
     } = result;
 
     const feed = feedToCamelCase(posts);
+    try {
+      if (query !== '') {
+        logEvent({ event: 'Feed- Start Search', props: { Query: query } });
+      }
+    } catch (err) {
+      console.log(err);
+    }
     return feed;
   } catch (err) {
     console.log(err);

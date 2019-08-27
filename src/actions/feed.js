@@ -207,7 +207,6 @@ export const updateFilter = ({
         value
       })
     );
-    dispatch(fetchFeed());
   } catch (err) {
     dispatch(
       setError({

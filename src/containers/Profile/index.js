@@ -337,7 +337,7 @@ class Profile extends React.PureComponent<Props, State> {
       if (!inStudyCircle) {
         await addToStudyCircle({ userId, classmateId: ownerId, feedId: null });
         logEvent({
-          event: 'Profile- Added to Study Circle',
+          event: 'Feed- Added to Study Circle',
           props: { Source: 'Profile' }
         });
         this.setState({ studyCircle: true, loading: true });
@@ -350,7 +350,7 @@ class Profile extends React.PureComponent<Props, State> {
           feedId: null
         });
         logEvent({
-          event: 'Profile- Removed from Study Circle',
+          event: 'Feed- Removed from Study Circle',
           props: { Source: 'Profile' }
         });
       }

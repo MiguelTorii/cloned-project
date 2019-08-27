@@ -33,6 +33,7 @@ import {
   setVideoInitiator,
   postVideoPoints
 } from '../../api/video';
+import { logEvent } from '../../api/analytics';
 import * as utils from './utils';
 
 const styles = theme => ({
@@ -349,7 +350,18 @@ class MeetUp extends React.Component<Props, State> {
       });
 
       videoRoom.on('disconnected', () => {
-        console.log('disconnected');
+        this.pointsStarted = false;
+          if (this.started) {
+            const elapsed = parseInt(
+              (new Date().getTime() - this.started) / 1000
+            ,10);
+            logEvent({
+              event: 'Video- Session Length',
+              props: { Length: elapsed, 'Channel SID': videoRoom.sid }
+            });
+          }
+
+          this.started = 0;
       });
 
       updateLoading(false);

@@ -12,6 +12,7 @@ import type {
   PostResponse
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
+import { logEvent } from './analytics';
 import {
   getToken,
   postToCamelCase,
@@ -108,6 +109,11 @@ export const createPhotoNote = async ({
 
     const { data } = result;
     const response = postResponseToCamelCase(data);
+    try {
+      logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
+    } catch(err) {
+      console.log(err)
+    }
     return response;
   } catch (err) {
     console.log(err);
