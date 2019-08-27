@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import MicOffIcon from '@material-ui/icons/MicOff';
+import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 
 const styles = () => ({
   root: {
@@ -63,6 +64,17 @@ const styles = () => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column'
+  },
+  black: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -74,7 +86,8 @@ type Props = {
   isVideo: boolean,
   isMic: boolean,
   video: ?Object,
-  isVisible: boolean
+  isVisible: boolean,
+  isSharing: boolean
 };
 
 type State = {};
@@ -115,7 +128,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       video,
       isVideo,
       isMic,
-      isVisible
+      isVisible,
+      isSharing
     } = this.props;
 
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
@@ -148,6 +162,11 @@ class VideoGridItem extends React.PureComponent<Props, State> {
                     style={{ color: 'white', fontWeight: 'bold' }}
                   >{`${firstName} ${lastName}`}</Typography>
                 )}
+              </div>
+            )}
+            {isSharing && (
+              <div className={classes.black}>
+                <ScreenShareIcon fontSize="large" />
               </div>
             )}
           </div>

@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const styles = theme => ({
   main: {
@@ -52,6 +53,14 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  visible: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  icon: {
+    marginRight: theme.spacing.unit
   }
 });
 
@@ -106,6 +115,10 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                 )}
               </div>
             </div>
+            <Typography variant="subtitle1" className={classes.visible}>
+              <VisibilityIcon className={classes.icon} /> Visible to your
+              classmates
+            </Typography>
           </ValidatorForm>
         </Paper>
       </main>

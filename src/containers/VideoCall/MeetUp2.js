@@ -4,12 +4,14 @@
 import React, { Fragment } from 'react';
 import Video from 'twilio-video';
 import first from 'lodash/first';
+import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import Fab from '@material-ui/core/Fab';
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
 import VideoChatChannel from './VideoChatChannel';
@@ -23,8 +25,14 @@ import NoParticipants from '../../components/MeetUp2/NoParticipants';
 import Whiteboard from '../../components/MeetUp2/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp2/WhiteboardControls';
 import DialogTitle from '../../components/DialogTitle';
+import VideoPointsDialog from '../../components/VideoPointsDialog';
 import { renewTwilioToken } from '../../api/chat';
 import { getUserProfile } from '../../api/user';
+import {
+  checkVideoSession,
+  setVideoInitiator,
+  postVideoPoints
+} from '../../api/video';
 import * as utils from './utils';
 
 const styles = theme => ({
@@ -50,6 +58,34 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  points: {
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 0,
+    left: 0,
+    padding: theme.spacing.unit * 2,
+    zIndex: 9999
+  },
+  pointsButton: {
+    animation:
+      'points 1s infinite, createBox 0.5s, vibrate 0.3s linear infinite both'
+  },
+  '@keyframes points': {
+    '0%': {
+      '-moz-box-shadow': '0 0 0 0 rgba(73, 175, 217, 0.4)',
+      'box-shadow': '0 0 0 0 rgba(73, 175, 217, 0.4)'
+    },
+    '70%': {
+      '-moz-box-shadow': '0 0 0 20px rgba(73, 175, 217, 0)',
+      'box-shadow': '0 0 0 20px rgba(73, 175, 217, 0)'
+    },
+    '100%': {
+      '-moz-box-shadow': '0 0 0 0 rgba(73, 175, 217, 0)',
+      'box-shadow': '0 0 0 0 rgba(73, 175, 217, 0)'
+    }
   }
 });
 
@@ -61,7 +97,8 @@ type Props = {
   roomName: string,
   channel: ?Object,
   leaveRoom: Function,
-  updateLoading: Function
+  updateLoading: Function,
+  enqueueSnackbar: Function
 };
 
 type State = {
@@ -83,7 +120,12 @@ type State = {
   color: string,
   canvasImg: string,
   isText: boolean,
-  eraser: boolean
+  eraser: boolean,
+  points: boolean,
+  openVideoPoints: boolean,
+  postingPoints: boolean,
+  noPointsAllowed: boolean,
+  earned: boolean
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -106,7 +148,12 @@ class MeetUp extends React.Component<Props, State> {
       color: 'black',
       canvasImg: '',
       isText: false,
-      eraser: false
+      eraser: false,
+      points: false,
+      openVideoPoints: false,
+      postingPoints: false,
+      noPointsAllowed: false,
+      earned: false,
   };
 
   constructor(props) {
@@ -115,16 +162,35 @@ class MeetUp extends React.Component<Props, State> {
     this.whiteboard = React.createRef();
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    this.notInitiator = false;
+    this.initiator = false;
+    this.pointsStarted = false;
+
+    this.handleSession = debounce(this.handleSession, 1000);
+    this.started = new Date().getTime();
+
     const {
       user: { userId, firstName, lastName, profileImage }
     } = this.props;
+
+    const noPointsAllowed = await checkVideoSession({ userId });
+
     this.setState({
       profiles: {
         [userId]: { firstName, lastName, userProfileUrl: profileImage }
-      }
+      },
+      noPointsAllowed
     });
     this.handleStartCall();
+  };
+
+  componentDidUpdate = () => {
+    const { participants } = this.state;
+    if (participants.length > 1 && !this.pointsStarted) {
+      this.pointsStarted = true;
+      this.handleSession();
+    } else if (participants.length <= 1) this.pointsStarted = false;
   };
 
   componentWillUnmount = () => {
@@ -133,6 +199,12 @@ class MeetUp extends React.Component<Props, State> {
       videoRoom.disconnect();
       this.setState({ videoRoom: null });
     }
+
+    if (
+      this.handleSession.cancel &&
+      typeof this.handleSession.cancel === 'function'
+    )
+      this.handleSession.cancel();
   };
 
   handleStartCall = async () => {
@@ -191,6 +263,7 @@ class MeetUp extends React.Component<Props, State> {
 
       videoRoom.participants.forEach(participant => {
         this.handleAddParticipant(participant);
+        if (!this.initiator) this.notInitiator = true;
       });
 
       videoRoom.on('participantConnected', async participant => {
@@ -212,6 +285,33 @@ class MeetUp extends React.Component<Props, State> {
             });
           }
         });
+        if (!this.notInitiator && !this.initiator) {
+          this.initiator = true;
+          const { sid } = videoRoom;
+          const success = await setVideoInitiator({
+            userId,
+            sid
+          });
+          if (success) {
+            const { enqueueSnackbar, classes } = this.props;
+            enqueueSnackbar(
+              'Congratulations, you have just earned some points because you initiated a Video meet-up. Good Work!',
+              {
+                variant: 'success',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                },
+                autoHideDuration: 5000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
+                }
+              }
+            );
+          }
+        }
       });
 
       videoRoom.on('participantDisconnected', participant => {
@@ -524,7 +624,90 @@ class MeetUp extends React.Component<Props, State> {
     }
   }
 
+  handleSession = () => {
+    const { earned, points, noPointsAllowed } = this.state;
+    if (this.pointsStarted && !earned && !points && !noPointsAllowed) {
+      const elapsed = Number((new Date().getTime() - this.started) / 1000);
+
+      if (elapsed > 600) {
+        this.setState({ points: true });
+      }
+    }
+    if (this.pointsStarted) this.handleSession();
+  };
+
+  handleOpenClaimPoints = () => {
+    this.setState({ openVideoPoints: true });
+  };
+
+  handleVideoPointsClose = () => {
+    this.setState({ openVideoPoints: false });
+  };
+
+  handlePointsSubmit = async ({
+    purpose,
+    classId,
+    sectionId,
+    meeting,
+    selectedDate,
+    help
+  }: {
+    purpose: string,
+    classId: number,
+    sectionId?: number,
+    meeting: boolean,
+    selectedDate: Object,
+    help: string
+  }) => {
+    try {
+      this.setState({ postingPoints: true });
+      const {
+        user: { userId }
+      } = this.props;
+      const { videoRoom, participants } = this.state;
+      if (videoRoom && this.started) {
+        const { sid } = videoRoom;
+        const length = Number(
+          Number((new Date().getTime() - this.started) / 1000).toFixed(0)
+        );
+
+        const participantsForPoints = participants
+          .map(item => Number(item.participant.identity))
+          .filter(item => item !== Number(userId));
+
+        await postVideoPoints({
+          userId,
+          sid,
+          length,
+          purposeId: Number(purpose),
+          scheduledTime: meeting ? selectedDate.valueOf() : 0,
+          openAnswer: help,
+          participants: participantsForPoints,
+          classId,
+          sectionId
+        });
+      }
+
+      this.setState({
+        points: false,
+        earned: true,
+        openVideoPoints: false,
+        postingPoints: false
+      });
+    } catch (err) {
+      this.setState({ postingPoints: false });
+    }
+  };
+
   whiteboard: Object;
+
+  notInitiator: boolean;
+
+  initiator: boolean;
+
+  pointsStarted: boolean;
+
+  started: number;
 
   render() {
     const { classes, user, channel } = this.props;
@@ -548,7 +731,10 @@ class MeetUp extends React.Component<Props, State> {
       color,
       isText,
       eraser,
-      canvasImg
+      canvasImg,
+      points,
+      openVideoPoints,
+      postingPoints
     } = this.state;
     const localPartcipant = participants.find(item => item.type === 'local');
 
@@ -556,6 +742,7 @@ class MeetUp extends React.Component<Props, State> {
     const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0;
 
     return (
+      <Fragment>
       <ErrorBoundary>
         <div className={classes.root}>
           {participants.length < 2 && <NoParticipants />}
@@ -583,6 +770,7 @@ class MeetUp extends React.Component<Props, State> {
                 participants={participants}
                 profiles={profiles}
                 lockedParticipant={lockedParticipant}
+                sharingTrackId={sharingTrackId}
                 onLockParticipant={this.handleLockParticipant}
               />
             }
@@ -680,6 +868,30 @@ class MeetUp extends React.Component<Props, State> {
             </DialogActions>
           </Dialog>
       </ErrorBoundary>
+      <ErrorBoundary>
+      {points && (
+            <div className={classes.points}>
+              <Fab
+                variant="extended"
+                color="primary"
+                aria-label="Claim"
+                className={classes.pointsButton}
+                onClick={this.handleOpenClaimPoints}
+              >
+                Claim Your Points
+              </Fab>
+            </div>
+          )}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <VideoPointsDialog
+          open={openVideoPoints}
+          loading={postingPoints}
+          onClose={this.handleVideoPointsClose}
+          onSubmit={this.handlePointsSubmit}
+        />
+      </ErrorBoundary>
+      </Fragment>
     );
   }
 }

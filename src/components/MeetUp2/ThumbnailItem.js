@@ -12,6 +12,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 // import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import CastForEducationIcon from '@material-ui/icons/CastForEducation';
+import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 
 const styles = theme => ({
   root: {
@@ -77,6 +78,18 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  black: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4
   }
 });
 
@@ -89,7 +102,8 @@ type Props = {
   isPinned: boolean,
   isVideo: boolean,
   isMic: boolean,
-  isDataSharing: boolean
+  isDataSharing: boolean,
+  isSharing: boolean
 };
 
 type State = {};
@@ -130,7 +144,8 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       isPinned,
       isVideo,
       isMic,
-      isDataSharing
+      isDataSharing,
+      isSharing
     } = this.props;
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
       lastName !== '' ? lastName.charAt(0) : ''
@@ -150,6 +165,11 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
               >
                 {initials === '' ? <PersonIcon /> : initials}
               </Avatar>
+            </div>
+          )}
+          {isSharing && (
+            <div className={classes.black}>
+              <ScreenShareIcon />
             </div>
           )}
         </div>

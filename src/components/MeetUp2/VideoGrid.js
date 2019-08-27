@@ -65,7 +65,8 @@ class VideoGrid extends React.PureComponent<Props, State> {
       sharingTrackId,
       isDataSharing
     } = this.props;
-    return participants.map(item => {
+    let isParticipantVisible = false;
+    return participants.map((item, index) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
@@ -77,6 +78,8 @@ class VideoGrid extends React.PureComponent<Props, State> {
         sharingTrackId
       );
 
+      isParticipantVisible = visibleId !== '';
+
       if (item.video.length === 0) {
         return (
           <VideoGridItem
@@ -86,7 +89,10 @@ class VideoGrid extends React.PureComponent<Props, State> {
             profileImage={userProfileUrl}
             isVideo={false}
             isMic={item.audio.length > 0}
-            isVisible={!isDataSharing && visibleId === item.participant.sid}
+            isVisible={
+              (!isDataSharing && visibleId === item.participant.sid) ||
+              (!isParticipantVisible && index === participants.length - 1)
+            }
           />
         );
       }
@@ -101,7 +107,11 @@ class VideoGrid extends React.PureComponent<Props, State> {
             video={track}
             isVideo
             isMic={item.audio.length > 0}
-            isVisible={!isDataSharing && visibleId === id}
+            isSharing={Boolean(track.id === sharingTrackId)}
+            isVisible={
+              (!isDataSharing && visibleId === id) ||
+              (!isParticipantVisible && index === participants.length - 1)
+            }
           />
         );
       });

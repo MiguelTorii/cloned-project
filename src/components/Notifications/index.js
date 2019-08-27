@@ -84,8 +84,8 @@ class Notifications extends React.PureComponent<Props, State> {
           textColor="primary"
           onChange={onTabChange}
         >
-          <Tab label="Study Circle" />
           <Tab label="All" />
+          <Tab label="Study Circle" />
         </Tabs>
         <List className={classes.root}>
           {notifications.map(item => (

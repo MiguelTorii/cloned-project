@@ -20,6 +20,7 @@ type Props = {
   participants: Array<Object>,
   profiles: Object,
   lockedParticipant: string,
+  sharingTrackId: string,
   onLockParticipant: Function
 };
 
@@ -34,7 +35,7 @@ class Thumbnails extends React.PureComponent<Props, State> {
   };
 
   renderParticipants = () => {
-    const { classes, participants, profiles, lockedParticipant } = this.props;
+    const { classes, participants, profiles, lockedParticipant, sharingTrackId } = this.props;
     return participants.map(item => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
@@ -79,6 +80,7 @@ class Thumbnails extends React.PureComponent<Props, State> {
                 : lockedParticipant === track.sid
             }
             isVideo
+            isSharing={Boolean(track.id === sharingTrackId)}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />

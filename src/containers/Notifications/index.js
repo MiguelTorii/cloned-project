@@ -47,7 +47,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
 
   state = {
     notifications: [],
-    tab: 1,
+    tab: 0,
     loading: true
   };
 

@@ -31,7 +31,8 @@ const styles = theme => ({
     overflowY: 'none',
     height: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: theme.circleIn.palette.appBar
   },
   list: {
     overflowY: 'auto',

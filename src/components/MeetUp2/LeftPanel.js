@@ -47,7 +47,7 @@ const styles = theme => ({
     color: 'black'
   },
   drawer: {
-    width: 250,
+    width: 400,
     backgroundColor: 'white',
     overflowY: 'hidden'
   },
@@ -91,20 +91,27 @@ class LeftPanel extends React.PureComponent<Props, State> {
 
   handleOpen = type => () => {
     this.setState({ type });
-    const {onTabChange} = this.props
-    onTabChange(type)
+    const { onTabChange } = this.props;
+    onTabChange(type);
   };
 
   handleClose = () => {
     this.setState({ type: '' });
-    const {onTabChange} = this.props
-    onTabChange('')
+    const { onTabChange } = this.props;
+    onTabChange('');
   };
 
   handleChange = () => {};
 
   render() {
-    const { classes, participants, thumbnails, localParticipant, chat, unread } = this.props;
+    const {
+      classes,
+      participants,
+      thumbnails,
+      localParticipant,
+      chat,
+      unread
+    } = this.props;
     const { type } = this.state;
 
     return (
@@ -136,7 +143,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
                   badgeContent={unread}
                   color="primary"
                 >
-                <ChatBubbleIcon className={classes.icon} />
+                  <ChatBubbleIcon className={classes.icon} />
                 </Badge>
               </ButtonBase>
             </div>
@@ -180,12 +187,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
           >
             {thumbnails}
           </div>
-          <div
-            className={cx(
-              classes.section,
-              type !== 'chat' && classes.hide
-            )}
-          >
+          <div className={cx(classes.section, type !== 'chat' && classes.hide)}>
             {chat}
           </div>
         </Drawer>
