@@ -444,7 +444,7 @@ class Profile extends React.PureComponent<Props, State> {
       );
     if (error) return <Redirect to="/" />;
     const seasons = processSeasons(userStatistics);
-
+    
     return (
       <Fragment>
         <div className={classes.root}>
@@ -475,6 +475,7 @@ class Profile extends React.PureComponent<Props, State> {
                   tab={tab}
                   inStudyCircle={false}
                   isStudyCircleLoading={isStudyCircleLoading}
+                  isCirclein={userId === '0'}
                   onStartChat={this.handleStartChat}
                   onStartVideo={this.handleStartVideo}
                   onUpdateProfileImage={this.handleUpdateProfileImage}

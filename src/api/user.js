@@ -36,7 +36,7 @@ export const getUserProfile = async ({
     const { user_profile = {}, about = [], user_statistics = [] } = data;
 
     const userProfile = {
-      userId: String((user_profile.user_id: string) || ''),
+      userId: user_profile.user_id === 0 ? '0' : String((user_profile.user_id: string) || ''),
       firstName: String((user_profile.first_name: string) || ''),
       lastName: String((user_profile.last_name: string) || ''),
       grade: Number((user_profile.grade: number) || 0),

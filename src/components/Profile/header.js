@@ -174,6 +174,7 @@ type Props = {
   tab: number,
   inStudyCircle: boolean,
   isStudyCircleLoading: boolean,
+  isCirclein: boolean,
   onStartChat: Function,
   onStartVideo: Function,
   onUpdateProfileImage: Function,
@@ -241,6 +242,7 @@ class Header extends React.PureComponent<Props, State> {
       uploading,
       tab,
       inStudyCircle,
+      isCirclein,
       onStartChat,
       onStartVideo,
       onChange,
@@ -386,7 +388,7 @@ class Header extends React.PureComponent<Props, State> {
                     {`Member Since ${moment(joined).format('MMMM YYYY')}`}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={12} hidden={isMyProfile}>
+                <Grid item xs={12} md={12} hidden={isMyProfile || isCirclein}>
                   <Button
                     color="primary"
                     disabled={chatLoading}
@@ -395,7 +397,7 @@ class Header extends React.PureComponent<Props, State> {
                     Send {firstName} a message
                   </Button>
                 </Grid>
-                <Grid item xs={12} md={12} hidden={isMyProfile}>
+                <Grid item xs={12} md={12} hidden={isMyProfile || isCirclein}>
                   <Button
                     color="primary"
                     disabled={chatLoading}
