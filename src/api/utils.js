@@ -71,7 +71,10 @@ export const postToCamelCase = (post: Object): Post => {
       postId: Number((post.post_info.post_id: number) || 0),
       questionsCount: Number((post.post_info.questions_count: number) || 0),
       thanksCount: Number((post.post_info.thanks_count: number) || 0),
-      userId: String((post.post_info.user_id: string) || ''),
+      userId:
+        post.post_info.user_id === 0
+          ? '0'
+          : String((post.post_info.user_id: string) || ''),
       viewCount: Number((post.post_info.view_count: number) || 0)
     },
     rank: Number((post.rank: number) || 0),
@@ -176,7 +179,7 @@ export const userToCamelCase = (user: Object): User => {
 
 export const feedToCamelCase = (posts: Array<Object>): Feed => {
   return posts.map(item => ({
-    userId: String((item.user_id: string) || ''),
+    userId: item.user_id === 0 ? '0' : String((item.user_id: string) || ''),
     typeId: Number((item.type_id: number) || 0),
     feedId: Number((item.feed_id: number) || 0),
     postId: Number((item.post_id: number) || 0),
