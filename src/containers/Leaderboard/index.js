@@ -33,13 +33,17 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2
   },
   button: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing.unit * 2,
+    fontWeight: 'bold'
   },
   buttonDisabled: {
     '&:disabled': {
       backgroundColor: '#49afd9',
-      opacity: 0.55,
-      marginBottom: theme.spacing.unit * 2
+      color: 'rgba(0,0,0,0.7)',
+      marginBottom: theme.spacing.unit * 2,
+      borderStyle: 'solid',
+      borderWidth: 3,
+      borderColor: 'white'
     }
   },
   leaderboard: {
@@ -157,7 +161,8 @@ class Leaderboard extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { classes } = await getUserClasses({ userId });
-    this.setState({ userClasses: classes });
+
+    this.setState({ userClasses: classes.filter(o => o.classId !== 0) });
   };
 
   handleClose = () => {

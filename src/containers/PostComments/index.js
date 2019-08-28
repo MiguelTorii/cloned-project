@@ -46,7 +46,8 @@ type Props = {
   typeId: number,
   isQuestion?: boolean,
   readOnly: boolean,
-  hasBestAnswer?: boolean
+  hasBestAnswer?: boolean,
+  isOwner?: boolean
 };
 
 type State = {
@@ -59,7 +60,8 @@ type State = {
 class ViewNotes extends React.PureComponent<Props, State> {
   static defaultProps = {
     isQuestion: false,
-    hasBestAnswer: false
+    hasBestAnswer: false,
+    isOwner: false
   };
 
   state = {
@@ -200,7 +202,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       },
       isQuestion,
       readOnly,
-      hasBestAnswer
+      hasBestAnswer,
+      isOwner
     } = this.props;
     const { comments, items, isLoading, report } = this.state;
     if (!comments) return null;
@@ -249,6 +252,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 isOwn={item.user.userId === userId}
                 readOnly={readOnly}
                 hasBestAnswer={hasBestAnswer}
+                isOwner={Boolean(isOwner)}
                 onPostComment={this.handlePostComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
@@ -275,6 +279,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   isReply
                   readOnly={readOnly}
                   hasBestAnswer={hasBestAnswer}
+                  isOwner={Boolean(isOwner)}
                   onPostComment={this.handlePostComment}
                   onThanks={this.handleThanks}
                   onDelete={this.handleDelete}

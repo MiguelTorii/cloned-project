@@ -218,6 +218,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 isQuestion
                 hasBestAnswer={bestAnswer}
                 readOnly={readOnly}
+                isOwner={userId === ownerId}
               />
             </ErrorBoundary>
             <ErrorBoundary>

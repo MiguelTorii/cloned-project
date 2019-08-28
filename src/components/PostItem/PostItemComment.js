@@ -16,12 +16,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Link from '@material-ui/core/Link';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+// import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+// import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ReplyIcon from '@material-ui/icons/Reply';
 import green from '@material-ui/core/colors/green';
 import PostItemAddComment from './PostItemAddComment';
 import DialogTitle from '../DialogTitle';
+// $FlowIgnore
+import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -119,6 +121,7 @@ type Props = {
   readOnly: boolean,
   accepted: boolean,
   hasBestAnswer: boolean,
+  isOwner: boolean,
   onPostComment: Function,
   onThanks: Function,
   onReport: Function,
@@ -204,7 +207,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       accepted,
-      hasBestAnswer
+      hasBestAnswer,
+      isOwner
     } = this.props;
     const { showAddComment, open } = this.state;
     const date = moment(created);
@@ -261,7 +265,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 isQuestion && !isOwn && classes.bestAnswer
               )}
             >
-              {isQuestion && !isOwn && (!hasBestAnswer || accepted) ? (
+              {isQuestion && !isOwn && isOwner && (!hasBestAnswer || accepted) ? (
                 <Fragment>
                   <Button
                     className={classes.accepted}
@@ -286,7 +290,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
               </Typography>
               {!isOwn && (
                 <IconButton onClick={this.handleThanks} disabled={isLoading}>
-                  {thanked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+                  {thanked ? <ThanksIcon /> : <ThanksIcon />}
                 </IconButton>
               )}
               <Button

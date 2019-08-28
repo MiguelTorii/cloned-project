@@ -19,6 +19,8 @@ import type { State as StoreState } from '../../types/state';
 import type { DailyStreaksCard } from '../../types/models';
 import { getDailyStreaks, getDailyRewards } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
+// $FlowIgnore
+import { ReactComponent as StreakIcon } from '../../assets/svg/ic_streak.svg';
 
 const size = 150;
 const thickness = 10;
@@ -235,7 +237,8 @@ class DailyRewards extends React.PureComponent<Props, State> {
             id="daily-rewards-dialog-title"
             onClose={this.handleClose}
           >
-            {currentDay !== 5 ? 'You’re heating up!' : 'You’re AMAZING!'}
+            {currentDay !== 5 ? 'You’re heating up!' : 'You’re AMAZING!'}{' '}
+            <StreakIcon />
           </DialogTitle>
           <DialogContent>
             <div className={classes.progressWrapper}>

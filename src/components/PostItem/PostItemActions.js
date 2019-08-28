@@ -5,10 +5,14 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ShareIcon from '@material-ui/icons/Share';
-import AddIcon from '@material-ui/icons/Add';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+// import AddIcon from '@material-ui/icons/Add';
+// import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+// import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+// import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+// $FlowIgnore
+import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
+// $FlowIgnore
+import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
 
 const styles = theme => ({
   root: {
@@ -43,15 +47,15 @@ class PostItemActions extends React.PureComponent<Props> {
   renderThanks = () => {
     const { thanked, isThanksLoading } = this.props;
     if (isThanksLoading) return <CircularProgress size={24} />;
-    if (thanked) return <ThumbUpIcon />;
-    return <ThumbUpOutlinedIcon />;
+    if (thanked) return <ThanksIcon />;
+    return <ThanksIcon />;
   };
 
   renderStudyCircle = () => {
     const { inStudyCircle, isStudyCircleLoading } = this.props;
     if (isStudyCircleLoading) return <CircularProgress size={24} />;
-    if (inStudyCircle) return <AddIcon />;
-    return <AddOutlinedIcon />;
+    if (inStudyCircle) return <StudyCircleIcon />;
+    return <StudyCircleIcon />;
   };
 
   render() {

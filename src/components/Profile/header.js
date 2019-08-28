@@ -15,8 +15,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import AddIcon from '@material-ui/icons/Add';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+// import AddIcon from '@material-ui/icons/Add';
+// import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
@@ -27,6 +27,8 @@ import gold from '../../assets/svg/rank_gold.svg';
 import platinum from '../../assets/svg/rank_platinum.svg';
 import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
+// $FlowIgnore
+import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
 
 const styles = theme => ({
   container: {
@@ -216,8 +218,8 @@ class Header extends React.PureComponent<Props, State> {
   renderStudyCircle = () => {
     const { inStudyCircle, isStudyCircleLoading } = this.props;
     if (isStudyCircleLoading) return <CircularProgress size={24} />;
-    if (inStudyCircle) return <AddIcon />;
-    return <AddOutlinedIcon />;
+    if (inStudyCircle) return <StudyCircleIcon />;
+    return <StudyCircleIcon />;
   };
 
   render() {

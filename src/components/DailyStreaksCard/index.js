@@ -5,6 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { DailyStreaksCard as StreaksCard } from '../../types/models';
+// $FlowIgnore
+import { ReactComponent as StreakIcon } from '../../assets/svg/ic_streak.svg';
 
 const size = 150;
 const thickness = 10;
@@ -80,7 +82,7 @@ class DailyStreaksCard extends React.PureComponent<Props, State> {
     return (
       <Paper className={classes.root} elevation={1}>
         <Typography variant="h4" paragraph>
-          {data.title}
+          {data.title} <StreakIcon />
         </Typography>
         <div className={classes.progressWrapper}>
           <div className={classes.progress}>

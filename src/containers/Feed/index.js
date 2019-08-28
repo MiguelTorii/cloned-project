@@ -179,16 +179,19 @@ class Feed extends React.PureComponent<Props, State> {
     for (const filter of filters) {
       updateFilter({ field: filter.name, value: filter.value });
     }
+    this.handleFetchFeed();
   };
 
   handleClearFilters = () => {
     const { clearFilter } = this.props;
     clearFilter();
+    this.handleFetchFeed();
   };
 
   handleClearSearch = () => {
     const { updateFilter } = this.props;
     updateFilter({ field: 'query', value: '' });
+    this.handleFetchFeed();
   };
 
   handleLoadMore = () => {

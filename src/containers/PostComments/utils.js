@@ -22,5 +22,5 @@ export const processComments = (comments: Array<Object>) => {
     }
   });
 
-  return commentsTree.sort((a, b) => new Date(b.created) - new Date(a.created));
+  return commentsTree;
 };
