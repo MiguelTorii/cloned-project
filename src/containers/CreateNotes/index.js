@@ -24,6 +24,9 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  leftCharacters: {
+    marginRight: theme.spacing.unit * 2
   }
 });
 
@@ -160,6 +163,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
+  getLeftCharts = field => {
+    // help ? 50 - help.length : 50;
+    return 50 - field.length >= 0 ? 50 - field.length : 0;
+  };
+
   uploadImages: {
     handleUploadImages: Function
   };
@@ -220,6 +228,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   validators={['required']}
                   errorMessages={['Summary is required']}
                 />
+                <Typography
+                  variant="subtitle1"
+                  align="right"
+                  className={classes.leftCharacters}
+                >{`${this.getLeftCharts(
+                  summary
+                )} more characters to earn points`}</Typography>
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>

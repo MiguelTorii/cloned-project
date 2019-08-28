@@ -11,6 +11,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
+import EmojiSelector from '../EmojiSelector';
 
 const styles = theme => ({
   root: {
@@ -30,7 +31,8 @@ const styles = theme => ({
   },
   textfield: {
     marginLeft: 8,
-    flex: 1
+    flex: 1,
+    padding: 0
   },
   iconButton: {
     padding: 10
@@ -187,6 +189,10 @@ class ChatTextField extends React.PureComponent<Props, State> {
     this.setState({ isHover: false });
   };
 
+  handleSelect = emoji => {
+    this.setState(({ message }) => ({ message: `${message}${emoji}` }));
+  };
+
   // eslint-disable-next-line no-undef
   fileInput: ?HTMLInputElement;
 
@@ -233,11 +239,12 @@ class ChatTextField extends React.PureComponent<Props, State> {
               onKeyUp={this.handleKeyUp}
               className={classes.textfield}
               inputComponent={Textarea}
-              inputProps={{ style: { maxHeight: 60 } }}
+              inputProps={{ style: { maxHeight: 60, paddingTop: 5 } }}
               multiline
               rowsMax={2}
               placeholder="Type a message"
               autoComplete="off"
+              autoFocus
               endAdornment={
                 image && (
                   <ButtonBase
@@ -257,6 +264,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
               }
             />
           </div>
+          <EmojiSelector onSelect={this.handleSelect} />
           <Divider light className={classes.divider} />
           <IconButton
             color="primary"

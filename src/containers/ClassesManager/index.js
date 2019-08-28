@@ -396,9 +396,9 @@ class ClassesManager extends React.PureComponent<Props, State> {
                                 )}
                               />
                             }
-                            label={`${b.firstName} ${b.lastName} - Section ${
+                            label={`Section ${
                               b.section
-                            }`}
+                            }: ${b.firstName} ${b.lastName}`}
                           />
                         ))}
                       </FormGroup>

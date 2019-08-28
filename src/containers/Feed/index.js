@@ -170,7 +170,7 @@ class Feed extends React.PureComponent<Props, State> {
   handleChange = name => async event => {
     const { updateFilter } = this.props;
     await updateFilter({ field: name, value: event.target.value });
-    this.handleFetchFeed()
+    this.handleFetchFeed();
   };
 
   handleApplyFilters = filters => {
@@ -189,7 +189,7 @@ class Feed extends React.PureComponent<Props, State> {
   handleClearSearch = () => {
     const { updateFilter } = this.props;
     updateFilter({ field: 'query', value: '' });
-  }
+  };
 
   handleLoadMore = () => {
     const {
@@ -209,6 +209,8 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleOpenFilter = () => {
+    this.handleFetchUserClasses();
+
     logEvent({
       event: 'Feed- Open Filter',
       props: {}
