@@ -177,6 +177,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
               dailyStreaksCard: result,
               isDailyStreaksCardLoading: false
             });
+          window.scrollTo(0, 0);
         })
         .catch(() => {
           if (this.mounted) this.setState({ isDailyStreaksCardLoading: false });
@@ -185,6 +186,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
         .then(result => {
           if (this.mounted)
             this.setState({ questsCard: result, isQuestsCardLoading: false });
+          window.scrollTo(0, 0);
         })
         .catch(() => {
           if (this.mounted) this.setState({ isQuestsCardLoading: false });
@@ -196,6 +198,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
               currentSeasonCard: result,
               isCurrentSeasonCardLoading: false
             });
+          window.scrollTo(0, 0);
         })
         .catch(() => {
           if (this.mounted)
@@ -205,6 +208,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
         .then(result => {
           if (this.mounted)
             this.setState({ inviteCard: result, isInviteCardLoading: false });
+          window.scrollTo(0, 0);
         })
         .catch(() => {
           if (this.mounted) this.setState({ isInviteCardLoading: false });
