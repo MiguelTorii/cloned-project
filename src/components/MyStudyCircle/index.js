@@ -102,7 +102,7 @@ class MyStudyCircle extends React.PureComponent<Props> {
             variant="outlined"
             color="primary"
           >
-            Go to Feed
+            Go to Study
           </Button>
         </div>
       );

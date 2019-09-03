@@ -146,7 +146,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     this.setState(newState);
   };
 
-  handleSectionSelect = (classId, sectionId) => event => {
+  handleSectionSelect = (classId, sectionId) => async event => {
     const newState = update(this.state, {
       selectedClasses: {
         $apply: b => {
@@ -160,6 +160,24 @@ class ClassesManager extends React.PureComponent<Props, State> {
       }
     });
     this.setState(newState);
+
+    if(event.target.checked){
+    try {
+      const {
+        user: {
+          data: { userId }
+        },
+        fetchFeed
+      } = this.props;
+      // this.setState({ loading: true });
+      await joinClass({ classId, sectionId, userId });
+      const { classes } = await getUserClasses({ userId });
+      this.setState({ userClasses: classes, loading: false });
+      fetchFeed()
+      // this.setState({ loading: false });
+    } catch(err) {
+      // this.setState({ loading: false });
+    }}
   };
 
   handleRemoveClass = ({ classId }: { classId: number }) => async () => {
@@ -537,11 +555,11 @@ class ClassesManager extends React.PureComponent<Props, State> {
             </Button>
             {canAddClasses && (
               <Button
-                onClick={this.handleSubmit}
+                onClick={onClose}
                 color="primary"
                 variant="contained"
               >
-                Join
+                Done
               </Button>
             )}
           </DialogActions>

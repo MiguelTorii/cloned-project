@@ -8,13 +8,15 @@ import chat from './chat';
 import feed from './feed';
 import auth from './auth';
 import webNotifications from './web-notifications';
+import notifications from './notifications';
 
 const reducers = {
   user,
   chat,
   feed,
   auth,
-  webNotifications
+  webNotifications,
+  notifications
 };
 
 export type Reducers = typeof reducers;

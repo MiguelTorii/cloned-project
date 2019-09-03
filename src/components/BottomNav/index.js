@@ -73,7 +73,7 @@ class BottomNav extends React.PureComponent<Props, State> {
             href="/"
           />
           <BottomNavigationAction
-            label="Feed"
+            label="Study"
             icon={<ViewListIcon />}
             component={MyLink}
             href="/feed"
@@ -84,7 +84,7 @@ class BottomNav extends React.PureComponent<Props, State> {
             onClick={this.handleOpen}
           />
           <BottomNavigationAction
-            label="Messages"
+            label="Classmates"
             icon={<ChatIcon />}
             component={MyLink}
             href="/chat"

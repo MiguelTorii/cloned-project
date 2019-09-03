@@ -311,12 +311,14 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 disableRipple
               >
                 <Typography className={classes.banner} align="center">
-                  Hey! You’re one of the lucky students with access to CircleIn
-                  for one or more of your courses this year. View those courses
-                  by clicking{' '}
+                  Add Your Courses
+                  <br />
+                  You’re one of the lucky students who has access to CircleIn in
+                  one or more of your courses this year! To add courses,{' '}
                   <span style={{ fontWeight: 'bolder', fontSize: 16 }}>
-                    here!
+                    tap here
                   </span>
+                  .
                 </Typography>
               </ButtonBase>
             </Grid>

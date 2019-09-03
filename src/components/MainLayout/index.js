@@ -503,7 +503,7 @@ class MainLayout extends React.Component<Props, State> {
               />
             </ListItemIcon>
             <ListItemText
-              primary="Feed"
+              primary="Study"
               primaryTypographyProps={{
                 color: pathname === '/feed' ? 'primary' : 'textPrimary'
               }}
@@ -532,7 +532,7 @@ class MainLayout extends React.Component<Props, State> {
               />
             </ListItemIcon>
             <ListItemText
-              primary="Store"
+              primary="Rewards Store"
               primaryTypographyProps={{
                 color: pathname === '/store' ? 'primary' : 'textPrimary'
               }}

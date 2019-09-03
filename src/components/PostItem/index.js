@@ -61,7 +61,7 @@ class PostItem extends React.PureComponent<Props> {
           <div className={classes.actions}>
             <Typography className={classes.link}>
               <Link component={MyLink} feedid={feedId}>
-                Back to Feed
+                Back to Study
               </Link>
             </Typography>
           </div>
