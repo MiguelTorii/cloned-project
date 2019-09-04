@@ -96,7 +96,7 @@ class MainChat extends React.PureComponent<Props, State> {
       >
         <div className={classes.header}>
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
-            <Typography variant="h6">Chat</Typography>
+            <Typography variant="h6">Classmates</Typography>
             <Badge
               className={classes.margin}
               badgeContent={unread}

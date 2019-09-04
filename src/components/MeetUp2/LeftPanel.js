@@ -172,7 +172,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
               onClick={this.handleOpen('participants')}
             />
             <BottomNavigationAction
-              label="Chat"
+              label="Classmates"
               classes={{ label: classes.navButton }}
               icon={<ChatBubbleIcon className={classes.icon} />}
               onClick={this.handleOpen('chat')}
