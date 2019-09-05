@@ -36,6 +36,7 @@ class Sandbox extends React.Component<ProvidedProps & Props, State> {
         </a>
         <a href="https://bit.ly/2lAcUt2">https://bit.ly/2lAcUt2</a>
         <a href="https://circlein.app">https://circlein.app</a>
+        <a href="https://app.circleinapp.com">https://app.circleinapp.com</a>
       </main>
     );
   }
