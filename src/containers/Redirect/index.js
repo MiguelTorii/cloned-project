@@ -9,8 +9,9 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
+import { IOS_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
 
-const MyLink = props => <RouterLink to="/open-collective" {...props} />;
+const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} />;
 
 const styles = () => ({
   root: {
@@ -49,7 +50,7 @@ class Redirect extends React.PureComponent<Props, State> {
           {isIOS && (
             <Link
               className={classes.button}
-              href={`https://redirect-dev.circleinapp.com/login?nonce=${nonce}`}
+              href={`${IOS_REDIRECT_URI}?nonce=${nonce}`}
             >
               <Button variant="contained" color="primary">
                 Open iOS App
@@ -59,7 +60,7 @@ class Redirect extends React.PureComponent<Props, State> {
           {isAndroid && (
             <Link
               className={classes.button}
-              href={`circleinapp://dev-app2.circleinapp.com/oauth?nonce=${nonce}`}
+              href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
             >
               <Button variant="contained" color="primary">
                 Open iOS App
@@ -67,7 +68,9 @@ class Redirect extends React.PureComponent<Props, State> {
             </Link>
           )}
           <Typography>
-            <Link component={MyLink}>Go to Website</Link>
+            <Link component={MyLink} to={`/canvas/${nonce}`}>
+              Go to Website
+            </Link>
           </Typography>
         </div>
       </div>

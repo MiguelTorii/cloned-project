@@ -40,4 +40,14 @@ export const SENTRY =
 export const ENV =
   process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
 
+export const IOS_REDIRECT_URI =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'https://redirect.circleinapp.com/login'
+    : 'https://redirect-dev.circleinapp.com/login';
+
+export const ANDROID_REDIRECT_URI =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'circleinapp://app.circleinapp.com/oauth'
+    : 'circleinapp://dev-app2.circleinapp.com/oauth';
+
 export const RELEASE = 'V2.0.19';
