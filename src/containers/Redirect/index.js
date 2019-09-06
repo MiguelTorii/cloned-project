@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
 
 const MyLink = props => <RouterLink to="/open-collective" {...props} />;
 
@@ -44,6 +45,7 @@ class Redirect extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <div className={classes.links}>
+          <Logo style={{ height: 80, maxWidth: 200 }} />
           {isIOS && (
             <Link
               className={classes.button}
