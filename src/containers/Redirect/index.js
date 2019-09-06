@@ -63,7 +63,7 @@ class Redirect extends React.PureComponent<Props, State> {
               href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
             >
               <Button variant="contained" color="primary">
-                Open iOS App
+                Open Android App
               </Button>
             </Link>
           )}
