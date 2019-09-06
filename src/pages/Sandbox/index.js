@@ -30,13 +30,12 @@ class Sandbox extends React.Component<ProvidedProps & Props, State> {
     return (
       <main className={classes.main}>
         <CssBaseline />
-        <a href="circlein.app">circlein.app</a>
-        <a href="https://redirect.circleinapp.com/share/abc">
-          https://redirect.circleinapp.com/share/abc
+        <a href="https://redirect.circleinapp.com/login?nonce=blah">
+          https://redirect.circleinapp.com/login?nonce=blah
         </a>
-        <a href="https://bit.ly/2lAcUt2">https://bit.ly/2lAcUt2</a>
-        <a href="https://circlein.app">https://circlein.app</a>
-        <a href="https://app.circleinapp.com">https://app.circleinapp.com</a>
+        <a href="https://redirect-dev.circleinapp.com/login?nonce=blah">
+          https://redirect-dev.circleinapp.com/login?nonce=blah
+        </a>
       </main>
     );
   }
