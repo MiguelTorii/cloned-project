@@ -41,6 +41,7 @@ import ResetPassword from './pages/ResetPassword';
 import OAuth from './pages/OAuth';
 import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
+import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
 import { init as analyticsInit } from './api/analytics';
 import {
@@ -168,6 +169,7 @@ ReactDOM.render(
             component={withTracker(TermsOfUse)}
           />
           <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
+          <Route exact path="/redirect" component={Redirect} />
           <Route exact path="/sandbox" component={Sandbox} />
           <Route render={() => <div>Miss</div>} />
         </Switch>
