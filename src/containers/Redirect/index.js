@@ -13,7 +13,7 @@ import { IOS_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
 
 const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} />;
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     width: '100vw',
     height: '100vh',
@@ -26,6 +26,9 @@ const styles = () => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  button: {
+    margin: theme.spacing.unit * 2
   }
 });
 
@@ -67,7 +70,7 @@ class Redirect extends React.PureComponent<Props, State> {
               </Button>
             </Link>
           )}
-          <Typography>
+          <Typography className={classes.button}>
             <Link component={MyLink} to={`/canvas/${nonce}`}>
               Go to Website
             </Link>
