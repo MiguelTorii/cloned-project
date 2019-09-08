@@ -74,8 +74,9 @@ type ProvidedProps = {
 
 type Props = {
   classes: Object,
-  email: String,
-  password: String,
+  email: string,
+  password: string,
+  isVerified: boolean,
   loading: boolean,
   handleChange: Function,
   handleSubmit: Function,
@@ -90,6 +91,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
       classes,
       email,
       password,
+      isVerified,
       loading,
       handleSubmit,
       handleChange,
@@ -106,32 +108,35 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
             onSubmit={handleSubmit}
             className={classes.form}
           >
-            <TextValidator
-              label="Email Address"
-              margin="normal"
-              onChange={handleChange('email')}
-              name="email"
-              autoComplete="email"
-              autoFocus
-              fullWidth
-              value={email}
-              disabled={loading}
-              validators={['required', 'isEmail']}
-              errorMessages={['email is required', 'email is not valid']}
-            />
-            <TextValidator
-              label="Password"
-              margin="normal"
-              onChange={handleChange('password')}
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              type="password"
-              value={password}
-              disabled={loading}
-              validators={['required']}
-              errorMessages={['password is required']}
-            />
+            {!isVerified ? (
+              <TextValidator
+                label="Email Address"
+                margin="normal"
+                onChange={handleChange('email')}
+                name="email"
+                autoComplete="email"
+                autoFocus
+                fullWidth
+                value={email}
+                disabled={loading}
+                validators={['required', 'isEmail']}
+                errorMessages={['email is required', 'email is not valid']}
+              />
+            ) : (
+              <TextValidator
+                label="Password"
+                margin="normal"
+                onChange={handleChange('password')}
+                name="password"
+                autoComplete="current-password"
+                fullWidth
+                type="password"
+                value={password}
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['password is required']}
+              />
+            )}
             <div className={classes.wrapper}>
               <Button
                 type="submit"
@@ -141,7 +146,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
                 disabled={loading}
                 className={classes.submit}
               >
-                Sign in
+                {!isVerified ? 'Next' : 'Sign In'}
               </Button>
               {loading && (
                 <CircularProgress
@@ -152,7 +157,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
             </div>
           </ValidatorForm>
           <div className={classes.links}>
-            <Typography variant="subtitle1" gutterBottom>
+            {/* <Typography variant="subtitle1" gutterBottom>
               {"Don't have an account? "}
               <Link
                 component={MyLink}
@@ -163,19 +168,21 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
               >
                 Sign Up
               </Link>
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              <Link
-                component={MyLink}
-                link="/forgot_password"
-                href="/forgot_password"
-                className={classes.link}
-                disabled={loading}
-              >
-                Forgot Password
-              </Link>
-            </Typography>
-            <Button variant="outlined" color="primary" onClick={onChangeSchool}>
+            </Typography> */}
+            {isVerified && (
+              <Typography variant="subtitle1" gutterBottom>
+                <Link
+                  component={MyLink}
+                  link="/forgot_password"
+                  href="/forgot_password"
+                  className={classes.link}
+                  disabled={loading}
+                >
+                  Forgot Password
+                </Link>
+              </Typography>
+            )}
+            <Button color="primary" onClick={onChangeSchool}>
               Select a Different School
             </Button>
           </div>

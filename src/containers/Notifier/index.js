@@ -10,7 +10,8 @@ import * as notificationsActions from '../../actions/notifications';
 type Props = {
   notifications: Array<Object>,
   enqueueSnackbar: Function,
-  removeSnackbar: Function
+  removeSnackbar: Function,
+  closeSnackbar: Function
 };
 
 class Notifier extends React.Component<Props> {
@@ -64,6 +65,8 @@ class Notifier extends React.Component<Props> {
   storeDisplayed = id => {
     this.displayed = [...this.displayed, id];
   };
+
+  displayed: Array<Object>;
 
   render() {
     return null;

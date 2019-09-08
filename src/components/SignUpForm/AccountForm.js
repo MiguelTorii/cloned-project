@@ -51,6 +51,7 @@ type Props = {
   type: string,
   loading: boolean,
   hide: boolean,
+  email: string,
   emailDomain: Array<string>,
   emailRestriction: boolean,
   onSubmit: Function
@@ -82,6 +83,8 @@ class AccountForm extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
+    const { email: propsEmail } = this.props;
+    this.setState({ email: propsEmail });
     ValidatorForm.addValidationRule('isEmailMatch', value => {
       const { email } = this.state;
       if (value !== email) {

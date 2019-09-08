@@ -4,6 +4,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import SignInForm from '../../components/SignInForm';
@@ -16,6 +17,7 @@ import * as authActions from '../../actions/auth';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
 import logo from '../../assets/svg/circlein_logo_beta.svg';
+import * as signInApi from '../../api/sign-in';
 
 const styles = theme => ({
   main: {
@@ -46,18 +48,21 @@ type Props = {
   auth: AuthState,
   signIn: Function,
   clearError: Function,
-  updateSchool: Function
+  updateSchool: Function,
+  pushTo: Function
 };
 
 type State = {
   email: string,
-  password: string
+  password: string,
+  isVerified: boolean
 };
 
 class SignIn extends React.Component<Props, State> {
   state = {
     email: '',
-    password: ''
+    password: '',
+    isVerified: false
   };
 
   handleChange = (field: string) => (
@@ -74,17 +79,24 @@ class SignIn extends React.Component<Props, State> {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const {
       auth: {
         data: { school }
       },
-      signIn
+      signIn,
+      pushTo
     } = this.props;
-    if (!school) return;
-    const { id } = school;
-    const { email, password } = this.state;
-    signIn({ email, password, schoolId: id });
+    const { isVerified, email, password } = this.state;
+    if (!isVerified) {
+      const exists = await signInApi.verifyEmail({ email });
+      if (exists) this.setState({ isVerified: true });
+      else pushTo(`/signup?email=${encodeURIComponent(email)}`);
+    } else {
+      if (!school) return;
+      const { id } = school;
+      signIn({ email, password, schoolId: id });
+    }
   };
 
   handleErrorDialogClose = () => {
@@ -105,7 +117,7 @@ class SignIn extends React.Component<Props, State> {
         data: { school }
       }
     } = this.props;
-    const { email, password } = this.state;
+    const { email, password, isVerified } = this.state;
     const { error, errorMessage, isLoading } = user;
     const { title, body, showSignup } = errorMessage;
 
@@ -120,6 +132,7 @@ class SignIn extends React.Component<Props, State> {
               <SignInForm
                 email={email}
                 password={password}
+                isVerified={isVerified}
                 loading={isLoading}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
@@ -152,7 +165,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       signIn: signInActions.signIn,
       clearError: signInActions.clearSignInError,
-      updateSchool: authActions.updateSchool
+      updateSchool: authActions.updateSchool,
+      pushTo: push
     },
     dispatch
   );

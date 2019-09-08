@@ -34,6 +34,7 @@ import {
   leaveUserClass,
   joinClass
 } from '../../api/user';
+import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 
@@ -90,6 +91,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     const { open } = this.props;
     if (open !== prevProps.open && open === true) {
       this.handleLoadClasses();
+      logEvent({ event: 'Join Class- Opened', props: {} });
     }
   };
 
@@ -177,7 +179,10 @@ class ClassesManager extends React.PureComponent<Props, State> {
       // this.setState({ loading: false });
     } catch(err) {
       // this.setState({ loading: false });
-    }}
+    } finally {
+      logEvent({ event: 'Join Class- Joined Class', props: { 'Section ID': sectionId } });
+    }
+  }
   };
 
   handleRemoveClass = ({ classId }: { classId: number }) => async () => {

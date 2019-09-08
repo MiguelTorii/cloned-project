@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+// $FlowIgnore
 import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
 import { IOS_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
 
@@ -33,7 +34,8 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Object,
+  nonce: string
 };
 
 type State = {};

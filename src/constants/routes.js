@@ -38,6 +38,7 @@ export const API_ROUTES = {
   FEED_V1_1: `${API_URL_V1_1}/feed`,
   CREATELINK: `${API_URL}/feed/link/post`,
   USER: `${API_URL}/user`,
+  CHECK_EMAIL: `${API_URL}/user/email/verify`,
   REFERRAL: `${API_URL}/user/referral`,
   USER_CLASS: `${API_URL}/user/class`,
   USER_CLASSES: `${API_URL}/user/classes`,

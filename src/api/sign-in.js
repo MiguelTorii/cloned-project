@@ -113,3 +113,22 @@ export const searchSchools = async ({
     return [];
   }
 };
+
+export const verifyEmail = async ({
+  email
+}: {
+  email: string
+}): Promise<boolean> => {
+  try {
+    const result = await axios.get(
+      `${API_ROUTES.CHECK_EMAIL}?email=${encodeURIComponent(
+        email
+      )}&user_id=-1&token=NA`
+    );
+    const { data = {} } = result;
+    const { exists } = data;
+    return exists;
+  } catch (err) {
+    return false;
+  }
+};

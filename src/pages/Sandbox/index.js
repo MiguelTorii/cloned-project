@@ -15,9 +15,7 @@ type Props = {
   classes: Object
 };
 
-type State = {
-  text: string
-};
+type State = {};
 
 class Sandbox extends React.Component<ProvidedProps & Props, State> {
   state = {};

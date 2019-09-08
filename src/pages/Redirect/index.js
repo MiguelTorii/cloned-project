@@ -14,7 +14,10 @@ type ProvidedProps = {
 };
 
 type Props = {
-  classes: Object
+  classes: Object,
+  location: {
+    search: string
+  }
 };
 
 type State = {
@@ -28,7 +31,7 @@ class RedirectPage extends React.Component<ProvidedProps & Props, State> {
 
   componentDidMount = () => {
     const {
-      location: { search = {} }
+      location: { search = '' }
     } = this.props;
     const values = queryString.parse(search);
     const { nonce = '' } = values;

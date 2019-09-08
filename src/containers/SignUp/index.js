@@ -59,6 +59,7 @@ type ProvidedProps = {
 type Props = {
   user: UserState,
   auth: AuthState,
+  email: string,
   signUp: Function,
   enqueueSnackbar: Function,
   updateError: Function,
@@ -87,6 +88,11 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     email: '',
     password: '',
     grade: ''
+  };
+
+  componentDidMount = () => {
+    const { email } = this.props;
+    this.setState({ email });
   };
 
   handleTypeChange = type => {
@@ -193,7 +199,8 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       user,
       auth: {
         data: { school }
-      }
+      },
+      email: propsEmail
     } = this.props;
     const { type, activeStep, loading, email } = this.state;
     const { error, errorMessage, isLoading } = user;
@@ -218,6 +225,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
                   type={type}
                   loading={isLoading || loading}
                   hide={Boolean(type === '' || activeStep !== 0)}
+                  email={propsEmail}
                   emailDomain={emailDomain}
                   emailRestriction={emailRestriction}
                   onSubmit={this.handleSubmit}

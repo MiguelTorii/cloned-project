@@ -3,14 +3,14 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
+// const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 
 const styles = theme => ({
   main: {
@@ -82,12 +82,12 @@ class SignUpForm extends React.PureComponent<Props, State> {
           </Typography>
           {children}
           <div className={classes.links}>
-            <Typography variant="subtitle1" gutterBottom>
+            {/* <Typography variant="subtitle1" gutterBottom>
               {'Already have an account? '}
               <Link component={MyLink} link="/login" href="/login">
                 Sign in
               </Link>
-            </Typography>
+            </Typography> */}
             <Button variant="outlined" color="primary" onClick={onChangeSchool}>
               Select a Different School
             </Button>
