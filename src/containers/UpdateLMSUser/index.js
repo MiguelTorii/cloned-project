@@ -2,6 +2,7 @@
 // @flow
 
 import React, { Fragment } from 'react';
+import store from 'store';
 import {
   ValidatorForm,
   TextValidator,
@@ -20,6 +21,7 @@ import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
+import Onboarding from '../Onboarding';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
 import * as signInActions from '../../actions/sign-in';
@@ -56,7 +58,8 @@ type State = {
   firstName: string,
   lastName: string,
   grade: string | number,
-  email: string
+  email: string,
+  onboarding: boolean
 };
 
 class UpdateLMSUser extends React.PureComponent<Props, State> {
@@ -66,7 +69,8 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     firstName: '',
     lastName: '',
     grade: '',
-    email: ''
+    email: '',
+    onboarding: false
   };
 
   componentDidMount = () => {
@@ -101,6 +105,13 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       }
     } = this.props;
     if (updateProfile.length > 0) this.setState({ open: true });
+    else {
+      const onboarding = store.get('ONBOARDING');
+      if (!onboarding || onboarding !== 'VIEWED') {
+        // store.set('ONBOARDING', 'SHOW');
+        this.handleShowOnboarding();
+      }
+    }
   };
 
   handleChange = name => event => {
@@ -144,9 +155,23 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       await checkUserSession();
 
       this.setState({ open: false, loading: false });
+      const onboarding = store.get('ONBOARDING');
+      if (!onboarding || onboarding !== 'VIEWED') {
+        // store.set('ONBOARDING', 'SHOW');
+        this.handleShowOnboarding();
+      }
     } catch (err) {
       this.setState({ loading: false });
     }
+  };
+
+  handleShowOnboarding = () => {
+    this.setState({ onboarding: true });
+  };
+
+  handleHideOnboarding = () => {
+    store.set('ONBOARDING', 'VIEWED');
+    this.setState({ onboarding: false });
   };
 
   render() {
@@ -159,7 +184,15 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
 
     if (userId === '') return null;
 
-    const { open, loading, firstName, lastName, grade, email } = this.state;
+    const {
+      open,
+      loading,
+      firstName,
+      lastName,
+      grade,
+      email,
+      onboarding
+    } = this.state;
 
     const renderForm = (
       <Fragment>
@@ -292,6 +325,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
+        <Onboarding open={onboarding} onClose={this.handleHideOnboarding} />
       </ErrorBoundary>
     );
   }
