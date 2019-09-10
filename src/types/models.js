@@ -271,7 +271,8 @@ export type School = {
   lmsTypeId: number,
   emailRestriction: boolean,
   emailDomain: Array<string>,
-  scope: string
+  scope: string,
+  launchType: string
 };
 
 export type Schools = Array<School>;

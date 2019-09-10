@@ -2,8 +2,11 @@
 // @flow
 
 import React from 'react';
-import { isAndroid, isIOS } from 'react-device-detect';
-import { Link as RouterLink } from 'react-router-dom';
+import { isAndroid, isIOS, isBrowser } from 'react-device-detect';
+import {
+  Link as RouterLink,
+  Redirect as RouterRedirect
+} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
@@ -47,6 +50,8 @@ class Redirect extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, nonce } = this.props;
+
+    if (isBrowser) return <RouterRedirect to={`/canvas/${nonce}`} />;
 
     return (
       <div className={classes.root}>

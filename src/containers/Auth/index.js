@@ -6,6 +6,11 @@ import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Button from '@material-ui/core/Button';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import type { UserState } from '../../reducers/user';
@@ -50,19 +55,23 @@ type Props = {
 
 type State = {
   school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
-  error: boolean
+  error: boolean,
+  lti: boolean
 };
 
 class Auth extends React.Component<Props, State> {
   state = {
     school: null,
-    error: false
+    error: false,
+    lti: false
   };
 
   handleChange = value => {
     if (!value) return;
-    const { lmsTypeId } = value;
-    if (lmsTypeId === 0) {
+    const { lmsTypeId, launchType } = value;
+    if (launchType === 'lti') {
+      this.setState({ lti: true });
+    } else if (lmsTypeId === 0) {
       const { updateSchool } = this.props;
       const { label, value: selectValue, ...school } = value;
       updateSchool({ school });
@@ -113,6 +122,10 @@ class Auth extends React.Component<Props, State> {
     };
   };
 
+  handleClose = () => {
+    this.setState({ lti: false });
+  };
+
   render() {
     const {
       classes,
@@ -121,7 +134,7 @@ class Auth extends React.Component<Props, State> {
       },
       auth: { data }
     } = this.props;
-    const { school, error } = this.state;
+    const { school, error, lti } = this.state;
 
     if (userId !== '') return <Redirect to="/" />;
     if (data.school) return <Redirect to="/login" />;
@@ -142,6 +155,23 @@ class Auth extends React.Component<Props, State> {
             </div>
           </Grid>
         </Grid>
+        <Dialog
+          open={lti}
+          onClose={this.handleClose}
+          aria-labelledby="lti-title"
+          aria-describedby="lti-description"
+        >
+          <DialogContent className={classes.content}>
+            <DialogContentText color="textPrimary">
+              Please open CircleIn from the Canvas mobile app or website.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Got It!
+            </Button>
+          </DialogActions>
+        </Dialog>
       </main>
     );
   }

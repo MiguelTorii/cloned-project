@@ -107,7 +107,8 @@ export const searchSchools = async ({
       lmsTypeId: Number((school.lms_type_id: number) || 0),
       emailRestriction: Boolean((school.email_restriction: boolean) || false),
       emailDomain: school.email_domain || [],
-      scope: String((school.scope: string) || '')
+      scope: String((school.scope: string) || ''),
+      launchType: String((school.launch_type: string) || '')
     }));
   } catch (err) {
     return [];
