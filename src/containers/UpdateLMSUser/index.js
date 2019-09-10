@@ -10,6 +10,7 @@ import {
 } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -49,7 +50,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  checkUserSession: Function
+  checkUserSession: Function,
+  pushTo: Function
 };
 
 type State = {
@@ -172,6 +174,8 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
   handleHideOnboarding = () => {
     store.set('ONBOARDING', 'VIEWED');
     this.setState({ onboarding: false });
+    const { pushTo } = this.props;
+    pushTo('/feed');
   };
 
   render() {
@@ -338,7 +342,8 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      checkUserSession: signInActions.checkUserSession
+      checkUserSession: signInActions.checkUserSession,
+      pushTo: push
     },
     dispatch
   );
