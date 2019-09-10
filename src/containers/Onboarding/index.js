@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import withRoot from '../../withRoot';
 import ErrorBoundary from '../ErrorBoundary';
+import { logEvent } from '../../api/analytics';
 import slide1 from '../../assets/img/slide 1.png';
 import slide2 from '../../assets/img/slide 2.png';
 import slide3 from '../../assets/img/slide 3.png';
@@ -61,6 +62,13 @@ class Onboarding extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {};
 
+  componentDidUpdate = prevProps => {
+    const { open } = this.props;
+    if (open !== prevProps.open && open === true) {
+      logEvent({ event: 'Onboarding- First Onboarding Opened', props: {} });
+    }
+  };
+
   handleNext = () => {
     const { activeStep } = this.state;
     const { onClose } = this.props;
@@ -68,6 +76,9 @@ class Onboarding extends React.PureComponent<Props, State> {
     if (activeStep === 4) {
       onClose();
       return;
+    }
+    if (activeStep === 3) {
+      logEvent({ event: 'Onboarding- Last Onboarding Opened', props: {} });
     }
     this.setState(state => ({
       activeStep: state.activeStep + 1
