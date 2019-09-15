@@ -48,11 +48,47 @@ class Redirect extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {};
 
+  handleAndroidClick = nonce => () => {
+    const scheme = ANDROID_REDIRECT_URI;
+    const data = `?nonce=${nonce}`;
+    const packagename = 'com.circlein.android';
+
+    const urlScheme = `${scheme}://${data}`;
+    const urlStore = `https://play.google.com/store/apps/details?id=${packagename}`;
+    const urlChrome = `intent://${data}#Intent;scheme=${scheme};package=${packagename};end`;
+
+    if (navigator.userAgent.match(/OPR/)) {
+      console.log('OPR');
+      this.iframe(urlScheme, urlStore);
+    } else if (navigator.userAgent.match(/Chrome/)) {
+      console.log('Chrome');
+      document.location = urlChrome;
+    } else if (navigator.userAgent.match(/Firefox/)) {
+      console.log('firefox');
+      document.location = urlScheme;
+    } else {
+      console.log('default');
+      this.iframe(urlScheme, urlStore);
+    }
+  };
+
+  iframe = (scheme, store) => {
+    const iframe = document.createElement('iframe');
+    iframe.style.border = 'none';
+    iframe.style.width = '1px';
+    iframe.style.height = '1px';
+    iframe.onload = () => {
+      document.location = store;
+    };
+    iframe.src = scheme;
+    document.body.appendChild(iframe);
+  };
+
   render() {
     const { classes, nonce } = this.props;
 
     if (isBrowser) return <RouterRedirect to={`/canvas/${nonce}`} />;
-
+    // console.log()
     return (
       <div className={classes.root}>
         <div className={classes.links}>
@@ -68,14 +104,18 @@ class Redirect extends React.PureComponent<Props, State> {
             </Link>
           )}
           {isAndroid && (
-            <Link
-              className={classes.button}
-              href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
+            // <Link
+            //   className={classes.button}
+            //   href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
+            // >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleAndroidClick(nonce)}
             >
-              <Button variant="contained" color="primary">
-                Open Android App
-              </Button>
-            </Link>
+              Open Android App
+            </Button>
+            // </Link>
           )}
           <Typography className={classes.button}>
             <Link component={MyLink} to={`/canvas/${nonce}`}>
