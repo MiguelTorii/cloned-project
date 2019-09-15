@@ -557,7 +557,7 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemIcon>
               <HelpIcon />
             </ListItemIcon>
-            <ListItemText primary="How Do I Earn Points" />
+            <ListItemText primary="CircleIn Details" />
           </ListItem>
         </List>
       </Fragment>

@@ -1,82 +1,29 @@
 // @flow
 import React from 'react';
-import uuidv4 from 'uuid/v4';
-import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import LanguageIcon from '@material-ui/icons/Language';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import EventIcon from '@material-ui/icons/Event';
-import DuoIcon from '@material-ui/icons/Duo';
-import LaunchIcon from '@material-ui/icons/Launch';
-import DialogTitle from '../DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import amazonLogo from '../../assets/svg/amazon_logo.svg';
+import trophy from '../../assets/svg/trophy.svg';
+import ring from '../../assets/svg/ring.svg';
+import appLogo from '../../assets/svg/app-logo.svg';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
-
-const options = [
-  {
-    id: uuidv4(),
-    title: 'Uploading Class Notes',
-    subtitle:
-      '10K points for initial page, 5K for second page and more points for more pages',
-    icon: <NoteAddIcon />,
-    href: '/create/notes'
+const styles = theme => ({
+  circleIn: {
+    color: theme.circleIn.palette.action
   },
-  {
-    id: uuidv4(),
-    title: 'Asking a Question',
-    subtitle:
-      '1K fore replying with an answer, 25K points for being selected as best answer',
-    icon: <ContactSupportIcon />,
-    href: '/create/question'
+  content: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  {
-    id: uuidv4(),
-    title: 'Sharing a Link ',
-    subtitle: '2K points',
-    icon: <LanguageIcon />,
-    href: '/create/sharelink'
-  },
-  {
-    id: uuidv4(),
-    title: 'Creating Flashcards',
-    subtitle: '5K points for first 4 cards, 2.5K points more per cards',
-    icon: <DashboardIcon />,
-    href: '/create/flashcards'
-  },
-  {
-    id: uuidv4(),
-    title: 'Create a Reminder',
-    subtitle: '300 points for creating, 400 points for completing',
-    icon: <EventIcon />,
-    href: '/reminders'
-  },
-  {
-    id: uuidv4(),
-    title: 'Video Meet Up',
-    subtitle:
-      '20K points for initiating a session, 50K additional points after a 10-minute session',
-    icon: <DuoIcon />,
-    href: '/video-call'
-  }
-];
-
-const styles = () => ({
-  root: {
-    width: '100%'
-    // maxWidth: 360
-    // minWidth: 300
+  contentIcon: {
+    marginRight: theme.spacing.unit,
+    marginBottom: theme.spacing.unit * 2,
+    height: 40
   }
 });
 
@@ -94,48 +41,151 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
         open={open}
         onClose={onClose}
         fullWidth
-        maxWidth="xs"
+        maxWidth="md"
         aria-labelledby="how-earn-points-dialog-title"
         aria-describedby="how-earn-points-dialog-description"
       >
-        <DialogTitle id="how-earn-points-dialog-title" onClose={onClose}>
-          {'How do I earn points?'}
-        </DialogTitle>
         <DialogContent>
-          <List className={classes.root}>
-            {options.map(item => (
-              <ListItem key={item.id} dense>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText
-                  primary={item.title}
-                  secondary={item.subtitle}
-                  secondaryTypographyProps={{
-                    color: 'textPrimary'
-                  }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    aria-label="Launch"
-                    component={MyLink}
-                    href={item.href}
-                  >
-                    <LaunchIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={onClose}
-            color="primary"
-            autoFocus
-            variant="contained"
+          <DialogContentText
+            id="video-points-description"
+            className={classes.circleIn}
+            variant="h4"
+            paragraph
           >
-            Ok
-          </Button>
-        </DialogActions>
+            CircleIn
+          </DialogContentText>
+          <DialogContentText
+            id="video-points-description"
+            color="textPrimary"
+            paragraph
+          >
+            Students are constantly prepping for the next exam, assignment, or
+            project. CircleIn is your platform to connect with classmates and
+            give or get help, earning real-life rewards as you go!
+          </DialogContentText>
+          <DialogContentText
+            id="video-points-description"
+            color="textPrimary"
+            variant="h5"
+            paragraph
+          >
+            Your Month
+          </DialogContentText>
+          <div className={classes.content}>
+            <img
+              src={amazonLogo}
+              alt="Amazon"
+              className={classes.contentIcon}
+            />
+            <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              paragraph
+            >
+              Every 1st Tuesday of the month, your points are automatically
+              converted into your top picks. Let us know what your three
+              most-wanted rewards are by heading to the Rewards Store and
+              placing them inside of the Top Three slots!
+            </DialogContentText>
+          </div>
+          <DialogContentText
+            id="video-points-description"
+            color="textPrimary"
+            variant="h5"
+            paragraph
+          >
+            Season Grand Prize
+          </DialogContentText>
+          <div className={classes.content}>
+            <img src={trophy} alt="Trophy" className={classes.contentIcon} />
+            <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              paragraph
+            >
+              Your season stats are important to you, not only because it tracks
+              your performance on CircleIn, but because it leads to something
+              awesome... the Season Grand Prize! To check your current season
+              stats, head to the Home screen. To view all your season stats,
+              head to the Profile.
+            </DialogContentText>
+          </div>
+          {/* <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              variant="h5"
+              paragraph
+            >
+              Study Packets
+            </DialogContentText>
+            <div className={classes.content}>
+              <img
+                src={studyPacketCard}
+                alt="Study Packet Card"
+                className={classes.contentIcon}
+              />
+              <DialogContentText
+                id="video-points-description"
+                color="textPrimary"
+                paragraph
+              >
+                Every week, CircleIn finds and collects the best posts created
+                by your classmates and turns them into a study packet just for
+                you!
+              </DialogContentText>
+            </div> */}
+          <DialogContentText
+            id="video-points-description"
+            color="textPrimary"
+            variant="h5"
+            paragraph
+          >
+            Daily Streaks
+          </DialogContentText>
+          <div className={classes.content}>
+            <img src={ring} alt="Ring" className={classes.contentIcon} />
+            <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              paragraph
+            >
+              Students are studying Sunday through Saturday. That’s why we
+              reward you when you log in every day of the week. The Daily Streak
+              Ring represents an entire week using CircleIn. Every time you
+              complete the ring, we give you a total of 150,000 points to let
+              you know you’re awesome!
+            </DialogContentText>
+          </div>
+          <DialogContentText
+            id="video-points-description"
+            color="textPrimary"
+            variant="h5"
+            paragraph
+          >
+            CircleIn App
+          </DialogContentText>
+          <div className={classes.content}>
+            <img
+              src={appLogo}
+              alt="CircleIn App"
+              className={classes.contentIcon}
+            />
+            <DialogContentText
+              id="video-points-description"
+              color="textPrimary"
+              paragraph
+            >
+              Just like you enjoy our web version, you can download the app by
+              going to your app store, searching CircleIn and then just login.
+              Much success!
+            </DialogContentText>
+          </div>
+          <DialogActions>
+            <Button onClick={onClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </DialogContent>
       </Dialog>
     );
   }

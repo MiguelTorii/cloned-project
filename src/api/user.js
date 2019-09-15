@@ -154,7 +154,7 @@ export const getUserClasses = async ({
     const {
       data: { classes = [], permissions = {} }
     } = result;
-
+    
     const userClasses = classes.map(userClass => ({
       className: String((userClass.class: string) || ''),
       classId: Number((userClass.class_id: number) || 0),

@@ -312,13 +312,13 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
                       value="school"
                       disabled={isLoading}
                       control={<Radio />}
-                      label="My School"
+                      label="My Classes"
                     />
                     <FormControlLabel
                       value="everyone"
                       disabled={isLoading}
                       control={<Radio />}
-                      label="Everyone"
+                      label="My School"
                     />
                   </RadioGroup>
                 </FormControl>

@@ -241,9 +241,9 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             />
             {/* <span className={classes.grow} /> */}
           </div>
-          <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
+          {/* <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
             <Avatar className={classes.helpIcon}>?</Avatar>
-          </ButtonBase>
+          </ButtonBase> */}
           <Typography variant="h5" paragraph align="center">
             {renderText(data.subtitle.text, data.subtitle.style)}
           </Typography>
@@ -415,7 +415,8 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 Students are studying Sunday through Saturday. That’s why we
                 reward you when you log in every day of the week. The Daily
                 Streak Ring represents an entire week using CircleIn. Every time
-                you complete the ring, we give you a total of 150,000 points to let you know you’re awesome!
+                you complete the ring, we give you a total of 150,000 points to
+                let you know you’re awesome!
               </DialogContentText>
             </div>
             <DialogContentText
