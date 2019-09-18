@@ -33,7 +33,7 @@ import StudyCircle from './pages/StudyCircle';
 import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
 import UpdateLMSUser from './containers/UpdateLMSUser';
-import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
+// import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
 import Auth from './pages/Auth';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -73,7 +73,7 @@ ReactDOM.render(
   <Provider store={store}>
     <DailyRewards />
     <UpdateLMSUser />
-    <TwoWeekNotesContest />
+    {/* <TwoWeekNotesContest /> */}
     <ConnectedRouter history={history}>
       <div>
         <FloatingChat />
