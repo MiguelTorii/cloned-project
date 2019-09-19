@@ -56,21 +56,23 @@ type Props = {
 type State = {
   school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
   error: boolean,
-  lti: boolean
+  lti: boolean,
+  lmsTypeId: ?number
 };
 
 class Auth extends React.Component<Props, State> {
   state = {
     school: null,
     error: false,
-    lti: false
+    lti: false,
+    lmsTypeId: null
   };
 
   handleChange = value => {
     if (!value) return;
     const { lmsTypeId, launchType } = value;
     if (launchType === 'lti') {
-      this.setState({ lti: true });
+      this.setState({ lti: true, lmsTypeId });
     } else if (lmsTypeId === 0) {
       const { updateSchool } = this.props;
       const { label, value: selectValue, ...school } = value;
@@ -134,7 +136,7 @@ class Auth extends React.Component<Props, State> {
       },
       auth: { data }
     } = this.props;
-    const { school, error, lti } = this.state;
+    const { school, error, lti, lmsTypeId } = this.state;
 
     if (userId !== '') return <Redirect to="/" />;
     if (data.school) return <Redirect to="/login" />;
@@ -163,7 +165,9 @@ class Auth extends React.Component<Props, State> {
         >
           <DialogContent className={classes.content}>
             <DialogContentText color="textPrimary">
-              Please open CircleIn from the Canvas mobile app or website.
+              Please open CircleIn from the{' '}
+              {`${lmsTypeId === 2 ? 'Blackboard' : 'Canvas'}`} mobile app or
+              website.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
