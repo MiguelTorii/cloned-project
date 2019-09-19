@@ -111,8 +111,8 @@ export const createPhotoNote = async ({
     const response = postResponseToCamelCase(data);
     try {
       logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
-    } catch(err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
     return response;
   } catch (err) {
@@ -231,7 +231,6 @@ export const getNotes = async ({
 
     const { data } = result;
     const post = postToCamelCase(data);
-
     const notes = (data.notes || []).map(item => ({
       fullNoteUrl: String((item.full_note_url: string) || ''),
       note: String((item.note: string) || ''),
@@ -786,7 +785,7 @@ export const updatePostView = async ({
       `${API_ROUTES.FEED}/${postId}/view`,
       {
         user_id: Number(userId),
-        type_id: typeId,
+        type_id: typeId
         // token: 'NA'
       },
       {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import debounce from 'lodash/debounce';
-import { withSnackbar } from 'notistack';
+// import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -20,6 +20,7 @@ import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createShareLink } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -126,22 +127,24 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
       if (points > 0) {
         const { enqueueSnackbar, classes } = this.props;
-        enqueueSnackbar(
-          `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
-          {
-            variant: 'success',
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left'
-            },
-            autoHideDuration: 2000,
-            ContentProps: {
-              classes: {
-                root: classes.stackbar
+        enqueueSnackbar({
+          notification: {
+            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            options: {
+              variant: 'success',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'left'
+              },
+              autoHideDuration: 7000,
+              ContentProps: {
+                classes: {
+                  root: classes.stackbar
+                }
               }
             }
           }
-        );
+        });
       }
 
       pushTo('/feed');
@@ -295,7 +298,8 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      pushTo: push
+      pushTo: push,
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch
   );
@@ -303,4 +307,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withSnackbar(CreateShareLink)));
+)(withStyles(styles)(CreateShareLink));

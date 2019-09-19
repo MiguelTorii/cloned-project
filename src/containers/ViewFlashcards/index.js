@@ -172,6 +172,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
       feedId,
       postId,
       typeId,
+      roleId,
       name,
       userProfileUrl,
       courseDisplayName,
@@ -201,6 +202,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
                 body={summary}
                 title={title}
                 bookmarked={bookmarked}
+                roleId={roleId}
                 onBookmark={this.handleBookmark}
                 onReport={this.handleReport}
                 onDelete={this.handleDelete}

@@ -154,6 +154,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       feedId,
       postId,
       typeId,
+      roleId,
       name,
       userProfileUrl,
       courseDisplayName,
@@ -187,6 +188,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 body={body}
                 title={title}
                 bookmarked={bookmarked}
+                roleId={roleId}
                 onBookmark={this.handleBookmark}
                 onReport={this.handleReport}
                 onDelete={this.handleDelete}

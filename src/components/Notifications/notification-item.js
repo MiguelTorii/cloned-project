@@ -84,7 +84,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               <Typography
                 className={classes.deckCount}
                 variant="caption"
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 8 }}
               >{`${deckSize} Cards`}</Typography>
             </div>
           );

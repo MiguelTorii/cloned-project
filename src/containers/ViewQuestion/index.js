@@ -153,6 +153,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
       feedId,
       postId,
       typeId,
+      roleId,
       name,
       userProfileUrl,
       courseDisplayName,
@@ -183,6 +184,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
                 title={title}
                 isMarkdown
                 bookmarked={bookmarked}
+                roleId={roleId}
                 onBookmark={this.handleBookmark}
                 onReport={this.handleReport}
                 onDelete={this.handleDelete}

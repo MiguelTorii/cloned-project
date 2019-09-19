@@ -29,6 +29,7 @@ import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
 // $FlowIgnore
 import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
+import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
 const styles = theme => ({
   container: {
@@ -175,6 +176,7 @@ type Props = {
   inStudyCircle: boolean,
   isStudyCircleLoading: boolean,
   isCirclein: boolean,
+  roleId: number,
   onStartChat: Function,
   onStartVideo: Function,
   onUpdateProfileImage: Function,
@@ -243,12 +245,13 @@ class Header extends React.PureComponent<Props, State> {
       tab,
       inStudyCircle,
       isCirclein,
+      roleId,
       onStartChat,
       onStartVideo,
       onChange,
       onStudyCircle
     } = this.props;
-
+    
     const { open } = this.state;
 
     const name = `${firstName} ${lastName}`;
@@ -317,7 +320,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={8} sm={6} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                {name}
+                {name} {roleId === 2 && <TutorBadgeIcon />}
               </Typography>
               <Grid container>
                 <Grid item xs={12} md={4} className={classes.status}>

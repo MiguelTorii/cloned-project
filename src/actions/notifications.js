@@ -16,6 +16,7 @@ const enqueueSnackbarRequest = ({ notification }): Action => ({
 const closeSnackbarRequest = ({ key }): Action => ({
   type: notificationsActions.CLOSE_SNACKBAR_REQUEST,
   payload: {
+    dismissAll: !key,
     key
   }
 });

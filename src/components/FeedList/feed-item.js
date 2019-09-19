@@ -33,6 +33,7 @@ import gold from '../../assets/svg/rank_gold.svg';
 import platinum from '../../assets/svg/rank_platinum.svg';
 import diamond from '../../assets/svg/rank_diamond.svg';
 import master from '../../assets/svg/rank_master.svg';
+import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 import type { FeedItem as Item } from '../../types/models';
 
 const ranks = [bronze, silver, gold, platinum, diamond, master];
@@ -291,7 +292,11 @@ class FeedItem extends React.PureComponent<Props, State> {
       >
         <MenuItem onClick={this.handleBookmark}>
           <ListItemIcon color="inherit">
-            {data.bookmarked ? <BookmarkIcon className={classes.bookmarked} /> : <BookmarkBorderIcon />}
+            {data.bookmarked ? (
+              <BookmarkIcon className={classes.bookmarked} />
+            ) : (
+              <BookmarkBorderIcon />
+            )}
           </ListItemIcon>
           <ListItemText inset primary="Bookmark" />
         </MenuItem>
@@ -350,22 +355,31 @@ class FeedItem extends React.PureComponent<Props, State> {
                       src={ranks[data.rank - 1]}
                       alt="Rank"
                       className={classes.rank}
-                    />
-                  </Typography>
-                  <Typography component="p" variant="subtitle1" noWrap>
-                    <strong>•</strong>
-                  </Typography>
-                  <Typography component="p" variant="subtitle1" noWrap>
-                    {fromNow}
+                    />{' '}
+                    {data.roleId === 2 && (
+                      <TutorBadgeIcon style={{ height: 15 }} />
+                    )}
                   </Typography>
                 </div>
               </CardActionArea>
             }
             subheader={
               <CardActionArea disabled>
-                <Typography component="p" noWrap>
-                  {data.courseDisplayName}
-                </Typography>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography component="p" noWrap>
+                    {data.courseDisplayName}
+                  </Typography>
+                  <Typography
+                    component="p"
+                    noWrap
+                    style={{ marginRight: 5, marginLeft: 5 }}
+                  >
+                    <strong>•</strong>
+                  </Typography>
+                  <Typography component="p" noWrap>
+                    {fromNow}
+                  </Typography>
+                </div>
               </CardActionArea>
             }
           />
@@ -404,7 +418,11 @@ class FeedItem extends React.PureComponent<Props, State> {
               <ShareIcon />
             </IconButton>
             <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
-              {data.bookmarked ? <BookmarkIcon className={classes.bookmarked}/> : <BookmarkBorderIcon />}
+              {data.bookmarked ? (
+                <BookmarkIcon className={classes.bookmarked} />
+              ) : (
+                <BookmarkBorderIcon />
+              )}
             </IconButton>
             <div className={classes.stats}>
               <Typography

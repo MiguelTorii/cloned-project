@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -18,6 +17,7 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createPhotoNote } from '../../api/posts';
+import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -101,22 +101,24 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
         if (points > 0) {
           const { enqueueSnackbar, classes } = this.props;
-          enqueueSnackbar(
-            `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
-            {
-              variant: 'success',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'left'
-              },
-              autoHideDuration: 2000,
-              ContentProps: {
-                classes: {
-                  root: classes.stackbar
+          enqueueSnackbar({
+            notification: {
+              message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+              options: {
+                variant: 'success',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                },
+                autoHideDuration: 7000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
                 }
               }
             }
-          );
+          });
         }
 
         pushTo('/feed');
@@ -279,7 +281,8 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      pushTo: push
+      pushTo: push,
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch
   );
@@ -287,4 +290,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withSnackbar(CreateNotes)));
+)(withStyles(styles)(CreateNotes));

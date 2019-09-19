@@ -433,7 +433,8 @@ class Profile extends React.PureComponent<Props, State> {
       school,
       state,
       grade,
-      joined
+      joined,
+      roleId
     } = userProfile;
 
     if (isLoading)
@@ -476,6 +477,7 @@ class Profile extends React.PureComponent<Props, State> {
                   inStudyCircle={false}
                   isStudyCircleLoading={isStudyCircleLoading}
                   isCirclein={userId === '0'}
+                  roleId={roleId}
                   onStartChat={this.handleStartChat}
                   onStartVideo={this.handleStartVideo}
                   onUpdateProfileImage={this.handleUpdateProfileImage}

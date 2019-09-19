@@ -17,6 +17,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Markdown from './Markdown';
+import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -66,6 +67,7 @@ type Props = {
   body: string,
   isMarkdown?: boolean,
   bookmarked: boolean,
+  roleId: number,
   onBookmark: Function,
   onReport: Function,
   onDelete: Function
@@ -117,6 +119,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       body,
       isMarkdown,
       bookmarked,
+      roleId,
       onBookmark
     } = this.props;
     const { moreAnchorEl } = this.state;
@@ -178,7 +181,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
                 className={classes.link}
               >
                 {name}
-              </Link>
+              </Link>{' '}
+              {roleId === 2 && <TutorBadgeIcon />}
             </Typography>
             <Typography component="p" variant="subtitle1" noWrap>
               {classroomName}

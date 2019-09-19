@@ -17,14 +17,14 @@ type Props = {
 class Notifier extends React.Component<Props> {
   componentDidMount = async () => {};
 
-  shouldComponentUpdate = ({ notifications: newSnacks = [] }) => {
+  shouldComponentUpdate = ({ notifications: { items: newSnacks = [] } }) => {
     if (!newSnacks.length) {
       this.displayed = [];
       return false;
     }
 
     const {
-      notifications: currentSnacks,
+      notifications: { items: currentSnacks },
       closeSnackbar,
       removeSnackbar
     } = this.props;
@@ -45,9 +45,13 @@ class Notifier extends React.Component<Props> {
   };
 
   componentDidUpdate = () => {
-    const { notifications = [], enqueueSnackbar, removeSnackbar } = this.props;
+    const {
+      notifications: { items },
+      enqueueSnackbar,
+      removeSnackbar
+    } = this.props;
 
-    notifications.forEach(({ key, message, options = {} }) => {
+    items.forEach(({ key, message, options = {} }) => {
       if (this.displayed.includes(key)) return;
       enqueueSnackbar(message, {
         ...options,

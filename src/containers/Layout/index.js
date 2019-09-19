@@ -23,6 +23,7 @@ import RequestClass from '../RequestClass'
 import Announcements from '../../components/Announcements';
 import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
+import Notifier from '../Notifier';
 
 const styles = theme => ({
   loader: {
@@ -264,6 +265,9 @@ class Layout extends React.PureComponent<Props, State> {
         </ErrorBoundary>
         <ErrorBoundary>
           <RequestClass open={openRequestClass} onClose={this.handleCloseRequestClass} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Notifier />
         </ErrorBoundary>
       </Fragment>
     );
