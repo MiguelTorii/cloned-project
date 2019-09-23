@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
 
@@ -86,7 +86,7 @@ class ForgotPasswordForm extends React.PureComponent<
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <img src={logo} alt="Logo" className={classes.logo} />
+          <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
           <Typography component="h1" variant="h5">
             Recover Password
           </Typography>

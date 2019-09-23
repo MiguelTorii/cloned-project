@@ -452,6 +452,13 @@ export type Notification = {
   state: number
 };
 
+export type CustomNotification = {
+  title: string,
+  body: string,
+  details: string,
+  created: string
+};
+
 export type Notifications = {
   notifications: Array<Notification>,
   unreadCount: number

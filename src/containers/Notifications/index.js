@@ -9,9 +9,11 @@ import type { State as StoreState } from '../../types/state';
 import type { Notification as NotificationState } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import Notifications from '../../components/Notifications';
+import CustomNotification from '../../components/Notifications/CustomNotification';
 import {
   getNotifications,
-  setNotificationsRead
+  setNotificationsRead,
+  getNotification
 } from '../../api/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -36,6 +38,8 @@ type Props = {
 type State = {
   notifications: Array<NotificationState>,
   tab: number,
+  title: string,
+  details: string,
   loading: boolean
 };
 
@@ -48,6 +52,8 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   state = {
     notifications: [],
     tab: 0,
+    title: '',
+    details: '',
     loading: true
   };
 
@@ -123,7 +129,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       try {
         const { notifications, unreadCount } = await getNotifications({
           userId,
-          isStudyCircle: !tab
+          isStudyCircle: tab
         });
         if (onUpdateUnreadCount) onUpdateUnreadCount(unreadCount);
         this.setState({ notifications });
@@ -141,11 +147,43 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     }
   };
 
+  handleClick = async ({
+    entityType,
+    typeId,
+    postId,
+    id
+  }: {
+    entityType: number,
+    typeId: number,
+    postId: number,
+    id: number
+  }) => {
+    const {
+      user: {
+        data: { userId }
+      },
+      onClick,
+      onClose
+    } = this.props;
+    if (entityType !== 8000) {
+      onClick({ postId, typeId, entityType });
+    } else {
+      const { title, details } = await getNotification({ userId, id });
+      onClose();
+      this.setState({ title, details });
+    }
+  };
+
+  handleCloseCustomNotification = () => {
+    this.setState({ title: '', details: '' });
+  };
+
   mounted: boolean;
 
   render() {
-    const { classes, isPage, anchorEl, onClose, onClick } = this.props;
-    const { notifications, tab, loading } = this.state;
+    const { classes, isPage, anchorEl, onClose } = this.props;
+    const { notifications, tab, title, details, loading } = this.state;
+
     return (
       <div className={classes.root}>
         <ErrorBoundary>
@@ -157,7 +195,13 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
             isPage={isPage}
             onNotificationClose={onClose}
             onTabChange={this.handleTabChange}
-            onClick={onClick}
+            onClick={this.handleClick}
+          />
+          <CustomNotification
+            open={title !== ''}
+            title={title}
+            details={details}
+            onClose={this.handleCloseCustomNotification}
           />
         </ErrorBoundary>
       </div>

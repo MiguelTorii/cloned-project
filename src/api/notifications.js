@@ -2,7 +2,7 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import type { Notifications } from '../types/models';
+import type { Notifications, CustomNotification } from '../types/models';
 import { getToken } from './utils';
 
 export const getNotifications = async ({
@@ -78,5 +78,36 @@ export const setNotificationsRead = async ({
     return data;
   } catch (err) {
     return {};
+  }
+};
+
+export const getNotification = async ({
+  userId,
+  id
+}: {
+  userId: string,
+  id: number
+}): Promise<CustomNotification> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(
+      `${API_ROUTES.NOTIFICATIONS}/${userId}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data } = result;
+    return {
+      title: String((data.title: string) || ''),
+      body: String((data.body: string) || ''),
+      details: String((data.details: string) || ''),
+      created: String((data.created: string) || '')
+    };
+  } catch (err) {
+    console.log(err);
+    return { title: '', body: '', details: '', created: '' };
   }
 };

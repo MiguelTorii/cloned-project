@@ -17,11 +17,11 @@ import type { UserState } from '../../reducers/user';
 import type { AuthState } from '../../reducers/auth';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
 import AuthSearchSchool from '../../components/AuthSearchSchool';
 import { searchSchools } from '../../api/sign-in';
 import * as authActions from '../../actions/auth';
 import { REDIRECT_URI } from '../../constants/app';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
 const styles = theme => ({
   main: {
@@ -145,7 +145,7 @@ class Auth extends React.Component<Props, State> {
         <Grid container justify="space-around">
           <Grid item xs={12} lg={6}>
             <div className={classes.grid}>
-              <img src={logo} alt="Logo" className={classes.logo} />
+              <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
               <ErrorBoundary>
                 <AuthSearchSchool
                   school={school}

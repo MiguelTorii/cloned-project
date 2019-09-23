@@ -16,8 +16,8 @@ import * as signInActions from '../../actions/sign-in';
 import * as authActions from '../../actions/auth';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
 import * as signInApi from '../../api/sign-in';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
 const styles = theme => ({
   main: {
@@ -127,7 +127,7 @@ class SignIn extends React.Component<Props, State> {
       <main className={classes.main}>
         <Grid container justify="space-around">
           <Grid item xs={12} lg={6} className={classes.grid}>
-            <img src={logo} alt="Logo" className={classes.logo} />
+            <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
             <ErrorBoundary>
               <SignInForm
                 email={email}

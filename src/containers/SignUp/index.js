@@ -23,7 +23,7 @@ import * as authActions from '../../actions/auth';
 import { sendCode, verifyCode } from '../../api/sign-up';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
-import logo from '../../assets/svg/circlein_logo_beta.svg';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
 const styles = theme => ({
   main: {
@@ -213,7 +213,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       <main className={classes.main}>
         <Grid container justify="space-around">
           <Grid item xs={12} lg={6} className={classes.grid}>
-            <img src={logo} alt="Logo" className={classes.logo} />
+            <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
                 <Steps activeStep={activeStep} hide={Boolean(type === '')} />

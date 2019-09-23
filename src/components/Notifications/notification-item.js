@@ -54,15 +54,10 @@ type State = {};
 class FeedItem extends React.PureComponent<Props, State> {
   handleClick = () => {
     const {
-      notification: { postId, postTypeId, entityType },
+      notification: { postId, postTypeId, entityType, id },
       onClick
     } = this.props;
-
-    if (entityType !== 8000) {
-      onClick({ postId, typeId: postTypeId });
-    } else {
-      // this.props.getCustomNotificationRequest({ id, userId });
-    }
+    onClick({ entityType, postId, typeId: postTypeId, id });
   };
 
   renderStatic = () => {
