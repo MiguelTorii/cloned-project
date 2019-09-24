@@ -104,18 +104,18 @@ class Redirect extends React.PureComponent<Props, State> {
             </Link>
           )}
           {isAndroid && (
-            // <Link
-            //   className={classes.button}
-            //   href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
-            // >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleAndroidClick(nonce)}
+            <Link
+              className={classes.button}
+              href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
             >
-              Open Android App
-            </Button>
-            // </Link>
+              <Button
+                variant="contained"
+                color="primary"
+                // onClick={this.handleAndroidClick(nonce)}
+              >
+                Open Android App
+              </Button>
+            </Link>
           )}
           <Typography className={classes.button}>
             <Link component={MyLink} to={`/canvas/${nonce}`}>
