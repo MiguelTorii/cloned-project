@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
 import { IOS_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
 
-const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} />;
+const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} target="_top" />;
 
 const styles = theme => ({
   root: {
