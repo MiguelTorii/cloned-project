@@ -2,7 +2,7 @@
 // @flow
 
 import React from 'react';
-import { isAndroid, isIOS, isBrowser } from 'react-device-detect';
+import { isAndroid, isIOS, isBrowser, osVersion } from 'react-device-detect';
 import {
   Link as RouterLink,
   Redirect as RouterRedirect
@@ -13,9 +13,15 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 // $FlowIgnore
 import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
-import { IOS_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
+import {
+  IOS_REDIRECT_URI,
+  IOS_13_REDIRECT_URI,
+  ANDROID_REDIRECT_URI
+} from '../../constants/app';
 
-const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} target="_top" />;
+const MyLink = ({ to, ...props }) => (
+  <RouterLink to={to} {...props} target="_top" />
+);
 
 const styles = theme => ({
   root: {
@@ -96,7 +102,11 @@ class Redirect extends React.PureComponent<Props, State> {
           {isIOS && (
             <Link
               className={classes.button}
-              href={`${IOS_REDIRECT_URI}?nonce=${nonce}`}
+              href={`${
+                osVersion.startsWith('13')
+                  ? IOS_13_REDIRECT_URI
+                  : IOS_REDIRECT_URI
+              }?nonce=${nonce}`}
             >
               <Button variant="contained" color="primary">
                 Open iOS App
