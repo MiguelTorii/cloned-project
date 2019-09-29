@@ -55,4 +55,4 @@ export const ANDROID_REDIRECT_URI =
     ? 'circleinapp://app.circleinapp.com/oauth'
     : 'circleinapp://dev-app2.circleinapp.com/oauth';
 
-export const RELEASE = 'V2.0.29';
+export const RELEASE = 'V2.0.30';
