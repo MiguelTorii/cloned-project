@@ -245,13 +245,13 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
                   value={grade}
                   fullWidth
                   name="grade"
-                  label="Grade"
+                  label="Year"
                   onChange={this.handleChange('grade')}
                   variant="outlined"
                   margin="normal"
                   disabled={loading}
                   validators={['required']}
-                  errorMessages={['Grade is required']}
+                  errorMessages={['Year is required']}
                 >
                   <MenuItem value="" />
                   {(grades[segment] || []).map(item => (
