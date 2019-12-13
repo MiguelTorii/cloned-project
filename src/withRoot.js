@@ -15,6 +15,7 @@ const circleInTheme = {
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
   normalButtonText1: '#090909',
+  textOffwhite: '#f9f9f9',
   appBar: '#37474f', // validate
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
@@ -23,7 +24,8 @@ const circleInTheme = {
   // v2
   success: '#60b515',
   snackbar: '#114255',
-  disabled: '#6d7884'
+  disabled: '#6d7884',
+  profilebgColor: '#bdbdbd'
 };
 const theme = createMuiTheme({
   circleIn: {
@@ -33,12 +35,14 @@ const theme = createMuiTheme({
       modalBackground: circleInTheme.modalBackground,
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
+      textOffwhite: circleInTheme.textOffwhite,
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
       appBar: circleInTheme.appBar,
       success: circleInTheme.success,
       snackbar: circleInTheme.snackbar,
-      disabled: circleInTheme.disabled
+      disabled: circleInTheme.disabled,
+      profilebgColor: circleInTheme.profilebgColor
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

@@ -1,6 +1,7 @@
 // @flow
 
-import React from 'react';
+// $FlowFixMe
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,14 +9,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import MobileStepper from '@material-ui/core/MobileStepper';
+import Lottie from 'react-lottie'
+import OnboardSelectRewards from 'components/OnboardSelectRewards'
+import circles1 from 'assets/svg/background-circle-1.svg'
+import circles2 from 'assets/svg/background-circle-2.svg'
+import circles3 from 'assets/svg/background-circle-3.svg'
+import animation1 from '../../assets/lottie/slide_1_animation.json'
+import animation2 from '../../assets/lottie/slide_2_animation.json'
+import animation3 from '../../assets/lottie/slide_3_animation.json'
+import animation4 from '../../assets/lottie/slide_4_animation.json'
 import withRoot from '../../withRoot';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEvent } from '../../api/analytics';
-import slide1 from '../../assets/img/slide 1.png';
-import slide2 from '../../assets/img/slide 2.png';
-import slide3 from '../../assets/img/slide 3.png';
-import slide4 from '../../assets/img/slide 4.png';
-import slide5 from '../../assets/img/slide 5.png';
 
 const styles = theme => ({
   content: {
@@ -42,6 +47,12 @@ const styles = theme => ({
     height: 200,
     maxHeight: 200,
     marginBottom: theme.spacing.unit * 2
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 200,
+    justifyContent: 'space-evenly',
   }
 });
 
@@ -51,128 +62,153 @@ type Props = {
   onClose: Function
 };
 
-type State = {
-  activeStep: number
-};
+const Onboarding = ({ classes, open, onClose }: Props) => {
+  const [activeStep, setActiveStep] = useState(null)
+  const [animations] = useState([animation1, animation2, animation3, animation4])
+  const [currentAnimation, setCurrentAnimation] = useState(animation1)
+  const [hovered, setHovered] = useState(false)
 
-class Onboarding extends React.PureComponent<Props, State> {
-  state = {
-    activeStep: 0
-  };
-
-  componentDidMount = () => {};
-
-  componentDidUpdate = prevProps => {
-    const { open } = this.props;
-    if (open !== prevProps.open && open === true) {
+  useEffect(() => {
+    setActiveStep(0)
+    if (open) {
       logEvent({ event: 'Onboarding- First Onboarding Opened', props: {} });
     }
-  };
+  }, [open])
 
-  handleNext = () => {
-    const { activeStep } = this.state;
-    const { onClose } = this.props;
+  useLayoutEffect(() => {
+    if (activeStep !== null) setCurrentAnimation(animations[activeStep])
+  }, [activeStep, animations])
 
-    if (activeStep === 4) {
+  const handleNext = () => {
+    setHovered(false)
+    if (activeStep === 3) {
       onClose();
       return;
     }
-    if (activeStep === 3) {
+    if (activeStep === 2) {
       logEvent({ event: 'Onboarding- Last Onboarding Opened', props: {} });
     }
-    this.setState(state => ({
-      activeStep: state.activeStep + 1
-    }));
+
+    setActiveStep(activeStep + 1)
   };
 
-  renderTitle = step => {
+  const handleBack = () => {
+    if (activeStep !== null) setActiveStep(activeStep - 1)
+    setHovered(false)
+  }
+
+  const onClick = () => {
+    if (activeStep === 2) setHovered(true)
+  }
+
+  const renderTitle = step => {
     switch (step) {
-      case 1:
-        return 'STUDY WITH CLASSMATES';
-      case 2:
-        return 'EARN REWARDS';
-      case 3:
-        return "DON'T WORRY";
-      case 4:
-        return 'SO, WHAT HAPPENS NEXT?';
-      default:
-        return 'BEING A STUDENT IS DIFFICULT...';
+    case 1:
+      return 'BUILD STRONG STUDY HABITS';
+    case 2:
+      return 'EARN REWARDS AS YOU BUILD BETTER HABITS';
+    case 3:
+      return "SEE WHAT YOU CAN DO ON CIRCLEIN";
+    default:
+      return 'BEING A STUDENT IS DIFFICULT...';
     }
   };
 
-  renderBody = step => {
+  const renderBody = step => {
     switch (step) {
-      case 1:
-        return 'Before CircleIn, finding homework & study help was hard. We make it easy to share notes with classmates, get your questions answered, and send helpful tips.';
-      case 2:
-        return 'We made studying with classmates better, and we also made it so that you earn points towards rewards as you do.';
-      case 3:
-        return "Now, you don't have to walk up to students to get their phone numbers. We match you with your classmates on CircleIn so you can work better together.";
-      case 4:
-        return 'We are going to put you into Study mode. Tap on the example posts so you can see how students use CircleIn with their classmates to get help and study.';
-      default:
-        return 'Balancing classworks, mid terms, and finals all by yourself can feel lonely and overwhelming.';
+    case 1:
+      return 'of reviewing your notes and the notes your classmates share to get ahead of exams.'
+    case 2:
+      return 'Don\'t worry. You can change these later.';
+    case 3:
+      return "Check out how students are sharing notes and much more by viewing example posts in the Study Feed.";
+    default:
+      return 'Classwork + Exams = OVERWHELMING';
     }
   };
 
-  renderImg = step => {
-    const { classes } = this.props;
-    switch (step) {
-      case 1:
-        return <img src={slide2} alt="Slide 2" className={classes.img} />;
-      case 2:
-        return <img src={slide3} alt="Slide 3" className={classes.img} />;
-      case 3:
-        return <img src={slide4} alt="Slide 4" className={classes.img} />;
-      case 4:
-        return <img src={slide5} alt="Slide 5" className={classes.img} />;
-      default:
-        return <img src={slide1} alt="Slide 1" className={classes.img} />;
-    }
-  };
+  const renderSubTitle = () => {
+    if (activeStep === 2) return 'Pick your top three rewards below to let us know which prices you want to win for being a superb notetaker'
+    return ''
+  }
 
-  render() {
-    const { classes, open } = this.props;
-    const { activeStep } = this.state;
+  const backgroundStyle = {
+    position: 'absolute',
+    objectFit: 'scale-down',
+    height: 180,
+    top: 80
+  }
 
-    return (
-      <ErrorBoundary>
-        <Dialog
-          fullWidth
-          open={open}
-          disableBackdropClick
-          disableEscapeKeyDown
-          aria-labelledby="onboarding-title"
-          aria-describedby="onboarding-description"
-        >
-          <DialogTitle id="onboarding-title" className={classes.title}>
-            {this.renderTitle(activeStep)}
-          </DialogTitle>
-          <DialogContent className={classes.content}>
-            {this.renderImg(activeStep)}
-            <DialogContentText color="textPrimary" align="center">
-              {this.renderBody(activeStep)}
-            </DialogContentText>
+  const renderBackground = () => {
+    if (activeStep === 0) return <img style={backgroundStyle} src={circles1} alt='circles' />
+    if (activeStep === 1) return <img style={backgroundStyle} src={circles2} alt='circles' />
+    if (activeStep === 3) return <img style={backgroundStyle} src={circles3} alt='circles' />
+    return null
+  }
+  
+  return (
+    <ErrorBoundary>
+      <Dialog
+        fullWidth
+        open={open}
+        disableBackdropClick
+        disableEscapeKeyDown
+        aria-labelledby="onboarding-title"
+        aria-describedby="onboarding-description"
+      >
+        <DialogTitle id="onboarding-title" className={classes.title}>
+          {renderTitle(activeStep)}
+        </DialogTitle>
+        <DialogContent className={classes.content}>
+          {renderBackground()}
+          <DialogContentText color="textPrimary" align="center">
+            {renderSubTitle()}
+          </DialogContentText>
+          <div onClick={onClick} role='presentation'>
+            {!hovered && <Lottie 
+              options={{
+                loop: true,
+                autoplay: true, 
+                animationData: currentAnimation,
+              }}
+              width={200}
+              height={200}
+              className={classes.img}
+            />}
+            {activeStep === 2 && hovered && <OnboardSelectRewards/>} 
+          </div>
+          <DialogContentText color="textPrimary" align="center">
+            {renderBody(activeStep)}
+          </DialogContentText>
+          <div className={classes.buttons}>
+            {activeStep !== null && activeStep > 0 && activeStep < 3 && <Button
+              color="primary"
+              variant="outlined"
+              className={classes.button}
+              onClick={handleBack}
+            >
+                Back
+            </Button>}
             <Button
               color="primary"
               variant="contained"
               className={classes.button}
-              onClick={this.handleNext}
+              onClick={handleNext}
             >
-              {activeStep === 4 ? 'Get Started' : 'Next'}
+              {activeStep === 3 ? 'Get Started' : 'Next'}
             </Button>
-            <MobileStepper
-              variant="dots"
-              steps={5}
-              position="static"
-              activeStep={activeStep}
-              className={classes.stepper}
-            />
-          </DialogContent>
-        </Dialog>
-      </ErrorBoundary>
-    );
-  }
+          </div>
+          <MobileStepper
+            variant="dots"
+            steps={4}
+            position="static"
+            activeStep={activeStep}
+            className={classes.stepper}
+          />
+        </DialogContent>
+      </Dialog>
+    </ErrorBoundary>
+  );
 }
 
 export default withRoot(withStyles(styles)(Onboarding));

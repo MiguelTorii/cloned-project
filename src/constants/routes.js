@@ -10,6 +10,11 @@ export const API_URL_V1_1 =
     ? 'https://api.circleinapp.com/v1.1'
     : 'https://dev-api.circleinapp.com/v1.1';
 
+export const API_URL_V1_2 =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'https://api.circleinapp.com/v1.2'
+    : 'https://dev-api.circleinapp.com/v1.2';
+
 export const VIDEO_SHARE_URL =
   // eslint-disable-next-line no-nested-ternary
   process.env.REACT_APP_STAGE === 'production'
@@ -73,5 +78,8 @@ export const API_ROUTES = {
   STREAKS: `${API_URL}/streaks`,
   QUESTS: `${API_URL}/quests`,
   INVITE: `${API_URL}/invite`,
-  CURRENT_SEASON: `${API_URL}/season/current`
+  CURRENT_SEASON: `${API_URL}/season/current`,
+  LEADERBOARD_V2: `${API_URL_V1_2}/leaderboard`,
+  LEADERBOARD_V2_BOARD_ONE: `${API_URL_V1_2}/leaderboard/leaders?board_id=1`,
+  LEADERBOARD_V2_BOARD_TWO: `${API_URL_V1_2}/leaderboard/leaders?board_id=2`
 };

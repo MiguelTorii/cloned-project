@@ -16,7 +16,11 @@
     "react/prop-types": 0,
     "no-underscore-dangle": 0,
     "import/imports-first": ["error", "absolute-first"],
-    "import/newline-after-import": "error"
+    "indent": ["error", 2, {
+      "ignoredNodes": ["TemplateLiteral"]
+    }],
+    "import/newline-after-import": "error",
+    "import/no-unresolved": 0
   },
   "globals": {
     "window": true,

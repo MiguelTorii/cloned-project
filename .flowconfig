@@ -15,6 +15,12 @@
 
 [options]
 
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.json
+
+module.system.node.resolve_dirname=src
+
 include_warnings=true
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable

@@ -39,6 +39,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
+import './currentRoute.css'
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
@@ -162,7 +163,7 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
-  onOpenLeaderboard: Function
+  // onOpenLeaderboard: Function
   // onOpenAnnouncements: Function
 };
 
@@ -268,7 +269,7 @@ class MainLayout extends React.Component<Props, State> {
       children,
       unreadCount,
       pathname,
-      onOpenLeaderboard
+      // onOpenLeaderboard
       // onOpenAnnouncements
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -517,11 +518,20 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem> */}
-          <ListItem button onClick={onOpenLeaderboard}>
+          <ListItem button component={MyLink} link="/leaderboard">
             <ListItemIcon>
-              <LeaderboardIcon />
+              <LeaderboardIcon 
+                className={classNames(
+                  pathname === '/leaderboard' && 'currentRouteClass'
+                )}
+              />
             </ListItemIcon>
-            <ListItemText primary="Leaderboard" />
+            <ListItemText 
+              primary="Leaderboard"
+              primaryTypographyProps={{
+                color: pathname === '/leaderboard' ? 'primary' : 'textPrimary'
+              }}
+            />
           </ListItem>
           <ListItem button component={MyLink} link="/store">
             <ListItemIcon>

@@ -7,6 +7,7 @@ import user from './user';
 import chat from './chat';
 import feed from './feed';
 import auth from './auth';
+import leaderboard from './leaderboard';
 import webNotifications from './web-notifications';
 import notifications from './notifications';
 
@@ -16,7 +17,8 @@ const reducers = {
   feed,
   auth,
   webNotifications,
-  notifications
+  notifications,
+  leaderboard
 };
 
 export type Reducers = typeof reducers;

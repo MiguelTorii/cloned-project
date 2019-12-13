@@ -134,21 +134,21 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
         const item = { field: profileItem.field, updated_value: '' };
 
         switch (profileItem.field) {
-          case 'first_name':
-            item.updated_value = firstName;
-            break;
-          case 'last_name':
-            item.updated_value = lastName;
-            break;
-          case 'grade':
-            item.updated_value = grade.toString();
-            break;
-          case 'email':
-            item.updated_value = email;
-            break;
-          default:
-            item.updated_value = '';
-            break;
+        case 'first_name':
+          item.updated_value = firstName;
+          break;
+        case 'last_name':
+          item.updated_value = lastName;
+          break;
+        case 'grade':
+          item.updated_value = grade.toString();
+          break;
+        case 'email':
+          item.updated_value = email;
+          break;
+        default:
+          item.updated_value = '';
+          break;
         }
         fields.push(item);
       }
@@ -202,85 +202,85 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       <Fragment>
         {updateProfile.map(({ field }) => {
           switch (field) {
-            case 'first_name':
-              return (
-                <TextValidator
-                  key={field}
-                  label="First Name"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={this.handleChange('firstName')}
-                  name="firstName"
-                  autoComplete="firstName"
-                  autoFocus
-                  fullWidth
-                  value={firstName}
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['first name is required']}
-                />
-              );
-            case 'last_name':
-              return (
-                <TextValidator
-                  key={field}
-                  label="Last Name"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={this.handleChange('lastName')}
-                  name="lastName"
-                  autoComplete="lastName"
-                  autoFocus
-                  fullWidth
-                  value={lastName}
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['last name is required']}
-                />
-              );
-            case 'grade':
-              return (
-                <SelectValidator
-                  key={field}
-                  value={grade}
-                  fullWidth
-                  name="grade"
-                  label="Year"
-                  onChange={this.handleChange('grade')}
-                  variant="outlined"
-                  margin="normal"
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['Year is required']}
-                >
-                  <MenuItem value="" />
-                  {(grades[segment] || []).map(item => (
-                    <MenuItem key={item.value} value={item.value}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </SelectValidator>
-              );
-            case 'email':
-              return (
-                <TextValidator
-                  key={field}
-                  label="Email"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={this.handleChange('email')}
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  fullWidth
-                  value={email}
-                  disabled={loading}
-                  validators={['required', 'isEmail']}
-                  errorMessages={['email is required', 'email is not valid']}
-                />
-              );
-            default:
-              return null;
+          case 'first_name':
+            return (
+              <TextValidator
+                key={field}
+                label="First Name"
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleChange('firstName')}
+                name="firstName"
+                autoComplete="firstName"
+                autoFocus
+                fullWidth
+                value={firstName}
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['first name is required']}
+              />
+            );
+          case 'last_name':
+            return (
+              <TextValidator
+                key={field}
+                label="Last Name"
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleChange('lastName')}
+                name="lastName"
+                autoComplete="lastName"
+                autoFocus
+                fullWidth
+                value={lastName}
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['last name is required']}
+              />
+            );
+          case 'grade':
+            return (
+              <SelectValidator
+                key={field}
+                value={grade}
+                fullWidth
+                name="grade"
+                label="Year"
+                onChange={this.handleChange('grade')}
+                variant="outlined"
+                margin="normal"
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['Year is required']}
+              >
+                <MenuItem value="" />
+                {(grades[segment] || []).map(item => (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </SelectValidator>
+            );
+          case 'email':
+            return (
+              <TextValidator
+                key={field}
+                label="Email"
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleChange('email')}
+                name="email"
+                autoComplete="email"
+                autoFocus
+                fullWidth
+                value={email}
+                disabled={loading}
+                validators={['required', 'isEmail']}
+                errorMessages={['email is required', 'email is not valid']}
+              />
+            );
+          default:
+            return null;
           }
         })}
       </Fragment>
