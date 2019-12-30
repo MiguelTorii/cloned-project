@@ -100,8 +100,10 @@ class Redirect extends React.PureComponent<Props, State> {
         <div className={classes.links}>
           <Logo style={{ height: 80, maxWidth: 200 }} />
           {isIOS && (
-            <Link
+            <a
               className={classes.button}
+              style={{ textDecoration: 'none'}}
+              target="_blank"
               href={`${
                 osVersion.startsWith('13')
                   ? IOS_13_REDIRECT_URI
@@ -111,7 +113,7 @@ class Redirect extends React.PureComponent<Props, State> {
               <Button variant="contained" color="primary">
                 Open iOS App
               </Button>
-            </Link>
+            </a>
           )}
           {isAndroid && (
             <Link
