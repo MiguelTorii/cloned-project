@@ -98,7 +98,7 @@ class MyStudyCircle extends React.PureComponent<Props> {
           </Typography>
           <Button
             component={MyLink}
-            href="/feed"
+            href="/"
             variant="outlined"
             color="primary"
           >

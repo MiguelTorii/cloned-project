@@ -6,7 +6,6 @@ import type {
   UserClasses,
   AvailableClasses,
   BlockedUsers,
-  Leaderboard,
   StudyCircle,
   UserStats,
   DailyRewards,
@@ -390,42 +389,6 @@ export const unblockUser = async ({
   } catch (err) {
     console.log(err);
     return {};
-  }
-};
-
-export const getLeaderboard = async ({
-  sectionId,
-  index,
-  limit
-}: {
-  sectionId: number,
-  index: number,
-  limit: number
-}): Promise<Leaderboard> => {
-  try {
-    const token = await getToken();
-
-    let url = `${API_ROUTES.LEADERBOARD}?index=${index}&limit=${limit}`;
-
-    if (sectionId > -1) {
-      url = `${url}&section_id=${sectionId}`;
-    }
-
-    const result = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const { data = {} } = result;
-    const { leaderboard = [] } = data;
-
-    return leaderboard.map(item => ({
-      userId: String((item.user_id: string) || ''),
-      points: Number((item.points: number) || 0),
-      username: String((item.username: string) || '')
-    }));
-  } catch (err) {
-    return [];
   }
 };
 

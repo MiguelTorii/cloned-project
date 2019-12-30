@@ -28,7 +28,6 @@ import {
   getInvite
 } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
-import Leaderboard from '../Leaderboard';
 import ClassesManager from '../ClassesManager';
 import RequestClass from '../RequestClass';
 import YourMonthCard from '../../components/YourMonthCard';
@@ -99,7 +98,6 @@ type State = {
   isQuestsCardLoading: boolean,
   isCurrentSeasonCardLoading: boolean,
   isInviteCardLoading: boolean,
-  leaderboard: boolean,
   openRequestClass: boolean,
   manageClasses: boolean
 };
@@ -160,7 +158,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
     isQuestsCardLoading: true,
     isCurrentSeasonCardLoading: true,
     isInviteCardLoading: true,
-    leaderboard: false,
     manageClasses: false,
     openRequestClass: false
   };
@@ -239,14 +236,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
     });
   };
 
-  handleOpenLeaderboard = () => {
-    this.setState({ leaderboard: true });
-  };
-
-  handleCloseLeaderboard = () => {
-    this.setState({ leaderboard: false });
-  };
-
   handleOpenManageClasses = () => {
     this.setState({ manageClasses: true });
   };
@@ -290,7 +279,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
       isQuestsCardLoading,
       isCurrentSeasonCardLoading,
       isInviteCardLoading,
-      leaderboard,
       manageClasses,
       openRequestClass
     } = this.state;
@@ -327,7 +315,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 data={homeCard}
                 rank={rank}
                 isLoading={isHomeCardLoading}
-                onOpenLeaderboard={this.handleOpenLeaderboard}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -363,12 +350,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
               />
             </Grid>
           </Grid>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Leaderboard
-            open={leaderboard}
-            onClose={this.handleCloseLeaderboard}
-          />
         </ErrorBoundary>
         <ErrorBoundary>
           <ClassesManager

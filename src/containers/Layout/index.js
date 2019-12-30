@@ -17,7 +17,6 @@ import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications';
 import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
-import Leaderboard from '../Leaderboard';
 import WebNotifications from '../WebNotifications'
 import RequestClass from '../RequestClass'
 import Announcements from '../../components/Announcements';
@@ -51,7 +50,6 @@ type State = {
   manageClasses: boolean,
   manageBlockedUsers: boolean,
   anchorEl: Node,
-  leaderboard: boolean,
   announcements: boolean,
   unreadCount: number,
   openRequestClass: boolean
@@ -66,7 +64,6 @@ class Layout extends React.PureComponent<Props, State> {
     manageClasses: false,
     manageBlockedUsers: false,
     anchorEl: null,
-    leaderboard: false,
     announcements: false,
     unreadCount: 0,
     openRequestClass: false
@@ -100,14 +97,6 @@ class Layout extends React.PureComponent<Props, State> {
 
   handleCloseManageBlockedUsers = () => {
     this.setState({ manageBlockedUsers: false });
-  };
-
-  handleOpenLeaderboard = () => {
-    this.setState({ leaderboard: true });
-  };
-
-  handleCloseLeaderboard = () => {
-    this.setState({ leaderboard: false });
   };
 
   handleOpenStartVideoMeetUp = () => {}
@@ -150,20 +139,20 @@ class Layout extends React.PureComponent<Props, State> {
   }) => {
     const { push } = this.props;
     switch (typeId) {
-      case 3:
-        push(`/flashcards/${postId}`);
-        break;
-      case 4:
-        push(`/notes/${postId}`);
-        break;
-      case 5:
-        push(`/sharelink/${postId}`);
-        break;
-      case 6:
-        push(`/question/${postId}`);
-        break;
-      default:
-        break;
+    case 3:
+      push(`/flashcards/${postId}`);
+      break;
+    case 4:
+      push(`/notes/${postId}`);
+      break;
+    case 5:
+      push(`/sharelink/${postId}`);
+      break;
+    case 6:
+      push(`/question/${postId}`);
+      break;
+    default:
+      break;
     }
   };
 
@@ -196,7 +185,6 @@ class Layout extends React.PureComponent<Props, State> {
       manageClasses,
       manageBlockedUsers,
       anchorEl,
-      leaderboard,
       announcements,
       unreadCount,
       openRequestClass
@@ -245,12 +233,6 @@ class Layout extends React.PureComponent<Props, State> {
           <BlockedUsersManager
             open={manageBlockedUsers}
             onClose={this.handleCloseManageBlockedUsers}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Leaderboard
-            open={leaderboard}
-            onClose={this.handleCloseLeaderboard}
           />
         </ErrorBoundary>
         <ErrorBoundary>

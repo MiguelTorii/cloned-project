@@ -12,10 +12,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
+import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -67,16 +67,16 @@ class BottomNav extends React.PureComponent<Props, State> {
           className={classes.bottomNav}
         >
           <BottomNavigationAction
-            label="Home"
-            icon={<HomeIcon />}
+            label="Study"
+            icon={<ViewListIcon />}
             component={MyLink}
             href="/"
           />
           <BottomNavigationAction
-            label="Study"
-            icon={<ViewListIcon />}
+            label="Leaderboard"
+            icon={<LeaderboardIcon />}
             component={MyLink}
-            href="/feed"
+            href="/leaderboard"
           />
           <BottomNavigationAction
             label="New"

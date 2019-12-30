@@ -175,7 +175,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     store.set('ONBOARDING', 'VIEWED');
     this.setState({ onboarding: false });
     const { pushTo } = this.props;
-    pushTo('/feed');
+    pushTo('/');
   };
 
   render() {

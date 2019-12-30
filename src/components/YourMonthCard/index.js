@@ -181,7 +181,6 @@ type Props = {
   data: HomeCard,
   rank: number,
   isLoading: boolean,
-  onOpenLeaderboard: Function
 };
 
 type State = {
@@ -202,7 +201,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, data, rank, isLoading, onOpenLeaderboard } = this.props;
+    const { classes, data, rank, isLoading } = this.props;
     const { open } = this.state;
 
     // eslint-disable-next-line no-script-url
@@ -286,16 +285,6 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 className={classes.link}
               >
                 Reward Store
-              </Link>
-            </Typography>
-            <Typography variant="h6" align="center">
-              <Link
-                href={dudUrl}
-                onClick={onOpenLeaderboard}
-                color="inherit"
-                className={classes.link}
-              >
-                Leaderboard
               </Link>
             </Typography>
           </div>

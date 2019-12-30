@@ -23,7 +23,6 @@ import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
@@ -484,29 +483,16 @@ class MainLayout extends React.Component<Props, State> {
           <Divider light />
           <ListItem button component={MyLink} link="/">
             <ListItemIcon>
-              <HomeIcon
-                className={classNames(pathname === '/' && classes.currentRoute)}
-              />
-            </ListItemIcon>
-            <ListItemText
-              primary="Home"
-              primaryTypographyProps={{
-                color: pathname === '/' ? 'primary' : 'textPrimary'
-              }}
-            />
-          </ListItem>
-          <ListItem button component={MyLink} link="/feed">
-            <ListItemIcon>
               <ViewListIcon
                 className={classNames(
-                  pathname === '/feed' && classes.currentRoute
+                  ['/', '/feed'].includes(pathname) && classes.currentRoute
                 )}
               />
             </ListItemIcon>
             <ListItemText
               primary="Study"
               primaryTypographyProps={{
-                color: pathname === '/feed' ? 'primary' : 'textPrimary'
+                color: ['/', '/feed'].includes(pathname) ? 'primary' : 'textPrimary'
               }}
             />
           </ListItem>

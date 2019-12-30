@@ -354,14 +354,6 @@ export type FeedItem = {
 
 export type Feed = Array<FeedItem>;
 
-export type LeaderboardItem = {
-  userId: string,
-  points: number,
-  username: string
-};
-
-export type Leaderboard = Array<LeaderboardItem>;
-
 export type ToDo = {
   due: number,
   dueDate: number,

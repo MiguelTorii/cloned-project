@@ -10,7 +10,6 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
-import Index from './pages/Home';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
 import LeaderBoard from './pages/LeaderBoard';
@@ -79,9 +78,9 @@ ReactDOM.render(
       <div>
         <FloatingChat />
         <Switch>
-          <Route exact path="/" component={withTracker(Index)} />
-          <Route exact path="/store" component={withTracker(Store)} />
+          <Route exact path="/" component={withTracker(Feed)} />
           <Route exact path="/feed" component={withTracker(Feed)} />
+          <Route exact path="/store" component={withTracker(Store)} />
           <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
           <Route exact path="/chat" component={withTracker(Chat)} />
           <Route
