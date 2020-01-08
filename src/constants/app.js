@@ -47,8 +47,8 @@ export const IOS_REDIRECT_URI =
 
 export const IOS_13_REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
-    ? 'https://circlein.app.link/login'
-    : 'https://circlein.app.link/login';
+    ? 'https://redirect.circleinapp.com/login'
+    : 'https://redirect-dev.circleinapp.com/login';
 
 export const ANDROID_REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
