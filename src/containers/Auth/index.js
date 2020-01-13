@@ -166,7 +166,7 @@ class Auth extends React.Component<Props, State> {
           <DialogContent className={classes.content}>
             <DialogContentText color="textPrimary">
               Please open CircleIn from the{' '}
-              {`${lmsTypeId === 2 ? 'Blackboard' : 'Canvas'}`} mobile app or
+              {`${lmsTypeId === 2 ? 'Blackboard' : `${lmsTypeId === 1 ? 'Canvas' : 'Brightspace' }` }`} mobile app or
               website.
             </DialogContentText>
           </DialogContent>
