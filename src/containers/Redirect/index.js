@@ -38,7 +38,7 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   button: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 
@@ -103,6 +103,7 @@ class Redirect extends React.PureComponent<Props, State> {
             <a
               className={classes.button}
               style={{ textDecoration: 'none'}}
+              rel="noopener noreferrer"
               target="_blank"
               href={`${
                 osVersion.startsWith('13')

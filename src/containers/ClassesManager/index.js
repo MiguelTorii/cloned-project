@@ -40,7 +40,7 @@ import * as feedActions from '../../actions/feed';
 
 const styles = theme => ({
   root: {
-    // padding: theme.spacing.unit * 2
+    // padding: theme.spacing(2)
   },
   list: {
     width: '100%',
@@ -50,7 +50,7 @@ const styles = theme => ({
     maxHeight: 200
   },
   link: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     color: theme.palette.primary.main
   }
 });
@@ -164,25 +164,25 @@ class ClassesManager extends React.PureComponent<Props, State> {
     this.setState(newState);
 
     if(event.target.checked){
-    try {
-      const {
-        user: {
-          data: { userId }
-        },
-        fetchFeed
-      } = this.props;
-      // this.setState({ loading: true });
-      await joinClass({ classId, sectionId, userId });
-      const { classes } = await getUserClasses({ userId });
-      this.setState({ userClasses: classes, loading: false });
-      fetchFeed()
+      try {
+        const {
+          user: {
+            data: { userId }
+          },
+          fetchFeed
+        } = this.props;
+        // this.setState({ loading: true });
+        await joinClass({ classId, sectionId, userId });
+        const { classes } = await getUserClasses({ userId });
+        this.setState({ userClasses: classes, loading: false });
+        fetchFeed()
       // this.setState({ loading: false });
-    } catch(err) {
+      } catch(err) {
       // this.setState({ loading: false });
-    } finally {
-      logEvent({ event: 'Join Class- Joined Class', props: { 'Section ID': sectionId } });
+      } finally {
+        logEvent({ event: 'Join Class- Joined Class', props: { 'Section ID': sectionId } });
+      }
     }
-  }
   };
 
   handleRemoveClass = ({ classId }: { classId: number }) => async () => {
@@ -505,7 +505,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     } = this.state;
     
     // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
+    const dudUrl = '';
     if (!open) return null;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
@@ -546,13 +546,13 @@ class ClassesManager extends React.PureComponent<Props, State> {
           </DialogContent>
           <DialogContent>
             <Typography>Can’t find your classes? <Link
-                href={dudUrl}
-                onClick={onOpenRequestClass}
-                color="inherit"
-                className={classes.link}
-              >
+              href={dudUrl}
+              onClick={onOpenRequestClass}
+              color="inherit"
+              className={classes.link}
+            >
                 Click here
-              </Link></Typography>
+            </Link></Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose} color="secondary" variant="contained">

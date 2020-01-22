@@ -30,7 +30,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 
@@ -205,7 +205,6 @@ class Layout extends React.PureComponent<Props, State> {
             handleSignOut={signOut}
             onManageClasses={this.handleOpenManageClasses}
             onManageBlockedUsers={this.handleOpenBlockedUsers}
-            onOpenLeaderboard={this.handleOpenLeaderboard}
             onOpenAnnouncements={this.handleOpenAnnouncements}
           >
             {this.renderChildren()}

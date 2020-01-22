@@ -48,7 +48,7 @@ const styles = theme => ({
   },
   typingText: {
     // color: 'black'
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   progress: {
     display: 'flex',

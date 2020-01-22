@@ -8,7 +8,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   dropZone: {
     position: 'relative',

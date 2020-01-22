@@ -25,7 +25,7 @@ import DropImage from './DropImage';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     width: 200,
     height: 200,
     display: 'flex',
@@ -58,14 +58,14 @@ const styles = theme => ({
   inputActions: {
     display: 'flex',
     justifyContent: 'flex-end',
-    paddingRight: theme.spacing.unit * 2
+    paddingRight: theme.spacing(2)
   },
   extendedIcon: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing()
   },
   divider: {
-    marginBottom: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(2)
   }
 });
 

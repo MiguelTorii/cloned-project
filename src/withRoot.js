@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'notistack';
 
 const circleInTheme = {
+  brand: '#03A9F4',
   action: '#49afd9',
   primaryBackground: '#1b2a32',
   modalBackground: '#22343c',
@@ -21,6 +22,7 @@ const circleInTheme = {
   tabColor: '#ffffff', // validate
   dividerColor: '#ffffff', // validate
   inputBorderColor: '#959595',
+  buttonBackground: '#598498',
   // v2
   success: '#60b515',
   snackbar: '#114255',
@@ -30,6 +32,8 @@ const circleInTheme = {
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      brand: circleInTheme.brand, 
+      buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,
       primaryBackground: circleInTheme.primaryBackground,
       modalBackground: circleInTheme.modalBackground,
@@ -63,7 +67,7 @@ const theme = createMuiTheme({
       default: circleInTheme.primaryBackground
     },
     text: {
-      primary: circleInTheme.primaryText1
+      primary: circleInTheme.primaryText1,
     }
   },
   typography: {
@@ -77,6 +81,21 @@ const theme = createMuiTheme({
     drawer: 900
   },
   overrides: {
+    MuiTypography: {
+      caption: {
+        paddingLeft: 8
+      }
+    },
+    MuiListItemIcon: {
+      root: {
+        minWidth: 30
+      }
+    },
+    MuiListItemText: {
+      inset: {
+        paddingLeft: 0
+      }
+    },
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: circleInTheme.appBar

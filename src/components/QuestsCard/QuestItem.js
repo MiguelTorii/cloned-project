@@ -15,10 +15,10 @@ const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 const styles = theme => ({
   root: {
     // ...theme.mixins.gutters(),
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing(),
+    paddingRight: theme.spacing(),
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     height: 113,
     width: 113,
     minWidth: 113,
@@ -52,10 +52,10 @@ const styles = theme => ({
     flex: 1
   },
   removeButton: {
-    padding: theme.spacing.unit / 2
+    padding: theme.spacing(1/2)
   },
   body: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     fontSize: 9,
     transition: 'font-size 0.5s'
   },
@@ -66,11 +66,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
     // transition: 'padding 0.5s'
   },
   imageWrapperSmall: {
-    // padding: theme.spacing.unit / 2
+    // padding: theme.spacing(1/2)
   },
   image: {
     height: 40,
@@ -85,7 +85,7 @@ const styles = theme => ({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'

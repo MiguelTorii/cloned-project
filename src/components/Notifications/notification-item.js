@@ -86,6 +86,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         case 4:
           return (
             <Paper
+              elevation={2}
               className={classes.image}
               style={{
                 background: `url(${noteUrl})`,
@@ -96,6 +97,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         case 5:
           return (
             <Paper
+              elevation={2}
               className={classes.image}
               style={{
                 background: `url(${linkImage})`,
@@ -106,6 +108,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         case 6:
           return (
             <Paper
+              elevation={2}
               className={classes.image}
               style={{
                 background: `url(${questionImage})`,

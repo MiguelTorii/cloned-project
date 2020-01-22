@@ -31,7 +31,7 @@ const styles = theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   center: {
     display: 'flex',
@@ -55,13 +55,13 @@ const styles = theme => ({
     width: 80
   },
   marginTop: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   input: {
     display: 'none'
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

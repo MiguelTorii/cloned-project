@@ -17,11 +17,11 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   reply: {
-    marginTop: theme.spacing.unit,
-    marginLeft: theme.spacing.unit * 4
+    marginTop: theme.spacing(),
+    marginLeft: theme.spacing(4)
   },
   body: {
     display: 'flex',
@@ -34,7 +34,7 @@ const styles = theme => ({
     }
   },
   textField: {
-    marginLeft: theme.spacing.unit * 2
+    marginLeft: theme.spacing(2)
   },
   actions: {
     display: 'flex',

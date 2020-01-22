@@ -42,7 +42,7 @@ const styles = theme => ({
     overflow: 'hidden'
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
     backgroundColor: theme.palette.primary.main
   },
   chipFocused: {
@@ -54,7 +54,7 @@ const styles = theme => ({
     )
   },
   noOptionsMessage: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
+    padding: `${theme.spacing()}px ${theme.spacing(2)}px`
   },
   placeholder: {
     position: 'absolute',
@@ -65,7 +65,7 @@ const styles = theme => ({
   paper: {
     position: 'absolute',
     zIndex: 100,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     left: 0,
     right: 0
   },

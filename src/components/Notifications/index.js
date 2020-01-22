@@ -16,7 +16,7 @@ import type { Notification as NotificationState } from '../../types/models';
 const styles = theme => ({
   root: {
     // width: 376,
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -31,13 +31,13 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   progress: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     position: 'absolute',
     top: 0,
     right: 0
@@ -84,8 +84,9 @@ class Notifications extends React.PureComponent<Props, State> {
           textColor="primary"
           onChange={onTabChange}
         >
-          <Tab label="All" />
-          <Tab label="Study Circle" />
+          <Tab label="My Posts" />
+          <Tab label="Recommended" />
+          <Tab label="Announcements" />
         </Tabs>
         <List className={classes.root}>
           {notifications.map(item => (

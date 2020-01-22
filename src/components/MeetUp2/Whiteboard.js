@@ -61,7 +61,7 @@ const styles = theme => ({
     borderColor: theme.palette.primary.main,
     borderRadius: 8,
     borderBottomLeftRadius: 0,
-    padding: theme.spacing.unit / 2
+    padding: theme.spacing(1/2)
   }
 });
 

@@ -11,7 +11,7 @@ const styles = theme => ({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   hide: {
     display: 'none'

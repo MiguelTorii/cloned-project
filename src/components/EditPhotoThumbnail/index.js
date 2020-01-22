@@ -28,7 +28,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const styles = theme => ({
   root: {
-    // margin: theme.spacing.unit * 2,
+    // margin: theme.spacing(2),
     backgroundColor: 'white',
     color: 'black',
     position: 'relative',
@@ -52,7 +52,7 @@ const styles = theme => ({
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   uploaded: {
     position: 'absolute',
@@ -62,7 +62,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   retry: {
     position: 'absolute',
@@ -70,7 +70,7 @@ const styles = theme => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   button: {
     padding: 4,
@@ -91,14 +91,14 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   actions: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   green: {
     color: green[500]

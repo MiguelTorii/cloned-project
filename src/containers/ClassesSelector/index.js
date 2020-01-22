@@ -18,7 +18,7 @@ import RequestClass from '../RequestClass';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   newClass: {
     color: theme.circleIn.palette.action

@@ -15,7 +15,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   item: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     display: 'flex'
   },
   avatar: {
@@ -26,7 +26,7 @@ const styles = theme => ({
     borderColor: theme.palette.primary.main,
     backgroundColor: 'transparent',
     color: theme.palette.primary.main,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing()
   },
   card: {
     width: 180,
@@ -45,7 +45,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

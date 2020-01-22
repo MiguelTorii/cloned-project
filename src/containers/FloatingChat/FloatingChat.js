@@ -39,7 +39,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   info: {
     backgroundColor: 'red'

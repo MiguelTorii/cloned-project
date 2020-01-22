@@ -9,8 +9,8 @@ import type { CurrentSeasonCard } from '../../types/models';
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     height: '100%'
   },
   stats: {
@@ -24,7 +24,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     backgroundColor: theme.circleIn.palette.primaryBackground,
     width: 70,
     height: 75,
@@ -37,8 +37,8 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    padding: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 2,
+    padding: theme.spacing(),
+    marginTop: theme.spacing(2),
     backgroundColor: theme.circleIn.palette.primaryBackground,
     width: '100%',
     borderRadius: 8,
@@ -51,14 +51,14 @@ const styles = theme => ({
     height: 76,
     minWidth: 76,
     minHeight: 76,
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   texts: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   title: {
     fontWeight: 'bold'
@@ -67,7 +67,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

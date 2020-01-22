@@ -27,7 +27,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 100,
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   avatar: {
     display: 'flex',
@@ -47,7 +47,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginLeft: theme.spacing.unit * 2
+    marginLeft: theme.spacing(2)
   },
   markdown: {
     color: theme.palette.text.primary,

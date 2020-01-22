@@ -7,7 +7,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -22,7 +22,7 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     width: 120,
     height: 120
   }

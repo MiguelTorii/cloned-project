@@ -15,7 +15,7 @@ import FlashcardItem from '../Flashcard';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   appBar: {
     position: 'relative'

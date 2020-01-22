@@ -19,7 +19,7 @@ const styles = theme => ({
     maxHeight: 'inherit',
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   actions: {
     display: 'flex',
@@ -30,12 +30,12 @@ const styles = theme => ({
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     [theme.breakpoints.up('sm')]: {
-      marginTop: theme.spacing.unit * 2
+      marginTop: theme.spacing(2)
     },
-    marginBottom: theme.spacing.unit * 8,
+    marginBottom: theme.spacing(8),
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',

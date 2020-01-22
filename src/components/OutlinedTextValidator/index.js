@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 

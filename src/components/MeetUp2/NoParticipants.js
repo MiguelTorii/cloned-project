@@ -12,13 +12,13 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1400,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     borderRadius: 8,
     backgroundColor: 'rgba(0,0,0,0.5)'
   },
   text: {
     color: 'white',
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   }
 });
 

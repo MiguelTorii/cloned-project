@@ -40,7 +40,7 @@ const ranks = [bronze, silver, gold, platinum, diamond, master];
 
 const styles = theme => ({
   card: {
-    // margin: theme.spacing.unit * 2
+    // margin: theme.spacing(2)
     // borderWidth: 100,
     // borderColor: 'black',
     // borderStyle: 'solid'
@@ -56,27 +56,27 @@ const styles = theme => ({
     // paddingTop: '56.25%' // 16:9
   },
   header: {
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   title: {
     display: 'flex',
     alignItems: 'center',
     '& > :first-child': {
-      marginRight: theme.spacing.unit / 2
+      marginRight: theme.spacing(1/2)
     },
     '& > :last-child': {
-      marginLeft: theme.spacing.unit / 2
+      marginLeft: theme.spacing(1/2)
     }
   },
   content: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     display: 'flex',
     '& > :nth-child(2)': {
       flex: 1
     }
   },
   postTitle: {
-    paddingLeft: theme.spacing.unit
+    paddingLeft: theme.spacing()
   },
   actions: {
     display: 'flex',
@@ -89,7 +89,7 @@ const styles = theme => ({
     alignItems: 'center'
   },
   stat: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   rank: {
     width: 15
@@ -134,7 +134,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   chip: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   label: {
     fontSize: 10
@@ -227,42 +227,42 @@ class FeedItem extends React.PureComponent<Props, State> {
   renderImage = () => {
     const { classes, data } = this.props;
     switch (data.typeId) {
-      case 3:
-        return (
-          <div className={classes.flashCardsImage}>
-            <img
-              src={flashcardPost}
-              className={classes.type}
-              alt="Flascarhds"
-            />
-            <div className={classes.deckCount}>
-              {`${data.deck.length} Cards`}
-            </div>
-          </div>
-        );
-      case 4:
-        return (
-          <div
-            className={classes.notePost}
-            style={{
-              background: `url(${data.noteUrl})`,
-              backgroundSize: 'cover',
-              borderRadius: 10
-            }}
-          />
-        );
-      case 5:
-        return <img src={linkPost} className={classes.imagePost} alt="Link" />;
-      case 6:
-        return (
+    case 3:
+      return (
+        <div className={classes.flashCardsImage}>
           <img
-            src={questionPost}
-            className={classes.imagePost}
-            alt="Question"
+            src={flashcardPost}
+            className={classes.type}
+            alt="Flascarhds"
           />
-        );
-      default:
-        return null;
+          <div className={classes.deckCount}>
+            {`${data.deck.length} Cards`}
+          </div>
+        </div>
+      );
+    case 4:
+      return (
+        <div
+          className={classes.notePost}
+          style={{
+            background: `url(${data.noteUrl})`,
+            backgroundSize: 'cover',
+            borderRadius: 10
+          }}
+        />
+      );
+    case 5:
+      return <img src={linkPost} className={classes.imagePost} alt="Link" />;
+    case 6:
+      return (
+        <img
+          src={questionPost}
+          className={classes.imagePost}
+          alt="Question"
+        />
+      );
+    default:
+      return null;
     }
   };
 
@@ -350,12 +350,12 @@ class FeedItem extends React.PureComponent<Props, State> {
               <CardActionArea onClick={this.handleUserClick}>
                 <div className={classes.title}>
                   <Typography component="p" variant="h6" noWrap>
-                    {data.name}{' '}
-                    <img
+                    {data.name}
+                    {/* <img
                       src={ranks[data.rank - 1]}
                       alt="Rank"
                       className={classes.rank}
-                    />{' '}
+                    /> */}
                     {data.roleId === 2 && (
                       <TutorBadgeIcon style={{ height: 15 }} />
                     )}
@@ -365,7 +365,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             }
             subheader={
               <CardActionArea disabled>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
                   <Typography component="p" noWrap>
                     {data.courseDisplayName}
                   </Typography>
@@ -413,7 +413,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               ))}
             </CardContent>
           </CardActionArea>
-          <CardActions className={classes.actions} disableActionSpacing>
+          <CardActions className={classes.actions} disableactionspacing='true'>
             <IconButton aria-label="Share" onClick={this.handleShareClick}>
               <ShareIcon />
             </IconButton>

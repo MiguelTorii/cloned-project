@@ -16,13 +16,13 @@ import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycirc
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
   buttonText: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   }
 });
 

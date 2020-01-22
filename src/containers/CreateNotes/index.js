@@ -26,7 +26,7 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText1
   },
   leftCharacters: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   }
 });
 

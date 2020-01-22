@@ -19,7 +19,7 @@ const styles = theme => ({
   },
   actions: {
     width: '100%',
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'

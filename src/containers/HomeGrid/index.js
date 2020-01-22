@@ -48,7 +48,7 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText1
   },
   grid: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     [theme.breakpoints.up('sm')]: {
       maxWidth: '90%'
     }
@@ -58,20 +58,20 @@ const styles = theme => ({
   },
   paper: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     borderRadius: 4,
     backgroundColor: theme.circleIn.palette.action,
     width: '100%'
   },
   link: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     color: theme.palette.primary.main
   },
   banner: {
     color: 'black',
-    marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit
+    marginRight: theme.spacing(),
+    marginLeft: theme.spacing()
   },
   clear: {
     position: 'absolute',
@@ -286,7 +286,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <ErrorBoundary>
-          <Grid container spacing={8} className={classes.grid}>
+          <Grid container spacing={1} className={classes.grid}>
             <Grid
               item
               xs={12}

@@ -33,11 +33,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   reply: {
-    marginLeft: theme.spacing.unit * 4,
-    paddingRight: theme.spacing.unit * 4
+    marginLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4)
   },
   info: {
     width: '100%',
@@ -45,7 +45,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginLeft: theme.spacing.unit * 2
+    marginLeft: theme.spacing(2)
   },
   header: {
     display: 'flex',
@@ -53,11 +53,11 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   created: {
-    paddingLeft: theme.spacing.unit
+    paddingLeft: theme.spacing()
   },
   markdown: {
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     color: theme.palette.text.primary,
     fontFamily: theme.typography.fontFamily,
     '& img': {
@@ -84,7 +84,7 @@ const styles = theme => ({
     flex: 1
   },
   thanks: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   replyTo: {
     display: 'flex',

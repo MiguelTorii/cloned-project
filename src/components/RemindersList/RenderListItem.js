@@ -36,7 +36,7 @@ const styles = theme => ({
     color: grey[500]
   },
   margin: {
-    padding: `0 ${theme.spacing.unit}px`
+    padding: `0 ${theme.spacing()}px`
   }
 });
 
@@ -65,14 +65,14 @@ class RemindersListItem extends React.PureComponent<Props, State> {
   renderClass = label => {
     const { classes } = this.props;
     switch (label) {
-      case 1:
-        return classes.green;
-      case 2:
-        return classes.blue;
-      case 3:
-        return classes.grey;
-      default:
-        return classes.red;
+    case 1:
+      return classes.green;
+    case 2:
+      return classes.blue;
+    case 3:
+      return classes.grey;
+    default:
+      return classes.red;
     }
   };
 

@@ -38,12 +38,12 @@ const styles = theme => ({
     margin: 4
   },
   picker: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   label: {
     height: 20,
     width: 20,
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   disabled: {
     opacity: 0.3
@@ -58,10 +58,10 @@ const styles = theme => ({
     backgroundColor: grey[500]
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

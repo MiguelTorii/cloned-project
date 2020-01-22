@@ -37,17 +37,17 @@ const styles = theme => ({
     maxHeight: 'inherit',
     // display: 'flex',
     // flexDirection: ''
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     flex: 1,
     position: 'relative'
   },
   helpButton: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
     width: 20,
     height: 20,
     borderRadius: '100%',
@@ -69,14 +69,14 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   gridInfo: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   avatar: {
     // borderRadius: '50%',
@@ -106,23 +106,23 @@ const styles = theme => ({
       height: 170
     },
     fontSize: theme.typography.h1.fontSize,
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   img: {
     textAlign: 'center'
   },
   button: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   status: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   statusLabel: {
-    marginLeft: theme.spacing.unit / 2,
-    marginRight: theme.spacing.unit * 2
+    marginLeft: theme.spacing(1/2),
+    marginRight: theme.spacing(2)
   },
   typoData: {
     display: 'flex',
@@ -133,7 +133,7 @@ const styles = theme => ({
     height: 20
   },
   upload: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   input: {
     display: 'none'
@@ -142,7 +142,7 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.appBar
   },
   buttonText: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   content: {
     display: 'flex',
@@ -150,8 +150,8 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   contentIcon: {
-    marginRight: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 2,
+    marginRight: theme.spacing(),
+    marginBottom: theme.spacing(2),
     height: 40
   }
 });

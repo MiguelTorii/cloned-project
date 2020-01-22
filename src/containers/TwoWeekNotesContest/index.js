@@ -26,7 +26,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   }
 });
 

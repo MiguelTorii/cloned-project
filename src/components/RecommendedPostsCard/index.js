@@ -13,8 +13,8 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     height: '100%'
   },
   cards: {
@@ -22,7 +22,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginTop: theme.spacing.unit * 4
+    marginTop: theme.spacing(4)
   },
   card: {
     display: 'flex',
@@ -34,8 +34,8 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit,
+    margin: theme.spacing(),
+    padding: theme.spacing(),
     width: 86,
     height: 86,
     backgroundColor: theme.circleIn.palette.appBar
@@ -44,7 +44,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   icon: {
     height: 40,

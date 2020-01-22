@@ -22,7 +22,7 @@ const styles = theme => ({
     zIndex: 900
   },
   fab: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 
@@ -89,15 +89,15 @@ class Controls extends React.PureComponent<Props, State> {
         >
           {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
         </Fab>
-          <Fab
-            color={!isSharingData ? 'primary' : 'default'}
-            aria-label="share-data"
-            className={classes.fab}
-            disabled={isSharing || !isConnected}
-            onClick={shareData}
-          >
-            <CastForEducationIcon />
-          </Fab>
+        <Fab
+          color={!isSharingData ? 'primary' : 'default'}
+          aria-label="share-data"
+          className={classes.fab}
+          disabled={isSharing || !isConnected}
+          onClick={shareData}
+        >
+          <CastForEducationIcon />
+        </Fab>
         <Fab
           color="primary"
           aria-label="call-end"

@@ -11,8 +11,8 @@
 // const styles = theme => ({
 //   paper: {
 //     ...theme.mixins.gutters(),
-//     paddingTop: theme.spacing.unit * 2,
-//     paddingBottom: theme.spacing.unit * 2,
+//     paddingTop: theme.spacing(2),
+//     paddingBottom: theme.spacing(2),
 //     textAlign: 'left',
 //     height: '100%'
 //   },
@@ -21,11 +21,11 @@
 //   },
 //   img: {
 //     width: 65,
-//     margin: theme.spacing.unit * 2
+//     margin: theme.spacing(2)
 //   },
 //   referral: {
 //     width: '100%',
-//     marginTop: theme.spacing.unit * 2,
+//     marginTop: theme.spacing(2),
 //     display: 'flex',
 //     alignItems: 'center',
 //     justifyContent: 'center'
@@ -38,13 +38,13 @@
 //   link: {
 //     flex: 1,
 //     height: 40,
-//     padding: theme.spacing.unit,
+//     padding: theme.spacing(),
 //     borderRadius: 10,
-//     marginRight: theme.spacing.unit * 2,
+//     marginRight: theme.spacing(2),
 //     backgroundColor: theme.circleIn.palette.appBar
 //   },
 //   icon: {
-//     marginRight: theme.spacing.unit
+//     marginRight: theme.spacing()
 //   },
 //   button: {
 //     height: 40,

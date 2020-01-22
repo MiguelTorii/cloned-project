@@ -12,7 +12,6 @@ import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -22,7 +21,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import AddIcon from '@material-ui/icons/Add';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
@@ -34,14 +33,16 @@ import StoreIcon from '@material-ui/icons/Store';
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import HelpIcon from '@material-ui/icons/Help';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
+// $FlowIgnore
+import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 import './currentRoute.css'
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
-const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
+const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
 
 const drawerWidth = 240;
 
@@ -57,7 +58,7 @@ const styles = theme => ({
     })
   },
   appBarShift: {
-    marginLeft: drawerWidth,
+    // marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
     },
@@ -68,10 +69,8 @@ const styles = theme => ({
     })
   },
   menuButton: {
-    marginRight: 20,
     [theme.breakpoints.up('sm')]: {
       marginLeft: 12,
-      marginRight: 36
     }
   },
   grow: {
@@ -94,7 +93,8 @@ const styles = theme => ({
     }
   },
   logo: {
-    maxWidth: 160
+    maxWidth: 160,
+    paddingLeft: theme.spacing(2)
   },
   hide: {
     [theme.breakpoints.up('sm')]: {
@@ -122,9 +122,9 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: 'hidden',
-    width: theme.spacing.unit * 7 + 1,
+    width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9 + 1
+      width: theme.spacing(9) + 1
     }
   },
   toolbar: {
@@ -136,17 +136,58 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit,
+    width: '75%',
+    padding: theme.spacing(),
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column',
     [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing.unit * 8
+      marginBottom: theme.spacing(8)
     }
   },
   currentRoute: {
     color: theme.palette.primary.main
-  }
+  },
+  newItem: {
+    width: 'auto',
+    justifyContent: 'center',
+    margin: theme.spacing(2),
+    borderRadius: theme.spacing(6),
+    background: theme.circleIn.palette.brand,
+    '&:hover': {
+      background: theme.circleIn.palette.primaryText2
+    },
+    marginTop: theme.spacing(2)
+  },
+  newRoot: {
+    flex: 'inherit'
+  },
+  newLabel: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  newIcon: {
+    color: 'black',
+    fontWeight: 'bold'
+  },
+  currentPath: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    background: theme.circleIn.palette.buttonBackground,
+    margin: theme.spacing(2),
+    '&:hover': {
+      background: theme.circleIn.palette.primaryText2
+    },
+  },
+  otherPath: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    margin: theme.spacing(2),
+    '&:hover': {
+      background: theme.circleIn.palette.primaryText2
+    },
+  },
 });
 
 type Props = {
@@ -463,37 +504,37 @@ class MainLayout extends React.Component<Props, State> {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <Divider />
         <List>
-          <ListItem button onClick={this.handleCreatePostMenuOpen}>
+          <ListItem button className={classes.newItem} onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
-              <AddBoxIcon
-                className={classNames(
-                  pathname.includes('/create') && classes.currentRoute
-                )}
+              <AddIcon
+                className={classes.newIcon}
               />
             </ListItemIcon>
             <ListItemText
-              primary="Create"
+              primary="New"
+              classes={{
+                root: classes.newRoot,
+                primary: classes.newLabel
+              }}
               primaryTypographyProps={{
                 color: pathname.includes('/create') ? 'primary' : 'textPrimary'
               }}
             />
           </ListItem>
-          <Divider light />
-          <ListItem button component={MyLink} link="/">
+          <ListItem 
+            button 
+            component={MyLink} 
+            link="/"
+            className={classNames(
+              ['/', '/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
             <ListItemIcon>
-              <ViewListIcon
-                className={classNames(
-                  ['/', '/feed'].includes(pathname) && classes.currentRoute
-                )}
-              />
+              <ViewListIcon />
             </ListItemIcon>
             <ListItemText
               primary="Study"
-              primaryTypographyProps={{
-                color: ['/', '/feed'].includes(pathname) ? 'primary' : 'textPrimary'
-              }}
             />
           </ListItem>
           {/* <ListItem button component={MyLink} link="/reminders">
@@ -504,34 +545,34 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem> */}
-          <ListItem button component={MyLink} link="/leaderboard">
+          <ListItem 
+            button 
+            component={MyLink} 
+            link="/leaderboard"
+            className={classNames(
+              ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
             <ListItemIcon>
-              <LeaderboardIcon 
-                className={classNames(
-                  pathname === '/leaderboard' && 'currentRouteClass'
-                )}
-              />
+              <LeaderboardIcon />
             </ListItemIcon>
             <ListItemText 
               primary="Leaderboard"
-              primaryTypographyProps={{
-                color: pathname === '/leaderboard' ? 'primary' : 'textPrimary'
-              }}
             />
           </ListItem>
-          <ListItem button component={MyLink} link="/store">
+          <ListItem 
+            button 
+            component={MyLink} 
+            link="/store"
+            className={classNames(
+              ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
             <ListItemIcon>
-              <StoreIcon
-                className={classNames(
-                  pathname === '/store' && classes.currentRoute
-                )}
-              />
+              <StoreIcon />
             </ListItemIcon>
             <ListItemText
               primary="Rewards Store"
-              primaryTypographyProps={{
-                color: pathname === '/store' ? 'primary' : 'textPrimary'
-              }}
             />
           </ListItem>
           {/* <ListItem button component={MyLink} link="/video-call">
@@ -549,11 +590,25 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Announcements" />
           </ListItem> */}
-          <ListItem button onClick={this.handleOpenHowEarnPoints}>
+          <ListItem 
+            button 
+            onClick={this.handleManageClasses}
+            className={classes.otherPath}
+          >
             <ListItemIcon>
-              <HelpIcon />
+              <GradCapIcon className={classNames("whiteSvg")} />
             </ListItemIcon>
-            <ListItemText primary="CircleIn Details" />
+            <ListItemText primary="Add/Remove Classes" />
+          </ListItem>
+          <ListItem 
+            button 
+            onClick={this.handleOpenHowEarnPoints}
+            className={classes.otherPath}
+          >
+            <ListItemIcon>
+              <HelpOutline />
+            </ListItemIcon>
+            <ListItemText primary="Help" />
           </ListItem>
         </List>
       </Fragment>
@@ -569,16 +624,18 @@ class MainLayout extends React.Component<Props, State> {
             })}
           >
             <Toolbar disableGutters={!open}>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(classes.menuButton, {
-                  [classes.hide]: open
-                })}
-              >
-                <MenuIcon />
-              </IconButton>
+              <Hidden smUp implementation="css">
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.handleDrawerOpen}
+                  className={classNames(classes.menuButton, {
+                    [classes.hide]: open
+                  })}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Hidden>
               <Link href="/" component={MyLink} link="/">
                 <img src={logo} alt="Logo" className={classes.logo} />
               </Link>
@@ -619,6 +676,7 @@ class MainLayout extends React.Component<Props, State> {
           {renderCreatePostMenu}
           <Hidden smUp implementation="css">
             <Drawer
+              id='mobileMenu'
               variant="temporary"
               open={open && width === 'xs'}
               onClose={this.handleDrawerClose}
@@ -631,16 +689,16 @@ class MainLayout extends React.Component<Props, State> {
           </Hidden>
           <Hidden xsDown implementation="css">
             <Drawer
+              id='desktopMenu'
               variant="permanent"
-              className={classNames(classes.drawer, {
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open
-              })}
+              className={classNames(
+                classes.drawer,
+                classes.drawerOpen,
+              )}
               classes={{
-                paper: classNames({
-                  [classes.drawerOpen]: open,
-                  [classes.drawerClose]: !open
-                })
+                paper: classNames(
+                  classes.drawerOpen
+                )
               }}
               open={open}
             >

@@ -22,25 +22,25 @@ import { states } from '../../constants/clients';
 const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   hide: {
     display: 'none'
   },
   formControl: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   title: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   actions: {
     display: 'flex'
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

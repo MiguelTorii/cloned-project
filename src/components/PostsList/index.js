@@ -10,12 +10,12 @@ const styles = theme => ({
   container: {
     maxHeight: 'inherit',
     display: 'flex',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',

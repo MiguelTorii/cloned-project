@@ -23,14 +23,14 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   circleContainer: {
     position: 'relative',
     width: 240,
     height: 240,
-    padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 4,
+    padding: theme.spacing(),
+    margin: theme.spacing(4),
     border: 'solid 4px',
     borderColor: theme.palette.primary.main,
     borderRadius: '50%'

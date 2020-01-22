@@ -7,16 +7,16 @@ import { getToken } from './utils';
 
 export const getNotifications = async ({
   userId,
-  isStudyCircle
+  tab
 }: {
   userId: string,
-  isStudyCircle?: boolean
+  tab?: number
 }): Promise<Notifications> => {
   try {
     const token = await getToken();
     let type = '';
-    if (isStudyCircle) type = 'study_circle=true';
-    else type = 'device_id=1';
+    if (tab === 1) type = 'recommended=true';
+    if (tab === 2) type = 'announcement=true';
     const result = await axios.get(
       `${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`,
       {

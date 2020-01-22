@@ -17,7 +17,7 @@ const index = searchClient.initIndex(ALGOLIA_INDEX);
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 

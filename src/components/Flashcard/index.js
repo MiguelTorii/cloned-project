@@ -12,9 +12,9 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing(),
+    marginRight: theme.spacing(),
+    marginBottom: theme.spacing(),
     width: 200,
     height: 200,
     display: 'flex',

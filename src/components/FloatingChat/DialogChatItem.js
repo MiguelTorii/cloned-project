@@ -24,7 +24,7 @@ import DialogTitle from '../DialogTitle';
 
 const styles = theme => ({
   paper: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     width: 250,
     height: 40,
     display: 'flex',
@@ -49,14 +49,14 @@ const styles = theme => ({
   headerTitle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingLeft: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
     height: 40
   },
   title: {
     maxWidth: 120
   },
   iconButton: {
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   content: {
     overflow: 'none',

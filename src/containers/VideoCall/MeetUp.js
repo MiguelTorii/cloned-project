@@ -48,7 +48,7 @@ const styles = theme => ({
     justifyContent: 'center',
     bottom: 0,
     left: 0,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     zIndex: 9999
   },
   pointsButton: {
@@ -71,7 +71,7 @@ const styles = theme => ({
   },
   canvasWrapper: {
     backgroundColor: 'white',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     minHeight: 100
   },
   canvasImg: {

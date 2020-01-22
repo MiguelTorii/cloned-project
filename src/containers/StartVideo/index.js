@@ -29,8 +29,8 @@ const styles = theme => ({
   },
   start: {
     maxWidth: 200,
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   }
 });
 

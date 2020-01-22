@@ -23,7 +23,7 @@ const styles = theme => ({
     width: '80%'
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

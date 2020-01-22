@@ -24,7 +24,7 @@ import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
   root: {
-    // padding: theme.spacing.unit * 2
+    // padding: theme.spacing(2)
   },
   list: {
     width: '100%',

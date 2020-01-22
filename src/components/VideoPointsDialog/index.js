@@ -25,18 +25,18 @@ import OutlinedTextValidator from '../OutlinedTextValidator';
 const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
   formControl: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   picker: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

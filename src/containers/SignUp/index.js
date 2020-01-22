@@ -48,7 +48,7 @@ const styles = theme => ({
     flexDirection: 'column'
   },
   logo: {
-    marginTop: theme.spacing.unit * 8
+    marginTop: theme.spacing(8)
   }
 });
 

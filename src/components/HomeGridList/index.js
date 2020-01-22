@@ -11,7 +11,7 @@
 //   root: {
 //     maxHeight: 'inherit',
 //     display: 'flex',
-//     padding: theme.spacing.unit
+//     padding: theme.spacing()
 //   }
 // });
 
@@ -73,7 +73,7 @@
 //         <Grid
 //           container
 //           className={classes.root}
-//           spacing={16}
+//           spacing={2}
 //           alignItems="stretch"
 //         >
 //           {this.renderCards()}

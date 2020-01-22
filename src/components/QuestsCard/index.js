@@ -15,8 +15,8 @@ import { renderText } from '../HomeGridList/utils';
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     height: '100%'
   },
   status: {
@@ -24,13 +24,13 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   links: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   link: {
     color: theme.palette.primary.main
@@ -39,7 +39,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

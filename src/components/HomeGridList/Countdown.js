@@ -14,8 +14,8 @@
 // const styles = theme => ({
 //   paper: {
 //     ...theme.mixins.gutters(),
-//     paddingTop: theme.spacing.unit * 2,
-//     paddingBottom: theme.spacing.unit * 2,
+//     paddingTop: theme.spacing(2),
+//     paddingBottom: theme.spacing(2),
 //     backgroundColor: '#22343C'
 //     // backgroundColor: theme.palette.primary.main
 //     // backgroundImage:
@@ -29,10 +29,10 @@
 //     display: 'flex',
 //     alignItems: 'center',
 //     justifyContent: 'flex-end',
-//     marginTop: theme.spacing.unit * 2
+//     marginTop: theme.spacing(2)
 //   },
 //   link: {
-//     margin: theme.spacing.unit
+//     margin: theme.spacing()
 //   }
 // });
 

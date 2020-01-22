@@ -2,3 +2,6 @@
   fill: #49afd9 !important;
 }
 
+.whiteSvg path {
+  fill: #fff !important;
+}

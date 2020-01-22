@@ -29,7 +29,7 @@ const styles = theme => ({
     zIndex: 900
   },
   paper: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     display: 'flex',
@@ -68,7 +68,7 @@ const styles = theme => ({
     width: 60
   },
   menu: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing()
   },
   menuList: {
     display: 'flex',

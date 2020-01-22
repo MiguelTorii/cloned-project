@@ -14,7 +14,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 

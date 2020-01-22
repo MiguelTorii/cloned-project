@@ -129,7 +129,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       try {
         const { notifications, unreadCount } = await getNotifications({
           userId,
-          isStudyCircle: tab
+          tab
         });
         if (onUpdateUnreadCount) onUpdateUnreadCount(unreadCount);
         this.setState({ notifications });
@@ -169,7 +169,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       onClick({ postId, typeId, entityType });
     } else {
       const { title, details } = await getNotification({ userId, id });
-      onClose();
+      // onClose();
       this.setState({ title, details });
     }
   };

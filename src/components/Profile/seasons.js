@@ -26,12 +26,12 @@ const styles = theme => ({
   container: {
     maxHeight: 'inherit',
     display: 'flex',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
@@ -41,10 +41,10 @@ const styles = theme => ({
   },
   tabs: {
     // maxWidth: 600,
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   helpButton: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
     width: 20,
     height: 20,
     borderRadius: '100%',
@@ -62,12 +62,12 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText1
   },
   gridContainer: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
     height: '100%'
   },
   rankContainer: {
     width: '100%',
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
     height: '100%',
     minHeight: 146,
     [theme.breakpoints.down('xs')]: {
@@ -90,7 +90,7 @@ const styles = theme => ({
     flex: 1,
     display: 'flex',
     alignItems: 'center',
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   badge: {
     height: 40,
@@ -104,7 +104,7 @@ const styles = theme => ({
     width: '100%',
     height: 20,
     borderRadius: 10,
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   tab: {
     fontSize: 20
@@ -170,7 +170,7 @@ class Seasons extends React.PureComponent<Props, State> {
           <Grid
             container
             justify="space-evenly"
-            spacing={16}
+            spacing={2}
             className={classes.gridContainer}
             item
             xs={12}
@@ -207,11 +207,11 @@ class Seasons extends React.PureComponent<Props, State> {
               <Typography variant="h6">Community Service Hours</Typography>
             </Grid>
           </Grid>
-          <Grid
+          {/* <Grid
             container
             justify="space-evenly"
             alignItems="stretch"
-            spacing={16}
+            spacing={2}
             className={classes.rankContainer}
             item
             xs={12}
@@ -301,7 +301,7 @@ class Seasons extends React.PureComponent<Props, State> {
               </div>
               <Typography variant="h6">Master</Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container item xs={12} sm={8}>
             <LinearProgress
               variant="determinate"

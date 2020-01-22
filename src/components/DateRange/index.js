@@ -2,7 +2,8 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import moment from 'moment';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from "@date-io/date-fns";
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -12,7 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const styles = theme => ({
   buttonWrapper: {
     position: 'relative',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   deleteIcon: {
     position: 'absolute',
@@ -68,25 +69,19 @@ type Props = {
 
 type State = {
   from: ?Object,
-  to: ?Object
+  to: ?Object,
+  open: bool
 };
 
 class DateRange extends React.PureComponent<Props, State> {
   state = {
     from: null,
-    to: null
+    to: null,
+    open: false,
   };
 
-  constructor(props) {
-    super(props);
-    // $FlowIgnore
-    this.fromPickerRef = React.createRef();
-  }
-
-  handleClick = e => {
-    if (this.fromPickerRef && this.fromPickerRef.current) {
-      this.fromPickerRef.current.open(e);
-    }
+  handleClick = () => {
+    this.setState({open: true})
   };
 
   handleReset = () => {
@@ -105,10 +100,12 @@ class DateRange extends React.PureComponent<Props, State> {
     const { from, to } = this.state;
     onChange('fromDate', from);
     onChange('toDate', to);
+    this.setState({ open: false })
   };
 
-  handleChange = date => () => {
+  handleChange = d => () => {
     const { from } = this.state;
+    const date = moment(d)
     if (!from) {
       this.setState({ from: date });
     } else if (date.isBefore(from, 'day')) {
@@ -154,8 +151,6 @@ class DateRange extends React.PureComponent<Props, State> {
     );
   };
 
-  fromPickerRef: Object;
-
   renderButtonText = () => {
     const { from, to } = this.props;
     if (from && to) {
@@ -172,40 +167,44 @@ class DateRange extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, from, to } = this.props;
+    const { open } = this.state
     return (
-      <Fragment>
-        <div className={classes.buttonWrapper}>
-          <Button
-            variant="outlined"
-            color="primary"
-            className={classes.root}
-            onClick={this.handleClick}
-          >
-            {this.renderButtonText()}
-          </Button>
-          {(from || to) && (
-            <ButtonBase
-              aria-label="Delete"
-              className={classes.deleteIcon}
-              onClick={this.handleReset}
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Fragment>
+          <div className={classes.buttonWrapper}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.root}
+              onClick={this.handleClick}
             >
-              <DeleteIcon fontSize="small" />
-            </ButtonBase>
-          )}
-        </div>
-        <DatePicker
-          showTodayButton
-          disableFuture
-          value={null}
-          onChange={this.handleDateChange}
-          onOpen={this.handleOpen}
-          variant="outlined"
-          label=""
-          className={classes.picker}
-          ref={this.fromPickerRef}
-          renderDay={this.handleRenderDay}
-        />
-      </Fragment>
+              {this.renderButtonText()}
+            </Button>
+            {(from || to) && (
+              <ButtonBase
+                aria-label="Delete"
+                className={classes.deleteIcon}
+                onClick={this.handleReset}
+              >
+                <DeleteIcon fontSize="small" />
+              </ButtonBase>
+            )}
+          </div>
+          <DatePicker
+            disableFuture
+            value={null}
+            onChange={this.handleDateChange}
+            onClose={() => this.setState({ open: false})}
+            onOpen={this.handleOpen}
+            inputVariant="outlined"
+            label=""
+            className={classes.picker}
+            open={open}
+            variant='dialog'
+            renderDay={this.handleRenderDay}
+          />
+        </Fragment>
+      </MuiPickersUtilsProvider>
     );
   }
 }

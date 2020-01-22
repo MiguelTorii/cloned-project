@@ -25,7 +25,7 @@ import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
   preview: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,

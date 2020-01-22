@@ -17,8 +17,8 @@
 // const styles = theme => ({
 //   paper: {
 //     ...theme.mixins.gutters(),
-//     paddingTop: theme.spacing.unit * 2,
-//     paddingBottom: theme.spacing.unit * 2,
+//     paddingTop: theme.spacing(2),
+//     paddingBottom: theme.spacing(2),
 //     height: '100%'
 //   },
 //   title: {
@@ -34,20 +34,20 @@
 //     display: 'flex',
 //     alignItems: 'center',
 //     justifyContent: 'flex-start',
-//     marginTop: theme.spacing.unit * 2
+//     marginTop: theme.spacing(2)
 //   },
 //   item: {
 //     textDecoration: 'line-through'
 //   },
 //   avatar: {
 //     backgroundColor: theme.palette.primary.main,
-//     marginRight: theme.spacing.unit,
+//     marginRight: theme.spacing(),
 //     width: 15,
 //     height: 15,
 //     fontSize: 10
 //   },
 //   progress: {
-//     marginTop: theme.spacing.unit,
+//     marginTop: theme.spacing(),
 //     display: 'flex',
 //     flexDirection: 'column',
 //     alignItems: 'center',
@@ -55,7 +55,7 @@
 //   },
 //   divider: {
 //     minWidth: 200,
-//     margin: theme.spacing.unit
+//     margin: theme.spacing()
 //   }
 // });
 

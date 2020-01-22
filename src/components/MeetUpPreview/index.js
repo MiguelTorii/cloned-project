@@ -34,9 +34,9 @@ const styles = theme => ({
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: 0,
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -85,7 +85,7 @@ const styles = theme => ({
     zIndex: 1100
   },
   fab: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   video: {
     width: 'auto    !important',
@@ -93,7 +93,7 @@ const styles = theme => ({
     height: '100%   !important'
   },
   margin: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   }
 });
 

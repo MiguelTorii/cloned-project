@@ -41,13 +41,13 @@ const styles = theme => ({
   },
   dragContainer: {
     position: 'relative',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   drag: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   button: {
     padding: 4,

@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     width: 200,
     height: 200,
     borderRadius: 4,

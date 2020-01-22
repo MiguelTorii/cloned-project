@@ -17,7 +17,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink ref={ref} to={href} {...props} />);
 
 const styles = () => ({
   bottomNav: {

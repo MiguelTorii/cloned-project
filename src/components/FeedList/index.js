@@ -8,17 +8,29 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FeedItem from './feed-item';
 
 const styles = theme => ({
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: 8
+    },
+    '*::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.3)',
+      outline: '1px solid slategrey'
+    }
+  },
   container: {
     maxHeight: 'inherit',
-    display: 'flex',
-    padding: theme.spacing.unit,
+    // display: 'flex',
+    padding: theme.spacing(),
     position: 'relative',
     minHeight: 400
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
@@ -28,22 +40,22 @@ const styles = theme => ({
     flex: 1
   },
   textField: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(),
     flex: 1
   },
   items: {
     overflowY: 'auto',
-    maxHeight: 'calc(100vh - 170px)',
+    maxHeight: 'calc(100vh - 250px)',
     flex: 1,
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   margin: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   popover: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   loader: {
     position: 'absolute',
@@ -58,7 +70,7 @@ const styles = theme => ({
     height: 100,
     borderRadius: 6,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -68,7 +80,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

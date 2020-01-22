@@ -6,7 +6,7 @@ import Link from '@material-ui/core/Link';
 
 const styles = theme => ({
   listItem: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     color: theme.palette.text.primary
   }
 });

@@ -62,8 +62,8 @@ const items = [{ key: 1 }, { key: 2 }, { key: 3 }];
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     position: 'relative'
   },
   header: {
@@ -76,7 +76,7 @@ const styles = theme => ({
     color: '#fec04f'
   },
   badge: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(),
     height: 32,
     width: 32
   },
@@ -90,11 +90,11 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   item: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     display: 'flex'
   },
   helpButton: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
     width: 20,
     height: 20,
     borderRadius: '100%',
@@ -119,7 +119,7 @@ const styles = theme => ({
     borderColor: theme.circleIn.palette.primaryText1,
     backgroundColor: 'transparent',
     color: theme.circleIn.palette.primaryText1,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing()
   },
   card: {
     width: 92,
@@ -149,17 +149,17 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   link: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     color: theme.palette.primary.main
   },
   progress: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   circleIn: {
     color: theme.circleIn.palette.action
@@ -170,8 +170,8 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   contentIcon: {
-    marginRight: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 2,
+    marginRight: theme.spacing(),
+    marginBottom: theme.spacing(2),
     height: 40
   }
 });
@@ -386,7 +386,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 you!
               </DialogContentText>
             </div> */}
-            <DialogContentText
+            {/* <DialogContentText
               id="video-points-description"
               color="textPrimary"
               variant="h5"
@@ -407,7 +407,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
                 you complete the ring, we give you a total of 150,000 points to
                 let you know you’re awesome!
               </DialogContentText>
-            </div>
+            </div> */}
             <DialogContentText
               id="video-points-description"
               color="textPrimary"

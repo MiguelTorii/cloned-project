@@ -14,21 +14,21 @@ const styles = theme => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3)
   },
   paper: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 8,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
       .spacing.unit * 3}px`
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
@@ -38,7 +38,7 @@ const styles = theme => ({
     justifyContent: 'flex-end'
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

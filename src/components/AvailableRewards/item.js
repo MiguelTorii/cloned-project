@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   item: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
     borderRadius: 4,
     width: 180,
     height: 120,
@@ -29,7 +29,7 @@ const styles = theme => ({
     maxWidth: 120,
     height: 'auto',
     maxHeight: 50,
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   display: {
     width: 180,
@@ -62,7 +62,7 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   button: {
-    margin: theme.spacing.unit / 2
+    margin: theme.spacing(1/2)
   }
   // elevation: {
   //   boxShadow:

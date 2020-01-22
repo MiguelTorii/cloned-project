@@ -17,14 +17,14 @@ const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 const styles = theme => ({
   paper: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
+    marginLeft: theme.spacing(),
+    marginBottom: theme.spacing(),
     alignItems: 'flex-start',
     maxWidth: '80%'
   },
@@ -39,7 +39,7 @@ const styles = theme => ({
   },
   message: {
     maxWidth: '100%',
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
@@ -54,7 +54,7 @@ const styles = theme => ({
   },
   image: {
     borderRadius: 5,
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(),
     maxWidth: 120
   },
   createdAt: {

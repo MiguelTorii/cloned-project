@@ -14,7 +14,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 
 const styles = theme => ({
   paper: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     width: 250,
     height: 40,
     display: 'flex',
@@ -39,11 +39,11 @@ const styles = theme => ({
   headerTitle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingLeft: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
     height: 40
   },
   iconButton: {
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   content: {
     overflow: 'none',
@@ -58,7 +58,7 @@ const styles = theme => ({
     overflowY: 'auto'
   },
   margin: {
-    marginLeft: theme.spacing.unit * 2
+    marginLeft: theme.spacing(2)
   }
 });
 

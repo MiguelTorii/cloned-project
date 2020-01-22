@@ -32,6 +32,7 @@ const styles = theme => ({
     borderBottom: 'none',
     fontSize: 16,
     fontWeight: 700,
+    padding: theme.spacing(),
     color: theme.circleIn.palette.primaryText1,
   },
   tdnp: {

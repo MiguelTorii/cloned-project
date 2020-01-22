@@ -11,23 +11,23 @@ import GroupIcon from '@material-ui/icons/Group';
 const styles = theme => ({
   root: {
     display: 'flex',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     width: '100%'
   },
   progress: {
     display: 'flex',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
   grow: {
     flex: 1,
-    paddingLeft: theme.spacing.unit,
+    paddingLeft: theme.spacing(),
     minWidth: 0,
     textAlign: 'left'
   },
   margin: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

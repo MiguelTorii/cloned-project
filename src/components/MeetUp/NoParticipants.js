@@ -13,7 +13,7 @@ const styles = theme => ({
   },
   text: {
     color: 'white',
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   }
 });
 

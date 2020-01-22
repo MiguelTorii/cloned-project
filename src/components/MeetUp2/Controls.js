@@ -23,7 +23,7 @@ const styles = theme => ({
     // backgroundColor: 'white'
   },
   fab: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 

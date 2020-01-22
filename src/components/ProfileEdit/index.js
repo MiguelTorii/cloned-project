@@ -25,7 +25,7 @@ const styles = theme => ({
     flexDirection: 'column'
   },
   header: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -45,7 +45,7 @@ const styles = theme => ({
     height: 80
   },
   upload: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   input: {
     display: 'none'

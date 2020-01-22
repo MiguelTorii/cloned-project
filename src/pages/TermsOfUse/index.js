@@ -8,7 +8,7 @@ import TermsOfUse from '../../components/TermsOfUse';
 
 const styles = theme => ({
   main: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 });
 

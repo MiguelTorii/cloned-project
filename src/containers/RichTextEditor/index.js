@@ -18,7 +18,7 @@ const styles = theme => ({
     maxHeight: 200
   },
   quill: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     maxHeight: 200
   },
   input: {

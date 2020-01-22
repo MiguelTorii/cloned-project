@@ -66,7 +66,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   tierItem: {
     display: 'flex',
@@ -80,7 +80,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    marginBottom: theme.spacing.unit
+    marginBottom: theme.spacing()
   },
   tierCircle: {
     background: '#60b515',

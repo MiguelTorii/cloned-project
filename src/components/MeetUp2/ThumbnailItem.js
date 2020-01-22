@@ -21,7 +21,7 @@ const styles = theme => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     position: 'relative',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   videoWrapper: {
     height: 60,
@@ -55,7 +55,7 @@ const styles = theme => ({
   },
   title: {
     color: 'black',
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   media: {
     display: 'flex',

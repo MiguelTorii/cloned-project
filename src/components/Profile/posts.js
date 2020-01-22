@@ -12,12 +12,12 @@ const styles = theme => ({
     height: '100%',
     maxHeight: 'inherit',
     display: 'flex',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 4,
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
     flex: 1
   },
   nothing: {

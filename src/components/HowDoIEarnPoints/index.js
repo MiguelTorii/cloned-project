@@ -21,8 +21,8 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   contentIcon: {
-    marginRight: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 2,
+    marginRight: theme.spacing(),
+    marginBottom: theme.spacing(2),
     height: 40
   }
 });
@@ -134,7 +134,7 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
                 you!
               </DialogContentText>
             </div> */}
-          <DialogContentText
+          {/* <DialogContentText
             id="video-points-description"
             color="textPrimary"
             variant="h5"
@@ -155,7 +155,7 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
               complete the ring, we give you a total of 150,000 points to let
               you know you’re awesome!
             </DialogContentText>
-          </div>
+          </div> */}
           <DialogContentText
             id="video-points-description"
             color="textPrimary"

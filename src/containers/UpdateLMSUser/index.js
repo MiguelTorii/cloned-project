@@ -29,13 +29,13 @@ import * as signInActions from '../../actions/sign-in';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   form: {
     width: '100%' // Fix IE 11 issue.
   },
   wrapper: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     position: 'relative'
   },
   buttonProgress: {

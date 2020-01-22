@@ -9,14 +9,14 @@ const styles = theme => ({
   container: {
     maxHeight: 'inherit',
     display: 'flex',
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 8,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(8),
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',

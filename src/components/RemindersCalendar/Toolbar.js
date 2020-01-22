@@ -14,10 +14,10 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing.unit
+    marginBottom: theme.spacing()
   },
   fab: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   }
 });
 

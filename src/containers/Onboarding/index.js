@@ -33,7 +33,7 @@ const styles = theme => ({
     textAlign: 'center'
   },
   button: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   stepper: {
     maxWidth: 400,
@@ -41,12 +41,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   img: {
     height: 200,
     maxHeight: 200,
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   buttons: {
     display: 'flex',

@@ -47,9 +47,9 @@ const types = [
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    margin: theme.spacing.unit,
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
+    margin: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
@@ -86,14 +86,14 @@ const styles = theme => ({
     alignItems: 'flex-start'
   },
   formControl: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   },
   formButton: {
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     textDecoration: 'none'
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing()
   },
   actions: {
     display: 'flex',
@@ -187,14 +187,14 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { classesList } = this.props;
     const values = [];
     switch (name) {
-      case 'postTypes':
-        values.push(...types.map(item => item.value));
-        break;
-      case 'userClasses':
-        values.push(...classesList.map(item => item.value));
-        break;
-      default:
-        break;
+    case 'postTypes':
+      values.push(...types.map(item => item.value));
+      break;
+    case 'userClasses':
+      values.push(...classesList.map(item => item.value));
+      break;
+    default:
+      break;
     }
     if (values.length > 0) {
       const newState = update(this.state, {
@@ -327,7 +327,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
           aria-describedby="filter-dialog-description"
         >
           <DialogTitle id="filter-dialog-title" onClose={this.handleClose}>
-            {'Filter Posts by:'}
+            Filter Posts by:
           </DialogTitle>
           <Grid container>
             <Grid item xs={12} sm={6} className={classes.option}>
