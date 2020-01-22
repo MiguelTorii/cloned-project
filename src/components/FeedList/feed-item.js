@@ -78,6 +78,9 @@ const styles = theme => ({
   postTitle: {
     paddingLeft: theme.spacing()
   },
+  cardHighlight: {
+    backgroundColor: 'rgba(255,255,255,0.2)'
+  },
   actions: {
     display: 'flex',
     padding: 0
@@ -347,7 +350,12 @@ class FeedItem extends React.PureComponent<Props, State> {
               </IconButton>
             }
             title={
-              <CardActionArea onClick={this.handleUserClick}>
+              <CardActionArea 
+                classes={{
+                  focusHighlight: classes.cardHighlight
+                }}
+                onClick={this.handleUserClick}
+              >
                 <div className={classes.title}>
                   <Typography component="p" variant="h6" noWrap>
                     {data.name}
@@ -384,6 +392,9 @@ class FeedItem extends React.PureComponent<Props, State> {
             }
           />
           <CardActionArea
+            classes={{
+              focusHighlight: classes.cardHighlight
+            }}
             onClick={onPostClick({
               typeId: data.typeId,
               postId: data.postId,
