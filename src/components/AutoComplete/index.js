@@ -22,7 +22,7 @@ import type { SelectType } from '../../types/models';
 
 const Link = props => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
-    {"Can't find your school? Click Here"}
+    Can't find your school? Click Here
   </a>
 );
 
@@ -245,7 +245,7 @@ function Menu({ selectProps, children, innerProps }) {
           }}
           {...innerProps}
         >
-          {"Can't find your school? Click Here"}
+          Can't find your school? Click Here
         </MenuItem>
       )}
     </Paper>

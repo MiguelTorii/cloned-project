@@ -5,7 +5,6 @@ import React from 'react';
 import type { Node } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 // import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -77,9 +76,6 @@ class SignUpForm extends React.PureComponent<Props, State> {
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Create your CircleIn Account
-          </Typography>
           {children}
           <div className={classes.links}>
             {/* <Typography variant="subtitle1" gutterBottom>
@@ -88,9 +84,9 @@ class SignUpForm extends React.PureComponent<Props, State> {
                 Sign in
               </Link>
             </Typography> */}
-            <Button variant="outlined" color="primary" onClick={onChangeSchool}>
+            {/* <Button variant="outlined" color="primary" onClick={onChangeSchool}>
               Select a Different School
-            </Button>
+            </Button> */}
             {/* {this.renderTypeLink()} */}
           </div>
         </Paper>

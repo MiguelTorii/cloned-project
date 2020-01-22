@@ -80,8 +80,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
         className={cx(classes.form, hide && classes.hide)}
       >
         <Typography align="center" variant="subtitle1">
-          Did a friend invite you to CircleIn? Enter their referral code and
-          your friend will receive 10,000 bonus points. Brilliant!
+            If a friend invited you to CircleIn, enter their referral code and they will receive 10,000 bonus points. Brilliant!
         </Typography>
         <TextValidator
           variant="outlined"
@@ -112,7 +111,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
             className={classes.button}
             onClick={this.handleSubmit}
           >
-            Skip
+            I don’t have a code
           </Button>
         </div>
         <div className={classes.wrapper}>

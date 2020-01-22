@@ -47,6 +47,19 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={lin
 const drawerWidth = 240;
 
 const styles = theme => ({
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: 8
+    },
+    '*::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: theme.circleIn.palette.brand,
+      borderRadius: 16,
+      outline: '1px solid slategrey'
+    }
+  },
   root: {
     display: 'flex'
   },

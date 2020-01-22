@@ -8,6 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { withSnackbar } from 'notistack';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { AuthState } from '../../reducers/auth';
@@ -113,57 +114,57 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       signUp
     } = this.props;
     switch (action) {
-      case 'Account':
-        this.setState({
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          email: data.email || '',
-          password: data.password || '',
-          grade: data.grade || '',
-          loading: true
+    case 'Account':
+      this.setState({
+        firstName: data.firstName || '',
+        lastName: data.lastName || '',
+        email: data.email || '',
+        password: data.password || '',
+        grade: data.grade || '',
+        loading: true
+      });
+      try {
+        await sendCode({ email: data.email });
+        this.setState({ activeStep: 1 });
+      } finally {
+        this.setState({ loading: false });
+      }
+      break;
+    case 'VerifyAccount':
+      this.setState({ loading: true });
+      try {
+        await verifyCode({ email: data.email, code: data.code });
+        this.setState({ activeStep: 2 });
+      } catch (err) {
+        const { updateError } = this.props;
+        updateError({
+          title: 'Verification Error',
+          body: "We couldn't verify your code, please try again."
         });
-        try {
-          await sendCode({ email: data.email });
-          this.setState({ activeStep: 1 });
-        } finally {
-          this.setState({ loading: false });
-        }
-        break;
-      case 'VerifyAccount':
+      } finally {
+        this.setState({ loading: false });
+      }
+      break;
+    case 'ReferralCode':
+      try {
         this.setState({ loading: true });
-        try {
-          await verifyCode({ email: data.email, code: data.code });
-          this.setState({ activeStep: 2 });
-        } catch (err) {
-          const { updateError } = this.props;
-          updateError({
-            title: 'Verification Error',
-            body: "We couldn't verify your code, please try again."
-          });
-        } finally {
-          this.setState({ loading: false });
-        }
-        break;
-      case 'ReferralCode':
-        try {
-          this.setState({ loading: true });
-          await signUp({
-            grade,
-            school: school && school.id,
-            firstName,
-            lastName,
-            password,
-            email,
-            phone: '',
-            segment: type,
-            referralCode: data.code
-          });
-        } catch (err) {
-          this.setState({ loading: false });
-        }
-        break;
-      default:
-        break;
+        await signUp({
+          grade,
+          school: school && school.id,
+          firstName,
+          lastName,
+          password,
+          email,
+          phone: '',
+          segment: type,
+          referralCode: data.code
+        });
+      } catch (err) {
+        this.setState({ loading: false });
+      }
+      break;
+    default:
+      break;
     }
   };
 
@@ -216,7 +217,10 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
             <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
-                <Steps activeStep={activeStep} hide={Boolean(type === '')} />
+                <Typography component="h1" variant="h5">
+                  {activeStep === 2 ? 'Did a friend refer you?' : 'Create your CircleIn Account'}
+                </Typography>
+                {/* <Steps activeStep={activeStep} hide={Boolean(type === '')} /> */}
                 <TypeSelect
                   onTypeChange={this.handleTypeChange}
                   hide={Boolean(type !== '')}

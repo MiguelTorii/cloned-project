@@ -135,6 +135,11 @@ const theme = createMuiTheme({
         opacity: 0.5
       }
     },
+    MuiInputBase: {
+      input: {
+        height: 'fit-content'
+      }
+    },
     MuiInputLabel: {
       root: {
         color: circleInTheme.primaryText2
