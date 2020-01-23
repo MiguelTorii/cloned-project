@@ -14,7 +14,7 @@ import type { UserState } from '../../reducers/user';
 import type { AuthState } from '../../reducers/auth';
 import SignUpForm from '../../components/SignUpForm';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import Steps from '../../components/SignUpForm/Steps';
+// import Steps from '../../components/SignUpForm/Steps';
 import TypeSelect from '../../components/SignUpForm/TypeSelect';
 import AccountForm from '../../components/SignUpForm/AccountForm';
 import VerifyAccount from '../../components/SignUpForm/VerifyAccount';

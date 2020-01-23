@@ -163,7 +163,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
         data: { userId }
       },
       onClick,
-      onClose
+      // onClose
     } = this.props;
     if (entityType !== 8000) {
       onClick({ postId, typeId, entityType });

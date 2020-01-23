@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import amazonLogo from '../../assets/svg/amazon_logo.svg';
 import trophy from '../../assets/svg/trophy.svg';
-import ring from '../../assets/svg/ring.svg';
+// import ring from '../../assets/svg/ring.svg';
 import appLogo from '../../assets/svg/app-logo.svg';
 
 const styles = theme => ({

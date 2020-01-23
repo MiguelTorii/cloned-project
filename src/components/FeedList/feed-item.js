@@ -27,16 +27,16 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
+// import bronze from '../../assets/svg/rank_bronze.svg';
+// import silver from '../../assets/svg/rank_silver.svg';
+// import gold from '../../assets/svg/rank_gold.svg';
+// import platinum from '../../assets/svg/rank_platinum.svg';
+// import diamond from '../../assets/svg/rank_diamond.svg';
+// import master from '../../assets/svg/rank_master.svg';
 import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 import type { FeedItem as Item } from '../../types/models';
 
-const ranks = [bronze, silver, gold, platinum, diamond, master];
+// const ranks = [bronze, silver, gold, platinum, diamond, master];
 
 const styles = theme => ({
   card: {

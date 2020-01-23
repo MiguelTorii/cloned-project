@@ -8,6 +8,7 @@ import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
 import arrayMove from 'array-move';
 import { withStyles } from '@material-ui/core/styles';
+import imageCompression from 'browser-image-compression'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import UploadImagesForm from '../../components/UploadImagesForm';
@@ -80,9 +81,19 @@ class UploadImages extends React.PureComponent<Props, State> {
     this.setState(newState);
   };
 
+  compressImage = async file => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true
+    }
+    return imageCompression(file, options)
+  }
+
   handleDrop = acceptedFiles => {
-    acceptedFiles.forEach(file => {
-      const url = URL.createObjectURL(file);
+    acceptedFiles.forEach(async file => {
+      const compressedFile = await this.compressImage(file)
+      const url = URL.createObjectURL(compressedFile);
       const { path, type } = file;
       const extension = this.getFileExtension(path);
       fetch(url)
@@ -127,9 +138,10 @@ class UploadImages extends React.PureComponent<Props, State> {
     });
     return axios
       .all(
-        images.map(item =>
-          this.uploadImageRequest(result[item.id].url, item.file, item.type)
-        )
+        images.map(async item => {
+          const compress = await this.compressImage(item.file)
+          this.uploadImageRequest(result[item.id].url, compress, item.type)
+        })
       )
       .then(
         axios.spread((...data) => {

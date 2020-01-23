@@ -6,7 +6,7 @@ import type { Node } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 // import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 // const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
@@ -50,7 +50,7 @@ type Props = {
   // type: string,
   children: Node,
   // onReset: Function
-  onChangeSchool: Function
+  // onChangeSchool: Function
 };
 
 type State = {};
@@ -71,7 +71,11 @@ class SignUpForm extends React.PureComponent<Props, State> {
   // };
 
   render() {
-    const { classes, children, onChangeSchool } = this.props;
+    const { 
+      classes, 
+      children, 
+      // onChangeSchool
+    } = this.props;
 
     return (
       <main className={classes.main}>

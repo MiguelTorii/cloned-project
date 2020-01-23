@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import cx from 'classnames';
+// import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -15,12 +15,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
+// import bronze from '../../assets/svg/rank_bronze.svg';
+// import silver from '../../assets/svg/rank_silver.svg';
+// import gold from '../../assets/svg/rank_gold.svg';
+// import platinum from '../../assets/svg/rank_platinum.svg';
+// import diamond from '../../assets/svg/rank_diamond.svg';
+// import master from '../../assets/svg/rank_master.svg';
 
 const styles = theme => ({
   container: {
