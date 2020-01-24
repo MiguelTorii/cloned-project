@@ -7,6 +7,7 @@ import type { Dispatch } from '../types/store';
 import {
   getLeaderboards,
   getGrandPrizeScores,
+  getGrandPrizeInfo,
   getTuesdayPrizeScores
 } from '../api/leaderboards'
 
@@ -135,8 +136,33 @@ const updateGrandLeaderboards = () => async (dispatch: Dispatch) => {
   }
 };
 
+
+const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
+  type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST,
+  payload: {
+    grandInfo
+  }
+});
+
+const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
+  try {
+    const res: Object = await getGrandPrizeInfo()
+    const grandInfo = {
+      logoUrl: res.logo_url,
+      description: res.description,
+      text: res.grand_prize_text
+    } 
+    dispatch(
+      updateLeaderboardGrandInfoRequest({ grandInfo })
+    );
+  } catch(e) {
+    console.log(e)
+  }
+};
+
 export default {
   updateLeaderboards,
+  updateLeaderboardGrandInfo,
   updateTuesdayLeaderboard,
   updateGrandLeaderboards
 }

@@ -62,7 +62,12 @@ export type LeaderBoardState = {
     grand: {
       boardName: string,
       scoreLabel: string,
-      students: Array<LeaderBoardStudents>
+      students: Array<LeaderBoardStudents>,
+    },
+    grandDialog: {
+      logoUrl: string,
+      description: string,
+      text: string
     }
   }
 }
@@ -89,12 +94,17 @@ const defaultState = {
     grand: {
       boardName: '',
       scoreLabel: '',
-      students: []
+      students: [],
     },
     tuesday: {
       boardName: '',
       scoreLabel: '',
-      students: []
+      students: [],
+    },
+    grandDialog: {
+      logoUrl: '',
+      description: '',
+      text: ''
     }
   }
 };
@@ -109,6 +119,14 @@ export default (
       return update(state, {
         data: {
           general: { $set: action.payload.leaderboards },
+        }
+      });
+    return state;
+  case leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST:
+    if(action && action.payload && action.payload.grandInfo)
+      return update(state, {
+        data: {
+          grandDialog: { $set: action.payload.grandInfo },
         }
       });
     return state;

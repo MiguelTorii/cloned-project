@@ -18,6 +18,7 @@ const LeaderBoards = ({
   leaderboard, 
   updateLeaderboards,
   updateTuesdayLeaderboard,
+  updateLeaderboardGrandInfo,
   updateGrandLeaderboards
 }) => {
   useEffect(() => {
@@ -34,7 +35,8 @@ const LeaderBoards = ({
         Leaderboards
       </Typography>
       <LeaderBoardTabs 
-        leaderboard={leaderboard} 
+        leaderboard={leaderboard}
+        updateLeaderboardGrandInfo={updateLeaderboardGrandInfo}
         updateTuesdayLeaderboard={updateTuesdayLeaderboard}
         updateGrandLeaderboards={updateGrandLeaderboards}
       />
@@ -51,7 +53,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       updateLeaderboards: leaderboardActions.updateLeaderboards,
       updateTuesdayLeaderboard: leaderboardActions.updateTuesdayLeaderboard,
-      updateGrandLeaderboards: leaderboardActions.updateGrandLeaderboards
+      updateGrandLeaderboards: leaderboardActions.updateGrandLeaderboards,
+      updateLeaderboardGrandInfo: leaderboardActions.updateLeaderboardGrandInfo
     },
     dispatch
   );

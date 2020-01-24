@@ -20,6 +20,22 @@ export const getLeaderboards = async () => {
   }
 };
 
+export const getGrandPrizeInfo = async () => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(API_ROUTES.LEADERBOARD_GRAND_PRIZE_INFO, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const { data = {} } = result;
+
+    return data
+  } catch (err) {
+    return [];
+  }
+};
+
 export const getGrandPrizeScores = async () => {
   try {
     const token = await getToken();

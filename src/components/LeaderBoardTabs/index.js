@@ -5,6 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 import withRoot from '../../withRoot';
 import Table from './table'
 import LoadImg from '../LoadImg'
@@ -82,12 +87,20 @@ const styles = theme => ({
     width: 150,
     marginLeft: 10, 
   },
+  dialogText: {
+    color: theme.palette.primary.main
+  },
+  imgDialogContainer: {
+    textAlign: 'center',
+    width: '100%'
+  },
 })
 
 const LeaderBoardTabs = ({ 
   classes,
   leaderboard,
   updateTuesdayLeaderboard,
+  updateLeaderboardGrandInfo,
   updateGrandLeaderboards
 }) => {
   const [selectedTab, setSelectedTab] = useState('tuesday')
@@ -100,11 +113,16 @@ const LeaderBoardTabs = ({
   const [prizeText, setPrizeText] = useState('')
   const [prizeImgs, setPrizeImgs] = useState([])
   const [rewardButtonText, setRewardButtonText] = useState('')
+  const [dialogTitle, setDialogTitle] = useState('')
+  const [dialogLogo, setDialogLogo] = useState('')
+  const [dialogDescription, setDialogDescription] = useState('')
+  const [openDialog, setOpenDialog] = useState(false)
 
   useEffect(() => {
     updateTuesdayLeaderboard()
     updateGrandLeaderboards()
-  }, [updateGrandLeaderboards, updateTuesdayLeaderboard])
+    updateLeaderboardGrandInfo()
+  }, [updateGrandLeaderboards, updateTuesdayLeaderboard, updateLeaderboardGrandInfo])
 
   useEffect(() => {
     try {
@@ -118,6 +136,10 @@ const LeaderBoardTabs = ({
       setGrandBoardName(data.grand.boardName)
       setScoreLabel(selected.scoreLabel)
       setStudents(selected.students)
+        
+      setDialogTitle(data.grandDialog.text)
+      setDialogLogo(data.grandDialog.logoUrl)
+      setDialogDescription(data.grandDialog.description)
       if (selectedTab === 'grand') {
         setPrizeText(generalSelected.text)
         setPrizeImgs([generalSelected.logo])
@@ -158,9 +180,32 @@ const LeaderBoardTabs = ({
 
   const navigateToStore = () => { window.location.pathname = '/store' }
 
+  const handleCloseDialog = () => setOpenDialog(false)
+  const handleOpenDialog = () => setOpenDialog(true)
+  const imgDialogStyle = {
+    width: 75,
+    height: 75,
+  }
+   
   return (
     <div className={classes.container}>
       <div className={classes.header}>
+        <Dialog onClose={handleCloseDialog} open={openDialog}>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogContent>
+            <div className={classes.imgDialogContainer}>
+              <LoadImg url={dialogLogo} style={imgDialogStyle} />
+            </div>
+            <DialogContentText className={classes.dialogText}>
+              {dialogDescription}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+            Close
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Button 
           onClick={() => setSelectedTab('tuesday')} 
           className={selectedTab === 'tuesday' ? classes.selected : classes.tab }>
@@ -178,7 +223,14 @@ const LeaderBoardTabs = ({
         {renderPrizes()} 
         <div>
           <div className={classes.rewardTitle}>{prizeText}</div>
-          <Button variant="outlined" color="primary" onClick={navigateToStore} className={classes.button}>{rewardButtonText}</Button>
+          <Button 
+            variant="outlined" 
+            color="primary" 
+            onClick={selectedTab === 'grand' ? handleOpenDialog : navigateToStore} 
+            className={classes.button}
+          >
+            {rewardButtonText}
+          </Button>
         </div>
       </div>
       <div className={classes.filterContainer}>
