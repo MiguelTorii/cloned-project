@@ -108,7 +108,8 @@ export const searchSchools = async ({
       emailRestriction: Boolean((school.email_restriction: boolean) || false),
       emailDomain: school.email_domain || [],
       scope: String((school.scope: string) || ''),
-      launchType: String((school.launch_type: string) || '')
+      launchType: String((school.launch_type: string) || ''),
+      redirect_message: String((school.redirect_message: string) || '')
     }));
   } catch (err) {
     return [];

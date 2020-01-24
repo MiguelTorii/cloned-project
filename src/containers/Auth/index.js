@@ -57,7 +57,7 @@ type State = {
   school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
   error: boolean,
   lti: boolean,
-  lmsTypeId: ?number
+  redirectMessage: string,
 };
 
 class Auth extends React.Component<Props, State> {
@@ -65,14 +65,14 @@ class Auth extends React.Component<Props, State> {
     school: null,
     error: false,
     lti: false,
-    lmsTypeId: null
+    redirectMessage: '',
   };
 
   handleChange = value => {
     if (!value) return;
-    const { lmsTypeId, launchType } = value;
+    const { lmsTypeId, launchType, redirect_message: redirectMessage } = value;
     if (launchType === 'lti') {
-      this.setState({ lti: true, lmsTypeId });
+      this.setState({ lti: true, redirectMessage});
     } else if (lmsTypeId === 0) {
       const { updateSchool } = this.props;
       const { label, value: selectValue, ...school } = value;
@@ -136,7 +136,7 @@ class Auth extends React.Component<Props, State> {
       },
       auth: { data }
     } = this.props;
-    const { school, error, lti, lmsTypeId } = this.state;
+    const { redirectMessage, school, error, lti } = this.state;
 
     if (userId !== '') return <Redirect to="/" />;
     if (data.school) return <Redirect to="/login" />;
@@ -164,11 +164,7 @@ class Auth extends React.Component<Props, State> {
           aria-describedby="lti-description"
         >
           <DialogContent className={classes.content}>
-            <DialogContentText color="textPrimary">
-              Please open CircleIn from the{' '}
-              {`${lmsTypeId === 2 ? 'Blackboard' : `${lmsTypeId === 1 ? 'Canvas' : 'Brightspace' }` }`} mobile app or
-              website.
-            </DialogContentText>
+            <DialogContentText color="textPrimary">{redirectMessage}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

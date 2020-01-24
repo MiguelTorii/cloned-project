@@ -31,6 +31,7 @@ const styles = theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
+    height: '65vh',
     marginTop: theme.spacing(2)
   },
   center: {

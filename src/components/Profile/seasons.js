@@ -174,7 +174,7 @@ class Seasons extends React.PureComponent<Props, State> {
             className={classes.gridContainer}
             item
             xs={12}
-            sm={8}
+            sm={6}
           >
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
@@ -200,12 +200,12 @@ class Seasons extends React.PureComponent<Props, State> {
               </Typography>
               <Typography variant="h6">Reach</Typography>
             </Grid>
-            <Grid item className={classes.data}>
+            {/* <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
                 {seasons[value].communityServiceHours.toLocaleString()}
               </Typography>
               <Typography variant="h6">Community Service Hours</Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
           {/* <Grid
             container
@@ -371,9 +371,9 @@ class Seasons extends React.PureComponent<Props, State> {
               All of the views across all of your posts added up is your total
               reach.
             </DialogContentText>
-            <DialogContentText color="textPrimary" variant="h5" paragraph>
+            {/* <DialogContentText color="textPrimary" variant="h5" paragraph>
               Community Service Hours
-            </DialogContentText>
+            </DialogContentText> */}
             <DialogContentText color="textPrimary" paragraph>
               This stat is our way of recognizing students who contribute to the
               community. Community Service Hours can be redeemed for college and
