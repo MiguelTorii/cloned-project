@@ -118,9 +118,10 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
 
       if (points > 0) {
         const { enqueueSnackbar, classes } = this.props;
-        enqueueSnackbar({
+        await enqueueSnackbar({
           notification: {
             message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            nextPath: '/feed',
             options: {
               variant: 'success',
               anchorOrigin: {
@@ -210,19 +211,21 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     this.setState(newState);
 
     const { enqueueSnackbar, classes } = this.props;
-    enqueueSnackbar('Flashcards Updated', {
-      variant: 'success',
-      anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'left'
-      },
-      autoHideDuration: 2000,
-      ContentProps: {
-        classes: {
-          root: classes.stackbar
+    enqueueSnackbar({ notification: {
+      message: 'Flashcards Updated', 
+      options: {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left'
+        },
+        autoHideDuration: 2000,
+        ContentProps: {
+          classes: {
+            root: classes.stackbar
+          }
         }
-      }
-    });
+      }}});
     this.handleAddNew();
   };
 

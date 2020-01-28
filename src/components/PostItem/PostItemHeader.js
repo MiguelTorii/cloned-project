@@ -19,7 +19,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Markdown from './Markdown';
 import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
 
 const styles = theme => ({
   root: {

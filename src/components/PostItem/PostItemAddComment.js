@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import RichTextEditor from '../../containers/RichTextEditor';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
 
 const styles = theme => ({
   container: {

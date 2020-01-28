@@ -1,97 +1,61 @@
-// @flow
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import { removeSnackbar } from '../../actions/notifications';
 
-import React from 'react';
-import { withSnackbar } from 'notistack';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import type { State as StoreState } from '../../types/state';
-import * as notificationsActions from '../../actions/notifications';
+let displayed = [];
 
-type Props = {
-  notifications: Array<Object>,
-  enqueueSnackbar: Function,
-  removeSnackbar: Function,
-  closeSnackbar: Function
-};
+const Notifier = () => {
+  const dispatch = useDispatch();
+  const notifications = useSelector(store => store.notifications.items || []);
+  const pathname = useSelector(store => store.router.location.pathname || console.log(store));
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-class Notifier extends React.Component<Props> {
-  componentDidMount = async () => {};
+  const storeDisplayed = (id) => {
+    displayed = [...displayed, id];
+  };
 
-  shouldComponentUpdate = ({ notifications: { items: newSnacks = [] } }) => {
-    if (!newSnacks.length) {
-      this.displayed = [];
-      return false;
-    }
+  const removeDisplayed = (id) => {
+    displayed = [...displayed.filter(key => id !== key)];
+  };
 
-    const {
-      notifications: { items: currentSnacks },
-      closeSnackbar,
-      removeSnackbar
-    } = this.props;
-    let notExists = false;
-    for (let i = 0; i < newSnacks.length; i += 1) {
-      const newSnack = newSnacks[i];
-      if (newSnack.dismissed) {
-        closeSnackbar(newSnack.key);
-        removeSnackbar(newSnack.key);
+  useEffect(() => {
+    notifications.forEach(({ nextPath, key, message, options = {}, dismissed = false }) => {
+      if (dismissed) {
+        // dismiss snackbar using notistack
+        closeSnackbar(key);
+        return;
       }
 
-      if (!notExists)
-        notExists =
-          notExists ||
-          !currentSnacks.filter(({ key }) => newSnack.key === key).length;
-    }
-    return notExists;
-  };
+      // display only on correct screen after navigation
+      if(nextPath && pathname && pathname !== nextPath) return
 
-  componentDidUpdate = () => {
-    const {
-      notifications: { items },
-      enqueueSnackbar,
-      removeSnackbar
-    } = this.props;
+      // do nothing if snackbar is already displayed
+      if (displayed.includes(key)) return;
 
-    items.forEach(({ key, message, options = {} }) => {
-      if (this.displayed.includes(key)) return;
+      // display snackbar using notistack
       enqueueSnackbar(message, {
+        key,
         ...options,
-        onClose: (event, reason, id) => {
+        onClose: (event, reason, myKey) => {
           if (options.onClose) {
-            options.onClose(event, reason, id);
+            options.onClose(event, reason, myKey);
           }
-          removeSnackbar(id);
-        }
+        },
+        onExited: (event, myKey) => {
+          // removen this snackbar from redux store
+          dispatch(removeSnackbar({ key: myKey }));
+          removeDisplayed(myKey);
+        },
       });
-      this.storeDisplayed(key);
+
+      // keep track of snackbars that we've displayed
+      storeDisplayed(key);
     });
-  };
+  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
 
-  storeDisplayed = id => {
-    this.displayed = [...this.displayed, id];
-  };
+  return null;
+};
 
-  displayed: Array<Object>;
+export default Notifier;
 
-  render() {
-    return null;
-  }
-}
-
-const mapStateToProps = ({ notifications }: StoreState): {} => ({
-  notifications
-});
-
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      removeSnackbar: notificationsActions.removeSnackbar
-    },
-    dispatch
-  );
-
-export default withSnackbar(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Notifier)
-);

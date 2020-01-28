@@ -32,7 +32,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
-      .spacing.unit * 3}px`
+      .spacing(3)}px`
   },
   schools: {
     width: '100%',
@@ -57,7 +57,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5" align="center">
-            {"Enter your school's name"}
+            Enter your school's name
           </Typography>
           <div className={classes.schools}>
             <AutoComplete

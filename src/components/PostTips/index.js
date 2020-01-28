@@ -88,7 +88,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
-      .spacing.unit * 3}px`
+      .spacing(3)}px`
   },
   title: {
     display: 'flex',

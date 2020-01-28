@@ -50,7 +50,7 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
-      .spacing.unit * 3}px`
+      .spacing(3)}px`
   },
   header: {
     display: 'flex',
@@ -145,14 +145,14 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
   renderClass = label => {
     const { classes } = this.props;
     switch (label) {
-      case 1:
-        return classes.green;
-      case 2:
-        return classes.blue;
-      case 3:
-        return classes.grey;
-      default:
-        return classes.red;
+    case 1:
+      return classes.green;
+    case 2:
+      return classes.blue;
+    case 3:
+      return classes.grey;
+    default:
+      return classes.red;
     }
   };
 

@@ -9,10 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';
 
-const MyLink = props => (
+const MyLink = React.forwardRef(({ href, ...props }, ref) =>
   // eslint-disable-next-line react/destructuring-assignment
-  <RouterLink to={`/feed?id=${props.feedid}`} {...props} />
-);
+  <RouterLink to={`/feed?id=${props.feedid}`} {...props} ref={ref} />);
 
 const styles = theme => ({
   container: {
