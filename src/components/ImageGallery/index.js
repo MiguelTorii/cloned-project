@@ -4,6 +4,8 @@ import React from 'react';
 import Lightbox from 'react-images';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import RotateRightIcon from '@material-ui/icons/RotateRight';
 
 const styles = theme => ({
   root: {
@@ -40,12 +42,14 @@ type Props = {
 
 type State = {
   open: boolean,
+  rotation: number,
   currentImage: number
 };
 
 class ImageGallery extends React.PureComponent<Props, State> {
   state = {
     open: false,
+    rotation: 0,
     currentImage: 0
   };
 
@@ -75,9 +79,28 @@ class ImageGallery extends React.PureComponent<Props, State> {
     this.setState({ currentImage: index, open: true });
   };
 
+  rotateLeft = () => {
+    this.setState(prev => ({ 
+      rotation: prev.rotation - 90
+    }))
+  }
+
+  rotateRight = () => {
+    this.setState(prev => ({ 
+      rotation: prev.rotation + 90
+    }))
+  }
+
   render() {
     const { classes, images } = this.props;
-    const { open, currentImage } = this.state;
+    const { open, rotation, currentImage } = this.state;
+
+    const rotate = (
+      <div style={{ paddingTop: 10 }}>
+        <RotateLeftIcon style={{ cursor: 'pointer' }} onClick={this.rotateLeft}/>
+        <RotateRightIcon style={{ cursor: 'pointer' }} onClick={this.rotateRight} />
+      </div>
+    )
 
     return (
       <div className={classes.root}>
@@ -96,8 +119,11 @@ class ImageGallery extends React.PureComponent<Props, State> {
           ))}
         </div>
         <Lightbox
+          key={rotation}
           preloadNextImage
           showThumbnails
+          customControls={[rotate]}
+          theme={{ figure: {transform: `rotate(${rotation}deg)`}}}
           images={images}
           currentImage={currentImage}
           isOpen={open}
