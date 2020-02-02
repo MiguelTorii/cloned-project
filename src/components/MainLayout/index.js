@@ -518,7 +518,7 @@ class MainLayout extends React.Component<Props, State> {
           </IconButton>
         </div>
         <List>
-          <ListItem button className={classes.newItem} onClick={this.handleCreatePostMenuOpen}>
+          <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
               <AddIcon
                 className={classes.newIcon}
@@ -540,6 +540,7 @@ class MainLayout extends React.Component<Props, State> {
             component={MyLink} 
             link="/"
             className={classNames(
+              'tour-onboarding-study',
               ['/', '/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           >
@@ -563,6 +564,7 @@ class MainLayout extends React.Component<Props, State> {
             component={MyLink} 
             link="/leaderboard"
             className={classNames(
+              'tour-onboarding-leaderboard',
               ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           >

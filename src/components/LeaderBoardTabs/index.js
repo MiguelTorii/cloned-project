@@ -146,7 +146,7 @@ const LeaderBoardTabs = ({
         setRewardButtonText('Grand Prize Info')
       }
       else {
-        setPrizeText('Your Top Picked Rewards')
+        setPrizeText('Gifts You Selected to Earn')
         const images = generalSelected.slots.map(s => s.thumbnail)
         setRewardButtonText('Rewards Store')
         setPrizeImgs(images)
@@ -208,12 +208,12 @@ const LeaderBoardTabs = ({
         </Dialog>
         <Button 
           onClick={() => setSelectedTab('tuesday')} 
-          className={selectedTab === 'tuesday' ? classes.selected : classes.tab }>
+          className={`${selectedTab === 'tuesday' ? classes.selected : classes.tab} tour-onboarding-leaderboard-tuesday`}>
           {tuesdayBoardName || <CircularProgress size={20} />}        
         </Button>
         <Button 
           onClick={() => setSelectedTab('grand')} 
-          className={selectedTab === 'grand' ? classes.selected : classes.tab }>
+          className={`${selectedTab === 'grand' ? classes.selected : classes.tab } tour-onboarding-leaderboard-grand`}>
           {grandBoardName}
         </Button>
         <div className={classes.divider} />

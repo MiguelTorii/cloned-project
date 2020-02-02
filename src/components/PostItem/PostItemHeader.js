@@ -29,6 +29,9 @@ const styles = theme => ({
     height: 100,
     padding: theme.spacing()
   },
+  body: {
+    wordBreak: 'break-all'
+  },
   avatar: {
     display: 'flex',
     alignItems: 'center',
@@ -199,7 +202,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           {title}
         </Typography>
         {!isMarkdown ? (
-          <Typography component="p" variant="h6">
+          <Typography className={classes.body} component="p" variant="h6">
             {body}
           </Typography>
         ) : (

@@ -8,7 +8,7 @@ let displayed = [];
 const Notifier = () => {
   const dispatch = useDispatch();
   const notifications = useSelector(store => store.notifications.items || []);
-  const pathname = useSelector(store => store.router.location.pathname || console.log(store));
+  const pathname = useSelector(store => store.router.location.pathname || '');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const storeDisplayed = (id) => {
@@ -52,7 +52,7 @@ const Notifier = () => {
       // keep track of snackbars that we've displayed
       storeDisplayed(key);
     });
-  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
+  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch, pathname]);
 
   return null;
 };

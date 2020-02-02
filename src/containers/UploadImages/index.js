@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import fetch from 'isomorphic-fetch';
 import update from 'immutability-helper';
@@ -9,6 +10,7 @@ import uuidv4 from 'uuid/v4';
 import arrayMove from 'array-move';
 import { withStyles } from '@material-ui/core/styles';
 import imageCompression from 'browser-image-compression'
+import * as notificationsActions from '../../actions/notifications';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import UploadImagesForm from '../../components/UploadImagesForm';
@@ -18,11 +20,16 @@ import ErrorBoundary from '../ErrorBoundary';
 const styles = theme => ({
   root: {
     padding: theme.spacing(2)
-  }
+  },
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  },
 });
 
 type Props = {
   classes: Object,
+  enqueueSnackbar: Function,
   user: UserState
 };
 
@@ -35,12 +42,14 @@ type Image = {
 
 type State = {
   images: Array<Image>,
+  loading: boolean,
   isDropzoneDisabled: boolean
 };
 
 class UploadImages extends React.PureComponent<Props, State> {
   state = {
     images: [],
+    loading: false,
     isDropzoneDisabled: false
   };
 
@@ -91,6 +100,7 @@ class UploadImages extends React.PureComponent<Props, State> {
   }
 
   handleDrop = acceptedFiles => {
+    this.setState({loading: true})
     acceptedFiles.forEach(async file => {
       const compressedFile = await this.compressImage(file)
       const url = URL.createObjectURL(compressedFile);
@@ -101,6 +111,7 @@ class UploadImages extends React.PureComponent<Props, State> {
         .then(blob => {
           const newImage = window.URL.createObjectURL(blob);
           this.setState(prevState => ({
+            loading: false,
             images: [
               ...prevState.images,
               {
@@ -118,7 +129,28 @@ class UploadImages extends React.PureComponent<Props, State> {
     });
   };
 
-  handleDropRejected = () => {};
+  handleDropRejected = (a) => {
+    this.setState({ loading: false })
+    const { enqueueSnackbar, classes } = this.props;
+    enqueueSnackbar({
+      notification: {
+        message: `Only PNG, JPG and JPEG of maximum 40 MB size files are supported at this time`,
+        options: {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left'
+          },
+          autoHideDuration: 3000,
+          ContentProps: {
+            classes: {
+              root: classes.stackbar
+            }
+          }
+        }
+      }
+    });
+  };
 
   handleUploadImages = async () => {
     const {
@@ -211,7 +243,7 @@ class UploadImages extends React.PureComponent<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { images, isDropzoneDisabled } = this.state;
+    const { images, loading, isDropzoneDisabled } = this.state;
     return (
       <ErrorBoundary>
         <div className={classes.root}>
@@ -222,6 +254,7 @@ class UploadImages extends React.PureComponent<Props, State> {
             onImageSave={this.handleImageSave}
             onImageRetry={this.handleImageRetry}
             onDrop={this.handleDrop}
+            loading={loading}
             onDropRejected={this.handleDropRejected}
             onSortEnd={this.handleSortEnd}
           />
@@ -235,7 +268,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(UploadImages));

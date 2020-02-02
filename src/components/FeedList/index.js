@@ -139,7 +139,7 @@ class FeedList extends React.PureComponent<Props, State> {
     } = this.props;
 
     return (
-      <div className={classes.container}>
+      <div className={`${classes.container} tour-onboarding-feed`}>
         {isLoading && (
           <div className={classes.loader}>
             <div className={classes.progress}>

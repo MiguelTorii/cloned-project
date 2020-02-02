@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import EditPhotoThumbnail from '../EditPhotoThumbnail';
 
 const styles = theme => ({
@@ -70,6 +71,7 @@ type Props = {
   classes: Object,
   images: Array<Image>,
   isDropzoneDisabled: boolean,
+  loading: boolean,
   onImageDelete: Function,
   onImageSave: Function,
   onDrop: Function,
@@ -95,6 +97,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
       onImageDelete,
       onImageSave,
       onDrop,
+      loading,
       onDropRejected,
       onImageRetry,
       onSortEnd
@@ -105,7 +108,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
           accept={['image/*']}
           onDrop={onDrop}
           onDropRejected={onDropRejected}
-          maxSize={4 * 1000000}
+          maxSize={4 * 10000000}
           disabled={isDropzoneDisabled}
         >
           {({ getRootProps, getInputProps }) => (
@@ -114,7 +117,10 @@ class UploadImagesForm extends React.PureComponent<Props> {
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
                   <Typography variant="h6" align="center">
-                    {"Drag 'n' drop some files here, or click to select files"}
+                    { loading ? 
+                      <CircularProgress size={50} /> : 
+                          `Drag 'n' drop some files here, or click select files. Only PNG, JPG and JPEG files are supported at this time`
+                    }
                   </Typography>
                   <CloudUploadIcon className={classes.uploadIconSize} />
                 </div>

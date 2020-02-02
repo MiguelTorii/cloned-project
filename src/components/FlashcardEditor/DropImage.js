@@ -56,7 +56,7 @@ class DropImage extends React.PureComponent<Props> {
           accept={['image/*']}
           onDrop={onDrop}
           onDropRejected={onDropRejected}
-          maxSize={4 * 1000000}
+          maxSize={4 * 10000000}
           multiple={false}
           disabled={isDropzoneDisabled}
         >
@@ -66,7 +66,7 @@ class DropImage extends React.PureComponent<Props> {
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
                   <Typography variant="h6">
-                    {"Drag 'n' drop your image here, or click to select a file"}
+                    Drag 'n' drop your image here, or click to select a file
                   </Typography>
                   <CloudUploadIcon className={classes.uploadIconSize} />
                 </div>

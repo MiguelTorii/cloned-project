@@ -24,6 +24,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import Image from "react-graceful-image";
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
@@ -68,6 +69,9 @@ const styles = theme => ({
       marginLeft: theme.spacing(1/2)
     }
   },
+  description: {
+    wordBreak: 'break-all'
+  },
   content: {
     padding: theme.spacing(),
     display: 'flex',
@@ -98,6 +102,7 @@ const styles = theme => ({
     width: 15
   },
   notePost: {
+    borderRadius: 10,
     minHeight: 75,
     maxHeight: 75,
     minWidth: 75,
@@ -245,15 +250,11 @@ class FeedItem extends React.PureComponent<Props, State> {
       );
     case 4:
       return (
-        <div
+        <Image
           className={classes.notePost}
-          style={{
-            background: `url(${data.noteUrl})`,
-            backgroundSize: 'cover',
-            borderRadius: 10
-          }}
+          src={data.noteUrl}
         />
-      );
+      )
     case 5:
       return <img src={linkPost} className={classes.imagePost} alt="Link" />;
     case 6:
@@ -407,7 +408,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               </Typography>
             </CardContent>
             <CardContent className={classes.content}>
-              <Typography component="p" variant="h6">
+              <Typography className={classes.description} component="p" variant="h6">
                 {description}
               </Typography>
               <span />
