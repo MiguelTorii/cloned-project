@@ -397,25 +397,6 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/question"
-        >
-          <ListItemIcon>
-            <ContactSupportIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Ask a Question"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="1K for replying with an answer, 25K points for being selected as best answer"
-          />
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
           link="/create/notes"
         >
           <ListItemIcon>
@@ -429,6 +410,25 @@ class MainLayout extends React.Component<Props, State> {
               color: 'textPrimary'
             }}
             secondary="10K points for initial page, 5K for second page and more points for more pages"
+          />
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link="/create/question"
+        >
+          <ListItemIcon>
+            <ContactSupportIcon />
+          </ListItemIcon>
+          <ListItemText
+            inset
+            primary="Ask a Question"
+            secondaryTypographyProps={{
+              variant: 'caption',
+              color: 'textPrimary'
+            }}
+            secondary="1K for replying with an answer, 25K points for being selected as best answer"
           />
         </MenuItem>
         <MenuItem

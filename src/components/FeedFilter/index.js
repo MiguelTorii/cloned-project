@@ -332,7 +332,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
           <Grid container>
             <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
-                <FormLabel component="legend">Post Type</FormLabel>
+                <FormLabel component="legend">Courses</FormLabel>
                 <FormGroup>
                   {classesList.map(item => (
                     <FormControlLabel
