@@ -119,7 +119,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
                   <Typography variant="h6" align="center">
                     { loading ? 
                       <CircularProgress size={50} /> : 
-                          `Drag 'n' drop some files here, or click select files. Only PNG, JPG and JPEG files are supported at this time`
+                          `Drag and drop a photo of your notes or click to select the photo: Only PNG, JPG and JPEG images`
                     }
                   </Typography>
                   <CloudUploadIcon className={classes.uploadIconSize} />

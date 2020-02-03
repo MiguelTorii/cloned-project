@@ -404,7 +404,7 @@ class MainLayout extends React.Component<Props, State> {
           </ListItemIcon>
           <ListItemText
             inset
-            primary="Upload Notes"
+            primary="Share Notes"
             secondaryTypographyProps={{
               variant: 'caption',
               color: 'textPrimary'

@@ -461,7 +461,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
               {channels.length === 0 ? (
                 <div className={classes.noMessages}>
                   <Typography variant="subtitle1" align="center">
-                    Start a study session by tapping on the icons above
+                     Begin an individual or group chat with any of your classmates by tapping on the icons above
                   </Typography>
                 </div>
               ) : (
