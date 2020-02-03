@@ -99,7 +99,7 @@ const Tour = ({ user, router }: Props) => {
       setRunning(false)
       setTimeout(() => {
         setStepIndex(stepIndex + 1)
-        setRunning(true)
+        setRunning(store.get('TOUR') !== 'VIEWED')
       }, 1000)
     }
   }, [stepIndex, pathname])
