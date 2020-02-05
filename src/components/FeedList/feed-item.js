@@ -251,6 +251,7 @@ class FeedItem extends React.PureComponent<Props, State> {
     case 4:
       return (
         <Image
+          noLazyLoad
           className={classes.notePost}
           src={data.noteUrl}
         />
