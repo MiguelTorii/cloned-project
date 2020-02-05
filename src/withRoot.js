@@ -59,6 +59,9 @@ const theme = createMuiTheme({
     }
   },
   palette: {
+    secondary: {
+      main: circleInTheme.primaryText1,
+    },
     primary: {
       main: circleInTheme.action
     },

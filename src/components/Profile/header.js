@@ -318,11 +318,14 @@ class Header extends React.PureComponent<Props, State> {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={8} sm={6} className={classes.gridInfo}>
+            <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
                 {name} {roleId === 2 && <TutorBadgeIcon />}
               </Typography>
-              <Grid container>
+              <Grid 
+                justify='space-between'
+                container
+              >
                 <Grid item xs={12} md={4} className={classes.status}>
                   <Typography variant="h4">
                     {points.toLocaleString()}
@@ -331,7 +334,7 @@ class Header extends React.PureComponent<Props, State> {
                     points
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={4} className={classes.status}>
+                <Grid item xs={12} md={2} className={classes.status}>
                   <Typography variant="h4">
                     {thanks.toLocaleString()}
                   </Typography>
@@ -339,7 +342,7 @@ class Header extends React.PureComponent<Props, State> {
                     thanks
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={4} className={classes.status}>
+                <Grid item xs={12} md={2} className={classes.status}>
                   <Typography variant="h4">
                     {bestAnswers.toLocaleString()}
                   </Typography>

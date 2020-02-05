@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -15,6 +14,9 @@ import Table from './table'
 import LoadImg from '../LoadImg'
 
 const styles = theme => ({
+  dialogTitle: {
+    color: theme.circleIn.palette.action,
+  },
   container: {
     margin: '32px auto 40px auto', 
     paddingBottom: 20,
@@ -88,7 +90,7 @@ const styles = theme => ({
     marginLeft: 10, 
   },
   dialogText: {
-    color: theme.palette.primary.main
+    color: theme.circleIn.palette.primaryText1
   },
   imgDialogContainer: {
     textAlign: 'center',
@@ -191,11 +193,13 @@ const LeaderBoardTabs = ({
     <div className={classes.container}>
       <div className={classes.header}>
         <Dialog onClose={handleCloseDialog} open={openDialog}>
-          <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogContent>
-            <div className={classes.imgDialogContainer}>
-              <LoadImg url={dialogLogo} style={imgDialogStyle} />
-            </div>
+            <DialogContentText 
+              variant="h4"
+              paragraph
+              className={classes.dialogTitle}>
+              {dialogTitle}
+            </DialogContentText>
             <DialogContentText className={classes.dialogText}>
               {dialogDescription}
             </DialogContentText>

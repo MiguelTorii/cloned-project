@@ -42,7 +42,7 @@ const styles = theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    height: '65vh',
+    height: '60vh',
     marginTop: theme.spacing(2)
   },
   center: {
@@ -213,7 +213,6 @@ class CreateChatChannelDialog extends React.PureComponent<Props, State> {
         disableBackdropClick={isLoading}
         disableEscapeKeyDown={isLoading}
         style={{ maxWidth: 600, margin: '0 auto' }}
-        fullScreen
         open={Boolean(open)}
         onClose={this.handleClose}
         fullWidth

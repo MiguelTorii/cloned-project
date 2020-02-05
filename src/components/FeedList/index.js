@@ -33,7 +33,7 @@ const styles = theme => ({
   },
   items: {
     overflowY: 'auto',
-    maxHeight: 'calc(100vh - 250px)',
+    // maxHeight: 'calc(100vh - 250px)',
     flex: 1,
     marginTop: theme.spacing()
   },

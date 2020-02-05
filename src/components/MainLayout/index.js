@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -41,6 +42,7 @@ import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboa
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 import './currentRoute.css'
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
+import GetApp from '../GetApp';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
 
@@ -55,7 +57,7 @@ const styles = theme => ({
       '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
     },
     '*::-webkit-scrollbar-thumb': {
-      backgroundColor: theme.circleIn.palette.brand,
+      backgroundColor: '#547686',
       borderRadius: 16,
       outline: '1px solid slategrey'
     }
@@ -225,6 +227,7 @@ type State = {
   anchorEl: ?string,
   mobileMoreAnchorEl: ?string,
   createPostAnchorEl: ?string,
+  openGetApp: boolean,
   openHowEarnPoints: boolean
 };
 
@@ -234,6 +237,7 @@ class MainLayout extends React.Component<Props, State> {
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
+    openGetApp: false,
     openHowEarnPoints: false
   };
 
@@ -295,6 +299,15 @@ class MainLayout extends React.Component<Props, State> {
     this.handleMenuClose();
     onManageBlockedUsers();
   };
+  
+  handleOpenGetApp = () => {
+    this.setState({ openGetApp: true });
+    this.handleMenuClose();
+  };
+  
+  handleCloseGetApp = () => {
+    this.setState({ openGetApp: false });
+  };
 
   handleOpenHowEarnPoints = () => {
     this.setState({ openHowEarnPoints: true });
@@ -311,6 +324,7 @@ class MainLayout extends React.Component<Props, State> {
       anchorEl,
       mobileMoreAnchorEl,
       createPostAnchorEl,
+      openGetApp,
       openHowEarnPoints
     } = this.state;
     const {
@@ -617,6 +631,16 @@ class MainLayout extends React.Component<Props, State> {
           </ListItem>
           <ListItem 
             button 
+            onClick={this.handleOpenGetApp}
+            className={classes.otherPath}
+          >
+            <ListItemIcon>
+              <SystemUpdateIcon />
+            </ListItemIcon>
+            <ListItemText primary="Get the Mobile App" />
+          </ListItem>
+          <ListItem 
+            button 
             onClick={this.handleOpenHowEarnPoints}
             className={classes.otherPath}
           >
@@ -725,6 +749,10 @@ class MainLayout extends React.Component<Props, State> {
             {children}
           </main>
         </div>
+        <GetApp
+          open={openGetApp}
+          onClose={this.handleCloseGetApp}
+        />
         <HowDoIEarnPoints
           open={openHowEarnPoints}
           onClose={this.handleCloseHowEarnPoints}

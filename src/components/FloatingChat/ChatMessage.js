@@ -39,7 +39,7 @@ const styles = theme => ({
   },
   message: {
     maxWidth: '100%',
-    marginTop: theme.spacing(),
+    marginBottom: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
@@ -70,7 +70,7 @@ const styles = theme => ({
     padding: '5px 10px 5px 10px',
     // backgroundColor: 'grey',
     // wordWrap: 'break-word',
-    minWidth: 270,
+    // minWidth: 270,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
