@@ -52,7 +52,8 @@ const Notifier = () => {
       // keep track of snackbars that we've displayed
       storeDisplayed(key);
     });
-  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch, pathname]);
+    // eslint-disable-next-line 
+  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
 
   return null;
 };

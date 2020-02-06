@@ -64,6 +64,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
     errorBody: ''
   };
 
+  uploadImages: {
+    handleUploadImages: Function
+  };
+
   handleSubmit = async event => {
     event.preventDefault();
     const { tags } = this.state;
@@ -104,6 +108,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           enqueueSnackbar({
             notification: {
               message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+              nextPath: '/feed',
               options: {
                 variant: 'success',
                 anchorOrigin: {
@@ -168,10 +173,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
   getLeftCharts = field => {
     // help ? 50 - help.length : 50;
     return 50 - field.length >= 0 ? 50 - field.length : 0;
-  };
-
-  uploadImages: {
-    handleUploadImages: Function
   };
 
   render() {

@@ -104,6 +104,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         enqueueSnackbar({
           notification: {
             message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            nextPath: '/feed',
             options: {
               variant: 'success',
               anchorOrigin: {
@@ -185,7 +186,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
             <Grid container alignItems="center">
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">
-                  {"What's your question?"}
+                  What's your question?
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
