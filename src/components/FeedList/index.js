@@ -162,7 +162,7 @@ class FeedList extends React.PureComponent<Props, State> {
               pageStart={0}
               loadMore={onLoadMore}
               hasMore={hasMore}
-              useWindow={false}
+              useWindow
               initialLoad={false}
               getScrollParent={() => this.scrollParentRef}
             >

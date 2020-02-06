@@ -241,20 +241,20 @@ class Feed extends React.PureComponent<Props, State> {
     const { push } = this.props;
     push(`/feed?id=${feedId}`);
     switch (typeId) {
-      case 3:
-        push(`/flashcards/${postId}`);
-        break;
-      case 4:
-        push(`/notes/${postId}`);
-        break;
-      case 5:
-        push(`/sharelink/${postId}`);
-        break;
-      case 6:
-        push(`/question/${postId}`);
-        break;
-      default:
-        break;
+    case 3:
+      push(`/flashcards/${postId}`);
+      break;
+    case 4:
+      push(`/notes/${postId}`);
+      break;
+    case 5:
+      push(`/sharelink/${postId}`);
+      break;
+    case 6:
+      push(`/question/${postId}`);
+      break;
+    default:
+      break;
     }
   };
 
