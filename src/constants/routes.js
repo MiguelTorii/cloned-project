@@ -51,6 +51,8 @@ export const API_ROUTES = {
   BLOCK_USER: `${API_URL}/user/blocks/create`,
   UNBLOCK_USER: `${API_URL}/user/blocks/destroy`,
   CLASSES: `${API_URL}/classes`,
+  SUBJECTS: `${API_URL_V1_2}/school/subjects`,
+  SECTIONS: `${API_URL_V1_2}/school/classes/sections`,
   MEDIA_URL: `${API_URL}/media/url`,
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
   QUESTION: `${API_URL}/question`,

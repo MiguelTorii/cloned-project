@@ -235,6 +235,81 @@ export const getAvailableClasses = async ({
   }
 };
 
+export const getAvailableSubjects = async (): Array => {
+  try {
+    const token = await getToken();
+    const result: Object = await axios.get(
+      `${API_ROUTES.SUBJECTS}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data: {subjects = []}
+    } = result;
+
+    return subjects;
+  } catch (err) {
+    return [];
+  }
+};
+
+export const getAvailableSubjectsClasses = async ({
+  subjectId
+}: {
+  subjectId: number
+}): Array => {
+  try {
+    const token = await getToken();
+    const result: Object = await axios.get(
+      `${API_ROUTES.SUBJECTS}/${subjectId}/classes`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data: {classes = []}
+    } = result;
+
+    return classes;
+  } catch (err) {
+    return [];
+  }
+};
+
+
+export const getAvailableClassesSections = async ({
+  classId
+}: {
+  classId: number
+}): Array => {
+  try {
+    const token = await getToken();
+    const result: Object = await axios.get(
+      `${API_ROUTES.SECTIONS}?class_id=${classId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data: {sections = []}
+    } = result;
+
+    return sections;
+  } catch (err) {
+    return [];
+  }
+};
+
 export const leaveUserClass = async ({
   classId,
   sectionId,

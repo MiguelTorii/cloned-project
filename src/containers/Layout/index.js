@@ -9,13 +9,13 @@ import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
+import AddRemoveClasses from 'components/AddRemoveClasses'
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications';
-import ClassesManager from '../ClassesManager';
 import BlockedUsersManager from '../BlockedUsersManager';
 import WebNotifications from '../WebNotifications'
 import RequestClass from '../RequestClass'
@@ -23,6 +23,7 @@ import Announcements from '../../components/Announcements';
 import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
 import Notifier from '../Notifier';
+import * as notificationsActions from '../../actions/notifications';
 
 const styles = theme => ({
   loader: {
@@ -42,6 +43,7 @@ type Props = {
   location: {pathname: string},
   checkUserSession: Function,
   signOut: Function,
+  enqueueSnackbar: Function,
   openCreateChatGroup: Function,
   push: Function
 };
@@ -175,6 +177,7 @@ class Layout extends React.PureComponent<Props, State> {
       user,
       signOut,
       isNaked,
+      enqueueSnackbar,
       location: { pathname }
     } = this.props;
     const {
@@ -222,9 +225,11 @@ class Layout extends React.PureComponent<Props, State> {
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          <ClassesManager
+          <AddRemoveClasses
+            userId={userId}
             open={manageClasses}
             onClose={this.handleCloseManageClasses}
+            enqueueSnackbar={enqueueSnackbar}
             onOpenRequestClass={this.handleOpenRequestClass}
           />
         </ErrorBoundary>
@@ -262,6 +267,7 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
       checkUserSession: signInActions.checkUserSession,
       signOut: signInActions.signOut,
       openCreateChatGroup: chatActions.openCreateChatGroup,

@@ -374,6 +374,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       if (items.length > 0) result.push({ name: item.name, classes: items });
       return result;
     }, []);
+    console.log(userClasses)
     return (
       <div>
         {filteredClasses.map(item => (
