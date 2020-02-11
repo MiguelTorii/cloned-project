@@ -86,6 +86,10 @@ class DateRange extends React.PureComponent<Props, State> {
 
   handleReset = () => {
     const { onChange } = this.props;
+    this.setState({
+      from: null,
+      to: null
+    })
     onChange('fromDate', null);
     onChange('toDate', null);
   };
@@ -105,13 +109,15 @@ class DateRange extends React.PureComponent<Props, State> {
 
   handleChange = d => () => {
     const { from } = this.state;
-    const date = moment(d)
+    const date = moment(d).utc()
     if (!from) {
       this.setState({ from: date });
     } else if (date.isBefore(from, 'day')) {
       this.setState({ from: date });
     } else if (date.isAfter(from, 'day')) {
-      this.setState({ to: date });
+      if (date.isSame(moment(), 'day')) {
+        this.setState({ to: moment().utc() })
+      }else this.setState({ to: date });
     }
   };
 

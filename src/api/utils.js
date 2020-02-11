@@ -269,11 +269,11 @@ export const generateFeedURL = ({
   }
 
   if (fromDate) {
-    queryString = `${queryString}&from_date=${fromDate.format('x')}`;
+    queryString = `${queryString}&from_date=${fromDate.valueOf()}`;
   }
 
   if (toDate) {
-    queryString = `${queryString}&to_date=${toDate.format('x')}`;
+    queryString = `${queryString}&to_date=${toDate.valueOf()}`;
   }
 
   url = `${url}${queryString}`;

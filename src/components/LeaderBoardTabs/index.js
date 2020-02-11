@@ -116,7 +116,6 @@ const LeaderBoardTabs = ({
   const [prizeImgs, setPrizeImgs] = useState([])
   const [rewardButtonText, setRewardButtonText] = useState('')
   const [dialogTitle, setDialogTitle] = useState('')
-  const [dialogLogo, setDialogLogo] = useState('')
   const [dialogDescription, setDialogDescription] = useState('')
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -140,7 +139,6 @@ const LeaderBoardTabs = ({
       setStudents(selected.students)
         
       setDialogTitle(data.grandDialog.text)
-      setDialogLogo(data.grandDialog.logoUrl)
       setDialogDescription(data.grandDialog.description)
       if (selectedTab === 'grand') {
         setPrizeText(generalSelected.text)
@@ -154,7 +152,7 @@ const LeaderBoardTabs = ({
         setPrizeImgs(images)
       }
     } catch(e) {
-      console.log(e)
+      // console.log(e)
     }
   }, [leaderboard, selectedTab])
 
@@ -184,10 +182,6 @@ const LeaderBoardTabs = ({
 
   const handleCloseDialog = () => setOpenDialog(false)
   const handleOpenDialog = () => setOpenDialog(true)
-  const imgDialogStyle = {
-    width: 75,
-    height: 75,
-  }
    
   return (
     <div className={classes.container}>

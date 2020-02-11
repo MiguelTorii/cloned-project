@@ -310,13 +310,13 @@ class FeedFilter extends React.PureComponent<Props, State> {
               </Badge>
             </IconButton>
           </div>
-          {/* <div className={classes.filtersFooter}> */}
-          {/* <DateRange */}
-          {/* from={fromDate} */}
-          {/* to={toDate} */}
-          {/* onChange={onChangeDateRange} */}
-          {/* /> */}
-          {/* </div> */}
+          <div className={classes.filtersFooter}> 
+            <DateRange 
+              from={fromDate} 
+              to={toDate} 
+              onChange={onChangeDateRange} 
+            /> 
+          </div> 
         </Paper>
         <Dialog
           open={open}

@@ -227,6 +227,7 @@ class Feed extends React.PureComponent<Props, State> {
   handleChangeDateRange = (range, date) => {
     const { updateFilter } = this.props;
     updateFilter({ field: range, value: date });
+    this.handleFetchFeed();
   };
 
   handlePostClick = ({
