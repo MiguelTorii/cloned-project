@@ -40,6 +40,19 @@ import type { FeedItem as Item } from '../../types/models';
 // const ranks = [bronze, silver, gold, platinum, diamond, master];
 
 const styles = theme => ({
+  numberOfCardsStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    height: 80,
+    width: 80,
+    fontSize: 30,
+    position: 'absolute',
+    textAlign: 'center',
+    background: 'rgba(0,0,0,0.25)',
+    transform: 'translate(-5px, -100%)'
+  },
   card: {
     // margin: theme.spacing(2)
     // borderWidth: 100,
@@ -234,6 +247,7 @@ class FeedItem extends React.PureComponent<Props, State> {
 
   renderImage = () => {
     const { classes, data } = this.props;
+    const { numberOfNotes } = data
     switch (data.typeId) {
     case 3:
       return (
@@ -250,11 +264,14 @@ class FeedItem extends React.PureComponent<Props, State> {
       );
     case 4:
       return (
-        <Image
-          noLazyLoad
-          className={classes.notePost}
-          src={data.noteUrl}
-        />
+        <div>
+          <Image
+            noLazyLoad
+            className={classes.notePost}
+            src={data.noteUrl}
+          />
+          {numberOfNotes > 1 && <div className={classes.numberOfCardsStyle}>+{numberOfNotes-1}</div>}
+        </div>
       )
     case 5:
       return <img src={linkPost} className={classes.imagePost} alt="Link" />;

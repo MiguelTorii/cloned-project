@@ -709,6 +709,7 @@ export const getPostMetadata = async ({
     const { data = {} } = result;
     const recommendedPosts = (data.recommended_posts || []).map(item => ({
       id: Number((item.id: number) || 0),
+      numberOfNotes: Number((item.page_notes: number) || 0),
       postId: Number((item.post_id: number) || 0),
       typeId: Number((item.type_id: number) || 0),
       userId: String((item.user_id: string) || ''),

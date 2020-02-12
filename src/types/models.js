@@ -332,6 +332,7 @@ export type BlockedUsers = Array<BlockedUser>;
 export type FeedItem = {
   userId: string,
   typeId: number,
+  numberOfNotes: number,
   feedId: number,
   postId: number,
   roleId: number,
