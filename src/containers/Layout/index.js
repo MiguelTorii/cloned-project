@@ -24,6 +24,7 @@ import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
 import Notifier from '../Notifier';
 import * as notificationsActions from '../../actions/notifications';
+import * as feedActions from '../../actions/feed';
 
 const styles = theme => ({
   loader: {
@@ -43,6 +44,7 @@ type Props = {
   location: {pathname: string},
   checkUserSession: Function,
   signOut: Function,
+  fetchFeed: Function,
   enqueueSnackbar: Function,
   openCreateChatGroup: Function,
   push: Function
@@ -94,6 +96,8 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   handleCloseManageClasses = () => {
+    const { fetchFeed } = this.props
+    fetchFeed()
     this.setState({ manageClasses: false });
   };
 
@@ -271,6 +275,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       checkUserSession: signInActions.checkUserSession,
       signOut: signInActions.signOut,
       openCreateChatGroup: chatActions.openCreateChatGroup,
+      fetchFeed: feedActions.fetchFeed,
       push: routePush
     },
     dispatch
