@@ -41,20 +41,6 @@ import type { FeedItem as Item } from '../../types/models';
 // const ranks = [bronze, silver, gold, platinum, diamond, master];
 
 const styles = theme => ({
-  numberOfCardsStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    height: 80,
-    width: 75,
-    fontSize: 30,
-    position: 'absolute',
-    textAlign: 'center',
-    background: 'rgba(0,0,0,0.25)',
-    transform: 'translate(0px, -80px)',
-    borderRadius: 10,
-  },
   card: {
     // margin: theme.spacing(2)
     // borderWidth: 100,
@@ -117,11 +103,24 @@ const styles = theme => ({
     width: 15
   },
   notePost: {
+    objectFit: 'cover',
     borderRadius: 10,
-    minHeight: 75,
-    maxHeight: 75,
-    minWidth: 75,
-    maxWidth: 75
+    width: 75,
+    height: 75
+  },
+  numberOfCardsStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    height: 75,
+    width: 77,
+    fontSize: 30,
+    position: 'absolute',
+    textAlign: 'center',
+    background: 'rgba(0,0,0,0.25)',
+    transform: 'translate(-1px, -77px)',
+    borderRadius: 10,
   },
   imagePost: {
     minHeight: 75,
