@@ -88,7 +88,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
   
   loadData = async () => {
-    this.setState({ isEdit: true })
     const {
       user: {
         data: { userId, segment }
@@ -98,6 +97,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     } = this.props;
     try {
       if(!noteId) return
+      this.setState({ isEdit: true })
       const photoNote = await getNotes({ userId, noteId });
       const { classes } = await getUserClasses({ userId });
       const userClasses = processClasses({ classes, segment });

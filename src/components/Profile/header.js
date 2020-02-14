@@ -10,25 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
 // $FlowIgnore
 import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
+// $FlowIgnore
 import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
 const styles = theme => ({
@@ -189,9 +179,8 @@ type State = {
 };
 
 class Header extends React.PureComponent<Props, State> {
-  state = {
-    open: false
-  };
+  // eslint-disable-next-line no-undef
+  fileInput: ?HTMLInputElement;
 
   handleOpenInputFile = () => {
     if (this.fileInput) this.fileInput.click();
@@ -206,17 +195,6 @@ class Header extends React.PureComponent<Props, State> {
     )
       onUpdateProfileImage(this.fileInput.files[0]);
   };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
 
   renderStudyCircle = () => {
     const { inStudyCircle, isStudyCircleLoading } = this.props;
@@ -252,17 +230,12 @@ class Header extends React.PureComponent<Props, State> {
       onStudyCircle
     } = this.props;
     
-    const { open } = this.state;
-
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
-          <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
-            <Avatar className={classes.helpIcon}>?</Avatar>
-          </ButtonBase>
           <Grid container>
             <Grid item xs={4} className={classes.gridAvatar}>
               <div className={classes.avatar}>
@@ -427,109 +400,6 @@ class Header extends React.PureComponent<Props, State> {
           <Tab label={isMyProfile ? 'My Stuff' : 'Posts'} />
           {isMyProfile && <Tab label="Bookmarks" />}
         </Tabs>
-        <Dialog
-          open={open}
-          onClose={this.handleClose}
-          fullWidth
-          maxWidth="md"
-          aria-labelledby="ranks-info-title"
-          aria-describedby="ranks-info-description"
-        >
-          <DialogContent>
-            <DialogContentText
-              id="ranks-points-description"
-              variant="h3"
-              paragraph
-              color="textPrimary"
-            >
-              What do ranks mean?
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              Ranks are a quick and easy way to see how active classmates are on
-              CircleIn. Check the breakdown below to learn what each rank means
-              and the perks of achieving each rank!
-            </DialogContentText>
-            <div className={classes.content}>
-              <img src={bronze} alt="Bronze" className={classes.contentIcon} />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Bronze
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  0 - 248,000 Points
-                </DialogContentText>
-              </div>
-            </div>
-            <div className={classes.content}>
-              <img src={silver} alt="Silver" className={classes.contentIcon} />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Silver
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  248,001 - 630,000 Points
-                </DialogContentText>
-              </div>
-            </div>
-            <div className={classes.content}>
-              <img src={gold} alt="Gold" className={classes.contentIcon} />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Gold
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  630,001 - 1,630,000 Points
-                </DialogContentText>
-              </div>
-            </div>
-            <div className={classes.content}>
-              <img
-                src={platinum}
-                alt="Platinum"
-                className={classes.contentIcon}
-              />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Platinum
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  1,630,001 - 4,130,000 Points
-                </DialogContentText>
-              </div>
-            </div>
-            <div className={classes.content}>
-              <img
-                src={diamond}
-                alt="Diamond"
-                className={classes.contentIcon}
-              />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Diamond
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  4,130,001 - 6,830,000 Points
-                </DialogContentText>
-              </div>
-            </div>
-            <div className={classes.content}>
-              <img src={master} alt="Master" className={classes.contentIcon} />
-              <div>
-                <DialogContentText color="textPrimary" variant="h5">
-                  Master
-                </DialogContentText>
-                <DialogContentText color="textPrimary">
-                  6,830,000+ Points
-                </DialogContentText>
-              </div>
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
       </div>
     );
   }

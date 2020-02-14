@@ -123,7 +123,6 @@ class ClassesSelector extends React.PureComponent<Props, State> {
         error,
         data: { userId }
       },
-      sectionId
     } = this.props;
     const { userClasses, value, open, isEdit, openRequestClass } = this.state;
     if (isLoading) return <CircularProgress size={12} />;
