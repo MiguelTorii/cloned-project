@@ -71,7 +71,7 @@ const styles = theme => ({
     }
   },
   description: {
-    wordBreak: 'break-all'
+    wordBreak: 'break-word'
   },
   content: {
     padding: theme.spacing(),

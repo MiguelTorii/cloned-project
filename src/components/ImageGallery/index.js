@@ -148,6 +148,7 @@ class ImageGallery extends React.PureComponent<Props, State> {
           onClickNext={this.handleNext}
           onClose={this.handleClose}
           onClickThumbnail={this.handleClickThumbnail}
+          backdropClosesModal
         />
       </div>
     );

@@ -31,7 +31,7 @@ const styles = theme => ({
     padding: theme.spacing()
   },
   body: {
-    wordBreak: 'break-all'
+    wordBreak: 'break-word'
   },
   avatar: {
     display: 'flex',
