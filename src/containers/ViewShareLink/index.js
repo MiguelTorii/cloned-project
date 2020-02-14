@@ -133,6 +133,7 @@ class ViewShareLink extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      push,
       user: {
         data: {
           userId,
@@ -188,6 +189,9 @@ class ViewShareLink extends React.PureComponent<Props, State> {
                 onBookmark={this.handleBookmark}
                 onReport={this.handleReport}
                 onDelete={this.handleDelete}
+                postId={postId}
+                typeId={typeId}
+                pushTo={push}
               />
             </ErrorBoundary>
             <ErrorBoundary>

@@ -70,6 +70,53 @@ export const createFlashcards = async ({
   }
 };
 
+
+export const updateFlashcards = async ({
+  flashcardId,
+  classId,
+  userId,
+  title,
+  sectionId,
+  summary,
+  deck,
+}: {
+  flashcardId: string,
+  title: string,
+  userid: string,
+  classid: number,
+  sectionid: ?number,
+  summary: string,
+  deck: Array<Flashcard>,
+}): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+    const result = await axios.put(
+      `${API_ROUTES.FLASHCARDS}/${flashcardId}`,
+      {
+        user_id: Number(userId),
+        section_id: sectionId,
+        title,
+        summary,
+        deck,
+        class_id: classId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+
+    const { data } = result;
+    console.log(data)
+    const response = postResponseToCamelCase(data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
 export const createPhotoNote = async ({
   userId,
   title,
@@ -121,6 +168,95 @@ export const createPhotoNote = async ({
   }
 };
 
+export const updatePhotoNote = async ({
+  userId,
+  title,
+  classId,
+  sectionId,
+  fileNames,
+  comment,
+  noteId,
+}: {
+  noteId: string,
+  userId: string,
+  title: string,
+  classId: number,
+  sectionId: ?number,
+  fileNames: Array<string>,
+  comment: string,
+}): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+    const result = await axios.put(
+      `${API_ROUTES.PHOTO_NOTE}/${noteId}`,
+      {
+        user_id: Number(userId),
+        title,
+        class_id: classId,
+        section_id: sectionId,
+        file_names: fileNames,
+        comment,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    try {
+      logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
+export const updateQuestion = async ({
+  userId,
+  questionId,
+  title,
+  body,
+  classId,
+  sectionId,
+}: {
+  userId: string,
+  questionId: number,
+  title: string,
+  body: string,
+  classId: number,
+  sectionId: ?number,
+}) => {
+  try {
+    const token = await getToken();
+    const result = await axios.put(
+      `${API_ROUTES.QUESTION}/${questionId}`,
+      {
+        user_id: Number(userId),
+        question_title: title,
+        question_body: body,
+        class_id: classId,
+        section_id: sectionId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    return {}
+  }
+};
 export const createQuestion = async ({
   userId,
   title,
@@ -431,6 +567,51 @@ export const createShareURL = async ({
     const { data } = result;
     const { url } = data;
     return url;
+  } catch (err) {
+    console.log(err);
+    return '';
+  }
+};
+
+export const updateShareURL = async ({
+  userId,
+  sectionId,
+  classId,
+  uri,
+  summary,
+  title,
+  sharelinkId
+}: {
+  sharelinkId: number,
+  userId: string,
+  classId: number,
+  sectionId: ?number,
+  uri: string,
+  title: string,
+  summary: string,
+}) => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.put(
+      `${API_ROUTES.SHARELINK}/${sharelinkId}`,
+      {
+        user_id: Number(userId),
+        section_id: sectionId,
+        title,
+        summary,
+        uri,
+        class_id: classId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    return data;
   } catch (err) {
     console.log(err);
     return '';

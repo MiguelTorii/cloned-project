@@ -8,14 +8,24 @@ import Layout from '../../containers/Layout';
 import CreateShareLink from '../../containers/CreateShareLink';
 import PostTips from '../../components/PostTips';
 
-const CreateShareLinkPage = () => {
+type Props = {
+  match: {
+    params: {
+      sharelinkId: string
+    }
+  }
+};
+
+const CreateShareLinkPage = (props: Props) => {
+  const {match: {params: { sharelinkId }}} = props
+
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={9}>
-            <CreateShareLink />
+            <CreateShareLink sharelinkId={sharelinkId} />
           </Grid>
           <Grid item xs={12} sm={3}>
             <PostTips type="shareLink" />

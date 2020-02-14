@@ -381,27 +381,28 @@ class Profile extends React.PureComponent<Props, State> {
     const { push } = this.props;
     push(`/feed?id=${feedId}`);
     switch (typeId) {
-      case 3:
-        push(`/flashcards/${postId}`);
-        break;
-      case 4:
-        push(`/notes/${postId}`);
-        break;
-      case 5:
-        push(`/sharelink/${postId}`);
-        break;
-      case 6:
-        push(`/question/${postId}`);
-        break;
-      default:
-        break;
+    case 3:
+      push(`/flashcards/${postId}`);
+      break;
+    case 4:
+      push(`/notes/${postId}`);
+      break;
+    case 5:
+      push(`/sharelink/${postId}`);
+      break;
+    case 6:
+      push(`/question/${postId}`);
+      break;
+    default:
+      break;
     }
   };
 
   render() {
     const {
       classes,
-      user: { data: userData }
+      push,
+      user: { data: userData },
     } = this.props;
     const { segment = '', profileImage } = userData;
     const {
@@ -510,6 +511,7 @@ class Profile extends React.PureComponent<Props, State> {
                   onPostClick={this.handlePostClick}
                   onBookmark={this.handleBookmark}
                   onReport={this.handleReport}
+                  pushTo={push}
                   onDelete={this.handleDelete}
                   onUserClick={this.handleUserClick}
                 />
@@ -520,6 +522,7 @@ class Profile extends React.PureComponent<Props, State> {
                 <ProfilePosts
                   userId={userData.userId}
                   posts={bookmarks}
+                  pushTo={push}
                   isMyProfile={userId === userData.userId}
                   isBookmarks
                   onShare={this.handleShare}

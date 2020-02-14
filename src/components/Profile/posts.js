@@ -37,6 +37,7 @@ type Props = {
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
+  pushTo: Function,
   onUserClick: Function
 };
 
@@ -44,6 +45,7 @@ class Posts extends React.PureComponent<Props> {
   render() {
     const {
       classes,
+      pushTo,
       userId,
       posts,
       isMyProfile,
@@ -61,9 +63,7 @@ class Posts extends React.PureComponent<Props> {
         return (
           <div className={cx(classes.container, classes.nothing)}>
             <Typography variant="h6" color="textPrimary" align="center">
-              {
-                'It looks like you have no bookmarks yet. Explore the Feed and bookmark your favorite posts.'
-              }
+              It looks like you have no bookmarks yet. Explore the Feed and bookmark your favorite posts.
             </Typography>
           </div>
         );
@@ -85,6 +85,8 @@ class Posts extends React.PureComponent<Props> {
           {posts.map(item => (
             <FeedItem
               key={item.feedId}
+              postId={item.postId}
+              typeId={item.typeId}
               userId={userId}
               data={item}
               handleShareClick={onShare}
@@ -92,6 +94,7 @@ class Posts extends React.PureComponent<Props> {
               onBookmark={onBookmark}
               onReport={onReport}
               onDelete={onDelete}
+              pushTo={pushTo}
               onUserClick={onUserClick}
             />
           ))}

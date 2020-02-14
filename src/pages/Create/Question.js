@@ -8,14 +8,24 @@ import Layout from '../../containers/Layout';
 import CreateQuestion from '../../containers/CreateQuestion';
 import PostTips from '../../components/PostTips';
 
-const CreateQuestionPage = () => {
+type Props = {
+  match: {
+    params: {
+      questionId: string
+    }
+  }
+};
+
+const CreateQuestionPage = (props: Props) => {
+  const {match: {params: { questionId }}} = props
+
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={9}>
-            <CreateQuestion />
+            <CreateQuestion questionId={questionId} />
           </Grid>
           <Grid item xs={12} sm={3}>
             <PostTips type="question" />

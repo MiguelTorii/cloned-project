@@ -78,6 +78,7 @@ type Props = {
   loading: boolean,
   onDelete: Function,
   onSubmit: Function,
+  isNew: boolean,
   onDrop: Function,
   onDropRejected: Function
 };
@@ -96,7 +97,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
     question: '',
     answer: '',
     isFlipped: false,
-    open: true,
+    open: false,
     questionImage: false,
     answerImage: false
   };
@@ -105,6 +106,14 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
     super(props);
     // $FlowIgnore
     this.myRef = React.createRef();
+  }
+
+  componentDidMount = () => {
+    const { isNew, question, answer } = this.props
+    if(isNew) this.setState({open: true})
+    else {
+      this.setState({ question, answer });
+    }
   }
 
   componentDidUpdate = prevProps => {

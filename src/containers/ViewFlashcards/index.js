@@ -151,6 +151,7 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      push,
       user: {
         data: {
           userId,
@@ -199,6 +200,9 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
                 userProfileUrl={userProfileUrl}
                 classroomName={courseDisplayName}
                 created={created}
+                pushTo={push}
+                postId={postId}
+                typeId={typeId}
                 body={summary}
                 title={title}
                 bookmarked={bookmarked}
@@ -214,14 +218,14 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
             <ErrorBoundary>
               <div className={classes.flashcards}>
                 {// $FlowIgnore
-                deck.map(({ id, question, answer }, index) => (
-                  <Flashcard
-                    key={id}
-                    index={index + 1}
-                    question={question}
-                    answer={answer}
-                  />
-                ))}
+                  deck.map(({ id, question, answer }, index) => (
+                    <Flashcard
+                      key={id}
+                      index={index + 1}
+                      question={question}
+                      answer={answer}
+                    />
+                  ))}
               </div>
             </ErrorBoundary>
             <ErrorBoundary>

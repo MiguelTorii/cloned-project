@@ -133,6 +133,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      push,
       user: {
         data: {
           userId,
@@ -179,6 +180,9 @@ class ViewNotes extends React.PureComponent<Props, State> {
           <PostItem feedId={feedId}>
             <ErrorBoundary>
               <PostItemHeader
+                pushTo={push}
+                postId={postId}
+                typeId={typeId}
                 currentUserId={userId}
                 userId={ownerId}
                 name={name}

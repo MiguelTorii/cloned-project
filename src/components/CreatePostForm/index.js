@@ -70,6 +70,8 @@ type Props = {
   subtitle: string,
   children: Node,
   loading: boolean,
+   changed: boolean,
+  buttonLabel: string,
   handleSubmit: Function
 };
 
@@ -80,11 +82,17 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     const {
       classes,
       title,
+      buttonLabel,
       subtitle,
       children,
       loading,
+      changed,
       handleSubmit
     } = this.props;
+
+    const { location: {pathname}} = window
+    const isEdit = pathname.includes('/edit')
+
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
@@ -102,10 +110,10 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  disabled={loading}
+                  disabled={loading || (isEdit && !changed)}
                   className={classes.submit}
                 >
-                  Create
+                  {buttonLabel || 'Create'}
                 </Button>
                 {loading && (
                   <CircularProgress

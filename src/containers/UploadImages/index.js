@@ -27,21 +27,31 @@ const styles = theme => ({
   },
 });
 
-type Props = {
-  classes: Object,
-  enqueueSnackbar: Function,
-  user: UserState
-};
-
 type Image = {
   id: string,
   image: string,
   file: Object,
-  type: string
+  type: string,
+};
+
+type ImageUrl = {
+  fullNoteUrl: string,
+  note: string,
+  noteUrl: string,
+}
+
+type Props = {
+  classes: Object,
+  enqueueSnackbar: Function,
+  // eslint-disable-next-line
+  notes: Array<ImageUrl>,
+  imageChange: Function,
+  user: UserState
 };
 
 type State = {
   images: Array<Image>,
+  firstLoad: boolean,
   loading: boolean,
   isDropzoneDisabled: boolean
 };
@@ -49,11 +59,46 @@ type State = {
 class UploadImages extends React.PureComponent<Props, State> {
   state = {
     images: [],
+    firstLoad: true,
     loading: false,
     isDropzoneDisabled: false
   };
 
+  componentWillReceiveProps = async nextProps => {
+    const { firstLoad } = this.state 
+    if (!firstLoad) return
+    const { notes } = nextProps
+    notes.forEach(n => {
+      const url = n.fullNoteUrl
+      fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+          const newImage = window.URL.createObjectURL(blob);
+          const { note } = n
+          const { type } = blob
+          const extension = this.getFileExtension(note);
+          this.setState(prevState => ({
+            firstLoad: false,
+            images: [
+              ...prevState.images,
+              {
+                image: newImage,
+                file: blob,
+                id: `${uuidv4()}.${extension}`,
+                loaded: true,
+                loading: false,
+                error: false,
+                type
+              }
+            ]
+          }));
+        });
+    })
+
+  }
+
   handleImageDelete = (id: string) => {
+    const { imageChange } = this.props
     const newState = update(this.state, {
       images: {
         $apply: b => {
@@ -67,7 +112,7 @@ class UploadImages extends React.PureComponent<Props, State> {
         }
       }
     });
-
+    imageChange()
     this.setState(newState);
   };
 
@@ -96,6 +141,8 @@ class UploadImages extends React.PureComponent<Props, State> {
       maxWidthOrHeight: 1920,
       useWebWorker: true
     }
+    const { imageChange } = this.props
+    imageChange()
     return imageCompression(file, options)
   }
 
@@ -168,6 +215,7 @@ class UploadImages extends React.PureComponent<Props, State> {
       type: 3,
       fileNames
     });
+
     return axios
       .all(
         images.map(async item => {
@@ -176,8 +224,7 @@ class UploadImages extends React.PureComponent<Props, State> {
         })
       )
       .then(
-        axios.spread((...data) => {
-          console.log(data);
+        axios.spread(() => {
           this.setImagesUploaded();
           return images;
         })
@@ -228,7 +275,7 @@ class UploadImages extends React.PureComponent<Props, State> {
       },
       isDropzoneDisabled: { $set: false }
     });
-    this.setState(newState);
+    setTimeout(() => this.setState(newState), 4000);
   };
 
   getFileExtension = filename => filename.split('.').pop();
@@ -244,6 +291,7 @@ class UploadImages extends React.PureComponent<Props, State> {
   render() {
     const { classes } = this.props;
     const { images, loading, isDropzoneDisabled } = this.state;
+
     return (
       <ErrorBoundary>
         <div className={classes.root}>

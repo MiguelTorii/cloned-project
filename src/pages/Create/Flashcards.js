@@ -8,14 +8,23 @@ import Layout from '../../containers/Layout';
 import CreateFlashcards from '../../containers/CreateFlashcards';
 import PostTips from '../../components/PostTips';
 
-const CreateShareLinkPage = () => {
+type Props = {
+  match: {
+    params: {
+      flashcardId: string
+    }
+  }
+};
+
+const CreateShareLinkPage = (props: Props) => {
+  const {match: {params: { flashcardId }}} = props
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={9}>
-            <CreateFlashcards />
+            <CreateFlashcards flashcardId={flashcardId}/>
           </Grid>
           <Grid item xs={12} sm={3}>
             <PostTips type="flashcards" />

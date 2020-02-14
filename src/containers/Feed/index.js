@@ -264,6 +264,7 @@ class Feed extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      push,
       user: {
         data: { userId }
       },
@@ -308,6 +309,7 @@ class Feed extends React.PureComponent<Props, State> {
               handleShare={this.handleShare}
               onPostClick={this.handlePostClick}
               onBookmark={this.handleBookmark}
+              pushTo={push}
               onReport={this.handleReport}
               onDelete={this.handleDelete}
               onLoadMore={this.handleLoadMore}

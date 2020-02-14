@@ -28,33 +28,45 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
-  onChange: Function
+  onChange: Function,
+  classId: ?number,
+  sectionId: ?number
 };
 
 type State = {
   userClasses: Array<SelectType>,
   value: string,
   open: boolean,
+  isEdit: boolean,
   openRequestClass: boolean
 };
 
 class ClassesSelector extends React.PureComponent<Props, State> {
   state = {
     userClasses: [],
+    isEdit: false,
     value: '',
     open: false,
     openRequestClass: false
   };
 
-  componentDidMount = async () => {
-    this.mounted = true;
-    await this.handleLoadClasses();
-  };
 
   componentWillUnmount = () => {
     this.mounted = false;
   };
 
+  componentDidMount = async () => {
+    this.mounted = true;
+    const { location: {pathname}} = window
+    if (pathname.includes('/edit')) this.setState({ isEdit: true })
+    await this.handleLoadClasses();
+  };
+
+  componentWillReceiveProps = nextProps => {
+    const {classId, sectionId} = nextProps
+    if (classId && sectionId) this.setState({value: JSON.stringify({classId, sectionId})})
+  }
+  
   handleLoadClasses = async () => {
     try {
       const {
@@ -110,9 +122,10 @@ class ClassesSelector extends React.PureComponent<Props, State> {
         isLoading,
         error,
         data: { userId }
-      }
+      },
+      sectionId
     } = this.props;
-    const { userClasses, value, open, openRequestClass } = this.state;
+    const { userClasses, value, open, isEdit, openRequestClass } = this.state;
     if (isLoading) return <CircularProgress size={12} />;
     if (userId === '' || error)
       return 'Oops, there was an error loading your data, please try again.';
@@ -126,6 +139,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                 // native
                 value={value}
                 name="userClasses"
+                disabled={isEdit}
                 label="Select a Class"
                 onChange={this.handleChange}
                 variant="outlined"

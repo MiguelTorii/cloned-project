@@ -103,10 +103,13 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control({ selectProps, innerProps, innerRef, children }) {
+  const {isDisabled} = selectProps
+
   return (
     <TextField
       fullWidth
       variant="outlined"
+      disabled={isDisabled}
       InputProps={{
         inputComponent,
         inputProps: {
@@ -170,9 +173,11 @@ function Option({
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
+  const { isDisabled } = selectProps
+
   return (
     <Typography
-      color="textPrimary"
+      color={isDisabled ? "disabled" : "textPrimary"}
       className={selectProps.classes.placeholder}
       {...innerProps}
     >

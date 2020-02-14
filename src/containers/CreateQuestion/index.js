@@ -7,6 +7,7 @@ import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { processClasses } from 'containers/ClassesSelector/utils';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -16,10 +17,11 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import RichTextEditor from '../RichTextEditor';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createQuestion } from '../../api/posts';
+import { createQuestion, getQuestion, updateQuestion } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
+import { getUserClasses } from '../../api/user';
 
 const styles = theme => ({
   stackbar: {
@@ -32,6 +34,7 @@ type Props = {
   classes: Object,
   user: UserState,
   pushTo: Function,
+  questionId: number,
   enqueueSnackbar: Function
 };
 
@@ -45,6 +48,7 @@ type State = {
   tagsError: boolean,
   errorDialog: boolean,
   errorTitle: string,
+  changed: ?boolean,
   errorBody: string
 };
 
@@ -59,18 +63,99 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     tagsError: false,
     errorDialog: false,
     errorTitle: '',
+    changed: null,
     errorBody: ''
   };
 
   componentDidMount = () => {
+    const { questionId } = this.props
+    if( questionId) this.loadData()
     logEvent({
       event: 'Home- Start Ask Question',
       props: {}
     });
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
+  loadData = async () => {
+    const {
+      user: {
+        data: { userId, segment }
+      },
+      questionId
+    } = this.props;
+    const question = await getQuestion({ userId, questionId });
+    const { classes } = await getUserClasses({ userId });
+    const userClasses = processClasses({ classes, segment });
+    const { sectionId } = JSON.parse(userClasses[0].value);
+    const { body, title, classId } = question
+    this.setState({ body, title, classId, sectionId });
+    const {
+      postInfo: { feedId }
+    } = question;
+
+    logEvent({
+      event: 'Feed- Edit Question',
+      props: { 'Internal ID': feedId }
+    });
+  };
+
+  updateQuestion = async () => {
+    this.setState({ loading: true });
+    try {
+      const {
+        user: {
+          data: { userId = '' }
+        },
+        pushTo,
+        questionId
+      } = this.props;
+      const { title, body, classId, sectionId } = this.state;
+
+      const res = await updateQuestion({
+        userId,
+        questionId,
+        title,
+        body,
+        classId,
+        sectionId,
+      });
+
+      if (!res.success) throw new Error('Couldnt update')
+      
+      const { enqueueSnackbar, classes } = this.props;
+      enqueueSnackbar({
+        notification: {
+          message: `Successfully updated`,
+          nextPath: `/question/${questionId}`,
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 7000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
+          }
+        }
+      });
+
+      pushTo(`/question/${questionId}`);
+      this.setState({ loading: false })
+    } catch (err) {
+      this.setState({
+        loading: false,
+        errorDialog: true,
+        errorTitle: 'Unknown Error',
+        errorBody: 'Please try again'
+      });
+    }
+  };
+
+  createQuestion = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
       this.setState({ tagsError: true });
@@ -133,11 +218,22 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     }
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    const { questionId } = this.props
+    if(questionId) this.updateQuestion()
+    else this.createQuestion()
+  }
+
   handleTextChange = name => event => {
+    this.setState({ changed: true })
     this.setState({ [name]: event.target.value });
   };
 
   handleRTEChange = value => {
+    const { changed } = this.state
+    if (changed === null) this.setState({ changed: false })
+    else this.setState({ changed: true })
     this.setState({ body: value });
   };
 
@@ -162,15 +258,18 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { questionId, classes } = this.props;
     const {
       loading,
+      classId,
+      sectionId,
       title,
       body,
       tags,
       tagsError,
       errorDialog,
       errorTitle,
+      changed,
       errorBody
     } = this.state;
 
@@ -181,7 +280,9 @@ class CreateQuestion extends React.PureComponent<Props, State> {
             title="Ask a Question"
             subtitle="When you enter a question here, the question gets sent to your classmates to provide you with the help you need"
             loading={loading}
+            changed={changed}
             handleSubmit={this.handleSubmit}
+            buttonLabel={questionId ? 'Save' : 'Create'}
           >
             <Grid container alignItems="center">
               <Grid item xs={12} sm={2}>
@@ -213,7 +314,10 @@ class CreateQuestion extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                <ClassesSelector onChange={this.handleClassChange} />
+                <ClassesSelector 
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={this.handleClassChange} />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Tags</Typography>

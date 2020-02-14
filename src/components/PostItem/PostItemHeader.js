@@ -16,6 +16,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CreateIcon from '@material-ui/icons/Create';
 import Markdown from './Markdown';
 import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
@@ -73,6 +74,9 @@ type Props = {
   roleId: number,
   onBookmark: Function,
   onReport: Function,
+  postId: Number,
+  typeId: Number,
+  pushTo: Function,
   onDelete: Function
 };
 
@@ -107,6 +111,19 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     const { onDelete } = this.props;
     this.handleMenuClose();
     onDelete();
+  };
+
+  handleEdit = () => {
+    const {
+      postId,
+      typeId,
+      pushTo
+    } = this.props;
+    this.handleMenuClose();
+    if (typeId === 3) pushTo(`/edit/flashcards/${String(postId)}`)
+    if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`)
+    if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`)
+    if (typeId === 6) pushTo(`/edit/question/${String(postId)}`)
   };
 
   render() {
@@ -154,12 +171,20 @@ class PostItemHeader extends React.PureComponent<Props, State> {
             <ListItemText inset primary="Report" />
           </MenuItem>
         ) : (
-          <MenuItem onClick={this.handleDelete}>
-            <ListItemIcon color="inherit">
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Delete" />
-          </MenuItem>
+          <div>
+            <MenuItem onClick={this.handleEdit}> 
+              <ListItemIcon color="inherit"> 
+                <CreateIcon /> 
+              </ListItemIcon> 
+              <ListItemText inset primary="Edit" /> 
+            </MenuItem> 
+            <MenuItem onClick={this.handleDelete}>
+              <ListItemIcon color="inherit">
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText inset primary="Delete" />
+            </MenuItem>
+          </div>
         )}
       </Menu>
     );

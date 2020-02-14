@@ -8,14 +8,23 @@ import Layout from '../../containers/Layout';
 import CreateNotes from '../../containers/CreateNotes';
 import PostTips from '../../components/PostTips';
 
-const CreateNotesPage = () => {
+type Props = {
+  match: {
+    params: {
+      noteId: string
+    }
+  }
+};
+
+const CreateNotesPage = (props: Props) => {
+  const {match: {params: { noteId }}} = props
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={9}>
-            <CreateNotes />
+            <CreateNotes noteId={noteId} />
           </Grid>
           <Grid item xs={12} sm={3}>
             <PostTips type="notes" />

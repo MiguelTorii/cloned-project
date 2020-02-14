@@ -6,6 +6,20 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
+import Image from "react-graceful-image";
+
+const ImgComponent = React.forwardRef(({ item }, ref) => 
+  <Image
+    noLazyLoad
+    ref={ref}
+    style={{
+      width: 120,
+      height: 120
+    }}
+    src={item.thumbnail}
+  />
+)
+
 
 const styles = theme => ({
   root: {
@@ -32,6 +46,7 @@ const styles = theme => ({
 
 type Images = {
   original: string,
+  src: string,
   thumbnail: string
 };
 
@@ -110,12 +125,14 @@ class ImageGallery extends React.PureComponent<Props, State> {
               key={item.thumbnail}
               className={classes.button}
               onClick={this.handleClick(index)}
-              style={{
-                backgroundImage: `url(${item.thumbnail})`,
-                backgroundSize: 'cover',
-                backgroundPosition: '50% 50%'
-              }}
-            />
+              // style={{
+              // backgroundImage: `url(${item.thumbnail})`,
+              // backgroundSize: 'cover',
+              // backgroundPosition: '50% 50%'
+              // }}
+            >
+              <ImgComponent item={item} />
+            </ButtonBase>
           ))}
         </div>
         <Lightbox

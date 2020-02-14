@@ -24,6 +24,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import CreateIcon from '@material-ui/icons/Create';
 import Image from "react-graceful-image";
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
@@ -46,12 +47,13 @@ const styles = theme => ({
     justifyContent: 'center',
     color: 'white',
     height: 80,
-    width: 80,
+    width: 75,
     fontSize: 30,
     position: 'absolute',
     textAlign: 'center',
     background: 'rgba(0,0,0,0.25)',
-    transform: 'translate(-5px, -100%)'
+    transform: 'translate(0px, -80px)',
+    borderRadius: 10,
   },
   card: {
     // margin: theme.spacing(2)
@@ -170,6 +172,7 @@ type Props = {
   userId: string,
   data: Item,
   handleShareClick: Function,
+  pushTo: Function,
   onPostClick: Function,
   onBookmark: Function,
   onReport: Function,
@@ -227,6 +230,19 @@ class FeedItem extends React.PureComponent<Props, State> {
     } = this.props;
     this.handleMenuClose();
     onDelete({ feedId });
+  };
+
+  handleEdit = () => {
+    const {
+      data: { postId, typeId },
+      pushTo
+    } = this.props;
+
+    this.handleMenuClose();
+    if (typeId === 3) pushTo(`/edit/flashcards/${postId}`)
+    if (typeId === 4) pushTo(`/edit/notes/${postId}`)
+    if (typeId === 5) pushTo(`/edit/sharelink/${postId}`)
+    if (typeId === 6) pushTo(`/edit/question/${postId}`)
   };
 
   handleUserClick = () => {
@@ -330,12 +346,20 @@ class FeedItem extends React.PureComponent<Props, State> {
             <ListItemText inset primary="Report" />
           </MenuItem>
         ) : (
-          <MenuItem onClick={this.handleDelete}>
-            <ListItemIcon color="inherit">
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Delete" />
-          </MenuItem>
+          <div>
+            <MenuItem onClick={this.handleEdit}>
+              <ListItemIcon color="inherit">
+                <CreateIcon />
+              </ListItemIcon>
+              <ListItemText inset primary="Edit" />
+            </MenuItem>
+            <MenuItem onClick={this.handleDelete}>
+              <ListItemIcon color="inherit">
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText inset primary="Delete" />
+            </MenuItem>
+          </div>
         )}
       </Menu>
     );

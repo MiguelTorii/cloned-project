@@ -29,12 +29,12 @@ type Props = {
 };
 
 type State = {
-  inputValue: string
+  inputValue: string,
 };
 
 class TagsAutoComplete extends React.PureComponent<Props, State> {
   state = {
-    inputValue: ''
+    inputValue: '',
   };
 
   handleLoadOptions = async (search, loadedOptions, { page }) => {
@@ -55,6 +55,8 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { location: {pathname}} = window
+    const isEdit = pathname.includes('/edit')
     const { classes, error, tags, onChange } = this.props;
     const { inputValue } = this.state;
     return (
@@ -62,6 +64,7 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
         <div className={classes.root}>
           <AutoComplete
             values={tags}
+            isDisabled={isEdit}
             inputValue={inputValue}
             label="Tags (Optional)"
             placeholder="Search for tags (Optional)"

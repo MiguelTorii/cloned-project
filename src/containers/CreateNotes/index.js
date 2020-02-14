@@ -7,6 +7,7 @@ import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { processClasses } from 'containers/ClassesSelector/utils';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -16,9 +17,10 @@ import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createPhotoNote } from '../../api/posts';
+import { getNotes, updatePhotoNote, createPhotoNote } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
+import { getUserClasses } from '../../api/user';
 
 const styles = theme => ({
   stackbar: {
@@ -30,8 +32,15 @@ const styles = theme => ({
   }
 });
 
+type ImageUrl = {
+  fullNoteUrl: string,
+  note: string,
+  noteUrl: string,
+}
+
 type Props = {
   classes: Object,
+  noteId: string,
   user: UserState,
   pushTo: Function,
   enqueueSnackbar: Function
@@ -46,8 +55,11 @@ type State = {
   tags: Array<SelectType>,
   tagsError: boolean,
   errorDialog: boolean,
+  notes: Array<ImageUrl>,
   errorTitle: string,
-  errorBody: string
+  errorBody: string,
+  changed: ?boolean,
+  isEdit: boolean
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -57,10 +69,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
     classId: 0,
     sectionId: null,
     summary: '',
+    changed: null,
     tags: [],
+    notes: [],
     tagsError: false,
     errorDialog: false,
     errorTitle: '',
+    isEdit: false,
     errorBody: ''
   };
 
@@ -68,8 +83,48 @@ class CreateNotes extends React.PureComponent<Props, State> {
     handleUploadImages: Function
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
+  componentDidMount = async () => {
+    this.loadData();
+  };
+  
+  loadData = async () => {
+    this.setState({ isEdit: true })
+    const {
+      user: {
+        data: { userId, segment }
+      },
+      noteId,
+      pushTo
+    } = this.props;
+    try {
+      if(!noteId) return
+      const photoNote = await getNotes({ userId, noteId });
+      const { classes } = await getUserClasses({ userId });
+      const userClasses = processClasses({ classes, segment });
+      const { sectionId } = JSON.parse(userClasses[0].value);
+    
+      const {
+        title,
+        classId,
+        body,
+        tags,
+        notes
+      } = photoNote
+
+      this.setState({
+        title,
+        classId,
+        sectionId,
+        summary: body,
+        tags,
+        notes
+      })
+    } catch(e) {
+      pushTo('/feed');
+    }
+  };
+ 
+  createNotes = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
       this.setState({ tagsError: true });
@@ -103,30 +158,31 @@ class CreateNotes extends React.PureComponent<Props, State> {
           tags: tagValues
         });
 
-        if (points > 0) {
-          const { enqueueSnackbar, classes } = this.props;
-          enqueueSnackbar({
-            notification: {
-              message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
-              nextPath: '/feed',
-              options: {
-                variant: 'success',
-                anchorOrigin: {
-                  vertical: 'bottom',
-                  horizontal: 'left'
-                },
-                autoHideDuration: 7000,
-                ContentProps: {
-                  classes: {
-                    root: classes.stackbar
+        setTimeout(() => {
+          if (points > 0) {
+            const { enqueueSnackbar, classes } = this.props;
+            enqueueSnackbar({
+              notification: {
+                message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+                nextPath: '/feed',
+                options: {
+                  variant: 'success',
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                  },
+                  autoHideDuration: 7000,
+                  ContentProps: {
+                    classes: {
+                      root: classes.stackbar
+                    }
                   }
                 }
               }
-            }
-          });
-        }
-
-        pushTo('/feed');
+            });
+          }
+          pushTo('/feed')
+        }, 3000);
       } catch (err) {
         if (err.message === 'no images')
           this.setState({
@@ -146,8 +202,85 @@ class CreateNotes extends React.PureComponent<Props, State> {
     }
   };
 
+  updateNotes = async () => {
+    this.setState({ loading: true });
+    if (this.uploadImages) {
+      try {
+        const {
+          user: {
+            data: { userId = '' }
+          },
+          pushTo,
+          noteId
+        } = this.props;
+        const { title, classId, sectionId, summary } = this.state;
+        const images = await this.uploadImages.handleUploadImages();
+        const fileNames = images.map(item => item.id);
+
+        await updatePhotoNote({
+          noteId,
+          userId,
+          title,
+          classId,
+          sectionId,
+          fileNames,
+          comment: summary,
+        });
+
+
+        setTimeout(() => {
+          this.setState({ loading: false })
+          const { enqueueSnackbar, classes } = this.props;
+          enqueueSnackbar({
+            notification: {
+              message: `Successfully updated`,
+              nextPath: `/notes/${noteId}`,
+              options: {
+                variant: 'info',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                },
+                autoHideDuration: 7000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
+                }
+              }
+            }
+          });
+          pushTo(`/notes/${noteId}`)
+        }, 3000)
+
+      } catch (err) {
+        if (err.message === 'no images')
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Error',
+            errorBody: 'You must add at least 1 image'
+          });
+        else
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Unknown Error',
+            errorBody: 'Please try again'
+          });
+      }
+    }
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const {noteId} = this.props
+    if(noteId) this.updateNotes()
+    else this.createNotes()
+  }
+
   handleTextChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value, changed: true });
   };
 
   handleClassChange = ({
@@ -175,6 +308,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
     return 50 - field.length >= 0 ? 50 - field.length : 0;
   };
 
+  imageChange = () => this.setState({ changed: true })
+
   render() {
     const { classes } = this.props;
     const {
@@ -185,6 +320,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
       tagsError,
       errorDialog,
       errorTitle,
+      classId,
+      notes,
+      sectionId,
+      isEdit,
+      changed,
       errorBody
     } = this.state;
 
@@ -195,6 +335,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
             title="Share Notes"
             subtitle="When you upload your notes, it’s your classmates who can see them. You can help others by sharing and also get feedback too."
             loading={loading}
+            changed={changed}
+            buttonLabel={isEdit ? 'Save' : 'Share'}
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
@@ -215,7 +357,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                <ClassesSelector onChange={this.handleClassChange} />
+                <ClassesSelector 
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={this.handleClassChange} 
+                />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Summary</Typography>
@@ -254,6 +400,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} sm={10}>
                 <UploadImages
+                  notes={notes}
+                  imageChange={this.imageChange}
                   innerRef={node => {
                     this.uploadImages = node;
                   }}

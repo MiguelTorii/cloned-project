@@ -9,6 +9,7 @@ import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { processClasses } from 'containers/ClassesSelector/utils';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -18,10 +19,12 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createShareLink } from '../../api/posts';
+import { updateShareURL, createShareLink , getShareLink } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
+import { getUserClasses } from '../../api/user';
+
 
 const styles = theme => ({
   preview: {
@@ -37,6 +40,7 @@ type Props = {
   classes: Object,
   user: UserState,
   pushTo: Function,
+  sharelinkId: number,
   enqueueSnackbar: Function
 };
 
@@ -52,6 +56,7 @@ type State = {
   tagsError: boolean,
   errorDialog: boolean,
   errorTitle: string,
+  changed: ?boolean,
   errorBody: string
 };
 
@@ -65,6 +70,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     classId: 0,
     sectionId: null,
     tags: [],
+    changed: null,
     tagsError: false,
     errorDialog: false,
     errorTitle: '',
@@ -72,6 +78,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
+    const { sharelinkId } = this.props
+    if (sharelinkId) this.loadData()
+
     this.updatePreview = debounce(this.updatePreview, 1000);
     logEvent({
       event: 'Home- Start Share Link',
@@ -79,6 +88,41 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     });
   };
 
+  loadData = async () => {
+    const {
+      pushTo,
+      user: {
+        data: { userId, segment }
+      },
+      sharelinkId
+    } = this.props;
+    try {
+      const shareLink = await getShareLink({ userId, sharelinkId });
+      const { classes } = await getUserClasses({ userId });
+      const userClasses = processClasses({ classes, segment });
+      const { sectionId } = JSON.parse(userClasses[0].value);
+      const { classId, summary, title, uri} = shareLink
+      this.updatePreview(uri)
+      this.setState({ 
+        title,
+        summary,
+        url: uri,
+        classId,
+        sectionId,
+      });
+      const {
+        postInfo: { feedId }
+      } = shareLink;
+
+      logEvent({
+        event: 'Feed- Edit Link',
+        props: { 'Internal ID': feedId }
+      });
+    } catch(e) {
+      pushTo('/feed')
+    }
+  };
+  
   componentWillUnmount = () => {
     if (
       this.updatePreview.cancel &&
@@ -87,8 +131,69 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       this.updatePreview.cancel();
   };
 
-  handleSubmit = async event => {
-    event.preventDefault();
+  updateSharelink = async () => {
+    this.setState({ loading: true });
+    try {
+      const {
+        sharelinkId,
+        pushTo,
+        user: {
+          data: { userId = '' }
+        },
+      } = this.props;
+      const { title, summary, url, classId, sectionId } = this.state;
+
+      const res = await updateShareURL({
+        userId,
+        sharelinkId,
+        title,
+        summary,
+        uri: url,
+        classId,
+        sectionId,
+      });
+
+      if (!res.success) throw new Error(`Couldn't update`)
+
+      logEvent({
+        event: 'Feed- Update Share Link',
+        props: {}
+      });
+
+      const { enqueueSnackbar, classes } = this.props;
+      enqueueSnackbar({
+        notification: {
+          message: `Successfully updated`,
+          nextPath: `/sharelink/${sharelinkId}`,
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 7000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
+          }
+        }
+      });
+      
+      pushTo(`/sharelink/${sharelinkId}`)
+      this.setState({ loading: false })
+    } catch (err) {
+      this.setState({
+        loading: false,
+        errorDialog: true,
+        errorTitle: 'Unknown Error',
+        errorBody: 'Please try again'
+      });
+    }
+  };
+
+  createSharelink = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
       this.setState({ tagsError: true });
@@ -159,8 +264,15 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     }
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    const {sharelinkId} = this.props
+    if(sharelinkId) this.updateSharelink()
+    else this.createSharelink()
+  }
+
   handleTextChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value, changed: true });
     if (name === 'url') this.updatePreview(event.target.value);
   };
 
@@ -189,16 +301,19 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { sharelinkId, classes } = this.props;
     const {
       loading,
       title,
+      classId,
+      sectionId,
       summary,
       url,
       preview,
       tags,
       tagsError,
       errorDialog,
+      changed,
       errorTitle,
       errorBody
     } = this.state;
@@ -210,6 +325,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             title="Share Link"
             subtitle="If you find something helpful or insightful, get the link, and share with your classmates. You’ll find out quickly that other students will benefit like you."
             loading={loading}
+            buttonLabel={sharelinkId ? 'Save' : 'Create'}
+            changed={changed}
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
@@ -232,7 +349,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                <ClassesSelector onChange={this.handleClassChange} />
+                <ClassesSelector 
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={this.handleClassChange} 
+                />
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Description</Typography>

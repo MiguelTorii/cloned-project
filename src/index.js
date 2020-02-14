@@ -26,7 +26,6 @@ import CreateFlashcards from './pages/Create/Flashcards';
 import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
 import CreateShareLink from './pages/Create/ShareLink';
-import EditQuestion from './pages/Edit/Question';
 import Profile from './pages/Profile';
 import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
@@ -110,6 +109,11 @@ ReactDOM.render(
             />
             <Route
               exact
+              path="/edit/sharelink/:sharelinkId"
+              component={withTracker(CreateShareLink)}
+            />
+            <Route
+              exact
               path="/question/:questionId"
               component={withTracker(Question)}
             />
@@ -120,7 +124,17 @@ ReactDOM.render(
             />
             <Route
               exact
+              path="/edit/flashcards/:flashcardId"
+              component={withTracker(CreateFlashcards)}
+            />
+            <Route
+              exact
               path="/create/question"
+              component={withTracker(CreateQuestion)}
+            />
+            <Route
+              exact
+              path="/edit/question/:questionId"
               component={withTracker(CreateQuestion)}
             />
             <Route
@@ -130,13 +144,18 @@ ReactDOM.render(
             />
             <Route
               exact
+              path="/edit/notes/:noteId"
+              component={withTracker(CreateNotes)}
+            />
+            <Route
+              exact
               path="/create/sharelink"
               component={withTracker(CreateShareLink)}
             />
             <Route
               exact
-              path="/edit/question/:id"
-              component={withTracker(EditQuestion)}
+              path="/edit/sharelink/:sharelinkId"
+              component={withTracker(CreateShareLink)}
             />
             <Route
               exact

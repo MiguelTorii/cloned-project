@@ -84,6 +84,7 @@ type Props = {
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
+  pushTo: Function,
   onLoadMore: Function,
   onUserClick: Function
 };
@@ -133,6 +134,7 @@ class FeedList extends React.PureComponent<Props, State> {
       onReport,
       onDelete,
       hasMore,
+      pushTo,
       fromFeedId,
       onLoadMore,
       onUserClick
@@ -184,6 +186,7 @@ class FeedList extends React.PureComponent<Props, State> {
                     }}
                     onPostClick={onPostClick}
                     onBookmark={onBookmark}
+                    pushTo={pushTo}
                     onReport={onReport}
                     onDelete={onDelete}
                     onUserClick={onUserClick}

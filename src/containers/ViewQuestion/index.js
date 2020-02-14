@@ -132,6 +132,7 @@ class ViewQuestion extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      push,
       user: {
         data: {
           userId,
@@ -175,6 +176,9 @@ class ViewQuestion extends React.PureComponent<Props, State> {
             <ErrorBoundary>
               <PostItemHeader
                 currentUserId={userId}
+                pushTo={push}
+                postId={postId}
+                typeId={typeId}
                 userId={ownerId}
                 name={name}
                 userProfileUrl={userProfileUrl}
