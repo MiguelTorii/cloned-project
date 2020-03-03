@@ -122,8 +122,8 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
             <RichTextEditor
               placeholder={
                 isQuestion
-                  ? 'Know the answer? Reply here'
-                  : 'Have a question? Ask here'
+                  ? 'Have an answer or a comment'
+                  : 'Have a question or a comment? Enter it here'
               }
               value={value}
               onChange={this.handleRTEChange}
@@ -133,8 +133,8 @@ class PostItemAddComment extends React.PureComponent<Props, State> {
               id="outlined-bare"
               placeholder={
                 isQuestion
-                  ? 'Know the answer? Reply here'
-                  : 'Have a question? Ask here'
+                  ? 'Have an answer or a comment'
+                  : 'Have a question or a comment? Enter it here'
               }
               value={value}
               margin="normal"
