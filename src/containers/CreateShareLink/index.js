@@ -212,10 +212,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
       const tagValues = tags.map(item => Number(item.value));
 
-      const {
-        points,
-        user: { firstName }
-      } = await createShareLink({
+
+      const res = await createShareLink({
         userId,
         title,
         summary,
@@ -225,13 +223,30 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         tags: tagValues
       });
 
+      const {
+        points,
+        linkId,
+        user: { firstName }
+      } = res
+
+      const { enqueueSnackbar, classes } = this.props;
+
+      if (linkId === 0) {
+        this.setState({
+          loading: false,
+          errorDialog: true,
+          errorTitle: 'Invalid Link',
+          errorBody: 'Please try again'
+        });
+        return
+      }
+
       logEvent({
         event: 'Feed- Share Link',
         props: {}
       });
 
       if (points > 0) {
-        const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar({
           notification: {
             message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
