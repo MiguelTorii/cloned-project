@@ -282,7 +282,7 @@ class AccountForm extends React.PureComponent<Props, State> {
           name="birthdate"
           disableFuture
           openTo="year"
-          format="DD/MM/YYYY"
+          format="MM/DD/YYYY"
           views={['year', 'month', 'day']}
           disabled={loading}
           className={classes.picker}

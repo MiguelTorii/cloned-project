@@ -160,13 +160,13 @@ class DateRange extends React.PureComponent<Props, State> {
   renderButtonText = () => {
     const { from, to } = this.props;
     if (from && to) {
-      return `${from.format('DD/MM/YYYY')} - ${to.format('DD/MM/YYYY')}`;
+      return `${from.format('MM/DD/YYYY')} - ${to.format('MM/DD/YYYY')}`;
     }
     if (from) {
-      return `${from.format('DD/MM/YYYY')} -`;
+      return `${from.format('MM/DD/YYYY')} -`;
     }
     if (to) {
-      return `- ${to.format('DD/MM/YYYY')}`;
+      return `- ${to.format('MM/DD/YYYY')}`;
     }
     return 'Date';
   };
