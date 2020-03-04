@@ -167,12 +167,22 @@ const LeaderBoardTabs = ({
       display: 'flex'
     }
 
+    const placeholder = {
+      height: 74,
+      width: 75,
+      paddingTop: 2,
+      marginRight: 8,
+      border: '1px dashed gray',
+      borderRadius: 16,
+    }
+
     if (window.innerWidth > 400)
       return (
         <div style={containerStyle}>
           {prizeImgs.map(img => (
             <LoadImg key={img} url={img} style={imgStyle} />
           ))}
+          {selectedTab === 'tuesday' && [...Array(3-prizeImgs.length)].map(() => <div style={placeholder} />)}
         </div>
       )
     return null
