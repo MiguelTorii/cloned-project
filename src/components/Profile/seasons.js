@@ -301,14 +301,14 @@ class Seasons extends React.PureComponent<Props, State> {
               </div>
               <Typography variant="h6">Master</Typography>
             </Grid>
-          </Grid> */}
+          </Grid>
           <Grid container item xs={12} sm={8}>
             <LinearProgress
               variant="determinate"
               value={30}
               className={classes.progress}
             />
-          </Grid>
+          </Grid> */}
         </Paper>
         <Dialog
           open={open}
