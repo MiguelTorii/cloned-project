@@ -108,7 +108,7 @@ export const updateFlashcards = async ({
     );
 
     const { data } = result;
-    console.log(data)
+
     const response = postResponseToCamelCase(data);
     return response;
   } catch (err) {

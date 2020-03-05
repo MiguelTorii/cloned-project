@@ -147,6 +147,7 @@ export const commentsToCamelCase = (comments: Object): Comments => {
         hours: Number((item.user.hours: number) || 0),
         joined: String((item.user.joined: string) || ''),
         rank: Number((item.user.rank: number) || 0),
+        isTutor: Boolean((item.user.is_tutor) || false),
         scholarshipPoints: Number((item.user.scholarship_points: number) || 0),
         schoolId: Number((item.user.school_id: number) || 0),
         state: String((item.user.state: string) || '')

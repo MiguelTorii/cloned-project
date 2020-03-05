@@ -20,12 +20,13 @@ import Link from '@material-ui/core/Link';
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ReplyIcon from '@material-ui/icons/Reply';
 import green from '@material-ui/core/colors/green';
+import TutorBadge from 'components/TutorBadge'
 import PostItemAddComment from './PostItemAddComment';
 import DialogTitle from '../DialogTitle';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 const styles = theme => ({
   container: {
@@ -49,11 +50,12 @@ const styles = theme => ({
   },
   header: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
   },
   created: {
-    paddingLeft: theme.spacing()
+    paddingLeft: 0
   },
   markdown: {
     paddingTop: theme.spacing(),
@@ -96,6 +98,11 @@ const styles = theme => ({
       backgroundColor: green[500],
       color: 'white'
     }
+  },
+  link: {
+    '&:hover': {
+      textDecoration: 'none',
+    }
   }
 });
 
@@ -126,6 +133,7 @@ type Props = {
   onThanks: Function,
   onReport: Function,
   onDelete: Function,
+  isTutor: boolean,
   onBestAnswer: Function
 };
 
@@ -208,6 +216,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       readOnly,
       accepted,
       hasBestAnswer,
+      isTutor,
       isOwner
     } = this.props;
     const { showAddComment, open } = this.state;
@@ -230,7 +239,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   href={`/profile/${ownerId}`}
                   className={classes.link}
                 >
-                  {name}
+                  {name} {isTutor && <TutorBadge text='Tutor' />}
                 </Link>
               </Typography>
               <Typography
