@@ -12,14 +12,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import TutorBadge from 'components/TutorBadge'
 import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
 // $FlowIgnore
 import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
-// $FlowIgnore
-import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
 const styles = theme => ({
   container: {
@@ -293,7 +292,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                {name} {roleId === 2 && <TutorBadgeIcon />}
+                {name} {roleId === 2 && <TutorBadge text='Tutor' />}
               </Typography>
               <Grid 
                 justify='space-between'

@@ -17,8 +17,8 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
+import TutorBadge from 'components/TutorBadge'
 import Markdown from './Markdown';
-import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
 
@@ -210,7 +210,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               >
                 {name}
               </Link>{' '}
-              {roleId === 2 && <TutorBadgeIcon />}
+              {roleId === 2 && <TutorBadge text='Tutor' />}
             </Typography>
             <Typography component="p" variant="subtitle1" noWrap>
               {classroomName}

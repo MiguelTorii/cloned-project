@@ -26,6 +26,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
 import Image from "react-graceful-image";
+import TutorBadge from 'components/TutorBadge'
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
@@ -35,7 +36,6 @@ import questionPost from '../../assets/svg/ic_question_post.svg';
 // import platinum from '../../assets/svg/rank_platinum.svg';
 // import diamond from '../../assets/svg/rank_diamond.svg';
 // import master from '../../assets/svg/rank_master.svg';
-import { ReactComponent as TutorBadgeIcon } from '../../assets/svg/ic_tutor_badge.svg';
 import type { FeedItem as Item } from '../../types/models';
 
 // const ranks = [bronze, silver, gold, platinum, diamond, master];
@@ -406,9 +406,9 @@ class FeedItem extends React.PureComponent<Props, State> {
                       alt="Rank"
                       className={classes.rank}
                     /> */}
-                    {data.roleId === 2 && (
-                      <TutorBadgeIcon style={{ height: 15 }} />
-                    )}
+                    {data.roleId === 2 && ( 
+                      <TutorBadge text='Tutor' />
+                    )} 
                   </Typography>
                 </div>
               </CardActionArea>
