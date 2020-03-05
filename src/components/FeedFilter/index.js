@@ -18,7 +18,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -102,6 +101,10 @@ const styles = theme => ({
   },
   grow: {
     flex: 1
+  },
+  filterButton: {
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(1),
   }
 });
 
@@ -187,14 +190,14 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { classesList } = this.props;
     const values = [];
     switch (name) {
-    case 'postTypes':
-      values.push(...types.map(item => item.value));
-      break;
-    case 'userClasses':
-      values.push(...classesList.map(item => item.value));
-      break;
-    default:
-      break;
+      case 'postTypes':
+        values.push(...types.map(item => item.value));
+        break;
+      case 'userClasses':
+        values.push(...classesList.map(item => item.value));
+        break;
+      default:
+        break;
     }
     if (values.length > 0) {
       const newState = update(this.state, {
@@ -297,26 +300,27 @@ class FeedFilter extends React.PureComponent<Props, State> {
             >
               <RefreshIcon />
             </IconButton>
-            <IconButton
-              color="primary"
-              className={classes.iconButton}
+          </div>
+          <div className={classes.filtersFooter}>
+            <DateRange
+              from={fromDate}
+              to={toDate}
+              onChange={onChangeDateRange}
+            />
+            <Button
+              aria-haspopup="true"
               aria-label="Filter"
               aria-owns={open ? 'filter-popper' : undefined}
-              aria-haspopup="true"
+              className={classes.filterButton}
+              color="primary"
               onClick={this.handleClick}
+              variant={filterCount > 0 ? "contained" : "outlined"}
             >
-              <Badge badgeContent={filterCount} color="primary">
-                <FilterListIcon />
+              <Badge badgeContent={filterCount} color="secondary">
+                Filters
               </Badge>
-            </IconButton>
+            </Button>
           </div>
-          <div className={classes.filtersFooter}> 
-            <DateRange 
-              from={fromDate} 
-              to={toDate} 
-              onChange={onChangeDateRange} 
-            /> 
-          </div> 
         </Paper>
         <Dialog
           open={open}
@@ -362,16 +366,16 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   Deselect All
                 </Link>
               ) : (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
-                  className={classes.formButton}
-                  onClick={this.handleSelectAll('userClasses')}
-                >
-                  Select All
+                  <Link
+                    href={dudUrl}
+                    component="button"
+                    variant="body2"
+                    className={classes.formButton}
+                    onClick={this.handleSelectAll('userClasses')}
+                  >
+                    Select All
                 </Link>
-              )}
+                )}
             </Grid>
             <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
@@ -405,16 +409,16 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   Deselect All
                 </Link>
               ) : (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
-                  className={classes.formButton}
-                  onClick={this.handleSelectAll('postTypes')}
-                >
-                  Select All
+                  <Link
+                    href={dudUrl}
+                    component="button"
+                    variant="body2"
+                    className={classes.formButton}
+                    onClick={this.handleSelectAll('postTypes')}
+                  >
+                    Select All
                 </Link>
-              )}
+                )}
             </Grid>
           </Grid>
           <DialogActions className={classes.actions}>
