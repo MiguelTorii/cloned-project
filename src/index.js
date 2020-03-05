@@ -169,11 +169,11 @@ ReactDOM.render(
               component={withTracker(VideoCall)}
             />
             <Route exact path="/video-call" component={withTracker(StartVideo)} />
-            <Route
-              exact
-              path="/study-circle"
-              component={withTracker(StudyCircle)}
-            />
+            {/* <Route */}
+            {/* exact */}
+            {/* path="/study-circle" */}
+            {/* component={withTracker(StudyCircle)} */}
+            {/* /> */}
             <Route exact path="/auth" component={withTracker(Auth)} />
             <Route exact path="/login" component={withTracker(SignIn)} />
             <Route exact path="/signup" component={withTracker(SignUp)} />

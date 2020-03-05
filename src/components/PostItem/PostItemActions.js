@@ -12,7 +12,7 @@ import ShareIcon from '@material-ui/icons/Share';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
 // $FlowIgnore
-import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
+// import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
 
 const styles = theme => ({
   root: {
@@ -30,17 +30,17 @@ type Props = {
   classes: Object,
   isOwner: boolean,
   thanked: boolean,
-  inStudyCircle: boolean,
+  // inStudyCircle: boolean,
   questionsCount: number,
   thanksCount: number,
   viewCount: number,
   isThanksLoading: boolean,
-  isStudyCircleLoading: boolean,
+  // isStudyCircleLoading: boolean,
   isQuestion: boolean,
   noThanks: boolean,
   onShare: Function,
   onThanks: Function,
-  onStudyCircle: Function
+  // onStudyCircle: Function
 };
 
 class PostItemActions extends React.PureComponent<Props> {
@@ -51,19 +51,19 @@ class PostItemActions extends React.PureComponent<Props> {
     return <ThanksIcon />;
   };
 
-  renderStudyCircle = () => {
-    const { inStudyCircle, isStudyCircleLoading } = this.props;
-    if (isStudyCircleLoading) return <CircularProgress size={24} />;
-    if (inStudyCircle) return <StudyCircleIcon />;
-    return <StudyCircleIcon />;
-  };
+  // renderStudyCircle = () => {
+  // const { inStudyCircle, isStudyCircleLoading } = this.props;
+  // if (isStudyCircleLoading) return <CircularProgress size={24} />;
+  // if (inStudyCircle) return <StudyCircleIcon />;
+  // return <StudyCircleIcon />;
+  // };
 
   render() {
     const {
       classes,
       isOwner,
       thanked,
-      inStudyCircle,
+      // inStudyCircle,
       questionsCount,
       thanksCount,
       viewCount,
@@ -71,7 +71,7 @@ class PostItemActions extends React.PureComponent<Props> {
       isQuestion,
       onShare,
       onThanks,
-      onStudyCircle
+      // onStudyCircle
     } = this.props;
 
     return (
@@ -96,12 +96,12 @@ class PostItemActions extends React.PureComponent<Props> {
                   </Typography>
                 </Button>
               )}
-              <Button aria-label="Add to Study Circle" onClick={onStudyCircle}>
-                {this.renderStudyCircle()}
-                <Typography variant="subtitle1" className={classes.buttonText}>
-                  {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle
-                </Typography>
-              </Button>
+              {/* <Button aria-label="Add to Study Circle" onClick={onStudyCircle}> */}
+              {/* {this.renderStudyCircle()} */}
+              {/* <Typography variant="subtitle1" className={classes.buttonText}> */}
+              {/* {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle */}
+              {/* </Typography> */}
+              {/* </Button> */}
             </Fragment>
           )}
         </div>

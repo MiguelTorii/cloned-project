@@ -273,22 +273,23 @@ class Header extends React.PureComponent<Props, State> {
                     Upload Profile Photo
                   </Button>
                 </Fragment>
-              ) : (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  className={classes.button}
-                  onClick={onStudyCircle}
-                >
-                  {this.renderStudyCircle()}
-                  <Typography
-                    variant="subtitle1"
-                    className={classes.buttonText}
-                  >
-                    {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle
-                  </Typography>
-                </Button>
-              )}
+              ) : null}
+              {/* ( */}
+              {/* <Button */}
+              {/* variant="outlined" */}
+              {/* color="primary" */}
+              {/* className={classes.button} */}
+              {/* onClick={onStudyCircle} */}
+              {/* > */}
+              {/* {this.renderStudyCircle()} */}
+              {/* <Typography */}
+              {/* variant="subtitle1" */}
+              {/* className={classes.buttonText} */}
+              {/* > */}
+              {/* {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle */}
+              {/* </Typography> */}
+              {/* </Button> */}
+              {/* )} */}
             </Grid>
             <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>

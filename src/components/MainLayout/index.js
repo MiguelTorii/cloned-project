@@ -354,9 +354,9 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem component={MyLink} link={`/profile/${userId}`}>
           My Profile
         </MenuItem>
-        <MenuItem component={MyLink} link="/study-circle">
-          My Study Circle
-        </MenuItem>
+        {/* <MenuItem component={MyLink} link="/study-circle"> */}
+        {/* My Study Circle */}
+        {/* </MenuItem> */}
         <MenuItem onClick={this.handleManageClasses}>
           Add/Remove Classes
         </MenuItem>
