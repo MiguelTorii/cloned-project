@@ -178,6 +178,11 @@ const theme = createMuiTheme({
       root: {
         color: circleInTheme.primaryText1
       }
+    },
+    MuiDrawer: {
+      paperAnchorDockedLeft: {
+        borderRight: 'none'
+      }
     }
   }
 });

@@ -122,9 +122,11 @@ const styles = theme => ({
     whiteSpace: 'nowrap'
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: theme.circleIn.palette.primaryBackground,
   },
   drawerOpen: {
+    backgroundColor: theme.circleIn.palette.primaryBackground,
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
