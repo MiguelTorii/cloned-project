@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { bindActionCreators } from 'redux';
@@ -19,6 +20,7 @@ const LeaderBoards = ({
   updateLeaderboards,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
+  pushTo,
   updateGrandLeaderboards
 }) => {
   useEffect(() => {
@@ -39,6 +41,7 @@ const LeaderBoards = ({
         updateLeaderboardGrandInfo={updateLeaderboardGrandInfo}
         updateTuesdayLeaderboard={updateTuesdayLeaderboard}
         updateGrandLeaderboards={updateGrandLeaderboards}
+        pushTo={pushTo}
       />
     </div>
   )
@@ -54,7 +57,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateLeaderboards: leaderboardActions.updateLeaderboards,
       updateTuesdayLeaderboard: leaderboardActions.updateTuesdayLeaderboard,
       updateGrandLeaderboards: leaderboardActions.updateGrandLeaderboards,
-      updateLeaderboardGrandInfo: leaderboardActions.updateLeaderboardGrandInfo
+      updateLeaderboardGrandInfo: leaderboardActions.updateLeaderboardGrandInfo,
+      pushTo: push
     },
     dispatch
   );

@@ -103,6 +103,7 @@ const LeaderBoardTabs = ({
   leaderboard,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
+  pushTo,
   updateGrandLeaderboards
 }) => {
   const [selectedTab, setSelectedTab] = useState('tuesday')
@@ -258,6 +259,7 @@ const LeaderBoardTabs = ({
       </div>
       <Table 
         scoreLabel={scoreLabel}
+        pushTo={pushTo}
         students={students}
       />
     </div>

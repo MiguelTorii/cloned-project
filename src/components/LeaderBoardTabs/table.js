@@ -17,6 +17,7 @@ const styles = theme => ({
     border: 'none',
   },
   tr: {
+    cursor: 'pointer',
     backgroundColor: theme.circleIn.palette.modalBackground,
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.action} !important`,
@@ -52,7 +53,12 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 
-function SimpleTable({ classes, students, scoreLabel }) {
+const StudentTable = ({ 
+  classes, 
+  students, 
+  scoreLabel,
+  pushTo
+}) => {
   return (
     <div className={classes.root}>
       <Table className={classes.table}>
@@ -68,6 +74,7 @@ function SimpleTable({ classes, students, scoreLabel }) {
             <TableRow
               hover 
               key={s.userId}
+              onClick={() => pushTo(`/profile/${s.userId}`)}
               className={classes.tr}
             >
               <TableCell padding='none' className={classes.tdnp} align="center">{s.position}</TableCell>
@@ -81,4 +88,4 @@ function SimpleTable({ classes, students, scoreLabel }) {
   );
 }
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(StudentTable);
