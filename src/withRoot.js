@@ -140,8 +140,12 @@ const theme = createMuiTheme({
     },
     MuiInputBase: {
       input: {
-        height: 'fit-content'
-      }
+        height: 'fit-content',
+        '&:-webkit-autofill': {
+          transitionDelay: '9999s',
+          transitionProperty: 'background-color, color',
+        },
+      },
     },
     MuiInputLabel: {
       root: {
@@ -153,6 +157,11 @@ const theme = createMuiTheme({
         '& $notchedOutline': {
           borderColor: circleInTheme.inputBorderColor
         }
+      }
+    },
+    MuiDialog: {
+      paperWidthSm: {
+        minWidth: 200
       }
     },
     MuiSelect: {
