@@ -454,47 +454,47 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const { id, type } = item;
     try {
       switch (type) {
-        case 'date':
-          return <ChatMessageDate key={id} body={item.body} />;
-        case 'message':
-          return (
-            <ChatMessage
-              key={id}
-              userId={item.author}
-              name={item.name}
-              messageList={item.messageList}
-              avatar={getAvatar({ id: item.author, profileURLs })}
-              onImageLoaded={this.handleImageLoaded}
-              onStartVideoCall={this.handleStartVideoCall}
-              onImageClick={this.handleImageClick}
-            />
-          );
-        case 'own':
-          return (
-            <ChatMessage
-              key={id}
-              messageList={item.messageList}
-              isOwn
-              onImageLoaded={this.handleImageLoaded}
-              onStartVideoCall={this.handleStartVideoCall}
-              onImageClick={this.handleImageClick}
-            />
-          );
-        case 'end':
-          return (
-            <div
-              key={uuidv4()}
-              style={{
-                float: 'left',
-                clear: 'both'
-              }}
-              ref={el => {
-                this.end = el;
-              }}
-            />
-          );
-        default:
-          return null;
+      case 'date':
+        return <ChatMessageDate key={id} body={item.body} />;
+      case 'message':
+        return (
+          <ChatMessage
+            key={id}
+            userId={item.author}
+            name={item.name}
+            messageList={item.messageList}
+            avatar={getAvatar({ id: item.author, profileURLs })}
+            onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
+          />
+        );
+      case 'own':
+        return (
+          <ChatMessage
+            key={id}
+            messageList={item.messageList}
+            isOwn
+            onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
+          />
+        );
+      case 'end':
+        return (
+          <div
+            key={uuidv4()}
+            style={{
+              float: 'left',
+              clear: 'both'
+            }}
+            ref={el => {
+              this.end = el;
+            }}
+          />
+        );
+      default:
+        return null;
       }
     } catch (err) {
       console.log(err);

@@ -110,7 +110,7 @@ class FloatingChat extends React.PureComponent<Props, State> {
     } = this.props;
     const {
       user: {
-        data: { userId: prevUserId, profileImage: prevProfileImage }
+        data: { userId: prevUserId }
       },
       chat: {
         data: { uuid: prevUuid }
@@ -129,16 +129,15 @@ class FloatingChat extends React.PureComponent<Props, State> {
     if (uuid !== prevUuid && uuid !== '' && this.mounted)
       this.handleCreateChannelOpen('group');
 
-    if (profileImage !== prevProfileImage && prevProfileImage !== '') {
-      const { client } = this.state;
-      if (client && this.mounted) {
-        try {
+    const { client } = this.state;
+    if (client && this.mounted && profileImage !== '') {
+      try {
+        if (client.user.attributes.profileImageUrl !== profileImage)
           client.user.updateAttributes({
             ...client.user.attributes,
             profileImageUrl: profileImage
           });
-        } catch (err) {}
-      }
+      } catch (err) {}
     }
   };
 

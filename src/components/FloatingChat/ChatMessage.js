@@ -12,7 +12,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 // import bell from '../../assets/img/bell.png';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 const styles = theme => ({
   paper: {
@@ -164,7 +164,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
 
     // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
+    const dudUrl = '';
 
     if (imageKey !== '') {
       return (
