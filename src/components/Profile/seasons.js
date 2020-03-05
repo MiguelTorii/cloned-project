@@ -131,42 +131,46 @@ class Seasons extends React.PureComponent<Props, State> {
     this.setState({ value });
   };
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  // handleOpen = () => {
+  // this.setState({ open: true });
+  // };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  // handleClose = () => {
+  // this.setState({ open: false });
+  // };
 
   render() {
     const { classes, seasons } = this.props;
-    const { value, open } = this.state;
+    // const { 
+    // value, 
+    // open
+    // } = this.state;
 
+    const seasonAll = seasons.filter(s => s.name === 'All')
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <div className={classes.tabs}>
-            <Tabs
-              value={value}
-              onChange={this.handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              {seasons.map(item => (
-                <Tab
-                  key={item.seasonId}
-                  label={item.name}
-                  classes={{ textColorPrimary: classes.tab }}
-                />
-              ))}
-            </Tabs>
+            {/* <Tabs */}
+            {/* value={value} */}
+            {/* onChange={this.handleChange} */}
+            {/* indicatorColor="primary" */}
+            {/* textColor="primary" */}
+            {/* variant="scrollable" */}
+            {/* scrollButtons="auto" */}
+            {/* > */}
+            {/* {seasons.map(item => ( */}
+            {/* <Tab */}
+            {/* key={item.seasonId} */}
+            {/* label={item.name} */}
+            {/* classes={{ textColorPrimary: classes.tab }} */}
+            {/* /> */}
+            {/* ))} */}
+            {/* </Tabs> */}
           </div>
-          <ButtonBase className={classes.helpButton} onClick={this.handleOpen}>
-            <Avatar className={classes.helpIcon}>?</Avatar>
-          </ButtonBase>
+          {/* <ButtonBase className={classes.helpButton} onClick={this.handleOpen}> */}
+          {/* <Avatar className={classes.helpIcon}>?</Avatar> */}
+          {/* </ButtonBase> */}
           <Grid
             container
             justify="space-evenly"
@@ -178,31 +182,31 @@ class Seasons extends React.PureComponent<Props, State> {
           >
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].points.toLocaleString()}
+                {seasonAll[0].points.toLocaleString()}
               </Typography>
               <Typography variant="h6">Points</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].thanks.toLocaleString()}
+                {seasonAll[0].thanks.toLocaleString()}
               </Typography>
               <Typography variant="h6">Thanks Received</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].bestAnswers.toLocaleString()}
+                {seasonAll[0].bestAnswers.toLocaleString()}
               </Typography>
               <Typography variant="h6">Best Answers</Typography>
             </Grid>
             <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].reach.toLocaleString()}
+                {seasonAll[0].reach.toLocaleString()}
               </Typography>
               <Typography variant="h6">Reach</Typography>
             </Grid>
             {/* <Grid item className={classes.data}>
               <Typography variant="h3" gutterBottom>
-                {seasons[value].communityServiceHours.toLocaleString()}
+                {seasonAll[0].communityServiceHours.toLocaleString()}
               </Typography>
               <Typography variant="h6">Community Service Hours</Typography>
             </Grid> */}
@@ -310,83 +314,81 @@ class Seasons extends React.PureComponent<Props, State> {
             />
           </Grid> */}
         </Paper>
-        <Dialog
-          open={open}
-          onClose={this.handleClose}
-          fullWidth
-          maxWidth="md"
-          aria-labelledby="seasons-info-title"
-          aria-describedby="seasons-info-description"
-        >
-          <DialogContent>
-            <DialogContentText
-              id="seasons-info-description"
-              variant="h3"
-              paragraph
-              color="textPrimary"
-            >
-              Seasons
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              At the end of every Season, we reward the top students with a
-              Grand Prize. After the Season ends, we reset your points and
-              statistics, however you can still view them under the All section.
-              You can, also, view your season breakdown by month for a closer
-              view at your performance!
-            </DialogContentText>
-            <DialogContentText color="textPrimary" variant="h5" paragraph>
-              Thanks
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              When your classmates find your content useful (or you find another
-              student’s content useful), they have the opportunity to let you
-              know by pressing the Thanks! button on your post.
-            </DialogContentText>
-            <DialogContentText color="textPrimary" variant="h5" paragraph>
-              Points
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              There are several ways that you can help other students to earn
-              points: sharing class notes and helpful links (think Khan
-              Academy), asking and answering questions, starting or joining
-              video study sessions, creating study flashcards. Points earned
-              contribute to your weekly performance and season stats. Your
-              points are automatically redeemed the first Tuesday of every month
-              to your top ranked rewards.
-            </DialogContentText>
-            <DialogContentText color="textPrimary" variant="h5" paragraph>
-              Best Answer
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              When you answer a question, the student who asked the question has
-              the chance to choose the answer that helped them the most as Best
-              Answer. Your answer will then be tagged with the ‘Best Answer’
-              symbol so that other students can see that your reponse helped the
-              question-asker the most.
-            </DialogContentText>
-            <DialogContentText color="textPrimary" variant="h5" paragraph>
-              Reach
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              All of the views across all of your posts added up is your total
-              reach.
-            </DialogContentText>
-            {/* <DialogContentText color="textPrimary" variant="h5" paragraph>
-              Community Service Hours
-            </DialogContentText> */}
-            <DialogContentText color="textPrimary" paragraph>
-              This stat is our way of recognizing students who contribute to the
-              community. Community Service Hours can be redeemed for college and
-              job applications. To redeem your community service hours, email us
-              at Hello@CircleInApp.com
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
+        {/* <Dialog */}
+        {/* open={open} */}
+        {/* onClose={this.handleClose} */}
+        {/* fullWidth */}
+        {/* maxWidth="md" */}
+        {/* aria-labelledby="seasons-info-title" */}
+        {/* aria-describedby="seasons-info-description" */}
+        {/* > */}
+        {/* <DialogContent> */}
+        {/* <DialogContentText */}
+        {/* id="seasons-info-description" */}
+        {/* variant="h3" */}
+        {/* paragraph */}
+        {/* color="textPrimary" */}
+        {/* > */}
+        {/* Seasons */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* At the end of every Season, we reward the top students with a */}
+        {/* Grand Prize. After the Season ends, we reset your points and */}
+        {/* statistics, however you can still view them under the All section. */}
+        {/* You can, also, view your season breakdown by month for a closer */}
+        {/* view at your performance! */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" variant="h5" paragraph> */}
+        {/* Thanks */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* When your classmates find your content useful (or you find another */}
+        {/* student’s content useful), they have the opportunity to let you */}
+        {/* know by pressing the Thanks! button on your post. */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" variant="h5" paragraph> */}
+        {/* Points */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* There are several ways that you can help other students to earn */}
+        {/* points: sharing class notes and helpful links (think Khan */}
+        {/* Academy), asking and answering questions, starting or joining */}
+        {/* video study sessions, creating study flashcards. Points earned */}
+        {/* contribute to your weekly performance and season stats. Your */}
+        {/* points are automatically redeemed the first Tuesday of every month */}
+        {/* to your top ranked rewards. */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" variant="h5" paragraph> */}
+        {/* Best Answer */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* When you answer a question, the student who asked the question has */}
+        {/* the chance to choose the answer that helped them the most as Best */}
+        {/* Answer. Your answer will then be tagged with the ‘Best Answer’ */}
+        {/* symbol so that other students can see that your reponse helped the */}
+        {/* question-asker the most. */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" variant="h5" paragraph> */}
+        {/* Reach */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* All of the views across all of your posts added up is your total */}
+        {/* reach. */}
+        {/* </DialogContentText> */}
+        {/* {/* <DialogContentText color="textPrimary" variant="h5" paragraph> */}
+        {/* Community Service Hours */}
+        {/* </DialogContentText> */}
+        {/* <DialogContentText color="textPrimary" paragraph> */}
+        {/* This stat is our way of recognizing students who contribute to the */}
+        {/* community. Community Service Hours can be redeemed for college and */}
+        {/* job applications. To redeem your community service hours, email us */}
+        {/* at Hello@CircleInApp.com */}
+        {/* </DialogContentText> */}
+        {/* </DialogContent> */}
+        {/* <DialogActions> */}
+        {/* <Button onClick={this.handleClose} color="primary">Ok</Button> */}
+        {/* </DialogActions> */}
+        {/* </Dialog> */}
       </div>
     );
   }
