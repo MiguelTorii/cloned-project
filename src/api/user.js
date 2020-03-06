@@ -128,7 +128,8 @@ export const searchUsers = async ({
       lastName: user.last_name,
       profileImageUrl: user.profile_image_url,
       school: user.school,
-      userId: user.user_id
+      userId: user.user_id,
+      relationship: user.relationship,
     }));
   } catch (err) {
     console.log(err);

@@ -132,7 +132,7 @@ function Option({
   children,
   data
 }) {
-  const { avatar = '', initials = '', school = '', noAvatar = false } =
+  const { avatar = '', initials = '', school = '', noAvatar = false, relationship = '' } =
     data || {};
   if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
     return (
@@ -152,7 +152,7 @@ function Option({
         </ListItemAvatar>
         <ListItemText
           primary={children}
-          secondary={school}
+          secondary={relationship}
           secondaryTypographyProps={{ color: 'textPrimary' }}
         />
       </ListItem>

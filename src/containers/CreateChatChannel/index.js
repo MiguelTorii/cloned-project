@@ -109,7 +109,8 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         initials,
         userId: Number(user.userId),
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        relationship: user.relationship
       };
     });
     return {
