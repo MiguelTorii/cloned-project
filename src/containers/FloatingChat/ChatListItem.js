@@ -104,6 +104,7 @@ class ChatListItem extends React.PureComponent<Props, State> {
   render() {
     const { channel } = this.props;
     const { loading, name, unread, title, subTitle, groupImage } = this.state;
+    console.log(groupImage)
     return (
       <ErrorBoundary>
         <MainChatItem

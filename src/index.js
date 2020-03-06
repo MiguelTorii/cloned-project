@@ -15,7 +15,6 @@ import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
 import LeaderBoard from './pages/LeaderBoard';
-import Chat from './pages/Chat';
 import Notifications from './pages/Notifications';
 import Share from './pages/Share';
 import FlashCards from './pages/View/Flashcards';
@@ -30,7 +29,7 @@ import Profile from './pages/Profile';
 import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
-import StudyCircle from './pages/StudyCircle';
+// import StudyCircle from './pages/StudyCircle';
 import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
 import UpdateLMSUser from './containers/UpdateLMSUser';
@@ -85,7 +84,6 @@ ReactDOM.render(
             <Route exact path="/feed" component={withTracker(Feed)} />
             <Route exact path="/store" component={withTracker(Store)} />
             <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
-            <Route exact path="/chat" component={withTracker(Chat)} />
             <Route
               exact
               path="/notifications"

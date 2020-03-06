@@ -220,13 +220,13 @@ class Header extends React.PureComponent<Props, State> {
       chatLoading,
       uploading,
       tab,
-      inStudyCircle,
+      // inStudyCircle,
       isCirclein,
       roleId,
       onStartChat,
       onStartVideo,
       onChange,
-      onStudyCircle
+      // onStudyCircle
     } = this.props;
     
     const name = `${firstName} ${lastName}`;
