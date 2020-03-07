@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 import {
   signInActions,
   signUpActions,
+  userActions,
   rootActions
 } from '../constants/action-types';
 import type { Action } from '../types/action';
@@ -15,6 +16,10 @@ export type UserState = {
   isLoading: boolean,
   data: User,
   error: boolean,
+  userClasses: {
+    classNames: Array<string>,
+    canAddClasses: boolean,
+  },
   errorMessage: {
     title: string,
     body: string,
@@ -42,6 +47,10 @@ const defaultState = {
     updateProfile: [],
     lmsTypeId: -1,
     lmsUser: false
+  },
+  userClasses: {
+    classNames: [],
+    canAddClasses: false,
   },
   isLoading: false,
   error: false,
@@ -94,6 +103,11 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       errorMessage: { $set: defaultState.errorMessage },
       isLoading: { $set: false }
     });
+  case userActions.UPDATE_CLASSES:
+    return update(state, {
+      // $FlowFixMe
+      userClasses: { $set: action.payload.userClasses }
+    })
   case signInActions.SIGN_OUT_USER_REQUEST:
   case signInActions.SIGN_OUT_USER_SUCCESS:
   case rootActions.CLEAR_STATE:

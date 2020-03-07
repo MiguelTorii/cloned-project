@@ -29,6 +29,17 @@ export type CheckUserRequest = {
   type: 'CHECK_USER_REQUEST'
 };
 
+export type UpdateClasses = {
+  type: 'UPDATE_CLASSES',
+  payload: {
+    userClasses: {
+      classNames: Array<string>,
+      canAddClasses: boolean
+    }
+  }
+};
+
+
 export type SignOutUserRequest = {
   type: 'SIGN_OUT_USER_REQUEST'
 };
@@ -48,7 +59,8 @@ export type Action =
   | SignInUserRequest
   | SignInUserSuccess
   | SignInUserError
+  | UpdateClasses
   | SignInUserClearError
   | CheckUserRequest
   | SignOutUserRequest
-  | OpenCreateChatGroupChannelRequest;
+  | OpenCreateChatGroupChannelRequest

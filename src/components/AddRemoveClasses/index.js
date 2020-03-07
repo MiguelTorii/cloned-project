@@ -12,7 +12,8 @@ import TreeView from '@material-ui/lab/TreeView'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import TreeItem from '@material-ui/lab/TreeItem'
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
 import {
   leaveUserClass,
   joinClass,
@@ -21,6 +22,10 @@ import {
   getAvailableSubjectsClasses,
   getAvailableSubjects
 } from 'api/user'
+import * as notificationsActions from '../../actions/notifications';
+import * as userActions from '../../actions/user';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 
 const styles = theme => ({
   circleIn: {
@@ -37,26 +42,43 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  user: UserState,
   open: boolean,
-  userId: number,
   enqueueSnackbar: Function,
+  fetchClasses: Function,
   onClose: Function
 };
 
 const AddRemoveClasses = (props: Props) => {
-  const { userId, classes, enqueueSnackbar, open, onClose } = props;
+  const { 
+    classes, 
+    enqueueSnackbar, 
+    fetchClasses: updateClasses,
+    open, 
+    user: {
+      data: { userId }
+    },
+    onClose
+  } = props;
+
   const [tree, setTree] = useState({})
   const [loading, setLoading] = useState(false)
-  const [sections, setSections] = useState([])
+  const [sections, setSections] = useState({})
+  const [canAddClasses, setCanAddClasses] = useState(false)
 
   const fetchUserClasses = async () => {
     try {
       const res= await getUserClasses({ userId })
-      const sectionsArr = res.classes.map(c=> {
-        const {section} =c
-        return section.map(s=> s.sectionId)
-      }).flat()
-      setSections(sectionsArr)
+      const { permissions: { canAddClasses: cac }} = res
+      setCanAddClasses(cac)
+      const sectionsObj = {}
+      res.classes.forEach(c=> {
+        const {section, permissions} =c
+        section.forEach(s=> {
+          sectionsObj[`sc${s.sectionId}`] = {canLeave: permissions.canLeave}
+        })
+      })
+      setSections(sectionsObj)
     } catch(e) {
       enqueueSnackbar({
         notification: {
@@ -136,9 +158,10 @@ const AddRemoveClasses = (props: Props) => {
   const handleChange = async (classId, sectionId, name) => {
     setLoading(true)
     try{
-      if(sections.includes(sectionId)) {
+      if(Object.keys(sections).includes(`sc${sectionId}`)) {
         await leaveUserClass({ sectionId, classId, userId: String(userId) })
-        setSections(sections.filter(s => s !== sectionId))
+        delete sections[`sc${sectionId}`]
+        setSections(sections)
         enqueueSnackbar({
           notification: {
             message: `Left ${name}`,
@@ -158,33 +181,38 @@ const AddRemoveClasses = (props: Props) => {
           }
         });
       } else {
-        await joinClass({ classId, sectionId, userId: String(userId) })
-        setSections([sectionId, ...sections])
-        enqueueSnackbar({
-          notification: {
-            message: `Joined ${name}`,
-            options: {
-              variant: 'info',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'left'
-              },
-              autoHideDuration: 3000,
-              ContentProps: {
-                classes: {
-                  root: classes.stackbar
+        const {success} = await joinClass({ classId, sectionId, userId: String(userId) })
+        if(success){
+          sections[`sc${sectionId}`] = {}
+          setSections(sections)
+          enqueueSnackbar({
+            notification: {
+              message: `Joined ${name}`,
+              options: {
+                variant: 'info',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                },
+                autoHideDuration: 3000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
                 }
               }
             }
-          }
-        });
+          });
+        }
       }
+
+      await updateClasses()
     } catch(e){
       enqueueSnackbar({
         notification: {
           message: `Couldn't change class settings`,
           options: {
-            variant: 'success',
+            variant: 'error',
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'left'
@@ -203,14 +231,12 @@ const AddRemoveClasses = (props: Props) => {
   }
   
   useEffect(() => {
-    if(userId) fetchUserClasses()
+    if(open) {
+      fetchSubjects()
+      if(userId) fetchUserClasses()
+    }
     // eslint-disable-next-line
-  }, [userId])
-
-  useEffect(() => {
-    fetchSubjects()
-    // eslint-disable-next-line
-  }, [])
+  }, [userId, open])
   
   return (
     <Dialog
@@ -264,9 +290,11 @@ const AddRemoveClasses = (props: Props) => {
                       <TreeItem nodeId='sections' />
                       {Object.keys(classC.sections).map(sc => {
                         const section = classC.sections[sc]
+                        
                         return (<div key={sc}>
                           <Checkbox
-                            checked={sections.includes(section.sectionId)}
+                            checked={Boolean(sections[sc])}
+                            disabled={(sections[sc] && !sections[sc].canLeave) || !canAddClasses}
                             onChange={() => handleChange(section.classId, section.sectionId, `${classC.name} ${section.name}`)}
                             value="primary"
                             inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -291,4 +319,21 @@ const AddRemoveClasses = (props: Props) => {
   );
 }
 
-export default withStyles(styles)(AddRemoveClasses);
+
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+      fetchClasses: userActions.fetchClasses,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(AddRemoveClasses));

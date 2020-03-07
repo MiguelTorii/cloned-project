@@ -7,13 +7,13 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import AddRemoveClasses from 'components/AddRemoveClasses';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import { getUserClasses } from '../../api/user';
 import { processClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
-import ClassesManager from '../ClassesManager';
 import RequestClass from '../RequestClass';
 
 const styles = theme => ({
@@ -163,7 +163,11 @@ class ClassesSelector extends React.PureComponent<Props, State> {
           </div>
         </ErrorBoundary>
         <ErrorBoundary>
-          <ClassesManager open={open} onClose={this.handleCloseManageClasses} onOpenRequestClass={this.handleOpenRequestClass}/>
+          <AddRemoveClasses 
+            open={open} 
+            onClose={this.handleCloseManageClasses} 
+            onOpenRequestClass={this.handleOpenRequestClass}
+          />
         </ErrorBoundary>
         <ErrorBoundary>
           <RequestClass

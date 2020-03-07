@@ -11,6 +11,8 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 // import Fab from '@material-ui/core/IconButton';
 // import ClearIcon from '@material-ui/icons/Clear';
+import { bindActionCreators } from 'redux';
+import AddRemoveClasses from 'components/AddRemoveClasses';
 import type { State as StoreState } from '../../types/state';
 import type {
   HomeCard,
@@ -28,8 +30,8 @@ import {
   getInvite
 } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
-import ClassesManager from '../ClassesManager';
 import RequestClass from '../RequestClass';
+import * as notificationsActions from '../../actions/notifications';
 import YourMonthCard from '../../components/YourMonthCard';
 import DailyStreaksCard from '../../components/DailyStreaksCard';
 import WeeklyStudyPackCard from '../../components/WeeklyStudyPackCard';
@@ -264,6 +266,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      enqueueSnackbar,
       user: {
         data: { userId, rank }
       }
@@ -352,7 +355,7 @@ class HomeGrid extends React.PureComponent<Props, State> {
           </Grid>
         </ErrorBoundary>
         <ErrorBoundary>
-          <ClassesManager
+          <AddRemoveClasses
             open={manageClasses}
             onClose={this.handleCloseManageClasses}
             onOpenRequestClass={this.handleOpenRequestClass}
@@ -373,7 +376,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(withSnackbar(HomeGrid)));

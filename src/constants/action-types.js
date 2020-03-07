@@ -2,6 +2,10 @@
     SIGN IN ACTION TYPES
 */
 
+export const userActions = {
+  UPDATE_CLASSES: 'UPDATE_CLASSES'
+};
+
 export const signInActions = {
   SIGN_IN_USER_REQUEST: 'SIGN_IN_USER_REQUEST',
   SIGN_IN_USER_SUCCESS: 'SIGN_IN_USER_SUCCESS',

@@ -43,6 +43,7 @@ import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg'
 import './currentRoute.css'
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import GetApp from '../GetApp';
+import ClassList from 'components/ClassList'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
 
@@ -205,6 +206,13 @@ const styles = theme => ({
       background: theme.circleIn.palette.primaryText2
     },
   },
+  myClasses: {
+    display: 'flex', 
+    marginLeft: 16,
+    alignItems: 'center',
+    paddingRight: 16,
+    paddingLeft: 16,
+  }
 });
 
 type Props = {
@@ -621,16 +629,17 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Announcements" />
           </ListItem> */}
-          <ListItem 
-            button 
-            onClick={this.handleManageClasses}
-            className={classes.otherPath}
-          >
+          <div className={classes.myClasses}>
             <ListItemIcon>
               <GradCapIcon className={classNames("whiteSvg")} />
             </ListItemIcon>
-            <ListItemText primary="Add/Remove Classes" />
-          </ListItem>
+            <ListItemText primary="My Classes" />
+          </div>
+          <ListItemText>
+            <ClassList
+              onClick={this.handleManageClasses}
+            />
+          </ListItemText>
           <ListItem 
             button 
             onClick={this.handleOpenGetApp}

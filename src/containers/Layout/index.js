@@ -230,10 +230,8 @@ class Layout extends React.PureComponent<Props, State> {
         </ErrorBoundary>
         <ErrorBoundary>
           <AddRemoveClasses
-            userId={userId}
             open={manageClasses}
             onClose={this.handleCloseManageClasses}
-            enqueueSnackbar={enqueueSnackbar}
             onOpenRequestClass={this.handleOpenRequestClass}
           />
         </ErrorBoundary>
