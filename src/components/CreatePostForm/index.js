@@ -10,8 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
+  submit: {
+    fontWeight: 'bold',
+    [theme.breakpoints.up('sm')]: {
+      width: 160,
+    },
+  },
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
@@ -23,10 +30,11 @@ const styles = theme => ({
   paper: {
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(8)
+      marginBottom: theme.spacing(4)
     },
     display: 'flex',
     flexDirection: 'column',
+    border: `solid 1px ${theme.circleIn.palette.borders}`,
     alignItems: 'center',
     padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
       .spacing(3)}px`
@@ -40,11 +48,14 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    // justifyContent: 'flex-end'
   },
   wrapper: {
     margin: theme.spacing(),
-    position: 'relative'
+    position: 'relative',
+    width: '100%',
   },
   buttonProgress: {
     color: green[500],
@@ -57,7 +68,8 @@ const styles = theme => ({
   visible: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    marginBottom: theme.spacing(2),
+    // justifyContent: 'flex-end'
   },
   icon: {
     marginRight: theme.spacing()
@@ -94,22 +106,25 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     const isEdit = pathname.includes('/edit')
 
     return (
-      <main className={classes.main}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h5" paragraph>
-            {title}
-          </Typography>
-          <Typography variant="subtitle1" paragraph align="center">
-            {subtitle}
-          </Typography>
-          <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+      <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+        <main className={classes.main}>
+          <Paper className={classes.paper}>
+            {title && <Typography component="h1" variant="h5" paragraph>
+              {title}
+            </Typography>}
+            {subtitle && <Typography variant="subtitle1" paragraph align="center">
+              {subtitle}
+            </Typography>}
             {children}
+          </Paper>
+          <Grid item xs={12} sm={12}>
             <div className={classes.actions}>
               <div className={classes.wrapper}>
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
+                  fullWidth
                   disabled={loading || (isEdit && !changed)}
                   className={classes.submit}
                 >
@@ -123,13 +138,15 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                 )}
               </div>
             </div>
-            <Typography variant="subtitle1" className={classes.visible}>
-              <VisibilityIcon className={classes.icon} /> Visible to your
-              classmates
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Typography variant="subtitle1" className={classes.visible}> 
+              <VisibilityIcon className={classes.icon} /> Visible to your 
+             classmates 
             </Typography>
-          </ValidatorForm>
-        </Paper>
-      </main>
+          </Grid>
+        </main>
+      </ValidatorForm>
     );
   }
 }

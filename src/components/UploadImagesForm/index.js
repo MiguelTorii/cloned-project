@@ -16,11 +16,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import EditPhotoThumbnail from '../EditPhotoThumbnail';
 
 const styles = theme => ({
+  dropLabel: {
+    fontWeight: 'bold'
+  },
   dropZone: {
     position: 'relative',
     width: '100%',
-    minHeight: 100,
-    borderStyle: 'dashed',
+    minHeight: 50,
+    borderStyle: 'solid',
     borderWidth: 1,
     borderColor: theme.circleIn.palette.primaryText1,
     cursor: 'pointer',
@@ -116,13 +119,12 @@ class UploadImagesForm extends React.PureComponent<Props> {
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
-                  <Typography variant="h6" align="center">
+                  <Typography className={classes.dropLabel} align="center">
                     { loading ? 
                       <CircularProgress size={50} /> : 
-                          `Drag and drop a photo of your notes or click to select the photo: Only PNG, JPG and JPEG images`
+                          `Add pictures of handwritten notes`
                     }
                   </Typography>
-                  <CloudUploadIcon className={classes.uploadIconSize} />
                 </div>
               </div>
             </section>

@@ -283,6 +283,7 @@ type Props = {
   isDisabled?: boolean,
   cacheUniq?: any,
   isSchoolSearch?: boolean,
+  variant: ?string,
   onChange: Function,
   onLoadOptions: Function
 };
@@ -310,6 +311,7 @@ class AutoComplete extends React.PureComponent<Props> {
       cacheUniq,
       isSchoolSearch,
       onChange,
+      variant,
       onLoadOptions
     } = this.props;
 
@@ -331,9 +333,7 @@ class AutoComplete extends React.PureComponent<Props> {
             styles={selectStyles}
             textFieldProps={{
               label,
-              InputLabelProps: {
-                shrink: true
-              }
+              variant,
             }}
             inputValue={inputValue}
             components={components}

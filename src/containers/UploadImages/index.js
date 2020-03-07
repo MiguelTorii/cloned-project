@@ -112,8 +112,7 @@ class UploadImages extends React.PureComponent<Props, State> {
         }
       }
     });
-    imageChange()
-    this.setState(newState);
+    this.setState(newState, imageChange);
   };
 
   handleImageSave = (id, newImage) => {
@@ -141,8 +140,6 @@ class UploadImages extends React.PureComponent<Props, State> {
       maxWidthOrHeight: 1920,
       useWebWorker: true
     }
-    const { imageChange } = this.props
-    imageChange()
     return imageCompression(file, options)
   }
 
@@ -157,6 +154,7 @@ class UploadImages extends React.PureComponent<Props, State> {
         .then(res => res.blob())
         .then(blob => {
           const newImage = window.URL.createObjectURL(blob);
+          const { imageChange } = this.props
           this.setState(prevState => ({
             loading: false,
             images: [
@@ -171,7 +169,7 @@ class UploadImages extends React.PureComponent<Props, State> {
                 type
               }
             ]
-          }));
+          }), imageChange);
         });
     });
   };

@@ -23,6 +23,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  variant: ?string,
   error: boolean,
   tags: Array<SelectType>,
   onChange: Function
@@ -57,17 +58,18 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
   render() {
     const { location: {pathname}} = window
     const isEdit = pathname.includes('/edit')
-    const { classes, error, tags, onChange } = this.props;
+    const { classes, error, tags, onChange, variant } = this.props;
     const { inputValue } = this.state;
     return (
       <ErrorBoundary>
         <div className={classes.root}>
           <AutoComplete
             values={tags}
+            variant={variant || 'outlined'}
             isDisabled={isEdit}
             inputValue={inputValue}
             label="Tags (Optional)"
-            placeholder="Search for tags (Optional)"
+            placeholder=""
             error={error}
             errorText="You must add at least 1 tag"
             isMulti

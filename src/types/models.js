@@ -172,7 +172,11 @@ export type Note = {
 };
 
 export type PhotoNote = Post & {
-  notes: Array<Note>
+  notes: Array<Note>,
+  title: string,
+  classId: number,
+  tags: Array<SelectType>,
+  body: string
 };
 
 export type Question = Post & {};

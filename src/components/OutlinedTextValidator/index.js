@@ -21,6 +21,7 @@ type Props = {
   validators: Array<string>,
   errorMessages: Array<string>,
   disabled?: boolean,
+  variant: string,
   onChange: Function
 };
 
@@ -44,6 +45,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
       errorMessages,
       autoFocus,
       disabled,
+      variant,
       onChange
     } = this.props;
 
@@ -55,7 +57,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
             multiline={multiline}
             rows={rows}
             autoFocus={autoFocus}
-            variant="outlined"
+            variant={variant || "outlined"}
             onChange={onChange(name)}
             name={name}
             fullWidth

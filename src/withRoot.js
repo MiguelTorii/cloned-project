@@ -13,6 +13,7 @@ const circleInTheme = {
   action: '#49afd9',
   primaryBackground: '#1b2a32',
   modalBackground: '#22343c',
+  borders: '#566c77',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
   normalButtonText1: '#090909',
@@ -32,6 +33,7 @@ const circleInTheme = {
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      borders: circleInTheme.borders,
       brand: circleInTheme.brand, 
       buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,

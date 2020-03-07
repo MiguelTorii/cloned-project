@@ -30,6 +30,8 @@ type Props = {
   user: UserState,
   onChange: Function,
   classId: ?number,
+  label: ?string,
+  variant: ?string,
   sectionId: ?number
 };
 
@@ -118,6 +120,8 @@ class ClassesSelector extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      variant,
+      label,
       user: {
         isLoading,
         error,
@@ -139,9 +143,9 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                 value={value}
                 name="userClasses"
                 disabled={isEdit}
-                label="Select a Class"
                 onChange={this.handleChange}
-                variant="outlined"
+                variant={variant || "outlined"}
+                label={label}
                 validators={['required']}
                 errorMessages={['User Classes is required']}
               >
