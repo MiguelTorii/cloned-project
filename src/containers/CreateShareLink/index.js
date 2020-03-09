@@ -10,6 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -24,7 +26,6 @@ import { logEvent } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
-
 
 const styles = theme => ({
   preview: {
@@ -41,6 +42,9 @@ type Props = {
   user: UserState,
   pushTo: Function,
   sharelinkId: number,
+  location: {
+    search: string
+  },
   enqueueSnackbar: Function
 };
 
@@ -80,6 +84,15 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     const { sharelinkId } = this.props
     if (sharelinkId) this.loadData()
+
+    const {
+      location: { search = '' },
+    } = this.props
+    const {
+      classId,
+      sectionId,
+    } = queryString.parse(search);
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
 
     this.updatePreview = debounce(this.updatePreview, 1000);
     logEvent({
@@ -444,4 +457,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateShareLink));
+)(withStyles(styles)(withRouter(CreateShareLink)));

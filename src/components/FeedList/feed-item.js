@@ -176,6 +176,7 @@ type Props = {
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
+  newClassesDisabled: boolean,
   onUserClick: Function
 };
 
@@ -307,7 +308,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   el: ?HTMLDivElement;
 
   render() {
-    const { classes, userId, data, onPostClick } = this.props;
+    const { newClassesDisabled, classes, userId, data, onPostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials =
@@ -416,16 +417,16 @@ class FeedItem extends React.PureComponent<Props, State> {
             subheader={
               <CardActionArea disabled>
                 <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
-                  <Typography component="p" noWrap>
+                  {newClassesDisabled && <Typography component="p" noWrap>
                     {data.courseDisplayName}
-                  </Typography>
-                  <Typography
+                  </Typography>}
+                  {newClassesDisabled && <Typography
                     component="p"
                     noWrap
                     style={{ marginRight: 5, marginLeft: 5 }}
                   >
                     <strong>•</strong>
-                  </Typography>
+                  </Typography>}
                   <Typography component="p" noWrap>
                     {fromNow}
                   </Typography>

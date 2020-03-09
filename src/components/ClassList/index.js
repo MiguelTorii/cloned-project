@@ -44,7 +44,7 @@ const ClassList = (props: Props) => {
     user: {
       data: { userId },
       userClasses: {
-        classNames,
+        classList,
         canAddClasses
       }
     }
@@ -55,14 +55,14 @@ const ClassList = (props: Props) => {
   }, [userId])
 
   const renderButtonText = () => {
-    if (classNames.length === 0) return 'Click here to get started and to add your classes' 
+    if (classList.length === 0) return 'Click here to get started and to add your classes' 
     return 'Add/Remove Classes'
   }
 
   return (
     <div className={classes.container}>
-      <div className={classes.list}>{classNames.map(c => (
-        <div key={c} title={c} className={classes.item}>{c}</div>
+      <div className={classes.list}>{classList.map(c => (
+        <div key={c.className} title={c.className} className={classes.item}>{c.className}</div>
       ))}
       </div>
       {canAddClasses && <div 

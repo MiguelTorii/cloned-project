@@ -10,6 +10,8 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
 import Tour from 'components/Tour'
+import Home from 'containers/Home'
+import Classes from 'pages/Classes';
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';
@@ -75,12 +77,12 @@ ReactDOM.render(
       <Tour />
       <DailyRewards />
       <UpdateLMSUser />
-      {/* <TwoWeekNotesContest /> */}
       <ConnectedRouter history={history}>
         <div>
           <FloatingChat />
           <Switch>
-            <Route exact path="/" component={withTracker(Feed)} />
+            <Route exact path="/" component={withTracker(Home)} />
+            <Route exact path="/classes" component={withTracker(Classes)} />
             <Route exact path="/feed" component={withTracker(Feed)} />
             <Route exact path="/store" component={withTracker(Store)} />
             <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />

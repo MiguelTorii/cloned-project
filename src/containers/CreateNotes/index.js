@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import Divider from '@material-ui/core/Divider'
 import withWidth from '@material-ui/core/withWidth'
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -57,7 +59,10 @@ type Props = {
   user: UserState,
   pushTo: Function,
   width: string,
-  enqueueSnackbar: Function
+  enqueueSnackbar: Function,
+  location: {
+    search: string
+  }
 };
 
 type State = {
@@ -103,6 +108,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.loadData();
+
+    const {
+      location: { search = '' },
+    } = this.props
+    const {
+      classId,
+      sectionId,
+    } = queryString.parse(search);
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
   };
   
   loadData = async () => {
@@ -418,7 +432,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { classes, width } = this.props;
+    const { 
+      classes, 
+      width
+    } = this.props;
+
 
     const {
       loading,
@@ -592,4 +610,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withWidth()(CreateNotes)));
+)(withStyles(styles)(withWidth()(withRouter(CreateNotes))));

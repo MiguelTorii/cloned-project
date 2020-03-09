@@ -24,6 +24,7 @@ export const VIDEO_SHARE_URL =
       : 'https://dev-app2.circleinapp.com/video-call';
 
 export const API_ROUTES = {
+  CAMPAIGN: `${API_URL}/campaigns`,
   LOGIN: `${API_URL}/auth/login`,
   SIGNUP: `${API_URL}/auth/register`,
   REFRESH: `${API_URL}/auth/refresh`,
@@ -41,6 +42,7 @@ export const API_ROUTES = {
   CANVAS_LOGIN: `${API_URL}/canvas/auth/login`,
   FEED: `${API_URL}/feed`,
   FEED_V1_1: `${API_URL_V1_1}/feed`,
+  USER_CLASSES_V1_1: `${API_URL_V1_1}/user/classes`,
   CREATELINK: `${API_URL}/feed/link/post`,
   USER: `${API_URL}/user`,
   CHECK_EMAIL: `${API_URL}/user/email/verify`,

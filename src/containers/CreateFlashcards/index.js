@@ -10,6 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType, Flashcard } from '../../types/models';
@@ -40,6 +42,9 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
+  location: {
+    search: string
+  },
   pushTo: Function,
   flashcardId: ?number,
   enqueueSnackbar: Function,
@@ -82,6 +87,14 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.loadData();
+    const {
+      location: { search = '' },
+    } = this.props
+    const {
+      classId,
+      sectionId,
+    } = queryString.parse(search);
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
   };
 
   loadData = async () => {
@@ -507,4 +520,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateFlashcards));
+)(withStyles(styles)(withRouter(CreateFlashcards)));

@@ -145,7 +145,7 @@ export const getUserClasses = async ({
   try {
     const token = await getToken();
     const result = await axios.get(
-      `${API_ROUTES.USER_CLASSES}?user_id=${userId}`,
+      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -172,15 +172,22 @@ export const getUserClasses = async ({
         lastName: String((item.last_name: string) || ''),
         section: String((item.section: string) || ''),
         sectionId: Number((item.section_id: number) || 0),
-        subject: String((item.subject: string) || '')
+        subject: String((item.subject: string) || ''),
+        sectionDisplayName: String((item.section_display_name: string) || ''),
+        instructorDisplayName: String((item.instructor_display_name: string) || ''),
       })),
-      subjectId: Number((userClass.subject_id: number) || 0)
+      subjectId: Number((userClass.subject_id: number) || 0),
+      courseDisplayName: String((userClass.course_display_name: string) || ''),
+      bgColor: String((userClass.bg_color) || '')
     }));
 
     const userPermissions = {
       canAddClasses: Boolean((permissions.can_add_classes: boolean) || false)
     };
 
+    // const userPermissions = {
+    // canAddClasses: true
+    // };
     return { classes: userClasses, permissions: userPermissions };
   } catch (err) {
     console.log(err);

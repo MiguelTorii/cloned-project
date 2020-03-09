@@ -86,6 +86,7 @@ type Props = {
   onDelete: Function,
   pushTo: Function,
   onLoadMore: Function,
+  newClassesDisabled: boolean,
   onUserClick: Function
 };
 
@@ -137,6 +138,7 @@ class FeedList extends React.PureComponent<Props, State> {
       pushTo,
       fromFeedId,
       onLoadMore,
+      newClassesDisabled,
       onUserClick
     } = this.props;
 
@@ -185,6 +187,7 @@ class FeedList extends React.PureComponent<Props, State> {
                       if (fromFeedId === item.feedId) this.selectedRef = node;
                     }}
                     onPostClick={onPostClick}
+                    newClassesDisabled={newClassesDisabled}
                     onBookmark={onBookmark}
                     pushTo={pushTo}
                     onReport={onReport}

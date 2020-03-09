@@ -1,6 +1,6 @@
-/* 
-    SIGN IN ACTION TYPES
-*/
+export const campaignActions = {
+  GET_CAMPAIGN: 'GET_CAMPAIGN'
+}
 
 export const userActions = {
   UPDATE_CLASSES: 'UPDATE_CLASSES'

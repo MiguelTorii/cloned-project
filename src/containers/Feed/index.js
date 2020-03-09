@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
@@ -19,7 +20,7 @@ import DeletePost from '../DeletePost';
 import { processUserClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
-
+import type { CampaignState } from '../../reducers/campaign';
 // const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({
@@ -46,6 +47,7 @@ type Props = {
   updateBookmark: Function,
   updateFilter: Function,
   clearFilter: Function,
+  campaign: CampaignState,
   updateFeedLimit: Function
 };
 
@@ -67,10 +69,11 @@ class Feed extends React.PureComponent<Props, State> {
   componentDidMount = async () => {
     this.mounted = true;
     const { classId, sectionId, bookmarks, updateFilter } = this.props;
+
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
-        field: 'userClass',
-        value: JSON.stringify({ classId, sectionId })
+        field: 'userClasses',
+        value: [JSON.stringify({ classId, sectionId })]
       });
     }
     if (bookmarks) {
@@ -276,9 +279,12 @@ class Feed extends React.PureComponent<Props, State> {
         },
         isLoading
       },
-      feedId: fromFeedId
+      feedId: fromFeedId,
+      campaign
     } = this.props;
     const { feedId, report, deletePost, classesList } = this.state;
+
+    const newClassesDisabled = campaign[NEW_CLASSES_CAMPAIGN] && campaign[NEW_CLASSES_CAMPAIGN].isDisabled
 
     return (
       <Fragment>
@@ -290,6 +296,7 @@ class Feed extends React.PureComponent<Props, State> {
               userClasses={userClasses}
               postTypes={postTypes}
               classesList={classesList}
+              newClassesDisabled={newClassesDisabled}
               fromDate={fromDate}
               toDate={toDate}
               onChange={this.handleChange}
@@ -304,6 +311,7 @@ class Feed extends React.PureComponent<Props, State> {
               isLoading={isLoading}
               userId={userId}
               items={items}
+              newClassesDisabled={newClassesDisabled}
               hasMore={hasMore}
               fromFeedId={fromFeedId}
               handleShare={this.handleShare}
@@ -344,8 +352,9 @@ class Feed extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, feed }: StoreState): {} => ({
+const mapStateToProps = ({ user, feed, campaign }: StoreState): {} => ({
   user,
+  campaign,
   feed
 });
 

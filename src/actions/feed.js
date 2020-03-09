@@ -200,7 +200,7 @@ export const updateFilter = ({
   value: string | number
 }) => async (dispatch: Dispatch) => {
   try {
-    await dispatch(updateFeedLimitRequest({ limit: 100 }));
+    await dispatch(updateFeedLimitRequest({ limit: 10 }));
     await dispatch(
       updateFeedFilterFieldRequest({
         field,

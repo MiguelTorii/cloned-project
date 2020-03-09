@@ -44,8 +44,19 @@ import './currentRoute.css'
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import GetApp from '../GetApp';
 import ClassList from 'components/ClassList'
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 
-const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
+const MyLink = React.forwardRef(({ link, ...props }, ref) => {
+  if (![
+    '/feed', 
+    '/create/notes',
+    '/create/sharelink',
+    '/create/question',
+    '/create/flashcards'
+  ].includes(window.location.pathname)) document.title = 'CircleIn'
+  return <RouterLink to={link} {...props} ref={ref} />
+});
 
 const drawerWidth = 240;
 
@@ -212,6 +223,9 @@ const styles = theme => ({
     alignItems: 'center',
     paddingRight: 16,
     paddingLeft: 16,
+  },
+  drawerList: {
+    overflow: 'auto !important'
   }
 });
 
@@ -228,6 +242,10 @@ type Props = {
   handleSignOut: Function,
   onManageClasses: Function,
   onManageBlockedUsers: Function,
+  newClassesDisabled: boolean,
+  location: {
+    search: string
+  },
   // onOpenLeaderboard: Function
   // onOpenAnnouncements: Function
 };
@@ -410,6 +428,16 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
+    const {
+      location: { search = '' }
+    } = this.props;
+    
+    const {
+      classId,
+      sectionId,
+    } = queryString.parse(search);
+
+    const classQuery = classId ? `?sectionId=${sectionId}&classId=${classId}` : ''
     const renderCreatePostMenu = (
       <Menu
         id="simple-menu"
@@ -421,7 +449,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/notes"
+          link={`/create/notes${classQuery}`}
         >
           <ListItemIcon>
             <NoteAddIcon />
@@ -440,7 +468,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/question"
+          link={`/create/question${classQuery}`}
         >
           <ListItemIcon>
             <ContactSupportIcon />
@@ -459,7 +487,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/sharelink"
+          link={`/create/sharelink${classQuery}`}
         >
           <ListItemIcon>
             <LanguageIcon />
@@ -478,7 +506,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link="/create/flashcards"
+          link={`/create/flashcards${classQuery}`}
         >
           <ListItemIcon>
             <DashboardIcon />
@@ -534,6 +562,7 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
+    const { newClassesDisabled } = this.props
     const drawer = (
       <Fragment>
         <div className={classes.toolbar}>
@@ -541,7 +570,7 @@ class MainLayout extends React.Component<Props, State> {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <List>
+        <List className={classes.drawerList}>
           <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
               <AddIcon
@@ -565,7 +594,7 @@ class MainLayout extends React.Component<Props, State> {
             link="/"
             className={classNames(
               'tour-onboarding-study',
-              ['/', '/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
+              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           >
             <ListItemIcon>
@@ -629,17 +658,17 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Announcements" />
           </ListItem> */}
-          <div className={classes.myClasses}>
+          {newClassesDisabled && <div className={classes.myClasses}>
             <ListItemIcon>
               <GradCapIcon className={classNames("whiteSvg")} />
             </ListItemIcon>
             <ListItemText primary="My Classes" />
-          </div>
-          <ListItemText>
+          </div>}
+          {newClassesDisabled && <ListItemText>
             <ClassList
               onClick={this.handleManageClasses}
             />
-          </ListItemText>
+          </ListItemText>}
           <ListItem 
             button 
             onClick={this.handleOpenGetApp}
@@ -773,4 +802,4 @@ class MainLayout extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(withWidth()(MainLayout));
+export default withStyles(styles)(withWidth()(withRouter(MainLayout)));

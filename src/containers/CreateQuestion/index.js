@@ -8,6 +8,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -35,6 +37,9 @@ type Props = {
   user: UserState,
   pushTo: Function,
   questionId: number,
+  location: {
+    search: string
+  },
   enqueueSnackbar: Function
 };
 
@@ -70,6 +75,16 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     const { questionId } = this.props
     if( questionId) this.loadData()
+
+    const {
+      location: { search = '' },
+    } = this.props
+    const {
+      classId,
+      sectionId,
+    } = queryString.parse(search);
+
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
     logEvent({
       event: 'Home- Start Ask Question',
       props: {}
@@ -361,4 +376,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateQuestion));
+)(withStyles(styles)(withRouter(CreateQuestion)));

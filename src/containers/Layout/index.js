@@ -2,6 +2,7 @@
 
 import React, { Fragment } from 'react';
 import type { Node } from 'react';
+import * as campaignActions from 'actions/campaign';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,9 +11,11 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses'
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
+import type { CampaignState } from '../../reducers/campaign';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications';
@@ -40,12 +43,14 @@ type Props = {
   classes: Object,
   children: Object,
   user: UserState,
+  campaign: CampaignState,
   isNaked?: boolean,
   location: {pathname: string},
   checkUserSession: Function,
   signOut: Function,
   fetchFeed: Function,
   enqueueSnackbar: Function,
+  requestCampaign: Function,
   openCreateChatGroup: Function,
   push: Function
 };
@@ -74,8 +79,9 @@ class Layout extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
-    const { checkUserSession } = this.props;
+    const { checkUserSession, requestCampaign } = this.props;
     checkUserSession();
+    requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN });
   };
 
   handleNotificationOpen = event => {
@@ -181,12 +187,14 @@ class Layout extends React.PureComponent<Props, State> {
       user,
       signOut,
       isNaked,
-      enqueueSnackbar,
+      campaign,
       location: { pathname }
     } = this.props;
     const {
       data: { userId, firstName, lastName, profileImage }
     } = user;
+
+    if(!campaign[NEW_CLASSES_CAMPAIGN]) return null
 
     const {
       manageClasses,
@@ -197,13 +205,16 @@ class Layout extends React.PureComponent<Props, State> {
       openRequestClass
     } = this.state;
     if (isNaked) return this.renderChildren();
+
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+
     return (
       <Fragment>
         <ErrorBoundary>
           <MainLayout
             userId={userId}
+            newClassesDisabled={campaign[NEW_CLASSES_CAMPAIGN].isDisabled}
             initials={initials}
             userProfileUrl={profileImage}
             unreadCount={unreadCount}
@@ -262,8 +273,9 @@ class Layout extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
@@ -274,7 +286,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       signOut: signInActions.signOut,
       openCreateChatGroup: chatActions.openCreateChatGroup,
       fetchFeed: feedActions.fetchFeed,
-      push: routePush
+      push: routePush,
+      requestCampaign: campaignActions.requestCampaign
     },
     dispatch
   );

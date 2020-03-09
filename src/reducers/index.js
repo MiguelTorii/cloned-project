@@ -11,6 +11,7 @@ import user from './user';
 import chat from './chat';
 import feed from './feed';
 import auth from './auth';
+import campaign from './campaign';
 import leaderboard from './leaderboard';
 import webNotifications from './web-notifications';
 import notifications from './notifications';
@@ -28,6 +29,7 @@ const reducers = {
   chat,
   feed,
   auth,
+  campaign,
   router: routerActions,
   webNotifications,
   notifications,

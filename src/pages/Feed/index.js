@@ -5,12 +5,11 @@ import queryString from 'query-string';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-// import Hidden from '@material-ui/core/Hidden';
 import withWidth from '@material-ui/core/withWidth';
+import { withRouter } from 'react-router';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import Feed from '../../containers/Feed';
-// import TopPosts from '../../containers/TopPosts';
 
 const styles = () => ({
   item: {
@@ -53,8 +52,8 @@ class FeedPage extends React.PureComponent<Props, State> {
 
     this.setState({
       feedId: id ? Number(id) : null,
-      classId,
-      sectionId,
+      classId: Number(classId),
+      sectionId: Number(sectionId),
       bookmarks: bookmarks === 'true'
     });
   };
@@ -76,11 +75,6 @@ class FeedPage extends React.PureComponent<Props, State> {
                 bookmarks={bookmarks}
               />
             </Grid>
-            {/* <Hidden smDown>
-              <Grid item md={3} className={classes.item}>
-                <TopPosts />
-              </Grid>
-            </Hidden> */}
           </Grid>
         </Layout>
       </main>
@@ -88,4 +82,4 @@ class FeedPage extends React.PureComponent<Props, State> {
   }
 }
 
-export default withRoot(withStyles(styles)(withWidth()(FeedPage)));
+export default withRoot(withStyles(styles)(withWidth()(withRouter(FeedPage))));

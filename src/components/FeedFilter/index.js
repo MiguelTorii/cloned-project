@@ -110,6 +110,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  newClassesDisabled: boolean,
   query: string,
   from: string,
   userClasses: Array<string>,
@@ -190,14 +191,14 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { classesList } = this.props;
     const values = [];
     switch (name) {
-      case 'postTypes':
-        values.push(...types.map(item => item.value));
-        break;
-      case 'userClasses':
-        values.push(...classesList.map(item => item.value));
-        break;
-      default:
-        break;
+    case 'postTypes':
+      values.push(...types.map(item => item.value));
+      break;
+    case 'userClasses':
+      values.push(...classesList.map(item => item.value));
+      break;
+    default:
+      break;
     }
     if (values.length > 0) {
       const newState = update(this.state, {
@@ -238,10 +239,10 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   getFilterCount = () => {
-    const { from, userClasses, postTypes } = this.props;
+    const { newClassesDisabled, from, userClasses, postTypes } = this.props;
     let count = 0;
     if (from !== 'everyone') count += 1;
-    if (userClasses.length > 0) count += 1;
+    if (newClassesDisabled && userClasses.length > 0) count += 1;
     if (postTypes.length > 0) count += 1;
     return count;
   };
@@ -258,6 +259,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       onChange,
       onRefresh,
       onChangeDateRange,
+      newClassesDisabled,
       onClearSearch
     } = this.props;
     const { open, postTypes, userClasses } = this.state;
@@ -334,7 +336,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             Filter Posts by:
           </DialogTitle>
           <Grid container>
-            <Grid item xs={12} sm={6} className={classes.option}>
+            {newClassesDisabled && <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel component="legend">Courses</FormLabel>
                 <FormGroup>
@@ -366,17 +368,17 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   Deselect All
                 </Link>
               ) : (
-                  <Link
-                    href={dudUrl}
-                    component="button"
-                    variant="body2"
-                    className={classes.formButton}
-                    onClick={this.handleSelectAll('userClasses')}
-                  >
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleSelectAll('userClasses')}
+                >
                     Select All
                 </Link>
-                )}
-            </Grid>
+              )}
+            </Grid>}
             <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel component="legend">Post Type</FormLabel>
@@ -409,16 +411,16 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   Deselect All
                 </Link>
               ) : (
-                  <Link
-                    href={dudUrl}
-                    component="button"
-                    variant="body2"
-                    className={classes.formButton}
-                    onClick={this.handleSelectAll('postTypes')}
-                  >
+                <Link
+                  href={dudUrl}
+                  component="button"
+                  variant="body2"
+                  className={classes.formButton}
+                  onClick={this.handleSelectAll('postTypes')}
+                >
                     Select All
                 </Link>
-                )}
+              )}
             </Grid>
           </Grid>
           <DialogActions className={classes.actions}>

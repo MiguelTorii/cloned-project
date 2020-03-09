@@ -16,6 +16,7 @@ const setClassesAction = ({
   }
 })
 
+// eslint-disable-next-line
 export const fetchClasses = () => async (
   dispatch: Dispatch,
   getState: Function
@@ -27,10 +28,10 @@ export const fetchClasses = () => async (
       }
     } = getState()
     const res= await getUserClasses({ userId })
-    const { canAddClasses } = res.permissions
-    const classNames = res.classes.map(c => c.className)
+    const { permissions : { canAddClasses }, classes: classList } = res
+
     dispatch(setClassesAction({ userClasses: {
-      classNames,
+      classList,
       canAddClasses,
     }}))
   } catch(e) {}

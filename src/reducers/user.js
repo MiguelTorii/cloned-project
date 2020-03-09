@@ -17,7 +17,7 @@ export type UserState = {
   data: User,
   error: boolean,
   userClasses: {
-    classNames: Array<string>,
+    classList: Array<Object>,
     canAddClasses: boolean,
   },
   errorMessage: {
@@ -49,7 +49,7 @@ const defaultState = {
     lmsUser: false
   },
   userClasses: {
-    classNames: [],
+    classList: [],
     canAddClasses: false,
   },
   isLoading: false,
