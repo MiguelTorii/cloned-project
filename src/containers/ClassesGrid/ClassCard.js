@@ -31,6 +31,7 @@ const ClassCard = ({
   const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
+      cursor: 'pointer',
       minHeight: 180,
       borderRadius: theme.spacing(),
       position: 'relative',
@@ -84,13 +85,20 @@ const ClassCard = ({
   const [anchorEl, setAnchorEl] = useState(null)
   
   const handleClickIcon = event => {
+    event.stopPropagation()
     setAnchorEl(anchorEl ? null : event.currentTarget);
   }
 
-  const handleClose = () => setAnchorEl(null)
+  const handleClose = event => {
+    event.stopPropagation()
+    setAnchorEl(null)
+  }
 
   return (
-    <Card className={classes.root}>
+    <Card 
+      className={classes.root}
+      onClick={navigate}
+    >
       <div className={classes.circle} />
       <LeaveClassPopover 
         anchorEl={anchorEl}
@@ -106,7 +114,6 @@ const ClassCard = ({
         title={
           <Typography
             className={classes.title}
-            onClick={navigate}
           >
             {courseDisplayName}
           </Typography>
@@ -114,7 +121,6 @@ const ClassCard = ({
       />
       <CardContent 
         className={classes.content}
-        onClick={navigate}
       >
         <Typography>
           {sectionDisplayName}

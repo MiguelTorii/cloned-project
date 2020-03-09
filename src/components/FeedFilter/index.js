@@ -21,6 +21,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import Typography from '@material-ui/core/Typography';
 import DialogTitle from '../DialogTitle';
 import DateRange from '../DateRange';
 
@@ -44,6 +46,11 @@ const types = [
 ];
 
 const styles = theme => ({
+  back: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(),
@@ -119,10 +126,12 @@ type Props = {
   fromDate: ?Object,
   toDate: ?Object,
   onChange: Function,
+  courseDisplayName: string,
   onApplyFilters: Function,
   onClearFilters: Function,
   onOpenFilter: Function,
   onRefresh: Function,
+  pushTo: Function,
   onChangeDateRange: Function,
   onClearSearch: Function
 };
@@ -139,6 +148,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
     postTypes: [],
     userClasses: []
   };
+
+  mounted: boolean;
 
   componentDidMount = () => {
     this.mounted = true;
@@ -247,8 +258,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
     return count;
   };
 
-  mounted: boolean;
-
   render() {
     const {
       classes,
@@ -260,6 +269,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
       onRefresh,
       onChangeDateRange,
       newClassesDisabled,
+      pushTo,
+      courseDisplayName,
       onClearSearch
     } = this.props;
     const { open, postTypes, userClasses } = this.state;
@@ -272,6 +283,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <Paper className={classes.root} elevation={0}>
+          {courseDisplayName && <div className={classes.back}>
+            <IconButton onClick={() => pushTo('/')}>
+              <ArrowBackIosIcon fontSize="small" />
+            </IconButton>
+            <Typography>{courseDisplayName}</Typography>
+          </div>}
           <div className={classes.filtersHeader}>
             <InputBase
               className={classes.input}
