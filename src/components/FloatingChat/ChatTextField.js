@@ -75,6 +75,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  expanded: Boolean,
   onSendMessage: Function,
   onSendInput: Function,
   onTyping: Function
@@ -197,7 +198,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   fileInput: ?HTMLInputElement;
 
   render() {
-    const { classes } = this.props;
+    const { classes, expanded } = this.props;
     const { message, image, isHover } = this.state;
 
     return (
@@ -239,7 +240,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
               onKeyUp={this.handleKeyUp}
               className={classes.textfield}
               inputComponent={Textarea}
-              inputProps={{ style: { maxHeight: 60, paddingTop: 5 } }}
+              inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5 } }}
               multiline
               rowsMax={2}
               placeholder="Type a message"

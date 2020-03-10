@@ -26,7 +26,7 @@ const styles = theme => ({
     marginLeft: theme.spacing(),
     marginBottom: theme.spacing(),
     alignItems: 'flex-start',
-    maxWidth: '80%'
+    width: '70%'
   },
   justifyEnd: {
     justifyContent: 'flex-end'
@@ -35,7 +35,8 @@ const styles = theme => ({
     alignItems: 'flex-end'
   },
   name: {
-    color: 'white'
+    color: 'white',
+    paddingLeft: 0,
   },
   message: {
     maxWidth: '100%',
@@ -45,12 +46,13 @@ const styles = theme => ({
   },
   bodyWrapper: {
     display: 'flex',
-    alignItems: 'flex-end',
-    flex: 1
+    alignItems: 'flex-start',
+    flex: 1,
+    flexDirection: 'column',
   },
   reverse: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   image: {
     borderRadius: 5,
@@ -58,11 +60,8 @@ const styles = theme => ({
     maxWidth: 120
   },
   createdAt: {
-    marginLeft: 5,
+    paddingLeft: 0,
     color: theme.circleIn.palette.primaryText1
-  },
-  createdAtRight: {
-    marginRight: 5
   },
   video: {
     flex: 1,
@@ -94,7 +93,7 @@ const styles = theme => ({
     backgroundColor: '#f5f5f5',
     color: '#303030',
     wordWrap: 'break-word',
-    maxWidth: 160
+    width: '100%'
     // 'word-break': 'break-all'
   },
   right: {
@@ -102,7 +101,8 @@ const styles = theme => ({
     backgroundColor: '#5dcbfd'
   },
   avatarLink: {
-    textDecoration: 'none'
+    textDecoration: 'none', 
+    marginTop: 3
   },
   link: {
     color: theme.palette.primary.main
@@ -220,7 +220,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           dangerouslySetInnerHTML={{ __html: this.linkify(message) }}
         />
         <Typography
-          className={cx(classes.createdAt, isOwn && classes.createdAtRight)}
+          className={cx(classes.createdAt)}
           variant="caption"
         >
           {createdAt}

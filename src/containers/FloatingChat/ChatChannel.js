@@ -28,7 +28,6 @@ const styles = theme => ({
   list: {
     overflowY: 'auto',
     flex: 1,
-    maxHeight: 290,
     transition: 'width 0.25s, height 0.25s'
   },
   listTyping: {
@@ -593,6 +592,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
               </div>
             )}
             <ChatTextField
+              expanded={expanded}
               onSendMessage={this.handleSendMessage}
               onSendInput={this.handleSendInput}
               onTyping={this.handleTyping}

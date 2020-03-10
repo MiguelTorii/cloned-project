@@ -53,7 +53,7 @@ const styles = theme => ({
   },
   header: {
     display: 'flex',
-    minHeight: 40
+    height: 40
   },
   headerTitle: {
     flex: 1,
@@ -71,10 +71,13 @@ const styles = theme => ({
     padding: theme.spacing()
   },
   content: {
-    overflow: 'none',
-    height: 'inherit',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: 360,
+    justifyContent: 'space-between'
+  },
+  contentExpanded: {
+    height: 460,
   },
   hide: {
     display: 'none'
@@ -264,7 +267,13 @@ class ChatItem extends React.PureComponent<Props, State> {
                 </ButtonBase>
               )}
             </div>
-            <div className={cx(!open && classes.hide, classes.content)}>
+            <div 
+              className={cx(
+                !open && classes.hide, 
+                classes.content, 
+                expanded && classes.contentExpanded
+              )}
+            >
               <Divider />
               {children}
             </div>
