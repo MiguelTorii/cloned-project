@@ -84,7 +84,7 @@ class Feed extends React.PureComponent<Props, State> {
         },
         fetchClasses
       } = this.props
-      if (classList.length === 0) fetchClasses()
+      if (classList && classList.length === 0) fetchClasses()
       updateFilter({
         field: 'userClasses',
         value: [JSON.stringify({ classId, sectionId })]
