@@ -8,11 +8,11 @@ const styles = theme => ({
     marginLeft: theme.spacing()
   },
   colorPrimary: {
-    backgroundColor: '#395060',
-    color: theme.palette.text.primary,
+    backgroundColor: '#FFE89B',
+    color: theme.circleIn.palette.normalButtonText1,
     fontWeight: 900,
     padding: 0,
-    borderRadius: 2
+    borderRadius: 4
   },
   labelSmall: {
     padding: 0,
@@ -20,7 +20,8 @@ const styles = theme => ({
     paddingRight: theme.spacing(),
   },
   sizeSmall: {
-    height: 16
+    height: 16,
+    fontSize: 14
   }
 })
 
