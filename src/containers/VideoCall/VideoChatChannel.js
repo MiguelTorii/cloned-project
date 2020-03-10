@@ -28,7 +28,6 @@ import {
 
 const styles = theme => ({
   root: {
-    overflowY: 'none',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -37,7 +36,6 @@ const styles = theme => ({
   list: {
     overflowY: 'auto',
     flex: 1,
-    maxHeight: '100%'
   },
   listTyping: {
     // maxHeight: 270
@@ -60,6 +58,12 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  infiniteScroll: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end'
   }
 });
 
@@ -102,11 +106,11 @@ class VideoChatChannel extends React.Component<Props, State> {
     this.handleMessageCount = debounce(this.handleMessageCount, 5000);
     try {
       const { channel } = this.props;
-    //   try {
-    //     channel.setAllMessagesConsumed();
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
+      //   try {
+      //     channel.setAllMessagesConsumed();
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
 
       try {
         channel.getMessages(30).then(paginator => {
@@ -173,7 +177,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     if (this.mounted && this.end) this.handleScrollToBottom();
     const { channel, open, onUnreadUpdate } = this.props;
     if (prevProps.open !== open && open === true) {
-        console.log('update')
+      console.log('update')
       try {
         channel.setAllMessagesConsumed();
         onUnreadUpdate()
@@ -343,7 +347,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     this.setState({ count: 0 });
   };
 
-  handleStartVideoCall = () => {};
+  handleStartVideoCall = () => { };
 
   mounted: boolean
 
@@ -432,25 +436,27 @@ class VideoChatChannel extends React.Component<Props, State> {
                 this.scrollParentRef = node;
               }}
             >
-              <InfiniteScroll
-                threshold={50}
-                pageStart={0}
-                loadMore={this.handleLoadMore}
-                hasMore={hasMore}
-                useWindow={false}
-                initialLoad={false}
-                isReverse
-                getScrollParent={() => this.scrollParentRef}
-              >
-                {messageItems.map(item =>
-                  this.renderMessage(item, profileURLs)
-                )}
-                {loading && (
-                  <div className={classes.progress}>
-                    <CircularProgress size={20} />
-                  </div>
-                )}
-              </InfiniteScroll>
+              <div className={classes.infiniteScroll}>
+                <InfiniteScroll
+                  threshold={50}
+                  pageStart={0}
+                  loadMore={this.handleLoadMore}
+                  hasMore={hasMore}
+                  useWindow={false}
+                  initialLoad={false}
+                  isReverse
+                  getScrollParent={() => this.scrollParentRef}
+                >
+                  {messageItems.map(item =>
+                    this.renderMessage(item, profileURLs)
+                  )}
+                  {loading && (
+                    <div className={classes.progress}>
+                      <CircularProgress size={20} />
+                    </div>
+                  )}
+                </InfiniteScroll>
+              </div>
             </div>
             {typing !== '' && (
               <div className={classes.typing}>

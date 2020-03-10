@@ -21,7 +21,8 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 810
+    zIndex: 810,
+    height: '100%'
   },
   paper: {
     position: 'relative',
@@ -59,8 +60,8 @@ const styles = theme => ({
   },
   section: {
     // position: 'fixed',
-    overflowY: 'auto'
-    // height: '100%'
+    overflowY: 'auto',
+    height: '100%',
   },
   hide: {
     display: 'none'
@@ -101,7 +102,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
     onTabChange('');
   };
 
-  handleChange = () => {};
+  handleChange = () => { };
 
   render() {
     const {
