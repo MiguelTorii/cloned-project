@@ -50,6 +50,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
   useEffect(() => {
     fetchClasses()
+    // eslint-disable-next-line
   }, [])
 
   const handleLeaveClass = async ({sectionId, classId, userId}) => {
@@ -89,6 +90,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         setCanAddClasses(canAddClasses)
       }
     } catch(e) {}
+    // eslint-disable-next-line
   }, [user])
 
   const navigate = ({ courseDisplayName, sectionId, classId }) => {

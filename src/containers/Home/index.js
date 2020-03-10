@@ -29,6 +29,7 @@ const Home = ({
 
   useEffect(() => {
     requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN })
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {

@@ -52,6 +52,7 @@ const ClassList = (props: Props) => {
 
   useEffect(() => {
     if (userId) fetchClasses()
+    // eslint-disable-next-line
   }, [userId])
 
   const renderButtonText = () => {
