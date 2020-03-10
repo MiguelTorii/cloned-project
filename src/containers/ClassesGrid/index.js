@@ -13,6 +13,7 @@ import {
   leaveUserClass,
 } from 'api/user'
 import AddRemoveClasses from 'components/AddRemoveClasses';
+import Typography from '@material-ui/core/Typography'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -43,7 +44,7 @@ type Props = {
 };
 
 const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
-  const [classList, setClassList] = useState([])
+  const [classList, setClassList] = useState(null)
   const [canAddClasses, setCanAddClasses] = useState(false)
   const [openAddClasses, setOpenAddClasses] = useState(false)
 
@@ -62,25 +63,31 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
   useEffect(() => {
     try {
-      setClassList(
-        user.userClasses.classList.map(cl => {
-          return cl.section.map(s => ({
-            sectionDisplayName: s.sectionDisplayName,
-            instructorDisplayName: s.instructorDisplayName,
-            sectionId: s.sectionId,
-            classId: cl.classId,
-            courseDisplayName: cl.courseDisplayName,
-            bgColor: cl.bgColor,
-            handleLeaveClass: () => handleLeaveClass({ 
+      const {
+        // eslint-disable-next-line
+        userClasses: { classList, canAddClasses }
+      } = user
+      if (classList) {
+        setClassList(
+          classList.map(cl => {
+            return cl.section.map(s => ({
+              sectionDisplayName: s.sectionDisplayName,
+              instructorDisplayName: s.instructorDisplayName,
               sectionId: s.sectionId,
               classId: cl.classId,
-              userId: String(user.data.userId)
-            }),
-            canLeave: cl.permissions.canLeave
-          }))
-        }).flatMap(x =>x)
-      )
-      setCanAddClasses(user.userClasses.canAddClasses)
+              courseDisplayName: cl.courseDisplayName,
+              bgColor: cl.bgColor,
+              handleLeaveClass: () => handleLeaveClass({ 
+                sectionId: s.sectionId,
+                classId: cl.classId,
+                userId: String(user.data.userId)
+              }),
+              canLeave: cl.permissions.canLeave
+            }))
+          }).flatMap(x =>x)
+        )
+        setCanAddClasses(canAddClasses)
+      }
     } catch(e) {}
   }, [user])
 
@@ -89,13 +96,23 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     pushTo(`/feed?sectionId=${sectionId}&classId=${classId}`)
   }
 
+  const hasClasses = classList && classList.length > 0
+
   return (
-    <Grid className={classes.container} container spacing={2}>
+    <Grid 
+      justify={hasClasses ? "flex-start" : "center"}
+      className={classes.container} 
+      container 
+      spacing={2}
+    >
       <AddRemoveClasses 
         open={openAddClasses} 
         onClose={() => setOpenAddClasses(false)} 
       />
-      {classList.map(cl => (
+      {classList && !hasClasses && 
+          <Typography>Empty in classes</Typography>
+      }
+      {classList && classList.map(cl => (
         <Grid key={cl.sectionId} item xs={12} md={4} className={classes.item}>
           <ClassCard
             sectionDisplayName={cl.sectionDisplayName}

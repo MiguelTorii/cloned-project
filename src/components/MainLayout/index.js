@@ -601,7 +601,7 @@ class MainLayout extends React.Component<Props, State> {
               <ViewListIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Study"
+              primary={newClassesDisabled ? "Study" : "My Classes"}
             />
           </ListItem>
           {/* <ListItem button component={MyLink} link="/reminders">

@@ -14,9 +14,9 @@ const LeaveClassPopover = ({
   handleClose
 }: Props) => {
 
-  const handleLeave = () => {
+  const handleLeave = event => {
     leaveClass()
-    handleClose()
+    handleClose(event)
   }
 
   return (

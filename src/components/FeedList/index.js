@@ -173,7 +173,7 @@ class FeedList extends React.PureComponent<Props, State> {
               {items.length === 0 ? (
                 <div className={classes.noMessages}>
                   <Typography variant="subtitle1" align="center">
-                    There are no posts matching your criteria
+                    Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.
                   </Typography>
                 </div>
               ) : (
