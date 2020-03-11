@@ -49,7 +49,7 @@ const defaultState = {
     lmsUser: false
   },
   userClasses: {
-    classList: null,
+    classList: [],
     canAddClasses: false,
   },
   isLoading: false,

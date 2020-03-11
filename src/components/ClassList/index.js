@@ -62,7 +62,7 @@ const ClassList = (props: Props) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.list}>{classList.map(c => (
+      <div className={classes.list}>{classList && classList.map(c => (
         <div key={c.className} title={c.className} className={classes.item}>{c.className}</div>
       ))}
       </div>
