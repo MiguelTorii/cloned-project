@@ -146,7 +146,8 @@ class UploadImages extends React.PureComponent<Props, State> {
   handleDrop = acceptedFiles => {
     this.setState({loading: true})
     acceptedFiles.forEach(async file => {
-      const compressedFile = await this.compressImage(file)
+      const compressedFile = 
+        file.type === 'application/pdf' ? file : await this.compressImage(file)
       const url = URL.createObjectURL(compressedFile);
       const { path, type } = file;
       const extension = this.getFileExtension(path);
@@ -217,7 +218,7 @@ class UploadImages extends React.PureComponent<Props, State> {
     return axios
       .all(
         images.map(async item => {
-          const compress = await this.compressImage(item.file)
+          const compress = item.file.type === "application/pdf" ? item.file :  await this.compressImage(item.file)
           this.uploadImageRequest(result[item.id].url, compress, item.type)
         })
       )

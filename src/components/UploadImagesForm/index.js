@@ -8,7 +8,6 @@ import {
   sortableHandle
 } from 'react-sortable-hoc';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -107,7 +106,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
     return (
       <div>
         <Dropzone
-          accept={['image/*']}
+          accept={['image/*', 'application/pdf']}
           onDrop={onDrop}
           onDropRejected={onDropRejected}
           maxSize={4 * 10000000}
@@ -118,12 +117,12 @@ class UploadImagesForm extends React.PureComponent<Props> {
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
-                  <Typography className={classes.dropLabel} align="center">
+                  <div className={classes.dropLabel} align="center">
                     { loading ? 
                       <CircularProgress size={50} /> : 
                           `Add pictures of handwritten notes`
                     }
-                  </Typography>
+                  </div>
                 </div>
               </div>
             </section>
