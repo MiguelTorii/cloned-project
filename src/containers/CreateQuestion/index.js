@@ -20,7 +20,7 @@ import RichTextEditor from '../RichTextEditor';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createQuestion, getQuestion, updateQuestion } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
+import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
@@ -190,7 +190,8 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       const tagValues = tags.map(item => Number(item.value));
       const {
         points,
-        user: { firstName }
+        user: { firstName },
+        questionId,
       } = await createQuestion({
         userId,
         title,
@@ -199,6 +200,13 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         sectionId,
         tags: tagValues
       });
+
+      logEventLocally({
+        category: 'Question',
+        objectId: questionId,
+        type: 'Created',
+      });
+
       if (points > 0) {
         const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar({

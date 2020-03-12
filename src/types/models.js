@@ -570,3 +570,15 @@ export type CreateChat = {
   thumbnailUrl: string,
   type: string
 };
+
+export type EventData = {
+  category: string,
+  durationMs?: number,
+  objectId: string,
+  position?: number,
+  rating?: number,
+  recommendationType?: 'notification',
+  source?: 'feed_banner' | 'side_menu',
+  type: string,
+  variationId?: number,
+}

@@ -22,7 +22,7 @@ import LinkPreview from '../../components/LinkPreview';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { updateShareURL, createShareLink , getShareLink } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
+import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
@@ -257,6 +257,12 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       logEvent({
         event: 'Feed- Share Link',
         props: {}
+      });
+
+      logEventLocally({
+        category: 'Link',
+        objectId: linkId,
+        type: 'Created',
       });
 
       if (points > 0) {

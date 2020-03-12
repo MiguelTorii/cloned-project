@@ -86,5 +86,6 @@ export const API_ROUTES = {
   LEADERBOARD_V2: `${API_URL_V1_2}/leaderboard`,
   LEADERBOARD_V2_BOARD_ONE: `${API_URL_V1_2}/leaderboard/leaders?board_id=1`,
   LEADERBOARD_V2_BOARD_TWO: `${API_URL_V1_2}/leaderboard/leaders?board_id=2`,
-  LEADERBOARD_GRAND_PRIZE_INFO: `${API_URL}/store/grand_prize `
+  LEADERBOARD_GRAND_PRIZE_INFO: `${API_URL}/store/grand_prize `,
+  EVENTS: `${API_URL}/event`,
 };

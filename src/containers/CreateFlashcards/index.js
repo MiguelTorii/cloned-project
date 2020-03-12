@@ -23,7 +23,7 @@ import NewFlashcard from '../../components/FlashcardEditor/NewFlashcard';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createFlashcards , getFlashcards, updateFlashcards } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
+import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
@@ -232,7 +232,8 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
       const tagValues = tags.map(item => Number(item.value));
       const {
         points,
-        user: { firstName }
+        user: { firstName },
+        fcId,
       } = await createFlashcards({
         userId,
         title,
@@ -246,9 +247,16 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         sectionId,
         tags: tagValues
       });
+
       logEvent({
         event: 'Feed- Create Flashcards',
         props: { 'Number of cards': flashcards.length, Title: title }
+      });
+
+      logEventLocally({
+        category: 'Flashcard',
+        objectId: fcId,
+        type: 'Created',
       });
 
       if (points > 0) {

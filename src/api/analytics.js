@@ -1,6 +1,8 @@
 // @flow
 
 import amplitude from 'amplitude-js';
+import createEvent from './events';
+import { EventData } from '../types/models';
 
 export const init = (key: string, newKey: string) => {
   try {
@@ -45,3 +47,11 @@ export const logEvent = ({
     console.log(err);
   }
 };
+
+export const logEventLocally = (eventData: EventData) => {
+  try {
+    createEvent(eventData);
+  } catch (err) {
+    console.log(err);
+  }
+}

@@ -25,6 +25,7 @@ import { getNotes, updatePhotoNote, createPhotoNote , createShareLink } from '..
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
+import { logEventLocally } from '../../api/analytics';
 
 const styles = theme => ({
   stackbar: {
@@ -196,8 +197,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
           errorTitle: 'Invalid Link',
           errorBody: 'Please try again'
         });
-        return
+        return;
       }
+
+      logEventLocally({
+        category: 'Link',
+        objectId: linkId,
+        type: 'Created',
+      });
 
       if (points > 0) {
         const { enqueueSnackbar, classes } = this.props;
@@ -256,7 +263,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
         const {
           points,
-          user: { firstName }
+          user: { firstName },
+          photoNoteId
         } = await createPhotoNote({
           userId,
           title,
@@ -265,6 +273,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
           fileNames,
           comment: summary,
           tags: tagValues
+        });
+
+        logEventLocally({
+          category: 'PhotoNote',
+          objectId: photoNoteId,
+          type: 'Created',
         });
 
         setTimeout(() => {
