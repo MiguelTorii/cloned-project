@@ -20,7 +20,9 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: Error, info: Object) {
     this.setState({ hasError: true });
-    Sentry.captureException(error, { extra: info });
+    if (process.env.NODE_ENV !== 'development') Sentry.captureException(error, { extra: info });
+    // eslint-disable-next-line
+    else console.log(error)
   }
 
   render() {
@@ -30,7 +32,7 @@ class ErrorBoundary extends React.Component<Props, State> {
       return (
         <div className={classes.root}>
           <Typography variant="subtitle1" paragraph>
-            {"We're sorry — something went wrong."}
+            We're sorry — something went wrong.
           </Typography>
           <Typography variant="subtitle1" paragraph>
             Our team has been notified
