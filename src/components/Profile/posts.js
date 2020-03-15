@@ -41,7 +41,7 @@ type Props = {
   onUserClick: Function
 };
 
-class Posts extends React.PureComponent<Props> {
+class ProfilePosts extends React.PureComponent<Props> {
   render() {
     const {
       classes,
@@ -104,4 +104,4 @@ class Posts extends React.PureComponent<Props> {
   }
 }
 
-export default withStyles(styles)(Posts);
+export default withStyles(styles)(ProfilePosts);

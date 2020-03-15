@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
+import * as userActions from '../../actions/user'
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -41,6 +42,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  fetchClasses: Function,
   children: Object,
   user: UserState,
   campaign: CampaignState,
@@ -49,7 +51,7 @@ type Props = {
   checkUserSession: Function,
   signOut: Function,
   fetchFeed: Function,
-  enqueueSnackbar: Function,
+  updateFilter: Function,
   requestCampaign: Function,
   openCreateChatGroup: Function,
   push: Function
@@ -78,10 +80,15 @@ class Layout extends React.PureComponent<Props, State> {
     openRequestClass: false
   };
 
-  componentDidMount = () => {
-    const { checkUserSession, requestCampaign } = this.props;
-    checkUserSession();
+  loadUser = async () => {
+    const { fetchClasses, checkUserSession, requestCampaign } = this.props;
+    await checkUserSession();
+    fetchClasses()
     requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN });
+  }
+
+  componentDidMount = () => {
+    this.loadUser()
   };
 
   handleNotificationOpen = event => {
@@ -188,10 +195,14 @@ class Layout extends React.PureComponent<Props, State> {
       signOut,
       isNaked,
       campaign,
-      location: { pathname }
+      location: { pathname },
+      updateFilter,
+      push,
+      fetchFeed
     } = this.props;
     const {
-      data: { userId, firstName, lastName, profileImage }
+      data: { userId, firstName, lastName, profileImage },
+      userClasses
     } = user;
 
     if(!campaign[NEW_CLASSES_CAMPAIGN]) return null
@@ -209,6 +220,14 @@ class Layout extends React.PureComponent<Props, State> {
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
+    const updateFeed = async (sectionId, classId) => {
+      await updateFilter({
+        field: 'userClasses',
+        value: [JSON.stringify({ classId, sectionId })]
+      });
+      await fetchFeed()
+    }
+
     return (
       <Fragment>
         <ErrorBoundary>
@@ -216,9 +235,12 @@ class Layout extends React.PureComponent<Props, State> {
             userId={userId}
             newClassesDisabled={campaign[NEW_CLASSES_CAMPAIGN].isDisabled}
             initials={initials}
+            pushTo={push}
             userProfileUrl={profileImage}
             unreadCount={unreadCount}
             pathname={pathname}
+            updateFeed={updateFeed}
+            userClasses={userClasses}
             handleNotificationOpen={this.handleNotificationOpen}
             handleSignOut={signOut}
             onManageClasses={this.handleOpenManageClasses}
@@ -286,6 +308,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       signOut: signInActions.signOut,
       openCreateChatGroup: chatActions.openCreateChatGroup,
       fetchFeed: feedActions.fetchFeed,
+      updateFilter: feedActions.updateFilter,
+      fetchClasses: userActions.fetchClasses,
       push: routePush,
       requestCampaign: campaignActions.requestCampaign
     },

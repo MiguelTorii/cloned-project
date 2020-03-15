@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { PhotoNote } from '../../types/models';
@@ -21,6 +22,7 @@ import PostTags from '../PostTags';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
+import type { CampaignState } from '../../reducers/campaign';
 
 const styles = theme => ({
   root: {
@@ -43,6 +45,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
+  campaign: CampaignState,
   noteId: number,
   push: Function
 };
@@ -134,6 +137,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
+      campaign,
       user: {
         data: {
           userId,
@@ -170,6 +174,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       bookmarked
     } = photoNote;
 
+    const newClassesDisabled = campaign[NEW_CLASSES_CAMPAIGN] && campaign[NEW_CLASSES_CAMPAIGN].isDisabled
+
     const images = notes.map(item => ({
       src: item.fullNoteUrl,
       thumbnail: item.noteUrl
@@ -182,6 +188,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
               <PostItemHeader
                 pushTo={push}
                 postId={postId}
+                newClassesDisabled={newClassesDisabled}
                 typeId={typeId}
                 currentUserId={userId}
                 userId={ownerId}
@@ -252,8 +259,9 @@ class ViewNotes extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign,
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

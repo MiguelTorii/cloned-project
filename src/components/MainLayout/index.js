@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+import Grid from '@material-ui/core/Grid';
 import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,7 +24,6 @@ import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import DuoIcon from '@material-ui/icons/Duo';
@@ -35,17 +35,20 @@ import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpOutline from '@material-ui/icons/HelpOutline';
+import Typography from '@material-ui/core/Typography';
+import HomeItem from 'components/MainLayout/HomeItem'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import ClassList from 'components/ClassList'
+import queryString from 'query-string'
+import { withRouter } from 'react-router';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 import './currentRoute.css'
-import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import GetApp from '../GetApp';
-import ClassList from 'components/ClassList'
-import queryString from 'query-string'
-import { withRouter } from 'react-router';
+import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -181,6 +184,8 @@ const styles = theme => ({
     width: 'auto',
     justifyContent: 'center',
     margin: theme.spacing(2),
+    paddingTop: 0,
+    paddingBottom: 0,
     borderRadius: theme.spacing(6),
     background: theme.circleIn.palette.brand,
     '&:hover': {
@@ -204,6 +209,8 @@ const styles = theme => ({
     width: 'auto',
     borderRadius: theme.spacing(6),
     background: theme.circleIn.palette.buttonBackground,
+    paddingTop: 0,
+    paddingBottom: 0,
     margin: theme.spacing(2),
     '&:hover': {
       background: theme.circleIn.palette.primaryText2
@@ -213,6 +220,8 @@ const styles = theme => ({
     width: 'auto',
     borderRadius: theme.spacing(6),
     margin: theme.spacing(2),
+    paddingTop: 0,
+    paddingBottom: 0,
     '&:hover': {
       background: theme.circleIn.palette.primaryText2
     },
@@ -226,6 +235,19 @@ const styles = theme => ({
   },
   drawerList: {
     overflow: 'auto !important'
+  },
+  backHeader: {
+    margin: theme.spacing(2)
+  },
+  backContainer: {
+    cursor: 'pointer'
+  },
+  backTitle: {
+    width: '100%',
+    fontSize: 20,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   }
 });
 
@@ -241,8 +263,11 @@ type Props = {
   handleNotificationOpen: Function,
   handleSignOut: Function,
   onManageClasses: Function,
+  userClasses: Object,
   onManageBlockedUsers: Function,
   newClassesDisabled: boolean,
+  updateFeed: Function,
+  pushTo: Function,
   location: {
     search: string
   },
@@ -345,6 +370,16 @@ class MainLayout extends React.Component<Props, State> {
   handleCloseHowEarnPoints = () => {
     this.setState({ openHowEarnPoints: false });
   };
+  
+  getCourseDisplayName = classList => {
+    const query = queryString.parse(window.location.search)
+
+    if (query.classId && classList) {
+      const c = classList.find(cl => cl.classId === Number(query.classId))
+      if (c) return c.courseDisplayName
+    }
+    return ''
+  }
 
   render() {
     const {
@@ -363,6 +398,7 @@ class MainLayout extends React.Component<Props, State> {
       width,
       children,
       unreadCount,
+      location: { search = '' },
       pathname,
       // onOpenLeaderboard
       // onOpenAnnouncements
@@ -379,7 +415,7 @@ class MainLayout extends React.Component<Props, State> {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem component={MyLink} link={`/profile/${userId}`}>
+        <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
           My Profile
         </MenuItem>
         {/* <MenuItem component={MyLink} link="/study-circle"> */}
@@ -428,16 +464,6 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const {
-      location: { search = '' }
-    } = this.props;
-    
-    const {
-      classId,
-      sectionId,
-    } = queryString.parse(search);
-
-    const classQuery = classId ? `?sectionId=${sectionId}&classId=${classId}` : ''
     const renderCreatePostMenu = (
       <Menu
         id="simple-menu"
@@ -449,7 +475,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link={`/create/notes${classQuery}`}
+          link={`/create/notes${search}`}
         >
           <ListItemIcon>
             <NoteAddIcon />
@@ -468,7 +494,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link={`/create/question${classQuery}`}
+          link={`/create/question${search}`}
         >
           <ListItemIcon>
             <ContactSupportIcon />
@@ -487,7 +513,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link={`/create/sharelink${classQuery}`}
+          link={`/create/sharelink${search}`}
         >
           <ListItemIcon>
             <LanguageIcon />
@@ -506,7 +532,7 @@ class MainLayout extends React.Component<Props, State> {
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
-          link={`/create/flashcards${classQuery}`}
+          link={`/create/flashcards${search}`}
         >
           <ListItemIcon>
             <DashboardIcon />
@@ -562,7 +588,9 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const { newClassesDisabled } = this.props
+    const { pushTo, updateFeed, newClassesDisabled, userClasses } = this.props
+    const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
+
     const drawer = (
       <Fragment>
         <div className={classes.toolbar}>
@@ -571,6 +599,21 @@ class MainLayout extends React.Component<Props, State> {
           </IconButton>
         </div>
         <List className={classes.drawerList}>
+          {!newClassesDisabled && courseDisplayName && <div className={classes.backHeader}>
+            <Grid
+              className={classes.backContainer} 
+              alignItems='center'
+              container
+              justify='flex-start'
+              onClick={() => pushTo('/')}
+            >
+              <IconButton>
+                <ArrowBackIosIcon fontSize="small" />
+              </IconButton>
+              <Typography>My Classes</Typography>
+            </Grid>
+            <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
+          </div>}
           <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
             <ListItemIcon>
               <AddIcon
@@ -588,22 +631,12 @@ class MainLayout extends React.Component<Props, State> {
               }}
             />
           </ListItem>
-          <ListItem 
-            button 
-            component={MyLink} 
-            link="/"
-            className={classNames(
-              'tour-onboarding-study',
-              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <ViewListIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={newClassesDisabled ? "Study" : "My Classes"}
-            />
-          </ListItem>
+          <HomeItem 
+            MyLink={MyLink}
+            userClasses={userClasses}
+            updateFeed={updateFeed}
+            newClassesDisabled={newClassesDisabled}
+          />
           {/* <ListItem button component={MyLink} link="/reminders">
             <ListItemIcon>
               <EventIcon className={classNames(pathname === '/reminders' && classes.currentRoute)} />

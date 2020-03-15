@@ -178,6 +178,7 @@ export const getUserClasses = async ({
       })),
       subjectId: Number((userClass.subject_id: number) || 0),
       courseDisplayName: String((userClass.course_display_name: string) || ''),
+      class: String((userClass.class: string) || ''),
       bgColor: String((userClass.bg_color) || '')
     }));
 

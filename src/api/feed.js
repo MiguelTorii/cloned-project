@@ -93,15 +93,18 @@ export const queryFeed = async ({
 
 export const fetchFeedv2 = async ({
   userId,
+  sectionId,
   bookmarked = false
 }: {
   userId: string,
+  sectionId: number,
   bookmarked?: boolean
 }): Promise<Feed> => {
   try {
+    const filterSection = sectionId ? `&section_id=${sectionId}` : ''
     const token = await getToken();
     const result = await axios.get(
-      `${API_ROUTES.FEED_V1_1}?user_id=${userId}&bookmarked=${Boolean(
+      `${API_ROUTES.FEED_V1_1}?user_id=${userId}${filterSection}&bookmarked=${Boolean(
         bookmarked
       ).toString()}`,
       {

@@ -188,6 +188,9 @@ class FeedItem extends React.PureComponent<Props, State> {
   state = {
     moreAnchorEl: null
   };
+  
+  // eslint-disable-next-line no-undef
+  el: ?HTMLDivElement;
 
   handleMenuOpen = event => {
     this.setState({ moreAnchorEl: event.currentTarget });
@@ -304,9 +307,6 @@ class FeedItem extends React.PureComponent<Props, State> {
     }
   };
 
-  // eslint-disable-next-line no-undef
-  el: ?HTMLDivElement;
-
   render() {
     const { newClassesDisabled, classes, userId, data, onPostClick } = this.props;
     const { moreAnchorEl } = this.state;
@@ -400,7 +400,7 @@ class FeedItem extends React.PureComponent<Props, State> {
                 onClick={this.handleUserClick}
               >
                 <div className={classes.title}>
-                  <Typography component="p" variant="h6" noWrap>
+                  <Typography component="div" variant="h6" noWrap>
                     {data.name}
                     {/* <img
                       src={ranks[data.rank - 1]}

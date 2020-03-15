@@ -170,7 +170,6 @@ type Props = {
   onStartVideo: Function,
   onUpdateProfileImage: Function,
   onChange: Function,
-  onStudyCircle: Function
 };
 
 type State = {
@@ -397,7 +396,7 @@ class Header extends React.PureComponent<Props, State> {
           classes={{ root: classes.tabs }}
         >
           <Tab label="Profile" />
-          <Tab label={isMyProfile ? 'My Stuff' : 'Posts'} />
+          <Tab label={isMyProfile ? 'My Posts' : 'Posts'} />
           {isMyProfile && <Tab label="Bookmarks" />}
         </Tabs>
       </div>

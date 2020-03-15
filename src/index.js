@@ -61,11 +61,13 @@ const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
-sentryInit({
-  dsn: SENTRY,
-  environment: ENV,
-  release: RELEASE
-});
+if (process.env.NODE_ENV !== 'development') {
+  sentryInit({
+    dsn: SENTRY,
+    environment: ENV,
+    release: RELEASE
+  });
+}
 
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 

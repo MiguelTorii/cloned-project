@@ -16,6 +16,7 @@
     "react/prop-types": 0,
     "no-underscore-dangle": 0,
     "import/imports-first": ["error", "absolute-first"],
+    "react/no-unescaped-entities": 0,
     "indent": ["error", 2, {
       "ignoredNodes": ["TemplateLiteral"]
     }],

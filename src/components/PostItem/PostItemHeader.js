@@ -73,6 +73,7 @@ type Props = {
   bookmarked: boolean,
   roleId: number,
   onBookmark: Function,
+  newClassesDisabled: boolean,
   onReport: Function,
   postId: Number,
   typeId: Number,
@@ -140,6 +141,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       isMarkdown,
       bookmarked,
       roleId,
+      newClassesDisabled,
       onBookmark
     } = this.props;
     const { moreAnchorEl } = this.state;
@@ -212,9 +214,9 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Link>{' '}
               {roleId === 2 && <TutorBadge text='Tutor' />}
             </Typography>
-            <Typography component="p" variant="subtitle1" noWrap>
+            {newClassesDisabled && <Typography component="p" variant="subtitle1" noWrap>
               {classroomName}
-            </Typography>
+            </Typography>}
             <Typography component="p" variant="subtitle1" noWrap>
               {fromNow}
             </Typography>

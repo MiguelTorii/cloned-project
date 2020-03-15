@@ -7,22 +7,19 @@ import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
-import queryString from 'query-string'
+import { processClasses } from 'containers/ClassesSelector/utils'
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { FeedState } from '../../reducers/feed';
-import { getUserClasses } from '../../api/user';
 import { logEvent } from '../../api/analytics';
 import SharePost from '../SharePost';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
-import { processUserClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 import type { CampaignState } from '../../reducers/campaign';
-import * as userActions from '../../actions/user'
 // const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({
@@ -45,7 +42,6 @@ type Props = {
   sectionId: number,
   bookmarks: boolean,
   push: Function,
-  fetchClasses: Function,
   fetchFeed: Function,
   updateBookmark: Function,
   updateFilter: Function,
@@ -76,15 +72,6 @@ class Feed extends React.PureComponent<Props, State> {
     const { classId, sectionId, bookmarks, updateFilter } = this.props;
 
     if (classId >= 0 && sectionId >= 0) {
-      const {
-        user: {
-          userClasses: {
-            classList
-          }
-        },
-        fetchClasses
-      } = this.props
-      if (classList && classList.length === 0) fetchClasses()
       updateFilter({
         field: 'userClasses',
         value: [JSON.stringify({ classId, sectionId })]
@@ -105,7 +92,6 @@ class Feed extends React.PureComponent<Props, State> {
     });
 
     this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
-    this.handleFetchUserClasses();
     await this.handleFetchFeed();
   };
 
@@ -116,19 +102,6 @@ class Feed extends React.PureComponent<Props, State> {
       typeof this.handleFetchFeed.cancel === 'function'
     )
       this.handleFetchFeed.cancel();
-  };
-
-  handleFetchUserClasses = () => {
-    const {
-      user: {
-        data: { userId, segment }
-      }
-    } = this.props;
-
-    getUserClasses({ userId }).then(({ classes }) => {
-      const classesList = processUserClasses({ classes, segment });
-      if (this.mounted) this.setState({ classesList });
-    });
   };
 
   handleFetchFeed = () => {
@@ -229,8 +202,6 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleOpenFilter = () => {
-    this.handleFetchUserClasses();
-
     logEvent({
       event: 'Feed- Open Filter',
       props: {}
@@ -257,34 +228,26 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: number
   }) => () => {
     const { push } = this.props;
-    push(`/feed?id=${feedId}`);
+    const { search } = window.location
+    const feedParam = search ? `&id=${feedId}` : `?id=${feedId}`
+    push(`/feed${search}${feedParam}`);
     switch (typeId) {
     case 3:
-      push(`/flashcards/${postId}`);
+      push(`/flashcards/${postId}${search}`);
       break;
     case 4:
-      push(`/notes/${postId}`);
+      push(`/notes/${postId}${search}`);
       break;
     case 5:
-      push(`/sharelink/${postId}`);
+      push(`/sharelink/${postId}${search}`);
       break;
     case 6:
-      push(`/question/${postId}`);
+      push(`/question/${postId}${search}`);
       break;
     default:
       break;
     }
   };
-
-  getCourseDisplayName = classList => {
-    const query = queryString.parse(window.location.search)
-
-    if (query.classId && classList) {
-      const c = classList.find(cl => cl.classId === Number(query.classId))
-      if (c) return c.courseDisplayName
-    }
-    return ''
-  }
 
   render() {
     const {
@@ -305,11 +268,9 @@ class Feed extends React.PureComponent<Props, State> {
       feedId: fromFeedId,
       campaign
     } = this.props;
-    const { feedId, report, deletePost, classesList } = this.state;
+    const { feedId, report, deletePost } = this.state;
 
     const newClassesDisabled = campaign[NEW_CLASSES_CAMPAIGN] && campaign[NEW_CLASSES_CAMPAIGN].isDisabled
-
-    const courseDisplayName = this.getCourseDisplayName(classList)
 
     return (
       <Fragment>
@@ -320,8 +281,7 @@ class Feed extends React.PureComponent<Props, State> {
               from={from}
               userClasses={userClasses}
               postTypes={postTypes}
-              courseDisplayName={courseDisplayName}
-              classesList={classesList}
+              classesList={processClasses({ classes: classList })}
               newClassesDisabled={newClassesDisabled}
               fromDate={fromDate}
               toDate={toDate}
@@ -330,7 +290,6 @@ class Feed extends React.PureComponent<Props, State> {
               onClearFilters={this.handleClearFilters}
               onOpenFilter={this.handleOpenFilter}
               onRefresh={this.handleRefresh}
-              pushTo={push}
               onChangeDateRange={this.handleChangeDateRange}
               onClearSearch={this.handleClearSearch}
             />
@@ -393,7 +352,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateBookmark: feedActions.updateBookmark,
       updateFilter: feedActions.updateFilter,
       clearFilter: feedActions.clearFilter,
-      fetchClasses: userActions.fetchClasses,
       updateFeedLimit: feedActions.updateFeedLimit
     },
     dispatch

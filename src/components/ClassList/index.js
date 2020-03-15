@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react'
-import { bindActionCreators } from 'redux'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import * as userActions from '../../actions/user'
 import type { UserState } from '../../reducers/user'
 import type { State as StoreState } from '../../types/state';
 
@@ -31,7 +29,6 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  fetchClasses: Function,
   onClick: Function,
   user: UserState,
 };
@@ -40,20 +37,13 @@ const ClassList = (props: Props) => {
   const {
     classes,
     onClick,
-    fetchClasses,
     user: {
-      data: { userId },
       userClasses: {
         classList,
         canAddClasses
       }
     }
   } = props
-
-  useEffect(() => {
-    if (userId) fetchClasses()
-    // eslint-disable-next-line
-  }, [userId])
 
   const renderButtonText = () => {
     if (classList.length === 0) return 'Click here to get started and to add your classes' 
@@ -83,15 +73,7 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      fetchClasses: userActions.fetchClasses
-    },
-    dispatch
-  );
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 )(withStyles(styles)(ClassList));

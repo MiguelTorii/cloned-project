@@ -48,11 +48,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [canAddClasses, setCanAddClasses] = useState(false)
   const [openAddClasses, setOpenAddClasses] = useState(false)
 
-  useEffect(() => {
-    fetchClasses()
-    // eslint-disable-next-line
-  }, [])
-
   const handleLeaveClass = async ({sectionId, classId, userId}) => {
     await leaveUserClass({ 
       sectionId,

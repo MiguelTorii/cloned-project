@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import { withRouter } from 'react-router';
+import queryString from 'query-string'
 import type {
   UserProfile,
   About,
@@ -70,6 +72,9 @@ type Props = {
   push: Function,
   checkUserSession: Function,
   openChannelWithEntity: Function,
+  location: {
+    search: string
+  },
   updateBookmark: Function
 };
 
@@ -158,10 +163,19 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleFetchFeed = () => {
-    const { userId } = this.props;
+    const { 
+      userId,
+      location: {
+        search = ''
+      }
+    } = this.props;
+    
+    const { sectionId } = queryString.parse(search)
+
     if (userId !== '') {
       fetchFeedv2({
-        userId
+        userId,
+        sectionId
       }).then(feed => {
         this.setState({ feed });
       });
@@ -173,11 +187,18 @@ class Profile extends React.PureComponent<Props, State> {
       user: {
         data: { userId: ownId }
       },
-      userId
+      userId,
+      location: {
+        search = ''
+      }
     } = this.props;
+
+    const { sectionId } = queryString.parse(search)
+
     if (ownId === userId && userId !== '') {
       fetchFeedv2({
         userId,
+        sectionId,
         bookmarked: true
       }).then(bookmarks => {
         this.setState({ bookmarks });
@@ -606,4 +627,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Profile));
+)(withStyles(styles)(withRouter(Profile)));
