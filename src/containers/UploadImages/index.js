@@ -180,7 +180,7 @@ class UploadImages extends React.PureComponent<Props, State> {
     const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar({
       notification: {
-        message: `Only PNG, JPG and JPEG of maximum 40 MB size files are supported at this time`,
+        message: `Only PDF, PNG, JPG and JPEG of maximum 40 MB size files are supported at this time`,
         options: {
           variant: 'error',
           anchorOrigin: {

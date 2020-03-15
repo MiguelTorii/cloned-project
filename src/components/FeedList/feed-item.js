@@ -27,6 +27,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
 import Image from "react-graceful-image";
 import TutorBadge from 'components/TutorBadge'
+import PdfComponent from 'components/PdfGallery/PdfComponent'
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
@@ -267,6 +268,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   renderImage = () => {
     const { classes, data } = this.props;
     const { numberOfNotes } = data
+    const isPdf = data.noteUrl.includes('.pdf')
     switch (data.typeId) {
     case 3:
       return (
@@ -284,11 +286,18 @@ class FeedItem extends React.PureComponent<Props, State> {
     case 4:
       return (
         <div>
-          <Image
-            noLazyLoad
-            className={classes.notePost}
-            src={data.noteUrl}
-          />
+          {isPdf ? 
+            <PdfComponent 
+              url={data.noteUrl} 
+              height={75}
+              width={75}
+              radius={10}
+            />:
+            <Image
+              noLazyLoad
+              className={classes.notePost}
+              src={data.noteUrl}
+            />}
           {numberOfNotes > 1 && <div className={classes.numberOfCardsStyle}>+{numberOfNotes-1}</div>}
         </div>
       )
