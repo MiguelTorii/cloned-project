@@ -22,30 +22,32 @@ const PdfComponent = ({ url, radius, height, width }) => {
 
   useEffect(() => {
     const fetchPdf = async () => {
-      const loadingTask = pdfjs.getDocument(url);
+      try { 
+        const loadingTask = pdfjs.getDocument(url);
 
-      const pdf = await loadingTask.promise;
+        const pdf = await loadingTask.promise;
 
-      const firstPageNumber = 1;
+        const firstPageNumber = 1;
 
-      const page = await pdf.getPage(firstPageNumber);
+        const page = await pdf.getPage(firstPageNumber);
 
-      const scale = page.view[2] ? 120/page.view[2] : 1;
-      const viewport = page.getViewport({ scale });
+        const scale = page.view[2] ? 120/page.view[2] : 1;
+        const viewport = page.getViewport({ scale });
 
-      const canvas = canvasRef.current;
+        const canvas = canvasRef.current;
 
-      const context = canvas.getContext('2d');
-      canvas.height = 120;
-      canvas.width = 120;
+        const context = canvas.getContext('2d');
+        canvas.height = 120;
+        canvas.width = 120;
 
-      const renderContext = {
-        canvasContext: context,
-        viewport
-      };
-      const renderTask = page.render(renderContext);
+        const renderContext = {
+          canvasContext: context,
+          viewport
+        };
+        const renderTask = page.render(renderContext);
 
-      await renderTask.promise;
+        await renderTask.promise;
+      } catch (e) {}
     };
 
     fetchPdf();

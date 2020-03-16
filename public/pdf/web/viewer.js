@@ -1051,7 +1051,7 @@ var PDFViewerApplication = {
                     message: message
                   });
 
-                  throw new Error(msg);
+                  //throw new Error(msg);
                 });
               }));
 
