@@ -354,7 +354,9 @@ export type FeedItem = {
   body: string,
   readOnly: boolean,
   postInfo: PostInfo,
-  tags: Array<Tag>
+  tags: Array<Tag>,
+  uri: string,
+  notes: Array<Note>
 };
 
 export type Feed = Array<FeedItem>;

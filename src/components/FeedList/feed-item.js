@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
+import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -28,6 +29,8 @@ import CreateIcon from '@material-ui/icons/Create';
 import Image from "react-graceful-image";
 import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
+import LinkPreview from 'components/LinkPreview';
+import Dotdotdot from 'react-dotdotdot';
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
@@ -77,6 +80,7 @@ const styles = theme => ({
   content: {
     padding: theme.spacing(),
     display: 'flex',
+    flexDirection: 'column',
     '& > :nth-child(2)': {
       flex: 1
     }
@@ -98,7 +102,11 @@ const styles = theme => ({
     alignItems: 'center'
   },
   stat: {
-    margin: theme.spacing()
+    margin: theme.spacing(),
+  },
+  stat2: {
+    color: theme.palette.primary.main,
+    margin: theme.spacing(),
   },
   rank: {
     width: 15
@@ -106,22 +114,22 @@ const styles = theme => ({
   notePost: {
     objectFit: 'cover',
     borderRadius: 10,
-    width: 75,
-    height: 75
+    width: 120,
+    height: 120
   },
   numberOfCardsStyle: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
-    height: 75,
-    width: 77,
+    height: 120,
+    width: 122,
     fontSize: 30,
     position: 'absolute',
     textAlign: 'center',
     background: 'rgba(0,0,0,0.25)',
-    transform: 'translate(-1px, -77px)',
     borderRadius: 10,
+    top: 0,
   },
   imagePost: {
     minHeight: 75,
@@ -157,14 +165,63 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   chip: {
-    margin: theme.spacing()
+    margin: theme.spacing(),
+  },
+  hashtag: {
+    color: theme.palette.primary.main,
+    fontSize: 14,
+    marginRight: 5,
   },
   label: {
     fontSize: 10
   },
+  label2: {
+    fontSize: 11,
+    lineHeight: 1.45,
+    letterSpacing: 'normal',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  label3: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    letterSpacing: 'normal',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
   bookmarked: {
     color: green[500]
-  }
+  },
+  photoNotes: {
+    display: 'flex', 
+    marginTop: 20,
+    position: 'relative', 
+  },
+  photoNotePreview: {
+    marginRight: 30,
+  },
+  ellipsis: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  flashCards: {
+    display: 'flex', 
+    marginTop: 24,
+  },
+  flashCardPreview: {
+    backgroundColor: '#357592',
+    borderRadius: 8,
+    boxShadow: '0 4px 10px 0 rgba(0, 0, 0, 0.25)',
+    color: '#ffffff',
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: 11,
+    justifyContent: 'space-between',
+    height: 98,
+    marginRight: 24,
+    padding: '10px 20px 15px 20px',
+    width: 199,
+  },
 });
 
 type Props = {
@@ -266,43 +323,111 @@ class FeedItem extends React.PureComponent<Props, State> {
   };
 
   renderImage = () => {
-    const { classes, data } = this.props;
+    const { classes, data, newClassesDisabled } = this.props;
     const { numberOfNotes } = data
     const isPdf = data.noteUrl.includes('.pdf')
     switch (data.typeId) {
     case 3:
-      return (
-        <div className={classes.flashCardsImage}>
-          <img
-            src={flashcardPost}
-            className={classes.type}
-            alt="Flascarhds"
-          />
-          <div className={classes.deckCount}>
-            {`${data.deck.length} Cards`}
+      if (newClassesDisabled) {
+        return (
+          <div className={classes.flashCardsImage}>
+            <img
+              src={flashcardPost}
+              className={classes.type}
+              alt="Flascarhds"
+            />
+            <div className={classes.deckCount}>
+              {`${data.deck.length} Cards`}
+            </div>
           </div>
-        </div>
-      );
-    case 4:
+        )
+      }
       return (
-        <div>
-          {isPdf ? 
-            <PdfComponent 
-              url={data.noteUrl} 
-              height={75}
-              width={75}
-              radius={10}
-            />:
-            <Image
-              noLazyLoad
-              className={classes.notePost}
-              src={data.noteUrl}
-            />}
-          {numberOfNotes > 1 && <div className={classes.numberOfCardsStyle}>+{numberOfNotes-1}</div>}
+        <div className={classes.flashCards}>
+          {
+            data.deck.splice(0, 3).map(({ question, answer }) => (
+              <div className={classes.flashCardPreview}>
+                <div>
+                  <Dotdotdot clamp={2}>
+                    <Typography className={cx(classes.label3, classes.ellipsis)}>
+                      {question}
+                    </Typography>
+                  </Dotdotdot>
+                </div>
+                <div>
+                  <Dotdotdot clamp={3}>
+                    <Typography className={cx(classes.label2, classes.ellipsis)}>
+                      {answer}
+                    </Typography>
+                  </Dotdotdot>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      )
+    case 4: 
+      if (newClassesDisabled) {
+        return (
+          <div>
+            {
+              isPdf ?
+                <PdfComponent
+                  url={data.noteUrl}
+                  height={75}
+                  width={75}
+                  radius={10}
+                /> :
+                <Image
+                  noLazyLoad
+                  className={classes.notePost}
+                  src={data.noteUrl}
+                />
+            }
+            {
+              numberOfNotes > 1 && 
+              <div className={classes.numberOfCardsStyle}>+{numberOfNotes - 1}</div>
+            }
+          </div>
+        )
+      }
+      return (
+        <div className={classes.photoNotes}>
+          {
+            data.notes.splice(0, 5).map((note, i) => {
+              return (
+                <div className={classes.photoNotePreview}>
+                  {
+                    isPdf ?
+                      <PdfComponent
+                        url={note.noteUrl}
+                        height={100}
+                        width={100}
+                        radius={10}
+                      /> :
+                      <Image
+                        noLazyLoad
+                        className={classes.notePost}
+                        src={note.noteUrl}
+                      />
+                  }
+                  {
+                    numberOfNotes > 5 && i === 4 &&
+                    <div className={classes.numberOfCardsStyle}>
+                      +{numberOfNotes - 5}
+                    </div>
+                  }
+                </div>
+              )
+            })
+          }
         </div>
       )
     case 5:
-      return <img src={linkPost} className={classes.imagePost} alt="Link" />;
+      if (newClassesDisabled) {
+        return <img src={linkPost} className={classes.imagePost} alt="Link" />
+      }
+      return <LinkPreview uri={data.uri} />
     case 6:
       return (
         <img
@@ -315,6 +440,15 @@ class FeedItem extends React.PureComponent<Props, State> {
       return null;
     }
   };
+
+  getTitle = (data: Object): String => {
+    if (data.typeId !== 3 || !data.deck) return data.title;
+
+    return `${data.deck.length} ${data.deck.length === 1 ? 'Card' : 'Cards'} | ${data.title}`;
+  }
+
+  // eslint-disable-next-line no-undef
+  el: ?HTMLDivElement;
 
   render() {
     const { newClassesDisabled, classes, userId, data, onPostClick } = this.props;
@@ -397,9 +531,21 @@ class FeedItem extends React.PureComponent<Props, State> {
               </ButtonBase>
             }
             action={
-              <IconButton onClick={this.handleMenuOpen}>
-                <MoreVertIcon />
-              </IconButton>
+              <React.Fragment>
+                {
+                  !newClassesDisabled &&
+                  <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
+                    {data.bookmarked ? (
+                      <BookmarkIcon className={classes.bookmarked} />
+                    ) : (
+                      <BookmarkBorderIcon />
+                    )}
+                  </IconButton>
+                }
+                <IconButton onClick={this.handleMenuOpen}>
+                  <MoreVertIcon />
+                </IconButton>
+              </React.Fragment>
             }
             title={
               <CardActionArea 
@@ -455,7 +601,9 @@ class FeedItem extends React.PureComponent<Props, State> {
           >
             <CardContent className={classes.postTitle}>
               <Typography component="p" variant="h5">
-                {data.title}
+                {
+                  newClassesDisabled ? data.title : this.getTitle(data)
+                }
               </Typography>
             </CardContent>
             <CardContent className={classes.content}>
@@ -467,12 +615,14 @@ class FeedItem extends React.PureComponent<Props, State> {
             </CardContent>
             <CardContent className={classes.tags}>
               {data.tags.map(tag => (
-                <Chip
-                  key={tag.id}
-                  label={`#${tag.name}`}
-                  className={classes.chip}
-                  classes={{ label: classes.label }}
-                />
+                newClassesDisabled ?
+                  <Chip
+                    key={tag.id}
+                    label={`#${tag.name}`}
+                    className={classes.chip}
+                    classes={{ label: classes.label }}
+                  /> :
+                  <span className={classes.hashtag}>{`#${tag.name}`}</span>
               ))}
             </CardContent>
           </CardActionArea>
@@ -480,18 +630,21 @@ class FeedItem extends React.PureComponent<Props, State> {
             <IconButton aria-label="Share" onClick={this.handleShareClick}>
               <ShareIcon />
             </IconButton>
-            <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
-              {data.bookmarked ? (
-                <BookmarkIcon className={classes.bookmarked} />
-              ) : (
-                <BookmarkBorderIcon />
-              )}
-            </IconButton>
+            {
+              newClassesDisabled &&
+              <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
+                {data.bookmarked ? (
+                  <BookmarkIcon className={classes.bookmarked} />
+                ) : (
+                  <BookmarkBorderIcon />
+                )}
+              </IconButton>
+            }
             <div className={classes.stats}>
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={classes.stat}
+                className={newClassesDisabled ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.questionsCount}</strong>{' '}
                 {data.typeId === 6 ? 'answers' : 'comments'}
@@ -499,14 +652,14 @@ class FeedItem extends React.PureComponent<Props, State> {
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={classes.stat}
+                className={newClassesDisabled ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.thanksCount}</strong> thanks
               </Typography>
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={classes.stat}
+                className={newClassesDisabled ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.viewCount}</strong> views
               </Typography>

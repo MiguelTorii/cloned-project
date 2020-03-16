@@ -190,6 +190,12 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     courseDisplayName: String((item.course_display_name: string) || ''),
     bookmarked: Boolean((item.bookmarked: boolean) || false),
     deck: item.deck || [],
+    notes: (item.notes || []).map(n => ({
+      fullNoteUrl: String((n.full_note_url: string) || ''),
+      note: String((n.note: string) || ''),
+      noteUrl: String((n.note_url: string) || ''),
+    })),
+    uri: String((item.uri: string) || ''),
     noteUrl: String((item.note_url: string) || ''),
     name: String((item.name: string) || ''),
     created: String((item.created: string) || ''),
