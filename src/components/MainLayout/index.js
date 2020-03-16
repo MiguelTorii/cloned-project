@@ -234,7 +234,6 @@ const styles = theme => ({
     paddingLeft: 16,
   },
   drawerList: {
-    overflow: 'auto !important'
   },
   backHeader: {
     margin: theme.spacing(2)

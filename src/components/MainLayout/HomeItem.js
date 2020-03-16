@@ -77,13 +77,14 @@ const HomeItem = ({
   const params = queryString.parse(window.location.search)
 
   return (
-    <div>
+    <div
+      className="tour-onboarding-study"
+    >
       <ListItem 
         button 
         component={MyLink} 
         link="/"
         className={classNames(
-          'tour-onboarding-study',
           isHome ? classes.currentPath : classes.otherPath
         )}
       >
