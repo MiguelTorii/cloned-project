@@ -35,6 +35,10 @@ const styles = theme => ({
   leftCharacters: {
     marginRight: theme.spacing(2)
   },
+  leftCharactersRed: {
+    marginRight: theme.spacing(2),
+    color: 'red'
+  },
   divisorOr: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
@@ -528,7 +532,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography
                   variant="subtitle1"
                   align="right"
-                  className={classes.leftCharacters}
+                  className={Number(this.getLeftCharts(summary)) > 0 ? classes.leftCharactersRed : classes.leftCharacters}
                 >{`${this.getLeftCharts(
                   summary
                 )} more characters to earn points`}</Typography>
