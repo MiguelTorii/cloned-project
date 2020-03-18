@@ -23,40 +23,23 @@ type Props = {
   }
 };
 
-type State = {
-  questionId: ?number
-};
+const QuestionPage = ({ classes, match }: Props) => {
+  const {
+    params: { questionId }
+  } = match
 
-class QuestionPage extends React.Component<Props, State> {
-  state = {
-    questionId: null
-  };
-
-  componentDidMount = () => {
-    const {
-      match: {
-        params: { questionId }
-      }
-    } = this.props;
-    this.setState({ questionId: Number(questionId) });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { questionId } = this.state;
-    return (
-      <main>
-        <CssBaseline />
-        <Layout>
-          <Grid container spacing={0}>
-            <Grid item xs={12} className={classes.item}>
-              {questionId && <ViewQuestion questionId={questionId} />}
-            </Grid>
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <Grid container spacing={0}>
+          <Grid item xs={12} className={classes.item}>
+            {questionId && <ViewQuestion questionId={questionId} />}
           </Grid>
-        </Layout>
-      </main>
-    );
-  }
+        </Grid>
+      </Layout>
+    </main>
+  );
 }
 
 export default withRoot(withStyles(styles)(QuestionPage));

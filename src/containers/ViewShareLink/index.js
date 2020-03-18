@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import update from 'immutability-helper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -47,82 +47,26 @@ type Props = {
   push: Function
 };
 
-type State = {
-  shareLink: ?ShareLink,
-  report: boolean,
-  deletePost: boolean
-};
+const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
+  const [shareLink, setShareLink] = useState(null)
+  const [report, setReport] = useState(false)
+  const [deletePost, setDeletePost] = useState(false)
 
-class ViewShareLink extends React.PureComponent<Props, State> {
-  state = {
-    shareLink: null,
-    report: false,
-    deletePost: false
-  };
-
-  componentDidMount = async () => {
-    this.loadData();
-  };
-
-  handleBookmark = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-    const { shareLink } = this.state;
-    if (!shareLink) return;
-    const { feedId, bookmarked } = shareLink;
-    try {
-      const newState = update(this.state, {
-        shareLink: {
-          bookmarked: { $set: !bookmarked }
-        }
-      });
-      this.setState(newState);
-      await bookmark({ feedId, userId, remove: bookmarked });
-    } catch (err) {
-      const newState = update(this.state, {
-        shareLink: {
-          bookmarked: { $set: bookmarked }
-        }
-      });
-      this.setState(newState);
+  const {
+    data: { 
+      userId,
+      firstName: myFirstName,
+      lastName: myLastName,
+      profileImage
     }
-  };
+  } = user
 
-  handleReport = () => {
-    this.setState({ report: true });
-  };
-
-  handleReportClose = () => {
-    this.setState({ report: false });
-  };
-
-  handleDelete = () => {
-    this.setState({ deletePost: true });
-  };
-
-  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
-    if (deleted && deleted === true) {
-      const { push } = this.props;
-      push('/feed');
-    }
-    this.setState({ deletePost: false });
-  };
-
-  loadData = async () => {
-    const {
-      user: {
-        data: { userId }
-      },
-      sharelinkId
-    } = this.props;
-    const shareLink = await getShareLink({ userId, sharelinkId });
-    this.setState({ shareLink });
+  const loadData = async () => {
+    const sl = await getShareLink({ userId, sharelinkId });
+    setShareLink(sl)
     const {
       postInfo: { feedId }
-    } = shareLink;
+    } = sl;
 
     logEvent({
       event: 'Feed- View Link',
@@ -130,123 +74,137 @@ class ViewShareLink extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
-    const {
-      classes,
-      push,
-      user: {
-        data: {
-          userId,
-          firstName: myFirstName,
-          lastName: myLastName,
-          profileImage
-        }
-      }
-    } = this.props;
-    const { shareLink, report, deletePost } = this.state;
+  useEffect(() => {
+    loadData()
+  }, [sharelinkId])
 
-    if (!shareLink)
-      return (
-        <div className={classes.loader}>
-          <CircularProgress />
-        </div>
-      );
-    const {
-      feedId,
-      postId,
-      typeId,
-      roleId,
-      name,
-      userProfileUrl,
-      courseDisplayName,
-      created,
-      summary,
-      title,
-      thanked,
-      inStudyCircle,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      uri,
-      readOnly,
-      bookmarked
-    } = shareLink;
+  const handleBookmark = async () => {
+    if (!shareLink) return;
+    const { feedId, bookmarked } = shareLink;
+    try {
+      setShareLink({ ...shareLink, bookmarked: !bookmarked })
+      await bookmark({ feedId, userId, remove: bookmarked });
+    } catch (err) {
+      setShareLink({ ...shareLink, bookmarked })
+    }
+  };
 
+  const handleReport = () => setReport(true)
+
+  const handleReportClose = () => setReport(false)
+
+  const handleDelete = () => setDeletePost(true)
+
+  const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+    if (deleted && deleted === true) {
+      push('/feed');
+    }
+    setDeletePost(false)
+  };
+
+
+  if (!shareLink)
     return (
-      <div className={classes.root}>
-        <ErrorBoundary>
-          <PostItem feedId={feedId}>
-            <ErrorBoundary>
-              <PostItemHeader
-                currentUserId={userId}
-                userId={ownerId}
-                name={name}
-                userProfileUrl={userProfileUrl}
-                classroomName={courseDisplayName}
-                created={created}
-                body={summary}
-                title={title}
-                bookmarked={bookmarked}
-                roleId={roleId}
-                onBookmark={this.handleBookmark}
-                onReport={this.handleReport}
-                onDelete={this.handleDelete}
-                postId={postId}
-                typeId={typeId}
-                pushTo={push}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <LinkPreview uri={uri} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostTags userId={userId} feedId={feedId} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostItemActions
-                userId={userId}
-                ownerId={ownerId}
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                name={name}
-                userProfileUrl={profileImage}
-                thanked={thanked}
-                inStudyCircle={inStudyCircle}
-                questionsCount={questionsCount}
-                thanksCount={thanksCount}
-                viewCount={viewCount}
-                ownName={`${myFirstName} ${myLastName}`}
-                onReload={this.loadData}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostComments
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                readOnly={readOnly}
-              />
-            </ErrorBoundary>
-
-            <ErrorBoundary>
-              <Report
-                open={report}
-                ownerId={ownerId}
-                objectId={feedId}
-                onClose={this.handleReportClose}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <DeletePost
-                open={deletePost}
-                feedId={feedId}
-                onClose={this.handleDeleteClose}
-              />
-            </ErrorBoundary>
-          </PostItem>
-        </ErrorBoundary>
+      <div className={classes.loader}>
+        <CircularProgress />
       </div>
     );
-  }
+
+  const {
+    feedId,
+    postId,
+    typeId,
+    roleId,
+    name,
+    userProfileUrl,
+    courseDisplayName,
+    created,
+    summary,
+    title,
+    thanked,
+    inStudyCircle,
+    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+    uri,
+    readOnly,
+    bookmarked
+  } = shareLink;
+
+  return (
+    <div className={classes.root}>
+      <ErrorBoundary>
+        <PostItem feedId={feedId}>
+          <ErrorBoundary>
+            <PostItemHeader
+              currentUserId={userId}
+              userId={ownerId}
+              name={name}
+              userProfileUrl={userProfileUrl}
+              classroomName={courseDisplayName}
+              created={created}
+              body={summary}
+              title={title}
+              bookmarked={bookmarked}
+              roleId={roleId}
+              onBookmark={handleBookmark}
+              onReport={handleReport}
+              onDelete={handleDelete}
+              postId={postId}
+              typeId={typeId}
+              pushTo={push}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <LinkPreview uri={uri} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostTags userId={userId} feedId={feedId} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostItemActions
+              userId={userId}
+              ownerId={ownerId}
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              name={name}
+              userProfileUrl={profileImage}
+              thanked={thanked}
+              inStudyCircle={inStudyCircle}
+              questionsCount={questionsCount}
+              thanksCount={thanksCount}
+              viewCount={viewCount}
+              ownName={`${myFirstName} ${myLastName}`}
+              onReload={loadData}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostComments
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              readOnly={readOnly}
+            />
+          </ErrorBoundary>
+
+          <ErrorBoundary>
+            <Report
+              open={report}
+              ownerId={ownerId}
+              objectId={feedId}
+              onClose={handleReportClose}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <DeletePost
+              open={deletePost}
+              feedId={feedId}
+              onClose={handleDeleteClose}
+            />
+          </ErrorBoundary>
+        </PostItem>
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 const mapStateToProps = ({ user }: StoreState): {} => ({

@@ -23,40 +23,25 @@ type Props = {
   }
 };
 
-type State = {
-  flashcardId: ?number
-};
+const FlashcardsPage = ({ classes, match }: Props) => {
+  const {
+    params: {
+      flashcardId
+    }
+  } = match
 
-class FlashcardsPage extends React.Component<Props, State> {
-  state = {
-    flashcardId: null
-  };
-
-  componentDidMount = () => {
-    const {
-      match: {
-        params: { flashcardId }
-      }
-    } = this.props;
-    this.setState({ flashcardId: Number(flashcardId) });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { flashcardId } = this.state;
-    return (
-      <main>
-        <CssBaseline />
-        <Layout>
-          <Grid container spacing={0}>
-            <Grid item xs={12} className={classes.item}>
-              {flashcardId && <ViewFlashcards flashcardId={flashcardId} />}
-            </Grid>
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <Grid container spacing={0}>
+          <Grid item xs={12} className={classes.item}>
+            {flashcardId && <ViewFlashcards flashcardId={flashcardId} />}
           </Grid>
-        </Layout>
-      </main>
-    );
-  }
+        </Grid>
+      </Layout>
+    </main>
+  );
 }
 
 export default withRoot(withStyles(styles)(FlashcardsPage));

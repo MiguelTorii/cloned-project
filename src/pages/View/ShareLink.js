@@ -23,40 +23,24 @@ type Props = {
   }
 };
 
-type State = {
-  sharelinkId: ?number
-};
 
-class ShareLinkPage extends React.Component<Props, State> {
-  state = {
-    sharelinkId: null
-  };
+const ShareLinkPage = ({ classes, match }: Props) => {
+  const {
+    params: { sharelinkId }
+  } = match
 
-  componentDidMount = () => {
-    const {
-      match: {
-        params: { sharelinkId }
-      }
-    } = this.props;
-    this.setState({ sharelinkId: Number(sharelinkId) });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { sharelinkId } = this.state;
-    return (
-      <main>
-        <CssBaseline />
-        <Layout>
-          <Grid container spacing={0}>
-            <Grid item xs={12} className={classes.item}>
-              {sharelinkId && <ViewShareLink sharelinkId={sharelinkId} />}
-            </Grid>
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <Grid container spacing={0}>
+          <Grid item xs={12} className={classes.item}>
+            {sharelinkId && <ViewShareLink sharelinkId={sharelinkId} />}
           </Grid>
-        </Layout>
-      </main>
-    );
-  }
+        </Grid>
+      </Layout>
+    </main>
+  );
 }
 
 export default withRoot(withStyles(styles)(ShareLinkPage));

@@ -75,6 +75,12 @@ class Notifications extends React.PureComponent<Props, State> {
       onTabChange,
       onClick
     } = this.props;
+
+    const handleClick = e => {
+      onClick(e)
+      onNotificationClose()
+    }
+
     const open = Boolean(anchorEl);
     const notificationPaper = (
       <Paper className={classes.root}>
@@ -93,7 +99,7 @@ class Notifications extends React.PureComponent<Props, State> {
             <NotificationItem
               key={item.id}
               notification={item}
-              onClick={onClick}
+              onClick={handleClick}
             />
           ))}
         </List>

@@ -23,40 +23,23 @@ type Props = {
   }
 };
 
-type State = {
-  noteId: ?number
-};
+const PostPage = ({ classes, match }: Props) => {
+  const {
+    params: { noteId }
+  } = match
 
-class PostPage extends React.Component<Props, State> {
-  state = {
-    noteId: null
-  };
-
-  componentDidMount = () => {
-    const {
-      match: {
-        params: { noteId }
-      }
-    } = this.props;
-    this.setState({ noteId: Number(noteId) });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { noteId } = this.state;
-    return (
-      <main>
-        <CssBaseline />
-        <Layout>
-          <Grid container spacing={0}>
-            <Grid item xs={12} className={classes.item}>
-              {noteId && <ViewNotes noteId={noteId} />}
-            </Grid>
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <Grid container spacing={0}>
+          <Grid item xs={12} className={classes.item}>
+            {noteId && <ViewNotes noteId={noteId} />}
           </Grid>
-        </Layout>
-      </main>
-    );
-  }
+        </Grid>
+      </Layout>
+    </main>
+  );
 }
 
 export default withRoot(withStyles(styles)(PostPage));

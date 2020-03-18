@@ -1,7 +1,6 @@
 // @flow
 
-import React from 'react';
-import update from 'immutability-helper';
+import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
@@ -9,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { PhotoNote } from '../../types/models';
+// import type { PhotoNote } from '../../types/models';
 import { getNotes, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
@@ -48,82 +47,26 @@ type Props = {
   push: Function
 };
 
-type State = {
-  photoNote: ?PhotoNote,
-  report: boolean,
-  deletePost: boolean
-};
+const ViewNotes = ({classes, noteId, push, user}: Props) => {
+  const [photoNote, setPhotoNote] = useState(null)
+  const [report, setReport] = useState(false)
+  const [deletePost, setDeletePost] = useState(false)
 
-class ViewNotes extends React.PureComponent<Props, State> {
-  state = {
-    photoNote: null,
-    report: false,
-    deletePost: false
-  };
-
-  componentDidMount = async () => {
-    this.loadData();
-  };
-
-  handleBookmark = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-    const { photoNote } = this.state;
-    if (!photoNote) return;
-    const { feedId, bookmarked } = photoNote;
-    try {
-      const newState = update(this.state, {
-        photoNote: {
-          bookmarked: { $set: !bookmarked }
-        }
-      });
-      this.setState(newState);
-      await bookmark({ feedId, userId, remove: bookmarked });
-    } catch (err) {
-      const newState = update(this.state, {
-        photoNote: {
-          bookmarked: { $set: bookmarked }
-        }
-      });
-      this.setState(newState);
+  const {
+    data: { 
+      userId,
+      firstName: myFirstName,
+      lastName: myLastName,
+      profileImage
     }
-  };
+  } = user;
 
-  handleReport = () => {
-    this.setState({ report: true });
-  };
-
-  handleReportClose = () => {
-    this.setState({ report: false });
-  };
-
-  handleDelete = () => {
-    this.setState({ deletePost: true });
-  };
-
-  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
-    if (deleted && deleted === true) {
-      const { push } = this.props;
-      push('/feed');
-    }
-    this.setState({ deletePost: false });
-  };
-
-  loadData = async () => {
-    const {
-      user: {
-        data: { userId }
-      },
-      noteId
-    } = this.props;
-    const photoNote = await getNotes({ userId, noteId });
-    this.setState({ photoNote });
+  const loadData = async () => {
+    const pn = await getNotes({ userId, noteId });
+    setPhotoNote(pn)
     const {
       postInfo: { feedId }
-    } = photoNote;
+    } = pn;
 
     logEvent({
       event: 'Feed- View Photo Note',
@@ -131,134 +74,153 @@ class ViewNotes extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
-    const {
-      classes,
-      push,
-      user: {
-        data: {
-          userId,
-          firstName: myFirstName,
-          lastName: myLastName,
-          profileImage
-        }
-      }
-    } = this.props;
-    const { photoNote, report, deletePost } = this.state;
+  useEffect(() => {
+    setPhotoNote(null)
+    loadData()
+  }, [noteId])
 
-    if (!photoNote)
-      return (
-        <div className={classes.loader}>
-          <CircularProgress />
-        </div>
-      );
-    const {
-      feedId,
-      postId,
-      typeId,
-      roleId,
-      name,
-      userProfileUrl,
-      courseDisplayName,
-      created,
-      body,
-      title,
-      notes,
-      thanked,
-      inStudyCircle,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      readOnly,
-      bookmarked
-    } = photoNote;
+  const handleBookmark = async () => {
+    if (!photoNote) return;
+    const { feedId, bookmarked } = photoNote;
+    try {
+      setPhotoNote({ ...photoNote, bookmarked: !bookmarked })
+      await bookmark({ feedId, userId, remove: bookmarked });
+    } catch (err) {
+      setPhotoNote({ ...photoNote, bookmarked: bookmarked })
+    }
+  };
 
-    const notesMap = notes.map(item => ({
-      src: item.fullNoteUrl,
-      fileName: item.note,
-      thumbnail: item.noteUrl
-    }));
+  const handleReport = () => {
+    setReport(true);
+  };
 
-    const images = notesMap.filter(nm => !nm.src.includes('.pdf'))
-    const pdfs = notesMap.filter(nm => nm.src.includes('.pdf'))
+  const handleReportClose = () => {
+    setReport(true);
+  };
 
+  const handleDelete = () => {
+    setDeletePost(true)
+  };
+
+  const handleDeleteClose = ({ deleted }: { deleted: ?boolean }) => {
+    if (deleted && deleted === true) {
+      push('/feed');
+    }
+    setDeletePost(false)
+  };
+
+  if (!photoNote)
     return (
-      <div className={classes.root}>
-        <ErrorBoundary>
-          <PostItem feedId={feedId}>
-            <ErrorBoundary>
-              <PostItemHeader
-                pushTo={push}
-                postId={postId}
-                typeId={typeId}
-                currentUserId={userId}
-                userId={ownerId}
-                name={name}
-                userProfileUrl={userProfileUrl}
-                classroomName={courseDisplayName}
-                created={created}
-                body={body}
-                title={title}
-                bookmarked={bookmarked}
-                roleId={roleId}
-                onBookmark={this.handleBookmark}
-                onReport={this.handleReport}
-                onDelete={this.handleDelete}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <ImageGallery images={images} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PdfGallery pdfs={pdfs} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostTags userId={userId} feedId={feedId} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostItemActions
-                userId={userId}
-                ownerId={ownerId}
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                name={name}
-                userProfileUrl={profileImage}
-                thanked={thanked}
-                inStudyCircle={inStudyCircle}
-                questionsCount={questionsCount}
-                thanksCount={thanksCount}
-                viewCount={viewCount}
-                ownName={`${myFirstName} ${myLastName}`}
-                onReload={this.loadData}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostComments
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                readOnly={readOnly}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Report
-                open={report}
-                ownerId={ownerId}
-                objectId={feedId}
-                onClose={this.handleReportClose}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <DeletePost
-                open={deletePost}
-                feedId={feedId}
-                onClose={this.handleDeleteClose}
-              />
-            </ErrorBoundary>
-          </PostItem>
-        </ErrorBoundary>
+      <div className={classes.loader}>
+        <CircularProgress />
       </div>
     );
-  }
+  const {
+    feedId,
+    postId,
+    typeId,
+    roleId,
+    name,
+    userProfileUrl,
+    courseDisplayName,
+    created,
+    body,
+    title,
+    notes,
+    thanked,
+    inStudyCircle,
+    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+    readOnly,
+    bookmarked
+  } = photoNote;
+
+  const notesMap = notes.map(item => ({
+    src: item.fullNoteUrl,
+    fileName: item.note,
+    thumbnail: item.noteUrl
+  }));
+
+  const images = notesMap.filter(nm => !nm.src.includes('.pdf'))
+  const pdfs = notesMap.filter(nm => nm.src.includes('.pdf'))
+
+  return (
+    <div className={classes.root}>
+      <ErrorBoundary>
+        <PostItem feedId={feedId}>
+          <ErrorBoundary>
+            <PostItemHeader
+              pushTo={push}
+              postId={postId}
+              typeId={typeId}
+              currentUserId={userId}
+              userId={ownerId}
+              name={name}
+              userProfileUrl={userProfileUrl}
+              classroomName={courseDisplayName}
+              created={created}
+              body={body}
+              title={title}
+              bookmarked={bookmarked}
+              roleId={roleId}
+              onBookmark={handleBookmark}
+              onReport={handleReport}
+              onDelete={handleDelete}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <ImageGallery images={images} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PdfGallery pdfs={pdfs} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostTags userId={userId} feedId={feedId} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostItemActions
+              userId={userId}
+              ownerId={ownerId}
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              name={name}
+              userProfileUrl={profileImage}
+              thanked={thanked}
+              inStudyCircle={inStudyCircle}
+              questionsCount={questionsCount}
+              thanksCount={thanksCount}
+              viewCount={viewCount}
+              ownName={`${myFirstName} ${myLastName}`}
+              onReload={loadData}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostComments
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              readOnly={readOnly}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Report
+              open={report}
+              ownerId={ownerId}
+              objectId={feedId}
+              onClose={handleReportClose}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <DeletePost
+              open={deletePost}
+              feedId={feedId}
+              onClose={handleDeleteClose}
+            />
+          </ErrorBoundary>
+        </PostItem>
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 const mapStateToProps = ({ user }: StoreState): {} => ({

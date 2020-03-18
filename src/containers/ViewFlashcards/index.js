@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
 import { bindActionCreators } from 'redux';
@@ -53,91 +53,35 @@ type Props = {
   push: Function
 };
 
-type State = {
-  flashcards: ?Flashcards,
-  report: boolean,
-  deletePost: boolean
-};
+const ViewFlashcards = ({ classes, user, flashcardId, push }) => {
+  const [flashcards, setFlashcards] = useState(null)
+  const [report, setReport] = useState(false)
+  const [deletePost, setDeletePost] = useState(false)
 
-class ViewFlashcards extends React.PureComponent<Props, State> {
-  state = {
-    flashcards: null,
-    report: false,
-    deletePost: false
-  };
-
-  componentDidMount = async () => {
-    this.loadData();
-  };
-
-  handleBookmark = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-    const { flashcards } = this.state;
-    if (!flashcards) return;
-    const { feedId, bookmarked } = flashcards;
-    try {
-      const newState = update(this.state, {
-        flashcards: {
-          bookmarked: { $set: !bookmarked }
-        }
-      });
-      this.setState(newState);
-      await bookmark({ feedId, userId, remove: bookmarked });
-    } catch (err) {
-      const newState = update(this.state, {
-        flashcards: {
-          bookmarked: { $set: bookmarked }
-        }
-      });
-      this.setState(newState);
+  const {
+    data: { 
+      userId,
+      firstName: myFirstName,
+      lastName: myLastName,
+      profileImage
     }
-  };
-
-  handleReport = () => {
-    this.setState({ report: true });
-  };
-
-  handleReportClose = () => {
-    this.setState({ report: false });
-  };
-
-  handleDelete = () => {
-    this.setState({ deletePost: true });
-  };
-
-  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
-    if (deleted && deleted === true) {
-      const { push } = this.props;
-      push('/feed');
-    }
-    this.setState({ deletePost: false });
-  };
-
-  loadData = async () => {
-    const {
-      user: {
-        data: { userId }
-      },
-      flashcardId
-    } = this.props;
+  } = user
+    
+  const loadData = async () => {
+    // eslint-disable-next-line
     const { deck = [], ...flashcards } = await getFlashcards({
       userId,
       flashcardId
     });
-    this.setState({
-      flashcards: {
-        ...flashcards,
-        deck: deck.map(item => ({
-          question: item.question,
-          answer: item.answer,
-          id: uuidv4()
-        }))
-      }
-    });
+    setFlashcards({
+      ...flashcards,
+      deck: deck.map(item => ({
+        question: item.question,
+        answer: item.answer,
+        id: uuidv4()
+      }))
+    })
+
     const {
       postInfo: { feedId }
     } = flashcards;
@@ -148,135 +92,148 @@ class ViewFlashcards extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
-    const {
-      classes,
-      push,
-      user: {
-        data: {
-          userId,
-          firstName: myFirstName,
-          lastName: myLastName,
-          profileImage
-        }
-      }
-    } = this.props;
-    const { flashcards, report, deletePost } = this.state;
+  useEffect(() => {
+    loadData()
+  }, [flashcardId])
 
-    if (!flashcards)
-      return (
-        <div className={classes.loader}>
-          <CircularProgress />
-        </div>
-      );
-    const {
-      feedId,
-      postId,
-      typeId,
-      roleId,
-      name,
-      userProfileUrl,
-      courseDisplayName,
-      created,
-      summary,
-      title,
-      thanked,
-      inStudyCircle,
-      deck,
-      postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
-      readOnly,
-      bookmarked
-    } = flashcards;
 
+  const handleBookmark = async () => {
+    if (!flashcards) return;
+    const { feedId, bookmarked } = flashcards;
+    try {
+      setFlashcards({ ...flashcards, bookmarked: !bookmarked })
+      await bookmark({ feedId, userId, remove: bookmarked });
+    } catch (err) {
+      setFlashcards({ ...flashcards, bookmarked })
+    }
+  };
+
+  const handleReport = () => setReport(true)
+
+  const handleReportClose = () => setReport(false)
+
+  const handleDelete = () => setDeletePost(true)
+
+  const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+    if (deleted && deleted === true) {
+      push('/feed');
+    }
+    setDeletePost(false)
+  };
+
+  if (!flashcards)
     return (
-      <div className={classes.root}>
-        <ErrorBoundary>
-          <PostItem feedId={feedId}>
-            <ErrorBoundary>
-              <PostItemHeader
-                currentUserId={userId}
-                userId={ownerId}
-                name={name}
-                userProfileUrl={userProfileUrl}
-                classroomName={courseDisplayName}
-                created={created}
-                pushTo={push}
-                postId={postId}
-                typeId={typeId}
-                body={summary}
-                title={title}
-                bookmarked={bookmarked}
-                roleId={roleId}
-                onBookmark={this.handleBookmark}
-                onReport={this.handleReport}
-                onDelete={this.handleDelete}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <FlashcardViewer title={title} flashcards={deck} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <div className={classes.flashcards}>
-                {// $FlowIgnore
-                  deck.map(({ id, question, answer }, index) => (
-                    <Flashcard
-                      key={id}
-                      index={index + 1}
-                      question={question}
-                      answer={answer}
-                    />
-                  ))}
-              </div>
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostTags userId={userId} feedId={feedId} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostItemActions
-                userId={userId}
-                ownerId={ownerId}
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                name={name}
-                userProfileUrl={profileImage}
-                thanked={thanked}
-                inStudyCircle={inStudyCircle}
-                questionsCount={questionsCount}
-                thanksCount={thanksCount}
-                viewCount={viewCount}
-                ownName={`${myFirstName} ${myLastName}`}
-                onReload={this.loadData}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <PostComments
-                feedId={feedId}
-                postId={postId}
-                typeId={typeId}
-                readOnly={readOnly}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Report
-                open={report}
-                ownerId={ownerId}
-                objectId={feedId}
-                onClose={this.handleReportClose}
-              />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <DeletePost
-                open={deletePost}
-                feedId={feedId}
-                onClose={this.handleDeleteClose}
-              />
-            </ErrorBoundary>
-          </PostItem>
-        </ErrorBoundary>
+      <div className={classes.loader}>
+        <CircularProgress />
       </div>
     );
-  }
+  const {
+    feedId,
+    postId,
+    typeId,
+    roleId,
+    name,
+    userProfileUrl,
+    courseDisplayName,
+    created,
+    summary,
+    title,
+    thanked,
+    inStudyCircle,
+    deck,
+    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+    readOnly,
+    bookmarked
+  } = flashcards;
+
+  return (
+    <div className={classes.root}>
+      <ErrorBoundary>
+        <PostItem feedId={feedId}>
+          <ErrorBoundary>
+            <PostItemHeader
+              currentUserId={userId}
+              userId={ownerId}
+              name={name}
+              userProfileUrl={userProfileUrl}
+              classroomName={courseDisplayName}
+              created={created}
+              pushTo={push}
+              postId={postId}
+              typeId={typeId}
+              body={summary}
+              title={title}
+              bookmarked={bookmarked}
+              roleId={roleId}
+              onBookmark={handleBookmark}
+              onReport={handleReport}
+              onDelete={handleDelete}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <FlashcardViewer title={title} flashcards={deck} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <div className={classes.flashcards}>
+              {// $FlowIgnore
+                deck.map(({ id, question, answer }, index) => (
+                  <Flashcard
+                    key={id}
+                    index={index + 1}
+                    question={question}
+                    answer={answer}
+                  />
+                ))}
+            </div>
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostTags userId={userId} feedId={feedId} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostItemActions
+              userId={userId}
+              ownerId={ownerId}
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              name={name}
+              userProfileUrl={profileImage}
+              thanked={thanked}
+              inStudyCircle={inStudyCircle}
+              questionsCount={questionsCount}
+              thanksCount={thanksCount}
+              viewCount={viewCount}
+              ownName={`${myFirstName} ${myLastName}`}
+              onReload={loadData}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <PostComments
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              readOnly={readOnly}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Report
+              open={report}
+              ownerId={ownerId}
+              objectId={feedId}
+              onClose={handleReportClose}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <DeletePost
+              open={deletePost}
+              feedId={feedId}
+              onClose={handleDeleteClose}
+            />
+          </ErrorBoundary>
+        </PostItem>
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
