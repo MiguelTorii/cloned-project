@@ -14,7 +14,8 @@ const ImgComponent = React.forwardRef(({ item }, ref) =>
     ref={ref}
     style={{
       width: 120,
-      height: 120
+      height: 120,
+      objectFit: 'cover',
     }}
     src={item.thumbnail}
   />
