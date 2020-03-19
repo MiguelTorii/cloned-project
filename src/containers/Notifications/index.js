@@ -57,7 +57,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     loading: true
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     this.mounted = true;
     window.addEventListener('offline', () => {
       if (
@@ -74,6 +74,9 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       this.handleDebounceFetchNotifications,
       10181
     );
+
+    await this.handleFetchNotifications();
+
     this.handleDebounceFetchNotifications();
   };
 
