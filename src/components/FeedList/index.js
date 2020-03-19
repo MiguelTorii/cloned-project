@@ -69,6 +69,11 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     margin: theme.spacing(2)
+  },
+  feedEnd: {
+    backgroundColor: theme.circleIn.palette.appBar,
+    padding: 10,
+    width: '100%',
   }
 });
 
@@ -199,6 +204,14 @@ class FeedList extends React.PureComponent<Props, State> {
             </InfiniteScroll>
           </div>
         </Paper>
+        {
+          items.length !== 0 && !hasMore &&
+          <div className={classes.feedEnd}>
+            <Typography variant="h6" align="center">
+              All posts have been loaded
+            </Typography>
+          </div>
+        }
       </div>
     );
   }
