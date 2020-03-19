@@ -45,6 +45,7 @@ export const getUserProfile = async ({
       points: Number((user_profile.points: number) || 0),
       rank: Number((user_profile.rank: number) || 0),
       roleId: Number((user_profile.role_id: number) || 1),
+      role: String((user_profile.role: string) || ''),
       school: String((user_profile.school: string) || ''),
       state: String((user_profile.state: string) || ''),
       userProfileUrl: String((user_profile.user_profile_url: string) || '')

@@ -115,6 +115,7 @@ const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
     postId,
     typeId,
     roleId,
+    role,
     name,
     userProfileUrl,
     courseDisplayName,
@@ -145,6 +146,7 @@ const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
               title={title}
               bookmarked={bookmarked}
               roleId={roleId}
+              role={role}
               onBookmark={handleBookmark}
               onReport={handleReport}
               onDelete={handleDelete}

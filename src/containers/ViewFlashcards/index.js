@@ -132,6 +132,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push }) => {
     postId,
     typeId,
     roleId,
+    role,
     name,
     userProfileUrl,
     courseDisplayName,
@@ -165,6 +166,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push }) => {
               title={title}
               bookmarked={bookmarked}
               roleId={roleId}
+              role={role}
               onBookmark={handleBookmark}
               onReport={handleReport}
               onDelete={handleDelete}

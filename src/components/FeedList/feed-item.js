@@ -562,8 +562,8 @@ class FeedItem extends React.PureComponent<Props, State> {
                       alt="Rank"
                       className={classes.rank}
                     /> */}
-                    {data.roleId === 2 && ( 
-                      <TutorBadge text='Tutor' />
+                    {data.roleId === 2 && data.role && ( 
+                      <TutorBadge text={data.role} />
                     )} 
                   </Typography>
                 </div>

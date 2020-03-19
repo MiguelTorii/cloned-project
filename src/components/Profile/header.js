@@ -166,6 +166,7 @@ type Props = {
   isStudyCircleLoading: boolean,
   isCirclein: boolean,
   roleId: number,
+  role: string,
   onStartChat: Function,
   onStartVideo: Function,
   onUpdateProfileImage: Function,
@@ -222,6 +223,7 @@ class Header extends React.PureComponent<Props, State> {
       // inStudyCircle,
       isCirclein,
       roleId,
+      role,
       onStartChat,
       onStartVideo,
       onChange,
@@ -292,7 +294,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                {name} {roleId === 2 && <TutorBadge text='Tutor' />}
+                {name} {roleId === 2 && role && <TutorBadge text={role} />}
               </Typography>
               <Grid 
                 justify='space-between'

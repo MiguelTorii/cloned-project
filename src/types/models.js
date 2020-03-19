@@ -36,6 +36,7 @@ export type UserProfile = {
   points: number,
   rank: number,
   roleId: number,
+  role: string,
   school: string,
   state: string,
   userProfileUrl: string
@@ -129,6 +130,7 @@ export type Post = {
   rank: number,
   reports: number,
   roleId: number,
+  role: string,
   school: string,
   subject: string,
   thanked: boolean,
@@ -340,6 +342,7 @@ export type FeedItem = {
   feedId: number,
   postId: number,
   roleId: number,
+  role: string,
   courseDisplayName: string,
   bookmarked: boolean,
   deck: Array<Flashcard>,

@@ -456,6 +456,7 @@ class Profile extends React.PureComponent<Props, State> {
       state,
       grade,
       joined,
+      role,
       roleId
     } = userProfile;
 
@@ -499,6 +500,7 @@ class Profile extends React.PureComponent<Props, State> {
                   inStudyCircle={false}
                   isStudyCircleLoading={isStudyCircleLoading}
                   isCirclein={userId === '0'}
+                  role={role}
                   roleId={roleId}
                   onStartChat={this.handleStartChat}
                   onStartVideo={this.handleStartVideo}

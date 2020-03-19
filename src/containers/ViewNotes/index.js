@@ -86,7 +86,7 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
       setPhotoNote({ ...photoNote, bookmarked: !bookmarked })
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setPhotoNote({ ...photoNote, bookmarked: bookmarked })
+      setPhotoNote({ ...photoNote, bookmarked })
     }
   };
 
@@ -120,6 +120,7 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
     postId,
     typeId,
     roleId,
+    role,
     name,
     userProfileUrl,
     courseDisplayName,
@@ -162,6 +163,7 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
               title={title}
               bookmarked={bookmarked}
               roleId={roleId}
+              role={role}
               onBookmark={handleBookmark}
               onReport={handleReport}
               onDelete={handleDelete}

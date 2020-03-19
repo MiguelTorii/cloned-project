@@ -133,7 +133,8 @@ type Props = {
   onThanks: Function,
   onReport: Function,
   onDelete: Function,
-  isTutor: boolean,
+  roleId: number,
+  role: string,
   onBestAnswer: Function
 };
 
@@ -216,7 +217,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
       readOnly,
       accepted,
       hasBestAnswer,
-      isTutor,
+      roleId,
+      role,
       isOwner
     } = this.props;
     const { showAddComment, open } = this.state;
@@ -239,7 +241,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   href={`/profile/${ownerId}`}
                   className={classes.link}
                 >
-                  {name} {isTutor && <TutorBadge text='Tutor' />}
+                  {name} {roleId === 2 && role && <TutorBadge text={role} />}
                 </Link>
               </Typography>
               <Typography

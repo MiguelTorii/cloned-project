@@ -115,6 +115,7 @@ const ViewQuestion = ({ classes, user, questionId, push }: Props) => {
     postId,
     typeId,
     roleId,
+    role,
     name,
     userProfileUrl,
     courseDisplayName,
@@ -149,6 +150,7 @@ const ViewQuestion = ({ classes, user, questionId, push }: Props) => {
               isMarkdown
               bookmarked={bookmarked}
               roleId={roleId}
+              role={role}
               onBookmark={handleBookmark}
               onReport={handleReport}
               onDelete={handleDelete}

@@ -234,8 +234,9 @@ class ViewNotes extends React.PureComponent<Props, State> {
           {items.map((item, index) => (
             <Fragment key={item.id}>
               <PostItemComment
-                isTutor={item.isTutor}
                 id={item.id}
+                role={item.role}
+                roleId={item.roleId}
                 ownProfileUrl={profileImage}
                 ownName={name}
                 ownerId={item.user.userId}
@@ -266,6 +267,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   id={reply.id}
                   ownProfileUrl={profileImage}
                   ownName={name}
+                  role={reply.role}
+                  roleId={reply.roleId}
                   replyTo={reply.replyTo}
                   firstName={reply.user.firstName}
                   lastName={reply.user.lastName}
