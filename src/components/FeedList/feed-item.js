@@ -345,7 +345,7 @@ class FeedItem extends React.PureComponent<Props, State> {
       return (
         <div className={classes.flashCards}>
           {
-            data.deck.splice(0, 3).map(({ question, answer }) => (
+            data.deck.slice(0, 3).map(({ question, answer }) => (
               <div className={classes.flashCardPreview}>
                 <div>
                   <Dotdotdot clamp={2}>
@@ -394,7 +394,7 @@ class FeedItem extends React.PureComponent<Props, State> {
       return (
         <div className={classes.photoNotes}>
           {
-            data.notes.splice(0, 5).map((note, i) => {
+            data.notes.slice(0, 5).map((note, i) => {
               return (
                 <div className={classes.photoNotePreview}>
                   {
