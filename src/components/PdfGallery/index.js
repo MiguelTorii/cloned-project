@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -53,6 +54,7 @@ type PDF = {
 
 type Props = {
   classes: Object,
+  title: string,
   pdfs: Array<PDF>
 };
 
@@ -60,7 +62,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const PdfGallery = ({ classes, pdfs }: Props) => {
+const PdfGallery = ({ title, classes, pdfs }: Props) => {
   const [urls, setUrls] = useState([])
   const [selected, setSelected] = useState('')
 
@@ -100,6 +102,9 @@ const PdfGallery = ({ classes, pdfs }: Props) => {
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
             </IconButton>
+            <Typography color='textPrimary' variant="h4">
+              {title}
+            </Typography>
           </Toolbar>
         </AppBar>
         <DialogContent>

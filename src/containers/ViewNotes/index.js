@@ -174,7 +174,7 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
             <ImageGallery images={images} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PdfGallery pdfs={pdfs} />
+            <PdfGallery pdfs={pdfs} title={title} />
           </ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />
