@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState, useEffect } from 'react';
-import update from 'immutability-helper';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
@@ -9,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { ShareLink } from '../../types/models';
 import { getShareLink, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
@@ -76,6 +74,7 @@ const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
 
   useEffect(() => {
     loadData()
+    // eslint-disable-next-line
   }, [sharelinkId])
 
   const handleBookmark = async () => {

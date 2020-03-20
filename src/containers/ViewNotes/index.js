@@ -77,6 +77,7 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
   useEffect(() => {
     setPhotoNote(null)
     loadData()
+    // eslint-disable-next-line
   }, [noteId])
 
   const handleBookmark = async () => {

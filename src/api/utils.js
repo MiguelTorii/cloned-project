@@ -253,7 +253,11 @@ export const generateFeedURL = ({
   let queryString = `?index=${index}&limit=${limit}`;
 
   if (from === 'bookmarks') {
-    return `${url}/${userId}/bookmark`;
+    queryString += `&bookmark=true`;
+  }
+
+  if (from === 'me') {
+    queryString += `&bookmark=false`;
   }
 
   if (query !== '' && from !== 'my_posts') {

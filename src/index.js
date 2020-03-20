@@ -86,6 +86,8 @@ ReactDOM.render(
             <Route exact path="/" component={withTracker(Home)} />
             <Route exact path="/classes" component={withTracker(Classes)} />
             <Route exact path="/feed" component={withTracker(Feed)} />
+            <Route exact path="/bookmarks" component={withTracker(Feed)} />
+            <Route exact path="/my_posts" component={withTracker(Feed)} />
             <Route exact path="/store" component={withTracker(Store)} />
             <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
             <Route

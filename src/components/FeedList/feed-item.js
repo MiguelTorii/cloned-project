@@ -346,7 +346,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         <div className={classes.flashCards}>
           {
             data.deck.slice(0, 3).map(({ question, answer }) => (
-              <div className={classes.flashCardPreview}>
+              <div key={question} className={classes.flashCardPreview}>
                 <div>
                   <Dotdotdot clamp={2}>
                     <Typography className={cx(classes.label3, classes.ellipsis)}>
@@ -396,7 +396,7 @@ class FeedItem extends React.PureComponent<Props, State> {
           {
             data.notes.slice(0, 5).map((note, i) => {
               return (
-                <div className={classes.photoNotePreview}>
+                <div key={note.noteUrl} className={classes.photoNotePreview}>
                   {
                     isPdf ?
                       <PdfComponent
@@ -622,7 +622,7 @@ class FeedItem extends React.PureComponent<Props, State> {
                     className={classes.chip}
                     classes={{ label: classes.label }}
                   /> :
-                  <span className={classes.hashtag}>{`#${tag.name}`}</span>
+                  <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
               ))}
             </CardContent>
           </CardActionArea>

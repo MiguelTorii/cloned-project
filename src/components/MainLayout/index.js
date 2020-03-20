@@ -18,6 +18,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 // import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
@@ -590,6 +592,8 @@ class MainLayout extends React.Component<Props, State> {
     const { pushTo, updateFeed, newClassExperience, userClasses } = this.props
     const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
 
+    const qs = queryString.parse(search)
+
     const drawer = (
       <Fragment>
         <div className={classes.toolbar}>
@@ -658,6 +662,36 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText 
               primary="Leaderboard"
+            />
+          </ListItem>
+          <ListItem 
+            button 
+            component={MyLink} 
+            link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
+            className={classNames(
+              ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <LibraryBooksIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Posts"
+            />
+          </ListItem>
+          <ListItem 
+            button 
+            component={MyLink} 
+            link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
+            className={classNames(
+              ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <BookmarkIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Bookmarks"
             />
           </ListItem>
           <ListItem 

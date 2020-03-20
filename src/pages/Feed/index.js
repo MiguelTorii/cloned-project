@@ -21,65 +21,32 @@ type Props = {
   classes: Object,
   location: {
     search: string
-  }
+  },
 };
 
-type State = {
-  feedId: ?number,
-  classId: number,
-  sectionId: number,
-  bookmarks: boolean
-};
 
-class FeedPage extends React.PureComponent<Props, State> {
-  state = {
-    feedId: null,
-    classId: -1,
-    sectionId: -1,
-    bookmarks: false
-  };
+const FeedPage = ({classes, location}: Props) => {
+  const {
+    feedId, classId, sectionId, from
+  } = queryString.parse(location.search)
 
-  componentDidMount = () => {
-    const {
-      location: { search = '' }
-    } = this.props;
-    const {
-      id = null,
-      classId = -1,
-      sectionId = -1,
-      bookmarks = false
-    } = queryString.parse(search);
-
-    this.setState({
-      feedId: id ? Number(id) : null,
-      classId: Number(classId),
-      sectionId: Number(sectionId),
-      bookmarks: bookmarks === 'true'
-    });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { feedId, classId, sectionId, bookmarks } = this.state;
-
-    return (
-      <main>
-        <CssBaseline />
-        <Layout>
-          <Grid container justify="center">
-            <Grid item xs={12} md={9} className={classes.item}>
-              <Feed
-                feedId={feedId}
-                classId={classId}
-                sectionId={sectionId}
-                bookmarks={bookmarks}
-              />
-            </Grid>
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <Grid container justify="center">
+          <Grid item xs={12} md={9} className={classes.item}>
+            <Feed
+              feedId={feedId}
+              classId={classId}
+              sectionId={sectionId}
+              from={from}
+            />
           </Grid>
-        </Layout>
-      </main>
-    );
-  }
+        </Grid>
+      </Layout>
+    </main>
+  );
 }
 
 export default withRoot(withStyles(styles)(withWidth()(withRouter(FeedPage))));

@@ -241,9 +241,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   getFilterCount = () => {
-    const { newClassExperience, from, userClasses, postTypes } = this.props;
+    const { newClassExperience, userClasses, postTypes } = this.props;
     let count = 0;
-    if (from !== 'everyone') count += 1;
+    // if (from !== 'everyone') count += 1;
     if (!newClassExperience && userClasses.length > 0) count += 1;
     if (postTypes.length > 0) count += 1;
     return count;

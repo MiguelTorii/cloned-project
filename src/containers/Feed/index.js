@@ -39,7 +39,7 @@ type Props = {
   feedId: ?number,
   classId: number,
   sectionId: number,
-  bookmarks: boolean,
+  from: boolean,
   push: Function,
   fetchFeed: Function,
   updateBookmark: Function,
@@ -66,9 +66,25 @@ class Feed extends React.PureComponent<Props, State> {
 
   mounted: boolean;
 
+  componentDidUpdate(prevProps) {
+    const { from } = this.props
+    if (from !== prevProps.from) {
+      this.handleUpdateFilter()
+    }
+  }
+
+  handleUpdateFilter = () => {
+    const { from, updateFilter } = this.props;
+    if (from) {
+      updateFilter({ field: 'from', value: from });
+    } else {
+      updateFilter({ field: 'from', value: 'everyone' });
+    }
+  }
+
   componentDidMount = async () => {
     this.mounted = true;
-    const { classId, sectionId, bookmarks, updateFilter } = this.props;
+    const { classId, sectionId, updateFilter } = this.props;
 
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
@@ -76,9 +92,9 @@ class Feed extends React.PureComponent<Props, State> {
         value: [JSON.stringify({ classId, sectionId })]
       });
     }
-    if (bookmarks) {
-      updateFilter({ field: 'from', value: 'bookmarks' });
-    }
+    
+    this.handleUpdateFilter()
+    
     window.addEventListener('offline', () => {
       if (
         this.handleFetchFeed.cancel &&

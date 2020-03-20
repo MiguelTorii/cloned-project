@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState, useEffect } from 'react';
-import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,7 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { Flashcards } from '../../types/models';
 import { getFlashcards, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
@@ -53,7 +51,7 @@ type Props = {
   push: Function
 };
 
-const ViewFlashcards = ({ classes, user, flashcardId, push }) => {
+const ViewFlashcards = ({ classes, user, flashcardId, push }: Props) => {
   const [flashcards, setFlashcards] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
@@ -94,6 +92,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push }) => {
 
   useEffect(() => {
     loadData()
+    // eslint-disable-next-line
   }, [flashcardId])
 
 
