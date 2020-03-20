@@ -110,6 +110,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  courseDisplayName: string,
   newClassExperience: boolean,
   query: string,
   from: string,
@@ -252,6 +253,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      courseDisplayName,
       classesList,
       query,
       fromDate,
@@ -260,7 +262,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       onRefresh,
       onChangeDateRange,
       newClassExperience,
-      onClearSearch
+      onClearSearch,
     } = this.props;
     const { open, postTypes, userClasses } = this.state;
     const filterCount = this.getFilterCount();
@@ -276,7 +278,11 @@ class FeedFilter extends React.PureComponent<Props, State> {
             <InputBase
               className={classes.input}
               // type="search"
-              placeholder="Search for posts"
+              placeholder={
+                courseDisplayName ? 
+                  `Search for posts in ${courseDisplayName}` : 
+                  'To search add some posts first'
+              }
               value={query}
               onChange={onChange('query')}
               endAdornment={

@@ -285,6 +285,13 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props;
     const { feedId, report, deletePost } = this.state;
 
+
+    let courseName = '';
+
+    if (items.length > 0) {
+      courseName = items[0].courseDisplayName;
+    }
+
     return (
       <Fragment>
         <ErrorBoundary>
@@ -293,6 +300,7 @@ class Feed extends React.PureComponent<Props, State> {
               query={query}
               from={from}
               userClasses={userClasses}
+              courseDisplayName={courseName}
               postTypes={postTypes}
               classesList={processClasses({ classes: classList })}
               newClassExperience={campaign.newClassExperience}
