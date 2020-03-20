@@ -57,13 +57,16 @@ const styles = theme => ({
     position: 'relative',
     width: '100%',
   },
+  divProgress: {
+    height: theme.spacing(3)
+  },
   buttonProgress: {
     color: green[500],
     position: 'absolute',
     top: '50%',
     left: '50%',
     marginTop: -12,
-    marginLeft: -12
+    marginLeft: -12,
   },
   visible: {
     display: 'flex',
@@ -128,14 +131,16 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                   disabled={loading || (isEdit && !changed)}
                   className={classes.submit}
                 >
-                  {buttonLabel || 'Create'}
+                  {loading ? (
+                    <div className={classes.divProgress}>
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    </div>
+                  ) :
+                    buttonLabel || 'Create'}
                 </Button>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )}
               </div>
             </div>
           </Grid>

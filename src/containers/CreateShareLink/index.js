@@ -26,6 +26,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
+import type { CampaignState } from '../../reducers/campaign';
 
 const styles = theme => ({
   preview: {
@@ -41,6 +42,7 @@ type Props = {
   classes: Object,
   user: UserState,
   pushTo: Function,
+  campaign: CampaignState,
   sharelinkId: number,
   location: {
     search: string
@@ -81,6 +83,15 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     errorBody: ''
   };
 
+  handlePush = path => {
+    const { location: { search }, pushTo, campaign } = this.props
+    if(campaign.newClassExperience) {
+      pushTo(`${path}${search}`)
+    } else {
+      pushTo(path)
+    }
+  }
+
   componentDidMount = () => {
     const { sharelinkId } = this.props
     if (sharelinkId) this.loadData()
@@ -103,7 +114,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   loadData = async () => {
     const {
-      pushTo,
       user: {
         data: { userId, segment }
       },
@@ -132,7 +142,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         props: { 'Internal ID': feedId }
       });
     } catch(e) {
-      pushTo('/feed')
+      this.handlePush('/feed')
     }
   };
   
@@ -149,7 +159,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     try {
       const {
         sharelinkId,
-        pushTo,
         user: {
           data: { userId = '' }
         },
@@ -194,7 +203,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         }
       });
       
-      pushTo(`/sharelink/${sharelinkId}`)
+      this.handlePush(`/sharelink/${sharelinkId}`)
       this.setState({ loading: false })
     } catch (err) {
       this.setState({
@@ -219,7 +228,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        pushTo
       } = this.props;
       const { title, summary, url, classId, sectionId } = this.state;
 
@@ -287,7 +295,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         });
       }
 
-      pushTo('/feed');
+      this.handlePush('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -447,8 +455,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

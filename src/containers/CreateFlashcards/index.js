@@ -14,6 +14,7 @@ import queryString from 'query-string'
 import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
+import type { CampaignState } from '../../reducers/campaign';
 import type { SelectType, Flashcard } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
 import ClassesSelector from '../ClassesSelector';
@@ -47,6 +48,7 @@ type Props = {
   },
   pushTo: Function,
   flashcardId: ?number,
+  campaign: CampaignState,
   enqueueSnackbar: Function,
 };
 
@@ -84,6 +86,15 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
     changed: false,
     errorBody: ''
   };
+
+  handlePush = path => {
+    const { location: { search }, pushTo, campaign } = this.props
+    if(campaign.newClassExperience) {
+      pushTo(`${path}${search}`)
+    } else {
+      pushTo(path)
+    }
+  }
 
   componentDidMount = async () => {
     this.loadData();
@@ -149,7 +160,6 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        pushTo,
         flashcardId,
       } = this.props;
       const { title, sectionId, summary, classId } = this.state;
@@ -192,7 +202,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
           }
         }
       });
-      pushTo(`/flashcards/${flashcardId}`)
+      this.handlePush(`/flashcards/${flashcardId}`)
       this.setState({
         loading: false,
       })
@@ -225,7 +235,6 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '', grade }
         },
-        pushTo
       } = this.props;
       const { title, summary, classId, sectionId } = this.state;
 
@@ -282,7 +291,7 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         });
       }
 
-      pushTo('/feed');
+      this.handlePush('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -511,8 +520,9 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, router }: StoreState): {} => ({
+const mapStateToProps = ({ campaign, user, router }: StoreState): {} => ({
   user,
+  campaign,
   router
 });
 

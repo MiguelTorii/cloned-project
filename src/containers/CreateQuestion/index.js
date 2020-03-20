@@ -24,6 +24,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { getUserClasses } from '../../api/user';
+import type { CampaignState } from '../../reducers/campaign';
 
 const styles = theme => ({
   stackbar: {
@@ -35,6 +36,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
+  campaign: CampaignState,
   pushTo: Function,
   questionId: number,
   location: {
@@ -71,6 +73,15 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     changed: null,
     errorBody: ''
   };
+
+  handlePush = path => {
+    const { location: { search }, pushTo, campaign } = this.props
+    if(campaign.newClassExperience) {
+      pushTo(`${path}${search}`)
+    } else {
+      pushTo(path)
+    }
+  }
 
   componentDidMount = () => {
     const { questionId } = this.props
@@ -121,7 +132,6 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        pushTo,
         questionId
       } = this.props;
       const { title, body, classId, sectionId } = this.state;
@@ -158,7 +168,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         }
       });
 
-      pushTo(`/question/${questionId}`);
+      this.handlePush(`/question/${questionId}`);
       this.setState({ loading: false })
     } catch (err) {
       this.setState({
@@ -183,7 +193,6 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        pushTo
       } = this.props;
       const { title, body, classId, sectionId } = this.state;
 
@@ -230,7 +239,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         });
       }
 
-      pushTo('/feed');
+      this.handlePush('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -368,8 +377,9 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

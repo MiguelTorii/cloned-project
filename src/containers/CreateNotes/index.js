@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider'
 import withWidth from '@material-ui/core/withWidth'
 import queryString from 'query-string'
 import { withRouter } from 'react-router';
+import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -63,6 +64,7 @@ type Props = {
   noteId: string,
   user: UserState,
   pushTo: Function,
+  campaign: CampaignState,
   width: string,
   enqueueSnackbar: Function,
   location: {
@@ -111,6 +113,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
     handleUploadImages: Function
   };
 
+  handlePush = path => {
+    const { location: { search }, pushTo, campaign } = this.props
+    if(campaign.newClassExperience) {
+      pushTo(`${path}${search}`)
+    } else {
+      pushTo(path)
+    }
+  }
+
   componentDidMount = async () => {
     this.loadData();
 
@@ -130,7 +141,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
         data: { userId, segment }
       },
       noteId,
-      pushTo
     } = this.props;
     try {
       if(!noteId) return
@@ -157,7 +167,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         notes
       })
     } catch(e) {
-      pushTo('/feed');
+      this.handlePush('/feed');
     }
   };
 
@@ -174,7 +184,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        pushTo
       } = this.props;
       const { title, summary, url, classId, sectionId } = this.state;
 
@@ -233,7 +242,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         });
       }
 
-      pushTo('/feed');
+      this.handlePush('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -258,7 +267,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
           user: {
             data: { userId = '' }
           },
-          pushTo
         } = this.props;
         const { title, classId, sectionId, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
@@ -308,7 +316,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               }
             });
           }
-          pushTo('/feed')
+          this.handlePush('/feed')
         }, 3000);
       } catch (err) {
         if (err.message === 'no images')
@@ -337,7 +345,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
           user: {
             data: { userId = '' }
           },
-          pushTo,
           noteId
         } = this.props;
         const { title, classId, sectionId, summary } = this.state;
@@ -377,7 +384,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               }
             }
           });
-          pushTo(`/notes/${noteId}`)
+          this.handlePush(`/notes/${noteId}`)
         }, 3000)
 
       } catch (err) {
@@ -612,8 +619,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

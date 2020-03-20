@@ -143,7 +143,7 @@ class UploadImagesForm extends React.PureComponent<Props> {
                         </Grid>
                         <Grid xs={10} md={11} item>
                           <Typography>
-                          Tap to add photos of notes (JPG, JPEG, PNG, PDF only)
+                            Tap to add notes (JPG, JPEG, PNG, PDF files supported)
                           </Typography>
                         </Grid>
                       </Grid>
