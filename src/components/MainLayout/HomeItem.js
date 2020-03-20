@@ -6,6 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import queryString from 'query-string'
+// $FlowIgnore
+import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 
 type Props = {
   newClassExperience: boolean,
@@ -89,7 +91,7 @@ const HomeItem = ({
         )}
       >
         <ListItemIcon>
-          <ViewListIcon />
+          {newClassExperience ? <GradCapIcon className={classNames("whiteSvg")} /> : <ViewListIcon />}
         </ListItemIcon>
         <ListItemText
           primary={!newClassExperience ? "Study" : "My Classes"}
