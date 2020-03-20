@@ -205,7 +205,7 @@ class Layout extends React.PureComponent<Props, State> {
       userClasses
     } = user;
 
-    if(!campaign[NEW_CLASSES_CAMPAIGN]) return null
+    if (campaign.newClassExperience === null) return null
 
     const {
       manageClasses,
@@ -233,7 +233,7 @@ class Layout extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <MainLayout
             userId={userId}
-            newClassesDisabled={campaign[NEW_CLASSES_CAMPAIGN].isDisabled}
+            newClassExperience={campaign.newClassExperience}
             initials={initials}
             pushTo={push}
             userProfileUrl={profileImage}

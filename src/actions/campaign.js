@@ -1,19 +1,20 @@
 /* eslint-disable import/prefer-default-export */
 // @flow
 
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign'
 import type { Dispatch } from '../types/store';
 
-const requestGetCampaign = ({ id, isDisabled }: {
-  id: string,
-  isDisabled: boolean
+const requestGetCampaign = ({ campaign, active }: {
+  campaign: string,
+  active: boolean
 }): Action => ({
   type: campaignActions.GET_CAMPAIGN,
   payload: {
-    id,
-    isDisabled
+    campaign,
+    active
   }
 });
 
@@ -23,11 +24,13 @@ export const requestCampaign = ({ campaignId }: { campaignId: string }) => async
     const { campaign } = getState()
 
     if(!campaign[campaignId]) {
-      const { campaign_id: id, is_disabled: isDisabled } = await getCampaign({ campaignId })
-      dispatch(requestGetCampaign({ id, isDisabled }));
+      const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
+      if (campaignId === NEW_CLASSES_CAMPAIGN) 
+        dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: !isDisabled && id === 3 }));
     }
   } catch(e) {
-    dispatch(requestGetCampaign({ id: campaignId, isDisabled: true }));
+    return null
   }
+  return null
 };
 

@@ -264,7 +264,7 @@ type Props = {
   onManageClasses: Function,
   userClasses: Object,
   onManageBlockedUsers: Function,
-  newClassesDisabled: boolean,
+  newClassExperience: boolean,
   updateFeed: Function,
   pushTo: Function,
   location: {
@@ -587,7 +587,7 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const { pushTo, updateFeed, newClassesDisabled, userClasses } = this.props
+    const { pushTo, updateFeed, newClassExperience, userClasses } = this.props
     const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
 
     const drawer = (
@@ -598,7 +598,7 @@ class MainLayout extends React.Component<Props, State> {
           </IconButton>
         </div>
         <List className={classes.drawerList}>
-          {!newClassesDisabled && courseDisplayName && <div className={classes.backHeader}>
+          {newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Grid
               className={classes.backContainer} 
               alignItems='center'
@@ -634,7 +634,7 @@ class MainLayout extends React.Component<Props, State> {
             MyLink={MyLink}
             userClasses={userClasses}
             updateFeed={updateFeed}
-            newClassesDisabled={newClassesDisabled}
+            newClassExperience={newClassExperience}
           />
           {/* <ListItem button component={MyLink} link="/reminders">
             <ListItemIcon>
@@ -690,13 +690,13 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Announcements" />
           </ListItem> */}
-          {newClassesDisabled && <div className={classes.myClasses}>
+          {!newClassExperience && <div className={classes.myClasses}>
             <ListItemIcon>
               <GradCapIcon className={classNames("whiteSvg")} />
             </ListItemIcon>
             <ListItemText primary="My Classes" />
           </div>}
-          {newClassesDisabled && <ListItemText>
+          {!newClassExperience && <ListItemText>
             <ClassList
               onClick={this.handleManageClasses}
             />

@@ -234,7 +234,7 @@ type Props = {
   onBookmark: Function,
   onReport: Function,
   onDelete: Function,
-  newClassesDisabled: boolean,
+  newClassExperience: boolean,
   onUserClick: Function
 };
 
@@ -323,12 +323,12 @@ class FeedItem extends React.PureComponent<Props, State> {
   };
 
   renderImage = () => {
-    const { classes, data, newClassesDisabled } = this.props;
+    const { classes, data, newClassExperience } = this.props;
     const { numberOfNotes } = data
     const isPdf = data.noteUrl.includes('.pdf')
     switch (data.typeId) {
     case 3:
-      if (newClassesDisabled) {
+      if (!newClassExperience) {
         return (
           <div className={classes.flashCardsImage}>
             <img
@@ -367,7 +367,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         </div>
       )
     case 4: 
-      if (newClassesDisabled) {
+      if (!newClassExperience) {
         return (
           <div>
             {
@@ -424,7 +424,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         </div>
       )
     case 5:
-      if (newClassesDisabled) {
+      if (!newClassExperience) {
         return <img src={linkPost} className={classes.imagePost} alt="Link" />
       }
       return <LinkPreview uri={data.uri} />
@@ -451,7 +451,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   el: ?HTMLDivElement;
 
   render() {
-    const { newClassesDisabled, classes, userId, data, onPostClick } = this.props;
+    const { newClassExperience, classes, userId, data, onPostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials =
@@ -533,7 +533,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             action={
               <React.Fragment>
                 {
-                  !newClassesDisabled &&
+                  newClassExperience &&
                   <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
                     {data.bookmarked ? (
                       <BookmarkIcon className={classes.bookmarked} />
@@ -572,10 +572,10 @@ class FeedItem extends React.PureComponent<Props, State> {
             subheader={
               <CardActionArea disabled>
                 <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
-                  {newClassesDisabled && <Typography component="p" noWrap>
+                  {!newClassExperience && <Typography component="p" noWrap>
                     {data.courseDisplayName}
                   </Typography>}
-                  {newClassesDisabled && <Typography
+                  {!newClassExperience && <Typography
                     component="p"
                     noWrap
                     style={{ marginRight: 5, marginLeft: 5 }}
@@ -602,7 +602,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             <CardContent className={classes.postTitle}>
               <Typography component="p" variant="h5">
                 {
-                  newClassesDisabled ? data.title : this.getTitle(data)
+                  !newClassExperience ? data.title : this.getTitle(data)
                 }
               </Typography>
             </CardContent>
@@ -615,7 +615,7 @@ class FeedItem extends React.PureComponent<Props, State> {
             </CardContent>
             <CardContent className={classes.tags}>
               {data.tags.map(tag => (
-                newClassesDisabled ?
+                !newClassExperience ?
                   <Chip
                     key={tag.id}
                     label={`#${tag.name}`}
@@ -631,7 +631,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               <ShareIcon />
             </IconButton>
             {
-              newClassesDisabled &&
+              !newClassExperience &&
               <IconButton aria-label="Bookmark" onClick={this.handleBookmark}>
                 {data.bookmarked ? (
                   <BookmarkIcon className={classes.bookmarked} />
@@ -644,7 +644,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={newClassesDisabled ? classes.stat : classes.stat2}
+                className={!newClassExperience ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.questionsCount}</strong>{' '}
                 {data.typeId === 6 ? 'answers' : 'comments'}
@@ -652,14 +652,14 @@ class FeedItem extends React.PureComponent<Props, State> {
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={newClassesDisabled ? classes.stat : classes.stat2}
+                className={!newClassExperience ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.thanksCount}</strong> thanks
               </Typography>
               <Typography
                 component="p"
                 variant="subtitle1"
-                className={newClassesDisabled ? classes.stat : classes.stat2}
+                className={!newClassExperience ? classes.stat : classes.stat2}
               >
                 <strong>{data.postInfo.viewCount}</strong> views
               </Typography>

@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
 import { processClasses } from 'containers/ClassesSelector/utils'
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
@@ -270,8 +269,6 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props;
     const { feedId, report, deletePost } = this.state;
 
-    const newClassesDisabled = campaign[NEW_CLASSES_CAMPAIGN] && campaign[NEW_CLASSES_CAMPAIGN].isDisabled
-
     return (
       <Fragment>
         <ErrorBoundary>
@@ -282,7 +279,7 @@ class Feed extends React.PureComponent<Props, State> {
               userClasses={userClasses}
               postTypes={postTypes}
               classesList={processClasses({ classes: classList })}
-              newClassesDisabled={newClassesDisabled}
+              newClassExperience={campaign.newClassExperience}
               fromDate={fromDate}
               toDate={toDate}
               onChange={this.handleChange}
@@ -297,7 +294,7 @@ class Feed extends React.PureComponent<Props, State> {
               isLoading={isLoading}
               userId={userId}
               items={items}
-              newClassesDisabled={newClassesDisabled}
+              newClassExperience={campaign.newClassExperience}
               hasMore={hasMore}
               fromFeedId={fromFeedId}
               handleShare={this.handleShare}

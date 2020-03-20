@@ -8,7 +8,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import queryString from 'query-string'
 
 type Props = {
-  newClassesDisabled: boolean,
+  newClassExperience: boolean,
   updateFeed: Function,
   userClasses: Object,
   MyLink: Function
@@ -18,7 +18,7 @@ const HomeItem = ({
   userClasses, 
   MyLink, 
   updateFeed,
-  newClassesDisabled
+  newClassExperience
 }: Props) => {
   const [classList, setClassList] = useState([])
   const classes = makeStyles(theme => ({
@@ -57,7 +57,7 @@ const HomeItem = ({
   }))()
 
   useEffect(() => {
-    if(!newClassesDisabled && userClasses && userClasses.classList) {
+    if(newClassExperience && userClasses && userClasses.classList) {
       setClassList(
         userClasses.classList.map(cl => {
           return cl.section.map(s => ({
@@ -71,7 +71,7 @@ const HomeItem = ({
         }).flatMap(x =>x)
       )
     }
-  }, [newClassesDisabled, userClasses])
+  }, [newClassExperience, userClasses])
 
   const isHome = ['/'].includes(window.location.pathname)
   const params = queryString.parse(window.location.search)
@@ -92,7 +92,7 @@ const HomeItem = ({
           <ViewListIcon />
         </ListItemIcon>
         <ListItemText
-          primary={newClassesDisabled ? "Study" : "My Classes"}
+          primary={!newClassExperience ? "Study" : "My Classes"}
         />
       </ListItem>
       {classList.map(cl => (

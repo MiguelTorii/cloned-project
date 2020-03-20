@@ -110,7 +110,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  newClassesDisabled: boolean,
+  newClassExperience: boolean,
   query: string,
   from: string,
   userClasses: Array<string>,
@@ -241,10 +241,10 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   getFilterCount = () => {
-    const { newClassesDisabled, from, userClasses, postTypes } = this.props;
+    const { newClassExperience, from, userClasses, postTypes } = this.props;
     let count = 0;
     if (from !== 'everyone') count += 1;
-    if (newClassesDisabled && userClasses.length > 0) count += 1;
+    if (!newClassExperience && userClasses.length > 0) count += 1;
     if (postTypes.length > 0) count += 1;
     return count;
   };
@@ -259,7 +259,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       onChange,
       onRefresh,
       onChangeDateRange,
-      newClassesDisabled,
+      newClassExperience,
       onClearSearch
     } = this.props;
     const { open, postTypes, userClasses } = this.state;
@@ -336,7 +336,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             Filter Posts by:
           </DialogTitle>
           <Grid container>
-            {newClassesDisabled && <Grid item xs={12} sm={6} className={classes.option}>
+            {!newClassExperience && <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel component="legend">Courses</FormLabel>
                 <FormGroup>

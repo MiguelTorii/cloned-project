@@ -33,9 +33,7 @@ const Home = ({
   }, [])
 
   useEffect(() => {
-    if(campaign[NEW_CLASSES_CAMPAIGN]) {
-      setNewClassesGrid(!campaign[NEW_CLASSES_CAMPAIGN].isDisabled)
-    }
+    setNewClassesGrid(campaign.newClassExperience)
   }, [campaign])
 
 
