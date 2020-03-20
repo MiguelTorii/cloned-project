@@ -205,7 +205,8 @@ const styles = theme => ({
     textOverflow: 'ellipsis'
   },
   flashCards: {
-    display: 'flex', 
+    display: 'flex',
+    flexWrap: 'wrap',
     marginTop: 24,
   },
   flashCardPreview: {
@@ -218,7 +219,9 @@ const styles = theme => ({
     fontSize: 11,
     justifyContent: 'space-between',
     height: 98,
-    marginRight: 24,
+    marginBottom: 15,
+    marginRight: 15,
+    minWidth: 199,
     padding: '10px 20px 15px 20px',
     width: 199,
   },
