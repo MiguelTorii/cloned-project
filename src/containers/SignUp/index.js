@@ -218,7 +218,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
                 <Typography component="h1" variant="h5">
-                  {activeStep === 2 ? 'Did a friend refer you?' : 'Create your CircleIn Account'}
+                  {activeStep === 2 ? 'Did a classmate refer you to CircleIn?' : 'Create your CircleIn Account'}
                 </Typography>
                 {/* <Steps activeStep={activeStep} hide={Boolean(type === '')} /> */}
                 <TypeSelect

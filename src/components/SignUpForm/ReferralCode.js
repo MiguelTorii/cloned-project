@@ -8,25 +8,29 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing()
+    marginTop: theme.spacing(),
   },
   hide: {
     display: 'none'
   },
-  actions: {
-    display: 'flex',
-    justifyContent: 'space-between'
+  backButton: {
+    left: 0,
+    position: 'absolute',
+    top: 0,
   },
   button: {
-    margin: theme.spacing()
+    paddingRight: theme.spacing(6),
+    paddingLeft: theme.spacing(6),
   },
   wrapper: {
-    margin: theme.spacing(),
-    position: 'relative'
+    marginTop: 20,
+    textAlign: 'center',
   },
   buttonProgress: {
     color: green[500],
@@ -35,7 +39,7 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
-  }
+  },
 });
 
 type Props = {
@@ -80,11 +84,11 @@ class ReferralCode extends React.PureComponent<Props, State> {
         className={cx(classes.form, hide && classes.hide)}
       >
         <Typography align="center" variant="subtitle1">
-            If a friend invited you to CircleIn, enter their referral code and they will receive 10,000 bonus points. Brilliant!
+            If a classmate referred you to CircleIn, enter their referral code and they will receive 10,000 bonus points. Brilliant!
         </Typography>
         <TextValidator
           variant="outlined"
-          label="Referral Code"
+          placeholder="Referral Code"
           margin="normal"
           onChange={this.handleChange('code')}
           name="code"
@@ -94,36 +98,35 @@ class ReferralCode extends React.PureComponent<Props, State> {
           value={code}
           disabled={loading}
         />
-        <div className={classes.actions}>
-          <Button
-            variant="contained"
-            color="default"
-            disabled={loading}
-            className={classes.button}
+        <div className={classes.backButton}>
+          <IconButton
+            color="inherit"
             onClick={onBack}
+            aria-label="Go Back"
           >
-            Back
-          </Button>
-          <Button
-            variant="contained"
-            color="default"
-            disabled={loading}
-            className={classes.button}
-            onClick={this.handleSubmit}
-          >
-            I don’t have a code
-          </Button>
+            <ArrowBackIcon />
+          </IconButton>
         </div>
         <div className={classes.wrapper}>
           <Button
             type="submit"
-            fullWidth
             variant="contained"
             color="primary"
-            disabled={loading}
+            disabled={code === '' || loading}
+            className={classes.button}
           >
             Submit
           </Button>
+          <div style={{ marginTop: 20 }}>
+            <Button
+              color="default"
+              disabled={loading}
+              className={classes.button}
+              onClick={this.handleSubmit}
+            >
+              Skip this step →
+            </Button>
+          </div>
           {loading && (
             <CircularProgress size={24} className={classes.buttonProgress} />
           )}

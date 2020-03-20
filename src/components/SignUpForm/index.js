@@ -29,8 +29,9 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
-      .spacing(3)}px`
+    position: 'relative',
+    padding: theme.spacing(4),
+    paddingTop: theme.spacing(5),
   },
   avatar: {
     margin: theme.spacing(1),
