@@ -487,6 +487,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <ErrorBoundary>
           <CreatePostForm
+            title="Share Notes"
+            subtitle="When you upload your notes, it’s your classmates who can see them. You can help others by sharing and also get feedback too."
             loading={loading}
             changed={changed}
             buttonLabel={isEdit ? 'Save' : 'Share'}
