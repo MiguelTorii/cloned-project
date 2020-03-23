@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     this.setState({ hasError: true });
     if (process.env.NODE_ENV !== 'development') Sentry.captureException(error, { extra: info });
     // eslint-disable-next-line
-    else console.log(error)
+    else console.log('Boundary: ', error)
   }
 
   render() {

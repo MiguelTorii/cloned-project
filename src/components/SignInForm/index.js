@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import green from '@material-ui/core/colors/green';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;
+const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink ref={ref} to={link} {...props} />);
 
 const styles = theme => ({
   main: {

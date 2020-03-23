@@ -51,7 +51,7 @@ export const getNotifications = async ({
 
     return { notifications, unreadCount };
   } catch (err) {
-    console.log(err);
+    if (err.response && err.response.status === 401) window.location.href = '/auth'
     return { notifications: [], unreadCount: 0 };
   }
 };

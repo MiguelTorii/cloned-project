@@ -20,11 +20,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import type { SelectType } from '../../types/models';
 
-const Link = props => (
-  <a href="https://www.circleinapp.com/waitlist" {...props}>
+const Link = React.forwardRef(({ href, ...props }, ref) => (
+  <a ref={ref} href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
-);
+));
 
 const styles = theme => ({
   root: {

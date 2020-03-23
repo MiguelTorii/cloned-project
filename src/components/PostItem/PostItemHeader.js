@@ -20,7 +20,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import TutorBadge from 'components/TutorBadge'
 import Markdown from './Markdown';
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 const styles = theme => ({
   root: {

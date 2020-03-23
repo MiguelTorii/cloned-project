@@ -9,9 +9,7 @@ import Link from '@material-ui/core/Link';
 import AutoComplete from '../AutoComplete';
 import type { SelectType } from '../../types/models';
 
-const MyLink = props => (
-  <RouterLink to="/terms-of-use" target="_blank" {...props} />
-);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to="/terms-of-use" target="_blank" {...props} ref={ref} />);
 
 const styles = theme => ({
   root: {
