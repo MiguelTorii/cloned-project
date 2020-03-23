@@ -19,16 +19,15 @@ const requestGetCampaign = ({ campaign, active }: {
 });
 
 
-export const requestCampaign = ({ campaignId }: { campaignId: string }) => async (dispatch: Dispatch, getState: Function) => {
+export const requestCampaign = ({ campaignId }: { campaignId: string }) => async (dispatch: Dispatch) => {
   try {
-    const { campaign } = getState()
+    const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
 
-    if(!campaign[campaignId]) {
-      const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
-      if (campaignId === NEW_CLASSES_CAMPAIGN) 
-        dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: !isDisabled && id === 3 }));
-    }
+    if (campaignId === NEW_CLASSES_CAMPAIGN) 
+      dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: !isDisabled && id === 3 }));
   } catch(e) {
+    if (campaignId === NEW_CLASSES_CAMPAIGN) 
+      dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: false }));
     return null
   }
   return null
