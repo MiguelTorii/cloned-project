@@ -27,6 +27,10 @@ export type FeedState = {
   errorMessage: {
     title: string,
     body: string
+  },
+  scrollData: {
+    position: number,
+    classId: string,
   }
 };
 
@@ -51,6 +55,10 @@ const defaultState = {
   errorMessage: {
     title: '',
     body: ''
+  },
+  scrollData: {
+    position: 0,
+    classId: -1,
   }
 };
 
@@ -145,6 +153,14 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
       data: {
         filters: { $set: defaultState.data.filters }
       }
+    });
+  case feedActions.UPDATE_SCROLL_DATA:
+    return update(state, {
+      scrollData: { $set: action.payload }
+    });
+  case feedActions.RESET_SCROLL_DATA:
+    return update(state, {
+      scrollData: { $set: defaultState.scrollData }
     });
   case rootActions.CLEAR_STATE:
     return defaultState;

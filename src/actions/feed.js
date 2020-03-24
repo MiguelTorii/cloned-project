@@ -93,6 +93,18 @@ const clearFeedFilterRequest = () => ({
   type: feedActions.CLEAR_FEED_FILTER_REQUEST
 });
 
+const updateScrollDataRequest = ({ position, classId }: { position: number, classId: string }) => ({
+  type: feedActions.UPDATE_SCROLL_DATA,
+  payload: {
+    position,
+    classId
+  }
+});
+
+const resetScrollDataRequest = () => ({
+  type: feedActions.RESET_SCROLL_DATA
+});
+
 export const fetchFeed = () => async (
   dispatch: Dispatch,
   getState: Function
@@ -149,6 +161,13 @@ export const fetchFeed = () => async (
 
 export const clearFeedError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
+  
+export const updateScrollData = 
+  (scrollData: { position: number, clasId: number }) => async (dispatch: Dispatch) =>
+    dispatch(updateScrollDataRequest(scrollData));
+
+export const resetScrollData = () => async (dispatch: Dispatch) =>
+  dispatch(resetScrollDataRequest());
 
 export const updateBookmark = ({
   feedId,

@@ -46,7 +46,9 @@ type Props = {
   updateFilter: Function,
   clearFilter: Function,
   campaign: CampaignState,
-  updateFeedLimit: Function
+  updateFeedLimit: Function,
+  updateScrollData: Function,
+  resetScrollPosition: Function,
 };
 
 type State = {
@@ -84,7 +86,8 @@ class Feed extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    const { classId, sectionId, updateFilter } = this.props;
+    const { classId, sectionId, updateFilter, feed: { scrollData }, resetScrollData  } 
+      = this.props;
 
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
@@ -108,6 +111,12 @@ class Feed extends React.PureComponent<Props, State> {
 
     this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
     await this.handleFetchFeed();
+
+    if (classId === scrollData.classId) {
+      window.scrollTo(0, scrollData.position);
+    }
+
+    resetScrollData();
   };
 
   componentWillUnmount = () => {
@@ -242,9 +251,10 @@ class Feed extends React.PureComponent<Props, State> {
     postId: number,
     feedId: number
   }) => () => {
-    const { push } = this.props;
+    const { push, updateScrollData, classId } = this.props;
     const { search } = window.location
     const feedParam = search ? `&id=${feedId}` : `?id=${feedId}`
+    updateScrollData({ position: window.pageYOffset, classId });
     push(`/feed${search}${feedParam}`);
     switch (typeId) {
     case 3:
@@ -373,7 +383,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateBookmark: feedActions.updateBookmark,
       updateFilter: feedActions.updateFilter,
       clearFilter: feedActions.clearFilter,
-      updateFeedLimit: feedActions.updateFeedLimit
+      updateFeedLimit: feedActions.updateFeedLimit,
+      updateScrollData: feedActions.updateScrollData,
+      resetScrollData: feedActions.resetScrollData,
     },
     dispatch
   );
