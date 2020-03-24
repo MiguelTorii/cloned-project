@@ -9,6 +9,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import { v4 as uuidv4 } from 'uuid';
 import withRoot from '../../withRoot';
 import Table from './table'
 import LoadImg from '../LoadImg'
@@ -183,7 +184,7 @@ const LeaderBoardTabs = ({
           {prizeImgs.map(img => (
             <LoadImg key={img} url={img} style={imgStyle} />
           ))}
-          {selectedTab === 'tuesday' && [...Array(3-prizeImgs.length)].map(() => <div style={placeholder} />)}
+          {selectedTab === 'tuesday' && [...Array(3-prizeImgs.length)].map(() => <div key={uuidv4()} style={placeholder} />)}
         </div>
       )
     return null

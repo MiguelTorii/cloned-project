@@ -16,7 +16,6 @@ const setClassesAction = ({
   }
 })
 
-// eslint-disable-next-line
 export const fetchClasses = () => async (
   dispatch: Dispatch,
   getState: Function
@@ -35,5 +34,22 @@ export const fetchClasses = () => async (
       canAddClasses,
     }}))
   } catch(e) {}
+}
+
+const updateTourAction = ({
+  runningTour
+} : {
+  runningTour: boolean
+}): Action  => ({
+  type: userActions.UPDATE_TOUR,
+  payload: {
+    runningTour
+  }
+})
+
+export const updateTour = runningTour => (
+  dispatch: Dispatch
+) => {
+  dispatch(updateTourAction(runningTour))
 }
 

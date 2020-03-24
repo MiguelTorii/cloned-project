@@ -3,7 +3,8 @@ export const campaignActions = {
 }
 
 export const userActions = {
-  UPDATE_CLASSES: 'UPDATE_CLASSES'
+  UPDATE_CLASSES: 'UPDATE_CLASSES',
+  UPDATE_TOUR: 'UPDATE_TOUR'
 };
 
 export const signInActions = {

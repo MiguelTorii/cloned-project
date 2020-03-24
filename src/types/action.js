@@ -39,6 +39,12 @@ export type UpdateClasses = {
   }
 };
 
+export type UPDATE_CLASSES = {
+  type: 'UPDATE_CLASSES',
+  payload: {
+    runningTour: boolean
+  }
+}
 
 export type SignOutUserRequest = {
   type: 'SIGN_OUT_USER_REQUEST'

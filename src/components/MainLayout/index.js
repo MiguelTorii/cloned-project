@@ -42,6 +42,7 @@ import HomeItem from 'components/MainLayout/HomeItem'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ClassList from 'components/ClassList'
 import queryString from 'query-string'
+import clsx from 'clsx'
 import { withRouter } from 'react-router';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
@@ -236,6 +237,7 @@ const styles = theme => ({
     paddingLeft: 16,
   },
   drawerList: {
+    overflow: 'auto !important'
   },
   backHeader: {
     margin: theme.spacing(2)
@@ -255,6 +257,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   width: string,
+  runningTour: boolean,
   userId: string,
   initials: string,
   userProfileUrl: string,
@@ -401,6 +404,7 @@ class MainLayout extends React.Component<Props, State> {
       unreadCount,
       location: { search = '' },
       pathname,
+      runningTour,
       // onOpenLeaderboard
       // onOpenAnnouncements
     } = this.props;
@@ -601,7 +605,7 @@ class MainLayout extends React.Component<Props, State> {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <List className={classes.drawerList}>
+        <List className={clsx(!runningTour && classes.drawerList)}>
           {newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Grid
               className={classes.backContainer} 

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import store from 'store'
+import * as userActions from 'actions/user'
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import Tooltip from './Tooltip'
 
 type Props = {
   user: UserState,
+  updateTour: Function
 };
 
-const Tour = ({ user, router }: Props) => {
+const Tour = ({ user, router, updateTour }: Props) => {
   const { data: { userId} } = user
   const { location: { pathname }} = router
   const steps = [
@@ -72,6 +75,11 @@ const Tour = ({ user, router }: Props) => {
       setRunning(store.get('TOUR') !== 'VIEWED')
     }
   }, [router])
+
+  useEffect(() => {
+    updateTour({ runningTour: running })
+    // eslint-disable-next-line
+  }, [running])
 
   const handleJoyrideCallback = data => {
     const { action, index, status, type} = data;
@@ -145,7 +153,16 @@ const mapStateToProps = ({ user, router }: StoreState): {} => ({
   router,
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      updateTour: userActions.updateTour,
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps
 )(Tour);
 

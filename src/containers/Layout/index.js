@@ -202,6 +202,7 @@ class Layout extends React.PureComponent<Props, State> {
     } = this.props;
     const {
       data: { userId, firstName, lastName, profileImage },
+      runningTour,
       userClasses
     } = user;
 
@@ -233,6 +234,7 @@ class Layout extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <MainLayout
             userId={userId}
+            runningTour={runningTour}
             newClassExperience={campaign.newClassExperience}
             initials={initials}
             pushTo={push}

@@ -16,6 +16,7 @@ export type UserState = {
   isLoading: boolean,
   data: User,
   error: boolean,
+  runningTour: boolean,
   userClasses: {
     classList: ?Array<Object>,
     canAddClasses: boolean,
@@ -52,6 +53,7 @@ const defaultState = {
     classList: [],
     canAddClasses: false,
   },
+  runningTour: false,
   isLoading: false,
   error: false,
   errorMessage: {
@@ -107,6 +109,11 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     return update(state, {
       // $FlowFixMe
       userClasses: { $set: action.payload.userClasses }
+    })
+  case userActions.UPDATE_TOUR:
+    return update(state, {
+      // $FlowFixMe
+      runningTour: { $set: action.payload.runningTour }
     })
   case signInActions.SIGN_OUT_USER_REQUEST:
   case signInActions.SIGN_OUT_USER_SUCCESS:
