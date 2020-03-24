@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import queryString from 'query-string'
+import Typography from '@material-ui/core/Typography';
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 
@@ -24,10 +25,9 @@ const HomeItem = ({
 }: Props) => {
   const [classList, setClassList] = useState([])
   const classes = makeStyles(theme => ({
-    currentPath: {
+    item: {
       width: 'auto',
       borderRadius: theme.spacing(6),
-      background: theme.circleIn.palette.buttonBackground,
       paddingTop: 0,
       paddingBottom: 0,
       margin: theme.spacing(2),
@@ -35,26 +35,25 @@ const HomeItem = ({
         background: theme.circleIn.palette.primaryText2
       },
     },
+    currentPath: {
+      background: theme.circleIn.palette.buttonBackground,
+    },
     otherPath: {
-      width: 'auto',
-      borderRadius: theme.spacing(6),
-      paddingTop: 0,
-      paddingBottom: 0,
-      margin: theme.spacing(2),
-      '&:hover': {
-        background: theme.circleIn.palette.primaryText2
-      },
+      background: theme.circleIn.palette.modalBackground,
     },
     classes: {
       fontSize: 14,
       paddingTop: 0,
       paddingBottom: 0,
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
       marginLeft: theme.spacing(6),
       marginRight: theme.spacing(6),
       textAlign: 'center'
+    },
+    typo: {
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      marginLeft: theme.spacing(2),
     }
   }))()
 
@@ -68,6 +67,7 @@ const HomeItem = ({
             class: cl.class,
             sectionId: s.sectionId,
             classId: cl.classId,
+            color: cl.bgColor,
             courseDisplayName: cl.courseDisplayName,
           }))
         }).flatMap(x =>x)
@@ -78,6 +78,16 @@ const HomeItem = ({
   const isHome = ['/'].includes(window.location.pathname)
   const params = queryString.parse(window.location.search)
 
+  const renderCircle = color => (
+    <div style={{
+      background: color,
+      borderRadius: '50%',
+      width: 8,
+      height: 8,
+      position: 'absolute',
+    }} />
+  )
+
   return (
     <div
       className="tour-onboarding-study"
@@ -87,7 +97,8 @@ const HomeItem = ({
         component={MyLink} 
         link="/"
         className={classNames(
-          isHome ? classes.currentPath : classes.otherPath
+          classes.item,
+          isHome ? classes.currentPath : null
         )}
       >
         <ListItemIcon>
@@ -106,12 +117,12 @@ const HomeItem = ({
           link={`/feed?sectionId=${cl.sectionId}&classId=${cl.classId}`}
           className={classNames(
             classes.classes,
-            params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) ? classes.currentPath : classes.otherPath
+            classes.item,
+            params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) ? classes.otherPath : null
           )}
         >
-          <ListItemText
-            primary={cl.class}
-          />
+          {renderCircle(cl.color)}
+          <Typography className={classes.typo}>{cl.class}</Typography>
         </ListItem>
       ))}
     </div>

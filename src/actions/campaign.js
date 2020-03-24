@@ -19,10 +19,11 @@ const requestGetCampaign = ({ campaign, active }: {
 });
 
 
-export const requestCampaign = ({ campaignId }: { campaignId: string }) => async (dispatch: Dispatch, getState: Function) => {
+export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaignId: string }) => async (dispatch: Dispatch, getState: Function) => {
   try {
     const { campaign } = getState()
-    if (campaign.newClassExperience === null) {
+
+    if (campaign.newClassExperience === null || reset) {
       const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
 
       if (campaignId === NEW_CLASSES_CAMPAIGN) 

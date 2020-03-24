@@ -2,6 +2,8 @@
 
 import { push } from 'connected-react-router';
 import store from 'store';
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import * as campaignActions from 'actions/campaign'
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -94,6 +96,7 @@ export const signIn = ({
     store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
+    await dispatch(campaignActions.requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN, reset: true }))
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;

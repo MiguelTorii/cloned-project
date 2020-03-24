@@ -2,6 +2,8 @@
 
 import { push } from 'connected-react-router';
 import store from 'store';
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import * as campaignActions from 'actions/campaign'
 import { signUpActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -99,6 +101,8 @@ export const signUp = ({
     store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
+
+    await dispatch(campaignActions.requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN, reset: true }))
     try {
       if (referralCode !== '') {
         setReferral({ userId: user.userId, referralCode });
