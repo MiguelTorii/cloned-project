@@ -33,6 +33,7 @@ const styles = theme => ({
     width: 300
   },
   header: {
+    background: theme.circleIn.palette.brand,
     display: 'flex',
     minHeight: 40
   },
@@ -96,7 +97,7 @@ class MainChat extends React.PureComponent<Props, State> {
       >
         <div className={classes.header}>
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
-            <Typography variant="h6">Classmates</Typography>
+            <Typography variant="h6">Chats</Typography>
             <Badge
               className={classes.margin}
               badgeContent={unread}
