@@ -18,8 +18,6 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
 // import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
@@ -606,7 +604,8 @@ class MainLayout extends React.Component<Props, State> {
           </IconButton>
         </div>
         <List className={clsx(!runningTour && classes.drawerList)}>
-          {newClassExperience && courseDisplayName && <div className={classes.backHeader}>
+          {/* TODO: move this to feed top */} 
+          {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Grid
               className={classes.backContainer} 
               alignItems='center'
@@ -658,7 +657,7 @@ class MainLayout extends React.Component<Props, State> {
             link="/leaderboard"
             className={classNames(
               'tour-onboarding-leaderboard',
-              ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
+              !qs.sectionId && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           >
             <ListItemIcon>
@@ -666,36 +665,6 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText 
               primary="Leaderboard"
-            />
-          </ListItem>
-          <ListItem 
-            button 
-            component={MyLink} 
-            link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
-            className={classNames(
-              ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <LibraryBooksIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="My Posts"
-            />
-          </ListItem>
-          <ListItem 
-            button 
-            component={MyLink} 
-            link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
-            className={classNames(
-              ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <BookmarkIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Bookmarks"
             />
           </ListItem>
           <ListItem 

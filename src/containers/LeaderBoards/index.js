@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
 import type { State as StoreState } from '../../types/state';
 import LeaderBoardTabs from '../../components/LeaderBoardTabs'
 import leaderboardActions from '../../actions/leaderboard'
@@ -21,6 +22,7 @@ const LeaderBoards = ({
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
   pushTo,
+  sectionId,
   updateGrandLeaderboards
 }) => {
   useEffect(() => {
@@ -28,7 +30,7 @@ const LeaderBoards = ({
   }, [updateLeaderboards])
 
   return (
-    <div style={{ width: '100%' }}>
+    <Grid xs={12} item>
       <Typography
         color="textPrimary"
         variant='h3'
@@ -38,12 +40,13 @@ const LeaderBoards = ({
       </Typography>
       <LeaderBoardTabs 
         leaderboard={leaderboard}
+        sectionId={sectionId}
         updateLeaderboardGrandInfo={updateLeaderboardGrandInfo}
         updateTuesdayLeaderboard={updateTuesdayLeaderboard}
         updateGrandLeaderboards={updateGrandLeaderboards}
         pushTo={pushTo}
       />
-    </div>
+    </Grid>
   )
 }
 

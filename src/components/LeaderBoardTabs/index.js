@@ -10,6 +10,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { v4 as uuidv4 } from 'uuid';
+import Grid from '@material-ui/core/Grid';
+import withWidth from '@material-ui/core/withWidth';
+import queryString from 'query-string'
 import withRoot from '../../withRoot';
 import Table from './table'
 import LoadImg from '../LoadImg'
@@ -28,9 +31,7 @@ const styles = theme => ({
   header: {
     backgroundColor: theme.circleIn.palette.appBar,
     borderRadius: '16px 16px 0 0',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    textAlign: 'center',
     padding: '17px 39px 11px 39px',
   },
   tab: {
@@ -49,12 +50,13 @@ const styles = theme => ({
     cursor: 'pointer',
   },
   days: {
-    fontSize: 24,
+    fontSize: 20,
     color: theme.circleIn.palette.primaryText1,
   },
   count: {
     fontSize: 20,
     color: theme.circleIn.palette.success,
+    textAlign: 'center',
     padding: 8,
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: 8,
@@ -104,6 +106,8 @@ const LeaderBoardTabs = ({
   leaderboard,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
+  width,
+  sectionId,
   pushTo,
   updateGrandLeaderboards
 }) => {
@@ -122,10 +126,10 @@ const LeaderBoardTabs = ({
   const [openDialog, setOpenDialog] = useState(false)
 
   useEffect(() => {
-    updateTuesdayLeaderboard()
-    updateGrandLeaderboards()
+    updateTuesdayLeaderboard(sectionId)
+    updateGrandLeaderboards(sectionId)
     updateLeaderboardGrandInfo()
-  }, [updateGrandLeaderboards, updateTuesdayLeaderboard, updateLeaderboardGrandInfo])
+  }, [sectionId, updateGrandLeaderboards, updateTuesdayLeaderboard, updateLeaderboardGrandInfo])
 
   useEffect(() => {
     try {
@@ -216,19 +220,43 @@ const LeaderBoardTabs = ({
             </Button>
           </DialogActions>
         </Dialog>
-        <Button 
-          onClick={() => setSelectedTab('tuesday')} 
-          className={`${selectedTab === 'tuesday' ? classes.selected : classes.tab} tour-onboarding-leaderboard-tuesday`}>
-          {tuesdayBoardName || <CircularProgress size={20} />}        
-        </Button>
-        <Button 
-          onClick={() => setSelectedTab('grand')} 
-          className={`${selectedTab === 'grand' ? classes.selected : classes.tab } tour-onboarding-leaderboard-grand`}>
-          {grandBoardName}
-        </Button>
-        <div className={classes.divider} />
-        <div className={classes.days}>{timeLabel}: <span className={classes.count}>{time}</span></div>
+        <Grid
+          container
+          direction='row'
+          alignItems='center'
+          spacing={2}
+          justify='space-between'
+        >
+          <Grid item xs={6} md={4}>
+            <Button
+              onClick={() => setSelectedTab('tuesday')} 
+              className={`${selectedTab === 'tuesday' ? classes.selected : classes.tab} tour-onboarding-leaderboard-tuesday`}>
+              {tuesdayBoardName || <CircularProgress size={20} />}
+            </Button>
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <Button
+              onClick={() => setSelectedTab('grand')} 
+              className={`${selectedTab === 'grand' ? classes.selected : classes.tab } tour-onboarding-leaderboard-grand`}>
+              {grandBoardName}
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Grid container alignItems="center">
+              {['md', 'lg'].includes(width) && <Grid item xs={1}>
+                <div className={classes.divider} />
+              </Grid>}
+              <Grid item sm={5} md={8}>
+                <div className={classes.days}>{timeLabel}: </div>
+              </Grid>
+              <Grid item sm={1} md={3}>
+                <div className={classes.count}>{time}</div>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
+
       <div className={classes.rewardContainer}>
         {renderPrizes()} 
         <div>
@@ -267,4 +295,4 @@ const LeaderBoardTabs = ({
   )
 }
 
-export default withRoot(withStyles(styles)(LeaderBoardTabs))
+export default withRoot(withStyles(styles)(withWidth()(LeaderBoardTabs)))

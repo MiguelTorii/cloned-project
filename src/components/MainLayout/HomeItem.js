@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import queryString from 'query-string'
 import Typography from '@material-ui/core/Typography';
+import SubMenu from 'components/MainLayout/SubMenu'
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 
@@ -109,21 +110,28 @@ const HomeItem = ({
         />
       </ListItem>
       {classList.map(cl => (
-        <ListItem 
-          button 
+        <div
           key={cl.sectionId}
-          component={MyLink} 
-          onClick={() => updateFeed(cl.sectionId, cl.classId)}
-          link={`/feed?sectionId=${cl.sectionId}&classId=${cl.classId}`}
-          className={classNames(
-            classes.classes,
-            classes.item,
-            params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) ? classes.otherPath : null
-          )}
         >
-          {renderCircle(cl.color)}
-          <Typography className={classes.typo}>{cl.class}</Typography>
-        </ListItem>
+          <ListItem 
+            button 
+            component={MyLink} 
+            onClick={() => updateFeed(cl.sectionId, cl.classId)}
+            link={`/feed?sectionId=${cl.sectionId}&classId=${cl.classId}`}
+            className={classNames(
+              classes.classes,
+              classes.item,
+              params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) ? classes.otherPath : null
+            )}
+          >
+            {renderCircle(cl.color)}
+            <Typography className={classes.typo}>{cl.class}</Typography>
+          </ListItem>
+          {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) && 
+              <SubMenu
+                MyLink={MyLink}
+              />}
+        </div>
       ))}
     </div>
   )

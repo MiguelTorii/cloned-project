@@ -104,9 +104,9 @@ const camelCaseLeaderboard = (res: Object) => {
   }
 }
 
-const updateTuesdayLeaderboard = () => async (dispatch: Dispatch) => {
+const updateTuesdayLeaderboard = (sectionId) => async (dispatch: Dispatch) => {
   try{
-    const res: Object = await getTuesdayPrizeScores()
+    const res: Object = await getTuesdayPrizeScores(sectionId)
     const leaderboards = camelCaseLeaderboard(res)
 
     dispatch(
@@ -124,9 +124,9 @@ const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
   }
 });
 
-const updateGrandLeaderboards = () => async (dispatch: Dispatch) => {
+const updateGrandLeaderboards = (sectionId) => async (dispatch: Dispatch) => {
   try {
-    const res = await getGrandPrizeScores()
+    const res = await getGrandPrizeScores(sectionId)
     const leaderboards = camelCaseLeaderboard(res)
     dispatch(
       updateGrandLeaderboardRequest({ leaderboards })
