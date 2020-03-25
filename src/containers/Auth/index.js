@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router-dom';
+import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,8 +13,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
-import type { UserState } from '../../reducers/user';
-import type { AuthState } from '../../reducers/auth';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
 import AuthSearchSchool from '../../components/AuthSearchSchool';
@@ -48,8 +46,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  user: UserState,
-  auth: AuthState,
+  pushTo: Function,
   updateSchool: Function
 };
 
@@ -74,9 +71,10 @@ class Auth extends React.Component<Props, State> {
     if (launchType === 'lti') {
       this.setState({ lti: true, redirectMessage});
     } else if (lmsTypeId === 0) {
-      const { updateSchool } = this.props;
+      const { updateSchool, pushTo } = this.props;
       const { label, value: selectValue, ...school } = value;
       updateSchool({ school });
+      pushTo('/login')
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
     } else {
@@ -131,15 +129,9 @@ class Auth extends React.Component<Props, State> {
   render() {
     const {
       classes,
-      user: {
-        data: { userId }
-      },
-      auth: { data }
     } = this.props;
     const { redirectMessage, school, error, lti } = this.state;
 
-    if (userId !== '') return <Redirect to="/" />;
-    if (data.school) return <Redirect to="/login" />;
     return (
       <main className={classes.main}>
         <Grid container justify="space-around">
@@ -185,7 +177,8 @@ const mapStateToProps = ({ user, auth }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      updateSchool: authActions.updateSchool
+      updateSchool: authActions.updateSchool,
+      pushTo: push
     },
     dispatch
   );
