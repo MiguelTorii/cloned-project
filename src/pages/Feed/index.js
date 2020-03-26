@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
+import FeedResources from 'containers/FeedResources'
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import Feed from '../../containers/Feed';
@@ -43,6 +44,7 @@ const FeedPage = ({classes, location}: Props) => {
               from={from}
             />
           </Grid>
+          <FeedResources />
         </Grid>
       </Layout>
     </main>

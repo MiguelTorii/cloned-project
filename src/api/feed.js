@@ -67,6 +67,42 @@ export const fetchFeed = async ({
   }
 };
 
+export const feedResources = async ({
+  userId
+}: {
+  userId: string
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.SYNC}/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const {
+      data: {
+        institution_resources: {
+          display_on_feed: display,
+          small_logo: smallLogo,
+          large_logo: largeLogo,
+          feed_resources_title: resourcesTitle,
+          feed_resources_body: resourcesBody
+        }
+      }
+    } = result
+    return {
+      smallLogo,
+      largeLogo,
+      display,
+      resourcesTitle,
+      resourcesBody
+    }
+  } catch (err) {
+    return null;
+  }
+};
+
 export const queryFeed = async ({
   query
 }: {
