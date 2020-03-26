@@ -17,7 +17,8 @@ const styles = () => ({
 
 const LeaderBoards = ({ 
   classes, 
-  leaderboard, 
+  leaderboard,
+  userId, 
   updateLeaderboards,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
@@ -38,7 +39,8 @@ const LeaderBoards = ({
       >
         Leaderboards
       </Typography>
-      <LeaderBoardTabs 
+      <LeaderBoardTabs
+        userId={userId}
         leaderboard={leaderboard}
         sectionId={sectionId}
         updateLeaderboardGrandInfo={updateLeaderboardGrandInfo}
@@ -50,8 +52,9 @@ const LeaderBoards = ({
   )
 }
 
-const mapStateToProps = ({ leaderboard }: StoreState): {} => ({
-  leaderboard
+const mapStateToProps = ({ leaderboard, user }: StoreState): {} => ({
+  leaderboard,
+  userId: user.data.userId
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

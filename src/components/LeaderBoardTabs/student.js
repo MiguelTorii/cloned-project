@@ -1,7 +1,7 @@
 import React from 'react'
 import LoadImg from '../LoadImg'
 
-const Student = ({ student }) => {
+const Student = ({ student, you }) => {
   const  { firstName, lastName, profileImg } = student
   const imageStyle = {
     height: 45,
@@ -24,10 +24,12 @@ const Student = ({ student }) => {
 
   const fallback = <div style={imageStyle}>{`${firstName[0]}${lastName[0]}`}</div>
 
+  const fullName = you ? 'You' : `${firstName} ${lastName}`
+
   return (
     <div style={container}>
       <LoadImg style={imageStyle} url={profileImg} loadgingSize={12} fallback={fallback} />
-      <div style={name}>{`${firstName} ${lastName}`}</div>
+      <div style={name}>{fullName}</div>
     </div>
   )
 }

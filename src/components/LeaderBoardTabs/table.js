@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -22,6 +23,9 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.action} !important`,
     },
+  },
+  trHighlight: {
+    backgroundColor: theme.circleIn.palette.appBar
   },
   tdHeader: {
     backgroundColor: theme.circleIn.palette.modalBackground,
@@ -57,7 +61,8 @@ const StudentTable = ({
   classes, 
   students, 
   scoreLabel,
-  pushTo
+  pushTo,
+  userId,
 }) => {
   return (
     <div className={classes.root}>
@@ -75,10 +80,10 @@ const StudentTable = ({
               hover 
               key={s.userId}
               onClick={() => pushTo(`/profile/${s.userId}`)}
-              className={classes.tr}
+              className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
             >
               <TableCell padding='none' className={classes.tdnp} align="center">{s.position}</TableCell>
-              <TableCell className={classes.td} align="left"><Student student={s} /></TableCell>
+              <TableCell className={classes.td} align="left"><Student student={s} you={userId === s.userId} /></TableCell>
               <TableCell className={classes.td} align="center">{s.score}</TableCell>
             </TableRow>
           ))}
