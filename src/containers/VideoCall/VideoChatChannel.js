@@ -31,11 +31,11 @@ const styles = theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-end',
     backgroundColor: theme.circleIn.palette.appBar
   },
   list: {
     overflowY: 'auto',
-    flex: 1,
   },
   listTyping: {
     // maxHeight: 270
@@ -59,12 +59,6 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   },
-  infiniteScroll: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end'
-  }
 });
 
 type Props = {
@@ -436,27 +430,25 @@ class VideoChatChannel extends React.Component<Props, State> {
                 this.scrollParentRef = node;
               }}
             >
-              <div className={classes.infiniteScroll}>
-                <InfiniteScroll
-                  threshold={50}
-                  pageStart={0}
-                  loadMore={this.handleLoadMore}
-                  hasMore={hasMore}
-                  useWindow={false}
-                  initialLoad={false}
-                  isReverse
-                  getScrollParent={() => this.scrollParentRef}
-                >
-                  {messageItems.map(item =>
-                    this.renderMessage(item, profileURLs)
-                  )}
-                  {loading && (
-                    <div className={classes.progress}>
-                      <CircularProgress size={20} />
-                    </div>
-                  )}
-                </InfiniteScroll>
-              </div>
+              <InfiniteScroll
+                threshold={50}
+                pageStart={0}
+                loadMore={this.handleLoadMore}
+                hasMore={hasMore}
+                useWindow={false}
+                initialLoad={false}
+                isReverse
+                getScrollParent={() => this.scrollParentRef}
+              >
+                {messageItems.slice(0,2).map(item =>
+                  this.renderMessage(item, profileURLs)
+                )}
+                {loading && (
+                  <div className={classes.progress}>
+                    <CircularProgress size={20} />
+                  </div>
+                )}
+              </InfiniteScroll>
             </div>
             {typing !== '' && (
               <div className={classes.typing}>

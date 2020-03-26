@@ -33,7 +33,7 @@ const styles = theme => ({
     width: 300
   },
   header: {
-    background: theme.circleIn.palette.brand,
+    background: '#C7D3DA',
     display: 'flex',
     minHeight: 40
   },
