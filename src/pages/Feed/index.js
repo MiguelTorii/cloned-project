@@ -44,7 +44,9 @@ const FeedPage = ({classes, location}: Props) => {
               from={from}
             />
           </Grid>
-          <FeedResources />
+          <Grid item xs={12} md={3}>
+            <FeedResources />
+          </Grid>
         </Grid>
       </Layout>
     </main>
