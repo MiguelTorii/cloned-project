@@ -106,7 +106,7 @@ class Controls extends React.PureComponent<Props, State> {
         >
           {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
         </Fab>
-        <Fab
+        {/* <Fab
           size="small"
           color={!isSharingData ? 'primary' : 'default'}
           aria-label="share-data"
@@ -115,7 +115,7 @@ class Controls extends React.PureComponent<Props, State> {
           onClick={shareData}
         >
           <CastForEducationIcon />
-        </Fab>
+        </Fab> */}
       </div>
     );
   }
