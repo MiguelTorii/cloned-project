@@ -46,6 +46,12 @@ import logo from '../../assets/svg/circlein_logo.svg';
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
+import FlashCards from '../../assets/svg/flashcards.svg';
+import Links from '../../assets/svg/links.svg';
+import Notes from '../../assets/svg/notes.svg';
+import Questions  from '../../assets/svg/questions.svg';
+import Reminders from '../../assets/svg/reminders.svg';
+import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import GetApp from '../GetApp';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
@@ -248,7 +254,34 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  }
+  },
+  icon: {
+    height: 36,
+    marginLeft: 4,
+    marginRight: 20,
+    width: 36,
+  },
+  menuItemContent: {
+    alignItems: 'center',
+    display: 'flex',
+    marginRight: 10,
+  },
+  primaryItem: {
+    color: theme.circleIn.palette.primaryText1,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  secondaryItem: {
+    color: theme.circleIn.palette.primaryText2,
+    fontSize: 14,
+  },
+  hr: {
+    background: theme.circleIn.palette.appBar,
+    border: 'none',
+    color: theme.circleIn.palette.appBar,
+    height: 2,
+    margin: '6px 0px',
+  },
 });
 
 type Props = {
@@ -410,6 +443,16 @@ class MainLayout extends React.Component<Props, State> {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
 
+    const MenuItemContent = ({ primaryText, secondaryText, icon }) => (
+      <div className={classes.menuItemContent}>
+        <img src={icon} alt="icon" className={classes.icon} />
+        <div className={classes.menuItem}>
+          <div className={classes.primaryItem}>{primaryText}</div>
+          <div className={classes.secondaryItem}>{secondaryText}</div>
+        </div>
+      </div>
+    )
+
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -480,17 +523,10 @@ class MainLayout extends React.Component<Props, State> {
           component={MyLink}
           link={`/create/notes${search}`}
         >
-          <ListItemIcon>
-            <NoteAddIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Share Notes"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="10K points for initial page, 5K for second page and more points for more pages"
+          <MenuItemContent
+            primaryText="Share Notes"
+            secondaryText="Earn 10k points for first page, 5k for second page, then more points for each page after"
+            icon={Notes}
           />
         </MenuItem>
         <MenuItem
@@ -499,36 +535,10 @@ class MainLayout extends React.Component<Props, State> {
           component={MyLink}
           link={`/create/question${search}`}
         >
-          <ListItemIcon>
-            <ContactSupportIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Ask a Question"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="1K for replying with an answer, 25K points for being selected as best answer"
-          />
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link={`/create/sharelink${search}`}
-        >
-          <ListItemIcon>
-            <LanguageIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Share Link"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="2K points"
+          <MenuItemContent
+            primaryText="Ask a Question"
+            secondaryText="Earn 1k for answering a question, and 25k if your answer is chosen as Best Answer"
+            icon={Questions}
           />
         </MenuItem>
         <MenuItem
@@ -537,36 +547,35 @@ class MainLayout extends React.Component<Props, State> {
           component={MyLink}
           link={`/create/flashcards${search}`}
         >
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Create Flashcards"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="5K points for first 4 cards, 2.5K points more per cards"
+          <MenuItemContent
+            primaryText="Create Flashcards"
+            secondaryText="Earn 5k points for the first 4 cards, then 2.5k for each card after"
+            icon={FlashCards}
+          />  
+        </MenuItem>
+        <MenuItem
+          button
+          onClick={this.handleCreatePostMenuClose}
+          component={MyLink}
+          link={`/create/sharelink${search}`}
+        >
+          <MenuItemContent
+            primaryText="Share a Link"
+            secondaryText="Earn 2k points for each link shared"
+            icon={Links}
           />
         </MenuItem>
+        <hr className={classes.hr} />
         <MenuItem
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
           link="/video-call"
         >
-          <ListItemIcon>
-            <DuoIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Video Meet Up"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="20K points for initiating a session, 50K additional points after a 10-minute session"
+          <MenuItemContent
+            primaryText="Video Meet-Up"
+            secondaryText="Earn 20k points for starting a video meet-up, then 50k points after 10 minutes"
+            icon={Videos}
           />
         </MenuItem>
         <MenuItem
@@ -575,17 +584,10 @@ class MainLayout extends React.Component<Props, State> {
           component={MyLink}
           link="/reminders"
         >
-          <ListItemIcon>
-            <EventIcon />
-          </ListItemIcon>
-          <ListItemText
-            inset
-            primary="Create Reminders"
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'textPrimary'
-            }}
-            secondary="300 points for creating, 400 points for completing"
+          <MenuItemContent
+            primaryText="Create a Reminder"
+            secondaryText="Earn 300 points for creating a reminder, then 400 points for completing it"
+            icon={Reminders}
           />
         </MenuItem>
       </Menu>
