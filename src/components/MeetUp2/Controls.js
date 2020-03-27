@@ -24,6 +24,10 @@ const styles = theme => ({
   },
   fab: {
     margin: theme.spacing(2)
+  },
+  hangup: {
+    background: 'red',
+    margin: theme.spacing(2),
   }
 });
 
@@ -90,7 +94,7 @@ class Controls extends React.PureComponent<Props, State> {
         <Fab
           color="secondary"
           aria-label="call-end"
-          className={classes.fab}
+          className={classes.hangup}
           onClick={endCall}
           disabled={!isConnected}
         >
