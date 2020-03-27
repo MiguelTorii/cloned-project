@@ -14,7 +14,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import { v4 as uuidv4 } from 'uuid';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
-import queryString from 'query-string'
 import withRoot from '../../withRoot';
 import Table from './table'
 import LoadImg from '../LoadImg'

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import Grid from '@material-ui/core/Grid';
 import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -37,11 +36,11 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import Typography from '@material-ui/core/Typography';
 import HomeItem from 'components/MainLayout/HomeItem'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ClassList from 'components/ClassList'
 import queryString from 'query-string'
 import clsx from 'clsx'
 import { withRouter } from 'react-router';
+import ClassmatesDialog from 'components/ClassmatesDialog'
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -269,7 +268,6 @@ type Props = {
   onManageBlockedUsers: Function,
   newClassExperience: boolean,
   updateFeed: Function,
-  pushTo: Function,
   location: {
     search: string
   },
@@ -293,7 +291,8 @@ class MainLayout extends React.Component<Props, State> {
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
     openGetApp: false,
-    openHowEarnPoints: false
+    openHowEarnPoints: false,
+    openClassmates: false
   };
 
   handleDrawerOpen = () => {
@@ -390,7 +389,8 @@ class MainLayout extends React.Component<Props, State> {
       mobileMoreAnchorEl,
       createPostAnchorEl,
       openGetApp,
-      openHowEarnPoints
+      openHowEarnPoints,
+      openClassmates
     } = this.state;
     const {
       classes,
@@ -591,13 +591,21 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const { pushTo, updateFeed, newClassExperience, userClasses } = this.props
+    const { updateFeed, newClassExperience, userClasses } = this.props
     const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
 
     const qs = queryString.parse(search)
 
+    const openClassmatesDialog = () => this.setState({ openClassmates: true }) 
+    const closeClassmatesDialog = () => this.setState({ openClassmates: false }) 
+
     const drawer = (
       <Fragment>
+        <ClassmatesDialog
+          close={closeClassmatesDialog}
+          state={openClassmates}
+          courseDisplayName={courseDisplayName}
+        />
         <div className={classes.toolbar}>
           <IconButton onClick={this.handleDrawerClose}>
             <ChevronLeftIcon />
@@ -605,19 +613,7 @@ class MainLayout extends React.Component<Props, State> {
         </div>
         <List className={clsx(!runningTour && classes.drawerList)}>
           {/* TODO: move this to feed top */} 
-          {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
-            <Grid
-              className={classes.backContainer} 
-              alignItems='center'
-              container
-              justify='flex-start'
-              onClick={() => pushTo('/')}
-            >
-              <IconButton>
-                <ArrowBackIosIcon fontSize="small" />
-              </IconButton>
-              <Typography>My Classes</Typography>
-            </Grid>
+          {newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
           </div>}
           <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
@@ -642,6 +638,7 @@ class MainLayout extends React.Component<Props, State> {
             userClasses={userClasses}
             updateFeed={updateFeed}
             newClassExperience={newClassExperience}
+            openClassmatesDialog={openClassmatesDialog}
           />
           {/* <ListItem button component={MyLink} link="/reminders">
             <ListItemIcon>

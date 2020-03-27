@@ -5,6 +5,41 @@ import { API_ROUTES } from '../constants/routes';
 import type { ChatPoints, CreateChat, ChatUser } from '../types/models';
 import { getToken } from './utils';
 
+export const getClassmates = async ({
+  classId,
+  sectionId
+}: {
+  classId: string,
+  sectionId: string
+}): Promise<Array<Object>> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data: {
+        members
+      }
+    } = result
+
+    return members.map(m => ({
+      firstName: m.first_name,
+      lastName: m.last_name,
+      userId: m.user_id,
+      image: m.profile_image_url
+    }));
+  } catch (err) {
+    return null;
+  }
+};
+
 export const renewTwilioToken = async ({
   userId
 }: {

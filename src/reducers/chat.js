@@ -42,31 +42,31 @@ const defaultState = {
 
 export default (state: ChatState = defaultState, action: Action): ChatState => {
   switch (action.type) {
-    case chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
-      return update(state, {
-        data: {
-          // $FlowIgnore
-          uuid: { $set: action.payload.uuid }
-        }
-      });
-    case chatActions.START_CHANNEL_WITH_ENTITY_REQUEST:
-      return update(state, {
-        data: {
-          // $FlowIgnore
-          entityId: { $set: action.payload.entityId },
-          // $FlowIgnore
-          entityFirstName: { $set: action.payload.entityFirstName },
-          // $FlowIgnore
-          entityLastName: { $set: action.payload.entityLastName },
-          // $FlowIgnore
-          entityVideo: { $set: action.payload.entityVideo },
-          // $FlowIgnore
-          entityUuid: { $set: action.payload.entityUuid }
-        }
-      });
-    case rootActions.CLEAR_STATE:
-      return defaultState;
-    default:
-      return state;
+  case chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
+    return update(state, {
+      data: {
+        // $FlowIgnore
+        uuid: { $set: action.payload.uuid }
+      }
+    });
+  case chatActions.START_CHANNEL_WITH_ENTITY_REQUEST:
+    return update(state, {
+      data: {
+        // $FlowIgnore
+        entityId: { $set: action.payload.entityId },
+        // $FlowIgnore
+        entityFirstName: { $set: action.payload.entityFirstName },
+        // $FlowIgnore
+        entityLastName: { $set: action.payload.entityLastName },
+        // $FlowIgnore
+        entityVideo: { $set: action.payload.entityVideo },
+        // $FlowIgnore
+        entityUuid: { $set: action.payload.entityUuid }
+      }
+    });
+  case rootActions.CLEAR_STATE:
+    return defaultState;
+  default:
+    return state;
   }
 };

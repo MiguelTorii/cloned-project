@@ -15,13 +15,15 @@ type Props = {
   newClassExperience: boolean,
   updateFeed: Function,
   userClasses: Object,
-  MyLink: Function
+  MyLink: Function,
+  openClassmatesDialog: Function
 }
 
 const HomeItem = ({
   userClasses, 
   MyLink, 
   updateFeed,
+  openClassmatesDialog,
   newClassExperience
 }: Props) => {
   const [classList, setClassList] = useState([])
@@ -130,6 +132,7 @@ const HomeItem = ({
           {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) && 
               <SubMenu
                 MyLink={MyLink}
+                openClassmatesDialog={openClassmatesDialog}
               />}
         </div>
       ))}

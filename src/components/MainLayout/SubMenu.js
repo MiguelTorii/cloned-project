@@ -6,11 +6,13 @@ import classNames from 'classnames';
 import queryString from 'query-string'
 
 type Props = {
-  MyLink: Function
+  MyLink: Function,
+  openClassmatesDialog: Function
 }
 
 const SubItems = ({
-  MyLink, 
+  MyLink,
+  openClassmatesDialog
 }: Props) => {
   const classes = makeStyles(theme => ({
     item: {
@@ -77,19 +79,17 @@ const SubItems = ({
           primary="Class Leaderboard" 
         /> 
       </ListItem> 
-      {/* <ListItem */}
-      {/* button */}
-      {/* // component={MyLink} */}
-      {/* // link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`} */}
-      {/* className={classNames( */}
-      {/* classes.item, */}
-      {/* // ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath */}
-      {/* )} */}
-      {/* > */}
-      {/* <ListItemText */}
-      {/* primary="Classmates" */}
-      {/* /> */}
-      {/* </ListItem> */}
+      <ListItem 
+        button 
+        onClick={openClassmatesDialog}
+        className={classNames( 
+          classes.item, 
+        )} 
+      > 
+        <ListItemText 
+          primary="Classmates" 
+        /> 
+      </ListItem> 
     </div>
   )
 }
