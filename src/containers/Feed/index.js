@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import { processClasses } from 'containers/ClassesSelector/utils'
+import queryString from 'query-string'
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
@@ -253,9 +254,10 @@ class Feed extends React.PureComponent<Props, State> {
   }) => () => {
     const { push, updateScrollData, classId } = this.props;
     const { search } = window.location
-    const feedParam = search ? `&id=${feedId}` : `?id=${feedId}`
+    const query = queryString.parse(search)
+    const newQuery = queryString.stringify({ ...query, id: feedId })
     updateScrollData({ position: window.pageYOffset, classId });
-    push(`/feed${search}${feedParam}`);
+    push(`/feed?${newQuery}`);
     switch (typeId) {
     case 3:
       push(`/flashcards/${postId}${search}`);

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import uuidv4 from 'uuid/v4';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push as routePush } from 'connected-react-router';
+import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
@@ -48,10 +48,12 @@ type Props = {
   classes: Object,
   user: UserState,
   flashcardId: number,
+  router: Object,
+  pop: Function,
   push: Function
 };
 
-const ViewFlashcards = ({ classes, user, flashcardId, push }: Props) => {
+const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props) => {
   const [flashcards, setFlashcards] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
@@ -153,6 +155,8 @@ const ViewFlashcards = ({ classes, user, flashcardId, push }: Props) => {
           <ErrorBoundary>
             <PostItemHeader
               currentUserId={userId}
+              action={router.action}
+              pop={pop}
               userId={ownerId}
               name={name}
               userProfileUrl={userProfileUrl}
@@ -237,14 +241,16 @@ const ViewFlashcards = ({ classes, user, flashcardId, push }: Props) => {
   );
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, router }: StoreState): {} => ({
+  user,
+  router
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush
+      push: routePush,
+      pop: goBack
     },
     dispatch
   );

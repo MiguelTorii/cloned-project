@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push as routePush } from 'connected-react-router';
+import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
@@ -42,10 +42,12 @@ type Props = {
   classes: Object,
   user: UserState,
   sharelinkId: number,
+  router: Object,
+  pop: Function,
   push: Function
 };
 
-const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
+const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props) => {
   const [shareLink, setShareLink] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
@@ -136,6 +138,8 @@ const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
           <ErrorBoundary>
             <PostItemHeader
               currentUserId={userId}
+              action={router.action}
+              pop={pop}
               userId={ownerId}
               name={name}
               userProfileUrl={userProfileUrl}
@@ -208,14 +212,16 @@ const ViewShareLink = ({ classes, user, sharelinkId, push }: Props) => {
   );
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ router, user }: StoreState): {} => ({
+  user,
+  router
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush
+      push: routePush,
+      pop: goBack
     },
     dispatch
   );

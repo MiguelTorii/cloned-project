@@ -5,6 +5,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -23,6 +25,9 @@ import Markdown from './Markdown';
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 const styles = theme => ({
+  backButton: {
+    cursor: 'pointer'
+  },
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -79,6 +84,8 @@ type Props = {
   postId: Number,
   typeId: Number,
   pushTo: Function,
+  pop: Function,
+  action: string,
   onDelete: Function
 };
 
@@ -131,6 +138,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
+      action,
+      pop,
       currentUserId,
       userId,
       name,
@@ -195,6 +204,11 @@ class PostItemHeader extends React.PureComponent<Props, State> {
 
     return (
       <Fragment>
+        {action === 'PUSH' && 
+              <Grid className={classes.backButton} container onClick={pop}>
+                <ArrowBackIosRoundedIcon />
+              </Grid>
+        }
         <div className={classes.root}>
           <Link
             className={classes.avatar}

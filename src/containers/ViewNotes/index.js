@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push as routePush } from 'connected-react-router';
+import { push as routePush, goBack } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
@@ -44,10 +44,11 @@ type Props = {
   classes: Object,
   user: UserState,
   noteId: number,
-  push: Function
+  push: Function,
+  pop: Function
 };
 
-const ViewNotes = ({classes, noteId, push, user}: Props) => {
+const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
   const [photoNote, setPhotoNote] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
@@ -152,6 +153,8 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
           <ErrorBoundary>
             <PostItemHeader
               pushTo={push}
+              action={router.action}
+              pop={pop}
               postId={postId}
               typeId={typeId}
               currentUserId={userId}
@@ -226,14 +229,16 @@ const ViewNotes = ({classes, noteId, push, user}: Props) => {
   );
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
+  router
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush
+      push: routePush,
+      pop: goBack,
     },
     dispatch
   );
