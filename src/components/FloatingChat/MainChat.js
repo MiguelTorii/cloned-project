@@ -34,6 +34,7 @@ const styles = theme => ({
   },
   header: {
     background: '#C7D3DA',
+    color: theme.circleIn.palette.normalButtonText1,
     display: 'flex',
     minHeight: 40
   },
@@ -45,6 +46,9 @@ const styles = theme => ({
   },
   iconButton: {
     padding: theme.spacing()
+  },
+  icon: {
+    color: theme.circleIn.palette.normalButtonText1,
   },
   content: {
     overflow: 'none',
@@ -110,20 +114,20 @@ class MainChat extends React.PureComponent<Props, State> {
             className={classes.iconButton}
             onClick={this.handleCreateChannel('single')}
           >
-            <PersonAddIcon />
+            <PersonAddIcon className={classes.icon} />
           </ButtonBase>
           <ButtonBase
             className={classes.iconButton}
             onClick={this.handleCreateChannel('group')}
           >
-            <GroupAddIcon />
+            <GroupAddIcon className={classes.icon} />
           </ButtonBase>
           {open && (
             <ButtonBase
               className={classes.iconButton}
               onClick={this.handleOpen}
             >
-              <RemoveIcon />
+              <RemoveIcon className={classes.icon} />
             </ButtonBase>
           )}
         </div>
