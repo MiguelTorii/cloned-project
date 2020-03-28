@@ -55,7 +55,8 @@ const HomeItem = ({
     typo: {
       // textOverflow: 'ellipsis',
       textAlign: 'left',
-      fontSize: 12,
+      fontSize: 14,
+      fontWeight: 600,
       whiteSpace: 'pre-wrap',
       overflow: 'hidden',
       marginLeft: theme.spacing(2),

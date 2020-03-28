@@ -30,7 +30,8 @@ const SubItems = ({
       background: theme.circleIn.palette.modalBackground,
     },
     label: {
-      fontSize: 12
+      fontSize: 14,
+      fontWeight: 600,
     }
   }))()
 

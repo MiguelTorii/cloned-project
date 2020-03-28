@@ -67,7 +67,7 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
 });
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
   '@global': {
@@ -615,7 +615,7 @@ class MainLayout extends React.Component<Props, State> {
         </div>
         <List className={clsx(!runningTour && classes.drawerList)}>
           {/* TODO: move this to feed top */} 
-          {newClassExperience && courseDisplayName && <div className={classes.backHeader}>
+          {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
           </div>}
           <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
