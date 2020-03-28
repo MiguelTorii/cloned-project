@@ -20,9 +20,8 @@ const SubItems = ({
       borderRadius: theme.spacing(6),
       paddingTop: 0,
       paddingBottom: 0,
-      margin: theme.spacing(2),
-      fontSize: 14,
-      marginLeft: theme.spacing(8),
+      marginLeft: theme.spacing(5),
+      marginRight: theme.spacing(3),
       '&:hover': {
         background: theme.circleIn.palette.primaryText2
       },
@@ -30,6 +29,9 @@ const SubItems = ({
     currentPath: {
       background: theme.circleIn.palette.modalBackground,
     },
+    label: {
+      fontSize: 12
+    }
   }))()
 
   const { pathname, search } = window.location
@@ -48,6 +50,9 @@ const SubItems = ({
       > 
         <ListItemText 
           primary="My Posts" 
+          classes={{
+            primary: classes.label
+          }}
         /> 
       </ListItem> 
       <ListItem 
@@ -61,6 +66,9 @@ const SubItems = ({
       > 
         <ListItemText 
           primary="Bookmarks" 
+          classes={{
+            primary: classes.label
+          }}
         /> 
       </ListItem> 
       <ListItem 
@@ -77,6 +85,9 @@ const SubItems = ({
       > 
         <ListItemText 
           primary="Class Leaderboard" 
+          classes={{
+            primary: classes.label
+          }}
         /> 
       </ListItem> 
       <ListItem 
@@ -88,6 +99,9 @@ const SubItems = ({
       > 
         <ListItemText 
           primary="Classmates" 
+          classes={{
+            primary: classes.label
+          }}
         /> 
       </ListItem> 
     </div>

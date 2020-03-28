@@ -48,13 +48,15 @@ const HomeItem = ({
       fontSize: 14,
       paddingTop: 0,
       paddingBottom: 0,
-      marginLeft: theme.spacing(6),
-      marginRight: theme.spacing(6),
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
       textAlign: 'center'
     },
     typo: {
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
+      // textOverflow: 'ellipsis',
+      textAlign: 'left',
+      fontSize: 12,
+      whiteSpace: 'pre-wrap',
       overflow: 'hidden',
       marginLeft: theme.spacing(2),
     }
@@ -127,7 +129,7 @@ const HomeItem = ({
             )}
           >
             {renderCircle(cl.color)}
-            <Typography className={classes.typo}>{cl.class}</Typography>
+            <Typography className={classes.typo}>{cl.courseDisplayName}</Typography>
           </ListItem>
           {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) && 
               <SubMenu
