@@ -96,7 +96,9 @@ const FeedResources = ({ width, classes, user }: Props) => {
         {title}
       </Typography>
       <Typography className={classes.text}>
-        <Linkify>{body}</Linkify>
+        <Linkify properties={{target: '_blank' }}>
+          {body}
+        </Linkify>
       </Typography>
     </Paper>
   );
