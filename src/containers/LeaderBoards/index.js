@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
+import queryString from 'query-string'
 import type { State as StoreState } from '../../types/state';
 import LeaderBoardTabs from '../../components/LeaderBoardTabs'
 import leaderboardActions from '../../actions/leaderboard'
 
-const styles = () => ({
+const styles = theme => ({
   title: {
-    marginTop: 32
+    marginTop: theme.spacing(4),
+    fontWeight: 700,
+    fontSize: 28,
   }
 })
 
@@ -24,20 +27,38 @@ const LeaderBoards = ({
   updateLeaderboardGrandInfo,
   pushTo,
   sectionId,
+  search,
+  classList,
   updateGrandLeaderboards
 }) => {
+  const [courseDisplayName , setCourseDisplayname] = useState('')
+
   useEffect(() => {
     updateLeaderboards()
   }, [updateLeaderboards])
+
+
+  const getCourseDisplayName = ()=> {
+    const query = queryString.parse(search)
+
+    if (query.classId && classList) {
+      const c = classList.find(cl => cl.classId === Number(query.classId))
+      if (c) return c.courseDisplayName
+    }
+    return ''
+  }
+
+  useEffect(() => {
+    setCourseDisplayname(getCourseDisplayName())
+  }, [classList, search])
 
   return (
     <Grid xs={12} item>
       <Typography
         color="textPrimary"
-        variant='h3'
         className={classes.title}
       >
-        Leaderboards
+        {courseDisplayName ? `${courseDisplayName} Leaderboards` : 'Leaderboards'}
       </Typography>
       <LeaderBoardTabs
         userId={userId}
@@ -52,8 +73,11 @@ const LeaderBoards = ({
   )
 }
 
-const mapStateToProps = ({ leaderboard, user }: StoreState): {} => ({
+const mapStateToProps = ({ router, leaderboard, user }: StoreState): {} => ({
   leaderboard,
+  router,
+  search: router.location.search,
+  classList: user.userClasses.classList,
   userId: user.data.userId
 });
 

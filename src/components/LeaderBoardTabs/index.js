@@ -4,29 +4,34 @@ import Typography from '@material-ui/core/Typography';
 // import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from '@material-ui/core/Dialog';
-import CloseIcon from '@material-ui/icons/Close';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import { v4 as uuidv4 } from 'uuid';
-import Grid from '@material-ui/core/Grid';
+import PrizeDialog from 'components/LeaderBoardTabs/PrizeDialog'
 import withWidth from '@material-ui/core/withWidth';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
 import withRoot from '../../withRoot';
 import Table from './table'
 import LoadImg from '../LoadImg'
-import shareNotes from '../../assets/svg/share_notes.svg';
-import answerQuestions from '../../assets/svg/answer_questions.svg';
-import studyVirtually from '../../assets/svg/study-virtually.svg';
-import powerHour from '../../assets/svg/power_hour.svg';
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      {...other}
+    >
+      {value === index && <Box p={1}>{children}</Box>}
+    </Typography>
+  );
+}
 
 const styles = theme => ({
-  dialogTitle: {
-    color: theme.circleIn.palette.primaryText1,
-    fontWeight: 'bold',
-    textAlign: 'center'
+  fullWidth: {
+    width: '100%',
   },
   container: {
     margin: '32px auto 40px auto', 
@@ -41,26 +46,17 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  tabs: {
+    borderRadius: '16px 16px 0 0',
     padding: '17px 32px 11px 32px',
-  },
-  tab: {
-    fontSize: 20,
-    color: theme.circleIn.palette.primaryText2,
+    fontSize: 18,
     cursor: 'pointer',
     fontWeight: 700,
-  },
-  selected: {
-    fontSize: 20,
-    padding: '8px 16px 8px 16px',
-    color: theme.circleIn.palette.normalButtonText1,
-    borderRadius: 40,
-    lineHeight: 1,
-    fontWeight: 700,
-    backgroundColor: theme.circleIn.palette.textOffwhite,
-    cursor: 'pointer',
   },
   days: {
     fontSize: 20,
+    paddingBottom: theme.spacing(),
     color: theme.circleIn.palette.primaryText1,
   },
   count: {
@@ -102,17 +98,17 @@ const styles = theme => ({
     width: 150,
     marginLeft: 10, 
   },
-  dialogText: {
-    color: theme.circleIn.palette.primaryText1
-  },
   imgDialogContainer: {
     textAlign: 'center',
     width: '100%'
   },
+  grayText: {
+    color: theme.circleIn.palette.primaryText2,
+  },
   scoreContainer: {
-    paddingLeft: 32,
-    marginTop: 20,
-    marginBottom: 40,
+    paddingLeft: theme.spacing(5),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(),
   },
   infoButton: {
     borderRadius: 8,
@@ -138,62 +134,7 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText2,
     fontSize: 12,
   },
-  dialogFootnote: {
-    ...styles.footnote,
-    textAlign: 'center',
-    margin: '24px 0px',
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  hr: {
-    background: theme.circleIn.palette.appBar,
-    border: 'none',
-    color: theme.circleIn.palette.appBar,
-    height: 2,
-    margin: '0px 10px',
-  },
-  mvpActions: {
-    display: 'flex', 
-    justifyContent: 'space-around',
-    marginTop: 30, 
-  },
-  mvpAction: {
-    textAlign: 'center', 
-    width: 160,
-  },
-  dialogTable: {
-    display: 'flex', 
-    justifyContent: 'space-between', 
-    marginBottom: 15,
-  }
 })
-
-const mvpActions = [
-  {
-    imageUrl: shareNotes,
-    title: 'Share your notes often.',
-    text: 'As often as you take them. Notes are the easiest way to earn points.'
-  },
-  {
-    imageUrl: answerQuestions,
-    title: 'Answer Questions.',
-    text: 'All answers get points. The best answer gets the most points.'
-  },
-  {
-    imageUrl: studyVirtually,
-    title: 'Study virtually.',
-    text: 'Connect over video with classmates or project groups.'
-  },
-  {
-    imageUrl: powerHour,
-    title: 'Utilize Power Hour!',
-    text: 'Posts and answers earn double the points during Power Hour.'
-  },
-];
 
 const LeaderBoardTabs = ({ 
   classes,
@@ -201,7 +142,6 @@ const LeaderBoardTabs = ({
   userId,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
-  width,
   sectionId,
   pushTo,
   updateGrandLeaderboards
@@ -217,7 +157,6 @@ const LeaderBoardTabs = ({
   const [prizeImgs, setPrizeImgs] = useState([])
   const [rewardButtonText, setRewardButtonText] = useState('')
   const [dialogTitle, setDialogTitle] = useState('')
-  const [dialogDescription, setDialogDescription] = useState('')
   const [openDialog, setOpenDialog] = useState(false)
 
   const { amount, eligibility, numberOfWinners, text } = leaderboard.data.grandDialog;
@@ -242,7 +181,6 @@ const LeaderBoardTabs = ({
       setStudents(selected.students)
         
       setDialogTitle(data.grandDialog.text)
-      setDialogDescription(data.grandDialog.description)
       if (selectedTab === 'grand') {
         setPrizeText(generalSelected.text)
         setPrizeImgs([generalSelected.logo])
@@ -296,7 +234,7 @@ const LeaderBoardTabs = ({
   const handleCloseDialog = () => setOpenDialog(false)
   const handleOpenDialog = () => setOpenDialog(true)
 
-  const me = students.find(s => s.userId === Number(userId));
+  const me = students.find(s => s.userId === Number(userId)) || {};
 
   const imgStyle = {
     width: 75,
@@ -307,143 +245,104 @@ const LeaderBoardTabs = ({
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <Dialog onClose={handleCloseDialog} open={openDialog} maxWidth="md">
-          <DialogTitle disableTypography>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={handleCloseDialog}>
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText 
-              variant="h4"
-              paragraph
-              className={classes.dialogTitle}>
-              {dialogTitle}
-            </DialogContentText>
-            <DialogContentText className={classes.dialogText}>
-              For students who positively impact their classmates’ academic success through collaboration on CircleIn.
-            </DialogContentText>
-            <hr className={classes.hr} />
-            <div style={{ padding: 20 }}>
-              <div className={classes.dialogTable}>
-                <div style={{ marginRight: 25 }}>
-                  <div className={classes.highlight}>Amount</div>
-                  <div className={classes.label}>{amount}</div>
-                </div>
-                <div style={{ marginRight: 25, whiteSpace: 'nowrap' }}>
-                  <div className={classes.highlight}>Number of Winners</div>
-                  <div className={classes.label}>{numberOfWinners}</div>
-                </div>
-                <div style={{ maxWidth: 250 }}>
-                  <div className={classes.highlight}>Eligibility Requirements</div>
-                  <div className={classes.label}>
-                    {eligibility}
-                  </div>
-                </div>
-              </div>
-              <div className={classes.dialogFootnote}>
-                Keep in mind that 7 MVP’s is the minimum qualifier. <br />
-                Strive to earn more than 7 because it will increase your overall chances of winning a scholarship.
-              </div>
-              <DialogContentText
-                variant="h6"
-                paragraph
-                className={classes.dialogTitle}>
-                Best Practices to Earn MVPs:
-              </DialogContentText>
-              <div className={classes.mvpActions}>
-                {
-                  mvpActions.map(action => (
-                    <div className={classes.mvpAction}>
-                      <LoadImg key={action.imageUlrl} url={action.imageUrl} style={imgStyle} />
-                      <div style={{ marginTop: 8 }}><b>{action.title}</b></div>
-                      <div style={{ marginTop: 8 }}>{action.text}</div>
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-        <Grid
-          container
-          direction='row'
-          alignItems='center'
-          spacing={2}
-          justify='space-between'
+        <PrizeDialog
+          handleCloseDialog={handleCloseDialog}
+          openDialog={openDialog}
+          amount={amount}
+          numberOfWinners={numberOfWinners}
+          dialogTitle={dialogTitle}
+          eligibility={eligibility}
+        />
+        <Tabs 
+          variant="fullWidth"
+          value={selectedTab}
+          classes={{
+            root: classes.fullWidth,
+          }}
+          onChange={(e, n) => setSelectedTab(n)}
         >
-          <Grid item xs={6} md={4}>
-            <Button
-              onClick={() => setSelectedTab('tuesday')} 
-              className={`${selectedTab === 'tuesday' ? classes.selected : classes.tab} tour-onboarding-leaderboard-tuesday`}>
-              {tuesdayBoardName || <CircularProgress size={20} />}
-            </Button>
-          </Grid>
-          <div className={classes.divider} />
-          <Grid item xs={6} md={4}>
-            <Button
-              onClick={() => setSelectedTab('grand')} 
-              className={`${selectedTab === 'grand' ? classes.selected : classes.tab } tour-onboarding-leaderboard-grand`}>
-              {grandBoardName}
-            </Button>
-          </Grid>
-        </Grid>
+          <Tab
+            className='tour-onboarding-leaderboard-tuesday'
+            classes={{
+              wrapper: classes.tabs
+            }}
+            label={tuesdayBoardName}
+            value="tuesday"
+          />
+          <Tab
+            className='tour-onboarding-leaderboard-grand'
+            classes={{
+              wrapper: classes.tabs
+            }}
+            label={grandBoardName}
+            value="grand"
+          />
+        </Tabs>
       </div>
-      {
-        selectedTab === 'grand' &&
+      <TabPanel value={selectedTab} index="grand">
         <div className={classes.scoreContainer}>
-            <div className={classes.days}>{timeLabel}:
-              <span className={classes.count}>{time}</span>
-            </div>
-            <div className={classes.days}>MVPs earned:
-              <span className={classes.count}>{me.score}</span>
-            </div>
-            <div style={{ marginTop: 40 }}>
-              <div style={{ display: 'flex' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ marginBottom: 12 }}>
-                    <LoadImg key={prizeImgs[0]} url={prizeImgs[0]} style={imgStyle} />
+          <div className={classes.days}>{timeLabel}:
+            <span className={classes.count}>{time}</span>
+          </div>
+          <div className={classes.days}>MVPs earned:
+            <span className={classes.count}>{me.score}</span>
+          </div>
+          <div style={{ marginTop: 24 }}>
+            <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ marginBottom: 12 }}>
+                  <LoadImg key={prizeImgs[0]} url={prizeImgs[0]} style={imgStyle} />
+                </div>
+                <div>
+                  <Button
+                    className={classes.infoButton}
+                    onClick={handleOpenDialog}
+                    variant="outlined"
+                  >
+                    <Typography>Info</Typography>
+                  </Button>
+                </div>
+              </div>
+              <div style={{ marginLeft: 16}}>
+                <div style={{ marginBottom: 2 }}>
+                  <Typography variant="h5">{text}</Typography>
+                </div>
+                <div style={{ display: 'flex', marginBottom: 15 }}>
+                  <div style={{ marginRight: 25 }}>
+                    <div className={classes.highlight}>Amount</div>
+                    <div className={classes.label}>{amount}</div>
                   </div>
-                  <div>
-                    <Button
-                      className={classes.infoButton}
-                      onClick={handleOpenDialog}
-                      variant="outlined"
-                    >
-                      <Typography variant="h7">Info</Typography>
-                    </Button>
+                  <div style={{ marginRight: 25, whiteSpace: 'nowrap' }}>
+                    <div className={classes.highlight}>Number of Winners</div>
+                    <div className={classes.label}>{numberOfWinners}</div>
+                  </div>
+                  <div style={{ maxWidth: 250 }}>
+                    <div className={classes.highlight}>Eligibility Requirements*</div>
+                    <div className={classes.labelSmall}>
+                      {eligibility}
+                    </div>
                   </div>
                 </div>
-                <div style={{ marginLeft: 16}}>
-                  <div style={{ marginBottom: 2 }}>
-                    <Typography variant="h5">{text}</Typography>
-                  </div>
-                  <div style={{ display: 'flex', marginBottom: 15 }}>
-                    <div style={{ marginRight: 25 }}>
-                      <div className={classes.highlight}>Amount</div>
-                      <div className={classes.label}>{amount}</div>
-                    </div>
-                    <div style={{ marginRight: 25, whiteSpace: 'nowrap' }}>
-                      <div className={classes.highlight}>Number of Winners</div>
-                      <div className={classes.label}>{numberOfWinners}</div>
-                    </div>
-                    <div style={{ maxWidth: 250 }}>
-                      <div className={classes.highlight}>Eligibility Requirements*</div>
-                      <div className={classes.labelSmall}>
-                        {eligibility}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={classes.footnote}>
+                <div className={classes.footnote}>
                     *Learn more about how to qualify by clicking Info
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-      }
-      {
-        selectedTab !== 'grand' &&
+        </div>
+      </TabPanel>
+      <TabPanel value={selectedTab} index='tuesday'>
+        <div className={classes.scoreContainer}>
+          <div className={classes.days}>{timeLabel}:
+            <span className={classes.count}>{time}</span>
+          </div>
+          <div className={classes.days}>Points Needed to Qualify: 
+            <span className={classes.grayText}> 10,000</span>
+          </div>
+          <div className={classes.footnote}>
+            *You must earn a minimum of 150,000 points to qualify for 1st Tuesday Rewards
+          </div>
+        </div>
         <div className={classes.rewardContainer}>
           {renderPrizes()}
           <div>
@@ -458,21 +357,11 @@ const LeaderBoardTabs = ({
             </Button>
           </div>
         </div>
-      }
+      </TabPanel>
       <div className={classes.filterContainer}>
         <Typography variant="h4">
           Current Leaders
         </Typography>
-        {/* <Select */}
-        {/* variant='filled' */}
-        {/* classes={{ */}
-        {/* select: classes.filled */}
-        {/* }} */}
-        {/* > */}
-        {/* <MenuItem value={10}>Ten</MenuItem> */}
-        {/* <MenuItem value={20}>Twenty</MenuItem> */}
-        {/* <MenuItem value={30}>Thirty</MenuItem> */}
-        {/* </Select> */}
       </div>
       <Table
         userId={Number(userId)} 
