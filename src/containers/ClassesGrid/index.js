@@ -144,12 +144,15 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             + Add More Classes
         </Button>
       </Grid>}
-      {emptyVisibility && <Grid item xs={12}>
-        <Empty
-          logo={emptyLogo}
-          body={emptyBody}
-        />
-      </Grid>}
+      {emptyVisibility &&
+            <Grid container justify='center' item xs={12}>
+              <Grid item xs={12} md={9}>
+                <Empty
+                  logo={emptyLogo}
+                  body={emptyBody}
+                />
+              </Grid>
+            </Grid>}
     </Grid>
   );
 }

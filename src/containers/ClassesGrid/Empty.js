@@ -43,7 +43,7 @@ const styles = theme => ({
     textAlign: 'center',
   },
   textContainer: {
-    margin: theme.spacing(5, 2, 10, 2),
+    margin: theme.spacing(2, 2, 4, 2),
   }
 });
 
