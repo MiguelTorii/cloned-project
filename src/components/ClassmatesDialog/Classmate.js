@@ -69,7 +69,7 @@ const Classmate = ({ close, openChannelWithEntity, width, classmate }: Props) =>
         }}
         primary={`${classmate.firstName} ${classmate.lastName}`}
       />
-      <ListSubheader disableGutters>
+      <ListSubheader component='div' disableGutters>
         <Button
           className={classes.messageMargin}
           variant="outlined"
