@@ -138,7 +138,7 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
           <ErrorBoundary>
             <PostItemHeader
               currentUserId={userId}
-              action={router.action}
+              router={router}
               pop={pop}
               pushTo={push}
               postId={postId}

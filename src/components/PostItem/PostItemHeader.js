@@ -19,12 +19,16 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
+import queryString from 'query-string';
 import TutorBadge from 'components/TutorBadge'
 import Markdown from './Markdown';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 const styles = theme => ({
+  feedTypo: {
+    fontSize: 24
+  },
   backButton: {
     cursor: 'pointer'
   },
@@ -81,11 +85,11 @@ type Props = {
   onBookmark: Function,
   newClassExperience: boolean,
   onReport: Function,
-  postId: Number,
-  typeId: Number,
+  postId: number,
+  typeId: number,
   pushTo: Function,
   pop: Function,
-  action: string,
+  router: Object,
   onDelete: Function
 };
 
@@ -138,8 +142,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      action,
-      pop,
+      router,
       currentUserId,
       userId,
       name,
@@ -152,6 +155,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       bookmarked,
       roleId,
       role,
+      pushTo,
       newClassExperience,
       onBookmark
     } = this.props;
@@ -202,13 +206,26 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       </Menu>
     );
 
+    const {
+      location: {
+        query
+      }
+    } = router
+
+    const goToFeed = () => pushTo(`/feed?${queryString.stringify(query)}`)
+
     return (
       <Fragment>
-        {action === 'PUSH' && 
-              <Grid className={classes.backButton} container onClick={pop}>
-                <ArrowBackIosRoundedIcon />
-              </Grid>
-        }
+        <Grid
+          className={classes.backButton}
+          container
+          justify='flex-start'
+          alignItems='center'
+          onClick={goToFeed}
+        >
+          <ArrowBackIosRoundedIcon />
+          <Typography className={classes.feedTypo}>Feed</Typography>
+        </Grid>
         <div className={classes.root}>
           <Link
             className={classes.avatar}

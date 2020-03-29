@@ -153,7 +153,7 @@ const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
           <ErrorBoundary>
             <PostItemHeader
               pushTo={push}
-              action={router.action}
+              router={router}
               pop={pop}
               postId={postId}
               typeId={typeId}

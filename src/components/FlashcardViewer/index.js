@@ -36,9 +36,9 @@ const styles = theme => ({
   }
 });
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
+const Transition = React.forwardRef((props, ref) => {
+  return <Slide ref={ref} direction="up" {...props} />;
+})
 
 type Props = {
   classes: Object,

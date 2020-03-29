@@ -138,7 +138,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
           <ErrorBoundary>
             <PostItemHeader
               currentUserId={userId}
-              action={router.action}
+              router={router}
               pop={pop}
               userId={ownerId}
               name={name}

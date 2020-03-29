@@ -155,7 +155,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           <ErrorBoundary>
             <PostItemHeader
               currentUserId={userId}
-              action={router.action}
+              router={router}
               pop={pop}
               userId={ownerId}
               name={name}
