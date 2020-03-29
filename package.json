@@ -81,15 +81,14 @@
   "devDependencies": {
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-flowtype": "^4.7.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "flow-bin": "^0.113.0",
     "prettier": "^1.16.3"
   },
   "scripts": {
-    "flow": "flow",
     "start": "react-scripts start",
     "lint": "eslint src || exit 0",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",

@@ -450,14 +450,11 @@ class FeedItem extends React.PureComponent<Props, State> {
     }
   };
 
-  getTitle = (data: Object): String => {
+  getTitle = (data: Object): string => {
     if (data.typeId !== 3 || !data.deck) return data.title;
 
     return `${data.deck.length} ${data.deck.length === 1 ? 'Card' : 'Cards'} | ${data.title}`;
   }
-
-  // eslint-disable-next-line no-undef
-  el: ?HTMLDivElement;
 
   render() {
     const { newClassExperience, classes, userId, data, onPostClick } = this.props;
