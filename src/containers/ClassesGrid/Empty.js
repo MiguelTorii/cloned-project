@@ -9,7 +9,7 @@ import Linkify from 'react-linkify'
 
 const styles = theme => ({
   paper: {
-    margin: theme.spacing(1, 5, 0, 1),
+    margin: theme.spacing(1, 0, 0, 1),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

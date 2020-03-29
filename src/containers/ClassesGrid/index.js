@@ -48,8 +48,8 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [canAddClasses, setCanAddClasses] = useState(false)
   const [openAddClasses, setOpenAddClasses] = useState(false)
   const [emptyLogo, setEmptyLogo] = useState('')
-  const [emptyVisibility, setEmptyVisibility] = useState(true)
-  const [emptyBody, setEmptyBody] = useState('Empty in Classes')
+  const [emptyVisibility, setEmptyVisibility] = useState(false)
+  const [emptyBody, setEmptyBody] = useState('')
 
   const handleLeaveClass = async ({sectionId, classId, userId}) => {
     await leaveUserClass({ 
@@ -144,7 +144,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             + Add More Classes
         </Button>
       </Grid>}
-      {(!hasClasses || emptyVisibility) && <Grid item xs={12}>
+      {emptyVisibility && <Grid item xs={12}>
         <Empty
           logo={emptyLogo}
           body={emptyBody}
