@@ -140,12 +140,15 @@ const styles = theme => ({
     minWidth: 75,
     maxWidth: 75
   },
+  flashcardImage: {
+    width: 75
+  },
   flashCardsImage: {
     display: 'flex',
     flexDirection: 'column'
   },
   deckCount: {
-    width: '100%',
+    width: 75,
     background: '#345952',
     textAlign: 'center',
     color: 'white',
@@ -339,7 +342,7 @@ class FeedItem extends React.PureComponent<Props, State> {
           <div className={classes.flashCardsImage}>
             <img
               src={flashcardPost}
-              className={classes.type}
+              className={classes.flashcardImage}
               alt="Flascarhds"
             />
             <div className={classes.deckCount}>
