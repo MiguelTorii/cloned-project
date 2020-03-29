@@ -70,7 +70,6 @@ class Controls extends React.PureComponent<Props, State> {
       disableAudio,
       endCall,
       shareScreen,
-      shareData
     } = this.props;
 
     return (

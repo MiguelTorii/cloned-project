@@ -20,6 +20,11 @@ export type UserState = {
   userClasses: {
     classList: ?Array<Object>,
     canAddClasses: boolean,
+    emptyState: {
+      visibility: boolean,
+      logo: string,
+      body: string
+    }
   },
   errorMessage: {
     title: string,
@@ -52,6 +57,11 @@ const defaultState = {
   userClasses: {
     classList: [],
     canAddClasses: false,
+    emptyState: {
+      visibility: false,
+      body: '',
+      logo: '',
+    }
   },
   runningTour: false,
   isLoading: false,

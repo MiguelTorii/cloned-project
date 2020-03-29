@@ -154,7 +154,7 @@ export const getUserClasses = async ({
       }
     );
     const {
-      data: { classes = [], permissions = {} }
+      data: { classes = [], permissions = {}, empty_state: empty = {}  }
     } = result;
     
     const userClasses = classes.map(userClass => ({
@@ -183,14 +183,17 @@ export const getUserClasses = async ({
       bgColor: String((userClass.bg_color) || '')
     }));
 
+    const emptyState = {
+      visibility: Boolean((empty.visibility: boolean) || false),
+      logo: String((empty.logo_image: string) || ''),
+      body: String((empty.body: string) || '')
+    }
+
     const userPermissions = {
       canAddClasses: Boolean((permissions.can_add_classes: boolean) || false)
     };
 
-    // const userPermissions = {
-    // canAddClasses: true
-    // };
-    return { classes: userClasses, permissions: userPermissions };
+    return { classes: userClasses, permissions: userPermissions, emptyState };
   } catch (err) {
     console.log(err);
     return { classes: [], permissions: { canAddClasses: false } };

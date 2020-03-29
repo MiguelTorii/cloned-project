@@ -23,14 +23,8 @@ import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import DuoIcon from '@material-ui/icons/Duo';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import LanguageIcon from '@material-ui/icons/Language';
 import StoreIcon from '@material-ui/icons/Store';
 // import AnnouncementIcon from '@material-ui/icons/Announcement';
-import EventIcon from '@material-ui/icons/Event';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpOutline from '@material-ui/icons/HelpOutline';
@@ -303,7 +297,7 @@ type Props = {
   updateFeed: Function,
   location: {
     search: string
-  },
+  }
   // onOpenLeaderboard: Function
   // onOpenAnnouncements: Function
 };

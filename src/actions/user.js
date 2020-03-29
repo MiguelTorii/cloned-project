@@ -6,9 +6,10 @@ import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 
 const setClassesAction = ({
-  userClasses
+  userClasses,
 }: {
-  userClasses: Array<string>
+  userClasses: Array<string>,
+  emptyState: Object
 }): Action => ({
   type: userActions.UPDATE_CLASSES,
   payload: {
@@ -27,11 +28,12 @@ export const fetchClasses = () => async (
       }
     } = getState()
     const res= await getUserClasses({ userId })
-    const { permissions : { canAddClasses }, classes: classList } = res
+    const { classes: classList, emptyState, permissions: { canAddClasses } } = res
 
     dispatch(setClassesAction({ userClasses: {
       classList,
       canAddClasses,
+      emptyState,
     }}))
   } catch(e) {}
 }

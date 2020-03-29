@@ -50,6 +50,7 @@ const LeaderBoards = ({
 
   useEffect(() => {
     setCourseDisplayname(getCourseDisplayName())
+    // eslint-disable-next-line
   }, [classList, search])
 
   return (

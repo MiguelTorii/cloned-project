@@ -13,7 +13,7 @@ import {
   leaveUserClass,
 } from 'api/user'
 import AddRemoveClasses from 'components/AddRemoveClasses';
-import Typography from '@material-ui/core/Typography'
+import Empty from 'containers/ClassesGrid/Empty'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -47,6 +47,9 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [classList, setClassList] = useState(null)
   const [canAddClasses, setCanAddClasses] = useState(false)
   const [openAddClasses, setOpenAddClasses] = useState(false)
+  const [emptyLogo, setEmptyLogo] = useState('')
+  const [emptyVisibility, setEmptyVisibility] = useState(true)
+  const [emptyBody, setEmptyBody] = useState('Empty in Classes')
 
   const handleLeaveClass = async ({sectionId, classId, userId}) => {
     await leaveUserClass({ 
@@ -61,8 +64,20 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     try {
       const {
         // eslint-disable-next-line
-        userClasses: { classList, canAddClasses }
+        userClasses: { classList, canAddClasses, emptyState }
       } = user
+
+      if (emptyState && emptyState.visibility) {
+        const {
+          visibility,
+          logo,
+          body
+        } = emptyState
+        setEmptyLogo(logo)
+        setEmptyBody(body)
+        setEmptyVisibility(visibility)
+      }
+
       if (classList) {
         setClassList(
           classList.map(cl => {
@@ -106,9 +121,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         open={openAddClasses} 
         onClose={() => setOpenAddClasses(false)} 
       />
-      {classList && !hasClasses && 
-          <Typography>Empty in classes</Typography>
-      }
       {classList && classList.map(cl => (
         <Grid key={cl.sectionId} item xs={12} md={4} className={classes.item}>
           <ClassCard
@@ -131,6 +143,12 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         >
             + Add More Classes
         </Button>
+      </Grid>}
+      {(!hasClasses || emptyVisibility) && <Grid item xs={12}>
+        <Empty
+          logo={emptyLogo}
+          body={emptyBody}
+        />
       </Grid>}
     </Grid>
   );
