@@ -117,6 +117,9 @@ const styles = theme => ({
     width: 120,
     height: 120
   },
+  imageContainer: {
+    position: 'relative',
+  },
   numberOfCardsStyle: {
     display: 'flex',
     alignItems: 'center',
@@ -372,7 +375,7 @@ class FeedItem extends React.PureComponent<Props, State> {
     case 4: 
       if (!newClassExperience) {
         return (
-          <div>
+          <div className={classes.imageContainer}>
             {
               isPdf ?
                 <PdfComponent
