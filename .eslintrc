@@ -22,6 +22,7 @@
     }],
     "import/newline-after-import": "error",
     "import/no-unresolved": 0,
+    "no-trailing-spaces": 2,
 
     "flowtype/boolean-style": [
       2,

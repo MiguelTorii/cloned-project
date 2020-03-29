@@ -61,7 +61,7 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
         </MuiDialogTitle>
         <DialogContent className={classes.content}>
           <List>
-            {classmates.map(c => <Classmate key={c.userId} classmate={c} />)}
+            {classmates.map(c => <Classmate close={close} key={c.userId} classmate={c} />)}
           </List>
         </DialogContent>
       </Dialog>
