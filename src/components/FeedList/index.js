@@ -2,6 +2,7 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -144,7 +145,8 @@ class FeedList extends React.PureComponent<Props, State> {
       fromFeedId,
       onLoadMore,
       newClassExperience,
-      onUserClick
+      onUserClick,
+      location: { pathname },
     } = this.props;
 
     return (
@@ -178,7 +180,11 @@ class FeedList extends React.PureComponent<Props, State> {
               {items.length === 0 ? (
                 <div className={classes.noMessages}>
                   <Typography variant="subtitle1" align="center">
-                    Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.
+                    {
+                      pathname === '/bookmarks'
+                        ? `It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here`
+                        : 'Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.'
+                    }
                   </Typography>
                 </div>
               ) : (
@@ -217,4 +223,4 @@ class FeedList extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(FeedList);
+export default withStyles(styles)(withRouter(FeedList));
