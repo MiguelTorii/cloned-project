@@ -19,6 +19,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import classNames from 'classnames';
 import type { SelectType } from '../../types/models';
 
 const Link = React.forwardRef(({ href, ...props }, ref) => (
@@ -64,11 +65,16 @@ const styles = theme => ({
     opacity: 0.7
   },
   paper: {
-    position: 'absolute',
     zIndex: 100,
     marginTop: theme.spacing(),
     left: 0,
     right: 0
+  },
+  paperAbsolute: {
+    position: 'absolute',
+  },
+  paperRelative: {
+    position: 'relatve',
   },
   errorLabel: {
     paddingLeft: 12
@@ -238,11 +244,15 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
 }
 
 function Menu({ selectProps, children, innerProps }) {
-  const { inputValue, options = [], isSchoolSearch } = selectProps;
-
+  const { inputValue, options = [], textFieldProps, isSchoolSearch } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
-    <Paper square className={selectProps.classes.paper} {...innerProps}>
+    <Paper square className={classNames(
+      selectProps.classes.paper,
+      textFieldProps.relative ? selectProps.classes.paperRelative : selectProps.classes.paperAbsolute
+    )}
+    {...innerProps}
+    >
       {children}
       {isSchoolSearch && (
         <MenuItem
@@ -283,92 +293,86 @@ type Props = {
   isMulti: boolean,
   error: boolean,
   errorText: string,
-  isDisabled?: boolean,
-  cacheUniq?: any,
-  isSchoolSearch?: boolean,
+  isDisabled: boolean,
+  cacheUniq: any,
+  isSchoolSearch: boolean,
   variant: ?string,
   onChange: Function,
   autoFocus: boolean,
+  relative: boolean,
   onLoadOptions: Function
 };
 
-class AutoComplete extends React.PureComponent<Props> {
-  static defaultProps = {
-    isDisabled: false,
-    cacheUniq: '',
-    isSchoolSearch: false
+const AutoComplete = ({
+  classes,
+  theme,
+  page = 0,
+  values,
+  inputValue,
+  label,
+  placeholder,
+  isMulti,
+  error,
+  errorText,
+  onChange,
+  variant,
+  isDisabled = false,
+  cacheUniq = '',
+  isSchoolSearch = false,
+  autoFocus,
+  relative,
+  onLoadOptions
+}: Props) => {
+
+  const selectStyles = {
+    input: base => ({
+      ...base,
+      color: theme.palette.text.primary,
+      '& input': {
+        font: 'inherit'
+      }
+    })
   };
 
-  render() {
-    const {
-      classes,
-      theme,
-      page = 0,
-      values,
-      inputValue,
-      label,
-      placeholder,
-      isMulti,
-      error,
-      errorText,
-      isDisabled,
-      cacheUniq,
-      isSchoolSearch,
-      onChange,
-      variant,
-      autoFocus,
-      onLoadOptions
-    } = this.props;
-
-    const selectStyles = {
-      input: base => ({
-        ...base,
-        color: theme.palette.text.primary,
-        '& input': {
-          font: 'inherit'
-        }
-      })
-    };
-
-    return (
-      <div className={classes.root}>
-        <NoSsr>
-          <AsyncPaginate
-            classes={classes}
-            styles={selectStyles}
-            textFieldProps={{
-              label,
-              variant,
-            }}
-            inputValue={inputValue}
-            components={components}
-            value={values}
-            onChange={onChange}
-            loadOptions={onLoadOptions}
-            additional={{
-              page
-            }}
-            placeholder={placeholder}
-            isMulti={isMulti}
-            isClearable
-            autoFocus={autoFocus}
-            isDisabled={isDisabled}
-            cacheUniq={cacheUniq}
-            noOptionsMessage={({ inputValue: input }) => {
-              if (input !== '') return 'No results, please try again';
-              return '';
-            }}
-            isSchoolSearch={isSchoolSearch}
-          />
-          {error && (
-            <FormHelperText error className={classes.errorLabel}>
-              {errorText}
-            </FormHelperText>
-          )}
-        </NoSsr>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <NoSsr>
+        <AsyncPaginate
+          classes={classes}
+          styles={selectStyles}
+          textFieldProps={{
+            relative,
+            label,
+            variant,
+          }}
+          inputValue={inputValue}
+          components={components}
+          value={values}
+          onChange={onChange}
+          loadOptions={onLoadOptions}
+          additional={{
+            page
+          }}
+          placeholder={placeholder}
+          isMulti={isMulti}
+          isClearable
+          autoFocus={autoFocus}
+          isDisabled={isDisabled}
+          cacheUniq={cacheUniq}
+          noOptionsMessage={({ inputValue: input }) => {
+            if (input !== '') return 'No results, please try again';
+            return '';
+          }}
+          isSchoolSearch={isSchoolSearch}
+        />
+        {error && (
+          <FormHelperText error className={classes.errorLabel}>
+            {errorText}
+          </FormHelperText>
+        )}
+      </NoSsr>
+    </div>
+  );
 }
 
 export default withStyles(styles, { withTheme: true })(AutoComplete);

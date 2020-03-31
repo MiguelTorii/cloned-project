@@ -8,10 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
 import Badge from '@material-ui/core/Badge';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import RemoveIcon from '@material-ui/icons/Remove';
-import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
+import NewChatIcon from 'assets/svg/ic_new_chat.svg'
 
 const styles = theme => ({
   paper: {
@@ -46,10 +44,14 @@ const styles = theme => ({
     height: 40
   },
   iconButton: {
-    padding: theme.spacing()
+    paddingRight: theme.spacing()
   },
   icon: {
     color: theme.circleIn.palette.normalButtonText1,
+  },
+  img: {
+    color: theme.circleIn.palette.normalButtonText1,
+    width: 32,
   },
   content: {
     overflow: 'none',
@@ -115,7 +117,7 @@ class MainChat extends React.PureComponent<Props, State> {
             className={classes.iconButton}
             onClick={this.handleCreateChannel('single')}
           >
-            <LaunchOutlinedIcon className={classes.icon} />
+            <img src={NewChatIcon} alt='newChat' className={classes.img} />
           </ButtonBase>
           {open && (
             <ButtonBase

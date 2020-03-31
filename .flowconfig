@@ -34,7 +34,7 @@ suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore
 
 [lints]
 
-all=error
+all=false
 sketchy-null-bool=off
 sketchy-null-mixed=off
 sketchy-null-number=off

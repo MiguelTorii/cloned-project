@@ -52,7 +52,7 @@ import HowDoIEarnPoints from '../HowDoIEarnPoints';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
-    '/feed', 
+    '/feed',
     '/create/notes',
     '/create/sharelink',
     '/create/question',
@@ -227,7 +227,7 @@ const styles = theme => ({
     },
   },
   myClasses: {
-    display: 'flex', 
+    display: 'flex',
     marginLeft: 16,
     alignItems: 'center',
     paddingRight: 16,
@@ -380,12 +380,12 @@ class MainLayout extends React.Component<Props, State> {
     this.handleMenuClose();
     onManageBlockedUsers();
   };
-  
+
   handleOpenGetApp = () => {
     this.setState({ openGetApp: true });
     this.handleMenuClose();
   };
-  
+
   handleCloseGetApp = () => {
     this.setState({ openGetApp: false });
   };
@@ -398,7 +398,7 @@ class MainLayout extends React.Component<Props, State> {
   handleCloseHowEarnPoints = () => {
     this.setState({ openHowEarnPoints: false });
   };
-  
+
   getCourseDisplayName = classList => {
     const query = queryString.parse(window.location.search)
 
@@ -545,7 +545,7 @@ class MainLayout extends React.Component<Props, State> {
             primaryText="Create Flashcards"
             secondaryText="Earn 5k points for the first 4 cards, then 2.5k for each card after"
             icon={FlashCards}
-          />  
+          />
         </MenuItem>
         <MenuItem
           button
@@ -592,8 +592,8 @@ class MainLayout extends React.Component<Props, State> {
 
     const qs = queryString.parse(search)
 
-    const openClassmatesDialog = () => this.setState({ openClassmates: true }) 
-    const closeClassmatesDialog = () => this.setState({ openClassmates: false }) 
+    const openClassmatesDialog = () => this.setState({ openClassmates: true })
+    const closeClassmatesDialog = () => this.setState({ openClassmates: false })
 
     const drawer = (
       <Fragment>
@@ -608,7 +608,7 @@ class MainLayout extends React.Component<Props, State> {
           </IconButton>
         </div>
         <List className={clsx(!runningTour && classes.drawerList)}>
-          {/* TODO: move this to feed top */} 
+          {/* TODO: move this to feed top */}
           {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
           </div>}
@@ -629,7 +629,7 @@ class MainLayout extends React.Component<Props, State> {
               }}
             />
           </ListItem>
-          <HomeItem 
+          <HomeItem
             MyLink={MyLink}
             userClasses={userClasses}
             updateFeed={updateFeed}
@@ -644,9 +644,9 @@ class MainLayout extends React.Component<Props, State> {
             primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
             />
           </ListItem> */}
-          <ListItem 
-            button 
-            component={MyLink} 
+          <ListItem
+            button
+            component={MyLink}
             link="/leaderboard"
             className={classNames(
               'tour-onboarding-leaderboard',
@@ -656,13 +656,13 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemIcon>
               <LeaderboardIcon />
             </ListItemIcon>
-            <ListItemText 
+            <ListItemText
               primary="Leaderboard"
             />
           </ListItem>
-          <ListItem 
-            button 
-            component={MyLink} 
+          <ListItem
+            button
+            component={MyLink}
             link="/store"
             className={classNames(
               ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
@@ -701,8 +701,8 @@ class MainLayout extends React.Component<Props, State> {
               onClick={this.handleManageClasses}
             />
           </ListItemText>}
-          <ListItem 
-            button 
+          <ListItem
+            button
             onClick={this.handleOpenGetApp}
             className={classes.otherPath}
           >
@@ -711,8 +711,8 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Get the Mobile App" />
           </ListItem>
-          <ListItem 
-            button 
+          <ListItem
+            button
             onClick={this.handleOpenHowEarnPoints}
             className={classes.otherPath}
           >
