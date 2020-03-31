@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -58,7 +59,7 @@ const styles = theme => ({
   },
   placeholder: {
     position: 'absolute',
-    left: 12,
+    left: 22,
     fontSize: 12,
     opacity: 0.7
   },
@@ -103,7 +104,7 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control({ selectProps, innerProps, innerRef, children }) {
-  const {isDisabled} = selectProps
+  const {isDisabled, autoFocus} = selectProps
 
   return (
     <TextField
@@ -112,7 +113,9 @@ function Control({ selectProps, innerProps, innerRef, children }) {
       disabled={isDisabled}
       InputProps={{
         inputComponent,
+        startAdornment: <InputAdornment position='start'><div /></InputAdornment>,
         inputProps: {
+          autoFocus,
           className: selectProps.classes.input,
           inputRef: innerRef,
           children,
@@ -285,6 +288,7 @@ type Props = {
   isSchoolSearch?: boolean,
   variant: ?string,
   onChange: Function,
+  autoFocus: boolean,
   onLoadOptions: Function
 };
 
@@ -312,6 +316,7 @@ class AutoComplete extends React.PureComponent<Props> {
       isSchoolSearch,
       onChange,
       variant,
+      autoFocus,
       onLoadOptions
     } = this.props;
 
@@ -346,6 +351,7 @@ class AutoComplete extends React.PureComponent<Props> {
             placeholder={placeholder}
             isMulti={isMulti}
             isClearable
+            autoFocus={autoFocus}
             isDisabled={isDisabled}
             cacheUniq={cacheUniq}
             noOptionsMessage={({ inputValue: input }) => {

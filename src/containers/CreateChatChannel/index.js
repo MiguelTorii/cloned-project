@@ -254,7 +254,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { type, isVideo } = this.props;
+    const { isVideo, type } = this.props;
     const { thumbnail, isLoading } = this.state;
     return (
       <ErrorBoundary>

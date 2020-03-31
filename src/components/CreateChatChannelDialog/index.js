@@ -1,7 +1,6 @@
 // @flow
 
-import React from 'react';
-import cx from 'classnames';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   ValidatorForm,
   TextValidator,
@@ -20,14 +19,14 @@ import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
 import Collapse from '@material-ui/core/Collapse';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GroupIcon from '@material-ui/icons/Group';
 import AutoComplete from '../AutoComplete';
 
 const styles = theme => ({
+  dialogTitleRoot: {
+    paddingBottom: 0
+  },
   title: {
     display: 'flex',
     alignItems: 'center'
@@ -43,7 +42,6 @@ const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     height: '60vh',
-    marginTop: theme.spacing(2)
   },
   center: {
     display: 'flex',
@@ -66,9 +64,6 @@ const styles = theme => ({
     height: 80,
     width: 80
   },
-  marginTop: {
-    marginTop: theme.spacing(2)
-  },
   input: {
     display: 'none'
   },
@@ -87,7 +82,6 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  chatType: string,
   thumbnail: ?string,
   isLoading: boolean,
   isVideo: boolean,
@@ -97,282 +91,213 @@ type Props = {
   onSendInput: Function
 };
 
-type State = {
-  chatType: string,
-  name: string,
-  type: string,
-  from: string,
-  users: Array<Object>,
-  error: boolean,
-  inputValue: string
-};
+const CreateChatChannelDialog = ({
+  classes,
+  thumbnail,
+  isLoading,
+  isVideo,
+  onClose,
+  onSubmit,
+  chatType: chatTypeProp,
+  onLoadOptions,
+  onSendInput
+}: Props) => {
+  const [chatType, setChatType] = useState(chatTypeProp)
+  const [name, setName] = useState('')
+  const [type, setType] = useState('')
+  const [from, setFrom] = useState('school')
+  const [users, setUsers] = useState([])
+  const [error, setError] = useState(false)
+  const [inputValue, setInputValue] = useState('')
 
-class CreateChatChannelDialog extends React.PureComponent<Props, State> {
-  state = {
-    chatType: 'single',
-    name: '',
-    type: '',
-    from: 'school',
-    users: [],
-    error: false,
-    inputValue: ''
+  const fileInput = useRef(null)
+
+  useEffect(() => {
+    if (users.length > 1 && chatType === 'single') setChatType('group')
+    else if (users.length <= 1 && chatType === 'group') setChatType('single')
+    // eslint-disable-next-line
+  }, [users])
+
+  useEffect(() => {
+    setChatType(chatTypeProp)
+  }, [chatTypeProp])
+
+  const handleAutoComplete = values => {
+    setUsers(values);
+    setError(false);
   };
 
-  componentDidUpdate = prevProps => {
-    const { chatType } = this.props;
-    if (chatType && prevProps.chatType !== chatType) {
-      this.setState({ chatType });
-    }
-  };
-
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
-  handleAutoComplete = values => {
-    const { chatType } = this.state;
-    if (chatType === 'single' && values.length > 1)
-      this.setState({ users: [values[values.length - 1]] });
-    else this.setState({ users: values });
-    if (values.length === 0) this.setState({ error: true });
-    else this.setState({ error: false });
-  };
-
-  handleLoadOptions = query => {
-    const { onLoadOptions } = this.props;
-    const { from } = this.state;
+  const handleLoadOptions = query => {
     return onLoadOptions({ query, from });
   };
 
-  handleChatTypeChange = () => {
-    this.setState(({ chatType }) => ({
-      chatType: chatType === 'single' ? 'group' : 'single'
-    }));
-  };
-
-  handleSubmit = () => {
-    const { onSubmit } = this.props;
-    const { chatType, name, type, users } = this.state;
-    if (users.length === 0) this.setState({ error: true });
-    else if (chatType === 'single' && users.length > 1)
-      this.setState({ error: true });
+  const handleSubmit = () => {
+    if (users.length === 0) setError(true)
     else {
-      this.setState({ error: false });
+      setError(false)
       onSubmit({ chatType, name, type, selectedUsers: users });
-      this.setState({
-        name: '',
-        type: '',
-        users: [],
-        inputValue: '',
-        from: 'school'
-      });
+      setName('')
+      setType('')
+      setUsers([])
+      setInputValue('')
+      setFrom('school')
     }
   };
 
-  handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
+  const handleOpenInputFile = () => {
+    if (fileInput.current) fileInput.current.click();
   };
 
-  handleInputChange = () => {
-    const { onSendInput } = this.props;
+  const handleInputChange = () => {
     if (
-      this.fileInput &&
-      this.fileInput.files &&
-      this.fileInput.files.length > 0
+      fileInput.current &&
+      fileInput.current.files &&
+      fileInput.current.files.length > 0
     )
-      onSendInput(this.fileInput.files[0]);
+      onSendInput(fileInput.current.files[0]);
   };
 
-  handleClose = () => {
-    const { onClose } = this.props;
-    this.setState({
-      name: '',
-      type: '',
-      users: [],
-      inputValue: '',
-      from: 'school'
-    });
+  const handleClose = () => {
+    setName('')
+    setType('')
+    setUsers([])
+    setFrom('school')
     onClose();
   };
 
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
-
-  render() {
-    const {
-      classes,
-      chatType: open,
-      thumbnail,
-      isLoading,
-      isVideo
-    } = this.props;
-    const { chatType, name, type, inputValue, from, users, error } = this.state;
-
-    return (
-      <Dialog
-        disableBackdropClick={isLoading}
-        disableEscapeKeyDown={isLoading}
-        style={{ maxWidth: 600, margin: '0 auto' }}
-        open={Boolean(open)}
-        onClose={this.handleClose}
-        fullWidth
-        scroll="body"
-        aria-labelledby="create-chat-dialog-title"
+  return (
+    <Dialog
+      disableBackdropClick={isLoading}
+      disableEscapeKeyDown={isLoading}
+      style={{ maxWidth: 600, margin: '0 auto' }}
+      open={Boolean(chatType)}
+      onClose={handleClose}
+      fullWidth
+      scroll="body"
+      aria-labelledby="create-chat-dialog-title"
+    >
+      <DialogTitle
+        id="create-chat-dialog-title"
+        disableTypography
+        classes={{
+          root: classes.dialogTitleRoot
+        }}
+        className={classes.title}
       >
-        <DialogTitle
-          id="create-chat-dialog-title"
-          disableTypography
-          className={classes.title}
-        >
-          <Typography variant="h6" className={classes.grow}>
-            {`Create ${chatType === 'single' ? '1-to-1' : 'Group'} ${
+        <Typography variant="h6" className={classes.grow}>
+          {`Create ${
               isVideo ? 'Video Room' : 'Chat'
             }`}
-          </Typography>
+        </Typography>
+      </DialogTitle>
+      <ValidatorForm
+        onSubmit={handleSubmit}
+        className={classes.validatorForm}
+      >
+        <DialogContent>
+          <div className={classes.form}>
+            <Collapse in={chatType === 'group'}>
+              <Grid container>
+                <Grid item xs={6} className={classes.center}>
+                  <ButtonBase
+                    className={classes.avatarButton}
+                    disabled={isLoading}
+                    onClick={handleOpenInputFile}
+                  >
+                    <Avatar className={classes.avatar} src={thumbnail || ''}>
+                      <GroupIcon className={classes.groupIcon} />
+                    </Avatar>
+                  </ButtonBase>
+                  <input
+                    accept="image/*"
+                    className={classes.input}
+                    ref={fileInput}
+                    onChange={handleInputChange}
+                    type="file"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextValidator
+                    label="Group Name"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={e => setName(e.target.value)}
+                    name="name"
+                    autoComplete="name"
+                    fullWidth
+                    value={name}
+                    disabled={isLoading}
+                  />
+                  <FormControl variant="outlined" fullWidth>
+                    <SelectValidator
+                      value={type}
+                      name="type"
+                      label="Group Type"
+                      onChange={e => setType(e.target.value)}
+                      variant="outlined"
+                      validators={chatType === 'group' ? ['required'] : []}
+                      errorMessages={['You have to select a Group Type']}
+                      disabled={isLoading}
+                    >
+                      <MenuItem value="" />
+                      <MenuItem value="Class">Class</MenuItem>
+                      <MenuItem value="Study">Study</MenuItem>
+                      <MenuItem value="Social">Social</MenuItem>
+                      <MenuItem value="Club">Activity/Club</MenuItem>
+                    </SelectValidator>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Collapse>
+            <div>
+              <AutoComplete
+                values={users}
+                inputValue={inputValue}
+                label="Select users"
+                placeholder="Search for classmates"
+                error={error}
+                errorText="You must select at least 1 classmate"
+                cacheUniq={from}
+                autoFocus
+                isMulti
+                isDisabled={isLoading}
+                onChange={handleAutoComplete}
+                onLoadOptions={handleLoadOptions}
+              />
+            </div>
+          </div>
+        </DialogContent>
+        <DialogActions>
           <Button
             disabled={isLoading}
-            color="primary"
+            onClick={handleClose}
+            color="secondary"
             variant="contained"
-            onClick={this.handleChatTypeChange}
-          >{`Create ${chatType === 'single' ? 'group' : '1-to-1'} ${
-            isVideo ? 'video room' : 'chat'
-          } instead`}</Button>
-        </DialogTitle>
-        <ValidatorForm
-          onSubmit={this.handleSubmit}
-          className={classes.validatorForm}
-        >
-          <DialogContent>
-            <div className={classes.form}>
-              <Collapse in={chatType === 'group'}>
-                <Grid container>
-                  <Grid item xs={6} className={classes.center}>
-                    <ButtonBase
-                      className={classes.avatarButton}
-                      disabled={isLoading}
-                      onClick={this.handleOpenInputFile}
-                    >
-                      <Avatar className={classes.avatar} src={thumbnail || ''}>
-                        <GroupIcon className={classes.groupIcon} />
-                      </Avatar>
-                    </ButtonBase>
-                    <input
-                      accept="image/*"
-                      className={classes.input}
-                      ref={fileInput => {
-                        this.fileInput = fileInput;
-                      }}
-                      onChange={this.handleInputChange}
-                      type="file"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextValidator
-                      label="Group Name"
-                      margin="normal"
-                      variant="outlined"
-                      onChange={this.handleChange('name')}
-                      name="name"
-                      autoComplete="name"
-                      fullWidth
-                      value={name}
-                      disabled={isLoading}
-                    />
-                    <FormControl variant="outlined" fullWidth>
-                      <SelectValidator
-                        value={type}
-                        name="type"
-                        label="Group Type"
-                        onChange={this.handleChange('type')}
-                        variant="outlined"
-                        validators={chatType === 'group' ? ['required'] : []}
-                        errorMessages={['You have to select a Group Type']}
-                        disabled={isLoading}
-                      >
-                        <MenuItem value="" />
-                        <MenuItem value="Class">Class</MenuItem>
-                        <MenuItem value="Study">Study</MenuItem>
-                        <MenuItem value="Social">Social</MenuItem>
-                        <MenuItem value="Club">Activity/Club</MenuItem>
-                      </SelectValidator>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </Collapse>
-              <div className={cx(chatType === 'group' && classes.marginTop)}>
-                <FormControl component="fieldset">
-                  <RadioGroup
-                    aria-label="From"
-                    name="from"
-                    value={from}
-                    onChange={this.handleChange('from')}
-                    row
-                  >
-                    <FormControlLabel
-                      value="school"
-                      disabled={isLoading}
-                      control={<Radio />}
-                      label="My Classes"
-                    />
-                    <FormControlLabel
-                      value="everyone"
-                      disabled={isLoading}
-                      control={<Radio />}
-                      label="My School"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <AutoComplete
-                  values={users}
-                  inputValue={inputValue}
-                  label="Select users"
-                  placeholder="Search for classmates"
-                  error={error}
-                  errorText={
-                    chatType === 'single'
-                      ? 'You have to select 1 classmate'
-                      : 'You must select at least 1 classmate'
-                  }
-                  cacheUniq={from}
-                  isMulti
-                  isDisabled={isLoading}
-                  onChange={this.handleAutoComplete}
-                  onLoadOptions={this.handleLoadOptions}
-                />
-              </div>
-            </div>
-          </DialogContent>
-          <DialogActions>
+          >
+              Cancel
+          </Button>
+
+          <div className={classes.wrapper}>
             <Button
               disabled={isLoading}
-              onClick={this.handleClose}
-              color="secondary"
+              type="submit"
+              color="primary"
               variant="contained"
             >
-              Cancel
-            </Button>
-
-            <div className={classes.wrapper}>
-              <Button
-                disabled={isLoading}
-                type="submit"
-                color="primary"
-                variant="contained"
-              >
                 Create
-              </Button>
-              {isLoading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
-          </DialogActions>
-        </ValidatorForm>
-      </Dialog>
-    );
-  }
+            </Button>
+            {isLoading && (
+              <CircularProgress
+                size={24}
+                className={classes.buttonProgress}
+              />
+            )}
+          </div>
+        </DialogActions>
+      </ValidatorForm>
+    </Dialog>
+  );
 }
 
 export default withStyles(styles)(CreateChatChannelDialog);
+

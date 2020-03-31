@@ -11,6 +11,7 @@ import Badge from '@material-ui/core/Badge';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import RemoveIcon from '@material-ui/icons/Remove';
+import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 
 const styles = theme => ({
   paper: {
@@ -114,13 +115,7 @@ class MainChat extends React.PureComponent<Props, State> {
             className={classes.iconButton}
             onClick={this.handleCreateChannel('single')}
           >
-            <PersonAddIcon className={classes.icon} />
-          </ButtonBase>
-          <ButtonBase
-            className={classes.iconButton}
-            onClick={this.handleCreateChannel('group')}
-          >
-            <GroupAddIcon className={classes.icon} />
+            <LaunchOutlinedIcon className={classes.icon} />
           </ButtonBase>
           {open && (
             <ButtonBase
