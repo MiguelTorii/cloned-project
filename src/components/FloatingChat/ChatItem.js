@@ -52,8 +52,13 @@ const styles = theme => ({
     width: 500
   },
   header: {
+    background: '#C7D3DA',
+    color: theme.circleIn.palette.normalButtonText1,
     display: 'flex',
-    height: 40
+    height: 40,
+  },
+  icon: {
+    color: theme.circleIn.palette.normalButtonText1,
   },
   headerTitle: {
     flex: 1,
@@ -94,7 +99,8 @@ const styles = theme => ({
     zIndex: 2100
   },
   expandIcon: {
-    transform: 'rotate(45deg)'
+    transform: 'rotate(45deg)',
+    color: theme.circleIn.palette.normalButtonText1,
   }
 });
 
@@ -238,7 +244,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                 <Fragment>
                   <ButtonBase className={classes.iconButton} onClick={onExpand}>
                     {expanded ? (
-                      <UnfoldLessIcon className={classes.expandIcon} />
+                      <UnfoldLessIcon className={classes.expandIcon}  />
                     ) : (
                       <UnfoldMoreIcon className={classes.expandIcon} />
                     )}
@@ -247,7 +253,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                     className={classes.iconButton}
                     onClick={onStartVideoCall}
                   >
-                    <VideoCamIcon />
+                    <VideoCamIcon className={classes.icon} />
                   </ButtonBase>
                   <ButtonBase
                     className={classes.iconButton}
@@ -255,15 +261,15 @@ class ChatItem extends React.PureComponent<Props, State> {
                     aria-haspopup="true"
                     onClick={this.handleClick}
                   >
-                    <SettingsIcon />
+                    <SettingsIcon className={classes.icon} />
                   </ButtonBase>
                   <ButtonBase className={classes.iconButton} onClick={onOpen}>
-                    <RemoveIcon />
+                    <RemoveIcon className={classes.icon} />
                   </ButtonBase>
                 </Fragment>
               ) : (
                 <ButtonBase className={classes.iconButton} onClick={onClose}>
-                  <ClearIcon />
+                  <ClearIcon className={classes.icon} />
                 </ButtonBase>
               )}
             </div>
