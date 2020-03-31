@@ -163,19 +163,10 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleFetchFeed = () => {
-    const { 
-      userId,
-      location: {
-        search = ''
-      }
-    } = this.props;
-    
-    const { sectionId } = queryString.parse(search)
-
+    const { userId } = this.props;
     if (userId !== '') {
       fetchFeedv2({
         userId,
-        sectionId
       }).then(feed => {
         this.setState({ feed });
       });
@@ -188,17 +179,12 @@ class Profile extends React.PureComponent<Props, State> {
         data: { userId: ownId }
       },
       userId,
-      location: {
-        search = ''
-      }
     } = this.props;
-
-    const { sectionId } = queryString.parse(search)
 
     if (ownId === userId && userId !== '') {
       fetchFeedv2({
         userId,
-        sectionId,
+        sectionId: '',
         bookmarked: true
       }).then(bookmarks => {
         this.setState({ bookmarks });
