@@ -54,7 +54,10 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
         <MuiDialogTitle
           disableTypography
         >
-          <Typography variant="h6">{courseDisplayName} Classmates</Typography>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h6">{courseDisplayName} Classmates</Typography>
+            <Typography>Classmates who have joined CircleIn</Typography>
+          </div>
           <IconButton aria-label="close" className={classes.closeButton} onClick={close}>
             <CloseIcon />
           </IconButton>
