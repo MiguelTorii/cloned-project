@@ -347,20 +347,6 @@ class Header extends React.PureComponent<Props, State> {
                     className={classes.typoData}
                   >
                     <img
-                      src={gradCapIcon}
-                      alt="Grad Cap"
-                      className={classes.icon}
-                    />
-                    {gradeName(segment, grade)}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Typography
-                    variant="body2"
-                    gutterBottom
-                    className={classes.typoData}
-                  >
-                    <img
                       src={calendarIcon}
                       alt="Calendar"
                       className={classes.icon}
