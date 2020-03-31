@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
-import Tour from 'components/Tour'
+// import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
 import configureStore, { history } from './configureStore';
@@ -76,7 +76,7 @@ axios.defaults.headers.common['x-client-version'] = RELEASE;
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider>
-      <Tour />
+      {/* <Tour /> */}
       <DailyRewards />
       <UpdateLMSUser />
       <ConnectedRouter history={history}>
