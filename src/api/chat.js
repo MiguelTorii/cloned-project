@@ -142,7 +142,7 @@ export const blockChatUser = async ({
     const result = await axios.post(
       `${API_ROUTES.CHAT}/block`,
       {
-        blocked_user_id: blockedUserId
+        blocked_user_id: Number(blockedUserId)
       },
       {
         headers: {
