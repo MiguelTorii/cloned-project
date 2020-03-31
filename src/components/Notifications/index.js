@@ -90,7 +90,7 @@ class Notifications extends React.PureComponent<Props, State> {
           textColor="primary"
           onChange={onTabChange}
         >
-          <Tab label="My Posts" />
+          <Tab label="Posts" />
           <Tab label="Recommended" />
           <Tab label="Announcements" />
         </Tabs>
