@@ -30,9 +30,10 @@ const styles = () => ({
   },
   video: {
     height: '100%   !important',
-    width: 'auto    !important',
+    width: '100%',
     '& video': {
-      width: 'auto    !important',
+      objectFit: 'cover',
+      width: '100%',
       height: '100%   !important'
     }
   },
@@ -87,6 +88,7 @@ type Props = {
   isMic: boolean,
   video: ?Object,
   isVisible: boolean,
+  count: number,
   isSharing: boolean
 };
 
@@ -129,7 +131,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       isVideo,
       isMic,
       isVisible,
-      isSharing
+      count,
+      // isSharing
     } = this.props;
 
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
@@ -138,8 +141,12 @@ class VideoGridItem extends React.PureComponent<Props, State> {
 
     const isScreen = video && video.name === 'screenSharing';
 
+    const factor = Math.ceil(Math.sqrt(count))
+    const xs = 12 / factor
+    const height = 100 / factor
+
     return (
-      <Grid item xs hidden={!isVisible}>
+      <Grid item xs={xs} style={{ height: `${height}vh` }} hidden={!isVisible}>
         <div className={classes.root}>
           <div className={classes.videoWrapper}>
             {isVideo ? (
@@ -164,11 +171,11 @@ class VideoGridItem extends React.PureComponent<Props, State> {
                 )}
               </div>
             )}
-            {isSharing && (
-              <div className={classes.black}>
-                <ScreenShareIcon fontSize="large" />
-              </div>
-            )}
+            {/* {isSharing && ( */}
+            {/* <div className={classes.black}> */}
+            {/* <ScreenShareIcon fontSize="large" /> */}
+            {/* </div> */}
+            {/* )} */}
           </div>
           {!isMic && (
             <div className={classes.mic}>

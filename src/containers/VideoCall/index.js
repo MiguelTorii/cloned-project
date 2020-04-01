@@ -153,6 +153,7 @@ class VideoCall extends React.Component<Props, State> {
       selectedaudioinput,
       channel
     } = this.state;
+
     if (!join) {
       return (
         <Preview

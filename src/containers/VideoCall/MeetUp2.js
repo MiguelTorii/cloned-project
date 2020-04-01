@@ -146,15 +146,15 @@ class MeetUp extends React.Component<Props, State> {
     dataTrack: null,
     drawData: '',
     lineWidth: 1,
-      color: 'black',
-      canvasImg: '',
-      isText: false,
-      eraser: false,
-      points: false,
-      openVideoPoints: false,
-      postingPoints: false,
-      noPointsAllowed: false,
-      earned: false,
+    color: 'black',
+    canvasImg: '',
+    isText: false,
+    eraser: false,
+    points: false,
+    openVideoPoints: false,
+    postingPoints: false,
+    noPointsAllowed: false,
+    earned: false,
   };
 
   constructor(props) {
@@ -351,17 +351,17 @@ class MeetUp extends React.Component<Props, State> {
 
       videoRoom.on('disconnected', () => {
         this.pointsStarted = false;
-          if (this.started) {
-            const elapsed = parseInt(
-              (new Date().getTime() - this.started) / 1000
+        if (this.started) {
+          const elapsed = parseInt(
+            (new Date().getTime() - this.started) / 1000
             ,10);
-            logEvent({
-              event: 'Video- Session Length',
-              props: { Length: elapsed, 'Channel SID': videoRoom.sid }
-            });
-          }
+          logEvent({
+            event: 'Video- Session Length',
+            props: { Length: elapsed, 'Channel SID': videoRoom.sid }
+          });
+        }
 
-          this.started = 0;
+        this.started = 0;
       });
 
       updateLoading(false);
@@ -755,104 +755,104 @@ class MeetUp extends React.Component<Props, State> {
 
     return (
       <Fragment>
-      <ErrorBoundary>
-        <div className={classes.root}>
-          {participants.length < 2 && <NoParticipants />}
-          <LeftPanel
-            participants={participants.length}
-            localParticipant={
-              <LocalThumbnail
-                key={
-                  localPartcipant && localPartcipant.video.length > 0
-                    ? localPartcipant.video[0].id
-                    : 'LocalParticipant'
-                }
-                profileImage={profileImage}
-                video={
-                  localPartcipant &&
+        <ErrorBoundary>
+          <div className={classes.root}>
+            {participants.length < 2 && <NoParticipants />}
+            <LeftPanel
+              participants={participants.length}
+              localParticipant={
+                <LocalThumbnail
+                  key={
+                    localPartcipant && localPartcipant.video.length > 0
+                      ? localPartcipant.video[0].id
+                      : 'LocalParticipant'
+                  }
+                  profileImage={profileImage}
+                  video={
+                    localPartcipant &&
                   localPartcipant.video.length > 0 &&
                   localPartcipant.video[0]
-                }
-                isVideo={isVideoEnabled}
-                isMic={isAudioEnabled}
-              />
-            }
-            thumbnails={
-              <Thumbnails
-                participants={participants}
-                profiles={profiles}
-                lockedParticipant={lockedParticipant}
-                sharingTrackId={sharingTrackId}
-                onLockParticipant={this.handleLockParticipant}
-              />
-            }
-            chat={
-              channel && (
-                <VideoChatChannel
-                  open={type === 'chat'}
-                  user={user}
-                  channel={channel}
-                  onUnreadUpdate={this.handleUnreadUpdate}
+                  }
+                  isVideo={isVideoEnabled}
+                  isMic={isAudioEnabled}
                 />
-              )
-            }
-            unread={unread}
-            onTabChange={this.handleTabChange}
-          />
-          <Controls
-            isConnected={Boolean(videoRoom)}
-            isVideoEnabled={isVideoEnabled}
-            isAudioEnabled={isAudioEnabled}
-            isScreenSharingSupported={Boolean(
-              navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
+              }
+              thumbnails={
+                <Thumbnails
+                  participants={participants}
+                  profiles={profiles}
+                  lockedParticipant={lockedParticipant}
+                  sharingTrackId={sharingTrackId}
+                  onLockParticipant={this.handleLockParticipant}
+                />
+              }
+              chat={
+                channel && (
+                  <VideoChatChannel
+                    open={type === 'chat'}
+                    user={user}
+                    channel={channel}
+                    onUnreadUpdate={this.handleUnreadUpdate}
+                  />
+                )
+              }
+              unread={unread}
+              onTabChange={this.handleTabChange}
+            />
+            <Controls
+              isConnected={Boolean(videoRoom)}
+              isVideoEnabled={isVideoEnabled}
+              isAudioEnabled={isAudioEnabled}
+              isScreenSharingSupported={Boolean(
+                navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
+              )}
+              isSharing={isVideoSharing}
+              isSharingData={Boolean(dataTrack)}
+              isVideoSwitching={isVideoSwitching}
+              isAudioSwitching={isAudioSwitching}
+              endCall={this.handleEndCall}
+              disableVideo={this.handleDisableVideo}
+              disableAudio={this.handleDisableAudio}
+              shareScreen={this.handleShareScreen}
+              shareData={this.handleShareData}
+            />
+            <SharingScreenControl
+              isSharing={Boolean(screenTrack)}
+              onStopSharing={this.handleShareScreen}
+            />
+            <VideoGrid
+              participants={participants}
+              profiles={profiles}
+              lockedParticipant={lockedParticipant}
+              dominantSpeaker={dominantSpeaker}
+              sharingTrackId={sharingTrackId}
+              isDataSharing={Boolean(dataTrack)}
+            />
+            {Boolean(dataTrack) && (
+              <Fragment>
+                <Whiteboard
+                  innerRef={this.whiteboard}
+                  userId={userId}
+                  name={`${firstName} ${lastName}`}
+                  drawData={drawData}
+                  lineWidth={lineWidth}
+                  color={color}
+                  isText={isText}
+                  eraser={eraser}
+                  sendDataMessage={this.handleSendDataMessage}
+                />
+                <WhiteboardControls
+                  onPencilChange={this.handlePencilChange}
+                  onColorChange={this.handleColorChange}
+                  onErase={this.handleErase}
+                  onText={this.handleTextChange}
+                  onSave={this.handleSave}
+                  onClear={this.handleClear}
+                />
+              </Fragment>
             )}
-            isSharing={isVideoSharing}
-            isSharingData={Boolean(dataTrack)}
-            isVideoSwitching={isVideoSwitching}
-            isAudioSwitching={isAudioSwitching}
-            endCall={this.handleEndCall}
-            disableVideo={this.handleDisableVideo}
-            disableAudio={this.handleDisableAudio}
-            shareScreen={this.handleShareScreen}
-            shareData={this.handleShareData}
-          />
-          <SharingScreenControl
-            isSharing={Boolean(screenTrack)}
-            onStopSharing={this.handleShareScreen}
-          />
-          <VideoGrid
-            participants={participants}
-            profiles={profiles}
-            lockedParticipant={lockedParticipant}
-            dominantSpeaker={dominantSpeaker}
-            sharingTrackId={sharingTrackId}
-            isDataSharing={Boolean(dataTrack)}
-          />
-          {Boolean(dataTrack) && (
-            <Fragment>
-              <Whiteboard
-                innerRef={this.whiteboard}
-                userId={userId}
-                name={`${firstName} ${lastName}`}
-                drawData={drawData}
-                lineWidth={lineWidth}
-                color={color}
-                isText={isText}
-                eraser={eraser}
-                sendDataMessage={this.handleSendDataMessage}
-              />
-              <WhiteboardControls
-                onPencilChange={this.handlePencilChange}
-                onColorChange={this.handleColorChange}
-                onErase={this.handleErase}
-                onText={this.handleTextChange}
-                onSave={this.handleSave}
-                onClear={this.handleClear}
-              />
-            </Fragment>
-          )}
-        </div>
-        <Dialog
+          </div>
+          <Dialog
             open={Boolean(canvasImg !== '')}
             onClose={this.handleCanvasClose}
             aria-labelledby="canvas-img-dialog-title"
@@ -879,9 +879,9 @@ class MeetUp extends React.Component<Props, State> {
               </Button>
             </DialogActions>
           </Dialog>
-      </ErrorBoundary>
-      <ErrorBoundary>
-      {points && (
+        </ErrorBoundary>
+        <ErrorBoundary>
+          {points && (
             <div className={classes.points}>
               <Fab
                 variant="extended"
@@ -894,15 +894,15 @@ class MeetUp extends React.Component<Props, State> {
               </Fab>
             </div>
           )}
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <VideoPointsDialog
-          open={openVideoPoints}
-          loading={postingPoints}
-          onClose={this.handleVideoPointsClose}
-          onSubmit={this.handlePointsSubmit}
-        />
-      </ErrorBoundary>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <VideoPointsDialog
+            open={openVideoPoints}
+            loading={postingPoints}
+            onClose={this.handleVideoPointsClose}
+            onSubmit={this.handlePointsSubmit}
+          />
+        </ErrorBoundary>
       </Fragment>
     );
   }

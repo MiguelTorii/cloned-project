@@ -48,8 +48,8 @@ type Props = {
   endCall: Function,
   disableVideo: Function,
   disableAudio: Function,
-  shareScreen: Function,
-  shareData: Function
+  shareScreen: Function
+  // shareData: Function
 };
 
 type State = {};
@@ -76,70 +76,86 @@ class Controls extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <Tooltip
           arrow
-          classes={classes}
+          classes={{
+            tooltip: classes.tooltip
+          }}
           placement='bottom'
-          title={isVideoEnabled ? 'Turn off camera' : 'Turn on camera'} 
+          title={isVideoEnabled ? 'Turn off camera' : 'Turn on camera'}
         >
-          <Fab
-            size='small'
-            color={isVideoEnabled ? 'primary' : 'default'}
-            aria-label='disable-video'
-            onClick={disableVideo}
-            className={classes.fab}
-            disabled={!isConnected || isVideoSwitching}
-          >
-            {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
-          </Fab>
+          <div>
+            <Fab
+              size='small'
+              color={isVideoEnabled ? 'primary' : 'default'}
+              aria-label='disable-video'
+              onClick={disableVideo}
+              className={classes.fab}
+              disabled={!isConnected || isVideoSwitching}
+            >
+              {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
+            </Fab>
+          </div>
         </Tooltip>
         <Tooltip
           arrow
-          classes={classes}
+          classes={{
+            tooltip: classes.tooltip
+          }}
           placement='bottom'
-          title={isAudioEnabled ? 'Turn off microphone' : 'Turn on microphone'} 
+          title={isAudioEnabled ? 'Turn off microphone' : 'Turn on microphone'}
         >
-          <Fab
-            size='small'
-            color={isAudioEnabled ? 'primary' : 'default'}
-            aria-label='disable-audio'
-            className={classes.fab}
-            onClick={disableAudio}
-            disabled={!isConnected || isAudioSwitching}
-          >
-            {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
-          </Fab>
+          <div>
+            <Fab
+              size='small'
+              color={isAudioEnabled ? 'primary' : 'default'}
+              aria-label='disable-audio'
+              className={classes.fab}
+              onClick={disableAudio}
+              disabled={!isConnected || isAudioSwitching}
+            >
+              {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
+            </Fab>
+          </div>
         </Tooltip>
         <Tooltip
           arrow
-          classes={classes}
+          classes={{
+            tooltip: classes.tooltip
+          }}
           placement='bottom'
           title='Leave call'
         >
-          <Fab
-            color='secondary'
-            aria-label='call-end'
-            className={classes.hangup}
-            onClick={endCall}
-            disabled={!isConnected}
-          >
-            <CallEndIcon />
-          </Fab>
-        </Tooltip> 
+          <div>
+            <Fab
+              color='secondary'
+              aria-label='call-end'
+              className={classes.hangup}
+              onClick={endCall}
+              disabled={!isConnected}
+            >
+              <CallEndIcon />
+            </Fab>
+          </div>
+        </Tooltip>
         <Tooltip
           arrow
-          classes={classes}
+          classes={{
+            tooltip: classes.tooltip
+          }}
           placement='bottom'
           title={isSharing ? 'Stop presenting' : 'Present your screen'}
         >
-          <Fab
-            size='small'
-            color={!isSharing ? 'primary' : 'default'}
-            aria-label='share-screen'
-            className={classes.fab}
-            disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-            onClick={shareScreen}
-          >
-            {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
-          </Fab>
+          <div>
+            <Fab
+              size='small'
+              color={!isSharing ? 'primary' : 'default'}
+              aria-label='share-screen'
+              className={classes.fab}
+              disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+              onClick={shareScreen}
+            >
+              {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
+            </Fab>
+          </div>
         </Tooltip>
         {/* <Fab
           size='small'

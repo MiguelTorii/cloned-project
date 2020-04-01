@@ -41,7 +41,7 @@ const styles = theme => ({
     marginLeft: -120
   },
   iconButton: {
-    width: 60,
+    width: 120,
     height: 60
   },
   icon: {
@@ -135,18 +135,18 @@ class LeftPanel extends React.PureComponent<Props, State> {
                   <GroupIcon className={classes.icon} />
                 </Badge>
               </ButtonBase>
-              <ButtonBase
-                className={classes.iconButton}
-                onClick={this.handleOpen('chat')}
-              >
-                <Badge
-                  className={classes.margin}
-                  badgeContent={unread}
-                  color="primary"
-                >
-                  <ChatBubbleIcon className={classes.icon} />
-                </Badge>
-              </ButtonBase>
+              {/* <ButtonBase */}
+              {/* className={classes.iconButton} */}
+              {/* onClick={this.handleOpen('chat')} */}
+              {/* > */}
+              {/* <Badge */}
+              {/* className={classes.margin} */}
+              {/* badgeContent={unread} */}
+              {/* color="primary" */}
+              {/* > */}
+              {/* <ChatBubbleIcon className={classes.icon} /> */}
+              {/* </Badge> */}
+              {/* </ButtonBase> */}
             </div>
             {localParticipant}
           </Paper>
@@ -172,12 +172,12 @@ class LeftPanel extends React.PureComponent<Props, State> {
               icon={<GroupIcon className={classes.icon} />}
               onClick={this.handleOpen('participants')}
             />
-            <BottomNavigationAction
-              label="Classmates"
-              classes={{ label: classes.navButton }}
-              icon={<ChatBubbleIcon className={classes.icon} />}
-              onClick={this.handleOpen('chat')}
-            />
+            {/* <BottomNavigationAction */}
+            {/* label="Classmates" */}
+            {/* classes={{ label: classes.navButton }} */}
+            {/* icon={<ChatBubbleIcon className={classes.icon} />} */}
+            {/* onClick={this.handleOpen('chat')} */}
+            {/* /> */}
           </BottomNavigation>
           <Divider />
           <div

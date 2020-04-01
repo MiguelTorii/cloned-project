@@ -6,11 +6,12 @@ import VideoGridItem from './VideoGridItem';
 
 const styles = () => ({
   root: {
-    flexGrow: 1,
     height: '100vh',
-    maxHeight: '100vh',
-    width: '100vw',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: 'calc(100vw)',
+  },
+  gridContainer: {
+    height: '100%'
   }
 });
 
@@ -63,9 +64,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
       lockedParticipant,
       dominantSpeaker,
       sharingTrackId,
-      isDataSharing
     } = this.props;
-    let isParticipantVisible = false;
     return participants.map((item, index) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
@@ -78,7 +77,7 @@ class VideoGrid extends React.PureComponent<Props, State> {
         sharingTrackId
       );
 
-      isParticipantVisible = visibleId !== '';
+      const numberOfParticipants = sharingTrackId || lockedParticipant ? 1 : participants.length
 
       if (item.video.length === 0) {
         return (
@@ -89,9 +88,11 @@ class VideoGrid extends React.PureComponent<Props, State> {
             profileImage={userProfileUrl}
             isVideo={false}
             isMic={item.audio.length > 0}
+            count={numberOfParticipants}
             isVisible={
-              (!isDataSharing && visibleId === item.participant.sid) ||
-              (!isParticipantVisible && index === participants.length - 1)
+              !sharingTrackId && !lockedParticipant ||
+                (sharingTrackId === item.participant.sid && !lockedParticipant) ||
+                lockedParticipant === item.participant.sid
             }
           />
         );
@@ -107,10 +108,12 @@ class VideoGrid extends React.PureComponent<Props, State> {
             video={track}
             isVideo
             isMic={item.audio.length > 0}
+            count={numberOfParticipants}
             isSharing={Boolean(track.id === sharingTrackId)}
             isVisible={
-              (!isDataSharing && visibleId === id) ||
-              (!isParticipantVisible && index === participants.length - 1)
+              !sharingTrackId && !lockedParticipant ||
+                (sharingTrackId === id && !lockedParticipant) ||
+                lockedParticipant === id
             }
           />
         );
@@ -123,7 +126,14 @@ class VideoGrid extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={0} style={{ height: '100%' }}>
+        <Grid
+          container
+          spacing={1}
+          justify='center'
+          alignItems='center'
+          alignContent='center'
+          className={classes.gridContainer}
+        >
           {this.renderParticipants()}
         </Grid>
       </div>
