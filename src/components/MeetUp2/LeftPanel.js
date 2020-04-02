@@ -4,14 +4,14 @@ import type { Node } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import ButtonBase from '@material-ui/core/ButtonBase';
+//import ButtonBase from '@material-ui/core/ButtonBase';
 import Drawer from '@material-ui/core/Drawer';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Divider from '@material-ui/core/Divider';
-import Badge from '@material-ui/core/Badge';
+// import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/Group';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+// import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 
 const styles = theme => ({
   root: {
@@ -27,8 +27,8 @@ const styles = theme => ({
   paper: {
     position: 'relative',
     width: '100%',
-    minWidth: 120,
-    maxWidth: 120,
+    minWidth: 100,
+    maxWidth: 100,
     backgroundColor: 'white',
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
@@ -41,7 +41,7 @@ const styles = theme => ({
     marginLeft: -120
   },
   iconButton: {
-    width: 120,
+    width: 100,
     height: 60
   },
   icon: {
@@ -68,16 +68,25 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing(2)
+  },
+  scroll: {
+    maxHeight: '80vh',
+    overflow: 'scroll',
+  },
+  iconActive: {
+    color: theme.circleIn.palette.brand
   }
 });
 
 type Props = {
   classes: Object,
-  participants: number,
+  // participants: number,
   thumbnails: Node,
-  localParticipant: Node,
+  // localParticipant: Node,
   chat: Node,
-  unread: number,
+  // unread: number,
+  // dominantToggle: Function,
+  // dominantView: boolean,
   onTabChange: Function
 };
 
@@ -107,11 +116,12 @@ class LeftPanel extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      participants,
       thumbnails,
-      localParticipant,
+      // dominantToggle,
+      // localParticipant,
       chat,
-      unread
+      // dominantView,
+      // unread
     } = this.props;
     const { type } = this.state;
 
@@ -119,36 +129,21 @@ class LeftPanel extends React.PureComponent<Props, State> {
       <Fragment>
         <div className={classes.root}>
           <Paper
-            className={cx(classes.paper, Boolean(type) && classes.paperHide)}
+            className={cx(classes.paper, (!thumbnails && classes.paperHide))}
             elevation={1}
           >
-            <div>
-              <ButtonBase
-                className={classes.iconButton}
-                onClick={this.handleOpen('participants')}
-              >
-                <Badge
-                  className={classes.margin}
-                  badgeContent={participants}
-                  color="primary"
-                >
-                  <GroupIcon className={classes.icon} />
-                </Badge>
-              </ButtonBase>
-              {/* <ButtonBase */}
-              {/* className={classes.iconButton} */}
-              {/* onClick={this.handleOpen('chat')} */}
-              {/* > */}
-              {/* <Badge */}
-              {/* className={classes.margin} */}
-              {/* badgeContent={unread} */}
-              {/* color="primary" */}
-              {/* > */}
-              {/* <ChatBubbleIcon className={classes.icon} /> */}
-              {/* </Badge> */}
-              {/* </ButtonBase> */}
+            {/* <div> */}
+            {/* <ButtonBase */}
+            {/* className={classes.iconButton} */}
+            {/* onClick={dominantToggle} */}
+            {/* > */}
+            {/* <RecordVoiceOverIcon className={dominantView ? classes.iconActive : classes.icon} /> */}
+            {/* </ButtonBase> */}
+            {/* </div> */}
+            {/* {localParticipant} */}
+            <div className={classes.scroll}>
+              {thumbnails}
             </div>
-            {localParticipant}
           </Paper>
         </div>
         <Drawer

@@ -48,13 +48,11 @@ const styles = () => ({
   },
   mic: {
     position: 'absolute',
-    width: '100%',
-    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    top: 0,
-    right: 0
+    bottom: 10,
+    right: 10
   },
   icon: {
     height: 40,
@@ -89,6 +87,7 @@ type Props = {
   video: ?Object,
   isVisible: boolean,
   count: number,
+  highlight: boolean,
   isSharing: boolean
 };
 
@@ -132,6 +131,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       isMic,
       isVisible,
       count,
+      highlight
       // isSharing
     } = this.props;
 
@@ -145,8 +145,10 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     const xs = 12 / factor
     const height = 100 / factor
 
+    const activeBorder = highlight ? { border: '1px solid #03A9F4' } : {}
+
     return (
-      <Grid item xs={xs} style={{ height: `${height}vh` }} hidden={!isVisible}>
+      <Grid item xs={xs} style={{ ...activeBorder, height: `${height}vh` }} hidden={!isVisible}>
         <div className={classes.root}>
           <div className={classes.videoWrapper}>
             {isVideo ? (

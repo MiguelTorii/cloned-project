@@ -154,8 +154,19 @@ class MeetUp extends React.Component<Props, State> {
     openVideoPoints: false,
     postingPoints: false,
     noPointsAllowed: false,
+    dominantView: false,
     earned: false,
   };
+
+  whiteboard: Object;
+
+  notInitiator: boolean;
+
+  initiator: boolean;
+
+  pointsStarted: boolean;
+
+  started: number;
 
   constructor(props) {
     super(props);
@@ -711,15 +722,10 @@ class MeetUp extends React.Component<Props, State> {
     }
   };
 
-  whiteboard: Object;
-
-  notInitiator: boolean;
-
-  initiator: boolean;
-
-  pointsStarted: boolean;
-
-  started: number;
+  dominantToggle = () => {
+    const { dominantView } = this.state
+    this.setState({ dominantView: !dominantView })
+  }
 
   render() {
     const { classes, user, channel } = this.props;
@@ -746,6 +752,7 @@ class MeetUp extends React.Component<Props, State> {
       canvasImg,
       points,
       openVideoPoints,
+      dominantView,
       postingPoints
     } = this.state;
     const localPartcipant = participants.find(item => item.type === 'local');
@@ -801,6 +808,8 @@ class MeetUp extends React.Component<Props, State> {
             />
             <Controls
               isConnected={Boolean(videoRoom)}
+              dominantToggle={this.dominantToggle}
+              dominantView={dominantView}
               isVideoEnabled={isVideoEnabled}
               isAudioEnabled={isAudioEnabled}
               isScreenSharingSupported={Boolean(
@@ -822,6 +831,7 @@ class MeetUp extends React.Component<Props, State> {
             />
             <VideoGrid
               participants={participants}
+              dominantView={dominantView}
               profiles={profiles}
               lockedParticipant={lockedParticipant}
               dominantSpeaker={dominantSpeaker}

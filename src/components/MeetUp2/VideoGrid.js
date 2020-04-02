@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import VideoGridItem from './VideoGridItem';
@@ -21,64 +21,54 @@ type Props = {
   profiles: Object,
   lockedParticipant: string,
   dominantSpeaker: string,
-  sharingTrackId: string,
-  isDataSharing: boolean
+  dominantView: boolean,
+  sharingTrackId: string
+  // isDataSharing: boolean
 };
 
-type State = {};
+const VideoGrid = ({
+  classes,
+  participants,
+  profiles,
+  dominantSpeaker,
+  dominantView,
+  lockedParticipant,
+  sharingTrackId,
+}: Props) => {
+  const [dominant, setDominant] = useState('')
 
-class VideoGrid extends React.PureComponent<Props, State> {
-  handleVerifyVisibility = (
-    participant,
-    numberOfParticipants,
-    lockedParticipant,
-    dominantSpeaker,
-    sharingTrackId
-  ) => {
-    if (lockedParticipant === participant.participant.sid)
-      return lockedParticipant;
-    if (numberOfParticipants === 1) {
-      if (participant.video.length === 0) return participant.participant.sid;
-      const isTrackLocked = participant.video.find(
-        track => track.id === lockedParticipant
-      );
-      if (isTrackLocked) return isTrackLocked.id;
-      if (sharingTrackId !== '') return sharingTrackId;
-      return participant.video[0].id;
-    }
-    if (numberOfParticipants > 1) {
-      if (lockedParticipant !== '') return lockedParticipant;
-      if (sharingTrackId !== '') return sharingTrackId;
-      if (dominantSpeaker === participant.participant.sid) {
-        if (participant.video.length === 0) return participant.participant.sid;
-        return participant.video[0].sid;
-      }
-    }
-    return '';
-  };
+  useEffect(() => {
+    if (dominantSpeaker) setDominant(dominantSpeaker)
+  }, [dominantSpeaker])
 
-  renderParticipants = () => {
-    const {
-      participants,
-      profiles,
-      lockedParticipant,
-      dominantSpeaker,
-      sharingTrackId,
-    } = this.props;
-    return participants.map((item, index) => {
+  const isVisible = (id, other) => {
+    if (lockedParticipant) {
+      if (lockedParticipant === (other || id)) return true
+      return false
+    }
+
+    if (sharingTrackId) {
+      if (sharingTrackId === id || sharingTrackId === other) return true
+      return false
+    }
+
+    if (dominantView && dominant) {
+      if(dominant === id) return true
+      return false
+    }
+
+    return true
+  }
+
+  const renderParticipants = () => {
+    return participants.map((item) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
-      const visibleId = this.handleVerifyVisibility(
-        item,
-        participants.length,
-        lockedParticipant,
-        dominantSpeaker,
-        sharingTrackId
-      );
-
-      const numberOfParticipants = sharingTrackId || lockedParticipant ? 1 : participants.length
-
+      const numberOfParticipants =
+        sharingTrackId || lockedParticipant || (dominantView && dominant)
+          ? 1
+          : participants.length
       if (item.video.length === 0) {
         return (
           <VideoGridItem
@@ -89,56 +79,56 @@ class VideoGrid extends React.PureComponent<Props, State> {
             isVideo={false}
             isMic={item.audio.length > 0}
             count={numberOfParticipants}
-            isVisible={
-              !sharingTrackId && !lockedParticipant ||
-                (sharingTrackId === item.participant.sid && !lockedParticipant) ||
-                lockedParticipant === item.participant.sid
-            }
+            isVisible={isVisible(item.participant.sid)}
+            //! sharingTrackId && !lockedParticipant ||
+            // (sharingTrackId === item.participant.sid && !lockedParticipant) ||
+            // (!dominantView && lockedParticipant === item.participant.sid) ||
+            // (dominantView && dominant === item.participant.sid)
+            // }
           />
         );
       }
       return item.video.map(track => {
         const id = item.type === 'local' ? track.id : track.sid;
+        const isVideo = item.video.length !== 0
         return (
           <VideoGridItem
-            key={item.type === 'local' ? track.id : track.sid}
+            key={id}
             firstName={firstName}
             lastName={lastName}
             profileImage={userProfileUrl}
             video={track}
-            isVideo
+            isVideo={isVideo}
             isMic={item.audio.length > 0}
+            highlight={dominantSpeaker === item.participant.sid}
             count={numberOfParticipants}
             isSharing={Boolean(track.id === sharingTrackId)}
-            isVisible={
-              !sharingTrackId && !lockedParticipant ||
-                (sharingTrackId === id && !lockedParticipant) ||
-                lockedParticipant === id
-            }
+            isVisible={isVisible(item.participant.sid, id)}
+            //! sharingTrackId && !lockedParticipant ||
+            // (sharingTrackId === id && !lockedParticipant) ||
+            // (!dominantView && lockedParticipant === id) ||
+            // (dominantView && dominant === id)
+            // }
           />
         );
       });
     });
   };
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <Grid
-          container
-          spacing={1}
-          justify='center'
-          alignItems='center'
-          alignContent='center'
-          className={classes.gridContainer}
-        >
-          {this.renderParticipants()}
-        </Grid>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <Grid
+        container
+        spacing={1}
+        justify='center'
+        alignItems='center'
+        alignContent='center'
+        className={classes.gridContainer}
+      >
+        {renderParticipants()}
+      </Grid>
+    </div>
+  );
 }
 
 export default withStyles(styles)(VideoGrid);

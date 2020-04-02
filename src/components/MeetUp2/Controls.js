@@ -8,6 +8,8 @@ import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import Tooltip from '@material-ui/core/Tooltip';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import FeaturedVideoIcon from '@material-ui/icons/FeaturedVideo';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
 // import CastForEducationIcon from '@material-ui/icons/CastForEducation';
@@ -48,6 +50,8 @@ type Props = {
   endCall: Function,
   disableVideo: Function,
   disableAudio: Function,
+  dominantToggle: Function,
+  dominantView: boolean,
   shareScreen: Function
   // shareData: Function
 };
@@ -64,6 +68,8 @@ class Controls extends React.PureComponent<Props, State> {
       isScreenSharingSupported,
       isSharing,
       isSharingData,
+      dominantToggle,
+      dominantView,
       isVideoSwitching,
       isAudioSwitching,
       disableVideo,
@@ -154,6 +160,27 @@ class Controls extends React.PureComponent<Props, State> {
               onClick={shareScreen}
             >
               {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
+            </Fab>
+          </div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title={dominantView ? 'Speaker View' : 'Gallery View'}
+        >
+          <div>
+            <Fab
+              size='small'
+              color="primary"
+              aria-label='share-screen'
+              className={classes.fab}
+              disabled={!isConnected}
+              onClick={dominantToggle}
+            >
+              {dominantView ? <FeaturedVideoIcon /> : <ViewModuleIcon />}
             </Fab>
           </div>
         </Tooltip>

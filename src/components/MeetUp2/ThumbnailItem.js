@@ -46,12 +46,9 @@ const styles = theme => ({
     }
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    height: 60,
-    width: '100%'
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
   },
   title: {
     color: 'black',
@@ -64,7 +61,7 @@ const styles = theme => ({
     width: '100%'
   },
   icon: {
-    color: 'black',
+    color: 'white',
     width: 24,
     height: 24
   },
@@ -174,18 +171,18 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
           )}
         </div>
         <div className={classes.content}>
-          <Typography variant="body1" className={classes.title}>
-            {`${firstName} ${lastName}`}
-          </Typography>
+          {/* <Typography variant="body1" className={classes.title}> */}
+          {/* {`${firstName} ${lastName}`} */}
+          {/* </Typography> */}
           <div className={classes.media}>
             {isDataSharing && <CastForEducationIcon className={classes.icon} />}
             {isVideo ? (
-              <VideocamIcon className={classes.icon} />
+              null
             ) : (
               <VideocamOffIcon className={classes.icon} />
             )}
             {isMic ? (
-              <MicIcon className={classes.icon} />
+              null
             ) : (
               <MicOffIcon className={classes.icon} />
             )}
