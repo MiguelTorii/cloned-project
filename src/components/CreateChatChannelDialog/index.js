@@ -23,7 +23,8 @@ const styles = theme => ({
     alignItems: 'center'
   },
   grow: {
-    flex: 1
+    flex: 1,
+    paddingBottom: theme.spacing()
   },
   validatorForm: {
     flex: 1,
@@ -51,10 +52,6 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
-  },
-  formHelpText: {
-    marginBottom: theme.spacing(),
-    fontSize: 16,
   },
   dialogContent: {
     '&:first-child': {
@@ -149,9 +146,7 @@ const CreateChatChannelDialog = ({
         className={classes.title}
       >
         <Typography variant="h6" className={classes.grow}>
-          {`Create ${
-              isVideo ? 'Video Room' : 'Chat'
-            }`}
+          Setup a Class Group Chat or Send a Direct Message
         </Typography>
       </DialogTitle>
       <ValidatorForm
@@ -163,7 +158,6 @@ const CreateChatChannelDialog = ({
             root: classes.dialogContent
           }}
         >
-          <Typography className={classes.formHelpText}>Setup a Class Group Chat or Send a Direct Message</Typography>
           <div className={classes.form}>
             <div>
               <AutoComplete
