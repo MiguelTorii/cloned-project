@@ -22,6 +22,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import queryString from 'query-string';
 import TutorBadge from 'components/TutorBadge'
 import Markdown from './Markdown';
+import Tooltip from '../../containers/Tooltip';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -254,9 +255,15 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               {fromNow}
             </Typography>
           </div>
-          <IconButton onClick={this.handleMenuOpen}>
-            <MoreVertIcon />
-          </IconButton>
+          <Tooltip
+            id={9043}
+            placement="right"
+            text="Save what you want to review later during your study time. Set a reminder to view your bookmarks"
+          >
+            <IconButton onClick={this.handleMenuOpen}>
+              <MoreVertIcon />
+            </IconButton>
+          </Tooltip>
         </div>
         <Typography component="p" variant="h4" paragraph>
           {title}

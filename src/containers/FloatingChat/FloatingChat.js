@@ -20,6 +20,7 @@ import type { ChatChannels } from '../../types/models';
 import { renewTwilioToken, leaveChat, blockChatUser } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
+import Tooltip from '../Tooltip';
 import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
@@ -458,28 +459,34 @@ class FloatingChat extends React.PureComponent<Props, State> {
                 onBlock={this.handleBlock}
               />
             ))}
-            <MainChat
-              unread={unread}
-              onCreateChannel={this.handleCreateChannelOpen}
+            <Tooltip
+              id={3292}
+              placement="top"
+              text="Setup a group chat with your class to connect on topics and discuss problems"
             >
-              {channels.length === 0 ? (
-                <div className={classes.noMessages}>
-                  <Typography variant="subtitle1" align="center">
-                     Begin an individual or group chat with any of your classmates by tapping on the icons above
-                  </Typography>
-                </div>
-              ) : (
-                channels.map(item => (
-                  <ChatListItem
-                    key={item.sid}
-                    channel={item}
-                    userId={userId}
-                    onOpenChannel={this.handleRoomClick}
-                    onUpdateUnreadCount={this.handleUpdateUnreadCount}
-                  />
-                ))
-              )}
-            </MainChat>
+              <MainChat
+                unread={unread}
+                onCreateChannel={this.handleCreateChannelOpen}
+              >
+                {channels.length === 0 ? (
+                  <div className={classes.noMessages}>
+                    <Typography variant="subtitle1" align="center">
+                      Begin an individual or group chat with any of your classmates by tapping on the icons above
+                    </Typography>
+                  </div>
+                ) : (
+                  channels.map(item => (
+                    <ChatListItem
+                      key={item.sid}
+                      channel={item}
+                      userId={userId}
+                      onOpenChannel={this.handleRoomClick}
+                      onUpdateUnreadCount={this.handleUpdateUnreadCount}
+                    />
+                  ))
+                )}
+              </MainChat>
+            </Tooltip>
           </div>
         </ErrorBoundary>
         <ErrorBoundary>

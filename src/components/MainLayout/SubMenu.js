@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import queryString from 'query-string'
+import Tooltip from '../../containers/Tooltip';
 
 type Props = {
   MyLink: Function,
@@ -12,7 +13,8 @@ type Props = {
 
 const SubItems = ({
   MyLink,
-  openClassmatesDialog
+  openClassmatesDialog,
+  createPostOpen
 }: Props) => {
   const classes = makeStyles(theme => ({
     item: {
@@ -70,7 +72,7 @@ const SubItems = ({
           classes={{
             primary: classes.label
           }}
-        /> 
+        />
       </ListItem> 
       <ListItem 
         button 
@@ -83,13 +85,20 @@ const SubItems = ({
           classes.item,
           ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath 
         )} 
-      > 
-        <ListItemText 
-          primary="Class Leaderboard" 
-          classes={{
-            primary: classes.label
-          }}
-        /> 
+      >
+        <Tooltip
+          hidden={createPostOpen}
+          id={6938}
+          placement="left"
+          text="See the scores of all your classmates towards scholarships and gifts."
+        >
+          <ListItemText
+            primary="Class Leaderboard"
+            classes={{
+              primary: classes.label
+            }}
+          />
+        </Tooltip>
       </ListItem> 
       <ListItem 
         button 

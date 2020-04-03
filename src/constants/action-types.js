@@ -4,7 +4,9 @@ export const campaignActions = {
 
 export const userActions = {
   UPDATE_CLASSES: 'UPDATE_CLASSES',
-  UPDATE_TOUR: 'UPDATE_TOUR'
+  UPDATE_TOUR: 'UPDATE_TOUR',
+  SYNC_SUCCESS: 'SYNC_SUCCESS',
+  CONFIRM_TOOLITP_SUCCESS: 'CONFIRM_TOOLITP_SUCCESS'
 };
 
 export const signInActions = {

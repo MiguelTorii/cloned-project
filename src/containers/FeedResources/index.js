@@ -9,8 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import { feedResources } from 'api/feed'
 import Linkify from 'react-linkify'
+// import { feedResources } from 'api/feed'
+import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 
@@ -53,31 +54,27 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   width: string,
-  user: UserState
+  user: UserState,
+  userSync: Function
 };
 
 
-const FeedResources = ({ width, classes, user }: Props) => {
+const FeedResources = ({ width, classes, user, userSync }: Props) => {
   const {
     data: {
       userId
+    },
+    syncData: {
+      display,
+      smallLogo,
+      resourcesBody,
+      resourcesTitle
     }
   } = user
 
-  const [logo, setLogo] = useState(null)
-  const [title, setTitle] = useState(null)
-  const [body, setBody] = useState(null)
-  const [display, setDisplay] = useState(false)
-
   useEffect(() => {
     const init = async () => {
-      const res = await feedResources({ userId })
-      if (res) {
-        setLogo(res.smallLogo)
-        setTitle(res.resourcesTitle)
-        setBody(res.resourcesBody)
-        setDisplay(res.display)
-      }
+      userSync({ userId })
     }
 
     if (userId) init()
@@ -89,15 +86,15 @@ const FeedResources = ({ width, classes, user }: Props) => {
     <Paper className={classes.paper}>
       <Grid item>
         <div className={classes.imgContainer}>
-          {logo && <img alt='logo' className={classes.img} src={logo} />}
+          {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
         </div>
       </Grid>
       <Typography className={classes.title}>
-        {title}
+        {resourcesTitle}
       </Typography>
       <Typography className={classes.text}>
         <Linkify properties={{target: '_blank' }}>
-          {body}
+          {resourcesBody}
         </Linkify>
       </Typography>
     </Paper>
@@ -112,6 +109,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       push: routePush,
+      userSync: sync,
     },
     dispatch
   );

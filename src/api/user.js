@@ -868,3 +868,62 @@ export const getInvite = async (): Promise<InviteCard> => {
     };
   }
 };
+
+export const confirmTooltip = async (tooltipId: number) => {
+  try {
+    const token = await getToken();
+
+    await axios.post(
+      `${API_ROUTES.USER}/tool_tip`,
+      {
+        tool_tip_id: [tooltipId]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSync = async ({
+  userId
+}: {
+  userId: string
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.SYNC}/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const {
+      data: {
+        institution_resources: {
+          display_on_feed: display,
+          small_logo: smallLogo,
+          large_logo: largeLogo,
+          feed_resources_title: resourcesTitle,
+          feed_resources_body: resourcesBody
+        },
+        viewed_tool_tips: viewedTooltips
+      }
+    } = result
+    return {
+      smallLogo,
+      largeLogo,
+      display,
+      resourcesTitle,
+      resourcesBody,
+      viewedTooltips
+    }
+  } catch (err) {
+    return null;
+  }
+};
+

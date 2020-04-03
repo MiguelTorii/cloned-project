@@ -24,7 +24,8 @@ const HomeItem = ({
   MyLink, 
   updateFeed,
   openClassmatesDialog,
-  newClassExperience
+  newClassExperience,
+  createPostOpen,
 }: Props) => {
   const [classList, setClassList] = useState([])
   const classes = makeStyles(theme => ({
@@ -134,6 +135,7 @@ const HomeItem = ({
           </ListItem>
           {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) && 
               <SubMenu
+                createPostOpen={createPostOpen}
                 MyLink={MyLink}
                 openClassmatesDialog={openClassmatesDialog}
               />}

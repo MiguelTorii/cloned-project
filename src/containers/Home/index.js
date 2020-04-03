@@ -1,3 +1,4 @@
+// @flow
 import React, { useEffect, useState } from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,6 +8,7 @@ import * as campaignActions from 'actions/campaign'
 import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
 import Feed from 'pages/Feed'
 import Classes from 'pages/Classes'
+import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 
 const styles = () => ({
@@ -20,10 +22,12 @@ const styles = () => ({
 });
 
 
-const Home = ({ 
-  campaign, 
+const Home = ({
+  campaign,
   classes,
-  requestCampaign
+  requestCampaign,
+  userId,
+  userSync
 }) => {
   const [newClassesGrid, setNewClassesGrid] = useState(null)
 
@@ -36,6 +40,13 @@ const Home = ({
     setNewClassesGrid(campaign.newClassExperience)
   }, [campaign])
 
+  useEffect(() => {
+    const init = async () => {
+      userSync({ userId })
+    }
+
+    if (userId) init()
+  }, [userId])
 
   if(newClassesGrid === null) return (
     <div className={classes.loading}>
@@ -46,14 +57,16 @@ const Home = ({
   return newClassesGrid ? <Classes /> : <Feed />
 }
 
-const mapStateToProps = ({ campaign }: StoreState): {} => ({
-  campaign
+const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
+  campaign,
+  userId: user.data.userId
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      requestCampaign: campaignActions.requestCampaign
+      requestCampaign: campaignActions.requestCampaign,
+      userSync: sync
     },
     dispatch
   );

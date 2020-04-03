@@ -26,6 +26,14 @@ export type UserState = {
       body: string
     }
   },
+  syncData: {
+    display: boolean,
+    largeLogo: string,
+    smallLogo: string,
+    resourcesBody: string,
+    resourcesTitle: string,
+    viewedTooltips: Array<number>
+  },
   errorMessage: {
     title: string,
     body: string,
@@ -62,6 +70,14 @@ const defaultState = {
       body: '',
       logo: '',
     }
+  },
+  syncData: {
+    display: false,
+    largeLogo: '',
+    smallLogo: '',
+    resourcesBody: '',
+    resourcesTitle: '',
+    viewedTooltips: null
   },
   runningTour: false,
   isLoading: false,
@@ -129,6 +145,25 @@ export default (state: UserState = defaultState, action: Action): UserState => {
   case signInActions.SIGN_OUT_USER_SUCCESS:
   case rootActions.CLEAR_STATE:
     return defaultState;
+  case userActions.SYNC_SUCCESS:
+    return update(state, {
+      syncData: {
+        display: { $set: action.payload.display },
+        largeLogo: { $set: action.payload.largeLogo },
+        resourcesBody: { $set: action.payload.resourcesBody },
+        resourcesTitle: { $set: action.payload.resourcesTitle },
+        smallLogo: { $set: action.payload.smallLogo },
+        viewedTooltips: { $set: action.payload.viewedTooltips },
+      },
+    });
+  case userActions.CONFIRM_TOOLITP_SUCCESS:
+    return update(state, {
+      syncData: {
+        viewedTooltips: {
+          $set: state.syncData.viewedTooltips.concat(action.payload.tooltipId)
+        },
+      },
+    });
   default:
     return state;
   }

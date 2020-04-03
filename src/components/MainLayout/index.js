@@ -49,6 +49,7 @@ import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import GetApp from '../GetApp';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
+import Tooltip from '../../containers/Tooltip';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -308,7 +309,8 @@ type State = {
   mobileMoreAnchorEl: ?string,
   createPostAnchorEl: ?string,
   openGetApp: boolean,
-  openHowEarnPoints: boolean
+  openHowEarnPoints: boolean,
+  createPostOpen: boolean
 };
 
 class MainLayout extends React.Component<Props, State> {
@@ -319,7 +321,8 @@ class MainLayout extends React.Component<Props, State> {
     createPostAnchorEl: null,
     openGetApp: false,
     openHowEarnPoints: false,
-    openClassmates: false
+    openClassmates: false,
+    createPostOpen: false,
   };
 
   handleDrawerOpen = () => {
@@ -348,11 +351,11 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   handleCreatePostMenuOpen = event => {
-    this.setState({ createPostAnchorEl: event.currentTarget });
+    this.setState({ createPostAnchorEl: event.currentTarget, createPostOpen: true });
   };
 
   handleCreatePostMenuClose = () => {
-    this.setState({ createPostAnchorEl: null });
+    this.setState({ createPostAnchorEl: null, createPostOpen: false });
   };
 
   handleNotificationOpen = event => {
@@ -413,6 +416,7 @@ class MainLayout extends React.Component<Props, State> {
     const {
       open,
       anchorEl,
+      createPostOpen,
       mobileMoreAnchorEl,
       createPostAnchorEl,
       openGetApp,
@@ -541,11 +545,18 @@ class MainLayout extends React.Component<Props, State> {
           component={MyLink}
           link={`/create/flashcards${search}`}
         >
-          <MenuItemContent
-            primaryText="Create Flashcards"
-            secondaryText="Earn 5k points for the first 4 cards, then 2.5k for each card after"
-            icon={FlashCards}
-          />
+          <Tooltip
+            id={1194}
+            placement="top"
+            margin
+            text="Create a set of flashcards now, and continue to edit them weekly as part of your studying for each class"
+          >
+            <MenuItemContent
+              primaryText="Create Flashcards"
+              secondaryText="Earn 5k points for the first 4 cards, then 2.5k for each card after"
+              icon={FlashCards}
+            />
+          </Tooltip>
         </MenuItem>
         <MenuItem
           button
@@ -630,6 +641,7 @@ class MainLayout extends React.Component<Props, State> {
             />
           </ListItem>
           <HomeItem
+            createPostOpen={createPostOpen}
             MyLink={MyLink}
             userClasses={userClasses}
             updateFeed={updateFeed}
