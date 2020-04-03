@@ -169,7 +169,7 @@ class Controls extends React.PureComponent<Props, State> {
             tooltip: classes.tooltip
           }}
           placement='bottom'
-          title={dominantView ? 'Speaker View' : 'Gallery View'}
+          title={!dominantView ? 'Speaker View' : 'Gallery View'}
         >
           <div>
             <Fab
@@ -180,7 +180,7 @@ class Controls extends React.PureComponent<Props, State> {
               disabled={!isConnected}
               onClick={dominantToggle}
             >
-              {dominantView ? <FeaturedVideoIcon /> : <ViewModuleIcon />}
+              {!dominantView ? <FeaturedVideoIcon /> : <ViewModuleIcon />}
             </Fab>
           </div>
         </Tooltip>

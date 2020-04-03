@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import MicOffIcon from '@material-ui/icons/MicOff';
-import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 
 const styles = () => ({
   root: {
@@ -32,7 +31,6 @@ const styles = () => ({
     height: '100%   !important',
     width: '100%',
     '& video': {
-      objectFit: 'cover',
       width: '100%',
       height: '100%   !important'
     }
