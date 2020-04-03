@@ -328,6 +328,11 @@ class FloatingChat extends React.PureComponent<Props, State> {
         const { author, attributes, body } = state;
         const { firstName, lastName } = attributes;
         const { enqueueSnackbar, classes } = this.props;
+
+        this.setState(prevState => ({
+          channels: [channel, ...prevState.channels.filter(c => c.sid !== channel.sid)]
+        }));
+
         if (Number(author) !== Number(userId)) {
           const msg = `${firstName} ${lastName} sent you a message:`;
           enqueueSnackbar(`${msg} ${body}`, {
