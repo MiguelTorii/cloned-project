@@ -34,7 +34,7 @@ const styles = theme => ({
     width: '100%',
   },
   container: {
-    margin: '32px auto 40px auto', 
+    margin: '32px auto 40px auto',
     paddingBottom: 20,
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: 16,
@@ -96,7 +96,7 @@ const styles = theme => ({
   },
   button: {
     width: 150,
-    marginLeft: 10, 
+    marginLeft: 10,
   },
   imgDialogContainer: {
     textAlign: 'center',
@@ -114,7 +114,7 @@ const styles = theme => ({
     borderRadius: 8,
     color: theme.circleIn.palette.brand,
     borderColor: theme.circleIn.palette.brand,
-    width: 75, 
+    width: 75,
   },
   highlight: {
     color: '#fec04f',
@@ -136,7 +136,7 @@ const styles = theme => ({
   },
 })
 
-const LeaderBoardTabs = ({ 
+const LeaderBoardTabs = ({
   classes,
   leaderboard,
   userId,
@@ -179,7 +179,7 @@ const LeaderBoardTabs = ({
       setGrandBoardName(data.grand.boardName)
       setScoreLabel(selected.scoreLabel)
       setStudents(selected.students)
-        
+
       setDialogTitle(data.grandDialog.text)
       if (selectedTab === 'grand') {
         setPrizeText(generalSelected.text)
@@ -241,7 +241,7 @@ const LeaderBoardTabs = ({
     height: 75,
     marginRight: 5,
   }
-   
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -253,7 +253,7 @@ const LeaderBoardTabs = ({
           dialogTitle={dialogTitle}
           eligibility={eligibility}
         />
-        <Tabs 
+        <Tabs
           variant="fullWidth"
           value={selectedTab}
           classes={{
@@ -336,8 +336,8 @@ const LeaderBoardTabs = ({
           <div className={classes.days}>{timeLabel}:
             <span className={classes.count}>{time}</span>
           </div>
-          <div className={classes.days}>Points Needed to Qualify: 
-            <span className={classes.grayText}> 10,000</span>
+          <div className={classes.days}>Points Needed to Qualify:
+            <span className={classes.grayText}> 150,000</span>
           </div>
           <div className={classes.footnote}>
             *You must earn a minimum of 150,000 points to qualify for 1st Tuesday Rewards
@@ -364,7 +364,7 @@ const LeaderBoardTabs = ({
         </Typography>
       </div>
       <Table
-        userId={Number(userId)} 
+        userId={Number(userId)}
         scoreLabel={scoreLabel}
         pushTo={pushTo}
         students={students}
