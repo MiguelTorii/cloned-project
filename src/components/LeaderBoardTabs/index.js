@@ -336,7 +336,7 @@ const LeaderBoardTabs = ({
           <div className={classes.days}>{timeLabel}:
             <span className={classes.count}>{time}</span>
           </div>
-          <div className={classes.days}>Points Needed to Qualify:
+          <div className={classes.days}>Points:
             <span className={classes.grayText}> 150,000</span>
           </div>
           <div className={classes.footnote}>
