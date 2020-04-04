@@ -98,7 +98,7 @@ class ChatListItem extends React.PureComponent<Props, State> {
 
   handleOpenChannel = () => {
     const { channel, onOpenChannel } = this.props;
-    onOpenChannel(channel.sid);
+    onOpenChannel(channel);
   };
 
   render() {

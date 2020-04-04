@@ -234,7 +234,7 @@ const FloatingChat = ({
     channel: Object,
     startVideo: boolean
   }) => {
-    handleRoomClick(channel.sid);
+    handleRoomClick(channel);
     if (startVideo) {
       logEvent({
         event: 'Video- Start Video',
