@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import store from 'store';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
@@ -48,10 +47,9 @@ type Props = {
   location: { pathname: string },
   placement: string,
   text: string,
+  viewedOnboarding: boolean,
   viewedTooltips: Array<number>
 };
-
-const onboardingViewed = store.get('ONBOARDING') === 'VIEWED';
 
 const Tooltip = ({
   children,
@@ -62,6 +60,7 @@ const Tooltip = ({
   location: { pathname },
   placement,
   text,
+  viewedOnboarding,
   viewedTooltips
 }: Props) => {
 
@@ -82,7 +81,7 @@ const Tooltip = ({
     if (hidden) {
       result = false;
     } else if (
-      !onboardingViewed // Onboarding not completed
+      !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading
       || viewedTooltips.includes(id) // Tooltip already dismissed by user
     ) {
@@ -133,7 +132,7 @@ const Tooltip = ({
 
   useEffect(() => {
     isOpen();
-  }, [viewedTooltips, hidden])
+  }, [viewedOnboarding, viewedTooltips, hidden])
 
   return (
     <MuiTooltip
@@ -175,9 +174,9 @@ const Tooltip = ({
   )
 }
 
-const mapStateToProps = ({ user: { syncData: { viewedTooltips }}, router }: StoreState): {} => ({
-  viewedTooltips,
-  router
+const mapStateToProps = ({ user: { syncData: { viewedOnboarding, viewedTooltips }} }: StoreState): {} => ({
+  viewedOnboarding,
+  viewedTooltips
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

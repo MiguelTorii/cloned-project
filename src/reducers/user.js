@@ -32,7 +32,8 @@ export type UserState = {
     smallLogo: string,
     resourcesBody: string,
     resourcesTitle: string,
-    viewedTooltips: Array<number>
+    viewedTooltips: Array<number>,
+    viewedOnboarding: boolean
   },
   errorMessage: {
     title: string,
@@ -77,7 +78,8 @@ const defaultState = {
     smallLogo: '',
     resourcesBody: '',
     resourcesTitle: '',
-    viewedTooltips: null
+    viewedTooltips: null,
+    viewedOnboarding: null,
   },
   runningTour: false,
   isLoading: false,
@@ -153,7 +155,8 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         resourcesBody: { $set: action.payload.resourcesBody },
         resourcesTitle: { $set: action.payload.resourcesTitle },
         smallLogo: { $set: action.payload.smallLogo },
-        viewedTooltips: { $set: action.payload.viewedTooltips },
+        viewedOnboarding: { $set: action.payload.viewedOnboarding },
+        viewedTooltips: { $set: action.payload.viewedTooltips }
       },
     });
   case userActions.CONFIRM_TOOLITP_SUCCESS:
@@ -161,6 +164,14 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       syncData: {
         viewedTooltips: {
           $set: state.syncData.viewedTooltips.concat(action.payload.tooltipId)
+        },
+      },
+    });
+  case userActions.UPDATE_ONBOARDING:
+    return update(state, {
+      syncData: {
+        viewedOnboarding: {
+          $set: action.payload.viewedOnboarding
         },
       },
     });

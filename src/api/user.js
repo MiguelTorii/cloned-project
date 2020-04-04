@@ -911,7 +911,8 @@ export const getSync = async ({
           feed_resources_title: resourcesTitle,
           feed_resources_body: resourcesBody
         },
-        viewed_tool_tips: viewedTooltips
+        viewed_tool_tips: viewedTooltips,
+        viewed_onboarding: viewedOnboarding
       }
     } = result
     return {
@@ -920,7 +921,8 @@ export const getSync = async ({
       display,
       resourcesTitle,
       resourcesBody,
-      viewedTooltips
+      viewedTooltips,
+      viewedOnboarding
     }
   } catch (err) {
     return null;

@@ -64,6 +64,7 @@ const syncSuccessAction = ({
   smallLogo,
   resourcesBody,
   resourcesTitle,
+  viewedOnboarding,
   viewedTooltips
 }: {
     display: boolean,
@@ -71,6 +72,7 @@ const syncSuccessAction = ({
     smallLogo: string,
     resourcesBody: string,
     resourcesTitle: string,
+    viewedOnboarding: boolean,
     viewedTooltips: Array<number>
 }): Action => ({
   type: userActions.SYNC_SUCCESS,
@@ -80,6 +82,7 @@ const syncSuccessAction = ({
     smallLogo,
     resourcesBody,
     resourcesTitle,
+    viewedOnboarding,
     viewedTooltips
   }
 })
@@ -103,4 +106,17 @@ export const confirmTooltip = (tooltipId: number) => async (
 ) => {
   await postConfirmTooltip(tooltipId)
   dispatch(confirmTooltipSuccessAction(tooltipId))
+}
+
+const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
+  type: userActions.UPDATE_ONBOARDING,
+  payload: {
+    viewedOnboarding
+  }
+})
+
+export const updateOnboarding = ({ viewedOnboarding }: { viewedOnboarding: boolean } ) => (
+  dispatch: Dispatch
+) => {
+  dispatch(updateOnboardingAction(viewedOnboarding))
 }

@@ -1,47 +1,62 @@
 // @flow
 
 // $FlowFixMe
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import MobileStepper from '@material-ui/core/MobileStepper';
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Lottie from 'react-lottie'
-import OnboardSelectRewards from 'components/OnboardSelectRewards'
-import circles1 from 'assets/svg/background-circle-1.svg'
-import circles2 from 'assets/svg/background-circle-2.svg'
-import circles3 from 'assets/svg/background-circle-3.svg'
-import animation1 from '../../assets/lottie/slide_1_animation.json'
-import animation2 from '../../assets/lottie/slide_2_animation.json'
-import animation3 from '../../assets/lottie/slide_3_animation.json'
-import animation4 from '../../assets/lottie/slide_4_animation.json'
+import animation1 from '../../assets/lottie/page_turning.json'
+import animation2 from '../../assets/lottie/coinpig.json'
+import giftCards from '../../assets/img/gift-cards.png'
+import addClasses from '../../assets/img/add-classes.png'
 import withRoot from '../../withRoot';
 import ErrorBoundary from '../ErrorBoundary';
-import { logEvent } from '../../api/analytics';
+import { logEvent, logEventLocally } from '../../api/analytics';
 
 const styles = theme => ({
   content: {
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    display: 'flex',
+    flex: 'initial',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: 'initial'
   },
   title: {
-    textAlign: 'center'
+    maxWidth: 675,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   button: {
-    marginTop: theme.spacing(2)
+    borderRadius: 8,
+    borderWidth: 2,
+    fontWeight: 'bold',
+    margin: '0px 10px',
+    padding: '4px 30px',
+  },
+  buttonLarge: {
+    padding: '8px 48px',
   },
   stepper: {
-    maxWidth: 400,
-    flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'transparent',
-    marginTop: theme.spacing(2)
+    flexGrow: 1,
+    justifyContent: 'center',
+    maxWidth: 400,
+    position: 'absolute',
+    bottom: 20,
   },
   img: {
     height: 200,
@@ -50,159 +65,295 @@ const styles = theme => ({
   },
   buttons: {
     display: 'flex',
-    flexDirection: 'row',
-    width: 200,
-    justifyContent: 'space-evenly',
-  }
+    justifyContent: 'center',
+    margin: '20px 0px'
+  },
+  formControl: {
+    margin: 20,
+    width: 300
+  },
+  money: {
+    color: '#60b515',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    maxWidth: 600,
+    textAlign: 'center',
+  },
+  dialogPaper: {
+    height: 700,
+    padding: 20,
+    width: 750,
+  },
 });
 
 type Props = {
   classes: Object,
   open: boolean,
-  onClose: Function
+  userId: number,
+  updateOnboarding: Function
 };
 
-const Onboarding = ({ classes, open, onClose }: Props) => {
-  const [activeStep, setActiveStep] = useState(null)
-  const [animations] = useState([animation1, animation2, animation3, animation4])
-  const [currentAnimation, setCurrentAnimation] = useState(animation1)
-  const [hovered, setHovered] = useState(false)
+const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
+  const [activeStep, setActiveStep] = useState(1)
+  const [studyPreference, setStudyPreference] = useState('')
+  const [studyMethod, setStudyMethod] = useState('')
+  const [studyLength, setStudyLength] = useState('')
+  const [other, setOther] = useState('')
 
   useEffect(() => {
-    setActiveStep(0)
+    setActiveStep(1)
+
     if (open) {
       logEvent({ event: 'Onboarding- First Onboarding Opened', props: {} });
+      logEventLocally({
+        category: 'Onboarding',
+        objectId: userId,
+        type: 'Started',
+      });
     }
   }, [open])
-
-  useLayoutEffect(() => {
-    if (activeStep !== null) setCurrentAnimation(animations[activeStep])
-  }, [activeStep, animations])
-
-  const handleNext = () => {
-    setHovered(false)
-    if (activeStep === 3) {
-      onClose();
-      return;
-    }
-    if (activeStep === 2) {
-      logEvent({ event: 'Onboarding- Last Onboarding Opened', props: {} });
-    }
-
-    setActiveStep(activeStep + 1)
-  };
-
-  const handleBack = () => {
-    if (activeStep !== null) setActiveStep(activeStep - 1)
-    setHovered(false)
-  }
-
-  const onClick = () => {
-    if (activeStep === 2) setHovered(true)
-  }
 
   const renderTitle = step => {
     switch (step) {
     case 1:
-      return 'BUILD STRONG STUDY HABITS';
+      return 'We’re here to help you pass your classes.';
     case 2:
-      return 'EARN REWARDS AS YOU BUILD BETTER HABITS';
+      return 'We help you study while you earn gifts for helping classmates.';
     case 3:
-      return "SEE WHAT YOU CAN DO ON CIRCLEIN";
+      return 'Get started by adding your classes on CircleIn.';
     default:
-      return 'BEING A STUDENT IS DIFFICULT...';
+      return '...';
+    }
+  };
+
+  const renderSubtitle = step => {
+    switch (step) {
+    case 1:
+      return 'But first, we need to get to know you better.';
+    case 2:
+      return 'Earn gifts like real scholarships between';
+    case 3:
+      return '';
+    default:
+      return '...';
     }
   };
 
   const renderBody = step => {
     switch (step) {
     case 1:
-      return 'of reviewing your notes and the notes your classmates share to get ahead of exams.'
+      return <Step1 />
     case 2:
-      return 'Don\'t worry. You can change these later.';
+      return <Step2 />
     case 3:
-      return "Check out how students are sharing notes and much more by viewing example posts in the Study Feed.";
+      return <Step3 />
     default:
-      return 'Classwork + Exams = OVERWHELMING';
+      return <Step1 />;
     }
   };
 
-  const renderSubTitle = () => {
-    if (activeStep === 2) return 'Pick your top three rewards below to let us know which prices you want to win for being a superb notetaker'
-    return ''
-  }
+  const Step1 = () => (
+    <div>
+      <div style={{ display: 'flex' }}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='select-preference-label'>How do you prefer to study?</InputLabel>
+          <Select
+            id='select-preference'
+            labelId='select-preference-label'
+            onChange={(event) => setStudyPreference(event.target.value)}
+            value={studyPreference}
+          >
+            <MenuItem value='By myself'>By myself</MenuItem>
+            <MenuItem value='In a group of 2-5'>In a group of 2-5</MenuItem>
+            <MenuItem value='in a group of 6-10'>in a group of 6-10</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='select-test-label'>How do you study for tests?</InputLabel>
+          <Select
+            id='select-test'
+            labelId='select-test-label'
+            onChange={(event) => {
+              setStudyMethod(event.target.value)
+              setOther('')
+            }}
+            value={studyMethod}
+          >
+            <MenuItem value='Read and highlight'>Read and highlight</MenuItem>
+            <MenuItem value='Read and take notes'>Read and take notes</MenuItem>
+            <MenuItem value='Read and make flash cards'>Read and make flash cards</MenuItem>
+            <MenuItem value='None'>None</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+      <div style={{ display: 'flex' }}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='select-frequency-label'>
+            How often do you study each week?
+          </InputLabel>
+          <Select
+            id='select-frequency'
+            labelId='select-frequency-label'
+            onChange={(event) => setStudyLength(event.target.value)}
+            value={studyLength}
+          >
+            <MenuItem value='1-2 time'>1-2 times</MenuItem>
+            <MenuItem value='3-5 time'>3-5 times</MenuItem>
+            <MenuItem value='Everyday'>Everyday</MenuItem>
+          </Select>
+        </FormControl>
+        {
+          studyMethod === 'None' &&
+          <FormControl className={classes.formControl}>
+            <TextField
+              autoFocus
+              id='text-other'
+              label='Tell us how you study...'
+              onChange={(event) => setOther(event.target.value)}
+              value={other}
+            />
+          </FormControl>
+        }
+      </div>
+      <div className={classes.buttons}>
+        <Button
+          color='primary'
+          disabled={
+            !studyPreference || !studyMethod || !studyLength ||
+            (studyMethod === 'None' && other === '')}
+          className={classes.button}
+          onClick={() => setActiveStep(2)}
+          variant='contained'
+        >
+          Next
+        </Button>
+      </div>
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          animationData: animation1,
+        }}
+        width={250}
+        height={250}
+        className={classes.img}
+      />
+    </div>
+  )
 
-  const backgroundStyle = {
-    position: 'absolute',
-    objectFit: 'scale-down',
-    height: 180,
-    top: 80
-  }
+  const Step2 = () => (
+    <div>
+      <Typography className={classes.money} component='div' variant='h4'>
+        $500 - $2500
+      </Typography>
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          animationData: animation2,
+        }}
+        width={200}
+        height={200}
+        className={classes.img}
+      />
+      <Typography component='div' className={classes.subtitle}>
+        And <b>gift cards</b> to your favorite places and services with over 30 options!
+      </Typography>
+      <div style={{ textAlign: 'center', margin: '16px 0px' }}>
+        <img src={giftCards} alt='Gift cards' />
+      </div>
+      <div className={classes.buttons}>
+        <Button
+          className={classes.button}
+          color='primary'
+          onClick={() => setActiveStep(1)}
+          variant='outlined'
+        >
+          Back
+        </Button>
+        <Button
+          className={classes.button}
+          color='primary'
+          onClick={() => {
+            setActiveStep(3)
+            logEvent({ event: 'Onboarding- Last Onboarding Opened', props: {} });
+          }}
+          variant='contained'
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+  )
 
-  const renderBackground = () => {
-    if (activeStep === 0) return <img style={backgroundStyle} src={circles1} alt='circles' />
-    if (activeStep === 1) return <img style={backgroundStyle} src={circles2} alt='circles' />
-    if (activeStep === 3) return <img style={backgroundStyle} src={circles3} alt='circles' />
-    return null
-  }
-  
+  const Step3 = () => (
+    <div>
+      <div style={{ textAlign: 'center', margin: '16px 0px' }}>
+        <img src={addClasses} alt='Add classes' />
+      </div>
+      <Typography component='div' className={classes.subtitle}>
+        You’ll also receive an email from one of our CircleIn Studying Specialists soon.
+        Happy studying!
+      </Typography>
+      <div className={classes.buttons}>
+        <Button
+          className={cx(classes.button, classes.buttonLarge)}
+          color='primary'
+          onClick={async () => {
+            // await updateUserProfile({
+            //   userId,
+            //   fields: [
+            //     { field: 'study_preference', updated_value: studyPreference },
+            //     { field: 'study_method', updated_value: studyMethod === 'None' ? other : studyMethod },
+            //     { field: 'study_length', updated_value: studyLength },
+            //   ]
+            // });
+            logEventLocally({
+              category: 'Onboarding',
+              objectId: userId,
+              type: 'Ended',
+            });
+            updateOnboarding({ viewedOnboarding: true });
+          }}
+          variant='contained'
+        >
+          Get Started
+        </Button>
+      </div>
+    </div>
+  )
+
   return (
     <ErrorBoundary>
       <Dialog
-        fullWidth
         open={open}
         disableBackdropClick
         disableEscapeKeyDown
-        aria-labelledby="onboarding-title"
-        aria-describedby="onboarding-description"
+        maxWidth='md'
+        classes={{ paper: classes.dialogPaper }}
+        aria-labelledby='onboarding-title'
+        aria-describedby='onboarding-description'
       >
-        <DialogTitle id="onboarding-title" className={classes.title}>
-          {renderTitle(activeStep)}
+        <DialogTitle id='onboarding-title' style={{ textAlign: 'center' }}>
+          <Typography component='div' variant='h4' className={classes.title}>
+            {renderTitle(activeStep)}
+          </Typography>
         </DialogTitle>
         <DialogContent className={classes.content}>
-          {renderBackground()}
-          <DialogContentText color="textPrimary" align="center">
-            {renderSubTitle()}
+          <DialogContentText color='textPrimary' align='center'>
+            <Typography component='div' className={classes.subtitle}>
+              {renderSubtitle(activeStep)}
+            </Typography>
           </DialogContentText>
-          <div onClick={onClick} role='presentation'>
-            {!hovered && <Lottie 
-              options={{
-                loop: true,
-                autoplay: true, 
-                animationData: currentAnimation,
-              }}
-              width={200}
-              height={200}
-              className={classes.img}
-            />}
-            {activeStep === 2 && hovered && <OnboardSelectRewards/>} 
-          </div>
-          <DialogContentText color="textPrimary" align="center">
-            {renderBody(activeStep)}
-          </DialogContentText>
-          <div className={classes.buttons}>
-            {activeStep !== null && activeStep > 0 && activeStep < 3 && <Button
-              color="primary"
-              variant="outlined"
-              className={classes.button}
-              onClick={handleBack}
-            >
-                Back
-            </Button>}
-            <Button
-              color="primary"
-              variant="contained"
-              className={classes.button}
-              onClick={handleNext}
-            >
-              {activeStep === 3 ? 'Get Started' : 'Next'}
-            </Button>
-          </div>
+          {renderBody(activeStep)}
           <MobileStepper
-            variant="dots"
-            steps={4}
-            position="static"
-            activeStep={activeStep}
+            variant='dots'
+            steps={3}
+            position='static'
+            activeStep={activeStep - 1}
             className={classes.stepper}
           />
         </DialogContent>

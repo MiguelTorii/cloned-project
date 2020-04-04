@@ -2,7 +2,6 @@
 // @flow
 
 import React, { Fragment } from 'react';
-import store from 'store';
 import {
   ValidatorForm,
   TextValidator,
@@ -10,7 +9,6 @@ import {
 } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -25,6 +23,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import Onboarding from '../Onboarding';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
+import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
 
 const styles = theme => ({
@@ -51,7 +50,7 @@ type Props = {
   classes: Object,
   user: UserState,
   checkUserSession: Function,
-  pushTo: Function
+  updateOnboarding: Function
 };
 
 type State = {
@@ -60,8 +59,7 @@ type State = {
   firstName: string,
   lastName: string,
   grade: string | number,
-  email: string,
-  onboarding: boolean
+  email: string
 };
 
 class UpdateLMSUser extends React.PureComponent<Props, State> {
@@ -72,7 +70,6 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     lastName: '',
     grade: '',
     email: '',
-    onboarding: false
   };
 
   componentDidMount = () => {
@@ -107,13 +104,6 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       }
     } = this.props;
     if (updateProfile.length > 0) this.setState({ open: true });
-    else {
-      const onboarding = store.get('ONBOARDING');
-      if (!onboarding || onboarding !== 'VIEWED') {
-        // store.set('ONBOARDING', 'SHOW');
-        this.handleShowOnboarding();
-      }
-    }
   };
 
   handleChange = name => event => {
@@ -157,33 +147,19 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       await checkUserSession();
 
       this.setState({ open: false, loading: false });
-      const onboarding = store.get('ONBOARDING');
-      if (!onboarding || onboarding !== 'VIEWED') {
-        // store.set('ONBOARDING', 'SHOW');
-        this.handleShowOnboarding();
-      }
     } catch (err) {
       this.setState({ loading: false });
     }
-  };
-
-  handleShowOnboarding = () => {
-    this.setState({ onboarding: true });
-  };
-
-  handleHideOnboarding = () => {
-    store.set('ONBOARDING', 'VIEWED');
-    this.setState({ onboarding: false });
-    const { pushTo } = this.props;
-    pushTo('/', { onboardingEnd: true });
   };
 
   render() {
     const {
       classes,
       user: {
-        data: { userId, updateProfile, segment }
-      }
+        data: { userId, updateProfile, segment },
+        syncData: { viewedOnboarding }
+      },
+      updateOnboarding
     } = this.props;
 
     if (userId === '') return null;
@@ -195,7 +171,6 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       lastName,
       grade,
       email,
-      onboarding
     } = this.state;
 
     const renderForm = (
@@ -329,7 +304,11 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        <Onboarding open={onboarding} onClose={this.handleHideOnboarding} />
+        <Onboarding
+          open={viewedOnboarding !== null && !viewedOnboarding}
+          updateOnboarding={updateOnboarding}
+          userId={userId}
+        />
       </ErrorBoundary>
     );
   }
@@ -343,7 +322,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       checkUserSession: signInActions.checkUserSession,
-      pushTo: push
+      updateOnboarding: userActions.updateOnboarding,
     },
     dispatch
   );
