@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from 'store';
@@ -9,6 +9,7 @@ import MuiTooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Fade';
 import { withRouter } from 'react-router';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 
@@ -26,9 +27,8 @@ const styles = theme => ({
   },
   arrow: {
     color: '#7572f7',
-  },
-  popper: {
-    marginTop: 60
+    fontSize: 12,
+    marginTop: 0,
   },
   button: {
     borderColor: theme.circleIn.palette.primaryText1,
@@ -46,7 +46,6 @@ type Props = {
   id: number,
   hidden: ?boolean,
   location: { pathname: string },
-  margin: boolean,
   placement: string,
   text: string,
   viewedTooltips: Array<number>
@@ -62,7 +61,6 @@ const Tooltip = ({
   hidden = false,
   location: { pathname },
   placement,
-  margin,
   text,
   viewedTooltips
 }: Props) => {
@@ -73,54 +71,69 @@ const Tooltip = ({
   const THANKS = 2197;
   const FLASHCARDS = 1194;
 
+  const [open, setOpen] = useState(false);
+
+  const timer = useRef();
+
+  const isOpen = () => {
+    let result = true;
+    clearTimeout(timer.current);
+
+    if (hidden) {
+      result = false;
+    } else if (
+      !onboardingViewed // Onboarding not completed
+      || viewedTooltips === null // Data still loading
+      || viewedTooltips.includes(id) // Tooltip already dismissed by user
+    ) {
+      result = false;
+    } else {
+      switch(id) {
+      case CHAT:
+        result = true;
+        break;
+      case FLASHCARDS:
+        result = viewedTooltips.includes(CHAT);
+        break;
+      case LEADERBOARD:
+        result = (
+          viewedTooltips.includes(CHAT) &&
+          pathname.indexOf('/feed') === 0
+        );
+        break;
+      case BOOKMARKS:
+        result = (
+          viewedTooltips.includes(CHAT) &&
+          viewedTooltips.includes(FLASHCARDS)
+        );
+        break;
+      case THANKS:
+        result = (
+          viewedTooltips.includes(CHAT) &&
+          viewedTooltips.includes(FLASHCARDS) &&
+          viewedTooltips.includes(BOOKMARKS)
+        );
+        break;
+      default:
+        result = true;
+      }
+    }
+
+    if (result) {
+      timer.current = setTimeout(() => setOpen(true), 4000);
+    } else {
+      setOpen(false);
+    }
+  }
+
   const onClick = (e) => {
     e.stopPropagation();
     confirmTooltip(id);
   }
 
-  const isOpen = () => {
-    if (hidden) return false;
-
-    if (
-      !onboardingViewed // Onboarding not completed
-      || viewedTooltips === null // Data still loading
-      || viewedTooltips.includes(id) // Tooltip already dismissed by user
-    ) {
-      return false;
-    }
-
-    if (id === CHAT) {
-      return true;
-    }
-
-    if (id === FLASHCARDS) {
-      return (viewedTooltips.includes(CHAT));
-    }
-
-    if (id === LEADERBOARD) {
-      return (
-        viewedTooltips.includes(CHAT) &&
-        pathname.indexOf('/feed') === 0
-      )
-    }
-
-    if (id === BOOKMARKS) {
-      return (
-        viewedTooltips.includes(CHAT) &&
-        viewedTooltips.includes(FLASHCARDS)
-      );
-    }
-
-    if (id === THANKS) {
-      return (
-        viewedTooltips.includes(CHAT) &&
-        viewedTooltips.includes(FLASHCARDS) &&
-        viewedTooltips.includes(BOOKMARKS)
-      );
-    }
-
-    return true;
-  }
+  useEffect(() => {
+    isOpen();
+  }, [viewedTooltips, hidden])
 
   return (
     <MuiTooltip
@@ -128,10 +141,11 @@ const Tooltip = ({
       classes={{
         arrow: classes.arrow,
         tooltip: classes.tooltip,
-        popper: margin ? classes.popper : null,
       }}
-      open={isOpen(id)}
+      open={open}
       placement={placement}
+      TransitionComponent={Zoom}
+      TransitionProps={{ timeout: 1500 }}
       title={
         <div className={classes.tooltipContent}>
           <div style={{ textAlign: 'right' }}>
