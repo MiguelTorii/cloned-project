@@ -70,6 +70,9 @@ const Tooltip = ({
   const THANKS = 2197;
   const FLASHCARDS = 1194;
 
+  const DELAY_TIME = 2000;
+  const TRANSITION_TIME = 750;
+
   const [open, setOpen] = useState(false);
 
   const timer = useRef();
@@ -102,15 +105,13 @@ const Tooltip = ({
         break;
       case BOOKMARKS:
         result = (
-          viewedTooltips.includes(CHAT) &&
-          viewedTooltips.includes(FLASHCARDS)
+          viewedTooltips.includes(CHAT)
         );
         break;
       case THANKS:
         result = (
           viewedTooltips.includes(CHAT) &&
-          viewedTooltips.includes(FLASHCARDS) &&
-          viewedTooltips.includes(BOOKMARKS)
+          viewedTooltips.includes(FLASHCARDS)
         );
         break;
       default:
@@ -119,7 +120,7 @@ const Tooltip = ({
     }
 
     if (result) {
-      timer.current = setTimeout(() => setOpen(true), 4000);
+      timer.current = setTimeout(() => setOpen(true), DELAY_TIME);
     } else {
       setOpen(false);
     }
@@ -144,7 +145,7 @@ const Tooltip = ({
       open={open}
       placement={placement}
       TransitionComponent={Zoom}
-      TransitionProps={{ timeout: 1500 }}
+      TransitionProps={{ timeout: TRANSITION_TIME }}
       title={
         <div className={classes.tooltipContent}>
           <div style={{ textAlign: 'right' }}>

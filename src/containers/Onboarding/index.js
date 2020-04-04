@@ -24,6 +24,7 @@ import addClasses from '../../assets/img/add-classes.png'
 import withRoot from '../../withRoot';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEvent, logEventLocally } from '../../api/analytics';
+import { updateProfile as updateUserProfile } from '../../api/user';
 
 const styles = theme => ({
   content: {
@@ -303,14 +304,14 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           className={cx(classes.button, classes.buttonLarge)}
           color='primary'
           onClick={async () => {
-            // await updateUserProfile({
-            //   userId,
-            //   fields: [
-            //     { field: 'study_preference', updated_value: studyPreference },
-            //     { field: 'study_method', updated_value: studyMethod === 'None' ? other : studyMethod },
-            //     { field: 'study_length', updated_value: studyLength },
-            //   ]
-            // });
+            await updateUserProfile({
+              userId,
+              fields: [
+                { field: 'study_preference', updated_value: studyPreference },
+                { field: 'study_method', updated_value: studyMethod === 'None' ? other : studyMethod },
+                { field: 'study_length', updated_value: studyLength },
+              ]
+            });
             logEventLocally({
               category: 'Onboarding',
               objectId: userId,
