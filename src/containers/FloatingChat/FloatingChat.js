@@ -1,23 +1,20 @@
 /* eslint-disable no-empty */
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import update from 'immutability-helper';
-import Chat from 'twilio-chat';
-import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import usePrevious from 'hooks/usePrevious'
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
-import type { ChatChannels } from '../../types/models';
-import { renewTwilioToken, leaveChat, blockChatUser } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
 import Tooltip from '../Tooltip';
@@ -25,7 +22,7 @@ import ChatChannel from './ChatChannel';
 import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
-import * as webNotificationsActions from '../../actions/web-notifications';
+import * as chatActions from '../../actions/chat';
 
 const styles = theme => ({
   root: {
@@ -45,7 +42,7 @@ const styles = theme => ({
   info: {
     backgroundColor: 'red'
   },
-  stackbar: {
+  snackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   }
@@ -55,190 +52,43 @@ type Props = {
   classes: Object,
   user: UserState,
   chat: ChatState,
-  enqueueSnackbar: Function,
-  updateTitle: Function,
+  handleInitChat: Function,
+  handleShutdownChat: Function,
+  handleBlockUser: Function,
+  handleRemoveChannel: Function,
+  handleUpdateUnreadCount: Function,
   push: Function
 };
 
-type State = {
-  openChannels: ChatChannels,
-  client: ?Object,
-  channels: Array<Object>,
-  unread: number,
-  online: boolean,
-  createChannel: ?string
-};
+const FloatingChat = ({
+  classes,
+  user,
+  chat,
+  push,
+  handleInitChat,
+  handleShutdownChat,
+  handleBlockUser,
+  handleRemoveChannel,
+  handleUpdateUnreadCount
+}: Props) => {
+  const [createChannel, setCreateChat] = useState(null)
+  const [openChannels, setOpenChannels] = useState([])
 
-class FloatingChat extends React.PureComponent<Props, State> {
-  state = {
-    openChannels: [],
-    client: null,
-    channels: [],
-    unread: 0,
-    online: true,
-    createChannel: null
-  };
-
-  componentDidMount = () => {
-    this.initiated = false;
-    this.mounted = true;
-    this.updateOpenChannels = debounce(this.updateOpenChannels, 250);
-    this.handleInitChat = debounce(this.handleInitChat, 1000);
-    window.addEventListener('resize', this.updateOpenChannels);
-    window.addEventListener('offline', () => {
-      console.log('**** offline ****');
-      if (this.mounted) {
-        this.setState({ online: false });
-        this.handleShutdownChat();
-      }
-    });
-    window.addEventListener('online', () => {
-      console.log('**** online ****');
-      const { online } = this.state;
-      if (!online && this.mounted) window.location.reload();
-    });
-    this.handleInitChat();
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    const {
-      user: {
-        data: { userId, profileImage }
-      },
-      chat: {
-        data: { uuid }
-      }
-    } = this.props;
-    const {
-      user: {
-        data: { userId: prevUserId }
-      },
-      chat: {
-        data: { uuid: prevUuid }
-      }
-    } = prevProps;
-    const { online } = this.state;
-    if (prevUserId !== '' && userId === '' && this.mounted) {
-      this.handleShutdownChat();
-    } else if (
-      ((prevUserId === '' && userId !== '' && online) ||
-        (userId !== '' && online && !prevState.online)) &&
-      this.mounted
-    ) {
-      this.handleInitChat();
+  const {
+    data: {
+      uuid,
+      client,
+      channels,
+      unread,
+      online,
     }
-    if (uuid !== prevUuid && uuid !== '' && this.mounted)
-      this.handleCreateChannelOpen('group');
+  } = chat
 
-    const { client } = this.state;
-    if (client && this.mounted && profileImage !== '') {
-      try {
-        if (client.user.attributes.profileImageUrl !== profileImage)
-          client.user.updateAttributes({
-            ...client.user.attributes,
-            profileImageUrl: profileImage
-          });
-      } catch (err) {}
-    }
-  };
+  const {
+    data: { userId, profileImage }
+  } = user
 
-  componentWillUnmount = () => {
-    this.mounted = false;
-    if (
-      this.updateOpenChannels.cancel &&
-      typeof this.updateOpenChannels.cancel === 'function'
-    )
-      this.updateOpenChannels.cancel();
-
-    if (
-      this.handleInitChat.cancel &&
-      typeof this.handleInitChat.cancel === 'function'
-    )
-      this.handleInitChat.cancel();
-    this.handleShutdownChat();
-  };
-
-  handleRoomClick = roomId => {
-    try {
-      const availableSlots = this.getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0 || !this.mounted) {
-        return;
-      }
-
-      const { channels } = this.state;
-
-      const channel = channels.find(item => item.sid === roomId);
-
-      if (!channel) return;
-
-      const newState = update(this.state, {
-        openChannels: {
-          $apply: b => {
-            if (availableSlots === 0) return [];
-            const index = b.findIndex(item => item.sid === roomId);
-            if (index > -1) {
-              let newB = update(b, { $splice: [[index, 1]] });
-              newB = update(newB, { $splice: [[availableSlots - 1]] });
-              return [channel, ...newB];
-            }
-            const newB = update(b, { $splice: [[availableSlots - 1]] });
-            return [channel, ...newB];
-          }
-        }
-      });
-      this.setState(newState);
-    } catch (err) {}
-  };
-
-  handleChannelClose = channelId => {
-    try {
-      if (!this.mounted) return;
-      const newState = update(this.state, {
-        openChannels: {
-          $apply: b => {
-            const index = b.findIndex(item => item.sid === channelId);
-            if (index > -1) {
-              return update(b, { $splice: [[index, 1]] });
-            }
-            return b;
-          }
-        }
-      });
-      this.setState(newState);
-    } catch (err) {}
-  };
-
-  handleUpdateUnreadCount = unread => {
-    try {
-      if (!this.mounted) return;
-      this.setState(prevState => ({
-        unread: prevState.unread + Number(unread)
-      }));
-    } catch (err) {}
-  };
-
-  updateOpenChannels = () => {
-    try {
-      if (!this.mounted) return;
-      const availableSlots = this.getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0) {
-        this.setState({ openChannels: [] });
-        return;
-      }
-
-      const newState = update(this.state, {
-        openChannels: {
-          $apply: b => {
-            const newB = update(b, { $splice: [[availableSlots]] });
-            return [...newB];
-          }
-        }
-      });
-      this.setState(newState);
-    } catch (err) {}
-  };
-
-  getAvailableSlots = width => {
+  const getAvailableSlots = width => {
     try {
       const chatSize = 320;
       return Math.trunc((width - chatSize) / chatSize);
@@ -247,171 +97,144 @@ class FloatingChat extends React.PureComponent<Props, State> {
     }
   };
 
-  handleMessageReceived = id => () => (
+  const handleRoomClick = channel => {
+    try {
+      const availableSlots = getAvailableSlots(window.innerWidth);
+      if (availableSlots === 0) {
+        return;
+      }
+
+      const newState = update(openChannels, {
+        $apply: b => {
+          if (availableSlots === 0) return [];
+          const index = b.findIndex(item => item.sid === channel.sid);
+          if (index > -1) {
+            let newB = update(b, { $splice: [[index, 1]] });
+            newB = update(newB, { $splice: [[availableSlots - 1]] });
+            return [channel, ...newB];
+          }
+          const newB = update(b, { $splice: [[availableSlots - 1]] });
+          return [channel, ...newB];
+        }
+      });
+      setOpenChannels(newState)
+    } catch (err) {}
+  };
+
+  const handleMessageReceived = channel => () => (
     <Button
       onClick={() => {
-        this.handleRoomClick(id);
+        handleRoomClick(channel);
       }}
     >
       Open
     </Button>
   );
 
-  handleInitChat = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-
-    if (userId === '' || this.initiated || !this.mounted) return;
-
-    this.initiated = true;
-
+  const updateOpenChannels = () => {
     try {
-      const accessToken = await renewTwilioToken({
-        userId
-      });
-
-      if (!accessToken || (accessToken && accessToken === '')) {
-        this.handleInitChat();
+      const availableSlots = getAvailableSlots(window.innerWidth);
+      if (availableSlots === 0) {
+        setOpenChannels([]);
         return;
       }
 
-      const client = await Chat.create(accessToken);
+      const newState = update(openChannels, {
+        $apply: b => {
+          const newB = update(b, { $splice: [[availableSlots]] });
+          return [...newB];
+        }
+      });
+      setOpenChannels(newState);
+    } catch (err) {}
+  };
 
-      let paginator = await client.getSubscribedChannels();
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
+  useEffect(() => {
+    const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
+    const handleInitChatDebounce = debounce(handleInitChat, 1000);
+    window.addEventListener('resize', updateOpenChannelsDebounce);
+    window.addEventListener('offline', () => {
+      console.log('**** offline ****');
+      handleShutdownChat();
+    });
+    window.addEventListener('online', () => {
+      console.log('**** online ****');
+      if (!online) window.location.reload();
+    });
+    handleInitChatDebounce({ snackbarStyle: classes.snackbar, handleMessageReceived });
+
+    return () => {
+      if (
+        updateOpenChannelsDebounce.cancel &&
+      typeof updateOpenChannelsDebounce.cancel === 'function'
+      )
+        updateOpenChannelsDebounce.cancel();
+
+      if (
+        handleInitChatDebounce.cancel &&
+      typeof handleInitChatDebounce.cancel === 'function'
+      )
+        handleInitChatDebounce.cancel();
+      handleShutdownChat();
+    };
+
+  }, [])
+
+  const prevChat = usePrevious(chat)
+  const prevUser = usePrevious(user)
+
+  const handleCreateChannelOpen = type => {
+    setCreateChat(type)
+  };
+
+  useEffect(() => {
+    if (prevUser && prevChat) {
+      const {
+        data: { userId: prevUserId }
+      } = prevUser
+
+      const {
+        data: { uuid: prevUuid }
+      } = prevChat
+
+      if (prevUserId !== '' && userId === '') {
+        handleShutdownChat();
+      } else if (
+        prevUserId === '' && userId !== '' && !online
+      ) {
+        handleInitChat({ snackbarStyle: classes.snackbar, handleMessageReceived });
       }
-      const channels = await client.getLocalChannels({
-        criteria: 'lastMessage',
-        order: 'descending'
-      });
-      // const channels = [];
-      this.setState({ client, channels });
+      if (uuid !== prevUuid && uuid !== '')
+        handleCreateChannelOpen('group');
 
-      client.on('channelJoined', async channel => {
-        if (!this.mounted) return;
-        this.setState(prevState => ({
-          channels: [...prevState.channels, channel]
-        }));
-      });
-
-      client.on('channelLeft', async channel => {
-        if (!this.mounted) return;
-        this.setState(prevState => ({
-          channels: prevState.channels.filter(c => c.sid !== channel.sid)
-        }));
-        this.handleChannelClose(channel.sid);
-      });
-
-      client.on('channelUpdated', async ({ channel, updateReasons }) => {
-        if (!this.mounted) return;
-        if (
-          updateReasons.length > 0 &&
-          updateReasons.indexOf('lastMessage') > -1
-        ) {
-          const first = channel.sid;
-          this.setState(prevState => ({
-            channels: prevState.channels.sort((x, y) => {
-              // eslint-disable-next-line no-nested-ternary
-              return x.sid === first ? -1 : y.sid === first ? 1 : 0;
-            })
-          }));
-        }
-      });
-
-      client.on('messageAdded', async message => {
-        if (!this.mounted) return;
-        const { state, channel } = message;
-        const { author, attributes, body } = state;
-        const { firstName, lastName } = attributes;
-        const { enqueueSnackbar, classes } = this.props;
-
-        this.setState(prevState => ({
-          channels: [channel, ...prevState.channels.filter(c => c.sid !== channel.sid)]
-        }));
-
-        if (Number(author) !== Number(userId)) {
-          const msg = `${firstName} ${lastName} sent you a message:`;
-          enqueueSnackbar(`${msg} ${body}`, {
-            variant: 'info',
-            anchorOrigin: {
-              vertical: 'top',
-              horizontal: 'right'
-            },
-            action: this.handleMessageReceived(channel.sid),
-            autoHideDuration: 3000,
-            ContentProps: {
-              classes: {
-                root: classes.stackbar
-              }
-            }
-          });
-          const { updateTitle } = this.props;
-          updateTitle({
-            title: `${firstName} ${lastName} sent you a message:`,
-            body
-          });
-        }
-      });
-
-      client.on('tokenAboutToExpire', async () => {
-        if (!this.mounted) return;
-        const newToken = await renewTwilioToken({
-          userId
-        });
-        if (!newToken || (newToken && newToken === '')) {
-          return;
-        }
-        await client.updateToken(newToken);
-      });
-    } catch (err) {}
-  };
-
-  handleShutdownChat = () => {
-    if (!this.mounted) return;
-    const { client } = this.state;
-    if (client) {
-      try {
-        client.shutdown();
-      } catch (err) {}
+      if (client && profileImage !== '') {
+        try {
+          if (client.user.attributes.profileImageUrl !== profileImage)
+            client.user.updateAttributes({
+              ...client.user.attributes,
+              profileImageUrl: profileImage
+            });
+        } catch (err) {}
+      }
     }
-    this.setState({ client: null, channels: [], openChannels: [], unread: 0 });
+  }, [user, chat, online])
+
+  const handleCreateChannelClose = () => {
+    setCreateChat(null)
   };
 
-  handleRemoveChannel = async ({ sid }) => {
-    try {
-      await leaveChat({ sid });
-    } catch (err) {}
-  };
+  const handleChannelClose = sid => {
+    setOpenChannels(openChannels.filter(oc => oc.sid !== sid))
+  }
 
-  handleBlock = async blockedUserId => {
-    try {
-      await blockChatUser({ blockedUserId });
-    } catch (err) {}
-  };
-
-  handleCreateChannelOpen = type => {
-    if (!this.mounted) return;
-    this.setState({ createChannel: type });
-  };
-
-  handleCreateChannelClose = () => {
-    if (!this.mounted) return;
-    this.setState({ createChannel: null });
-  };
-
-  handleChannelCreated = ({
+  const handleChannelCreated = ({
     channel,
     startVideo = false
   }: {
     channel: Object,
     startVideo: boolean
   }) => {
-    this.handleRoomClick(channel.sid);
+    handleRoomClick(channel.sid);
     if (startVideo) {
       logEvent({
         event: 'Video- Start Video',
@@ -420,87 +243,68 @@ class FloatingChat extends React.PureComponent<Props, State> {
       const win = window.open(`/video-call/${channel.sid}`, '_blank');
       if (win && win.focus) win.focus();
       if (!win || win.closed || typeof win.closed === 'undefined') {
-        const { push } = this.props;
         push(`/video-call/${channel.sid}`);
       }
     }
   };
 
-  mounted: boolean;
+  if (userId === '' || !client) return null;
 
-  initiated: boolean;
-
-  render() {
-    const { classes, user } = this.props;
-    const {
-      client,
-      openChannels,
-      channels,
-      unread,
-      createChannel
-    } = this.state;
-    const {
-      data: { userId }
-    } = user;
-
-    if (userId === '' || !client) return null;
-
-    return (
-      <Fragment>
-        <ErrorBoundary>
-          <div className={classes.root}>
-            {openChannels.map(item => (
-              <ChatChannel
-                key={item.sid}
-                user={user}
-                channel={item}
-                onClose={this.handleChannelClose}
-                onRemove={this.handleRemoveChannel}
-                onBlock={this.handleBlock}
-              />
-            ))}
-            <Tooltip
-              id={3292}
-              placement="top"
-              text="Setup a group chat with your class to connect on topics and discuss problems"
+  return (
+    <Fragment>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          {openChannels.map(item => (
+            <ChatChannel
+              key={item.sid}
+              user={user}
+              channel={item}
+              onClose={handleChannelClose}
+              onRemove={handleRemoveChannel}
+              onBlock={handleBlockUser}
+            />
+          ))}
+          <Tooltip
+            id={3292}
+            placement="top"
+            text="Setup a group chat with your class to connect on topics and discuss problems"
+          >
+            <MainChat
+              unread={unread}
+              onCreateChannel={handleCreateChannelOpen}
             >
-              <MainChat
-                unread={unread}
-                onCreateChannel={this.handleCreateChannelOpen}
-              >
-                {channels.length === 0 ? (
-                  <div className={classes.noMessages}>
-                    <Typography variant="subtitle1" align="center">
-                      Begin an individual or group chat with any of your classmates by tapping on the icons above
-                    </Typography>
-                  </div>
-                ) : (
-                  channels.map(item => (
-                    <ChatListItem
-                      key={item.sid}
-                      channel={item}
-                      userId={userId}
-                      onOpenChannel={this.handleRoomClick}
-                      onUpdateUnreadCount={this.handleUpdateUnreadCount}
-                    />
-                  ))
-                )}
-              </MainChat>
-            </Tooltip>
-          </div>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <CreateChatChannel
-            type={createChannel}
-            client={client}
-            channels={channels}
-            onClose={this.handleCreateChannelClose}
-            onChannelCreated={this.handleChannelCreated}
-          />
-        </ErrorBoundary>
-      </Fragment>
-    );
-  }
+              {channels.length === 0 ? (
+                <div className={classes.noMessages}>
+                  <Typography variant="subtitle1" align="center">
+                     Begin an individual or group chat with any of your classmates by tapping on the icons above
+                  </Typography>
+                </div>
+              ) : (
+                channels.map(item => (
+                  <ChatListItem
+                    key={item.sid}
+                    channel={item}
+                    userId={userId}
+                    onOpenChannel={handleRoomClick}
+                    onUpdateUnreadCount={handleUpdateUnreadCount}
+                  />
+                ))
+              )}
+            </MainChat>
+          </Tooltip>
+        </div>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <CreateChatChannel
+          type={createChannel}
+          client={client}
+          channels={channels}
+          onClose={handleCreateChannelClose}
+          onChannelCreated={handleChannelCreated}
+        />
+      </ErrorBoundary>
+    </Fragment>
+  );
 }
 
 const mapStateToProps = ({ user, chat }: StoreState): {} => ({
@@ -511,8 +315,12 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      updateTitle: webNotificationsActions.updateTitle,
-      push: routePush
+      push: routePush,
+      handleInitChat: chatActions.handleInitChat,
+      handleShutdownChat: chatActions.handleShutdownChat,
+      handleBlockUser: chatActions.handleBlockUser,
+      handleRemoveChannel: chatActions.handleRemoveChannel,
+      handleUpdateUnreadCount: chatActions.handleUpdateUnreadCount,
     },
     dispatch
   );
@@ -520,4 +328,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRoot(withSnackbar(withStyles(styles)(FloatingChat))));
+)(withRoot(withStyles(styles)(FloatingChat)));

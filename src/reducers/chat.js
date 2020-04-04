@@ -5,6 +5,7 @@
 import update from 'immutability-helper';
 import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+import type { ChatChannels } from '../types/models';
 
 export type ChatState = {
   isLoading: boolean,
@@ -14,7 +15,11 @@ export type ChatState = {
     entityFirstName: string,
     entityLastName: string,
     entityVideo: boolean,
-    entityUuid: string
+    entityUuid: string,
+    client: ?Object,
+    channels: Array<ChatChannels>,
+    unread: number,
+    online: boolean
   },
   error: boolean,
   errorMessage: {
@@ -30,7 +35,11 @@ const defaultState = {
     entityFirstName: '',
     entityLastName: '',
     entityVideo: false,
-    entityUuid: ''
+    entityUuid: '',
+    client: null,
+    channels: [],
+    unread: 0,
+    online: false,
   },
   isLoading: false,
   error: false,
@@ -64,6 +73,46 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         entityUuid: { $set: action.payload.entityUuid }
       }
     });
+  case chatActions.INIT_CLIENT_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      online: true,
+      client: action.payload.client
+    }}
+  case chatActions.INIT_CHANNELS_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      channels: action.payload.channels
+    }}
+  case chatActions.UPDATE_CHANNEL_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      channels: [action.payload.channel, ...state.data.channels.filter(c => c.sid !== action.payload.channel.sid)]
+    }}
+  case chatActions.ADD_CHANNEL_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      channels: [action.payload.channel, ...state.data.channels]
+    }}
+  case chatActions.REMOVE_CHANNEL_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      channels: state.data.channels.filter(c => c.sid !== action.payload.sid)
+    }}
+  case chatActions.SHUTDOWN_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      client: null,
+      channels: [],
+      online: false,
+      openChannels: [],
+      unread: 0
+    }}
+  case chatActions.UPDATE_UNREAD_COUNT_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      unread: state.data.unread + Number(action.payload.unread)
+    }}
   case rootActions.CLEAR_STATE:
     return defaultState;
   default:
