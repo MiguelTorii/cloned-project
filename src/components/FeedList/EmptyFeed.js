@@ -69,6 +69,7 @@ const useStyles = makeStyles(theme => ({
     objectFir: 'scale-down'
   },
   buttonLabel: {
+    textTransform: 'initial',
     fontWeight: 'bold'
   },
   buttonSuccess: {
@@ -89,8 +90,8 @@ type Props = {
   user: UserState,
   chat: ChatState,
   router: Object,
-  postsCount: number,
   handleRoomClick: Function,
+  feed: Object,
   checkUserSession: Function,
   fetchClasses: Function
 };
@@ -99,7 +100,7 @@ const EmptyFeed = ({
   user,
   chat,
   router,
-  postsCount,
+  feed,
   checkUserSession,
   handleRoomClick,
   fetchClasses
@@ -114,6 +115,8 @@ const EmptyFeed = ({
       userId,
       profileImage
     }} = user
+
+  const { data: { items }} = feed
   const { data: { client, channels, online }} = chat
   const { location: { query: {
     sectionId,
@@ -171,8 +174,9 @@ const EmptyFeed = ({
   }, [channels])
 
   useEffect(() => {
-    if (postsCount > 0) setHide(true)
-  }, [postsCount])
+    if (items.length > 0) setHide(true)
+    else setHide(false)
+  }, [items])
 
   const handleChannelCreated = ({ channel }) => handleRoomClick(channel)
   const handleCreateChannelClose = () => setChannelType(null)
@@ -322,9 +326,10 @@ const EmptyFeed = ({
   )
 }
 
-const mapStateToProps = ({ user, chat, router }: StoreState): {} => ({
+const mapStateToProps = ({ feed, user, chat, router }: StoreState): {} => ({
   user,
   chat,
+  feed,
   router
 });
 
