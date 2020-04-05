@@ -13,9 +13,6 @@ import Classmate from 'components/ClassmatesDialog/Classmate'
 
 const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
   const classes = makeStyles(theme => ({
-    root: {
-      width: '75vw'
-    },
     closeButton: {
       position: 'absolute',
       right: theme.spacing(1),
@@ -42,7 +39,7 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
 
     if (state) init()
   }, [state])
-  
+
   return (
     <div>
       <Dialog

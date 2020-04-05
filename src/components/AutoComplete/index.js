@@ -110,7 +110,10 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control({ selectProps, innerProps, innerRef, children }) {
-  const {isDisabled, autoFocus} = selectProps
+  const {isDisabled, autoFocus, textFieldProps: {
+    relative,
+    ...otherTextFieldProps
+  }} = selectProps
 
   return (
     <TextField
@@ -128,7 +131,8 @@ function Control({ selectProps, innerProps, innerRef, children }) {
           ...innerProps
         }
       }}
-      {...selectProps.textFieldProps}
+      relative={String(relative)}
+      {...otherTextFieldProps}
     />
   );
 }
@@ -186,7 +190,7 @@ function Placeholder({ selectProps, innerProps, children }) {
 
   return (
     <Typography
-      color={isDisabled ? "disabled" : "textPrimary"}
+      color={isDisabled ? "textSecondary" : "textPrimary"}
       className={selectProps.classes.placeholder}
       {...innerProps}
     >

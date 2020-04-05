@@ -160,3 +160,32 @@ export const fetchFeedv2 = async ({
     return [];
   }
 };
+
+export const postEvent = async ({
+  sectionId,
+  category,
+  type
+}: {
+  sectionId: number,
+  category: string,
+  type: string
+}): Promise<Array<Object>> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(`${API_ROUTES.EVENT}`, {
+      section_id: sectionId,
+      category,
+      type
+    }
+    ,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const { data: { success }} = result
+    return success
+  } catch (err) {
+    return null;
+  }
+};

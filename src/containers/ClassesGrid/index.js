@@ -52,7 +52,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [emptyBody, setEmptyBody] = useState('')
 
   const handleLeaveClass = async ({sectionId, classId, userId}) => {
-    await leaveUserClass({ 
+    await leaveUserClass({
       sectionId,
       classId,
       userId
@@ -88,7 +88,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
               classId: cl.classId,
               courseDisplayName: cl.courseDisplayName,
               bgColor: cl.bgColor,
-              handleLeaveClass: () => handleLeaveClass({ 
+              handleLeaveClass: () => handleLeaveClass({
                 sectionId: s.sectionId,
                 classId: cl.classId,
                 userId: String(user.data.userId)
@@ -111,15 +111,15 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const hasClasses = classList && classList.length > 0
 
   return (
-    <Grid 
+    <Grid
       justify={hasClasses ? "flex-start" : "center"}
-      className={classes.container} 
-      container 
+      className={classes.container}
+      container
       spacing={2}
     >
-      <AddRemoveClasses 
-        open={openAddClasses} 
-        onClose={() => setOpenAddClasses(false)} 
+      <AddRemoveClasses
+        open={openAddClasses}
+        onClose={() => setOpenAddClasses(false)}
       />
       {classList && classList.map(cl => (
         <Grid key={cl.sectionId} item xs={12} md={4} className={classes.item}>
@@ -130,7 +130,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             bgColor={cl.bgColor}
             canLeave={cl.canLeave}
             handleLeaveClass={cl.handleLeaveClass}
-            navigate={() => navigate({...cl})} 
+            navigate={() => navigate({...cl})}
           />
         </Grid>
       ))}
@@ -173,6 +173,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps 
+  mapDispatchToProps
 )(withRoot(withStyles(styles)(withWidth()(Classes))));
 

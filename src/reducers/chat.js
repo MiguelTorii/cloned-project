@@ -18,6 +18,7 @@ export type ChatState = {
     entityUuid: string,
     client: ?Object,
     channels: Array<ChatChannels>,
+    openChannels: Array<ChatChannels>,
     unread: number,
     online: boolean
   },
@@ -38,6 +39,7 @@ const defaultState = {
     entityUuid: '',
     client: null,
     channels: [],
+    openChannels: [],
     unread: 0,
     online: false,
   },
@@ -112,6 +114,11 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     return { ...state, data: {
       ...state.data,
       unread: state.data.unread + Number(action.payload.unread)
+    }}
+  case chatActions.SET_OPEN_CHANNELS:
+    return { ...state, data: {
+      ...state.data,
+      openChannels: action.payload.openChannels
     }}
   case rootActions.CLEAR_STATE:
     return defaultState;

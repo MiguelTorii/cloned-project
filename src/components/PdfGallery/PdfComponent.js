@@ -22,7 +22,7 @@ const PdfComponent = ({ url, radius, height, width }) => {
 
   useEffect(() => {
     const fetchPdf = async () => {
-      try { 
+      try {
         const loadingTask = pdfjs.getDocument(url);
 
         const pdf = await loadingTask.promise;

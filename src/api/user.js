@@ -156,7 +156,7 @@ export const getUserClasses = async ({
     const {
       data: { classes = [], permissions = {}, empty_state: empty = {}  }
     } = result;
-    
+
     const userClasses = classes.map(userClass => ({
       className: String((userClass.course_display_name: string) || ''),
       classId: Number((userClass.class_id: number) || 0),
@@ -180,7 +180,8 @@ export const getUserClasses = async ({
       subjectId: Number((userClass.subject_id: number) || 0),
       courseDisplayName: String((userClass.course_display_name: string) || ''),
       class: String((userClass.class: string) || ''),
-      bgColor: String((userClass.bg_color) || '')
+      bgColor: String((userClass.bg_color) || ''),
+      didInviteClassmates: Boolean((userClass.did_invite_classmates) || false)
     }));
 
     const emptyState = {

@@ -3,7 +3,6 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
-import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
@@ -57,6 +56,9 @@ type Props = {
   handleBlockUser: Function,
   handleRemoveChannel: Function,
   handleUpdateUnreadCount: Function,
+  handleRoomClick: Function,
+  updateOpenChannels: Function,
+  handleChannelClose: Function,
   push: Function
 };
 
@@ -69,10 +71,12 @@ const FloatingChat = ({
   handleShutdownChat,
   handleBlockUser,
   handleRemoveChannel,
+  handleRoomClick,
+  updateOpenChannels,
+  handleChannelClose,
   handleUpdateUnreadCount
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null)
-  const [openChannels, setOpenChannels] = useState([])
 
   const {
     data: {
@@ -81,45 +85,13 @@ const FloatingChat = ({
       channels,
       unread,
       online,
+      openChannels
     }
   } = chat
 
   const {
     data: { userId, profileImage }
   } = user
-
-  const getAvailableSlots = width => {
-    try {
-      const chatSize = 320;
-      return Math.trunc((width - chatSize) / chatSize);
-    } catch (err) {
-      return 0;
-    }
-  };
-
-  const handleRoomClick = channel => {
-    try {
-      const availableSlots = getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0) {
-        return;
-      }
-
-      const newState = update(openChannels, {
-        $apply: b => {
-          if (availableSlots === 0) return [];
-          const index = b.findIndex(item => item.sid === channel.sid);
-          if (index > -1) {
-            let newB = update(b, { $splice: [[index, 1]] });
-            newB = update(newB, { $splice: [[availableSlots - 1]] });
-            return [channel, ...newB];
-          }
-          const newB = update(b, { $splice: [[availableSlots - 1]] });
-          return [channel, ...newB];
-        }
-      });
-      setOpenChannels(newState)
-    } catch (err) {}
-  };
 
   const handleMessageReceived = channel => () => (
     <Button
@@ -130,24 +102,6 @@ const FloatingChat = ({
       Open
     </Button>
   );
-
-  const updateOpenChannels = () => {
-    try {
-      const availableSlots = getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0) {
-        setOpenChannels([]);
-        return;
-      }
-
-      const newState = update(openChannels, {
-        $apply: b => {
-          const newB = update(b, { $splice: [[availableSlots]] });
-          return [...newB];
-        }
-      });
-      setOpenChannels(newState);
-    } catch (err) {}
-  };
 
   useEffect(() => {
     const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
@@ -219,13 +173,6 @@ const FloatingChat = ({
     }
   }, [user, chat, online])
 
-  const handleCreateChannelClose = () => {
-    setCreateChat(null)
-  };
-
-  const handleChannelClose = sid => {
-    setOpenChannels(openChannels.filter(oc => oc.sid !== sid))
-  }
 
   const handleChannelCreated = ({
     channel,
@@ -246,6 +193,10 @@ const FloatingChat = ({
         push(`/video-call/${channel.sid}`);
       }
     }
+  };
+
+  const handleCreateChannelClose = () => {
+    setCreateChat(null)
   };
 
   if (userId === '' || !client) return null;
@@ -321,6 +272,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleUpdateUnreadCount: chatActions.handleUpdateUnreadCount,
+      handleRoomClick: chatActions.handleRoomClick,
+      updateOpenChannels: chatActions.updateOpenChannels,
+      handleChannelClose: chatActions.handleChannelClose,
     },
     dispatch
   );

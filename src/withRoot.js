@@ -34,7 +34,7 @@ const theme = createMuiTheme({
   circleIn: {
     palette: {
       borders: circleInTheme.borders,
-      brand: circleInTheme.brand, 
+      brand: circleInTheme.brand,
       buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,
       primaryBackground: circleInTheme.primaryBackground,

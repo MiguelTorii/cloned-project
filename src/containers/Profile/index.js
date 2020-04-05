@@ -11,7 +11,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
-import queryString from 'query-string'
 import type {
   UserProfile,
   About,

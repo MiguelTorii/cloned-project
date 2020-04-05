@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import EmptyFeed from 'components/FeedList/EmptyFeed'
 import FeedItem from './feed-item';
 
 const styles = theme => ({
@@ -64,12 +65,6 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  noMessages: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: theme.spacing(2)
   },
   feedEnd: {
     backgroundColor: theme.circleIn.palette.appBar,
@@ -178,15 +173,7 @@ class FeedList extends React.PureComponent<Props, State> {
               getScrollParent={() => this.scrollParentRef}
             >
               {items.length === 0 ? (
-                <div className={classes.noMessages}>
-                  <Typography variant="subtitle1" align="center">
-                    {
-                      pathname === '/bookmarks'
-                        ? `It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here`
-                        : 'Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.'
-                    }
-                  </Typography>
-                </div>
+                <EmptyFeed />
               ) : (
                 items.map(item => (
                   <FeedItem

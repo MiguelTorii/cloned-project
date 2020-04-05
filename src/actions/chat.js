@@ -4,9 +4,9 @@
 import uuidv4 from 'uuid/v4';
 import { renewTwilioToken, leaveChat, blockChatUser } from 'api/chat';
 import Chat from 'twilio-chat';
-import { makeStyles } from '@material-ui/core/styles';
 import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
+import update from 'immutability-helper';
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -77,6 +77,11 @@ const shutdown = (): Action => ({
 const updateUnreadCount = ({ unread }: { unread: number }) => ({
   type: chatActions.UPDATE_UNREAD_COUNT_CHAT,
   payload: { unread }
+})
+
+const setOpenChannels = ({ openChannels }: { openChannels: array }) => ({
+  type: chatActions.SET_OPEN_CHANNELS,
+  payload: { openChannels }
 })
 
 
@@ -235,3 +240,60 @@ export const handleBlockUser = ({ blockedUserId }) => async () => {
 export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch: Dispatch) => {
   dispatch(removeChannel({ sid }))
 }
+
+
+const getAvailableSlots = width => {
+  try {
+    const chatSize = 320;
+    return Math.trunc((width - chatSize) / chatSize);
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const handleRoomClick = channel => async (dispatch: Dispatch, getState: Function) => {
+  const { chat: { data: { openChannels }}} = getState()
+  try {
+    const availableSlots = getAvailableSlots(window.innerWidth);
+
+    const newState = update(openChannels, {
+      $apply: b => {
+        if (availableSlots === 0) return [];
+        const index = b.findIndex(item => item.sid === channel.sid);
+        if (index > -1) {
+          let newB = update(b, { $splice: [[index, 1]] });
+          newB = update(newB, { $splice: [[availableSlots - 1]] });
+          return [channel, ...newB];
+        }
+        const newB = update(b, { $splice: [[availableSlots - 1]] });
+        return [channel, ...newB];
+      }
+    });
+    dispatch(setOpenChannels({ openChannels: newState }))
+  } catch (err) {}
+};
+
+export const updateOpenChannels = () => async (dispatch: Dispatch, getState: Function) => {
+  const { chat: { data: { openChannels }}} = getState()
+  try {
+    const availableSlots = getAvailableSlots(window.innerWidth);
+    if (availableSlots === 0) {
+      return;
+    }
+
+    if (availableSlots === 0) dispatch(setOpenChannels({ openChannels: [] }))
+    const newState = update(openChannels, {
+      $apply: b => {
+        const newB = update(b, { $splice: [[availableSlots]] });
+        return [...newB];
+      }
+    });
+    dispatch(setOpenChannels({ openChannels: newState }))
+  } catch (err) {}
+};
+
+export const handleChannelClose = (sid: string) => async (dispatch: Dispatch, getState: Function) => {
+  const { chat: { data: { openChannels }}} = getState()
+  dispatch(setOpenChannels({ openChannels: openChannels.filter(oc => oc.sid !== sid) }))
+}
+
