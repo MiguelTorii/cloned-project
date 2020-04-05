@@ -547,6 +547,7 @@ class MainLayout extends React.Component<Props, State> {
         >
           <Tooltip
             id={1194}
+            delay={600}
             placement="top"
             text="Create a set of flashcards now, and continue to edit them weekly as part of your studying for each class"
           >

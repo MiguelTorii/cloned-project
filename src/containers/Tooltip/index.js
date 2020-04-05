@@ -16,7 +16,6 @@ const styles = theme => ({
   tooltip: {
     background: '#7572f7',
     borderRadius: 8,
-    height: 180,
     padding: '8px 12px',
     pointerEvents: 'initial',
     width: 255,
@@ -31,17 +30,22 @@ const styles = theme => ({
   },
   button: {
     borderColor: theme.circleIn.palette.primaryText1,
-    bottom: 12,
     color: theme.circleIn.palette.primaryText1,
-    marginTop: 10,
-    position: 'absolute',
+    marginTop: 16,
+    marginBottom: 2,
   },
+  close: {
+    marginRight: -4,
+    marginTop: -2,
+    textAlign: 'right'
+  }
 });
 
 type Props = {
   children: Object | Array<Object>,
   classes: Object,
   confirmTooltip: Function,
+  delay: ?number,
   id: number,
   hidden: ?boolean,
   location: { pathname: string },
@@ -55,6 +59,7 @@ const Tooltip = ({
   children,
   classes,
   confirmTooltip,
+  delay = 2000,
   id,
   hidden = false,
   location: { pathname },
@@ -70,7 +75,6 @@ const Tooltip = ({
   const THANKS = 2197;
   const FLASHCARDS = 1194;
 
-  const DELAY_TIME = 2000;
   const TRANSITION_TIME = 750;
 
   const [open, setOpen] = useState(false);
@@ -120,7 +124,7 @@ const Tooltip = ({
     }
 
     if (result) {
-      timer.current = setTimeout(() => setOpen(true), DELAY_TIME);
+      timer.current = setTimeout(() => setOpen(true), delay);
     } else {
       setOpen(false);
     }
@@ -148,7 +152,7 @@ const Tooltip = ({
       TransitionProps={{ timeout: TRANSITION_TIME }}
       title={
         <div className={classes.tooltipContent}>
-          <div style={{ textAlign: 'right' }}>
+          <div className={classes.close}>
             <CloseIcon
               fontSize="small"
               onClick={(e) => onClick(e)}
