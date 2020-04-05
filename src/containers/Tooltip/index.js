@@ -111,7 +111,7 @@ const Tooltip = ({
       case THANKS:
         result = (
           viewedTooltips.includes(CHAT) &&
-          viewedTooltips.includes(FLASHCARDS)
+          viewedTooltips.includes(BOOKMARKS)
         );
         break;
       default:
