@@ -145,7 +145,7 @@ const CreateChatChannelDialog = ({
         }}
         className={classes.title}
       >
-        <Typography variant="h6" className={classes.grow}>
+        <Typography variant="h6" className={classes.grow} id="circlein-chat-title">
           Setup a Class Group Chat or Send a Direct Message
         </Typography>
       </DialogTitle>

@@ -67,6 +67,7 @@ const styles = theme => ({
   },
   action: {
     color: theme.circleIn.palette.action,
+    textDecoration: 'none'
   }
 })
 
@@ -129,7 +130,11 @@ const UseCases = ({
           <Item
             imageUrl={videos}
             onClick={() => {
-              document.getElementById('circlein-newchat').click()
+              document.getElementById('circlein-newchat').click();
+              // TODO: replace this workaround
+              setTimeout(() => {
+                document.getElementById('circlein-chat-title').innerHTML = 'Setup a Video Study Session';
+              }, 100)
             }}
             title="Start a Chat or Group Chat"
           />
@@ -141,7 +146,11 @@ const UseCases = ({
           <Item
             imageUrl={videos}
             onClick={() => {
-              document.getElementById('circlein-newchat').click()
+              document.getElementById('circlein-newchat').click();
+              // TODO: replace this workaround
+              setTimeout(() => {
+                document.getElementById('circlein-chat-title').innerHTML = 'Setup a Video Study Session';
+              }, 100)
             }}
             title="Create a Video Study Session"
           />
@@ -174,7 +183,9 @@ const UseCases = ({
       </div>
       <div className={classes.text2}>
         {`Send us an email with your best study tips at `}
-        <span className={classes.action}>hello@circleinapp.com</span>!
+        <a className={classes.action} href="mailto:hello@circleinapp.com">
+          hello@circleinapp.com
+        </a>!
       </div>
     </div>
   )
