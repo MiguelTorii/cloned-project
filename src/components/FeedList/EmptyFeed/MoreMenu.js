@@ -24,7 +24,7 @@ const MoreMenu = ({ anchor, handleHide, handleMenuClose }: Props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleHide}>
-        <ListItemText inset primary="Hide from feed" />
+        <ListItemText inset primary="Remove from feed" />
       </MenuItem>
     </Menu>
   );

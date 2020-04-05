@@ -186,7 +186,7 @@ const EmptyFeed = ({
   const header = (
     <Grid container justify='center' classes={{ root: classes.container }} item>
       <Typography variant='h4'>Get Started with CircleIn</Typography>
-      {!hide && profileStep && inviteStep && chatStep &&
+      {!hide &&
             <IconButton onClick={handleMenuOpen} className={classes.moreIcon}>
               <MoreVertIcon />
             </IconButton>
