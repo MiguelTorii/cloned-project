@@ -1,7 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 // @flow
-import React from 'react'
+import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+import { push as routePush } from 'connected-react-router';
+import { bindActionCreators } from 'redux';
 import withRoot from '../../withRoot';
 import LoadImg from '../LoadImg';
 
@@ -20,7 +24,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: 24,
-    width: 450
+    width: 400
   },
   row: {
     display: 'flex',
@@ -28,25 +32,26 @@ const styles = theme => ({
   },
   title: {
     color: theme.circleIn.palette.primaryText1,
-    fontSize: 24,
+    fontSize: 22,
     letterSpacing: 0.5,
     fontWeight: 'bold',
     textAlign: 'center'
   },
   text: {
     color: theme.circleIn.palette.primaryText1,
-    fontSize: 18,
+    fontSize: 16,
     margin: '8px 0',
     textAlign: 'center'
   },
   item: {
     alignItems: 'center',
+    cursor: 'pointer',
     display: 'flex',
     marginTop: 4
   },
   itemTitle: {
     color: theme.circleIn.palette.action,
-    fontSize: 18,
+    fontSize: 16,
     letterSpacing: 0.5,
     marginLeft: 24,
   },
@@ -56,7 +61,7 @@ const styles = theme => ({
   },
   text2: {
     color: theme.circleIn.palette.primaryText1,
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 10,
     textAlign: 'center'
   },
@@ -67,11 +72,28 @@ const styles = theme => ({
 
 const UseCases = ({
   classes,
+  onRedirect,
+  push,
+  userId
 }: {
-  classes: Object
+  classes: Object,
+  onRedirect: Function,
+  push: Function,
+  userId: number
 }) => {
-  const Item = ({ imageUrl, title }: { imageUrl: string, title: string }) => (
-    <div className={classes.item}>
+  const Item = (
+    { imageUrl, onClick, title, to }: { imageUrl: string, onClick: ?Function, title: string, to: ?string }) => (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div className={classes.item} onClick={() => {
+      onRedirect();
+
+      if (to) {
+        push(to);
+      } else if (onClick) {
+        onClick();
+      }
+    }}>
       <div>
         <LoadImg className={classes.icon} key={imageUrl} url={imageUrl} />
       </div>
@@ -103,16 +125,34 @@ const UseCases = ({
           title="Need Help"
           text="It feels terrible to struggle and not have immediate help. Post a question, your classmates get notified, and when you vote a student with “Best Answer”, they get 25,000 points for helping you out."
         >
-          <Item imageUrl={question} title="Post a Question" />
-          <Item imageUrl={videos} title="Start a Chat or Group Chat" />
+          <Item imageUrl={question} title="Post a Question" to="/create/question" />
+          <Item
+            imageUrl={videos}
+            onClick={() => {
+              document.getElementById('circlein-newchat').click()
+            }}
+            title="Start a Chat or Group Chat"
+          />
         </UseCase>
         <UseCase
           title="Group Studying or Project"
           text="CircleIn makes group projects and studying so much easier. Don’t worry if someone is down the hall or across the country"
         >
-          <Item imageUrl={videos} title="Create a Video Study Session" />
-          <Item imageUrl={groupchat} title="Start a Chat or Group Chat" />
-          <Item imageUrl={links} title="Share a link to a file or video" />
+          <Item
+            imageUrl={videos}
+            onClick={() => {
+              document.getElementById('circlein-newchat').click()
+            }}
+            title="Create a Video Study Session"
+          />
+          <Item
+            imageUrl={groupchat}
+            onClick={() => {
+              document.getElementById('circlein-newchat').click()
+            }}
+            title="Start a Chat or Group Chat"
+          />
+          <Item imageUrl={links} title="Share a link to a file or video" to="/create/sharelink" />
         </UseCase>
       </div>
       <div className={classes.row}>
@@ -120,16 +160,16 @@ const UseCases = ({
           title="Get Ready for a Test"
           text="CircleIn is great for preparing for your next midterm or final exam"
         >
-          <Item imageUrl={flashcards} title="Create Flashcards" />
-          <Item imageUrl={notes} title="Upload your Notes" />
-          <Item imageUrl={reminders} title="Create a Reminder" />
+          <Item imageUrl={flashcards} title="Create Flashcards" to="/create/flashcards" />
+          <Item imageUrl={notes} title="Upload your Notes" to="/create/notes" />
+          <Item imageUrl={reminders} title="Create a Reminder" to="/reminders" />
         </UseCase>
         <UseCase
           title="Get Organized"
           text="To make life easier, we all need reminders. Setup reminders to study, to review flashcards and to review notes your classmates posted"
         >
-          <Item imageUrl={reminders} title="Set a Reminder" />
-          <Item imageUrl={bookmarks} title="View my Bookmarks" />
+          <Item imageUrl={reminders} title="Set a Reminder" to="/reminders" />
+          <Item imageUrl={bookmarks} title="View my Bookmarks" to={`/profile/${userId}/2`} />
         </UseCase>
       </div>
       <div className={classes.text2}>
@@ -140,4 +180,18 @@ const UseCases = ({
   )
 }
 
-export default withRoot(withStyles(styles)(withWidth()(UseCases)))
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  userId: user.data.userId
+});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      push: routePush
+    },
+    dispatch
+  );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRoot(withStyles(styles)(withWidth()(UseCases))))

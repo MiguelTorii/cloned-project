@@ -117,7 +117,7 @@ class MainChat extends React.PureComponent<Props, State> {
             className={classes.iconButton}
             onClick={this.handleCreateChannel('single')}
           >
-            <img src={NewChatIcon} alt='newChat' className={classes.img} />
+            <img id="circlein-newchat" src={NewChatIcon} alt='newChat' className={classes.img} />
           </ButtonBase>
           {open && (
             <ButtonBase

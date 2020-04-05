@@ -10,11 +10,11 @@ import withRoot from '../../withRoot';
 const styles = theme => ({
   dialogPaper: {
     borderRadius: 20,
-    width: 1000,
+    width: 920,
   },
   title: {
     color: theme.circleIn.palette.primaryText1,
-    fontSize: 34,
+    fontSize: 32,
     fontStretch: 'normal',
     fontWeight: 'bold',
     letterSpacing: 'normal',

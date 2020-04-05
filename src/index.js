@@ -163,7 +163,7 @@ ReactDOM.render(
             />
             <Route
               exact
-              path="/profile/:userId"
+              path="/profile/:userId/:tab?"
               component={withTracker(Profile)}
             />
             <Route exact path="/reminders" component={withTracker(Reminders)} />

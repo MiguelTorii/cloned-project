@@ -72,7 +72,8 @@ type Props = {
   checkUserSession: Function,
   openChannelWithEntity: Function,
   location: {
-    search: string
+    search: string,
+    pathname: string
   },
   updateBookmark: Function
 };
@@ -137,7 +138,12 @@ class Profile extends React.PureComponent<Props, State> {
     this.handleGetProfile();
     this.handleFetchFeed();
     this.handleFetchBookmarks();
-    const { edit } = this.props;
+    const { edit, match: { params } } = this.props;
+
+    if (params.tab) {
+      this.setState({ tab: Number(params.tab) });
+    }
+
     this.setState({ edit });
   };
 
