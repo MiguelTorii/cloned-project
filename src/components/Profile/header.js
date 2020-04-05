@@ -13,9 +13,7 @@ import Tab from '@material-ui/core/Tab';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import TutorBadge from 'components/TutorBadge'
-import { gradeName } from '../../constants/common';
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
-import gradCapIcon from '../../assets/svg/ic_grad_cap.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
 // $FlowIgnore
 import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
@@ -170,7 +168,7 @@ type Props = {
   onStartChat: Function,
   onStartVideo: Function,
   onUpdateProfileImage: Function,
-  onChange: Function,
+  onChange: Function
 };
 
 type State = {
@@ -214,8 +212,6 @@ class Header extends React.PureComponent<Props, State> {
       thanks,
       school,
       state,
-      segment = '',
-      grade,
       joined,
       chatLoading,
       uploading,
@@ -229,7 +225,7 @@ class Header extends React.PureComponent<Props, State> {
       onChange,
       // onStudyCircle
     } = this.props;
-    
+
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
@@ -296,7 +292,7 @@ class Header extends React.PureComponent<Props, State> {
               <Typography variant="h2" gutterBottom>
                 {name} {roleId === 2 && role && <TutorBadge text={role} />}
               </Typography>
-              <Grid 
+              <Grid
                 justify='space-between'
                 container
               >

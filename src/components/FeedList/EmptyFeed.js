@@ -26,15 +26,16 @@ import axios from 'axios'
 import CheckIcon from '@material-ui/icons/Check'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import CreateChatChannel from 'containers/CreateChatChannel'
-import queryString from 'query-string'
 import * as signInActions from 'actions/sign-in'
 import * as userActions from 'actions/user'
-import InviteDialog from 'components/FeedList/InviteDialog'
+import InviteDialog from 'components/FeedList/EmptyFeed/InviteDialog'
+import MoreMenu from 'components/FeedList/EmptyFeed/MoreMenu'
 import { postEvent } from 'api/feed'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import IconButton from '@material-ui/core/IconButton'
 
 const useStyles = makeStyles(theme => ({
   container: {
-    margin: theme.spacing(0,0,2,0),
     width: '100%'
   },
   imgFirst: {
@@ -58,12 +59,19 @@ const useStyles = makeStyles(theme => ({
   },
   hidden: {
     display: 'none'
-  }
+  },
+  moreIcon: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
 }))
 
 type Props = {
   user: UserState,
   chat: ChatState,
+  router: Object,
   handleRoomClick: Function,
   checkUserSession: Function,
   fetchClasses: Function
@@ -72,6 +80,7 @@ type Props = {
 const EmptyFeed = ({
   user,
   chat,
+  router,
   checkUserSession,
   handleRoomClick,
   fetchClasses
@@ -87,12 +96,12 @@ const EmptyFeed = ({
       profileImage
     }} = user
   const { data: { client, channels, online }} = chat
-
-  const {
+  const { location: { query: {
     sectionId,
     classId,
-  } = queryString.parse(window.location.search)
+  }}} = router
 
+  const [hide, setHide] = useState(true)
   const [profileStep, setProfileStep] = useState(profileImage !== '')
   const [channelType, setChannelType] = useState(null)
   const [inviteStep, setInviteStep] = useState(false)
@@ -131,8 +140,11 @@ const EmptyFeed = ({
 
   useEffect(() => {
     const currentClass = classList.find(cl => cl.classId === Number(classId))
-    if (currentClass && currentClass.didInviteClassmates) setInviteStep(true)
-  }, [classList])
+    if (currentClass) {
+      setInviteStep(currentClass.didInviteClassmates)
+      setHide(currentClass.didHideFeedEmptyState)
+    }
+  }, [classList, classId])
 
   useEffect(() => {
     if (channels.length > 0) setChatStep(true)
@@ -155,6 +167,35 @@ const EmptyFeed = ({
     if (success) fetchClasses()
   }
 
+  const [moreAnchor, setMoreAnchor] = useState(null)
+
+  const handleMenuOpen = e => setMoreAnchor(e.currentTarget)
+  const handleMenuClose = () => setMoreAnchor(null)
+
+  const handleHide = async () => {
+    const success = await postEvent({
+      sectionId: Number(sectionId),
+      category: 'FeedEmptyState',
+      type: 'Removed'
+    })
+    if (success) fetchClasses()
+    handleMenuClose()
+    setHide(true)
+  }
+
+  const header = (
+    <Grid container justify='center' classes={{ root: classes.container }} item>
+      <Typography variant='h4'>Get Started with CircleIn</Typography>
+      {!hide && profileStep && inviteStep && chatStep &&
+            <IconButton onClick={handleMenuOpen} className={classes.moreIcon}>
+              <MoreVertIcon />
+            </IconButton>
+      }
+    </Grid>
+  )
+
+  if (hide) return header
+
   return (
     <Grid
       container
@@ -164,6 +205,11 @@ const EmptyFeed = ({
         root: classes.container
       }}
     >
+      <MoreMenu
+        anchor={moreAnchor}
+        handleMenuClose={handleMenuClose}
+        handleHide={handleHide}
+      />
       <InviteDialog
         handleClose={handleInviteClose}
         open={inviteDialog}
@@ -175,9 +221,7 @@ const EmptyFeed = ({
         onClose={handleCreateChannelClose}
         onChannelCreated={handleChannelCreated}
       />
-      <Grid item>
-        <Typography variant='h4'>Get Started with CircleIn</Typography>
-      </Grid>
+      {header}
       <input accept='image/*' type='file' onChange={handleAddProfilePicture} ref={fileRef} className={classes.hidden} />
       <Grid container justify='center'>
         {!profileStep &&
@@ -243,9 +287,10 @@ const EmptyFeed = ({
   )
 }
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+const mapStateToProps = ({ user, chat, router }: StoreState): {} => ({
   user,
-  chat
+  chat,
+  router
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
@@ -78,6 +78,7 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
     }
 
     if (userId) init()
+    // eslint-disable-next-line
   }, [userId])
 
   if (!display || ['xs', 'sm'].includes(width)) return null

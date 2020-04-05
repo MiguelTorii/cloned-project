@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EmptyFeed from 'components/FeedList/EmptyFeed'
+import cx from 'classnames'
 import FeedItem from './feed-item';
 
 const styles = theme => ({
@@ -25,6 +26,9 @@ const styles = theme => ({
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'space-between'
+  },
+  marginBottom: {
+    marginBottom: theme.spacing()
   },
   title: {
     flex: 1
@@ -141,7 +145,6 @@ class FeedList extends React.PureComponent<Props, State> {
       onLoadMore,
       newClassExperience,
       onUserClick,
-      location: { pathname },
     } = this.props;
 
     return (
@@ -156,6 +159,9 @@ class FeedList extends React.PureComponent<Props, State> {
             </div>
           </div>
         )}
+        {newClassExperience && <Paper className={cx(classes.root, classes.marginBottom)} elevation={0}>
+          <EmptyFeed />
+        </Paper>}
         <Paper className={classes.root} elevation={0}>
           <div
             className={classes.items}
@@ -172,28 +178,25 @@ class FeedList extends React.PureComponent<Props, State> {
               initialLoad={false}
               getScrollParent={() => this.scrollParentRef}
             >
-              {items.length === 0 ? (
-                <EmptyFeed />
-              ) : (
-                items.map(item => (
-                  <FeedItem
-                    key={item.feedId}
-                    userId={userId}
-                    data={item}
-                    handleShareClick={handleShare}
-                    innerRef={node => {
-                      if (fromFeedId === item.feedId) this.selectedRef = node;
-                    }}
-                    onPostClick={onPostClick}
-                    newClassExperience={newClassExperience}
-                    onBookmark={onBookmark}
-                    pushTo={pushTo}
-                    onReport={onReport}
-                    onDelete={onDelete}
-                    onUserClick={onUserClick}
-                  />
-                ))
-              )}
+              {items.map(item => (
+                <FeedItem
+                  key={item.feedId}
+                  userId={userId}
+                  data={item}
+                  handleShareClick={handleShare}
+                  innerRef={node => {
+                    if (fromFeedId === item.feedId) this.selectedRef = node;
+                  }}
+                  onPostClick={onPostClick}
+                  newClassExperience={newClassExperience}
+                  onBookmark={onBookmark}
+                  pushTo={pushTo}
+                  onReport={onReport}
+                  onDelete={onDelete}
+                  onUserClick={onUserClick}
+                />
+              ))
+              }
             </InfiniteScroll>
           </div>
         </Paper>

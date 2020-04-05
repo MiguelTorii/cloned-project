@@ -132,6 +132,7 @@ const FloatingChat = ({
       handleShutdownChat();
     };
 
+    // eslint-disable-next-line
   }, [])
 
   const prevChat = usePrevious(chat)
@@ -171,6 +172,7 @@ const FloatingChat = ({
         } catch (err) {}
       }
     }
+    // eslint-disable-next-line
   }, [user, chat, online])
 
 
