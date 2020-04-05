@@ -7,6 +7,7 @@ import LoadImg from '../LoadImg';
 
 import bookmarks from '../../assets/svg/bookmarks.svg';
 import flashcards from '../../assets/svg/flashcards.svg';
+import groupchat from '../../assets/svg/group_chat.svg';
 import links from '../../assets/svg/links.svg';
 import notes from '../../assets/svg/notes.svg';
 import question from '../../assets/svg/questions.svg';
@@ -18,8 +19,8 @@ const styles = theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: 36,
-    width: 480
+    marginBottom: 24,
+    width: 450
   },
   row: {
     display: 'flex',
@@ -35,13 +36,13 @@ const styles = theme => ({
   text: {
     color: theme.circleIn.palette.primaryText1,
     fontSize: 18,
-    margin: '12px 0',
+    margin: '8px 0',
     textAlign: 'center'
   },
   item: {
     alignItems: 'center',
     display: 'flex',
-    marginTop: 8
+    marginTop: 4
   },
   itemTitle: {
     color: theme.circleIn.palette.action,
@@ -110,7 +111,7 @@ const UseCases = ({
           text="CircleIn makes group projects and studying so much easier. Don’t worry if someone is down the hall or across the country"
         >
           <Item imageUrl={videos} title="Create a Video Study Session" />
-          <Item imageUrl={bookmarks} title="Start a Chat or Group Chat" />
+          <Item imageUrl={groupchat} title="Start a Chat or Group Chat" />
           <Item imageUrl={links} title="Share a link to a file or video" />
         </UseCase>
       </div>
