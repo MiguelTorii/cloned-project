@@ -84,7 +84,7 @@ const EmptyFeed = ({
     },
     data: {
       userId,
-      profilePicture
+      profileImage
     }} = user
   const { data: { client, channels, online }} = chat
 
@@ -93,7 +93,7 @@ const EmptyFeed = ({
     classId,
   } = queryString.parse(window.location.search)
 
-  const [profileStep, setProfileStep] = useState(profilePicture !== '')
+  const [profileStep, setProfileStep] = useState(profileImage !== '')
   const [channelType, setChannelType] = useState(null)
   const [inviteStep, setInviteStep] = useState(false)
   const [chatStep, setChatStep] = useState(false)
