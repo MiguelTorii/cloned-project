@@ -42,12 +42,15 @@ import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboa
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 import FlashCards from '../../assets/svg/flashcards.svg';
 import Links from '../../assets/svg/links.svg';
+import Logo from '../../assets/svg/app-logo-white.svg';
 import Notes from '../../assets/svg/notes.svg';
 import Questions  from '../../assets/svg/questions.svg';
 import Reminders from '../../assets/svg/reminders.svg';
 import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import GetApp from '../GetApp';
+import UseCases from '../UseCases';
+import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
 
@@ -310,6 +313,7 @@ type State = {
   createPostAnchorEl: ?string,
   openGetApp: boolean,
   openHowEarnPoints: boolean,
+  openUseCases: boolean,
   createPostOpen: boolean
 };
 
@@ -321,6 +325,7 @@ class MainLayout extends React.Component<Props, State> {
     createPostAnchorEl: null,
     openGetApp: false,
     openHowEarnPoints: false,
+    openUseCases: false,
     openClassmates: false,
     createPostOpen: false,
   };
@@ -402,6 +407,15 @@ class MainLayout extends React.Component<Props, State> {
     this.setState({ openHowEarnPoints: false });
   };
 
+  handleOpenUseCases = () => {
+    this.setState({ openUseCases: true });
+    this.handleMenuClose();
+  };
+
+  handleCloseUseCases = () => {
+    this.setState({ openUseCases: false });
+  };
+
   getCourseDisplayName = classList => {
     const query = queryString.parse(window.location.search)
 
@@ -421,7 +435,8 @@ class MainLayout extends React.Component<Props, State> {
       createPostAnchorEl,
       openGetApp,
       openHowEarnPoints,
-      openClassmates
+      openClassmates,
+      openUseCases
     } = this.state;
     const {
       classes,
@@ -658,6 +673,16 @@ class MainLayout extends React.Component<Props, State> {
           </ListItem> */}
           <ListItem
             button
+            className={classes.otherPath}
+            onClick={this.handleOpenUseCases}
+          >
+            <ListItemIcon>
+              <img src={Logo} alt="logo" />
+            </ListItemIcon>
+            <ListItemText primary="Studying on CircleIn" />
+          </ListItem>
+          <ListItem
+            button
             component={MyLink}
             link="/leaderboard"
             className={classNames(
@@ -841,6 +866,13 @@ class MainLayout extends React.Component<Props, State> {
           open={openHowEarnPoints}
           onClose={this.handleCloseHowEarnPoints}
         />
+        <Dialog
+          open={openUseCases}
+          onClose={this.handleCloseUseCases}
+          title="How to use CircleIn for Studying"
+        >
+          <UseCases />
+        </Dialog>
       </Fragment>
     );
   }
