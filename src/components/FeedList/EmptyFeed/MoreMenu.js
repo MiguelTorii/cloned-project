@@ -7,13 +7,14 @@ import ListItemText from '@material-ui/core/ListItemText'
 
 type Props = {
   anchor: Object,
-  handleHide: Function,
+  handleRemove: Function,
+  completed: boolean,
+  hide: boolean,
+  toggleHide: Function,
   handleMenuClose: Function
 };
 
-const MoreMenu = ({ anchor, handleHide, handleMenuClose }: Props) => {
-
-
+const MoreMenu = ({ anchor, handleRemove, handleMenuClose, completed, hide, toggleHide }: Props) => {
   return (
     <Menu
       disableAutoFocusItem
@@ -23,9 +24,12 @@ const MoreMenu = ({ anchor, handleHide, handleMenuClose }: Props) => {
       open={Boolean(anchor)}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleHide}>
-        <ListItemText inset primary="Remove from feed" />
+      <MenuItem onClick={toggleHide}>
+        <ListItemText inset primary={hide ? 'Expand' : 'Minimise'} />
       </MenuItem>
+      {completed && <MenuItem onClick={handleRemove}>
+        <ListItemText inset primary="Remove from feed" />
+      </MenuItem>}
     </Menu>
   );
 }

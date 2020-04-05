@@ -7,7 +7,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EmptyFeed from 'components/FeedList/EmptyFeed'
-import cx from 'classnames'
 import FeedItem from './feed-item';
 
 const styles = theme => ({
@@ -159,9 +158,7 @@ class FeedList extends React.PureComponent<Props, State> {
             </div>
           </div>
         )}
-        {newClassExperience && <Paper className={cx(classes.root, classes.marginBottom)} elevation={0}>
-          <EmptyFeed />
-        </Paper>}
+        {newClassExperience && <EmptyFeed postsCount={items.length} />}
         <Paper className={classes.root} elevation={0}>
           <div
             className={classes.items}

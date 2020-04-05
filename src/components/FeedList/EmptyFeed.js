@@ -33,10 +33,27 @@ import MoreMenu from 'components/FeedList/EmptyFeed/MoreMenu'
 import { postEvent } from 'api/feed'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
+import cx from 'classnames'
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    padding: theme.spacing(),
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  marginBottom: {
+    marginBottom: theme.spacing()
+  },
   container: {
-    width: '100%'
+    paddingTop: theme.spacing(),
+    width: '100%',
+    marginBottom: theme.spacing()
   },
   imgFirst: {
     height: 92,
@@ -72,6 +89,7 @@ type Props = {
   user: UserState,
   chat: ChatState,
   router: Object,
+  postsCount: number,
   handleRoomClick: Function,
   checkUserSession: Function,
   fetchClasses: Function
@@ -81,6 +99,7 @@ const EmptyFeed = ({
   user,
   chat,
   router,
+  postsCount,
   checkUserSession,
   handleRoomClick,
   fetchClasses
@@ -101,7 +120,8 @@ const EmptyFeed = ({
     classId,
   }}} = router
 
-  const [hide, setHide] = useState(true)
+  const [hide, setHide] = useState(false)
+  const [remove, setRemove] = useState(false)
   const [profileStep, setProfileStep] = useState(profileImage !== '')
   const [channelType, setChannelType] = useState(null)
   const [inviteStep, setInviteStep] = useState(false)
@@ -142,13 +162,17 @@ const EmptyFeed = ({
     const currentClass = classList.find(cl => cl.classId === Number(classId))
     if (currentClass) {
       setInviteStep(currentClass.didInviteClassmates)
-      setHide(currentClass.didHideFeedEmptyState)
+      setRemove(currentClass.didHideFeedEmptyState)
     }
   }, [classList, classId])
 
   useEffect(() => {
     if (channels.length > 0) setChatStep(true)
   }, [channels])
+
+  useEffect(() => {
+    if (postsCount > 0) setHide(true)
+  }, [postsCount])
 
   const handleChannelCreated = ({ channel }) => handleRoomClick(channel)
   const handleCreateChannelClose = () => setChannelType(null)
@@ -171,8 +195,12 @@ const EmptyFeed = ({
 
   const handleMenuOpen = e => setMoreAnchor(e.currentTarget)
   const handleMenuClose = () => setMoreAnchor(null)
+  const toggleHide = () => {
+    handleMenuClose()
+    setHide(!hide)
+  }
 
-  const handleHide = async () => {
+  const handleRemove = async () => {
     const success = await postEvent({
       sectionId: Number(sectionId),
       category: 'FeedEmptyState',
@@ -180,110 +208,117 @@ const EmptyFeed = ({
     })
     if (success) fetchClasses()
     handleMenuClose()
-    setHide(true)
+    setRemove(true)
   }
 
   const header = (
-    <Grid container justify='center' classes={{ root: classes.container }} item>
-      <Typography variant='h4'>Get Started with CircleIn</Typography>
-      {!hide &&
-            <IconButton onClick={handleMenuOpen} className={classes.moreIcon}>
-              <MoreVertIcon />
-            </IconButton>
-      }
-    </Grid>
+    <Paper className={cx(classes.root, classes.marginBottom, classes.container)} elevation={0}>
+      <Grid container justify='center' classes={{ root: classes.container }} item>
+        <MoreMenu
+          anchor={moreAnchor}
+          handleMenuClose={handleMenuClose}
+          completed={profileStep && inviteStep && chatStep}
+          handleRemove={handleRemove}
+          hide={hide}
+          toggleHide={toggleHide}
+        />
+        <Typography variant='h4'>Get Started with CircleIn</Typography>
+        <IconButton onClick={handleMenuOpen} className={classes.moreIcon}>
+          <MoreVertIcon />
+        </IconButton>
+      </Grid>
+    </Paper>
   )
 
+  if (remove) return null
   if (hide) return header
 
+
   return (
-    <Grid
-      container
-      spacing={4}
-      justify='center'
-      classes={{
-        root: classes.container
-      }}
-    >
-      <MoreMenu
-        anchor={moreAnchor}
-        handleMenuClose={handleMenuClose}
-        handleHide={handleHide}
-      />
-      <InviteDialog
-        handleClose={handleInviteClose}
-        open={inviteDialog}
-      />
-      <CreateChatChannel
-        type={channelType}
-        client={client}
-        channels={channels}
-        onClose={handleCreateChannelClose}
-        onChannelCreated={handleChannelCreated}
-      />
-      {header}
-      <input accept='image/*' type='file' onChange={handleAddProfilePicture} ref={fileRef} className={classes.hidden} />
-      <Grid container justify='center'>
-        {!profileStep &&
+    <Paper className={cx(classes.root, classes.marginBottom)} elevation={0}>
+      <Grid
+        container
+        spacing={4}
+        justify='center'
+        classes={{
+          root: classes.container
+        }}
+      >
+        <InviteDialog
+          handleClose={handleInviteClose}
+          open={inviteDialog}
+        />
+        <CreateChatChannel
+          type={channelType}
+          client={client}
+          channels={channels}
+          onClose={handleCreateChannelClose}
+          onChannelCreated={handleChannelCreated}
+        />
+        {header}
+        <input accept='image/*' type='file' onChange={handleAddProfilePicture} ref={fileRef} className={classes.hidden} />
+        <Grid container justify='center'>
+          {!profileStep &&
               <img className={classes.imgFirst} src={EmptyAddProfilePhotoOne} alt='EmptyAddProfilePhotoOne' />}
-        {!profileStep &&
+          {!profileStep &&
         <img className={classes.imgFirst} src={EmptyAddProfilePhotoTwo} alt='EmptyAddProfilePhotoTwo' />}
-        {profileStep &&
+          {profileStep &&
         <img className={classes.imgSecond} src={CompletedAddProfilePhoto} alt='CompletedAddProfilePhotoTwo' />}
-      </Grid>
-      <Grid item>
-        <Button
-          variant='contained'
-          onClick={openFileDialog}
-          disabled={profileStep}
-          startIcon={profileStep && <CheckIcon color='disabled' />}
-          color='primary'
-          classes={{
-            label: classes.buttonLabel
-          }}
-        >
-          {profileStep !== null ? 'Add a Profile Photo' : <CircularProgress color='secondary' size={20} />}
-        </Button>
-      </Grid>
-      <Grid container justify='center'>
-        {!inviteStep && <img className={classes.imgSecond} src={EmptyInvite} alt='EmptyInvite' />}
-        {inviteStep && <img className={classes.imgSecond} src={CompletedInvite} alt='CompletedInvite' />}
-      </Grid>
-      <Grid item>
-        <Button
-          variant='contained'
-          disabled={inviteStep}
-          startIcon={inviteStep && <CheckIcon color='disabled' />}
-          color='primary'
-          onClick={handleInvite}
-          classes={{
-            label: classes.buttonLabel
-          }}
-        >
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            onClick={openFileDialog}
+            disabled={profileStep}
+            startIcon={profileStep && <CheckIcon color='disabled' />}
+            color='primary'
+            classes={{
+              label: classes.buttonLabel
+            }}
+          >
+            {profileStep !== null ? 'Add a Profile Photo' : <CircularProgress color='secondary' size={20} />}
+          </Button>
+        </Grid>
+        <Grid container justify='center'>
+          {!inviteStep && <img className={classes.imgSecond} src={EmptyInvite} alt='EmptyInvite' />}
+          {inviteStep && <img className={classes.imgSecond} src={CompletedInvite} alt='CompletedInvite' />}
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            disabled={inviteStep}
+            startIcon={inviteStep && <CheckIcon color='disabled' />}
+            color='primary'
+            onClick={handleInvite}
+            classes={{
+              label: classes.buttonLabel
+            }}
+          >
           Invite your Classmates
-        </Button>
+          </Button>
+        </Grid>
+        <Grid container justify='space-around'>
+          {!chatStep && <img className={classes.imgThird} src={EmptyClassGroupChatOne} alt='EmptyClassGroupChatOne' />}
+          {!chatStep &&<img className={classes.imgThird} src={EmptyClassGroupChatTwo} alt='EmptyClassGroupChatTwo' />}
+          {chatStep &&<img className={classes.imgThird} src={CompletedClassGroupChatOne} alt='CompletedClassGroupChatOne' />}
+          {chatStep &&<img className={classes.imgThird} src={CompletedClassGroupChatTwo} alt='CompletedClassGroupChatTwo' />}
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            color='primary'
+            disabled={chatStep || !online}
+            startIcon={chatStep && <CheckIcon color='disabled' />}
+            onClick={handleCreateChannelOpen}
+            classes={{
+              label: classes.buttonLabel
+            }}
+          >
+            {online ? 'Setup a Class Group Chat' : <CircularProgress color='secondary' size={20} />}
+          </Button>
+        </Grid>
       </Grid>
-      <Grid container justify='space-around'>
-        {!chatStep && <img className={classes.imgThird} src={EmptyClassGroupChatOne} alt='EmptyClassGroupChatOne' />}
-        {!chatStep &&<img className={classes.imgThird} src={EmptyClassGroupChatTwo} alt='EmptyClassGroupChatTwo' />}
-        {chatStep &&<img className={classes.imgThird} src={CompletedClassGroupChatOne} alt='CompletedClassGroupChatOne' />}
-        {chatStep &&<img className={classes.imgThird} src={CompletedClassGroupChatTwo} alt='CompletedClassGroupChatTwo' />}
-      </Grid>
-      <Grid item>
-        <Button
-          variant='contained'
-          color='primary'
-          disabled={chatStep || !online}
-          startIcon={chatStep && <CheckIcon color='disabled' />}
-          onClick={handleCreateChannelOpen}
-          classes={{
-            label: classes.buttonLabel
-          }}
-        >
-          {online ? 'Setup a Class Group Chat' : <CircularProgress color='secondary' size={20} />}
-        </Button>
-      </Grid>
-    </Grid>
+    </Paper>
   )
 }
 
