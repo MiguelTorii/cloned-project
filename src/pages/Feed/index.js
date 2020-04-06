@@ -22,7 +22,7 @@ type Props = {
   classes: Object,
   location: {
     search: string
-  },
+  }
 };
 
 

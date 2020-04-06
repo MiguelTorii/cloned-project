@@ -114,6 +114,13 @@ class FeedList extends React.PureComponent<Props, State> {
     this.mounted = false;
   };
 
+  emptyMessage = pathname => {
+    if (pathname === '/bookmarks') return `It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here`
+    if (pathname === '/my_posts') return 'Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.'
+    return `Your classmate's notes, flashcards and questions will appear here. Be the first to post to get closer to a Reward or Scholarship!`
+  }
+
+
   handleScrollToRef = () => {
     if (this.selectedRef && this.selectedRef.el) {
       this.selectedRef.el.scrollIntoView({ behavior: 'instant' });
@@ -147,6 +154,7 @@ class FeedList extends React.PureComponent<Props, State> {
       onLoadMore,
       newClassExperience,
       onUserClick,
+      location: { pathname },
     } = this.props;
 
     return (
@@ -200,7 +208,7 @@ class FeedList extends React.PureComponent<Props, State> {
             </InfiniteScroll>
           </div>
           {items.length === 0 &&
-          <Typography className={classes.endLabel}>Your classmate's notes, flashcards and questions will appear here. Be the first to post to get closer to a Reward or Scholarship!</Typography>}
+          <Typography className={classes.endLabel}>{this.emptyMessage(pathname)}</Typography>}
         </Paper>
         {
           items.length !== 0 && !hasMore &&
