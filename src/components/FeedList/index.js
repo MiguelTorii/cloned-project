@@ -73,7 +73,10 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.appBar,
     padding: 10,
     width: '100%',
-  }
+  },
+  endLabel: {
+    textAlign: 'center'
+  },
 });
 
 type Props = {
@@ -196,6 +199,8 @@ class FeedList extends React.PureComponent<Props, State> {
               }
             </InfiniteScroll>
           </div>
+          {items.length === 0 &&
+          <Typography className={classes.endLabel}>Your classmate's notes, flashcards and questions will appear here. Be the first to post to get closer to a Reward or Scholarship!</Typography>}
         </Paper>
         {
           items.length !== 0 && !hasMore &&
