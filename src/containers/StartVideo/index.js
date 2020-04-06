@@ -323,6 +323,7 @@ class StartVideo extends React.PureComponent<Props, State> {
             isVideo
             onClose={this.handleCreateChannelClose}
             onChannelCreated={this.handleChannelCreated}
+            title="Setup a Video Study Session"
           />
         </ErrorBoundary>
       </Fragment>

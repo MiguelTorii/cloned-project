@@ -63,16 +63,16 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   isLoading: boolean,
-  isVideo: boolean,
   onClose: Function,
   onSubmit: Function,
-  onLoadOptions: Function
+  onLoadOptions: Function,
+  title: ?string
 };
 
 const CreateChatChannelDialog = ({
   classes,
   isLoading,
-  isVideo,
+  title,
   onClose,
   onSubmit,
   chatType: chatTypeProp,
@@ -146,7 +146,7 @@ const CreateChatChannelDialog = ({
         className={classes.title}
       >
         <Typography variant="h6" className={classes.grow} id="circlein-chat-title">
-          Setup a Class Group Chat or Send a Direct Message
+          {title || "Setup a Class Group Chat or Send a Direct Message"}
         </Typography>
       </DialogTitle>
       <ValidatorForm

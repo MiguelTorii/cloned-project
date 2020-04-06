@@ -25,7 +25,8 @@ type Props = {
   // channels: Array<Object>,
   isVideo?: boolean,
   onClose: Function,
-  onChannelCreated: Function
+  onChannelCreated: Function,
+  title: ?string
 };
 
 type State = {
@@ -254,7 +255,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { isVideo, type } = this.props;
+    const { isVideo, type, title } = this.props;
     const { thumbnail, isLoading } = this.state;
     return (
       <ErrorBoundary>
@@ -267,6 +268,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
           onSubmit={this.handleSubmit}
           onLoadOptions={this.handleLoadOptions}
           onSendInput={this.handleUploadThumbnail}
+          title={title}
         />
       </ErrorBoundary>
     );
