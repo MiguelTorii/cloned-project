@@ -158,6 +158,7 @@ const LeaderBoardTabs = ({
   const [rewardButtonText, setRewardButtonText] = useState('')
   const [dialogTitle, setDialogTitle] = useState('')
   const [openDialog, setOpenDialog] = useState(false)
+  const [tuesdayPoints, setTuesdayPoints] = useState('')
 
   const { amount, eligibility, numberOfWinners, text } = leaderboard.data.grandDialog;
 
@@ -190,6 +191,7 @@ const LeaderBoardTabs = ({
         setPrizeText('Gifts You Selected to Earn')
         const images = generalSelected.slots.map(s => s.thumbnail)
         setRewardButtonText('Rewards Store')
+        setTuesdayPoints(generalSelected.currentMonthPointsDisplayName)
         setPrizeImgs(images)
       }
     } catch(e) {
@@ -337,7 +339,7 @@ const LeaderBoardTabs = ({
             <span className={classes.count}>{time}</span>
           </div>
           <div className={classes.days}>Points:
-            <span className={classes.grayText}> 150,000</span>
+            <span className={classes.count}>{tuesdayPoints}</span>
           </div>
           <div className={classes.footnote}>
             *You must earn a minimum of 150,000 points to qualify for 1st Tuesday Rewards

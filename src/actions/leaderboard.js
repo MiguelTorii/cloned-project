@@ -29,6 +29,7 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
           label: labelTuesday,
         },
         slots,
+        current_month_points_display_name: currentMonthPointsDisplayName
       },
       grand_prize: {
         time_left: {
@@ -54,6 +55,7 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
           label: labelTuesday,
         },
         slots: camelSlots,
+        currentMonthPointsDisplayName,
       },
       grand: {
         timeLeft: {
@@ -154,7 +156,7 @@ const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
       amount: res.amount,
       numberOfWinners: res.number_of_winners,
       eligibility: res.eligibility,
-    } 
+    }
     dispatch(
       updateLeaderboardGrandInfoRequest({ grandInfo })
     );

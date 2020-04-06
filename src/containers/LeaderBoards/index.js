@@ -18,10 +18,10 @@ const styles = theme => ({
   }
 })
 
-const LeaderBoards = ({ 
-  classes, 
+const LeaderBoards = ({
+  classes,
   leaderboard,
-  userId, 
+  userId,
   updateLeaderboards,
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,

@@ -16,7 +16,7 @@ export type StudentType = {
   lastName: string,
   userId: number,
   profileImage: string
-}
+};
 
 export type PrizeSlots = {
   slot: number,
@@ -24,7 +24,7 @@ export type PrizeSlots = {
   name: string,
   logo: string,
   thumbnail: string
-}
+};
 
 export type LeaderBoardStudents = {
   position: number,
@@ -33,7 +33,7 @@ export type LeaderBoardStudents = {
   lastName: string,
   userId: number,
   profileImg: string
-}
+};
 
 export type LeaderBoardState = {
   data: {
@@ -41,18 +41,19 @@ export type LeaderBoardState = {
       tuesday: {
         timeLeft: {
           time: string,
-          label: string,
+          label: string
         },
-        slots: Array<PrizeSlots>
+        slots: Array<PrizeSlots>,
+        currentMonthPointsDisplayName: string
       },
       grand: {
         timeLeft: {
           time: string,
-          label: string,
+          label: string
         },
         logo: string,
         text: string
-      },
+      }
     },
     tuesday: {
       boardName: string,
@@ -62,7 +63,7 @@ export type LeaderBoardState = {
     grand: {
       boardName: string,
       scoreLabel: string,
-      students: Array<LeaderBoardStudents>,
+      students: Array<LeaderBoardStudents>
     },
     grandDialog: {
       logoUrl: string,
@@ -70,17 +71,18 @@ export type LeaderBoardState = {
       text: string
     }
   }
-}
+};
 
 const defaultState = {
-  data: { 
+  data: {
     general: {
       tuesday: {
         timeLeft: {
           time: '',
           label: ''
         },
-        slots: []
+        slots: [],
+        currentMonthPointsDisplayName: '',
       },
       grand: {
         timeLeft: {
