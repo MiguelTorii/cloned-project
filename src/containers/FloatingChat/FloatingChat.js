@@ -228,9 +228,7 @@ const FloatingChat = ({
             >
               {channels.length === 0 ? (
                 <div className={classes.noMessages}>
-                  <Typography variant="subtitle1" align="center">
-                     Begin an individual or group chat with any of your classmates by tapping on the icons above
-                  </Typography>
+                  <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
                 </div>
               ) : (
                 channels.map(item => (
