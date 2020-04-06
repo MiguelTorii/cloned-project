@@ -35,6 +35,7 @@ import queryString from 'query-string'
 import clsx from 'clsx'
 import { withRouter } from 'react-router';
 import ClassmatesDialog from 'components/ClassmatesDialog'
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -680,6 +681,21 @@ class MainLayout extends React.Component<Props, State> {
               <img src={Logo} alt="logo" />
             </ListItemIcon>
             <ListItemText primary="Studying on CircleIn" />
+          </ListItem>
+          <ListItem
+            button
+            component={MyLink}
+            link="/reminders"
+            className={classNames(
+              ['/reminders'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <CalendarTodayIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Reminders"
+            />
           </ListItem>
           <ListItem
             button
