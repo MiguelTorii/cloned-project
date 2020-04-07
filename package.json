@@ -93,6 +93,7 @@
     "lint": "eslint src || exit 0",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build": "react-scripts build",
+    "build:production": "yarn install && REACT_APP_STAGE=production react-scripts build",
     "eject": "react-scripts eject"
   },
   "browserslist": [

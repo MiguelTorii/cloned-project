@@ -56,8 +56,8 @@ const styles = theme => ({
 type ImageUrl = {
   fullNoteUrl: string,
   note: string,
-  noteUrl: string,
-}
+  noteUrl: string
+};
 
 type Props = {
   classes: Object,
@@ -87,7 +87,7 @@ type State = {
   errorTitle: string,
   errorBody: string,
   changed: ?boolean,
-  isEdit: boolean,
+  isEdit: boolean
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -134,7 +134,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     } = queryString.parse(search);
     this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
   };
-  
+
   loadData = async () => {
     const {
       user: {
@@ -149,7 +149,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       const { classes } = await getUserClasses({ userId });
       const userClasses = processClasses({ classes, segment });
       const { sectionId } = JSON.parse(userClasses[0].value);
-    
+
       const {
         title,
         classId,
@@ -252,7 +252,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       });
     }
   };
- 
+
   createNotes = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
@@ -457,8 +457,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { 
-      classes, 
+    const {
+      classes,
       width
     } = this.props;
 
@@ -514,15 +514,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>}
               <Grid item xs={12} md={10}>
-                <ClassesSelector 
+                <ClassesSelector
                   classId={classId}
                   sectionId={sectionId}
                   label={notSm ? '' : 'Class'}
                   variant={notSm ? null : 'standard'}
-                  onChange={this.handleClassChange} 
+                  onChange={this.handleClassChange}
                 />
               </Grid>
-                
+
               {notSm && <Grid item md={2}>
                 <Typography variant="subtitle1">Summary of notes</Typography>
               </Grid>}
@@ -546,24 +546,24 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   summary
                 )} more characters to earn points`}</Typography>
               </Grid>
-                
-              {notSm && <Grid item md={2}> 
-                <Typography variant="subtitle1">Tags</Typography> 
+
+              {notSm && <Grid item md={2}>
+                <Typography variant="subtitle1">Tags</Typography>
               </Grid>}
-              <Grid item xs={12} md={10}> 
-                <TagsAutoComplete 
-                  tags={tags} 
-                  error={tagsError} 
+              <Grid item xs={12} md={10}>
+                <TagsAutoComplete
+                  tags={tags}
+                  error={tagsError}
                   label={notSm ? '' : 'Tags'}
                   variant={notSm ? null : 'standard'}
-                  onChange={this.handleTagsChange} 
-                /> 
-              </Grid> 
+                  onChange={this.handleTagsChange}
+                />
+              </Grid>
               {notSm && <Grid item md={2} />}
-              <Grid 
-                container 
-                item 
-                xs={12} 
+              <Grid
+                container
+                item
+                xs={12}
                 md={10}
                 justify='center'
                 alignItems='center'

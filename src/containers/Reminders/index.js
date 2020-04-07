@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import ReactCardFlip from 'react-card-flip';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import * as notificationsActions from 'actions/notifications';
+import { bindActionCreators } from 'redux';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { ToDos } from '../../types/models';
@@ -20,10 +22,16 @@ import {
 } from '../../api/reminders';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({});
+const styles = theme => ({
+  stackbar: {
+    backgroundColor: theme.circleIn.palette.snackbar,
+    color: theme.circleIn.palette.primaryText1
+  },
+});
 
 type Props = {
   classes: Object,
+  enqueueSnackbar: Function,
   user: UserState
 };
 
@@ -58,6 +66,38 @@ class Reminders extends React.PureComponent<Props, State> {
     )
       this.handleUpdateDB.cancel();
   };
+
+  handlePoints = res => {
+    try {
+      const {
+        points,
+        user: {
+          first_name: firstName
+        }
+      } = res
+      const { enqueueSnackbar, classes } = this.props;
+      if (points) {
+        enqueueSnackbar({
+          notification: {
+            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            options: {
+              variant: 'success',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'left'
+              },
+              autoHideDuration: 7000,
+              ContentProps: {
+                classes: {
+                  root: classes.stackbar
+                }
+              }
+            }
+          }
+        });
+      }
+    } catch(e) {}
+  }
 
   handleFetchReminders = async () => {
     const {
@@ -94,13 +134,14 @@ class Reminders extends React.PureComponent<Props, State> {
     this.handleUpdateDB({ id, status });
   };
 
-  handleUpdateDB = ({ id, status }) => {
+  handleUpdateDB = async ({ id, status }) => {
     const {
       user: {
         data: { userId }
       }
     } = this.props;
-    updateReminder({ userId, id, status });
+    const res = await updateReminder({ userId, id, status });
+    this.handlePoints(res)
   };
 
   handleDelete = id => () => {
@@ -145,7 +186,8 @@ class Reminders extends React.PureComponent<Props, State> {
     } = this.props;
     this.setState({ loading: true });
     try {
-      await createReminder({ userId, title, label, dueDate });
+      const res = await createReminder({ userId, title, label, dueDate });
+      this.handlePoints(res)
       await this.handleFetchReminders();
     } finally {
       this.setState({ loading: false });
@@ -200,7 +242,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(Reminders));

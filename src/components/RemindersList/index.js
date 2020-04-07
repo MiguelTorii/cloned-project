@@ -93,7 +93,7 @@ class RemindersList extends React.PureComponent<Props, State> {
         <Paper elevation={2} className={classes.paper}>
           <div className={classes.header}>
             <Typography component="h1" variant="h5">
-              Reminders - List
+              Reminders
             </Typography>
             {/* <Button
               color="primary"
