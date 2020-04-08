@@ -8,10 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import Avatar from '@material-ui/core/Avatar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -21,7 +17,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
-import DialogTitle from '../DialogTitle';
+import Dialog, { dialogStyle } from '../Dialog';
 import { VIDEO_SHARE_URL } from '../../constants/routes';
 
 const styles = theme => ({
@@ -94,6 +90,10 @@ const styles = theme => ({
   },
   margin: {
     marginTop: theme.spacing(2)
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 600
   }
 });
 
@@ -266,73 +266,62 @@ class Preview extends React.Component<Props, State> {
           </Button>
         </Paper>
         <Dialog
+          className={classes.dialog}
+          okTitle="Done"
+          onCancel={this.closeSettings}
+          onOk={this.closeSettings}
           open={open}
-          onClose={this.closeSettings}
-          fullWidth
-          aria-labelledby="form-dialog-title"
+          showActions
+          title="General"
         >
-          <DialogTitle id="form-dialog-title" onClose={this.closeSettings}>
-            General
-          </DialogTitle>
-          <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
-            <FormControl>
-              <InputLabel htmlFor="videoinput-native-helper">Video</InputLabel>
-              <NativeSelect
-                value={selectedvideoinput}
-                onChange={this.handleChange('videoinput')}
-                input={
-                  <Input name="videoinput" id="videoinput-native-helper" />
-                }
-              >
-                {videoinput.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="audioinput-native-helper">Mic</InputLabel>
-              <NativeSelect
-                value={selectedaudioinput}
-                onChange={this.handleChange('audioinput')}
-                input={
-                  <Input name="audioinput" id="audioinput-native-helper" />
-                }
-              >
-                {audioinput.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeSettings} color="primary">
-              Done
-            </Button>
-          </DialogActions>
+          <FormControl>
+            <InputLabel htmlFor="videoinput-native-helper">Video</InputLabel>
+            <NativeSelect
+              value={selectedvideoinput}
+              onChange={this.handleChange('videoinput')}
+              input={
+                <Input name="videoinput" id="videoinput-native-helper" />
+              }
+            >
+              {videoinput.map(item => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </NativeSelect>
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="audioinput-native-helper">Mic</InputLabel>
+            <NativeSelect
+              value={selectedaudioinput}
+              onChange={this.handleChange('audioinput')}
+              input={
+                <Input name="audioinput" id="audioinput-native-helper" />
+              }
+            >
+              {audioinput.map(item => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </NativeSelect>
+          </FormControl>
         </Dialog>
         <Dialog
-          open={error}
-          disableEscapeKeyDown
+          className={classes.dialog}
           disableBackdropClick
-          fullWidth
-          aria-labelledby="permissions-dialog-title"
+          disableEscapeKeyDown
+          title="Permissions Not Granted"
+          open={error}
+          showHeader={false}
         >
-          <DialogTitle id="permissions-dialog-title" onClose={null}>
-            Permissions Not Granted
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText color="textPrimary" paragraph>
-              To access this feature you need to grant permissions to use your
-              media devices.
-            </DialogContentText>
-            <DialogContentText color="textPrimary">
-              Refresh the page after you have granted permissions.
-            </DialogContentText>
-          </DialogContent>
+          <Typography color="textPrimary" paragraph>
+            To access this feature you need to grant permissions to use your
+            media devices.
+          </Typography>
+          <Typography color="textPrimary">
+            Refresh the page after you have granted permissions.
+          </Typography>
         </Dialog>
       </div>
     );

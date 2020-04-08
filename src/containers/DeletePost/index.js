@@ -4,21 +4,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '../../components/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '../../components/Dialog';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { deletePost } from '../../api/posts';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
-  paper: {
-    width: '80%'
-  },
   wrapper: {
     margin: theme.spacing(),
     position: 'relative'
@@ -89,49 +82,23 @@ class DeletePost extends React.PureComponent<Props, State> {
     return (
       <ErrorBoundary>
         <Dialog
-          maxWidth="md"
+          ariaDescribedBy="confirmation-dialog-description"
+          disableActions={loading}
           disableBackdropClick={loading}
-          aria-labelledby="confirmation-dialog-title"
-          aria-describedby="confirmation-dialog-description"
-          classes={{
-            paper: classes.paper
-          }}
+          okTitle="Delete"
+          onCancel={onClose}
+          onOk={this.handleSubmit}
           open={open}
-          onClose={onClose}
+          showActions
+          showCancel
+          title="Delete Post"
         >
-          <DialogTitle id="confirmation-dialog-title" onClose={onClose}>
-            Delete Post
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              color="textPrimary"
-              id="confirmation-dialog-description"
-            >
-              Are you sure you want to delete this post?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button disabled={loading} onClick={onClose} color="primary">
-              Cancel
-            </Button>
-            <div className={classes.wrapper}>
-              <Button
-                disabled={loading}
-                onClick={this.handleSubmit}
-                type="submit"
-                color="primary"
-                variant="contained"
-              >
-                Delete
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
-          </DialogActions>
+          <Typography
+            color="textPrimary"
+            id="confirmation-dialog-description"
+          >
+            Are you sure you want to delete this post?
+          </Typography>
         </Dialog>
       </ErrorBoundary>
     );

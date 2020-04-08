@@ -6,22 +6,17 @@ import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DialogTitle from '../../components/DialogTitle';
+import Dialog from '../../components/Dialog';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { DailyStreaksCard } from '../../types/models';
 import { getDailyStreaks, getDailyRewards } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
-// $FlowIgnore
-import { ReactComponent as StreakIcon } from '../../assets/svg/ic_streak.svg';
 
+// $FlowIgnore
 const size = 150;
 const thickness = 10;
 
@@ -226,154 +221,82 @@ class DailyRewards extends React.PureComponent<Props, State> {
     return (
       <ErrorBoundary>
         <Dialog
+          onCancel={this.handleClose}
+          onOk={this.handleClose}
           open={open}
-          fullWidth
-          maxWidth="xs"
-          onClose={this.handleClose}
-          aria-labelledby="daily-rewards-dialog-title"
-          aria-describedby="daily-rewards-dialog-description"
+          showActions
+          title={currentDay !== 5 ? 'You’re heating up! 🔥' : 'You’re AMAZING! 🔥'}
         >
-          <DialogTitle
-            id="daily-rewards-dialog-title"
-            onClose={this.handleClose}
-          >
-            {currentDay !== 5 ? 'You’re heating up!' : 'You’re AMAZING!'}{' '}
-            <StreakIcon />
-          </DialogTitle>
-          <DialogContent>
-            <div className={classes.progressWrapper}>
-              <div className={classes.progress}>
-                <CircularProgress
-                  className={classes.background}
-                  variant="static"
-                  value={100}
-                  size={size}
-                  thickness={thickness}
-                  classes={{ svg: classes.circle }}
-                />
-              </div>
-              <div className={classes.progress}>
-                <CircularProgress
-                  className={cx(
-                    classes.main,
-                    currentDay === 5 && classes.completed
-                  )}
-                  variant="static"
-                  value={(currentDay * 100) / 5}
-                  size={size}
-                  thickness={thickness}
-                />
-              </div>
-              <div className={classes.progress}>
-                <Typography
-                  variant="h6"
-                  className={cx(
-                    classes.dayText,
-                    currentDay === 5 && classes.dayTextCompleted
-                  )}
-                  align="center"
-                >
-                  {`Day ${currentDay}`}
-                </Typography>
-                <Typography variant="subtitle1" align="center">
-                  {`+${(tiers.find(o => o.day === currentDay) || {}).points ||
-                    0}`}
-                </Typography>
-              </div>
+          <div className={classes.progressWrapper}>
+            <div className={classes.progress}>
+              <CircularProgress
+                className={classes.background}
+                variant="static"
+                value={100}
+                size={size}
+                thickness={thickness}
+                classes={{ svg: classes.circle }}
+              />
             </div>
-            <div className={classes.tiers}>
-              {tiers.map(tier => (
-                <div key={tier.day} className={classes.tierItem}>
-                  <div className={classes.tierShapes}>
-                    <div
-                      className={cx(
-                        classes.tierCircle,
-                        tier.day > currentDay && classes.disabled
-                      )}
-                    />
-                    <div
-                      className={cx(
-                        classes.tierLine,
-                        tier.day >= currentDay && classes.disabled,
-                        tier.day === 5 && classes.hidden
-                      )}
-                    />
-                    <div
-                      className={cx(
-                        classes.tierLine,
-                        classes.left,
-                        tier.day > currentDay && classes.disabled,
-                        tier.day === 1 && classes.hidden
-                      )}
-                    />
-                  </div>
-                  <Typography>{`+${tier.points.toLocaleString()}`}</Typography>
-                </div>
-              ))}
-              {/* <div className={classes.tierItem}>
+            <div className={classes.progress}>
+              <CircularProgress
+                className={cx(
+                  classes.main,
+                  currentDay === 5 && classes.completed
+                )}
+                variant="static"
+                value={(currentDay * 100) / 5}
+                size={size}
+                thickness={thickness}
+              />
+            </div>
+            <div className={classes.progress}>
+              <Typography
+                variant="h6"
+                className={cx(
+                  classes.dayText,
+                  currentDay === 5 && classes.dayTextCompleted
+                )}
+                align="center"
+              >
+                {`Day ${currentDay}`}
+              </Typography>
+              <Typography variant="subtitle1" align="center">
+                {`+${(tiers.find(o => o.day === currentDay) || {}).points ||
+                  0}`}
+              </Typography>
+            </div>
+          </div>
+          <div className={classes.tiers}>
+            {tiers.map(tier => (
+              <div key={tier.day} className={classes.tierItem}>
                 <div className={classes.tierShapes}>
-                  <div className={classes.tierCircle} />
-                  <div className={classes.tierLine} />
+                  <div
+                    className={cx(
+                      classes.tierCircle,
+                      tier.day > currentDay && classes.disabled
+                    )}
+                  />
+                  <div
+                    className={cx(
+                      classes.tierLine,
+                      tier.day >= currentDay && classes.disabled,
+                      tier.day === 5 && classes.hidden
+                    )}
+                  />
                   <div
                     className={cx(
                       classes.tierLine,
                       classes.left,
-                      classes.hidden
+                      tier.day > currentDay && classes.disabled,
+                      tier.day === 1 && classes.hidden
                     )}
                   />
                 </div>
-                <Typography>+10000</Typography>
+                <Typography>{`+${tier.points.toLocaleString()}`}</Typography>
               </div>
-              <div className={classes.tierItem}>
-                <div className={classes.tierShapes}>
-                  <div className={classes.tierCircle} />
-                  <div className={classes.tierLine} />
-                  <div className={cx(classes.tierLine, classes.left)} />
-                </div>
-                <Typography>+20000</Typography>
-              </div>
-              <div className={classes.tierItem}>
-                <div className={classes.tierShapes}>
-                  <div className={classes.tierCircle} />
-                  <div className={classes.tierLine} />
-                  <div className={cx(classes.tierLine, classes.left)} />
-                </div>
-                <Typography>+30000</Typography>
-              </div>
-              <div className={classes.tierItem}>
-                <div className={classes.tierShapes}>
-                  <div className={classes.tierCircle} />
-                  <div className={cx(classes.tierLine, classes.disabled)} />
-                  <div className={cx(classes.tierLine, classes.left)} />
-                </div>
-                <Typography>+40000</Typography>
-              </div>
-              <div className={classes.tierItem}>
-                <div className={classes.tierShapes}>
-                  <div className={cx(classes.tierCircle, classes.disabled)} />
-                  <div className={cx(classes.tierLine, classes.hidden)} />
-                  <div
-                    className={cx(
-                      classes.tierLine,
-                      classes.left,
-                      classes.disabled
-                    )}
-                  />
-                </div>
-                <Typography>+50000</Typography>
-              </div> */}
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.handleClose}
-              variant="contained"
-              color="primary"
-              autoFocus
-            >
-              Got It!
-            </Button>
-          </DialogActions>
+            ))}
+          </div>
         </Dialog>
       </ErrorBoundary>
     );

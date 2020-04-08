@@ -1,25 +1,37 @@
 // @flow
-
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import DialogTitle from '../DialogTitle';
+import Dialog, { dialogStyle } from '../Dialog';
 
-const styles = () => ({});
-
-type ProvidedProps = {
-  //   classes: Object
-};
+const styles = () => ({
+  button: {
+    borderRadius: 8,
+    fontSize: 14,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    lineHeight: '14px',
+    margin: 10,
+    padding: '9px 18px',
+    width: 120,
+  },
+  buttons: {
+    display: 'flex',
+    marginTop: 10,
+    justifyContent: 'flex-end',
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 500
+  }
+});
 
 type Props = {
-  //   classes: Object
+  classes: Object,
   open: boolean,
   title: string,
   body: string,
@@ -27,8 +39,6 @@ type Props = {
   handleClose: Function,
   pushTo: Function
 };
-
-type State = {};
 
 class SimpleErrorDialog extends React.PureComponent<
   ProvidedProps & Props,
@@ -45,42 +55,38 @@ class SimpleErrorDialog extends React.PureComponent<
   };
 
   render() {
-    const { open, title, body, showSignup, handleClose } = this.props;
+    const { open, classes, title, body, showSignup, handleClose } = this.props;
     return (
       <Dialog
+        ariaDescribedBy="alert-dialog-description"
+        className={classes.dialog}
+        onCancel={handleClose}
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        title={title}
       >
-        <DialogTitle id="alert-dialog-title" onClose={handleClose}>
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText color="textPrimary" id="alert-dialog-description">
-            {body}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
+        <Typography color="textPrimary" id="alert-dialog-description">
+          {body}
+        </Typography>
+        <div className={classes.buttons}>
           {showSignup && (
             <Button
-              variant="outlined"
-              onClick={this.handleSignUp}
+              className={classes.button}
               color="primary"
-              autoFocus
+              onClick={this.handleSignUp}
+              variant="outlined"
             >
               Sign up
             </Button>
           )}
           <Button
-            variant="contained"
-            onClick={handleClose}
+            className={classes.button}
             color="primary"
-            autoFocus
+            onClick={handleClose}
+            variant="contained"
           >
             {showSignup ? 'Try Again' : 'Ok'}
           </Button>
-        </DialogActions>
+        </div>
       </Dialog>
     );
   }

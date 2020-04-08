@@ -8,9 +8,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -27,7 +24,7 @@ import LabelIcon from '@material-ui/icons/Label';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import type { ToDos } from '../../types/models';
 import RemindersAddNew from '../RemindersAddNew';
-import DialogTitle from '../DialogTitle';
+import Dialog from '../Dialog';
 import Toolbar from './Toolbar';
 import DateHeader from './DateHeader';
 import MonthHeader from './MonthHeader';
@@ -214,61 +211,48 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
             label !== -2 &&
             status !== -1
           }
-          fullWidth
-          onClose={this.handleClose}
-          aria-labelledby="reminders-dialog-title"
-          aria-describedby="reminders-dialog-description"
+          okTitle="OK"
+          onCancel={this.handleClose}
+          onOk={this.handleClose}
+          showActions
+          title="View Event"
         >
-          <DialogTitle
-            variant="h5"
-            id="reminders-dialog-title"
-            onClose={this.handleClose}
-          >
-            View Event
-          </DialogTitle>
-          <DialogContent>
-            <List component="div" disablePadding>
-              <ListItem
-                button
-                dense
-                key={id}
-                onClick={this.handleUpdate({
-                  id,
-                  status: status === 2 ? 1 : 2
-                })}
-              >
-                <ListItemIcon>
-                  <Checkbox
-                    checked={status === 2}
-                    tabIndex={-1}
-                    disableRipple
-                  />
-                </ListItemIcon>
-                <ListItemIcon>
-                  <LabelIcon className={cx(this.renderClass(label))} />
-                </ListItemIcon>
-                <ListItemText
-                  inset
-                  primary={title}
-                  secondary={due}
-                  secondaryTypographyProps={{ color: 'textPrimary' }}
+          <List component="div" disablePadding>
+            <ListItem
+              button
+              dense
+              key={id}
+              onClick={this.handleUpdate({
+                id,
+                status: status === 2 ? 1 : 2
+              })}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  checked={status === 2}
+                  tabIndex={-1}
+                  disableRipple
                 />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    aria-label="Delete"
-                    onClick={this.handleDelete(id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
+              </ListItemIcon>
+              <ListItemIcon>
+                <LabelIcon className={cx(this.renderClass(label))} />
+              </ListItemIcon>
+              <ListItemText
+                inset
+                primary={title}
+                secondary={due}
+                secondaryTypographyProps={{ color: 'textPrimary' }}
+              />
+              <ListItemSecondaryAction>
+                <IconButton
+                  aria-label="Delete"
+                  onClick={this.handleDelete(id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
         </Dialog>
       </Fragment>
     );

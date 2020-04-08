@@ -4,14 +4,10 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -23,6 +19,7 @@ import giftCards from '../../assets/img/gift-cards.png'
 import addClasses from '../../assets/img/add-classes.png'
 import withRoot from '../../withRoot';
 import ErrorBoundary from '../ErrorBoundary';
+import Dialog, { dialogStyle } from '../../components/Dialog';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import { updateProfile as updateUserProfile } from '../../api/user';
 
@@ -34,11 +31,6 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     padding: 'initial'
-  },
-  title: {
-    maxWidth: 675,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   button: {
     borderRadius: 8,
@@ -83,8 +75,9 @@ const styles = theme => ({
     maxWidth: 600,
     textAlign: 'center',
   },
-  dialogPaper: {
-    height: 700,
+  dialog: {
+    ...dialogStyle,
+    height: 750,
     padding: 20,
     width: 750,
   },
@@ -330,34 +323,32 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   return (
     <ErrorBoundary>
       <Dialog
-        open={open}
+        ariaDescribedby='onboarding-description'
+        className={classes.dialog}
         disableBackdropClick
         disableEscapeKeyDown
-        maxWidth='md'
-        classes={{ paper: classes.dialogPaper }}
-        aria-labelledby='onboarding-title'
-        aria-describedby='onboarding-description'
+        open={open}
+        title={renderTitle(activeStep)}
       >
-        <DialogTitle id='onboarding-title' style={{ textAlign: 'center' }}>
-          <Typography component='div' variant='h4' className={classes.title}>
-            {renderTitle(activeStep)}
-          </Typography>
-        </DialogTitle>
-        <DialogContent className={classes.content}>
-          <DialogContentText color='textPrimary' align='center'>
-            <Typography component='div' className={classes.subtitle}>
+        <div className={classes.content}>
+          <Typography color='textPrimary' align='center'>
+            <Typography
+              id="onboarding-description"
+              component='div'
+              className={classes.subtitle}
+            >
               {renderSubtitle(activeStep)}
             </Typography>
-          </DialogContentText>
+          </Typography>
           {renderBody(activeStep)}
           <MobileStepper
-            variant='dots'
-            steps={3}
-            position='static'
             activeStep={activeStep - 1}
             className={classes.stepper}
+            position='static'
+            steps={3}
+            variant='dots'
           />
-        </DialogContent>
+        </div>
       </Dialog>
     </ErrorBoundary>
   );

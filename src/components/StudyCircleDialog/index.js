@@ -1,15 +1,10 @@
 // @flow
-
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DialogTitle from '../DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '../Dialog';
 import type { StudyCircle } from '../../types/models';
 
 const styles = theme => ({
@@ -101,22 +96,19 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
 
     return (
       <Dialog
+        ariaDescribedBy="study-circle-description"
+        onCancel={onClose}
         open={open}
-        onClose={onClose}
-        aria-labelledby="study-circle-title"
-        aria-describedby="study-circle-description"
+        title="Congratulations"
       >
-        <DialogTitle id="study-circle-title" onClose={onClose}>
-          Congratulations
-        </DialogTitle>
-        <DialogContent className={classes.content}>
-          <DialogContentText
+        <div className={classes.content}>
+          <Typography
             align="center"
             id="study-circle-description"
             color="textPrimary"
           >
             You added <strong>{name}</strong> to your Study Circle
-          </DialogContentText>
+          </Typography>
           {loading && (
             <div className={classes.progress}>
               <CircularProgress />
@@ -136,9 +128,9 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
                   style={{
                     transform: `rotate(${270 +
                       index * degreeAngle}deg) translate(120px) rotate(${-(
-                      270 +
-                      index * degreeAngle
-                    )}deg)`
+                        270 +
+                        index * degreeAngle
+                      )}deg)`
                   }}
                 >
                   <Avatar
@@ -151,16 +143,11 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
               ))}
             </div>
           )}
-          <DialogContentText align="center" color="textPrimary">
+          <Typography align="center" color="textPrimary">
             You will be notified when <strong>{name}</strong> publishes new
             content
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
+          </Typography>
+        </div>
       </Dialog>
     );
   }

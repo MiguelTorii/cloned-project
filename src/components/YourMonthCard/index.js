@@ -290,7 +290,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
           </div>
         </Paper>
         <Dialog
-          open={open}
+          open
           onClose={this.handleClose}
           fullWidth
           maxWidth="md"

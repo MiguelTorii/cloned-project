@@ -7,10 +7,6 @@ import first from 'lodash/first';
 import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import Fab from '@material-ui/core/Fab';
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
@@ -24,7 +20,7 @@ import SharingScreenControl from '../../components/MeetUp2/SharingScreenControl'
 import NoParticipants from '../../components/MeetUp2/NoParticipants';
 import Whiteboard from '../../components/MeetUp2/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp2/WhiteboardControls';
-import DialogTitle from '../../components/DialogTitle';
+import Dialog from '../../components/Dialog';
 import VideoPointsDialog from '../../components/VideoPointsDialog';
 import { renewTwilioToken } from '../../api/chat';
 import { getUserProfile } from '../../api/user';
@@ -863,18 +859,11 @@ class MeetUp extends React.Component<Props, State> {
             )}
           </div>
           <Dialog
+            onCancel={this.handleCanvasClose}
             open={Boolean(canvasImg !== '')}
-            onClose={this.handleCanvasClose}
-            aria-labelledby="canvas-img-dialog-title"
-            aria-describedby="canvas-img-dialog-description"
+            title="Whiteboard Screenshot"
           >
-            <DialogTitle
-              id="canvas-img-dialog-title"
-              onClose={this.handleCanvasClose}
-            >
-              Whiteboard Screenshot
-            </DialogTitle>
-            <DialogContent className={classes.canvasWrapper}>
+            <div className={classes.canvasWrapper}>
               {canvasImg !== '' && (
                 <img
                   src={canvasImg}
@@ -882,12 +871,7 @@ class MeetUp extends React.Component<Props, State> {
                   alt="Canvas screenshot"
                 />
               )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleCanvasClose} color="primary">
-                Ok
-              </Button>
-            </DialogActions>
+            </div>
           </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>

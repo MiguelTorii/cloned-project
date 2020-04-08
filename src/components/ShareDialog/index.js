@@ -3,14 +3,11 @@
 import React, { Fragment } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import DialogTitle from '../DialogTitle';
+import Dialog from '../Dialog';
 
 const styles = theme => ({
   icon: {
@@ -55,40 +52,35 @@ class ShareDialog extends React.PureComponent<Props, State> {
     } = this.props;
     return (
       <Dialog
+        ariaDescribedBy="share-dialog-description"
+        onCancel={onClose}
         open={open}
-        onClose={onClose}
-        aria-labelledby="share-dialog-title"
-        aria-describedby="share-dialog-description"
+        title="Share this Post"
       >
-        <DialogTitle variant="h5" id="share-dialog-title" onClose={onClose}>
-          Share this Post
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            variant="h6"
-            id="share-dialog-description"
-            color="textPrimary"
-          >
-            Copy this link and send it to your classmates.
-          </DialogContentText>
-          <div className={classes.content}>
-            {isLoading ? (
-              <CircularProgress />
-            ) : (
-              <Fragment>
-                <div className={classes.link}>
-                  <Typography variant="subtitle1">{link}</Typography>
-                </div>
-                <CopyToClipboard text={link} onCopy={onLinkCopied}>
-                  <Button variant="contained" color="primary" autoFocus>
-                    <FileCopyIcon className={classes.icon} />
-                    Copy
-                  </Button>
-                </CopyToClipboard>
-              </Fragment>
-            )}
-          </div>
-        </DialogContent>
+        <Typography
+          variant="h6"
+          id="share-dialog-description"
+          color="textPrimary"
+        >
+          Copy this link and send it to your classmates.
+        </Typography>
+        <div className={classes.content}>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Fragment>
+              <div className={classes.link}>
+                <Typography variant="subtitle1">{link}</Typography>
+              </div>
+              <CopyToClipboard text={link} onCopy={onLinkCopied}>
+                <Button variant="contained" color="primary" autoFocus>
+                  <FileCopyIcon className={classes.icon} />
+                  Copy
+                </Button>
+              </CopyToClipboard>
+            </Fragment>
+          )}
+        </div>
       </Dialog>
     );
   }

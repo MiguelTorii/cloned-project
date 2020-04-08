@@ -7,8 +7,6 @@ import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
@@ -21,7 +19,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
-import DialogTitle from '../DialogTitle';
+import Dialog, { dialogStyle } from '../Dialog';
 import DateRange from '../DateRange';
 
 const types = [
@@ -105,6 +103,10 @@ const styles = theme => ({
   filterButton: {
     marginLeft: theme.spacing(2),
     marginTop: theme.spacing(1),
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 350
   }
 });
 
@@ -113,7 +115,6 @@ type Props = {
   courseDisplayName: string,
   newClassExperience: boolean,
   query: string,
-  from: string,
   userClasses: Array<string>,
   postTypes: Array<string>,
   classesList: Array<{ value: string, label: string }>,
@@ -331,16 +332,15 @@ class FeedFilter extends React.PureComponent<Props, State> {
           </div>
         </Paper>
         <Dialog
+          className={classes.dialog}
+          okTitle="Search"
+          onCancel={this.handleClose}
+          onOk={this.handleApplyFilters}
           open={open}
-          onClose={this.handleClose}
-          fullWidth
-          maxWidth="sm"
-          aria-labelledby="filter-dialog-title"
-          aria-describedby="filter-dialog-description"
+          showActions
+          showCancel
+          title="Filter Posts by:"
         >
-          <DialogTitle id="filter-dialog-title" onClose={this.handleClose}>
-            Filter Posts by:
-          </DialogTitle>
           <Grid container>
             {!newClassExperience && <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
@@ -429,7 +429,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
               )}
             </Grid>
           </Grid>
-          <DialogActions className={classes.actions}>
+          <div className={classes.actions}>
             <Button
               color="primary"
               className={classes.button}
@@ -439,22 +439,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
               Reset Filters
             </Button>
             <span className={classes.grow} />
-            <Button
-              color="primary"
-              className={classes.button}
-              onClick={this.handleClose}
-            >
-              cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={this.handleApplyFilters}
-            >
-              Search
-            </Button>
-          </DialogActions>
+          </div>
         </Dialog>
       </Fragment>
     );

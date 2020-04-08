@@ -3,27 +3,15 @@
 import React from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog, { dialogStyle } from '../Dialog';
 import AutoComplete from '../AutoComplete';
 
 const styles = theme => ({
-  title: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  grow: {
-    flex: 1
-  },
   validatorForm: {
     flex: 1,
     display: 'flex',
@@ -34,43 +22,12 @@ const styles = theme => ({
     height: '65vh',
     marginTop: theme.spacing(2)
   },
-  center: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatarButton: {
-    height: 120,
-    width: 120,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  avatar: {
-    height: 120,
-    width: 120
-  },
-  groupIcon: {
-    height: 80,
-    width: 80
-  },
-  marginTop: {
-    marginTop: theme.spacing(2)
-  },
   input: {
     display: 'none'
   },
-  wrapper: {
-    margin: theme.spacing(),
-    position: 'relative'
-  },
-  buttonProgress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12
+  dialog: {
+    ...dialogStyle,
+    width: 600
   }
 });
 
@@ -145,93 +102,65 @@ class AddMembers extends React.PureComponent<Props, State> {
 
     return (
       <Dialog
+        className={classes.dialog}
         disableBackdropClick={isLoading}
         disableEscapeKeyDown={isLoading}
-        style={{ maxWidth: 600, margin: '0 auto' }}
-        fullScreen
-        fullWidth
+        okTitle="Add"
         open={open}
-        onClose={this.handleClose}
-        scroll="body"
-        aria-labelledby="add-members-dialog-title"
+        onCancel={this.handleClose}
+        onOk={this.handleSubmit}
+        showActions
+        showCancel
+        title="Add New Group Member"
       >
-        <DialogTitle
-          id="add-members-dialog-title"
-          disableTypography
-          className={classes.title}
-        >
-          <Typography variant="h6">Add New Group Member</Typography>
-        </DialogTitle>
+        {isLoading && <CircularProgress
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%'
+          }}
+        />}
         <ValidatorForm
           onSubmit={this.handleSubmit}
           className={classes.validatorForm}
         >
-          <DialogContent>
-            <div className={classes.form}>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="From"
-                  name="from"
-                  value={from}
-                  onChange={this.handleChange('from')}
-                  row
-                >
-                  <FormControlLabel
-                    value="school"
-                    disabled={isLoading}
-                    control={<Radio />}
-                    label="My Classes"
-                  />
-                  <FormControlLabel
-                    value="everyone"
-                    disabled={isLoading}
-                    control={<Radio />}
-                    label="My School"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <AutoComplete
-                values={users}
-                inputValue={inputValue}
-                label="Select users"
-                placeholder="Search for classmates"
-                error={error}
-                errorText="You must select at least 1 classmate"
-                cacheUniq={from}
-                isMulti
-                isDisabled={isLoading}
-                onChange={this.handleAutoComplete}
-                onLoadOptions={this.handleLoadOptions}
-              />
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              disabled={isLoading}
-              onClick={this.handleClose}
-              color="secondary"
-              variant="contained"
-            >
-              Cancel
-            </Button>
-
-            <div className={classes.wrapper}>
-              <Button
-                disabled={isLoading}
-                type="submit"
-                color="primary"
-                variant="contained"
+          <div className={classes.form}>
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="From"
+                name="from"
+                value={from}
+                onChange={this.handleChange('from')}
+                row
               >
-                Add
-              </Button>
-              {isLoading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
+                <FormControlLabel
+                  value="school"
+                  disabled={isLoading}
+                  control={<Radio />}
+                  label="My Classes"
                 />
-              )}
-            </div>
-          </DialogActions>
+                <FormControlLabel
+                  value="everyone"
+                  disabled={isLoading}
+                  control={<Radio />}
+                  label="My School"
+                />
+              </RadioGroup>
+            </FormControl>
+            <AutoComplete
+              values={users}
+              inputValue={inputValue}
+              label="Select users"
+              placeholder="Search for classmates"
+              error={error}
+              errorText="You must select at least 1 classmate"
+              cacheUniq={from}
+              isMulti
+              isDisabled={isLoading}
+              onChange={this.handleAutoComplete}
+              onLoadOptions={this.handleLoadOptions}
+            />
+          </div>
         </ValidatorForm>
       </Dialog>
     );

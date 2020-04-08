@@ -2,19 +2,16 @@
 
 import React, { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Dialog from '@material-ui/core/Dialog';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DialogTitle from '../../components/DialogTitle';
+import Dialog, { dialogStyle } from '../../components/Dialog';
 import { getInitials } from './utils';
 import type { ChatUser } from '../../types/models';
 import { blockUser } from '../../api/user';
@@ -22,9 +19,6 @@ import { getGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
-  dialog: {
-    zIndex: 2100
-  },
   list: {
     width: '100%'
   },
@@ -38,6 +32,11 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 500,
+    zIndex: 2100
   }
 });
 
@@ -105,124 +104,85 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <Dialog
-            open={open}
-            onClose={onClose}
-            disableEscapeKeyDown={loading}
-            disableBackdropClick={loading}
-            maxWidth="xs"
-            fullWidth
             className={classes.dialog}
-            aria-labelledby="members-dialog-title"
+            disableActions={loading}
+            disableBackdropClick={loading}
+            disableEscapeKeyDown={loading}
+            okTitle="Add Memeber"
+            onCancel={onClose}
+            onOk={onAddMember}
+            open={open}
+            showActions
+            showCancel
+            title="Members"
           >
-            <DialogTitle id="members-dialog-title" onClose={onClose}>
-              Members
-            </DialogTitle>
-            <DialogContent>
-              <List className={classes.list}>
-                {members.map(value => (
-                  <ListItem key={value.userId} role={undefined} dense>
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={`${value.firstName} ${value.lastName}`}
-                        src={value.profileImageUrl}
-                      >
-                        {getInitials({
-                          name: `${value.firstName} ${value.lastName}`
-                        })}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        Number(userId) === Number(value.userId)
-                          ? 'me'
-                          : `${value.firstName} ${value.lastName}`
-                      }
-                    />
-                    {Number(userId) !== Number(value.userId) && (
-                      <ListItemSecondaryAction>
-                        <div className={classes.wrapper}>
-                          <Button
-                            onClick={this.handleOpenConfirm({
-                              blockedUserId: value.userId,
-                              name: `${value.firstName} ${value.lastName}`
-                            })}
-                            disabled={loading}
-                            color="secondary"
-                            aria-label="Block"
-                            variant="contained"
-                          >
-                            Block
-                          </Button>
-                          {loading && (
-                            <CircularProgress
-                              size={24}
-                              className={classes.buttonProgress}
-                            />
-                          )}
-                        </div>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
-              </List>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={onAddMember}
-                disabled={loading}
-                color="primary"
-                variant="outlined"
-              >
-                Add Member
-              </Button>
-              <Button
-                onClick={onClose}
-                disabled={loading}
-                color="primary"
-                variant="contained"
-              >
-                Ok
-              </Button>
-            </DialogActions>
+            <List className={classes.list}>
+              {members.map(value => (
+                <ListItem key={value.userId} role={undefined} dense>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={`${value.firstName} ${value.lastName}`}
+                      src={value.profileImageUrl}
+                    >
+                      {getInitials({
+                        name: `${value.firstName} ${value.lastName}`
+                      })}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      Number(userId) === Number(value.userId)
+                        ? 'me'
+                        : `${value.firstName} ${value.lastName}`
+                    }
+                  />
+                  {Number(userId) !== Number(value.userId) && (
+                    <ListItemSecondaryAction>
+                      <div className={classes.wrapper}>
+                        <Button
+                          onClick={this.handleOpenConfirm({
+                            blockedUserId: value.userId,
+                            name: `${value.firstName} ${value.lastName}`
+                          })}
+                          disabled={loading}
+                          color="secondary"
+                          aria-label="Block"
+                          variant="contained"
+                        >
+                          Block
+                        </Button>
+                        {loading && (
+                          <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                          />
+                        )}
+                      </div>
+                    </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+              ))}
+            </List>
           </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
           <Dialog
-            open={Boolean(blockedUserId)}
-            onClose={this.handleConfirmClose}
+            ariaDescribedBy="confirm-dialog-description"
             className={classes.dialog}
-            aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
+            okTitle="Yes, I'm sure"
+            onCancel={this.handleConfirmClose}
+            onOk={this.handleBlock(blockedUserId)}
+            open={Boolean(blockedUserId)}
+            showActions
+            showCancel
+            title="Block User"
           >
-            <DialogTitle
-              id="confirm-dialog-title"
-              onClose={this.handleConfirmClose}
+            <Typography
+              color="textPrimary"
+              id="confirm-dialog-description"
             >
-              Block User
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText
-                color="textPrimary"
-                id="confirm-dialog-description"
-              >
-                Are you sure you want to block {name}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={this.handleConfirmClose}
-                color="primary"
-                autoFocus
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={this.handleBlock(blockedUserId)}
-                color="secondary"
-              >
-                {"Yes, I'm sure"}
-              </Button>
-            </DialogActions>
+              Are you sure you want to block {name}
+            </Typography>
           </Dialog>
         </ErrorBoundary>
       </Fragment>

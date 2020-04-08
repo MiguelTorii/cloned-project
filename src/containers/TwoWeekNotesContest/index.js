@@ -7,12 +7,8 @@ import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import { DialogContentText } from '@material-ui/core';
-import DialogTitle from '../../components/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '../../components/Dialog';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -79,61 +75,42 @@ class TwoWeekNotesContest extends React.PureComponent<Props, State> {
     return (
       <ErrorBoundary>
         <Dialog
+          okTitle="Head to Reward Store"
+          onCancel={this.handleClose}
+          onOk={this.handleClick}
           open={open}
-          fullWidth
-          maxWidth="md"
-          className={classes.root}
-          onClose={this.handleClose}
-          aria-labelledby="two-week-notes-contest-dialog-title"
-          aria-describedby="two-week-notes-contest-dialog-description"
+          showActions
+          title="TWO-WEEK NOTES CONTEST"
         >
-          <DialogTitle
-            id="two-week-notes-contest-dialog-title"
-            onClose={this.handleClose}
+          <Typography color="textPrimary" paragraph>
+            Everyone who shares 5 pages of notes over the next 2 weeks will
+            earn an MVP certificate that goes towards the Season 1 Grand Prize
+            raffle for Beats Headphones.
+          </Typography>
+          <Typography color="textPrimary" paragraph>
+            We’re also going to select a special student who shares 5 pages of
+            notes, and send them $100 towards one of their top three rewards
+            selected!
+          </Typography>
+          <Typography color="textPrimary" paragraph>
+            These are the rules:
+            <br />
+            A minimum of 5 pages of notes by September 25th
+            <br />
+            Your posts cannot be reported as spam
+            <br />
+            Do not repost the same page of notes
+          </Typography>
+          <Typography
+            color="textPrimary"
+            style={{ fontWeight: 'bold' }}
+            align="center"
           >
-            TWO-WEEK NOTES CONTEST
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText color="textPrimary" paragraph>
-              Everyone who shares 5 pages of notes over the next 2 weeks will
-              earn an MVP certificate that goes towards the Season 1 Grand Prize
-              raffle for Beats Headphones.
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              We’re also going to select a special student who shares 5 pages of
-              notes, and send them $100 towards one of their top three rewards
-              selected!
-            </DialogContentText>
-            <DialogContentText color="textPrimary" paragraph>
-              These are the rules:
-              <br />
-              A minimum of 5 pages of notes by September 25th
-              <br />
-              Your posts cannot be reported as spam
-              <br />
-              Do not repost the same page of notes
-            </DialogContentText>
-            <DialogContentText
-              color="textPrimary"
-              style={{ fontWeight: 'bold' }}
-              align="center"
-            >
-              Choose your top three rewards to begin!
-            </DialogContentText>
-            <div className={classes.frame}>
-              <Frame />
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.handleClick}
-              variant="contained"
-              color="primary"
-              autoFocus
-            >
-              Head to Reward Store
-            </Button>
-          </DialogActions>
+            Choose your top three rewards to begin!
+          </Typography>
+          <div className={classes.frame}>
+            <Frame />
+          </div>
         </Dialog>
       </ErrorBoundary>
     );

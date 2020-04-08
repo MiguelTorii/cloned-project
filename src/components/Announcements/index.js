@@ -1,14 +1,19 @@
 // @flow
 
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '../DialogTitle';
+import Dialog, { dialogStyle } from '../Dialog';
+
+const styles = () => ({
+  dialog: {
+    ...dialogStyle,
+    width: 500,
+  }
+});
 
 type Props = {
+  classes: Object,
   open: boolean,
   onClose: Function,
   onCreate: Function
@@ -18,38 +23,30 @@ type State = {};
 
 class Announcements extends React.PureComponent<Props, State> {
   render() {
-    const { open, onClose, onCreate } = this.props;
+    const { classes, open, onClose, onCreate } = this.props;
     return (
       <Dialog
+        ariaDescribedBy="circlein-announcements"
+        className={classes.dialog}
+        okTitle="Create"
+        onCancel={onClose}
+        onOk={onCreate}
         open={open}
-        onClose={onClose}
-        aria-labelledby="announcements-dialog-title"
-        aria-describedby="announcements-dialog-description"
+        showActions
+        showCancel
+        title="Announcement"
       >
-        <DialogTitle id="announcements-dialog-title" onClose={onClose}>
-          Announcement
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            id="announcements-dialog-description"
-            color="textPrimary"
-          >
-            Start a study hall with your classmates to let them know about
-            upcoming tests, homework, after-school events or really anything you
-            can think of.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={onCreate} color="primary" variant="contained">
-            Create
-          </Button>
-        </DialogActions>
+        <DialogContentText
+          id="circlein-announcements"
+          color="textPrimary"
+        >
+          Start a study hall with your classmates to let them know about
+          upcoming tests, homework, after-school events or really anything you
+          can think of.
+        </DialogContentText>
       </Dialog>
     );
   }
 }
 
-export default Announcements;
+export default withStyles(styles)(Announcements);

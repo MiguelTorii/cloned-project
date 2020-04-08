@@ -11,15 +11,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 // import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import TextFieldsIcon from '@material-ui/icons/TextFields';
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
-import DialogTitle from '../DialogTitle';
+import Dialog from '../Dialog';
 import OutlinedTextValidator from '../OutlinedTextValidator';
 import DropImage from './DropImage';
 
@@ -249,129 +246,72 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
           {this.renderContent(false)}
         </ReactCardFlip>
         <Dialog
+          title="Flashcard"
+          okTitle="Save"
+          onCancel={this.handleCancel}
+          onOk={this.handleSubmit}
           open={open}
-          onClose={this.handleCancel}
-          onBackdropClick={this.handleCancel}
-          onEscapeKeyDown={this.handleCancel}
-          aria-labelledby="form-dialog-title"
+          showActions
+          showCancel
         >
           <ValidatorForm onSubmit={this.handleSubmit} ref={this.myRef}>
-            <DialogTitle id="form-dialog-title" onClose={this.handleCancel}>
-              Flashcard
-            </DialogTitle>
-            <DialogContent>
-              <Grid container alignItems="center">
-                <Grid item xs={2}>
-                  <Typography variant="subtitle1">Question</Typography>
-                </Grid>
-                <Grid container item xs={10}>
-                  {/* <Grid item xs={12} className={classes.inputActions}>
-                    <Fab
-                      variant="extended"
-                      color="primary"
-                      size="small"
-                      aria-label="Change Type"
-                      onClick={this.handleInputType('questionImage')}
-                    >
-                      {!questionImage ? (
-                        <Fragment>
-                          <InsertPhotoIcon className={classes.extendedIcon} />
-                          Insert Image
-                        </Fragment>
-                      ) : (
-                        <Fragment>
-                          <TextFieldsIcon className={classes.extendedIcon} />
-                          Insert Text
-                        </Fragment>
-                      )}
-                    </Fab>
-                  </Grid> */}
-                  <Grid item xs={12}>
-                    {!questionImage ? (
-                      <OutlinedTextValidator
-                        label="Question"
-                        onChange={this.handleTextChange}
-                        autoFocus
-                        name="question"
-                        multiline
-                        rows={4}
-                        value={question}
-                        fullWidth
-                        validators={['required']}
-                        errorMessages={['Question is required']}
-                      />
-                    ) : (
-                      <DropImage
-                        isDropzoneDisabled={false}
-                        onDrop={this.handleDrop('question')}
-                        onDropRejected={onDropRejected}
-                      />
-                    )}
-                  </Grid>
-                </Grid>
+            <Grid container alignItems="center">
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Question</Typography>
+              </Grid>
+              <Grid container item xs={10}>
                 <Grid item xs={12}>
-                  <Divider light className={classes.divider} />
-                </Grid>
-                <Grid item xs={2}>
-                  <Typography variant="subtitle1">Answer</Typography>
-                </Grid>
-                <Grid container item xs={10}>
-                  {/* <Grid item xs={12} className={classes.inputActions}>
-                    <Fab
-                      variant="extended"
-                      color="primary"
-                      size="small"
-                      aria-label="Change Type"
-                      onClick={this.handleInputType('answerImage')}
-                    >
-                      {!answerImage ? (
-                        <Fragment>
-                          <InsertPhotoIcon className={classes.extendedIcon} />
-                          Insert Image
-                        </Fragment>
-                      ) : (
-                        <Fragment>
-                          <TextFieldsIcon className={classes.extendedIcon} />
-                          Insert Text
-                        </Fragment>
-                      )}
-                    </Fab>
-                  </Grid> */}
-                  <Grid item xs={12}>
-                    {!answerImage ? (
-                      <OutlinedTextValidator
-                        label="Answer"
-                        onChange={this.handleTextChange}
-                        name="answer"
-                        multiline
-                        rows={4}
-                        value={answer}
-                        validators={['required']}
-                        errorMessages={['Answer is required']}
-                      />
-                    ) : (
-                      <DropImage
-                        isDropzoneDisabled={false}
-                        onDrop={this.handleDrop('answer')}
-                        onDropRejected={onDropRejected}
-                      />
-                    )}
-                  </Grid>
+                  {!questionImage ? (
+                    <OutlinedTextValidator
+                      label="Question"
+                      onChange={this.handleTextChange}
+                      autoFocus
+                      name="question"
+                      multiline
+                      rows={4}
+                      value={question}
+                      fullWidth
+                      validators={['required']}
+                      errorMessages={['Question is required']}
+                    />
+                  ) : (
+                    <DropImage
+                      isDropzoneDisabled={false}
+                      onDrop={this.handleDrop('question')}
+                      onDropRejected={onDropRejected}
+                    />
+                  )}
                 </Grid>
               </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={this.handleSubmit}
-                variant="outlined"
-                color="primary"
-              >
-                Save
-              </Button>
-              <Button onClick={this.handleCancel} color="primary">
-                Close
-              </Button>
-            </DialogActions>
+              <Grid item xs={12}>
+                <Divider light className={classes.divider} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle1">Answer</Typography>
+              </Grid>
+              <Grid container item xs={10}>
+                <Grid item xs={12}>
+                  {!answerImage ? (
+                    <OutlinedTextValidator
+                      label="Answer"
+                      onChange={this.handleTextChange}
+                      name="answer"
+                      multiline
+                      rows={4}
+                      value={answer}
+                      validators={['required']}
+                      errorMessages={['Answer is required']}
+                    />
+                  ) : (
+                    <DropImage
+                      isDropzoneDisabled={false}
+                      onDrop={this.handleDrop('answer')}
+                      onDropRejected={onDropRejected}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
           </ValidatorForm>
         </Dialog>
       </Fragment>

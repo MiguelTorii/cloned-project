@@ -1,12 +1,8 @@
 // @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '../DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '../Dialog';
 
 const styles = () => ({
   details: {
@@ -35,33 +31,20 @@ class CustomNotification extends React.PureComponent<Props, State> {
 
     return (
       <Dialog
-        open={open}
-        onClose={onClose}
+        ariaDescribedBy="custom-notification-description"
         className={classes.root}
-        aria-labelledby="custom-notification-title"
-        aria-describedby="custom-notification-description"
+        onClose={onClose}
+        open={open}
+        showActions
+        title={title}
       >
-        <DialogTitle
-          variant="h5"
-          id="custom-notification-title"
-          onClose={onClose}
-        >
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            variant="h6"
-            id="custom-notification-description"
-            color="textPrimary"
-            className={classes.details}
-            dangerouslySetInnerHTML={{ __html: details }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={onClose} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
+        <Typography
+          className={classes.details}
+          color="textPrimary"
+          dangerouslySetInnerHTML={{ __html: details }}
+          id="custom-notification-description"
+          variant="h6"
+        />
       </Dialog>
     );
   }

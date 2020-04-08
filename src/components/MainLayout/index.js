@@ -884,7 +884,7 @@ class MainLayout extends React.Component<Props, State> {
         />
         <Dialog
           open={openUseCases}
-          onClose={this.handleCloseUseCases}
+          onCancel={this.handleCloseUseCases}
           title="How to use CircleIn for Studying"
         >
           <UseCases onRedirect={this.handleCloseUseCases} />

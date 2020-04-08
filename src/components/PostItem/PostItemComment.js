@@ -11,10 +11,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Link from '@material-ui/core/Link';
 // import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
@@ -22,7 +18,7 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import green from '@material-ui/core/colors/green';
 import TutorBadge from 'components/TutorBadge'
 import PostItemAddComment from './PostItemAddComment';
-import DialogTitle from '../DialogTitle';
+import Dialog from '../Dialog';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
 
@@ -348,45 +344,24 @@ class PostItemComment extends React.PureComponent<Props, State> {
           />
         </Collapse>
         <Dialog
+          ariaDescribedBy="remove-dialog-description"
+          okTitle="Confirm"
+          onCancel={this.handleCloseBestAnswer}
+          onOk={this.handleConfirmBestAnswer}
           open={open}
-          onClose={this.handleCloseBestAnswer}
-          aria-labelledby="best-answer-dialog-title"
-          aria-describedby="remove-dialog-description"
+          showActions
+          showCancel
+          title="Best Answer"
         >
-          <DialogTitle
-            id="best-answer-dialog-title"
-            onClose={this.handleCloseBestAnswer}
+          <Typography
+            color="textPrimary"
+            id="best-answer-dialog-description"
           >
-            Best Answer
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              color="textPrimary"
-              id="best-answer-dialog-description"
-            >
-              Are you sure you want to mark it as Best Answer?
-              <br />
-              <br />
-              Once you choose a Best Answer you cannot change it
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.handleCloseBestAnswer}
-              color="secondary"
-              variant="contained"
-              autoFocus
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={this.handleConfirmBestAnswer}
-              variant="contained"
-              color="primary"
-            >
-              Confirm
-            </Button>
-          </DialogActions>
+            Are you sure you want to mark it as Best Answer?
+            <br />
+            <br />
+            Once you choose a Best Answer you cannot change it
+          </Typography>
         </Dialog>
       </Fragment>
     );

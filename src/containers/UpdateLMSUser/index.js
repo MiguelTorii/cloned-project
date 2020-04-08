@@ -10,10 +10,6 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withRoot from '../../withRoot';
@@ -21,6 +17,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import Onboarding from '../Onboarding';
+import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
 import * as userActions from '../../actions/user';
@@ -29,6 +26,9 @@ import * as signInActions from '../../actions/sign-in';
 const styles = theme => ({
   root: {
     padding: theme.spacing(2)
+  },
+  dialog: {
+    ...dialogStyle
   },
   form: {
     width: '100%' // Fix IE 11 issue.
@@ -265,42 +265,26 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       <ErrorBoundary>
         <Dialog
           open={open}
-          fullWidth
-          maxWidth="xs"
           disableBackdropClick
           disableEscapeKeyDown
-          aria-labelledby="update-lms-user-dialog-title"
-          aria-describedby="update-lms-user-dialog-description"
+          okTitle="Update"
+          onOK={this.handleSubmit}
+          showActions
+          title="Update Profile"
         >
-          <DialogTitle id="update-lms-user-dialog-title">
-            Update Profile
-          </DialogTitle>
-          <div className={classes.root}>
+          <div className={classes.dialog}>
+            {loading && (
+              <CircularProgress
+                size={24}
+                className={classes.buttonProgress}
+              />
+            )}
             <ValidatorForm
               instantValidate
               onSubmit={this.handleSubmit}
               className={classes.form}
             >
               {renderForm}
-              <DialogActions>
-                <div className={classes.wrapper}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    autoFocus
-                    disabled={loading}
-                  >
-                    Update
-                  </Button>
-                  {loading && (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    />
-                  )}
-                </div>
-              </DialogActions>
             </ValidatorForm>
           </div>
         </Dialog>

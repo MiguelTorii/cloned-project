@@ -8,17 +8,13 @@ import {
 } from 'react-material-ui-form-validator';
 import { DateTimePicker } from 'material-ui-pickers';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DialogTitle from '../DialogTitle';
+import Dialog, { dialogStyle } from '../Dialog';
 import ClassesSelector from '../../containers/ClassesSelector';
 import OutlinedTextValidator from '../OutlinedTextValidator';
 
@@ -39,12 +35,16 @@ const styles = theme => ({
     margin: theme.spacing(),
     position: 'relative'
   },
-  buttonProgress: {
+  progress: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 600
   }
 });
 
@@ -115,22 +115,29 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
     const { purpose, meeting, selectedDate, help } = this.state;
     return (
       <Dialog
-        open={open}
+        ariaDescribedBy="video-points-description"
+        className={classes.dialog}
         disableBackdropClick={loading}
+        disableActions={loading}
         disableEscapeKeyDown={loading}
-        onClose={onClose}
-        aria-labelledby="video-points-title"
-        aria-describedby="video-points-description"
+        okTitle="Submit"
+        onCancel={onClose}
+        onOk={this.handleSubmit}
+        open={open}
+        showActions
+        showCancel
+        title="Congratulations!"
       >
-        <DialogTitle id="video-points-title" onClose={onClose}>
-          Congratulations!
-        </DialogTitle>
-        <DialogContent className={classes.content}>
-          <DialogContentText id="video-points-description" color="textPrimary">
-            {
-              "Nice Job! You've unlocked points for today's video study session. Fill out the fields below to receive your points"
-            }
-          </DialogContentText>
+        <div className={classes.content}>
+          {loading && (
+            <CircularProgress
+              size={24}
+              className={classes.buttonProgress}
+            />
+          )}
+          <Typography id="video-points-description" color="textPrimary">
+            Nice Job! You've unlocked points for today's video study session. Fill out the fields below to receive your points
+          </Typography>
           <ValidatorForm onSubmit={this.handleSubmit} className={classes.form}>
             <FormControl
               variant="outlined"
@@ -163,9 +170,9 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
                 onChange={this.handleClassesChange}
               />
             )}
-            <DialogContentText color="textPrimary">
+            <Typography color="textPrimary">
               Do you want to schedule another meeting for the next 7 days?
-            </DialogContentText>
+            </Typography>
             <FormControlLabel
               control={
                 <Switch
@@ -199,30 +206,12 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
               validators={['required']}
               errorMessages={['This field is required']}
             />
-            <DialogContentText color="textPrimary">{`${this.getLeftCharts()} characters left to earn points`}</DialogContentText>
-            <DialogActions>
-              <Button onClick={onClose} disabled={loading} color="primary">
-                Cancel
-              </Button>
-              <div className={classes.wrapper}>
-                <Button
-                  variant="contained"
-                  disabled={loading}
-                  type="submit"
-                  color="primary"
-                >
-                  Submit
-                </Button>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )}
-              </div>
-            </DialogActions>
+            <Typography
+              color="textPrimary">
+              {`${this.getLeftCharts()} characters left to earn points`}
+            </Typography>
           </ValidatorForm>
-        </DialogContent>
+        </div>
       </Dialog>
     );
   }

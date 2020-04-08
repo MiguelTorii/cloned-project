@@ -5,26 +5,24 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { BlockedUsers } from '../../types/models';
+import Dialog, { dialogStyle } from '../../components/Dialog';
 import { getBlockedUsers, unblockUser } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = () => ({
-  root: {
-    // padding: theme.spacing(2)
+  dialog: {
+    dialogStyle,
+    width: 400
   },
   list: {
     width: '100%',
@@ -111,57 +109,46 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
     return (
       <ErrorBoundary>
         <Dialog
+          ariaDescribedBy="blocked-users-dialog-description"
+          className={classes.dialog}
+          onCancel={onClose}
           open={open}
-          className={classes.root}
-          onClose={onClose}
-          fullWidth
-          aria-labelledby="blocked-users-dialog-title"
-          aria-describedby="blocked-users-dialog-description"
+          title="Blocked Users"
         >
-          <DialogTitle id="blocked-users-dialog-title" onClose={onClose}>
-            Blocked Users
-          </DialogTitle>
-          <DialogContent>
-            {loading && <CircularProgress size={12} />}
-            {!loading && blockedUsers.length === 0 && (
-              <DialogContentText
-                color="textPrimary"
-                id="blocked-users-dialog-description"
-              >
-                {"You don't have blocked users"}
-              </DialogContentText>
-            )}
-            {!loading && (
-              <List className={classes.list}>
-                {blockedUsers.map(user => (
-                  <ListItem key={user.userId} dense>
-                    <ListItemAvatar>
-                      <Avatar alt={user.name} src={user.profileImageUrl}>
-                        {user.name !== ''
-                          ? (user.name.match(/\b(\w)/g) || []).join('')
-                          : ''}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={user.name} />
-                    <ListItemSecondaryAction>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={this.handleUnBlock(user.userId)}
-                      >
-                        Unblock
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose} color="primary" variant="contained">
-              Ok
-            </Button>
-          </DialogActions>
+          {loading && <CircularProgress size={12} />}
+          {!loading && blockedUsers.length === 0 && (
+            <Typography
+              color="textPrimary"
+              id="blocked-users-dialog-description"
+            >
+              You don't have blocked users
+            </Typography>
+          )}
+          {!loading && (
+            <List className={classes.list}>
+              {blockedUsers.map(user => (
+                <ListItem key={user.userId} dense>
+                  <ListItemAvatar>
+                    <Avatar alt={user.name} src={user.profileImageUrl}>
+                      {user.name !== ''
+                        ? (user.name.match(/\b(\w)/g) || []).join('')
+                        : ''}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={user.name} />
+                  <ListItemSecondaryAction>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={this.handleUnBlock(user.userId)}
+                    >
+                      Unblock
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          )}
         </Dialog>
       </ErrorBoundary>
     );

@@ -4,15 +4,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
-import DialogTitle from '../../components/DialogTitle';
+import Dialog, { dialogStyle } from '../../components/Dialog';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { report } from '../../api/posts';
@@ -32,6 +28,10 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 600
   }
 });
 
@@ -56,6 +56,9 @@ class Report extends React.PureComponent<Props, State> {
     description: '',
     loading: false
   };
+
+  // eslint-disable-next-line no-undef
+  radioGroupRef: ?Object;
 
   handleEntering = () => {
     if (this.radioGroupRef) this.radioGroupRef.focus();
@@ -96,9 +99,6 @@ class Report extends React.PureComponent<Props, State> {
     }
   };
 
-  // eslint-disable-next-line no-undef
-  radioGroupRef: ?Object;
-
   render() {
     const {
       classes,
@@ -118,90 +118,70 @@ class Report extends React.PureComponent<Props, State> {
     return (
       <ErrorBoundary>
         <Dialog
-          maxWidth="md"
+          className={classes.dialog}
+          disableActions={loading}
           disableBackdropClick={loading}
-          onEntering={this.handleEntering}
-          aria-labelledby="confirmation-dialog-title"
-          classes={{
-            paper: classes.paper
-          }}
+          okTitle="Report"
+          onCancel={onClose}
+          onOk={this.handleSubmit}
           open={open}
-          onClose={onClose}
+          showActions
+          showCancel
+          title="Report"
         >
-          <DialogTitle id="confirmation-dialog-title" onClose={onClose}>
-            Report
-          </DialogTitle>
-          <DialogContent>
-            <RadioGroup
-              ref={ref => {
-                this.radioGroupRef = ref;
-              }}
-              aria-label="Reason"
-              name="reason"
-              value={reasonId}
-              onChange={this.handleChange}
-            >
-              <FormControlLabel
-                value="1"
-                disabled={loading}
-                control={<Radio />}
-                label="Inappropriate"
-              />
-              <FormControlLabel
-                value="2"
-                disabled={loading}
-                control={<Radio />}
-                label="Irrelevant"
-              />
-              <FormControlLabel
-                value="3"
-                disabled={loading}
-                control={<Radio />}
-                label="Bullying or Harassment- this post is bullying me"
-              />
-              <FormControlLabel
-                value="4"
-                disabled={loading}
-                control={<Radio />}
-                label="Bullying or Harassment- this post is bullying someone else"
-              />
-            </RadioGroup>
-            <TextField
-              id="report-description"
-              label="Description"
-              placeholder="Add more details"
-              disabled={loading}
-              fullWidth
-              multiline
-              rowsMax="4"
-              value={description}
-              onChange={this.handleTextChange}
-              variant="outlined"
-              margin="normal"
+          {loading && (
+            <CircularProgress
+              size={24}
+              className={classes.buttonProgress}
             />
-          </DialogContent>
-          <DialogActions>
-            <Button disabled={loading} onClick={onClose} color="primary">
-              Cancel
-            </Button>
-            <div className={classes.wrapper}>
-              <Button
-                disabled={loading}
-                onClick={this.handleSubmit}
-                type="submit"
-                color="primary"
-                variant="contained"
-              >
-                Report
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
-          </DialogActions>
+          )}
+          <RadioGroup
+            ref={ref => {
+              this.radioGroupRef = ref;
+            }}
+            aria-label="Reason"
+            name="reason"
+            value={reasonId}
+            onChange={this.handleChange}
+          >
+            <FormControlLabel
+              value="1"
+              disabled={loading}
+              control={<Radio />}
+              label="Inappropriate"
+            />
+            <FormControlLabel
+              value="2"
+              disabled={loading}
+              control={<Radio />}
+              label="Irrelevant"
+            />
+            <FormControlLabel
+              value="3"
+              disabled={loading}
+              control={<Radio />}
+              label="Bullying or Harassment- this post is bullying me"
+            />
+            <FormControlLabel
+              value="4"
+              disabled={loading}
+              control={<Radio />}
+              label="Bullying or Harassment- this post is bullying someone else"
+            />
+          </RadioGroup>
+          <TextField
+            id="report-description"
+            label="Description"
+            placeholder="Add more details"
+            disabled={loading}
+            fullWidth
+            multiline
+            rowsMax="4"
+            value={description}
+            onChange={this.handleTextChange}
+            variant="outlined"
+            margin="normal"
+          />
         </Dialog>
       </ErrorBoundary>
     );

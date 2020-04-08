@@ -6,16 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Badge from '@material-ui/core/Badge';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import VideoCamIcon from '@material-ui/icons/Videocam';
@@ -25,7 +20,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import GroupIcon from '@material-ui/icons/Group';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import DialogTitle from '../DialogTitle';
+import Dialog from '../Dialog';
 
 const styles = theme => ({
   paper: {
@@ -131,36 +126,6 @@ class ChatItem extends React.PureComponent<Props, State> {
     openRemove: false
   };
 
-  // handleCheckBoundingRect = () => {
-  //   if (!this.el) return;
-  //   const bounding = this.el.getBoundingClientRect();
-
-  //   if (bounding) {
-  //     const { top, left, bottom, right } = bounding;
-  //     console.log(bounding);
-  //     if (top < 0) {
-  //       // Top is out of viewport
-  //       console.log('close');
-  //     }
-
-  //     if (left < 0) {
-  //       // Left side is out of viewoprt
-  //       console.log('close');
-  //     }
-
-  //     if (
-  //       bottom > (window.innerHeight || document.documentElement.clientHeight)
-  //     ) {
-  //       // Bottom is out of viewport
-  //       console.log('close');
-  //     }
-
-  //     if (right > (window.innerWidth || document.documentElement.clientWidth)) {
-  //       // Right side is out of viewport
-  //       console.log('close');
-  //     }
-  //   }
-  // };
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -314,46 +279,25 @@ class ChatItem extends React.PureComponent<Props, State> {
           </MenuItem>
         </Menu>
         <Dialog
-          open={openRemove}
-          onClose={this.handleRemoveClose}
+          ariaDescribedBy="remove-dialog-description"
           className={classes.dialog}
-          aria-labelledby="remove-dialog-title"
-          aria-describedby="remove-dialog-description"
+          okTitle="Delete"
+          onCancel={this.handleRemoveClose}
+          onOk={this.handleRemoveSubmit}
+          open={openRemove}
+          showActions
+          showCancel
+          title="Delete Chat"
         >
-          <DialogTitle
-            id="remove-dialog-title"
-            onClose={this.handleRemoveClose}
+          <Typography
+            color="textPrimary"
+            id="remove-dialog-description"
           >
-            Delete Chat
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              color="textPrimary"
-              id="remove-dialog-description"
-            >
-              Are you sure you want to delete this chat?
-              <br />
-              <br />
-              {"Deleting this chat can't be undone"}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.handleRemoveClose}
-              color="primary"
-              autoFocus
-              variant="contained"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={this.handleRemoveSubmit}
-              color="secondary"
-              variant="contained"
-            >
-              Delete
-            </Button>
-          </DialogActions>
+            Are you sure you want to delete this chat?
+            <br />
+            <br />
+            Deleting this chat can't be undone
+          </Typography>
         </Dialog>
       </Fragment>
     );

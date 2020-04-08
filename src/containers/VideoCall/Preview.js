@@ -9,9 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import Avatar from '@material-ui/core/Avatar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -21,7 +18,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
-import DialogTitle from '../../components/DialogTitle';
+import Dialog from '../../components/Dialog';
 import type { User } from '../../types/models';
 import { VIDEO_SHARE_URL } from '../../constants/routes';
 import ErrorBoundary from '../ErrorBoundary';
@@ -419,15 +416,14 @@ class Preview extends React.Component<Props, State> {
             </Button>
           </Paper>
           <Dialog
+            onCancel={this.closeSettings}
+            onOk={this.closeSettings}
+            okTitle="Done"
             open={open}
-            onClose={this.closeSettings}
-            fullWidth
-            aria-labelledby="form-dialog-title"
+            showActions
+            title="General"
           >
-            <DialogTitle id="form-dialog-title" onClose={this.closeSettings}>
-              General
-            </DialogTitle>
-            <DialogContent style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               <FormControl>
                 <InputLabel htmlFor="videoinput-native-helper">
                   Video
@@ -462,12 +458,7 @@ class Preview extends React.Component<Props, State> {
                   ))}
                 </NativeSelect>
               </FormControl>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.closeSettings} color="primary">
-                Done
-              </Button>
-            </DialogActions>
+            </div>
           </Dialog>
         </div>
       </ErrorBoundary>

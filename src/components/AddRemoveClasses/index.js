@@ -1,11 +1,6 @@
 // @flow
 import React, { useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TreeView from '@material-ui/lab/TreeView'
@@ -26,17 +21,22 @@ import * as notificationsActions from '../../actions/notifications';
 import * as userActions from '../../actions/user';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
+import Dialog, { dialogStyle } from '../Dialog';
 
 const styles = theme => ({
   circleIn: {
     color: theme.circleIn.palette.action
   },
   list: {
-    height: '40vh',
-    overflow: 'auto'
+    overflowY: 'scroll',
   },
   stackbar: {
     color: theme.circleIn.palette.primaryText1
+  },
+  dialog: {
+    ...dialogStyle,
+    height: 700,
+    width: 700,
   }
 });
 
@@ -229,7 +229,7 @@ const AddRemoveClasses = (props: Props) => {
     }
     setLoading(false)
   }
-  
+
   useEffect(() => {
     if(open) {
       fetchSubjects()
@@ -237,43 +237,37 @@ const AddRemoveClasses = (props: Props) => {
     }
     // eslint-disable-next-line
   }, [userId, open])
-  
+
   return (
     <Dialog
+      className={classes.dialog}
+      okTitle="Ok"
+      onCancel={onClose}
+      onOk={onClose}
       open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="md"
-      aria-labelledby="get-app-dialog-title"
-      aria-describedby="get-app-dialog-description"
+      showActions
+      title="Add/Remove Classes"
     >
-      <DialogContent>
-        {loading && <CircularProgress 
+      <>
+        {loading && <CircularProgress
           style={{
             position: 'fixed',
             top: '50%',
             left: '50%'
           }}
         />}
-        <DialogContentText
-          className={classes.circleIn}
-          variant="h4"
-          paragraph
-        >
-            Add/Remove Classes
-        </DialogContentText>
         <TreeView
           className={classes.list}
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
           {Object.keys(tree).map(t => {
-            const subject = tree[t] 
+            const subject = tree[t]
             return (
-              <TreeItem 
+              <TreeItem
                 key={t}
-                onClick={!subject.expanded ? subject.expand : ()=>{}} 
-                nodeId={t} 
+                onClick={!subject.expanded ? subject.expand : () => { }}
+                nodeId={t}
                 label={subject.name}
               >
                 <TreeItem nodeId='classes' />
@@ -281,16 +275,16 @@ const AddRemoveClasses = (props: Props) => {
                 {Object.keys(subject.classes).map(c => {
                   const classC = subject.classes[c]
                   return (
-                    <TreeItem 
+                    <TreeItem
                       key={c}
-                      onClick={classC.expand} 
-                      nodeId={c} 
+                      onClick={classC.expand}
+                      nodeId={c}
                       label={classC.name}
                     >
                       <TreeItem nodeId='sections' />
                       {Object.keys(classC.sections).map(sc => {
                         const section = classC.sections[sc]
-                        
+
                         return (<div key={sc}>
                           <Checkbox
                             checked={Boolean(sections[sc])}
@@ -309,12 +303,7 @@ const AddRemoveClasses = (props: Props) => {
             )
           })}
         </TreeView>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
-              Ok
-          </Button>
-        </DialogActions>
-      </DialogContent>
+      </>
     </Dialog>
   );
 }

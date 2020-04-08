@@ -5,20 +5,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Button from '@material-ui/core/Button';
-import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
+import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
 import AuthSearchSchool from '../../components/AuthSearchSchool';
 import { searchSchools } from '../../api/sign-in';
 import * as authActions from '../../actions/auth';
 import { REDIRECT_URI } from '../../constants/app';
+import Dialog from '../../components/Dialog';
 import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
 const styles = theme => ({
@@ -150,19 +147,14 @@ class Auth extends React.Component<Props, State> {
           </Grid>
         </Grid>
         <Dialog
+          onCancel={this.handleClose}
+          onOk={this.handleClose}
           open={lti}
-          onClose={this.handleClose}
-          aria-labelledby="lti-title"
-          aria-describedby="lti-description"
+          showActions
         >
-          <DialogContent className={classes.content}>
-            <DialogContentText color="textPrimary">{redirectMessage}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Got It!
-            </Button>
-          </DialogActions>
+          <div className={classes.content}>
+            <Typography color="textPrimary">{redirectMessage}</Typography>
+          </div>
         </Dialog>
       </main>
     );

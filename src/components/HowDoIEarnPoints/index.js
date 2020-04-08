@@ -1,25 +1,13 @@
 // @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Typography from '@material-ui/core/Typography';
+import Dialog, { dialogStyle } from '../Dialog';
 
-const styles = theme => ({
-  circleIn: {
-    color: theme.circleIn.palette.action
-  },
-  content: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  contentIcon: {
-    marginRight: theme.spacing(),
-    marginBottom: theme.spacing(2),
-    height: 40
+const styles = () => ({
+  dialog: {
+    ...dialogStyle,
+    width: 400,
   }
 });
 
@@ -34,35 +22,18 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
     const { classes, open, onClose } = this.props;
     return (
       <Dialog
+        className={classes.dialog}
         open={open}
-        onClose={onClose}
-        fullWidth
-        maxWidth="md"
-        aria-labelledby="how-earn-points-dialog-title"
-        aria-describedby="how-earn-points-dialog-description"
+        onCancel={onClose}
+        title="CircleIn"
       >
-        <DialogContent>
-          <DialogContentText
-            id="video-points-description"
-            className={classes.circleIn}
-            variant="h4"
-            paragraph
-          >
-            CircleIn
-          </DialogContentText>
-          <DialogContentText
-            id="video-points-description"
-            color="textPrimary"
-            paragraph
-          >
-              If you need help, have any questions or have a great idea, email us at support@circleinapp.com
-          </DialogContentText>
-          <DialogActions>
-            <Button onClick={onClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </DialogContent>
+        <Typography
+          id="video-points-description"
+          color="textPrimary"
+          paragraph
+        >
+            If you need help, have any questions or have a great idea, email us at support@circleinapp.com
+        </Typography>
       </Dialog>
     );
   }

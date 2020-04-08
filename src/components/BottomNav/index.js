@@ -9,12 +9,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
+import Dialog from '../Dialog';
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink ref={ref} to={href} {...props} />);
@@ -96,7 +96,7 @@ class BottomNav extends React.PureComponent<Props, State> {
             href="/notifications"
           />
         </BottomNavigation>
-        <Dialog open={open} fullWidth onClose={this.handleClose}>
+        <Dialog open={open} onCancel={this.handleClose}>
           <div>
             <List>
               <ListItem button component={MyLink} href="/create/question">

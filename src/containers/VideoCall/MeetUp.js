@@ -6,11 +6,7 @@ import debounce from 'lodash/debounce';
 import update from 'immutability-helper';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import type { User } from '../../types/models';
 import { renewTwilioToken } from '../../api/chat';
@@ -19,7 +15,6 @@ import {
   setVideoInitiator,
   postVideoPoints
 } from '../../api/video';
-import DialogTitle from '../../components/DialogTitle';
 import MeetUpControls from '../../components/MeetUp/Controls';
 import Thumbnails from '../../components/MeetUp/Thumbnails';
 import NoParticipants from '../../components/MeetUp/NoParticipants';
@@ -27,6 +22,7 @@ import ActiveParticipant from '../../components/MeetUp/ActiveParticipant';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
 import VideoPointsDialog from '../../components/VideoPointsDialog';
+import Dialog from '../../components/Dialog';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -717,43 +713,24 @@ class MeetUp extends React.Component<Props, State> {
             </Fragment>
           )}
           <Dialog
+            ariaDescribedBy="alert-dialog-description"
+            onCancel={this.handleClose}
             open={open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+            title="Screen Sharing Not Supported"
           >
-            <DialogTitle id="alert-dialog-title" onClose={this.handleClose}>
-              Screen Sharing Not Supported
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText
-                id="alert-dialog-description"
-                color="textPrimary"
-              >
-                {
-                  "Your current browser doesn't support screen sharing, consider using Chrome or Firefox"
-                }
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Ok
-              </Button>
-            </DialogActions>
+            <Typography
+              id="alert-dialog-description"
+              color="textPrimary"
+            >
+              Your current browser doesn't support screen sharing, consider using Chrome or Firefox
+            </Typography>
           </Dialog>
           <Dialog
+            onCancel={this.handleClose}
             open={Boolean(canvasImg !== '')}
-            onClose={this.handleClose}
-            aria-labelledby="canvas-img-dialog-title"
-            aria-describedby="canvas-img-dialog-description"
+            title="Whiteboard Screenshot"
           >
-            <DialogTitle
-              id="canvas-img-dialog-title"
-              onClose={this.handleClose}
-            >
-              Whiteboard Screenshot
-            </DialogTitle>
-            <DialogContent className={classes.canvasWrapper}>
+            <div className={classes.canvasWrapper}>
               {canvasImg !== '' && (
                 <img
                   src={canvasImg}
@@ -761,12 +738,7 @@ class MeetUp extends React.Component<Props, State> {
                   alt="Canvas screenshot"
                 />
               )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleCanvasClose} color="primary">
-                Ok
-              </Button>
-            </DialogActions>
+            </div>
           </Dialog>
           {points && (
             <div className={classes.points}>
