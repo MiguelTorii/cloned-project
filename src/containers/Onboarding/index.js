@@ -77,7 +77,6 @@ const styles = theme => ({
   },
   dialog: {
     ...dialogStyle,
-    height: 750,
     padding: 20,
     width: 750,
   },
@@ -323,22 +322,20 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   return (
     <ErrorBoundary>
       <Dialog
-        ariaDescribedby='onboarding-description'
+        ariaDescribedBy='onboarding-description'
         className={classes.dialog}
         disableBackdropClick
         disableEscapeKeyDown
         open={open}
+        showHeader={false}
         title={renderTitle(activeStep)}
       >
         <div className={classes.content}>
-          <Typography color='textPrimary' align='center'>
-            <Typography
-              id="onboarding-description"
-              component='div'
-              className={classes.subtitle}
-            >
-              {renderSubtitle(activeStep)}
-            </Typography>
+          <Typography
+            id="onboarding-description"
+            className={classes.subtitle}
+          >
+            {renderSubtitle(activeStep)}
           </Typography>
           {renderBody(activeStep)}
           <MobileStepper
