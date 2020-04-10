@@ -56,6 +56,7 @@ import {
   RELEASE
 } from './constants/app';
 import withTracker from './withTracker';
+import Chat from './pages/Chat'
 
 const store = configureStore();
 
@@ -86,6 +87,7 @@ ReactDOM.render(
             <Route exact path="/" component={withTracker(Home)} />
             <Route exact path="/classes" component={withTracker(Classes)} />
             <Route exact path="/feed" component={withTracker(Feed)} />
+            <Route exact path="/chat" component={withTracker(Chat)} />
             <Route exact path="/bookmarks" component={withTracker(Feed)} />
             <Route exact path="/my_posts" component={withTracker(Feed)} />
             <Route exact path="/store" component={withTracker(Store)} />

@@ -17,11 +17,11 @@ type Props = {
   userClasses: Object,
   MyLink: Function,
   openClassmatesDialog: Function
-}
+};
 
 const HomeItem = ({
-  userClasses, 
-  MyLink, 
+  userClasses,
+  MyLink,
   updateFeed,
   openClassmatesDialog,
   newClassExperience,
@@ -99,9 +99,9 @@ const HomeItem = ({
     <div
       className="tour-onboarding-study"
     >
-      <ListItem 
-        button 
-        component={MyLink} 
+      <ListItem
+        button
+        component={MyLink}
         link="/"
         className={classNames(
           classes.item,
@@ -119,9 +119,9 @@ const HomeItem = ({
         <div
           key={cl.sectionId}
         >
-          <ListItem 
-            button 
-            component={MyLink} 
+          <ListItem
+            button
+            component={MyLink}
             onClick={() => updateFeed(cl.sectionId, cl.classId)}
             link={`/feed?sectionId=${cl.sectionId}&classId=${cl.classId}`}
             className={classNames(
@@ -133,7 +133,7 @@ const HomeItem = ({
             {renderCircle(cl.color)}
             <Typography className={classes.typo}>{cl.courseDisplayName}</Typography>
           </ListItem>
-          {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) && 
+          {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) &&
               <SubMenu
                 createPostOpen={createPostOpen}
                 MyLink={MyLink}

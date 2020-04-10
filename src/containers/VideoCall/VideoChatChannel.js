@@ -12,6 +12,11 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+  processMessages,
+  getAvatar,
+  fetchAvatars
+} from 'utils/chat';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
@@ -20,11 +25,6 @@ import ErrorBoundary from '../ErrorBoundary';
 import { logEvent } from '../../api/analytics';
 import { getPresignedURL } from '../../api/media';
 import { postMessageCount } from '../../api/chat';
-import {
-  processMessages,
-  getAvatar,
-  fetchAvatars
-} from '../FloatingChat/utils';
 
 const styles = theme => ({
   root: {
@@ -355,46 +355,46 @@ class VideoChatChannel extends React.Component<Props, State> {
     const { id, type } = item;
     try {
       switch (type) {
-        case 'date':
-          return <ChatMessageDate key={id} body={item.body} />;
-        case 'message':
-          return (
-            <ChatMessage
-              key={id}
-              name={item.name}
-              messageList={item.messageList}
-              avatar={getAvatar({ id: item.author, profileURLs })}
-              onImageLoaded={this.handleImageLoaded}
-              onStartVideoCall={this.handleStartVideoCall}
-              onImageClick={this.handleImageClick}
-            />
-          );
-        case 'own':
-          return (
-            <ChatMessage
-              key={id}
-              messageList={item.messageList}
-              isOwn
-              onImageLoaded={this.handleImageLoaded}
-              onStartVideoCall={this.handleStartVideoCall}
-              onImageClick={this.handleImageClick}
-            />
-          );
-        case 'end':
-          return (
-            <div
-              key={uuidv4()}
-              style={{
-                float: 'left',
-                clear: 'both'
-              }}
-              ref={el => {
-                this.end = el;
-              }}
-            />
-          );
-        default:
-          return null;
+      case 'date':
+        return <ChatMessageDate key={id} body={item.body} />;
+      case 'message':
+        return (
+          <ChatMessage
+            key={id}
+            name={item.name}
+            messageList={item.messageList}
+            avatar={getAvatar({ id: item.author, profileURLs })}
+            onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
+          />
+        );
+      case 'own':
+        return (
+          <ChatMessage
+            key={id}
+            messageList={item.messageList}
+            isOwn
+            onImageLoaded={this.handleImageLoaded}
+            onStartVideoCall={this.handleStartVideoCall}
+            onImageClick={this.handleImageClick}
+          />
+        );
+      case 'end':
+        return (
+          <div
+            key={uuidv4()}
+            style={{
+              float: 'left',
+              clear: 'both'
+            }}
+            ref={el => {
+              this.end = el;
+            }}
+          />
+        );
+      default:
+        return null;
       }
     } catch (err) {
       return null;

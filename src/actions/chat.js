@@ -170,7 +170,7 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
 
         dispatch(updateChannel({ channel }));
 
-        if (Number(author) !== Number(userId)) {
+        if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
           const msg = `${firstName} ${lastName} sent you a message:`;
           dispatch(enqueueSnackbar({
             notification: {

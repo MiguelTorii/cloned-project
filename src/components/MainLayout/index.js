@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
+import ChatIcon from '@material-ui/icons/Chat';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
@@ -174,7 +175,7 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     width: '75%',
-    padding: theme.spacing(),
+    // padding: theme.spacing(),
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column',
@@ -816,6 +817,15 @@ class MainLayout extends React.Component<Props, State> {
                   </Badge>
                 </IconButton>
                 <IconButton
+                  color="inherit"
+                  component={MyLink}
+                  link='/chat'
+                >
+                  <Badge color="secondary">
+                    <ChatIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
                   aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                   aria-haspopup="true"
                   onClick={this.handleProfileMenuOpen}
@@ -851,7 +861,7 @@ class MainLayout extends React.Component<Props, State> {
               {drawer}
             </Drawer>
           </Hidden>
-          <Hidden xsDown implementation="css">
+          {pathname !== '/chat' && <Hidden xsDown implementation="css">
             <Drawer
               id='desktopMenu'
               variant="permanent"
@@ -868,7 +878,7 @@ class MainLayout extends React.Component<Props, State> {
             >
               {drawer}
             </Drawer>
-          </Hidden>
+          </Hidden>}
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {children}

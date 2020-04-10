@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import usePrevious from 'hooks/usePrevious'
+import ChatListItem from 'components/ChatListItem';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -18,7 +19,6 @@ import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
 import Tooltip from '../Tooltip';
 import ChatChannel from './ChatChannel';
-import ChatListItem from './ChatListItem';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
 import * as chatActions from '../../actions/chat';
@@ -67,6 +67,7 @@ const FloatingChat = ({
   user,
   chat,
   push,
+  router,
   handleInitChat,
   handleShutdownChat,
   handleBlockUser,
@@ -88,6 +89,8 @@ const FloatingChat = ({
       openChannels
     }
   } = chat
+
+  const { location: { pathname}} = router
 
   const {
     data: { userId, profileImage }
@@ -201,7 +204,7 @@ const FloatingChat = ({
     setCreateChat(null)
   };
 
-  if (userId === '' || !client) return null;
+  if (userId === '' || !client || pathname === '/chat') return null;
 
   return (
     <Fragment>
@@ -258,8 +261,9 @@ const FloatingChat = ({
   );
 }
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+const mapStateToProps = ({ router, user, chat }: StoreState): {} => ({
   user,
+  router,
   chat
 });
 

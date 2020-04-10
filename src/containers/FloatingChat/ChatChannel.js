@@ -11,6 +11,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -18,7 +19,6 @@ import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
 import ChatChannelViewMembers from './ChatChannelViewMembers';
 import ChatChannelAddMembers from './ChatChannelAddMembers';
-import { getTitle, fetchAvatars, processMessages, getAvatar } from './utils';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
 import { postMessageCount } from '../../api/chat';
@@ -106,6 +106,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
     count: 0,
     addMembers: false
   };
+
+  mounted: boolean;
+
+  // eslint-disable-next-line no-undef
+  end: ?HTMLDivElement;
+
+  // eslint-disable-next-line no-undef
+  scrollParentRef: ?HTMLDivElement;
 
   componentDidMount = async () => {
     this.mounted = true;
@@ -440,14 +448,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
     this.setState({ count: 0 });
   };
-
-  mounted: boolean;
-
-  // eslint-disable-next-line no-undef
-  end: ?HTMLDivElement;
-
-  // eslint-disable-next-line no-undef
-  scrollParentRef: ?HTMLDivElement;
 
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;

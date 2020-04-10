@@ -11,6 +11,7 @@ import { SnackbarProvider } from 'notistack';
 const circleInTheme = {
   brand: '#03A9F4',
   action: '#49afd9',
+  rowSelection: '#324f61',
   primaryBackground: '#1b2a32',
   modalBackground: '#22343c',
   borders: '#566c77',
@@ -35,6 +36,7 @@ const theme = createMuiTheme({
     palette: {
       borders: circleInTheme.borders,
       brand: circleInTheme.brand,
+      rowSelection: circleInTheme.rowSelection,
       buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,
       primaryBackground: circleInTheme.primaryBackground,
