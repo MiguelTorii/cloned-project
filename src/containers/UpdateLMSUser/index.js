@@ -268,7 +268,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
           disableBackdropClick
           disableEscapeKeyDown
           okTitle="Update"
-          onOK={this.handleSubmit}
+          onOk={this.handleSubmit}
           showActions
           title="Update Profile"
         >
