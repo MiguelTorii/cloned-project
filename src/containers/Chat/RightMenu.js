@@ -13,12 +13,18 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import { Link as RouterLink } from 'react-router-dom';
 import GroupIcon from '@material-ui/icons/Group';
+import Dialog, { dialogStyle } from 'components/Dialog';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
 });
 
 const useStyles = makeStyles((theme) => ({
+  dialog: {
+    ...dialogStyle,
+    width: 500,
+    zIndex: 2100
+  },
   usersContainer: {
     width: '100%',
     padding: theme.spacing(2),
@@ -90,25 +96,36 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     fontSize: 30
   },
+  blockLabel: {
+    color: theme.circleIn.palette.danger
+  },
+  blockButton: {
+    border: `1px solid ${theme.circleIn.palette.danger}`
+  }
 }))
 
-const RightMenu = ({ userId, channel }) => {
+const RightMenu = ({ userId, channel, handleBlock }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
   const [members, setMembers] = useState([])
   const [type, setType] = useState('')
   const [groupImage, setGroupImage] = useState(null)
   const [initials, setInitals] = useState('')
+  const [otherUser, setOtherUser] = useState(null)
+  const [blockUser, setBlockUser] = useState(false)
+
+  const handleOpenBlock = v => () => setBlockUser(v)
 
   useEffect(() => {
     const updateAvatars = async () => {
       const avatars = await fetchAvatars(channel)
       const m = channel.state.attributes.users.map(u => {
         const avatar = avatars.find(a => Number(a.identity) === u.userId)
-        if (avatars.length === 2) {
+        if (channel.state.attributes.users.length === 2) {
           if (u.userId !== userId) {
             setGroupImage(avatar && avatar.profileImageUrl)
             setInitals(getInitials({name: `${u.firstName} ${u.lastName}`}))
+            setOtherUser(u)
           }
         }
         return {
@@ -132,6 +149,7 @@ const RightMenu = ({ userId, channel }) => {
     }
 
     try {
+      setOtherUser(null)
       setMembers([])
       setGroupImage(null)
       setInitals('')
@@ -234,6 +252,39 @@ const RightMenu = ({ userId, channel }) => {
             })}
           </List>
         </Grid>
+        {otherUser && <Grid
+          container
+          justify='center'
+        >
+          <Button
+            onClick={handleOpenBlock(true)}
+            variant='outlined'
+            classes={{
+              label: classes.blockLabel,
+              root: classes.blockButton
+            }}
+          >
+          Block {otherUser.firstName} {otherUser.lastName}
+          </Button>
+          <Dialog
+            ariaDescribedBy="confirm-dialog-description"
+            className={classes.dialog}
+            okTitle="Yes, I'm sure"
+            onCancel={handleOpenBlock(false)}
+            onOk={handleBlock(otherUser.userId)}
+            open={blockUser}
+            showActions
+            showCancel
+            title="Block User"
+          >
+            <Typography
+              color="textPrimary"
+              id="confirm-dialog-description"
+            >
+              Are you sure you want to block {otherUser.firstName} {otherUser.lastName}
+            </Typography>
+          </Dialog>
+        </Grid>}
       </Grid>
     </Grid>
   )

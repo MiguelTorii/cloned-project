@@ -73,9 +73,9 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     }
   };
 
-  handleOpenConfirm = ({ blockedUserId, name }) => () => {
-    this.setState({ blockedUserId, name });
-  };
+ handleOpenConfirm = ({ blockedUserId, name }) => () => {
+   this.setState({ blockedUserId, name });
+ };
 
   handleConfirmClose = () => {
     this.setState({ blockedUserId: null, name: null });
@@ -83,23 +83,23 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
 
   handleBlock = blockedUserId => async () => {
     const { userId, onBlock, onClose } = this.props;
-    this.handleConfirmClose();
+
     this.setState({ loading: true });
     try {
       await blockUser({ userId, blockedUserId: String(blockedUserId) });
-      await onBlock(blockedUserId);
+      await onBlock({ blockedUserId });
     } catch (err) {
       this.setState({ loading: false });
     } finally {
       this.setState({ loading: false });
       onClose();
     }
+    this.handleConfirmClose();
   };
 
   render() {
     const { classes, open, userId, onClose, onAddMember } = this.props;
     const { loading, blockedUserId, name, members } = this.state;
-
     return (
       <Fragment>
         <ErrorBoundary>
@@ -108,7 +108,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             disableActions={loading}
             disableBackdropClick={loading}
             disableEscapeKeyDown={loading}
-            okTitle="Add Memeber"
+            okTitle="Add Member"
             onCancel={onClose}
             onOk={onAddMember}
             open={open}

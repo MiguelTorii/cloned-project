@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
@@ -12,6 +12,7 @@ import Main from 'containers/Chat/Main'
 import { makeStyles } from '@material-ui/core/styles'
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
+import { blockUser } from '../../api/user';
 import type { State as StoreState } from '../../types/state';
 
 type Props = {
@@ -36,11 +37,23 @@ const useStyles = makeStyles(() => ({
     overflow: 'auto',
   }
 }))
-const Chat = ({ chat, user }: Props) => {
+
+const Chat = ({ handleBlockUser, chat, user }: Props) => {
   const { data: { client, channels }} = chat
   const { data: { userId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
+
+  useEffect(() => {
+    if (channels.length > 0) setCurrentChannel(channels[0])
+  }, [channels])
+
+  const handleBlock = blockedUserId => async () => {
+    try {
+      await blockUser({ userId, blockedUserId: String(blockedUserId) });
+      await handleBlockUser({ blockedUserId });
+    } catch (err) {}
+  }
 
   return (
     <Grid className={classes.container} direction='row' container>
@@ -61,6 +74,7 @@ const Chat = ({ chat, user }: Props) => {
       </Grid>
       <Grid item xs={3} className={classes.right}>
         <RightMenu
+          handleBlock={handleBlock}
           userId={userId}
           channel={currentChannel}
         />

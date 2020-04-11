@@ -151,7 +151,6 @@ export const blockChatUser = async ({
       }
     );
     const { data = {} } = result;
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);

@@ -29,11 +29,13 @@ const circleInTheme = {
   success: '#60b515',
   snackbar: '#114255',
   disabled: '#6d7884',
-  profilebgColor: '#bdbdbd'
+  profilebgColor: '#bdbdbd',
+  danger: '#f34f47'
 };
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      danger: circleInTheme.danger,
       borders: circleInTheme.borders,
       brand: circleInTheme.brand,
       rowSelection: circleInTheme.rowSelection,
@@ -75,6 +77,9 @@ const theme = createMuiTheme({
     },
     text: {
       primary: circleInTheme.primaryText1,
+    },
+    danger: {
+      main: circleInTheme.danger
     }
   },
   typography: {

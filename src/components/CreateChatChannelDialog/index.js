@@ -116,6 +116,7 @@ const CreateChatChannelDialog = ({
       />}
       <ValidatorForm
         className={classes.validatorForm}
+        onSubmit={handleSubmit}
       >
         <div className={classes.form}>
           <div>
