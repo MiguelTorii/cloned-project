@@ -30,6 +30,7 @@ const useStyles = makeStyles(() => ({
     overflow: 'auto',
   },
   main: {
+    position: 'relative',
     borderLeft: '1px solid rgba(255,255,255,0.15)',
     borderRight: '1px solid rgba(255,255,255,0.15)',
     height: 'calc(100vh - 72px)',

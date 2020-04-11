@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import { processMessages, fetchAvatars, getTitle, getAvatar } from 'utils/chat'
 import InfiniteScroll from 'react-infinite-scroller'
 import uuidv4 from 'uuid/v4'
-import ChatTextField from 'components/FloatingChat/ChatTextField'
+import ChatTextField from 'containers/Chat/ChatTextField'
 import ChatMessage from 'components/FloatingChat/ChatMessage'
 import axios from 'axios'
 import { getPresignedURL } from 'api/media'
@@ -18,6 +18,7 @@ import cx from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    height: 'inherit',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
   },
   messageContainer: {
-    height: 'calc(100vh - 185px)',
+    flex: 1,
     overflowY: 'auto',
   },
   typing: {
@@ -169,6 +170,7 @@ const Main = ({
   })
 
   const handleLoadMore = () => {
+    setScroll(false)
     try {
       if (paginator.hasPrevPage) {
         paginator.prevPage().then(result => {
@@ -246,6 +248,7 @@ const Main = ({
   }
 
   const onSendMessage = async message => {
+    setScroll(true)
     if (!channel) return
     const messageAttributes = {
       firstName,
