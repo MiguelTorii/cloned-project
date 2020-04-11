@@ -10,6 +10,10 @@ import axios from 'axios'
 import { getPresignedURL } from 'api/media'
 import Lightbox from 'react-images'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import cx from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,18 +21,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   header: {
-    // position: 'fixed',
+    position: 'relative',
     // top: 64,
     backgroundColor: theme.circleIn.palette.modalBackground,
     width: '100%',
     padding: theme.spacing(),
-    paddingLeft: theme.spacing(4),
   },
   headerTitle: {
     fontSize: 18,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+    paddingLeft: theme.spacing(4),
   },
   messageContainer: {
     height: 'calc(100vh - 185px)',
@@ -43,9 +47,37 @@ const useStyles = makeStyles((theme) => ({
     // color: 'black'
     marginLeft: theme.spacing()
   },
+  rightDrawerClose: {
+    right: 10,
+  },
+  rightDrawerOpen: {
+    right: 10,
+  },
+  leftDrawerClose: {
+    left: 10,
+  },
+  leftDrawerOpen: {
+  },
+  iconButton: {
+    position: 'absolute',
+    top: 12,
+    padding: 0,
+    border: '1px solid white',
+    zIndex: 1002
+  },
+  icon: {
+    fontSize: 16,
+  },
 }))
 
-const Main = ({ channel, user }) => {
+const Main = ({
+  onCollapseLeft,
+  onCollapseRight,
+  leftSpace,
+  rightSpace,
+  channel,
+  user
+}) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
   const [messages, setMessages] = useState([])
@@ -279,9 +311,34 @@ const Main = ({ channel, user }) => {
   const  handleImageClose = () => setImages([])
   if (!channel) return null
   // console.log(typing)
+
+  const renderIcon = d => {
+    return ( d
+      ? <KeyboardArrowLeftIcon className={classes.icon} />
+      : <KeyboardArrowRightIcon className={classes.icon} />
+    )}
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
+        <IconButton
+          className={cx(
+            leftSpace !== 0 ? classes.leftDrawerOpen : classes.leftDrawerClose,
+            classes.iconButton
+          )}
+          onClick={onCollapseLeft}
+        >
+          {renderIcon(leftSpace !== 0)}
+        </IconButton>
+        {channel && <IconButton
+          className={cx(
+            rightSpace !== 0 ? classes.rightDrawerOpen : classes.rightDrawerClose,
+            classes.iconButton
+          )}
+          onClick={onCollapseRight}
+        >
+          {renderIcon(rightSpace === 0)}
+        </IconButton>}
         <Typography className={classes.headerTitle}>{title}</Typography>
       </div>
       <div className={classes.messageContainer}>
