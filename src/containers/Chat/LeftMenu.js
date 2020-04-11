@@ -11,6 +11,7 @@ import ChatListItem from 'components/ChatListItem'
 import CreateChatChannel from 'containers/CreateChatChannel'
 import Fuse from 'fuse.js'
 import { getTitle } from 'utils/chat';
+import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -108,6 +109,7 @@ const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client 
 
   const handleChannelCreated = ({ channel }) => setCurrentChannel(channel)
 
+
   return (
     <Grid item classes={{ root: classes.container }}>
       <CreateChatChannel
@@ -157,6 +159,7 @@ const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client 
           </Grid>
         </Grid>
         <Grid item className={classes.gridChatList}>
+          {channels.length === 0 && <EmptyLeftMenu />}
           <List className={classes.root}>
             {searchChannels.map(c => (<ChatListItem
               key={c.sid}

@@ -13,6 +13,7 @@ import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import EmptyMain from 'containers/Chat/EmptyMain'
 import cx from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     position: 'relative',
+    minHeight: 40,
     // top: 64,
     backgroundColor: theme.circleIn.palette.modalBackground,
     width: '100%',
@@ -244,6 +246,7 @@ const Main = ({
   }
 
   const onSendMessage = async message => {
+    if (!channel) return
     const messageAttributes = {
       firstName,
       lastName,
@@ -262,6 +265,7 @@ const Main = ({
   }
 
   const onTyping = () => {
+    if (!channel) return
     try {
       channel.typing()
     } catch (err) {
@@ -271,6 +275,7 @@ const Main = ({
 
   const onSendInput = async file => {
     // this.setState({ loading: true })
+    if (!channel) return
 
     try {
       const result = await getPresignedURL({
@@ -309,7 +314,7 @@ const Main = ({
   }
 
   const  handleImageClose = () => setImages([])
-  if (!channel) return null
+  // if (!channel) return null
   // console.log(typing)
 
   const renderIcon = d => {
@@ -342,6 +347,7 @@ const Main = ({
         <Typography className={classes.headerTitle}>{title}</Typography>
       </div>
       <div className={classes.messageContainer}>
+        {!channel && <EmptyMain />}
         <InfiniteScroll
           threshold={50}
           pageStart={0}

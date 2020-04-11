@@ -25,10 +25,13 @@ const useStyles = makeStyles(() => ({
     position: 'relative'
   },
   left: {
+    position: 'relative',
     height: 'calc(100vh - 72px)',
     overflow: 'auto',
   },
   main: {
+    borderLeft: '1px solid rgba(255,255,255,0.15)',
+    borderRight: '1px solid rgba(255,255,255,0.15)',
     height: 'calc(100vh - 72px)',
     overflow: 'auto',
   },
@@ -37,6 +40,7 @@ const useStyles = makeStyles(() => ({
     overflow: 'auto',
   },
   hidden: {
+    border: 'none',
     display: 'none'
   }
 }))
@@ -47,11 +51,17 @@ const Chat = ({ handleBlockUser, chat, user }: Props) => {
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
-  const [rightSpace, setRightSpace] = useState(3)
+  const [rightSpace, setRightSpace] = useState(0)
 
   useEffect(() => {
-    if (channels.length > 0) setCurrentChannel(channels[0])
+    if (channels.length > 0) {
+      setCurrentChannel(channels[0])
+    }
   }, [channels])
+
+  useEffect(() => {
+    if (currentChannel) setRightSpace(3)
+  }, [currentChannel])
 
   const handleBlock = blockedUserId => async () => {
     try {

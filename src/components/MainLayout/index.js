@@ -516,6 +516,22 @@ class MainLayout extends React.Component<Props, State> {
             <p>Notifications</p>
           </MenuItem>
         )}
+        {width !== 'xs' && (
+          <MenuItem
+            button
+            component={MyLink}
+            link='/chat'
+          >
+            <IconButton
+              color="inherit"
+            >
+              <Badge color="secondary">
+                <ChatIcon />
+              </Badge>
+            </IconButton>
+            <p>Chat</p>
+          </MenuItem>
+        )}
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <Avatar src={userProfileUrl}>{initials}</Avatar>

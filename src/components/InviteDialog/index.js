@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Dialog, { dialogStyle } from '../../Dialog';
+import Dialog, { dialogStyle } from 'components/Dialog';
 
 const InviteDialog = ({ handleClose, open }) => {
   const classes = makeStyles(() => ({
@@ -16,6 +16,7 @@ const InviteDialog = ({ handleClose, open }) => {
       <Dialog
         className={classes.dialog}
         onClose={handleClose}
+        onCancel={handleClose}
         onOk={handleClose}
         open={open}
         showActions
