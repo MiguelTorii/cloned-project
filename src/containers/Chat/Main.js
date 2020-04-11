@@ -40,8 +40,11 @@ const useStyles = makeStyles((theme) => ({
   messageContainer: {
     flex: 1,
     overflowY: 'auto',
+    position: 'relative',
   },
   typing: {
+    position: 'absolute',
+    bottom: theme.spacing(),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'
