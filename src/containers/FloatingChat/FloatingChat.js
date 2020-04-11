@@ -90,8 +90,6 @@ const FloatingChat = ({
     }
   } = chat
 
-  const { location: { pathname}} = router
-
   const {
     data: { userId, profileImage }
   } = user
@@ -106,7 +104,9 @@ const FloatingChat = ({
     </Button>
   );
 
+  const { location: { pathname}} = router
   useEffect(() => {
+    if(pathname === '/chat') return null
     const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
     const handleInitChatDebounce = debounce(handleInitChat, 1000);
     window.addEventListener('resize', updateOpenChannelsDebounce);
@@ -146,7 +146,7 @@ const FloatingChat = ({
   };
 
   useEffect(() => {
-    if (prevUser && prevChat) {
+    if (prevUser && prevChat && pathname !== '/chat') {
       const {
         data: { userId: prevUserId }
       } = prevUser
@@ -204,7 +204,7 @@ const FloatingChat = ({
     setCreateChat(null)
   };
 
-  if (userId === '' || !client || pathname === '/chat') return null;
+  if (pathname === '/chat' ||  userId === '' || !client) return null;
 
   return (
     <Fragment>

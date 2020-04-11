@@ -20,7 +20,8 @@ export type ChatState = {
     channels: Array<ChatChannels>,
     openChannels: Array<ChatChannels>,
     unread: number,
-    online: boolean
+    online: boolean,
+    newMessage: ?Object
   },
   error: boolean,
   errorMessage: {
@@ -42,6 +43,7 @@ const defaultState = {
     openChannels: [],
     unread: 0,
     online: false,
+    newMessage: null,
   },
   isLoading: false,
   error: false,
@@ -75,6 +77,11 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         entityUuid: { $set: action.payload.entityUuid }
       }
     });
+  case chatActions.NEW_CHAT_MESSAGE:
+    return { ...state, data: {
+      ...state.data,
+      newMessage: action.payload.message
+    }}
   case chatActions.INIT_CLIENT_CHAT:
     return { ...state, data: {
       ...state.data,

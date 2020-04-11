@@ -37,14 +37,16 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     paddingLeft: theme.spacing(4),
   },
+  messageScroll: {
+    flex: 1
+  },
   messageContainer: {
     flex: 1,
     overflowY: 'auto',
     position: 'relative',
   },
   typing: {
-    position: 'absolute',
-    bottom: theme.spacing(),
+    minHeight: 28,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'
@@ -82,12 +84,12 @@ const Main = ({
   leftSpace,
   rightSpace,
   channel,
+  newMessage,
   user
 }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
   const [messages, setMessages] = useState([])
-  const [newMessage, setNewMessage] = useState(null)
   const [paginator, setPaginator] = useState(null)
   const [hasMore, setHasMore] = useState(false)
   const [scroll, setScroll] = useState(true)
@@ -95,7 +97,6 @@ const Main = ({
   const [avatars, setAvatars] = useState([])
   const [typing, setTyping] = useState(null)
   const [images, setImages] = useState([])
-  const [prevChannel, setPrevChannel] = useState(null)
 
   const {
     data: { userId, firstName, lastName }
@@ -112,21 +113,22 @@ const Main = ({
   }
 
   useEffect(() => {
-    if(newMessage) {
+    if(channel && newMessage && channel.sid === newMessage.channel.sid) {
+      try {
+        channel.setAllMessagesConsumed()
+      } catch(e) {}
       setMessages([...messages, newMessage])
       setTimeout(handleScrollToBottom, 100)
-      setNewMessage(null)
     }
     // eslint-disable-next-line
   }, [newMessage])
 
   useEffect(() => {
     const init = async () => {
-      if (prevChannel) {
-        prevChannel.removeAllListeners()
-      }
-      setPrevChannel(channel)
       setTitle(getTitle(channel, userId))
+      try {
+        channel.setAllMessagesConsumed()
+      } catch(e) {}
 
       const av = await fetchAvatars(channel)
       setAvatars(av)
@@ -137,30 +139,23 @@ const Main = ({
       setHasMore(!(p.items.length < 10))
       handleScrollToBottom()
 
-      channel.on('messageAdded', message => {
-        setNewMessage(message)
-      })
+      // channel.on('messageAdded', message => {
+      // setNewMessage(message)
+      // })
 
-      channel.on(
-        'updated',
-        async ({ channel: updatedChannel, updateReasons }) => {
-          if (updateReasons.indexOf('attributes') > -1) {
-            setTitle(getTitle(updatedChannel, userId))
-          }
-        }
-      )
-
-      channel.on('typingStarted', member => {
-        member.getUser().then(user => {
-          const { state } = user
-          const { friendlyName } = state
-          setTyping({ channel: channel.sid, friendlyName })
+      if (channel._events.typingStarted.length === 0) {
+        channel.on('typingStarted', member => {
+          member.getUser().then(user => {
+            const { state } = user
+            const { friendlyName } = state
+            setTyping({ channel: channel.sid, friendlyName })
+          })
         })
-      })
 
-      channel.on('typingEnded', () => {
-        setTyping('')
-      })
+        channel.on('typingEnded', () => {
+          setTyping('')
+        })
+      }
     }
 
     if(channel) init()
@@ -355,6 +350,7 @@ const Main = ({
       <div className={classes.messageContainer}>
         {!channel && <EmptyMain />}
         <InfiniteScroll
+          className={classes.messageScroll}
           threshold={50}
           pageStart={0}
           loadMore={handleLoadMore}
@@ -367,14 +363,14 @@ const Main = ({
             renderMessage(item, avatars)
           )}
         </InfiniteScroll>
-        {typing && typing.channel === channel.sid && (
-          <div className={classes.typing}>
-            <Typography
-              className={classes.typingText}
-              variant="subtitle1"
-            >{`${typing.friendlyName} is typing ...`}</Typography>
-          </div>
-        )}
+      </div>
+      <div className={classes.typing}>
+        <Typography
+          className={classes.typingText}
+          variant="subtitle1"
+        >
+          {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
+        </Typography>
       </div>
       <ChatTextField
         onSendMessage={onSendMessage}

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useEffect, useState} from 'react'
+import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
@@ -46,8 +47,15 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const Chat = ({ handleBlockUser, chat, user }: Props) => {
-  const { data: { client, channels }} = chat
+const Chat = ({
+  handleUpdateUnreadCount,
+  handleInitChat,
+  handleShutdownChat,
+  handleBlockUser,
+  chat,
+  user
+}: Props) => {
+  const { data: { online, client, channels, newMessage }} = chat
   const { data: { userId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
@@ -55,10 +63,28 @@ const Chat = ({ handleBlockUser, chat, user }: Props) => {
   const [rightSpace, setRightSpace] = useState(0)
 
   useEffect(() => {
-    if (channels.length > 0) {
-      setCurrentChannel(channels[0])
-    }
-  }, [channels])
+    const handleInitChatDebounce = debounce(handleInitChat, 1000);
+    window.addEventListener('offline', () => {
+      console.log('**** offline ****');
+      handleShutdownChat();
+    });
+    window.addEventListener('online', () => {
+      console.log('**** online ****');
+      if (!online) window.location.reload();
+    });
+    handleInitChatDebounce({ handleMessageReceived: () => {}, snackbarStyle: '' });
+
+    return () => {
+      if (
+        handleInitChatDebounce.cancel &&
+      typeof handleInitChatDebounce.cancel === 'function'
+      )
+        handleInitChatDebounce.cancel();
+      handleShutdownChat();
+    };
+
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     if (currentChannel) setRightSpace(3)
@@ -79,6 +105,7 @@ const Chat = ({ handleBlockUser, chat, user }: Props) => {
       <Grid item xs={3} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}
+          handleUpdateUnreadCount={handleUpdateUnreadCount}
           userId={userId}
           client={client}
           currentChannel={currentChannel}
@@ -87,6 +114,7 @@ const Chat = ({ handleBlockUser, chat, user }: Props) => {
       </Grid>
       <Grid item xs={12-leftSpace-rightSpace} className={classes.main}>
         <Main
+          newMessage={newMessage}
           onCollapseLeft={onCollapseLeft}
           onCollapseRight={onCollapseRight}
           leftSpace={leftSpace}

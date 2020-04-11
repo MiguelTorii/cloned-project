@@ -76,7 +76,7 @@ type Props = {
   setCurrentChannel: Function
 };
 
-const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client }: Props) => {
+const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel, currentChannel, client }: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
   const handleCreateChannelClose = () => setChannelType(null)
@@ -166,7 +166,7 @@ const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client 
               selected={c === currentChannel}
               channel={c}
               userId={userId}
-              onUpdateUnreadCount={()=>{}}
+              onUpdateUnreadCount={handleUpdateUnreadCount}
               onOpenChannel={setCurrentChannel}
             />))}
           </List>

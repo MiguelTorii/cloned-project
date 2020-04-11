@@ -45,6 +45,11 @@ const requestStartChannelWithEntity = ({
   }
 });
 
+const newMessage = ({ message }): Action => ({
+  type: chatActions.NEW_CHAT_MESSAGE,
+  payload: { message }
+})
+
 const initClient = ({ client }: { client: Object }): Action => ({
   type: chatActions.INIT_CLIENT_CHAT,
   payload: { client }
@@ -168,6 +173,7 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
         const { firstName, lastName } = attributes;
 
 
+        dispatch(newMessage({ message }))
         dispatch(updateChannel({ channel }));
 
         if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {

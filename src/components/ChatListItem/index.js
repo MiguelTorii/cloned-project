@@ -18,9 +18,17 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState('')
   const [unread, setUnread] = useState(0)
+  const [newUnread, setNewUnread] = useState(0)
   const [title, setTitle] = useState('')
   const [subTitle, setSubTitle] = useState('')
   const [groupImage, setGroupImage] = useState('')
+
+  useEffect(() => {
+    if (newUnread !== 0){
+      setUnread(newUnread)
+      setNewUnread(0)
+    }
+  }, [newUnread])
 
   useEffect(() => {
     try {
@@ -49,29 +57,33 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
         const { items } = messages;
         const t = getTitle(channel, userId);
         const st = items.length > 0 ? getSubTitle(items[0], userId) : '';
-        setUnread(unread || 0)
+        setNewUnread(u || 0)
         setTitle(t)
         setSubTitle(st)
         setLoading(false)
         onUpdateUnreadCount(u);
       });
 
-      channel.on('messageAdded', message => {
-        const st = getSubTitle(message, userId);
-        setSubTitle(st)
-        setUnread(unread+1)
-        onUpdateUnreadCount(1);
-      });
 
-      channel.on('updated', ({ updateReasons }) => {
-        if (updateReasons.indexOf('lastConsumedMessageIndex') > -1) {
-          onUpdateUnreadCount(-unread);
-          setUnread(0)
-        } else if (updateReasons.indexOf('attributes') > -1) {
-          const t = getTitle(channel, userId);
-          setTitle(t)
-        }
-      });
+      if (channel._events.messageAdded.length === 0) {
+        channel.on('messageAdded', message => {
+          const st = getSubTitle(message, userId);
+          const { channel: { lastConsumedMessageIndex }, index } = message
+          setSubTitle(st)
+          setNewUnread(index - lastConsumedMessageIndex)
+          onUpdateUnreadCount(1);
+        });
+
+        channel.on('updated', ({ updateReasons }) => {
+          if (updateReasons.indexOf('lastConsumedMessageIndex') > -1) {
+            onUpdateUnreadCount(-unread);
+            setUnread(0)
+          } else if (updateReasons.indexOf('attributes') > -1) {
+            const t = getTitle(channel, userId);
+            setTitle(t)
+          }
+        });
+      }
     } catch (err) {
       console.log(err);
     }
