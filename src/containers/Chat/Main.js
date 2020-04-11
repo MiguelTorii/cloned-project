@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.circleIn.palette.modalBackground,
     width: '100%',
     padding: theme.spacing(),
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
   },
   headerTitle: {
     fontSize: 18,
@@ -278,7 +278,7 @@ const Main = ({ channel, user }) => {
 
   const  handleImageClose = () => setImages([])
   if (!channel) return null
-  //console.log(typing)
+  // console.log(typing)
   return (
     <div className={classes.root}>
       <div className={classes.header}>
