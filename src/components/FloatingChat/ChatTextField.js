@@ -266,15 +266,15 @@ class ChatTextField extends React.PureComponent<Props, State> {
             />
           </div>
           <EmojiSelector onSelect={this.handleSelect} />
-          <Divider light className={classes.divider} />
-          <IconButton
+          {(message || image) && <Divider light className={classes.divider} />}
+          {(message || image) && <IconButton
             color="primary"
             type="submit"
             className={classes.iconButton}
             aria-label="Send"
           >
             <SendIcon />
-          </IconButton>
+          </IconButton>}
         </form>
       </Paper>
     );
