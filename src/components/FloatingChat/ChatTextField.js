@@ -11,9 +11,13 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
+import Tooltip from '@material-ui/core/Tooltip';
 import EmojiSelector from '../EmojiSelector';
 
 const styles = theme => ({
+  tooltip: {
+    fontSize: 14,
+  },
   root: {
     padding: '2px 4px',
     width: '95%',
@@ -267,14 +271,25 @@ class ChatTextField extends React.PureComponent<Props, State> {
           </div>
           <EmojiSelector onSelect={this.handleSelect} />
           {(message || image) && <Divider light className={classes.divider} />}
-          {(message || image) && <IconButton
-            color="primary"
-            type="submit"
-            className={classes.iconButton}
-            aria-label="Send"
+          {(message || image) &&
+          <Tooltip
+            arrow
+            classes={{
+              tooltip: classes.tooltip
+            }}
+            placement='top'
+            title="Press enter to send"
           >
-            <SendIcon />
-          </IconButton>}
+            <IconButton
+              color="primary"
+              type="submit"
+              className={classes.iconButton}
+              aria-label="Send"
+            >
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
+          }
         </form>
       </Paper>
     );
