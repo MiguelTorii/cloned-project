@@ -592,5 +592,11 @@ export type EventData = {
   recommendationType?: 'notification',
   source?: 'feed_banner' | 'side_menu',
   type: string,
-  variationId?: number,
+  variationId?: number
+};
+
+export type Class = {
+  courseDisplayName: string,
+  extraInformation: string,
+  sectionId: number
 }

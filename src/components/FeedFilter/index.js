@@ -19,7 +19,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 
 const types = [
@@ -104,10 +104,6 @@ const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginTop: theme.spacing(1),
   },
-  dialog: {
-    ...dialogStyle,
-    width: 350
-  }
 });
 
 type Props = {

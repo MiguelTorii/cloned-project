@@ -1,5 +1,6 @@
 // @flow
 import React, { useEffect, useState } from 'react';
+import debounce from 'lodash/debounce';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -7,8 +8,13 @@ import TreeView from '@material-ui/lab/TreeView'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import TreeItem from '@material-ui/lab/TreeItem'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
+
 import {
   leaveUserClass,
   joinClass,
@@ -16,7 +22,8 @@ import {
   getAvailableClassesSections,
   getAvailableSubjectsClasses,
   getAvailableSubjects
-} from 'api/user'
+} from 'api/user';
+import searchClasses from 'api/class';
 import * as notificationsActions from '../../actions/notifications';
 import * as userActions from '../../actions/user';
 import type { UserState } from '../../reducers/user';
@@ -37,6 +44,25 @@ const styles = theme => ({
     ...dialogStyle,
     height: 700,
     width: 700,
+  },
+  optionItem: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  optionName: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  optionButton: {
+    fontWeight: 'bold',
+    marginLeft: 10,
+    padding: '2px 16px',
+  },
+  autocomplete: {
+    marginBottom: 20,
+    width: '100%'
   }
 });
 
@@ -65,6 +91,7 @@ const AddRemoveClasses = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const [sections, setSections] = useState({})
   const [canAddClasses, setCanAddClasses] = useState(false)
+  const [options, setOptions] = useState([])
 
   const fetchUserClasses = async () => {
     try {
@@ -238,6 +265,22 @@ const AddRemoveClasses = (props: Props) => {
     // eslint-disable-next-line
   }, [userId, open])
 
+  let debouncedFn;
+
+  const onAutocompleteChange = async (e) => {
+    e.persist();
+
+    if (!debouncedFn) {
+      debouncedFn = debounce(async () => {
+        const searchString = e.target.value;
+        const result = await searchClasses(searchString);
+        setOptions(result);
+      }, 300);
+    }
+
+    debouncedFn();
+  };
+
   return (
     <Dialog
       className={classes.dialog}
@@ -256,6 +299,52 @@ const AddRemoveClasses = (props: Props) => {
             left: '50%'
           }}
         />}
+        <Autocomplete
+          options={options}
+          onClose={() => setOptions([])}
+          renderOption={(option) => (
+            <div className={classes.optionItem}>
+              <Typography
+                className={classes.optionName}
+                dangerouslySetInnerHTML={{ __html: option.name }}
+              />
+              <Button
+                className={classes.optionButton}
+                color={option.hasJoined ? 'silver' : 'primary'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const newOptions = options.map(o => {
+                    if (o.sectionId === option.sectionId) {
+                      return {
+                        ...o,
+                        hasJoined: !option.hasJoined
+                      }
+                    }
+                    return o;
+                  });
+                  setOptions(newOptions);
+                  handleChange(option.classId, option.sectionId, option.name);
+                }}
+                variant="contained"
+              >
+                {option.hasJoined ? 'Added' : 'Add'}
+              </Button>
+            </div>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Find a class..."
+              variant="outlined"
+              onChange={onAutocompleteChange}
+              className={classes.autocomplete}
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+              }}
+            />
+          )}
+        />
         <TreeView
           className={classes.list}
           defaultCollapseIcon={<ExpandMoreIcon />}
