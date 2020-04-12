@@ -84,7 +84,7 @@ const CTA = ({
     });
   };
 
-  if (!referralProgram) return null;
+  if (!referralProgram || !referralProgram.is_visible) return null;
 
   const {
     code,
