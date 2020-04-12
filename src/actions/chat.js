@@ -149,68 +149,70 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
       dispatch(initClient({ client }));
       dispatch(initChannels({ channels }))
 
-      client.on('channelJoined', async channel => {
-        dispatch(addChannel({ channel }));
-      });
-
-      client.on('channelLeft', async channel => {
-        const { sid } = channel
-        dispatch(removeChannel({ sid }))
-      })
-
-      client.on('channelUpdated', async ({ channel, updateReasons }) => {
-        if (
-          updateReasons.length > 0 &&
-          updateReasons.indexOf('lastMessage') > -1
-        ) {
-          dispatch(updateChannel({ channel }));
-        }
-      });
-
-      client.on('messageAdded', async message => {
-        const { state, channel } = message;
-        const { author, attributes, body } = state;
-        const { firstName, lastName } = attributes;
-
-
-        dispatch(newMessage({ message }))
-        dispatch(updateChannel({ channel }));
-
-        if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
-          const msg = `${firstName} ${lastName} sent you a message:`;
-          dispatch(enqueueSnackbar({
-            notification: {
-              message: `${msg} ${body}`,
-              options: {
-                variant: 'info',
-                anchorOrigin: {
-                  vertical: 'top',
-                  horizontal: 'right'
-                },
-                action: handleMessageReceived(channel),
-                autoHideDuration: 3000,
-                ContentProps: {
-                  classes: {
-                    root: snackbarStyle
-                  }
-                }
-              }}}));
-          dispatch(updateTitle({
-            title: `${firstName} ${lastName} sent you a message:`,
-            body
-          }));
-        }
-      });
-
-      client.on('tokenAboutToExpire', async () => {
-        const newToken = await renewTwilioToken({
-          userId
+      if (client._eventsCount === 0) {
+        client.on('channelJoined', async channel => {
+          dispatch(addChannel({ channel }));
         });
-        if (!newToken || (newToken && newToken === '')) {
-          return;
-        }
-        await client.updateToken(newToken);
-      });
+
+        client.on('channelLeft', async channel => {
+          const { sid } = channel
+          dispatch(removeChannel({ sid }))
+        })
+
+        client.on('channelUpdated', async ({ channel, updateReasons }) => {
+          if (
+            updateReasons.length > 0 &&
+          updateReasons.indexOf('lastMessage') > -1
+          ) {
+            dispatch(updateChannel({ channel }));
+          }
+        });
+
+        client.on('messageAdded', async message => {
+          const { state, channel } = message;
+          const { author, attributes, body } = state;
+          const { firstName, lastName } = attributes;
+
+
+          dispatch(newMessage({ message }))
+          dispatch(updateChannel({ channel }));
+
+          if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
+            const msg = `${firstName} ${lastName} sent you a message:`;
+            dispatch(enqueueSnackbar({
+              notification: {
+                message: `${msg} ${body}`,
+                options: {
+                  variant: 'info',
+                  anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                  },
+                  action: handleMessageReceived(channel),
+                  autoHideDuration: 3000,
+                  ContentProps: {
+                    classes: {
+                      root: snackbarStyle
+                    }
+                  }
+                }}}));
+            dispatch(updateTitle({
+              title: `${firstName} ${lastName} sent you a message:`,
+              body
+            }));
+          }
+        });
+
+        client.on('tokenAboutToExpire', async () => {
+          const newToken = await renewTwilioToken({
+            userId
+          });
+          if (!newToken || (newToken && newToken === '')) {
+            return;
+          }
+          await client.updateToken(newToken);
+        });
+      }
     } catch (err) {}
   }
 

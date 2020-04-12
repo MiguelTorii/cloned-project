@@ -12,6 +12,7 @@ import CreateChatChannel from 'containers/CreateChatChannel'
 import Fuse from 'fuse.js'
 import { getTitle } from 'utils/chat';
 import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu'
+import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -67,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: 18
+  },
+  hidden: {
+    display: 'none'
   }
 }))
 
@@ -100,15 +104,14 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
 
       const fuse = new Fuse(list, options)
 
-      const result = fuse.search(search).map(c => c.item.channel)
+      const result = fuse.search(search).map(c => c.item.channel.sid)
       setSearchChannels(result)
     } else {
-      setSearchChannels(channels)
+      setSearchChannels(channels.map(c => c.sid))
     }
   }, [search, channels])
 
   const handleChannelCreated = ({ channel }) => setCurrentChannel(channel)
-
 
   return (
     <Grid item classes={{ root: classes.container }}>
@@ -147,7 +150,7 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
             <div className={classes.search}>
               <InputBase
                 onChange={onChangeSearch}
-                value={search}
+                value={search || ''}
                 placeholder="Search for a chat…"
                 classes={{
                   root: classes.inputRoot,
@@ -161,14 +164,20 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
         <Grid item className={classes.gridChatList}>
           {channels.length === 0 && <EmptyLeftMenu />}
           <List className={classes.root}>
-            {searchChannels.map(c => (<ChatListItem
-              key={c.sid}
-              selected={c === currentChannel}
-              channel={c}
-              userId={userId}
-              onUpdateUnreadCount={handleUpdateUnreadCount}
-              onOpenChannel={setCurrentChannel}
-            />))}
+            {channels.map(c => (
+              <div
+                key={c.sid}
+                className={clsx(!searchChannels.includes(c.sid) && classes.hidden)}
+              >
+                <ChatListItem
+                  selected={c === currentChannel}
+                  channel={c}
+                  userId={userId}
+                  onUpdateUnreadCount={handleUpdateUnreadCount}
+                  onOpenChannel={setCurrentChannel}
+                />
+              </div>
+            ))}
           </List>
         </Grid>
       </Grid>

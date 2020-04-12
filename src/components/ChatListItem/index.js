@@ -64,8 +64,7 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
         onUpdateUnreadCount(u);
       });
 
-
-      if (channel._events.messageAdded.length === 0) {
+      if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
         channel.on('messageAdded', message => {
           const st = getSubTitle(message, userId);
           const { channel: { lastConsumedMessageIndex }, index } = message

@@ -106,34 +106,37 @@ const FloatingChat = ({
 
   const { location: { pathname}} = router
   useEffect(() => {
-    if(pathname === '/chat') return null
-    const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
-    const handleInitChatDebounce = debounce(handleInitChat, 1000);
-    window.addEventListener('resize', updateOpenChannelsDebounce);
-    window.addEventListener('offline', () => {
-      console.log('**** offline ****');
-      handleShutdownChat();
-    });
-    window.addEventListener('online', () => {
-      console.log('**** online ****');
-      if (!online) window.location.reload();
-    });
-    handleInitChatDebounce({ snackbarStyle: classes.snackbar, handleMessageReceived });
+    const init = () => {
+      const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
+      const handleInitChatDebounce = debounce(handleInitChat, 1000);
+      window.addEventListener('resize', updateOpenChannelsDebounce);
+      window.addEventListener('offline', () => {
+        console.log('**** offline ****');
+        handleShutdownChat();
+      });
+      window.addEventListener('online', () => {
+        console.log('**** online ****');
+        if (!online) window.location.reload();
+      });
+      handleInitChatDebounce({ snackbarStyle: classes.snackbar, handleMessageReceived });
 
-    return () => {
-      if (
-        updateOpenChannelsDebounce.cancel &&
+      return () => {
+        if (
+          updateOpenChannelsDebounce.cancel &&
       typeof updateOpenChannelsDebounce.cancel === 'function'
-      )
-        updateOpenChannelsDebounce.cancel();
+        )
+          updateOpenChannelsDebounce.cancel();
 
-      if (
-        handleInitChatDebounce.cancel &&
+        if (
+          handleInitChatDebounce.cancel &&
       typeof handleInitChatDebounce.cancel === 'function'
-      )
-        handleInitChatDebounce.cancel();
-      handleShutdownChat();
-    };
+        )
+          handleInitChatDebounce.cancel();
+        handleShutdownChat();
+      };
+    }
+
+    if(pathname !== '/chat') return init()
 
     // eslint-disable-next-line
   }, [])

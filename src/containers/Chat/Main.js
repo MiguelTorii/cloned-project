@@ -143,7 +143,7 @@ const Main = ({
       // setNewMessage(message)
       // })
 
-      if (channel._events.typingStarted.length === 0) {
+      if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
         channel.on('typingStarted', member => {
           member.getUser().then(user => {
             const { state } = user
