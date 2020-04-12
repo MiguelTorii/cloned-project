@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
+import { hotjar } from 'react-hotjar';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
@@ -54,7 +55,9 @@ import {
   GOOGLE_ANALYTICS,
   SENTRY,
   ENV,
-  RELEASE
+  RELEASE,
+  HOTJAR_ID,
+  HOTJAR_SV
 } from './constants/app';
 import withTracker from './withTracker';
 import Chat from './pages/Chat'
@@ -62,6 +65,10 @@ import Chat from './pages/Chat'
 const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
+
+// if (process.env.NODE_ENV !== 'development') {
+hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
+//}
 
 if (process.env.NODE_ENV !== 'development') {
   sentryInit({

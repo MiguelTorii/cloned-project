@@ -37,6 +37,10 @@ export const GOOGLE_ANALYTICS =
 export const SENTRY =
   'https://300ac9c2204b4d1eb492ca7bbf75f052@sentry.io/1263172';
 
+export const HOTJAR_ID = 1763746;
+
+export const HOTJAR_SV  = 6;
+
 export const ENV =
   process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
 

@@ -50,6 +50,7 @@
     "react-dropzone": "^10.2.1",
     "react-ga": "^2.5.7",
     "react-graceful-image": "^1.2.12",
+    "react-hotjar": "^2.2.0",
     "react-iframe": "^1.8.0",
     "react-images": "^0.5.19",
     "react-infinite-scroller": "^1.2.4",
