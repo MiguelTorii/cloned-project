@@ -50,6 +50,13 @@ const styles = theme => ({
   },
   logo: {
     marginTop: theme.spacing(8)
+  },
+  header: {
+    textAlign: 'center'
+  },
+  title: {
+    fontSize: '1.5rem',
+    marginBottom: 10
   }
 });
 
@@ -109,7 +116,8 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     const { type, firstName, lastName, email, password, grade } = this.state;
     const {
       auth: {
-        data: { school }
+        data: { school },
+        referralData
       },
       signUp
     } = this.props;
@@ -124,8 +132,18 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
         loading: true
       });
       try {
-        await sendCode({ email: data.email });
-        this.setState({ activeStep: 1 });
+        const result = await sendCode({ email: data.email });
+
+        if (result.error) {
+          const { updateError } = this.props;
+
+          updateError({
+            title: 'Validation Error',
+            body: result.error
+          });
+        } else {
+          this.setState({ activeStep: 1 });
+        }
       } finally {
         this.setState({ loading: false });
       }
@@ -134,7 +152,22 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       this.setState({ loading: true });
       try {
         await verifyCode({ email: data.email, code: data.code });
-        this.setState({ activeStep: 2 });
+
+        if (referralData) {
+          await signUp({
+            grade,
+            school: referralData.schoolId,
+            firstName,
+            lastName,
+            password,
+            email,
+            phone: '',
+            segment: type,
+            referralCode: referralData.code
+          });
+        } else {
+          this.setState({ activeStep: 2 });
+        }
       } catch (err) {
         const { updateError } = this.props;
         updateError({
@@ -194,12 +227,45 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     updateSchool({ school: null });
   };
 
+  renderHeader(activeStep: number) {
+    const { auth: { referralData }, classes } = this.props;
+
+    if (referralData) {
+      const { name, school } = referralData;
+
+      return (
+        <div className={classes.header}>
+          <Typography className={classes.title}>
+            {`${name} is inviting you to CircleIn`}
+          </Typography>
+          <Typography variant="h6">
+            {school}
+          </Typography>
+          <Typography>
+            Sign Up below and verify your account
+          </Typography>
+        </div>
+      );
+    }
+
+    return (
+      <Typography component="h1" variant="h5">
+        {
+          activeStep === 2
+            ? 'Did a classmate refer you to CircleIn?'
+            : 'Create your CircleIn Account'
+        }
+      </Typography>
+    );
+  }
+
   render() {
     const {
       classes,
       user,
       auth: {
-        data: { school }
+        data: { school },
+        referralData
       },
       email: propsEmail
     } = this.props;
@@ -207,7 +273,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     const { error, errorMessage, isLoading } = user;
     const { title, body } = errorMessage;
 
-    if (!school) return <Redirect to="/auth" />;
+    if (!school && !referralData) return <Redirect to="/auth" />;
     const { emailDomain, emailRestriction } = school;
 
     return (
@@ -217,10 +283,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
             <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
-                <Typography component="h1" variant="h5">
-                  {activeStep === 2 ? 'Did a classmate refer you to CircleIn?' : 'Create your CircleIn Account'}
-                </Typography>
-                {/* <Steps activeStep={activeStep} hide={Boolean(type === '')} /> */}
+                {this.renderHeader(activeStep)}
                 <TypeSelect
                   onTypeChange={this.handleTypeChange}
                   hide={Boolean(type !== '')}

@@ -11,7 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns' 
+import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns';
+import Dialog, { dialogStyle } from 'components/Dialog';
+import { ReferralStatus } from 'containers/Referrals';
 import * as userActions from '../../actions/user'
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
@@ -37,6 +39,10 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing(2)
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 500
   }
 });
 
@@ -63,7 +69,8 @@ type State = {
   anchorEl: Node,
   announcements: boolean,
   unreadCount: number,
-  openRequestClass: boolean
+  openRequestClass: boolean,
+  referralStatus: boolean
 };
 
 class Layout extends React.PureComponent<Props, State> {
@@ -77,7 +84,8 @@ class Layout extends React.PureComponent<Props, State> {
     anchorEl: null,
     announcements: false,
     unreadCount: 0,
-    openRequestClass: false
+    openRequestClass: false,
+    referralStatus: false
   };
 
   loadUser = async () => {
@@ -128,6 +136,14 @@ class Layout extends React.PureComponent<Props, State> {
 
   handleCloseAnnouncements = () => {
     this.setState({ announcements: false });
+  };
+
+  handleOpenReferralStatus = () => {
+    this.setState({ referralStatus: true });
+  };
+
+  handleCloseReferralStatus = () => {
+    this.setState({ referralStatus: false });
   };
 
   handleCreateChatGroupChannel = () => {
@@ -192,6 +208,7 @@ class Layout extends React.PureComponent<Props, State> {
   render() {
     const {
       user,
+      classes,
       signOut,
       isNaked,
       campaign,
@@ -214,7 +231,8 @@ class Layout extends React.PureComponent<Props, State> {
       anchorEl,
       announcements,
       unreadCount,
-      openRequestClass
+      openRequestClass,
+      referralStatus
     } = this.state;
     if (isNaked) return this.renderChildren();
 
@@ -248,6 +266,7 @@ class Layout extends React.PureComponent<Props, State> {
             onManageClasses={this.handleOpenManageClasses}
             onManageBlockedUsers={this.handleOpenBlockedUsers}
             onOpenAnnouncements={this.handleOpenAnnouncements}
+            onOpenReferralStatus={this.handleOpenReferralStatus}
           >
             {this.renderChildren()}
           </MainLayout>
@@ -275,6 +294,16 @@ class Layout extends React.PureComponent<Props, State> {
             open={manageBlockedUsers}
             onClose={this.handleCloseManageBlockedUsers}
           />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Dialog
+            className={classes.dialog}
+            onCancel={this.handleCloseReferralStatus}
+            open={referralStatus}
+            title="Referred Classmates Status"
+          >
+            <ReferralStatus />
+          </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
           <Announcements

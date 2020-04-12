@@ -283,6 +283,13 @@ export type School = {
   launchType: string
 };
 
+export type ReferralData = {
+  code: string,
+  name: string,
+  schoolId: number,
+  school: string
+};
+
 export type Schools = Array<School>;
 
 export type ChatMessageListItem = {

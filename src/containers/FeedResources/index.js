@@ -10,20 +10,23 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import Linkify from 'react-linkify'
-// import { feedResources } from 'api/feed'
+import { ReferralCTA } from '../Referrals'
 import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 
 const styles = theme => ({
-  paper: {
+  container: {
     margin: theme.spacing(1, 5, 0, 1),
+    position: 'fixed'
+  },
+  paper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    position: 'fixed',
     justifyContent: 'center',
     borderRadius: theme.spacing(),
+    marginBottom: theme.spacing(2)
   },
   img: {
     width: '60%'
@@ -84,21 +87,26 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
   if (!display || ['xs', 'sm'].includes(width)) return null
 
   return (
-    <Paper className={classes.paper}>
-      <Grid item>
-        <div className={classes.imgContainer}>
-          {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
-        </div>
-      </Grid>
-      <Typography className={classes.title}>
-        {resourcesTitle}
-      </Typography>
-      <Typography className={classes.text}>
-        <Linkify properties={{target: '_blank' }}>
-          {resourcesBody}
-        </Linkify>
-      </Typography>
-    </Paper>
+    <div className={classes.container}>
+      <Paper className={classes.paper}>
+        <Grid item>
+          <div className={classes.imgContainer}>
+            {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
+          </div>
+        </Grid>
+        <Typography className={classes.title}>
+          {resourcesTitle}
+        </Typography>
+        <Typography className={classes.text}>
+          <Linkify properties={{target: '_blank' }}>
+            {resourcesBody}
+          </Linkify>
+        </Typography>
+      </Paper>
+      <Paper className={classes.paper}>
+        <ReferralCTA />
+      </Paper>
+    </div>
   );
 }
 

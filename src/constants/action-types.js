@@ -72,7 +72,8 @@ export const feedActions = {
 };
 
 export const authActions = {
-  UPDATE_AUTH_SCHOOL_REQUEST: 'UPDATE_AUTH_SCHOOL_REQUEST'
+  UPDATE_AUTH_SCHOOL_REQUEST: 'UPDATE_AUTH_SCHOOL_REQUEST',
+  UPDATE_REFERRAL_DATA: 'UPDATE_REFERRAL_DATA'
 };
 
 export const notificationsActions = {

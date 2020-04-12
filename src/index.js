@@ -35,6 +35,7 @@ import StartVideo from './pages/StartVideo';
 import FloatingChat from './containers/FloatingChat';
 import DailyRewards from './containers/DailyRewards';
 import UpdateLMSUser from './containers/UpdateLMSUser';
+import { Referral } from './containers/Referrals';
 // import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
 import Auth from './pages/Auth';
 import SignIn from './pages/SignIn';
@@ -183,6 +184,7 @@ ReactDOM.render(
             <Route exact path="/auth" component={withTracker(Auth)} />
             <Route exact path="/login" component={withTracker(SignIn)} />
             <Route exact path="/signup" component={withTracker(SignUp)} />
+            <Route exact path="/referral/:code" component={withTracker(Referral)} />
             <Route
               exact
               path="/forgot_password"

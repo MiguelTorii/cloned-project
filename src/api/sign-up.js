@@ -26,8 +26,13 @@ export const sendCode = async ({ email }: { email: string }) => {
     const { data = {} } = result;
     return data;
   } catch (err) {
-    console.log(err);
-    return {};
+    const errorMessage =
+      (err.response && err.response.data && err.response.data.message) ||
+      'Error occurred';
+
+    return {
+      error: errorMessage
+    };
   }
 };
 
@@ -66,7 +71,8 @@ export const createAccount = async ({
   // parentLastName,
   // parentPhone,
   // parentEmail,
-  segment
+  segment,
+  referralCode = ''
 }: {
   // state: number,
   grade: number,
@@ -83,7 +89,8 @@ export const createAccount = async ({
   // parentLastName: string,
   // parentPhone: string,
   // parentEmail: string,
-  segment: string
+  segment: string,
+  referralCode: string
 }) => {
   try {
     const result = await axios.post(API_ROUTES.SIGNUP, {
@@ -102,7 +109,8 @@ export const createAccount = async ({
       // parent_last_name: parentLastName,
       // parent_cell_phone: parentPhone,
       // parent_email: parentEmail,
-      segment
+      segment,
+      referral_code: referralCode
     });
     const { data = {} } = result;
     return data;
@@ -123,7 +131,7 @@ export const setReferral = async ({
     const token = await getToken();
 
     const result = await axios.post(
-      API_ROUTES.REFERRAL,
+      API_ROUTES.USER_REFERRAL,
       {
         user_id: Number(userId),
         referral_code: referralCode

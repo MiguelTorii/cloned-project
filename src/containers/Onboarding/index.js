@@ -107,7 +107,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         type: 'Started',
       });
     }
-  }, [open])
+  }, [open, userId])
 
   const renderTitle = step => {
     switch (step) {

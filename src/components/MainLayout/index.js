@@ -385,6 +385,18 @@ class MainLayout extends React.Component<Props, State> {
     onManageClasses();
   };
 
+  handleOpenReferralStatus = () => {
+    const { onOpenReferralStatus } = this.props;
+    this.handleMenuClose();
+    onOpenReferralStatus();
+  };
+
+  handleReferralStatus = () => {
+    const { onManageBlockedUsers } = this.props;
+    this.handleMenuClose();
+    onManageBlockedUsers();
+  };
+
   handleBlockedUsers = () => {
     const { onManageBlockedUsers } = this.props;
     this.handleMenuClose();
@@ -490,6 +502,7 @@ class MainLayout extends React.Component<Props, State> {
           How Do I Earn Points
         </MenuItem> */}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
+        <MenuItem onClick={this.handleOpenReferralStatus}>Referred Classmates</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
       </Menu>
     );

@@ -71,7 +71,8 @@ export const signUp = ({
       password,
       email,
       phone,
-      segment
+      segment,
+      referralCode
     });
 
     const user: User = {

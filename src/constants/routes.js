@@ -48,7 +48,7 @@ export const API_ROUTES = {
   CREATELINK: `${API_URL}/feed/link/post`,
   USER: `${API_URL}/user`,
   CHECK_EMAIL: `${API_URL}/user/email/verify`,
-  REFERRAL: `${API_URL}/user/referral`,
+  USER_REFERRAL: `${API_URL}/user/referral`,
   USER_CLASS: `${API_URL}/user/class`,
   USER_CLASSES: `${API_URL}/user/classes`,
   GET_BLOCKED_USERS: `${API_URL}/user/blocks`,
@@ -90,4 +90,5 @@ export const API_ROUTES = {
   LEADERBOARD_V2_BOARD_TWO: `${API_URL_V1_2}/leaderboard/leaders?board_id=2`,
   LEADERBOARD_GRAND_PRIZE_INFO: `${API_URL}/store/grand_prize `,
   EVENTS: `${API_URL}/event`,
+  REFERRAL: `${API_URL}/referral`,
 };
