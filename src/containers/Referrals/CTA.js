@@ -86,15 +86,23 @@ const CTA = ({
 
   if (!referralProgram) return null;
 
-  const { code, img_url: imageUrl, title, subtitle } = referralProgram;
+  const {
+    code,
+    cta,
+    cta_body: ctaBody,
+    cta_title: ctaTitle,
+    img_url: imageUrl,
+    title,
+    subtitle
+  } = referralProgram;
 
   return (
     <div className={classes.body}>
       <Typography className={classes.title}>
-        Referral Codes
+        {ctaTitle}
       </Typography>
       <Typography className={classes.text}>
-        Invite your friends
+        {ctaBody}
       </Typography>
       <Button
         className={classes.button}
@@ -102,7 +110,7 @@ const CTA = ({
         onClick={() => setDialogOpen(true)}
         variant='contained'
       >
-        Invite Classmates
+        {cta}
       </Button>
       <Dialog
         className={classes.dialog}

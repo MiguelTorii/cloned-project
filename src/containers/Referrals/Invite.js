@@ -8,12 +8,13 @@ import LoadImg from 'components/LoadImg';
 
 const styles = theme => ({
   action: {
-    color: theme.circleIn.palette.action
+    color: theme.circleIn.palette.action,
+    marginLeft: 20
   },
   body: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
   },
   coupon: {
     alignItems: 'center',
@@ -24,8 +25,7 @@ const styles = theme => ({
     height: 40,
     justifyContent: 'space-between',
     margin: '20px 0px',
-    padding: 10,
-    width: 300,
+    padding: 20,
   },
   title: {
     fontSize: 24,
