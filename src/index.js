@@ -66,9 +66,9 @@ const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
-// if (process.env.NODE_ENV !== 'development') {
-hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
-//}
+if (process.env.NODE_ENV !== 'development') {
+  hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
+}
 
 if (process.env.NODE_ENV !== 'development') {
   sentryInit({
