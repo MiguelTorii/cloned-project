@@ -12,7 +12,7 @@ import withRoot from '../../withRoot';
 
 export const dialogStyle = {
   borderRadius: 20,
-  overFlow: 'hidden',
+  overflow: 'auto',
 }
 
 const styles = theme => ({
@@ -20,7 +20,6 @@ const styles = theme => ({
   contentRoot: {
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
     padding: 24,
     paddingTop: 8
   },
