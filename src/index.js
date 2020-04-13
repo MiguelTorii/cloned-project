@@ -66,7 +66,7 @@ const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
-if (process.env.REACT_APP_STAGE !== 'dev') {
+if (ENV !== 'dev') {
   hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
 }
 
