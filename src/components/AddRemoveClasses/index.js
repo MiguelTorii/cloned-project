@@ -56,9 +56,11 @@ const styles = theme => ({
     textOverflow: 'ellipsis',
   },
   optionButton: {
+    borderRadius: 8,
     fontWeight: 'bold',
     marginLeft: 10,
     padding: '2px 16px',
+    width: 50,
   },
   autocomplete: {
     marginBottom: 20,
@@ -76,13 +78,13 @@ type Props = {
 };
 
 const AddRemoveClasses = (props: Props) => {
-  const { 
-    classes, 
-    enqueueSnackbar, 
+  const {
+    classes,
+    enqueueSnackbar,
     fetchClasses: updateClasses,
-    open, 
+    open,
     user: {
-      data: { userId }
+      data: { userId, schoolId }
     },
     onClose
   } = props;
@@ -95,18 +97,18 @@ const AddRemoveClasses = (props: Props) => {
 
   const fetchUserClasses = async () => {
     try {
-      const res= await getUserClasses({ userId })
-      const { permissions: { canAddClasses: cac }} = res
+      const res = await getUserClasses({ userId })
+      const { permissions: { canAddClasses: cac } } = res
       setCanAddClasses(cac)
       const sectionsObj = {}
-      res.classes.forEach(c=> {
-        const {section, permissions} =c
-        section.forEach(s=> {
-          sectionsObj[`sc${s.sectionId}`] = {canLeave: permissions.canLeave}
+      res.classes.forEach(c => {
+        const { section, permissions } = c
+        section.forEach(s => {
+          sectionsObj[`sc${s.sectionId}`] = { canLeave: permissions.canLeave }
         })
       })
       setSections(sectionsObj)
-    } catch(e) {
+    } catch (e) {
       enqueueSnackbar({
         notification: {
           message: `Error loading Classes`,
@@ -169,7 +171,7 @@ const AddRemoveClasses = (props: Props) => {
     setLoading(true)
     const res = await getAvailableSubjects()
     res.forEach(r => {
-      tree[`s${  r.subject_id}`] = {
+      tree[`s${r.subject_id}`] = {
         name: r.display_name,
         subjectId: r.subject_id,
         expanded: false,
@@ -184,8 +186,8 @@ const AddRemoveClasses = (props: Props) => {
 
   const handleChange = async (classId, sectionId, name) => {
     setLoading(true)
-    try{
-      if(Object.keys(sections).includes(`sc${sectionId}`)) {
+    try {
+      if (Object.keys(sections).includes(`sc${sectionId}`)) {
         await leaveUserClass({ sectionId, classId, userId: String(userId) })
         delete sections[`sc${sectionId}`]
         setSections(sections)
@@ -208,8 +210,8 @@ const AddRemoveClasses = (props: Props) => {
           }
         });
       } else {
-        const {success} = await joinClass({ classId, sectionId, userId: String(userId) })
-        if(success){
+        const { success } = await joinClass({ classId, sectionId, userId: String(userId) })
+        if (success) {
           sections[`sc${sectionId}`] = {}
           setSections(sections)
           enqueueSnackbar({
@@ -234,7 +236,7 @@ const AddRemoveClasses = (props: Props) => {
       }
 
       await updateClasses()
-    } catch(e){
+    } catch (e) {
       enqueueSnackbar({
         notification: {
           message: `Couldn't change class settings`,
@@ -258,9 +260,9 @@ const AddRemoveClasses = (props: Props) => {
   }
 
   useEffect(() => {
-    if(open) {
+    if (open) {
       fetchSubjects()
-      if(userId) fetchUserClasses()
+      if (userId) fetchUserClasses()
     }
     // eslint-disable-next-line
   }, [userId, open])
@@ -281,6 +283,39 @@ const AddRemoveClasses = (props: Props) => {
     debouncedFn();
   };
 
+  const renderOption = (option) => (
+    <div className={classes.optionItem}>
+      <Typography
+        className={classes.optionName}
+      >
+        {option.name.split("\n").map((item) => {
+          return (<span key={Math.random()}>{item}<br /></span>)
+        })}
+      </Typography>
+      <Button
+        className={classes.optionButton}
+        color={option.hasJoined ? 'secondary' : 'primary'}
+        onClick={(e) => {
+          e.stopPropagation();
+          const newOptions = options.map(o => {
+            if (o.sectionId === option.sectionId) {
+              return {
+                ...o,
+                hasJoined: !option.hasJoined
+              }
+            }
+            return o;
+          });
+          setOptions(newOptions);
+          handleChange(option.classId, option.sectionId, option.name);
+        }}
+        variant="contained"
+      >
+        {option.hasJoined ? 'Added' : 'Add'}
+      </Button>
+    </div>
+  );
+
   return (
     <Dialog
       className={classes.dialog}
@@ -299,52 +334,26 @@ const AddRemoveClasses = (props: Props) => {
             left: '50%'
           }}
         />}
-        <Autocomplete
-          options={options}
-          onClose={() => setOptions([])}
-          renderOption={(option) => (
-            <div className={classes.optionItem}>
-              <Typography
-                className={classes.optionName}
-                dangerouslySetInnerHTML={{ __html: option.name }}
-              />
-              <Button
-                className={classes.optionButton}
-                color={option.hasJoined ? 'silver' : 'primary'}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const newOptions = options.map(o => {
-                    if (o.sectionId === option.sectionId) {
-                      return {
-                        ...o,
-                        hasJoined: !option.hasJoined
-                      }
-                    }
-                    return o;
-                  });
-                  setOptions(newOptions);
-                  handleChange(option.classId, option.sectionId, option.name);
+        {schoolId === "52" &&
+          <Autocomplete
+            onClose={() => setOptions([])}
+            options={options}
+            renderOption={renderOption}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Find a class..."
+                variant="outlined"
+                onChange={onAutocompleteChange}
+                className={classes.autocomplete}
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password', // disable autocomplete and autofill
                 }}
-                variant="contained"
-              >
-                {option.hasJoined ? 'Added' : 'Add'}
-              </Button>
-            </div>
-          )}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Find a class..."
-              variant="outlined"
-              onChange={onAutocompleteChange}
-              className={classes.autocomplete}
-              inputProps={{
-                ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
-              }}
-            />
-          )}
-        />
+              />
+            )}
+          />
+        }
         <TreeView
           className={classes.list}
           defaultCollapseIcon={<ExpandMoreIcon />}
