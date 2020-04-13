@@ -139,7 +139,7 @@ const FloatingChat = ({
     if(pathname !== '/chat') return init()
 
     // eslint-disable-next-line
-  }, [])
+  }, [pathname])
 
   const prevChat = usePrevious(chat)
   const prevUser = usePrevious(user)
