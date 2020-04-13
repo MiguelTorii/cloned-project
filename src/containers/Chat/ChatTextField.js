@@ -40,6 +40,9 @@ const styles = theme => ({
     flex: 1,
     paddingLeft: theme.spacing(2),
   },
+  sendIcon: {
+    color: theme.circleIn.palette.brand
+  },
   iconButton: {
     padding: 10
   },
@@ -289,7 +292,11 @@ class ChatTextField extends React.PureComponent<Props, State> {
               className={classes.iconButton}
               aria-label="Send"
             >
-              <SendIcon />
+              <SendIcon
+                classes={{
+                  root: classes.sendIcon
+                }}
+              />
             </IconButton>
           </Tooltip>
           }

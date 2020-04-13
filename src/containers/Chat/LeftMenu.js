@@ -13,7 +13,7 @@ import { getTitle } from 'utils/chat';
 import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu'
 import clsx from 'clsx'
 import Button from '@material-ui/core/Button';
-import NewChatIcon from 'assets/svg/ic_new_chat.svg'
+import NewChatIcon from 'assets/svg/ic_new_chat_bold.svg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -48,8 +48,11 @@ const useStyles = makeStyles((theme) => ({
     width: 'inherit',
     marginBottom: theme.spacing(6)
   },
+  imgIcon: {
+  },
   newButton: {
     borderRadius: '50%',
+    background: theme.circleIn.palette.brand,
     padding: 0,
     minWidth: 0,
     textTransform: 'none',
@@ -129,7 +132,7 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
             alignItems='center'
             className={classes.headerTitle}
           >
-            <Typography className={classes.title}>Chat</Typography>
+            <Typography className={classes.title}>Chats</Typography>
             <Button
               variant='contained'
               classes={{
@@ -138,7 +141,7 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
               color='primary'
               onClick={handleCreateChannelOpen}
             >
-              <img id="circlein-newchat" src={NewChatIcon} alt='newChat' className={classes.img} />
+              <img id="circlein-newchat" src={NewChatIcon} alt='newChat' className={classes.imgIcon} />
             </Button>
           </Grid>
           <Grid item className={classes.gridItem}>

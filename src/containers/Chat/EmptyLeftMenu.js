@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     fontWeight: 'bold',
     backgroundColor: '#539f56',
+    width: '23%',
     bottom: 10
   },
   messageContainer: {
