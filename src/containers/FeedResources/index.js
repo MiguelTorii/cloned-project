@@ -84,25 +84,26 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
     // eslint-disable-next-line
   }, [userId])
 
-  if (!display || ['xs', 'sm'].includes(width)) return null
-
   return (
     <div className={classes.container}>
-      <Paper className={classes.paper}>
-        <Grid item>
-          <div className={classes.imgContainer}>
-            {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
-          </div>
-        </Grid>
-        <Typography className={classes.title}>
-          {resourcesTitle}
-        </Typography>
-        <Typography className={classes.text}>
-          <Linkify properties={{target: '_blank' }}>
-            {resourcesBody}
-          </Linkify>
-        </Typography>
-      </Paper>
+      {
+        display && !['xs', 'sm'].includes(width) &&
+        <Paper className={classes.paper}>
+          <Grid item>
+            <div className={classes.imgContainer}>
+              {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
+            </div>
+          </Grid>
+          <Typography className={classes.title}>
+            {resourcesTitle}
+          </Typography>
+          <Typography className={classes.text}>
+            <Linkify properties={{ target: '_blank' }}>
+              {resourcesBody}
+            </Linkify>
+          </Typography>
+        </Paper>
+      }
       <Paper className={classes.paper}>
         <ReferralCTA />
       </Paper>
