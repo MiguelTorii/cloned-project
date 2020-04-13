@@ -56,7 +56,9 @@ const Invite = ({ classes, imageUrl, link, onLinkCopied, subtitle, title }: Prop
         {title}
       </Typography>
       <Typography className={classes.subtitle}>
-        {subtitle}
+        {subtitle.split("\n").map((item) => {
+          return (<span key={Math.random()}>{item}<br /></span>)
+        })}
       </Typography>
       <CopyToClipboard text={link} onCopy={onLinkCopied}>
         <div className={classes.coupon}>
