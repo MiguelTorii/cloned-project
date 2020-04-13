@@ -669,23 +669,30 @@ class MainLayout extends React.Component<Props, State> {
           {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
           </div>}
-          <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
-            <ListItemIcon>
-              <AddIcon
-                className={classes.newIcon}
+          <Tooltip
+            hidden={createPostOpen}
+            id={5792}
+            placement="right"
+            text="Now that you’re in your class, click here to post on the feed and start earning points!"
+          >
+            <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
+              <ListItemIcon>
+                <AddIcon
+                  className={classes.newIcon}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary="New"
+                classes={{
+                  root: classes.newRoot,
+                  primary: classes.newLabel
+                }}
+                primaryTypographyProps={{
+                  color: pathname.includes('/create') ? 'primary' : 'textPrimary'
+                }}
               />
-            </ListItemIcon>
-            <ListItemText
-              primary="New"
-              classes={{
-                root: classes.newRoot,
-                primary: classes.newLabel
-              }}
-              primaryTypographyProps={{
-                color: pathname.includes('/create') ? 'primary' : 'textPrimary'
-              }}
-            />
-          </ListItem>
+            </ListItem>
+          </Tooltip>
           <HomeItem
             createPostOpen={createPostOpen}
             MyLink={MyLink}

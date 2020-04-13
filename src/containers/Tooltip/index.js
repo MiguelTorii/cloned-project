@@ -74,6 +74,7 @@ const Tooltip = ({
   const BOOKMARKS = 9043;
   const THANKS = 2197;
   const FLASHCARDS = 1194;
+  const NEW_POST = 5792;
 
   const TRANSITION_TIME = 750;
 
@@ -85,10 +86,10 @@ const Tooltip = ({
     let result = true;
     clearTimeout(timer.current);
 
-    if (hidden) {
-      result = false;
-    } else if (
-      !viewedOnboarding // Onboarding not completed
+    if (
+      hidden
+      || id === LEADERBOARD
+      || !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading
       || viewedTooltips.includes(id) // Tooltip already dismissed by user
     ) {
@@ -101,7 +102,7 @@ const Tooltip = ({
       case FLASHCARDS:
         result = viewedTooltips.includes(CHAT);
         break;
-      case LEADERBOARD:
+      case NEW_POST:
         result = (
           viewedTooltips.includes(CHAT) &&
           pathname.indexOf('/feed') === 0
