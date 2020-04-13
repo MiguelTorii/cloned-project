@@ -118,28 +118,32 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
 
   useEffect(() => {
     const updateAvatars = async () => {
-      const avatars = await fetchAvatars(channel)
-      const m = channel.state.attributes.users.map(u => {
-        const avatar = avatars.find(a => Number(a.identity) === u.userId)
-        if (channel.state.attributes.users.length === 2) {
-          if (u.userId !== userId) {
-            setGroupImage(avatar && avatar.profileImageUrl)
-            setInitals(getInitials({name: `${u.firstName} ${u.lastName}`}))
-            setOtherUser(u)
+      try {
+        const avatars = await fetchAvatars(channel)
+        const m = channel.state.attributes.users.map(u => {
+          const avatar = avatars.find(a => Number(a.identity) === u.userId)
+          if (channel.state.attributes.users.length === 2) {
+            if (u.userId !== userId) {
+              setGroupImage(avatar && avatar.profileImageUrl)
+              setInitals(getInitials({name: `${u.firstName} ${u.lastName}`}))
+              setOtherUser(u)
+            }
           }
-        }
-        return {
-          id: u.userId,
-          firstName: u.firstName,
-          lastName: u.lastName,
-          avatar: avatar && avatar.profileImageUrl
-        }
-      })
-      setMembers(m)
+          return {
+            id: u.userId,
+            firstName: u.firstName,
+            lastName: u.lastName,
+            avatar: avatar && avatar.profileImageUrl
+          }
+        })
+        setMembers(m)
+      } catch(e) {}
     }
 
     const init = async () => {
-      setTitle(getTitle(channel, userId))
+      try {
+        setTitle(getTitle(channel, userId))
+      } catch(e) {}
       const { state } = channel
       const { attributes } = state
       const { groupType, thumbnail } = attributes

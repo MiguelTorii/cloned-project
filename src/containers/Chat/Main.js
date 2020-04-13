@@ -128,34 +128,34 @@ const Main = ({
       setTitle(getTitle(channel, userId))
       try {
         channel.setAllMessagesConsumed()
-      } catch(e) {}
 
-      const av = await fetchAvatars(channel)
-      setAvatars(av)
+        const av = await fetchAvatars(channel)
+        setAvatars(av)
 
-      const p = await channel.getMessages(10)
-      setMessages(p.items)
-      setPaginator(p)
-      setHasMore(!(p.items.length < 10))
-      handleScrollToBottom()
+        const p = await channel.getMessages(10)
+        setMessages(p.items)
+        setPaginator(p)
+        setHasMore(!(p.items.length < 10))
+        handleScrollToBottom()
 
-      // channel.on('messageAdded', message => {
-      // setNewMessage(message)
-      // })
+        // channel.on('messageAdded', message => {
+        // setNewMessage(message)
+        // })
 
-      if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
-        channel.on('typingStarted', member => {
-          member.getUser().then(user => {
-            const { state } = user
-            const { friendlyName } = state
-            setTyping({ channel: channel.sid, friendlyName })
+        if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
+          channel.on('typingStarted', member => {
+            member.getUser().then(user => {
+              const { state } = user
+              const { friendlyName } = state
+              setTyping({ channel: channel.sid, friendlyName })
+            })
           })
-        })
 
-        channel.on('typingEnded', () => {
-          setTyping('')
-        })
-      }
+          channel.on('typingEnded', () => {
+            setTyping('')
+          })
+        }
+      } catch(e) {}
     }
 
     if(channel) init()

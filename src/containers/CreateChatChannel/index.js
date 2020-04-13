@@ -172,13 +172,17 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       });
 
       if (chatId !== '') {
-        const channel = await client.getChannelBySid(chatId);
-        onChannelCreated({
-          channel,
-          isNew: isNewChat,
-          startVideo
-        });
-        this.handleClose();
+        try {
+          const channel = await client.getChannelBySid(chatId);
+          onChannelCreated({
+            channel,
+            isNew: isNewChat,
+            startVideo
+          });
+          this.handleClose();
+        } catch (e) {
+          this.setState({ isLoading: false });
+        }
       } else {
         this.setState({ isLoading: false });
       }

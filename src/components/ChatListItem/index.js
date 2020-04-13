@@ -31,11 +31,10 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
   }, [newUnread])
 
   useEffect(() => {
-    try {
-      Promise.all([
-        channel.getUnconsumedMessagesCount(),
-        channel.getMessages(1)
-      ]).then(results => {
+    const init = async () => {
+      try {
+        const u = await channel.getUnconsumedMessagesCount()
+        const messages = await channel.getMessages(1)
         const { state, members = [] } = channel;
         const { attributes = {} } = state;
         const { thumbnail = '', users = [] } = attributes;
@@ -53,7 +52,6 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
           });
         }
 
-        const [u, messages] = results
         const { items } = messages;
         const t = getTitle(channel, userId);
         const st = items.length > 0 ? getSubTitle(items[0], userId) : '';
@@ -62,32 +60,37 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
         setSubTitle(st)
         setLoading(false)
         onUpdateUnreadCount(u);
-      });
 
-      if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
-        channel.on('messageAdded', message => {
-          const st = getSubTitle(message, userId);
-          const { channel: { lastConsumedMessageIndex }, index } = message
-          setSubTitle(st)
-          setNewUnread(index - lastConsumedMessageIndex)
-          onUpdateUnreadCount(1);
-        });
+        if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
+          channel.on('messageAdded', message => {
+            const st = getSubTitle(message, userId);
+            const { channel: { lastConsumedMessageIndex }, index } = message
+            setSubTitle(st)
+            setNewUnread(index - lastConsumedMessageIndex)
+            onUpdateUnreadCount(1);
+          });
 
-        channel.on('updated', ({ updateReasons }) => {
-          if (updateReasons.indexOf('lastConsumedMessageIndex') > -1) {
-            onUpdateUnreadCount(-unread);
-            setUnread(0)
-          } else if (updateReasons.indexOf('attributes') > -1) {
-            const t = getTitle(channel, userId);
-            setTitle(t)
-          }
-        });
+          channel.on('updated', ({ updateReasons }) => {
+            if (updateReasons.indexOf('lastConsumedMessageIndex') > -1) {
+              onUpdateUnreadCount(-unread);
+              setUnread(0)
+            } else if (updateReasons.indexOf('attributes') > -1) {
+              const t = getTitle(channel, userId);
+              setTitle(t)
+            }
+          });
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
+
+    init()
+
     return () => {
-      channel.removeAllListeners()
+      try {
+        channel.removeAllListeners()
+      } catch(e) {}
     }
     // eslint-disable-next-line
   }, [])

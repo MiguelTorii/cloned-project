@@ -138,7 +138,7 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
 
       let paginator = await client.getSubscribedChannels();
       while (paginator.hasNextPage) {
-      // eslint-disable-next-line no-await-in-loop
+        // eslint-disable-next-line no-await-in-loop
         paginator = await paginator.nextPage();
       }
       const channels = await client.getLocalChannels({
@@ -213,7 +213,9 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
           await client.updateToken(newToken);
         });
       }
-    } catch (err) {}
+    } catch (err) {
+      setTimeout(handleInitChat, 2000);
+    }
   }
 
 export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Function) => {
