@@ -86,7 +86,7 @@ export const updateFlashcards = async ({
   classid: number,
   sectionid: ?number,
   summary: string,
-  deck: Array<Flashcard>,
+  deck: Array<Flashcard>
 }): Promise<PostResponse> => {
   try {
     const token = await getToken();
@@ -183,7 +183,7 @@ export const updatePhotoNote = async ({
   classId: number,
   sectionId: ?number,
   fileNames: Array<string>,
-  comment: string,
+  comment: string
 }): Promise<PostResponse> => {
   try {
     const token = await getToken();
@@ -231,7 +231,7 @@ export const updateQuestion = async ({
   title: string,
   body: string,
   classId: number,
-  sectionId: ?number,
+  sectionId: ?number
 }) => {
   try {
     const token = await getToken();
@@ -588,7 +588,7 @@ export const updateShareURL = async ({
   sectionId: ?number,
   uri: string,
   title: string,
-  summary: string,
+  summary: string
 }) => {
   try {
     const token = await getToken();

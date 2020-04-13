@@ -290,7 +290,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                {name} {roleId === 2 && role && <TutorBadge text={role} />}
+                {name} {[2,3].includes(roleId) && role && <TutorBadge text={role} />}
               </Typography>
               <Grid
                 justify='space-between'

@@ -191,6 +191,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     } = this.props;
     const result = await getPostComments({ userId, postId, typeId });
     const items = processComments(result.comments);
+
     this.setState({ comments: result, items });
   };
 
@@ -235,8 +236,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
             <Fragment key={item.id}>
               <PostItemComment
                 id={item.id}
-                role={item.role}
-                roleId={item.roleId}
+                role={item.user.role}
+                roleId={item.user.roleId}
                 ownProfileUrl={profileImage}
                 ownName={name}
                 ownerId={item.user.userId}
@@ -267,8 +268,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   id={reply.id}
                   ownProfileUrl={profileImage}
                   ownName={name}
-                  role={reply.role}
-                  roleId={reply.roleId}
+                  role={reply.user.role}
+                  roleId={reply.user.roleId}
                   replyTo={reply.replyTo}
                   firstName={reply.user.firstName}
                   lastName={reply.user.lastName}

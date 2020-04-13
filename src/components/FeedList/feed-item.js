@@ -199,9 +199,9 @@ const styles = theme => ({
     color: green[500]
   },
   photoNotes: {
-    display: 'flex', 
+    display: 'flex',
     marginTop: 20,
-    position: 'relative', 
+    position: 'relative',
   },
   photoNotePreview: {
     marginRight: 30,
@@ -255,7 +255,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   state = {
     moreAnchorEl: null
   };
-  
+
   // eslint-disable-next-line no-undef
   el: ?HTMLDivElement;
 
@@ -375,7 +375,7 @@ class FeedItem extends React.PureComponent<Props, State> {
           }
         </div>
       )
-    case 4: 
+    case 4:
       if (!newClassExperience) {
         return (
           <div className={classes.imageContainer}>
@@ -394,7 +394,7 @@ class FeedItem extends React.PureComponent<Props, State> {
                 />
             }
             {
-              numberOfNotes > 1 && 
+              numberOfNotes > 1 &&
               <div className={classes.numberOfCardsStyle}>+{numberOfNotes - 1}</div>
             }
           </div>
@@ -554,7 +554,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               </React.Fragment>
             }
             title={
-              <CardActionArea 
+              <CardActionArea
                 classes={{
                   focusHighlight: classes.cardHighlight
                 }}
@@ -568,9 +568,9 @@ class FeedItem extends React.PureComponent<Props, State> {
                       alt="Rank"
                       className={classes.rank}
                     /> */}
-                    {data.roleId === 2 && data.role && ( 
+                    {[2, 3].includes(data.roleId) && data.role && (
                       <TutorBadge text={data.role} />
-                    )} 
+                    )}
                   </Typography>
                 </div>
               </CardActionArea>

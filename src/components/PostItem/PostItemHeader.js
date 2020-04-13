@@ -246,7 +246,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               >
                 {name}
               </Link>{' '}
-              {roleId === 2 && role && <TutorBadge text={role} />}
+              {[2,3].includes(roleId) && role && <TutorBadge text={role} />}
             </Typography>
             {!newClassExperience && <Typography component="p" variant="subtitle1" noWrap>
               {classroomName}
