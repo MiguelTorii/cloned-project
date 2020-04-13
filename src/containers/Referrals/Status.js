@@ -48,7 +48,9 @@ const Status = ({
   return (
     <div className={classes.body}>
       <Typography className={classes.subtitle}>
-        {subtitle}
+        {subtitle.split("\n").map((item) => {
+          return (<span key={Math.random()}>{item}<br /></span>)
+        })}
       </Typography>
       {
         users.map((user, index) => (

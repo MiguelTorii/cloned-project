@@ -102,7 +102,9 @@ const CTA = ({
         {ctaTitle}
       </Typography>
       <Typography className={classes.text}>
-        {ctaBody}
+        {ctaBody.split("\n").map((item) => {
+          return (<span key={Math.random()}>{item}<br /></span>)
+        })}
       </Typography>
       <Button
         className={classes.button}
