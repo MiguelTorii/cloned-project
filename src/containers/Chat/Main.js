@@ -348,7 +348,7 @@ const Main = ({
         <Typography className={classes.headerTitle}>{title}</Typography>
       </div>
       <div className={classes.messageContainer}>
-        {!channel && <EmptyMain />}
+        {(!channel || messageItems.length === 1) && <EmptyMain />}
         <InfiniteScroll
           className={classes.messageScroll}
           threshold={50}

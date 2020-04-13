@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   inviteButton: {
-    position: 'absolute',
+    zIndex: 1,
+    position: 'fixed',
     fontWeight: 'bold',
     backgroundColor: '#539f56',
-    width: '90%',
     bottom: 10
   },
   messageContainer: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const EmptyLeftMenu = () => {
+const EmptyLeftMenu = ({ emptyChannels }) => {
   const [inviteDialog, setInviteDialog] = useState(false)
   const handleInviteClose = () => setInviteDialog(false)
   const handleInviteOpen = () => setInviteDialog(true)
@@ -47,7 +47,7 @@ const EmptyLeftMenu = () => {
         handleClose={handleInviteClose}
         open={inviteDialog}
       />
-      <div className={classes.messageContainer}>
+      {emptyChannels && <div className={classes.messageContainer}>
         <img src={EmptyLeftChat} alt='emptychat' />
         <Typography
           classes={{
@@ -56,7 +56,7 @@ const EmptyLeftMenu = () => {
         >
             Once you send a message about class or a problem, all of your messages will be here
         </Typography>
-      </div>
+      </div>}
       <Button
         variant='contained'
         onClick={handleInviteOpen}

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import InputBase from '@material-ui/core/InputBase'
 import Grid from '@material-ui/core/Grid'
 import ChatListItem from 'components/ChatListItem'
@@ -13,6 +12,8 @@ import Fuse from 'fuse.js'
 import { getTitle } from 'utils/chat';
 import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu'
 import clsx from 'clsx'
+import Button from '@material-ui/core/Button';
+import NewChatIcon from 'assets/svg/ic_new_chat.svg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,48 +27,36 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  drawer: {
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
   search: {
     borderRadius: theme.spacing(2),
     backgroundColor: theme.circleIn.palette.primaryBackground,
+    width: '90%',
     // width: drawerWidth - theme.spacing(2),
     padding: theme.spacing(0, 2),
   },
   inputRoot: {
     color: 'inherit',
   },
+  headerTitle: {
+    margin: theme.spacing(1, 1, 0, 1),
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+  },
   gridItem: {
     margin: theme.spacing(1, 0),
   },
   gridChatList: {
-    width: 'inherit'
+    width: 'inherit',
+    marginBottom: theme.spacing(6)
   },
   newButton: {
+    borderRadius: '50%',
+    padding: 0,
+    minWidth: 0,
     textTransform: 'none',
     fontWeight: 'bold'
   },
   title: {
-    fontSize: 18
+    fontSize: 22
   },
   hidden: {
     display: 'none'
@@ -133,17 +122,23 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
           alignItems='center'
           direction='column'
         >
-          <Grid item className={classes.gridItem}>
-            <Typography className={classes.title}>Messages</Typography>
-          </Grid>
-          <Grid item className={classes.gridItem}>
+          <Grid
+            container
+            item
+            justify='space-between'
+            alignItems='center'
+            className={classes.headerTitle}
+          >
+            <Typography className={classes.title}>Chat</Typography>
             <Button
               variant='contained'
-              onClick={handleCreateChannelOpen}
-              classes={{ label: classes.newButton }}
+              classes={{
+                root: classes.newButton
+              }}
               color='primary'
+              onClick={handleCreateChannelOpen}
             >
-               Start a New Chat
+              <img id="circlein-newchat" src={NewChatIcon} alt='newChat' className={classes.img} />
             </Button>
           </Grid>
           <Grid item className={classes.gridItem}>
@@ -162,7 +157,7 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
           </Grid>
         </Grid>
         <Grid item className={classes.gridChatList}>
-          {channels.length === 0 && <EmptyLeftMenu />}
+          <EmptyLeftMenu emptyChannels={channels.length === 0} />
           <List className={classes.root}>
             {channels.map(c => (
               <div

@@ -64,10 +64,12 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
         if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
           channel.on('messageAdded', message => {
             const st = getSubTitle(message, userId);
-            const { channel: { lastConsumedMessageIndex }, index } = message
+            const { channel: { lastConsumedMessageIndex }, index, state: { author } } = message
             setSubTitle(st)
-            setNewUnread(index - lastConsumedMessageIndex)
-            onUpdateUnreadCount(1);
+            if(author !== userId) {
+              setNewUnread(index - lastConsumedMessageIndex)
+              onUpdateUnreadCount(1);
+            }
           });
 
           channel.on('updated', ({ updateReasons }) => {
