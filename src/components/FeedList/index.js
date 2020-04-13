@@ -169,7 +169,7 @@ class FeedList extends React.PureComponent<Props, State> {
             </div>
           </div>
         )}
-        {newClassExperience && <EmptyFeed />}
+        {newClassExperience && pathname === '/feed' && <EmptyFeed />}
         <Paper className={classes.root} elevation={0}>
           <div
             className={classes.items}
