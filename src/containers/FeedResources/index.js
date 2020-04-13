@@ -84,10 +84,12 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
     // eslint-disable-next-line
   }, [userId])
 
+  if (['xs', 'sm'].includes(width)) return null;
+
   return (
     <div className={classes.container}>
       {
-        display && !['xs', 'sm'].includes(width) &&
+        display &&
         <Paper className={classes.paper}>
           <Grid item>
             <div className={classes.imgContainer}>
