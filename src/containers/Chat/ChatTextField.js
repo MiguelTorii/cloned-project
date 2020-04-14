@@ -55,17 +55,20 @@ const styles = theme => ({
     display: 'none'
   },
   imgContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 4,
+    width: 240,
+    height: 240,
+    borderRadius: 20,
+    backgroundColor: theme.circleIn.palette.modalBackground,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'absolute',
+    bottom: 60,
   },
   img: {
-    width: 24,
-    height: 24,
+    objectFit: 'scale-down',
+    width: 240,
+    height: 240,
     borderRadius: 4
   },
   clearIcon: {
