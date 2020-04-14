@@ -18,6 +18,7 @@ type Props = {
 
 const CreateNotesPage = (props: Props) => {
   const {match: {params: { noteId }}} = props
+
   return (
     <main>
       <CssBaseline />

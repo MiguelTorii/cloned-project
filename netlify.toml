@@ -6,7 +6,7 @@
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
 [context.production]
-  command = "REACT_APP_STAGE=prod npm run build"
+  command = "yarn build:sourcemaps"
 
 [context.demo]
   command = "REACT_APP_STAGE=demo npm run build"
