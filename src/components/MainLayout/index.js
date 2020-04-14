@@ -84,7 +84,10 @@ const styles = theme => ({
     }
   },
   root: {
-    display: 'flex'
+    display: 'flex',
+  },
+  marginChat: {
+    margin: theme.spacing()
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -817,7 +820,7 @@ class MainLayout extends React.Component<Props, State> {
 
     return (
       <Fragment>
-        <div className={classes.root}>
+        <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
           <AppBar
             position="fixed"
             className={classNames(classes.appBar, {

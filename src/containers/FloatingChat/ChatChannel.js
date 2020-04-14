@@ -164,7 +164,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
             unread: prevState.unread + 1
           }));
         } else {
-          channel.setAllMessagesConsumed();
+          try {
+            channel.setAllMessagesConsumed();
+          } catch(e) {}
         }
         this.handleScrollToBottom();
       });
@@ -181,11 +183,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
       );
       channel.on('typingStarted', member => {
         if (!this.mounted) return;
-        member.getUser().then(user => {
-          const { state } = user;
-          const { friendlyName } = state;
-          this.setState({ typing: friendlyName });
-        });
+        try{
+          member.getUser().then(user => {
+            const { state } = user;
+            const { friendlyName } = state;
+            this.setState({ typing: friendlyName });
+          });
+        } catch(e) {}
       });
 
       channel.on('typingEnded', () => {

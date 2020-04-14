@@ -204,13 +204,15 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
         });
 
         client.on('tokenAboutToExpire', async () => {
-          const newToken = await renewTwilioToken({
-            userId
-          });
-          if (!newToken || (newToken && newToken === '')) {
-            return;
-          }
-          await client.updateToken(newToken);
+          try{
+            const newToken = await renewTwilioToken({
+              userId
+            });
+            if (!newToken || (newToken && newToken === '')) {
+              return;
+            }
+            await client.updateToken(newToken);
+          } catch(e) {}
         });
       }
     } catch (err) {

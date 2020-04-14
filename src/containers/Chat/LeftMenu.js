@@ -101,7 +101,7 @@ const LeftMenu = ({ handleUpdateUnreadCount, userId, channels, setCurrentChannel
     } else {
       setSearchChannels(channels.map(c => c.sid))
     }
-  }, [search, channels])
+  }, [search, channels, userId])
 
   const handleChannelCreated = ({ channel }) => setCurrentChannel(channel)
 
