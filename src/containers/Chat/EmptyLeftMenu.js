@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   inviteButton: {
-    zIndex: 1,
+    zIndex: 1000,
     position: 'fixed',
     fontWeight: 'bold',
     backgroundColor: '#539f56',
