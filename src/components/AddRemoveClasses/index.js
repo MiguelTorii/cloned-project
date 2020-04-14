@@ -65,6 +65,9 @@ const styles = theme => ({
   autocomplete: {
     marginBottom: 20,
     width: '100%'
+  },
+  paper: {
+    background: theme.circleIn.palette.appBar
   }
 });
 
@@ -336,6 +339,7 @@ const AddRemoveClasses = (props: Props) => {
         />}
         {schoolId === "52" &&
           <Autocomplete
+            classes={{ paper: classes.paper }}
             onClose={() => setOptions([])}
             options={options}
             renderOption={renderOption}
