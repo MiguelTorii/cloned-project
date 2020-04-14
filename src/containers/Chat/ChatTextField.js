@@ -55,29 +55,23 @@ const styles = theme => ({
     display: 'none'
   },
   imgContainer: {
-    width: 240,
-    height: 240,
     borderRadius: 20,
-    backgroundColor: theme.circleIn.palette.modalBackground,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 60,
   },
   img: {
     objectFit: 'scale-down',
     width: 240,
-    height: 240,
     borderRadius: 4
   },
   clearIcon: {
     position: 'absolute',
     top: 0,
     right: 0,
-    width: 24,
-    height: 24,
-    borderRadius: 4,
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -253,13 +247,13 @@ class ChatTextField extends React.PureComponent<Props, State> {
                 onKeyUp={this.handleKeyUp}
                 className={classes.textfield}
                 inputComponent={Textarea}
-                inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5 } }}
+                inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, display: image ? 'none':'' } }}
                 multiline
                 rowsMax={2}
                 placeholder="Type a message"
                 autoComplete="off"
                 autoFocus
-                endAdornment={
+                startAdornment={
                   image && (
                     <ButtonBase
                       className={classes.imgContainer}
