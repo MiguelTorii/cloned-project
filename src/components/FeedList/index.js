@@ -6,8 +6,11 @@ import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import EmptyFeed from 'components/FeedList/EmptyFeed'
+import EmptyState from 'components/FeedList/EmptyState';
 import FeedItem from './feed-item';
+import EmptyFeed from 'assets/svg/empty-feed.svg'
+import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg'
+import EmptyMyPosts from 'assets/svg/empty-my-posts.svg'
 
 const styles = theme => ({
   container: {
@@ -77,6 +80,17 @@ const styles = theme => ({
   endLabel: {
     textAlign: 'center'
   },
+  newPost: {
+    background: theme.circleIn.palette.brand,
+    borderRadius: 10,
+    color: 'black',
+    display: 'inline',
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: '0px 2px',
+    padding: '0px 8px',
+    width: 100,
+  }
 });
 
 type Props = {
@@ -114,12 +128,36 @@ class FeedList extends React.PureComponent<Props, State> {
     this.mounted = false;
   };
 
-  emptyMessage = pathname => {
-    if (pathname === '/bookmarks') return `It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here`
-    if (pathname === '/my_posts') return 'Be the first in your class to earn points toward your scholarship and gifts. Post your notes now.'
-    return `Your classmate's notes, flashcards and questions will appear here. Be the first to post to get closer to a Reward or Scholarship!`
-  }
+  getEmptyState = pathname => {
+    const { classes } = this.props;
 
+    if (pathname === '/bookmarks') return (
+      <EmptyState
+        imageUrl={EmptyBookmarks}
+        title="Bookmark helpful study material to review later"
+      >
+        Once you bookmark a post on the Class Feed, it’ll appear here
+      </EmptyState>
+    )
+
+    if (pathname === '/my_posts') return (
+      <EmptyState
+        imageUrl={EmptyMyPosts}
+        title="Your posts will appear here"
+      >
+        After posting, your study material will be here for you to view later for an exam
+      </EmptyState>
+    )
+
+    return (
+      <EmptyState
+        imageUrl={EmptyFeed}
+        title="Everyone’s notes, flashcards and questions from this class will appear here"
+      >
+        Click the <p className={classes.newPost}>+ New</p> button on the top left to post, earn points and get closer to a Reward or Scholarship
+      </EmptyState>
+    )
+  }
 
   handleScrollToRef = () => {
     if (this.selectedRef && this.selectedRef.el) {
@@ -169,7 +207,6 @@ class FeedList extends React.PureComponent<Props, State> {
             </div>
           </div>
         )}
-        {newClassExperience && pathname === '/feed' && <EmptyFeed />}
         <Paper className={classes.root} elevation={0}>
           <div
             className={classes.items}
@@ -207,8 +244,7 @@ class FeedList extends React.PureComponent<Props, State> {
               }
             </InfiniteScroll>
           </div>
-          {items.length === 0 &&
-          <Typography className={classes.endLabel}>{this.emptyMessage(pathname)}</Typography>}
+          {items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
         {
           items.length !== 0 && !hasMore &&
