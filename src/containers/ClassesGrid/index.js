@@ -81,7 +81,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
       if (classList) {
         setClassList(
           classList.map(cl => {
-            return cl.section.map(s => ({
+            const classesInter = cl.section.map(s => ({
               sectionDisplayName: s.sectionDisplayName,
               instructorDisplayName: s.instructorDisplayName,
               sectionId: s.sectionId,
@@ -95,7 +95,9 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
               }),
               canLeave: cl.permissions.canLeave
             }))
-          }).flatMap(x =>x)
+            if (classesInter.length > 0) return classesInter[0]
+            return null
+          })
         )
         setCanAddClasses(canAddClasses)
       }

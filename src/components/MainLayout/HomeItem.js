@@ -68,7 +68,7 @@ const HomeItem = ({
     if(newClassExperience && userClasses && userClasses.classList) {
       setClassList(
         userClasses.classList.map(cl => {
-          return cl.section.map(s => ({
+          const classInter = cl.section.map(s => ({
             sectionDisplayName: s.sectionDisplayName,
             instructorDisplayName: s.instructorDisplayName,
             class: cl.class,
@@ -77,7 +77,8 @@ const HomeItem = ({
             color: cl.bgColor,
             courseDisplayName: cl.courseDisplayName,
           }))
-        }).flatMap(x =>x)
+          return classInter.length > 0 ? classInter[0] : null
+        })
       )
     }
   }, [newClassExperience, userClasses])
