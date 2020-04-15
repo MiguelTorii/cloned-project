@@ -132,9 +132,8 @@ export const handleInitChat = () =>
         return;
       }
 
-      const client = await Chat.create(accessToken);
+      const client = await Chat.create(accessToken, { logLevel: 'silent' });
 
-      console.log(client)
       let paginator = await client.getSubscribedChannels();
       while (paginator.hasNextPage) {
         // eslint-disable-next-line no-await-in-loop
