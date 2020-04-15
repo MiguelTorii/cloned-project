@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
-import withRoot from '../../withRoot';
 
 export const dialogStyle = {
   borderRadius: 20,
@@ -178,5 +177,5 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   null,
   mapDispatchToProps
-)(withRoot(withStyles(styles)(Dialog)));
+)(withStyles(styles)(Dialog));
 

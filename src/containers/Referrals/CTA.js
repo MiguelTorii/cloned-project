@@ -4,30 +4,16 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { withSnackbar } from 'notistack';
-
-import Dialog, { dialogStyle } from 'components/Dialog';
-import { logEventLocally } from 'api/analytics';
 import { getReferralProgram } from 'api/referral';
-
 import Invite from './Invite';
 
-const styles = theme => ({
+const styles = () => ({
   body: {
     padding: 16,
     width: '100%'
   },
   button: {
     width: '100%'
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 500
-  },
-  stackbar: {
-    backgroundColor: theme.circleIn.palette.snackbar,
-    color: theme.circleIn.palette.primaryText1,
-    zIndex: 100000
   },
   text: {
     margin: '10px 0px'
@@ -42,12 +28,10 @@ const styles = theme => ({
 
 const CTA = ({
   classes,
-  enqueueSnackbar,
 }: {
-  classes: Object,
-  enqueueSnackbar: Function
+  classes: Object
 }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
 
   useEffect(() => {
@@ -61,28 +45,6 @@ const CTA = ({
 
     init();
   }, []);
-
-  const handleLinkCopied = () => {
-    logEventLocally({
-      category: 'Referral',
-      objectId: (referralProgram && referralProgram.code) || '',
-      type: 'Copied',
-    });
-
-    enqueueSnackbar('Link copied', {
-      variant: 'info',
-      anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'left'
-      },
-      autoHideDuration: 3000,
-      ContentProps: {
-        classes: {
-          root: classes.stackbar
-        }
-      }
-    });
-  };
 
   if (!referralProgram || !referralProgram.is_visible) return null;
 
@@ -109,26 +71,18 @@ const CTA = ({
       <Button
         className={classes.button}
         color='primary'
-        onClick={() => setDialogOpen(true)}
+        onClick={() => setInviteVisible(true)}
         variant='contained'
       >
         {cta}
       </Button>
-      <Dialog
-        className={classes.dialog}
-        onCancel={() => setDialogOpen(false)}
-        open={dialogOpen}
-      >
-        <Invite
-          imageUrl={imageUrl}
-          link={`${window.location.host}/referral/${code}`}
-          onLinkCopied={handleLinkCopied}
-          subtitle={subtitle}
-          title={title}
-        />
-      </Dialog>
+      <Invite
+        onHide={() => setInviteVisible(false)}
+        referralData={{code, imageUrl, subtitle, title}}
+        visible={inviteVisible}
+      />
     </div>
   );
 }
 
-export default withRouter(withSnackbar(withStyles(styles)(CTA)));
+export default withRouter(withStyles(styles)(CTA));

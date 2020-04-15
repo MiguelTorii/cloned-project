@@ -34,7 +34,7 @@ type Props = {
 
 const EmptyState = ({ children, classes, imageUrl, title }: Props) => (
   <div className={classes.body}>
-    <LoadImg url={imageUrl} />
+    <LoadImg url={imageUrl} style={{ width: '100%' }} />
     <div className={classes.title}>{title}</div>
     <div className={classes.content}>{children}</div>
   </div>

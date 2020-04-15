@@ -197,7 +197,6 @@ ReactDOM.render(
               path="/forgot_password"
               component={withTracker(ForgotPassword)}
             />
-          ç
             <Route
               exact
               path="/reset_password"
