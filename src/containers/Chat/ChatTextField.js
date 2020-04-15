@@ -37,13 +37,19 @@ const styles = theme => ({
     flex: 1,
   },
   textfield: {
+    width: '100%',
     flex: 1,
     paddingLeft: theme.spacing(2),
   },
   sendIcon: {
     color: theme.circleIn.palette.brand
   },
+  imgIcon: {
+    padding: 0
+  },
   iconButton: {
+    display: 'flex',
+    alignItems: 'center',
     padding: 10
   },
   divider: {
@@ -81,7 +87,6 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  expanded: Boolean,
   onSendMessage: Function,
   onSendInput: Function,
   onTyping: Function
@@ -108,14 +113,15 @@ class ChatTextField extends React.PureComponent<Props, State> {
     event.preventDefault();
     const { onSendMessage, onSendInput } = this.props;
     const { message, input } = this.state;
-    if (message.trim() !== '') {
-      onSendMessage(message);
-      this.setState({ message: '' });
-    }
 
     if (input) {
       onSendInput(input);
       this.setState({ input: null, image: null, isHover: false });
+    }
+
+    if (message.trim() !== '') {
+      onSendMessage(message);
+      this.setState({ message: '' });
     }
   };
 
@@ -209,13 +215,15 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
     return (
       <Paper className={classes.root} elevation={1}>
-        <IconButton
-          onClick={this.handleOpenInputFile}
-          className={classes.iconButton}
-          aria-label="Insert Photo"
-        >
-          <InsertPhotoIcon />
-        </IconButton>
+        <div className={classes.iconButton}>
+          <IconButton
+            className={classes.imgIcon}
+            onClick={this.handleOpenInputFile}
+            aria-label="Insert Photo"
+          >
+            <InsertPhotoIcon />
+          </IconButton>
+        </div>
         <form
           autoComplete="off"
           className={classes.form}
@@ -234,12 +242,28 @@ class ChatTextField extends React.PureComponent<Props, State> {
             <div
               style={{
                 display: 'flex',
-                alignItems: 'center',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
                 height: '100%',
                 width: '100%',
                 minHeight: 44
               }}
             >
+              {image && (
+                <ButtonBase
+                  className={classes.imgContainer}
+                  onClick={this.handleRemoveImg}
+                  onMouseEnter={this.handleMouseEnter}
+                  onMouseLeave={this.handleMouseLeave}
+                >
+                  <img className={classes.img} src={image} alt="test" />
+                  {isHover && (
+                    <div className={classes.clearIcon}>
+                      <ClearIcon fontSize="small" />
+                    </div>
+                  )}
+                </ButtonBase>
+              )}
               <InputBase
                 value={message}
                 onChange={this.handleChange}
@@ -247,29 +271,12 @@ class ChatTextField extends React.PureComponent<Props, State> {
                 onKeyUp={this.handleKeyUp}
                 className={classes.textfield}
                 inputComponent={Textarea}
-                inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, display: image ? 'none':'' } }}
+                inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, width: '100%' } }}
                 multiline
                 rowsMax={2}
                 placeholder="Type a message"
                 autoComplete="off"
                 autoFocus
-                startAdornment={
-                  image && (
-                    <ButtonBase
-                      className={classes.imgContainer}
-                      onClick={this.handleRemoveImg}
-                      onMouseEnter={this.handleMouseEnter}
-                      onMouseLeave={this.handleMouseLeave}
-                    >
-                      <img className={classes.img} src={image} alt="test" />
-                      {isHover && (
-                        <div className={classes.clearIcon}>
-                          <ClearIcon fontSize="small" />
-                        </div>
-                      )}
-                    </ButtonBase>
-                  )
-                }
               />
             </div>
             <EmojiSelector onSelect={this.handleSelect} />
@@ -283,18 +290,20 @@ class ChatTextField extends React.PureComponent<Props, State> {
             placement='top'
             title="Press enter to send"
           >
-            <IconButton
-              color="primary"
-              type="submit"
-              className={classes.iconButton}
-              aria-label="Send"
-            >
-              <SendIcon
-                classes={{
-                  root: classes.sendIcon
-                }}
-              />
-            </IconButton>
+            <div className={classes.iconButton}>
+              <IconButton
+                color="primary"
+                className={classes.imgIcon}
+                type="submit"
+                aria-label="Send"
+              >
+                <SendIcon
+                  classes={{
+                    root: classes.sendIcon
+                  }}
+                />
+              </IconButton>
+            </div>
           </Tooltip>
           }
         </form>

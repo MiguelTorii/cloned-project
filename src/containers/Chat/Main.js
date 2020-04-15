@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import EmptyMain from 'containers/Chat/EmptyMain'
 import cx from 'classnames'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,6 +98,7 @@ const Main = ({
   const [avatars, setAvatars] = useState([])
   const [typing, setTyping] = useState(null)
   const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const {
     data: { userId, firstName, lastName }
@@ -254,14 +256,14 @@ const Main = ({
       imageKey: '',
       isVideoNotification: false
     }
-    // this.setState({ loading: true })
+    setLoading(true)
     try {
       await channel.sendMessage(message, messageAttributes)
 
     } catch (err) {
       console.log(err)
     } finally {
-      // this.setState({ loading: false })
+      setLoading(false)
     }
   }
 
@@ -275,7 +277,7 @@ const Main = ({
   }
 
   const onSendInput = async file => {
-    // this.setState({ loading: true })
+    setLoading(true)
     if (!channel) return
 
     try {
@@ -310,6 +312,7 @@ const Main = ({
     } catch (err) {
       console.log(err)
     } finally {
+      setLoading(false)
       // this.setState({ loading: false })
     }
   }
@@ -361,6 +364,11 @@ const Main = ({
         >
           {messageItems.map(item =>
             renderMessage(item, avatars)
+          )}
+          {loading && (
+            <div className={classes.progress}>
+              <CircularProgress size={20} />
+            </div>
           )}
         </InfiniteScroll>
       </div>
