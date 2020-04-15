@@ -153,49 +153,51 @@ class ChatChannel extends React.PureComponent<Props, State> {
         console.log(err);
       }
 
-      channel.on('messageAdded', message => {
-        if (!this.mounted) return;
-        this.setState(prevState => ({
-          messages: [...prevState.messages, message]
-        }));
-        const { open } = this.state;
-        if (!open) {
-          this.setState(prevState => ({
-            unread: prevState.unread + 1
-          }));
-        } else {
-          try {
-            channel.setAllMessagesConsumed();
-          } catch(e) {}
-        }
-        this.handleScrollToBottom();
-      });
-      channel.on(
-        'updated',
-        async ({ channel: updatedChannel, updateReasons }) => {
+      if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
+        // channel.on('messageAdded', message => {
+        // if (!this.mounted) return;
+        // this.setState(prevState => ({
+        // messages: [...prevState.messages, message]
+        // }));
+        // const { open } = this.state;
+        // if (!open) {
+        // this.setState(prevState => ({
+        // unread: prevState.unread + 1
+        // }));
+        // } else {
+        // try {
+        // channel.setAllMessagesConsumed();
+        // } catch(e) {}
+        // }
+        // this.handleScrollToBottom();
+        // });
+        // channel.on(
+        // 'updated',
+        // async ({ channel: updatedChannel, updateReasons }) => {
+        // if (!this.mounted) return;
+        // if (updateReasons.indexOf('attributes') > -1) {
+        // this.setState({
+        // title: getTitle(updatedChannel, userId)
+        // });
+        // }
+        // }
+        // );
+        channel.on('typingStarted', member => {
           if (!this.mounted) return;
-          if (updateReasons.indexOf('attributes') > -1) {
-            this.setState({
-              title: getTitle(updatedChannel, userId)
+          try{
+            member.getUser().then(user => {
+              const { state } = user;
+              const { friendlyName } = state;
+              this.setState({ typing: friendlyName });
             });
-          }
-        }
-      );
-      channel.on('typingStarted', member => {
-        if (!this.mounted) return;
-        try{
-          member.getUser().then(user => {
-            const { state } = user;
-            const { friendlyName } = state;
-            this.setState({ typing: friendlyName });
-          });
-        } catch(e) {}
-      });
+          } catch(e) {}
+        });
 
-      channel.on('typingEnded', () => {
-        if (!this.mounted) return;
-        this.setState({ typing: '' });
-      });
+        channel.on('typingEnded', () => {
+          if (!this.mounted) return;
+          this.setState({ typing: '' });
+        });
+      }
 
       logEvent({
         event: 'User- View Chat Room',
