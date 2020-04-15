@@ -4,8 +4,6 @@
 import uuidv4 from 'uuid/v4';
 import { renewTwilioToken, leaveChat, blockChatUser } from 'api/chat';
 import Chat from 'twilio-chat';
-import { updateTitle } from 'actions/web-notifications';
-import { enqueueSnackbar } from 'actions/notifications';
 import update from 'immutability-helper';
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
@@ -116,7 +114,7 @@ export const openChannelWithEntity = ({
   );
 };
 
-export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handleMessageReceived: Function, snackbarStyle: string }) =>
+export const handleInitChat = () =>
   async (dispatch: Dispatch, getState: Function) => {
     const {
       user: {
@@ -136,6 +134,7 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
 
       const client = await Chat.create(accessToken);
 
+      console.log(client)
       let paginator = await client.getSubscribedChannels();
       while (paginator.hasNextPage) {
         // eslint-disable-next-line no-await-in-loop
@@ -169,38 +168,9 @@ export const handleInitChat = ({ snackbarStyle, handleMessageReceived }: { handl
         });
 
         client.on('messageAdded', async message => {
-          const { state, channel } = message;
-          const { author, attributes, body } = state;
-          const { firstName, lastName } = attributes;
-
-
+          const { channel } = message;
           dispatch(newMessage({ message }))
           dispatch(updateChannel({ channel }));
-
-          if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
-            const msg = `${firstName} ${lastName} sent you a message:`;
-            dispatch(enqueueSnackbar({
-              notification: {
-                message: `${msg} ${body}`,
-                options: {
-                  variant: 'info',
-                  anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right'
-                  },
-                  action: handleMessageReceived(channel),
-                  autoHideDuration: 3000,
-                  ContentProps: {
-                    classes: {
-                      root: snackbarStyle
-                    }
-                  }
-                }}}));
-            dispatch(updateTitle({
-              title: `${firstName} ${lastName} sent you a message:`,
-              body
-            }));
-          }
         });
 
         client.on('tokenAboutToExpire', async () => {

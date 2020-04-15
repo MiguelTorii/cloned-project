@@ -4,6 +4,7 @@ import React from 'react'
 import EmptyMainChat from 'assets/svg/empty_main_chat.svg'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import LoadImg from 'components/LoadImg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,27 +33,33 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const EmptyMain = () => {
+type Props = {
+  noChannel: boolean
+};
+
+const EmptyMain = ({noChannel}: Props) => {
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
       <div className={classes.messageContainer}>
-        <img src={EmptyMainChat} alt='emptychat' />
+        <LoadImg url={EmptyMainChat} alt='emptychat' />
         <Typography
           classes={{
             root: classes.titleMessage
           }}
         >
-          Set up a group class chat
+          {!noChannel
+            ? 'Time to send a message!'
+            : 'Set up a group class chat'}
         </Typography>
-        <Typography
+        {noChannel && <Typography
           classes={{
             root: classes.subtitleMessage
           }}
         >
           Or just chat with a classmate about an issue
-        </Typography>
+        </Typography>}
       </div>
     </div>
   )

@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import usePrevious from 'hooks/usePrevious'
 import ChatListItem from 'components/ChatListItem';
+import { updateTitle } from 'actions/web-notifications';
+import { enqueueSnackbar } from 'actions/notifications';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -59,6 +61,8 @@ type Props = {
   handleRoomClick: Function,
   updateOpenChannels: Function,
   handleChannelClose: Function,
+  enqueueSnackbarAction: Function,
+  updateTitleAction: Function,
   push: Function
 };
 
@@ -75,6 +79,8 @@ const FloatingChat = ({
   handleRoomClick,
   updateOpenChannels,
   handleChannelClose,
+  enqueueSnackbarAction,
+  updateTitleAction,
   handleUpdateUnreadCount
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null)
@@ -85,6 +91,7 @@ const FloatingChat = ({
       client,
       channels,
       unread,
+      newMessage,
       online,
       openChannels
     }
@@ -104,6 +111,40 @@ const FloatingChat = ({
     </Button>
   );
 
+  useEffect(() => {
+    const handleMessage =() =>{
+      const { state, channel } = newMessage;
+      const { author, attributes, body } = state;
+      const { firstName, lastName } = attributes;
+      if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
+        const msg = `${firstName} ${lastName} sent you a message:`;
+        enqueueSnackbarAction({
+          notification: {
+            message: `${msg} ${body}`,
+            options: {
+              variant: 'info',
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right'
+              },
+              action: handleMessageReceived(channel),
+              autoHideDuration: 3000,
+              ContentProps: {
+                classes: {
+                  root: classes.snackbarStyle
+                }
+              }
+            }}});
+        updateTitleAction({
+          title: `${firstName} ${lastName} sent you a message:`,
+          body
+        });
+      }
+    }
+    if(newMessage) handleMessage()
+
+  }, [newMessage])
+
   const { location: { pathname}} = router
   useEffect(() => {
     const init = () => {
@@ -118,7 +159,7 @@ const FloatingChat = ({
         console.log('**** online ****');
         if (!online) window.location.reload();
       });
-      handleInitChatDebounce({ snackbarStyle: classes.snackbar, handleMessageReceived });
+      handleInitChatDebounce();
 
       return () => {
         if (
@@ -163,7 +204,7 @@ const FloatingChat = ({
       } else if (
         prevUserId === '' && userId !== '' && !online
       ) {
-        handleInitChat({ snackbarStyle: classes.snackbar, handleMessageReceived });
+        handleInitChat();
       }
       if (uuid !== prevUuid && uuid !== '')
         handleCreateChannelOpen('group');
@@ -282,6 +323,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleRoomClick: chatActions.handleRoomClick,
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,
+      updateTitleAction: updateTitle,
+      enqueueSnackbarAction: enqueueSnackbar,
     },
     dispatch
   );

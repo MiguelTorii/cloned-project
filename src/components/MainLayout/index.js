@@ -722,6 +722,21 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
+          {width !== 'xs' && (
+            <ListItem
+              button
+              component={MyLink}
+              className={classes.otherPath}
+              link='/chat'
+            >
+              <ListItemIcon>
+                <ChatIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Chat"
+              />
+            </ListItem>
+          )}
           <ListItem
             button
             component={MyLink}

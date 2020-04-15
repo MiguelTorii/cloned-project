@@ -6,6 +6,7 @@ import InviteDialog from 'components/InviteDialog'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import LoadImg from 'components/LoadImg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,7 +50,7 @@ const EmptyLeftMenu = ({ emptyChannels }) => {
         open={inviteDialog}
       />
       {emptyChannels && <div className={classes.messageContainer}>
-        <img src={EmptyLeftChat} alt='emptychat' />
+        <LoadImg url={EmptyLeftChat} alt='emptychat' />
         <Typography
           classes={{
             root: classes.message
