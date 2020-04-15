@@ -45,6 +45,7 @@ type Props = {
   children: Object | Array<Object>,
   classes: Object,
   confirmTooltip: Function,
+  dialogVisible: boolean,
   delay: ?number,
   id: number,
   hidden: ?boolean,
@@ -60,6 +61,7 @@ const Tooltip = ({
   classes,
   confirmTooltip,
   delay = 2000,
+  dialogVisible,
   id,
   hidden = false,
   location: { pathname },
@@ -89,6 +91,7 @@ const Tooltip = ({
     if (
       hidden
       || id === LEADERBOARD
+      || dialogVisible
       || !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading
       || viewedTooltips.includes(id) // Tooltip already dismissed by user
@@ -138,7 +141,7 @@ const Tooltip = ({
 
   useEffect(() => {
     isOpen();
-  }, [viewedOnboarding, viewedTooltips, hidden])
+  }, [dialogVisible, hidden, viewedOnboarding, viewedTooltips])
 
   return (
     <MuiTooltip
@@ -180,7 +183,9 @@ const Tooltip = ({
   )
 }
 
-const mapStateToProps = ({ user: { syncData: { viewedOnboarding, viewedTooltips }} }: StoreState): {} => ({
+const mapStateToProps = (
+  { user: { syncData: { viewedOnboarding, viewedTooltips }}, dialog: { visible } }): {} => ({
+  dialogVisible: visible,
   viewedOnboarding,
   viewedTooltips
 });

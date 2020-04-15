@@ -1,5 +1,7 @@
 // @flow
-import React from 'react'
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -7,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
-import withWidth from '@material-ui/core/withWidth';
+import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
 import withRoot from '../../withRoot';
 
 export const dialogStyle = {
@@ -76,7 +78,8 @@ const Dialog = ({
   showActions=false,
   showCancel=false,
   showHeader=true,
-  title
+  title,
+  updateVisibility,
 }: {
   ariaDescribedBy: ?string,
   children: Object | Array<Object>,
@@ -93,8 +96,13 @@ const Dialog = ({
   showActions: ?boolean,
   showCancel: ?boolean,
   showHeader: ?boolean,
-  title: ?string
+  title: ?string,
+  updateVisibility: Function
 }) => {
+  useEffect(() => {
+    updateVisibility(open);
+  }, [open])
+
   return (
     <MuiDialog
       aria-describedby={ariaDescribedBy}
@@ -159,4 +167,16 @@ const Dialog = ({
   )
 }
 
-export default withRoot(withStyles(styles)(withWidth()(Dialog)));
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      updateVisibility: updateVisiblityAction
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRoot(withStyles(styles)(Dialog)));
+

@@ -2,6 +2,10 @@ export const campaignActions = {
   GET_CAMPAIGN: 'GET_CAMPAIGN'
 }
 
+export const dialogActions = {
+  UPDATE_VISIBILITY: 'UPDATE_VISIBLITY'
+};
+
 export const userActions = {
   UPDATE_CLASSES: 'UPDATE_CLASSES',
   UPDATE_TOUR: 'UPDATE_TOUR',
