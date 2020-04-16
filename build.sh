@@ -17,6 +17,12 @@ then
   exit 0
 fi
 
+if [ -z $REACT_APP_SENTRY_ENV ] 
+then
+export SENTRY_ENV=prod
+else
+export SENTRY_ENV=$REACT_APP_SENTRY_ENV
+fi
 
 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
 
@@ -31,7 +37,7 @@ yarn run sentry-cli releases new ${REACT_APP_SENTRY_RELEASE}
 #echo "Setting release commits"
 #yarn run sentry-cli releases set-commits --commit "https://bitbucket.org/MyQVO/web-app-frontend-v2/commits/@${REACT_APP_SENTRY_RELEASE}" ${REACT_APP_SENTRY_RELEASE}
 echo "Link deploy to release"
-yarn run sentry-cli releases deploys ${REACT_APP_SENTRY_RELEASE} new -e prod
+yarn run sentry-cli releases deploys ${REACT_APP_SENTRY_RELEASE} new -e ${SENTRY_ENV}
 echo "Uploading source maps"
 if [ -d build ]; then
   yarn run sentry-cli releases files ${REACT_APP_SENTRY_RELEASE} upload-sourcemaps build/static/js/ --rewrite --url-prefix '~/static/js' || true
