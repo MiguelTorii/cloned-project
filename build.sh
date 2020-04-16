@@ -1,12 +1,6 @@
 #!/bin/bash
 # build
-if [ -z $1 ] 
-then
 export REACT_APP_SENTRY_RELEASE=$(git rev-parse --short HEAD)
-else
-export REACT_APP_SENTRY_RELEASE=$1
-fi
-
 echo "Version: $REACT_APP_SENTRY_RELEASE"
 
 if [ -z $SENTRY_AUTH_TOKEN ]
@@ -24,7 +18,8 @@ else
 export SENTRY_ENV=$REACT_APP_SENTRY_ENV
 fi
 
-GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
+echo $1
+REACT_APP_STAGE=$1 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
 
 # install sentry cli
 echo "Installing and configuring sentry cli"
