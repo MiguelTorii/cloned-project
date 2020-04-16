@@ -116,7 +116,7 @@ const HomeItem = ({
           primary={!newClassExperience ? "Study" : "My Classes"}
         />
       </ListItem>
-      {classList.map(cl => (
+      {classList.map(cl => cl && (
         <div
           key={cl.sectionId}
         >

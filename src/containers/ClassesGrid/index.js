@@ -123,7 +123,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         open={openAddClasses}
         onClose={() => setOpenAddClasses(false)}
       />
-      {classList && classList.map(cl => (
+      {classList && classList.map(cl => cl && (
         <Grid key={cl.sectionId} item xs={12} md={4} className={classes.item}>
           <ClassCard
             sectionDisplayName={cl.sectionDisplayName}
