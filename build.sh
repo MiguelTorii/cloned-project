@@ -1,6 +1,23 @@
 #!/bin/bash
 # build
+if [ -z $1 ] 
+then
 export REACT_APP_SENTRY_RELEASE=$(git rev-parse --short HEAD)
+else
+export REACT_APP_SENTRY_RELEASE=$1
+fi
+
+echo "Version: $REACT_APP_SENTRY_RELEASE"
+
+if [ -z $SENTRY_AUTH_TOKEN ]
+then
+  echo "No SENTRY_AUTH_TOKEN environment variable."
+  echo "To set run: export SENTRY_AUTH_TOKEN=TOKEN_VALUE"
+  echo "And try again"
+  exit 0
+fi
+
+
 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
 
 # install sentry cli
