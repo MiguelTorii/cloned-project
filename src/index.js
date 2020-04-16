@@ -73,7 +73,7 @@ if (ENV !== 'dev') {
 if (process.env.NODE_ENV !== 'development') {
   sentryInit({
     dsn: SENTRY,
-    environment: ENV,
+    environment: process.env.REACT_APP_SENTRY_ENV || ENV,
     release: process.env.REACT_APP_SENTRY_RELEASE || RELEASE
   });
 }
