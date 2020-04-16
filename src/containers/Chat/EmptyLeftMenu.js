@@ -21,9 +21,17 @@ const useStyles = makeStyles((theme) => ({
     width: '23%',
     bottom: 10
   },
+  messageContainerImg: {
+    position: 'absolute',
+    bottom: '40%',
+    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   messageContainer: {
     position: 'absolute',
-    bottom: '35%',
+    bottom: '25%',
     padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
@@ -49,8 +57,10 @@ const EmptyLeftMenu = ({ emptyChannels }) => {
         handleClose={handleInviteClose}
         open={inviteDialog}
       />
-      {emptyChannels && <div className={classes.messageContainer}>
+      {emptyChannels && <div className={classes.messageContainerImg}>
         <LoadImg url={EmptyLeftChat} alt='emptychat' />
+      </div>}
+      {emptyChannels && <div className={classes.messageContainer}>
         <Typography
           classes={{
             root: classes.message

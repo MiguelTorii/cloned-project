@@ -545,7 +545,7 @@ class MainLayout extends React.Component<Props, State> {
                 <ChatIcon />
               </Badge>
             </IconButton>
-            <p>Chat</p>
+            <p>Chats</p>
           </MenuItem>
         )}
         <MenuItem onClick={this.handleProfileMenuOpen}>
@@ -733,7 +733,7 @@ class MainLayout extends React.Component<Props, State> {
                 <ChatIcon />
               </ListItemIcon>
               <ListItemText
-                primary="Chat"
+                primary="Chats"
               />
             </ListItem>
           )}
