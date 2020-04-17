@@ -166,7 +166,7 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
   if (!channel) return null
 
   const onOk = async () => {
-    await handleBlock(otherUser.userId)
+    if (userId !== otherUser.userId) await handleBlock(otherUser.userId)
     handleOpenBlock(false)()
   }
 
