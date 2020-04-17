@@ -165,8 +165,8 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
   const startVideo = () => window.open(`/video-call/${channel.sid}`, '_blank')
   if (!channel) return null
 
-  const onOk = () => {
-    handleBlock(otherUser.userId)()
+  const onOk = async () => {
+    await handleBlock(otherUser.userId)
     handleOpenBlock(false)()
   }
 

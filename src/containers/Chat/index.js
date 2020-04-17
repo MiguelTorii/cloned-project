@@ -90,11 +90,11 @@ const Chat = ({
     if (currentChannel) setRightSpace(3)
   }, [currentChannel])
 
-  const handleBlock = blockedUserId => async () => {
+  const handleBlock = async blockedUserId => {
     try {
-      setCurrentChannel(null)
       await blockUser({ userId, blockedUserId: String(blockedUserId) });
       await handleBlockUser({ blockedUserId });
+      setCurrentChannel(null)
     } catch (err) {}
   }
 
