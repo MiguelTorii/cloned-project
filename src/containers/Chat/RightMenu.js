@@ -165,6 +165,11 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
   const startVideo = () => window.open(`/video-call/${channel.sid}`, '_blank')
   if (!channel) return null
 
+  const onOk = () => {
+    handleBlock(otherUser.userId)()
+    handleOpenBlock(false)()
+  }
+
   return (
     <Grid
       item
@@ -275,7 +280,7 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
             className={classes.dialog}
             okTitle="Yes, I'm sure"
             onCancel={handleOpenBlock(false)}
-            onOk={handleBlock(otherUser.userId)}
+            onOk={onOk}
             open={blockUser}
             showActions
             showCancel

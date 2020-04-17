@@ -197,11 +197,15 @@ export const handleInitChat = () =>
 
 export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Function) => {
   const {
-    chat: { data: { client }}
+    chat: { data: { client, channels }}
   } = getState()
 
   if (client) {
     try {
+      client.removeAllListeners()
+      channels.forEach(c => {
+        c.removeAllListeners()
+      })
       // client.shutdown();
     } catch (err) {}
   }

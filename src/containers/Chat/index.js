@@ -92,6 +92,7 @@ const Chat = ({
 
   const handleBlock = blockedUserId => async () => {
     try {
+      setCurrentChannel(null)
       await blockUser({ userId, blockedUserId: String(blockedUserId) });
       await handleBlockUser({ blockedUserId });
     } catch (err) {}
