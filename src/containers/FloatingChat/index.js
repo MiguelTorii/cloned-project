@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import withWidth from '@material-ui/core/withWidth';
@@ -17,20 +17,22 @@ type Props = {
   }
 };
 
-class Chat extends React.PureComponent<Props> {
-  render() {
-    const {
-      user: {
-        data: { userId }
-      },
-      width,
-      location: { pathname }
-    } = this.props;
+const Chat = ({ user, width, location: { pathname }}: Props) => {
+  const {
+    data: { userId }
+  } = user;
 
-    if (!userId || userId === '') return null;
-    if (pathname.includes('video-call')) return null;
-    return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
-  }
+  useEffect(() => {
+    window.onunhandledrejection = e => {
+      if (["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)) {
+        e.preventDefault()
+      }
+    }
+  }, [])
+
+  if (!userId || userId === '') return null;
+  if (pathname.includes('video-call')) return null;
+  return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
 }
 
 const mapStateToProps = ({ user }: StoreState): {} => ({

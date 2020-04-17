@@ -120,9 +120,15 @@ export const handleInitChat = () =>
       user: {
         data: { userId }
       },
+      chat: {
+        data: {
+          client: curClient
+        }
+      }
     } = getState()
 
     try {
+      if (curClient && curClient.connectionState === "connected") return
       const accessToken = await renewTwilioToken({
         userId
       });
@@ -196,7 +202,7 @@ export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Fun
 
   if (client) {
     try {
-      client.shutdown();
+      // client.shutdown();
     } catch (err) {}
   }
   dispatch(shutdown());

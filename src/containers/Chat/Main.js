@@ -140,10 +140,6 @@ const Main = ({
         setHasMore(!(p.items.length < 10))
         handleScrollToBottom()
 
-        // channel.on('messageAdded', message => {
-        // setNewMessage(message)
-        // })
-
         if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', member => {
             member.getUser().then(user => {
