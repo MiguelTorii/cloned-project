@@ -116,7 +116,8 @@ const FloatingChat = ({
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
       const { firstName, lastName } = attributes;
-      if (Number(author) !== Number(userId) && window.location.pathname !== '/chat') {
+      const sids = openChannels.map(oc => oc.sid)
+      if (Number(author) !== Number(userId) && window.location.pathname !== '/chat' && !sids.includes(channel.sid)) {
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {

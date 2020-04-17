@@ -8,12 +8,11 @@ import LoadImg from 'components/LoadImg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
   },
   messageContainer: {
-    position: 'absolute',
-    bottom: '35%',
     padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
