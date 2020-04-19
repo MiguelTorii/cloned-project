@@ -10,7 +10,7 @@ import {
   rootActions
 } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { User } from '../types/models';
+import type { User, Announcement } from '../types/models';
 
 export type UserState = {
   isLoading: boolean,
@@ -35,6 +35,7 @@ export type UserState = {
     viewedTooltips: Array<number>,
     viewedOnboarding: boolean
   },
+  announcementData: Announcement,
   errorMessage: {
     title: string,
     body: string,
@@ -84,6 +85,7 @@ const defaultState = {
   runningTour: false,
   isLoading: false,
   error: false,
+  announcementData: null,
   errorMessage: {
     title: '',
     body: '',
@@ -173,6 +175,12 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         viewedOnboarding: {
           $set: action.payload.viewedOnboarding
         },
+      },
+    });
+  case userActions.GET_ANNOUNCEMENT_SUCCESS:
+    return update(state, {
+      announcementData: {
+        $set: action.payload.announcement
       },
     });
   default:

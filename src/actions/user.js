@@ -1,5 +1,7 @@
 // @flow
 import { userActions } from 'constants/action-types'
+import { getAnnouncement as fetchAnnouncement } from 'api/announcement';
+import { getCampaign } from 'api/campaign';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
@@ -7,6 +9,7 @@ import {
 } from 'api/user'
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
+import { Announcement } from '../types/models'
 
 const setClassesAction = ({
   userClasses,
@@ -120,3 +123,20 @@ export const updateOnboarding = ({ viewedOnboarding }: { viewedOnboarding: boole
 ) => {
   dispatch(updateOnboardingAction(viewedOnboarding))
 }
+
+const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
+  type: userActions.GET_ANNOUNCEMENT_SUCCESS,
+  payload: { announcement }
+});
+
+export const getAnnouncement = (
+  { announcementId, campaignId }: { announcementId: number, campaignId: number }) => async (
+  dispatch: Dispatch
+) => {
+  const announcement = await fetchAnnouncement(announcementId);
+  const campaign = await getCampaign({ campaignId });
+
+  if (announcement && !campaign.is_disabled) {
+    dispatch(getAnnouncementSuccessAction(announcement));
+  }
+};

@@ -18,14 +18,11 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-// import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
 import StoreIcon from '@material-ui/icons/Store';
-// import AnnouncementIcon from '@material-ui/icons/Announcement';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import HelpOutline from '@material-ui/icons/HelpOutline';
@@ -55,6 +52,7 @@ import UseCases from '../UseCases';
 import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
+import { AnnouncementBanner } from '../../containers/Announcements';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -97,11 +95,9 @@ const styles = theme => ({
     })
   },
   appBarShift: {
-    // marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
     },
-    // width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -178,7 +174,6 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     width: '75%',
-    // padding: theme.spacing(),
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column',
@@ -307,8 +302,6 @@ type Props = {
   location: {
     search: string
   }
-  // onOpenLeaderboard: Function
-  // onOpenAnnouncements: Function
 };
 
 type State = {
@@ -332,8 +325,13 @@ class MainLayout extends React.Component<Props, State> {
     openHowEarnPoints: false,
     openUseCases: false,
     openClassmates: false,
-    createPostOpen: false,
+    createPostOpen: false
   };
+
+  constructor(props) {
+    super(props);
+    this.appBarRef = React.createRef();
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -466,9 +464,14 @@ class MainLayout extends React.Component<Props, State> {
       location: { search = '' },
       pathname,
       runningTour,
-      // onOpenLeaderboard
-      // onOpenAnnouncements
     } = this.props;
+
+    let appBarHeight = 0;
+
+    if (this.appBarRef.current && this.appBarRef.current.clientHeight) {
+      appBarHeight = this.appBarRef.current.clientHeight;
+    }
+
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
@@ -494,16 +497,9 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
           My Profile
         </MenuItem>
-        {/* <MenuItem component={MyLink} link="/study-circle"> */}
-        {/* My Study Circle */}
-        {/* </MenuItem> */}
         <MenuItem onClick={this.handleManageClasses}>
           Add/Remove Classes
         </MenuItem>
-        {/* <MenuItem onClick={this.handleMenuClose}>Weekly Goals</MenuItem> */}
-        {/* <MenuItem onClick={this.handleOpenHowEarnPoints}>
-          How Do I Earn Points
-        </MenuItem> */}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleOpenReferralStatus}>Referred Classmates</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
@@ -662,12 +658,7 @@ class MainLayout extends React.Component<Props, State> {
           state={openClassmates}
           courseDisplayName={courseDisplayName}
         />
-        <div className={classes.toolbar}>
-          <IconButton onClick={this.handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <List className={clsx(!runningTour && classes.drawerList)}>
+        <List className={clsx(!runningTour && classes.drawerList)} style={{ marginTop: appBarHeight }}>
           {/* TODO: move this to feed top */}
           {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
             <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
@@ -704,14 +695,6 @@ class MainLayout extends React.Component<Props, State> {
             newClassExperience={newClassExperience}
             openClassmatesDialog={openClassmatesDialog}
           />
-          {/* <ListItem button component={MyLink} link="/reminders">
-            <ListItemIcon>
-              <EventIcon className={classNames(pathname === '/reminders' && classes.currentRoute)} />
-            </ListItemIcon>
-            <ListItemText primary="Reminders"
-            primaryTypographyProps={{ color: pathname === '/reminders' ? 'primary' : 'textPrimary' }}
-            />
-          </ListItem> */}
           <ListItem
             button
             className={classes.otherPath}
@@ -783,21 +766,6 @@ class MainLayout extends React.Component<Props, State> {
               primary="Rewards Store"
             />
           </ListItem>
-          {/* <ListItem button component={MyLink} link="/video-call">
-            <ListItemIcon>
-              <DuoIcon className={classNames(pathname === '/video-call' && classes.currentRoute)}/>
-            </ListItemIcon>
-            <ListItemText primary="Video Meet Up"
-            primaryTypographyProps={{ color: pathname === '/video-call' ? 'primary' : 'textPrimary' }}
-            />
-          </ListItem> */}
-          {/* <ListSubheader>Help</ListSubheader> */}
-          {/* <ListItem button onClick={onOpenAnnouncements}>
-            <ListItemIcon>
-              <AnnouncementIcon />
-            </ListItemIcon>
-            <ListItemText primary="Announcements" />
-          </ListItem> */}
           {!newClassExperience && <div className={classes.myClasses}>
             <ListItemIcon>
               <GradCapIcon className={classNames("whiteSvg")} />
@@ -837,6 +805,7 @@ class MainLayout extends React.Component<Props, State> {
       <Fragment>
         <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
           <AppBar
+            ref={this.appBarRef}
             position="fixed"
             className={classNames(classes.appBar, {
               [classes.appBarShift]: open
@@ -898,6 +867,7 @@ class MainLayout extends React.Component<Props, State> {
                 </IconButton>
               </div>
             </Toolbar>
+            <AnnouncementBanner />
           </AppBar>
           {renderMenu}
           {renderMobileMenu}
@@ -933,8 +903,7 @@ class MainLayout extends React.Component<Props, State> {
               {drawer}
             </Drawer>
           </Hidden>}
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
+          <main className={classes.content} style={{ marginTop: appBarHeight }}>
             {children}
           </main>
         </div>

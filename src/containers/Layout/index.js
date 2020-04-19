@@ -60,7 +60,8 @@ type Props = {
   updateFilter: Function,
   requestCampaign: Function,
   openCreateChatGroup: Function,
-  push: Function
+  push: Function,
+  getAnnouncement: Function
 };
 
 type State = {
@@ -96,6 +97,9 @@ class Layout extends React.PureComponent<Props, State> {
   }
 
   componentDidMount = () => {
+    const { getAnnouncement } = this.props;
+    getAnnouncement({ announcementId: 1, campaignId: 7 });
+
     this.loadUser()
   };
 
@@ -341,6 +345,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       fetchFeed: feedActions.fetchFeed,
       updateFilter: feedActions.updateFilter,
       fetchClasses: userActions.fetchClasses,
+      getAnnouncement: userActions.getAnnouncement,
       push: routePush,
       requestCampaign: campaignActions.requestCampaign
     },

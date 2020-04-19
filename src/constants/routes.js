@@ -92,4 +92,5 @@ export const API_ROUTES = {
   LEADERBOARD_GRAND_PRIZE_INFO: `${API_URL}/store/grand_prize `,
   EVENTS: `${API_URL}/event`,
   REFERRAL: `${API_URL}/referral`,
+  ANNOUNCEMENT: `${API_URL}/announcement`,
 };

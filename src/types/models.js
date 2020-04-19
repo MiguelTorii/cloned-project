@@ -290,6 +290,15 @@ export type ReferralData = {
   school: string
 };
 
+export type Announcement = {
+  hourlyReward: string,
+  imageUrl: string,
+  popupTitle: string,
+  subtitle: string,
+  title: string,
+  variationId: number
+};
+
 export type Schools = Array<School>;
 
 export type ChatMessageListItem = {
