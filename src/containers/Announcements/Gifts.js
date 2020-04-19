@@ -11,6 +11,7 @@ import notes from 'assets/svg/notes.svg';
 
 const styles = theme => ({
   action: {
+    alignItems: 'center',
     display: 'flex',
   },
   actions: {
@@ -21,7 +22,7 @@ const styles = theme => ({
     margin: '16px 0px',
   },
   actionText: {
-    fontSize: 18,
+    fontSize: 16,
     marginLeft: 8,
   },
   link: {
@@ -36,7 +37,7 @@ const styles = theme => ({
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
   },
   newPost: {
     background: theme.circleIn.palette.brand,

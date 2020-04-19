@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-import LoadImg from 'components/LoadImg';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { Anouncement } from 'types/models';
 import Gifts from './Gifts';
@@ -15,14 +14,18 @@ const styles = theme => ({
     background: '#e9ecef',
     display: 'flex',
     justifyContent: 'center',
-    padding: 8,
+    padding: '4px 0px',
     position: 'relative',
     width: '100%',
   },
+  button: {
+    padding: 0,
+  },
   buttonLabel: {
     color: theme.circleIn.palette.action,
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
+    paddingLeft: 4,
   },
   content: {
     alignItems: 'center',
@@ -37,6 +40,7 @@ const styles = theme => ({
     maxWidth: 750,
   },
   image: {
+    height: '100%',
     left: 16,
     position: 'absolute',
   },
@@ -44,11 +48,11 @@ const styles = theme => ({
     alignItems: 'center',
     color: 'black',
     display: 'flex',
-    fontSize: 18,
+    fontSize: 14,
   },
   title: {
     color: 'black',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
   }
 });
@@ -90,7 +94,7 @@ const Banner = ({
   return (
     <div className={classes.body}>
       <div className={classes.image}>
-        {isActive && <LoadImg url={imageUrl} style={{ width: 100 }} />}
+        {isActive && <img src={imageUrl} alt="gift" style={{ height: '100%' }} />}
       </div>
       <div className={classes.content}>
         <div className={classes.title}>
