@@ -1,11 +1,12 @@
 {
   "extends": [
+    "react-app",
     "airbnb",
     "prettier",
     "prettier/react",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["prettier", "jsx-a11y", "flowtype"],
+  "plugins": ["prettier", "jsx-a11y", "flowtype", "react-hooks"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -23,6 +24,8 @@
     "import/newline-after-import": "error",
     "import/no-unresolved": 0,
     "no-trailing-spaces": 2,
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
 
     "flowtype/boolean-style": [
       2,

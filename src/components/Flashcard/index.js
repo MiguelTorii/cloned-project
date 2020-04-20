@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import cx from 'classnames';
 import ReactCardFlip from 'react-card-flip';
 import { withStyles } from '@material-ui/core/styles';
@@ -36,8 +36,9 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   cardText: {
+    wordBreak: 'break-word',
     width: '100%',
-    height: 60,
+    height: 250,
     fontWeight: 'bold',
     overflowY: 'auto'
   },
@@ -55,25 +56,19 @@ type Props = {
   studyMode?: boolean
 };
 
-type State = {
-  isFlipped: boolean
-};
 
-class Flashcard extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    studyMode: false
-  };
+const Flashcard = ({ isFlipped: flipped, classes, index, question, answer, studyMode = false}: Props) => {
+  const [isFlipped, setIsFlipped] = useState(false)
 
-  state = {
-    isFlipped: false
-  };
+  const handleFlip = useCallback(() => {
+    setIsFlipped(p => !p)
+  }, []);
 
-  handleFlip = () => {
-    this.setState(({ isFlipped }) => ({ isFlipped: !isFlipped }));
-  };
+  useEffect(() => {
+    setIsFlipped(flipped)
+  }, [flipped])
 
-  renderContent = isQuestion => {
-    const { classes, index, question, answer, studyMode } = this.props;
+  const renderContent = useCallback(isQuestion => {
     return (
       <Card
         className={cx(classes.root, studyMode && classes.big)}
@@ -99,7 +94,7 @@ class Flashcard extends React.PureComponent<Props, State> {
         </CardContent>
         <CardActions className={classes.actions}>
           <Button
-            onClick={this.handleFlip}
+            onClick={handleFlip}
             size="small"
             color="primary"
             variant="contained"
@@ -109,20 +104,16 @@ class Flashcard extends React.PureComponent<Props, State> {
         </CardActions>
       </Card>
     );
-  };
+  }, [handleFlip, classes, question, answer, index, studyMode]);
 
-  render() {
-    const { isFlipped } = this.state;
-
-    return (
-      <Fragment>
-        <ReactCardFlip isFlipped={isFlipped}>
-          {this.renderContent(true)}
-          {this.renderContent(false)}
-        </ReactCardFlip>
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <ReactCardFlip isFlipped={isFlipped}>
+        {renderContent(true)}
+        {renderContent(false)}
+      </ReactCardFlip>
+    </Fragment>
+  );
 }
 
 export default withStyles(styles)(Flashcard);

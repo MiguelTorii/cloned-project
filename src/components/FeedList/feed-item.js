@@ -216,7 +216,7 @@ const styles = theme => ({
     marginTop: 24,
   },
   flashCardPreview: {
-    backgroundColor: '#357592',
+    backgroundColor: theme.circleIn.palette.flashcardBackground,
     borderRadius: 8,
     boxShadow: '0 4px 10px 0 rgba(0, 0, 0, 0.25)',
     color: '#ffffff',

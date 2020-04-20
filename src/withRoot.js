@@ -30,11 +30,13 @@ const circleInTheme = {
   snackbar: '#114255',
   disabled: '#6d7884',
   profilebgColor: '#bdbdbd',
-  danger: '#f34f47'
+  danger: '#f34f47',
+  flashcardBackground: '#357592'
 };
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      flashcardBackground: circleInTheme.flashcardBackground,
       danger: circleInTheme.danger,
       borders: circleInTheme.borders,
       brand: circleInTheme.brand,

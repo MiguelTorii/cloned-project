@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FlashcardList from 'components/FlashcardViewer/FlashcardList'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getFlashcards, bookmark } from '../../api/posts';
@@ -14,7 +15,7 @@ import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import FlashcardViewer from '../../components/FlashcardViewer';
-import Flashcard from '../../components/Flashcard';
+// import Flashcard from '../../components/Flashcard';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 import PostTags from '../PostTags';
@@ -59,14 +60,14 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
   const [deletePost, setDeletePost] = useState(false)
 
   const {
-    data: { 
+    data: {
       userId,
       firstName: myFirstName,
       lastName: myLastName,
       profileImage
     }
   } = user
-    
+
   const loadData = async () => {
     // eslint-disable-next-line
     const { deck = [], ...flashcards } = await getFlashcards({
@@ -96,7 +97,6 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
     loadData()
     // eslint-disable-next-line
   }, [flashcardId])
-
 
   const handleBookmark = async () => {
     if (!flashcards) return;
@@ -178,18 +178,21 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           <ErrorBoundary>
             <FlashcardViewer title={title} flashcards={deck} />
           </ErrorBoundary>
+          {/* <ErrorBoundary> */}
+          {/* <div className={classes.flashcards}> */}
+          {/* {// $FlowIgnore */}
+          {/* deck.map(({ id, question, answer }, index) => ( */}
+          {/* <Flashcard */}
+          {/* key={id} */}
+          {/* index={index + 1} */}
+          {/* question={question} */}
+          {/* answer={answer} */}
+          {/* /> */}
+          {/* ))} */}
+          {/* </div> */}
+          {/* </ErrorBoundary> */}
           <ErrorBoundary>
-            <div className={classes.flashcards}>
-              {// $FlowIgnore
-                deck.map(({ id, question, answer }, index) => (
-                  <Flashcard
-                    key={id}
-                    index={index + 1}
-                    question={question}
-                    answer={answer}
-                  />
-                ))}
-            </div>
+            <FlashcardList deck={deck} />
           </ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />
