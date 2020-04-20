@@ -136,7 +136,7 @@ export const getAnnouncement = (
   const announcement = await fetchAnnouncement(announcementId);
   const campaign = await getCampaign({ campaignId });
 
-  if (announcement && !campaign.is_disabled) {
+  if (announcement && !campaign.is_disabled && campaign.variation_key !== 'hidden') {
     dispatch(getAnnouncementSuccessAction(announcement));
   }
 };

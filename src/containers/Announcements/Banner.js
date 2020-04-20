@@ -1,9 +1,12 @@
 // @flow
 import React, { useEffect, useState } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 
+import * as userActions from 'actions/user'
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { Anouncement } from 'types/models';
 import Gifts from './Gifts';
@@ -59,25 +62,34 @@ const styles = theme => ({
 
 type Props = {
   announcement: Anouncement,
-  classes: Object
+  classes: Object,
+  getAnnouncement: Function,
+  location: { pathname: string }
 };
 
 const Banner = ({
   announcement,
   classes,
+  getAnnouncement,
+  location: { pathname },
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [minutesRemaining, setMinutesRemaining] = useState(60 - new Date().getMinutes());
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setMinutesRemaining(60 - new Date().getMinutes());
+      const currentMinute = new Date().getMinutes();
+      setMinutesRemaining(60 - currentMinute);
+
+      if (currentMinute === 1) {
+        getAnnouncement({ announcementId: 1, campaignId: 7 });
+      }
     }, 60000);
 
     return () => clearInterval(intervalId);
   }, [minutesRemaining]);
 
-  if (!announcement) return null;
+  if (!announcement || pathname === '/chat') return null;
 
   const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 20);
 
@@ -130,4 +142,15 @@ const mapStateToProps = ({ user: { announcementData } }): {} => ({
   announcement: announcementData
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Banner));
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      getAnnouncement: userActions.getAnnouncement,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withStyles(styles)(Banner)));
