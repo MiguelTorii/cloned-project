@@ -78,6 +78,15 @@ if (process.env.NODE_ENV !== 'development') {
   });
 }
 
+if (ENV === 'dev') {
+  const script = document.createElement("script");
+
+  script.src = "src=“//rum-static.pingdom.net/pa-5e9f10ba229e9300080009c1.js";
+  script.async = true;
+
+  document.body.appendChild(script);
+}
+
 analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
 axios.defaults.headers.common['x-client-version'] = RELEASE;
