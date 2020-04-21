@@ -97,7 +97,7 @@ class AccountForm extends React.PureComponent<Props, State> {
       if (emailRestriction) {
         let match = false;
         for (const domain of emailDomain) {
-          if (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))
+          if (value && (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`)))
             match = true;
         }
         return match;
