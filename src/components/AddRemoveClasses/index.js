@@ -337,7 +337,7 @@ const AddRemoveClasses = (props: Props) => {
             left: '50%'
           }}
         />}
-        {schoolId === "52" &&
+        {(schoolId === "52" || schoolId === "16") &&
           <Autocomplete
             classes={{ paper: classes.paper }}
             onClose={() => setOptions([])}
