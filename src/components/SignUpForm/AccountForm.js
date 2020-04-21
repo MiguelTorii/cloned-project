@@ -61,12 +61,9 @@ type State = {
   firstName: string,
   lastName: string,
   email: string,
-  confirmEmail: string,
-  // gender: string,
+  confirmPassword: string,
   password: string,
   grade: string | number
-  // birthdate: ?Object,
-  // birthdateError: boolean
 };
 
 class AccountForm extends React.PureComponent<Props, State> {
@@ -74,20 +71,17 @@ class AccountForm extends React.PureComponent<Props, State> {
     firstName: '',
     lastName: '',
     email: '',
-    confirmEmail: '',
-    // gender: '',
+    confirmPassword: '',
     password: '',
     grade: ''
-    // birthdate: null,
-    // birthdateError: false
   };
 
   componentDidMount = () => {
     const { email: propsEmail } = this.props;
     this.setState({ email: propsEmail });
-    ValidatorForm.addValidationRule('isEmailMatch', value => {
-      const { email } = this.state;
-      if (value !== email) {
+    ValidatorForm.addValidationRule('isPasswordMatch', value => {
+      const { password } = this.state;
+      if (value !== password) {
         return false;
       }
       return true;
@@ -110,37 +104,25 @@ class AccountForm extends React.PureComponent<Props, State> {
     this.setState({ [name]: event.target.value });
   };
 
-  // handleDateChange = selectedDate => {
-  //   this.setState({ birthdate: selectedDate, birthdateError: false });
-  // };
-
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const {
       firstName,
       lastName,
       email,
-      confirmEmail,
-      // gender,
+      confirmPassword,
       password,
       grade
-      // birthdate
     } = this.state;
-    // if (!birthdate) {
-    //   this.setState({ birthdateError: true });
-    //   return;
-    // }
     const data = {
       action: 'Account',
       data: {
         firstName,
         lastName,
         email,
-        confirmEmail,
-        // gender,
+        confirmPassword,
         password,
         grade
-        // birthdate: birthdate && birthdate.format('YYYY-MM-DD')
       }
     };
     onSubmit(data);
@@ -152,12 +134,9 @@ class AccountForm extends React.PureComponent<Props, State> {
       firstName,
       lastName,
       email,
-      confirmEmail,
-      // gender,
+      confirmPassword,
       password,
       grade
-      // birthdate,
-      // birthdateError
     } = this.state;
     return (
       <ValidatorForm
@@ -212,39 +191,6 @@ class AccountForm extends React.PureComponent<Props, State> {
         />
         <TextValidator
           variant="outlined"
-          label="Confirm Email Address"
-          margin="normal"
-          onChange={this.handleChange('confirmEmail')}
-          name="confirmEmail"
-          autoComplete="confirmEmail"
-          fullWidth
-          value={confirmEmail}
-          disabled={loading}
-          validators={['required', 'isEmailMatch']}
-          errorMessages={[
-            'Email Address is required',
-            "Email Address don't match"
-          ]}
-        />
-        {/* <FormControl variant="outlined" fullWidth>
-          <SelectValidator
-            value={gender}
-            name="gender"
-            label="Gender"
-            disabled={loading}
-            onChange={this.handleChange('gender')}
-            variant="outlined"
-            validators={['required']}
-            errorMessages={['Gender is required']}
-          >
-            <MenuItem value="" />
-            <MenuItem value="M">Male</MenuItem>
-            <MenuItem value="F">Female</MenuItem>
-            <MenuItem value="U">Unspecified</MenuItem>
-          </SelectValidator>
-        </FormControl> */}
-        <TextValidator
-          variant="outlined"
           label="Password"
           margin="normal"
           onChange={this.handleChange('password')}
@@ -256,41 +202,23 @@ class AccountForm extends React.PureComponent<Props, State> {
           validators={['required']}
           errorMessages={['Password is required']}
         />
-        {/* <TextValidator
+        <TextValidator
           variant="outlined"
-          label="Birth Date"
-          type="date"
+          label="Confirm Password"
           margin="normal"
-          onChange={this.handleChange('birthdate')}
-          name="birthdate"
-          InputLabelProps={{
-            shrink: true
-          }}
+          onChange={this.handleChange('confirmPassword')}
+          name="confirmPassword"
+          autoComplete="confirmPassword"
           fullWidth
-          value={birthdate}
+          type="password"
+          value={confirmPassword}
           disabled={loading}
-          validators={['required']}
-          errorMessages={['Birth Date is required']}
-        /> */}
-        {/* <DatePicker
-          value={birthdate}
-          fullWidth
-          onChange={this.handleDateChange}
-          variant="outlined"
-          label="Birth Date"
-          margin="normal"
-          name="birthdate"
-          disableFuture
-          openTo="year"
-          format="MM/DD/YYYY"
-          views={['year', 'month', 'day']}
-          disabled={loading}
-          className={classes.picker}
-          error={birthdateError}
+          validators={['required', 'isPasswordMatch']}
+          errorMessages={[
+            'Password is required',
+            "Passwords don't match"
+          ]}
         />
-        {birthdateError && (
-          <FormHelperText error>Birth Date is required</FormHelperText>
-        )} */}
         <FormControl
           variant="outlined"
           fullWidth

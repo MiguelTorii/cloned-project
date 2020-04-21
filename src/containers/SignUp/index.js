@@ -18,7 +18,6 @@ import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import TypeSelect from '../../components/SignUpForm/TypeSelect';
 import AccountForm from '../../components/SignUpForm/AccountForm';
 import VerifyAccount from '../../components/SignUpForm/VerifyAccount';
-import ReferralCode from '../../components/SignUpForm/ReferralCode';
 import * as signUpActions from '../../actions/sign-up';
 import * as authActions from '../../actions/auth';
 import { sendCode, verifyCode } from '../../api/sign-up';
@@ -153,46 +152,25 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
       try {
         await verifyCode({ email: data.email, code: data.code });
 
-        if (referralData) {
-          await signUp({
-            grade,
-            school: referralData.schoolId,
-            firstName,
-            lastName,
-            password,
-            email,
-            phone: '',
-            segment: type,
-            referralCode: referralData.code
-          });
-        } else {
-          this.setState({ activeStep: 2 });
-        }
-      } catch (err) {
-        const { updateError } = this.props;
-        updateError({
-          title: 'Verification Error',
-          body: "We couldn't verify your code, please try again."
-        });
-      } finally {
-        this.setState({ loading: false });
-      }
-      break;
-    case 'ReferralCode':
-      try {
-        this.setState({ loading: true });
         await signUp({
           grade,
-          school: school && school.id,
+          school: (referralData && referralData.schoolId) || (school && school.id),
           firstName,
           lastName,
           password,
           email,
           phone: '',
           segment: type,
-          referralCode: data.code
+          referralCode: (referralData && referralData.code) || (data && data.code)
         });
       } catch (err) {
+        alert(JSON.stringify(err))
+        const { updateError } = this.props;
+        updateError({
+          title: 'Verification Error',
+          body: "We couldn't verify your code, please try again."
+        });
+      } finally {
         this.setState({ loading: false });
       }
       break;
@@ -227,7 +205,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     updateSchool({ school: null });
   };
 
-  renderHeader(activeStep: number) {
+  renderHeader() {
     const { auth: { referralData }, classes } = this.props;
 
     if (referralData) {
@@ -250,11 +228,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
     return (
       <Typography component="h1" variant="h5">
-        {
-          activeStep === 2
-            ? 'Did a classmate refer you to CircleIn?'
-            : 'Create your CircleIn Account'
-        }
+          Create your CircleIn Account'
       </Typography>
     );
   }
@@ -283,7 +257,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
             <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
-                {this.renderHeader(activeStep)}
+                {this.renderHeader()}
                 <TypeSelect
                   onTypeChange={this.handleTypeChange}
                   hide={Boolean(type !== '')}
@@ -303,12 +277,6 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
                   hide={Boolean(type === '' || activeStep !== 1)}
                   onBack={this.handleBack}
                   onResend={this.handleResendCode}
-                  onSubmit={this.handleSubmit}
-                />
-                <ReferralCode
-                  loading={isLoading || loading}
-                  hide={Boolean(type === '' || activeStep !== 2)}
-                  onBack={this.handleBack}
                   onSubmit={this.handleSubmit}
                 />
               </SignUpForm>
