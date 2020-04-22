@@ -26,6 +26,7 @@
     "no-trailing-spaces": 2,
     "react-hooks/exhaustive-deps": "error",
     "react-hooks/rules-of-hooks": "error",
+    "no-shadow": 0,
 
     "flowtype/boolean-style": [
       2,

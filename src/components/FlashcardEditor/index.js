@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { useRef, Fragment, useState, useEffect, useCallback } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
@@ -80,109 +80,79 @@ type Props = {
   onDropRejected: Function
 };
 
-type State = {
-  question: string,
-  answer: string,
-  isFlipped: boolean,
-  open: boolean,
-  questionImage: boolean,
-  answerImage: boolean
-};
+const FlashcardEditor = ({
+  classes,
+  id,
+  index,
+  question,
+  answer,
+  loading,
+  onDelete,
+  onSubmit,
+  isNew,
+  onDrop,
+  onDropRejected
+}: Props) => {
+  const myRef = useRef(null)
+  const [isFlipped, setIsFlipped] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [curQuestion, setCurQuestion] = useState('')
+  const [curAnswer, setCurAnswer] = useState('')
 
-class FlashcardEditor extends React.PureComponent<Props, State> {
-  state = {
-    question: '',
-    answer: '',
-    isFlipped: false,
-    open: false,
-    questionImage: false,
-    answerImage: false
-  };
+  useEffect(() => {
+    if (isNew) setOpen(true)
+  }, [isNew])
 
-  constructor(props) {
-    super(props);
-    // $FlowIgnore
-    this.myRef = React.createRef();
-  }
 
-  componentDidMount = () => {
-    const { isNew, question, answer } = this.props
-    if(isNew) this.setState({open: true})
-    else {
-      this.setState({ question, answer });
-    }
-  }
-
-  componentDidUpdate = prevProps => {
-    const { question, answer } = this.props;
-    const { open } = this.state;
-    if (
-      !open &&
-      (question !== prevProps.question || answer !== prevProps.answer)
-    ) {
-      this.setState({ question, answer });
-    }
-  };
-
-  handleDelete = () => {
-    const { id, onDelete } = this.props;
+  const handleDelete = useCallback(() => {
     onDelete(id);
-  };
+  }, [onDelete, id]);
 
-  handleFlip = () => {
-    this.setState(({ isFlipped }) => ({ isFlipped: !isFlipped }));
-  };
+  const handleFlip = useCallback(() => {
+    setIsFlipped(p => !p)
+  }, []);
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  const handleOpen = useCallback(() => {
+    setOpen(true)
+  }, []);
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  const handleClose = useCallback(() => {
+    setOpen(false)
+  }, []);
 
-  handleCancel = () => {
-    const { id, question, answer, onDelete } = this.props;
-    if (question === '' || answer === '') {
+  const handleCancel = useCallback(() => {
+    if (curQuestion === '' || curAnswer === '') {
       onDelete(id);
     } else {
-      this.setState({ question, answer });
-      this.handleClose();
+      handleClose();
     }
-  };
+  }, [id, curQuestion, curAnswer, onDelete, handleClose]);
 
-  handleTextChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
+  const handleTextChange = useCallback(name => event => {
+    if (name === 'question') setCurQuestion(event.target.value)
+    else setCurAnswer(event.target.value)
+  }, []);
 
-  handleSubmit = async () => {
-    if (this.myRef && this.myRef.current) {
-      const result = await this.myRef.current.isFormValid(false);
+  const handleSubmit = useCallback(async () => {
+    if (myRef.current) {
+      const result = await myRef.current.isFormValid(false);
       if (result) {
-        const { id, onSubmit } = this.props;
-        const { question, answer } = this.state;
-        onSubmit({ id, question, answer });
-        this.handleClose();
+        onSubmit({ id, question: curQuestion, answer: curAnswer });
+        handleClose();
       }
     }
-  };
+  }, [curQuestion, curAnswer, id, handleClose, onSubmit]);
 
-  handleInputType = name => () => {
-    this.setState(prevState => ({ [name]: !prevState[name] }));
-  };
-
-  handleDrop = type => acceptedFiles => {
-    const { id, onDrop } = this.props;
+  const handleDrop = useCallback(type => acceptedFiles => {
     onDrop({ id, image: acceptedFiles[0], type });
-  };
+  }, [id, onDrop]);
 
-  renderContent = isQuestion => {
-    const { classes, index, question, answer, loading } = this.props;
+  const renderContent = useCallback(isQuestion => {
     return (
       <Card className={classes.root} key={isQuestion ? 'front' : 'back'}>
         <CardHeader
           action={
-            <IconButton disabled={loading} onClick={this.handleDelete}>
+            <IconButton disabled={loading} onClick={handleDelete}>
               <DeleteIcon fontSize="small" className={classes.icon} />
             </IconButton>
           }
@@ -205,7 +175,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
         <CardActions className={classes.actions}>
           <Button
             disabled={loading}
-            onClick={this.handleFlip}
+            onClick={handleFlip}
             size="small"
             color="default"
             variant="contained"
@@ -214,7 +184,7 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
           </Button>
           <Button
             disabled={loading}
-            onClick={this.handleOpen}
+            onClick={handleOpen}
             size="small"
             color="primary"
             variant="contained"
@@ -224,99 +194,77 @@ class FlashcardEditor extends React.PureComponent<Props, State> {
         </CardActions>
       </Card>
     );
-  };
+  }, [classes, question, answer, handleDelete, handleFlip, index, handleOpen, loading]);
 
-  myRef: Object;
-
-  render() {
-    const { classes, onDropRejected } = this.props;
-    const {
-      question,
-      answer,
-      isFlipped,
-      open,
-      questionImage,
-      answerImage
-    } = this.state;
-
-    return (
-      <Fragment>
-        <ReactCardFlip isFlipped={isFlipped}>
-          {this.renderContent(true)}
-          {this.renderContent(false)}
-        </ReactCardFlip>
-        <Dialog
-          title="Flashcard"
-          okTitle="Save"
-          onCancel={this.handleCancel}
-          onOk={this.handleSubmit}
-          open={open}
-          showActions
-          showCancel
-        >
-          <ValidatorForm onSubmit={this.handleSubmit} ref={this.myRef}>
-            <Grid container alignItems="center">
-              <Grid item xs={2}>
-                <Typography variant="subtitle1">Question</Typography>
-              </Grid>
-              <Grid container item xs={10}>
-                <Grid item xs={12}>
-                  {!questionImage ? (
-                    <OutlinedTextValidator
-                      label="Question"
-                      onChange={this.handleTextChange}
-                      autoFocus
-                      name="question"
-                      multiline
-                      rows={4}
-                      value={question}
-                      fullWidth
-                      validators={['required']}
-                      errorMessages={['Question is required']}
-                    />
-                  ) : (
-                    <DropImage
-                      isDropzoneDisabled={false}
-                      onDrop={this.handleDrop('question')}
-                      onDropRejected={onDropRejected}
-                    />
-                  )}
-                </Grid>
-              </Grid>
+  return (
+    <Fragment>
+      <ReactCardFlip isFlipped={isFlipped}>
+        {renderContent(true)}
+        {renderContent(false)}
+      </ReactCardFlip>
+      <Dialog
+        title="Flashcard"
+        okTitle="Save"
+        onCancel={handleCancel}
+        onOk={handleSubmit}
+        open={open}
+        showActions
+        showCancel
+      >
+        <ValidatorForm onSubmit={handleSubmit} ref={myRef}>
+          <Grid container alignItems="center">
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">Question</Typography>
+            </Grid>
+            <Grid container alignItems="center" item xs={10}>
               <Grid item xs={12}>
-                <Divider light className={classes.divider} />
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle1">Answer</Typography>
-              </Grid>
-              <Grid container item xs={10}>
-                <Grid item xs={12}>
-                  {!answerImage ? (
-                    <OutlinedTextValidator
-                      label="Answer"
-                      onChange={this.handleTextChange}
-                      name="answer"
-                      multiline
-                      rows={4}
-                      value={answer}
-                      validators={['required']}
-                      errorMessages={['Answer is required']}
-                    />
-                  ) : (
-                    <DropImage
-                      isDropzoneDisabled={false}
-                      onDrop={this.handleDrop('answer')}
-                      onDropRejected={onDropRejected}
-                    />
-                  )}
-                </Grid>
+                <OutlinedTextValidator
+                  onChange={handleTextChange}
+                  autoFocus
+                  name="question"
+                  multiline
+                  rows={4}
+                  value={curQuestion}
+                  fullWidth
+                  validators={['required']}
+                  errorMessages={['Question is required']}
+                />
+                {/* <DropImage */}
+                {/* isDropzoneDisabled={false} */}
+                {/* onDrop={handleDrop('question')} */}
+                {/* onDropRejected={onDropRejected} */}
+                {/* /> */}
               </Grid>
             </Grid>
-          </ValidatorForm>
-        </Dialog>
-      </Fragment>
-    );
-  }
+            <Grid item xs={12}>
+              <Divider light className={classes.divider} />
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">Answer</Typography>
+            </Grid>
+            <Grid container alignItems="center" item xs={10}>
+              <Grid item xs={12}>
+                <OutlinedTextValidator
+                  onChange={handleTextChange}
+                  name="answer"
+                  multiline
+                  rows={4}
+                  value={curAnswer}
+                  validators={['required']}
+                  errorMessages={['Answer is required']}
+                />
+                {/* <DropImage */}
+                {/* isDropzoneDisabled={false} */}
+                {/* onDrop={handleDrop('answer')} */}
+                {/* onDropRejected={onDropRejected} */}
+                {/* /> */}
+              </Grid>
+            </Grid>
+          </Grid>
+        </ValidatorForm>
+      </Dialog>
+    </Fragment>
+  );
 }
 
-export default withStyles(styles)(FlashcardEditor);
+export default React.memo(withStyles(styles)(FlashcardEditor));

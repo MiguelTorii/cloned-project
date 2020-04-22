@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import uuidv4 from 'uuid/v4';
 import update from 'immutability-helper';
 import { connect } from 'react-redux';
@@ -10,12 +10,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
-import queryString from 'query-string'
+import queryString from 'query-string';
 import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
-import type { SelectType, Flashcard } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
 import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
@@ -23,7 +22,7 @@ import FlashcardEditor from '../../components/FlashcardEditor';
 import NewFlashcard from '../../components/FlashcardEditor/NewFlashcard';
 import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createFlashcards , getFlashcards, updateFlashcards } from '../../api/posts';
+import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
@@ -49,123 +48,86 @@ type Props = {
   pushTo: Function,
   flashcardId: ?number,
   campaign: CampaignState,
-  enqueueSnackbar: Function,
+  enqueueSnackbar: Function
 };
 
-type State = {
-  loading: boolean,
-  title: string,
-  summary: string,
-  classId: number,
-  sectionId: ?number,
-  tags: Array<SelectType>,
-  tagsError: boolean,
-  flashcards: Array<Flashcard & { id: string, isNew: boolean }>,
-  flashcardsError: boolean,
-  errorDialog: boolean,
-  errorTitle: string,
-  errorBody: string,
-  changed: ?boolean,
-  className: string,
-};
+const CreateFlashcards = ({
+  classes,
+  user,
+  location,
+  pushTo,
+  flashcardId,
+  campaign,
+  enqueueSnackbar
+}: Props) => {
+  const { search } = location;
+  const {
+    data: { userId, segment, grade }
+  } = user;
+  const [classId, setClassId] = useState(0);
+  const [sectionId, setSectionId] = useState(null);
+  const [flashcards, setFlashcards] = useState([]);
+  const [title, setTitle] = useState('');
+  const [tags, setTags] = useState([]);
+  const [summary, setSummary] = useState('');
+  const [tagsError, setTagsError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [flashcardsError, setFlashcardsError] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorBody, setErrorBody] = useState('');
+  const [changed, setChanged] = useState(false);
 
-class CreateFlashcards extends React.PureComponent<Props, State> {
-  state = {
-    loading: false,
-    className: '',
-    title: '',
-    summary: '',
-    classId: 0,
-    sectionId: null,
-    tags: [],
-    tagsError: false,
-    flashcards: [],
-    flashcardsError: false,
-    errorDialog: false,
-    errorTitle: '',
-    changed: false,
-    errorBody: ''
-  };
-
-  handlePush = path => {
-    const { location: { search }, pushTo, campaign } = this.props
-    if(campaign.newClassExperience) {
-      pushTo(`${path}${search}`)
+  const handlePush = useCallback(path => {
+    if (campaign.newClassExperience) {
+      pushTo(`${path}${search}`);
     } else {
-      pushTo(path)
+      pushTo(path);
     }
-  }
+  }, []);
 
-  componentDidMount = async () => {
-    this.loadData();
-    const {
-      location: { search = '' },
-    } = this.props
-    const {
-      classId,
-      sectionId,
-    } = queryString.parse(search);
-    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
-  };
-
-  loadData = async () => {
-    const {
-      user: {
-        data: { userId, segment }
-      },
-      flashcardId
-    } = this.props;
-    if(!flashcardId) return null
-    const res= await getFlashcards({
+  const loadData = useCallback(async () => {
+    if (!flashcardId) return null;
+    const res = await api.getFlashcards({
       userId,
-      flashcardId,
+      flashcardId
     });
 
     const { classes } = await getUserClasses({ userId });
     const userClasses = processClasses({ classes, segment });
     const { sectionId } = JSON.parse(userClasses[0].value);
-    const { courseDisplayName, deck = [], title, classId, tags = [], summary } = res
-
-    this.setState({
-      sectionId,
-      className: courseDisplayName,
-      flashcards: deck.map(item => ({
+    const { deck = [], title, classId, tags = [], summary } = res;
+    setSectionId(sectionId);
+    setClassId(classId);
+    setFlashcards(
+      deck.map(item => ({
         question: item.question,
         isNew: false,
         answer: item.answer,
         id: uuidv4()
-      })),
-      title,
-      classId,
-      tags,
-      summary
-    })
-    return null
-  };
+      }))
+    );
+    setTitle(title);
+    setTags(tags);
+    setSummary(summary);
+    return null;
+  }, []);
 
-  updateFlashcards = async () => {
-    const { tags, flashcards } = this.state;
+  const updateFlashcards = useCallback(async () => {
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      setTagsError(true);
       return;
     }
     if (flashcards.length === 0) {
-      this.setState({ flashcardsError: true });
+      setFlashcardsError(true);
       return;
     }
-    this.setState({ tagsError: false, flashcardsError: false });
-    this.setState({ loading: true });
+    setTagsError(false);
+    setFlashcardsError(false);
+    setLoading(true);
     try {
-      const {
-        user: {
-          data: { userId = '' }
-        },
-        flashcardId,
-      } = this.props;
-      const { title, sectionId, summary, classId } = this.state;
-
-      const id = String(flashcardId)
-      await updateFlashcards({
+      const id = String(flashcardId);
+      await api.updateFlashcards({
         flashcardId: id,
         userId,
         classId,
@@ -175,14 +137,13 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         deck: flashcards.map(item => ({
           question: item.question,
           answer: item.answer
-        })),
+        }))
       });
       logEvent({
         event: 'Feed- Update Flashcards',
         props: { 'Number of cards': flashcards.length, Title: title }
       });
 
-      const { enqueueSnackbar, classes } = this.props;
       await enqueueSnackbar({
         notification: {
           message: `Successfully updated`,
@@ -202,48 +163,36 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
           }
         }
       });
-      this.handlePush(`/flashcards/${flashcardId}`)
-      this.setState({
-        loading: false,
-      })
- 
+      handlePush(`/flashcards/${flashcardId}`);
+      setLoading(false);
     } catch (err) {
-      this.setState({
-        loading: false,
-        errorDialog: true,
-        errorTitle: 'Unknown Error',
-        errorBody: 'Please try again'
-      });
+      setLoading(false);
+      setErrorDialog(true);
+      setErrorTitle('Unknown Error');
+      setErrorBody('Please try again');
     }
+  }, [classId, classes, flashcards, enqueueSnackbar, handlePush, sectionId, summary, userId, tags, title, flashcardId]);
 
-  }
-
-  createFlashcards = async () => {
-    const { tags, flashcards } = this.state;
+  const createFlashcards = useCallback(async () => {
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      setTagsError(true);
       return;
     }
     if (flashcards.length === 0) {
-      this.setState({ flashcardsError: true });
+      setFlashcardsError(true);
       return;
     }
-    this.setState({ tagsError: false, flashcardsError: false });
-    this.setState({ loading: true });
-    try {
-      const {
-        user: {
-          data: { userId = '', grade }
-        },
-      } = this.props;
-      const { title, summary, classId, sectionId } = this.state;
+    setTagsError(false);
+    setFlashcardsError(false);
+    setLoading(true);
 
+    try {
       const tagValues = tags.map(item => Number(item.value));
       const {
         points,
         user: { firstName },
-        fcId,
-      } = await createFlashcards({
+        fcId
+      } = await api.createFlashcards({
         userId,
         title,
         summary,
@@ -265,11 +214,10 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
       logEventLocally({
         category: 'Flashcard',
         objectId: fcId,
-        type: 'Created',
+        type: 'Created'
       });
 
       if (points > 0) {
-        const { enqueueSnackbar, classes } = this.props;
         await enqueueSnackbar({
           notification: {
             message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
@@ -291,234 +239,239 @@ class CreateFlashcards extends React.PureComponent<Props, State> {
         });
       }
 
-      this.handlePush('/feed');
+      handlePush('/feed');
     } catch (err) {
-      this.setState({
-        loading: false,
-        errorDialog: true,
-        errorTitle: 'Unknown Error',
-        errorBody: 'Please try again'
-      });
+      setLoading(false);
+      setErrorDialog(true);
+      setErrorTitle('Unknown Error');
+      setErrorBody('Please try again');
     }
-  };
+  }, [classId, classes, flashcards, enqueueSnackbar, grade, handlePush, sectionId, summary, userId, tags, title]);
 
-  handleSubmit= () => {
-    const {flashcardId} = this.props
-    if(flashcardId) this.updateFlashcards()
-    else this.createFlashcards()
-  }
+  const handleSubmit = useCallback(() => {
+    if (flashcardId) updateFlashcards();
+    else createFlashcards();
+  }, [updateFlashcards, createFlashcards, flashcardId]);
 
-  handleTextChange = name => event => {
-    this.setState({ changed: true })
-    this.setState({ [name]: event.target.value });
-  };
+  const handleTextChange = useCallback(
+    name => event => {
+      setChanged(true);
+      const v = event.target.value
+      if (name === 'title') setTitle(v)
+      if (name === 'summary') setSummary(v)
+    },
+    []
+  );
 
-  handleClassChange = ({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
-    this.setState({ classId, sectionId });
-  };
+  const handleClassChange = useCallback(
+    ({ classId: cid, sectionId: sid }: { cid: number, sid: number }) => {
+      setClassId(cid);
+      setSectionId(sid);
+    },
+    []
+  );
 
-  handleTagsChange = values => {
-    this.setState({ tags: values });
-    if (values.length === 0) this.setState({ tagsError: true });
-    else this.setState({ tagsError: false });
-  };
+  const handleTagsChange = useCallback(values => {
+    setTags(values);
+    if (values.length === 0) setTagsError(true);
+    else setTagsError(false);
+  }, []);
 
-  handleAddNew = () => {
-    this.setState({ changed: true })
-    this.setState(({ flashcards }) => ({
-      flashcards: [...flashcards, { id: uuidv4(), question: '', answer: '', isNew: true }]
-    }));
-  };
+  const handleAddNew = useCallback(() => {
+    setChanged(true);
+    setFlashcards(f => ([
+      ...f,
+      { id: uuidv4(), question: '', answer: '', isNew: true }
+    ]
+    ));
+  }, []);
 
-  handleDelete = id => {
-    const newState = update(this.state, {
-      changed: { $set: true },
-      flashcards: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
-          if (index > -1) {
-            return update(b, { $splice: [[index, 1]] });
+  const handleDelete = useCallback(id => {
+    const { flashcards: f } = update(
+      { flashcards },
+      {
+        flashcards: {
+          $apply: b => {
+            const index = b.findIndex(item => item.id === id);
+            if (index > -1) {
+              return update(b, { $splice: [[index, 1]] });
+            }
+            return b;
           }
-          return b;
         }
       }
-    });
-    this.setState(newState);
-  };
-
-  handleUpdate = ({ id, question, answer }) => {
-    const newState = update(this.state, {
-      changed: { $set: true },
-      flashcards: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
-          if (index > -1) {
-            return update(b, {
-              [index]: {
-                question: { $set: question },
-                answer: { $set: answer }
-              }
-            });
-          }
-          return b;
-        }
-      }
-    });
-    this.setState(newState);
-
-    const { enqueueSnackbar, classes } = this.props;
-    enqueueSnackbar({ notification: {
-      message: 'Flashcards Updated', 
-      options: {
-        variant: 'info',
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'left'
-        },
-        autoHideDuration: 2000,
-        ContentProps: {
-          classes: {
-            root: classes.stackbar
-          }
-        }
-      }}});
-    this.handleAddNew();
-  };
-
-  handleErrorDialogClose = () => {
-    this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
-  };
-
-  handleDrop = ({ id, image, type }) => {
-    console.log(id, image, type);
-  };
-
-  handleDropRejected = () => {};
-
-  render() {
-    const { classes, flashcardId } = this.props;
-    const {
-      loading,
-      title,
-      summary,
-      tags,
-      tagsError,
-      flashcards,
-      flashcardsError,
-      errorDialog,
-      errorTitle,
-      classId,
-      sectionId,
-      changed,
-      errorBody
-    } = this.state;
-
-    return (
-      <div className={classes.root}>
-        <ErrorBoundary>
-          <CreatePostForm
-            title={`${flashcardId ? 'Edit': 'Create'  } Flashcards`}
-            buttonLabel={flashcardId ? 'Update': 'Create'}
-            subtitle="Yes, tests are make or break. Take a little time to get prepared, and when you create your cards, they will go on the feed where classmates can also view them."
-            loading={loading}
-            changed={changed}
-            handleSubmit={this.handleSubmit}
-          >
-            <Grid container alignItems="center">
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Title</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <OutlinedTextValidator
-                  label="Title"
-                  onChange={this.handleTextChange}
-                  name="title"
-                  value={title}
-                  validators={['required']}
-                  errorMessages={['Title is required']}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Class</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <ClassesSelector 
-                  onChange={this.handleClassChange} 
-                  classId={classId}
-                  sectionId={sectionId}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Description</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <OutlinedTextValidator
-                  label="Description"
-                  onChange={this.handleTextChange}
-                  name="summary"
-                  multiline
-                  rows={4}
-                  value={summary}
-                  validators={['required']}
-                  errorMessages={['Description is required']}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Tags</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <TagsAutoComplete
-                  tags={tags}
-                  error={tagsError}
-                  onChange={this.handleTagsChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Flashcards</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10} className={classes.flashcards}>
-                {flashcards.map((flashcard, index) => (
-                  <FlashcardEditor
-                    key={flashcard.id}
-                    isNew={flashcard.isNew}
-                    id={flashcard.id}
-                    index={index + 1}
-                    loading={loading}
-                    question={flashcard.question}
-                    answer={flashcard.answer}
-                    onDelete={this.handleDelete}
-                    onSubmit={this.handleUpdate}
-                    onDrop={this.handleDrop}
-                    onDropRejected={this.handleDropRejected}
-                  />
-                ))}
-                <NewFlashcard
-                  error={flashcardsError && flashcards.length === 0}
-                  loading={loading}
-                  onClick={this.handleAddNew}
-                />
-              </Grid>
-            </Grid>
-          </CreatePostForm>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <SimpleErrorDialog
-            open={errorDialog}
-            title={errorTitle}
-            body={errorBody}
-            handleClose={this.handleErrorDialogClose}
-          />
-        </ErrorBoundary>
-      </div>
     );
-  }
-}
+    setFlashcards(f);
+    setChanged(true);
+  }, [flashcards]);
+
+  const handleUpdate = useCallback(
+    ({ id, question, answer }) => {
+      const { flashcards: f } = update(
+        { flashcards },
+        {
+          flashcards: {
+            $apply: b => {
+              const index = b.findIndex(item => item.id === id);
+              if (index > -1) {
+                return update(b, {
+                  [index]: {
+                    question: { $set: question },
+                    answer: { $set: answer }
+                  }
+                });
+              }
+              return b;
+            }
+          }
+        }
+      );
+      setChanged(true);
+      setFlashcards(f);
+
+      enqueueSnackbar({
+        notification: {
+          message: 'Flashcards Updated',
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 2000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
+            }
+          }
+        }
+      });
+      handleAddNew();
+    },
+    [classes, enqueueSnackbar, handleAddNew, flashcards]
+  );
+
+  const handleErrorDialogClose = useCallback(() => {
+    setErrorDialog(false);
+    setErrorTitle('');
+    setErrorBody('');
+  }, []);
+
+  const handleDrop = useCallback(({ id, image, type }) => {
+    console.log(id, image, type);
+  }, []);
+
+  const handleDropRejected = useCallback(e => {
+    console.log(e)
+  }, []);
+
+  useEffect(() => {
+    loadData();
+    const { classId: cid, sectionId: sid } = queryString.parse(search);
+    setClassId(Number(cid));
+    setSectionId(Number(sid));
+  }, [loadData, search]);
+
+  return (
+    <div className={classes.root}>
+      <ErrorBoundary>
+        <CreatePostForm
+          title={`${flashcardId ? 'Edit' : 'Create'} Flashcards`}
+          buttonLabel={flashcardId ? 'Update' : 'Create'}
+          subtitle="Yes, tests are make or break. Take a little time to get prepared, and when you create your cards, they will go on the feed where classmates can also view them."
+          loading={loading}
+          changed={changed}
+          handleSubmit={handleSubmit}
+        >
+          <Grid container alignItems="center">
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Title</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <OutlinedTextValidator
+                label="Title"
+                onChange={handleTextChange}
+                name="title"
+                value={title}
+                validators={['required']}
+                errorMessages={['Title is required']}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Class</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <ClassesSelector
+                onChange={handleClassChange}
+                classId={classId}
+                sectionId={sectionId}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Description</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <OutlinedTextValidator
+                label="Description"
+                onChange={handleTextChange}
+                name="summary"
+                multiline
+                rows={4}
+                value={summary}
+                validators={['required']}
+                errorMessages={['Description is required']}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Tags</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <TagsAutoComplete
+                tags={tags}
+                error={tagsError}
+                onChange={handleTagsChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Flashcards</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10} className={classes.flashcards}>
+              {flashcards.map((flashcard, index) => (
+                <FlashcardEditor
+                  key={flashcard.id}
+                  isNew={flashcard.isNew}
+                  id={flashcard.id}
+                  index={index + 1}
+                  loading={loading}
+                  question={flashcard.question}
+                  answer={flashcard.answer}
+                  onDelete={handleDelete}
+                  onSubmit={handleUpdate}
+                  onDrop={handleDrop}
+                  onDropRejected={handleDropRejected}
+                />
+              ))}
+              <NewFlashcard
+                error={flashcardsError && flashcards.length === 0}
+                loading={loading}
+                onClick={handleAddNew}
+              />
+            </Grid>
+          </Grid>
+        </CreatePostForm>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <SimpleErrorDialog
+          open={errorDialog}
+          title={errorTitle}
+          body={errorBody}
+          handleClose={handleErrorDialogClose}
+        />
+      </ErrorBoundary>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ campaign, user, router }: StoreState): {} => ({
   user,

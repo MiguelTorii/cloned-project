@@ -4,7 +4,7 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import ImageIcon from '@material-ui/icons/Image';
 
 const styles = theme => ({
   root: {
@@ -13,10 +13,10 @@ const styles = theme => ({
   dropZone: {
     position: 'relative',
     width: '100%',
-    minHeight: 100,
+    minHeight: 50,
     borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: theme.circleIn.palette.primaryText1,
+    borderColor: theme.circleIn.palette.borderColor,
     cursor: 'pointer',
     boxSizing: 'border-box',
     display: 'flex',
@@ -26,9 +26,10 @@ const styles = theme => ({
     borderRadius: 5
   },
   uploadIconSize: {
-    width: 51,
-    height: 51,
-    color: '#909090'
+    paddingTop: theme.spacing(),
+    width: 31,
+    height: 31,
+    // color: '#909090'
   }
 });
 
@@ -65,10 +66,7 @@ class DropImage extends React.PureComponent<Props> {
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className={classes.dropZone}>
-                  <Typography variant="h6">
-                    Drag 'n' drop your image here, or click to select a file
-                  </Typography>
-                  <CloudUploadIcon className={classes.uploadIconSize} />
+                  <ImageIcon className={classes.uploadIconSize} />
                 </div>
               </div>
             </section>
