@@ -1,5 +1,6 @@
 // @flow
 import axios from 'axios';
+import clsx from 'clsx'
 import type {
   Post,
   PhotoNote,
@@ -40,6 +41,13 @@ export const createFlashcards = async ({
   grade: number
 }): Promise<PostResponse> => {
   try {
+    const newDeck = deck.map(d => ({
+      question: d.question,
+      answer: d.answer,
+      answer_image_url: clsx(d.answerImage),
+      question_image_url: clsx(d.questionImage)
+    }))
+
     const token = await getToken();
     const result = await axios.post(
       `${API_ROUTES.DECK}`,
@@ -47,7 +55,7 @@ export const createFlashcards = async ({
         user_id: Number(userId),
         title,
         summary,
-        deck,
+        deck: newDeck,
         grade_level: grade,
         token: 'NA',
         class_id: classId,
@@ -89,6 +97,13 @@ export const updateFlashcards = async ({
   deck: Array<Flashcard>
 }): Promise<PostResponse> => {
   try {
+    const newDeck = deck.map(d => ({
+      question: d.question,
+      answer: d.answer,
+      answer_image_url: clsx(d.answerImage),
+      question_image_url: clsx(d.questionImage)
+    }))
+
     const token = await getToken();
     const result = await axios.put(
       `${API_ROUTES.FLASHCARDS}/${flashcardId}`,
@@ -97,7 +112,7 @@ export const updateFlashcards = async ({
         section_id: sectionId,
         title,
         summary,
-        deck,
+        deck: newDeck,
         class_id: classId,
       },
       {

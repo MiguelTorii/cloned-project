@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef, Fragment, useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,14 +11,14 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 // import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import TextFieldsIcon from '@material-ui/icons/TextFields';
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
+import RichTextEditor from 'containers/RichTextEditor';
+import withWidth from '@material-ui/core/withWidth';
+import clsx from 'clsx'
 import Dialog from '../Dialog';
-import OutlinedTextValidator from '../OutlinedTextValidator';
-import DropImage from './DropImage';
 
 const styles = theme => ({
   root: {
@@ -63,6 +63,75 @@ const styles = theme => ({
   divider: {
     marginBottom: theme.spacing(2),
     marginRight: theme.spacing(2)
+  },
+  smallRichEditor: {
+    '& div': {
+      height: 'calc(100% - 62px)'
+    },
+  },
+  bigRichEditor: {
+    '& div': {
+      height: 'calc(100% - 42px)'
+    },
+  },
+  richEditor: {
+    height: 170,
+    width: '30vw',
+    margin: theme.spacing(1, 0),
+    border: `1px solid ${theme.circleIn.palette.borderColor}`,
+    borderRadius: theme.spacing(),
+    position: 'relative',
+    '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
+      top: 'inherit',
+      zIndex: 1,
+      bottom: '100%',
+    },
+    '& div div': {
+      height: '100%',
+      padding: 0
+    },
+    '& .ql-image': {
+      position: 'absolute',
+      right: theme.spacing()
+    },
+    '& .ql-editor': {
+      position: 'absolute',
+      width: '100%',
+      padding: theme.spacing(),
+    },
+    '& .ql-toolbar.ql-snow': {
+      height: 42,
+      zIndex: '1',
+      width: '100%',
+      border: 'none'
+    },
+    '& .ql-container.ql-snow': {
+      width: '100%',
+      border: 'none'
+    },
+    '& .quill': {
+      height: '100%'
+    },
+    '& .ql-toolbar': {
+      position: 'absolute',
+      bottom: 0,
+      transform: 'translateY(100%)'
+    }
+  },
+  image: {
+    position: 'absolute',
+    borderRadius: theme.spacing(),
+    top: theme.spacing(2),
+    left: theme.spacing(),
+    maxHeight: 100,
+    maxWidth: 100,
+    objectFit: 'scale-down',
+  },
+  imageEditor: {
+    '& .ql-editor': {
+      width: 'calc(100% - 116px)',
+      left: 116,
+    }
   }
 });
 
@@ -76,8 +145,9 @@ type Props = {
   onDelete: Function,
   onSubmit: Function,
   isNew: boolean,
-  onDrop: Function,
-  onDropRejected: Function
+  width: string,
+  questionImage: string,
+  answerImage: string
 };
 
 const FlashcardEditor = ({
@@ -86,18 +156,21 @@ const FlashcardEditor = ({
   index,
   question,
   answer,
+  questionImage,
+  answerImage,
   loading,
   onDelete,
   onSubmit,
   isNew,
-  onDrop,
-  onDropRejected
+  width,
 }: Props) => {
   const myRef = useRef(null)
   const [isFlipped, setIsFlipped] = useState(false)
   const [open, setOpen] = useState(false)
-  const [curQuestion, setCurQuestion] = useState('')
-  const [curAnswer, setCurAnswer] = useState('')
+  const [curQuestion, setCurQuestion] = useState(question)
+  const [curAnswer, setCurAnswer] = useState(answer)
+  const [curQuestionImage, setCurQuestionImage] = useState(questionImage)
+  const [curAnswerImage, setCurAnswerImage] = useState(answerImage)
 
   useEffect(() => {
     if (isNew) setOpen(true)
@@ -128,24 +201,26 @@ const FlashcardEditor = ({
     }
   }, [id, curQuestion, curAnswer, onDelete, handleClose]);
 
-  const handleTextChange = useCallback(name => event => {
-    if (name === 'question') setCurQuestion(event.target.value)
-    else setCurAnswer(event.target.value)
+  const handleTextChange = useCallback(name => v => {
+    if (name === 'question') setCurQuestion(v)
+    else setCurAnswer(v)
   }, []);
 
   const handleSubmit = useCallback(async () => {
     if (myRef.current) {
       const result = await myRef.current.isFormValid(false);
       if (result) {
-        onSubmit({ id, question: curQuestion, answer: curAnswer });
+        onSubmit({
+          id,
+          question: curQuestion,
+          answer: curAnswer,
+          questionImage: curQuestionImage,
+          answerImage: curAnswerImage
+        });
         handleClose();
       }
     }
-  }, [curQuestion, curAnswer, id, handleClose, onSubmit]);
-
-  const handleDrop = useCallback(type => acceptedFiles => {
-    onDrop({ id, image: acceptedFiles[0], type });
-  }, [id, onDrop]);
+  }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit]);
 
   const renderContent = useCallback(isQuestion => {
     return (
@@ -196,6 +271,15 @@ const FlashcardEditor = ({
     );
   }, [classes, question, answer, handleDelete, handleFlip, index, handleOpen, loading]);
 
+  const handleImage = useCallback(name => url => {
+    if (name === 'question') setCurQuestionImage(url)
+    else setCurAnswerImage(url)
+  },[])
+
+  const enabled = useMemo(() => (
+    (curQuestion || curQuestionImage) && (curAnswer || curAnswerImage)
+  ), [curQuestion, curQuestionImage, curAnswer, curAnswerImage])
+
   return (
     <Fragment>
       <ReactCardFlip isFlipped={isFlipped}>
@@ -203,8 +287,9 @@ const FlashcardEditor = ({
         {renderContent(false)}
       </ReactCardFlip>
       <Dialog
-        title="Flashcard"
+        title="Create Flashcards"
         okTitle="Save"
+        disableOk={!enabled}
         onCancel={handleCancel}
         onOk={handleSubmit}
         open={open}
@@ -217,47 +302,44 @@ const FlashcardEditor = ({
               <Typography variant="subtitle1">Question</Typography>
             </Grid>
             <Grid container alignItems="center" item xs={10}>
-              <Grid item xs={12}>
-                <OutlinedTextValidator
-                  onChange={handleTextChange}
-                  autoFocus
-                  name="question"
-                  multiline
-                  rows={4}
+              <Grid
+                item
+                xs={12}
+                className={clsx(
+                  classes.richEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
+                  curQuestionImage && classes.imageEditor
+                )}>
+                {curQuestionImage && <img className={classes.image} src={curQuestionImage} alt='questionImage' />}
+                <RichTextEditor
+                  placeholder=""
                   value={curQuestion}
-                  fullWidth
-                  validators={['required']}
-                  errorMessages={['Question is required']}
+                  fileType={6}
+                  onChange={handleTextChange('question')}
+                  handleImage={handleImage('question')}
                 />
-                {/* <DropImage */}
-                {/* isDropzoneDisabled={false} */}
-                {/* onDrop={handleDrop('question')} */}
-                {/* onDropRejected={onDropRejected} */}
-                {/* /> */}
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Divider light className={classes.divider} />
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Answer</Typography>
             </Grid>
             <Grid container alignItems="center" item xs={10}>
-              <Grid item xs={12}>
-                <OutlinedTextValidator
-                  onChange={handleTextChange}
-                  name="answer"
-                  multiline
-                  rows={4}
+              <Grid
+                item
+                xs={12}
+                className={clsx(
+                  classes.richEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
+                  curAnswerImage && classes.imageEditor
+                )}>
+                {curAnswerImage && <img className={classes.image} src={curAnswerImage} alt='answerImage' />}
+                <RichTextEditor
+                  placeholder=""
                   value={curAnswer}
-                  validators={['required']}
-                  errorMessages={['Answer is required']}
+                  fileType={6}
+                  onChange={handleTextChange('answer')}
+                  handleImage={handleImage('answer')}
                 />
-                {/* <DropImage */}
-                {/* isDropzoneDisabled={false} */}
-                {/* onDrop={handleDrop('answer')} */}
-                {/* onDropRejected={onDropRejected} */}
-                {/* /> */}
               </Grid>
             </Grid>
           </Grid>
@@ -267,4 +349,4 @@ const FlashcardEditor = ({
   );
 }
 
-export default React.memo(withStyles(styles)(FlashcardEditor));
+export default React.memo(withStyles(styles)(withWidth()(FlashcardEditor)));

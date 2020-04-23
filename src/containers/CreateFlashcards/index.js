@@ -84,7 +84,7 @@ const CreateFlashcards = ({
     } else {
       pushTo(path);
     }
-  }, []);
+  }, [campaign, pushTo]);
 
   const loadData = useCallback(async () => {
     if (!flashcardId) return null;
@@ -111,7 +111,7 @@ const CreateFlashcards = ({
     setTags(tags);
     setSummary(summary);
     return null;
-  }, []);
+  }, [flashcardId, segment, userId]);
 
   const updateFlashcards = useCallback(async () => {
     if (tags.length < 0) {
@@ -136,7 +136,9 @@ const CreateFlashcards = ({
         summary,
         deck: flashcards.map(item => ({
           question: item.question,
-          answer: item.answer
+          answer: item.answer,
+          questionImage: item.questionImage,
+          answerImage: item.answerImage
         }))
       });
       logEvent({
@@ -198,7 +200,9 @@ const CreateFlashcards = ({
         summary,
         deck: flashcards.map(item => ({
           question: item.question,
-          answer: item.answer
+          answer: item.answer,
+          questionImage: item.questionImage,
+          answerImage: item.answerImage
         })),
         grade,
         classId,
@@ -264,7 +268,7 @@ const CreateFlashcards = ({
   );
 
   const handleClassChange = useCallback(
-    ({ classId: cid, sectionId: sid }: { cid: number, sid: number }) => {
+    ({ classId: cid, sectionId: sid }) => {
       setClassId(cid);
       setSectionId(sid);
     },
@@ -281,7 +285,14 @@ const CreateFlashcards = ({
     setChanged(true);
     setFlashcards(f => ([
       ...f,
-      { id: uuidv4(), question: '', answer: '', isNew: true }
+      {
+        id: uuidv4(),
+        question: '',
+        answer: '',
+        questionImage: null,
+        answerImage: null,
+        isNew: true
+      }
     ]
     ));
   }, []);
@@ -306,7 +317,7 @@ const CreateFlashcards = ({
   }, [flashcards]);
 
   const handleUpdate = useCallback(
-    ({ id, question, answer }) => {
+    ({ id, question, answer, questionImage, answerImage }) => {
       const { flashcards: f } = update(
         { flashcards },
         {
@@ -317,7 +328,9 @@ const CreateFlashcards = ({
                 return update(b, {
                   [index]: {
                     question: { $set: question },
-                    answer: { $set: answer }
+                    answer: { $set: answer },
+                    questionImage: { $set: questionImage },
+                    answerImage: { $set: answerImage }
                   }
                 });
               }
@@ -446,6 +459,8 @@ const CreateFlashcards = ({
                   loading={loading}
                   question={flashcard.question}
                   answer={flashcard.answer}
+                  questionImage={flashcard.questionImage}
+                  answerImage={flashcard.answerImage}
                   onDelete={handleDelete}
                   onSubmit={handleUpdate}
                   onDrop={handleDrop}

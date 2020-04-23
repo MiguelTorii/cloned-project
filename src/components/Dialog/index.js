@@ -68,6 +68,7 @@ const Dialog = ({
   className,
   disableBackdropClick=false,
   disableActions=false,
+  disableOk=false,
   disableEscapeKeyDown=false,
   loading=false,
   okTitle="Got it!",
@@ -154,7 +155,7 @@ const Dialog = ({
           <Button
             className={classes.button}
             color="primary"
-            disabled={disableActions}
+            disabled={disableActions || disableOk}
             onClick={onOk}
             variant="contained"
           >

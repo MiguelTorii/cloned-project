@@ -185,7 +185,9 @@ export type Question = Post & {};
 
 export type Flashcard = {
   question: string,
-  answer: string
+  answer: string,
+  questionImage: string,
+  answerImage: string
 };
 
 export type Flashcards = Post & {
@@ -608,4 +610,4 @@ export type Class = {
   courseDisplayName: string,
   extraInformation: string,
   sectionId: number
-}
+};

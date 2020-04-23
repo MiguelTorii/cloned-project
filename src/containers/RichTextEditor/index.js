@@ -42,7 +42,9 @@ type Props = {
   user: UserState,
   placeholder: string,
   value: string,
-  onChange: Function
+  onChange: Function,
+  fileType: number,
+  handleImage: ?Function
 };
 
 type State = {
@@ -88,12 +90,14 @@ class RichTextEditor extends React.PureComponent<Props, State> {
         const {
           user: {
             data: { userId }
-          }
+          },
+          handleImage
         } = this.props;
         const { type } = file;
+        const { fileType } = this.props
         const result = await getPresignedURL({
           userId,
-          type: 1,
+          type: fileType || 1,
           mediaType: type
         });
 
@@ -105,8 +109,9 @@ class RichTextEditor extends React.PureComponent<Props, State> {
           }
         });
 
+        if (handleImage) handleImage(readUrl)
         // $FlowIgnore
-        this.rte.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
+        else this.rte.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
 
         // $FlowIgnore
         this.rte.editor.getEditor().enable(true);
