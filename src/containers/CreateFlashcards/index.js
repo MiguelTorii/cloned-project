@@ -62,7 +62,8 @@ const CreateFlashcards = ({
 }: Props) => {
   const { search } = location;
   const {
-    data: { userId, segment, grade }
+    data: { userId, segment, grade },
+    isLoading,
   } = user;
   const [classId, setClassId] = useState(0);
   const [sectionId, setSectionId] = useState(null);
@@ -84,7 +85,7 @@ const CreateFlashcards = ({
     } else {
       pushTo(path);
     }
-  }, [campaign, pushTo]);
+  }, [campaign, pushTo, search]);
 
   const loadData = useCallback(async () => {
     if (!flashcardId) return null;
@@ -104,6 +105,8 @@ const CreateFlashcards = ({
         question: item.question,
         isNew: false,
         answer: item.answer,
+        questionImage: item.question_image_url,
+        answerImage: item.answer_image_url,
         id: uuidv4()
       }))
     );
@@ -446,10 +449,10 @@ const CreateFlashcards = ({
                 onChange={handleTagsChange}
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12}>
               <Typography variant="subtitle1">Flashcards</Typography>
             </Grid>
-            <Grid item xs={12} sm={10} className={classes.flashcards}>
+            <Grid item xs={12} sm={12} className={classes.flashcards}>
               {flashcards.map((flashcard, index) => (
                 <FlashcardEditor
                   key={flashcard.id}

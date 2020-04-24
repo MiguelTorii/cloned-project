@@ -14,7 +14,7 @@ const LoadImg = ({ url, loadingSize, style, fallback }) => {
       imageToLoad={url}
       Spinner={() => <CircularProgress size={loadingSize} />}
     >
-      {fallbackComponent === null ? 
+      {fallbackComponent === null ?
         <img onError={onError} alt='alt' src={url} style={style} /> :
         fallbackComponent}
     </HideUntilLoaded>

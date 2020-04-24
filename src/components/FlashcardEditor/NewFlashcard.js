@@ -8,12 +8,11 @@ import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing(),
-    width: 200,
-    height: 200,
+    margin: theme.spacing(1, 0),
+    width:'100%',
     borderRadius: 4,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     backgroundColor: theme.circleIn.palette.action
   },
   error: {

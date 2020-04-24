@@ -1,23 +1,17 @@
 // @flow
 import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
-import ReactCardFlip from 'react-card-flip';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 // import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import DeleteIcon from '@material-ui/icons/Delete';
 // import TextFieldsIcon from '@material-ui/icons/TextFields';
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import RichTextEditor from 'containers/RichTextEditor';
 import withWidth from '@material-ui/core/withWidth';
 import clsx from 'clsx'
+import SelectedImage from 'components/SelectedImage'
+import FlashcardDetail from 'components/FlashcardEditor/FlashcardDetail'
 import Dialog from '../Dialog';
 
 const styles = theme => ({
@@ -73,6 +67,14 @@ const styles = theme => ({
     '& div': {
       height: 'calc(100% - 42px)'
     },
+  },
+  noFocus: {
+    '& div': {
+      height: '100%',
+    },
+    '& .ql-toolbar.ql-snow': {
+      display: 'none'
+    }
   },
   richEditor: {
     height: 170,
@@ -138,10 +140,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   id: string,
-  index: number,
   question: string,
   answer: string,
-  loading: boolean,
   onDelete: Function,
   onSubmit: Function,
   isNew: boolean,
@@ -153,24 +153,23 @@ type Props = {
 const FlashcardEditor = ({
   classes,
   id,
-  index,
   question,
   answer,
   questionImage,
   answerImage,
-  loading,
   onDelete,
   onSubmit,
   isNew,
   width,
 }: Props) => {
   const myRef = useRef(null)
-  const [isFlipped, setIsFlipped] = useState(false)
   const [open, setOpen] = useState(false)
   const [curQuestion, setCurQuestion] = useState(question)
   const [curAnswer, setCurAnswer] = useState(answer)
   const [curQuestionImage, setCurQuestionImage] = useState(questionImage)
   const [curAnswerImage, setCurAnswerImage] = useState(answerImage)
+  const [loadingImage, setLoadingImage] = useState(false)
+  const [focus, setFocus] = useState('question')
 
   useEffect(() => {
     if (isNew) setOpen(true)
@@ -180,10 +179,6 @@ const FlashcardEditor = ({
   const handleDelete = useCallback(() => {
     onDelete(id);
   }, [onDelete, id]);
-
-  const handleFlip = useCallback(() => {
-    setIsFlipped(p => !p)
-  }, []);
 
   const handleOpen = useCallback(() => {
     setOpen(true)
@@ -197,9 +192,13 @@ const FlashcardEditor = ({
     if (curQuestion === '' || curAnswer === '') {
       onDelete(id);
     } else {
+      setCurQuestion(question)
+      setCurAnswer(answer)
+      setCurQuestionImage(questionImage)
+      setCurAnswerImage(answerImage)
       handleClose();
     }
-  }, [id, curQuestion, curAnswer, onDelete, handleClose]);
+  }, [id, curQuestion, curAnswer, onDelete, handleClose, question, answer, questionImage, answerImage]);
 
   const handleTextChange = useCallback(name => v => {
     if (name === 'question') setCurQuestion(v)
@@ -222,55 +221,6 @@ const FlashcardEditor = ({
     }
   }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit]);
 
-  const renderContent = useCallback(isQuestion => {
-    return (
-      <Card className={classes.root} key={isQuestion ? 'front' : 'back'}>
-        <CardHeader
-          action={
-            <IconButton disabled={loading} onClick={handleDelete}>
-              <DeleteIcon fontSize="small" className={classes.icon} />
-            </IconButton>
-          }
-          titleTypographyProps={{ color: 'inherit', variant: 'subtitle2' }}
-          title={`Flashcard #${index}`}
-        />
-        <CardContent className={classes.content}>
-          <Typography variant="subtitle2" color="inherit" align="center">
-            {isQuestion ? 'Question:' : 'Answer:'}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            className={classes.cardText}
-            color="inherit"
-            align="center"
-          >
-            {isQuestion ? question : answer}
-          </Typography>
-        </CardContent>
-        <CardActions className={classes.actions}>
-          <Button
-            disabled={loading}
-            onClick={handleFlip}
-            size="small"
-            color="default"
-            variant="contained"
-          >
-            {isQuestion ? 'View Answer' : 'View Question'}
-          </Button>
-          <Button
-            disabled={loading}
-            onClick={handleOpen}
-            size="small"
-            color="primary"
-            variant="contained"
-          >
-            Edit
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }, [classes, question, answer, handleDelete, handleFlip, index, handleOpen, loading]);
-
   const handleImage = useCallback(name => url => {
     if (name === 'question') setCurQuestionImage(url)
     else setCurAnswerImage(url)
@@ -280,16 +230,34 @@ const FlashcardEditor = ({
     (curQuestion || curQuestionImage) && (curAnswer || curAnswerImage)
   ), [curQuestion, curQuestionImage, curAnswer, curAnswerImage])
 
+  const imageStyle = useMemo(() => ({
+    borderRadius: 8,
+    maxHeight: 100,
+    maxWidth: 100
+  }), [])
+
+  const deleteQuestionImage = useCallback(() => setCurQuestionImage(null), [])
+  const deleteAnswerImage = useCallback(() => setCurAnswerImage(null), [])
+
+  const onFocusQuestion = useCallback(() => setFocus('question'), [])
+  const onFocusAnswer = useCallback(() => setFocus('answer'), [])
+
   return (
     <Fragment>
-      <ReactCardFlip isFlipped={isFlipped}>
-        {renderContent(true)}
-        {renderContent(false)}
-      </ReactCardFlip>
+      <FlashcardDetail
+        id={id}
+        question={question}
+        answer={answer}
+        questionImage={questionImage}
+        answerImage={answerImage}
+        handleDelete={handleDelete}
+        handleOpen={handleOpen}
+      />
       <Dialog
         title="Create Flashcards"
         okTitle="Save"
         disableOk={!enabled}
+        disableActions={loadingImage}
         onCancel={handleCancel}
         onOk={handleSubmit}
         open={open}
@@ -308,11 +276,21 @@ const FlashcardEditor = ({
                 className={clsx(
                   classes.richEditor,
                   ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
-                  curQuestionImage && classes.imageEditor
+                  curQuestionImage && classes.imageEditor,
+                  focus !== 'question' && classes.noFocus
                 )}>
-                {curQuestionImage && <img className={classes.image} src={curQuestionImage} alt='questionImage' />}
+                {curQuestionImage &&
+                  <SelectedImage
+                    image={curQuestionImage}
+                    imageStyle={imageStyle}
+                    handleRemoveImg={deleteQuestionImage}
+                  />
+                }
                 <RichTextEditor
+                  focus
+                  onFocus={onFocusQuestion}
                   placeholder=""
+                  setLoadingImage={setLoadingImage}
                   value={curQuestion}
                   fileType={6}
                   onChange={handleTextChange('question')}
@@ -330,12 +308,21 @@ const FlashcardEditor = ({
                 className={clsx(
                   classes.richEditor,
                   ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
-                  curAnswerImage && classes.imageEditor
+                  curAnswerImage && classes.imageEditor,
+                  focus !== 'answer' && classes.noFocus
                 )}>
-                {curAnswerImage && <img className={classes.image} src={curAnswerImage} alt='answerImage' />}
+                {curAnswerImage &&
+                  <SelectedImage
+                    image={curAnswerImage}
+                    handleRemoveImg={deleteAnswerImage}
+                    imageStyle={imageStyle}
+                  />
+                }
                 <RichTextEditor
                   placeholder=""
                   value={curAnswer}
+                  setLoadingImage={setLoadingImage}
+                  onFocus={onFocusAnswer}
                   fileType={6}
                   onChange={handleTextChange('answer')}
                   handleImage={handleImage('answer')}

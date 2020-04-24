@@ -21,7 +21,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import queryString from 'query-string';
 import TutorBadge from 'components/TutorBadge'
-import Markdown from './Markdown';
+import Markdown from 'components/Markdown';
 import Tooltip from '../../containers/Tooltip';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
@@ -190,12 +190,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </MenuItem>
         ) : (
           <div>
-            <MenuItem onClick={this.handleEdit}> 
-              <ListItemIcon color="inherit"> 
-                <CreateIcon /> 
-              </ListItemIcon> 
-              <ListItemText inset primary="Edit" /> 
-            </MenuItem> 
+            <MenuItem onClick={this.handleEdit}>
+              <ListItemIcon color="inherit">
+                <CreateIcon />
+              </ListItemIcon>
+              <ListItemText inset primary="Edit" />
+            </MenuItem>
             <MenuItem onClick={this.handleDelete}>
               <ListItemIcon color="inherit">
                 <DeleteIcon />

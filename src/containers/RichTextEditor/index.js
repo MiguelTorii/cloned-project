@@ -44,6 +44,8 @@ type Props = {
   value: string,
   onChange: Function,
   fileType: number,
+  setLoadingImage: ?Function,
+  focus: ?boolean,
   handleImage: ?Function
 };
 
@@ -56,8 +58,23 @@ class RichTextEditor extends React.PureComponent<Props, State> {
     loading: false
   };
 
+  rte: ?Object;
+
+  // eslint-disable-next-line no-undef
+  fileInput: ?HTMLInputElement;
+
   componentDidMount = () => {
     if (this.rte && this.rte.editor) {
+      const { focus, onFocus } = this.props
+      if (onFocus) {
+        this.rte.editor.getEditor().root.onfocus = () => {
+          onFocus()
+        }
+      }
+
+      if (focus) {
+        this.rte.editor.focus()
+      }
       this.rte.editor
         .getEditor()
         .getModule('toolbar')
@@ -79,6 +96,8 @@ class RichTextEditor extends React.PureComponent<Props, State> {
       this.fileInput.files.length > 0 &&
       this.fileInput.files[0].size < 8000000
     ) {
+      const { setLoadingImage } = this.props
+      setLoadingImage(true)
       this.setState({ loading: true });
       try {
         // $FlowIgnore
@@ -119,15 +138,11 @@ class RichTextEditor extends React.PureComponent<Props, State> {
         if (this.rte && this.rte.editor)
           this.rte.editor.getEditor().enable(true);
       } finally {
+        setLoadingImage(false)
         this.setState({ loading: false });
       }
     }
   };
-
-  rte: ?Object;
-
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
 
   render() {
     const {
