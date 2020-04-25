@@ -192,7 +192,13 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     role: String((item.role: string) || ''),
     courseDisplayName: String((item.course_display_name: string) || ''),
     bookmarked: Boolean((item.bookmarked: boolean) || false),
-    deck: item.deck || [],
+    deck: (item.deck || []).map(d => ({
+      answer: String((d.answer: string) || ''),
+      answerImageUrl: String((d.answer_image_url: string) || ''),
+      id: Number((d.id: number) || 0),
+      question: String((d.question: string) || ''),
+      questionImageUrl: String((d.question_image_url: string) || ''),
+    })),
     notes: (item.notes || []).map(n => ({
       fullNoteUrl: String((n.full_note_url: string) || ''),
       note: String((n.note: string) || ''),

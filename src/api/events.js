@@ -9,11 +9,12 @@ const createEvent = async ({
   category,
   objectId,
   type,
+  ...rest
 }: {
   category: string,
   objectId: string,
-  type: string,
-}) : void => {
+  type: string
+}): void => {
   try {
     const token = await getToken();
 
@@ -23,6 +24,7 @@ const createEvent = async ({
         category,
         object_id: objectId.toString(),
         type,
+        ...rest
       },
       {
         headers: {

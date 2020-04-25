@@ -15,6 +15,7 @@ import { getFlashcards, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
+import FlashcardManager from '../../components/FlashcardManager';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 import PostTags from '../PostTags';
@@ -81,7 +82,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
         answer: item.answer,
         questionImage: item.question_image_url,
         answerImage: item.answer_image_url,
-        id: uuidv4()
+        id: item.id
       }))
     })
 
@@ -189,7 +190,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <FlashcardViewer title={title} flashcards={deck} />
+            <FlashcardManager title={title} flashcards={deck} />
           </ErrorBoundary>
           {/* <ErrorBoundary> */}
           {/* <div className={classes.flashcards}> */}
