@@ -43,6 +43,7 @@ import questionPost from '../../assets/svg/ic_question_post.svg';
 import type { FeedItem as Item } from '../../types/models';
 
 // const ranks = [bronze, silver, gold, platinum, diamond, master];
+const strip = s => s.replace(/<[^>]*>?/gm, '')
 
 const styles = theme => ({
   card: {
@@ -359,14 +360,14 @@ class FeedItem extends React.PureComponent<Props, State> {
                 <div>
                   <Dotdotdot clamp={2}>
                     <Typography className={cx(classes.label3, classes.ellipsis)}>
-                      {question}
+                      {strip(question)}
                     </Typography>
                   </Dotdotdot>
                 </div>
                 <div>
                   <Dotdotdot clamp={3}>
                     <Typography className={cx(classes.label2, classes.ellipsis)}>
-                      {answer}
+                      {strip(answer)}
                     </Typography>
                   </Dotdotdot>
                 </div>
