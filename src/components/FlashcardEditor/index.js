@@ -1,4 +1,5 @@
 // @flow
+
 import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +13,7 @@ import withWidth from '@material-ui/core/withWidth';
 import clsx from 'clsx'
 import SelectedImage from 'components/SelectedImage'
 import FlashcardDetail from 'components/FlashcardDetail'
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
 import Dialog from '../Dialog';
 
 const styles = theme => ({
@@ -271,9 +273,12 @@ const FlashcardEditor = ({
   const onFocusAnswer = useCallback(() => setFocus('answer'), [])
   const [questionEditor, setQuestionEditor] = useState(null)
   const [answerEditor, setAnswerEditor] = useState(null)
+  const [questionToolbar, setQuestionToolbar] = useState(null)
+  const [answerToolbar, setAnswerToolbar] = useState(null)
 
   useEffect(() => {
     if (questionEditor) {
+      setQuestionToolbar(questionEditor.getEditor().theme.modules.toolbar)
       questionEditor.getEditor().root.onfocus = () => {
         onFocusQuestion()
       }
@@ -286,6 +291,7 @@ const FlashcardEditor = ({
 
   useEffect(() => {
     if (answerEditor) {
+      setAnswerToolbar(answerEditor.getEditor().theme.modules.toolbar)
       answerEditor.getEditor().root.onfocus = () => {
         onFocusAnswer()
       }
@@ -294,6 +300,12 @@ const FlashcardEditor = ({
 
   return (
     <Fragment>
+      <ToolbarTooltip
+        toolbar={questionToolbar}
+      />
+      <ToolbarTooltip
+        toolbar={answerToolbar}
+      />
       <FlashcardDetail
         id={id}
         question={question}
