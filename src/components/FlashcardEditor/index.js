@@ -11,7 +11,7 @@ import RichTextEditor from 'containers/RichTextEditor';
 import withWidth from '@material-ui/core/withWidth';
 import clsx from 'clsx'
 import SelectedImage from 'components/SelectedImage'
-import FlashcardDetail from 'components/FlashcardEditor/FlashcardDetail'
+import FlashcardDetail from 'components/FlashcardDetail'
 import Dialog from '../Dialog';
 
 const styles = theme => ({
@@ -134,8 +134,18 @@ const styles = theme => ({
       width: 'calc(100% - 116px)',
       left: 116,
     }
+  },
+  dialog: {
+    position: 'relative',
+    '& #dialog-cancel-button': {
+      position: 'absolute',
+      bottom: theme.spacing() + 10,
+      left: theme.spacing(3),
+    }
   }
 });
+
+const strip = s => s.replace(/<[^>]*>?/gm, '').trim()
 
 type Props = {
   classes: Object,
@@ -189,7 +199,7 @@ const FlashcardEditor = ({
   }, []);
 
   const handleCancel = useCallback(() => {
-    if (curQuestion === '' || curAnswer === '') {
+    if (strip(question) === '' || strip(answer) === '') {
       onDelete(id);
     } else {
       setCurQuestion(question)
@@ -198,12 +208,28 @@ const FlashcardEditor = ({
       setCurAnswerImage(answerImage)
       handleClose();
     }
-  }, [id, curQuestion, curAnswer, onDelete, handleClose, question, answer, questionImage, answerImage]);
+  }, [id, onDelete, handleClose, question, answer, questionImage, answerImage]);
 
   const handleTextChange = useCallback(name => v => {
     if (name === 'question') setCurQuestion(v)
     else setCurAnswer(v)
   }, []);
+
+  const handleDone = useCallback(() => {
+    if (strip(curQuestion) === '' || strip(curAnswer) === '') {
+      onDelete(id)
+    } else {
+      onSubmit({
+        id,
+        question: curQuestion,
+        answer: curAnswer,
+        questionImage: curQuestionImage,
+        answerImage: curAnswerImage,
+        end: true
+      })
+    }
+    handleClose()
+  }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit, onDelete]);
 
   const handleSubmit = useCallback(async () => {
     if (myRef.current) {
@@ -227,8 +253,10 @@ const FlashcardEditor = ({
   },[])
 
   const enabled = useMemo(() => (
-    (curQuestion || curQuestionImage) && (curAnswer || curAnswerImage)
+    (strip(curQuestion) || curQuestionImage) && (strip(curAnswer) || curAnswerImage)
   ), [curQuestion, curQuestionImage, curAnswer, curAnswerImage])
+
+
 
   const imageStyle = useMemo(() => ({
     borderRadius: 8,
@@ -241,6 +269,28 @@ const FlashcardEditor = ({
 
   const onFocusQuestion = useCallback(() => setFocus('question'), [])
   const onFocusAnswer = useCallback(() => setFocus('answer'), [])
+  const [questionEditor, setQuestionEditor] = useState(null)
+  const [answerEditor, setAnswerEditor] = useState(null)
+
+  useEffect(() => {
+    if (questionEditor) {
+      questionEditor.getEditor().root.onfocus = () => {
+        onFocusQuestion()
+      }
+      questionEditor.getEditor().root.onkeydown = k => {
+        if(k.code === 'Tab' && answerEditor) answerEditor.focus()
+      }
+      setTimeout(() => questionEditor && questionEditor.focus(), 100)
+    }
+  }, [questionEditor, onFocusQuestion, answerEditor])
+
+  useEffect(() => {
+    if (answerEditor) {
+      answerEditor.getEditor().root.onfocus = () => {
+        onFocusAnswer()
+      }
+    }
+  }, [answerEditor, onFocusAnswer])
 
   return (
     <Fragment>
@@ -254,12 +304,15 @@ const FlashcardEditor = ({
         handleOpen={handleOpen}
       />
       <Dialog
+        className={classes.dialog}
         title="Create Flashcards"
         okTitle="Save"
+        secondaryOkTitle="Review Cards"
         disableOk={!enabled}
         disableActions={loadingImage}
         onCancel={handleCancel}
         onOk={handleSubmit}
+        onSecondaryOk={handleDone}
         open={open}
         showActions
         showCancel
@@ -287,8 +340,7 @@ const FlashcardEditor = ({
                   />
                 }
                 <RichTextEditor
-                  focus
-                  onFocus={onFocusQuestion}
+                  setEditor={setQuestionEditor}
                   placeholder=""
                   setLoadingImage={setLoadingImage}
                   value={curQuestion}
@@ -320,9 +372,9 @@ const FlashcardEditor = ({
                 }
                 <RichTextEditor
                   placeholder=""
+                  setEditor={setAnswerEditor}
                   value={curAnswer}
                   setLoadingImage={setLoadingImage}
-                  onFocus={onFocusAnswer}
                   fileType={6}
                   onChange={handleTextChange('answer')}
                   handleImage={handleImage('answer')}

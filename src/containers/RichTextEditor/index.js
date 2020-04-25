@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
@@ -45,75 +45,62 @@ type Props = {
   onChange: Function,
   fileType: number,
   setLoadingImage: ?Function,
-  focus: ?boolean,
   handleImage: ?Function
 };
 
-type State = {
-  loading: boolean
-};
+const RichTextEditor = ({
+  classes,
+  user,
+  placeholder,
+  value,
+  onChange,
+  fileType,
+  setLoadingImage,
+  handleImage,
+  setEditor
+}: Props) => {
+  const [loading, setLoading] = useState(false)
+  const rte = useRef(null)
+  const fileInput = useRef(null)
 
-class RichTextEditor extends React.PureComponent<Props, State> {
-  state = {
-    loading: false
-  };
+  const {
+    isLoading,
+    error,
+    data: { userId }
+  } = user
 
-  rte: ?Object;
+  const handleImageInput = useCallback(() => {
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
+  }, []);
 
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
-
-  componentDidMount = () => {
-    if (this.rte && this.rte.editor) {
-      const { focus, onFocus } = this.props
-      if (onFocus) {
-        this.rte.editor.getEditor().root.onfocus = () => {
-          onFocus()
-        }
-      }
-
-      if (focus) {
-        this.rte.editor.focus()
-      }
-      this.rte.editor
+  useEffect(() => {
+    if(rte.current) {
+      const {editor} = rte.current
+      if (setEditor) setEditor(editor)
+      editor
         .getEditor()
         .getModule('toolbar')
-        .addHandler('image', this.handleImageInput);
+        .addHandler('image', handleImageInput);
     }
-  };
+  },[handleImageInput, setEditor])
 
-  handleImageInput = () => {
-    if (this.fileInput) {
-      this.fileInput.click();
-    }
-  };
-
-  handleInputChange = async () => {
+  const handleInputChange = useCallback(async () => {
     if (
-      this.rte &&
-      this.rte.editor &&
-      this.fileInput &&
-      this.fileInput.files.length > 0 &&
-      this.fileInput.files[0].size < 8000000
+      rte.current &&
+      rte.current.editor &&
+      fileInput.current &&
+      fileInput.current.files.length > 0 &&
+      fileInput.current.files[0].size < 8000000
     ) {
-      const { setLoadingImage } = this.props
-      setLoadingImage(true)
-      this.setState({ loading: true });
+      if(setLoadingImage) setLoadingImage(true)
+      setLoading(true)
       try {
-        // $FlowIgnore
-        const file = this.fileInput.files[0];
-        // $FlowIgnore
-        const range = this.rte.editor.getEditor().getSelection();
-        // $FlowIgnore
-        this.rte.editor.getEditor().enable(false);
-        const {
-          user: {
-            data: { userId }
-          },
-          handleImage
-        } = this.props;
+        const file = fileInput.current.files[0];
+        const range = rte.current.editor.getEditor().getSelection();
+        rte.current.editor.getEditor().enable(false);
         const { type } = file;
-        const { fileType } = this.props
         const result = await getPresignedURL({
           userId,
           type: fileType || 1,
@@ -129,71 +116,50 @@ class RichTextEditor extends React.PureComponent<Props, State> {
         });
 
         if (handleImage) handleImage(readUrl)
-        // $FlowIgnore
-        else this.rte.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
 
-        // $FlowIgnore
-        this.rte.editor.getEditor().enable(true);
+        else rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
+
+        rte.current.editor.getEditor().enable(true);
       } catch (err) {
-        if (this.rte && this.rte.editor)
-          this.rte.editor.getEditor().enable(true);
+        if (rte.current && rte.current.editor)
+          rte.current.editor.getEditor().enable(true);
       } finally {
-        setLoadingImage(false)
-        this.setState({ loading: false });
+        if (setLoadingImage) setLoadingImage(false)
+        setLoading(false)
       }
     }
-  };
+  }, [fileType, handleImage, userId, setLoadingImage]);
 
-  render() {
-    const {
-      classes,
-      user: {
-        isLoading,
-        error,
-        data: { userId }
-      },
-      placeholder,
-      value,
-      onChange
-    } = this.props;
+  if (isLoading) return <CircularProgress size={12} />;
+  if (userId === '' || error)
+    return 'Oops, there was an error loading your data, please try again.';
 
-    const { loading } = this.state;
-
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
-      return 'Oops, there was an error loading your data, please try again.';
-
-    return (
-      <ErrorBoundary>
-        <div className={classes.root}>
-          <div className={classes.quill}>
-            <CustomQuill
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              ref={element => {
-                this.rte = element;
-              }}
-            />
-          </div>
-          <input
-            accept="image/*"
-            className={classes.input}
-            ref={fileInput => {
-              this.fileInput = fileInput;
-            }}
-            onChange={this.handleInputChange}
-            type="file"
+  return (
+    <ErrorBoundary>
+      <div className={classes.root}>
+        <div className={classes.quill}>
+          <CustomQuill
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            ref={rte}
           />
-          {loading && (
-            <div className={classes.loader}>
-              <CircularProgress />
-            </div>
-          )}
         </div>
-      </ErrorBoundary>
-    );
-  }
+        <input
+          accept="image/*"
+          className={classes.input}
+          ref={fileInput}
+          onChange={handleInputChange}
+          type="file"
+        />
+        {loading && (
+          <div className={classes.loader}>
+            <CircularProgress />
+          </div>
+        )}
+      </div>
+    </ErrorBoundary>
+  );
 }
 
 const mapStateToProps = ({ user }: StoreState): {} => ({

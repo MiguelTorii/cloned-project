@@ -1,21 +1,20 @@
 // @flow
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import uuidv4 from 'uuid/v4';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FlashcardList from 'components/FlashcardViewer/FlashcardList'
+import FlashcardDetail from 'components/FlashcardDetail'
+import FlashcardViewer from 'components/FlashcardViewer';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getFlashcards, bookmark } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import PostItem from '../../components/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
-import FlashcardViewer from '../../components/FlashcardViewer';
-// import Flashcard from '../../components/Flashcard';
 import PostItemActions from '../PostItemActions';
 import PostComments from '../PostComments';
 import PostTags from '../PostTags';
@@ -74,11 +73,14 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
       userId,
       flashcardId
     });
+
     setFlashcards({
       ...flashcards,
       deck: deck.map(item => ({
         question: item.question,
         answer: item.answer,
+        questionImage: item.question_image_url,
+        answerImage: item.answer_image_url,
         id: uuidv4()
       }))
     })
@@ -115,12 +117,22 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
 
   const handleDelete = () => setDeletePost(true)
 
-  const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+  const handleDeleteClose = ({ deleted }: { deleted: ?boolean }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
     setDeletePost(false)
   };
+
+  const flashcardView = useMemo(() => (flashcards && flashcards.deck.map(d => (
+    <FlashcardDetail
+      id={d.id}
+      question={d.question}
+      answer={d.answer}
+      questionImage={d.questionImage}
+      answerImage={d.answerImage}
+    />
+  ))), [flashcards])
 
   if (!flashcards)
     return (
@@ -128,6 +140,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
         <CircularProgress />
       </div>
     );
+
   const {
     feedId,
     postId,
@@ -192,7 +205,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           {/* </div> */}
           {/* </ErrorBoundary> */}
           <ErrorBoundary>
-            <FlashcardList deck={deck} />
+            {flashcardView}
           </ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />

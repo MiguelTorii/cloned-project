@@ -320,7 +320,7 @@ const CreateFlashcards = ({
   }, [flashcards]);
 
   const handleUpdate = useCallback(
-    ({ id, question, answer, questionImage, answerImage }) => {
+    ({ id, question, answer, questionImage, answerImage, end }) => {
       const { flashcards: f } = update(
         { flashcards },
         {
@@ -363,7 +363,7 @@ const CreateFlashcards = ({
           }
         }
       });
-      handleAddNew();
+      if (!end) handleAddNew();
     },
     [classes, enqueueSnackbar, handleAddNew, flashcards]
   );
@@ -372,14 +372,6 @@ const CreateFlashcards = ({
     setErrorDialog(false);
     setErrorTitle('');
     setErrorBody('');
-  }, []);
-
-  const handleDrop = useCallback(({ id, image, type }) => {
-    console.log(id, image, type);
-  }, []);
-
-  const handleDropRejected = useCallback(e => {
-    console.log(e)
   }, []);
 
   useEffect(() => {
@@ -466,8 +458,6 @@ const CreateFlashcards = ({
                   answerImage={flashcard.answerImage}
                   onDelete={handleDelete}
                   onSubmit={handleUpdate}
-                  onDrop={handleDrop}
-                  onDropRejected={handleDropRejected}
                 />
               ))}
               <NewFlashcard

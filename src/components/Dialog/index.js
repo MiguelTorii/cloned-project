@@ -72,8 +72,10 @@ const Dialog = ({
   disableEscapeKeyDown=false,
   loading=false,
   okTitle="Got it!",
+  secondaryOkTitle="",
   onCancel,
   onOk = () => {},
+  onSecondaryOk = () => {},
   open,
   showActions=false,
   showCancel=false,
@@ -90,8 +92,10 @@ const Dialog = ({
   disableEscapeKeyDown: ?boolean,
   loading: ?boolean,
   okTitle: ?string,
+  secondaryOkTitle: ?string,
   onCancel: Function,
   onOk: ?Function,
+  onSecondaryOk: ?Function,
   open: boolean,
   showActions: ?boolean,
   showCancel: ?boolean,
@@ -144,6 +148,7 @@ const Dialog = ({
           {
             showCancel &&
             <Button
+              id='dialog-cancel-button'
               className={classes.button}
               color="primary"
               disabled={disableActions}
@@ -151,6 +156,18 @@ const Dialog = ({
             >
               Cancel
             </Button>
+          }
+          {
+            secondaryOkTitle &&
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled={disableActions}
+            onClick={onSecondaryOk}
+            variant="contained"
+          >
+            {secondaryOkTitle}
+          </Button>
           }
           <Button
             className={classes.button}
