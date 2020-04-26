@@ -80,6 +80,7 @@ const Dialog = ({
   showActions=false,
   showCancel=false,
   showHeader=true,
+  setOkRef= () => {},
   title,
   updateVisibility,
 }: {
@@ -172,6 +173,7 @@ const Dialog = ({
           <Button
             className={classes.button}
             color="primary"
+            ref={setOkRef}
             disabled={disableActions || disableOk}
             onClick={onOk}
             variant="contained"

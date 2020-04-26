@@ -94,6 +94,9 @@ const styles = theme => ({
       height: '100%',
       padding: 0
     },
+    '& .ql-formats': {
+      height: 24
+    },
     '& .ql-image': {
       position: 'absolute',
       right: theme.spacing()
@@ -213,8 +216,8 @@ const FlashcardEditor = ({
   }, [id, onDelete, handleClose, question, answer, questionImage, answerImage]);
 
   const handleTextChange = useCallback(name => v => {
-    if (name === 'question') setCurQuestion(v)
-    else setCurAnswer(v)
+    if (name === 'question') setCurQuestion(v.replace('\t',''))
+    else setCurAnswer(v.replace('\t',''))
   }, []);
 
   const handleDone = useCallback(() => {
@@ -275,28 +278,57 @@ const FlashcardEditor = ({
   const [answerEditor, setAnswerEditor] = useState(null)
   const [questionToolbar, setQuestionToolbar] = useState(null)
   const [answerToolbar, setAnswerToolbar] = useState(null)
+  const [okRef, setOkRef] = useState(null)
 
   useEffect(() => {
     if (questionEditor) {
-      setQuestionToolbar(questionEditor.getEditor().theme.modules.toolbar)
-      questionEditor.getEditor().root.onfocus = () => {
-        onFocusQuestion()
-      }
-      questionEditor.getEditor().root.onkeydown = k => {
-        if(k.code === 'Tab' && answerEditor) answerEditor.focus()
-      }
-      setTimeout(() => questionEditor && questionEditor.focus(), 100)
+      try {
+        setQuestionToolbar(questionEditor.getEditor().theme.modules.toolbar)
+        questionEditor.getEditor().root.onfocus = () => {
+          onFocusQuestion()
+        }
+        questionEditor.getEditor().root.onkeydown = k => {
+          if(k.code === 'Tab' && answerEditor) {
+            k.preventDefault()
+            k.stopPropagation()
+            answerEditor.focus()
+          }
+        }
+        setTimeout(() => questionEditor && questionEditor.focus(), 100)
+      } catch(e) {}
     }
   }, [questionEditor, onFocusQuestion, answerEditor])
 
   useEffect(() => {
     if (answerEditor) {
-      setAnswerToolbar(answerEditor.getEditor().theme.modules.toolbar)
-      answerEditor.getEditor().root.onfocus = () => {
-        onFocusAnswer()
+      try {
+        setAnswerToolbar(answerEditor.getEditor().theme.modules.toolbar)
+        answerEditor.getEditor().root.onkeydown = k => {
+          if(k.code === 'Tab') {
+            k.preventDefault()
+            k.stopPropagation()
+            if (okRef && okRef.disabled) questionEditor.focus()
+            else okRef.focus()
+          }
+        }
+        answerEditor.getEditor().root.onfocus = () => {
+          onFocusAnswer()
+        }
+      } catch(e) {}
+    }
+  }, [answerEditor, onFocusAnswer, okRef, questionEditor])
+
+  useEffect(() => {
+    if (okRef) {
+      okRef.onkeydown = k => {
+        if(k.code === 'Tab' && questionEditor) {
+          k.preventDefault()
+          k.stopPropagation()
+          questionEditor.focus()
+        }
       }
     }
-  }, [answerEditor, onFocusAnswer])
+  }, [questionEditor, okRef])
 
   return (
     <Fragment>
@@ -316,6 +348,7 @@ const FlashcardEditor = ({
         handleOpen={handleOpen}
       />
       <Dialog
+        setOkRef={setOkRef}
         className={classes.dialog}
         title="Create Flashcards"
         okTitle="Save"

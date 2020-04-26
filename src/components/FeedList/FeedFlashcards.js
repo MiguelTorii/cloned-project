@@ -96,7 +96,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   countLabel: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: 'bold',
   }
 }))
