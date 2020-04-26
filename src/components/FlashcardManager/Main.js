@@ -21,6 +21,7 @@ const styles = theme => ({
   button: {
     borderRadius: 8,
     fontWeight: 'bold',
+    letterSpacing: 0.6,
     width: 150,
   },
   content: {
@@ -35,7 +36,7 @@ const styles = theme => ({
     display: 'flex',
     fontSize: 16,
     fontWeight: 'bold',
-    height: 450,
+    height: 500,
     justifyContent: 'center',
     width: 650,
   },
@@ -109,8 +110,8 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
   }, [orgFlashcards]);
 
   const keyboardControl = useCallback(({ keyCode }) => {
-    if (keyCode === 32) setFlipped(true);
-  }, []);
+    if (keyCode === 32) setFlipped(!flipped);
+  }, [flipped]);
 
   useEffect(() => {
     window.addEventListener('keydown', keyboardControl);
@@ -122,6 +123,7 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
   const resetState = () => {
     setDecks({ ...initialDecks, main: shuffle(orgFlashcards) });
     setCurrentDeckId('main');
+    setFlipped(false);
   }
 
   const handleClose = () => {
@@ -269,6 +271,7 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
                 isFlipped={flipped}
                 onAnswer={handleAnswer}
                 onShowAnswer={() => setFlipped(true)}
+                onShowQuestion={() => setFlipped(false)}
                 question={currentDeck[currentIndex].question}
                 questionImageUrl={currentDeck[currentIndex].questionImageUrl}
               />

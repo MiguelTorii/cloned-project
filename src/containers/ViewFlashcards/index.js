@@ -1,14 +1,12 @@
 // @flow
 
 import React, { useMemo, useState, useEffect } from 'react';
-import uuidv4 from 'uuid/v4';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FlashcardDetail from 'components/FlashcardDetail'
-import FlashcardViewer from 'components/FlashcardViewer';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getFlashcards, bookmark } from '../../api/posts';

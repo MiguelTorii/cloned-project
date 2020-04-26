@@ -1,5 +1,7 @@
+/* eslint-disable react/no-danger */
 // @flow
 import React, { Fragment } from 'react';
+import sanitizeHtml from 'sanitize-html';
 import ReactCardFlip from 'react-card-flip';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,23 +16,24 @@ const styles = theme => ({
   body: {
     display: 'flex',
     flexDirection: 'column',
-    height: 450,
+    height: 500,
     width: 650,
   },
   button: {
-    borderColor: theme.circleIn.palette.primaryText1,
     borderRadius: theme.spacing(1),
-    color: theme.circleIn.palette.primaryText1,
-    margin: theme.spacing(2),
+    fontWeight: 'bold',
+    letterSpacing: 0.6,
+    margin: `0px ${theme.spacing(2)}px`,
     padding: '12px 0px',
     width: 150,
   },
   buttons: {
     display: 'flex',
     justifyContent: 'center',
+    margin: "16px 0px",
   },
   content: {
-    background: theme.circleIn.palette.appBar,
+    background: theme.circleIn.palette.rowSelection,
     display: 'flex',
     padding: theme.spacing(4),
     height: '100%',
@@ -65,6 +68,7 @@ type Props = {
   isFlipped: boolean,
   onAnswer: Function,
   onShowAnswer: Function,
+  onShowQuestion: Function,
   question: string,
   questionImageUrl: string
 };
@@ -77,9 +81,14 @@ const Flashcard = ({
   isFlipped,
   onAnswer,
   onShowAnswer,
+  onShowQuestion,
   question,
   questionImageUrl
 }: Props) => {
+  const createMarkup = (html) => {
+    return { __html: sanitizeHtml(html) };
+  }
+
   const renderQuestion = () => (
     <Card className={classes.body} key='front'>
       <CardContent className={classes.content}>
@@ -89,12 +98,19 @@ const Flashcard = ({
             <img alt='card media' src={questionImageUrl} style={{ width: '100%' }} />
           </div>
         }
-        {question && <div className={classes.text}>{question}</div>}
+        {
+          question &&
+          <div
+            className={classes.text}
+            dangerouslySetInnerHTML={createMarkup(question)}
+          />
+        }
       </CardContent>
       <CardActions className={classes.actions}>
         <div className={classes.buttons}>
           <Button
             className={classes.button}
+            color="primary"
             onClick={() => onShowAnswer(true)}
             variant="outlined"
           >
@@ -114,7 +130,13 @@ const Flashcard = ({
             <img alt='card media' src={answerImageUrl} style={{ width: '100%' }} />
           </div>
         }
-        {answer && <div className={classes.text}>{answer}</div>}
+        {
+          answer &&
+          <div
+            className={classes.text}
+            dangerouslySetInnerHTML={createMarkup(answer)}
+          />
+        }
       </CardContent>
       <CardActions className={classes.actions}>
         <div className={classes.label}>
@@ -123,24 +145,37 @@ const Flashcard = ({
         <div className={classes.buttons}>
           <Button
             className={classes.button}
+            color="primary"
             onClick={() => onAnswer({ id, answer: 'difficult' })}
-            variant="outlined"
+            variant="contained"
           >
             Didn't remember
           </Button>
           <Button
             className={classes.button}
+            color="primary"
             onClick={() => onAnswer({ id, answer: 'medium' })}
-            variant="outlined"
+            variant="contained"
           >
             Almost had it
           </Button>
           <Button
             className={classes.button}
+            color="primary"
             onClick={() => onAnswer({ id, answer: 'easy' })}
-            variant="outlined"
+            variant="contained"
           >
             Correct
+          </Button>
+        </div>
+        <div className={classes.buttons}>
+          <Button
+            className={classes.button}
+            color="primary"
+            onClick={() => onShowQuestion()}
+            variant="outlined"
+          >
+            Show Question
           </Button>
         </div>
       </CardActions>
