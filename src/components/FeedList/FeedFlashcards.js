@@ -21,8 +21,62 @@ const useStyles = makeStyles(theme => ({
     width: 199,
   },
   markdownContainer: {
+    '& ol': {
+      paddingLeft: theme.spacing(2),
+      margin: 0
+    },
+    '& ul': {
+      paddingLeft: theme.spacing(2),
+      margin: 0
+    },
+    '& li': {
+      margin: 0
+    },
+    '& h1': {
+      fontSize: 18,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& h2': {
+      fontSize: 14,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& u': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& s': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& strong': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
+    '& span': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
+    '& p': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
     maxHeight: 35,
-    marginLeft: 4,
+    marginLeft: 8,
+    textOverflow: 'ellipsis',
     overflow: 'hidden'
   },
   image: {
@@ -57,12 +111,18 @@ const FeedFlashcards = ({ deck }) => {
     maxWidth: 40
   }), [])
 
+  const imageStyleSingle = useMemo(() => ({
+    borderRadius: 4,
+    maxHeight: 40,
+    maxWidth: 160
+  }), [])
+
   const count = useMemo(() => deck.length - 3, [deck])
 
   return (
     deck.slice(0, 3).map(({ id, question, answer, questionImageUrl, answerImageUrl }, k) => (
       <Grid container key={id} className={classes.flashCardPreview}>
-        {k === 2 &&
+        {k === 2 && count > 0 &&
           <div className={classes.count}>
             <Typography className={classes.countLabel}>
               +{count} more {count === 1 ? 'card' : 'cards'}
@@ -76,7 +136,7 @@ const FeedFlashcards = ({ deck }) => {
           alignItems='flex-start'
         >
           {questionImageUrl && <Grid item xs={strip(question) ? 3 : 12} className={classes.image}>
-            <LoadImg url={questionImageUrl} style={imageStyle} />
+            <LoadImg url={questionImageUrl} style={strip(question) ? imageStyle : imageStyleSingle} />
           </Grid>}
           {strip(question) && <Grid item xs={questionImageUrl ? 9 : 12}>
             <div className={classes.markdownContainer}>
@@ -91,7 +151,7 @@ const FeedFlashcards = ({ deck }) => {
           alignItems='flex-end'
         >
           {answerImageUrl && <Grid item xs={strip(answer) ? 3 : 12} className={classes.image}>
-            <LoadImg url={answerImageUrl} style={imageStyle} />
+            <LoadImg url={answerImageUrl} style={strip(answer) ? imageStyle : imageStyleSingle} />
           </Grid>}
           {strip(answer) && <Grid item xs={answerImageUrl ? 9 : 12}>
             <div className={classes.markdownContainer}>
