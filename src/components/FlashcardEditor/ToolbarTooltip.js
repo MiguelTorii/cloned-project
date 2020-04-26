@@ -129,7 +129,7 @@ const ToolbarTooltip = ({ toolbar }) => {
         {shortcut}
       </div>
     </div>
-  ), [])
+  ), [classes])
 
   return (
     <div>

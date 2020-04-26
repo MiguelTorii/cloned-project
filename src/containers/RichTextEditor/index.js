@@ -1,6 +1,6 @@
 // @flow
 
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';

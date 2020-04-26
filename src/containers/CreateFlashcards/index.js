@@ -63,7 +63,6 @@ const CreateFlashcards = ({
   const { search } = location;
   const {
     data: { userId, segment, grade },
-    isLoading,
   } = user;
   const [classId, setClassId] = useState(0);
   const [sectionId, setSectionId] = useState(null);

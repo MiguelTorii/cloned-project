@@ -218,7 +218,7 @@ const FlashcardEditor = ({
   }, []);
 
   const handleDone = useCallback(() => {
-    if (strip(curQuestion) === '' || strip(curAnswer) === '') {
+    if ((strip(curQuestion) === '' && !curQuestionImage) || (strip(curAnswer) === '' && !curAnswerImage)) {
       onDelete(id)
     } else {
       onSubmit({

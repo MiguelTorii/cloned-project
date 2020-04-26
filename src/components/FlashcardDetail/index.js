@@ -109,14 +109,18 @@ const FlashcardList = ({
           image={questionImage}
           imageStyle={imageStyle}
         />}
-        <Markdown className={clsx(questionImage && classes.hasImage)}>{question}</Markdown>
+        <div className={clsx(questionImage && classes.hasImage)}>
+          <Markdown>{question}</Markdown>
+        </div>
       </Grid>
       <Grid item xs={8} className={classes.answer}>
         {answerImage && <SelectedImage
           image={answerImage}
           imageStyle={imageStyle}
         />}
-        <Markdown className={clsx(answerImage && classes.hasImage)}>{answer}</Markdown>
+        <div className={clsx(answerImage&& classes.hasImage)}>
+          <Markdown>{answer}</Markdown>
+        </div>
       </Grid>
     </Grid>
   )

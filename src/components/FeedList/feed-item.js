@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -30,7 +29,7 @@ import Image from "react-graceful-image";
 import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview';
-import Dotdotdot from 'react-dotdotdot';
+import FeedFlashcards from 'components/FeedList/FeedFlashcards'
 import linkPost from '../../assets/svg/ic_link_post.svg';
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
 import questionPost from '../../assets/svg/ic_question_post.svg';
@@ -43,7 +42,6 @@ import questionPost from '../../assets/svg/ic_question_post.svg';
 import type { FeedItem as Item } from '../../types/models';
 
 // const ranks = [bronze, silver, gold, platinum, diamond, master];
-const strip = s => s.replace(/<[^>]*>?/gm, '')
 
 const styles = theme => ({
   card: {
@@ -182,20 +180,6 @@ const styles = theme => ({
   label: {
     fontSize: 10
   },
-  label2: {
-    fontSize: 11,
-    lineHeight: 1.45,
-    letterSpacing: 'normal',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  label3: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    letterSpacing: 'normal',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
   bookmarked: {
     color: green[500]
   },
@@ -207,30 +191,10 @@ const styles = theme => ({
   photoNotePreview: {
     marginRight: 30,
   },
-  ellipsis: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  },
   flashCards: {
     display: 'flex',
     flexWrap: 'wrap',
     marginTop: 24,
-  },
-  flashCardPreview: {
-    backgroundColor: theme.circleIn.palette.flashcardBackground,
-    borderRadius: 8,
-    boxShadow: '0 4px 10px 0 rgba(0, 0, 0, 0.25)',
-    color: '#ffffff',
-    display: 'flex',
-    flexDirection: 'column',
-    fontSize: 11,
-    justifyContent: 'space-between',
-    height: 98,
-    marginBottom: 15,
-    marginRight: 15,
-    minWidth: 199,
-    padding: '10px 20px 15px 20px',
-    width: 199,
   },
 });
 
@@ -354,26 +318,7 @@ class FeedItem extends React.PureComponent<Props, State> {
       }
       return (
         <div className={classes.flashCards}>
-          {
-            data.deck.slice(0, 3).map(({ question, answer }) => (
-              <div key={question} className={classes.flashCardPreview}>
-                <div>
-                  <Dotdotdot clamp={2}>
-                    <Typography className={cx(classes.label3, classes.ellipsis)}>
-                      {strip(question)}
-                    </Typography>
-                  </Dotdotdot>
-                </div>
-                <div>
-                  <Dotdotdot clamp={3}>
-                    <Typography className={cx(classes.label2, classes.ellipsis)}>
-                      {strip(answer)}
-                    </Typography>
-                  </Dotdotdot>
-                </div>
-              </div>
-            ))
-          }
+          <FeedFlashcards deck={data.deck} />
         </div>
       )
     case 4:
@@ -452,9 +397,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   };
 
   getTitle = (data: Object): string => {
-    if (data.typeId !== 3 || !data.deck) return data.title;
-
-    return `${data.deck.length} ${data.deck.length === 1 ? 'Card' : 'Cards'} | ${data.title}`;
+    return data.title;
   }
 
   render() {
