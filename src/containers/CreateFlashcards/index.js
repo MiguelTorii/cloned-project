@@ -6,12 +6,12 @@ import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
+import { Prompt , withRouter } from 'react-router'
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import queryString from 'query-string';
-import { withRouter } from 'react-router';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -255,6 +255,7 @@ const CreateFlashcards = ({
   }, [classId, classes, flashcards, enqueueSnackbar, grade, handlePush, sectionId, summary, userId, tags, title]);
 
   const handleSubmit = useCallback(() => {
+    setChanged(false)
     if (flashcardId) updateFlashcards();
     else createFlashcards();
   }, [updateFlashcards, createFlashcards, flashcardId]);
@@ -380,9 +381,25 @@ const CreateFlashcards = ({
     setSectionId(Number(sid));
   }, [loadData, search]);
 
+  const onUnload = e => {
+    e.preventDefault();
+    e.returnValue = 'Are you sure you want to leave?';
+  }
+
+  useEffect(() => {
+    if (changed) window.addEventListener("beforeunload", onUnload)
+    return () => {
+      window.removeEventListener("beforeunload", onUnload)
+    }
+  }, [changed])
+
   return (
     <div className={classes.root}>
       <ErrorBoundary>
+        <Prompt
+          when={changed}
+          message="Are you sure you want to leave?"
+        />
         <CreatePostForm
           title={`${flashcardId ? 'Edit' : 'Create'} Flashcards`}
           buttonLabel={flashcardId ? 'Update' : 'Create'}
