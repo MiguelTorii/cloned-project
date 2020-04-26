@@ -62,7 +62,7 @@ const styles = theme => ({
 
 type Props = {
   answer: string,
-  answerImageUrl: string,
+  answerImage: string,
   classes: Object,
   id: number,
   isFlipped: boolean,
@@ -70,12 +70,12 @@ type Props = {
   onShowAnswer: Function,
   onShowQuestion: Function,
   question: string,
-  questionImageUrl: string
+  questionImage: string
 };
 
 const Flashcard = ({
   answer,
-  answerImageUrl,
+  answerImage,
   classes,
   id,
   isFlipped,
@@ -83,7 +83,7 @@ const Flashcard = ({
   onShowAnswer,
   onShowQuestion,
   question,
-  questionImageUrl
+  questionImage
 }: Props) => {
   const createMarkup = (html) => {
     return { __html: sanitizeHtml(html) };
@@ -93,9 +93,9 @@ const Flashcard = ({
     <Card className={classes.body} key='front'>
       <CardContent className={classes.content}>
         {
-          questionImageUrl &&
+          questionImage &&
           <div className={classes.media}>
-            <img alt='card media' src={questionImageUrl} style={{ width: '100%' }} />
+            <img alt='card media' src={questionImage} style={{ width: '100%' }} />
           </div>
         }
         {
@@ -125,9 +125,9 @@ const Flashcard = ({
     <Card className={classes.body} key='back'>
       <CardContent className={classes.content}>
         {
-          answerImageUrl &&
+          answerImage &&
           <div className={classes.media}>
-            <img alt='card media' src={answerImageUrl} style={{ width: '100%' }} />
+            <img alt='card media' src={answerImage} style={{ width: '100%' }} />
           </div>
         }
         {

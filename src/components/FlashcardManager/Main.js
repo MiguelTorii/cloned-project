@@ -266,14 +266,14 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
             currentDeck.length > 0 && currentIndex !== currentDeck.length
               ? <FlashcardItem
                 answer={currentDeck[currentIndex].answer}
-                answerImageUrl={currentDeck[currentIndex].answerImageUrl}
+                answerImage={currentDeck[currentIndex].answerImage}
                 id={currentDeck[currentIndex].id}
                 isFlipped={flipped}
                 onAnswer={handleAnswer}
                 onShowAnswer={() => setFlipped(true)}
                 onShowQuestion={() => setFlipped(false)}
                 question={currentDeck[currentIndex].question}
-                questionImageUrl={currentDeck[currentIndex].questionImageUrl}
+                questionImage={currentDeck[currentIndex].questionImage}
               />
               : <div className={classes.emptyState}>
                   There aren’t any cards in this stack! <br /><br />
