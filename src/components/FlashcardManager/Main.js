@@ -36,8 +36,8 @@ const styles = theme => ({
     alignItems: 'center',
     alignSelf: 'center',
     display: 'flex',
-    height: '90%',
     justifyContent: 'center',
+    marginTop: 100,
   },
   emptyState: {
     alignItems: 'center',
@@ -46,6 +46,8 @@ const styles = theme => ({
     fontWeight: 'bold',
     height: 500,
     justifyContent: 'center',
+    letterSpacing: 0.6,
+    textAlign: 'center',
     width: 650,
   },
   score: {
@@ -65,7 +67,10 @@ const styles = theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    margin: `${theme.spacing(3)}px 0px`,
+    margin: `${theme.spacing(2)}px 0px`,
+  },
+  scoreLabel: {
+    color: theme.circleIn.palette.action,
   },
   scores: {
     display: 'flex',
@@ -317,8 +322,8 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
                 questionImage={currentDeck[currentIndex].questionImage}
               />
               : <div className={classes.emptyState}>
-                  There aren’t any cards in this stack! <br /><br />
-                  Select a different stack on the left side to view more cards.
+                  You don't have any cards in this stack! <br /><br />
+                  Click a different stack on the left side to view more cards.
               </div>
           }
         </div>
