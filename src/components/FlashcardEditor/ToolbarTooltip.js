@@ -60,13 +60,11 @@ const initialState = {
   },
   tab: {
     text: 'Indent',
-    shortcut: `Tab`,
     el: null,
     open: false
   },
   untab: {
     text: 'Unindent',
-    shortcut: `Shift + Tab`,
     el: null,
     open: false
   },

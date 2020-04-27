@@ -70,6 +70,9 @@ const styles = theme => ({
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  studyButton: {
+    margin: theme.spacing(2, 0)
   }
 });
 
@@ -197,6 +200,7 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
       <div className={classes.root}>
         <Button
           color="primary"
+          className={classes.studyButton}
           variant="contained"
           onClick={() => {
             setOpen(true);
