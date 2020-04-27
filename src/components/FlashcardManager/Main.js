@@ -15,9 +15,17 @@ import Slide from '@material-ui/core/Slide';
 import CustomDialog from 'components/Dialog';
 import type { Flashcard } from 'types/models';
 import { logEventLocally } from 'api/analytics';
+import store from 'store'
 import FlashcardItem from './Flashcard';
 
 const styles = theme => ({
+  buttonReset: {
+    marginRight: theme.spacing(),
+    borderRadius: 8,
+    fontWeight: 'bold',
+    letterSpacing: 0.6,
+    width: 150,
+  },
   button: {
     borderRadius: 8,
     fontWeight: 'bold',
@@ -83,34 +91,45 @@ const Transition = React.forwardRef((props, ref) => {
 type Props = {
   classes: Object,
   flashcards: Array<Flashcard & { id: string }>,
-  title: string
+  title: string,
+  postId: number
 };
 
+const initialDecks = {
+  main: [],
+  difficult: [],
+  medium: [],
+  easy: [],
+}
 
-const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) => {
+const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }: Props) => {
   const [open, setOpen] = useState(false);
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false)
   const [flipped, setFlipped] = useState(false);
   const [sessionId, setSessionId] = useState(null)
-
-  const initialDecks = {
-    main: [],
-    difficult: [],
-    medium: [],
-    easy: [],
-  }
 
   const [decks, setDecks] = useState(initialDecks);
   const [currentDeckId, setCurrentDeckId] = useState('main');
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setDecks({
-      ...decks,
-      main: shuffle(orgFlashcards)
+    const stored = store.get(`flashcards${postId}`)
+    const previousDecks = stored && JSON.parse(stored)
+    const current = {
+      main: [],
+      difficult: [],
+      medium: [],
+      easy: [],
+    }
+
+    orgFlashcards.forEach(card => {
+      const deck = previousDecks ? previousDecks[String(card.id)] : 'main'
+      if (deck) current[deck] = [...current[deck] , card]
+      else current.main = [...current.main, card]
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orgFlashcards]);
+
+    setDecks(current)
+  }, [orgFlashcards, postId]);
 
   const keyboardControl = useCallback(({ keyCode }) => {
     if (keyCode === 32) setFlipped(!flipped);
@@ -126,16 +145,24 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
   const resetState = () => {
     setDecks({ ...initialDecks, main: shuffle(orgFlashcards) });
     setCurrentDeckId('main');
+    store.set(`flashcards${postId}`, '')
     setFlipped(false);
   }
 
-  const handleClose = () => {
-    if (decks.main.length === 0) {
-      setOpen(false);
-      resetState();
-    } else {
-      setConfirmationOpen(true);
+  useEffect (() => {
+    const saveDeck = () => {
+      const current = {}
+      decks.main.forEach(d => {current[d.id] = 'main'})
+      decks.difficult.forEach(d => {current[d.id] = 'difficult'})
+      decks.medium.forEach(d => {current[d.id] = 'medium' })
+      decks.easy.forEach(d =>  {current[d.id] = 'easy' })
+      store.set(`flashcards${postId}`, JSON.stringify(current))
     }
+    saveDeck()
+  }, [decks, postId])
+
+  const handleClose = () => {
+    setOpen(false);
   }
 
   const handleDeckSwitch = (deckId) => {
@@ -233,14 +260,24 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
                 {title}
               </Typography>
             </div>
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="contained"
-              onClick={handleClose}
-            >
+            <div>
+              <Button
+                className={classes.buttonReset}
+                color="primary"
+                variant="contained"
+                onClick={() => setResetOpen(true)}
+              >
+                  Start Over
+              </Button>
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                onClick={handleClose}
+              >
               Done
-            </Button>
+              </Button>
+            </div>
           </Toolbar>
         </AppBar>
         <div className={classes.content}>
@@ -287,19 +324,18 @@ const FlashcardManager = ({ classes, title, flashcards: orgFlashcards }: Props) 
         </div>
       </Dialog>
       <CustomDialog
-        okTitle="OK"
-        onCancel={() => { setConfirmationOpen(false) }}
+        okTitle="Yes"
+        onCancel={() => { setResetOpen(false) }}
         onOk={() => {
-          setConfirmationOpen(false);
-          setOpen(false);
+          setResetOpen(false);
           resetState();
         }}
-        open={confirmationOpen}
+        open={resetOpen}
         showActions
         showCancel
-        title="Warning"
+        title="Start Over"
       >
-        You haven't completed the deck. Are you sure you want to leave?
+          If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </CustomDialog>
     </Fragment>
   );

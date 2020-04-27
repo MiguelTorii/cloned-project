@@ -188,7 +188,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <FlashcardManager title={title} flashcards={deck} />
+            <FlashcardManager title={title} flashcards={deck} postId={postId} />
           </ErrorBoundary>
           {/* <ErrorBoundary> */}
           {/* <div className={classes.flashcards}> */}
