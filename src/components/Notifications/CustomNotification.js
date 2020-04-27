@@ -33,7 +33,8 @@ class CustomNotification extends React.PureComponent<Props, State> {
       <Dialog
         ariaDescribedBy="custom-notification-description"
         className={classes.root}
-        onClose={onClose}
+        onCancel={onClose}
+        onOk={onClose}
         open={open}
         showActions
         title={title}
