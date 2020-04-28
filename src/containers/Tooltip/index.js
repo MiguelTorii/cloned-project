@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -77,6 +77,8 @@ const Tooltip = ({
   const THANKS = 2197;
   const FLASHCARDS = 1194;
   const NEW_POST = 5792;
+  const FLASHCARD_BOTTOM = 4212
+  const FLASHCARD_TOP = 5436
 
   const TRANSITION_TIME = 750;
 
@@ -84,14 +86,14 @@ const Tooltip = ({
 
   const timer = useRef();
 
-  const isOpen = () => {
+  const isOpen = useCallback(() => {
     let result = true;
     clearTimeout(timer.current);
 
     if (
       hidden
       || id === LEADERBOARD
-      || dialogVisible
+      || dialogVisible && (![FLASHCARD_BOTTOM, FLASHCARD_TOP].includes(id))
       || !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading
       || viewedTooltips.includes(id) // Tooltip already dismissed by user
@@ -122,6 +124,11 @@ const Tooltip = ({
           viewedTooltips.includes(BOOKMARKS)
         );
         break;
+      case FLASHCARD_BOTTOM:
+        result = (
+          viewedTooltips.includes(FLASHCARD_TOP)
+        );
+        break;
       default:
         result = true;
       }
@@ -132,7 +139,7 @@ const Tooltip = ({
     } else {
       setOpen(false);
     }
-  }
+  }, [id, delay, dialogVisible, hidden, pathname, viewedTooltips, viewedOnboarding])
 
   const onClick = (e) => {
     e.stopPropagation();
@@ -141,7 +148,7 @@ const Tooltip = ({
 
   useEffect(() => {
     isOpen();
-  }, [dialogVisible, hidden, viewedOnboarding, viewedTooltips])
+  }, [isOpen])
 
   return (
     <MuiTooltip

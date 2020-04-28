@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
   actions: {
@@ -58,6 +59,18 @@ const styles = theme => ({
     width: '50%',
     wordBreak: 'break-word',
   },
+  tooltip: {
+    background: theme.circleIn.palette.appBar,
+  },
+  tooltipLabel: {
+    fontSize: 14,
+    letterSpacing: 0.6,
+    lineHeight: 1.2,
+  },
+  tooltipArrow: {
+    color: theme.circleIn.palette.appBar,
+    fontSize: 12,
+  }
 });
 
 type Props = {
@@ -143,30 +156,72 @@ const Flashcard = ({
           Select the difficulty level to view the next card
         </div>
         <div className={classes.buttons}>
-          <Button
-            className={classes.button}
-            color="primary"
-            onClick={() => onAnswer({ id, answer: 'difficult' })}
-            variant="contained"
+          <Tooltip
+            arrow
+            classes={{
+              arrow: classes.tooltipArrow,
+              tooltip: classes.tooltip,
+            }}
+            placement='top'
+            title={
+              <p className={classes.tooltipLabel}>
+                Select <b>Didn't Remember</b> if you weren't able to remember the answer
+              </p>
+            }
           >
-            Didn't remember
-          </Button>
-          <Button
-            className={classes.button}
-            color="primary"
-            onClick={() => onAnswer({ id, answer: 'medium' })}
-            variant="contained"
+            <Button
+              className={classes.button}
+              color="primary"
+              onClick={() => onAnswer({ id, answer: 'difficult' })}
+              variant="contained"
+            >
+              Didn't Remember
+            </Button>
+          </Tooltip>
+          <Tooltip
+            arrow
+            classes={{
+              arrow: classes.tooltipArrow,
+              tooltip: classes.tooltip,
+            }}
+            placement='top'
+            title={
+              <p className={classes.tooltipLabel}>
+                Select <b>Almost Had It</b> if you were close to answering the correct answer or had difficulty answering it
+              </p>
+            }
           >
-            Almost had it
-          </Button>
-          <Button
-            className={classes.button}
-            color="primary"
-            onClick={() => onAnswer({ id, answer: 'easy' })}
-            variant="contained"
+            <Button
+              className={classes.button}
+              color="primary"
+              onClick={() => onAnswer({ id, answer: 'medium' })}
+              variant="contained"
+            >
+              Almost Had It
+            </Button>
+          </Tooltip>
+          <Tooltip
+            arrow
+            classes={{
+              arrow: classes.tooltipArrow,
+              tooltip: classes.tooltip,
+            }}
+            placement='top'
+            title={
+              <p className={classes.tooltipLabel}>
+                Select <b>Correct!</b> if you answered the question correctly
+              </p>
+            }
           >
-            Correct
-          </Button>
+            <Button
+              className={classes.button}
+              color="primary"
+              onClick={() => onAnswer({ id, answer: 'easy' })}
+              variant="contained"
+            >
+              Correct!
+            </Button>
+          </Tooltip>
         </div>
         <div className={classes.buttons}>
           <Button

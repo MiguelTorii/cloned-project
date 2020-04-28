@@ -1,5 +1,7 @@
 // @flow
 import React, { useCallback, useEffect, Fragment, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import cx from 'classnames';
 import shuffle from 'lodash/shuffle';
 import uuidv4 from 'uuid/v4';
@@ -13,8 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import CustomDialog from 'components/Dialog';
+import Tooltip from 'containers/Tooltip';
 import type { Flashcard } from 'types/models';
 import { logEventLocally } from 'api/analytics';
+import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
 import store from 'store'
 import FlashcardItem from './Flashcard';
 
@@ -96,8 +100,9 @@ const Transition = React.forwardRef((props, ref) => {
 type Props = {
   classes: Object,
   flashcards: Array<Flashcard & { id: string }>,
+  postId: number,
   title: string,
-  postId: number
+  updateVisibility: Function
 };
 
 const initialDecks = {
@@ -107,11 +112,13 @@ const initialDecks = {
   easy: [],
 }
 
-const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }: Props) => {
+const FlashcardManager = ({
+  postId, classes, title, flashcards: orgFlashcards, updateVisibility }: Props) => {
   const [open, setOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false)
   const [flipped, setFlipped] = useState(false);
   const [sessionId, setSessionId] = useState(null)
+  const [showAnswerClicked, setShowAnswerClicked] = useState(false)
 
   const [decks, setDecks] = useState(initialDecks);
   const [currentDeckId, setCurrentDeckId] = useState('main');
@@ -166,8 +173,15 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
     saveDeck()
   }, [decks, postId])
 
+  const handleOpen = () => {
+    setOpen(true);
+    setSessionId(uuidv4());
+    updateVisibility(true);
+  }
+
   const handleClose = () => {
     setOpen(false);
+    updateVisibility(false);
   }
 
   const handleDeckSwitch = (deckId) => {
@@ -234,10 +248,7 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
           color="primary"
           className={classes.studyButton}
           variant="contained"
-          onClick={() => {
-            setOpen(true);
-            setSessionId(uuidv4())
-          }}
+          onClick={handleOpen}
         >
           Study Now
         </Button>
@@ -287,24 +298,39 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
         </AppBar>
         <div className={classes.content}>
           <div className={classes.scores}>
-            <ScoreBox
-              deckId="main"
-              title="Cards To Review"
-              value={decks.main.length}
-            />
+            <Tooltip
+              id={5436}
+              placement="right"
+              text="Here's the total number of flashcards that need to be reviewed in this stack."
+            >
+              <ScoreBox
+                deckId="main"
+                title="Cards To Review"
+                value={decks.main.length}
+              />
+            </Tooltip>
             <ScoreBox
               deckId="difficult"
-              title="Didn't remember"
+              title="Didn't Remember"
               value={decks.difficult.length}
             />
-            <ScoreBox
-              deckId="medium"
-              title="Almost had it"
-              value={decks.medium.length}
-            />
+            <Tooltip
+              delay={1000}
+              hidden={!showAnswerClicked}
+              id={4212}
+              placement="right"
+              text="After you select the difficulty of the card, it gets moved into one of the three stacks.
+              Now you have the power to review what's most important for you to know."
+            >
+              <ScoreBox
+                deckId="medium"
+                title="Almost Had It"
+                value={decks.medium.length}
+              />
+            </Tooltip>
             <ScoreBox
               deckId="easy"
-              title="Correct"
+              title="Correct!"
               value={decks.easy.length}
             />
           </div>
@@ -316,7 +342,10 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
                 id={currentDeck[currentIndex].id}
                 isFlipped={flipped}
                 onAnswer={handleAnswer}
-                onShowAnswer={() => setFlipped(true)}
+                onShowAnswer={() => {
+                  setFlipped(true);
+                  setShowAnswerClicked(true);
+                }}
                 onShowQuestion={() => setFlipped(false)}
                 question={currentDeck[currentIndex].question}
                 questionImage={currentDeck[currentIndex].questionImage}
@@ -346,4 +375,15 @@ const FlashcardManager = ({ postId, classes, title, flashcards: orgFlashcards }:
   );
 }
 
-export default withStyles(styles)(FlashcardManager);
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      updateVisibility: updateVisiblityAction
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(FlashcardManager));
