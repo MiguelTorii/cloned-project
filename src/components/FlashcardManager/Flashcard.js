@@ -39,6 +39,7 @@ const styles = theme => ({
     padding: theme.spacing(4),
     height: '100%',
     justifyContent: 'center',
+    overflow: 'auto',
   },
   label: {
     textAlign: 'center',
@@ -55,7 +56,9 @@ const styles = theme => ({
     fontSize: 16,
     fontWeight: 'bold',
     justifyContent: 'center',
-    marginLeft: theme.spacing(2),
+    margin: theme.spacing(2),
+    padding: '0px 4px',
+    overflow: 'auto',
     width: '50%',
     wordBreak: 'break-word',
   },
@@ -162,6 +165,7 @@ const Flashcard = ({
               arrow: classes.tooltipArrow,
               tooltip: classes.tooltip,
             }}
+            enterDelay={700}
             placement='top'
             title={
               <p className={classes.tooltipLabel}>
@@ -184,6 +188,7 @@ const Flashcard = ({
               arrow: classes.tooltipArrow,
               tooltip: classes.tooltip,
             }}
+            enterDelay={700}
             placement='top'
             title={
               <p className={classes.tooltipLabel}>
@@ -206,6 +211,7 @@ const Flashcard = ({
               arrow: classes.tooltipArrow,
               tooltip: classes.tooltip,
             }}
+            enterDelay={700}
             placement='top'
             title={
               <p className={classes.tooltipLabel}>
