@@ -105,6 +105,7 @@ type Props = {
   flashcards: Array<Flashcard & { id: string }>,
   postId: number,
   title: string,
+  loadData: Function,
   updateVisibility: Function
 };
 
@@ -116,7 +117,7 @@ const initialDecks = {
 }
 
 const FlashcardManager = ({
-  postId, classes, title, flashcards: orgFlashcards, updateVisibility }: Props) => {
+  loadData, postId, classes, title, flashcards: orgFlashcards, updateVisibility }: Props) => {
   const [open, setOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false)
   const [flipped, setFlipped] = useState(false);
@@ -184,6 +185,7 @@ const FlashcardManager = ({
 
   const handleClose = () => {
     setOpen(false);
+    loadData()
     updateVisibility(false);
   }
 
