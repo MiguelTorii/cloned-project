@@ -21,14 +21,67 @@ type Props = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing()
+  markdownContainer: {
+    '& ol': {
+      paddingLeft: theme.spacing(2),
+      margin: 0
+    },
+    '& ul': {
+      paddingLeft: theme.spacing(2),
+      margin: 0
+    },
+    '& li': {
+      margin: 0
+    },
+    '& u': {
+      fontSize: 16,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& s': {
+      fontSize: 16,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& strong': {
+      fontSize: 16,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
+    '& span': {
+      fontSize: 16,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
+    '& p': {
+      fontSize: 16,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
+    '& h1': {
+      fontSize: 24,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
+    '& h2': {
+      fontSize: 22,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      margin: 0,
+    },
   },
   rootItem: {
     position: 'relative',
     borderRadius: theme.spacing(),
     backgroundColor: theme.circleIn.palette.flashcardBackground,
     padding: theme.spacing(1/2),
+    width: '99%',
     margin: theme.spacing(1, 0, 1, 0)
   },
   question: {
@@ -109,7 +162,10 @@ const FlashcardList = ({
           image={questionImage}
           imageStyle={imageStyle}
         />}
-        <div className={clsx(questionImage && classes.hasImage)}>
+        <div className={clsx(
+          questionImage && classes.hasImage,
+          classes.markdownContainer
+        )}>
           <Markdown>{question}</Markdown>
         </div>
       </Grid>
@@ -118,7 +174,10 @@ const FlashcardList = ({
           image={answerImage}
           imageStyle={imageStyle}
         />}
-        <div className={clsx(answerImage&& classes.hasImage)}>
+        <div className={clsx(
+          answerImage&& classes.hasImage,
+          classes.markdownContainer
+        )}>
           <Markdown>{answer}</Markdown>
         </div>
       </Grid>

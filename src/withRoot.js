@@ -31,7 +31,7 @@ const circleInTheme = {
   disabled: '#6d7884',
   profilebgColor: '#bdbdbd',
   danger: '#f34f47',
-  flashcardBackground: '#357592'
+  flashcardBackground: '#324F61'
 };
 const theme = createMuiTheme({
   circleIn: {

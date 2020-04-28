@@ -116,7 +116,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
 
   const handleDelete = () => setDeletePost(true)
 
-  const handleDeleteClose = ({ deleted }: { deleted: ?boolean }) => {
+  const handleDeleteClose = ({ deleted }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
