@@ -54,6 +54,9 @@ const styles = theme => ({
     textAlign: 'center',
     width: 650,
   },
+  root: {
+    width: 120,
+  },
   score: {
     alignItems: 'center',
     background: '#ffffff',
@@ -244,14 +247,20 @@ const FlashcardManager = ({
   return (
     <Fragment>
       <div className={classes.root}>
-        <Button
-          color="primary"
-          className={classes.studyButton}
-          variant="contained"
-          onClick={handleOpen}
+        <Tooltip
+          id={2287}
+          placement="right"
+          text="New Study Mode experience is now available!"
         >
-          Study Now
-        </Button>
+          <Button
+            color="primary"
+            className={classes.studyButton}
+            variant="contained"
+            onClick={handleOpen}
+          >
+            Study Now
+          </Button>
+        </Tooltip>
       </div>
       <Dialog
         fullScreen
