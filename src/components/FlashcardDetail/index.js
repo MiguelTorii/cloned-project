@@ -17,6 +17,7 @@ type Props = {
   questionImage: string,
   answerImage: string,
   handleDelete: ?Function,
+  hardCount: number,
   handleOpen: ?Function
 };
 
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
       overflow: 'hidden'
     },
-    '& p': {
+    '& div': {
       fontSize: 16,
       textOverflow: 'ellipsis',
       margin: 0,
@@ -75,11 +76,17 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'hidden',
       margin: 0,
     },
+    marginBottom: theme.spacing(3),
   },
-  rootItem: {
+  root: {
     position: 'relative',
     borderRadius: theme.spacing(),
     backgroundColor: theme.circleIn.palette.flashcardBackground,
+    padding: theme.spacing(1/2),
+    width: '99%',
+    margin: theme.spacing(1, 0, 1, 0)
+  },
+  rootItem: {
     padding: theme.spacing(1/2),
     width: '99%',
     margin: theme.spacing(1, 0, 1, 0)
@@ -114,6 +121,12 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     zIndex: 2,
   },
+  hardCount: {
+    margin: theme.spacing(),
+    color: '#CDB09E',
+    fontSize: 11,
+    fontWeight: 'bold'
+  }
 }))
 
 const FlashcardList = ({
@@ -122,6 +135,7 @@ const FlashcardList = ({
   answer,
   questionImage,
   answerImage,
+  hardCount,
   handleDelete,
   handleOpen
 }: Props) => {
@@ -133,55 +147,62 @@ const FlashcardList = ({
   }), [])
 
   return (
-    <Grid
-      key={id}
-      container
-      spacing={2}
-      classes={{
-        root: classes.rootItem
-      }}
-    >
-      <div
-        className={clsx(classes.buttonGroup)}
+    <div className={classes.root}>
+      {hardCount > 0 &&
+            <div className={classes.hardCount}>
+              Marked as Didn't Remember {hardCount} time{hardCount === 1 ? '': 's'}
+            </div>
+      }
+      <Grid
+        key={id}
+        container
+        spacing={2}
+        classes={{
+          root: classes.rootItem
+        }}
       >
-        {handleDelete && <Button
-          className={classes.button}
-          onClick={handleOpen}
+        <div
+          className={clsx(classes.buttonGroup)}
         >
-          <CreateIcon fontSize="small" />
-        </Button>}
-        {handleOpen && <Button
-          className={classes.button}
-          onClick={handleDelete}
-        >
-          <ClearIcon fontSize="small" />
-        </Button>}
-      </div>
-      <Grid item xs={4} className={classes.question}>
-        {questionImage && <SelectedImage
-          image={questionImage}
-          imageStyle={imageStyle}
-        />}
-        <div className={clsx(
-          questionImage && classes.hasImage,
-          classes.markdownContainer
-        )}>
-          <Markdown>{question}</Markdown>
+          {handleDelete && <Button
+            className={classes.button}
+            onClick={handleOpen}
+          >
+            <CreateIcon fontSize="small" />
+          </Button>}
+          {handleOpen && <Button
+            className={classes.button}
+            onClick={handleDelete}
+          >
+            <ClearIcon fontSize="small" />
+          </Button>}
         </div>
+        <Grid item xs={4} className={classes.question}>
+          {questionImage && <SelectedImage
+            image={questionImage}
+            imageStyle={imageStyle}
+          />}
+          <div className={clsx(
+            questionImage && classes.hasImage,
+            classes.markdownContainer
+          )}>
+            <Markdown>{question}</Markdown>
+          </div>
+        </Grid>
+        <Grid item xs={8} className={classes.answer}>
+          {answerImage && <SelectedImage
+            image={answerImage}
+            imageStyle={imageStyle}
+          />}
+          <div className={clsx(
+            answerImage&& classes.hasImage,
+            classes.markdownContainer
+          )}>
+            <Markdown>{answer}</Markdown>
+          </div>
+        </Grid>
       </Grid>
-      <Grid item xs={8} className={classes.answer}>
-        {answerImage && <SelectedImage
-          image={answerImage}
-          imageStyle={imageStyle}
-        />}
-        <div className={clsx(
-          answerImage&& classes.hasImage,
-          classes.markdownContainer
-        )}>
-          <Markdown>{answer}</Markdown>
-        </div>
-      </Grid>
-    </Grid>
+    </div>
   )
 }
 

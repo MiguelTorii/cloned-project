@@ -7,6 +7,7 @@ import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FlashcardDetail from 'components/FlashcardDetail'
+import Divider from '@material-ui/core/Divider'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getFlashcards, bookmark } from '../../api/posts';
@@ -40,6 +41,9 @@ const styles = theme => ({
   flashcards: {
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  divider: {
+    margin: theme.spacing(1, 1, 2, 1)
   }
 });
 
@@ -78,6 +82,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
       deck: deck.map(item => ({
         question: item.question,
         answer: item.answer,
+        hardCount: item.marked_hard_count,
         questionImage: item.question_image_url,
         answerImage: item.answer_image_url,
         id: item.id
@@ -123,15 +128,21 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
     setDeletePost(false)
   };
 
-  const flashcardView = useMemo(() => (flashcards && flashcards.deck.map(d => (
-    <FlashcardDetail
-      id={d.id}
-      question={d.question}
-      answer={d.answer}
-      questionImage={d.questionImage}
-      answerImage={d.answerImage}
-    />
-  ))), [flashcards])
+  const flashcardView = useMemo(() => (flashcards && flashcards.deck
+    .sort((a, b) => b.hardCount - a.hardCount)
+    .map((d, k) => (
+      <div key={d.id}>
+        {k !== 0 && <Divider light className={classes.divider} />}
+        <FlashcardDetail
+          id={d.id}
+          question={d.question}
+          answer={d.answer}
+          hardCount={d.hardCount}
+          questionImage={d.questionImage}
+          answerImage={d.answerImage}
+        />
+      </div>
+    ))), [flashcards, classes])
 
   if (!flashcards)
     return (

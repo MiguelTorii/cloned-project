@@ -28,7 +28,7 @@ const options = {
       )
     },
     p: {
-      component: props => <Typography variant="h6" paragraph {...props} />
+      component: props => <Typography component='div' variant="h6" paragraph {...props} />
     },
     li: {
       component: withStyles(styles)(({ classes, ...props }) => (

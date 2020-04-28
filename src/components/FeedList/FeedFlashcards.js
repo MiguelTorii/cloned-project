@@ -68,6 +68,12 @@ const useStyles = makeStyles(theme => ({
       margin: 0,
       overflow: 'hidden'
     },
+    '& div': {
+      fontSize: 11,
+      textOverflow: 'ellipsis',
+      margin: 0,
+      overflow: 'hidden'
+    },
     '& p': {
       fontSize: 11,
       textOverflow: 'ellipsis',
