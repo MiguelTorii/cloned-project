@@ -128,21 +128,26 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
     setDeletePost(false)
   };
 
-  const flashcardView = useMemo(() => (flashcards && flashcards.deck
-    .sort((a, b) => b.hardCount - a.hardCount)
-    .map((d, k) => (
-      <div key={d.id}>
-        {k !== 0 && <Divider light className={classes.divider} />}
-        <FlashcardDetail
-          id={d.id}
-          question={d.question}
-          answer={d.answer}
-          hardCount={d.hardCount}
-          questionImage={d.questionImage}
-          answerImage={d.answerImage}
-        />
-      </div>
-    ))), [flashcards, classes])
+  const flashcardView = useMemo(() => {
+    const sorted = flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount)
+    if (sorted)
+      return sorted.map((d, k) => {
+        const renderDivisor = k>0 && sorted[k-1].hardCount >0 && d.hardCount === 0
+        return (
+          <div key={d.id}>
+            {renderDivisor && <Divider light className={classes.divider} />}
+            <FlashcardDetail
+              id={d.id}
+              question={d.question}
+              answer={d.answer}
+              hardCount={d.hardCount}
+              questionImage={d.questionImage}
+              answerImage={d.answerImage}
+            />
+          </div>
+        )})
+    return null
+  }, [flashcards, classes])
 
   if (!flashcards)
     return (
