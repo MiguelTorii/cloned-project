@@ -66,7 +66,6 @@ const Chat = ({
     const handleInitChatDebounce = debounce(handleInitChat, 1000);
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
-      handleShutdownChat();
     });
     window.addEventListener('online', () => {
       console.log('**** online ****');

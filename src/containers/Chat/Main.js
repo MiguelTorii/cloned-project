@@ -314,8 +314,6 @@ const Main = ({
   }
 
   const  handleImageClose = () => setImages([])
-  // if (!channel) return null
-  // console.log(typing)
 
   const renderIcon = d => {
     return ( d
@@ -368,14 +366,14 @@ const Main = ({
           )}
         </InfiniteScroll>
       </div>
-      <div className={classes.typing}>
+      {channel && <div className={classes.typing}>
         <Typography
           className={classes.typingText}
           variant="subtitle1"
         >
           {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
         </Typography>
-      </div>
+      </div>}
       <ChatTextField
         onSendMessage={onSendMessage}
         onTyping={onTyping}

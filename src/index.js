@@ -1,5 +1,6 @@
 // @flow
 
+import 'core-js/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';

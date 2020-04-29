@@ -179,6 +179,7 @@ const FloatingChat = ({
     }
 
     if(pathname !== '/chat') return init()
+    return null
 
     // eslint-disable-next-line
   }, [pathname])
