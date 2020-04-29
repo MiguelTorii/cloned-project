@@ -294,7 +294,7 @@ const FlashcardEditor = ({
             answerEditor.focus()
           }
         }
-        setTimeout(() => questionEditor && questionEditor.focus(), 100)
+        setTimeout(() =>  {if (questionEditor) questionEditor.focus() }, 100)
       } catch(e) {}
     }
   }, [questionEditor, onFocusQuestion, answerEditor])

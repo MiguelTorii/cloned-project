@@ -119,6 +119,11 @@ const UseCases = ({
     </div>
   );
 
+  const onClickChat = () => {
+    const newChat = document.getElementById('circlein-newchat')
+    if (newChat) newChat.click()
+  }
+
   return (
     <div>
       <div className={classes.row}>
@@ -144,9 +149,7 @@ const UseCases = ({
           />
           <Item
             imageUrl={groupchat}
-            onClick={() => {
-              document.getElementById('circlein-newchat').click()
-            }}
+            onClick={onClickChat}
             title="Start a Chat or Group Chat"
           />
           <Item imageUrl={links} title="Share a link to a file or video" to="/create/sharelink" />

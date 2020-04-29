@@ -78,7 +78,7 @@ class Notifications extends React.PureComponent<Props, State> {
 
     const handleClick = e => {
       onClick(e)
-      onNotificationClose()
+      if(onNotificationClose) onNotificationClose()
     }
 
     const open = Boolean(anchorEl);
