@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   search: {
     borderRadius: theme.spacing(2),
     backgroundColor: theme.circleIn.palette.primaryBackground,
-    width: '90%',
     // width: drawerWidth - theme.spacing(2),
     padding: theme.spacing(0, 2),
   },
@@ -42,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% - ${theme.spacing(2)}px)`,
   },
   gridItem: {
-    margin: theme.spacing(1, 0),
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+    margin: theme.spacing(2, 1, 1, 1),
   },
   gridChatList: {
     width: 'inherit',
