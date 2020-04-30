@@ -216,12 +216,6 @@ export const handleUpdateUnreadCount = (unread) => async (dispatch: Dispatch) =>
   if(unread) dispatch(updateUnreadCount({ unread }))
 }
 
-export const handleLeaveChat = ({ sid }) => async () => {
-  try {
-    await leaveChat({ sid });
-  } catch (err) {}
-}
-
 export const handleBlockUser = ({ blockedUserId }) => async () => {
   try {
     await blockChatUser({ blockedUserId });
@@ -229,6 +223,9 @@ export const handleBlockUser = ({ blockedUserId }) => async () => {
 }
 
 export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch: Dispatch) => {
+  try {
+    await leaveChat({ sid });
+  } catch (err) {}
   dispatch(removeChannel({ sid }))
 }
 

@@ -106,7 +106,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
   case chatActions.REMOVE_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,
-      channels: state.data.channels.filter(c => c.sid !== action.payload.sid)
+      channels: state.data.channels.filter(c => c.sid !== action.payload.sid),
+      openChannels: state.data.openChannels.filter(c => c.sid !== action.payload.sid)
     }}
   case chatActions.SHUTDOWN_CHAT:
     return { ...state, data: {

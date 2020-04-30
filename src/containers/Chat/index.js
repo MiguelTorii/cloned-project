@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState} from 'react'
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
@@ -48,6 +48,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Chat = ({
+  handleRemoveChannel,
   handleUpdateUnreadCount,
   handleInitChat,
   handleShutdownChat,
@@ -61,6 +62,8 @@ const Chat = ({
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
+
+  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
 
   useEffect(() => {
     const handleInitChatDebounce = debounce(handleInitChat, 1000);
@@ -125,9 +128,11 @@ const Chat = ({
       </Grid>
       <Grid item xs={3} className={rightSpace !==0 ? classes.right : classes.hidden}>
         <RightMenu
+          handleRemoveChannel={handleRemoveChannel}
           handleBlock={handleBlock}
           userId={userId}
           channel={currentChannel}
+          clearCurrentChannel={clearCurrentChannel}
         />
       </Grid>
     </Grid>

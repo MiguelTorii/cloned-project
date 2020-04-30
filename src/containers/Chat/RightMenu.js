@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { getInitials, getTitle, fetchAvatars } from 'utils/chat'
 import Typography from '@material-ui/core/Typography'
@@ -101,10 +101,13 @@ const useStyles = makeStyles((theme) => ({
   },
   blockButton: {
     border: `1px solid ${theme.circleIn.palette.danger}`
+  },
+  removeChannel: {
+    marginTop: theme.spacing()
   }
 }))
 
-const RightMenu = ({ userId, channel, handleBlock }) => {
+const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, handleBlock }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
   const [members, setMembers] = useState([])
@@ -113,8 +116,18 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
   const [initials, setInitals] = useState('')
   const [otherUser, setOtherUser] = useState(null)
   const [blockUser, setBlockUser] = useState(false)
+  const [removeChat, setRemoveChat] = useState(false)
 
-  const handleOpenBlock = v => () => setBlockUser(v)
+  const handleRemoveClose = useCallback(() => setRemoveChat(false), [])
+  const handleRemoveOpen = useCallback(() => setRemoveChat(true), [])
+
+  const handleRemoveSubmit = useCallback(async () => {
+    if (channel) await handleRemoveChannel({ sid: channel.sid })
+    handleRemoveClose()
+    clearCurrentChannel()
+  }, [handleRemoveChannel, channel, handleRemoveClose, clearCurrentChannel])
+
+  const handleOpenBlock = useCallback(v => () => setBlockUser(v), [])
 
   useEffect(() => {
     const updateAvatars = async () => {
@@ -162,7 +175,9 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
     // eslint-disable-next-line
   }, [channel])
 
-  const startVideo = () => window.open(`/video-call/${channel.sid}`, '_blank')
+  const startVideo = useCallback(() =>
+    window.open(`/video-call/${channel.sid}`, '_blank'),
+  [channel])
   if (!channel) return null
 
   const onOk = async () => {
@@ -294,9 +309,48 @@ const RightMenu = ({ userId, channel, handleBlock }) => {
             </Typography>
           </Dialog>
         </Grid>}
+        <Grid
+          container
+          justify='center'
+          classes={{
+            root: classes.removeChannel
+          }}
+        >
+          <Button
+            onClick={handleRemoveOpen}
+            variant='outlined'
+            classes={{
+              label: classes.blockLabel,
+              root: classes.blockButton
+            }}
+          >
+           Remove
+          </Button>
+          <Dialog
+            ariaDescribedBy="remove-dialog-description"
+            className={classes.dialog}
+            okTitle="Delete"
+            onCancel={handleRemoveClose}
+            onOk={handleRemoveSubmit}
+            open={removeChat}
+            showActions
+            showCancel
+            title="Delete Chat"
+          >
+            <Typography
+              color="textPrimary"
+              id="remove-dialog-description"
+            >
+            Are you sure you want to delete this chat?
+              <br />
+              <br />
+            Deleting this chat can't be undone
+            </Typography>
+          </Dialog>
+        </Grid>
       </Grid>
     </Grid>
   )
 }
 
-export default RightMenu
+export default React.memo(RightMenu)

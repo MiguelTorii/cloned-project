@@ -124,7 +124,6 @@ export const leaveChat = async ({ sid }: { sid: string }): Promise<Object> => {
       }
     );
     const { data = {} } = result;
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
