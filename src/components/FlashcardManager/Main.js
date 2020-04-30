@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useEffect, Fragment, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import cx from 'classnames';
@@ -37,22 +37,24 @@ const styles = theme => ({
     width: 150,
   },
   content: {
-    alignItems: 'center',
     alignSelf: 'center',
     display: 'flex',
-    justifyContent: 'center',
+    height: '100%',
+    width: 800,
+    justifyContent: 'space-between',
     marginTop: 100,
+    position: 'relative',
   },
   emptyState: {
     alignItems: 'center',
     display: 'flex',
     fontSize: 16,
     fontWeight: 'bold',
-    height: 500,
+    height: 400,
     justifyContent: 'center',
     letterSpacing: 0.6,
     textAlign: 'center',
-    width: 650,
+    width: 600
   },
   root: {
     width: 120,
@@ -75,6 +77,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     margin: `${theme.spacing(2)}px 0px`,
+    marginTop: 0,
   },
   scoreLabel: {
     color: theme.circleIn.palette.action,
@@ -82,7 +85,6 @@ const styles = theme => ({
   scores: {
     display: 'flex',
     flexDirection: 'column',
-    marginRight: theme.spacing(10),
   },
   selected: {
     border: '5px solid #7572f7'
@@ -123,6 +125,8 @@ const FlashcardManager = ({
   const [flipped, setFlipped] = useState(false);
   const [sessionId, setSessionId] = useState(null)
   const [showAnswerClicked, setShowAnswerClicked] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [destinationCenter, setDestinationCenter] = useState(null)
 
   const [decks, setDecks] = useState(initialDecks);
   const [currentDeckId, setCurrentDeckId] = useState('main');
@@ -158,11 +162,22 @@ const FlashcardManager = ({
     };
   }, [keyboardControl]);
 
+  const refScoreHard = useRef(null);
+  const refScoreMedium = useRef(null);
+  const refScoreEasy = useRef(null);
+
   const resetState = () => {
     setDecks({ ...initialDecks, main: shuffle(orgFlashcards) });
     setCurrentDeckId('main');
     store.set(`flashcards${postId}`, '')
     setFlipped(false);
+  }
+
+  const getRectangleCenter = (rectangle) => {
+    return {
+      x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
+      y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2),
+    }
   }
 
   useEffect (() => {
@@ -185,7 +200,7 @@ const FlashcardManager = ({
 
   const handleClose = () => {
     setOpen(false);
-    loadData()
+    loadData();
     updateVisibility(false);
   }
 
@@ -195,15 +210,28 @@ const FlashcardManager = ({
     setFlipped(false);
   }
 
+  const handleAnimationStart = (answer) => {
+    let ref;
+
+    if (answer === 'difficult') {
+      ref = refScoreHard;
+    } else if (answer === 'medium') {
+      ref = refScoreMedium;
+    } else {
+      ref = refScoreEasy;
+    }
+
+    setIsAnimating(true);
+    setDestinationCenter(getRectangleCenter(ref.current.getBoundingClientRect()))
+  }
+
   const DIFFICULTY = {
     'easy': 1,
     'medium': 5,
     'difficult': 10,
   };
 
-  const handleAnswer = ({ answer, id }) => {
-    setFlipped(false);
-
+  const handleAnimationEnd = ({ answer, id }) => {
     logEventLocally({
       category: 'Flashcard',
       flashcard_study_session_id: sessionId,
@@ -213,6 +241,8 @@ const FlashcardManager = ({
     });
 
     setTimeout(() => {
+      setIsAnimating(false);
+      setFlipped(false)
       if (currentDeckId === 'main') {
         setDecks({
           ...decks,
@@ -226,15 +256,16 @@ const FlashcardManager = ({
       } else if (decks[currentDeckId][currentIndex + 1]) {
         setCurrentIndex(currentIndex + 1);
       }
-    }, 200);
+    }, 100)
   };
 
-  const ScoreBox = ({ deckId, title, value }) => (
+  const ScoreBox = React.forwardRef(({ deckId, title, value }, ref) => (
     <div
       className={classes.scoreBox}
       onClick={() => handleDeckSwitch(deckId) }
       onKeyUp={() => handleDeckSwitch(deckId) }
       role='button'
+      ref={ref}
       tabIndex='0'
     >
       <div className={cx(classes.score, deckId === currentDeckId ? classes.selected : '')}>
@@ -242,12 +273,12 @@ const FlashcardManager = ({
       </div>
       <div className={classes.scoreLabel}>{title}</div>
     </div>
-  )
+  ))
 
   const currentDeck = decks[currentDeckId];
 
   return (
-    <Fragment>
+    <>
       <div className={classes.root}>
         <Tooltip
           id={2287}
@@ -322,6 +353,7 @@ const FlashcardManager = ({
             </Tooltip>
             <ScoreBox
               deckId="difficult"
+              ref={refScoreHard}
               title="Didn't Remember"
               value={decks.difficult.length}
             />
@@ -335,6 +367,7 @@ const FlashcardManager = ({
             >
               <ScoreBox
                 deckId="medium"
+                ref={refScoreMedium}
                 title="Almost Had It"
                 value={decks.medium.length}
               />
@@ -342,17 +375,21 @@ const FlashcardManager = ({
             <ScoreBox
               deckId="easy"
               title="Correct!"
+              ref={refScoreEasy}
               value={decks.easy.length}
             />
           </div>
           {
-            currentDeck.length > 0 && currentIndex !== currentDeck.length
-              ? <FlashcardItem
+            currentDeck.length > 0 && currentIndex !== currentDeck.length ?
+              <FlashcardItem
                 answer={currentDeck[currentIndex].answer}
                 answerImage={currentDeck[currentIndex].answerImage}
+                destinationCenter={destinationCenter}
                 id={currentDeck[currentIndex].id}
+                isAnimating={isAnimating}
                 isFlipped={flipped}
-                onAnswer={handleAnswer}
+                onAnimationEnd={handleAnimationEnd}
+                onAnimationStart={handleAnimationStart}
                 onShowAnswer={() => {
                   setFlipped(true);
                   setShowAnswerClicked(true);
@@ -382,7 +419,7 @@ const FlashcardManager = ({
       >
           If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </CustomDialog>
-    </Fragment>
+    </>
   );
 }
 
