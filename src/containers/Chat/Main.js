@@ -374,11 +374,11 @@ const Main = ({
           {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
         </Typography>
       </div>}
-      <ChatTextField
+      {channel && <ChatTextField
         onSendMessage={onSendMessage}
         onTyping={onTyping}
         onSendInput={onSendInput}
-      />
+      />}
       <Lightbox
         images={images}
         currentImage={0}
