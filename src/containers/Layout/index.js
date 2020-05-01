@@ -83,7 +83,6 @@ class Layout extends React.PureComponent<Props, State> {
     manageClasses: false,
     manageBlockedUsers: false,
     anchorEl: null,
-    announcements: false,
     unreadCount: 0,
     openRequestClass: false,
     referralStatus: false
@@ -133,14 +132,6 @@ class Layout extends React.PureComponent<Props, State> {
   handleOpenStartVideoMeetUp = () => {}
 
   handleCloseStartVideoMeetUp = () => {}
-
-  handleOpenAnnouncements = () => {
-    this.setState({ announcements: true });
-  };
-
-  handleCloseAnnouncements = () => {
-    this.setState({ announcements: false });
-  };
 
   handleOpenReferralStatus = () => {
     this.setState({ referralStatus: true });
@@ -233,7 +224,6 @@ class Layout extends React.PureComponent<Props, State> {
       manageClasses,
       manageBlockedUsers,
       anchorEl,
-      announcements,
       unreadCount,
       openRequestClass,
       referralStatus
@@ -310,11 +300,7 @@ class Layout extends React.PureComponent<Props, State> {
           </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
-          <Announcements
-            open={announcements}
-            onClose={this.handleCloseAnnouncements}
-            onCreate={this.handleCreateChatGroupChannel}
-          />
+          <Announcements />
         </ErrorBoundary>
         <ErrorBoundary>
           <WebNotifications />
