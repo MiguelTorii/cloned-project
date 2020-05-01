@@ -528,22 +528,20 @@ class MainLayout extends React.Component<Props, State> {
             <p>Notifications</p>
           </MenuItem>
         )}
-        {width !== 'xs' && (
-          <MenuItem
-            button
-            component={MyLink}
-            link='/chat'
+        <MenuItem
+          button
+          component={MyLink}
+          link='/chat'
+        >
+          <IconButton
+            color="inherit"
           >
-            <IconButton
-              color="inherit"
-            >
-              <Badge color="secondary">
-                <ChatIcon />
-              </Badge>
-            </IconButton>
-            <p>Chats</p>
-          </MenuItem>
-        )}
+            <Badge color="secondary">
+              <ChatIcon />
+            </Badge>
+          </IconButton>
+          <p>Chats</p>
+        </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <Avatar src={userProfileUrl}>{initials}</Avatar>
@@ -705,21 +703,19 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
-          {width !== 'xs' && (
-            <ListItem
-              button
-              component={MyLink}
-              className={classes.otherPath}
-              link='/chat'
-            >
-              <ListItemIcon>
-                <ChatIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Chats"
-              />
-            </ListItem>
-          )}
+          <ListItem
+            button
+            component={MyLink}
+            className={classes.otherPath}
+            link='/chat'
+          >
+            <ListItemIcon>
+              <ChatIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Chats"
+            />
+          </ListItem>
           <ListItem
             button
             component={MyLink}
