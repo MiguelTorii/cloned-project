@@ -20,6 +20,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 'inherit',
+    width: '100%',
+    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
   },

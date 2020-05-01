@@ -36,13 +36,15 @@ type Props = {
   noChannel: boolean
 };
 
+const imageStyle = { maxWidth: '100%' }
+
 const EmptyMain = ({noChannel}: Props) => {
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
       <div className={classes.messageContainer}>
-        <LoadImg url={EmptyMainChat} alt='emptychat' />
+        <LoadImg url={EmptyMainChat} alt='emptychat' style={imageStyle} />
         <Typography
           classes={{
             root: classes.titleMessage

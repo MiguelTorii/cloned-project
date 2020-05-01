@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, useEffect, useState} from 'react'
+import React, { useMemo, useCallback, useEffect, useState} from 'react'
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
@@ -11,6 +11,7 @@ import LeftMenu from 'containers/Chat/LeftMenu'
 import RightMenu from 'containers/Chat/RightMenu'
 import Main from 'containers/Chat/Main'
 import { makeStyles } from '@material-ui/core/styles'
+import withWidth from '@material-ui/core/withWidth';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
@@ -18,27 +19,30 @@ import type { State as StoreState } from '../../types/state';
 
 type Props = {
   chat: ChatState,
-  user: UserState
+  user: UserState,
+  width: string
 };
 
 const useStyles = makeStyles(() => ({
   container: {
-    position: 'relative'
+    position: 'relative',
+    height: 'inherit'
   },
   left: {
+    height: '100%',
     position: 'relative',
-    height: 'calc(100vh - 72px)',
     overflow: 'auto',
   },
   main: {
+    display: 'flex',
     position: 'relative',
     borderLeft: '1px solid rgba(255,255,255,0.15)',
     borderRight: '1px solid rgba(255,255,255,0.15)',
-    height: 'calc(100vh - 72px)',
     overflow: 'auto',
+    height: '100%',
   },
   right: {
-    height: 'calc(100vh - 72px)',
+    height: '100%',
     overflow: 'auto',
   },
   hidden: {
@@ -53,28 +57,41 @@ const Chat = ({
   handleInitChat,
   handleShutdownChat,
   handleBlockUser,
+  width,
   chat,
   user
 }: Props) => {
-  const { data: { online, client, channels, newMessage }} = chat
+  const { data: { client, channels, newMessage }} = chat
   const { data: { userId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
+  const [prevWidth, setPrevWidth] = useState(null)
 
   const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
 
+  const curSize = useMemo(() => width === 'xs' ? 6 : 3, [width])
+
+  useEffect(() => {
+    if(width !== prevWidth) {
+      if (['xs'].includes(width)) {
+        setRightSpace(0)
+        if(currentChannel) setLeftSpace(0)
+        else setLeftSpace(curSize)
+      } else {
+        setLeftSpace(curSize)
+        if(currentChannel) setRightSpace(3)
+        else setRightSpace(0)
+      }
+    }
+
+    setPrevWidth(width)
+  }, [prevWidth, width, curSize, currentChannel])
+
   useEffect(() => {
     const handleInitChatDebounce = debounce(handleInitChat, 1000);
-    window.addEventListener('offline', () => {
-      console.log('**** offline ****');
-    });
-    window.addEventListener('online', () => {
-      console.log('**** online ****');
-      if (!online) window.location.reload();
-    });
-    handleInitChatDebounce({ handleMessageReceived: () => {}, snackbarStyle: '' });
+    handleInitChatDebounce();
 
     return () => {
       if (
@@ -85,12 +102,11 @@ const Chat = ({
       handleShutdownChat();
     };
 
-    // eslint-disable-next-line
-  }, [])
+  }, [handleInitChat, handleShutdownChat])
 
   useEffect(() => {
-    if (currentChannel) setRightSpace(3)
-  }, [currentChannel])
+    if (currentChannel && width !== 'xs') setRightSpace(3)
+  }, [currentChannel, width])
 
   const handleBlock = async blockedUserId => {
     try {
@@ -100,12 +116,23 @@ const Chat = ({
     } catch (err) {}
   }
 
-  const onCollapseLeft = () => setLeftSpace(leftSpace ? 0 : 3)
-  const onCollapseRight = () => setRightSpace(rightSpace ? 0 : 3)
+  const onCollapseLeft = useCallback(() => {
+    if (width === 'xs') {
+      setRightSpace(0)
+    }
+    setLeftSpace(leftSpace ? 0 : curSize)
+  }, [width, curSize, leftSpace])
+
+  const onCollapseRight = useCallback(() => {
+    if (width === 'xs') {
+      setLeftSpace(0)
+    }
+    setRightSpace(rightSpace ? 0 : curSize)
+  }, [width, curSize, rightSpace])
 
   return (
     <Grid className={classes.container} direction='row' container>
-      <Grid item xs={3} className={leftSpace !== 0 ? classes.left: classes.hidden}>
+      <Grid item xs={leftSpace} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}
           handleUpdateUnreadCount={handleUpdateUnreadCount}
@@ -126,7 +153,7 @@ const Chat = ({
           user={user}
         />
       </Grid>
-      <Grid item xs={3} className={rightSpace !==0 ? classes.right : classes.hidden}>
+      <Grid item xs={rightSpace} className={rightSpace !==0 ? classes.right : classes.hidden}>
         <RightMenu
           handleRemoveChannel={handleRemoveChannel}
           handleBlock={handleBlock}
@@ -163,4 +190,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Chat);
+)(withWidth()(Chat));

@@ -2,31 +2,34 @@
 
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import withRoot from 'withRoot';
 import Layout from 'containers/Layout';
 import Chat from 'containers/Chat';
 
-const styles = () => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex'
+  },
+  container: {
+    height: 'calc(100vh - 64px)',
+    [theme.breakpoints.down('xs')]: {
+      height: 'calc(100vh - 116px)',
+      marginBottom: -64
+    }
   }
-});
+}));
 
-type Props = {
-  classes: Object
-};
-
-
-const FeedPage = ({classes}: Props) => {
+const ChatPage = () => {
+  const classes = useStyles()
 
   return (
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container justify="center">
+        <Grid container justify="center" className={classes.container}>
           <Chat />
         </Grid>
       </Layout>
@@ -34,4 +37,4 @@ const FeedPage = ({classes}: Props) => {
   );
 }
 
-export default withRoot(withStyles(styles)(withRouter(FeedPage)))
+export default withRoot(withRouter(ChatPage))

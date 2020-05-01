@@ -19,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     backgroundColor: '#539f56',
     width: '23%',
-    bottom: 10
+    bottom: 10,
+    [theme.breakpoints.down('xs')]: {
+      width: '40%',
+      bottom: 68
+    }
   },
   messageContainer: {
     position: 'absolute',
