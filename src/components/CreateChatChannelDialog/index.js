@@ -42,6 +42,7 @@ const CreateChatChannelDialog = ({
   title,
   onClose,
   onSubmit,
+  okLabel,
   chatType: chatTypeProp,
   onLoadOptions,
 }: Props) => {
@@ -56,8 +57,7 @@ const CreateChatChannelDialog = ({
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') setChatType('group')
     else if (users.length <= 1 && chatType === 'group') setChatType('single')
-    // eslint-disable-next-line
-  }, [users])
+  }, [users, chatType])
 
   useEffect(() => {
     setChatType(chatTypeProp)
@@ -102,7 +102,7 @@ const CreateChatChannelDialog = ({
       open={Boolean(chatType)}
       onCancel={handleClose}
       onOk={handleSubmit}
-      okTitle="Create"
+      okTitle={okLabel || "Create"}
       showActions
       showCancel
       title={title || "Setup a Class Group Chat or Send a Direct Message"}

@@ -62,7 +62,7 @@ const Chat = ({
   user
 }: Props) => {
   const { data: { client, channels, newMessage }} = chat
-  const { data: { userId }} = user
+  const { data: { userId, schoolId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
@@ -106,6 +106,7 @@ const Chat = ({
 
   useEffect(() => {
     if (currentChannel && width !== 'xs') setRightSpace(3)
+    if (!currentChannel) setRightSpace(0)
   }, [currentChannel, width])
 
   const handleBlock = async blockedUserId => {
@@ -132,7 +133,7 @@ const Chat = ({
 
   return (
     <Grid className={classes.container} direction='row' container>
-      <Grid item xs={leftSpace} className={leftSpace !== 0 ? classes.left: classes.hidden}>
+      <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}
           handleUpdateUnreadCount={handleUpdateUnreadCount}
@@ -153,11 +154,12 @@ const Chat = ({
           user={user}
         />
       </Grid>
-      <Grid item xs={rightSpace} className={rightSpace !==0 ? classes.right : classes.hidden}>
+      <Grid item xs={rightSpace || 1} className={rightSpace !==0 ? classes.right : classes.hidden}>
         <RightMenu
           handleRemoveChannel={handleRemoveChannel}
           handleBlock={handleBlock}
           userId={userId}
+          schoolId={schoolId}
           channel={currentChannel}
           clearCurrentChannel={clearCurrentChannel}
         />
@@ -180,9 +182,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleUpdateUnreadCount: chatActions.handleUpdateUnreadCount,
-      handleRoomClick: chatActions.handleRoomClick,
-      updateOpenChannels: chatActions.updateOpenChannels,
-      handleChannelClose: chatActions.handleChannelClose,
     },
     dispatch
   );

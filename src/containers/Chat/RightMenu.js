@@ -13,18 +13,16 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import { Link as RouterLink } from 'react-router-dom';
 import GroupIcon from '@material-ui/icons/Group';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import BlockUser from 'containers/Chat/BlockUser'
+import RemoveChat from 'containers/Chat/RemoveChat'
+import AddMembers from 'containers/Chat/AddMembers'
+import {getGroupMembers} from 'api/chat'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
 });
 
 const useStyles = makeStyles((theme) => ({
-  dialog: {
-    ...dialogStyle,
-    width: 500,
-    zIndex: 2100
-  },
   usersContainer: {
     width: '100%',
     padding: theme.spacing(2),
@@ -56,27 +54,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.circleIn.palette.primaryBackground,
     padding: theme.spacing(2),
   },
-  secondaryAction: {
-  },
-  drawer: {
-  },
-  drawerOpen: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
   videoLabel: {
     fontWeight: 'bold',
     textTransform: 'none'
@@ -96,18 +73,9 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     fontSize: 30
   },
-  blockLabel: {
-    color: theme.circleIn.palette.danger
-  },
-  blockButton: {
-    border: `1px solid ${theme.circleIn.palette.danger}`
-  },
-  removeChannel: {
-    marginTop: theme.spacing()
-  }
 }))
 
-const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, handleBlock }) => {
+const RightMenu = ({ schoolId, clearCurrentChannel, handleRemoveChannel, userId, channel, handleBlock }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
   const [members, setMembers] = useState([])
@@ -115,44 +83,32 @@ const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, 
   const [groupImage, setGroupImage] = useState(null)
   const [initials, setInitals] = useState('')
   const [otherUser, setOtherUser] = useState(null)
-  const [blockUser, setBlockUser] = useState(false)
-  const [removeChat, setRemoveChat] = useState(false)
 
-  const handleRemoveClose = useCallback(() => setRemoveChat(false), [])
-  const handleRemoveOpen = useCallback(() => setRemoveChat(true), [])
-
-  const handleRemoveSubmit = useCallback(async () => {
-    if (channel) await handleRemoveChannel({ sid: channel.sid })
-    handleRemoveClose()
-    clearCurrentChannel()
-  }, [handleRemoveChannel, channel, handleRemoveClose, clearCurrentChannel])
-
-  const handleOpenBlock = useCallback(v => () => setBlockUser(v), [])
+  const updateAvatars = useCallback(async () => {
+    try {
+      const avatars = await fetchAvatars(channel)
+      const users = await getGroupMembers({ chatId: channel.sid })
+      const m = users.map(u => {
+        const avatar = avatars.find(a => a.identity === u.userId)
+        if (users.length === 2) {
+          if (u.userId !== userId) {
+            setGroupImage(avatar && avatar.profileImageUrl)
+            setInitals(getInitials({name: `${u.firstName} ${u.lastName}`}))
+            setOtherUser(u)
+          }
+        }
+        return {
+          id: u.userId,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          avatar: avatar && avatar.profileImageUrl
+        }
+      })
+      setMembers(m)
+    } catch(e) {}
+  }, [userId, channel])
 
   useEffect(() => {
-    const updateAvatars = async () => {
-      try {
-        const avatars = await fetchAvatars(channel)
-        const m = channel.state.attributes.users.map(u => {
-          const avatar = avatars.find(a => Number(a.identity) === u.userId)
-          if (channel.state.attributes.users.length === 2) {
-            if (u.userId !== userId) {
-              setGroupImage(avatar && avatar.profileImageUrl)
-              setInitals(getInitials({name: `${u.firstName} ${u.lastName}`}))
-              setOtherUser(u)
-            }
-          }
-          return {
-            id: u.userId,
-            firstName: u.firstName,
-            lastName: u.lastName,
-            avatar: avatar && avatar.profileImageUrl
-          }
-        })
-        setMembers(m)
-      } catch(e) {}
-    }
-
     const init = async () => {
       try {
         setTitle(getTitle(channel, userId))
@@ -172,18 +128,12 @@ const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, 
       setInitals('')
       if (channel) init()
     } catch (e) {}
-    // eslint-disable-next-line
-  }, [channel])
+  }, [channel, userId])
 
   const startVideo = useCallback(() =>
     window.open(`/video-call/${channel.sid}`, '_blank'),
   [channel])
   if (!channel) return null
-
-  const onOk = async () => {
-    if (userId !== otherUser.userId) await handleBlock(otherUser.userId)
-    handleOpenBlock(false)()
-  }
 
   return (
     <Grid
@@ -251,7 +201,7 @@ const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, 
               const fullName = `${m.firstName} ${m.lastName}`
               return (
                 <ListItem
-                  key={fullName}
+                  key={m.id}
                   component={MyLink}
                   link={`/profile/${m.id}`}
                   button
@@ -276,78 +226,19 @@ const RightMenu = ({ clearCurrentChannel, handleRemoveChannel, userId, channel, 
             })}
           </List>
         </Grid>
-        {otherUser && <Grid
-          container
-          justify='center'
-        >
-          <Button
-            onClick={handleOpenBlock(true)}
-            variant='outlined'
-            classes={{
-              label: classes.blockLabel,
-              root: classes.blockButton
-            }}
-          >
-          Block {otherUser.firstName} {otherUser.lastName}
-          </Button>
-          <Dialog
-            ariaDescribedBy="confirm-dialog-description"
-            className={classes.dialog}
-            okTitle="Yes, I'm sure"
-            onCancel={handleOpenBlock(false)}
-            onOk={onOk}
-            open={blockUser}
-            showActions
-            showCancel
-            title="Block User"
-          >
-            <Typography
-              color="textPrimary"
-              id="confirm-dialog-description"
-            >
-              Are you sure you want to block {otherUser.firstName} {otherUser.lastName}
-            </Typography>
-          </Dialog>
-        </Grid>}
-        <Grid
-          container
-          justify='center'
-          classes={{
-            root: classes.removeChannel
-          }}
-        >
-          <Button
-            onClick={handleRemoveOpen}
-            variant='outlined'
-            classes={{
-              label: classes.blockLabel,
-              root: classes.blockButton
-            }}
-          >
-           Remove
-          </Button>
-          <Dialog
-            ariaDescribedBy="remove-dialog-description"
-            className={classes.dialog}
-            okTitle="Delete"
-            onCancel={handleRemoveClose}
-            onOk={handleRemoveSubmit}
-            open={removeChat}
-            showActions
-            showCancel
-            title="Delete Chat"
-          >
-            <Typography
-              color="textPrimary"
-              id="remove-dialog-description"
-            >
-            Are you sure you want to delete this chat?
-              <br />
-              <br />
-            Deleting this chat can't be undone
-            </Typography>
-          </Dialog>
-        </Grid>
+        <AddMembers
+          userId={userId}
+          channel={channel}
+          members={members}
+          schoolId={schoolId}
+          updateAvatars={updateAvatars}
+        />
+        <BlockUser userId={userId} otherUser={otherUser} handleBlock={handleBlock} />
+        <RemoveChat
+          clearCurrentChannel={clearCurrentChannel}
+          handleRemoveChannel={handleRemoveChannel}
+          channel={channel}
+        />
       </Grid>
     </Grid>
   )

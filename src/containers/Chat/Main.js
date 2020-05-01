@@ -348,7 +348,7 @@ const Main = ({
       </div>
       <div className={classes.messageContainer}>
         {(!channel || messageItems.length === 1) && <EmptyMain noChannel={!channel} />}
-        <InfiniteScroll
+        {channel && <InfiniteScroll
           className={classes.messageScroll}
           threshold={50}
           pageStart={0}
@@ -366,7 +366,7 @@ const Main = ({
               <CircularProgress size={20} />
             </div>
           )}
-        </InfiniteScroll>
+        </InfiniteScroll>}
       </div>
       {channel && <div className={classes.typing}>
         <Typography
