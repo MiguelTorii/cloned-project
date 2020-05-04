@@ -85,6 +85,7 @@ type State = {
   images: Array<{ src: string }>,
   expanded: boolean,
   count: number,
+  onUpdateUnreadCount: Function,
   addMembers: boolean
 };
 
@@ -123,9 +124,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
         channel,
         user: {
           data: { userId }
-        }
+        },
+        onUpdateUnreadCount
       } = this.props;
       try {
+        const { lastConsumedMessageIndex, lastMessage: { index }} = channel
+        onUpdateUnreadCount(lastConsumedMessageIndex - index)
         channel.setAllMessagesConsumed();
       } catch (err) {
         console.log(err);
@@ -159,7 +163,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
           messages: [...prevState.messages, message]
         }));
         const { open } = this.state;
+        const { channel } = message
+        const { onUpdateUnreadCount } = this.props
         if (!open) {
+          onUpdateUnreadCount(1)
           this.setState(prevState => ({
             unread: prevState.unread + 1
           }));
@@ -222,13 +229,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleChatOpen = () => {
     const { open } = this.state;
-    const { channel } = this.props;
+    const { channel, onUpdateUnreadCount } = this.props;
     if (open) {
       this.setState({ open: false });
       return;
     }
 
     try {
+      const { lastConsumedMessageIndex, lastMessage: { index }} = channel
+      onUpdateUnreadCount(lastConsumedMessageIndex - index)
       channel.setAllMessagesConsumed();
     } catch (err) {
       console.log(err);

@@ -121,7 +121,9 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
   case chatActions.UPDATE_UNREAD_COUNT_CHAT:
     return { ...state, data: {
       ...state.data,
-      unread: state.data.unread + Number(action.payload.unread)
+      unread: state.data.unread + Number(action.payload.unread) > 0 ?
+        state.data.unread + Number(action.payload.unread)
+        :0
     }}
   case chatActions.SET_OPEN_CHANNELS:
     return { ...state, data: {

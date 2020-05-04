@@ -118,6 +118,7 @@ const FloatingChat = ({
       const { firstName, lastName } = attributes;
       const sids = openChannels.map(oc => oc.sid)
       if (Number(author) !== Number(userId) && window.location.pathname !== '/chat' && !sids.includes(channel.sid)) {
+        handleUpdateUnreadCount(1)
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {
@@ -263,6 +264,7 @@ const FloatingChat = ({
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
+              onUpdateUnreadCount={handleUpdateUnreadCount}
             />
           ))}
           <Tooltip
