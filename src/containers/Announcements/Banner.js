@@ -99,7 +99,7 @@ const Banner = ({
 
   if (!announcement || pathname === '/chat') return null;
 
-  const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 24);
+  const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 20);
 
   const {
     hourlyReward,

@@ -65,15 +65,6 @@ import Chat from './pages/Chat'
 
 const store = configureStore();
 
-// if (ENV === 'dev') {
-//   const script = document.createElement("script");
-
-//   script.src = "src=“//rum-static.pingdom.net/pa-5e9f10ba229e9300080009c1.js";
-//   script.async = true;
-
-//   document.body.appendChild(script);
-// }
-
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
 if (ENV !== 'dev') {
