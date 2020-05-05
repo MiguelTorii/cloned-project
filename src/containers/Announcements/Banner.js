@@ -64,7 +64,8 @@ type Props = {
   announcement: Anouncement,
   classes: Object,
   getAnnouncement: Function,
-  location: { pathname: string }
+  location: { pathname: string },
+  onLoaded: Function
 };
 
 const Banner = ({
@@ -72,11 +73,14 @@ const Banner = ({
   classes,
   getAnnouncement,
   location: { pathname },
+  onLoaded,
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [minutesRemaining, setMinutesRemaining] = useState(60 - new Date().getMinutes());
 
   useEffect(() => {
+    getAnnouncement({ announcementId: 1, campaignId: 7 });
+
     const intervalId = setInterval(() => {
       const currentMinute = new Date().getMinutes();
       setMinutesRemaining(60 - currentMinute);
@@ -87,11 +91,15 @@ const Banner = ({
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [minutesRemaining]);
+  }, [getAnnouncement]);
+
+  useEffect(() => {
+    if (announcement) onLoaded();
+  }, [announcement, onLoaded])
 
   if (!announcement || pathname === '/chat') return null;
 
-  const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 20);
+  const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 24);
 
   const {
     hourlyReward,

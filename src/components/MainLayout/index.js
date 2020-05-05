@@ -305,6 +305,7 @@ type Props = {
 };
 
 type State = {
+  announcementLoaded: boolean,
   open: boolean,
   anchorEl: ?string,
   mobileMoreAnchorEl: ?string,
@@ -317,6 +318,7 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
+    announcementLoaded: false,
     open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
@@ -331,6 +333,10 @@ class MainLayout extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.appBarRef = React.createRef();
+  }
+
+  handleAnnouncementLoaded = () => {
+    this.setState({ announcementLoaded: true });
   }
 
   handleDrawerOpen = () => {
@@ -863,7 +869,7 @@ class MainLayout extends React.Component<Props, State> {
                 </IconButton>
               </div>
             </Toolbar>
-            <AnnouncementBanner />
+            <AnnouncementBanner onLoaded={this.handleAnnouncementLoaded} />
           </AppBar>
           {renderMenu}
           {renderMobileMenu}
