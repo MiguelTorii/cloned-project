@@ -12,6 +12,10 @@ import RightMenu from 'containers/Chat/RightMenu'
 import Main from 'containers/Chat/Main'
 import { makeStyles } from '@material-ui/core/styles'
 import withWidth from '@material-ui/core/withWidth';
+import IconButton from '@material-ui/core/IconButton';
+import cx from 'classnames'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
@@ -23,7 +27,7 @@ type Props = {
   width: string
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   container: {
     position: 'relative',
     height: 'inherit'
@@ -48,7 +52,35 @@ const useStyles = makeStyles(() => ({
   hidden: {
     border: 'none',
     display: 'none'
-  }
+  },
+  rightDrawerClose: {
+    right: 0,
+  },
+  rightDrawerOpen: {
+    right: '24%',
+    [theme.breakpoints.down('xs')]: {
+      right: '48%'
+    }
+  },
+  leftDrawerClose: {
+    left: 0,
+  },
+  leftDrawerOpen: {
+    left: '24%',
+    [theme.breakpoints.down('xs')]: {
+      left: '48%'
+    }
+  },
+  iconButton: {
+    position: 'absolute',
+    top: 60,
+    padding: 0,
+    border: '1px solid white',
+    zIndex: 1002
+  },
+  icon: {
+    fontSize: 16,
+  },
 }))
 
 const Chat = ({
@@ -130,8 +162,33 @@ const Chat = ({
     setRightSpace(rightSpace ? 0 : curSize)
   }, [width, curSize, rightSpace])
 
+
+  const renderIcon = d => {
+    return ( d
+      ? <ArrowBackIcon className={classes.icon} />
+      : <ArrowForwardIcon className={classes.icon} />
+    )}
+
   return (
     <Grid className={classes.container} direction='row' container>
+      <IconButton
+        className={cx(
+          leftSpace !== 0 ? classes.leftDrawerOpen : classes.leftDrawerClose,
+          classes.iconButton
+        )}
+        onClick={onCollapseLeft}
+      >
+        {renderIcon(leftSpace !== 0)}
+      </IconButton>
+      {currentChannel && <IconButton
+        className={cx(
+          rightSpace !== 0 ? classes.rightDrawerOpen : classes.rightDrawerClose,
+          classes.iconButton
+        )}
+        onClick={onCollapseRight}
+      >
+        {renderIcon(rightSpace === 0)}
+      </IconButton>}
       <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}

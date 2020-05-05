@@ -4,7 +4,6 @@ import { getInitials, getTitle, fetchAvatars } from 'utils/chat'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -53,13 +52,6 @@ const useStyles = makeStyles((theme) => ({
   infoContainer: {
     backgroundColor: theme.circleIn.palette.primaryBackground,
     padding: theme.spacing(2),
-  },
-  videoLabel: {
-    fontWeight: 'bold',
-    textTransform: 'none'
-  },
-  videoButton: {
-    marginBottom: theme.spacing(2),
   },
   usersTitle: {
     padding: theme.spacing()
@@ -130,9 +122,6 @@ const RightMenu = ({ schoolId, clearCurrentChannel, handleRemoveChannel, userId,
     } catch (e) {}
   }, [channel, userId])
 
-  const startVideo = useCallback(() =>
-    window.open(`/video-call/${channel.sid}`, '_blank'),
-  [channel])
   if (!channel) return null
 
   return (
@@ -177,17 +166,6 @@ const RightMenu = ({ schoolId, clearCurrentChannel, handleRemoveChannel, userId,
           >
             {initials || <GroupIcon />}
           </Avatar>
-          <Button
-            variant='contained'
-            onClick={startVideo}
-            classes={{
-              label: classes.videoLabel,
-              root: classes.videoButton
-            }}
-            color='primary'
-          >
-               Start a Video Call
-          </Button>
           {type && <Typography>Type: {type}</Typography>}
         </Grid>
         <Grid

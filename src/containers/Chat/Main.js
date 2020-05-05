@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { processMessages, fetchAvatars, getTitle, getAvatar } from 'utils/chat'
@@ -10,12 +10,11 @@ import axios from 'axios'
 import { getPresignedURL } from 'api/media'
 import Lightbox from 'react-images'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Button from '@material-ui/core/Button';
 import EmptyMain from 'containers/Chat/EmptyMain'
-import cx from 'classnames'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import Grid from '@material-ui/core/Grid'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    paddingLeft: theme.spacing(4),
+    padding: theme.spacing(0, 1),
   },
   messageScroll: {
     flex: 1
@@ -58,34 +57,21 @@ const useStyles = makeStyles((theme) => ({
     // color: 'black'
     marginLeft: theme.spacing()
   },
-  rightDrawerClose: {
-    right: 10,
+  videoLabel: {
+    fontWeight: 'bold',
+    color: 'white',
+    textTransform: 'none'
   },
-  rightDrawerOpen: {
-    right: 10,
+  videoButton: {
+    backgroundColor: theme.circleIn.palette.brand,
+    padding: theme.spacing(1/2),
   },
-  leftDrawerClose: {
-    left: 10,
-  },
-  leftDrawerOpen: {
-  },
-  iconButton: {
-    position: 'absolute',
-    top: 12,
-    padding: 0,
-    border: '1px solid white',
-    zIndex: 1002
-  },
-  icon: {
-    fontSize: 16,
-  },
+  videoIcon: {
+    paddingBottom: theme.spacing(1/4)
+  }
 }))
 
 const Main = ({
-  onCollapseLeft,
-  onCollapseRight,
-  leftSpace,
-  rightSpace,
   channel,
   newMessage,
   user
@@ -317,34 +303,27 @@ const Main = ({
 
   const  handleImageClose = () => setImages([])
 
-  const renderIcon = d => {
-    return ( d
-      ? <KeyboardArrowLeftIcon className={classes.icon} />
-      : <KeyboardArrowRightIcon className={classes.icon} />
-    )}
+  const startVideo = useCallback(() =>
+    window.open(`/video-call/${channel.sid}`, '_blank'),
+  [channel])
 
   return (
     <div className={classes.root}>
       <div className={classes.header}>
-        <IconButton
-          className={cx(
-            leftSpace !== 0 ? classes.leftDrawerOpen : classes.leftDrawerClose,
-            classes.iconButton
-          )}
-          onClick={onCollapseLeft}
-        >
-          {renderIcon(leftSpace !== 0)}
-        </IconButton>
-        {channel && <IconButton
-          className={cx(
-            rightSpace !== 0 ? classes.rightDrawerOpen : classes.rightDrawerClose,
-            classes.iconButton
-          )}
-          onClick={onCollapseRight}
-        >
-          {renderIcon(rightSpace === 0)}
-        </IconButton>}
-        <Typography className={classes.headerTitle}>{title}</Typography>
+        {channel && <Grid container justify='space-between'>
+          <Typography className={classes.headerTitle}>{title}</Typography>
+          <Button
+            variant='contained'
+            onClick={startVideo}
+            classes={{
+              label: classes.videoLabel,
+              root: classes.videoButton
+            }}
+            color='primary'
+          >
+            <VideocamIcon className={classes.videoIcon} /> Start Video
+          </Button>
+        </Grid>}
       </div>
       <div className={classes.messageContainer}>
         {(!channel || messageItems.length === 1) && <EmptyMain noChannel={!channel} />}
