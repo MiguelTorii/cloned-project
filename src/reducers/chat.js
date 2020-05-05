@@ -20,6 +20,7 @@ export type ChatState = {
     channels: Array<ChatChannels>,
     openChannels: Array<ChatChannels>,
     unread: number,
+    local: Object,
     online: boolean,
     newMessage: ?Object
   },
@@ -42,6 +43,7 @@ const defaultState = {
     channels: [],
     openChannels: [],
     unread: 0,
+    local: {},
     online: false,
     newMessage: null,
   },
@@ -91,12 +93,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
   case chatActions.INIT_CHANNELS_CHAT:
     return { ...state, data: {
       ...state.data,
+      local: action.payload.local,
       channels: action.payload.channels
     }}
   case chatActions.UPDATE_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,
-      channels: [action.payload.channel, ...state.data.channels.filter(c => c.sid !== action.payload.channel.sid)]
+      channels: [action.payload.channel, ...state.data.channels.filter(c => c.sid !== action.payload.channel.sid)],
+      local: { ...state.data.local, [action.payload.channel.sid]: { unread: action.payload.unread } }
     }}
   case chatActions.ADD_CHANNEL_CHAT:
     return { ...state, data: {
@@ -117,13 +121,6 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       online: false,
       openChannels: [],
       unread: 0
-    }}
-  case chatActions.UPDATE_UNREAD_COUNT_CHAT:
-    return { ...state, data: {
-      ...state.data,
-      unread: state.data.unread + Number(action.payload.unread) > 0 ?
-        state.data.unread + Number(action.payload.unread)
-        :0
     }}
   case chatActions.SET_OPEN_CHANNELS:
     return { ...state, data: {

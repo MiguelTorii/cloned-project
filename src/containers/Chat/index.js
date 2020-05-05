@@ -53,7 +53,6 @@ const useStyles = makeStyles(() => ({
 
 const Chat = ({
   handleRemoveChannel,
-  handleUpdateUnreadCount,
   handleInitChat,
   handleShutdownChat,
   handleBlockUser,
@@ -136,7 +135,6 @@ const Chat = ({
       <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}
-          handleUpdateUnreadCount={handleUpdateUnreadCount}
           userId={userId}
           client={client}
           currentChannel={currentChannel}
@@ -181,7 +179,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
-      handleUpdateUnreadCount: chatActions.handleUpdateUnreadCount,
     },
     dispatch
   );

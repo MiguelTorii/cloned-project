@@ -57,7 +57,6 @@ type Props = {
   handleShutdownChat: Function,
   handleBlockUser: Function,
   handleRemoveChannel: Function,
-  handleUpdateUnreadCount: Function,
   handleRoomClick: Function,
   updateOpenChannels: Function,
   handleChannelClose: Function,
@@ -81,18 +80,18 @@ const FloatingChat = ({
   handleChannelClose,
   enqueueSnackbarAction,
   updateTitleAction,
-  handleUpdateUnreadCount
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null)
+  const [unread, setUnread] = useState(0)
 
   const {
     data: {
       uuid,
       client,
       channels,
-      unread,
       newMessage,
       online,
+      local,
       openChannels
     }
   } = chat
@@ -112,13 +111,22 @@ const FloatingChat = ({
   );
 
   useEffect(() => {
+    if(local) {
+      let unread = 0
+      Object.keys(local).forEach(l => {
+        unread += local[l].unread
+      })
+      setUnread(unread)
+    }
+  }, [local])
+
+  useEffect(() => {
     const handleMessage =() =>{
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
       const { firstName, lastName } = attributes;
       const sids = openChannels.map(oc => oc.sid)
       if (Number(author) !== Number(userId) && window.location.pathname !== '/chat' && !sids.includes(channel.sid)) {
-        handleUpdateUnreadCount(1)
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {
@@ -264,7 +272,6 @@ const FloatingChat = ({
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
-              onUpdateUnreadCount={handleUpdateUnreadCount}
             />
           ))}
           <Tooltip
@@ -287,7 +294,6 @@ const FloatingChat = ({
                     channel={item}
                     userId={userId}
                     onOpenChannel={handleRoomClick}
-                    onUpdateUnreadCount={handleUpdateUnreadCount}
                   />
                 ))
               )}
@@ -322,7 +328,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
-      handleUpdateUnreadCount: chatActions.handleUpdateUnreadCount,
       handleRoomClick: chatActions.handleRoomClick,
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,

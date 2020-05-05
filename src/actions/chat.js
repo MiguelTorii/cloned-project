@@ -53,19 +53,19 @@ const initClient = ({ client }: { client: Object }): Action => ({
   payload: { client }
 })
 
-const initChannels = ({ channels }: { channels: array }): Action => ({
+const initChannels = ({ channels, local }: { channels: array, local: Object }): Action => ({
   type: chatActions.INIT_CHANNELS_CHAT,
-  payload: { channels }
+  payload: { channels, local }
 })
 
-const updateChannel = ({ channel }: { channel: Object }): Action => ({
+const updateChannel = ({ channel, unread }: { channel: Object, unread: number }): Action => ({
   type: chatActions.UPDATE_CHANNEL_CHAT,
-  payload: { channel }
+  payload: { channel, unread }
 })
 
-const addChannel = ({ channel }: { channel: Object }): Action => ({
+const addChannel = ({ channel, unread }: { channel: Object, unread: number }): Action => ({
   type: chatActions.ADD_CHANNEL_CHAT,
-  payload: { channel }
+  payload: { channel, unread }
 })
 
 const removeChannel = ({ sid }: { sid: string }): Action => ({
@@ -75,11 +75,6 @@ const removeChannel = ({ sid }: { sid: string }): Action => ({
 
 const shutdown = (): Action => ({
   type: chatActions.SHUTDOWN_CHAT,
-})
-
-const updateUnreadCount = ({ unread }: { unread: number }) => ({
-  type: chatActions.UPDATE_UNREAD_COUNT_CHAT,
-  payload: { unread }
 })
 
 const setOpenChannels = ({ openChannels }: { openChannels: array }) => ({
@@ -149,9 +144,23 @@ export const handleInitChat = () =>
         criteria: 'lastMessage',
         order: 'descending'
       });
+      const local = {}
+
+      const unreadCount = channel => {
+        try{
+          if (!channel.lastConsumedMessageIndex || !channel.lastMessage) return 0
+          return channel.lastMessage.index - channel.lastConsumedMessageIndex
+        } finally {}
+      }
+
+      channels.forEach(c => {
+        local[c.sid] = {
+          unread: unreadCount(c)
+        }
+      })
 
       dispatch(initClient({ client }));
-      dispatch(initChannels({ channels }))
+      dispatch(initChannels({ channels, local }))
 
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
@@ -163,19 +172,14 @@ export const handleInitChat = () =>
           dispatch(removeChannel({ sid }))
         })
 
-        client.on('channelUpdated', async ({ channel, updateReasons }) => {
-          if (
-            updateReasons.length > 0 &&
-          updateReasons.indexOf('lastMessage') > -1
-          ) {
-            dispatch(updateChannel({ channel }));
-          }
+        client.on('channelUpdated', async ({ channel }) => {
+          dispatch(updateChannel({ channel, unread: unreadCount(channel) }));
         });
 
         client.on('messageAdded', async message => {
           const { channel } = message;
           dispatch(newMessage({ message }))
-          dispatch(updateChannel({ channel }));
+          dispatch(updateChannel({ channel, unread: unreadCount(channel) }));
         });
 
         client.on('tokenAboutToExpire', async () => {
@@ -210,10 +214,6 @@ export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Fun
     } catch (err) {}
   }
   dispatch(shutdown());
-}
-
-export const handleUpdateUnreadCount = (unread) => async (dispatch: Dispatch) => {
-  if(unread) dispatch(updateUnreadCount({ unread }))
 }
 
 export const handleBlockUser = ({ blockedUserId }) => async () => {

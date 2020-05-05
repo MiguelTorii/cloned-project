@@ -10,11 +10,10 @@ type Props = {
   userId: string,
   onOpenChannel: Function,
   selected: boolean,
-  dark: boolean,
-  onUpdateUnreadCount: Function
+  dark: boolean
 };
 
-const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdateUnreadCount }: Props) => {
+const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId }: Props) => {
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState('')
   const [unread, setUnread] = useState(0)
@@ -59,7 +58,6 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId, onUpdate
         setTitle(t)
         setSubTitle(st)
         setLoading(false)
-        onUpdateUnreadCount(u);
 
         if (!channel._events.messageAdded || channel._events.messageAdded.length === 0) {
           channel.on('messageAdded', message => {
