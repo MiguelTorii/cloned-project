@@ -2,6 +2,7 @@
 
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import withWidth from '@material-ui/core/withWidth';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
@@ -75,8 +76,8 @@ const styles = theme => ({
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3)
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1)
     }
   },
   paper: {
@@ -87,8 +88,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme
-      .spacing(3)}px`
+    padding: `${theme.spacing(2)}px ${theme.spacing(2)}px ${theme
+      .spacing(2)}px`
   },
   title: {
     display: 'flex',
@@ -100,14 +101,18 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  type: string
+  type: string,
+  width: string
 };
 
 type State = {};
 
 class PostTips extends React.PureComponent<Props, State> {
   render() {
-    const { classes, type } = this.props;
+    const { classes, type, width } = this.props;
+
+    if (['sm'].includes(width)) return null;
+
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
@@ -137,4 +142,4 @@ class PostTips extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(PostTips);
+export default withStyles(styles)(withWidth()(PostTips));

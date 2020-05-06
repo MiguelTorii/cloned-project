@@ -23,8 +23,8 @@ const styles = theme => ({
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3)
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1)
     }
   },
   paper: {
@@ -41,7 +41,6 @@ const styles = theme => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
   },
