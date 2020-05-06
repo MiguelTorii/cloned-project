@@ -38,8 +38,13 @@ const styles = theme => ({
     background: theme.circleIn.palette.rowSelection,
     display: 'flex',
     height: '100%',
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
     justifyContent: 'center',
+    width: '100%',
+  },
+  image: {
+    height: '100%',
+    objectFit: 'contain',
     width: '100%',
   },
   label: {
@@ -199,7 +204,7 @@ const Flashcard = ({
           {
             answerImage &&
             <div className={classes.media}>
-              <img alt='card media' src={answerImage} style={{ width: '100%' }} />
+              <img alt='card media' src={answerImage} className={classes.image} />
             </div>
           }
           {
@@ -220,7 +225,7 @@ const Flashcard = ({
         {
           questionImage &&
           <div className={classes.media}>
-            <img alt='card media' src={questionImage} style={{ width: '100%' }} />
+            <img alt='card media' src={questionImage} className={classes.image} />
           </div>
         }
         {
