@@ -3,27 +3,43 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
+import chatImg from 'assets/img/chat_img.png';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
 import Dialog, { dialogStyle } from '../Dialog';
 
-const styles = () => ({
+const styles = (theme) => ({
   dialog: {
     ...dialogStyle,
     maxWidth: 700,
   },
   image: {
+    height: 300,
+    objectFit: 'contain',
+    width: '100%',
+  },
+  imageContainer: {
     display: 'flex',
     justifyContent: 'center',
     marginTop: 24
   },
   row: {
     fontSize: 16,
-  }
+  },
+  title: {
+    color: theme.circleIn.palette.primaryText1,
+    fontSize: 28,
+    fontStretch: 'normal',
+    fontWeight: 500,
+    letterSpacing: 1.1,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
 });
 
 type Props = {
   classes: Object,
   confirmTooltip: Function,
+  schoolId: number,
   viewedOnboarding: boolean,
   viewedTooltips: Array<number>
 };
@@ -31,6 +47,7 @@ type Props = {
 const Announcements = ({
   classes,
   confirmTooltip,
+  schoolId,
   viewedOnboarding,
   viewedTooltips
 }: Props) => {
@@ -39,7 +56,8 @@ const Announcements = ({
 
   useEffect(() => {
     if (
-      !viewedOnboarding // Onboarding not completed
+      ![16, 52, 57].includes(schoolId) // School not on this list
+      || !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading
       || viewedTooltips.includes(ID) // Tooltip already dismissed by user
     ) {
@@ -47,7 +65,7 @@ const Announcements = ({
     } else {
       setOpen(true);
     }
-  }, [viewedOnboarding, viewedTooltips]);
+  }, [schoolId, viewedOnboarding, viewedTooltips]);
 
   const handleConfirmation = () => {
     confirmTooltip(ID);
@@ -62,23 +80,20 @@ const Announcements = ({
       onOk={handleConfirmation}
       open={open}
       showActions
-      title="Leaderboard has been reset"
+      title={
+        <div className={classes.title}>
+          Have Class Discussions in <b>Every Class</b>
+        </div>
+      }
     >
       <div>
         <p className={classes.row}>
-          As one journey ends, another begins. April has ended and we all know what this means
+          CircleIn now automatically places you and all your classmates into a Class
+          Chat for each course. You can collaborate with the entire class here, ask
+          questions directly to tutors, and discuss classwork together.
         </p>
-        <p className={classes.row}>
-          First Tuesday Awards!!!!
-        </p>
-        <p className={classes.row}>
-          Winners will be announced next week. The leaderboard has been reset and everyone’s points have been reset to zero. At the end of May, we’ll announce more winners.
-        </p>
-        <p className={classes.row}>
-          To view the total points that you have earned so far this semester, go to your Profile
-        </p>
-        <div className={classes.image}>
-          <img src="https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif" alt="so excited" />
+        <div className={classes.imageContainer}>
+          <img className={classes.image} src={chatImg} alt="chat" />
         </div>
       </div>
     </Dialog>
@@ -86,9 +101,10 @@ const Announcements = ({
 }
 
 const mapStateToProps = (
-  { user: { syncData: { viewedOnboarding, viewedTooltips } } }): {} => ({
+  { user: { syncData: { viewedOnboarding, viewedTooltips }, data: { schoolId } }}): {} => ({
+  schoolId: Number(schoolId),
   viewedOnboarding,
-  viewedTooltips
+  viewedTooltips,
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

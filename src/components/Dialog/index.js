@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 // @flow
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -101,12 +102,12 @@ const Dialog = ({
   showActions: ?boolean,
   showCancel: ?boolean,
   showHeader: ?boolean,
-  title: ?string,
+  title: ?ReactNode,
   updateVisibility: Function
 }) => {
   useEffect(() => {
     updateVisibility(open);
-  }, [open])
+  }, [open, updateVisibility]);
 
   return (
     <MuiDialog
@@ -129,7 +130,9 @@ const Dialog = ({
       <DialogContent classes={{ root: classes.contentRoot }}>
         {
           title &&
-          <div id='circle-in-dialog-title' className={classes.title}>{title}</div>
+          typeof title === 'string' ?
+            <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
+            title
         }
         {
           loading
