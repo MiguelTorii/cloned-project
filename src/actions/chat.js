@@ -2,7 +2,7 @@
 // @flow
 
 import uuidv4 from 'uuid/v4';
-import { renewTwilioToken, leaveChat, blockChatUser } from 'api/chat';
+import { getGroupMembers, getChannels, renewTwilioToken, leaveChat, blockChatUser } from 'api/chat';
 import Chat from 'twilio-chat';
 import update from 'immutability-helper';
 import { chatActions } from '../constants/action-types';
@@ -48,6 +48,11 @@ const newMessage = ({ message }): Action => ({
   payload: { message }
 })
 
+const initLocal = ({ local }: { local: Object }): Action => ({
+  type: chatActions.INIT_LOCAL_CHAT,
+  payload: { local }
+})
+
 const initClient = ({ client }: { client: Object }): Action => ({
   type: chatActions.INIT_CLIENT_CHAT,
   payload: { client }
@@ -63,9 +68,19 @@ const updateChannel = ({ channel, unread }: { channel: Object, unread: number })
   payload: { channel, unread }
 })
 
-const addChannel = ({ channel, unread }: { channel: Object, unread: number }): Action => ({
+const updateMembers = ({ members, channelId }: { channelId: number, members: Object }): Action => ({
+  type: chatActions.UPDATE_MEMBERS_CHAT,
+  payload: { members, channelId }
+})
+
+const removeMember = ({ member }: { member: Object }): Action => ({
+  type: chatActions.REMOVE_MEMBER_CHAT,
+  payload: { member }
+})
+
+const addChannel = ({ userId, channel, unread }: { channel: Object, unread: number, userId: string }): Action => ({
   type: chatActions.ADD_CHANNEL_CHAT,
-  payload: { channel, unread }
+  payload: { userId, channel, unread }
 })
 
 const removeChannel = ({ sid }: { sid: string }): Action => ({
@@ -109,6 +124,15 @@ export const openChannelWithEntity = ({
   );
 };
 
+const initLocalChannels = async dispatch => {
+  try {
+    const local = await getChannels()
+    dispatch(initLocal({ local }))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const handleInitChat = () =>
   async (dispatch: Dispatch, getState: Function) => {
     const {
@@ -123,6 +147,7 @@ export const handleInitChat = () =>
     } = getState()
 
     try {
+      initLocalChannels(dispatch)
       if (curClient && curClient.connectionState === "connected") return
       const accessToken = await renewTwilioToken({
         userId
@@ -155,7 +180,8 @@ export const handleInitChat = () =>
 
       channels.forEach(c => {
         local[c.sid] = {
-          unread: unreadCount(c)
+          unread: unreadCount(c),
+          twilioChannel: c,
         }
       })
 
@@ -164,12 +190,33 @@ export const handleInitChat = () =>
 
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
-          dispatch(addChannel({ channel }));
+          dispatch(addChannel({ channel, userId }))
+          // initLocalChannels(dispatch)
         });
 
         client.on('channelLeft', async channel => {
           const { sid } = channel
           dispatch(removeChannel({ sid }))
+        })
+
+        client.on('memberJoined',  member => {
+          const update = async () => {
+            const { channel: { sid } } = member
+            const res = await getGroupMembers({ chatId: sid })
+            const members = res.map(m => ({
+              firstname: m.firstName,
+              lastname: m.lastName,
+              image: m.profileImageUrl,
+              userId: m.userId
+            }))
+            dispatch(updateMembers({ members, channelId: sid }))
+          }
+
+          setTimeout(update, 1000)
+        })
+
+        client.on('memberLeft', async member => {
+          dispatch(removeMember({ member }))
         })
 
         client.on('channelUpdated', async ({ channel }) => {

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AddMembers = ({ updateAvatars, userId, schoolId, channel, members }) => {
+const AddMembers = ({ userId, schoolId, channel, members }) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -72,11 +72,10 @@ const AddMembers = ({ updateAvatars, userId, schoolId, channel, members }) => {
         users: selectedUsers.map(user => Number(user.userId))
       });
     } finally {
-      await updateAvatars()
       setLoading(false)
       handleCreateChannelClose()
     }
-  }, [channel, handleCreateChannelClose, updateAvatars])
+  }, [channel, handleCreateChannelClose])
 
   return (
     <Grid

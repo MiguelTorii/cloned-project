@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import cx from 'classnames'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import moment from 'moment'
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
@@ -92,17 +93,26 @@ const Chat = ({
   chat,
   user
 }: Props) => {
-  const { data: { client, channels, newMessage }} = chat
+  const { data: { client, channels, newMessage, local }} = chat
   const { data: { userId, schoolId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
   const [prevWidth, setPrevWidth] = useState(null)
+  const [channelList, setChannelList] = useState([])
 
   const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
 
   const curSize = useMemo(() => width === 'xs' ? 6 : 3, [width])
+
+  useEffect(() => {
+    const channelList = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
+      if (local[a].lastMessage.message === '') return 0
+      return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
+    })
+    setChannelList(channelList)
+  }, [local])
 
   useEffect(() => {
     if(width !== prevWidth) {
@@ -192,6 +202,8 @@ const Chat = ({
       <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left: classes.hidden}>
         <LeftMenu
           channels={channels}
+          channelList={channelList}
+          local={local}
           userId={userId}
           client={client}
           currentChannel={currentChannel}
@@ -216,6 +228,7 @@ const Chat = ({
           userId={userId}
           schoolId={schoolId}
           channel={currentChannel}
+          local={local}
           clearCurrentChannel={clearCurrentChannel}
         />
       </Grid>

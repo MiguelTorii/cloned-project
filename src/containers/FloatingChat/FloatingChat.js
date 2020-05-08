@@ -13,6 +13,7 @@ import usePrevious from 'hooks/usePrevious'
 import ChatListItem from 'components/ChatListItem';
 import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
+import moment from 'moment'
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -83,6 +84,7 @@ const FloatingChat = ({
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null)
   const [unread, setUnread] = useState(0)
+  const [channelList, setChannelList] = useState([])
 
   const {
     data: {
@@ -113,6 +115,11 @@ const FloatingChat = ({
   useEffect(() => {
     if(local) {
       let unread = 0
+      const channelList = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
+        if (!local[a].lastMessage.message) return 0
+        return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
+      })
+      setChannelList(channelList)
       Object.keys(local).forEach(l => {
         unread += local[l].unread
       })
@@ -283,15 +290,15 @@ const FloatingChat = ({
               unread={unread}
               onCreateChannel={handleCreateChannelOpen}
             >
-              {channels.length === 0 ? (
+              {channelList.length === 0 ? (
                 <div className={classes.noMessages}>
                   <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
                 </div>
               ) : (
-                channels.map(item => (
+                channelList.map(c => (
                   <ChatListItem
-                    key={item.sid}
-                    channel={item}
+                    key={local[c].sid}
+                    channel={local[c]}
                     userId={userId}
                     onOpenChannel={handleRoomClick}
                   />

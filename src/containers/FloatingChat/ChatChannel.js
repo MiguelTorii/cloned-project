@@ -126,7 +126,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
         },
       } = this.props;
       try {
-        const { lastConsumedMessageIndex, lastMessage: { index }} = channel
         channel.setAllMessagesConsumed();
       } catch (err) {
         console.log(err);

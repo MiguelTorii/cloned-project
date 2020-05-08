@@ -69,10 +69,12 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
   userId: string,
   channels: array,
+  channelList: array,
+  local: Object,
   setCurrentChannel: Function
 };
 
-const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client }: Props) => {
+const LeftMenu = ({ local, channelList, userId, channels, setCurrentChannel, currentChannel, client }: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
   const handleCreateChannelClose = () => setChannelType(null)
@@ -91,6 +93,7 @@ const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client 
 
       const options = {
         includeScore: true,
+        threshold: 0,
         keys: ['name']
       }
 
@@ -160,16 +163,16 @@ const LeftMenu = ({ userId, channels, setCurrentChannel, currentChannel, client 
           </Grid>
         </Grid>
         <Grid item className={classes.gridChatList}>
-          <EmptyLeftMenu emptyChannels={channels.length === 0} />
+          <EmptyLeftMenu emptyChannels={channelList.length === 0} />
           <List className={classes.root}>
-            {channels.map(c => (
+            {channelList.map(c => (
               <div
-                key={c.sid}
-                className={clsx(!searchChannels.includes(c.sid) && classes.hidden)}
+                key={local[c].sid}
+                className={clsx(!searchChannels.includes(local[c].sid) && classes.hidden)}
               >
                 <ChatListItem
-                  selected={c === currentChannel}
-                  channel={c}
+                  selected={currentChannel && c === currentChannel.sid}
+                  channel={local[c]}
                   userId={userId}
                   onOpenChannel={setCurrentChannel}
                 />

@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 // @flow
 import axios from 'axios';
+import moment from 'moment'
 import { API_ROUTES } from '../constants/routes';
 import type { ChatPoints, CreateChat, ChatUser } from '../types/models';
 import { getToken } from './utils';
@@ -108,6 +109,49 @@ export const createChannel = async ({
       thumbnailUrl: '',
       type: ''
     };
+  }
+};
+
+export const getChannels = async (): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.CHAT}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    const local = {}
+    data.chats.forEach(c => {
+      local[c.id] = {
+        sid: c.id,
+        title: c.group_name,
+        lastMessage: {
+          date: moment(c.last_received_message.date_sent).toISOString(),
+          message: c.last_received_message.message,
+          user: {
+            firstname: c.last_received_message.user.first_name,
+            lastname: c.last_received_message.user.last_name,
+            userId: c.last_received_message.user.user_id,
+            image: c.last_received_message.user.profile_image_url,
+          },
+        },
+        thumbnail: c.thumbnail,
+        members: c.users.map(u => ({
+          firstname: u.first_name,
+          lastname: u.last_name,
+          userId: u.user_id,
+          image: u.profile_image_url,
+        }))
+      }
+    });
+    return local
+  } catch (err) {
+    console.log(err);
+    return {};
   }
 };
 

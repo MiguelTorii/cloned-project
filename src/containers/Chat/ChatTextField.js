@@ -68,7 +68,7 @@ const styles = theme => ({
   },
   img: {
     objectFit: 'scale-down',
-    width: 240,
+    width: '60%',
     borderRadius: 4
   },
   clearIcon: {
