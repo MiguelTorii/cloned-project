@@ -206,6 +206,7 @@ class Layout extends React.PureComponent<Props, State> {
       location: { pathname },
       updateFilter,
       push,
+      chat,
       fetchFeed
     } = this.props;
     const {
@@ -213,6 +214,15 @@ class Layout extends React.PureComponent<Props, State> {
       runningTour,
       userClasses
     } = user;
+
+    const {
+      data: { local }
+    } = chat
+
+    let unreadMessages = 0
+    Object.keys(local).forEach(l => {
+      unreadMessages += local[l].unread
+    })
 
     if (campaign.newClassExperience === null) return null
 
@@ -241,6 +251,7 @@ class Layout extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <MainLayout
+            unreadMessages={unreadMessages}
             userId={userId}
             runningTour={runningTour}
             newClassExperience={campaign.newClassExperience}
@@ -312,8 +323,9 @@ class Layout extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+const mapStateToProps = ({ chat, user, campaign }: StoreState): {} => ({
   user,
+  chat,
   campaign
 });
 

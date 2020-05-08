@@ -291,6 +291,7 @@ type Props = {
   userProfileUrl: string,
   children: any,
   unreadCount: number,
+  unreadMessages: number,
   pathname: string,
   handleNotificationOpen: Function,
   handleSignOut: Function,
@@ -467,6 +468,7 @@ class MainLayout extends React.Component<Props, State> {
       width,
       children,
       unreadCount,
+      unreadMessages,
       location: { search = '' },
       pathname,
       runningTour,
@@ -542,7 +544,7 @@ class MainLayout extends React.Component<Props, State> {
           <IconButton
             color="inherit"
           >
-            <Badge color="secondary">
+            <Badge badgeContent={unreadMessages} color="secondary">
               <ChatIcon />
             </Badge>
           </IconButton>
@@ -847,7 +849,9 @@ class MainLayout extends React.Component<Props, State> {
                   link='/chat'
                 >
                   <Badge color="secondary">
-                    <ChatIcon />
+                    <Badge badgeContent={unreadMessages} color="secondary">
+                      <ChatIcon />
+                    </Badge>
                   </Badge>
                 </IconButton>
                 <IconButton
