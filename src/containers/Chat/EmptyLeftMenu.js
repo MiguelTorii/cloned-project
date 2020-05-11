@@ -7,10 +7,12 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import LoadImg from 'components/LoadImg'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   inviteButton: {
@@ -38,10 +40,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     marginTop: theme.spacing(),
     textAlign: 'center'
+  },
+  loading: {
+    width: '100%',
+    marginTop: theme.spacing(2),
+    textAlign: 'center'
   }
 }))
 
-const EmptyLeftMenu = ({ emptyChannels }) => {
+const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
   const [inviteDialog, setInviteDialog] = useState(false)
   const handleInviteClose = () => setInviteDialog(false)
   const handleInviteOpen = () => setInviteDialog(true)
@@ -62,6 +69,9 @@ const EmptyLeftMenu = ({ emptyChannels }) => {
         >
             Once you send a message about class or a problem, all of your messages will be here
         </Typography>
+        {isLoading && <div className={classes.loading}>
+          <CircularProgress />
+        </div>}
       </div>}
       <Button
         variant='contained'

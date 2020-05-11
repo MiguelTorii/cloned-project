@@ -71,10 +71,22 @@ type Props = {
   channels: array,
   channelList: array,
   local: Object,
-  setCurrentChannel: Function
+  isLoading: boolean,
+  setCurrentChannel: Function,
+  currentChannel: ?Object,
+  client: Object
 };
 
-const LeftMenu = ({ local, channelList, userId, channels, setCurrentChannel, currentChannel, client }: Props) => {
+const LeftMenu = ({
+  local,
+  isLoading,
+  channelList,
+  userId,
+  channels,
+  setCurrentChannel,
+  currentChannel,
+  client
+}: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
   const handleCreateChannelClose = () => setChannelType(null)
@@ -163,7 +175,7 @@ const LeftMenu = ({ local, channelList, userId, channels, setCurrentChannel, cur
           </Grid>
         </Grid>
         <Grid item className={classes.gridChatList}>
-          <EmptyLeftMenu emptyChannels={channelList.length === 0} />
+          <EmptyLeftMenu emptyChannels={channelList.length === 0} isLoading={isLoading} />
           <List className={classes.root}>
             {channelList.map(c => (
               <div

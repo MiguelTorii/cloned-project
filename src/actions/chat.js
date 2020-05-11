@@ -48,6 +48,10 @@ const newMessage = ({ message }): Action => ({
   payload: { message }
 })
 
+const startLoading = (): Action => ({
+  type: chatActions.START_LOADING,
+})
+
 const initLocal = ({ local }: { local: Object }): Action => ({
   type: chatActions.INIT_LOCAL_CHAT,
   payload: { local }
@@ -126,6 +130,7 @@ export const openChannelWithEntity = ({
 
 const initLocalChannels = async dispatch => {
   try {
+    dispatch(startLoading())
     const local = await getChannels()
     dispatch(initLocal({ local }))
   } catch (e) {

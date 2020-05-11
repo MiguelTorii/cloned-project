@@ -70,6 +70,11 @@ const mergeObjects = (first, second) => {
 
 export default (state: ChatState = defaultState, action: Action): ChatState => {
   switch (action.type) {
+  case chatActions.START_LOADING:
+    return {
+      ...state,
+      isLoading: true
+    }
   case chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
     return update(state, {
       data: {
@@ -114,10 +119,13 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       }
     }}
   case chatActions.INIT_LOCAL_CHAT:
-    return { ...state, data: {
-      ...state.data,
-      local: mergeObjects(state.data.local, action.payload.local)
-    }}
+    return {
+      ...state,
+      isLoading: false,
+      data: {
+        ...state.data,
+        local: mergeObjects(state.data.local, action.payload.local)
+      }}
   case chatActions.INIT_CLIENT_CHAT:
     return { ...state, data: {
       ...state.data,
@@ -125,11 +133,13 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       client: action.payload.client
     }}
   case chatActions.INIT_CHANNELS_CHAT:
-    return { ...state, data: {
-      ...state.data,
-      local: mergeObjects(state.data.local, action.payload.local),
-      channels: action.payload.channels
-    }}
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        local: mergeObjects(state.data.local, action.payload.local),
+        channels: action.payload.channels
+      }}
   case chatActions.UPDATE_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,

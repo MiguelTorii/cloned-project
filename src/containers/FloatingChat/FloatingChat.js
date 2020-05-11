@@ -14,6 +14,7 @@ import ChatListItem from 'components/ChatListItem';
 import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
 import moment from 'moment'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -38,6 +39,7 @@ const styles = theme => ({
   noMessages: {
     display: 'flex',
     alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'center',
     margin: theme.spacing(2)
   },
@@ -47,6 +49,11 @@ const styles = theme => ({
   snackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  loading: {
+    width: '100%',
+    marginTop: theme.spacing(2),
+    textAlign: 'center'
   }
 });
 
@@ -87,6 +94,7 @@ const FloatingChat = ({
   const [channelList, setChannelList] = useState([])
 
   const {
+    isLoading,
     data: {
       uuid,
       client,
@@ -293,6 +301,9 @@ const FloatingChat = ({
               {channelList.length === 0 ? (
                 <div className={classes.noMessages}>
                   <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
+                  {isLoading && <div className={classes.loading}>
+                    <CircularProgress />
+                  </div>}
                 </div>
               ) : (
                 channelList.map(c => (

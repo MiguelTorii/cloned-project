@@ -46,6 +46,7 @@ const Home = ({
     }
 
     if (userId) init()
+    // eslint-disable-next-line
   }, [userId])
 
   if(newClassesGrid === null) return (

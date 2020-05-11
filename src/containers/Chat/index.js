@@ -93,7 +93,7 @@ const Chat = ({
   chat,
   user
 }: Props) => {
-  const { data: { client, channels, newMessage, local }} = chat
+  const { isLoading, data: { client, channels, newMessage, local }} = chat
   const { data: { userId, schoolId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
@@ -205,6 +205,7 @@ const Chat = ({
           channelList={channelList}
           local={local}
           userId={userId}
+          isLoading={isLoading}
           client={client}
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
