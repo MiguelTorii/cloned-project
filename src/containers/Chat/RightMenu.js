@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { getInitials} from 'utils/chat'
 import Typography from '@material-ui/core/Typography'
@@ -15,6 +15,10 @@ import GroupIcon from '@material-ui/icons/Group';
 import BlockUser from 'containers/Chat/BlockUser'
 import RemoveChat from 'containers/Chat/RemoveChat'
 import AddMembers from 'containers/Chat/AddMembers'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
@@ -64,6 +68,21 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     fontSize: 30
   },
+  membersExpansion: {
+    maxWidth: '95%',
+    backgroundColor: theme.circleIn.palette.primaryBackground,
+  },
+  membersSummary: {
+    margin: 0,
+    padding: 0
+  },
+  membersDetails: {
+    padding: 0
+  },
+  membersExpanded: {
+    margin: '0 !important',
+    minHeight: '0 !important'
+  }
 }))
 
 const RightMenu = ({ local, schoolId, clearCurrentChannel, handleRemoveChannel, userId, channel, handleBlock }) => {
@@ -140,36 +159,55 @@ const RightMenu = ({ local, schoolId, clearCurrentChannel, handleRemoveChannel, 
             root: classes.usersContainer
           }}
         >
-          <Typography className={classes.usersTitle}>In this chat...</Typography>
-          <List dense className={classes.listRoot}>
-            {local[channel.sid].members.map(m => {
-              const fullName = `${m.firstname} ${m.lastname}`
-              return (
-                <ListItem
-                  key={m.userId}
-                  component={MyLink}
-                  link={`/profile/${m.userId}`}
-                  button
-                  classes={{
-                    secondaryAction: classes.secondaryAction
-                  }}
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={fullName}
-                      src={m.image}
+          <ExpansionPanel
+            elevation={0}
+            classes={{
+              root: classes.membersExpansion,
+              expanded: classes.membersExpanded
+            }}
+            TransitionProps={{ unmountOnExit: true }}
+          >
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              classes={{
+                root: classes.membersSummary,
+                expanded: classes.membersExpanded
+              }}
+            >
+              <Typography className={classes.usersTitle}>In this chat...</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.membersDetails}>
+              <List dense className={classes.listRoot}>
+                {local[channel.sid].members.map(m => {
+                  const fullName = `${m.firstname} ${m.lastname}`
+                  return (
+                    <ListItem
+                      key={m.userId}
+                      component={MyLink}
+                      link={`/profile/${m.userId}`}
+                      button
+                      classes={{
+                        secondaryAction: classes.secondaryAction
+                      }}
                     >
-                      {getInitials({name: fullName})}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={fullName} />
-                  <ListItemSecondaryAction>
-                    <ArrowForwardIosIcon className={classes.icon} />
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={fullName}
+                          src={m.image}
+                        >
+                          {getInitials({name: fullName})}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={fullName} />
+                      <ListItemSecondaryAction>
+                        <ArrowForwardIosIcon className={classes.icon} />
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         </Grid>
         <AddMembers
           userId={userId}

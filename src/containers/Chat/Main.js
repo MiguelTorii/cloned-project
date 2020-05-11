@@ -63,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none'
   },
   videoButton: {
-    backgroundColor: theme.circleIn.palette.brand,
+    backgroundColor: theme.circleIn.palette.darkActionBlue,
     padding: theme.spacing(1/2),
   },
   videoIcon: {
-    paddingBottom: theme.spacing(1/4)
+    marginRight: theme.spacing(1/2),
+    paddingBottom: theme.spacing(1/8)
   }
 }))
 

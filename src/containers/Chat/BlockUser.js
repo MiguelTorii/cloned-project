@@ -43,7 +43,7 @@ const BlockUser = ({ otherUser, userId, handleBlock }) => {
           root: classes.blockButton
         }}
       >
-          Block {otherUser.firstName} {otherUser.lastName}
+          Block {otherUser.firstname} {otherUser.lastname}
       </Button>
       <Dialog
         ariaDescribedBy="confirm-dialog-description"

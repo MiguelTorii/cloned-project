@@ -25,6 +25,7 @@ const circleInTheme = {
   dividerColor: '#ffffff', // validate
   inputBorderColor: '#959595',
   buttonBackground: '#598498',
+  darkActionBlue: '#3177E7',
   // v2
   success: '#60b515',
   snackbar: '#114255',
@@ -40,6 +41,7 @@ const theme = createMuiTheme({
       danger: circleInTheme.danger,
       borders: circleInTheme.borders,
       brand: circleInTheme.brand,
+      darkActionBlue: circleInTheme.darkActionBlue,
       rowSelection: circleInTheme.rowSelection,
       buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,
