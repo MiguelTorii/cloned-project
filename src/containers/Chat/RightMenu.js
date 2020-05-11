@@ -58,7 +58,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   usersTitle: {
-    padding: theme.spacing()
+    padding: 0,
+    fontWeight: 'bold',
+  },
+  usersCount: {
+    marginLeft: 'auto',
+    fontWeight: 'bold',
+    paddingRight: theme.spacing()
   },
   icon: {
     cursor: 'pointer',
@@ -71,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 30
   },
   membersExpansion: {
-    maxWidth: '95%',
     backgroundColor: theme.circleIn.palette.primaryBackground,
   },
   membersSummary: {
@@ -84,6 +89,10 @@ const useStyles = makeStyles((theme) => ({
   membersExpanded: {
     margin: '0 !important',
     minHeight: '0 !important'
+  },
+  expandIcon: {
+    padding: 0,
+    marginRight: 0,
   }
 }))
 
@@ -181,10 +190,12 @@ const RightMenu = ({
               expandIcon={<ExpandMoreIcon />}
               classes={{
                 root: classes.membersSummary,
+                expandIcon: classes.expandIcon,
                 expanded: classes.membersExpanded
               }}
             >
               <Typography className={classes.usersTitle}>In this chat...</Typography>
+              <Typography className={classes.usersCount}>{local[channel.sid].members.length}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.membersDetails}>
               <List dense className={classes.listRoot}>
@@ -194,6 +205,7 @@ const RightMenu = ({
                     <ListItem
                       key={m.userId}
                       component={MyLink}
+                      disableGutters
                       link={`/profile/${m.userId}`}
                       button
                       classes={{
