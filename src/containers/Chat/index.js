@@ -244,7 +244,6 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush,
       handleInitChat: chatActions.handleInitChat,
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,

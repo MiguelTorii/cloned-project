@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     borderTop: `1px solid ${theme.circleIn.palette.modalBackground}`,
   },
   listRoot: {
+    width: '100%',
     overflow: 'auto',
   },
   header: {
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing()
   },
   icon: {
+    cursor: 'pointer',
     fontSize: 14
   },
   avatar: {
@@ -85,7 +87,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RightMenu = ({ local, schoolId, clearCurrentChannel, handleRemoveChannel, userId, channel, handleBlock }) => {
+const RightMenu = ({
+  local,
+  schoolId,
+  clearCurrentChannel,
+  handleRemoveChannel,
+  userId,
+  channel,
+  handleBlock
+}) => {
   const classes = useStyles()
   const [groupImage, setGroupImage] = useState(null)
   const [initials, setInitials] = useState('')
@@ -200,7 +210,9 @@ const RightMenu = ({ local, schoolId, clearCurrentChannel, handleRemoveChannel, 
                       </ListItemAvatar>
                       <ListItemText primary={fullName} />
                       <ListItemSecondaryAction>
-                        <ArrowForwardIosIcon className={classes.icon} />
+                        <RouterLink to={`/profile/${m.userId}`}>
+                          <ArrowForwardIosIcon className={classes.icon} />
+                        </RouterLink>
                       </ListItemSecondaryAction>
                     </ListItem>
                   );
