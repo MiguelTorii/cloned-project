@@ -18,7 +18,7 @@ import AddMembers from 'containers/Chat/AddMembers'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import TutorBadge from 'components/TutorBadge'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
@@ -88,11 +88,21 @@ const useStyles = makeStyles((theme) => ({
   },
   membersExpanded: {
     margin: '0 !important',
-    minHeight: '0 !important'
+    minHeight: '0 !important',
   },
   expandIcon: {
     padding: 0,
     marginRight: 0,
+    '& .MuiSvgIcon-root': {
+      fontSize: 18
+    },
+  },
+  expandedRotate: {
+    margin: '0 !important',
+    minHeight: '0 !important',
+    '& .MuiExpansionPanelSummary-expandIcon.Mui-expanded': {
+      transform: 'rotate(90deg)'
+    }
   }
 }))
 
@@ -187,11 +197,11 @@ const RightMenu = ({
             TransitionProps={{ unmountOnExit: true }}
           >
             <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ArrowForwardIosIcon />}
               classes={{
                 root: classes.membersSummary,
                 expandIcon: classes.expandIcon,
-                expanded: classes.membersExpanded
+                expanded: classes.expandedRotate
               }}
             >
               <Typography className={classes.usersTitle}>In this chat...</Typography>
@@ -220,7 +230,7 @@ const RightMenu = ({
                           {getInitials({name: fullName})}
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={fullName} />
+                      {fullName} {[2,3].includes(m.roleId) && m.role && <TutorBadge text={m.role} />}
                       <ListItemSecondaryAction>
                         <RouterLink to={`/profile/${m.userId}`}>
                           <ArrowForwardIosIcon className={classes.icon} />

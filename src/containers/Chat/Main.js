@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({
   channel,
   newMessage,
+  local,
   user
 }) => {
   const classes = useStyles()
@@ -88,6 +89,7 @@ const Main = ({
   const [typing, setTyping] = useState(null)
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
+  const [members, setMembers] = useState({})
 
   const {
     data: { userId, firstName, lastName }
@@ -102,6 +104,17 @@ const Main = ({
       console.log(err)
     }
   }
+
+  useEffect(() => {
+    if (channel && local && local[channel.sid]) {
+      const { members } = local[channel.sid]
+      const newMembers = {}
+      members.forEach(m => {
+        newMembers[m.userId] = m
+      })
+      setMembers(newMembers)
+    }
+  }, [local, channel])
 
   useEffect(() => {
     if(channel && newMessage && channel.sid === newMessage.channel.sid) {
@@ -181,9 +194,18 @@ const Main = ({
     win.focus();
   };
 
+  const getRole = userId => {
+    if (!members[userId]) return null
+    const {role, roleId} = members[userId]
+    if ([2, 3].includes(roleId)) {
+      return role
+    }
+    return null
+  }
 
-  const  renderMessage = (item, profileURLs) => {
+  const renderMessage = (item, profileURLs) => {
     const { id, type } = item
+    const role = getRole(item.author)
     try {
       switch (type) {
       case 'date':
@@ -192,6 +214,7 @@ const Main = ({
         return (
           <ChatMessage
             key={id}
+            role={role}
             userId={item.author}
             name={item.name}
             messageList={item.messageList}

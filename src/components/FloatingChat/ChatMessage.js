@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
-// import bell from '../../assets/img/bell.png';
+import TutorBadge from 'components/TutorBadge'
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -101,7 +101,7 @@ const styles = theme => ({
     backgroundColor: '#5dcbfd'
   },
   avatarLink: {
-    textDecoration: 'none', 
+    textDecoration: 'none',
     marginTop: 3
   },
   link: {
@@ -111,6 +111,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  role: ?string,
   userId?: string,
   name?: string,
   avatar?: string,
@@ -230,7 +231,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { classes, userId, name, avatar, isOwn, messageList } = this.props;
+    const { role, classes, userId, name, avatar, isOwn, messageList } = this.props;
     const initials =
       name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
@@ -260,6 +261,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               >
                 {name}
               </Link>
+              {role && <TutorBadge text={role} />}
             </Typography>
           )}
           {messageList.map(message => (

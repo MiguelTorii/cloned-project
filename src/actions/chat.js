@@ -82,9 +82,9 @@ const removeMember = ({ member }: { member: Object }): Action => ({
   payload: { member }
 })
 
-const addChannel = ({ userId, channel, unread }: { channel: Object, unread: number, userId: string }): Action => ({
+const addChannel = ({ members, userId, channel, unread }: { channel: Object, unread: number, userId: string, members: array }): Action => ({
   type: chatActions.ADD_CHANNEL_CHAT,
-  payload: { userId, channel, unread }
+  payload: { userId, channel, unread, members }
 })
 
 const removeChannel = ({ sid }: { sid: string }): Action => ({
@@ -136,6 +136,19 @@ const initLocalChannels = async dispatch => {
   } catch (e) {
     console.log(e)
   }
+}
+
+const fetchMembers = async sid => {
+  const res = await getGroupMembers({ chatId: sid })
+  const members = res.map(m => ({
+    firstname: m.firstName,
+    lastname: m.lastName,
+    image: m.profileImageUrl,
+    roleId: m.roleId,
+    role: m.role,
+    userId: m.userId
+  }))
+  return members
 }
 
 export const handleInitChat = () =>
@@ -195,7 +208,9 @@ export const handleInitChat = () =>
 
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
-          dispatch(addChannel({ channel, userId }))
+          const {sid} = channel
+          const members = await fetchMembers(sid)
+          dispatch(addChannel({ channel, userId, members }))
           // initLocalChannels(dispatch)
         });
 
@@ -207,13 +222,7 @@ export const handleInitChat = () =>
         client.on('memberJoined',  member => {
           const update = async () => {
             const { channel: { sid } } = member
-            const res = await getGroupMembers({ chatId: sid })
-            const members = res.map(m => ({
-              firstname: m.firstName,
-              lastname: m.lastName,
-              image: m.profileImageUrl,
-              userId: m.userId
-            }))
+            const members = await fetchMembers(sid)
             dispatch(updateMembers({ members, channelId: sid }))
           }
 

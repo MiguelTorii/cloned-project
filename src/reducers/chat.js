@@ -158,12 +158,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           unread: 0,
           twilioChannel: action.payload.channel,
           title: getTitle(action.payload.channel, action.payload.userId),
-          members: action.payload.channel.attributes.users.map(u => ({
-            firstname: u.firstName,
-            lastname: u.lastName,
-            userId: u.userId,
-            image: ''
-          })),
+          members: action.payload.members,
           lastMessage: {
             user: {
               firstname: '',

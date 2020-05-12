@@ -216,6 +216,7 @@ const Chat = ({
           newMessage={newMessage}
           onCollapseLeft={onCollapseLeft}
           onCollapseRight={onCollapseRight}
+          local={local}
           leftSpace={leftSpace}
           rightSpace={rightSpace}
           channel={currentChannel}

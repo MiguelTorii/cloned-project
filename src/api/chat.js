@@ -145,6 +145,8 @@ export const getChannels = async (): Promise<Object> => {
           lastname: u.last_name,
           userId: u.user_id,
           image: u.profile_image_url,
+          role: u.role,
+          roleId: u.role_id
         }))
       }
     });
@@ -260,6 +262,8 @@ export const getGroupMembers = async ({
     return users.map(user => ({
       firstName: String((user.first_name: string) || ''),
       hours: Number((user.hours: number) || 0),
+      role: String((user.role: string) || ''),
+      roleId: Number((user.role_id: number) || 0),
       joined: String((user.joined: string) || ''),
       lastName: String((user.last_name: string) || ''),
       profileImageUrl: String((user.profile_image_url: string) || ''),
