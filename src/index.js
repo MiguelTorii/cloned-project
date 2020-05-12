@@ -11,6 +11,7 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
 import { hotjar } from 'react-hotjar';
+import mixpanel from 'mixpanel-browser';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
@@ -69,6 +70,11 @@ ReactGA.initialize(GOOGLE_ANALYTICS);
 
 if (ENV !== 'dev') {
   hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
+}
+
+if (ENV === 'dev') {
+  mixpanel.init("50f9de3ee829e2b19fdba0f8759431f2");
+  mixpanel.track("This is a test event!");
 }
 
 if (process.env.NODE_ENV !== 'development') {
