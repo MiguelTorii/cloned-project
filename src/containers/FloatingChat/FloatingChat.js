@@ -172,24 +172,29 @@ const FloatingChat = ({
 
   const { location: { pathname}} = router
   useEffect(() => {
+    const offlineListener = () => {
+      console.log('**** offline ****');
+      handleShutdownChat();
+    }
+
+    const onlineListener = () => {
+      console.log('**** online ****');
+      if (!online) window.location.reload();
+    }
+
+
     const init = () => {
       const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
       const handleInitChatDebounce = debounce(handleInitChat, 1000);
       window.addEventListener('resize', updateOpenChannelsDebounce);
-      window.addEventListener('offline', () => {
-        console.log('**** offline ****');
-        handleShutdownChat();
-      });
-      window.addEventListener('online', () => {
-        console.log('**** online ****');
-        if (!online) window.location.reload();
-      });
+      window.addEventListener('offline', offlineListener)
+      window.addEventListener('online', onlineListener)
       handleInitChatDebounce();
 
       return () => {
-        window.removeEventListener('resize')
-        window.removeEventListener('offline')
-        window.removeEventListener('online')
+        window.removeEventListener('resize', updateOpenChannelsDebounce)
+        window.removeEventListener('offline', offlineListener)
+        window.removeEventListener('online', onlineListener)
         if (
           updateOpenChannelsDebounce.cancel &&
       typeof updateOpenChannelsDebounce.cancel === 'function'
