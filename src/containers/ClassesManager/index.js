@@ -103,24 +103,21 @@ class ClassesManager extends React.PureComponent<Props, State> {
     } = this.props;
     this.setState({ loading: true });
     try {
-      Promise.all([
-        getUserClasses({ userId }),
-        getAvailableClasses({ userId, schoolId })
-      ]).then(result => {
-        const availableClasses = [];
-        const keys = Object.keys(result[1]);
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key of keys) {
-          availableClasses.push({ name: key, classes: result[1][key] });
-        }
-        const { classes = [], permissions } = result[0] || {};
+      const userClass = await getUserClasses({ userId })
+      const ac = await getAvailableClasses({ userId, schoolId })
+      const availableClasses = [];
+      const keys = Object.keys(ac);
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key of keys) {
+        availableClasses.push({ name: key, classes: ac[key] });
+      }
+      const { classes = [], permissions } = userClass || {};
 
-        this.setState({
-          userClasses: classes,
-          permissions,
-          availableClasses,
-          loading: false
-        });
+      this.setState({
+        userClasses: classes,
+        permissions,
+        availableClasses,
+        loading: false
       });
     } catch (err) {
       this.setState({ loading: false });
@@ -504,7 +501,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       loading,
       errorText
     } = this.state;
-    
+
     // eslint-disable-next-line no-script-url
     const dudUrl = '';
     if (!open) return null;

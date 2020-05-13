@@ -187,6 +187,9 @@ const FloatingChat = ({
       handleInitChatDebounce();
 
       return () => {
+        window.removeEventListener('resize')
+        window.removeEventListener('offline')
+        window.removeEventListener('online')
         if (
           updateOpenChannelsDebounce.cancel &&
       typeof updateOpenChannelsDebounce.cancel === 'function'
