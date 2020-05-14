@@ -109,7 +109,6 @@ const useStyles = makeStyles((theme) => ({
 const RightMenu = ({
   local,
   schoolId,
-  clearCurrentChannel,
   handleRemoveChannel,
   userId,
   channel,
@@ -121,7 +120,7 @@ const RightMenu = ({
   const [otherUser, setOtherUser] = useState(null)
 
   useEffect(() => {
-    if (channel) {
+    if (channel && local[channel.sid]) {
       setInitials('')
       setOtherUser(null)
       setGroupImage(null)
@@ -138,7 +137,8 @@ const RightMenu = ({
       }
     }
   }, [local, channel, userId])
-  if (!channel) return null
+
+  if (!channel || !local[channel.sid]) return null
 
   return (
     <Grid
@@ -251,7 +251,6 @@ const RightMenu = ({
         />
         <BlockUser userId={userId} otherUser={otherUser} handleBlock={handleBlock} />
         <RemoveChat
-          clearCurrentChannel={clearCurrentChannel}
           handleRemoveChannel={handleRemoveChannel}
           channel={channel}
         />

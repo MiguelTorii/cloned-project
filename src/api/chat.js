@@ -129,6 +129,7 @@ export const getChannels = async (): Promise<Object> => {
       local[c.id] = {
         sid: c.id,
         title: c.group_name,
+        muted: false,
         lastMessage: {
           date: moment(c.last_received_message.date_sent).toISOString(),
           message: c.last_received_message.message,

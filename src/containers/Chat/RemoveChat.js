@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RemoveChat = ({ channel, handleRemoveChannel, clearCurrentChannel }) => {
+const RemoveChat = ({ channel, handleRemoveChannel }) => {
   const classes = useStyles()
   const [removeChat, setRemoveChat] = useState(false)
 
@@ -33,8 +33,7 @@ const RemoveChat = ({ channel, handleRemoveChannel, clearCurrentChannel }) => {
   const handleRemoveSubmit = useCallback(async () => {
     if (channel) await handleRemoveChannel({ sid: channel.sid })
     handleRemoveClose()
-    clearCurrentChannel()
-  }, [handleRemoveChannel, channel, handleRemoveClose, clearCurrentChannel])
+  }, [handleRemoveChannel, channel, handleRemoveClose])
 
 
   return (

@@ -22,12 +22,6 @@ import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
 import type { State as StoreState } from '../../types/state';
 
-type Props = {
-  chat: ChatState,
-  user: UserState,
-  width: string
-};
-
 const useStyles = makeStyles(theme => ({
   container: {
     position: 'relative',
@@ -84,11 +78,23 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+type Props = {
+  chat: ChatState,
+  user: UserState,
+  width: string,
+  handleRemoveChannel: Function,
+  handleInitChat: Function,
+  handleShutdownChat: Function,
+  handleBlockUser: Function,
+  handleMuteChannel: Function
+};
+
 const Chat = ({
   handleRemoveChannel,
   handleInitChat,
   handleShutdownChat,
   handleBlockUser,
+  handleMuteChannel,
   width,
   chat,
   user
@@ -103,6 +109,11 @@ const Chat = ({
   const [channelList, setChannelList] = useState([])
 
   const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
+
+  const handleRemove = useCallback(async sid => {
+    clearCurrentChannel()
+    await handleRemoveChannel(sid)
+  }, [handleRemoveChannel, clearCurrentChannel])
 
   const curSize = useMemo(() => width === 'xs' ? 6 : 3, [width])
 
@@ -209,6 +220,8 @@ const Chat = ({
           client={client}
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
+          handleMuteChannel={handleMuteChannel}
+          handleRemoveChannel={handleRemove}
         />
       </Grid>
       <Grid item xs={12-leftSpace-rightSpace} className={classes.main}>
@@ -225,13 +238,12 @@ const Chat = ({
       </Grid>
       <Grid item xs={rightSpace || 1} className={rightSpace !==0 ? classes.right : classes.hidden}>
         <RightMenu
-          handleRemoveChannel={handleRemoveChannel}
+          handleRemoveChannel={handleRemove}
           handleBlock={handleBlock}
           userId={userId}
           schoolId={schoolId}
           channel={currentChannel}
           local={local}
-          clearCurrentChannel={clearCurrentChannel}
         />
       </Grid>
     </Grid>
@@ -246,6 +258,7 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
+      handleMuteChannel: chatActions.handleMuteChannel,
       handleInitChat: chatActions.handleInitChat,
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,

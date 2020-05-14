@@ -68,6 +68,11 @@ const mergeObjects = (first, second) => {
   return merged
 }
 
+const removeParam = (obj, id) => {
+  const {[id]: removed, ...rest} = obj
+  return rest
+}
+
 export default (state: ChatState = defaultState, action: Action): ChatState => {
   switch (action.type) {
   case chatActions.START_LOADING:
@@ -176,6 +181,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     return { ...state, data: {
       ...state.data,
       channels: state.data.channels.filter(c => c.sid !== action.payload.sid),
+      local: { ...removeParam(state.data.local, action.payload.sid) },
       openChannels: state.data.openChannels.filter(c => c.sid !== action.payload.sid)
     }}
   case chatActions.UPDATE_MEMBERS_CHAT:
@@ -202,6 +208,20 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         }
       }
     }}
+  case chatActions.MUTE_CHANNEL:
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        local: {
+          ...state.data.local,
+          [action.payload.sid]: {
+            ...state.data.local[action.payload.sid],
+            muted: !state.data.local[action.payload.sid].muted
+          }
+        }
+      }
+    }
   case chatActions.SHUTDOWN_CHAT:
     return { ...state, data: {
       ...state.data,

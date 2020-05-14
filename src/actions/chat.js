@@ -101,6 +101,10 @@ const setOpenChannels = ({ openChannels }: { openChannels: array }) => ({
   payload: { openChannels }
 })
 
+const muteChannel = ({ sid }: { sid: string }) => ({
+  type: chatActions.MUTE_CHANNEL,
+  payload: { sid }
+})
 
 export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
@@ -281,6 +285,10 @@ export const handleBlockUser = ({ blockedUserId }) => async () => {
   try {
     await blockChatUser({ blockedUserId });
   } catch (err) {}
+}
+
+export const handleMuteChannel = ({ sid }) => async (dispatch: Dispatch) => {
+  dispatch(muteChannel({ sid }));
 }
 
 export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch: Dispatch) => {

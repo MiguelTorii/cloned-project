@@ -73,7 +73,9 @@ type Props = {
   local: Object,
   isLoading: boolean,
   setCurrentChannel: Function,
+  handleRemoveChannel: Function,
   currentChannel: ?Object,
+  handleMuteChannel: Function,
   client: Object
 };
 
@@ -81,10 +83,12 @@ const LeftMenu = ({
   local,
   isLoading,
   channelList,
+  handleMuteChannel,
   userId,
   channels,
   setCurrentChannel,
   currentChannel,
+  handleRemoveChannel,
   client
 }: Props) => {
   const classes = useStyles()
@@ -178,7 +182,7 @@ const LeftMenu = ({
           <EmptyLeftMenu emptyChannels={channelList.length === 0} isLoading={isLoading} />
           <List className={classes.root}>
             {channelList.map(c => (
-              <div
+              local[c] && <div
                 key={local[c].sid}
                 className={clsx(!searchChannels.includes(local[c].sid) && classes.hidden)}
               >
@@ -187,6 +191,8 @@ const LeftMenu = ({
                   channel={local[c]}
                   userId={userId}
                   onOpenChannel={setCurrentChannel}
+                  handleRemoveChannel={handleRemoveChannel}
+                  handleMuteChannel={handleMuteChannel}
                 />
               </div>
             ))}

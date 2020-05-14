@@ -10,10 +10,12 @@ type Props = {
   userId: string,
   onOpenChannel: Function,
   selected: boolean,
+  handleRemoveChannel: Function,
+  handleMuteChannel: Function,
   dark: boolean
 };
 
-const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId }: Props) => {
+const ChatListItem = ({ dark, handleMuteChannel, selected, onOpenChannel, handleRemoveChannel, channel, userId }: Props) => {
   const [name, setName] = useState('')
   const [thumbnail, setThumbnail] = useState('')
 
@@ -39,12 +41,15 @@ const ChatListItem = ({ dark, selected, onOpenChannel, channel, userId }: Props)
   return (
     <ErrorBoundary>
       <MainChatItem
+        handleMuteChannel={handleMuteChannel}
         roomId={channel.sid}
+        handleRemoveChannel={handleRemoveChannel}
         isLoading={false}
         imageProfile={thumbnail}
         dark={dark}
         selected={selected}
         name={name}
+        muted={channel.muted}
         roomName={channel.title}
         lastMessage={clsx(channel.lastMessage && channel.lastMessage.message)}
         unReadCount={channel.unread}

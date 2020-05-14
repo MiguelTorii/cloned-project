@@ -70,6 +70,7 @@ type Props = {
   handleChannelClose: Function,
   enqueueSnackbarAction: Function,
   updateTitleAction: Function,
+  handleMuteChannel: Function,
   push: Function
 };
 
@@ -84,6 +85,7 @@ const FloatingChat = ({
   handleBlockUser,
   handleRemoveChannel,
   handleRoomClick,
+  handleMuteChannel,
   updateOpenChannels,
   handleChannelClose,
   enqueueSnackbarAction,
@@ -123,11 +125,11 @@ const FloatingChat = ({
   useEffect(() => {
     if(local) {
       let unread = 0
-      const channelList = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
+      const cl = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
         if (!local[a].lastMessage.message) return 0
         return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
       })
-      setChannelList(channelList)
+      setChannelList(cl)
       Object.keys(local).forEach(l => {
         unread += local[l].unread
       })
@@ -135,13 +137,21 @@ const FloatingChat = ({
     }
   }, [local])
 
+  const [prevMessageId, setPrevMessageId] = useState('')
+
   useEffect(() => {
     const handleMessage =() =>{
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
       const { firstName, lastName } = attributes;
       const sids = openChannels.map(oc => oc.sid)
-      if (Number(author) !== Number(userId) && window.location.pathname !== '/chat' && !sids.includes(channel.sid)) {
+      setPrevMessageId(newMessage.sid)
+      if (
+        Number(author) !== Number(userId) &&
+        window.location.pathname !== '/chat' &&
+        !sids.includes(channel.sid) &&
+        !local[channel.sid].muted
+      ) {
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {
@@ -166,9 +176,10 @@ const FloatingChat = ({
         });
       }
     }
-    if(newMessage) handleMessage()
+    if(newMessage && prevMessageId !== newMessage.sid) handleMessage()
 
-  }, [newMessage])
+    // eslint-disable-next-line
+  }, [newMessage, local, prevMessageId])
 
   const { location: { pathname}} = router
   useEffect(() => {
@@ -315,10 +326,12 @@ const FloatingChat = ({
                 </div>
               ) : (
                 channelList.map(c => (
-                  <ChatListItem
+                  local[c] && <ChatListItem
                     key={local[c].sid}
                     channel={local[c]}
                     userId={userId}
+                    handleMuteChannel={handleMuteChannel}
+                    handleRemoveChannel={handleRemoveChannel}
                     onOpenChannel={handleRoomClick}
                   />
                 ))
@@ -351,6 +364,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       push: routePush,
       handleInitChat: chatActions.handleInitChat,
+      handleMuteChannel: chatActions.handleMuteChannel,
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
