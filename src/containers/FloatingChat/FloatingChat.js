@@ -21,7 +21,6 @@ import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
 import { logEvent } from '../../api/analytics';
 import MainChat from '../../components/FloatingChat/MainChat';
-import Tooltip from '../Tooltip';
 import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
@@ -308,36 +307,30 @@ const FloatingChat = ({
               onBlock={handleBlockUser}
             />
           ))}
-          <Tooltip
-            id={3292}
-            placement="top"
-            text="Setup a group chat with your class to connect on topics and discuss problems"
+          <MainChat
+            unread={unread}
+            onCreateChannel={handleCreateChannelOpen}
           >
-            <MainChat
-              unread={unread}
-              onCreateChannel={handleCreateChannelOpen}
-            >
-              {channelList.length === 0 ? (
-                <div className={classes.noMessages}>
-                  <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
-                  {isLoading && <div className={classes.loading}>
-                    <CircularProgress />
-                  </div>}
-                </div>
-              ) : (
-                channelList.map(c => (
-                  local[c] && <ChatListItem
-                    key={local[c].sid}
-                    channel={local[c]}
-                    userId={userId}
-                    handleMuteChannel={handleMuteChannel}
-                    handleRemoveChannel={handleRemoveChannel}
-                    onOpenChannel={handleRoomClick}
-                  />
-                ))
-              )}
-            </MainChat>
-          </Tooltip>
+            {channelList.length === 0 ? (
+              <div className={classes.noMessages}>
+                <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
+                {isLoading && <div className={classes.loading}>
+                  <CircularProgress />
+                </div>}
+              </div>
+            ) : (
+              channelList.map(c => (
+                local[c] && <ChatListItem
+                  key={local[c].sid}
+                  channel={local[c]}
+                  userId={userId}
+                  handleMuteChannel={handleMuteChannel}
+                  handleRemoveChannel={handleRemoveChannel}
+                  onOpenChannel={handleRoomClick}
+                />
+              ))
+            )}
+          </MainChat>
         </div>
       </ErrorBoundary>
       <ErrorBoundary>

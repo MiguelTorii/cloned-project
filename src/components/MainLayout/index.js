@@ -843,6 +843,11 @@ class MainLayout extends React.Component<Props, State> {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
+          <Tooltip
+            id={3292}
+            placement="bottom"
+            text="Setup a group chat with your class to connect on topics and discuss problems"
+          >
                 <IconButton
                   color="inherit"
                   component={MyLink}
@@ -854,6 +859,7 @@ class MainLayout extends React.Component<Props, State> {
                     </Badge>
                   </Badge>
                 </IconButton>
+          </Tooltip>
                 <IconButton
                   aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                   aria-haspopup="true"
