@@ -2,7 +2,15 @@
 // @flow
 
 import uuidv4 from 'uuid/v4';
-import { getGroupMembers, getChannels, renewTwilioToken, leaveChat, blockChatUser } from 'api/chat';
+import {
+  getGroupMembers,
+  getChannels,
+  muteChannel,
+  unmuteChannel,
+  renewTwilioToken,
+  leaveChat,
+  blockChatUser
+} from 'api/chat';
 import Chat from 'twilio-chat';
 import update from 'immutability-helper';
 import { chatActions } from '../constants/action-types';
@@ -101,7 +109,7 @@ const setOpenChannels = ({ openChannels }: { openChannels: array }) => ({
   payload: { openChannels }
 })
 
-const muteChannel = ({ sid }: { sid: string }) => ({
+const muteChannelLocal = ({ sid }: { sid: string }) => ({
   type: chatActions.MUTE_CHANNEL,
   payload: { sid }
 })
@@ -287,8 +295,11 @@ export const handleBlockUser = ({ blockedUserId }) => async () => {
   } catch (err) {}
 }
 
-export const handleMuteChannel = ({ sid }) => async (dispatch: Dispatch) => {
-  dispatch(muteChannel({ sid }));
+export const handleMuteChannel = ({ sid }) => async (dispatch: Dispatch, getState: Function) => {
+  const { chat: { data: { local }}}= getState()
+  const { muted } = local[sid]
+  const res = muted ? await unmuteChannel(sid) : await muteChannel(sid)
+  if (res && res.success) dispatch(muteChannelLocal({ sid }));
 }
 
 export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch: Dispatch) => {

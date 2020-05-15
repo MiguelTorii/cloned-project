@@ -112,6 +112,46 @@ export const createChannel = async ({
   }
 };
 
+export const muteChannel = async (sid): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.CHAT}/${sid}/mute`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+}
+
+export const unmuteChannel = async (sid): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.CHAT}/${sid}/unmute`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+}
+
 export const getChannels = async (): Promise<Object> => {
   try {
     const token = await getToken();
@@ -129,7 +169,7 @@ export const getChannels = async (): Promise<Object> => {
       local[c.id] = {
         sid: c.id,
         title: c.group_name,
-        muted: false,
+        muted: c.is_muted,
         lastMessage: {
           date: moment(c.last_received_message.date_sent).toISOString(),
           message: c.last_received_message.message,

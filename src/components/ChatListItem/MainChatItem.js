@@ -186,7 +186,7 @@ const MainChatItem = ({
         getContentAnchorEl={null}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleMute}>Mute</MenuItem>
+        <MenuItem onClick={handleMute}>{muted? 'Unmute' : 'Mute'}</MenuItem>
         <MenuItem onClick={handleRemoveOpen}>Leave</MenuItem>
       </Menu>
       <Dialog
