@@ -73,8 +73,7 @@ if (ENV !== 'dev') {
 }
 
 if (ENV === 'dev') {
-  mixpanel.init("50f9de3ee829e2b19fdba0f8759431f2");
-  mixpanel.track("This is a test event!");
+  mixpanel.init("16a155de024402e518bfb4c430cff3fd");
 }
 
 if (process.env.NODE_ENV !== 'development') {
