@@ -22,7 +22,8 @@ const styles = theme => ({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: theme.spacing(3)
   },
   subtitle: {
     fontSize: 16
@@ -34,7 +35,6 @@ const styles = theme => ({
   dialogFootnote: {
     ...styles.footnote,
     textAlign: 'center',
-    margin: '24px 0px',
   },
   hr: {
     background: theme.circleIn.palette.appBar,
@@ -90,6 +90,7 @@ const LeaderBoardTabs = ({
   classes,
   handleCloseDialog,
   openDialog,
+  eligibilitySubtitle,
   amount,
   numberOfWinners,
   dialogTitle,
@@ -100,6 +101,9 @@ const LeaderBoardTabs = ({
     height: 75,
     marginRight: 5,
   }
+
+  const subtitle = eligibilitySubtitle && eligibilitySubtitle.split('.')
+
   return (
     <Dialog
       className={classes.dialog}
@@ -128,13 +132,8 @@ const LeaderBoardTabs = ({
             </div>
           </div>
         </div>
-        <div className={classes.dialogFootnote}>
-            Keep in mind that 7 MVP’s is the minimum qualifier. <br />
-            Strive to earn more than 7 because it will increase your overall chances of winning a scholarship.
-        </div>
+        {subtitle && subtitle.map(l => l && <div key={l} className={classes.dialogFootnote}>{l}.</div>)}
         <div
-          variant="h6"
-          paragraph
           className={classes.title}>
             Best Practices to Earn MVPs:
         </div>

@@ -160,7 +160,7 @@ const LeaderBoardTabs = ({
   const [openDialog, setOpenDialog] = useState(false)
   const [tuesdayPoints, setTuesdayPoints] = useState('')
 
-  const { amount, eligibility, numberOfWinners, text } = leaderboard.data.grandDialog;
+  const { amount, eligibility, numberOfWinners, text, eligibilitySubtitle } = leaderboard.data.grandDialog;
 
   useEffect(() => {
     updateTuesdayLeaderboard(sectionId)
@@ -248,6 +248,7 @@ const LeaderBoardTabs = ({
     <div className={classes.container}>
       <div className={classes.header}>
         <PrizeDialog
+          eligibilitySubtitle={eligibilitySubtitle}
           handleCloseDialog={handleCloseDialog}
           openDialog={openDialog}
           amount={amount}
