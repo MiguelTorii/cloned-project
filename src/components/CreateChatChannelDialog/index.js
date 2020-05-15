@@ -68,8 +68,14 @@ const CreateChatChannelDialog = ({
     setError(false);
   };
 
-  const handleLoadOptions = query => {
-    return onLoadOptions({ query, from });
+  const handleLoadOptions = async query => {
+    const users = await onLoadOptions({ query, from });
+    const ordered = users.options.sort((a, b) => {
+      if(a.relationship && !b.relationship) return -1
+      if(!a.relationship && b.relationship) return 1
+      return 0
+    })
+    return { options: ordered, hasMore: false }
   };
 
   const handleSubmit = () => {
