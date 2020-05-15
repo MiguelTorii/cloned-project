@@ -5,33 +5,33 @@ import mixpanel from 'mixpanel-browser';
 import createEvent from './events';
 import { EventData } from '../types/models';
 
-const MIXPANEL_EVENTS = [
-  'Feed - Start Search',
+const MIXPANEL_EVENT_NAMES = [
+  'Chat- Send Message-Image',
+  'Chat- Send Message-Text',
   'Feed- Open Filter',
-  'Onboarding- First Onboarding Opened',
-  'Onboarding- Started',
-  'Onboarding- Ended',
+  'Feed- Start Search',
   'Flashcard- Created',
   'Flashcard- Rated',
   'Home- Start Ask Question',
-  'Home- Start Share Link',
   'Home- Start Ask Question',
+  'Home- Start Share Link',
   'Join Class- Opened',
+  'Onboarding- Ended',
+  'Onboarding- First Onboarding Opened',
+  'Onboarding- Started',
   'Referral- Copied',
   'Referral- Opened',
-  'User - View Chat Room',
-  'User- Submitted Class Form',
   'User- Generated Link',
   'User- Opened Generated Link',
-  'Chat- Send Message-Text',
-  'Chat- Send Message-Image',
+  'User- Submitted Class Form',
+  'User- View Chat Room',
+  'Video- Session Length',
   'Video- Start Video-Chat',
   'Video- Start Video-Profile',
   'Video- Start Video-Video',
-  'Video- Session Length',
 ];
 
-const CIRCLEIN_EVENTS = [
+const CIRCLEIN_EVENT_NAMES = [
   'Chat- Send Message-Text',
   'Chat- Send Message-Image',
   'Video- Start Video-Chat',
@@ -74,15 +74,7 @@ export const setUserProperties = ({ props }: { props: Object }) => {
   }
 };
 
-export const logEventLocally = (eventData: EventData) => {
-  try {
-    createEvent(eventData);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-const fromAmplitudeEvent = ({ event, props}) => {
+const fromAmplitudeToEventName = ({ event, props }): string => {
   let eventName = event;
 
   if (props && props.Content) {
@@ -94,21 +86,31 @@ const fromAmplitudeEvent = ({ event, props}) => {
   return eventName;
 }
 
-const sendToMixpanel = ({ event, props }) => {
-  const eventName = fromAmplitudeEvent({ event, props });
+const toEventName = (eventData: EventData): string => {
+  return `${eventData.category}- ${eventData.type}`;
+}
 
-  if (MIXPANEL_EVENTS.includes(eventName)) {
-    mixpanel.track(eventName);
+const toEventData = (eventName: string): EventData => {
+  const [category, type] = eventName.split('- ');
+  return { category, type, objectId: '' };
+}
+
+const sendToMixpanel = (eventName) => {
+  if (MIXPANEL_EVENT_NAMES.includes(eventName)) mixpanel.track(eventName);
+}
+
+export const logEventLocally = (eventData: EventData) => {
+  try {
+    createEvent(eventData);
+    sendToMixpanel(toEventName(eventData));
+  } catch (err) {
+    console.log(err);
   }
 }
 
-const sendToCircleIn = ({ event, props }) => {
-  const eventName = fromAmplitudeEvent({ event, props });
-
-  if (CIRCLEIN_EVENTS.includes(eventName)) {
-    const [category, type] = eventName.split('- ');
-    const eventData = { category, type, objectId: '' };
-    logEventLocally(eventData);
+const sendToCircleIn = (eventName: string) => {
+  if (CIRCLEIN_EVENT_NAMES.includes(eventName)) {
+    createEvent(toEventData(eventName));
   }
 }
 
@@ -122,8 +124,11 @@ export const logEvent = ({
   try {
     amplitude.getInstance().logEvent(event, props);
     amplitude.getInstance('web').logEvent(event, props);
-    sendToMixpanel({event, props});
-    sendToCircleIn({ event, props });
+
+    const eventName = fromAmplitudeToEventName({ event, props });
+
+    sendToMixpanel(eventName);
+    sendToCircleIn(eventName);
   } catch (err) {
     console.log(err);
   }
