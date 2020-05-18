@@ -192,10 +192,7 @@ export const updateUser = ({ user }: { user: User }) => async (
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignOut());
-    store.remove('TOKEN');
-    store.remove('REFRESH_TOKEN');
-    store.remove('USER_ID');
-    store.remove('SEGMENT');
+    store.clearAll()
     dispatch(clearUser());
     dispatch(push('/login'));
   } catch (err) {

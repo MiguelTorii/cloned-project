@@ -319,7 +319,6 @@ type State = {
 
 class MainLayout extends React.Component<Props, State> {
   state = {
-    announcementLoaded: false,
     open: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
