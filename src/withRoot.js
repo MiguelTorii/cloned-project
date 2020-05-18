@@ -196,6 +196,12 @@ const theme = createMuiTheme({
       paperAnchorDockedLeft: {
         borderRight: 'none'
       }
+    },
+    MuiBadge: {
+      colorSecondary: {
+        backgroundColor: circleInTheme.danger,
+        color: circleInTheme.primaryText1
+      }
     }
   }
 });
