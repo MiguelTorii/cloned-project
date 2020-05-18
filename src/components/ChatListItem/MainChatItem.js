@@ -113,7 +113,7 @@ const MainChatItem = ({
   const onMouseLeave = useCallback(() => {
     setShowMenu(false)
     handleClose()
-  }, [])
+  }, [handleClose])
 
   const [removeChat, setRemoveChat] = useState(false)
 
@@ -121,7 +121,7 @@ const MainChatItem = ({
   const handleRemoveOpen = useCallback(() => {
     setRemoveChat(true)
     handleClose()
-  }, [])
+  }, [handleClose])
 
   const handleRemoveSubmit = useCallback(async () => {
     if (roomId) await handleRemoveChannel({ sid: roomId })

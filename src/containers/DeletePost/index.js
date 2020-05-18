@@ -65,7 +65,6 @@ class DeletePost extends React.PureComponent<Props, State> {
 
   render() {
     const {
-      classes,
       user: {
         isLoading,
         error,

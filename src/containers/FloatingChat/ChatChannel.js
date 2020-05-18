@@ -230,7 +230,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
 
     try {
-      const { lastConsumedMessageIndex, lastMessage: { index }} = channel
       channel.setAllMessagesConsumed();
     } catch (err) {
       console.log(err);

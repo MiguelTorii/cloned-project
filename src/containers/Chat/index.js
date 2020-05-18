@@ -5,7 +5,6 @@ import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
-import { push as routePush } from 'connected-react-router';
 import Grid from '@material-ui/core/Grid';
 import LeftMenu from 'containers/Chat/LeftMenu'
 import RightMenu from 'containers/Chat/RightMenu'
@@ -124,6 +123,10 @@ const Chat = ({
     })
     setChannelList(channelList)
   }, [local])
+
+  useEffect(() => {
+    if (channelList.length > 0 && !currentChannel) setCurrentChannel(local[channelList[0]].twilioChannel)
+  }, [channelList, currentChannel, local])
 
   useEffect(() => {
     if(width !== prevWidth) {

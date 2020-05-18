@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   messageContainer: {
     position: 'absolute',
-    bottom: '35%',
+    bottom: '25%',
     padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
