@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +13,8 @@ import withWidth from '@material-ui/core/withWidth'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Link from '@material-ui/core/Link';
+
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
@@ -55,13 +58,18 @@ const Classmate = ({ close, openChannelWithEntity, width, classmate }: Props) =>
     close()
   }
 
+  const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
+    <RouterLink to={href} {...props} ref={ref} />);
+
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
       <ListItemAvatar>
-        <Avatar
-          alt={`Avatar n°${classmate.userId}`}
-          src={classmate.image}
-        />
+        <Link href={`/profile/${classmate.userId}`} component={MyProfileLink}>
+          <Avatar
+            alt={`Avatar n°${classmate.userId}`}
+            src={classmate.image}
+          />
+        </Link>
       </ListItemAvatar>
       <ListItemText
         classes={{
