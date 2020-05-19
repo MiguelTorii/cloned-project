@@ -34,6 +34,7 @@ import clsx from 'clsx'
 import { withRouter } from 'react-router';
 import ClassmatesDialog from 'components/ClassmatesDialog'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import mixpanel from 'mixpanel-browser';
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -380,6 +381,7 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   handleSignOut = () => {
+    mixpanel.reset();
     const { handleSignOut } = this.props;
     handleSignOut();
     this.handleMobileMenuClose();
