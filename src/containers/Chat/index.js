@@ -105,9 +105,20 @@ const Chat = ({
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
   const [prevWidth, setPrevWidth] = useState(null)
+  const [newChannel, setNewChannel] = useState(false)
   const [channelList, setChannelList] = useState([])
 
+  const onNewChannel = useCallback(() => {
+    setNewChannel(true)
+    setCurrentChannel(null)
+  }, [])
+
   const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
+
+  const onOpenChannel = useCallback(channel => {
+    setCurrentChannel(channel)
+    setNewChannel(false)
+  }, [])
 
   const handleRemove = useCallback(async sid => {
     clearCurrentChannel()
@@ -125,8 +136,8 @@ const Chat = ({
   }, [local])
 
   useEffect(() => {
-    if (channelList.length > 0 && !currentChannel) setCurrentChannel(local[channelList[0]].twilioChannel)
-  }, [channelList, currentChannel, local])
+    if (channelList.length > 0 && !currentChannel && !newChannel) setCurrentChannel(local[channelList[0]].twilioChannel)
+  }, [channelList, currentChannel, local, newChannel])
 
   useEffect(() => {
     if(width !== prevWidth) {
@@ -221,8 +232,10 @@ const Chat = ({
           userId={userId}
           isLoading={isLoading}
           client={client}
+          onNewChannel={onNewChannel}
+          newChannel={newChannel}
           currentChannel={currentChannel}
-          setCurrentChannel={setCurrentChannel}
+          onOpenChannel={onOpenChannel}
           handleMuteChannel={handleMuteChannel}
           handleRemoveChannel={handleRemove}
         />
@@ -236,6 +249,8 @@ const Chat = ({
           leftSpace={leftSpace}
           rightSpace={rightSpace}
           channel={currentChannel}
+          newChannel={newChannel}
+          onOpenChannel={onOpenChannel}
           user={user}
         />
       </Grid>

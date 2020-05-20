@@ -108,7 +108,9 @@ const MainChatItem = ({
 
   const initials = useCallback(name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '', [name]);
 
-  const onMouseEnter = useCallback(() => setShowMenu(true), [])
+  const onMouseEnter = useCallback(() => {
+    if(handleRemoveChannel && handleMuteChannel) setShowMenu(true)
+  }, [handleMuteChannel, handleRemoveChannel])
 
   const onMouseLeave = useCallback(() => {
     setShowMenu(false)

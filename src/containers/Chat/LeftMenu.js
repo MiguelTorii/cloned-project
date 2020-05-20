@@ -7,13 +7,13 @@ import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import Grid from '@material-ui/core/Grid'
 import ChatListItem from 'components/ChatListItem'
-import CreateChatChannel from 'containers/CreateChatChannel'
 import Fuse from 'fuse.js'
 import { getTitle } from 'utils/chat';
 import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu'
 import clsx from 'clsx'
 import Button from '@material-ui/core/Button';
-import NewChatIcon from 'assets/svg/ic_new_chat_bold.svg'
+import NewChannelIcon from 'assets/svg/ic_new_chat_bold.svg'
+import MainChatItem from 'components/ChatListItem/MainChatItem'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -72,11 +72,11 @@ type Props = {
   channelList: array,
   local: Object,
   isLoading: boolean,
-  setCurrentChannel: Function,
+  onOpenChannel: Function,
   handleRemoveChannel: Function,
   currentChannel: ?Object,
-  handleMuteChannel: Function,
-  client: Object
+  onNewChannel: Function,
+  handleMuteChannel: Function
 };
 
 const LeftMenu = ({
@@ -86,15 +86,13 @@ const LeftMenu = ({
   handleMuteChannel,
   userId,
   channels,
-  setCurrentChannel,
+  onOpenChannel,
   currentChannel,
+  newChannel,
+  onNewChannel,
   handleRemoveChannel,
-  client
 }: Props) => {
   const classes = useStyles()
-  const [channelType, setChannelType] = useState(null)
-  const handleCreateChannelClose = () => setChannelType(null)
-  const handleCreateChannelOpen = () => setChannelType('group')
   const [search, setSearch] = useState()
   const [searchChannels, setSearchChannels] = useState([])
 
@@ -122,17 +120,8 @@ const LeftMenu = ({
     }
   }, [search, channels, userId])
 
-  const handleChannelCreated = ({ channel }) => setCurrentChannel(channel)
-
   return (
     <Grid item classes={{ root: classes.container }}>
-      <CreateChatChannel
-        type={channelType}
-        client={client}
-        channels={channels}
-        onClose={handleCreateChannelClose}
-        onChannelCreated={handleChannelCreated}
-      />
       <Grid
         container
         classes={{ root: classes.container}}
@@ -158,9 +147,9 @@ const LeftMenu = ({
                 root: classes.newButton
               }}
               color='primary'
-              onClick={handleCreateChannelOpen}
+              onClick={onNewChannel}
             >
-              <img id="circlein-newchat" src={NewChatIcon} alt='newChat' className={classes.imgIcon} />
+              <img id="circlein-newchat" src={NewChannelIcon} alt='newChat' className={classes.imgIcon} />
             </Button>
           </Grid>
           <Grid item className={classes.gridItem}>
@@ -181,6 +170,7 @@ const LeftMenu = ({
         <Grid item className={classes.gridChatList}>
           <EmptyLeftMenu emptyChannels={channelList.length === 0} isLoading={isLoading} />
           <List className={classes.root}>
+            {newChannel && <MainChatItem name='' roomName='New Chat' selected />}
             {channelList.map(c => (
               local[c] && <div
                 key={local[c].sid}
@@ -190,7 +180,7 @@ const LeftMenu = ({
                   selected={currentChannel && c === currentChannel.sid}
                   channel={local[c]}
                   userId={userId}
-                  onOpenChannel={setCurrentChannel}
+                  onOpenChannel={onOpenChannel}
                   handleRemoveChannel={handleRemoveChannel}
                   handleMuteChannel={handleMuteChannel}
                 />

@@ -15,6 +15,8 @@ import EmptyMain from 'containers/Chat/EmptyMain'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import Grid from '@material-ui/core/Grid'
+import CreateChatChannelInput from 'components/CreateChatChannelInput'
+import { logEvent } from '../../api/analytics';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +77,9 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({
   channel,
   newMessage,
+  onOpenChannel,
   local,
+  newChannel,
   user
 }) => {
   const classes = useStyles()
@@ -175,7 +179,6 @@ const Main = ({
           setMessages([...result.items, ...messages])
           setPaginator(result)
           setHasMore(!(!result.hasPrevPage || result.items.length < 10))
-          // setScroll(false)
         })
       }
     } catch (err) {
@@ -186,10 +189,10 @@ const Main = ({
   const handleImageClick = src => setImages([{ src }])
 
   const handleStartVideoCall = () => {
-    // logEvent({
-    // event: 'Video- Start Video',
-    // props: { 'Initiated From': 'Chat' }
-    // });
+    logEvent({
+      event: 'Video- Start Video',
+      props: { 'Initiated From': 'Chat' }
+    });
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   };
@@ -268,6 +271,10 @@ const Main = ({
     try {
       await channel.sendMessage(message, messageAttributes)
 
+      logEvent({
+        event: 'Chat- Send Message',
+        props: { Content: 'Text' }
+      });
     } catch (err) {
       console.log(err)
     } finally {
@@ -311,12 +318,10 @@ const Main = ({
       }
 
       await channel.sendMessage('Uploaded a image', messageAttributes)
-      // logEvent({
-      // event: 'Chat- Send Message',
-      // props: { Content: 'Image' }
-      // })
-      // this.setState(({ count }) => ({ count: count + 1 }))
-      // this.handleMessageCount()
+      logEvent({
+        event: 'Chat- Send Message',
+        props: { Content: 'Image' }
+      })
     } catch (err) {
       console.log(err)
     } finally {
@@ -334,6 +339,7 @@ const Main = ({
   return (
     <div className={classes.root}>
       <div className={classes.header}>
+        {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
           <Typography className={classes.headerTitle}>{title}</Typography>
           <Button
