@@ -228,7 +228,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
     return (
       <Typography component="h1" variant="h5">
-          Create your CircleIn Account'
+          Create your CircleIn Account
       </Typography>
     );
   }
