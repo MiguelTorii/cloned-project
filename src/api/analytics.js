@@ -61,10 +61,6 @@ export const setUserId = (userId: string) => {
   }
 };
 
-export const setUserAlias = (userId: string) => {
-  mixpanel.alias(userId);
-}
-
 export const setUserProperties = ({ props }: { props: Object }) => {
   try {
     amplitude.getInstance().setUserProperties(props);

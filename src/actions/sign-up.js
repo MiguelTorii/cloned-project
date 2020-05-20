@@ -9,7 +9,6 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User, UpdateProfile } from '../types/models';
 import { createAccount, setReferral } from '../api/sign-up';
-import { setUserAlias } from '../api/analytics';
 
 const requestSignUp = (): Action => ({
   type: signUpActions.SIGN_UP_USER_REQUEST
@@ -102,7 +101,6 @@ export const signUp = ({
     store.set('USER_ID', user.userId);
     store.set('SEGMENT', user.segment);
 
-    setUserAlias(user.userId); // For Mixpanel analytics.
     await dispatch(setUser({ user }));
 
     await dispatch(campaignActions.requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN, reset: true }))
