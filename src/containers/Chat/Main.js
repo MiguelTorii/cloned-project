@@ -16,7 +16,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import Grid from '@material-ui/core/Grid'
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
-import { logEvent } from '../../api/analytics';
+import { logEvent } from 'api/analytics';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -261,6 +262,12 @@ const Main = ({
   const onSendMessage = async message => {
     setScroll(true)
     if (!channel) return
+
+    logEvent({
+      event: 'Chat- Send Message',
+      props: { Content: 'Text', 'Channel SID': channel.sid }
+    });
+
     const messageAttributes = {
       firstName,
       lastName,
@@ -317,11 +324,18 @@ const Main = ({
         isVideoNotification: false
       }
 
+      logEvent({
+        event: 'Chat- Send Message',
+        props: { Content: 'Image', 'Channel SID': channel.sid }
+      });
+
       await channel.sendMessage('Uploaded a image', messageAttributes)
       logEvent({
         event: 'Chat- Send Message',
         props: { Content: 'Image' }
       })
+      // this.setState(({ count }) => ({ count: count + 1 }))
+      // this.handleMessageCount()
     } catch (err) {
       console.log(err)
     } finally {

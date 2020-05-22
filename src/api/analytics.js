@@ -32,11 +32,11 @@ const MIXPANEL_EVENT_NAMES = [
 ];
 
 const CIRCLEIN_EVENT_NAMES = [
-  'Chat- Send Message-Text',
-  'Chat- Send Message-Image',
-  'Video- Start Video-Chat',
-  'Video- Start Video-Profile',
-  'Video- Start Video-Video',
+  'Chat- Send Message',
+  'Chat- Send Message',
+  'Video- Start Video',
+  'Video- Start Video',
+  'Video- Start Video',
   'Video- Session Length',
 ];
 
@@ -86,9 +86,23 @@ const toEventName = (eventData: EventData): string => {
   return `${eventData.category}- ${eventData.type}`;
 }
 
-const toEventData = (eventName: string): EventData => {
-  const [category, type] = eventName.split('- ');
-  return { category, type, objectId: '' };
+const toEventData = (eventName: string, props: object): EventData => {
+  const [category] = eventName.split('- ');
+
+  let objectId = '';
+  const customProps = {};
+
+  if (props.Length) customProps.duration_ms = parseInt(props.Length, 10) * 1000;
+
+  if (category === 'Chat') objectId = props['Channel SID'];
+  if (category === 'Video') objectId = props.channelName;
+
+  return {
+    ...customProps,
+    category,
+    objectId,
+    type: category === 'Video' ? 'Ended' : 'Sent',
+  }
 }
 
 const sendToMixpanel = (eventName) => {
@@ -104,9 +118,9 @@ export const logEventLocally = (eventData: EventData) => {
   }
 }
 
-const sendToCircleIn = (eventName: string) => {
+const sendToCircleIn = (eventName: string, props: object) => {
   if (CIRCLEIN_EVENT_NAMES.includes(eventName)) {
-    createEvent(toEventData(eventName));
+    createEvent(toEventData(eventName, props));
   }
 }
 
@@ -124,7 +138,7 @@ export const logEvent = ({
     const eventName = fromAmplitudeToEventName({ event, props });
 
     sendToMixpanel(eventName);
-    sendToCircleIn(eventName);
+    sendToCircleIn(event, props);
   } catch (err) {
     console.log(err);
   }

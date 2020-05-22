@@ -202,7 +202,7 @@ class VideoChatChannel extends React.Component<Props, State> {
 
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Text' }
+        props: { Content: 'Text', 'Channel SID': channel.sid }
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();
@@ -246,7 +246,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       await channel.sendMessage('Uploaded a image', messageAttributes);
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Image' }
+        props: { Content: 'Image', 'Channel SID': channel.sid }
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();

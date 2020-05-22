@@ -364,7 +364,11 @@ class MeetUp extends React.Component<Props, State> {
             ,10);
           logEvent({
             event: 'Video- Session Length',
-            props: { Length: elapsed, 'Channel SID': videoRoom.sid }
+            props: {
+              Length: elapsed,
+              channelName: videoRoom.name,
+              'Channel SID': videoRoom.sid,
+            }
           });
         }
 

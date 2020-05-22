@@ -164,7 +164,6 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
           referralCode: (referralData && referralData.code) || (data && data.code)
         });
       } catch (err) {
-        alert(JSON.stringify(err))
         const { updateError } = this.props;
         updateError({
           title: 'Verification Error',

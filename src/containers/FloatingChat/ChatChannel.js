@@ -260,7 +260,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Text' }
+        props: { Content: 'Text', 'Channel SID': channel.sid }
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();
@@ -306,7 +306,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       await channel.sendMessage('Uploaded a image', messageAttributes);
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Image' }
+        props: { Content: 'Image', 'Channel SID': channel.sid }
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();
