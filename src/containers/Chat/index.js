@@ -85,7 +85,8 @@ type Props = {
   handleInitChat: Function,
   handleShutdownChat: Function,
   handleBlockUser: Function,
-  handleMuteChannel: Function
+  handleMuteChannel: Function,
+  handleNewChannel: Function
 };
 
 const Chat = ({
@@ -94,31 +95,31 @@ const Chat = ({
   handleShutdownChat,
   handleBlockUser,
   handleMuteChannel,
+  handleNewChannel,
   width,
   chat,
   user
 }: Props) => {
-  const { isLoading, data: { client, channels, newMessage, local }} = chat
+  const { isLoading, data: { client, channels, newMessage, local, newChannel }} = chat
   const { data: { userId, schoolId }} = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
   const [prevWidth, setPrevWidth] = useState(null)
-  const [newChannel, setNewChannel] = useState(false)
   const [channelList, setChannelList] = useState([])
 
-  const onNewChannel = useCallback(() => {
-    setNewChannel(true)
+  const onNewChannel = useCallback(async () => {
+    await handleNewChannel(true)
     setCurrentChannel(null)
-  }, [])
+  }, [handleNewChannel])
 
   const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
 
-  const onOpenChannel = useCallback(channel => {
+  const onOpenChannel = useCallback(async ({ channel }) => {
     setCurrentChannel(channel)
-    setNewChannel(false)
-  }, [])
+    await handleNewChannel(false)
+  }, [handleNewChannel])
 
   const handleRemove = useCallback(async sid => {
     clearCurrentChannel()
@@ -281,6 +282,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
+      handleNewChannel: chatActions.handleNewChannel,
     },
     dispatch
   );

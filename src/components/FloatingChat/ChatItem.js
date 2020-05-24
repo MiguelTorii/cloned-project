@@ -112,6 +112,7 @@ type Props = {
   onDelete: Function,
   onStartVideoCall: Function,
   onViewMembers: Function,
+  newChannel: boolean,
   onExpand: Function
 };
 
@@ -168,6 +169,7 @@ class ChatItem extends React.PureComponent<Props, State> {
       unread,
       expanded,
       // isGroup,
+      newChannel,
       onOpen,
       onClose,
       onStartVideoCall,
@@ -214,20 +216,20 @@ class ChatItem extends React.PureComponent<Props, State> {
                       <UnfoldMoreIcon className={classes.expandIcon} />
                     )}
                   </ButtonBase>
-                  <ButtonBase
+                  {!newChannel && <ButtonBase
                     className={classes.iconButton}
                     onClick={onStartVideoCall}
                   >
                     <VideoCamIcon className={classes.icon} />
-                  </ButtonBase>
-                  <ButtonBase
+                  </ButtonBase>}
+                  {!newChannel && <ButtonBase
                     className={classes.iconButton}
                     aria-owns={anchorEl ? 'simple-menu' : undefined}
                     aria-haspopup="true"
                     onClick={this.handleClick}
                   >
                     <SettingsIcon className={classes.icon} />
-                  </ButtonBase>
+                  </ButtonBase>}
                   <ButtonBase className={classes.iconButton} onClick={onOpen}>
                     <RemoveIcon className={classes.icon} />
                   </ButtonBase>
@@ -238,10 +240,10 @@ class ChatItem extends React.PureComponent<Props, State> {
                 </ButtonBase>
               )}
             </div>
-            <div 
+            <div
               className={cx(
-                !open && classes.hide, 
-                classes.content, 
+                !open && classes.hide,
+                classes.content,
                 expanded && classes.contentExpanded
               )}
             >

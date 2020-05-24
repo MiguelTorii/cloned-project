@@ -17,6 +17,15 @@ import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 
+const getAvailableSlots = width => {
+  try {
+    const chatSize = 320;
+    return Math.trunc((width - chatSize) / chatSize);
+  } catch (err) {
+    return 0;
+  }
+};
+
 const requestOpenCreateChatGroupChannel = ({
   uuid
 }: {
@@ -113,6 +122,23 @@ const muteChannelLocal = ({ sid }: { sid: string }) => ({
   type: chatActions.MUTE_CHANNEL,
   payload: { sid }
 })
+
+const createNewChannel = ({ newChannel, openChannels }: { newChannel: boolean, openChannels: array }) => ({
+  type: chatActions.CREATE_NEW_CHANNEL,
+  payload: { newChannel, openChannels }
+})
+
+export const handleNewChannel = newChannel => (dispatch: Dispatch, getState: Function) => {
+  const { chat: { data: { openChannels }}} = getState()
+  const availableSlots = getAvailableSlots(window.innerWidth);
+  const newState = update(openChannels, {
+    $apply: b => {
+      const newB = update(b, { $splice: [[availableSlots - 1]] });
+      return [...newB];
+    }
+  });
+  dispatch(createNewChannel({ newChannel, openChannels: newState }))
+}
 
 export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
@@ -308,16 +334,6 @@ export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch
   } catch (err) {}
   dispatch(removeChannel({ sid }))
 }
-
-
-const getAvailableSlots = width => {
-  try {
-    const chatSize = 320;
-    return Math.trunc((width - chatSize) / chatSize);
-  } catch (err) {
-    return 0;
-  }
-};
 
 export const handleRoomClick = channel => async (dispatch: Dispatch, getState: Function) => {
   const { chat: { data: { openChannels }}} = getState()

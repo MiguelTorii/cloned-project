@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
+import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -67,6 +68,8 @@ type Props = {
   onClose: Function,
   onBlock: Function,
   onRemove: Function,
+  newChannel: boolean,
+  handleChannelCreated: Function,
   enqueueSnackbar: Function
 };
 
@@ -135,13 +138,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
       this.setState({ title });
 
       try {
-        channel.getMessages(10).then(paginator => {
+        const paginator = await channel.getMessages(10)
+        if (paginator)
           this.setState({
             messages: paginator.items,
             paginator,
             hasMore: !(paginator.items.length < 10)
           });
-        });
       } catch (err) {
         console.log(err);
       }
@@ -274,10 +277,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
   handleSendInput = async file => {
     const {
       channel,
+      newChannel,
       user: {
         data: { userId, firstName, lastName }
       }
     } = this.props;
+    if (newChannel) return
 
     this.setState({ loading: true });
 
@@ -513,13 +518,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
       user: {
         data: { userId }
       },
+      newChannel,
       channel: {
         sid,
         state: {
           attributes: { groupType = '' }
         }
       },
-      onBlock
+      onBlock,
+      handleChannelCreated
     } = this.props;
 
     const {
@@ -554,6 +561,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onOpen={this.handleChatOpen}
             onClose={this.handleClose}
             onDelete={this.handleDelete}
+            newChannel={newChannel}
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
@@ -569,6 +577,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 this.scrollParentRef = node;
               }}
             >
+              {newChannel && <CreateChatChannelInput onOpenChannel={handleChannelCreated} />}
               <InfiniteScroll
                 threshold={50}
                 pageStart={0}

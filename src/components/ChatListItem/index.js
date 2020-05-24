@@ -35,7 +35,7 @@ const ChatListItem = ({ dark, handleMuteChannel, selected, onOpenChannel, handle
   }, [channel, userId])
 
   const handleOpenChannel = () => {
-    onOpenChannel(channel.twilioChannel);
+    onOpenChannel({ channel: channel.twilioChannel });
   };
 
   return (

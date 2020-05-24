@@ -24,6 +24,7 @@ export type ChatState = {
     unread: number,
     local: Object,
     online: boolean,
+    newChannel: boolean,
     newMessage: ?Object
   },
   error: boolean,
@@ -47,6 +48,7 @@ const defaultState = {
     unread: 0,
     local: {},
     online: false,
+    newChannel: false,
     newMessage: null,
   },
   isLoading: false,
@@ -75,6 +77,15 @@ const removeParam = (obj, id) => {
 
 export default (state: ChatState = defaultState, action: Action): ChatState => {
   switch (action.type) {
+  case chatActions.CREATE_NEW_CHANNEL:
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        newChannel: action.payload.newChannel,
+        openChannels: action.payload.openChannels
+      }
+    }
   case chatActions.START_LOADING:
     return {
       ...state,
@@ -234,7 +245,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
   case chatActions.SET_OPEN_CHANNELS:
     return { ...state, data: {
       ...state.data,
-      openChannels: action.payload.openChannels
+      openChannels: action.payload.openChannels,
+      newChannel: false
     }}
   case rootActions.CLEAR_STATE:
     return defaultState;

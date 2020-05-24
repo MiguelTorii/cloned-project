@@ -6,7 +6,8 @@ import {
 } from 'react-material-ui-form-validator'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton'
+import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
 import AutoComplete from '../AutoComplete'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
@@ -31,13 +32,12 @@ const styles = theme => ({
     display: 'none'
   },
   button: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(),
     borderRadius: 8,
     fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 1,
     lineHeight: '14px',
-    padding: '9px 18px'
   },
 })
 
@@ -130,7 +130,7 @@ const CreateChatChannelInput = ({
       if (chatId !== '') {
         try {
           const channel = await client.getChannelBySid(chatId)
-          onOpenChannel(channel)
+          onOpenChannel({ channel })
         } catch (e) {
           setIsLoading(false)
         }
@@ -179,14 +179,14 @@ const CreateChatChannelInput = ({
             onLoadOptions={handleLoadOptions}
           />
         </div>
-        <Button
+        <IconButton
           className={classes.button}
-          color="primary"
           onClick={handleSubmit}
           variant="contained"
+          color="primary"
         >
-            Create
-        </Button>
+          <CheckCircleOutlineRoundedIcon/>
+        </IconButton>
       </div>
     </ValidatorForm>
   )

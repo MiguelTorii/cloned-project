@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 // @flow
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useCallback, Fragment, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -70,6 +70,7 @@ type Props = {
   enqueueSnackbarAction: Function,
   updateTitleAction: Function,
   handleMuteChannel: Function,
+  handleNewChannel: Function,
   push: Function
 };
 
@@ -87,6 +88,7 @@ const FloatingChat = ({
   handleMuteChannel,
   updateOpenChannels,
   handleChannelClose,
+  handleNewChannel,
   enqueueSnackbarAction,
   updateTitleAction,
 }: Props) => {
@@ -103,6 +105,7 @@ const FloatingChat = ({
       newMessage,
       online,
       local,
+      newChannel,
       openChannels
     }
   } = chat
@@ -265,6 +268,17 @@ const FloatingChat = ({
     // eslint-disable-next-line
   }, [user, chat, online])
 
+  const handleNewChannelOpen = useCallback(() => {
+    handleNewChannel(true)
+  }, [handleNewChannel])
+
+  const handleNewChannelClose = useCallback(() => {
+    handleNewChannel(false)
+  }, [handleNewChannel])
+
+  const onChannelOpen = ({ channel }) => {
+    handleRoomClick(channel)
+  }
 
   const handleChannelCreated = ({
     channel,
@@ -273,6 +287,7 @@ const FloatingChat = ({
     channel: Object,
     startVideo: boolean
   }) => {
+    handleNewChannelClose()
     handleRoomClick(channel);
     if (startVideo) {
       logEvent({
@@ -299,7 +314,7 @@ const FloatingChat = ({
         <div className={classes.root}>
           {openChannels.map(item => (
             <ChatChannel
-              key={item.sid}
+              key={`op${item.sid}`}
               user={user}
               channel={item}
               onClose={handleChannelClose}
@@ -307,9 +322,26 @@ const FloatingChat = ({
               onBlock={handleBlockUser}
             />
           ))}
+          <ErrorBoundary>
+            {newChannel && <ChatChannel
+              user={user}
+              onClose={handleNewChannelClose}
+              newChannel
+              handleChannelCreated={handleChannelCreated}
+              channel={{
+                sid: '',
+                setAllMessagesConsumed: () => {},
+                getMessages: () => {},
+                on: () => {},
+                typing: () => {},
+                sendMessage: () => {},
+                state: { attributes: { friendlyName: 'New Chat' } }
+              }}
+            />}
+          </ErrorBoundary>
           <MainChat
             unread={unread}
-            onCreateChannel={handleCreateChannelOpen}
+            onCreateChannel={handleNewChannelOpen}
           >
             {channelList.length === 0 ? (
               <div className={classes.noMessages}>
@@ -326,7 +358,7 @@ const FloatingChat = ({
                   userId={userId}
                   handleMuteChannel={handleMuteChannel}
                   handleRemoveChannel={handleRemoveChannel}
-                  onOpenChannel={handleRoomClick}
+                  onOpenChannel={onChannelOpen}
                 />
               ))
             )}
@@ -364,6 +396,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleRoomClick: chatActions.handleRoomClick,
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,
+      handleNewChannel: chatActions.handleNewChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
     },
