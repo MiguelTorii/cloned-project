@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import Divider from '@material-ui/core/Divider'
 import withWidth from '@material-ui/core/withWidth'
-import queryString from 'query-string'
 import { withRouter } from 'react-router';
+import { decypherClass } from 'utils/crypto'
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -124,14 +124,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.loadData();
-
-    const {
-      location: { search = '' },
-    } = this.props
-    const {
-      classId,
-      sectionId,
-    } = queryString.parse(search);
+    const { classId, sectionId } = decypherClass()
     this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
   };
 

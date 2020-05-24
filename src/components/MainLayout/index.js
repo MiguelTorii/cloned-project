@@ -54,6 +54,7 @@ import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
+import { decypherClass } from 'utils/crypto'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -443,7 +444,8 @@ class MainLayout extends React.Component<Props, State> {
     const query = queryString.parse(window.location.search)
 
     if (query.classId && classList) {
-      const c = classList.find(cl => cl.classId === Number(query.classId))
+      const { classId } = decypherClass(query.class)
+      const c = classList.find(cl => cl.classId === Number(classId))
       if (c) return c.courseDisplayName
     }
     return ''

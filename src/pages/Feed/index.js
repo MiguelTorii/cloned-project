@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
 import FeedResources from 'containers/FeedResources'
+import { decypherClass } from 'utils/crypto'
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import Feed from '../../containers/Feed';
@@ -28,9 +29,10 @@ type Props = {
 
 const FeedPage = ({classes, location}: Props) => {
   const {
-    feedId, classId, sectionId, from
+    feedId, from
   } = queryString.parse(location.search)
 
+  const { classId, sectionId } = decypherClass()
   return (
     <main>
       <CssBaseline />

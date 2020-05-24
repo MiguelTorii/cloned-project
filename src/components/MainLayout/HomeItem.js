@@ -5,9 +5,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import queryString from 'query-string'
 import Typography from '@material-ui/core/Typography';
 import SubMenu from 'components/MainLayout/SubMenu'
+import { cypher, decypherClass } from 'utils/crypto'
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 
@@ -28,6 +28,7 @@ const HomeItem = ({
   createPostOpen,
 }: Props) => {
   const [classList, setClassList] = useState([])
+
   const classes = makeStyles(theme => ({
     item: {
       width: 'auto',
@@ -64,6 +65,8 @@ const HomeItem = ({
     }
   }))()
 
+  const { classId, sectionId } = decypherClass()
+
   useEffect(() => {
     if(newClassExperience && userClasses && userClasses.classList) {
       setClassList(
@@ -84,7 +87,7 @@ const HomeItem = ({
   }, [newClassExperience, userClasses])
 
   const isHome = ['/'].includes(window.location.pathname)
-  const params = queryString.parse(window.location.search)
+
 
   const renderCircle = color => (
     <div style={{
@@ -124,17 +127,17 @@ const HomeItem = ({
             button
             component={MyLink}
             onClick={() => updateFeed(cl.sectionId, cl.classId)}
-            link={`/feed?sectionId=${cl.sectionId}&classId=${cl.classId}`}
+            link={`/feed?class=${cypher(`${cl.classId}:${cl.sectionId}`)}`}
             className={classNames(
               classes.classes,
               classes.item,
-              params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) ? classes.otherPath : null
+              sectionId === String(cl.sectionId) && classId === String(cl.classId) ? classes.otherPath : null
             )}
           >
             {renderCircle(cl.color)}
             <Typography className={classes.typo}>{cl.courseDisplayName}</Typography>
           </ListItem>
-          {params.sectionId === String(cl.sectionId) && params.classId === String(cl.classId) &&
+          {sectionId === String(cl.sectionId) && classId=== String(cl.classId) &&
               <SubMenu
                 createPostOpen={createPostOpen}
                 MyLink={MyLink}

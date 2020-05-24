@@ -6,7 +6,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
-import queryString from 'query-string'
 import LeaderBoards from '../../containers/LeaderBoards'
 import Layout from '../../containers/Layout';
 import withRoot from '../../withRoot';
@@ -18,27 +17,18 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object,
-  location: {
-    search: string
-  }
+  classes: Object
 };
 
 
-const LeaderBoard = ({ classes, location }: Props) => {
-  const {
-    sectionId
-  } = queryString.parse(location.search)
-
+const LeaderBoard = ({ classes }: Props) => {
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0} justify="center">
           <Grid item xs={12} md={9} className={classes.item}>
-            <LeaderBoards
-              sectionId={sectionId}
-            />
+            <LeaderBoards />
           </Grid>
         </Grid>
       </Layout>

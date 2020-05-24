@@ -10,8 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
-import queryString from 'query-string'
 import { withRouter } from 'react-router';
+import { decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -96,13 +96,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const { sharelinkId } = this.props
     if (sharelinkId) this.loadData()
 
-    const {
-      location: { search = '' },
-    } = this.props
-    const {
-      classId,
-      sectionId,
-    } = queryString.parse(search);
+    const { classId, sectionId } = decypherClass()
     this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
 
     this.updatePreview = debounce(this.updatePreview, 1000);
@@ -126,7 +120,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const { sectionId } = JSON.parse(userClasses[0].value);
       const { classId, summary, title, uri} = shareLink
       this.updatePreview(uri)
-      this.setState({ 
+      this.setState({
         title,
         summary,
         url: uri,
@@ -145,7 +139,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       this.handlePush('/feed')
     }
   };
-  
+
   componentWillUnmount = () => {
     if (
       this.updatePreview.cancel &&
@@ -202,7 +196,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           }
         }
       });
-      
+
       this.handlePush(`/sharelink/${sharelinkId}`)
       this.setState({ loading: false })
     } catch (err) {
@@ -391,10 +385,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                <ClassesSelector 
+                <ClassesSelector
                   classId={classId}
                   sectionId={sectionId}
-                  onChange={this.handleClassChange} 
+                  onChange={this.handleClassChange}
                 />
               </Grid>
               <Grid item xs={12} sm={2}>

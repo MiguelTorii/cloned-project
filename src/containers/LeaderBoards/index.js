@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useState, useEffect } from 'react'
 import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography'
@@ -5,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import queryString from 'query-string'
+import { decypherClass } from 'utils/crypto'
 import type { State as StoreState } from '../../types/state';
 import LeaderBoardTabs from '../../components/LeaderBoardTabs'
 import leaderboardActions from '../../actions/leaderboard'
@@ -26,7 +28,6 @@ const LeaderBoards = ({
   updateTuesdayLeaderboard,
   updateLeaderboardGrandInfo,
   pushTo,
-  sectionId,
   search,
   classList,
   updateGrandLeaderboards
@@ -37,12 +38,11 @@ const LeaderBoards = ({
     updateLeaderboards()
   }, [updateLeaderboards])
 
+  const { sectionId, classId } = decypherClass()
 
   const getCourseDisplayName = ()=> {
-    const query = queryString.parse(search)
-
-    if (query.classId && classList) {
-      const c = classList.find(cl => cl.classId === Number(query.classId))
+    if (classId && classList) {
+      const c = classList.find(cl => cl.classId === Number(classId))
       if (c) return c.courseDisplayName
     }
     return ''

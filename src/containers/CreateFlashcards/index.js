@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import queryString from 'query-string';
+import { decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -376,9 +377,9 @@ const CreateFlashcards = ({
 
   useEffect(() => {
     loadData();
-    const { classId: cid, sectionId: sid } = queryString.parse(search);
-    setClassId(Number(cid));
-    setSectionId(Number(sid));
+    const { classId, sectionId } = decypherClass()
+    setClassId(Number(classId));
+    setSectionId(Number(sectionId));
   }, [loadData, search]);
 
   const onUnload = e => {

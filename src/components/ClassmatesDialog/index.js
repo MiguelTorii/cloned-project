@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getClassmates } from 'api/chat'
 import { getReferralProgram } from 'api/referral';
-import queryString from 'query-string'
 import List from '@material-ui/core/List';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralInvite } from 'containers/Referrals';
 import Classmate from 'components/ClassmatesDialog/Classmate'
+import { decypherClass } from 'utils/crypto'
 
 const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
   const classes = makeStyles(theme => ({
@@ -34,12 +34,12 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
 
   useEffect(() => {
     const init = async () => {
-      const {
+      const { classId, sectionId } = decypherClass()
+      if (!sectionId && !classId) return
+      let res = await getClassmates({
         sectionId,
         classId
-      } = queryString.parse(window.location.search)
-      if (!sectionId && !classId) return
-      let res = await getClassmates({ sectionId, classId })
+      })
       if (res) setClassmates(res)
 
       res = await getReferralProgram();

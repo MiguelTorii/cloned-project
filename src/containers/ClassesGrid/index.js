@@ -14,6 +14,7 @@ import {
 } from 'api/user'
 import AddRemoveClasses from 'components/AddRemoveClasses';
 import Empty from 'containers/ClassesGrid/Empty'
+import { cypher } from 'utils/crypto'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -107,7 +108,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
   const navigate = ({ courseDisplayName, sectionId, classId }) => {
     document.title = courseDisplayName
-    pushTo(`/feed?sectionId=${sectionId}&classId=${classId}`)
+    pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}`)
   }
 
   const hasClasses = classList && classList.length > 0
