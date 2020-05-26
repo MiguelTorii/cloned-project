@@ -247,9 +247,10 @@ export const handleInitChat = () =>
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
           const {sid} = channel
-          const members = await fetchMembers(sid)
-          dispatch(addChannel({ channel, userId, members }))
-          // initLocalChannels(dispatch)
+          setTimeout(async () => {
+            const members = await fetchMembers(sid)
+            dispatch(addChannel({ channel, userId, members }))
+          }, 1000)
         });
 
         client.on('channelLeft', async channel => {
