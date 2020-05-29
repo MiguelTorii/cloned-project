@@ -41,6 +41,7 @@ type Props = {
   noThanks: boolean,
   onShare: Function,
   onThanks: Function,
+  hideShare: ?boolean
   // onStudyCircle: Function
 };
 
@@ -72,18 +73,19 @@ class PostItemActions extends React.PureComponent<Props> {
       isQuestion,
       onShare,
       onThanks,
+      hideShare,
       // onStudyCircle
     } = this.props;
 
     return (
       <Fragment>
         <div className={classes.root}>
-          <Button aria-label="Share" onClick={onShare}>
+          {!hideShare && <Button aria-label="Share" onClick={onShare}>
             <ShareIcon />
             <Typography variant="subtitle1" className={classes.buttonText}>
               Share
             </Typography>
-          </Button>
+          </Button>}
           {!isOwner && (
             <Fragment>
               {!noThanks && (

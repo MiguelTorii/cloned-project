@@ -205,6 +205,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           </ErrorBoundary>
           <ErrorBoundary>
             <FlashcardManager
+              feedId={feedId}
               title={title}
               loadData={loadData}
               flashcards={deck}
@@ -232,6 +233,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           </ErrorBoundary>
           <ErrorBoundary>
             <PostItemActions
+              hideShare
               userId={userId}
               ownerId={ownerId}
               feedId={feedId}

@@ -20,6 +20,8 @@ import type { Flashcard } from 'types/models';
 import { logEventLocally } from 'api/analytics';
 import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
 import store from 'store'
+import ShareIcon from '@material-ui/icons/Share';
+import SharePost from 'containers/SharePost';
 import FlashcardItem from './Flashcard';
 
 const styles = theme => ({
@@ -57,7 +59,8 @@ const styles = theme => ({
     width: 600
   },
   root: {
-    width: 120,
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   score: {
     alignItems: 'center',
@@ -94,7 +97,15 @@ const styles = theme => ({
     justifyContent: 'space-between',
   },
   studyButton: {
-    margin: theme.spacing(2, 0)
+    fontSize: 18,
+    color: theme.circleIn.palette.primaryText1,
+    backgroundColor: theme.circleIn.palette.darkActionBlue,
+    fontWeight: 'bold',
+    margin: theme.spacing(2, 0),
+    padding: theme.spacing(1/2, 5)
+  },
+  buttonText: {
+    marginLeft: theme.spacing()
   }
 });
 
@@ -119,8 +130,16 @@ const initialDecks = {
 }
 
 const FlashcardManager = ({
-  loadData, postId, classes, title, flashcards: orgFlashcards, updateVisibility }: Props) => {
+  loadData,
+  postId,
+  feedId,
+  classes,
+  title,
+  flashcards: orgFlashcards,
+  updateVisibility
+}: Props) => {
   const [open, setOpen] = useState(false);
+  const [openShare, setOpenShare] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
   const [flipped, setFlipped] = useState(false);
   const [sessionId, setSessionId] = useState(null)
@@ -277,9 +296,13 @@ const FlashcardManager = ({
 
   const currentDeck = decks[currentDeckId];
 
+  const onShare = () => setOpenShare(true)
+  const handleCloseShare = () => setOpenShare(false)
+
   return (
     <>
       <div className={classes.root}>
+        <SharePost feedId={feedId} open={openShare} onClose={handleCloseShare} />
         <Tooltip
           id={2287}
           placement="right"
@@ -291,9 +314,15 @@ const FlashcardManager = ({
             variant="contained"
             onClick={handleOpen}
           >
-            Study Now
+            Enter Study Mode
           </Button>
         </Tooltip>
+        <Button aria-label="Share" onClick={onShare}>
+          <ShareIcon />
+          <Typography variant="subtitle1" className={classes.buttonText}>
+              Share
+          </Typography>
+        </Button>
       </div>
       <Dialog
         fullScreen

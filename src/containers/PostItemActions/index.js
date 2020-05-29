@@ -30,6 +30,7 @@ type Props = {
   viewCount: number,
   isQuestion?: boolean,
   ownName: string,
+  hideShare: ?boolean,
   onReload: Function
 };
 
@@ -116,6 +117,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
       ownerId,
       feedId,
       thanked,
+      hideShare,
       inStudyCircle,
       questionsCount,
       thanksCount,
@@ -138,6 +140,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <PostActions
+            hideShare={hideShare}
             thanked={thanked}
             isOwner={Boolean(Number(userId) === Number(ownerId))}
             inStudyCircle={inStudyCircle}
@@ -154,7 +157,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          <SharePost feedId={feedId} open={open} onClose={this.handleClose} />
+          {!hideShare && <SharePost feedId={feedId} open={open} onClose={this.handleClose} />}
         </ErrorBoundary>
         <ErrorBoundary>
           <StudyCircleDialog
