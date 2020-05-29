@@ -70,7 +70,8 @@ type Props = {
   onRemove: Function,
   newChannel: boolean,
   handleChannelCreated: Function,
-  enqueueSnackbar: Function
+  enqueueSnackbar: Function,
+  onSend: Function
 };
 
 type State = {
@@ -249,7 +250,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       channel,
       user: {
         data: { firstName, lastName }
-      }
+      },
+      onSend
     } = this.props;
     const messageAttributes = {
       firstName,
@@ -267,6 +269,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();
+      onSend();
     } catch (err) {
       console.log(err);
     } finally {
@@ -280,7 +283,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       newChannel,
       user: {
         data: { userId, firstName, lastName }
-      }
+      },
+      onSend
     } = this.props;
     if (newChannel) return
 
@@ -315,6 +319,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
       this.setState(({ count }) => ({ count: count + 1 }));
       this.handleMessageCount();
+      onSend();
     } catch (err) {
       console.log(err);
     } finally {

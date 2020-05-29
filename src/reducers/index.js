@@ -16,6 +16,7 @@ import leaderboard from './leaderboard';
 import webNotifications from './web-notifications';
 import notifications from './notifications';
 import dialog from './dialog';
+import onboarding from './onboarding';
 
 const routerActions = {
   push: typeof push,
@@ -35,7 +36,8 @@ const reducers = {
   webNotifications,
   notifications,
   leaderboard,
-  dialog
+  dialog,
+  onboarding
 };
 
 export type Reducers = typeof reducers;

@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as notificationsActions from 'actions/notifications';
 import { bindActionCreators } from 'redux';
+import * as OnboardingActions from 'actions/onboarding';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { ToDos } from '../../types/models';
@@ -36,9 +37,11 @@ type Props = {
 };
 
 type State = {
-  reminders: ToDos,
+  getOnboardingList: Function,
   list: boolean,
-  loading: boolean
+  loading: boolean,
+  onboardingListVisible: boolean,
+  reminders: ToDos
 };
 
 class Reminders extends React.PureComponent<Props, State> {
@@ -96,6 +99,7 @@ class Reminders extends React.PureComponent<Props, State> {
           }
         });
       }
+    // eslint-disable-next-line no-empty
     } catch(e) {}
   }
 
@@ -182,11 +186,14 @@ class Reminders extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId }
-      }
+      },
+      getOnboardingList,
+      onboardingListVisible
     } = this.props;
     this.setState({ loading: true });
     try {
       const res = await createReminder({ userId, title, label, dueDate });
+      if (onboardingListVisible) getOnboardingList();
       this.handlePoints(res)
       await this.handleFetchReminders();
     } finally {
@@ -238,14 +245,16 @@ class Reminders extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
+  user,
+  onboardingListVisible: onboarding.onboardingList.visible
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+      getOnboardingList: OnboardingActions.getOnboardingList
     },
     dispatch
   );

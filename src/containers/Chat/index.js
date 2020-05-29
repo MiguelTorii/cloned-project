@@ -16,6 +16,8 @@ import cx from 'classnames'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import moment from 'moment'
+
+import * as OnboardingActions from 'actions/onboarding';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
@@ -86,7 +88,10 @@ type Props = {
   handleShutdownChat: Function,
   handleBlockUser: Function,
   handleMuteChannel: Function,
-  handleNewChannel: Function
+  handleNewChannel: Function,
+  // markAsCompleted: Function,
+  getOnboardingList: Function,
+  onboardingListVisible: boolean
 };
 
 const Chat = ({
@@ -98,7 +103,10 @@ const Chat = ({
   handleNewChannel,
   width,
   chat,
-  user
+  user,
+  // markAsCompleted,
+  getOnboardingList,
+  onboardingListVisible
 }: Props) => {
   const { isLoading, data: { client, channels, newMessage, local, newChannel }} = chat
   const { data: { userId, schoolId }} = user
@@ -253,6 +261,7 @@ const Chat = ({
           newChannel={newChannel}
           onOpenChannel={onOpenChannel}
           user={user}
+          onSend={() => { if (onboardingListVisible) getOnboardingList() }}
         />
       </Grid>
       <Grid item xs={rightSpace || 1} className={rightSpace !==0 ? classes.right : classes.hidden}>
@@ -269,9 +278,10 @@ const Chat = ({
   )
 }
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+const mapStateToProps = ({ user, chat, onboarding }: StoreState): {} => ({
   user,
-  chat
+  chat,
+  onboardingListVisible: onboarding.onboardingList.visible
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
@@ -283,6 +293,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleNewChannel: chatActions.handleNewChannel,
+      getOnboardingList: OnboardingActions.getOnboardingList,
+      // markAsCompleted: OnboardingActions.markAsCompleted
     },
     dispatch
   );

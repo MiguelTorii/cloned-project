@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import Linkify from 'react-linkify'
+import OnboardingList from 'components/OnboardingList';
 import { ReferralCTA } from '../Referrals'
 import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
@@ -88,6 +89,7 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
 
   return (
     <div className={classes.container}>
+      <OnboardingList isNarrowBox />
       {
         display &&
         <Paper className={classes.paper}>

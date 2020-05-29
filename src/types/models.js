@@ -611,3 +611,14 @@ export type Class = {
   extraInformation: string,
   sectionId: number
 };
+
+export type OnboardingListItem = {
+  completed: boolean,
+  id: number,
+  text: string
+};
+
+export type OnboardingList = {
+  checklist: Array<OnboardingListItem>,
+  visible: boolean
+};

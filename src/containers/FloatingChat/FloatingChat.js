@@ -15,6 +15,7 @@ import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
 import moment from 'moment'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import * as OnboardingActions from 'actions/onboarding';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -71,7 +72,10 @@ type Props = {
   updateTitleAction: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
-  push: Function
+  push: Function,
+  onboardingListVisible: boolean,
+  getOnboardingList: Function
+  // markAsCompleted: Function
 };
 
 const FloatingChat = ({
@@ -91,6 +95,9 @@ const FloatingChat = ({
   handleNewChannel,
   enqueueSnackbarAction,
   updateTitleAction,
+  onboardingListVisible,
+  // markAsCompleted,
+  getOnboardingList
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null)
   const [unread, setUnread] = useState(0)
@@ -320,6 +327,9 @@ const FloatingChat = ({
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
+              onSend={() => {
+                if (onboardingListVisible) getOnboardingList();
+              }}
             />
           ))}
           <ErrorBoundary>
@@ -378,10 +388,11 @@ const FloatingChat = ({
   );
 }
 
-const mapStateToProps = ({ router, user, chat }: StoreState): {} => ({
+const mapStateToProps = ({ router, user, chat, onboarding }: StoreState): {} => ({
   user,
   router,
-  chat
+  chat,
+  onboardingListVisible: onboarding.onboardingList.visible
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
@@ -399,6 +410,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleNewChannel: chatActions.handleNewChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
+      // markAsCompleted: OnboardingActions.markAsCompleted,
+      getOnboardingList: OnboardingActions.getOnboardingList
     },
     dispatch
   );

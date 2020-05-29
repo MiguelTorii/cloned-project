@@ -12,6 +12,7 @@ import { push } from 'connected-react-router';
 import {
   leaveUserClass,
 } from 'api/user'
+import OnboardingList from 'components/OnboardingList';
 import AddRemoveClasses from 'components/AddRemoveClasses';
 import Empty from 'containers/ClassesGrid/Empty'
 import { cypher } from 'utils/crypto'
@@ -102,6 +103,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         )
         setCanAddClasses(canAddClasses)
       }
+    // eslint-disable-next-line no-empty
     } catch(e) {}
     // eslint-disable-next-line
   }, [user])
@@ -120,6 +122,9 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
       container
       spacing={2}
     >
+      <Grid item xs={12} md={12}>
+        <OnboardingList />
+      </Grid>
       <AddRemoveClasses
         open={openAddClasses}
         onClose={() => setOpenAddClasses(false)}

@@ -93,4 +93,5 @@ export const API_ROUTES = {
   EVENTS: `${API_URL}/event`,
   REFERRAL: `${API_URL}/referral`,
   ANNOUNCEMENT: `${API_URL}/announcement`,
+  ONBOARDING_STATUS: `${API_URL}/onboarding/status`,
 };

@@ -81,7 +81,8 @@ const Main = ({
   onOpenChannel,
   local,
   newChannel,
-  user
+  user,
+  onSend
 }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
@@ -282,6 +283,8 @@ const Main = ({
         event: 'Chat- Send Message',
         props: { Content: 'Text' }
       });
+
+      onSend();
     } catch (err) {
       console.log(err)
     } finally {

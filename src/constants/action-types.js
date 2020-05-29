@@ -96,3 +96,8 @@ export const notificationsActions = {
 export const rootActions = {
   CLEAR_STATE: 'CLEAR_STATE'
 };
+
+export const onboardingActions = {
+  GET_ONBOARDING_LIST_SUCCESS: 'GET_ONBOARDING_LIST_SUCCESS',
+  MARK_AS_COMPLETED: 'MARK_AS_COMPLETED'
+}
