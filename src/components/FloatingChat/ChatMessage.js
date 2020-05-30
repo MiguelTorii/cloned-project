@@ -64,12 +64,13 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText1
   },
   videoSpace: {
-    height: 50,
+    height: 70,
     width: '100%'
   },
   video: {
     flex: 1,
     position: 'absolute',
+    maxWidth: 250,
     width: '100%',
     left: '50%',
     transform: 'translateX(-50%)',
