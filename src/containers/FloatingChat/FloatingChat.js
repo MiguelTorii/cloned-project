@@ -291,9 +291,11 @@ const FloatingChat = ({
 
   const handleChannelCreated = ({
     channel,
+    message,
     startVideo = false
   }: {
     channel: Object,
+    messsage: string,
     startVideo: boolean
   }) => {
     handleNewChannelClose()

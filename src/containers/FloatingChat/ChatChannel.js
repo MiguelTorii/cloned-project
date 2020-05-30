@@ -108,6 +108,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     images: [],
     expanded: false,
     count: 0,
+    createMessage: null,
     addMembers: false
   };
 
@@ -245,6 +246,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     });
   };
 
+  handleClearCreateMessage = () => this.setState({ createMessage: null })
+
   handleSendMessage = async message => {
     const {
       channel,
@@ -260,16 +263,21 @@ class ChatChannel extends React.PureComponent<Props, State> {
       isVideoNotification: false
     };
     this.setState({ loading: true });
+    const { newChannel } = this.props
     try {
-      await channel.sendMessage(message, messageAttributes);
+      if (!newChannel) {
+        await channel.sendMessage(message, messageAttributes);
 
-      logEvent({
-        event: 'Chat- Send Message',
-        props: { Content: 'Text', 'Channel SID': channel.sid }
-      });
-      this.setState(({ count }) => ({ count: count + 1 }));
-      this.handleMessageCount();
-      onSend();
+        logEvent({
+          event: 'Chat- Send Message',
+          props: { Content: 'Text', 'Channel SID': channel.sid }
+        });
+        this.setState(({ count }) => ({ count: count + 1 }));
+        this.handleMessageCount();
+        onSend();
+      } else {
+        this.setState({ createMessage: { message, messageAttributes }})
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -546,6 +554,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       loading,
       images,
       expanded,
+      createMessage,
       addMembers
     } = this.state;
 
@@ -582,7 +591,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 this.scrollParentRef = node;
               }}
             >
-              {newChannel && <CreateChatChannelInput onOpenChannel={handleChannelCreated} />}
+              {newChannel &&
+                    <CreateChatChannelInput
+                      createMessage={createMessage}
+                      onOpenChannel={handleChannelCreated}
+                      handleClearCreateMessage={this.handleClearCreateMessage}
+                    />
+              }
               <InfiniteScroll
                 threshold={50}
                 pageStart={0}
@@ -612,6 +627,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
               </div>
             )}
             <ChatTextField
+              hideImage={newChannel}
               expanded={expanded}
               onSendMessage={this.handleSendMessage}
               onSendInput={this.handleSendInput}

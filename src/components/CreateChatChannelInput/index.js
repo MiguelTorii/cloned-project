@@ -45,13 +45,17 @@ type Props = {
   classes: Object,
   user: UserState,
   onOpenChannel: Function,
+  createMessage: Object,
+  handleClearCreateMessage: Function,
   chat: ChatState
 };
 
 const CreateChatChannelInput = ({
   classes,
   user,
+  createMessage,
   onOpenChannel,
+  handleClearCreateMessage,
   chat,
 }: Props) => {
   const [chatType, setChatType] = useState('single')
@@ -130,6 +134,7 @@ const CreateChatChannelInput = ({
       if (chatId !== '') {
         try {
           const channel = await client.getChannelBySid(chatId)
+          if (createMessage) await channel.sendMessage(createMessage.message, createMessage.messageAttributes)
           onOpenChannel({ channel })
         } catch (e) {
           setIsLoading(false)
@@ -140,8 +145,7 @@ const CreateChatChannelInput = ({
     } finally {
       setIsLoading(false)
     }
-  }, [users, chatType, client, name, onOpenChannel, type])
-
+  }, [users, chatType, client, name, onOpenChannel, type, createMessage])
 
   const handleSubmit = useCallback(() => {
     if (users.length === 0) setError(true)
@@ -156,6 +160,16 @@ const CreateChatChannelInput = ({
     }
   }, [chatType, name, type, users, onSubmit])
 
+  useEffect(() => {
+    const createChannel = async () => {
+      await handleSubmit()
+      handleClearCreateMessage()
+    }
+
+    if (createMessage) {
+      createChannel()
+    }
+  }, [createMessage])
 
   return (
     <ValidatorForm

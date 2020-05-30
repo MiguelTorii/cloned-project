@@ -79,7 +79,8 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  expanded: Boolean,
+  expanded: boolean,
+  hideImage: boolean,
   onSendMessage: Function,
   onSendInput: Function,
   onTyping: Function
@@ -202,7 +203,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   fileInput: ?HTMLInputElement;
 
   render() {
-    const { classes, expanded } = this.props;
+    const { hideImage, classes, expanded } = this.props;
     const { message, image, isHover } = this.state;
 
     return (
@@ -212,13 +213,13 @@ class ChatTextField extends React.PureComponent<Props, State> {
           className={classes.form}
           onSubmit={this.handleSubmit}
         >
-          <IconButton
+          {!hideImage && <IconButton
             onClick={this.handleOpenInputFile}
             className={classes.iconButton}
             aria-label="Insert Photo"
           >
             <InsertPhotoIcon />
-          </IconButton>
+          </IconButton>}
           <input
             accept="image/*"
             className={classes.input}

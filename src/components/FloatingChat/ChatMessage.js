@@ -63,10 +63,18 @@ const styles = theme => ({
     paddingLeft: 0,
     color: theme.circleIn.palette.primaryText1
   },
+  videoSpace: {
+    height: 50,
+    width: '100%'
+  },
   video: {
     flex: 1,
+    position: 'absolute',
+    width: '100%',
+    left: '50%',
+    transform: 'translateX(-50%)',
     // borderRadius: 20,
-    padding: '5px 10px 5px 10px',
+    // padding: '5px 10px 5px 10px',
     // backgroundColor: 'grey',
     // wordWrap: 'break-word',
     // minWidth: 270,
@@ -74,7 +82,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    marginLeft: -55
+    // marginLeft: -55
     // cursor: 'pointer'
   },
   videoTitle: {
@@ -186,29 +194,31 @@ class ChatMessageDate extends React.PureComponent<Props> {
     if (isVideoNotification && !isOwn) {
       return (
         <div className={classes.bodyWrapper}>
-          <div className={classes.video}>
-            <Typography
-              className={classes.createdAt}
-              style={{ fontStyle: 'italic' }}
-              align="center"
-            >
-              {createdAt}
-            </Typography>
-            <Typography
-              className={classes.videoTitle}
-              align="center"
-              style={{ fontStyle: 'italic' }}
-            >
-              {`${firstName} ${lastName} has invited you to a video call. `}
-              <Link
-                href={dudUrl}
-                color="inherit"
-                className={classes.link}
-                onClick={onStartVideoCall}
+          <div className={classes.videoSpace}>
+            <div className={classes.video}>
+              <Typography
+                className={classes.createdAt}
+                style={{ fontStyle: 'italic' }}
+                align="center"
               >
+                {createdAt}
+              </Typography>
+              <Typography
+                className={classes.videoTitle}
+                align="center"
+                style={{ fontStyle: 'italic' }}
+              >
+                {`${firstName} ${lastName} has invited you to a video call. `}
+                <Link
+                  href={dudUrl}
+                  color="inherit"
+                  className={classes.link}
+                  onClick={onStartVideoCall}
+                >
                 Join now!
-              </Link>
-            </Typography>
+                </Link>
+              </Typography>
+            </div>
           </div>
         </div>
       );
