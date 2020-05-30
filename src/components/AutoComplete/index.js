@@ -19,7 +19,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import classNames from 'classnames';
 import type { SelectType } from '../../types/models';
 
 const Link = React.forwardRef(({ href, ...props }, ref) => (
@@ -45,6 +44,7 @@ const styles = theme => ({
   },
   chip: {
     margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
+    maxWidth: 160,
     backgroundColor: theme.palette.primary.main
   },
   chipFocused: {
@@ -127,7 +127,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
           autoFocus,
           className: selectProps.classes.input,
           inputRef: innerRef,
-          children,
+          children: children[0],
           ...innerProps
         }
       }}
@@ -251,7 +251,7 @@ function Menu({ selectProps, children, innerProps }) {
   const { inputValue, options = [], textFieldProps, isSchoolSearch } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
-    <Paper square className={classNames(
+    <Paper square className={cx(
       selectProps.classes.paper,
       textFieldProps.relative ? selectProps.classes.paperRelative : selectProps.classes.paperAbsolute
     )}
