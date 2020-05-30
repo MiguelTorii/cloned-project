@@ -126,16 +126,6 @@ class PostTips extends React.PureComponent<Props, State> {
               {item}
             </Typography>
           ))}
-          <div className={classes.title}>
-            <Typography variant="h6" paragraph>
-              Maximize Points
-            </Typography>
-          </div>
-          {texts[type].maximize.map(item => (
-            <Typography key={item} variant="body2" paragraph>
-              {item}
-            </Typography>
-          ))}
         </Paper>
       </main>
     );

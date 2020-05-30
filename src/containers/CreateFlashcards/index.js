@@ -11,7 +11,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
-import queryString from 'query-string';
 import { decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -21,7 +20,7 @@ import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import FlashcardEditor from '../../components/FlashcardEditor';
 import NewFlashcard from '../../components/FlashcardEditor/NewFlashcard';
-import TagsAutoComplete from '../TagsAutoComplete';
+// import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
@@ -71,7 +70,7 @@ const CreateFlashcards = ({
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState([]);
   const [summary, setSummary] = useState('');
-  const [tagsError, setTagsError] = useState(false);
+  // const [tagsError, setTagsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [flashcardsError, setFlashcardsError] = useState(false);
   const [errorDialog, setErrorDialog] = useState(false);
@@ -118,14 +117,14 @@ const CreateFlashcards = ({
 
   const updateFlashcards = useCallback(async () => {
     if (tags.length < 0) {
-      setTagsError(true);
+      // setTagsError(true);
       return;
     }
     if (flashcards.length === 0) {
       setFlashcardsError(true);
       return;
     }
-    setTagsError(false);
+    // setTagsError(false);
     setFlashcardsError(false);
     setLoading(true);
     try {
@@ -180,14 +179,14 @@ const CreateFlashcards = ({
 
   const createFlashcards = useCallback(async () => {
     if (tags.length < 0) {
-      setTagsError(true);
+      // setTagsError(true);
       return;
     }
     if (flashcards.length === 0) {
       setFlashcardsError(true);
       return;
     }
-    setTagsError(false);
+    // setTagsError(false);
     setFlashcardsError(false);
     setLoading(true);
 
@@ -281,8 +280,8 @@ const CreateFlashcards = ({
 
   const handleTagsChange = useCallback(values => {
     setTags(values);
-    if (values.length === 0) setTagsError(true);
-    else setTagsError(false);
+    // if (values.length === 0) setTagsError(true);
+    // else setTagsError(false);
   }, []);
 
   const handleAddNew = useCallback(() => {
@@ -448,16 +447,16 @@ const CreateFlashcards = ({
                 errorMessages={['Description is required']}
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
-              <Typography variant="subtitle1">Tags</Typography>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-              <TagsAutoComplete
-                tags={tags}
-                error={tagsError}
-                onChange={handleTagsChange}
-              />
-            </Grid>
+            {/* <Grid item xs={12} sm={2}> */}
+            {/* <Typography variant="subtitle1">Tags</Typography> */}
+            {/* </Grid> */}
+            {/* <Grid item xs={12} sm={10}> */}
+            {/* <TagsAutoComplete */}
+            {/* tags={tags} */}
+            {/* error={tagsError} */}
+            {/* onChange={handleTagsChange} */}
+            {/* /> */}
+            {/* </Grid> */}
             <Grid item xs={12} sm={12}>
               <Typography variant="subtitle1">Flashcards</Typography>
             </Grid>

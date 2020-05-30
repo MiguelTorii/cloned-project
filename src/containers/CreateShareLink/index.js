@@ -19,7 +19,7 @@ import CreatePostForm from '../../components/CreatePostForm';
 import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
-import TagsAutoComplete from '../TagsAutoComplete';
+// import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { updateShareURL, createShareLink , getShareLink } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
@@ -77,7 +77,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     sectionId: null,
     tags: [],
     changed: null,
-    tagsError: false,
+    // tagsError: false,
     errorDialog: false,
     errorTitle: '',
     errorBody: ''
@@ -212,10 +212,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   createSharelink = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      // this.setState({ tagsError: true });
       return;
     }
-    this.setState({ tagsError: false });
+    // this.setState({ tagsError: false });
     this.setState({ loading: true });
     try {
       const {
@@ -322,11 +322,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     this.setState({ classId, sectionId });
   };
 
-  handleTagsChange = values => {
-    this.setState({ tags: values });
-    if (values.length === 0) this.setState({ tagsError: true });
-    else this.setState({ tagsError: false });
-  };
+  // handleTagsChange = values => {
+  // this.setState({ tags: values });
+  // if (values.length === 0) this.setState({ tagsError: true });
+  // else this.setState({ tagsError: false });
+  // };
 
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
@@ -346,8 +346,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       summary,
       url,
       preview,
-      tags,
-      tagsError,
+      // tags,
+      // tagsError,
       errorDialog,
       changed,
       errorTitle,
@@ -423,16 +423,16 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               <Grid item xs={12} sm={10} className={classes.preview}>
                 <LinkPreview uri={preview} />
               </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Tags</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <TagsAutoComplete
-                  tags={tags}
-                  error={tagsError}
-                  onChange={this.handleTagsChange}
-                />
-              </Grid>
+              {/* <Grid item xs={12} sm={2}> */}
+              {/* <Typography variant="subtitle1">Tags</Typography> */}
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={10}> */}
+              {/* <TagsAutoComplete */}
+              {/* tags={tags} */}
+              {/* error={tagsError} */}
+              {/* onChange={this.handleTagsChange} */}
+              {/* /> */}
+              {/* </Grid> */}
             </Grid>
           </CreatePostForm>
         </ErrorBoundary>

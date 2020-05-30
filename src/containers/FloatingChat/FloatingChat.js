@@ -121,6 +121,15 @@ const FloatingChat = ({
     data: { userId, profileImage }
   } = user
 
+
+  const handleNewChannelOpen = useCallback(() => {
+    handleNewChannel(true)
+  }, [handleNewChannel])
+
+  const handleNewChannelClose = useCallback(() => {
+    handleNewChannel(false)
+  }, [handleNewChannel])
+
   const handleMessageReceived = channel => () => (
     <Button
       onClick={() => {
@@ -204,6 +213,7 @@ const FloatingChat = ({
 
 
     const init = () => {
+      handleNewChannelClose()
       const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
       const handleInitChatDebounce = debounce(handleInitChat, 1000);
       window.addEventListener('resize', updateOpenChannelsDebounce);
@@ -274,14 +284,6 @@ const FloatingChat = ({
     }
     // eslint-disable-next-line
   }, [user, chat, online])
-
-  const handleNewChannelOpen = useCallback(() => {
-    handleNewChannel(true)
-  }, [handleNewChannel])
-
-  const handleNewChannelClose = useCallback(() => {
-    handleNewChannel(false)
-  }, [handleNewChannel])
 
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel)

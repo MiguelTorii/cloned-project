@@ -33,7 +33,7 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    padding: 10
+    padding: theme.spacing(1, 0)
   },
   valueContainer: {
     display: 'flex',
@@ -60,7 +60,7 @@ const styles = theme => ({
   },
   placeholder: {
     position: 'absolute',
-    left: 22,
+    left: 12,
     fontSize: 12,
     opacity: 0.7
   },

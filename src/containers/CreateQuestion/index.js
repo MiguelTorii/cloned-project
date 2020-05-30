@@ -17,7 +17,7 @@ import CreatePostForm from '../../components/CreatePostForm';
 import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import RichTextEditor from '../RichTextEditor';
-import TagsAutoComplete from '../TagsAutoComplete';
+// import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { createQuestion, getQuestion, updateQuestion } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
@@ -67,7 +67,7 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     classId: 0,
     sectionId: null,
     tags: [],
-    tagsError: false,
+    // tagsError: false,
     errorDialog: false,
     errorTitle: '',
     changed: null,
@@ -177,10 +177,10 @@ class CreateQuestion extends React.PureComponent<Props, State> {
   createQuestion = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      // this.setState({ tagsError: true });
       return;
     }
-    this.setState({ tagsError: false });
+    // this.setState({ tagsError: false });
     this.setState({ loading: true });
     try {
       const {
@@ -273,11 +273,11 @@ class CreateQuestion extends React.PureComponent<Props, State> {
     this.setState({ classId, sectionId });
   };
 
-  handleTagsChange = values => {
-    this.setState({ tags: values });
-    if (values.length === 0) this.setState({ tagsError: true });
-    else this.setState({ tagsError: false });
-  };
+  // handleTagsChange = values => {
+  // this.setState({ tags: values });
+  // if (values.length === 0) this.setState({ tagsError: true });
+  // else this.setState({ tagsError: false });
+  // };
 
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
@@ -291,8 +291,8 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       sectionId,
       title,
       body,
-      tags,
-      tagsError,
+      // tags,
+      // tagsError,
       errorDialog,
       errorTitle,
       changed,
@@ -345,16 +345,16 @@ class CreateQuestion extends React.PureComponent<Props, State> {
                   sectionId={sectionId}
                   onChange={this.handleClassChange} />
               </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Tags</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <TagsAutoComplete
-                  tags={tags}
-                  error={tagsError}
-                  onChange={this.handleTagsChange}
-                />
-              </Grid>
+              {/* <Grid item xs={12} sm={2}> */}
+              {/* <Typography variant="subtitle1">Tags</Typography> */}
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={10}> */}
+              {/* <TagsAutoComplete */}
+              {/* tags={tags} */}
+              {/* error={tagsError} */}
+              {/* onChange={this.handleTagsChange} */}
+              {/* /> */}
+              {/* </Grid> */}
             </Grid>
           </CreatePostForm>
         </ErrorBoundary>

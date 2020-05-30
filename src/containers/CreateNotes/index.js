@@ -20,7 +20,7 @@ import CreatePostForm from '../../components/CreatePostForm';
 import UploadImages from '../UploadImages';
 import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
-import TagsAutoComplete from '../TagsAutoComplete';
+// import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { getNotes, updatePhotoNote, createPhotoNote , createShareLink } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
@@ -94,7 +94,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   state = {
     loading: false,
     title: '',
-    tagsError: false,
+    // tagsError: false,
     classId: 0,
     url: '',
     sectionId: null,
@@ -167,10 +167,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
   createSharelink = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      // this.setState({ tagsError: true });
       return;
     }
-    this.setState({ tagsError: false });
+    // this.setState({ tagsError: false });
     this.setState({ loading: true });
     try {
       const {
@@ -249,10 +249,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
   createNotes = async () => {
     const { tags } = this.state;
     if (tags.length < 0) {
-      this.setState({ tagsError: true });
+      // this.setState({ tagsError: true });
       return;
     }
-    this.setState({ tagsError: false });
+    // this.setState({ tagsError: false });
     this.setState({ loading: true });
     if (this.uploadImages) {
       try {
@@ -422,11 +422,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ classId, sectionId });
   };
 
-   handleTagsChange = values => {
-     this.setState({ tags: values });
-     if (values.length === 0) this.setState({ tagsError: true });
-     else this.setState({ tagsError: false });
-   };
+  // handleTagsChange = values => {
+  // this.setState({ tags: values });
+  // if (values.length === 0) this.setState({ tagsError: true });
+  // else this.setState({ tagsError: false });
+  // };
 
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
@@ -457,6 +457,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
 
     const {
+      // tags,
+      // tagsError,
       loading,
       title,
       summary,
@@ -466,9 +468,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       notes,
       sectionId,
       isEdit,
-      tags,
       url,
-      tagsError,
       changed,
       hasImages,
       errorBody
@@ -540,18 +540,18 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 )} more characters to earn points`}</Typography>
               </Grid>
 
-              {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Tags</Typography>
-              </Grid>}
-              <Grid item xs={12} md={10}>
-                <TagsAutoComplete
-                  tags={tags}
-                  error={tagsError}
-                  label={notSm ? '' : 'Tags'}
-                  variant={notSm ? null : 'standard'}
-                  onChange={this.handleTagsChange}
-                />
-              </Grid>
+              {/* {notSm && <Grid item md={2}> */}
+              {/* <Typography variant="subtitle1">Tags</Typography> */}
+              {/* </Grid>} */}
+              {/* <Grid item xs={12} md={10}> */}
+              {/* <TagsAutoComplete */}
+              {/* tags={tags} */}
+              {/* error={tagsError} */}
+              {/* label={notSm ? '' : 'Tags'} */}
+              {/* variant={notSm ? null : 'standard'} */}
+              {/* onChange={this.handleTagsChange} */}
+              {/* /> */}
+              {/* </Grid> */}
               {notSm && <Grid item md={2} />}
               <Grid
                 container
