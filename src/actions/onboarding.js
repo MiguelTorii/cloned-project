@@ -1,6 +1,6 @@
 // @flow
 import { onboardingActions } from 'constants/action-types'
-import fetchOnboardingList from 'api/onboarding';
+import { fetchOnboardingList, completeOnboardingList } from 'api/onboarding';
 import type { Dispatch } from 'types/store';
 import type { OnboardingList } from 'types/models';
 
@@ -21,4 +21,11 @@ export const getOnboardingList = () => async (dispatch: Dispatch) => {
 
 export const markAsCompleted = (id: number) => async (dispatch: Dispatch) => {
   dispatch(markAsCompletedAction(id));
+};
+
+export const finishOnboardingList = () => async (dispatch: Dispatch) => {
+  await completeOnboardingList();
+
+  const onboardingList = await fetchOnboardingList();
+  dispatch(getAnnouncementSuccessAction(onboardingList));
 };

@@ -261,7 +261,9 @@ const Chat = ({
           newChannel={newChannel}
           onOpenChannel={onOpenChannel}
           user={user}
-          onSend={() => { if (onboardingListVisible) getOnboardingList() }}
+          onSend={() => {
+            if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)
+          }}
         />
       </Grid>
       <Grid item xs={rightSpace || 1} className={rightSpace !==0 ? classes.right : classes.hidden}>

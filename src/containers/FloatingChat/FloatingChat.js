@@ -332,7 +332,7 @@ const FloatingChat = ({
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
               onSend={() => {
-                if (onboardingListVisible) getOnboardingList();
+                if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)
               }}
             />
           ))}

@@ -9,12 +9,13 @@ import withWidth from '@material-ui/core/withWidth';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import CloseIcon from '@material-ui/icons/Close';
 
 import type {
   OnboardingList as OnboardingListType,
   OnboardingListItem as OnboardingListItemType
 } from 'types/models';
-import { getOnboardingList } from 'actions/onboarding';
+import * as onboardingActions from 'actions/onboarding';
 
 import checkmarkSvg from 'assets/svg/checkmark.svg';
 import checkmarkEmptySvg from 'assets/svg/checkmark_empty.svg';
@@ -38,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(),
     marginBottom: theme.spacing(3),
     padding: theme.spacing(3),
+  },
+  icon: {
+    cursor: 'pointer',
   },
   list: {
     display: 'flex',
@@ -83,12 +87,18 @@ const useStyles = makeStyles(theme => ({
     fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: 1,
+    marginLeft: theme.spacing(),
+  },
+  titleContainer: {
+    alignItems: 'center',
+    display: 'flex',
     marginBottom: theme.spacing(2),
   }
 }));
 
 type Props = {
-  fetchOnboardingLst: Function,
+  finishOnboardingList: Function,
+  getOnboardingList: Function,
   isNarrowBox: boolean,
   onboardingList: OnboardingListType,
   viewedOnboarding: boolean,
@@ -96,7 +106,8 @@ type Props = {
 };
 
 const OnboardingList = ({
-  fetchOnboardingLst,
+  finishOnboardingList,
+  getOnboardingList,
   isNarrowBox = false,
   onboardingList,
   viewedOnboarding,
@@ -106,8 +117,8 @@ const OnboardingList = ({
   const classes = useStyles(isNarrow);
 
   useEffect(() => {
-    fetchOnboardingLst();
-  }, [fetchOnboardingLst]);
+    getOnboardingList();
+  }, [getOnboardingList]);
 
   if (
     !viewedOnboarding ||
@@ -166,15 +177,18 @@ const OnboardingList = ({
     </Link>
   );
 
-  const calculateCompletion = (items: Array<OnboardingListItemType>) => {
-    const completedItems = items.filter(i => i.completed);
-
-    return (completedItems.length / items.length) * 100;
-  }
+  const completedItems = onboardingList.checklist.filter(i => i.completed);
+  const completionPercentage = (completedItems.length / onboardingList.checklist.length) * 100;
 
   return (
     <div className={classes.container}>
-      <div className={classes.title}>Placeholder title</div>
+      <div className={classes.titleContainer}>
+        {
+          (completedItems.length === onboardingList.checklist.length) &&
+          <CloseIcon className={classes.icon} onClick={finishOnboardingList} />
+        }
+        <div className={classes.title}>Placeholder title</div>
+      </div>
       <div className={classes.list}>
         {
           onboardingList.checklist.map(item => (
@@ -182,7 +196,7 @@ const OnboardingList = ({
           ))
         }
       </div>
-      <LinearProgressWithLabel value={calculateCompletion(onboardingList.checklist)} />
+      <LinearProgressWithLabel value={completionPercentage} />
     </div>
   )
 }
@@ -195,7 +209,8 @@ const mapStateToProps = ({ user: { syncData: { viewedOnboarding }}, onboarding }
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      fetchOnboardingLst: getOnboardingList
+      finishOnboardingList: onboardingActions.finishOnboardingList,
+      getOnboardingList: onboardingActions.getOnboardingList,
     },
     dispatch
   );

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
@@ -19,7 +19,7 @@ import type { UserState } from '../../reducers/user';
 const styles = theme => ({
   container: {
     margin: theme.spacing(1, 5, 0, 1),
-    position: 'fixed'
+    position: 'fixed',
   },
   paper: {
     display: 'flex',
@@ -59,11 +59,11 @@ type Props = {
   classes: Object,
   width: string,
   user: UserState,
-  userSync: Function
+  userSync: Function,
+  onboardingListVisible: boolean
 };
 
-
-const FeedResources = ({ width, classes, user, userSync }: Props) => {
+const FeedResources = ({ width, classes, user, userSync, onboardingListVisible }: Props) => {
   const {
     data: {
       userId
@@ -74,7 +74,8 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
       resourcesBody,
       resourcesTitle
     }
-  } = user
+  } = user;
+  const [scrollYPos, setScrollYPos] = useState(0);
 
   useEffect(() => {
     const init = async () => {
@@ -83,12 +84,38 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
 
     if (userId) init()
     // eslint-disable-next-line
-  }, [userId])
+  }, [userId]);
+
+  const handleScroll = () => {
+    const { scrollY } = window;
+    setScrollYPos(scrollY);
+  }
+
+  useEffect(() => {
+    if (onboardingListVisible) {
+      window.addEventListener('scroll', handleScroll, true);
+    }
+
+    return window.removeEventListener('scroll', handleScroll);
+  }, [onboardingListVisible]);
 
   if (['xs', 'sm'].includes(width)) return null;
 
+  let top;
+
+  const OFFSET = 400;
+
+  if (scrollYPos < 70 || !onboardingListVisible) {
+    top = 'auto';
+  } else if (scrollYPos < OFFSET) {
+    top = -scrollYPos;
+  } else if (scrollYPos >= OFFSET) {
+    top = -OFFSET;
+  }
+
   return (
-    <div className={classes.container}>
+    <div className={classes.container} style={{ top }}>
+      <div className={classes.content}></div>
       <OnboardingList isNarrowBox />
       {
         display &&
@@ -115,8 +142,9 @@ const FeedResources = ({ width, classes, user, userSync }: Props) => {
   );
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
   user,
+  onboardingListVisible: onboarding.onboardingList.visible
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
