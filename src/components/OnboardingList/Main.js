@@ -179,15 +179,20 @@ const OnboardingList = ({
 
   const completedItems = onboardingList.checklist.filter(i => i.completed);
   const completionPercentage = (completedItems.length / onboardingList.checklist.length) * 100;
+  const isCompleted = completedItems.length === onboardingList.checklist.length;
 
   return (
     <div className={classes.container}>
       <div className={classes.titleContainer}>
         {
-          (completedItems.length === onboardingList.checklist.length) &&
+          isCompleted &&
           <CloseIcon className={classes.icon} onClick={finishOnboardingList} />
         }
-        <div className={classes.title}>Placeholder title</div>
+        <div className={classes.title}>
+          {isCompleted
+            ? `You're ready to use CircleIn to the fullest!`
+            : `Get Started on CircleIn`}
+        </div>
       </div>
       <div className={classes.list}>
         {
