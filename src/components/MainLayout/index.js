@@ -35,6 +35,7 @@ import { withRouter } from 'react-router';
 import ClassmatesDialog from 'components/ClassmatesDialog'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import mixpanel from 'mixpanel-browser';
+import { decypherClass } from 'utils/crypto'
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -54,7 +55,6 @@ import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
-import { decypherClass } from 'utils/crypto'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -382,11 +382,15 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   handleSignOut = () => {
-    mixpanel.reset();
     const { handleSignOut } = this.props;
     handleSignOut();
     this.handleMobileMenuClose();
     this.handleMenuClose();
+    try {
+      mixpanel.reset();
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   handleManageClasses = () => {
