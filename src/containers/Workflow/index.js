@@ -78,7 +78,7 @@ function reducer(state, action) {
       tasks: { $set: action.tasks }
     })
   case 'ADD_TASK':
-    return { ...state, tasks: [...state.tasks, { ...action.task, id: state.tasks.length }]}
+    return { ...state, tasks: [...state.tasks, { ...action.task }]}
   case 'REORDER':
     return update(state, {
       tasks: {
@@ -105,7 +105,8 @@ function reducer(state, action) {
           categoryId: { $set: action.categoryId || 0 },
           description: { $set: action.description || '' },
           date: { $set: action.date },
-          sectionId: { $set: action.sectionId || '' }
+          sectionId: { $set: action.sectionId || '' },
+          status: { $set: action.status }
         }
       }
     })
@@ -193,7 +194,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     try {
       const res = await createTodo({ title })
       if (res?.id) {
-        dispatch({ type: 'ADD_TASK', task: { title, date: '', categoryId: 1, sectionId: '', order: tasks.length, id: res.id }})
+        dispatch({ type: 'ADD_TASK', task: { title, date: '', categoryId: 1, sectionId: '', order: tasks.length, id: res.id, status: 1 }})
         handleExpand(1)(true)
       }
     } catch(e) {

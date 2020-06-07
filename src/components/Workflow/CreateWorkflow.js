@@ -50,6 +50,7 @@ const CreateWorkflow = ({ handleAddTask }: Props) => {
             onKeyPress
           }}
           variant='outlined'
+          placeholder='Enter a task'
           fullWidth
           size='small'
         />

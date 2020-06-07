@@ -37,11 +37,13 @@ const useStyles = makeStyles(theme => ({
   },
   dragContainer: {
     position: 'absolute',
-    left: 0,
+    left: 10,
+    top: 20,
     cursor: 'grab',
   },
   item: {
     paddingLeft: theme.spacing(3),
+    cursor: 'pointer',
     paddingRight: theme.spacing(7),
     position: 'relative'
   },
@@ -190,12 +192,12 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
         </div>}
         <ListItemIcon>
           <IconButton onClick={handleComplete}>
-            {task.completed === 2 ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />}
+            {task.status === 2 ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />}
           </IconButton>
         </ListItemIcon>
-        <ListItemText primary={renderTask} />
-        <ListItemSecondaryAction>
-          <Button onClick={onOpen} style={getStyles(isDragging || !showDetails)}>Details</Button>
+        <ListItemText primary={renderTask} onClick={onOpen} />
+        <ListItemSecondaryAction onClick={onOpen}>
+          <Button style={getStyles(isDragging || !showDetails)}>Details</Button>
         </ListItemSecondaryAction>
       </ListItem>
       <Divider />

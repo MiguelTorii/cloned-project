@@ -11,8 +11,12 @@ import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import moment from 'moment'
+import AddRemoveClasses from 'components/AddRemoveClasses'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
+  newClass: {
+    color: theme.circleIn.palette.action
+  },
   dialog: {
     ...dialogStyle,
     width: 600,
@@ -50,6 +54,11 @@ const WorkflowEdit = ({
   const [title, setTitle] = useState(task.title)
   const descriptionRef = useRef(null)
   const [sectionId, setSectionId] = useState(task.sectionId)
+  const [openAddClasses, setOpenAddClasses] = useState(false)
+
+  const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), [])
+  const handleCloseManageClasses = useCallback(() => setOpenAddClasses(false), [])
+
 
   useEffect(() => {
     setCategoryId(task.categoryId)
@@ -91,8 +100,9 @@ const WorkflowEdit = ({
   }, [])
 
   const updateClass = useCallback(e => {
-    setSectionId(e.target.value)
-  }, [])
+    if (e.target.value === 'new') handleOpenManageClass()
+    else setSectionId(e.target.value)
+  }, [handleOpenManageClass])
 
   return (
     <Dialog
@@ -173,8 +183,15 @@ const WorkflowEdit = ({
                     {cl.courseDisplayName}
                   </MenuItem>
                 )})}
+              <MenuItem value="new" className={classes.newClass}>
+                Add Classes
+              </MenuItem>
             </Select>
           </FormControl>
+          <AddRemoveClasses
+            open={openAddClasses}
+            onClose={handleCloseManageClasses}
+          />
         </Grid>
       </Grid>
     </Dialog>
