@@ -34,8 +34,8 @@ const WorkflowList = ({
 
   const boxes = [
     { name: 'Upcoming', tasks: upcoming, categoryId: 1 },
-    { name: 'In Progress', tasks: inprogress, categoryId: 2 },
-    { name: 'Ready to Start', tasks: ready, categoryId: 3 },
+    { name: 'In progress', tasks: inprogress, categoryId: 2 },
+    { name: 'Ready to submit', tasks: ready, categoryId: 3 },
     { name: 'Done', tasks: done, categoryId: 4 }
   ]
 
