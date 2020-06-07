@@ -12,7 +12,8 @@ export type CampaignState = {
 };
 
 const defaultState = {
-  newClassExperience: null
+  newClassExperience: null,
+  workflowExperience: null
 };
 
 export default (state: CampaignState = defaultState, action: Action): CampaignState => {
