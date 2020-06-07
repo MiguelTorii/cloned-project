@@ -278,11 +278,11 @@ const CreateFlashcards = ({
     []
   );
 
-  const handleTagsChange = useCallback(values => {
-    setTags(values);
-    // if (values.length === 0) setTagsError(true);
-    // else setTagsError(false);
-  }, []);
+  // const handleTagsChange = useCallback(values => {
+  // setTags(values);
+  // // if (values.length === 0) setTagsError(true);
+  // // else setTagsError(false);
+  // }, []);
 
   const handleAddNew = useCallback(() => {
     setChanged(true);

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as campaignActions from 'actions/campaign'
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns'
 import Feed from 'pages/Feed'
 import Classes from 'pages/Classes'
 import { sync } from '../../actions/user';
@@ -33,6 +33,7 @@ const Home = ({
 
   useEffect(() => {
     requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN })
+    requestCampaign({ campaignId: WORKFLOW_CAMPAIGN })
     // eslint-disable-next-line
   }, [])
 

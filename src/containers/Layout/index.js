@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns';
+import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralStatus } from 'containers/Referrals';
 import * as userActions from '../../actions/user'
@@ -92,6 +92,7 @@ class Layout extends React.PureComponent<Props, State> {
     await checkUserSession();
     fetchClasses()
     requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN });
+    requestCampaign({ campaignId: WORKFLOW_CAMPAIGN });
   }
 
   componentDidMount = () => {
@@ -224,7 +225,7 @@ class Layout extends React.PureComponent<Props, State> {
       unreadMessages += local[l].unread
     })
 
-    if (campaign.newClassExperience === null) return null
+    if (campaign.newClassExperience === null || campaign.workflowExperience === null) return null
 
     const {
       manageClasses,
@@ -254,6 +255,7 @@ class Layout extends React.PureComponent<Props, State> {
             unreadMessages={unreadMessages}
             userId={userId}
             runningTour={runningTour}
+            workflowExperience={campaign.workflowExperience}
             newClassExperience={campaign.newClassExperience}
             initials={initials}
             pushTo={push}

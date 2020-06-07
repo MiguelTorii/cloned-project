@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 // @flow
 
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns'
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign'
@@ -23,14 +23,21 @@ export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaig
   try {
     const { campaign } = getState()
 
+    if (campaign.workflowExperience === null || reset) {
+      const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
+
+      if (campaignId === WORKFLOW_CAMPAIGN)
+        dispatch(requestGetCampaign({ campaign: 'workflowExperience', active: !isDisabled && id === 2 }));
+    }
+
     if (campaign.newClassExperience === null || reset) {
       const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
 
-      if (campaignId === NEW_CLASSES_CAMPAIGN) 
+      if (campaignId === NEW_CLASSES_CAMPAIGN)
         dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: !isDisabled && id === 3 }));
     }
   } catch(e) {
-    if (campaignId === NEW_CLASSES_CAMPAIGN) 
+    if (campaignId === NEW_CLASSES_CAMPAIGN)
       dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: false }));
     return null
   }

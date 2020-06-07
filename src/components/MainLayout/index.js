@@ -301,6 +301,7 @@ type Props = {
   userClasses: Object,
   onManageBlockedUsers: Function,
   newClassExperience: boolean,
+  workflowExperience: boolean,
   updateFeed: Function,
   location: {
     search: string
@@ -656,7 +657,7 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const { updateFeed, newClassExperience, userClasses } = this.props
+    const { updateFeed, newClassExperience, userClasses, workflowExperience } = this.props
     const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
 
     const qs = queryString.parse(search)
@@ -731,7 +732,22 @@ class MainLayout extends React.Component<Props, State> {
               primary="Chats"
             />
           </ListItem>
-          <ListItem
+          {workflowExperience && <ListItem
+            button
+            component={MyLink}
+            link="/workflow"
+            className={classNames(
+              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <CalendarTodayIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Workflow"
+            />
+          </ListItem>}
+          {!workflowExperience && <ListItem
             button
             component={MyLink}
             link="/reminders"
@@ -745,7 +761,7 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemText
               primary="My Reminders"
             />
-          </ListItem>
+          </ListItem>}
           <ListItem
             button
             component={MyLink}

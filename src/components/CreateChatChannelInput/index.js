@@ -169,7 +169,7 @@ const CreateChatChannelInput = ({
     if (createMessage) {
       createChannel()
     }
-  }, [createMessage])
+  }, [createMessage, handleClearCreateMessage, handleSubmit])
 
   return (
     <ValidatorForm
