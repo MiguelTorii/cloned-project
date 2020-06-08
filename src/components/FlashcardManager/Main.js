@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import cx from 'classnames';
 import shuffle from 'lodash/shuffle';
 import uuidv4 from 'uuid/v4';
+import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import CustomDialog from 'components/Dialog';
 import Tooltip from 'containers/Tooltip';
+import FlashcardQuiz from 'components/FlashcardQuiz';
 import type { Flashcard } from 'types/models';
 import { logEventLocally } from 'api/analytics';
 import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
@@ -46,6 +48,9 @@ const styles = theme => ({
     justifyContent: 'space-between',
     marginTop: 100,
     position: 'relative',
+  },
+  dialogPaper: {
+    backgroundColor: theme.circleIn.palette.primaryBackground,
   },
   emptyState: {
     alignItems: 'center',
@@ -102,6 +107,7 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.darkActionBlue,
     fontWeight: 'bold',
     margin: theme.spacing(2, 0),
+    marginRight: theme.spacing(),
     padding: theme.spacing(1/2, 5)
   },
   buttonText: {
@@ -116,6 +122,11 @@ const Transition = React.forwardRef((props, ref) => {
 type Props = {
   classes: Object,
   flashcards: Array<Flashcard & { id: string }>,
+  match: {
+    params: {
+      flashcardId: string
+    }
+  },
   postId: number,
   title: string,
   loadData: Function,
@@ -131,6 +142,7 @@ const initialDecks = {
 
 const FlashcardManager = ({
   loadData,
+  match : { params: { flashcardId } },
   postId,
   feedId,
   classes,
@@ -139,6 +151,7 @@ const FlashcardManager = ({
   updateVisibility
 }: Props) => {
   const [open, setOpen] = useState(false);
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
   const [flipped, setFlipped] = useState(false);
@@ -303,20 +316,30 @@ const FlashcardManager = ({
     <>
       <div className={classes.root}>
         <SharePost feedId={feedId} open={openShare} onClose={handleCloseShare} />
-        <Tooltip
-          id={2287}
-          placement="right"
-          text="New Study Mode experience is now available!"
-        >
+        <div style={{ display: 'flex' }}>
+          <Tooltip
+            id={2287}
+            placement="right"
+            text="New Study Mode experience is now available!"
+          >
+            <Button
+              color="primary"
+              className={classes.studyButton}
+              variant="contained"
+              onClick={handleOpen}
+            >
+              Enter Study Mode
+            </Button>
+          </Tooltip>
           <Button
             color="primary"
             className={classes.studyButton}
             variant="contained"
-            onClick={handleOpen}
+            onClick={() => setIsQuizOpen(true)}
           >
-            Enter Study Mode
+            Enter Learning Mode
           </Button>
-        </Tooltip>
+        </div>
         <Button aria-label="Share" onClick={onShare}>
           <ShareIcon />
           <Typography variant="subtitle1" className={classes.buttonText}>
@@ -434,6 +457,47 @@ const FlashcardManager = ({
           }
         </div>
       </Dialog>
+      <Dialog
+        classes={{ paper: classes.dialogPaper }}
+        fullScreen
+        aria-labelledby='quiz-dialog'
+        open={isQuizOpen}
+        onClose={() => setIsQuizOpen(false)}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar className={classes.toolbar}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton
+                aria-label="Close"
+                color="primary"
+                onClick={() => setIsQuizOpen(false)}
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography
+                color="textPrimary"
+                variant="h6"
+              >
+                {title}
+              </Typography>
+            </div>
+            <div>
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                onClick={() => setIsQuizOpen(false)}
+              >
+                Done
+              </Button>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <div className={classes.content}>
+          <FlashcardQuiz flashcardId={flashcardId} isOpen={isQuizOpen} />
+        </div>
+      </Dialog>
       <CustomDialog
         okTitle="Yes"
         onCancel={() => { setResetOpen(false) }}
@@ -463,4 +527,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(FlashcardManager));
+)(withStyles(styles)(withRouter(FlashcardManager)));

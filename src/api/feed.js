@@ -189,3 +189,23 @@ export const postEvent = async ({
     return null;
   }
 };
+
+export const generateQuiz = async ({
+  deckId
+}: {
+  deckId: number
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.get(`${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return result.data;
+  } catch (err) {
+    return null;
+  }
+}
