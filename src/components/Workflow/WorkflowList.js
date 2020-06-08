@@ -4,6 +4,7 @@ import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
 
 type Props = {
+  archiveTask: Function,
   classList: array,
   updateItem: Function,
   moveTask: Function,
@@ -24,6 +25,7 @@ const WorkflowList = ({
   tasks,
   expanded,
   handleExpand,
+  archiveTask,
   updateItem
 }: Props) => {
   const indexed = useMemo(() => tasks.map((t, index) => ({ ...t, index})), [tasks])
@@ -34,8 +36,8 @@ const WorkflowList = ({
 
   const boxes = [
     { name: 'Upcoming', tasks: upcoming, categoryId: 1 },
-    { name: 'In progress', tasks: inprogress, categoryId: 2 },
-    { name: 'Ready to submit', tasks: ready, categoryId: 3 },
+    { name: 'In Progress', tasks: inprogress, categoryId: 2 },
+    { name: 'Ready to Submit', tasks: ready, categoryId: 3 },
     { name: 'Done', tasks: done, categoryId: 4 }
   ]
 
@@ -44,6 +46,7 @@ const WorkflowList = ({
       <DragPreview />
       {boxes.map(box => (
         <WorkflowBox
+          archiveTask={archiveTask}
           dragId={dragId}
           onDrag={onDrag}
           updateCategory={updateCategory}

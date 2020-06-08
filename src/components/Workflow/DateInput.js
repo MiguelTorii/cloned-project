@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
       position: 'fixed !important',
       top: 'auto !important',
       left: 'auto !important',
-      transform: 'translate3d(-200px, 30px, 0px) !important',
+      transform: 'translate3d(-150px, 30px, 100px) !important',
     },
   },
   datePicker: {
@@ -94,7 +94,7 @@ const DateInput = ({ onChange, selected, fixed }: Props) => {
           size='small'
           fullWidth
           variant='outlined'
-          label='Due Time'
+          label='Time'
           className={cx(classes.datePicker, fixed && classes.fixed)}
           InputProps={{
             startAdornment: <InputAdornment position='start'><div /></InputAdornment>,

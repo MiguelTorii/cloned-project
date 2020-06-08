@@ -30,6 +30,7 @@ const useStyles = makeStyles(() => ({
 
 const WorkflowBox = ({
   handleExpand,
+  archiveTask,
   tasks,
   categoryId,
   updateItem,
@@ -83,6 +84,7 @@ const WorkflowBox = ({
               onDrag={onDrag}
               key={t.id}
               task={t}
+              archiveTask={archiveTask}
               updateItem={updateItem}
               moveTask={moveTask}
             />

@@ -15,6 +15,7 @@ import {
   createTodo,
   updateTodoCategory,
   updateTodo,
+  archiveTodo,
   updateTodosOrdering,
   getTodos
 } from 'api/workflow'
@@ -22,7 +23,6 @@ import type { UserState } from 'reducers/user'
 import type { State as StoreState } from 'types/state'
 import ErrorBoundary from 'containers/ErrorBoundary'
 import moment from 'moment'
-
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -79,6 +79,14 @@ function reducer(state, action) {
     })
   case 'ADD_TASK':
     return { ...state, tasks: [...state.tasks, { ...action.task }]}
+  case 'ARCHIVE_TASK':
+    return update(state, {
+      tasks: {
+        $splice: [
+          [action.index, 1],
+        ],
+      }
+    })
   case 'REORDER':
     return update(state, {
       tasks: {
@@ -141,6 +149,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     init()
   }, [dispatch, classes, enqueueSnackbar])
 
+  const archiveTask = useCallback(async task => {
+    const res = await archiveTodo({ id: task.id })
+    if (res?.success) dispatch({ type: 'ARCHIVE_TASK', index: task.index })
+  }, [dispatch])
+
   const moveTask = useCallback((dragIndex, hoverIndex) => {
     const dragTask = state.tasks[dragIndex]
     dispatch({ type: 'REORDER', dragIndex, hoverIndex, dragTask })
@@ -183,7 +196,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     } finally {/* NONE */}
   },[user])
 
-  const [expanded, setExpanded] = useState([false, false, false, false])
+  const [expanded, setExpanded] = useState([true, true, true, true])
 
   const handleExpand = useCallback(index => expand => {
     setExpanded(update(expanded, { [index-1]: { $set: expand } }))
@@ -226,7 +239,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           color="textPrimary"
           className={classes.title}
         >
-          Workflow
+          Workflow - Manage all of your assignments in one place
         </Typography>
         <Paper elevation={0} className={classes.body}>
           <CreateWorkflow handleAddTask={handleAddTask} />
@@ -241,6 +254,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             onDrag={onDrag}
             expanded={expanded}
             handleExpand={handleExpand}
+            archiveTask={archiveTask}
             updateItem={updateItem}
           />
         </Paper>

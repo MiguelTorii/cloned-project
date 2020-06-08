@@ -20,6 +20,8 @@ import { getEmptyImage } from "react-dnd-html5-backend"
 import cx from 'classnames'
 import { isMobile } from "react-device-detect"
 import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Dialog, { dialogStyle } from 'components/Dialog';
 
 function getStyles(hide) {
   return {
@@ -29,6 +31,9 @@ function getStyles(hide) {
 }
 
 const useStyles = makeStyles(theme => ({
+  detailsButton: {
+    color: theme.circleIn.palette.action
+  },
   root: {
     width: '100%'
   },
@@ -44,8 +49,11 @@ const useStyles = makeStyles(theme => ({
   item: {
     paddingLeft: theme.spacing(3),
     cursor: 'pointer',
-    paddingRight: theme.spacing(7),
+    paddingRight: theme.spacing(10),
     position: 'relative'
+  },
+  itemExtraPadding: {
+    paddingRight: theme.spacing(25),
   },
   chip: {
     color: theme.circleIn.palette.primaryText1,
@@ -56,6 +64,17 @@ const useStyles = makeStyles(theme => ({
   },
   hidden: {
     opacity: 0.3,
+  },
+  iconButton: {
+    padding: 0
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 600,
+  },
+  archiveTitle: {
+    fontSize: 20,
+    textAlign: 'center'
   }
 }))
 
@@ -64,10 +83,11 @@ type Props = {
   updateItem: Function,
   moveTask: Function,
   task: Object,
+  archiveTask: Function,
   index: number
 };
 
-const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, updateItem }: Props) => {
+const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList, task, updateItem }: Props) => {
   const taskRef = useRef(null)
   const [showDetails, setShowDetails] = useState(false)
 
@@ -135,27 +155,24 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
 
   const renderTask = useMemo(() => {
     const selected = classList[task.sectionId]
-    const dateSize = Number(Boolean(task.date) && 2)
-    const classSize = Number(Boolean(selected) && 2)
-    const titleSize = 10 - dateSize - classSize
 
     return (
       <Grid container alignItems='center'>
-        <Grid item xs={10} md={titleSize}>
+        <Grid item xs={10} md={6}>
           {task.title}
         </Grid>
-        {task.date && <Grid item xs={classSize ? 6 : 2} md={dateSize} className={classes.itemDetails}>
-          <Typography variant="caption" display="block" gutterBottom>
+        <Grid item xs={6} md={2} className={classes.itemDetails}>
+          {task.date && <Typography variant="caption" display="block" gutterBottom>
           Due {moment(task.date).format('MMM D')}
-          </Typography>
-        </Grid>}
-        {selected && <Grid item xs={6} md={classSize} className={classes.itemDetails}>
-          <Chip
+          </Typography>}
+        </Grid>
+        <Grid item xs={6} md={2} className={classes.itemDetails}>
+          {selected && <Chip
             label={selected.className} size='small'
             style={{ backgroundColor: selected.bgColor }}
             className={classes.chip}
-          />
-        </Grid>}
+          />}
+        </Grid>
       </Grid>
     )}, [task, classList, classes])
 
@@ -166,6 +183,15 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
     updateItem({ status: status === 1 ? 2 : 1, ...other })
   }, [task, updateItem])
 
+  const [confirmArchive, setConfirmArchive] = useState(false)
+  const openConfirmArchive = useCallback(() => setConfirmArchive(true), [])
+  const closeConfirmArchive = useCallback(() => setConfirmArchive(false), [])
+
+  const archive = useCallback(() => {
+    archiveTask(task)
+    closeConfirmArchive()
+  }, [task, archiveTask, closeConfirmArchive])
+
   return (
     <div
       ref={taskRef}
@@ -173,6 +199,18 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
       onMouseLeave={onMouseLeave}
       className={cx(classes.root, hiddenClass)}
     >
+      <Dialog
+        className={classes.dialog}
+        onCancel={closeConfirmArchive}
+        open={confirmArchive}
+        onOk={archive}
+        showActions
+        title='Are you sure you want to delete?'
+        okTitle='Delete'
+        showCancel
+      >
+        <Typography className={classes.archiveTitle}>{task.title}</Typography>
+      </Dialog>
       <WorkflowEdit
         task={task}
         classList={classList}
@@ -181,7 +219,7 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
         updateItem={updateItem}
       />
       <ListItem
-        className={classes.item}
+        className={cx(classes.item, showDetails && classes.itemExtraPadding)}
         selected={showDetails}
       >
         {showDetails && <div
@@ -196,8 +234,11 @@ const WorkflowItem = ({ onDrag, dragId, moveTask, index, classList, task, update
           </IconButton>
         </ListItemIcon>
         <ListItemText primary={renderTask} onClick={onOpen} />
-        <ListItemSecondaryAction onClick={onOpen}>
-          <Button style={getStyles(isDragging || !showDetails)}>Details</Button>
+        <ListItemSecondaryAction style={getStyles(isDragging || !showDetails)}>
+          <Button className={classes.detailsButton} onClick={onOpen}>Details</Button>
+          <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
+            <DeleteIcon />
+          </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
       <Divider />

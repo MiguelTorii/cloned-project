@@ -711,16 +711,6 @@ class MainLayout extends React.Component<Props, State> {
           />
           <ListItem
             button
-            className={classes.otherPath}
-            onClick={this.handleOpenUseCases}
-          >
-            <ListItemIcon>
-              <img src={Logo} alt="logo" />
-            </ListItemIcon>
-            <ListItemText primary="Studying on CircleIn" />
-          </ListItem>
-          <ListItem
-            button
             component={MyLink}
             className={classes.otherPath}
             link='/chat'
@@ -804,6 +794,16 @@ class MainLayout extends React.Component<Props, State> {
               onClick={this.handleManageClasses}
             />
           </ListItemText>}
+          <ListItem
+            button
+            className={classes.otherPath}
+            onClick={this.handleOpenUseCases}
+          >
+            <ListItemIcon>
+              <img src={Logo} alt="logo" />
+            </ListItemIcon>
+            <ListItemText primary="Studying on CircleIn" />
+          </ListItem>
           <ListItem
             button
             onClick={this.handleOpenGetApp}

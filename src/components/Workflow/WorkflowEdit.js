@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useRef, useState, useEffect, useCallback } from 'react'
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog from 'components/Dialog';
 import TextField from '@material-ui/core/TextField'
 import DateInput from 'components/Workflow/DateInput'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -18,8 +18,12 @@ const useStyles = makeStyles(theme => ({
     color: theme.circleIn.palette.action
   },
   dialog: {
-    ...dialogStyle,
+    borderRadius: 20,
+    overflowY: 'initial',
     width: 600,
+    '& .MuiDialogContent-root': {
+      overflowY: 'initial',
+    }
   },
   title: {
     fontSize: 20
@@ -30,6 +34,9 @@ const useStyles = makeStyles(theme => ({
       marginTop: 10,
     }
   },
+  emptyOption: {
+    height: theme.spacing(4)
+  }
 }))
 
 type Props = {
@@ -131,7 +138,7 @@ const WorkflowEdit = ({
             inputProps={{
               ref: descriptionRef,
             }}
-            label='Task Description'
+            label='Additional Details'
             onChange={updateDescription}
             value={description}
             variant='outlined'
@@ -144,7 +151,6 @@ const WorkflowEdit = ({
         <Grid item xs={12} md={8}>
           <DateInput
             fixed
-            label='Due Date'
             selected={date}
             onChange={updateDate}
           />
@@ -174,6 +180,7 @@ const WorkflowEdit = ({
               fullWidth
               onChange={updateClass}
             >
+              <MenuItem value='' className={classes.emptyOption} />
               {Object.keys(classList).map(k => {
                 const cl = classList[k]
                 return (

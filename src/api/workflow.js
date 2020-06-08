@@ -172,3 +172,28 @@ export const updateTodosOrdering = async ({
     return {};
   }
 };
+
+export const archiveTodo = async ({
+  id,
+}: {
+  id: string
+}) => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.post(
+      `${API_ROUTES.TODO}/${id}/archive`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    return data;
+  } catch (err) {
+    return null;
+  }
+};
