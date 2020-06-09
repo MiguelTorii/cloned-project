@@ -35,6 +35,14 @@ const styles = theme => ({
   title: {
     flex: 1
   },
+  title2: {
+    color: theme.circleIn.palette.primaryText1,
+    paddingBottom: 23,
+    paddingTop: 26,
+    maxWidth: 740,
+    fontSize: 26,
+    textAlign: 'center',
+  },
   textField: {
     marginLeft: theme.spacing(),
     flex: 1
@@ -82,13 +90,13 @@ const styles = theme => ({
   },
   newPost: {
     background: theme.circleIn.palette.brand,
-    borderRadius: 10,
+    borderRadius: 20,
     color: 'black',
     display: 'inline',
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
-    margin: '0px 2px',
-    padding: '0px 8px',
+    margin: '0px 3px',
+    padding: '0px 16px',
     width: 100,
   }
 });
@@ -150,11 +158,12 @@ class FeedList extends React.PureComponent<Props, State> {
     )
 
     return (
-      <EmptyState
-        imageUrl={EmptyFeed}
-        title="Everyone’s notes, flashcards and questions from this class will appear here"
+      <EmptyState imageUrl={EmptyFeed} title=""
       >
-        Click the <p className={classes.newPost}>+ New</p> button on the top left to post, earn points and get closer to a Reward or Scholarship
+        <div className={classes.title2}>
+          Click <p className={classes.newPost}>+ New</p> to post and earn points,
+          and get yourself closer to winning a gift card or scholarship!
+        </div>
       </EmptyState>
     )
   }
