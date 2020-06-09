@@ -137,6 +137,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { tasks, dragId } = state
   const [classList, setClassList] = useState({})
+  const { data: { firstName }, userClasses } = user
 
   useEffect(() => {
     const init = async () => {
@@ -189,7 +190,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   useEffect(() => {
     try{
       const classList = {}
-      user.userClasses.classList.forEach(cl => {
+      userClasses.classList.forEach(cl => {
         if (cl.section && cl.section.length > 0)
           cl.section.forEach(s => {
             classList[s.sectionId] = cl
@@ -197,7 +198,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       })
       setClassList(classList)
     } finally {/* NONE */}
-  },[user])
+  },[userClasses])
 
   const [expanded, setExpanded] = useState([true, true, true, true])
 
@@ -209,14 +210,31 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const handleAddTask = useCallback(async title => {
     try {
       const res = await createTodo({ title })
+
       if (res?.id) {
-        dispatch({ type: 'ADD_TASK', task: { title, date: '', categoryId: 1, sectionId: '', order: tasks.length, id: res.id, status: 1 }})
+        dispatch({
+          type: 'ADD_TASK',
+          task: {
+            title,
+            date: '',
+            categoryId: 1,
+            sectionId: '',
+            order: tasks.length,
+            id: res.id,
+            status: 1
+          }})
+
         handleExpand(1)(true)
+
+        if (res?.points) enqueueSnackbar(createSnackbar(
+          `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+          classes.snackbar,
+          'success'))
       }
     } catch(e) {
       enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'))
     }
-  }, [dispatch, handleExpand, enqueueSnackbar, classes, tasks])
+  }, [dispatch, handleExpand, enqueueSnackbar, classes, tasks, firstName])
 
   const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status }) => {
     const res = await updateTodo({
@@ -236,8 +254,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, enqueueSnackbar, classes])
 
   return (
-    <ErrorBoundary>
-      <Grid container direction='column' className={classes.container}>
+    <Grid container direction='column' spacing={0}>
+      <ErrorBoundary>
         <Typography
           color="textPrimary"
           className={classes.title}
@@ -261,8 +279,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             updateItem={updateItem}
           />
         </Paper>
-      </Grid>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </Grid>
   )
 }
 
