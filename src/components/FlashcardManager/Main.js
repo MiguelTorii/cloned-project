@@ -331,14 +331,14 @@ const FlashcardManager = ({
               Enter Study Mode
             </Button>
           </Tooltip>
-          <Button
+          {/* <Button
             color="primary"
             className={classes.studyButton}
             variant="contained"
             onClick={() => setIsQuizOpen(true)}
           >
             Enter Learning Mode
-          </Button>
+          </Button> */}
         </div>
         <Button aria-label="Share" onClick={onShare}>
           <ShareIcon />
