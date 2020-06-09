@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 // @flow
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { push as routePush } from 'connected-react-router';
 import { bindActionCreators } from 'redux';
+import { getCampaign } from 'api/campaign';
 import withRoot from '../../withRoot';
 import LoadImg from '../LoadImg';
 
@@ -82,6 +83,21 @@ const UseCases = ({
   push: Function,
   userId: number
 }) => {
+  const [campaign, setCampaign] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      const aCampaign = await getCampaign({ campaignId: 9 });
+      setCampaign(aCampaign);
+    }
+
+    init()
+  }, [])
+
+  if (!campaign) return null;
+
+  const videoEnabled = (campaign.variation_key && campaign.variation_key !== 'hidden');
+
   const Item = (
     { imageUrl, onClick, title, to }: { imageUrl: string, onClick: ?Function, title: string, to: ?string }) => (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -132,21 +148,27 @@ const UseCases = ({
           text="It feels terrible to struggle and not have immediate help. Post a question, your classmates get notified, and when you vote a student with “Best Answer”, they get 25,000 points for helping you out."
         >
           <Item imageUrl={question} title="Post a Question" to="/create/question" />
-          <Item
-            imageUrl={videos}
-            to="/video-call"
-            title="Start a Chat or Group Chat"
-          />
+          {
+            videoEnabled &&
+            <Item
+              imageUrl={videos}
+              to="/video-call"
+              title="Start a Chat or Group Chat"
+            />
+          }
         </UseCase>
         <UseCase
           title="Group Studying or Project"
           text="CircleIn makes group projects and studying so much easier. Don’t worry if someone is down the hall or across the country"
         >
-          <Item
-            imageUrl={videos}
-            to="/video-call"
-            title="Create a Video Study Session"
-          />
+          {
+            videoEnabled &&
+            <Item
+              imageUrl={videos}
+              to="/video-call"
+              title="Create a Video Study Session"
+            />
+          }
           <Item
             imageUrl={groupchat}
             onClick={onClickChat}

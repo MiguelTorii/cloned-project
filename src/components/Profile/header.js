@@ -12,6 +12,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import { getCampaign } from 'api/campaign';
 import TutorBadge from 'components/TutorBadge'
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
@@ -172,12 +173,24 @@ type Props = {
 };
 
 type State = {
-  open: boolean
+  open: boolean,
+  videoEnabled: boolean
 };
 
 class Header extends React.PureComponent<Props, State> {
   // eslint-disable-next-line no-undef
   fileInput: ?HTMLInputElement;
+
+  state = {
+    videoEnabled: null,
+  };
+
+  componentWillMount = async () => {
+    const campaign = await getCampaign({ campaignId: 9 });
+    this.setState({
+      videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
+    });
+  }
 
   handleOpenInputFile = () => {
     if (this.fileInput) this.fileInput.click();
@@ -225,6 +238,8 @@ class Header extends React.PureComponent<Props, State> {
       onChange,
       // onStudyCircle
     } = this.props;
+
+    const { videoEnabled } = this.state;
 
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
@@ -360,13 +375,16 @@ class Header extends React.PureComponent<Props, State> {
                   </Button>
                 </Grid>
                 <Grid item xs={12} md={12} hidden={isMyProfile || isCirclein}>
-                  <Button
-                    color="primary"
-                    disabled={chatLoading}
-                    onClick={onStartVideo}
-                  >
-                    Start video study session
-                  </Button>
+                  {
+                    videoEnabled &&
+                    <Button
+                      color="primary"
+                      disabled={chatLoading}
+                      onClick={onStartVideo}
+                    >
+                      Start video study session
+                    </Button>
+                  }
                 </Grid>
               </Grid>
             </Grid>
