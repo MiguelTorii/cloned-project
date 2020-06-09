@@ -42,10 +42,11 @@ type Props = {
   classmate: ClassmateType,
   openChannelWithEntity: Function,
   close: Function,
+  videoEnabled: boolean,
   width: string
 };
 
-const Classmate = ({ close, openChannelWithEntity, width, classmate }: Props) => {
+const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmate }: Props) => {
   const classes = useStyles();
 
   const openChat = isVideo => {
@@ -86,13 +87,16 @@ const Classmate = ({ close, openChannelWithEntity, width, classmate }: Props) =>
         >
          Send Message
         </Button>
-        <Button
-          variant="outlined"
-          onClick={() => openChat(true)}
-          color="primary"
-        >
-          Start Video
-        </Button>
+        {
+          videoEnabled &&
+          <Button
+            variant="outlined"
+            onClick={() => openChat(true)}
+            color="primary"
+          >
+            Start Video
+          </Button>
+        }
       </ListSubheader>
     </ListItem>
   );

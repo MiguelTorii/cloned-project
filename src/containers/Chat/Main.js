@@ -17,7 +17,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import Grid from '@material-ui/core/Grid'
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { logEvent } from 'api/analytics';
-
+import { getCampaign } from 'api/campaign';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,6 +96,7 @@ const Main = ({
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState({})
+  const [campaign, setCampaign] = useState(null);
 
   const {
     data: { userId, firstName, lastName }
@@ -141,6 +142,9 @@ const Main = ({
 
         const av = await fetchAvatars(channel)
         setAvatars(av)
+
+        const aCampaign = await getCampaign({ campaignId: 9 });
+        setCampaign(aCampaign);
 
         const p = await channel.getMessages(10)
         setMessages(p.items)
@@ -353,23 +357,28 @@ const Main = ({
     window.open(`/video-call/${channel.sid}`, '_blank'),
   [channel])
 
+  const videoEnabled = (campaign && campaign.variation_key && campaign.variation_key !== 'hidden');
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
           <Typography className={classes.headerTitle}>{title}</Typography>
-          <Button
-            variant='contained'
-            onClick={startVideo}
-            classes={{
-              label: classes.videoLabel,
-              root: classes.videoButton
-            }}
-            color='primary'
-          >
-            <VideocamIcon className={classes.videoIcon} /> Start Video
-          </Button>
+          {
+            videoEnabled &&
+            <Button
+              variant='contained'
+              onClick={startVideo}
+              classes={{
+                label: classes.videoLabel,
+                root: classes.videoButton
+              }}
+              color='primary'
+            >
+              <VideocamIcon className={classes.videoIcon} /> Start Video
+            </Button>
+          }
         </Grid>}
       </div>
       <div className={classes.messageContainer}>

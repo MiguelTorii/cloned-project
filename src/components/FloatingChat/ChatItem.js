@@ -106,6 +106,7 @@ type Props = {
   open: boolean,
   unread: number,
   expanded: boolean,
+  videoEnabled: boolean,
   // isGroup: boolean,
   onOpen: Function,
   onClose: Function,
@@ -168,7 +169,7 @@ class ChatItem extends React.PureComponent<Props, State> {
       open,
       unread,
       expanded,
-      // isGroup,
+      videoEnabled,
       newChannel,
       onOpen,
       onClose,
@@ -216,7 +217,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                       <UnfoldMoreIcon className={classes.expandIcon} />
                     )}
                   </ButtonBase>
-                  {!newChannel && <ButtonBase
+                  {!newChannel && videoEnabled && <ButtonBase
                     className={classes.iconButton}
                     onClick={onStartVideoCall}
                   >

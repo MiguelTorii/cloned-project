@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getClassmates } from 'api/chat'
 import { getReferralProgram } from 'api/referral';
+import { getCampaign } from 'api/campaign';
 import List from '@material-ui/core/List';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralInvite } from 'containers/Referrals';
@@ -31,6 +32,7 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
   const [classmates, setClassmates] = useState([])
   const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
+  const [campaign, setCampaign] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -42,12 +44,17 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
       })
       if (res) setClassmates(res)
 
+      const aCampaign = await getCampaign({ campaignId: 9 });
+      setCampaign(aCampaign);
+
       res = await getReferralProgram();
       setReferralProgram(res);
     }
 
     if (state) init()
   }, [state])
+
+  if (!campaign) return null
 
   const Invite = () => {
     if (!referralProgram || !referralProgram.is_visible) return null;
@@ -79,6 +86,8 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
     )
   }
 
+  const videoEnabled = (campaign.variation_key && campaign.variation_key !== 'hidden');
+
   return (
     <div>
       <Dialog
@@ -91,7 +100,7 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
           Classmates who have joined CircleIn
         </div>
         <List className={classes.list}>
-          {classmates.map(c => <Classmate close={close} key={c.userId} classmate={c} />)}
+          {classmates.map(c => <Classmate videoEnabled={videoEnabled} close={close} key={c.userId} classmate={c} />)}
           <Invite />
         </List>
       </Dialog>

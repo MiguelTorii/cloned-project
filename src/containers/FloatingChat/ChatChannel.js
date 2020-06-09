@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
+import { getCampaign } from 'api/campaign';
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -141,11 +142,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
       try {
         const paginator = await channel.getMessages(10)
+        const campaign = await getCampaign({ campaignId: 9 });
+
         if (paginator)
           this.setState({
             messages: paginator.items,
             paginator,
-            hasMore: !(paginator.items.length < 10)
+            hasMore: !(paginator.items.length < 10),
+            videoEnabled: (campaign.variation_key && campaign.variation_key !== 'hidden')
           });
       } catch (err) {
         console.log(err);
@@ -555,7 +559,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       images,
       expanded,
       createMessage,
-      addMembers
+      addMembers,
+      videoEnabled
     } = this.state;
 
     const messageItems = processMessages({
@@ -579,6 +584,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
+            videoEnabled={videoEnabled}
           >
             <div
               className={cx(
