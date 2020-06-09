@@ -10,18 +10,32 @@ import WorkflowItem from 'components/Workflow/WorkflowItem'
 import List from '@material-ui/core/List'
 import { useDrop } from 'react-dnd'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
+  header: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },
   panel: {
     position: 'inherit',
+    '& .MuiExpansionPanelSummary-root': {
+      borderBottom: `1px solid ${theme.circleIn.palette.borderColor}`,
+      padding: 0,
+      margin: theme.spacing(0, 3)
+    },
     '& .MuiButtonBase-root': {
+      minHeight: theme.spacing(5),
       justifyContent: 'flex-start'
     },
     '& .MuiExpansionPanelSummary-content': {
+      margin: 0,
       flexGrow: 0
     },
   },
   list: {
-    width: '100%'
+    width: '100%',
+    '& .MuiDivider-root': {
+      display: 'none'
+    }
   },
   details: {
     padding: 0
@@ -72,7 +86,7 @@ const WorkflowBox = ({
       onChange={onExpand}
     >
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{name} ({tasks.length})</Typography>
+        <Typography className={classes.header}>{name} ({tasks.length})</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.details}>
         <List className={classes.list}>

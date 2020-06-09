@@ -48,6 +48,9 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   },
+  container: {
+    flexWrap: 'inherit'
+  },
   title: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(),
@@ -151,7 +154,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   const archiveTask = useCallback(async task => {
     const res = await archiveTodo({ id: task.id })
-    if (res?.success) dispatch({ type: 'ARCHIVE_TASK', index: task.index })
+    if (res?.id) dispatch({ type: 'ARCHIVE_TASK', index: task.index })
   }, [dispatch])
 
   const moveTask = useCallback((dragIndex, hoverIndex) => {
@@ -234,7 +237,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   return (
     <ErrorBoundary>
-      <Grid container direction='column'>
+      <Grid container direction='column' className={classes.container}>
         <Typography
           color="textPrimary"
           className={classes.title}

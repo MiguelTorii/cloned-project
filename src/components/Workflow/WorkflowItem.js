@@ -42,22 +42,24 @@ const useStyles = makeStyles(theme => ({
   },
   dragContainer: {
     position: 'absolute',
-    left: 10,
-    top: 20,
+    left: 0,
     cursor: 'grab',
   },
   item: {
     paddingLeft: theme.spacing(3),
     cursor: 'pointer',
-    paddingRight: theme.spacing(10),
-    position: 'relative'
-  },
-  itemExtraPadding: {
-    paddingRight: theme.spacing(25),
+    paddingRight: theme.spacing(14),
+    position: 'relative',
   },
   chip: {
     color: theme.circleIn.palette.primaryText1,
     fontWeight: 'bold'
+  },
+  dateText: {
+    fontSize: 12,
+    padding: 0,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   itemDetails: {
     textAlign: 'left'
@@ -75,7 +77,21 @@ const useStyles = makeStyles(theme => ({
   archiveTitle: {
     fontSize: 20,
     textAlign: 'center'
-  }
+  },
+  taskTitle: {
+    maxWidth: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    fontWeight: 'bold',
+    fontSize: 14
+  },
+  ellipsis: {
+    maxWidth: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
 }))
 
 type Props = {
@@ -159,18 +175,18 @@ const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList,
     return (
       <Grid container alignItems='center'>
         <Grid item xs={10} md={6}>
-          {task.title}
+          <Typography className={classes.taskTitle}>{task.title}</Typography>
         </Grid>
         <Grid item xs={6} md={2} className={classes.itemDetails}>
-          {task.date && <Typography variant="caption" display="block" gutterBottom>
-          Due {moment(task.date).format('MMM D')}
+          {task.date && <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
+            {moment(task.date).format('MMM D')}
           </Typography>}
         </Grid>
-        <Grid item xs={6} md={2} className={classes.itemDetails}>
+        <Grid item xs={6} md={4} className={classes.itemDetails}>
           {selected && <Chip
             label={selected.className} size='small'
             style={{ backgroundColor: selected.bgColor }}
-            className={classes.chip}
+            className={cx(classes.chip, classes.ellipsis)}
           />}
         </Grid>
       </Grid>
@@ -219,8 +235,9 @@ const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList,
         updateItem={updateItem}
       />
       <ListItem
-        className={cx(classes.item, showDetails && classes.itemExtraPadding)}
+        className={classes.item}
         selected={showDetails}
+        dense
       >
         {showDetails && <div
           ref={drag}
@@ -229,7 +246,7 @@ const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList,
           <DragIndicatorIcon className={classes.dragIcon} style={getStyles(dragId !== null)} />
         </div>}
         <ListItemIcon>
-          <IconButton onClick={handleComplete}>
+          <IconButton onClick={handleComplete} className={classes.iconButton}>
             {task.status === 2 ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />}
           </IconButton>
         </ListItemIcon>

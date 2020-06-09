@@ -2,6 +2,26 @@
 import React, { useMemo } from 'react'
 import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
+
+
+const useStyles = makeStyles(theme => ({
+  item: {
+    paddingLeft: theme.spacing(3)+48,
+    paddingRight: theme.spacing(14),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
+  headerText: {
+    color: theme.circleIn.palette.primaryText2,
+    textAlign: 'center'
+  },
+  classText: {
+    color: theme.circleIn.palette.primaryText2,
+  }
+}))
 
 type Props = {
   archiveTask: Function,
@@ -33,6 +53,7 @@ const WorkflowList = ({
   const inprogress = useMemo(() => indexed.filter(t => t.categoryId === 2), [indexed])
   const ready = useMemo(() => indexed.filter(t => t.categoryId === 3), [indexed])
   const done = useMemo(() => indexed.filter(t => t.categoryId === 4), [indexed])
+  const classes = useStyles()
 
   const boxes = [
     { name: 'Upcoming', tasks: upcoming, categoryId: 1 },
@@ -44,6 +65,17 @@ const WorkflowList = ({
   return (
     <div>
       <DragPreview />
+      <div className={classes.item}>
+        <Grid container alignItems='center'>
+          <Grid item xs={6} />
+          <Grid item xs={2} className={classes.headerText}>
+            Due Date
+          </Grid>
+          <Grid item xs={4} className={classes.classText}>
+            Class
+          </Grid>
+        </Grid>
+      </div>
       {boxes.map(box => (
         <WorkflowBox
           archiveTask={archiveTask}

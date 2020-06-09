@@ -21,6 +21,9 @@ function getItemStyles(initialOffset, currentOffset) {
   return {
     transform,
     WebkitTransform: transform,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
     border: '1px dashed white',
     backgroundColor: 'rgba(255,255,255, 0.25)',
   }
