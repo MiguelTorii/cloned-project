@@ -81,7 +81,7 @@ function reducer(state, action) {
       tasks: { $set: action.tasks }
     })
   case 'ADD_TASK':
-    return { ...state, tasks: [...state.tasks, { ...action.task }]}
+    return { ...state, tasks: [{ ...action.task }, ...state.tasks]}
   case 'ARCHIVE_TASK':
     return update(state, {
       tasks: {
@@ -173,19 +173,20 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch])
 
   const [prevDragId, setprevDragId] = useState(null)
+  const reorder = useCallback(async () => {
+    let ordering = []
+    tasks.forEach((t, position) => {
+      if (t.order !== position) {
+        ordering = [...ordering, { id: t.id, position }]
+      }
+    })
+    await updateTodosOrdering({ ordering })
+  }, [tasks])
+
   useEffect(() => {
-    const reorder = async () => {
-      let ordering = []
-      tasks.forEach((t, position) => {
-        if (t.order !== position) {
-          ordering = [...ordering, { id: t.id, position }]
-        }
-      })
-      await updateTodosOrdering({ ordering })
-    }
     if (dragId !== prevDragId && dragId === null) reorder()
     setprevDragId(dragId)
-  }, [dragId, tasks, prevDragId])
+  }, [dragId, prevDragId, reorder])
 
   useEffect(() => {
     try{
@@ -206,6 +207,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     setExpanded(update(expanded, { [index-1]: { $set: expand } }))
   }, [expanded])
 
+  useEffect(() => {
+    const invalidOrder = tasks.find(t => t.order === -1)
+    if (invalidOrder) reorder()
+  }, [reorder, tasks])
+
 
   const handleAddTask = useCallback(async title => {
     try {
@@ -219,7 +225,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             date: '',
             categoryId: 1,
             sectionId: '',
-            order: tasks.length,
+            order: -1,
             id: res.id,
             status: 1
           }})
@@ -234,20 +240,21 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     } catch(e) {
       enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'))
     }
-  }, [dispatch, handleExpand, enqueueSnackbar, classes, tasks, firstName])
+  }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
   const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status }) => {
+    const newCategory = status === 2 ? 3 : categoryId
     const res = await updateTodo({
       id,
       title,
       sectionId: Number(sectionId),
-      categoryId: Number(categoryId),
+      categoryId: Number(newCategory),
       description,
       date: moment(date).valueOf(),
       status,
     })
     if (res?.success) {
-      dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId, description, sectionId, status })
+      dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status })
     } else {
       enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
     }
