@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles , useTheme } from '@material-ui/core/styles'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
@@ -22,12 +22,21 @@ import { isMobile } from "react-device-detect"
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Dialog, { dialogStyle } from 'components/Dialog';
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-function getStyles(hide) {
+
+const getStyles = hide => {
   return {
     opacity: hide ? 0 : 1,
     height: hide ? 0 : ""
   }
+}
+
+const getTitle = (downMd, downSm, downXs, title) => {
+  if (downXs) return title
+  if (downSm) return title.substr(0, 30)
+  if (downMd) return title.substr(0, 50)
+  return title
 }
 
 const useStyles = makeStyles(theme => ({
@@ -168,14 +177,21 @@ const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList,
     if (!dragId) setShowDetails(true)
   }, [dragId])
   const onMouseLeave = useCallback(() => setShowDetails(false), [])
+  const theme = useTheme()
+  const downMd = useMediaQuery(theme.breakpoints.down('md'))
+  const downSm = useMediaQuery(theme.breakpoints.down('sm'))
+  const downXs = useMediaQuery(theme.breakpoints.down('xs'))
+  const title = getTitle(downMd, downSm, downXs, task.title)
 
   const renderTask = useMemo(() => {
     const selected = classList[task.sectionId]
 
     return (
       <Grid container alignItems='center'>
-        <Grid item xs={10} md={6}>
-          <Typography className={classes.taskTitle}>{task.title}</Typography>
+        <Grid item xs={10} sm={5} md={6}>
+          <Typography className={classes.taskTitle}>
+            {title}
+          </Typography>
         </Grid>
         <Grid item xs={6} md={2} className={classes.itemDetails}>
           {task.date && <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
@@ -190,7 +206,7 @@ const WorkflowItem = ({ archiveTask, onDrag, dragId, moveTask, index, classList,
           />}
         </Grid>
       </Grid>
-    )}, [task, classList, classes])
+    )}, [task, classList, classes, title])
 
   drag(drop(taskRef))
 

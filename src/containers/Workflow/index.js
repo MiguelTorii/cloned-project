@@ -254,7 +254,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, enqueueSnackbar, classes])
 
   return (
-    <Grid container direction='column' spacing={0}>
+    <Grid container direction='column' spacing={0} className={classes.container}>
       <ErrorBoundary>
         <Typography
           color="textPrimary"
