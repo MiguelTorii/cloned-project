@@ -186,7 +186,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   const [modalImageUrl, setModalImageUrl] = useState('');
   const [isPhotoExpanded, setIsPhotoExpanded] = useState('');
 
-  const generateNewQuiz = useCallback(async() => {
+  const generateNewQuiz = useCallback(async () => {
     const result = await generateQuiz({ deckId: flashcardId });
     const initialQuestions = result.matching.questions.map(q => ({ ...q, answerId: '', uuid: uuidv4() }));
     const initialAnswers = result.matching.answers.map(a => ({ ...a, available: true, uuid: uuidv4() }));
@@ -237,7 +237,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     setQuestions(updatedQuestions);
   }
 
-  const Question = ({ question: { answerId, id, question, question_image_url, uuid }}) => {
+  const Question = ({ question: { answerId, id, question, question_image_url, uuid } }) => {
     const isAnswerCorrect = answerId === id;
     let color = 'white';
 
@@ -295,7 +295,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               <>
                 <div
                   className={classes.link}
-                  onKeyUp={() => {}}
+                  onKeyUp={() => { }}
                   onClick={() => {
                     setIsPhotoExpanded({
                       ...isPhotoExpanded,
@@ -305,7 +305,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                   role='button'
                   tabIndex={0}
                 >
-                  View Photo
+                  {photoExpanded ? 'Hide Photo' : 'View Photo'}
                 </div>
               </>
             }
@@ -314,7 +314,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             question_image_url && (photoExpanded || !question) &&
             <div
               className={classes.media}
-              onKeyUp={() => {}}
+              onKeyUp={() => { }}
               tabIndex={0}
               role='button'
               onClick={() => {
@@ -356,7 +356,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 role='button'
                 tabIndex={0}
               >
-                View Photo
+                {photoExpanded ? 'Hide Photo' : 'View Photo'}
               </div>
             </>
           }
@@ -464,7 +464,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                   role='button'
                   tabIndex={0}
                 >
-                  View Photo
+                  {photoExpanded ? 'Hide Photo' : 'View Photo'}
                 </div>
               </>
             }
@@ -513,7 +513,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 role='button'
                 tabIndex={0}
               >
-                View Photo
+                {photoExpanded ? 'Hide Photo' : 'View Photo'}
               </div>
             </>
           }
@@ -558,7 +558,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           <div className={classes.title}>Matching</div>
           {
             isEvaluationMode &&
-          <div className={classes.title}>{`Score ${score}`}</div>
+            <div className={classes.title}>{`Score ${score}`}</div>
           }
         </div>
         <Grid container spacing={2} item xs={12} md={12}>
@@ -574,7 +574,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <div className={classes.subtitle}>
-            Answer Bank
+              Answer Bank
             </div>
             {
               answers.map((answer, i) => (
@@ -594,7 +594,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             </div>
             {
               multiQuestions.map((multiQuestion, i) => (
-                <MultiQuestion multiQuestion={multiQuestion} index={i+1} />
+                <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
               ))
             }
           </Grid>
@@ -612,14 +612,14 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 const numberOfCorrectMatchingQuestions = questions.filter(q => q.answerId === q.id).length;
                 const numberOfCorrectMultiQuestions = multiQuestions.filter(q => q.answerId === q.id).length;
                 setIsQuizCompleted(true);
-                document.querySelector('[aria-labelledby="quiz-dialog"]').scroll(0, 0);
+                document.querySelector('[aria-labelledby="circle-in-dialog-content"]').scroll(0, 0);
                 setScore(`${numberOfCorrectMatchingQuestions + numberOfCorrectMultiQuestions} / ${numberOfQuestions}`);
               }}
               variant='contained'
             >
               Get Results
             </Button>
-            : ( <Button
+            : (<Button
               className={classes.button}
               color='primary'
               disabled={!canEvaluate}
@@ -632,7 +632,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               variant='contained'
             >
               Try Again
-            </Button> )
+            </Button>)
         }
       </div>
       <Dialog

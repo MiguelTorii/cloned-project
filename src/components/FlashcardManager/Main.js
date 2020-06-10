@@ -460,7 +460,7 @@ const FlashcardManager = ({
       <Dialog
         className={classes.dialogPaper}
         fullScreen
-        aria-labelledby='quiz-dialog'
+        ariaLabelledBy='quiz-dialog'
         open={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}
         TransitionComponent={Transition}

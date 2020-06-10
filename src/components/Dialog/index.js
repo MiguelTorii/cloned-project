@@ -64,6 +64,7 @@ const styles = theme => ({
 
 const Dialog = ({
   ariaDescribedBy,
+  ariaLabelledBy,
   children,
   classes,
   className,
@@ -87,6 +88,7 @@ const Dialog = ({
   ...props
 }: {
   ariaDescribedBy: ?string,
+  ariaLabelledBy: ?string,
   children: Object | Array<Object>,
   classes: Object,
   className: ?string,
@@ -114,7 +116,7 @@ const Dialog = ({
   return (
     <MuiDialog
       aria-describedby={ariaDescribedBy}
-      aria-labelledby='circle-in-dialog-title'
+      aria-labelledby={ariaLabelledBy || 'circle-in-dialog-title'}
       classes={{ paper: className || classes.dialogPaper, container: classes.container }}
       disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown={disableEscapeKeyDown}
@@ -130,7 +132,9 @@ const Dialog = ({
           <hr className={classes.hr} />
         </div>
       }
-      <DialogContent classes={{ root: classes.contentRoot }}>
+      <DialogContent
+        aria-labelledby='circle-in-dialog-content'
+        classes={{ root: classes.contentRoot }}>
         {
           title &&
           typeof title === 'string' ?
