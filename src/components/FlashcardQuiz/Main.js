@@ -11,10 +11,10 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
-import Dialog from '@material-ui/core/Dialog';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
+import Dialog from 'components/Dialog';
 import { generateQuiz } from 'api/feed';
 
 const useStyles = makeStyles(theme => ({
@@ -95,14 +95,6 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(),
     width: 250,
   },
-  modal: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    position: 'absolute',
-    width: 400,
-  },
   multiQuestion: {
     paddingBottom: theme.spacing(),
   },
@@ -182,9 +174,9 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   const [score, setScore] = useState('');
   const [quiz, setQuiz] = useState(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-  const [modalImageUrl, setModalImageUrl] = useState('');
-  const [isPhotoExpanded, setIsPhotoExpanded] = useState('');
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+  const [dialogImageUrl, setDialogImageUrl] = useState('');
+  const [isPhotoExpanded, setIsPhotoExpanded] = useState({});
 
   const generateNewQuiz = useCallback(async () => {
     const result = await generateQuiz({ deckId: flashcardId });
@@ -318,8 +310,8 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               tabIndex={0}
               role='button'
               onClick={() => {
-                setModalImageUrl(question_image_url);
-                setIsImageModalOpen(true);
+                setDialogImageUrl(question_image_url);
+                setIsImageDialogOpen(true);
               }}
             >
               <img className={classes.image} src={question_image_url} alt={question} />
@@ -370,8 +362,8 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               tabIndex={0}
               role='button'
               onClick={() => {
-                setModalImageUrl(answer_image_url);
-                setIsImageModalOpen(true);
+                setDialogImageUrl(answer_image_url);
+                setIsImageDialogOpen(true);
               }}
             >
               <img className={classes.image} src={answer_image_url} alt={answer} />
@@ -477,8 +469,8 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               tabIndex={0}
               role='button'
               onClick={() => {
-                setModalImageUrl(option_image_url);
-                setIsImageModalOpen(true);
+                setDialogImageUrl(option_image_url);
+                setIsImageDialogOpen(true);
               }}
             >
               <img className={classes.image} src={option_image_url} alt={question} />
@@ -526,8 +518,8 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             tabIndex={0}
             role='button'
             onClick={() => {
-              setModalImageUrl(question_image_url);
-              setIsImageModalOpen(true);
+              setDialogImageUrl(question_image_url);
+              setIsImageDialogOpen(true);
             }}
           >
             <img className={classes.image} src={question_image_url} alt={question} />
@@ -628,6 +620,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 setIsQuizCompleted(false);
                 setQuiz(null);
                 generateNewQuiz();
+                setIsPhotoExpanded({});
               }}
               variant='contained'
             >
@@ -636,15 +629,15 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         }
       </div>
       <Dialog
-        open={isImageModalOpen}
-        onClose={() => {
-          setModalImageUrl('');
-          setIsImageModalOpen(false);
+        open={isImageDialogOpen}
+        onCancel={() => {
+          setDialogImageUrl('');
+          setIsImageDialogOpen(false);
         }}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby="simple-dialog-title"
+        aria-describedby="simple-dialog-description"
       >
-        <img className={classes.dialogImage} src={modalImageUrl} alt="modal" />
+        <img className={classes.dialogImage} src={dialogImageUrl} alt="dialog" />
       </Dialog>
     </div>
   );
