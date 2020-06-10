@@ -8,14 +8,13 @@ import uuidv4 from 'uuid/v4';
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import CustomDialog from 'components/Dialog';
+import Dialog, { dialogStyle } from 'components/Dialog';
 import Tooltip from 'containers/Tooltip';
 import FlashcardQuiz from 'components/FlashcardQuiz';
 import type { Flashcard } from 'types/models';
@@ -46,10 +45,11 @@ const styles = theme => ({
     height: '100%',
     width: 800,
     justifyContent: 'space-between',
-    marginTop: 100,
+    marginTop: 50,
     position: 'relative',
   },
   dialogPaper: {
+    ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
   },
   emptyState: {
@@ -319,7 +319,7 @@ const FlashcardManager = ({
         <div style={{ display: 'flex' }}>
           <Tooltip
             id={2287}
-            placement="right"
+            placement="bottom"
             text="New Study Mode experience is now available!"
           >
             <Button
@@ -331,14 +331,14 @@ const FlashcardManager = ({
               Enter Study Mode
             </Button>
           </Tooltip>
-          {/* <Button
+          <Button
             color="primary"
             className={classes.studyButton}
             variant="contained"
             onClick={() => setIsQuizOpen(true)}
           >
             Enter Learning Mode
-          </Button> */}
+          </Button>
         </div>
         <Button aria-label="Share" onClick={onShare}>
           <ShareIcon />
@@ -458,7 +458,7 @@ const FlashcardManager = ({
         </div>
       </Dialog>
       <Dialog
-        classes={{ paper: classes.dialogPaper }}
+        className={classes.dialogPaper}
         fullScreen
         aria-labelledby='quiz-dialog'
         open={isQuizOpen}
@@ -498,7 +498,7 @@ const FlashcardManager = ({
           <FlashcardQuiz flashcardId={flashcardId} isOpen={isQuizOpen} />
         </div>
       </Dialog>
-      <CustomDialog
+      <Dialog
         okTitle="Yes"
         onCancel={() => { setResetOpen(false) }}
         onOk={() => {
@@ -511,7 +511,7 @@ const FlashcardManager = ({
         title="Start Over"
       >
           If you Start Over, then you'll reset your progress. Are you sure you want to restart?
-      </CustomDialog>
+      </Dialog>
     </>
   );
 }

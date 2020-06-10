@@ -84,6 +84,7 @@ const Dialog = ({
   setOkRef= () => {},
   title,
   updateVisibility,
+  ...props
 }: {
   ariaDescribedBy: ?string,
   children: Object | Array<Object>,
@@ -103,7 +104,8 @@ const Dialog = ({
   showCancel: ?boolean,
   showHeader: ?boolean,
   title: ?ReactNode,
-  updateVisibility: Function
+  updateVisibility: Function,
+  props: Object
 }) => {
   useEffect(() => {
     updateVisibility(open);
@@ -119,6 +121,7 @@ const Dialog = ({
       maxWidth="lg"
       onClose={onCancel}
       open={open}
+      {...props}
     >
       {
         showHeader &&

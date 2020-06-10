@@ -3,6 +3,7 @@
 // @flow
 import React, { useCallback, useState, useEffect } from 'react';
 import sanitizeHtml from 'sanitize-html';
+import uuidv4 from 'uuid/v4';
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
@@ -10,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
+import Dialog from '@material-ui/core/Dialog';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
 import { generateQuiz } from 'api/feed';
 
@@ -42,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     outline: 0,
     outlineStyle: 'none',
     paddingBottom: theme.spacing(),
+    position: 'relative',
     '& p': {
       padding: 0,
       margin: 0,
@@ -50,11 +55,15 @@ const useStyles = makeStyles(theme => ({
   choices: {
     paddingLeft: theme.spacing(3),
   },
-  container: {},
   content: {
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: theme.spacing(),
     padding: theme.spacing(3),
+  },
+  dialogImage: {
+    maxHeight: 600,
+    maxWidth: 800,
+    objectFit: 'contain'
   },
   header: {
     display: 'flex',
@@ -78,12 +87,21 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     alignItems: 'center',
+    cursor: 'pointer',
     display: 'flex',
     height: 100,
     justifyContent: 'center',
     marginTop: theme.spacing(),
     marginBottom: theme.spacing(),
     width: 250,
+  },
+  modal: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    position: 'absolute',
+    width: 400,
   },
   multiQuestion: {
     paddingBottom: theme.spacing(),
@@ -104,6 +122,7 @@ const useStyles = makeStyles(theme => ({
   questionSelect: {
     alignItems: 'center',
     display: 'flex',
+    position: 'relative',
   },
   questionTitle: {
     display: 'flex',
@@ -115,9 +134,26 @@ const useStyles = makeStyles(theme => ({
       margin: 0,
     }
   },
+  resultIcon: {
+    position: 'absolute',
+    left: -20,
+  },
+  resultIcon2: {
+    left: -10,
+    position: 'absolute',
+    top: 5,
+  },
+  radioIcon: {
+    cursor: 'pointer',
+    height: 20,
+    marginRight: theme.spacing(),
+  },
   subtitle: {
     fontSize: 16,
     marginBottom: theme.spacing(2),
+  },
+  success: {
+    color: theme.circleIn.palette.success,
   },
   title: {
     fontSize: 20,
@@ -146,12 +182,20 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   const [score, setScore] = useState('');
   const [quiz, setQuiz] = useState(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState('');
+  const [isPhotoExpanded, setIsPhotoExpanded] = useState('');
 
   const generateNewQuiz = useCallback(async() => {
     const result = await generateQuiz({ deckId: flashcardId });
-    const initialQuestions = result.matching.questions.map(q => ({ ...q, answerId: '' }));
-    const initialAnswers = result.matching.answers.map(a => ({ ...a, available: true }));
-    const initialMultiQuestions = result.multiple_choice.question.map(q => ({ ...q, answerId: '' }));
+    const initialQuestions = result.matching.questions.map(q => ({ ...q, answerId: '', uuid: uuidv4() }));
+    const initialAnswers = result.matching.answers.map(a => ({ ...a, available: true, uuid: uuidv4() }));
+    const initialMultiQuestions = result.multiple_choice.question.map(q => ({
+      ...q,
+      answerId: '',
+      uuid: uuidv4(),
+      answers: q.answers.map(an => ({ ...an, uuid: uuidv4() }))
+    }));
 
     setQuestions(initialQuestions);
     setAnswers(initialAnswers);
@@ -193,7 +237,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     setQuestions(updatedQuestions);
   }
 
-  const Question = ({ question: { answerId, id, question, question_image_url }}) => {
+  const Question = ({ question: { answerId, id, question, question_image_url, uuid }}) => {
     const isAnswerCorrect = answerId === id;
     let color = 'white';
 
@@ -201,14 +245,22 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       color = isAnswerCorrect ? '#60b515' : '#f54f47';
     }
 
+    const photoExpanded = isPhotoExpanded[uuid];
+
     return (
       <div className={classes.question}>
         <div className={classes.questionSelect}>
           {
             isEvaluationMode && (
               isAnswerCorrect
-                ? <CheckIcon style={{ fill: color, fontSize: 20 }} />
-                : <CloseIcon style={{ fill: color, fontSize: 20 }} />
+                ? <CheckIcon
+                  classes={{ root: classes.resultIcon2 }}
+                  style={{ fill: '#60b515', fontSize: 20 }}
+                />
+                : <CloseIcon
+                  classes={{ root: classes.resultIcon2 }}
+                  style={{ fill: '#f54f47', fontSize: 20 }}
+                />
             )
           }
           <Select
@@ -233,13 +285,43 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           </Select>
         </div>
         <div className={classes.questionContent}>
-          <div
-            className={classes.questionText}
-            dangerouslySetInnerHTML={createMarkup(question)}
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              className={classes.questionText}
+              dangerouslySetInnerHTML={createMarkup(question)}
+            />
+            {
+              question && question_image_url &&
+              <>
+                <div
+                  className={classes.link}
+                  onKeyUp={() => {}}
+                  onClick={() => {
+                    setIsPhotoExpanded({
+                      ...isPhotoExpanded,
+                      [uuid]: !photoExpanded
+                    })
+                  }}
+                  role='button'
+                  tabIndex={0}
+                >
+                  View Photo
+                </div>
+              </>
+            }
+          </div>
           {
-            question_image_url &&
-            <div className={classes.media}>
+            question_image_url && (photoExpanded || !question) &&
+            <div
+              className={classes.media}
+              onKeyUp={() => {}}
+              tabIndex={0}
+              role='button'
+              onClick={() => {
+                setModalImageUrl(question_image_url);
+                setIsImageModalOpen(true);
+              }}
+            >
               <img className={classes.image} src={question_image_url} alt={question} />
             </div>
           }
@@ -248,29 +330,63 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     );
   };
 
-  const Answer = ({ answer: { answer, answer_image_url }, char }) => (
-    <div className={classes.answer}>
-      <div className={classes.answerContent}>
-        <div>{`${char}.`}</div>
-        <div
-          dangerouslySetInnerHTML={createMarkup(answer)}
-          style={{ paddingLeft: 8, lineHeight: '32px' }}
-        />
-      </div>
-      {
-        answer_image_url &&
-        <div className={classes.media}>
-          <img className={classes.image} src={answer_image_url} alt={answer} />
-        </div>
-      }
-    </div>
-  );
+  const Answer = ({ answer: { answer, answer_image_url, uuid }, char }) => {
+    const photoExpanded = isPhotoExpanded[uuid];
 
-  const MultiQuestion = ({ index, multiQuestion: { answerId, answers, id, question, question_image_url } }) => {
-    const Choice = ({ answer, index }) => {
-      const isAnswerCorrect = answer.id === id;
-      const [isPhotoOpen, setIsPhotoOpen] = useState(false);
-      const isSelected = answer.id === answerId;
+    return (
+      <div className={classes.answer}>
+        <div className={classes.answerContent}>
+          <div>{`${char}.`}</div>
+          <div
+            dangerouslySetInnerHTML={createMarkup(answer)}
+            style={{ paddingLeft: 8, lineHeight: '32px' }}
+          />
+          {
+            answer && answer_image_url &&
+            <>
+              <div
+                className={classes.link}
+                onKeyUp={() => { }}
+                onClick={() => {
+                  setIsPhotoExpanded({
+                    ...isPhotoExpanded,
+                    [uuid]: !photoExpanded
+                  })
+                }}
+                role='button'
+                tabIndex={0}
+              >
+                View Photo
+              </div>
+            </>
+          }
+        </div>
+        {
+          answer_image_url && (!answer || photoExpanded) &&
+          <div className={classes.media}>
+            <div
+              className={classes.media}
+              onKeyUp={() => { }}
+              tabIndex={0}
+              role='button'
+              onClick={() => {
+                setModalImageUrl(answer_image_url);
+                setIsImageModalOpen(true);
+              }}
+            >
+              <img className={classes.image} src={answer_image_url} alt={answer} />
+            </div>
+          </div>
+        }
+      </div>
+    )
+  };
+
+  const MultiQuestion = ({ index, multiQuestion: { answerId, answers, id, question, question_image_url, uuid } }) => {
+    const Choice = ({ answer: { answer_image_url: option_image_url, answer: optionText, id: optionId, uuid }, index }) => {
+      const isAnswerCorrect = optionId === id;
+      const isSelected = optionId === answerId;
+      const photoExpanded = isPhotoExpanded[uuid];
       let color;
 
       if (isSelected) {
@@ -299,31 +415,51 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         <div>
           <div
             className={classes.choice}
-            onClick={() => onAnswerClicked(answer.id)}
-            onKeyUp={() => onAnswerClicked(answer.id)}
+            onClick={() => onAnswerClicked(optionId)}
+            onKeyUp={() => onAnswerClicked(optionId)}
             role='button'
             tabIndex={0}
             style={{ color }}
           >
+            {
+              isEvaluationMode && isSelected && (
+                isAnswerCorrect
+                  ? <CheckIcon
+                    classes={{ root: classes.resultIcon }}
+                    style={{ fill: '#60b515', fontSize: 20 }}
+                  />
+                  : <CloseIcon
+                    classes={{ root: classes.resultIcon }}
+                    style={{ fill: '#f54f47', fontSize: 20 }}
+                  />
+              )
+            }
+            <div>
+              {
+                isSelected
+                  ? <RadioButtonCheckedIcon classes={{ root: classes.radioIcon }} />
+                  : <RadioButtonUncheckedIcon classes={{ root: classes.radioIcon }} />
+              }
+            </div>
             <div>
               {`${alphabet.split('')[index]}.`}
             </div>
             <div
-              dangerouslySetInnerHTML={createMarkup(answer.answer)}
+              dangerouslySetInnerHTML={createMarkup(optionText)}
               style={{ padding: 0, paddingLeft: 8 }}
             />
             {
-              answer.answer_image_url &&
+              optionText && option_image_url &&
               <>
                 <div
                   className={classes.link}
+                  onKeyUp={() => { }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setIsPhotoOpen(!isPhotoOpen);
-                  }}
-                  onKeyUp={(e) => {
-                    e.stopPropagation();
-                    setIsPhotoOpen(!isPhotoOpen);
+                    setIsPhotoExpanded({
+                      ...isPhotoExpanded,
+                      [uuid]: !photoExpanded
+                    })
                   }}
                   role='button'
                   tabIndex={0}
@@ -334,14 +470,25 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             }
           </div>
           {
-            answer.answer_image_url && isPhotoOpen &&
-            <div className={classes.media}>
-              <img className={classes.image} src={answer.answer_image_url} alt={question} />
+            option_image_url && (photoExpanded || !optionText) &&
+            <div
+              className={classes.media}
+              onKeyUp={() => { }}
+              tabIndex={0}
+              role='button'
+              onClick={() => {
+                setModalImageUrl(option_image_url);
+                setIsImageModalOpen(true);
+              }}
+            >
+              <img className={classes.image} src={option_image_url} alt={question} />
             </div>
           }
         </div>
       )
-    }
+    };
+
+    const photoExpanded = isPhotoExpanded[uuid];
 
     return (
       <div className={classes.multiQuestion}>
@@ -351,10 +498,38 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             dangerouslySetInnerHTML={createMarkup(question)}
             style={{ paddingLeft: 8 }}
           />
+          {
+            question && question_image_url &&
+            <>
+              <div
+                className={classes.link}
+                onKeyUp={() => { }}
+                onClick={() => {
+                  setIsPhotoExpanded({
+                    ...isPhotoExpanded,
+                    [uuid]: !photoExpanded
+                  })
+                }}
+                role='button'
+                tabIndex={0}
+              >
+                View Photo
+              </div>
+            </>
+          }
         </div>
         {
-          question_image_url &&
-          <div className={classes.media}>
+          question_image_url && (!question || photoExpanded) &&
+          <div
+            className={classes.media}
+            onKeyUp={() => { }}
+            tabIndex={0}
+            role='button'
+            onClick={() => {
+              setModalImageUrl(question_image_url);
+              setIsImageModalOpen(true);
+            }}
+          >
             <img className={classes.image} src={question_image_url} alt={question} />
           </div>
         }
@@ -377,7 +552,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     numberOfAnsweredMultiQuestions);
 
   return (
-    <div className={classes.container}>
+    <div>
       <div className={classes.content}>
         <div className={classes.header}>
           <div className={classes.title}>Matching</div>
@@ -460,6 +635,17 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             </Button> )
         }
       </div>
+      <Dialog
+        open={isImageModalOpen}
+        onClose={() => {
+          setModalImageUrl('');
+          setIsImageModalOpen(false);
+        }}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <img className={classes.dialogImage} src={modalImageUrl} alt="modal" />
+      </Dialog>
     </div>
   );
 }
