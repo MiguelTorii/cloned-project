@@ -46,7 +46,7 @@ const FeedPage = ({classes, location}: Props) => {
               from={from}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} style={{ height: '120vh' }}>
             <FeedResources />
           </Grid>
         </Grid>
