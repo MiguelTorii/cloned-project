@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import store from 'store';
 import { WORKFLOW_CAMPAIGN, NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
-import { signInActions } from '../constants/action-types';
+import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User, UpdateProfile } from '../types/models';
@@ -25,6 +25,10 @@ const setUser = ({ user }: { user: User }): Action => ({
     user
   }
 });
+
+const clearState = () => ({
+  type: rootActions.CLEAR_STATE
+})
 
 const requestSignOut = (): Action => ({
   type: signInActions.SIGN_OUT_USER_REQUEST
@@ -192,6 +196,7 @@ export const updateUser = ({ user }: { user: User }) => async (
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
+    dispatch(clearState())
     dispatch(requestSignOut());
     store.clearAll()
     dispatch(clearUser());

@@ -149,7 +149,7 @@ const FloatingChat = ({
       })
       setChannelList(cl)
       Object.keys(local).forEach(l => {
-        unread += local[l].unread
+        if (local[l]?.unread) unread += local[l].unread
       })
       setUnread(unread)
     }

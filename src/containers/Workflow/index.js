@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles'
 import * as notificationsActions from 'actions/notifications'
 import { bindActionCreators } from 'redux'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import CreateWorkflow from 'components/Workflow/CreateWorkflow'
 import WorkflowList from 'components/Workflow/WorkflowList'
 import Paper from '@material-ui/core/Paper'
@@ -23,6 +22,8 @@ import type { UserState } from 'reducers/user'
 import type { State as StoreState } from 'types/state'
 import ErrorBoundary from 'containers/ErrorBoundary'
 import moment from 'moment'
+import Button from '@material-ui/core/Button'
+import cx from 'classnames'
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -51,19 +52,19 @@ const styles = theme => ({
   container: {
     flexWrap: 'inherit'
   },
-  title: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(),
-    fontWeight: 700,
-    fontSize: 28,
-  },
   body: {
     padding: theme.spacing(2),
     marginBottom: theme.spacing()
   },
   bodyList: {
-    padding: theme.spacing(2, 0),
-    marginBottom: theme.spacing()
+    padding: theme.spacing(2, 0, 0, 0),
+  },
+  button: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  bodyBoard: {
+    backgroundColor: 'transparent'
   }
 })
 
@@ -139,6 +140,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [classList, setClassList] = useState({})
   const { data: { firstName }, userClasses } = user
 
+  const [listView, setListView] = useState(false)
+
+  const showBoardView = useCallback(() => setListView(false), [])
+  const showListView = useCallback(() => setListView(true), [])
+
   useEffect(() => {
     const init = async () => {
       const res = await getTodos()
@@ -213,9 +219,9 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [reorder, tasks])
 
 
-  const handleAddTask = useCallback(async title => {
+  const handleAddTask = useCallback(async (title, categoryId) => {
     try {
-      const res = await createTodo({ title })
+      const res = await createTodo({ title, categoryId })
 
       if (res?.id) {
         dispatch({
@@ -223,7 +229,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           task: {
             title,
             date: '',
-            categoryId: 1,
+            categoryId,
             sectionId: '',
             order: -1,
             id: res.id,
@@ -243,7 +249,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
   const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status }) => {
-    const newCategory = status === 2 ? 3 : categoryId
+    const newCategory = status === 2 ? 4 : categoryId
     const res = await updateTodo({
       id,
       title,
@@ -263,18 +269,30 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   return (
     <Grid container direction='column' spacing={0} className={classes.container}>
       <ErrorBoundary>
-        <Typography
-          color="textPrimary"
-          className={classes.title}
-        >
-          Workflow - Manage all of your assignments in one place
-        </Typography>
-        <Paper elevation={0} className={classes.body}>
+        <Grid container>
+          <Button
+            color={cx(!listView ? 'primary' : 'default')}
+            className={classes.button}
+            onClick={showBoardView}
+          >
+            Board View
+          </Button>
+          <Button
+            color={cx(listView ? 'primary' : 'default')}
+            onClick={showListView}
+            className={classes.button}
+          >
+            List View
+          </Button>
+        </Grid>
+        {listView && <Paper elevation={0} className={classes.body}>
           <CreateWorkflow handleAddTask={handleAddTask} />
-        </Paper>
-        <Paper elevation={0} className={classes.bodyList}>
+        </Paper>}
+        <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
           <WorkflowList
+            handleAddTask={handleAddTask}
             updateCategory={updateCategory}
+            listView={listView}
             moveTask={moveTask}
             classList={classList}
             tasks={tasks}

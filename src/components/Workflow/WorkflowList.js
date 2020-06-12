@@ -4,12 +4,11 @@ import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
-
+import cx from 'classnames'
 
 const useStyles = makeStyles(theme => ({
   item: {
     paddingLeft: theme.spacing(3)+48,
-    paddingRight: theme.spacing(14),
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
@@ -20,6 +19,9 @@ const useStyles = makeStyles(theme => ({
   },
   classText: {
     color: theme.circleIn.palette.primaryText2,
+  },
+  columnContainer: {
+    display: 'flex',
   }
 }))
 
@@ -33,11 +35,13 @@ type Props = {
   dragId: number,
   onDrag: Function,
   expanded: array,
+  handleAddTask: Function,
   handleExpand: Function
 };
 
 const WorkflowList = ({
   dragId,
+  handleAddTask,
   onDrag,
   updateCategory,
   moveTask,
@@ -45,6 +49,7 @@ const WorkflowList = ({
   tasks,
   expanded,
   handleExpand,
+  listView,
   archiveTask,
   updateItem
 }: Props) => {
@@ -56,43 +61,48 @@ const WorkflowList = ({
   const classes = useStyles()
 
   const boxes = [
-    { name: 'Upcoming', tasks: upcoming, categoryId: 1 },
-    { name: 'In Progress', tasks: inprogress, categoryId: 2 },
-    { name: 'Ready to Submit', tasks: ready, categoryId: 3 },
+    { name: 'Overdue', tasks: upcoming, categoryId: 1 },
+    { name: 'Upcoming', tasks: inprogress, categoryId: 2 },
+    { name: 'In Progress', tasks: ready, categoryId: 3 },
     { name: 'Done', tasks: done, categoryId: 4 }
   ]
 
+
   return (
     <div>
-      <DragPreview />
+      {listView && <DragPreview />}
       <div className={classes.item}>
-        <Grid container alignItems='center'>
-          <Grid item xs={6} />
+        {listView && <Grid container alignItems='center'>
+          <Grid item xs={7} />
           <Grid item xs={2} className={classes.headerText}>
             Due Date
           </Grid>
-          <Grid item xs={4} className={classes.classText}>
+          <Grid item xs={3} className={classes.classText}>
             Class
           </Grid>
-        </Grid>
+        </Grid>}
       </div>
-      {boxes.map(box => (
-        <WorkflowBox
-          archiveTask={archiveTask}
-          dragId={dragId}
-          onDrag={onDrag}
-          updateCategory={updateCategory}
-          key={box.name}
-          tasks={box.tasks}
-          categoryId={box.categoryId}
-          classList={classList}
-          moveTask={moveTask}
-          updateItem={updateItem}
-          expanded={expanded}
-          name={box.name}
-          handleExpand={handleExpand}
-        />
-      ))}
+      <div className={cx(!listView && classes.columnContainer)}>
+        {boxes.map(box => (
+          <WorkflowBox
+            handleAddTask={handleAddTask}
+            listView={listView}
+            archiveTask={archiveTask}
+            dragId={dragId}
+            onDrag={onDrag}
+            updateCategory={updateCategory}
+            key={box.name}
+            tasks={box.tasks}
+            categoryId={box.categoryId}
+            classList={classList}
+            moveTask={moveTask}
+            updateItem={updateItem}
+            expanded={expanded}
+            name={box.name}
+            handleExpand={handleExpand}
+          />
+        ))}
+      </div>
     </div>
   )
 }

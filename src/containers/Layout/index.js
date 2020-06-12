@@ -222,7 +222,7 @@ class Layout extends React.PureComponent<Props, State> {
 
     let unreadMessages = 0
     Object.keys(local).forEach(l => {
-      unreadMessages += local[l].unread
+      if(local[l]?.unread) unreadMessages += Number(local[l].unread)
     })
 
     if (campaign.newClassExperience === null || campaign.workflowExperience === null) return null

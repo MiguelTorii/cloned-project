@@ -2,7 +2,6 @@
 // @flow
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-import { logEvent } from './analytics';
 import { getToken } from './utils';
 
 export const getTodos = async () => {
@@ -36,8 +35,10 @@ export const getTodos = async () => {
 
 export const createTodo = async ({
   title,
+  categoryId,
 }: {
-  title: string
+  title: string,
+  categoryId: number
 }) => {
   try {
     const token = await getToken();
@@ -46,6 +47,7 @@ export const createTodo = async ({
       `${API_ROUTES.TODO}`,
       {
         title,
+        category: categoryId,
       },
       {
         headers: {
@@ -55,13 +57,6 @@ export const createTodo = async ({
     );
 
     const { data } = result;
-    try {
-      logEvent({
-        event: 'Workflow- Create Todo',
-      });
-    } catch (err) {
-      console.log(err);
-    }
     return data;
   } catch (err) {
     console.log(err);

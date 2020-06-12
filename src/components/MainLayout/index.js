@@ -552,7 +552,7 @@ class MainLayout extends React.Component<Props, State> {
           <IconButton
             color="inherit"
           >
-            <Badge badgeContent={unreadMessages} color="secondary">
+            <Badge badgeContent={clsx(unreadMessages)} color="secondary">
               <ChatIcon />
             </Badge>
           </IconButton>
