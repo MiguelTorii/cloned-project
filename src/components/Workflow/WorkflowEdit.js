@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import moment from 'moment'
 import AddRemoveClasses from 'components/AddRemoveClasses'
+import { workflowCategories } from 'constants/common'
 
 const useStyles = makeStyles(theme => ({
   newClass: {
@@ -164,10 +165,9 @@ const WorkflowEdit = ({
               fullWidth
               onChange={updateType}
             >
-              <MenuItem value={1}>Upcoming</MenuItem>
-              <MenuItem value={2}>In Progress</MenuItem>
-              <MenuItem value={3}>Ready to Start</MenuItem>
-              <MenuItem value={4}>Done</MenuItem>
+              {workflowCategories.map(w => (
+                <MenuItem key={`cat-${  w.name}`} value={w.categoryId}>{w.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>

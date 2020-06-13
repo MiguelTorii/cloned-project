@@ -32,7 +32,11 @@ const getStyles = hide => {
 
 const useStyles = makeStyles(theme => ({
   detailsButton: {
-    color: theme.circleIn.palette.action
+    padding: theme.spacing(0, 1),
+    color: theme.circleIn.palette.action,
+    '& .MuiButtonBase-root': {
+      minHeight: 0,
+    }
   },
   dragIcon: {
     height: 20,
@@ -45,6 +49,7 @@ const useStyles = makeStyles(theme => ({
   item: {
     paddingLeft: theme.spacing(3),
     cursor: 'pointer',
+    minHeight: 40,
     position: 'relative',
   },
   chip: {
@@ -82,6 +87,9 @@ const useStyles = makeStyles(theme => ({
   empty: {
     height: '100%',
     width: '100%'
+  },
+  iconButton: {
+    padding: 0
   }
 }))
 

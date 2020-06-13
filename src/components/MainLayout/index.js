@@ -567,6 +567,8 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
+    const { updateFeed, newClassExperience, userClasses, workflowExperience } = this.props
+
     const renderCreatePostMenu = (
       <Menu
         id="simple-menu"
@@ -642,7 +644,7 @@ class MainLayout extends React.Component<Props, State> {
             icon={Videos}
           />
         </MenuItem>
-        <MenuItem
+        {!workflowExperience && <MenuItem
           button
           onClick={this.handleCreatePostMenuClose}
           component={MyLink}
@@ -653,11 +655,10 @@ class MainLayout extends React.Component<Props, State> {
             secondaryText="Earn 300 points for creating a reminder, then 400 points for completing it"
             icon={Reminders}
           />
-        </MenuItem>
+        </MenuItem>}
       </Menu>
     );
 
-    const { updateFeed, newClassExperience, userClasses, workflowExperience } = this.props
     const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
 
     const qs = queryString.parse(search)

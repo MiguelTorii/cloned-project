@@ -21,6 +21,7 @@ import {
 import type { UserState } from 'reducers/user'
 import type { State as StoreState } from 'types/state'
 import ErrorBoundary from 'containers/ErrorBoundary'
+import Typography from '@material-ui/core/Typography'
 import moment from 'moment'
 import Button from '@material-ui/core/Button'
 import cx from 'classnames'
@@ -45,6 +46,11 @@ const createSnackbar = (message, style, variant) => ({
 })
 
 const styles = theme => ({
+  title: {
+    marginTop: theme.spacing(),
+    fontWeight: 700,
+    fontSize: 28,
+  },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -57,7 +63,8 @@ const styles = theme => ({
     marginBottom: theme.spacing()
   },
   bodyList: {
-    padding: theme.spacing(2, 0, 0, 0),
+    marginBottom: theme.spacing(),
+    paddingBottom: theme.spacing(2),
   },
   button: {
     fontSize: 20,
@@ -249,7 +256,10 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
   const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status }) => {
-    const newCategory = status === 2 ? 4 : categoryId
+    const task = tasks[index]
+    const newCategory = status === 2 && task.status !== status
+      ? 4
+      : categoryId
     const res = await updateTodo({
       id,
       title,
@@ -264,11 +274,17 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     } else {
       enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
     }
-  }, [dispatch, enqueueSnackbar, classes])
+  }, [dispatch, enqueueSnackbar, classes, tasks])
 
   return (
     <Grid container direction='column' spacing={0} className={classes.container}>
       <ErrorBoundary>
+        <Typography
+          color="textPrimary"
+          className={classes.title}
+        >
+          Workflow
+        </Typography>
         <Grid container>
           <Button
             color={cx(!listView ? 'primary' : 'default')}

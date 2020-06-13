@@ -4,6 +4,7 @@ import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
+import { workflowCategories } from 'constants/common'
 import cx from 'classnames'
 
 const useStyles = makeStyles(theme => ({
@@ -60,13 +61,11 @@ const WorkflowList = ({
   const done = useMemo(() => indexed.filter(t => t.categoryId === 4), [indexed])
   const classes = useStyles()
 
-  const boxes = [
-    { name: 'Overdue', tasks: upcoming, categoryId: 1 },
-    { name: 'Upcoming', tasks: inprogress, categoryId: 2 },
-    { name: 'In Progress', tasks: ready, categoryId: 3 },
-    { name: 'Done', tasks: done, categoryId: 4 }
-  ]
-
+  const taskLists = [upcoming, inprogress, ready, done]
+  const boxes = workflowCategories.map((w, k) => ({
+    ...w,
+    tasks: taskLists[k]
+  }))
 
   return (
     <div>

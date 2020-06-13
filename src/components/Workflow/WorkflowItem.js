@@ -13,6 +13,7 @@ import WorkflowBoardItem from 'components/Workflow/WorkflowBoardItem'
 
 const useStyles = makeStyles(() => ({
   root: {
+    position: 'relative',
     width: '100%'
   },
   hidden: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(() => ({
     width: 600,
   },
   archiveTitle: {
+    wordBreak: 'break-word',
     fontSize: 20,
     textAlign: 'center'
   },
@@ -177,8 +179,6 @@ const WorkflowItem = ({
           openConfirmArchive={openConfirmArchive}
           onOpen={onOpen}
           showDetails={showDetails}
-          isDragging={isDragging}
-          handleComplete={handleComplete}
           drag={drag}
         />}
     </div>

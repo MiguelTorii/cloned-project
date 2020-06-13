@@ -25,8 +25,17 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 220px)',
+    maxHeight: 'calc(100vh - 265px)',
     overflow: 'overlay'
+  },
+  inputContainer: {
+    position: 'relative'
+  },
+  placeholder: {
+    position: 'absolute',
+    color: theme.circleIn.palette.primaryText2,
+    top: 4,
+    left: 4,
   }
 }))
 
@@ -53,16 +62,21 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
   }, [handleNew])
 
   const newInput = useMemo(() => (
-    <TextField
-      fullWidth
-      autoFocus
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
-      inputProps={{
-        onBlur: handleNew
-      }}
-    />
-  ), [handleKeyDown, handleNew, handleChange])
+    <div className={classes.inputContainer}>
+      {!newInputValue && <Typography className={classes.placeholder}>Enter a title for this task</Typography>}
+      <TextField
+        fullWidth
+        autoFocus
+        multiline
+        rowsMax={3}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        inputProps={{
+          onBlur: handleNew
+        }}
+      />
+    </div>
+  ), [handleKeyDown, handleNew, handleChange, classes, newInputValue])
 
   return (
     <Grid ref={drop} className={classes.container}>

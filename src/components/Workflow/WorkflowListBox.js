@@ -11,16 +11,16 @@ const useStyles = makeStyles(theme => ({
   details: {
     padding: 0
   },
+  summary: {
+    minHeight: theme.spacing(5),
+    justifyContent: 'flex-start'
+  },
   panel: {
     position: 'inherit',
     '& .MuiExpansionPanelSummary-root': {
       borderBottom: `1px solid ${theme.circleIn.palette.borderColor}`,
       padding: 0,
       margin: theme.spacing(0, 3)
-    },
-    '& .MuiButtonBase-root': {
-      minHeight: theme.spacing(5),
-      justifyContent: 'flex-start'
     },
     '& .MuiExpansionPanelSummary-content': {
       margin: 0,
@@ -40,7 +40,7 @@ const WorkflowListBox = ({ drop, name, tasks, list, isExpanded, onExpand }) => {
       expanded={isExpanded}
       onChange={onExpand}
     >
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
         <Typography className={classes.header}>{name} ({tasks.length})</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.details}>

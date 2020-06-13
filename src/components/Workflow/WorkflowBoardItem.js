@@ -9,18 +9,18 @@ const WorkflowBoardItem = ({
   openConfirmArchive,
   onOpen,
   showDetails,
-  isDragging,
-  handleComplete,
 }) => {
   const date = clsx(task.date && moment(task.date).format('MMM D'))
   const selectedClass = classList[task.sectionId]
+
   return (
     <div>
       <WorkflowBoardCard
         onOpen={onOpen}
         title={task.title}
-        description={task.description}
         date={date}
+        openConfirmArchive={openConfirmArchive}
+        showDetails={showDetails}
         selectedClass={selectedClass}
       />
     </div>
