@@ -277,7 +277,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       date: moment(date).valueOf(),
       status,
     })
-    if (res?.success) {
+
+    if (res?.id) {
       dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status })
       if (res?.points) enqueueSnackbar(createSnackbar(
           `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
