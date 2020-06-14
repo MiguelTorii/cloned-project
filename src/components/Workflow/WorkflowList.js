@@ -9,7 +9,6 @@ import cx from 'classnames'
 
 const useStyles = makeStyles(theme => ({
   item: {
-    paddingLeft: theme.spacing(3)+48,
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
