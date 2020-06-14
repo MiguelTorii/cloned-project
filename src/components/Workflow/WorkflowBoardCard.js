@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -71,11 +71,13 @@ const WorkflowBoardCard = ({
 }) => {
   const classes = useStyles()
 
-  const clampTitle = cx(
+  const clampTitle = useMemo(() => cx(
     title && title.length > 75
       ? `${title.substr(0, 75)  }...`
       : title
-  )
+  ), [title])
+
+  const dateSize = useMemo(() => selectedClass ? 3 : 8, [selectedClass])
 
   return (
     <Paper className={cx(classes.root, showDetails && classes.hover)} elevation={0} onClick={onOpen}>
@@ -84,14 +86,14 @@ const WorkflowBoardCard = ({
           {newInput || <Typography variant='body1' className={classes.title}>{clampTitle}</Typography>}
         </Grid>
         <Grid container alignContent='flex-end' alignItems='center' className={classes.bottom}>
-          <Grid item xs={5}>
-            {selectedClass && <Chip
+          {selectedClass && <Grid item xs={5}>
+            <Chip
               label={selectedClass.className} size='small'
               style={{ backgroundColor: selectedClass.bgColor }}
               className={cx(classes.chip, classes.ellipsis)}
-            />}
-          </Grid>
-          <Grid item xs={3}>
+            />
+          </Grid>}
+          <Grid item xs={dateSize}>
             <Typography variant='caption' className={classes.date}>{date}</Typography>
           </Grid>
           {showDetails && <Grid item xs={4}>

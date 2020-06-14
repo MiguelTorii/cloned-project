@@ -38,6 +38,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const locale = navigator.languages !== undefined ? navigator.languages[0] : navigator.language
+
 const  DateInputComponent = forwardRef((props) => {
   const { component: Component, inputRef, ...other } = props;
   // eslint-disable-next-line
@@ -104,11 +106,11 @@ const DateInput = ({ onChange, selected, fixed }: Props) => {
               selected,
               onChange: handleTime,
               showTimeSelectOnly: true,
+              locale,
               showTimeSelect: true,
-              timeFormat: 'HH:mm',
               timeIntervals: 15,
               timeCaption: 'Time',
-              dateFormat: 'HH:mm',
+              dateFormat: 'p',
             },
           }}
         />

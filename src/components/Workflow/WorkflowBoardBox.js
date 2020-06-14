@@ -11,11 +11,11 @@ import TextField from '@material-ui/core/TextField'
 const useStyles = makeStyles(theme => ({
   container: {
     marginRight: theme.spacing(2),
-    width: theme.spacing(30),
+    width: theme.spacing(31),
   },
   titleContainer: {
     padding: theme.spacing(2),
-    width: theme.spacing(30),
+    width: theme.spacing(31),
     borderRadius: theme.spacing()
   },
   title: {
@@ -26,7 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
   listContainer: {
     maxHeight: 'calc(100vh - 265px)',
-    overflow: 'overlay'
+    overflow: 'auto',
+    '&::-webkit-scrollbar-corner': {
+      background: 'rgba(0,0,0,0)'
+    }
   },
   inputContainer: {
     position: 'relative'
