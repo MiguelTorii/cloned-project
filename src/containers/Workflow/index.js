@@ -63,8 +63,8 @@ const styles = theme => ({
     marginBottom: theme.spacing()
   },
   bodyList: {
-    marginBottom: theme.spacing(),
-    paddingBottom: theme.spacing(2),
+    // marginBottom: theme.spacing(),
+    // paddingBottom: theme.spacing(2),
   },
   button: {
     fontSize: 20,
@@ -146,6 +146,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const { tasks, dragId } = state
   const [classList, setClassList] = useState({})
   const { data: { firstName }, userClasses } = user
+  const [dragCategoryId, setDragCategoryId] = useState(null)
 
   const [listView, setListView] = useState(false)
 
@@ -177,12 +178,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [state, dispatch])
 
   const updateCategory = useCallback(async (index, categoryId) => {
-    updateTodoCategory({ id: dragId, categoryId })
+    setDragCategoryId(categoryId)
     dispatch({ type: 'UPDATE_CATEGORY', index, categoryId })
-  }, [dispatch, dragId])
-
-  const onDrag = useCallback(dragId => {
-    dispatch({ type: 'DRAG_UPDATE', dragId })
   }, [dispatch])
 
   const [prevDragId, setprevDragId] = useState(null)
@@ -195,6 +192,17 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     })
     await updateTodosOrdering({ ordering })
   }, [tasks])
+
+  const onDrag = useCallback(async dragId => {
+    if (dragId === null && prevDragId !== null) {
+      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId })
+      if (res?.points) enqueueSnackbar(createSnackbar(
+       `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+       classes.snackbar,
+       'success'))
+    }
+    dispatch({ type: 'DRAG_UPDATE', dragId })
+  }, [dispatch, dragCategoryId, prevDragId, enqueueSnackbar, firstName, classes])
 
   useEffect(() => {
     if (dragId !== prevDragId && dragId === null) reorder()
@@ -271,10 +279,14 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     })
     if (res?.success) {
       dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status })
+      if (res?.points) enqueueSnackbar(createSnackbar(
+          `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+          classes.snackbar,
+          'success'))
     } else {
       enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
     }
-  }, [dispatch, enqueueSnackbar, classes, tasks])
+  }, [dispatch, enqueueSnackbar, classes, tasks, firstName])
 
   return (
     <Grid container direction='column' spacing={0} className={classes.container}>

@@ -57,12 +57,17 @@ const useStyles = makeStyles(theme => ({
   },
   bottom: {
     height: theme.spacing(3),
+  },
+  newButton: {
+    fontWeight: 'bold'
   }
 }))
 
 const WorkflowBoardCard = ({
   onOpen,
   newInput,
+  handleNew,
+  closeNew,
   title,
   date,
   selectedClass,
@@ -73,7 +78,7 @@ const WorkflowBoardCard = ({
 
   const clampTitle = useMemo(() => cx(
     title && title.length > 75
-      ? `${title.substr(0, 75)  }...`
+      ? `${title.substr(0, 75)}...`
       : title
   ), [title])
 
@@ -101,6 +106,10 @@ const WorkflowBoardCard = ({
             <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
               <DeleteIcon />
             </IconButton>
+          </Grid>}
+          {newInput && <Grid item xs={12}>
+            <Button className={classes.newButton} onClick={handleNew} variant='contained' color='primary'>Add</Button>
+            <Button className={classes.newButton} onClick={closeNew}>Cancel</Button>
           </Grid>}
         </Grid>
       </Grid>

@@ -7,9 +7,14 @@ import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
 import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(theme => ({
+  '@global': {
+    'body': {
+      overflowY: 'hidden'
+    },
+  },
   container: {
-    paddingRight: theme.spacing(2),
-    width: theme.spacing(33),
+    marginRight: theme.spacing(2),
+    width: theme.spacing(31),
   },
   title: {
     fontSize: 20,
@@ -31,13 +36,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 290px)',
+    maxHeight: 'calc(100vh - 250px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'
     }
   },
   inputContainer: {
+    height: theme.spacing(8),
     position: 'relative'
   },
   placeholder: {
@@ -54,14 +60,16 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
   const [newInputValue, setNewInputValue] = useState('')
 
   const openNew = useCallback(() => setShowNew(true), [])
-  const closeNew = useCallback(() => setShowNew(false), [])
+  const closeNew = useCallback(() => {
+    setShowNew(false)
+    setNewInputValue('')
+  }, [])
 
   const handleChange = useCallback(e => setNewInputValue(e.target.value), [])
 
   const handleNew = useCallback(async () => {
     if (newInputValue) {
       await handleAddTask(newInputValue, categoryId)
-      setNewInputValue('')
     }
     closeNew()
   }, [closeNew, newInputValue, categoryId, handleAddTask])
@@ -80,12 +88,9 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
         rowsMax={3}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        inputProps={{
-          onBlur: handleNew
-        }}
       />
     </div>
-  ), [handleKeyDown, handleNew, handleChange, classes, newInputValue])
+  ), [handleKeyDown, handleChange, classes, newInputValue])
 
   return (
     <Grid ref={drop} className={classes.container}>
@@ -100,7 +105,13 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
         </Grid>
       </Grid>
       <Grid container className={classes.listContainer}>
-        {showNew && <WorkflowBoardCard newInput={newInput}/>}
+        {showNew &&
+          <WorkflowBoardCard
+            newInput={newInput}
+            handleNew={handleNew}
+            closeNew={closeNew}
+          />
+        }
         {list}
       </Grid>
     </Grid>

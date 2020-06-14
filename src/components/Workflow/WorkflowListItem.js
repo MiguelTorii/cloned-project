@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
+// import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
+// import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
 import { makeStyles , useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Grid from '@material-ui/core/Grid'
@@ -100,7 +100,7 @@ const WorkflowListItem = ({
   onOpen,
   showDetails,
   isDragging,
-  handleComplete,
+  // handleComplete,
   drag
 }) => {
   const classes = useStyles()
@@ -155,11 +155,11 @@ const WorkflowListItem = ({
       >
         <DragIndicatorIcon className={classes.dragIcon} style={getStyles(isDragging || !showDetails)} />
       </div>
-      <ListItemIcon>
-        <IconButton onClick={handleComplete} className={classes.iconButton}>
-          {task.status === 2 ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />}
-        </IconButton>
-      </ListItemIcon>
+      {/* <ListItemIcon> */}
+      {/* <IconButton onClick={handleComplete} className={classes.iconButton}> */}
+      {/* {task.status === 2 ? <CheckCircleIcon /> : <RadioButtonUncheckedIcon />} */}
+      {/* </IconButton> */}
+      {/* </ListItemIcon> */}
       <ListItemText primary={renderTask} onClick={onOpen} />
     </ListItem>
   )
