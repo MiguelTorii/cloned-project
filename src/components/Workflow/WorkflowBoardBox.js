@@ -1,31 +1,37 @@
 import React, { useMemo, useCallback, useState } from 'react'
-import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import AddIcon from '@material-ui/icons/Add'
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
 import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(theme => ({
   container: {
-    marginRight: theme.spacing(2),
-    width: theme.spacing(31),
-  },
-  titleContainer: {
-    padding: theme.spacing(2),
-    width: theme.spacing(31),
-    borderRadius: theme.spacing()
+    paddingRight: theme.spacing(2),
+    width: theme.spacing(33),
   },
   title: {
-    fontWeight: 'bold'
+    fontSize: 20,
   },
-  iconButton: {
-    padding: 0
+  button: {
+    textAlign: 'center',
+    backgroundColor: theme.circleIn.palette.deepSeaOcean,
+    fontWeight: 'bold',
+    fontSize: 16,
+    width: theme.spacing(31),
+    borderRadius: theme.spacing(),
+    '& span': {
+      textTransform: 'none',
+    },
+    margin: theme.spacing(1, 0),
+    padding: 0,
+    '& hover': {
+      backgroundColor: theme.circleIn.palette.brand,
+    }
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 265px)',
+    maxHeight: 'calc(100vh - 290px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'
@@ -83,18 +89,16 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
 
   return (
     <Grid ref={drop} className={classes.container}>
-      <Paper elevation={0} className={classes.titleContainer}>
-        <Grid container justify='space-between'>
-          <Grid item>
-            <Typography className={classes.title}>{name}</Typography>
-          </Grid>
-          <Grid item>
-            <IconButton className={classes.iconButton} onClick={openNew}>
-              <AddIcon />
-            </IconButton>
-          </Grid>
+      <Grid container justify='space-between' direction='column'>
+        <Grid item>
+          <Typography className={classes.title}>{name}</Typography>
         </Grid>
-      </Paper>
+        <Grid item>
+          <Button className={classes.button} onClick={openNew}>
+            + Add a task
+          </Button>
+        </Grid>
+      </Grid>
       <Grid container className={classes.listContainer}>
         {showNew && <WorkflowBoardCard newInput={newInput}/>}
         {list}
