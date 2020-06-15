@@ -9,18 +9,18 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem'
-import { DatePicker } from 'material-ui-pickers';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { logEventLocally } from 'api/analytics';
 import { createTodo, updateTodo } from 'api/workflow'
 import ErrorBoundary from 'containers/ErrorBoundary';
 import Dialog, { dialogStyle } from 'components/Dialog';
+import DateInput from 'components/Workflow/DateInput'
 import LoadImg from 'components/LoadImg'
 
 import classesImg from 'assets/img/circlein-classes.png';
 import backgroundImg from 'assets/img/onboarding-background.png';
-import dragImg from 'assets/img/drag.png';
+import workflowDemoGif from 'assets/gif/workflow-demo.gif';
 import creditCardAnimation from 'assets/lottie/creditcard.json'
 import flipCardAnimation from 'assets/lottie/flip-card.json'
 import moneyStackAnimation from 'assets/lottie/money-stack.json'
@@ -86,6 +86,7 @@ const styles = theme => ({
     padding: theme.spacing(2),
     margin: `${theme.spacing(2)}px 0px`,
     width: '100%',
+    wordBreak: 'break-all',
     ...subtitle,
   },
   button: {
@@ -97,7 +98,7 @@ const styles = theme => ({
     letterSpacing: 0.5,
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1 / 2, 2),
-    width: 180,
+    width: 200,
   },
   buttons: {
     display: 'flex',
@@ -120,6 +121,11 @@ const styles = theme => ({
   },
   content: {
     height: '100%',
+  },
+  demoGif: {
+    borderRadius: 8,
+    height: 660,
+    width: '100%',
   },
   demoPanel: {
     borderRadius: 8,
@@ -188,7 +194,7 @@ const styles = theme => ({
     zIndex: 5,
   },
   formRow: {
-    marginBottom: theme.spacing(),
+    marginBottom: theme.spacing(1.25),
   },
   formTitle: {
     color: 'white',
@@ -197,7 +203,7 @@ const styles = theme => ({
   },
   step: {
     display: 'flex',
-    height: '100%',
+    height: 700,
   },
   stepper: {
     alignItems: 'center',
@@ -278,14 +284,15 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     </div>
   );
 
+  const updateDueDate = React.useCallback(value => {
+    setDueDate(value)
+  }, [])
+
   const SelectDate = () => (
-    <DatePicker
-      className={classes.textField}
-      emptyLabel='Add due date...'
-      format='MM/DD/YYYY'
-      InputProps={{ classes: { root: classes.textInput }, disableUnderline: true }}
-      onChange={setDueDate}
-      value={dueDate}
+    <DateInput
+      fixed
+      selected={dueDate}
+      onChange={updateDueDate}
     />
   );
 
@@ -363,24 +370,18 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     </div>
   );
 
+  const trunc = s => {
+    if (!s) return '';
+    return s.substr(0, 70);
+  }
+
   const MockedBoard = () => (
     <div className={classes.board}>
       <div className={classes.boardColumn}>
         <div className={classes.boardHeader}>Upcoming</div>
-        <div className={classes.boardTask}>{tasks.task1}</div>
-        <div
-          className={classes.boardTask}
-          style={activeStep === 3
-            ? { transform: 'rotate(-15deg) translateX(150px)' }
-            : {}
-          }
-        >
-          {tasks.task2}
-          {activeStep === 3 &&
-            <img src={dragImg} alt='drag hand' className={classes.dragImg} />
-          }
-        </div>
-        <div className={classes.boardTask}>{tasks.task3}</div>
+        <div className={classes.boardTask}>{trunc(tasks.task1)}</div>
+        <div className={classes.boardTask}>{trunc(tasks.task2)}</div>
+        <div className={classes.boardTask}>{trunc(tasks.task3)}</div>
       </div>
       <div className={classes.boardColumn}>
         <div className={classes.boardHeader}>In Progress</div>
@@ -403,17 +404,14 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         </div>
         <div className={cx(classes.subtitle)}>Task Description</div>
         <div className={cx(classes.formInput, classes.formRow)} />
-        <div className={cx(classes.subtitle)}>Due Date</div>
-        <div className={cx(classes.formInput, classes.formRow)}>
-          {dueDate && moment(dueDate).format('MM/DD/YYYY')}
-        </div>
-        <div className={cx(classes.formFlex, classes.formRow)}>
-          <div style={{ flex: 1 }}>
-            <div className={classes.subtitle}>Due Time</div>
-            <div className={classes.formInput} />
-          </div>
+        <div
+          className={cx(classes.formFlex, classes.formRow)}
+        >
+          <DateInput style={{ marginTop: 10 }} selected={dueDate} />
           <div style={{ marginLeft: 24, flex: 1 }}>
-            <div className={classes.subtitle}>Task Status</div>
+            <div className={classes.subtitle} style={{ marginTop: 10 }}>
+              Task Status
+            </div>
             <Select value={1} style={{ width: '100%' }}>
               <MenuItem value={1}>
                 <span style={{ color: formColor }}>Ready to Start</span>
@@ -450,6 +448,16 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     </div>
   );
 
+  const WorkflowDemo = () => (
+    <div>
+      <img
+        alt='workflow demo'
+        className={classes.demoGif}
+        src={workflowDemoGif}
+      />
+    </div>
+  )
+
   const STEPS = [
     {
       actionComponent: null,
@@ -457,8 +465,8 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       buttonText: 'Tell me more...',
       demoComponent: Intro,
       textRows: [
-        'Your school has partnered with us to help you pass all your classes.',
-        'One of the ways we help you pass your classes is through Workflow.'
+        'Your school has partnered with us to help you succeed.',
+        'One of the ways we help you pass your classes is using Workflow.'
       ],
       title: 'Welcome to CircleIn!',
     },
@@ -479,20 +487,20 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       buttonText: 'Due date added!',
       demoComponent: MockedForm,
       textRows: [
-        `Luckily, Workflow allows you to add the due date of each task. Let’s set the due date for ${tasks.task1}:`,
+        `Let’s set the due date for ${tasks.task1}:`,
       ],
-      title: 'Great! You have tasks. Now, if only you could see when they’re due...',
+      title: 'Great! You have tasks. Now let’s add a due date to get them done',
     },
     {
       actionComponent: null,
       buttonDisabled: false,
       buttonText: 'Got it!',
-      demoComponent: MockedBoard,
+      demoComponent: WorkflowDemo,
       textRows: [
         'Simply drag-n-drop a task from Upcoming to In Progress as you make progress with your schoolwork.',
         'Expert Tip: Go through your syllabus and create tasks for all the important due dates!'
       ],
-      title: 'Woohoo! You’re ready to use Workflow.',
+      title: 'Simply drag-n-drop … with your schoolwork',
     },
     {
       actionComponent: null,
@@ -538,7 +546,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     }
   }
 
-  const OnboardingStep = React.memo(({
+  const OnboardingStep = ({
     buttonDisabled, buttonText, ActionComponent = null, DemoComponent, textRows, title
   }) => {
     return (
@@ -550,7 +558,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           <div className={classes.textRows}>
             {
               textRows.map(textRow => (
-                <div className={classes.textRow}>{textRow}</div>
+                <div key={Math.random()} className={classes.textRow}>{textRow}</div>
               ))
             }
           </div>
@@ -574,7 +582,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         </div>
       </div>
     )
-  });
+  };
 
   const currentStep = STEPS[activeStep];
 
@@ -588,16 +596,14 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         open={open}
         showHeader={false}
       >
-        <div className={classes.content}>
-          <OnboardingStep
-            ActionComponent={currentStep.actionComponent || null}
-            buttonDisabled={currentStep.buttonDisabled}
-            buttonText={currentStep.buttonText}
-            DemoComponent={currentStep.demoComponent}
-            textRows={currentStep.textRows}
-            title={currentStep.title}
-          />
-        </div>
+        <OnboardingStep
+          ActionComponent={currentStep.actionComponent || null}
+          buttonDisabled={currentStep.buttonDisabled}
+          buttonText={currentStep.buttonText}
+          DemoComponent={currentStep.demoComponent}
+          textRows={currentStep.textRows}
+          title={currentStep.title}
+        />
       </Dialog>
     </ErrorBoundary>
   );

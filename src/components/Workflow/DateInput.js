@@ -48,10 +48,11 @@ const  DateInputComponent = forwardRef((props) => {
 
 type Props = {
   onChange: Function,
-  selected: Object
+  selected: Object,
+  style: Object
 };
 
-const DateInput = ({ onChange, selected, fixed }: Props) => {
+const DateInput = ({ onChange, selected, fixed, style }: Props) => {
   const classes = useStyles()
   const [time, setTime] = useState(selected)
   const [date, setDate] = useState(selected)
@@ -71,7 +72,7 @@ const DateInput = ({ onChange, selected, fixed }: Props) => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} style={style}>
       <Grid item xs={6}>
         <TextField
           size='small'
