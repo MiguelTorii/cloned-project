@@ -100,11 +100,6 @@ const styles = theme => ({
     padding: theme.spacing(1 / 2, 2),
     width: 200,
   },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: '20px 0px'
-  },
   caption: {
     color: theme.circleIn.palette.primaryBackground,
     fontSize: 16,
@@ -158,12 +153,6 @@ const styles = theme => ({
     width: '85%',
     zIndex: 6,
   },
-  formButtons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing(),
-    marginTop: theme.spacing(4),
-  },
   formContainer: {
     ...centered,
     height: '100%',
@@ -188,6 +177,7 @@ const styles = theme => ({
   },
   formOverlay: {
     background: 'rgba(255,255,255,0.7)',
+    borderRadius: 8,
     position: 'absolute',
     height: '100%',
     width: '100%',
@@ -425,24 +415,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
               <span style={{ color: formColor }}> What class is this for?</span>
             </MenuItem>
           </Select>
-        </div>
-        <div className={classes.formButtons}>
-          <div>
-            <Button
-              style={{ color: formColor, borderColor: formColor  }}
-              variant='outlined'
-            >
-              Mark as Complete
-            </Button>
-          </div>
-          <div>
-            <Button style={{ color: 'red', marginRight: 16 }}>
-              Delete
-            </Button>
-            <Button variant='contained' color='primary'>
-              Save
-            </Button>
-          </div>
         </div>
       </div>
     </div>
