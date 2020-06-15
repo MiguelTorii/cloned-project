@@ -144,7 +144,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { tasks, dragId } = state
   const [classList, setClassList] = useState({})
-  const { data: { firstName }, userClasses } = user
+  const { data: { firstName }, syncData: { viewedOnboarding }, userClasses } = user
   const [dragCategoryId, setDragCategoryId] = useState(null)
 
   const [listView, setListView] = useState(false)
@@ -164,7 +164,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     }
 
     init()
-  }, [dispatch, classes, enqueueSnackbar])
+  }, [dispatch, classes, enqueueSnackbar, viewedOnboarding])
 
   const archiveTask = useCallback(async task => {
     const res = await archiveTodo({ id: task.id })
