@@ -12,11 +12,16 @@ import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import * as campaignActions from 'actions/campaign';
+import { WORKFLOW_CAMPAIGN } from 'constants/campaigns';
+import type { CampaignState } from 'reducers/campaign';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import Onboarding from '../Onboarding';
+import OnboardingV2 from '../OnboardingV2';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
@@ -50,7 +55,9 @@ type Props = {
   classes: Object,
   user: UserState,
   checkUserSession: Function,
-  updateOnboarding: Function
+  updateOnboarding: Function,
+  campaign: CampaignState,
+  requestCampaign: Function
 };
 
 type State = {
@@ -74,12 +81,14 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     const {
+      requestCampaign,
       user: {
         data: { userId }
       }
     } = this.props;
 
     if (userId !== '') this.handleCheckUpdate();
+    requestCampaign({ campaignId: WORKFLOW_CAMPAIGN });
   };
 
   componentDidUpdate = prevProps => {
@@ -159,10 +168,11 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
         data: { userId, updateProfile, segment },
         syncData: { viewedOnboarding }
       },
+      campaign,
       updateOnboarding
     } = this.props;
 
-    if (userId === '') return null;
+    if (userId === '' || campaign.workflowExperience === null) return null;
 
     const {
       open,
@@ -288,18 +298,27 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        <Onboarding
-          open={viewedOnboarding !== null && !viewedOnboarding}
-          updateOnboarding={updateOnboarding}
-          userId={userId}
-        />
+        {
+          campaign.workflowExperience
+            ? <OnboardingV2
+              open={viewedOnboarding !== null && !viewedOnboarding}
+              updateOnboarding={updateOnboarding}
+              userId={userId}
+            />
+            : <Onboarding
+              open={viewedOnboarding !== null && !viewedOnboarding}
+              updateOnboarding={updateOnboarding}
+              userId={userId}
+            />
+        }
       </ErrorBoundary>
     );
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+  user,
+  campaign
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
@@ -307,6 +326,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       checkUserSession: signInActions.checkUserSession,
       updateOnboarding: userActions.updateOnboarding,
+      requestCampaign: campaignActions.requestCampaign
     },
     dispatch
   );
