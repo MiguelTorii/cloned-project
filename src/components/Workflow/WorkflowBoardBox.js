@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 250px)',
+    maxHeight: 'calc(100vh - 240px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'

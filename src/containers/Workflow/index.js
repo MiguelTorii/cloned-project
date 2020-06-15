@@ -67,8 +67,7 @@ const styles = theme => ({
     // paddingBottom: theme.spacing(2),
   },
   button: {
-    fontSize: 20,
-    fontWeight: 'bold'
+    fontSize: 16,
   },
   bodyBoard: {
     backgroundColor: 'transparent'

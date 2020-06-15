@@ -21,9 +21,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   datePicker: {
-    '& .react-datepicker-popper': {
-      width: 330
-    },
     '& .MuiInputBase-input': {
       paddingLeft: theme.spacing(),
       paddingRight: theme.spacing()
@@ -37,8 +34,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: 2
   }
 }))
-
-const locale = navigator.languages !== undefined ? navigator.languages[0] : navigator.language
 
 const  DateInputComponent = forwardRef((props) => {
   const { component: Component, inputRef, ...other } = props;
@@ -107,7 +102,6 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
               selected,
               onChange: handleTime,
               showTimeSelectOnly: true,
-              locale,
               showTimeSelect: true,
               timeIntervals: 15,
               timeCaption: 'Time',
