@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type Props = {
+  openConfirmArchive: Function,
   task: Object,
   classList: array,
   onClose: Function,
@@ -49,6 +50,7 @@ type Props = {
 };
 
 const WorkflowEdit = ({
+  openConfirmArchive,
   task,
   classList,
   onClose,
@@ -118,6 +120,8 @@ const WorkflowEdit = ({
       onCancel={onClose}
       open={open}
       onOk={updateTask}
+      secondaryRemoveTitle='Delete'
+      onSecondaryRemove={openConfirmArchive}
       showActions
       okTitle='Save'
     >

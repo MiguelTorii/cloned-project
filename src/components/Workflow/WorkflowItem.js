@@ -134,7 +134,8 @@ const WorkflowItem = ({
   const archive = useCallback(() => {
     archiveTask(task)
     closeConfirmArchive()
-  }, [task, archiveTask, closeConfirmArchive])
+    onClose()
+  }, [task, archiveTask, closeConfirmArchive, onClose])
 
   return (
     <div
@@ -157,6 +158,7 @@ const WorkflowItem = ({
       </Dialog>
       <WorkflowEdit
         task={task}
+        openConfirmArchive={openConfirmArchive}
         classList={classList}
         onClose={onClose}
         open={open}

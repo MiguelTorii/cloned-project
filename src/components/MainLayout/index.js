@@ -702,12 +702,28 @@ class MainLayout extends React.Component<Props, State> {
               />
             </ListItem>
           </Tooltip>
+          {workflowExperience && <ListItem
+            button
+            component={MyLink}
+            link="/"
+            className={classNames(
+              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <CalendarTodayIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Workflow"
+            />
+          </ListItem>}
           <HomeItem
             createPostOpen={createPostOpen}
             MyLink={MyLink}
             userClasses={userClasses}
             updateFeed={updateFeed}
             newClassExperience={newClassExperience}
+            workflowExperience={workflowExperience}
             openClassmatesDialog={openClassmatesDialog}
           />
           <ListItem
@@ -723,21 +739,6 @@ class MainLayout extends React.Component<Props, State> {
               primary="Chats"
             />
           </ListItem>
-          {workflowExperience && <ListItem
-            button
-            component={MyLink}
-            link="/workflow"
-            className={classNames(
-              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <CalendarTodayIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="My Workflow"
-            />
-          </ListItem>}
           {!workflowExperience && <ListItem
             button
             component={MyLink}

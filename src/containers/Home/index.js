@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as campaignActions from 'actions/campaign'
 import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns'
-import Feed from 'pages/Feed'
+import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
 import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
@@ -29,7 +29,7 @@ const Home = ({
   userId,
   userSync
 }) => {
-  const [newClassesGrid, setNewClassesGrid] = useState(null)
+  const [newWorkflowExperience, setNewWorkflowExperience] = useState(null)
 
   useEffect(() => {
     requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN })
@@ -38,7 +38,7 @@ const Home = ({
   }, [])
 
   useEffect(() => {
-    setNewClassesGrid(campaign.newClassExperience)
+    setNewWorkflowExperience(campaign.workflowExperience)
   }, [campaign])
 
   useEffect(() => {
@@ -50,13 +50,13 @@ const Home = ({
     // eslint-disable-next-line
   }, [userId])
 
-  if(newClassesGrid === null) return (
+  if(newWorkflowExperience === null) return (
     <div className={classes.loading}>
       <CircularProgress />
     </div>
   )
 
-  return newClassesGrid ? <Classes /> : <Feed />
+  return newWorkflowExperience ? <Workflow /> : <Classes />
 }
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({

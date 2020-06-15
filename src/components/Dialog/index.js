@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
+import cx from 'classnames'
 
 export const dialogStyle = {
   borderRadius: 20,
@@ -59,6 +60,9 @@ const styles = theme => ({
   },
   buttons: {
     margin: 10
+  },
+  removeButton: {
+    color: theme.circleIn.palette.danger
   }
 })
 
@@ -75,9 +79,11 @@ const Dialog = ({
   loading=false,
   okTitle="Got it!",
   secondaryOkTitle="",
+  secondaryRemoveTitle="",
   onCancel,
   onOk = () => {},
   onSecondaryOk = () => {},
+  onSecondaryRemove = () => {},
   open,
   showActions=false,
   showCancel=false,
@@ -156,6 +162,17 @@ const Dialog = ({
       {
         showActions &&
         <DialogActions className={classes.buttons}>
+          {
+            secondaryRemoveTitle &&
+          <Button
+            className={cx(classes.button, classes.removeButton)}
+            color="secondary"
+            disabled={disableActions}
+            onClick={onSecondaryRemove}
+          >
+            {secondaryRemoveTitle}
+          </Button>
+          }
           {
             showCancel &&
             <Button

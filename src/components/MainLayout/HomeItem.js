@@ -25,6 +25,7 @@ const HomeItem = ({
   updateFeed,
   openClassmatesDialog,
   newClassExperience,
+  workflowExperience,
   createPostOpen,
 }: Props) => {
   const [classList, setClassList] = useState([])
@@ -86,7 +87,8 @@ const HomeItem = ({
     }
   }, [newClassExperience, userClasses])
 
-  const isHome = ['/'].includes(window.location.pathname)
+  const classesPath = workflowExperience ? '/classes' : '/'
+  const isHome = [classesPath].includes(window.location.pathname)
 
 
   const renderCircle = color => (
@@ -106,7 +108,7 @@ const HomeItem = ({
       <ListItem
         button
         component={MyLink}
-        link="/"
+        link={classesPath}
         className={classNames(
           classes.item,
           isHome ? classes.currentPath : null
