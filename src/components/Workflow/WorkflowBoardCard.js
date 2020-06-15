@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(),
     padding: theme.spacing(2),
     cursor: 'grab',
-    backgroundColor: theme.circleIn.palette.flashcardBackground
+    backgroundColor: '#FFF'
   },
   container: {
     height: '100%',
@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     fontWeight: 'bold',
+    color: theme.circleIn.palette.normalButtonText1,
     overflow: 'hidden',
     wordBreak: 'break-word',
     textOverflow: 'ellipsis',
@@ -41,6 +42,7 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '1.5em',
   },
   date: {
+    color: theme.circleIn.palette.normalButtonText1,
     fontWeight: 'bold'
   },
   detailsButton: {

@@ -27,8 +27,8 @@ export const ranks = [
 ];
 
 export const workflowCategories = [
-  { name: 'Overdue',  categoryId: 1 },
-  { name: 'Upcoming', categoryId: 2 },
-  { name: 'In Progress', categoryId: 3 },
-  { name: 'Done', categoryId: 4 }
+  { name: 'Overdue',  categoryId: 1, bgcolor: '#C45961', buttonColor: '#6F343C' },
+  { name: 'Upcoming', categoryId: 2, bgcolor: '#EBAF64', buttonColor: '#5F472B' },
+  { name: 'In Progress', categoryId: 3, bgcolor: '#4781B3', buttonColor: '#2D5170' },
+  { name: 'Done', categoryId: 4, bgcolor: '#74C182', buttonColor: '#2F5139' }
 ]

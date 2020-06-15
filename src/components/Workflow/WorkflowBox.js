@@ -21,6 +21,8 @@ const useStyles = makeStyles(() => ({
 const WorkflowBox = ({
   handleExpand,
   archiveTask,
+  bgcolor,
+  buttonColor,
   listView,
   handleAddTask,
   tasks,
@@ -87,6 +89,8 @@ const WorkflowBox = ({
       handleAddTask={handleAddTask}
       list={renderList}
       drop={drop}
+      bgcolor={bgcolor}
+      buttonColor={buttonColor}
       name={name}
       categoryId={categoryId}
       tasks={tasks}

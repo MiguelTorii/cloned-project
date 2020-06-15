@@ -13,16 +13,18 @@ const useStyles = makeStyles(theme => ({
     },
   },
   container: {
+    padding: theme.spacing(),
+    borderRadius: theme.spacing(),
     marginRight: theme.spacing(2),
-    width: theme.spacing(31),
+    width: theme.spacing(33),
   },
   title: {
+    fontWeight: 'bold',
     fontSize: 20,
   },
   button: {
     textAlign: 'center',
     backgroundColor: theme.circleIn.palette.deepSeaOcean,
-    fontWeight: 'bold',
     fontSize: 16,
     width: theme.spacing(31),
     borderRadius: theme.spacing(),
@@ -36,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 240px)',
+    height: 'calc(100vh - 240px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'
@@ -54,7 +56,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
+const WorkflowBoardBox = ({ buttonColor, bgcolor, handleAddTask, categoryId, drop, name, list }) => {
   const classes = useStyles()
   const [showNew, setShowNew] = useState(false)
   const [newInputValue, setNewInputValue] = useState('')
@@ -93,13 +95,13 @@ const WorkflowBoardBox = ({ handleAddTask, categoryId, drop, name, list }) => {
   ), [handleKeyDown, handleChange, classes, newInputValue])
 
   return (
-    <Grid ref={drop} className={classes.container}>
+    <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }}>
       <Grid container justify='space-between' direction='column'>
         <Grid item>
           <Typography className={classes.title}>{name}</Typography>
         </Grid>
         <Grid item>
-          <Button className={classes.button} onClick={openNew}>
+          <Button style={{ backgroundColor: buttonColor }} className={classes.button} onClick={openNew}>
             + Add a task
           </Button>
         </Grid>
