@@ -477,7 +477,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       demoComponent: MockedBoard,
       textRows: [
         'It’s easy to lose track of due dates. The easiest way to stay organized is to create tasks for yourself to complete.',
-        'Let’s start wtih three of your upcoming tasks:'
+        'Let’s start with three of your upcoming tasks:'
       ],
       title: 'Workflow allows you to manage all of your assignments in one place.',
     },
