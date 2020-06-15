@@ -248,7 +248,7 @@ const styles = theme => ({
     ...centered,
   },
   title: {
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: 'bold',
     letterSpacing: 1.1,
     textAlign: 'center',
@@ -497,10 +497,9 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       buttonText: 'Got it!',
       demoComponent: WorkflowDemo,
       textRows: [
-        'Simply drag-n-drop a task from Upcoming to In Progress as you make progress with your schoolwork.',
         'Expert Tip: Go through your syllabus and create tasks for all the important due dates!'
       ],
-      title: 'Simply drag-n-drop … with your schoolwork',
+      title: 'Simply drag-n-drop a task from Upcoming to In Progress as you make progress with your schoolwork.',
     },
     {
       actionComponent: null,
