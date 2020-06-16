@@ -78,7 +78,7 @@ const styles = theme => ({
     paddingTop: theme.spacing(1.5),
     ...subtitle,
     letterSpacing: 0,
-    fontSize: 18,
+    fontSize: 20,
   },
   boardTask: {
     boxShadow: '4px 6px 5px -1px rgba(102,102,102,1)',
