@@ -71,7 +71,7 @@ const WorkflowList = ({
   }))
 
   return (
-    <div className={classes.container}>
+    <div className={cx(!listView && classes.container)}>
       {listView && <DragPreview />}
       <div className={classes.item}>
         {listView && <Grid container alignItems='center'>
