@@ -13,9 +13,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   container: {
-    height: 'calc(100vh - 170px)',
+    height: 'calc(100vh - 160px)',
     padding: theme.spacing(1, 1.5, 1, 1.5),
-    borderRadius: theme.spacing(),
+    borderRadius: theme.spacing(1, 1, 0, 0),
     marginRight: theme.spacing(2),
     width: theme.spacing(34),
   },
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listContainer: {
-    maxHeight: 'calc(100vh - 260px)',
+    maxHeight: 'calc(100vh - 265px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'

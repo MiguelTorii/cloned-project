@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
   },
   columnContainer: {
     display: 'flex',
+  },
+  container: {
+    width: 'fit-content',
+    marginRight: theme.spacing()
   }
 }))
 
@@ -67,7 +71,7 @@ const WorkflowList = ({
   }))
 
   return (
-    <div>
+    <div className={classes.container}>
       {listView && <DragPreview />}
       <div className={classes.item}>
         {listView && <Grid container alignItems='center'>
