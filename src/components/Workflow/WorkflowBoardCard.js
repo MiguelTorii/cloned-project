@@ -16,10 +16,12 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.spacing(),
     padding: theme.spacing(2),
     cursor: 'grab',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    '-webkit-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
+    '-moz-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
+    'box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
   },
   container: {
-    height: '100%',
   },
   chip: {
     color: theme.circleIn.palette.primaryText1,
@@ -30,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+  },
+  icon: {
+    color: theme.circleIn.palette.normalButtonText1,
   },
   title: {
     fontWeight: 'bold',
@@ -48,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   detailsButton: {
     minWidth: 45,
     padding: 0,
-    color: theme.circleIn.palette.action
+    color: theme.circleIn.palette.darkActionBlue
   },
   iconButton: {
     padding: 0
@@ -61,6 +66,7 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(3),
   },
   newButton: {
+    color: theme.circleIn.palette.normalButtonText1,
     fontWeight: 'bold'
   }
 }))
@@ -106,7 +112,7 @@ const WorkflowBoardCard = ({
           {showDetails && <Grid item xs={4}>
             <Button className={classes.detailsButton} onClick={onOpen}>Details</Button>
             <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
-              <DeleteIcon />
+              <DeleteIcon className={classes.icon} />
             </IconButton>
           </Grid>}
           {newInput && <Grid item xs={12}>

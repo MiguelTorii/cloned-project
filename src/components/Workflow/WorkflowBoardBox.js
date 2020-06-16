@@ -13,16 +13,20 @@ const useStyles = makeStyles(theme => ({
     },
   },
   container: {
-    padding: theme.spacing(),
+    height: 'calc(100vh - 170px)',
+    padding: theme.spacing(1, 1.5, 1, 1.5),
     borderRadius: theme.spacing(),
     marginRight: theme.spacing(2),
-    width: theme.spacing(33),
+    width: theme.spacing(34),
   },
   title: {
     fontWeight: 'bold',
     fontSize: 20,
   },
   button: {
+    '-webkit-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
+    '-moz-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
+    'box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
     textAlign: 'center',
     backgroundColor: theme.circleIn.palette.deepSeaOcean,
     fontSize: 16,
@@ -38,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   listContainer: {
-    height: 'calc(100vh - 240px)',
+    maxHeight: 'calc(100vh - 260px)',
     overflow: 'auto',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'
@@ -53,6 +57,11 @@ const useStyles = makeStyles(theme => ({
     color: theme.circleIn.palette.primaryText2,
     top: 4,
     left: 4,
+  },
+  textField: {
+    '& .MuiInputBase-root': {
+      color: theme.circleIn.palette.normalButtonText1,
+    }
   }
 }))
 
@@ -85,6 +94,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, handleAddTask, categoryId, dro
       {!newInputValue && <Typography className={classes.placeholder}>Enter a title for this task</Typography>}
       <TextField
         fullWidth
+        className={classes.textField}
         autoFocus
         multiline
         rowsMax={3}
