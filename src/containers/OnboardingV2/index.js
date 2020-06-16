@@ -69,22 +69,24 @@ const styles = theme => ({
   },
   boardColumn: {
     marginRight: theme.spacing(4),
+    padding: `0px ${theme.spacing(1.5)}px`,
     width: 200,
   },
   boardHeader: {
-    boxShadow: '4px 6px 5px -1px rgba(102,102,102,1)',
-    backgroundColor: theme.circleIn.palette.modalBackground,
-    height: 50,
+    height: 30,
     marginBottom: theme.spacing,
-    ...centered,
+    paddingTop: theme.spacing(1.5),
     ...subtitle,
+    letterSpacing: 0,
+    fontSize: 18,
   },
   boardTask: {
     boxShadow: '4px 6px 5px -1px rgba(102,102,102,1)',
+    backgroundColor: 'white',
+    color: theme.circleIn.palette.primaryBackground,
     height: 120,
-    backgroundColor: theme.circleIn.palette.rowSelection,
-    padding: theme.spacing(2),
-    margin: `${theme.spacing(2)}px 0px`,
+    padding: theme.spacing(1.5),
+    margin: `${theme.spacing(1.5)}px 0px`,
     width: '100%',
     wordBreak: 'break-all',
     ...subtitle,
@@ -253,7 +255,7 @@ type Props = {
 };
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [tasks, setTasks] = useState({});
   const [dueDate, setDueDate] = useState(null);
   const [focusedField, setFocusedField] = useState('task1');
@@ -367,13 +369,13 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
 
   const MockedBoard = () => (
     <div className={classes.board}>
-      <div className={classes.boardColumn}>
+      <div className={classes.boardColumn} style={{ backgroundColor: '#EBAF64'}}>
         <div className={classes.boardHeader}>Upcoming</div>
         <div className={classes.boardTask}>{trunc(tasks.task1)}</div>
         <div className={classes.boardTask}>{trunc(tasks.task2)}</div>
         <div className={classes.boardTask}>{trunc(tasks.task3)}</div>
       </div>
-      <div className={classes.boardColumn}>
+      <div className={classes.boardColumn} style={{ backgroundColor: '#4781B3' }}>
         <div className={classes.boardHeader}>In Progress</div>
       </div>
     </div>
