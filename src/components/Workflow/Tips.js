@@ -7,6 +7,7 @@ import TipsAnimation from 'assets/gif/tips.gif'
 import tipsBubbles from 'assets/svg/tipsBubbles.svg'
 import tipsCards from 'assets/svg/tipsCards.svg'
 import tipsPad from 'assets/svg/tipsPad.svg'
+import LoadImg from 'components/LoadImg'
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -66,7 +67,7 @@ const Tips = ({ open, close }) => {
         </Grid>
         <Grid container spacing={2} justify='center' className={classes.borders} alignItems='center'>
           <Grid item xs={6} container justify='center'>
-            <img className={classes.animation} alt='drag and drop tips animation' src={TipsAnimation} />
+            <LoadImg className={classes.animation} alt='drag and drop tips animation' url={TipsAnimation} />
           </Grid>
           <Grid item xs={6}>
             <Grid container>
@@ -82,7 +83,7 @@ const Tips = ({ open, close }) => {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={4} className={classes.itemContainer}>
-            <img alt='tips pad' src={tipsPad} className={classes.secondaryImg} />
+            <LoadImg alt='tips pad' url={tipsPad} className={classes.secondaryImg} />
             <Grid container>
               <Typography className={classes.titleSecondary}>How can I start using Workflow?</Typography>
               <Typography className={classes.text}>
@@ -94,7 +95,7 @@ const Tips = ({ open, close }) => {
             </Grid>
           </Grid>
           <Grid item xs={4} className={classes.itemContainer}>
-            <img alt='tips bubble' src={tipsBubbles} className={classes.secondaryImg} />
+            <LoadImg alt='tips bubble' url={tipsBubbles} className={classes.secondaryImg} />
             <Grid container>
               <Typography className={classes.titleSecondary}>Break down large tasks into small steps.</Typography>
               <Typography className={classes.text}>
@@ -103,7 +104,7 @@ const Tips = ({ open, close }) => {
             </Grid>
           </Grid>
           <Grid item xs={4} className={classes.itemContainer}>
-            <img className={classes.secondaryImg} alt='tips cards' src={tipsCards} />
+            <LoadImg className={classes.secondaryImg} alt='tips cards' url={tipsCards} />
             <Grid container>
               <Typography className={classes.titleSecondary}>Prevent burn-out from too many tasks.</Typography>
               <Typography className={classes.text}>
