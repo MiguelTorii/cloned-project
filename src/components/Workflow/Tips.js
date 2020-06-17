@@ -76,7 +76,7 @@ const Tips = ({ open, close }) => {
                 Workflow is CircleIn's task management tool for students. It helps you work through your task list from start to end.
               </Typography>
               <Typography className={classes.primaryText}>
-                The <b>Upcoming</b> column holds tasks coming up. The <b>In Progress</b> column holds tasks that you are currently working on. The <b>Done</b> column is holds that you finished. The <b>Overdue</b> column holds, well... tasks that are overdue!
+                The <b>Upcoming</b> column holds tasks coming up. The <b>In Progress</b> column holds tasks that you are currently working on. The <b>Done</b> column holds tasks that you finished. The <b>Overdue</b> column holds, well... tasks that are overdue!
               </Typography>
             </Grid>
           </Grid>
