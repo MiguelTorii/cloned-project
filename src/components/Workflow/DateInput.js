@@ -56,7 +56,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
     const date = moment(v).format('YYYY-MM-DD')
     const newTime = moment(time || new Date()).utc().format('HH:mm')
     setDate(v)
-    onChange(moment(`${date}T${newTime}Z`).utc().toDate())
+    onChange(moment(`${date}T${newTime}Z`)?.utc()?.toDate())
   }
 
   const handleTime = v => {

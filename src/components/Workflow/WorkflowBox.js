@@ -6,6 +6,7 @@ import List from '@material-ui/core/List'
 import { useDrop } from 'react-dnd'
 import WorkflowListBox from 'components/Workflow/WorkflowListBox'
 import WorkflowBoardBox from 'components/Workflow/WorkflowBoardBox'
+import { Motion, spring } from "react-motion"
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -13,6 +14,9 @@ const useStyles = makeStyles(() => ({
     fontSize: 20
   },
   list: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
     width: '100%',
     padding: 0
   },
@@ -57,24 +61,53 @@ const WorkflowBox = ({
     () => handleExpand(categoryId)(!isExpanded),
     [handleExpand, categoryId, isExpanded])
 
-  const renderList = useMemo(() => (
-    <List className={classes.list}>
-      {tasks.map(t => (
-        <WorkflowItem
-          classList={classList}
-          index={t.index}
-          dragId={dragId}
-          onDrag={onDrag}
-          key={t.id}
-          listView={listView}
-          task={t}
-          archiveTask={archiveTask}
-          updateItem={updateItem}
-          moveTask={moveTask}
-        />
-      ))}
-    </List>
-  ), [classList, tasks, archiveTask, listView, dragId, onDrag, updateItem, moveTask, classes])
+  const renderList = useMemo(() => {
+    let space = 0
+    let nextSpace = 0
+    const height = listView ? { height: 32 * tasks.length } : {}
+    return (
+      <List className={classes.list} style={height}>
+        {tasks.map((t, i) => {
+          if (listView && i !== 0) space += 32
+          else {
+            space = nextSpace
+            if (t.title.length <= 25) nextSpace += 100
+            if (t.title.length <= 45 && t.title.length > 25) nextSpace += 120
+            if (t.title.length > 45) nextSpace += 150
+          }
+          return (
+            <Motion
+              key={t.id}
+              defaultStyle={{
+                scale: 0,
+                y: space,
+              }}
+              style={{
+                y: spring(space, { stiffness: 400, damping: 28 }),
+                scale: spring(1, { stiffness: 400, damping: 22 })
+              }}
+            >
+              {interpolatingStyle => {
+                return (
+                  <WorkflowItem
+                    interpolatingStyle={interpolatingStyle}
+                    classList={classList}
+                    index={t.index}
+                    dragId={dragId}
+                    onDrag={onDrag}
+                    key={t.id}
+                    listView={listView}
+                    task={t}
+                    archiveTask={archiveTask}
+                    updateItem={updateItem}
+                    moveTask={moveTask}
+                  />
+                );
+              }}
+            </Motion>
+          )})}
+      </List>
+    )}, [classList, tasks, archiveTask, listView, dragId, onDrag, updateItem, moveTask, classes])
 
   return listView
     ? <WorkflowListBox

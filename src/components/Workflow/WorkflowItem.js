@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef, useMemo, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
@@ -14,10 +14,9 @@ import WorkflowBoardItem from 'components/Workflow/WorkflowBoardItem'
 const useStyles = makeStyles(() => ({
   root: {
     position: 'relative',
-    width: '100%'
   },
   hidden: {
-    opacity: 0.3,
+    opacity: 0,
   },
   iconButton: {
     padding: 0
@@ -31,6 +30,12 @@ const useStyles = makeStyles(() => ({
     fontSize: 20,
     textAlign: 'center'
   },
+  cardItem: {
+    width: 245,
+  },
+  listItem: {
+    width: '100%'
+  }
 }))
 
 type Props = {
@@ -44,6 +49,7 @@ type Props = {
 
 const WorkflowItem = ({
   archiveTask,
+  interpolatingStyle,
   listView,
   onDrag,
   dragId,
@@ -84,7 +90,7 @@ const WorkflowItem = ({
     },
   })
 
-  const [, drag, preview] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     item: { type: 'task', index, ...task },
     begin() {
       onDrag(task.id)
@@ -95,10 +101,11 @@ const WorkflowItem = ({
     canDrag() {
       if (isMobile) return showDetails
       return true
-    }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   })
-
-  const isDragging = useMemo(() => dragId === task.id, [dragId, task])
 
   if (listView) preview(getEmptyImage(), { captureDraggingState: true })
   const classes = useStyles()
@@ -137,12 +144,21 @@ const WorkflowItem = ({
     onClose()
   }, [task, archiveTask, closeConfirmArchive, onClose])
 
+
+  const moveStyle = {
+    position: 'absolute',
+    transform: `translate3d(0, ${interpolatingStyle.y}px, 0) scale( ${interpolatingStyle.scale}, ${interpolatingStyle.scale} )`,
+  }
+
+  const itemWidth = listView ? classes.listItem : classes.cardItem
+
   return (
     <div
       ref={taskRef}
+      style={moveStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={cx(classes.root, hiddenClass)}
+      className={cx(classes.root, hiddenClass, itemWidth)}
     >
       <Dialog
         className={classes.dialog}

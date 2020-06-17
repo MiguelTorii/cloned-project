@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState, useCallback, useReducer } from 'react'
+import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import * as notificationsActions from 'actions/notifications'
@@ -145,8 +145,6 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const { tasks, dragId } = state
   const [classList, setClassList] = useState({})
   const { data: { firstName }, syncData: { viewedOnboarding }, userClasses } = user
-  const [dragCategoryId, setDragCategoryId] = useState(null)
-
   const [listView, setListView] = useState(false)
 
   const showBoardView = useCallback(() => setListView(false), [])
@@ -176,12 +174,13 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     dispatch({ type: 'REORDER', dragIndex, hoverIndex, dragTask })
   }, [state, dispatch])
 
+  const dragCategoryId = useRef()
   const updateCategory = useCallback(async (index, categoryId) => {
-    setDragCategoryId(categoryId)
+    dragCategoryId.current = categoryId
     dispatch({ type: 'UPDATE_CATEGORY', index, categoryId })
   }, [dispatch])
 
-  const [prevDragId, setprevDragId] = useState(null)
+  const [prevDragId, setPrevDragId] = useState(null)
   const reorder = useCallback(async () => {
     let ordering = []
     tasks.forEach((t, position) => {
@@ -193,8 +192,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [tasks])
 
   const onDrag = useCallback(async dragId => {
-    if (dragId === null && prevDragId !== null) {
-      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId })
+    if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
+      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId.current })
       if (res?.points) enqueueSnackbar(createSnackbar(
        `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
        classes.snackbar,
@@ -205,7 +204,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   useEffect(() => {
     if (dragId !== prevDragId && dragId === null) reorder()
-    setprevDragId(dragId)
+    setPrevDragId(dragId)
   }, [dragId, prevDragId, reorder])
 
   useEffect(() => {

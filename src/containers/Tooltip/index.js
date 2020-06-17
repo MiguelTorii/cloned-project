@@ -93,6 +93,7 @@ const Tooltip = ({
     if (
       hidden
       || id === LEADERBOARD
+      // eslint-disable-next-line
       || dialogVisible && (![FLASHCARD_BOTTOM, FLASHCARD_TOP].includes(id))
       || !viewedOnboarding // Onboarding not completed
       || viewedTooltips === null // Data still loading

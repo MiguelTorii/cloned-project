@@ -1,15 +1,31 @@
 import React from 'react'
 import { useDragLayer } from 'react-dnd'
+import moment from 'moment'
+import clsx from 'clsx'
+import WorkflowListItem from 'components/Workflow/WorkflowListItem'
+import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
+import { makeStyles } from '@material-ui/core/styles'
 
-const layerStyles = {
-  position: 'fixed',
-  pointerEvents: 'none',
-  zIndex: 1004,
-  left: 30,
-  top: 10,
-  maxWidth: 500,
-}
-function getItemStyles(initialOffset, currentOffset) {
+const useStyles = makeStyles(() => ({
+  card: {
+    position: 'fixed',
+    pointerEvents: 'none',
+    zIndex: 1004,
+    left: 0,
+    top: 0,
+    maxWidth: 31*8,
+  },
+  list: {
+    position: 'fixed',
+    pointerEvents: 'none',
+    zIndex: 1004,
+    left: 50,
+    top: 0,
+    width: '50vw',
+  }
+}))
+
+const getItemStyles = (initialOffset, currentOffset) => {
   if (!initialOffset || !currentOffset) {
     return {
       display: 'none',
@@ -21,21 +37,18 @@ function getItemStyles(initialOffset, currentOffset) {
   return {
     transform,
     WebkitTransform: transform,
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    border: '1px dashed white',
-    backgroundColor: 'rgba(255,255,255, 0.25)',
   }
 }
-const DragPreview = () => {
+
+const DragPreview = ({ listView, classList }) => {
+  const classes = useStyles()
   const {
     isDragging,
-    item,
+    task,
     initialOffset,
     currentOffset,
   } = useDragLayer((monitor) => ({
-    item: monitor.getItem(),
+    task: monitor.getItem(),
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),
     isDragging: monitor.isDragging(),
@@ -44,12 +57,20 @@ const DragPreview = () => {
   if (!isDragging) {
     return null
   }
+
+  const date = clsx(task.date && moment(task.date).format('MMM D'))
+  const selectedClass = classList[task.sectionId]
+
+  const container = listView ? classes.list: classes.card
   return (
-    <div style={layerStyles}>
+    <div className={container}>
       <div
         style={getItemStyles(initialOffset, currentOffset)}
       >
-        {item.title}
+        {listView
+          ? <WorkflowListItem task={task} classList={classList}/>
+          : <WorkflowBoardCard title={task.title} date={date} selectedClass={selectedClass} />
+        }
       </div>
     </div>
   )

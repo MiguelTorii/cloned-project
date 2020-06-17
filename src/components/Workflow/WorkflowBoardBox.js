@@ -14,10 +14,13 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     height: 'calc(100vh - 160px)',
-    padding: theme.spacing(1, 1.5, 1, 1.5),
     borderRadius: theme.spacing(1, 1, 0, 0),
     marginRight: theme.spacing(2),
+    padding: theme.spacing(1, 0),
     width: theme.spacing(34),
+  },
+  headerItem: {
+    width: 250
   },
   title: {
     fontWeight: 'bold',
@@ -41,9 +44,17 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.circleIn.palette.brand,
     }
   },
+  newContainer: {
+    height: 120,
+    marginBottom: theme.spacing(),
+  },
   listContainer: {
-    maxHeight: 'calc(100vh - 265px)',
-    overflow: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'start',
+    height: 'calc(100vh - 265px)',
+    overflowY: 'auto',
+    overflowX: 'hidden',
     '&::-webkit-scrollbar-corner': {
       background: 'rgba(0,0,0,0)'
     }
@@ -106,24 +117,26 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, handleAddTask, categoryId, dro
 
   return (
     <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }}>
-      <Grid container justify='space-between' direction='column'>
-        <Grid item>
+      <Grid container justify='space-between' alignItems='center' direction='column'>
+        <Grid item className={classes.headerItem}>
           <Typography className={classes.title}>{name}</Typography>
         </Grid>
-        <Grid item>
+        <Grid item className={classes.headerItem}>
           <Button style={{ backgroundColor: buttonColor }} className={classes.button} onClick={openNew}>
             + Add a task
           </Button>
         </Grid>
       </Grid>
       <Grid container className={classes.listContainer}>
-        {showNew &&
+        <div className={classes.newContainer}>
+          {showNew &&
           <WorkflowBoardCard
             newInput={newInput}
             handleNew={handleNew}
             closeNew={closeNew}
           />
-        }
+          }
+        </div>
         {list}
       </Grid>
     </Grid>

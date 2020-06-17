@@ -9,9 +9,6 @@ import cx from 'classnames'
 
 const useStyles = makeStyles(theme => ({
   item: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
   },
   headerText: {
     color: theme.circleIn.palette.primaryText2,
@@ -72,7 +69,7 @@ const WorkflowList = ({
 
   return (
     <div className={cx(!listView && classes.container)}>
-      {listView && <DragPreview />}
+      <DragPreview listView={listView} classList={classList} />
       <div className={classes.item}>
         {listView && <Grid container alignItems='center'>
           <Grid item xs={7} />

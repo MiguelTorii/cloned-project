@@ -80,7 +80,6 @@ const useStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis',
   },
   titleContainer: {
-    maxWidth: '100%',
     alignItems: 'center',
     display: 'flex'
   },
@@ -93,15 +92,16 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const noOp = () => {}
+
 const WorkflowListItem = ({
   task,
-  classList,
-  openConfirmArchive,
-  onOpen,
-  showDetails,
-  isDragging,
+  classList = [],
+  openConfirmArchive = noOp,
+  onOpen = noOp,
+  showDetails = false,
+  isDragging = false,
   // handleComplete,
-  drag
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -115,25 +115,25 @@ const WorkflowListItem = ({
 
     return (
       <Grid container alignItems='center'>
-        <Grid container direction='row' item xs={10} sm={6} md={7}>
-          <Grid item className={classes.titleContainer}>
+        <Grid container direction='row' item xs={7}>
+          <Grid item className={classes.titleContainer} xs={8}>
             <Typography className={classes.taskTitle}>
               {title}
             </Typography>
           </Grid>
-          <Grid item style={getStyles(isDragging || !showDetails)}>
+          <Grid item style={getStyles(isDragging || !showDetails)} xs={4}>
             <Button className={classes.detailsButton} onClick={onOpen}>Details</Button>
             <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
               <DeleteIcon />
             </IconButton>
           </Grid>
         </Grid>
-        <Grid item xs={6} md={2} className={classes.itemDetails}>
+        <Grid item xs={2} md={2} className={classes.itemDetails}>
           {task.date && <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
             {moment(task.date).format('MMM D')}
           </Typography>}
         </Grid>
-        <Grid item xs={6} md={3} className={classes.itemDetails}>
+        <Grid item xs={3} md={3} className={classes.itemDetails}>
           {selected && <Chip
             label={selected.className} size='small'
             style={{ backgroundColor: selected.bgColor }}
@@ -150,7 +150,6 @@ const WorkflowListItem = ({
       dense
     >
       <div
-        ref={drag}
         className={classes.dragContainer}
       >
         <DragIndicatorIcon className={classes.dragIcon} style={getStyles(isDragging || !showDetails)} />
