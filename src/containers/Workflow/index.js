@@ -24,6 +24,7 @@ import ErrorBoundary from 'containers/ErrorBoundary'
 import Typography from '@material-ui/core/Typography'
 import moment from 'moment'
 import Button from '@material-ui/core/Button'
+import Tips from 'components/Workflow/Tips'
 import cx from 'classnames'
 
 const createSnackbar = (message, style, variant) => ({
@@ -63,14 +64,15 @@ const styles = theme => ({
     marginBottom: theme.spacing()
   },
   bodyList: {
-    // marginBottom: theme.spacing(),
-    // paddingBottom: theme.spacing(2),
   },
   button: {
     fontSize: 16,
   },
   bodyBoard: {
     backgroundColor: 'transparent'
+  },
+  divider: {
+    padding: theme.spacing(0, 2)
   }
 })
 
@@ -146,6 +148,10 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [classList, setClassList] = useState({})
   const { data: { firstName }, syncData: { viewedOnboarding }, userClasses } = user
   const [listView, setListView] = useState(false)
+  const [tips, setTips] = useState(false)
+
+  const openTips = useCallback(() => setTips(true), [])
+  const closeTips = useCallback(() => setTips(false), [])
 
   const showBoardView = useCallback(() => setListView(false), [])
   const showListView = useCallback(() => setListView(true), [])
@@ -290,13 +296,14 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   return (
     <Grid container direction='column' spacing={0} className={classes.container}>
       <ErrorBoundary>
+        <Tips open={tips} close={closeTips} />
         <Typography
           color="textPrimary"
           className={classes.title}
         >
           Workflow
         </Typography>
-        <Grid container>
+        <Grid container alignItems='center'>
           <Button
             color={cx(!listView ? 'primary' : 'default')}
             className={classes.button}
@@ -310,6 +317,14 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             className={classes.button}
           >
             List View
+          </Button>
+          <div className={classes.divider}>|</div>
+          <Button
+            color='default'
+            onClick={openTips}
+            className={classes.button}
+          >
+            Tips & Tricks
           </Button>
         </Grid>
         {listView && <Paper elevation={0} className={classes.body}>

@@ -69,7 +69,6 @@ const WorkflowEdit = ({
   const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), [])
   const handleCloseManageClasses = useCallback(() => setOpenAddClasses(false), [])
 
-
   useEffect(() => {
     setCategoryId(task.categoryId)
     setTitle(task.title)
