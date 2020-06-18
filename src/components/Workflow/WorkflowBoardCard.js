@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -63,11 +63,22 @@ const useStyles = makeStyles(theme => ({
     bottom: 4
   },
   bottom: {
-    height: theme.spacing(3),
   },
   newButton: {
     color: theme.circleIn.palette.normalButtonText1,
     fontWeight: 'bold'
+  },
+  oneLine: {
+    height: '1.5rem'
+  },
+  twoLines: {
+    height: '3rem'
+  },
+  threeLines: {
+    height: '4.5rem'
+  },
+  buttons: {
+    height: theme.spacing(5)
   }
 }))
 
@@ -83,12 +94,25 @@ const WorkflowBoardCard = ({
   showDetails,
 }) => {
   const classes = useStyles()
+  const [clampTitle, setClampTitle] = useState(title)
+  const [lineStyle, setLineStyle] = useState(classes.oneLine)
 
-  const clampTitle = useMemo(() => cx(
-    title && title.length > 75
-      ? `${title.substr(0, 75)}...`
-      : title
-  ), [title])
+  useEffect(() => {
+    if (title) {
+      setClampTitle(title)
+      if (title.length <= 25) {
+        setLineStyle(classes.oneLine)
+      }
+      if (title.length <= 65 && title.length > 25) {
+        if(title.length > 60) setClampTitle(`${title.substr(0, 60)}...`)
+        setLineStyle(classes.twoLines)
+      }
+      if (title.length > 65) {
+        if(title.length > 70) setClampTitle(`${title.substr(0, 70)}...`)
+        setLineStyle(classes.threeLines)
+      }
+    }
+  }, [title, classes])
 
   const dateSize = useMemo(() => selectedClass ? 3 : 8, [selectedClass])
 
@@ -96,7 +120,7 @@ const WorkflowBoardCard = ({
     <Paper className={cx(classes.root, showDetails && classes.hover)} elevation={0} onClick={onOpen}>
       <Grid container className={classes.container} direction='row'>
         <Grid item xs={12}>
-          {newInput || <Typography variant='body1' className={classes.title}>{clampTitle}</Typography>}
+          {newInput || <Typography variant='body1' className={cx(classes.title, lineStyle)}>{clampTitle}</Typography>}
         </Grid>
         <Grid container alignContent='flex-end' alignItems='center' className={classes.bottom}>
           {selectedClass && <Grid item xs={5}>
@@ -115,7 +139,7 @@ const WorkflowBoardCard = ({
               <DeleteIcon className={classes.icon} />
             </IconButton>
           </Grid>}
-          {newInput && <Grid item xs={12}>
+          {newInput && <Grid item xs={12} className={classes.buttons}>
             <Button className={classes.newButton} onClick={handleNew} variant='contained' color='primary'>Add</Button>
             <Button className={classes.newButton} onClick={closeNew}>Cancel</Button>
           </Grid>}

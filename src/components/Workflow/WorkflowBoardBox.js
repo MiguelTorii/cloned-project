@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   newContainer: {
-    height: 120,
     marginBottom: theme.spacing(),
   },
   listContainer: {
@@ -60,7 +59,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   inputContainer: {
-    height: theme.spacing(8),
     position: 'relative'
   },
   placeholder: {
