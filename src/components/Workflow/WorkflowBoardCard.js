@@ -63,6 +63,7 @@ const useStyles = makeStyles(theme => ({
     bottom: 4
   },
   bottom: {
+    minHeight: theme.spacing(3)
   },
   newButton: {
     color: theme.circleIn.palette.normalButtonText1,
