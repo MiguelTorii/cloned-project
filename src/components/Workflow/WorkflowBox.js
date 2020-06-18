@@ -72,8 +72,8 @@ const WorkflowBox = ({
           else {
             space = nextSpace
             if (t.title.length <= 25) nextSpace += 100
-            if (t.title.length <= 65 && t.title.length > 25) nextSpace += 120
-            if (t.title.length > 65) nextSpace += 150
+            if (t.title.length <= 50 && t.title.length > 25) nextSpace += 120
+            if (t.title.length > 50) nextSpace += 150
           }
           return (
             <Motion

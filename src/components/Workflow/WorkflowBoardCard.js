@@ -104,11 +104,11 @@ const WorkflowBoardCard = ({
       if (title.length <= 25) {
         setLineStyle(classes.oneLine)
       }
-      if (title.length <= 65 && title.length > 25) {
-        if(title.length > 60) setClampTitle(`${title.substr(0, 60)}...`)
+      if (title.length <= 50 && title.length > 25) {
+        if(title.length > 45) setClampTitle(`${title.substr(0, 45)}...`)
         setLineStyle(classes.twoLines)
       }
-      if (title.length > 65) {
+      if (title.length > 50) {
         if(title.length > 70) setClampTitle(`${title.substr(0, 70)}...`)
         setLineStyle(classes.threeLines)
       }
