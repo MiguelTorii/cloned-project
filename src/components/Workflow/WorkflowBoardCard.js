@@ -9,6 +9,17 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 
+const getHeight = text => {
+  const el = document.createElement('div')
+  el.style.cssText = 'line-height: 1.5em;width: 213px;font-size: 1rem;font-weight: bold;word-break: break-word;'
+  el.textContent = text
+  el.style.visibility = ''
+  document.body.appendChild(el)
+  const height = el.clientHeight
+  el.remove()
+  return height
+}
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: 245,
@@ -76,7 +87,10 @@ const useStyles = makeStyles(theme => ({
     height: '3rem'
   },
   threeLines: {
-    height: '4.5rem'
+    height: '4.5rem',
+    display: '-webkit-box',
+    '-webkit-line-clamp': '3',
+    '-webkit-box-orient': 'vertical',
   },
   buttons: {
     height: theme.spacing(5)
@@ -101,15 +115,15 @@ const WorkflowBoardCard = ({
   useEffect(() => {
     if (title) {
       setClampTitle(title)
-      if (title.length <= 25) {
+      const titleHeight = getHeight(title)
+
+      if (titleHeight <= 25) {
         setLineStyle(classes.oneLine)
       }
-      if (title.length <= 50 && title.length > 25) {
-        if(title.length > 45) setClampTitle(`${title.substr(0, 45)}...`)
+      if (titleHeight <= 50 && titleHeight > 25) {
         setLineStyle(classes.twoLines)
       }
-      if (title.length > 50) {
-        if(title.length > 70) setClampTitle(`${title.substr(0, 70)}...`)
+      if (titleHeight > 50) {
         setLineStyle(classes.threeLines)
       }
     }

@@ -22,6 +22,17 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
+const getHeight = text => {
+  const el = document.createElement('div')
+  el.style.cssText = 'line-height: 1.5em;width: 213px;font-size: 1rem;font-weight: bold;word-break: break-word;'
+  el.textContent = text
+  el.style.visibility = ''
+  document.body.appendChild(el)
+  const height = el.clientHeight
+  el.remove()
+  return height
+}
+
 const WorkflowBox = ({
   handleExpand,
   archiveTask,
@@ -71,9 +82,11 @@ const WorkflowBox = ({
           if (listView && i !== 0) space += 32
           else {
             space = nextSpace
-            if (t.title.length <= 25) nextSpace += 100
-            if (t.title.length <= 50 && t.title.length > 25) nextSpace += 120
-            if (t.title.length > 50) nextSpace += 150
+            const titleHeight = getHeight(t.title)
+
+            if (titleHeight <= 25) nextSpace += 100
+            if (titleHeight <= 50 && titleHeight > 25) nextSpace += 120
+            if (titleHeight > 50) nextSpace += 150
           }
           return (
             <Motion

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Dialog from 'components/Dialog';
 import TextField from '@material-ui/core/TextField'
 import DateInput from 'components/Workflow/DateInput'
@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import moment from 'moment'
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import { workflowCategories } from 'constants/common'
+import RichTextEditor from 'containers/RichTextEditor';
 
 const useStyles = makeStyles(theme => ({
   newClass: {
@@ -37,6 +38,15 @@ const useStyles = makeStyles(theme => ({
   },
   emptyOption: {
     height: theme.spacing(4)
+  },
+  richText: {
+    paddingBottom: '24px !important',
+    '& div div': {
+      padding: 0,
+    },
+    '& .ql-container': {
+      padding: theme.spacing()
+    }
   }
 }))
 
@@ -62,7 +72,6 @@ const WorkflowEdit = ({
   const [description, setDescription] = useState(task.description)
   const [categoryId, setCategoryId] = useState(task.categoryId)
   const [title, setTitle] = useState(task.title)
-  const descriptionRef = useRef(null)
   const [sectionId, setSectionId] = useState(task.sectionId)
   const [openAddClasses, setOpenAddClasses] = useState(false)
 
@@ -97,7 +106,7 @@ const WorkflowEdit = ({
   }, [])
 
   const updateDescription = useCallback(e => {
-    setDescription(e.target.value)
+    setDescription(e)
   }, [])
 
   const updateDate = useCallback(value => {
@@ -137,19 +146,11 @@ const WorkflowEdit = ({
             size='small'
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            inputProps={{
-              ref: descriptionRef,
-            }}
-            label='Additional Details'
-            onChange={updateDescription}
+        <Grid item xs={12} className={classes.richText}>
+          <RichTextEditor
+            placeholder='Additional Details'
             value={description}
-            variant='outlined'
-            multiline
-            rows={4}
-            fullWidth
-            size='small'
+            onChange={updateDescription}
           />
         </Grid>
         <Grid item xs={12} md={8}>
