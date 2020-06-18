@@ -20,8 +20,9 @@ export const getCampaign = async ({ campaignId }: {
     return data
   } catch (err) {
     if (
-      err?.response?.status === 401 &&
-      (window.location.pathname !== '/auth' || window.location.pathname !== '/oauth')
+        err?.response?.status === 401 &&
+        window.location.pathname !== '/auth' &&
+        window.location.pathname !== '/oauth'
     ) window.location = '/auth'
 
     return null;
