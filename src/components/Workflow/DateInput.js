@@ -79,7 +79,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
       if (date || time) {
         const nowDate = moment().format('YYYY-MM-DD')
         const nowTime = moment().format('HH:mm:ss')
-        onChange(moment(`${date || nowDate} ${time || nowTime}`).toDate())
+        onChange(`${date || nowDate} ${time || nowTime}`)
       }
     } finally {/* NO-OP */}
   }, [date, time, onChange])

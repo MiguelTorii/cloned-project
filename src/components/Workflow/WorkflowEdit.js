@@ -10,7 +10,6 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
-import moment from 'moment'
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import { workflowCategories } from 'constants/common'
 import RichTextEditor from 'containers/RichTextEditor';
@@ -86,7 +85,14 @@ const WorkflowEdit = ({
     setTitle(task.title)
     setDescription(task.description)
     setSectionId(task.sectionId)
-    if (task.date) setDate(moment(task.date).toDate())
+
+    if (task.date) {
+      if (typeof task.date.getMonth === 'function') {
+        setDate(task.date)
+      } else {
+        setDate(new Date(`${task.date.replace(' ', 'T')}Z`))
+      }
+    }
   }, [task])
 
 
@@ -113,7 +119,7 @@ const WorkflowEdit = ({
   }, [])
 
   const updateDate = useCallback(value => {
-    setDate(value)
+    setDate(new Date(value))
   }, [])
 
   const updateType = useCallback(e => {

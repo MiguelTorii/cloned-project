@@ -272,13 +272,14 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     const newCategory = status === 2 && task.status !== status
       ? 4
       : categoryId
+
     const res = await updateTodo({
       id,
       title,
       sectionId: Number(sectionId),
       categoryId: Number(newCategory),
       description,
-      date: moment(date).valueOf(),
+      date: moment.utc(date).valueOf(),
       status,
     })
 
