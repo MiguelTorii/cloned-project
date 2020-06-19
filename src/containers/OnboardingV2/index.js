@@ -74,7 +74,7 @@ const styles = theme => ({
   },
   boardHeader: {
     height: 30,
-    marginBottom: theme.spacing,
+    marginBottom: theme.spacing(),
     paddingTop: theme.spacing(1.5),
     ...subtitle,
     letterSpacing: 0,

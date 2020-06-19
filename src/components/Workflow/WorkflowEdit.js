@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
   },
   richText: {
     paddingBottom: '24px !important',
+    '& .ql-image': {
+      display: 'none !important'
+    },
     '& div div': {
       padding: 0,
     },

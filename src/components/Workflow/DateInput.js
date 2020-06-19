@@ -1,5 +1,5 @@
 // @flow
-import React, { forwardRef, useState } from 'react'
+import React, { useCallback, useEffect, forwardRef, useState } from 'react'
 import ReactDOM from 'react-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const  DateInputComponent = forwardRef((props) => {
+// eslint-disable-next-line
+const  DateInputComponent = forwardRef((props, ref) => {
   const { component: Component, inputRef, ...other } = props;
   // eslint-disable-next-line
   return <Component {...other} ref={(ref) => inputRef(ReactDOM.findDOMNode(ref))} />;
@@ -47,24 +48,41 @@ type Props = {
   style: Object
 };
 
+const getTime = date => {
+  const time = moment(date)
+  const format = time.format('HH:mm:ss')
+  return time._isValid ? format : ''
+}
+const getDate = date => {
+  const newDate = moment(date)
+  const format = newDate.format('YYYY-MM-DD')
+  return newDate._isValid ? format : ''
+}
+
 const DateInput = ({ onChange, selected, fixed, style }: Props) => {
   const classes = useStyles()
-  const [time, setTime] = useState(selected)
-  const [date, setDate] = useState(selected)
+  const [time, setTime] = useState(getTime(selected))
+  const [date, setDate] = useState(getDate(selected))
 
-  const handleDate = v => {
-    const date = moment(v).format('YYYY-MM-DD')
-    const newTime = moment(time || new Date()).utc().format('HH:mm')
-    setDate(v)
-    onChange(moment(`${date}T${newTime}Z`)?.utc()?.toDate())
-  }
+  const handleDate = useCallback(v => {
+    const date = getDate(v)
+    setDate(date)
+  }, [])
 
-  const handleTime = v => {
-    const time = moment.utc(v).format('HH:mm')
-    setTime(v)
-    const newDate = moment(date || new Date()).format('YYYY-MM-DD')
-    onChange(moment.utc(`${newDate} ${time}`).toDate())
-  }
+  const handleTime = useCallback(v => {
+    const time = getTime(v)
+    setTime(time)
+  }, [])
+
+  useEffect(() => {
+    try {
+      if (date || time) {
+        const nowDate = moment().format('YYYY-MM-DD')
+        const nowTime = moment().format('HH:mm:ss')
+        onChange(moment(`${date || nowDate} ${time || nowTime}`).toDate())
+      }
+    } finally {/* NO-OP */}
+  }, [date, time, onChange])
 
   return (
     <Grid container spacing={2} style={style}>
