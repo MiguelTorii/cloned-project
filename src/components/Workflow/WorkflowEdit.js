@@ -119,7 +119,7 @@ const WorkflowEdit = ({
   }, [])
 
   const updateDate = useCallback(value => {
-    setDate(new Date(value))
+    setDate(value)
   }, [])
 
   const updateType = useCallback(e => {
