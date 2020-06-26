@@ -5,6 +5,11 @@
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
     "@date-io/moment": "^1.3.5",
+    "@fullcalendar/daygrid": "^5.0.0",
+    "@fullcalendar/interaction": "^5.0.0",
+    "@fullcalendar/list": "^5.0.0",
+    "@fullcalendar/react": "^5.0.0",
+    "@fullcalendar/timegrid": "^5.0.0",
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.2.1",
     "@material-ui/lab": "^4.0.0-alpha.41",

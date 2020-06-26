@@ -8,8 +8,9 @@ import { bindActionCreators } from 'redux'
 import Grid from '@material-ui/core/Grid'
 import CreateWorkflow from 'components/Workflow/CreateWorkflow'
 import WorkflowList from 'components/Workflow/WorkflowList'
+import CalendarView from 'components/Workflow/CalendarView'
 import Paper from '@material-ui/core/Paper'
-import update from 'immutability-helper';
+import update from 'immutability-helper'
 import {
   createTodo,
   updateTodoCategory,
@@ -63,6 +64,10 @@ const styles = theme => ({
     padding: theme.spacing(2),
     marginBottom: theme.spacing()
   },
+  bodyCalendar: {
+    padding: theme.spacing(0, 2, 2, 2),
+    marginBottom: theme.spacing()
+  },
   bodyList: {
   },
   button: {
@@ -72,7 +77,7 @@ const styles = theme => ({
     backgroundColor: 'transparent'
   },
   divider: {
-    padding: theme.spacing(0, 2)
+    padding: theme.spacing(0, 1)
   }
 })
 
@@ -148,13 +153,23 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [classList, setClassList] = useState({})
   const { data: { firstName }, syncData: { viewedOnboarding }, userClasses } = user
   const [listView, setListView] = useState(false)
+  const [calendarView, setCalendarView] = useState(false)
   const [tips, setTips] = useState(false)
+  const [currentCalendarView, setCurrentCalendarView] = useState('dayGridMonth')
 
   const openTips = useCallback(() => setTips(true), [])
   const closeTips = useCallback(() => setTips(false), [])
 
-  const showBoardView = useCallback(() => setListView(false), [])
-  const showListView = useCallback(() => setListView(true), [])
+  const showBoardView = useCallback(() => {
+    setCalendarView(false)
+    setListView(false)
+  }, [])
+  const showListView = useCallback(() => {
+    setCalendarView(false)
+    setListView(true)
+  }, [])
+
+  const showCalendarView = useCallback(() => setCalendarView(true), [])
 
   useEffect(() => {
     const init = async () => {
@@ -306,18 +321,25 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         </Typography>
         <Grid container alignItems='center'>
           <Button
-            color={cx(!listView ? 'primary' : 'default')}
+            color={cx(!listView && !calendarView ? 'primary' : 'default')}
             className={classes.button}
             onClick={showBoardView}
           >
             Board View
           </Button>
           <Button
-            color={cx(listView ? 'primary' : 'default')}
+            color={cx(listView && !calendarView ? 'primary' : 'default')}
             onClick={showListView}
             className={classes.button}
           >
             List View
+          </Button>
+          <Button
+            color={cx(calendarView ? 'primary' : 'default')}
+            onClick={showCalendarView}
+            className={classes.button}
+          >
+            Calendar View
           </Button>
           <div className={classes.divider}>|</div>
           <Button
@@ -328,10 +350,20 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             Tips & Tricks
           </Button>
         </Grid>
-        {listView && <Paper elevation={0} className={classes.body}>
+        {calendarView && <Paper elevation={0} className={classes.bodyCalendar}>
+          <CalendarView
+            tasks={tasks}
+            updateItem={updateItem}
+            archiveTask={archiveTask}
+            classList={classList}
+            currentCalendarView={currentCalendarView}
+            setCurrentCalendarView={setCurrentCalendarView}
+          />
+        </Paper>}
+        {listView && !calendarView && <Paper elevation={0} className={classes.body}>
           <CreateWorkflow handleAddTask={handleAddTask} />
         </Paper>}
-        <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
+        {!calendarView && <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
           <WorkflowList
             handleAddTask={handleAddTask}
             updateCategory={updateCategory}
@@ -346,7 +378,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             archiveTask={archiveTask}
             updateItem={updateItem}
           />
-        </Paper>
+        </Paper>}
       </ErrorBoundary>
     </Grid>
   )

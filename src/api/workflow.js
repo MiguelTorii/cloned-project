@@ -109,7 +109,6 @@ export const updateTodo = async ({
   }
 };
 
-
 export const updateTodoCategory = async ({
   id,
   categoryId,
