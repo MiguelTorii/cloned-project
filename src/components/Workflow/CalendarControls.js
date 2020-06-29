@@ -1,12 +1,12 @@
-import React, { useMemo, useCallback, useEffect, useState } from 'react'
+import React, {useMemo, useCallback, useEffect, useState} from 'react'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Typography from '@material-ui/core/Typography'
-import CalendarEmptyDateTasks from 'components/Workflow/CalendarEmptyDateTasks'
+// import CalendarEmptyDateTasks from 'components/Workflow/CalendarEmptyDateTasks'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,10 +36,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CalendarControls = ({ onOpenEdit, calendar, currentCalendarView, tasksEmptyDate }) => {
+const CalendarControls = ({
+  // currentCalendarView,
+  // onOpenEdit,
+  // tasksEmptyDate,
+  calendar,
+}) => {
   const [api, setApi] = useState(null)
   const [title, setTitle] = useState('')
-  const [currentView, setCurrentView] = useState(currentCalendarView)
+  // const [currentView, setCurrentView] = useState(currentCalendarView)
   const classes = useStyles()
 
   useEffect(() => {
@@ -51,26 +56,26 @@ const CalendarControls = ({ onOpenEdit, calendar, currentCalendarView, tasksEmpt
   }, [calendar])
 
   const next = useCallback(() => {
-    if(api) {
+    if (api) {
       api.next()
       setTitle(api?.view?.title)
     }
   }, [api])
 
   const previous = useCallback(() => {
-    if(api) {
+    if (api) {
       api.prev()
       setTitle(api?.view?.title)
     }
   }, [api])
 
-  const changeView = useCallback(view => () => {
-    if(api) {
-      api.changeView(view)
-      setCurrentView(view)
-      setTitle(api?.view?.title)
-    }
-  }, [api])
+  // const changeView = useCallback(view => () => {
+  // if (api) {
+  // api.changeView(view)
+  // setCurrentView(view)
+  // setTitle(api?.view?.title)
+  // }
+  // }, [api])
 
   const today = useCallback(() => {
     if (api) {
@@ -89,7 +94,7 @@ const CalendarControls = ({ onOpenEdit, calendar, currentCalendarView, tasksEmpt
 
   return (
     <Grid className={classes.container} container justify='space-between'>
-      <Grid item>
+      <Grid item xs={4}>
         <IconButton
           aria-label='previous'
           className={classes.iconButton}
@@ -115,47 +120,48 @@ const CalendarControls = ({ onOpenEdit, calendar, currentCalendarView, tasksEmpt
           Today
         </Button>
       </Grid>
-      <Grid item>
-        <Button
-          aria-label='month view'
-          className={classes.button}
-          color={currentView === 'dayGridMonth' ? 'primary' : 'default'}
-          onClick={changeView('dayGridMonth')}
-        >
-          Month
-        </Button>
-        <Button
-          aria-label='week view'
-          className={classes.button}
-          color={currentView === 'timeGridWeek' ? 'primary' : 'default'}
-          onClick={changeView('timeGridWeek')}
-        >
-            Week
-        </Button>
-        <Button
-          aria-label='day view'
-          className={classes.button}
-          color={currentView === 'timeGridDay' ? 'primary' : 'default'}
-          onClick={changeView('timeGridDay')}
-        >
-            Day
-        </Button>
-        <Button
-          aria-label='list view'
-          className={classes.button}
-          color={currentView === 'listMonth' ? 'primary' : 'default'}
-          onClick={changeView('listMonth')}
-        >
-            List
-        </Button>
-      </Grid>
-      <Grid item xs={12} className={classes.titleContainer}>
-        {tasksEmptyDate.length > 0 &&
-          <CalendarEmptyDateTasks tasksEmptyDate={tasksEmptyDate} onOpenEdit={onOpenEdit} />
-        }
+      {/* <Grid item> */}
+      {/* <Button */}
+      {/* aria-label='month view' */}
+      {/* className={classes.button} */}
+      {/* color={currentView === 'dayGridMonth' ? 'primary' : 'default'} */}
+      {/* onClick={changeView('dayGridMonth')} */}
+      {/* > */}
+      {/* Month */}
+      {/* </Button> */}
+      {/* <Button */}
+      {/* aria-label='week view' */}
+      {/* className={classes.button} */}
+      {/* color={currentView === 'timeGridWeek' ? 'primary' : 'default'} */}
+      {/* onClick={changeView('timeGridWeek')} */}
+      {/* > */}
+      {/* Week */}
+      {/* </Button> */}
+      {/* <Button */}
+      {/* aria-label='day view' */}
+      {/* className={classes.button} */}
+      {/* color={currentView === 'timeGridDay' ? 'primary' : 'default'} */}
+      {/* onClick={changeView('timeGridDay')} */}
+      {/* > */}
+      {/* Day */}
+      {/* </Button> */}
+      {/* <Button */}
+      {/* aria-label='list view' */}
+      {/* className={classes.button} */}
+      {/* color={currentView === 'listMonth' ? 'primary' : 'default'} */}
+      {/* onClick={changeView('listMonth')} */}
+      {/* > */}
+      {/* List */}
+      {/* </Button> */}
+      {/* </Grid> */}
+      <Grid item xs={4} className={classes.titleContainer}>
+        {/* {tasksEmptyDate.length > 0 && */}
+        {/* <CalendarEmptyDateTasks tasksEmptyDate={tasksEmptyDate} onOpenEdit={onOpenEdit} /> */}
+        {/* } */}
         <Typography className={classes.title}>{title}</Typography>
       </Grid>
-    </Grid>
+      <Grid item xs={4} />
+    </Grid >
   )
 }
 

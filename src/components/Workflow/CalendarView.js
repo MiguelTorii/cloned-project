@@ -1,13 +1,13 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, {useRef, useEffect, useState, useCallback} from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from "@fullcalendar/interaction"
-import { workflowCategories } from 'constants/common'
+import {workflowCategories} from 'constants/common'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
-import Dialog, { dialogStyle } from 'components/Dialog'
+import Dialog, {dialogStyle} from 'components/Dialog'
 import Typography from '@material-ui/core/Typography'
 import CalendarControls from 'components/Workflow/CalendarControls'
 
@@ -89,9 +89,9 @@ const CalendarView = ({
   const closeConfirmArchive = useCallback(() => setConfirmArchive(false), [])
 
   const onOpenEdit = useCallback(e => {
-    const { event: { extendedProps: {index} } } = e
+    const {event: {extendedProps: {index}}} = e
     const task = tasks[index]
-    setCurrentTask({ ...task, index })
+    setCurrentTask({...task, index})
   }, [tasks])
 
   const onCloseEdit = useCallback(() => setCurrentTask(null), [])
@@ -127,21 +127,41 @@ const CalendarView = ({
   }, [tasks])
 
   const onDrop = useCallback(async e => {
-    const { event: { start, extendedProps: {index} } } = e
-    await updateItem({ ...tasks[index], date: start, index })
+    const {event: {start, extendedProps: {index}}} = e
+    await updateItem({...tasks[index], date: start, index})
   }, [updateItem, tasks])
 
   const onViewChange = useCallback(e => {
-    if(e?.view?.type) setCurrentCalendarView(e?.view?.type)
+    if (e?.view?.type) setCurrentCalendarView(e?.view?.type)
   }, [setCurrentCalendarView])
 
   const onExternalDrop = useCallback(async e => {
     if (e?.dateStr && e?.draggedEl?.dataset?.event) {
       const task = JSON.parse(e?.draggedEl?.dataset?.event)
       const date = new Date(e.dateStr.includes('T') ? e.dateStr : `${e.dateStr} 12:00:00`)
-      await updateItem({ ...task, date })
+      await updateItem({...task, date})
     }
   }, [updateItem])
+
+  const [doubleClick, setDoubleClick] = useState(null)
+  const onDateClick = useCallback(e => {
+    const {dateStr} = e
+    if (!doubleClick) {
+      setDoubleClick(dateStr)
+      setTimeout(() => setDoubleClick(null), 1000)
+    }
+
+    if (doubleClick === dateStr) {
+      setCurrentTask({
+        categoryId: 1,
+        date: new Date(`${dateStr} 12:00:00`),
+        id: -1,
+        sectionId: '',
+        status: 1,
+        order: -1,
+      })
+    }
+  }, [doubleClick])
 
   return (
     <div className={classes.root}>
@@ -180,6 +200,7 @@ const CalendarView = ({
         drop={onExternalDrop}
         eventDrop={onDrop}
         eventClick={onOpenEdit}
+        dateClick={onDateClick}
         allDaySlot={false}
         editable
         contentHeight='auto'
@@ -194,14 +215,11 @@ const CalendarView = ({
         initialView={currentCalendarView}
         nowIndicator
         headerToolbar={{
-        // left: 'prev,next today',
-        // center: 'title',
-        // right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           left: '',
           center: '',
           right: ''
         }}
-        plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin ]}
+        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin]}
         events={calendarTasks}
       />
     </div>

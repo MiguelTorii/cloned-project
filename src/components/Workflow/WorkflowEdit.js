@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import Dialog from 'components/Dialog';
 import TextField from '@material-ui/core/TextField'
 import DateInput from 'components/Workflow/DateInput'
@@ -9,9 +9,9 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import { workflowCategories } from 'constants/common'
+import {workflowCategories} from 'constants/common'
 import RichTextEditor from 'containers/RichTextEditor';
 
 const useStyles = makeStyles(theme => ({
@@ -145,6 +145,7 @@ const WorkflowEdit = ({
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
+            placeholder='Enter a task'
             inputProps={{
               className: classes.title,
             }}
@@ -179,7 +180,7 @@ const WorkflowEdit = ({
               onChange={updateType}
             >
               {workflowCategories.map(w => (
-                <MenuItem key={`cat-${  w.name}`} value={w.categoryId}>{w.name}</MenuItem>
+                <MenuItem key={`cat-${w.name}`} value={w.categoryId}>{w.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -202,7 +203,8 @@ const WorkflowEdit = ({
                     value={k}>
                     {cl.courseDisplayName}
                   </MenuItem>
-                )})}
+                )
+              })}
               <MenuItem value="new" className={classes.newClass}>
                 Add Classes
               </MenuItem>

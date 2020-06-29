@@ -1,10 +1,10 @@
 // @flow
 
-import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
+import React, {useRef, useEffect, useState, useCallback, useReducer} from 'react'
+import {connect} from 'react-redux'
+import {withStyles} from '@material-ui/core/styles'
 import * as notificationsActions from 'actions/notifications'
-import { bindActionCreators } from 'redux'
+import {bindActionCreators} from 'redux'
 import Grid from '@material-ui/core/Grid'
 import CreateWorkflow from 'components/Workflow/CreateWorkflow'
 import WorkflowList from 'components/Workflow/WorkflowList'
@@ -19,8 +19,8 @@ import {
   updateTodosOrdering,
   getTodos
 } from 'api/workflow'
-import type { UserState } from 'reducers/user'
-import type { State as StoreState } from 'types/state'
+import type {UserState} from 'reducers/user'
+import type {State as StoreState} from 'types/state'
 import ErrorBoundary from 'containers/ErrorBoundary'
 import Typography from '@material-ui/core/Typography'
 import moment from 'moment'
@@ -88,14 +88,14 @@ type Props = {
 };
 
 function reducer(state, action) {
-  const { type } = action
+  const {type} = action
   switch (type) {
   case 'INIT':
     return update(state, {
-      tasks: { $set: action.tasks }
+      tasks: {$set: action.tasks}
     })
   case 'ADD_TASK':
-    return { ...state, tasks: [{ ...action.task }, ...state.tasks]}
+    return {...state, tasks: [{...action.task}, ...state.tasks]}
   case 'ARCHIVE_TASK':
     return update(state, {
       tasks: {
@@ -117,7 +117,7 @@ function reducer(state, action) {
     return update(state, {
       tasks: {
         [action.index]: {
-          categoryId: { $set: action.categoryId },
+          categoryId: {$set: action.categoryId},
         }
       }
     })
@@ -126,17 +126,17 @@ function reducer(state, action) {
     return update(state, {
       tasks: {
         [action.index]: {
-          title: { $set: action.title },
-          categoryId: { $set: action.categoryId || 0 },
-          description: { $set: action.description || '' },
-          date: { $set: action.date },
-          sectionId: { $set: action.sectionId || '' },
-          status: { $set: action.status }
+          title: {$set: action.title},
+          categoryId: {$set: action.categoryId || 0},
+          description: {$set: action.description || ''},
+          date: {$set: action.date},
+          sectionId: {$set: action.sectionId || ''},
+          status: {$set: action.status}
         }
       }
     })
   case 'DRAG_UPDATE':
-    return update(state, { dragId: { $set: action.dragId }})
+    return update(state, {dragId: {$set: action.dragId}})
   default:
     return state
   }
@@ -147,11 +147,11 @@ const initialState = {
   tasks: []
 }
 
-const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
+const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { tasks, dragId } = state
+  const {tasks, dragId} = state
   const [classList, setClassList] = useState({})
-  const { data: { firstName }, syncData: { viewedOnboarding }, userClasses } = user
+  const {data: {firstName}, syncData: {viewedOnboarding}, userClasses} = user
   const [listView, setListView] = useState(false)
   const [calendarView, setCalendarView] = useState(false)
   const [tips, setTips] = useState(false)
@@ -176,7 +176,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       const res = await getTodos()
 
       if (res) {
-        dispatch({ type: 'INIT', tasks: res })
+        dispatch({type: 'INIT', tasks: res})
       } else {
         enqueueSnackbar(createSnackbar('Failed to initialize', classes.snackbar, 'error'))
       }
@@ -186,19 +186,19 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, classes, enqueueSnackbar, viewedOnboarding])
 
   const archiveTask = useCallback(async task => {
-    const res = await archiveTodo({ id: task.id })
-    if (res?.id) dispatch({ type: 'ARCHIVE_TASK', index: task.index })
+    const res = await archiveTodo({id: task.id})
+    if (res?.id) dispatch({type: 'ARCHIVE_TASK', index: task.index})
   }, [dispatch])
 
   const moveTask = useCallback((dragIndex, hoverIndex) => {
     const dragTask = state.tasks[dragIndex]
-    dispatch({ type: 'REORDER', dragIndex, hoverIndex, dragTask })
+    dispatch({type: 'REORDER', dragIndex, hoverIndex, dragTask})
   }, [state, dispatch])
 
   const dragCategoryId = useRef()
   const updateCategory = useCallback(async (index, categoryId) => {
     dragCategoryId.current = categoryId
-    dispatch({ type: 'UPDATE_CATEGORY', index, categoryId })
+    dispatch({type: 'UPDATE_CATEGORY', index, categoryId})
   }, [dispatch])
 
   const [prevDragId, setPrevDragId] = useState(null)
@@ -206,21 +206,21 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     let ordering = []
     tasks.forEach((t, position) => {
       if (t.order !== position) {
-        ordering = [...ordering, { id: t.id, position }]
+        ordering = [...ordering, {id: t.id, position}]
       }
     })
-    await updateTodosOrdering({ ordering })
+    await updateTodosOrdering({ordering})
   }, [tasks])
 
   const onDrag = useCallback(async dragId => {
     if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
-      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId.current })
+      const res = await updateTodoCategory({id: prevDragId, categoryId: dragCategoryId.current})
       if (res?.points) enqueueSnackbar(createSnackbar(
-       `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
-       classes.snackbar,
-       'success'))
+        `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+        classes.snackbar,
+        'success'))
     }
-    dispatch({ type: 'DRAG_UPDATE', dragId })
+    dispatch({type: 'DRAG_UPDATE', dragId})
   }, [dispatch, dragCategoryId, prevDragId, enqueueSnackbar, firstName, classes])
 
   useEffect(() => {
@@ -229,7 +229,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dragId, prevDragId, reorder])
 
   useEffect(() => {
-    try{
+    try {
       const classList = {}
       userClasses.classList.forEach(cl => {
         if (cl.section && cl.section.length > 0)
@@ -239,12 +239,12 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       })
       setClassList(classList)
     } finally {/* NONE */}
-  },[userClasses])
+  }, [userClasses])
 
   const [expanded, setExpanded] = useState([true, true, true, true])
 
   const handleExpand = useCallback(index => expand => {
-    setExpanded(update(expanded, { [index-1]: { $set: expand } }))
+    setExpanded(update(expanded, {[index - 1]: {$set: expand}}))
   }, [expanded])
 
   useEffect(() => {
@@ -255,7 +255,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   const handleAddTask = useCallback(async (title, categoryId) => {
     try {
-      const res = await createTodo({ title, categoryId })
+      const res = await createTodo({title, categoryId})
 
       if (res?.id) {
         dispatch({
@@ -268,7 +268,8 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             order: -1,
             id: res.id,
             status: 1
-          }})
+          }
+        })
 
         handleExpand(1)(true)
 
@@ -277,35 +278,39 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           classes.snackbar,
           'success'))
       }
-    } catch(e) {
+    } catch (e) {
       enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'))
     }
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
-  const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status }) => {
-    const task = tasks[index]
-    const newCategory = status === 2 && task.status !== status
-      ? 4
-      : categoryId
+  const updateItem = useCallback(async ({index, title, date, categoryId, description, sectionId, id, status}) => {
+    if (id === -1) {
+      // console.log({index, title, date, categoryId, description, sectionId, id, status})
+    } else {
+      const task = tasks[index]
+      const newCategory = status === 2 && task.status !== status
+        ? 4
+        : categoryId
 
-    const res = await updateTodo({
-      id,
-      title,
-      sectionId: Number(sectionId),
-      categoryId: Number(newCategory),
-      description,
-      date: moment.utc(date).valueOf(),
-      status,
-    })
+      const res = await updateTodo({
+        id,
+        title,
+        sectionId: Number(sectionId),
+        categoryId: Number(newCategory),
+        description,
+        date: moment.utc(date).valueOf(),
+        status,
+      })
 
-    if (res?.id) {
-      dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status })
-      if (res?.points) enqueueSnackbar(createSnackbar(
+      if (res?.id) {
+        dispatch({type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status})
+        if (res?.points) enqueueSnackbar(createSnackbar(
           `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
           classes.snackbar,
           'success'))
-    } else {
-      enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
+      } else {
+        enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
+      }
     }
   }, [dispatch, enqueueSnackbar, classes, tasks, firstName])
 
@@ -385,7 +390,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 }
 
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({user}: StoreState): {} => ({
   user,
 })
 
