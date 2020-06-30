@@ -127,6 +127,7 @@ const Dialog = ({
       disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown={disableEscapeKeyDown}
       maxWidth="lg"
+      disableRestoreFocus
       onClose={onCancel}
       open={open}
       {...props}

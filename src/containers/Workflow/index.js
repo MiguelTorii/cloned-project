@@ -253,18 +253,25 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   }, [reorder, tasks])
 
 
-  const handleAddTask = useCallback(async (title, categoryId) => {
+  const handleAddTask = useCallback(async ({ title, categoryId, date, sectionId, description }) => {
     try {
-      const res = await createTodo({title, categoryId})
+      const res = await createTodo({
+        title,
+        categoryId,
+        sectionId,
+        date: moment.utc(date).valueOf(),
+        description
+      })
 
       if (res?.id) {
         dispatch({
           type: 'ADD_TASK',
           task: {
             title,
-            date: '',
-            categoryId,
-            sectionId: '',
+            date: date || '',
+            categoryId: categoryId || 1,
+            sectionId: sectionId || '',
+            description: description || '',
             order: -1,
             id: res.id,
             status: 1
@@ -285,7 +292,13 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
 
   const updateItem = useCallback(async ({index, title, date, categoryId, description, sectionId, id, status}) => {
     if (id === -1) {
-      // console.log({index, title, date, categoryId, description, sectionId, id, status})
+      await handleAddTask({
+        title,
+        sectionId: Number(sectionId),
+        categoryId: Number(categoryId),
+        description,
+        date,
+      })
     } else {
       const task = tasks[index]
       const newCategory = status === 2 && task.status !== status
@@ -312,7 +325,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
         enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'))
       }
     }
-  }, [dispatch, enqueueSnackbar, classes, tasks, firstName])
+  }, [dispatch, enqueueSnackbar, classes, tasks, firstName, handleAddTask])
 
   return (
     <Grid container direction='column' spacing={0} className={classes.container}>
@@ -390,7 +403,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
 }
 
 
-const mapStateToProps = ({user}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user,
 })
 

@@ -89,7 +89,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, handleAddTask, categoryId, dro
 
   const handleNew = useCallback(async () => {
     if (newInputValue) {
-      await handleAddTask(newInputValue, categoryId)
+      await handleAddTask({ title: newInputValue, categoryId })
     }
     closeNew()
   }, [closeNew, newInputValue, categoryId, handleAddTask])

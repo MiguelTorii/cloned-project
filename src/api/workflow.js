@@ -36,9 +36,15 @@ export const getTodos = async () => {
 export const createTodo = async ({
   title,
   categoryId,
+  sectionId,
+  date,
+  description
 }: {
   title: string,
-  categoryId: number
+  categoryId: number,
+  sectionId: number,
+  date: number,
+  description: string
 }) => {
   try {
     const token = await getToken();
@@ -48,6 +54,9 @@ export const createTodo = async ({
       {
         title,
         category: categoryId,
+        due_date: date,
+        section_id: sectionId,
+        description,
       },
       {
         headers: {

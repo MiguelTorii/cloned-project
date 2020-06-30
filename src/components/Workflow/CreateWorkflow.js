@@ -27,7 +27,7 @@ const CreateWorkflow = ({ handleAddTask }: Props) => {
 
   const addTask = useCallback(() => {
     if (!taskRef.current.value) return
-    handleAddTask(taskRef.current.value)
+    handleAddTask({ title: taskRef.current.value })
     taskRef.current.value = ''
   }, [handleAddTask])
 
