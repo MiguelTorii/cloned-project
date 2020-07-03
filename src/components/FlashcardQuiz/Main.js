@@ -52,6 +52,12 @@ const useStyles = makeStyles(theme => ({
       margin: 0,
     }
   },
+  choiceText: {
+    color: theme.circleIn.palette.primaryText1
+  },
+  choiceTextSelected: {
+    color: theme.circleIn.palette.primaryText2
+  },
   choices: {
     paddingLeft: theme.spacing(3),
   },
@@ -379,10 +385,10 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       const isAnswerCorrect = optionId === id;
       const isSelected = optionId === answerId;
       const photoExpanded = isPhotoExpanded[uuid];
-      let color;
+      let color = '#E9ECEF';
 
       if (isSelected) {
-        color = 'white';
+        color = '#ADBBC4';
 
         if (isEvaluationMode) {
           color = isAnswerCorrect ? '#60b515' : '#f54f47';
