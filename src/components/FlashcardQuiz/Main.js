@@ -52,12 +52,6 @@ const useStyles = makeStyles(theme => ({
       margin: 0,
     }
   },
-  choiceText: {
-    color: theme.circleIn.palette.primaryText1
-  },
-  choiceTextSelected: {
-    color: theme.circleIn.palette.primaryText2
-  },
   choices: {
     paddingLeft: theme.spacing(3),
   },
@@ -435,8 +429,8 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             <div>
               {
                 isSelected
-                  ? <RadioButtonCheckedIcon classes={{ root: classes.radioIcon }} />
-                  : <RadioButtonUncheckedIcon classes={{ root: classes.radioIcon }} />
+                  ? <RadioButtonCheckedIcon classes={{ root: classes.radioIcon }} style={{ fill: color }} />
+                  : <RadioButtonUncheckedIcon classes={{ root: classes.radioIcon }} style={{ fill: color }} />
               }
             </div>
             <div>
