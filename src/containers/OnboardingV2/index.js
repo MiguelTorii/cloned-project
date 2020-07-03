@@ -255,7 +255,7 @@ type Props = {
 };
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [tasks, setTasks] = useState({});
   const [dueDate, setDueDate] = useState(null);
   const [focusedField, setFocusedField] = useState('task1');
