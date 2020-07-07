@@ -67,15 +67,19 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
   const handleDate = useCallback(v => {
     const date = getDate(v)
     const nowTime = moment().format('HH:mm:ss')
-    setDate(date)
-    onChange(new Date(`${date} ${time || nowTime}`))
+    if (date) {
+      setDate(date)
+      onChange(new Date(`${date} ${time || nowTime}`))
+    }
   }, [time, onChange])
 
   const handleTime = useCallback(v => {
     const time = getTime(v)
     const nowDate = moment().format('YYYY-MM-DD')
-    setTime(time)
-    onChange(new Date(`${date || nowDate} ${time}`))
+    if (time) {
+      setTime(time)
+      onChange(new Date(`${date || nowDate} ${time}`))
+    }
   }, [date, onChange])
 
   return (
