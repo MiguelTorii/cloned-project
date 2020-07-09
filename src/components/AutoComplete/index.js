@@ -304,6 +304,7 @@ type Props = {
   onChange: Function,
   autoFocus: boolean,
   relative: boolean,
+  id: string,
   onLoadOptions: Function
 };
 
@@ -325,6 +326,7 @@ const AutoComplete = ({
   isSchoolSearch = false,
   autoFocus,
   relative,
+  id,
   onLoadOptions
 }: Props) => {
 
@@ -339,7 +341,7 @@ const AutoComplete = ({
   };
 
   return (
-    <div className={classes.root}>
+    <div id={id} className={classes.root}>
       <NoSsr>
         <AsyncPaginate
           classes={classes}

@@ -1,5 +1,16 @@
 #!/bin/bash
 # build
+
+if [ $CYPRESS == 'true' ]
+then
+  echo "Starting end-to-end tests"
+  yarn install --force
+  yarn cy
+  mkdir build
+  exit 0
+fi
+
+
 export REACT_APP_SENTRY_RELEASE=$(git rev-parse --short HEAD)
 echo "Version: $REACT_APP_SENTRY_RELEASE"
 

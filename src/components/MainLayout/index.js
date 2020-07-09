@@ -889,7 +889,7 @@ class MainLayout extends React.Component<Props, State> {
                   onClick={this.handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Avatar src={userProfileUrl}>{initials}</Avatar>
+                  <Avatar className='avatar-menu' src={userProfileUrl}>{initials}</Avatar>
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>

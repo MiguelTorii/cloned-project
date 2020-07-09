@@ -59,6 +59,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
           </Typography>
           <div className={classes.schools}>
             <AutoComplete
+              id='search-school'
               values={school}
               inputValue=""
               label=""

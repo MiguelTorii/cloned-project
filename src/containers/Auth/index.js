@@ -51,7 +51,7 @@ type State = {
   school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
   error: boolean,
   lti: boolean,
-  redirectMessage: string,
+  redirectMessage: string
 };
 
 class Auth extends React.Component<Props, State> {

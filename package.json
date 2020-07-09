@@ -93,6 +93,7 @@
     "yarn": "^1.21.1"
   },
   "devDependencies": {
+    "cypress": "^4.10.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -111,6 +112,8 @@
     "build": "react-scripts build",
     "build:production": "yarn install && ./build.sh production",
     "build:sourcemaps": "./build.sh",
+    "cy": "cypress run --spec 'cypress/integration/**/*.js'",
+    "cy:open": "cypress open",
     "eject": "react-scripts eject"
   },
   "browserslist": [
