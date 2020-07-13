@@ -11,7 +11,6 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
 import { hotjar } from 'react-hotjar';
-import mixpanel from 'mixpanel-browser';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
@@ -51,10 +50,7 @@ import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
 import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
-import { init as analyticsInit } from './api/analytics';
 import {
-  AMPLITUDE,
-  AMPLITUDE_NEW,
   GOOGLE_ANALYTICS,
   SENTRY,
   ENV,
@@ -73,10 +69,6 @@ if (ENV !== 'dev') {
   hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
 }
 
-if (ENV === 'dev') {
-  mixpanel.init("16a155de024402e518bfb4c430cff3fd");
-}
-
 if (process.env.NODE_ENV !== 'development') {
   sentryInit({
     dsn: SENTRY,
@@ -84,7 +76,6 @@ if (process.env.NODE_ENV !== 'development') {
     release: process.env.REACT_APP_SENTRY_RELEASE || RELEASE
   });
 }
-analyticsInit(AMPLITUDE, AMPLITUDE_NEW);
 
 axios.defaults.headers.common['x-client-version'] = RELEASE;
 

@@ -9,7 +9,6 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User, UpdateProfile } from '../types/models';
 import { signInUser, checkUser } from '../api/sign-in';
-import { setUserId, setUserProperties } from '../api/analytics';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -159,17 +158,6 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       store.set('SEGMENT', user.segment);
 
       dispatch(setUser({ user }));
-
-      setUserId(user.userId);
-      setUserProperties({
-        props: {
-          school_id: user.schoolId,
-          school_name: user.school,
-          grade: user.grade,
-          segment: user.segment,
-          email: user.email
-        }
-      });
     } else {
       store.remove('TOKEN');
       store.remove('REFRESH_TOKEN');
