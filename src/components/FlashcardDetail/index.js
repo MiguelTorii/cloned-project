@@ -9,6 +9,7 @@ import CreateIcon from '@material-ui/icons/Create'
 import ClearIcon from '@material-ui/icons/Clear'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
+import CustomQuill from 'components/CustomQuill'
 
 type Props = {
   id: string,
@@ -187,6 +188,7 @@ const FlashcardList = ({
             classes.markdownContainer
           )}>
             <Markdown>{question}</Markdown>
+            {/* <CustomQuill value={question} readOnly /> */}
           </div>
         </Grid>
         <Grid item xs={8} className={classes.answer}>
@@ -199,6 +201,7 @@ const FlashcardList = ({
             classes.markdownContainer
           )}>
             <Markdown>{answer}</Markdown>
+            {/* <CustomQuill value={answer} readOnly /> */}
           </div>
         </Grid>
       </Grid>
