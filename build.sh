@@ -5,8 +5,7 @@ if [ $CYPRESS == 'true' ]
 then
   echo "Starting end-to-end tests"
   yarn install --force
-  yarn cy
-  mkdir build
+  yarn cy && mkdir build
   exit 0
 fi
 
