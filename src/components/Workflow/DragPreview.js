@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDragLayer } from 'react-dnd'
 import moment from 'moment'
 import clsx from 'clsx'
 import WorkflowListItem from 'components/Workflow/WorkflowListItem'
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
 import { makeStyles } from '@material-ui/core/styles'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -40,7 +41,8 @@ const getItemStyles = (initialOffset, currentOffset) => {
   }
 }
 
-const DragPreview = ({ listView, classList }) => {
+const DragPreview = () => {
+  const { listView, classList } = useContext(WorkflowContext)
   const classes = useStyles()
   const {
     isDragging,

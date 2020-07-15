@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState, useCallback} from 'react'
+import React, { useContext, useRef, useEffect, useState, useCallback} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -10,6 +10,7 @@ import WorkflowEdit from 'components/Workflow/WorkflowEdit'
 import Dialog, {dialogStyle} from 'components/Dialog'
 import Typography from '@material-ui/core/Typography'
 import CalendarControls from 'components/Workflow/CalendarControls'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,14 +69,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const CalendarView = ({
-  classList,
-  tasks,
-  updateItem,
-  archiveTask,
-  currentCalendarView,
-  setCurrentCalendarView
-}) => {
+const CalendarView = () => {
+  const {
+    tasks,
+    archiveTask,
+    setCurrentCalendarView,
+    updateItem,
+    currentCalendarView,
+  } = useContext(WorkflowContext)
   const classes = useStyles()
   const [calendarTasks, setCalendarTasks] = useState([])
   const [currentTask, setCurrentTask] = useState(null)
@@ -180,10 +181,8 @@ const CalendarView = ({
       {currentTask && <WorkflowEdit
         task={currentTask}
         openConfirmArchive={openConfirmArchive}
-        classList={classList}
         onClose={onCloseEdit}
         open
-        updateItem={updateItem}
       />}
       <CalendarControls
         calendar={calendarRef.current}

@@ -59,6 +59,7 @@ const styles = theme => ({
     padding: '9px 18px'
   },
   buttons: {
+    position: 'relative',
     margin: 10
   },
   removeButton: {
@@ -89,6 +90,7 @@ const Dialog = ({
   showCancel=false,
   showHeader=true,
   setOkRef= () => {},
+  rightButton=null,
   title,
   updateVisibility,
   ...props
@@ -113,6 +115,7 @@ const Dialog = ({
   showHeader: ?boolean,
   title: ?ReactNode,
   updateVisibility: Function,
+  rightButton: ?ReactNode,
   props: Object
 }) => {
   useEffect(() => {
@@ -163,6 +166,7 @@ const Dialog = ({
       {
         showActions &&
         <DialogActions className={classes.buttons}>
+          {rightButton}
           {
             secondaryRemoveTitle &&
           <Button

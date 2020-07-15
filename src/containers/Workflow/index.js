@@ -27,6 +27,7 @@ import moment from 'moment'
 import Button from '@material-ui/core/Button'
 import Tips from 'components/Workflow/Tips'
 import cx from 'classnames'
+import { WorkflowProvider } from 'containers/Workflow/WorkflowContext'
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -131,7 +132,8 @@ function reducer(state, action) {
           description: {$set: action.description || ''},
           date: {$set: action.date},
           sectionId: {$set: action.sectionId || ''},
-          status: {$set: action.status}
+          status: {$set: action.status},
+          images: {$set: action.images}
         }
       }
     })
@@ -151,7 +153,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const {tasks, dragId} = state
   const [classList, setClassList] = useState({})
-  const {data: {firstName}, syncData: {viewedOnboarding}, userClasses} = user
+  const {data: {firstName, userId}, syncData: {viewedOnboarding}, userClasses} = user
   const [listView, setListView] = useState(false)
   const [calendarView, setCalendarView] = useState(false)
   const [tips, setTips] = useState(false)
@@ -290,7 +292,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
     }
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
-  const updateItem = useCallback(async ({index, title, date, categoryId, description, sectionId, id, status}) => {
+  const updateItem = useCallback(async ({index, title, date, categoryId, description, sectionId, id, status, images}) => {
     if (id === -1) {
       await handleAddTask({
         title,
@@ -316,7 +318,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
       })
 
       if (res?.id) {
-        dispatch({type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status})
+        dispatch({type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status, images})
         if (res?.points) enqueueSnackbar(createSnackbar(
           `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
           classes.snackbar,
@@ -328,77 +330,76 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   }, [dispatch, enqueueSnackbar, classes, tasks, firstName, handleAddTask])
 
   return (
-    <Grid container direction='column' spacing={0} className={classes.container}>
-      <ErrorBoundary>
-        <Tips open={tips} close={closeTips} />
-        <Typography
-          color="textPrimary"
-          className={classes.title}
-        >
+    <WorkflowProvider value={{
+      enqueueSnackbar,
+      userId,
+      handleAddTask,
+      updateCategory,
+      listView,
+      moveTask,
+      classList,
+      tasks,
+      dragId,
+      onDrag,
+      expanded,
+      handleExpand,
+      updateItem,
+      archiveTask,
+      currentCalendarView,
+      setCurrentCalendarView,
+    }}>
+      <Grid container direction='column' spacing={0} className={classes.container}>
+        <ErrorBoundary>
+          <Tips open={tips} close={closeTips} />
+          <Typography
+            color="textPrimary"
+            className={classes.title}
+          >
           Workflow
-        </Typography>
-        <Grid container alignItems='center'>
-          <Button
-            color={cx(!listView && !calendarView ? 'primary' : 'default')}
-            className={classes.button}
-            onClick={showBoardView}
-          >
+          </Typography>
+          <Grid container alignItems='center'>
+            <Button
+              color={cx(!listView && !calendarView ? 'primary' : 'default')}
+              className={classes.button}
+              onClick={showBoardView}
+            >
             Board View
-          </Button>
-          <Button
-            color={cx(listView && !calendarView ? 'primary' : 'default')}
-            onClick={showListView}
-            className={classes.button}
-          >
+            </Button>
+            <Button
+              color={cx(listView && !calendarView ? 'primary' : 'default')}
+              onClick={showListView}
+              className={classes.button}
+            >
             List View
-          </Button>
-          <Button
-            color={cx(calendarView ? 'primary' : 'default')}
-            onClick={showCalendarView}
-            className={classes.button}
-          >
+            </Button>
+            <Button
+              color={cx(calendarView ? 'primary' : 'default')}
+              onClick={showCalendarView}
+              className={classes.button}
+            >
             Calendar View
-          </Button>
-          <div className={classes.divider}>|</div>
-          <Button
-            color='default'
-            onClick={openTips}
-            className={classes.button}
-          >
+            </Button>
+            <div className={classes.divider}>|</div>
+            <Button
+              color='default'
+              onClick={openTips}
+              className={classes.button}
+            >
             Tips & Tricks
-          </Button>
-        </Grid>
-        {calendarView && <Paper elevation={0} className={classes.bodyCalendar}>
-          <CalendarView
-            tasks={tasks}
-            updateItem={updateItem}
-            archiveTask={archiveTask}
-            classList={classList}
-            currentCalendarView={currentCalendarView}
-            setCurrentCalendarView={setCurrentCalendarView}
-          />
-        </Paper>}
-        {listView && !calendarView && <Paper elevation={0} className={classes.body}>
-          <CreateWorkflow handleAddTask={handleAddTask} />
-        </Paper>}
-        {!calendarView && <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
-          <WorkflowList
-            handleAddTask={handleAddTask}
-            updateCategory={updateCategory}
-            listView={listView}
-            moveTask={moveTask}
-            classList={classList}
-            tasks={tasks}
-            dragId={dragId}
-            onDrag={onDrag}
-            expanded={expanded}
-            handleExpand={handleExpand}
-            archiveTask={archiveTask}
-            updateItem={updateItem}
-          />
-        </Paper>}
-      </ErrorBoundary>
-    </Grid>
+            </Button>
+          </Grid>
+          {calendarView && <Paper elevation={0} className={classes.bodyCalendar}>
+            <CalendarView />
+          </Paper>}
+          {listView && !calendarView && <Paper elevation={0} className={classes.body}>
+            <CreateWorkflow handleAddTask={handleAddTask} />
+          </Paper>}
+          {!calendarView && <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
+            <WorkflowList />
+          </Paper>}
+        </ErrorBoundary>
+      </Grid>
+    </WorkflowProvider>
   )
 }
 

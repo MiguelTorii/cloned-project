@@ -1,10 +1,11 @@
-import React, { useMemo, useCallback, useState } from 'react'
+import React, { useContext, useMemo, useCallback, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
 import TextField from '@material-ui/core/TextField'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -74,7 +75,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const WorkflowBoardBox = ({ buttonColor, bgcolor, handleAddTask, categoryId, drop, name, list }) => {
+const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }) => {
+  const { handleAddTask } = useContext(WorkflowContext)
   const classes = useStyles()
   const [showNew, setShowNew] = useState(false)
   const [newInputValue, setNewInputValue] = useState('')

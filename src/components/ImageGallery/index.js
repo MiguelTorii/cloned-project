@@ -8,7 +8,7 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import Image from "react-graceful-image";
 
-const ImgComponent = React.forwardRef(({ item }, ref) => 
+const ImgComponent = React.forwardRef(({ item }, ref) =>
   <Image
     noLazyLoad
     ref={ref}
@@ -96,13 +96,13 @@ class ImageGallery extends React.PureComponent<Props, State> {
   };
 
   rotateLeft = () => {
-    this.setState(prev => ({ 
+    this.setState(prev => ({
       rotation: prev.rotation - 90
     }))
   }
 
   rotateRight = () => {
-    this.setState(prev => ({ 
+    this.setState(prev => ({
       rotation: prev.rotation + 90
     }))
   }

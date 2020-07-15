@@ -1,11 +1,12 @@
 // @flow
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import { workflowCategories } from 'constants/common'
 import cx from 'classnames'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -26,34 +27,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-type Props = {
-  archiveTask: Function,
-  classList: array,
-  updateItem: Function,
-  moveTask: Function,
-  updateCategory: Function,
-  tasks: array,
-  dragId: number,
-  onDrag: Function,
-  expanded: array,
-  handleAddTask: Function,
-  handleExpand: Function
-};
-
-const WorkflowList = ({
-  dragId,
-  handleAddTask,
-  onDrag,
-  updateCategory,
-  moveTask,
-  classList,
-  tasks,
-  expanded,
-  handleExpand,
-  listView,
-  archiveTask,
-  updateItem
-}: Props) => {
+const WorkflowList = () => {
+  const { tasks, listView } = useContext(WorkflowContext)
   const indexed = useMemo(() => tasks.map((t, index) => ({ ...t, index})), [tasks])
   const upcoming = useMemo(() => indexed.filter(t => t.categoryId === 1), [indexed])
   const inprogress = useMemo(() => indexed.filter(t => t.categoryId === 2), [indexed])
@@ -69,7 +44,7 @@ const WorkflowList = ({
 
   return (
     <div className={cx(!listView && classes.container)}>
-      <DragPreview listView={listView} classList={classList} />
+      <DragPreview />
       <div className={classes.item}>
         {listView && <Grid container alignItems='center'>
           <Grid item xs={7} />
@@ -84,23 +59,12 @@ const WorkflowList = ({
       <div className={cx(!listView && classes.columnContainer)}>
         {boxes.map(box => (
           <WorkflowBox
-            handleAddTask={handleAddTask}
-            listView={listView}
-            archiveTask={archiveTask}
-            dragId={dragId}
-            onDrag={onDrag}
-            updateCategory={updateCategory}
             key={box.name}
             tasks={box.tasks}
             bgcolor={box.bgcolor}
             buttonColor={box.buttonColor}
             categoryId={box.categoryId}
-            classList={classList}
-            moveTask={moveTask}
-            updateItem={updateItem}
-            expanded={expanded}
             name={box.name}
-            handleExpand={handleExpand}
           />
         ))}
       </div>

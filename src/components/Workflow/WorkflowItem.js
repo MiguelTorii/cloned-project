@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useContext, useRef, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
@@ -10,6 +10,7 @@ import { isMobile } from "react-device-detect"
 import Dialog, { dialogStyle } from 'components/Dialog';
 import WorkflowListItem from 'components/Workflow/WorkflowListItem'
 import WorkflowBoardItem from 'components/Workflow/WorkflowBoardItem'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -39,26 +40,24 @@ const useStyles = makeStyles(() => ({
 }))
 
 type Props = {
-  classList: array,
-  updateItem: Function,
-  moveTask: Function,
   task: Object,
-  archiveTask: Function,
   index: number
 };
 
 const WorkflowItem = ({
-  archiveTask,
   interpolatingStyle,
-  listView,
-  onDrag,
-  dragId,
-  moveTask,
   index,
-  classList,
   task,
-  updateItem
 }: Props) => {
+  const {
+    updateItem,
+    archiveTask,
+    listView,
+    onDrag,
+    dragId,
+    moveTask,
+    classList,
+  } = useContext(WorkflowContext)
   const taskRef = useRef(null)
   const [showDetails, setShowDetails] = useState(false)
 
@@ -174,11 +173,9 @@ const WorkflowItem = ({
       </Dialog>
       <WorkflowEdit
         task={task}
-        openConfirmArchive={openConfirmArchive}
-        classList={classList}
         onClose={onClose}
+        openConfirmArchive={openConfirmArchive}
         open={open}
-        updateItem={updateItem}
       />
       {listView
         ? <WorkflowListItem

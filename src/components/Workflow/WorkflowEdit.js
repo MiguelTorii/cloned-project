@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useRef, useContext, useState, useEffect, useCallback} from 'react'
 import Dialog from 'components/Dialog';
 import TextField from '@material-ui/core/TextField'
 import DateInput from 'components/Workflow/DateInput'
@@ -13,6 +13,8 @@ import {makeStyles} from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import {workflowCategories} from 'constants/common'
 import RichTextEditor from 'containers/RichTextEditor';
+import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(theme => ({
   newClass: {
@@ -20,11 +22,13 @@ const useStyles = makeStyles(theme => ({
   },
   dialog: {
     borderRadius: 20,
-    overflowY: 'initial',
     width: 600,
     '& .MuiDialogContent-root': {
-      overflowY: 'initial',
+      overflowY: 'auto',
     }
+  },
+  dialogImg: {
+    height: 'inherit',
   },
   title: {
     fontSize: 20
@@ -49,26 +53,25 @@ const useStyles = makeStyles(theme => ({
     '& .ql-container': {
       padding: theme.spacing()
     }
-  }
+  },
 }))
 
 type Props = {
-  openConfirmArchive: Function,
   task: Object,
-  classList: array,
   onClose: Function,
-  open: boolean,
-  updateItem: Function
+  open: boolean
 };
 
 const WorkflowEdit = ({
-  openConfirmArchive,
   task,
-  classList,
   onClose,
+  openConfirmArchive,
   open,
-  updateItem,
 }: Props) => {
+  const {
+    classList,
+    updateItem,
+  } = useContext(WorkflowContext)
   const classes = useStyles()
   const [date, setDate] = useState('')
   const [description, setDescription] = useState(task.description)
@@ -76,6 +79,8 @@ const WorkflowEdit = ({
   const [title, setTitle] = useState(task.title)
   const [sectionId, setSectionId] = useState(task.sectionId)
   const [openAddClasses, setOpenAddClasses] = useState(false)
+  const [images, setImages] = useState([])
+  const imagesRef = useRef(null)
 
   const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), [])
   const handleCloseManageClasses = useCallback(() => setOpenAddClasses(false), [])
@@ -85,6 +90,7 @@ const WorkflowEdit = ({
     setTitle(task.title)
     setDescription(task.description)
     setSectionId(task.sectionId)
+    if(task.images) setImages(task.images)
 
     if (task.date) {
       if (typeof task.date.getMonth === 'function') {
@@ -96,7 +102,9 @@ const WorkflowEdit = ({
   }, [task])
 
 
-  const updateTask = useCallback(() => {
+  const updateTask = useCallback(async () => {
+    // const images =  await imagesRef.current?.handleUploadImages()
+    // use id as file name
     updateItem({
       index: task.index,
       title,
@@ -105,10 +113,11 @@ const WorkflowEdit = ({
       description,
       sectionId,
       id: task.id,
-      status: task.status
+      status: task.status,
+      images: imagesRef.current?.images
     })
     onClose()
-  }, [updateItem, onClose, task, title, date, categoryId, description, sectionId])
+  }, [updateItem, onClose, task, title, date, categoryId, description, sectionId, imagesRef])
 
   const updateTitle = useCallback(e => {
     setTitle(e.target.value)
@@ -139,10 +148,11 @@ const WorkflowEdit = ({
       onOk={updateTask}
       secondaryRemoveTitle='Delete'
       onSecondaryRemove={openConfirmArchive}
+      // rightButton={<div>Test</div>}
       showActions
       okTitle='Save'
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className={classes.container}>
         <Grid item xs={12}>
           <TextField
             placeholder='Enter a task'
@@ -215,6 +225,9 @@ const WorkflowEdit = ({
             onClose={handleCloseManageClasses}
           />
         </Grid>
+        {/* <Grid xs={12} item> */}
+        {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
+        {/* </Grid> */}
       </Grid>
     </Dialog>
   )

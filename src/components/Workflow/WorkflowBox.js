@@ -1,5 +1,5 @@
 // @flow
-import React, { useMemo, useCallback } from 'react'
+import React, { useContext, useMemo, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import WorkflowItem from 'components/Workflow/WorkflowItem'
 import List from '@material-ui/core/List'
@@ -7,6 +7,7 @@ import { useDrop } from 'react-dnd'
 import WorkflowListBox from 'components/Workflow/WorkflowListBox'
 import WorkflowBoardBox from 'components/Workflow/WorkflowBoardBox'
 import { Motion, spring } from "react-motion"
+import WorkflowContext from 'containers/Workflow/WorkflowContext'
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -34,23 +35,13 @@ const getHeight = text => {
 }
 
 const WorkflowBox = ({
-  handleExpand,
-  archiveTask,
   bgcolor,
-  buttonColor,
-  listView,
-  handleAddTask,
   tasks,
   categoryId,
-  updateItem,
-  classList,
-  expanded,
-  moveTask,
-  updateCategory,
   name,
-  onDrag,
-  dragId
+  buttonColor,
 }) => {
+  const { expanded, listView, handleExpand, updateCategory } = useContext(WorkflowContext)
   const classes = useStyles()
   const [, drop] = useDrop({
     accept: 'task',
@@ -104,23 +95,16 @@ const WorkflowBox = ({
                 return (
                   <WorkflowItem
                     interpolatingStyle={interpolatingStyle}
-                    classList={classList}
                     index={t.index}
-                    dragId={dragId}
-                    onDrag={onDrag}
                     key={t.id}
-                    listView={listView}
                     task={t}
-                    archiveTask={archiveTask}
-                    updateItem={updateItem}
-                    moveTask={moveTask}
                   />
                 );
               }}
             </Motion>
           )})}
       </List>
-    )}, [classList, tasks, archiveTask, listView, dragId, onDrag, updateItem, moveTask, classes])
+    )}, [classes, tasks, listView])
 
   return listView
     ? <WorkflowListBox
@@ -132,7 +116,6 @@ const WorkflowBox = ({
       onExpand={onExpand}
     />
     : <WorkflowBoardBox
-      handleAddTask={handleAddTask}
       list={renderList}
       drop={drop}
       bgcolor={bgcolor}
