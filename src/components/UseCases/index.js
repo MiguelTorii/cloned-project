@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
@@ -76,14 +76,21 @@ const UseCases = ({
   classes,
   onRedirect,
   push,
+  workflowExperience,
   userId
 }: {
   classes: Object,
+  workflowExperience: boolean,
   onRedirect: Function,
   push: Function,
   userId: number
 }) => {
   const [campaign, setCampaign] = useState(null);
+  const organizeText = useMemo(() => (
+    workflowExperience
+      ? "To make life easier, we all need reminders. Setup tasks and reminders to study, to review flashcards and to review notes your classmates posted"
+      : "To make life easier, we all need reminders. Setup reminders to study, to review flashcards and to review notes your classmates posted"
+  ), [workflowExperience])
 
   useEffect(() => {
     const init = async () => {
@@ -184,13 +191,13 @@ const UseCases = ({
         >
           <Item imageUrl={flashcards} title="Create Flashcards" to="/create/flashcards" />
           <Item imageUrl={notes} title="Upload your Notes" to="/create/notes" />
-          <Item imageUrl={reminders} title="Create a Reminder" to="/reminders" />
+          <Item imageUrl={reminders} title={workflowExperience ? "Add a task to your Workflow" : "Create a Reminder"} to={workflowExperience ? "/" : "/reminders"} />
         </UseCase>
         <UseCase
           title="Get Organized"
-          text="To make life easier, we all need reminders. Setup reminders to study, to review flashcards and to review notes your classmates posted"
+          text={organizeText}
         >
-          <Item imageUrl={reminders} title="Set a Reminder" to="/reminders" />
+          <Item imageUrl={reminders} title={workflowExperience ? "Add a task to your Workflow" : "Set a Reminder"} to={workflowExperience ? "/" : "/reminders"} />
           <Item imageUrl={bookmarks} title="View my Bookmarks" to={`/profile/${userId}/2`} />
         </UseCase>
       </div>

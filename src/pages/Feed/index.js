@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useRef } from 'react';
 import queryString from 'query-string';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -31,6 +31,7 @@ const FeedPage = ({classes, location}: Props) => {
   const {
     feedId, from
   } = queryString.parse(location.search)
+  const gridRef = useRef(null)
 
   const { classId, sectionId } = decypherClass()
   return (
@@ -46,8 +47,8 @@ const FeedPage = ({classes, location}: Props) => {
               from={from}
             />
           </Grid>
-          <Grid item xs={12} md={3} style={{ height: '120vh' }}>
-            <FeedResources />
+          <Grid item xs={12} md={3} ref={gridRef}>
+            <FeedResources gridRef={gridRef} />
           </Grid>
         </Grid>
       </Layout>

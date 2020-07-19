@@ -145,6 +145,18 @@ const CalendarView = () => {
   }, [updateItem])
 
   const [doubleClick, setDoubleClick] = useState(null)
+
+  const addTask = useCallback(() => {
+    setCurrentTask({
+      categoryId: 1,
+      date: doubleClick ? new Date(`${doubleClick} 12:00:00`) : '',
+      id: -1,
+      sectionId: '',
+      status: 1,
+      order: -1,
+    })
+  }, [doubleClick])
+
   const onDateClick = useCallback(e => {
     const {dateStr} = e
     if (!doubleClick) {
@@ -152,17 +164,8 @@ const CalendarView = () => {
       setTimeout(() => setDoubleClick(null), 1000)
     }
 
-    if (doubleClick === dateStr) {
-      setCurrentTask({
-        categoryId: 1,
-        date: new Date(`${dateStr} 12:00:00`),
-        id: -1,
-        sectionId: '',
-        status: 1,
-        order: -1,
-      })
-    }
-  }, [doubleClick])
+    if (doubleClick === dateStr) addTask()
+  }, [addTask, doubleClick])
 
   return (
     <div className={classes.root}>
@@ -186,6 +189,7 @@ const CalendarView = () => {
       />}
       <CalendarControls
         calendar={calendarRef.current}
+        addTask={addTask}
         currentCalendarView={currentCalendarView}
         tasksEmptyDate={tasksEmptyDate}
         onOpenEdit={onOpenEdit}

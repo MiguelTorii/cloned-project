@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   titleContainer: {
     position: 'relative'
   },
+  addTask: {
+    textAlign: 'end'
+  }
 }))
 
 const CalendarControls = ({
@@ -41,6 +44,7 @@ const CalendarControls = ({
   // onOpenEdit,
   // tasksEmptyDate,
   calendar,
+  addTask
 }) => {
   const [api, setApi] = useState(null)
   const [title, setTitle] = useState('')
@@ -113,7 +117,6 @@ const CalendarControls = ({
           aria-label='today'
           onClick={today}
           className={classes.today}
-          variant='contained'
           color='primary'
           disabled={todayDisabled}
         >
@@ -160,7 +163,15 @@ const CalendarControls = ({
         {/* } */}
         <Typography className={classes.title}>{title}</Typography>
       </Grid>
-      <Grid item xs={4} />
+      <Grid item xs={4} className={classes.addTask}>
+        <Button
+          aria-label='new-task'
+          onClick={addTask}
+          color='primary'
+        >
+         Add Task
+        </Button>
+      </Grid>
     </Grid >
   )
 }

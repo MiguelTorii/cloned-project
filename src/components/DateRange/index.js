@@ -70,7 +70,7 @@ type Props = {
 type State = {
   from: ?Object,
   to: ?Object,
-  open: bool
+  open: boolean
 };
 
 class DateRange extends React.PureComponent<Props, State> {
@@ -198,6 +198,8 @@ class DateRange extends React.PureComponent<Props, State> {
           </div>
           <DatePicker
             disableFuture
+            clearable
+            onClear={this.handleReset}
             value={null}
             onChange={this.handleDateChange}
             onClose={() => this.setState({ open: false})}

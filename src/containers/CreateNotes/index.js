@@ -38,7 +38,12 @@ const styles = theme => ({
   },
   leftCharactersRed: {
     marginRight: theme.spacing(2),
-    color: 'red'
+    color: theme.circleIn.palette.danger,
+  },
+  errorMessage: {
+    color: theme.circleIn.palette.danger,
+    fontWeight: 'bold',
+    marginLeft: theme.spacing(),
   },
   divisorOr: {
     marginLeft: theme.spacing(),
@@ -449,6 +454,24 @@ class CreateNotes extends React.PureComponent<Props, State> {
     }
   }
 
+  errorMessage = () => {
+    const { classes } = this.props
+    const { summary } = this.state
+
+    if (Number(this.getLeftCharts(summary)) <= 0) return null
+
+    return (
+      <Typography
+        variant="subtitle1"
+        align="left"
+        className={classes.errorMessage}
+      >
+          You must type 50 characters or more in the summary to post these notes.
+      </Typography>
+    )
+
+  }
+
   render() {
     const {
       classes,
@@ -481,6 +504,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Share Notes"
+            errorMessage={this.errorMessage()}
             subtitle="When you upload your notes, it’s your classmates who can see them. You can help others by sharing and also get feedback too."
             loading={loading}
             changed={changed}

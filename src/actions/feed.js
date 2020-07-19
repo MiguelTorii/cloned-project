@@ -161,8 +161,8 @@ export const fetchFeed = () => async (
 
 export const clearFeedError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
-  
-export const updateScrollData = 
+
+export const updateScrollData =
   (scrollData: { position: number, clasId: number }) => async (dispatch: Dispatch) =>
     dispatch(updateScrollDataRequest(scrollData));
 

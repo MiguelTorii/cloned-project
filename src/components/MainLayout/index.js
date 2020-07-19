@@ -949,7 +949,7 @@ class MainLayout extends React.Component<Props, State> {
           onCancel={this.handleCloseUseCases}
           title="How to use CircleIn for Studying"
         >
-          <UseCases onRedirect={this.handleCloseUseCases} />
+          <UseCases onRedirect={this.handleCloseUseCases} workflowExperience={workflowExperience} />
         </Dialog>
       </Fragment>
     );

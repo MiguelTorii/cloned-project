@@ -84,7 +84,8 @@ type Props = {
   subtitle: string,
   children: Node,
   loading: boolean,
-   changed: boolean,
+  errorMessage: ?string,
+  changed: boolean,
   buttonLabel: string,
   handleSubmit: Function
 };
@@ -101,6 +102,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       children,
       loading,
       changed,
+      errorMessage,
       handleSubmit
     } = this.props;
 
@@ -127,7 +129,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  disabled={loading || (isEdit && !changed)}
+                  disabled={loading || (isEdit && !changed) || errorMessage}
                   className={classes.submit}
                 >
                   {loading ? (
@@ -144,9 +146,9 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             </div>
           </Grid>
           <Grid item xs={12} sm={12}>
-            <Typography variant="subtitle1" className={classes.visible}> 
-              <VisibilityIcon className={classes.icon} /> Visible to your 
-             classmates 
+            {errorMessage}
+            <Typography variant="subtitle1" className={classes.visible}>
+              <VisibilityIcon className={classes.icon} /> Visible to your classmates
             </Typography>
           </Grid>
         </main>

@@ -18,7 +18,7 @@ import type { UserState } from '../../reducers/user';
 
 const styles = theme => ({
   container: {
-    margin: theme.spacing(1, 5, 0, 1),
+    marginTop: theme.spacing(),
     position: 'fixed',
   },
   paper: {
@@ -41,12 +41,14 @@ const styles = theme => ({
     borderRadius: theme.spacing(1, 1, 0, 0),
   },
   title: {
+    textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
     padding: theme.spacing(2, 0, 2, 0),
   },
   text: {
     padding: theme.spacing(0, 2, 5, 2),
+    wordBreak: 'break-word',
     '& a': {
       textDecoration: 'none',
       color: theme.circleIn.palette.brand
@@ -58,12 +60,13 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   width: string,
+  gridRef: Object,
   user: UserState,
   userSync: Function,
   onboardingListVisible: boolean
 };
 
-const FeedResources = ({ width, classes, user, userSync, onboardingListVisible }: Props) => {
+const FeedResources = ({ gridRef, width, classes, user, userSync, onboardingListVisible }: Props) => {
   const {
     data: {
       userId
@@ -99,6 +102,17 @@ const FeedResources = ({ width, classes, user, userSync, onboardingListVisible }
     return window.removeEventListener('scroll', handleScroll);
   }, [onboardingListVisible]);
 
+
+  const [widthParent, setWidthParent] = useState(gridRef?.current?.offsetWidth)
+  useEffect(() => {
+    const  handleResize = () => {
+      setWidthParent(gridRef?.current?.offsetWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [gridRef])
+
   if (['xs', 'sm'].includes(width)) return null;
 
   let top;
@@ -114,7 +128,7 @@ const FeedResources = ({ width, classes, user, userSync, onboardingListVisible }
   }
 
   return (
-    <div className={classes.container} style={{ top }}>
+    <div className={classes.container} style={{ top, width: widthParent }}>
       <div className={classes.content}></div>
       <OnboardingList isNarrowBox />
       {
@@ -128,7 +142,7 @@ const FeedResources = ({ width, classes, user, userSync, onboardingListVisible }
           <Typography className={classes.title}>
             {resourcesTitle}
           </Typography>
-          <Typography className={classes.text}>
+          <Typography className={classes.text} style={{ width: widthParent }}>
             <Linkify properties={{ target: '_blank' }}>
               {resourcesBody}
             </Linkify>
