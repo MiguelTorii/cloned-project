@@ -3,7 +3,7 @@
 import React, { memo, useMemo, useRef, useContext, useState, useEffect, useCallback } from 'react'
 import Dialog from 'components/Dialog'
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+// import Button from '@material-ui/core/Button'
 import DateInput from 'components/Workflow/DateInput'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
@@ -12,7 +12,10 @@ import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import { workflowCategories, remiderTime } from 'constants/common'
+import {
+  workflowCategories,
+  // remiderTime
+} from 'constants/common'
 import RichTextEditor from 'containers/RichTextEditor'
 // import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
@@ -145,10 +148,10 @@ const WorkflowEdit = ({
     else setSectionId(e.target.value)
   }, [handleOpenManageClass])
 
-  const addNotification = useCallback(() => {
-    const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
-    setNotifications(n => [...n, { key: other[0] }])
-  }, [notifications, setNotifications])
+  // const addNotification = useCallback(() => {
+  // const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
+  // setNotifications(n => [...n, { key: other[0] }])
+  // }, [notifications, setNotifications])
 
   const editNotification = useCallback((e, index) => {
     const { key, value } = e.target

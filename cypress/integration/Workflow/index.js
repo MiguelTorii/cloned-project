@@ -29,6 +29,8 @@ describe('Workflow', () => {
       .trigger("dragover")
       .trigger("drop")
       .trigger("dragend");
+
+    cy.contains('Congratulations Felipe, you have just earned 1500 points. Good Work!')
   })
 
   it('Deletes task', () => {
@@ -37,13 +39,13 @@ describe('Workflow', () => {
     cy.contains('Delete').click()
   })
 
-  it('Create/Delete task in List View', () => {
-    cy.contains('List View').click()
-    cy.get('.MuiInputBase-input').click().type('Create Test Task List View')
-    cy.contains('Add Task').click()
-    cy.contains('Create Test Task List View').click()
-    cy.contains('Delete').click()
-    cy.wait(500)
-    cy.contains('Delete').click()
-  })
+  // it('Create/Delete task in List View', () => {
+  // cy.contains('List View').click()
+  // cy.get('.MuiInputBase-input').click().type('Create Test Task List View')
+  // cy.contains('Add Task').click()
+  // cy.contains('Create Test Task List View').click()
+  // cy.contains('Delete').click()
+  // cy.wait(1000)
+  // cy.contains('Delete').click()
+  // })
 })
