@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo, useMemo } from 'react'
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
 import clsx from 'clsx'
 import moment from 'moment'
@@ -10,10 +10,10 @@ const WorkflowBoardItem = ({
   onOpen,
   showDetails,
 }) => {
-  const date = clsx(task.date && moment(task.date).format('MMM D'))
-  const selectedClass = classList[task.sectionId]
+  const date = useMemo(() => clsx(task.date && moment(task.date).format('MMM D')), [task.date])
+  const selectedClass = useMemo(() => classList[task.sectionId], [classList, task.sectionId])
 
-  return (
+  return useMemo(() => (
     <div>
       <WorkflowBoardCard
         onOpen={onOpen}
@@ -24,7 +24,7 @@ const WorkflowBoardItem = ({
         selectedClass={selectedClass}
       />
     </div>
-  )
+  ), [date, onOpen, openConfirmArchive, selectedClass, showDetails, task.title])
 }
 
-export default WorkflowBoardItem
+export default memo(WorkflowBoardItem)

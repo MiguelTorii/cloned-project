@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useMemo, useCallback } from 'react'
+import React, { memo, useContext, useMemo, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import WorkflowItem from 'components/Workflow/WorkflowItem'
 import List from '@material-ui/core/List'
@@ -92,13 +92,21 @@ const WorkflowBox = ({
               }}
             >
               {interpolatingStyle => {
+                const moveStyle = {
+                  paddingLeft: 12,
+                  width: '100%',
+                  position: 'absolute',
+                  transform: `translate3d(0, ${interpolatingStyle.y}px, 0) scale( ${interpolatingStyle.scale}, ${interpolatingStyle.scale} )`,
+                }
                 return (
-                  <WorkflowItem
-                    interpolatingStyle={interpolatingStyle}
-                    index={t.index}
-                    key={t.id}
-                    task={t}
-                  />
+                  <div style={moveStyle}>
+                    <WorkflowItem
+                    // interpolatingStyle={interpolatingStyle}
+                      index={t.index}
+                      key={t.id}
+                      task={t}
+                    />
+                  </div>
                 );
               }}
             </Motion>
@@ -106,7 +114,7 @@ const WorkflowBox = ({
       </List>
     )}, [classes, tasks, listView])
 
-  return listView
+  return useMemo(() => (listView
     ? <WorkflowListBox
       list={renderList}
       drop={drop}
@@ -123,7 +131,7 @@ const WorkflowBox = ({
       name={name}
       categoryId={categoryId}
       tasks={tasks}
-    />
+    />), [bgcolor, buttonColor, categoryId, drop, isExpanded, listView, name, onExpand, renderList, tasks])
 }
 
-export default WorkflowBox
+export default memo(WorkflowBox)

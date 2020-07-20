@@ -26,7 +26,8 @@ export const getTodos = async () => {
       order: d.order,
       status: d.status,
       title: d.title,
-      date: d.due_date || ''
+      date: d.due_date || '',
+      notifications: []
     }))
   } catch (err) {
     return null;

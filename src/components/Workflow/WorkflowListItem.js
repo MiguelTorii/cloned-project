@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 // import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -143,7 +143,7 @@ const WorkflowListItem = ({
       </Grid>
     )}, [task, classList, classes, title, isDragging, showDetails, openConfirmArchive, onOpen])
 
-  return (
+  return useMemo(() => (
     <ListItem
       className={classes.item}
       selected={showDetails}
@@ -161,7 +161,7 @@ const WorkflowListItem = ({
       {/* </ListItemIcon> */}
       <ListItemText primary={renderTask} onClick={onOpen} />
     </ListItem>
-  )
+  ), [classes.dragContainer, classes.dragIcon, classes.item, isDragging, onOpen, renderTask, showDetails])
 }
 
-export default WorkflowListItem
+export default memo(WorkflowListItem)

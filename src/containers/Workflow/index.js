@@ -133,6 +133,7 @@ function reducer(state, action) {
           date: {$set: action.date},
           sectionId: {$set: action.sectionId || ''},
           status: {$set: action.status},
+          notifications: {$set: action.notifications || []},
           images: {$set: action.images}
         }
       }

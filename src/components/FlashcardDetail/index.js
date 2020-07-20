@@ -9,7 +9,7 @@ import CreateIcon from '@material-ui/icons/Create'
 import ClearIcon from '@material-ui/icons/Clear'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import CustomQuill from 'components/CustomQuill'
+// import CustomQuill from 'components/CustomQuill'
 
 type Props = {
   id: string,

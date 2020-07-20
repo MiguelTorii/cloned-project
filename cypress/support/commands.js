@@ -23,3 +23,13 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', () => {
+  cy.request('POST', 'https://dev-api.circleinapp.com/v1/auth/login', {"email":"felipe.machado+demo8@toptal.com","password":"bababa","school_id":4})
+    .then(user => {
+      window.localStorage.setItem('TOKEN', user.body.jwt_token)
+      window.localStorage.setItem('REFRESH_TOKEN', user.body.refresh_token)
+      window.localStorage.setItem('USER_ID', user.body.user_id)
+      window.localStorage.setItem('SEGMENT', user.body.segment)
+    })
+})

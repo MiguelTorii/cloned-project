@@ -1,5 +1,5 @@
 // @flow
-import React, { useContext, useRef, useState, useCallback } from 'react'
+import React, { memo, useContext, useRef, useState, useCallback, useMemo } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
@@ -45,7 +45,6 @@ type Props = {
 };
 
 const WorkflowItem = ({
-  interpolatingStyle,
   index,
   task,
 }: Props) => {
@@ -143,18 +142,11 @@ const WorkflowItem = ({
     onClose()
   }, [task, archiveTask, closeConfirmArchive, onClose])
 
+  const itemWidth = useMemo(() => listView ? classes.listItem : classes.cardItem, [classes.cardItem, classes.listItem, listView])
 
-  const moveStyle = {
-    position: 'absolute',
-    transform: `translate3d(0, ${interpolatingStyle.y}px, 0) scale( ${interpolatingStyle.scale}, ${interpolatingStyle.scale} )`,
-  }
-
-  const itemWidth = listView ? classes.listItem : classes.cardItem
-
-  return (
+  return useMemo(() => (
     <div
       ref={taskRef}
-      style={moveStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={cx(classes.root, hiddenClass, itemWidth)}
@@ -197,7 +189,7 @@ const WorkflowItem = ({
           drag={drag}
         />}
     </div>
-  )
+  ), [archive, classList, classes.archiveTitle, classes.dialog, classes.root, closeConfirmArchive, confirmArchive, drag, handleComplete, hiddenClass, isDragging, itemWidth, listView, onClose, onMouseEnter, onMouseLeave, onOpen, open, openConfirmArchive, showDetails, task])
 }
 
-export default WorkflowItem
+export default memo(WorkflowItem)

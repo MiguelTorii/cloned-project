@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { memo, useMemo, useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -164,4 +164,4 @@ const WorkflowBoardCard = ({
   )
 }
 
-export default WorkflowBoardCard
+export default memo(WorkflowBoardCard)

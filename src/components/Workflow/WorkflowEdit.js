@@ -1,20 +1,22 @@
 // @flow
 
-import React, { useRef, useContext, useState, useEffect, useCallback} from 'react'
-import Dialog from 'components/Dialog';
+import React, { memo, useMemo, useRef, useContext, useState, useEffect, useCallback } from 'react'
+import Dialog from 'components/Dialog'
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import DateInput from 'components/Workflow/DateInput'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import {workflowCategories} from 'constants/common'
-import RichTextEditor from 'containers/RichTextEditor';
-import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
+import { workflowCategories, remiderTime } from 'constants/common'
+import RichTextEditor from 'containers/RichTextEditor'
+// import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
+import Notification from 'components/Workflow/Notification'
 
 const useStyles = makeStyles(theme => ({
   newClass: {
@@ -24,20 +26,14 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     width: 600,
     '& .MuiDialogContent-root': {
-      overflowY: 'auto',
+      overflowY: 'auto'
     }
   },
   dialogImg: {
-    height: 'inherit',
+    height: 'inherit'
   },
   title: {
     fontSize: 20
-  },
-  selectForm: {
-    width: '100%',
-    '& .MuiInput-formControl': {
-      marginTop: 10,
-    }
   },
   emptyOption: {
     height: theme.spacing(4)
@@ -48,12 +44,18 @@ const useStyles = makeStyles(theme => ({
       display: 'none !important'
     },
     '& div div': {
-      padding: 0,
+      padding: 0
     },
     '& .ql-container': {
       padding: theme.spacing()
     }
   },
+  selectForm: {
+    width: '100%',
+    '& .MuiInput-formControl': {
+      marginTop: 10
+    }
+  }
 }))
 
 type Props = {
@@ -66,11 +68,11 @@ const WorkflowEdit = ({
   task,
   onClose,
   openConfirmArchive,
-  open,
+  open
 }: Props) => {
   const {
     classList,
-    updateItem,
+    updateItem
   } = useContext(WorkflowContext)
   const classes = useStyles()
   const [date, setDate] = useState('')
@@ -79,7 +81,11 @@ const WorkflowEdit = ({
   const [title, setTitle] = useState(task.title)
   const [sectionId, setSectionId] = useState(task.sectionId)
   const [openAddClasses, setOpenAddClasses] = useState(false)
-  const [images, setImages] = useState([])
+  const [
+    // images,
+    setImages
+  ] = useState([])
+  const [notifications, setNotifications] = useState([])
   const imagesRef = useRef(null)
 
   const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), [])
@@ -90,7 +96,7 @@ const WorkflowEdit = ({
     setTitle(task.title)
     setDescription(task.description)
     setSectionId(task.sectionId)
-    if(task.images) setImages(task.images)
+    if (task.images) setImages(task.images)
 
     if (task.date) {
       if (typeof task.date.getMonth === 'function') {
@@ -99,8 +105,7 @@ const WorkflowEdit = ({
         setDate(new Date(`${task.date.replace(' ', 'T')}Z`))
       }
     }
-  }, [task])
-
+  }, [task, setImages])
 
   const updateTask = useCallback(async () => {
     // const images =  await imagesRef.current?.handleUploadImages()
@@ -140,7 +145,28 @@ const WorkflowEdit = ({
     else setSectionId(e.target.value)
   }, [handleOpenManageClass])
 
-  return (
+  const addNotification = useCallback(() => {
+    const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
+    setNotifications(n => [...n, { key: other[0] }])
+  }, [notifications, setNotifications])
+
+  const editNotification = useCallback((e, index) => {
+    const { key, value } = e.target
+    if (key === 'custom') {
+      setNotifications(n => n.map((v, i) => i === index ? { key: key + index, value } : v))
+      return
+    }
+
+    if (!notifications.includes(value)) {
+      setNotifications(n => n.map((v, i) => i === index ? { key: value } : v))
+    }
+  }, [notifications, setNotifications])
+
+  const deleteNotification = useCallback(index => {
+    setNotifications(n => n.filter((_, idx) => idx !== index))
+  }, [setNotifications])
+
+  return useMemo(() => (
     <Dialog
       className={classes.dialog}
       onCancel={onClose}
@@ -157,7 +183,7 @@ const WorkflowEdit = ({
           <TextField
             placeholder='Enter a task'
             inputProps={{
-              className: classes.title,
+              className: classes.title
             }}
             fullWidth
             multiline
@@ -195,7 +221,7 @@ const WorkflowEdit = ({
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <FormControl className={classes.selectForm}>
             <InputLabel>What class is this for?</InputLabel>
             <Select
@@ -210,12 +236,13 @@ const WorkflowEdit = ({
                 return (
                   <MenuItem
                     key={k}
-                    value={k}>
+                    value={k}
+                  >
                     {cl.courseDisplayName}
                   </MenuItem>
                 )
               })}
-              <MenuItem value="new" className={classes.newClass}>
+              <MenuItem value='new' className={classes.newClass}>
                 Add Classes
               </MenuItem>
             </Select>
@@ -225,12 +252,25 @@ const WorkflowEdit = ({
             onClose={handleCloseManageClasses}
           />
         </Grid>
+        <Grid item xs={12}>
+          {notifications.map((n, index) => (
+            <Notification
+              n={n}
+              key={`reminders-${n.key}`}
+              dueDate={date}
+              index={index}
+              editNotification={editNotification}
+              deleteNotification={deleteNotification}
+            />
+          ))}
+        </Grid>
+        {/* notifications.length < 2 && <Button onClick={addNotification}>Add Notification</Button> */}
         {/* <Grid xs={12} item> */}
         {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
         {/* </Grid> */}
       </Grid>
     </Dialog>
-  )
+  ), [categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
 }
 
-export default WorkflowEdit
+export default memo(WorkflowEdit)

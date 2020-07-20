@@ -92,6 +92,8 @@
     }
   },
   "globals": {
+    "cy": true,
+    "Cypress": true,
     "window": true,
     "document": true,
     "localStorage": true,

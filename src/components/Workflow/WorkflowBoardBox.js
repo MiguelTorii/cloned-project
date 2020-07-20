@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback, useState } from 'react'
+import React, { memo, useContext, useMemo, useCallback, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -115,7 +115,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
     </div>
   ), [handleKeyDown, handleChange, classes, newInputValue])
 
-  return (
+  return useMemo(() => (
     <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }}>
       <Grid container justify='space-between' alignItems='center' direction='column'>
         <Grid item className={classes.headerItem}>
@@ -140,7 +140,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
         {list}
       </Grid>
     </Grid>
-  )
+  ), [bgcolor, buttonColor, classes.button, classes.container, classes.headerItem, classes.listContainer, classes.newContainer, classes.title, closeNew, drop, handleNew, list, name, newInput, openNew, showNew])
 }
 
-export default WorkflowBoardBox
+export default memo(WorkflowBoardBox)
