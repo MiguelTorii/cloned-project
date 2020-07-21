@@ -17,6 +17,7 @@ const styles = {
       border: 'none'
     },
     '& .ql-editor': {
+      maxHeight: 'none',
       paddingTop: 0
     }
   }
@@ -33,13 +34,11 @@ const modules = {
       { indent: '-1' },
       { indent: '+1' }
     ],
+    ['formula'],
     ['image'],
     ['clean']
   ]
 };
-
-const values = queryString.parse(window.location.search)
-if (values?.formulas) modules.toolbar = [...modules.toolbar, ['formula']]
 
 type Props = {
   placeholder: string,

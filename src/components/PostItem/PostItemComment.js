@@ -17,6 +17,7 @@ import Link from '@material-ui/core/Link';
 import ReplyIcon from '@material-ui/icons/Reply';
 import green from '@material-ui/core/colors/green';
 import TutorBadge from 'components/TutorBadge'
+import CustomQuill from 'components/CustomQuill'
 import PostItemAddComment from './PostItemAddComment';
 import Dialog from '../Dialog';
 // $FlowIgnore
@@ -263,8 +264,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
               </div>
             )}
             <div className={classes.markdown}>
-              <span dangerouslySetInnerHTML={{ __html: comment }} />
-              {/* <Markdown>{comment}</Markdown> */}
+              <CustomQuill value={comment} readOnly />
             </div>
             <div
               className={cx(

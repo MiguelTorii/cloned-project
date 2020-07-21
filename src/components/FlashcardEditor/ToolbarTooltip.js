@@ -83,6 +83,11 @@ const initialState = {
     el: null,
     open: false
   },
+  formula: {
+    text: 'Formula',
+    el: null,
+    open: false
+  },
 }
 
 function reducer(state, action) {

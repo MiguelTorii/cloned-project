@@ -2,14 +2,13 @@
 
 import React, { useMemo } from 'react'
 import Grid from '@material-ui/core/Grid'
-import Markdown from 'components/Markdown';
 import SelectedImage from 'components/SelectedImage'
 import clsx from 'clsx'
 import CreateIcon from '@material-ui/icons/Create'
 import ClearIcon from '@material-ui/icons/Clear'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
-// import CustomQuill from 'components/CustomQuill'
+import CustomQuill from 'components/CustomQuill'
 
 type Props = {
   id: string,
@@ -24,60 +23,7 @@ type Props = {
 
 const useStyles = makeStyles((theme) => ({
   markdownContainer: {
-    '& ol': {
-      paddingLeft: theme.spacing(2),
-      margin: 0
-    },
-    '& ul': {
-      paddingLeft: theme.spacing(2),
-      margin: 0
-    },
-    '& li': {
-      margin: 0
-    },
-    '& u': {
-      fontSize: 16,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& s': {
-      fontSize: 16,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& strong': {
-      fontSize: 16,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& span': {
-      fontSize: 16,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& div': {
-      fontSize: 16,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& h1': {
-      fontSize: 24,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& h2': {
-      fontSize: 22,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(1),
   },
   root: {
     position: 'relative',
@@ -187,8 +133,7 @@ const FlashcardList = ({
             questionImage && classes.hasImage,
             classes.markdownContainer
           )}>
-            <Markdown>{question}</Markdown>
-            {/* <CustomQuill value={question} readOnly /> */}
+            <CustomQuill value={question} readOnly />
           </div>
         </Grid>
         <Grid item xs={8} className={classes.answer}>
@@ -200,8 +145,7 @@ const FlashcardList = ({
             answerImage&& classes.hasImage,
             classes.markdownContainer
           )}>
-            <Markdown>{answer}</Markdown>
-            {/* <CustomQuill value={answer} readOnly /> */}
+            <CustomQuill value={answer} readOnly />
           </div>
         </Grid>
       </Grid>

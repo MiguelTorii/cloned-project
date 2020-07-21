@@ -10,6 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import CustomQuill from 'components/CustomQuill'
 
 const styles = theme => ({
   actions: {
@@ -209,10 +210,9 @@ const Flashcard = ({
           }
           {
             answer &&
-            <div
-              className={classes.text}
-              dangerouslySetInnerHTML={createMarkup(answer)}
-            />
+              <div className={classes.text}>
+                <CustomQuill value={answer} readOnly />
+              </div>
           }
         </CardContent>
       </Animation>
@@ -230,10 +230,9 @@ const Flashcard = ({
         }
         {
           question &&
-          <div
-            className={classes.text}
-            dangerouslySetInnerHTML={createMarkup(question)}
-          />
+              <div className={classes.text}>
+                <CustomQuill value={question} readOnly />
+              </div>
         }
       </CardContent>
     </Card>

@@ -21,7 +21,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import queryString from 'query-string';
 import TutorBadge from 'components/TutorBadge'
-import Markdown from 'components/Markdown';
+import CustomQuill from 'components/CustomQuill'
 import Tooltip from '../../containers/Tooltip';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
@@ -274,7 +274,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </Typography>
         ) : (
           <div className={classes.markdown}>
-            <Markdown>{body}</Markdown>
+            <CustomQuill value={body} readOnly />
           </div>
         )}
         {renderMenu}

@@ -4,6 +4,7 @@ import Markdown from 'components/Markdown';
 import LoadImg from 'components/LoadImg'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import CustomQuill from 'components/CustomQuill'
 
 const useStyles = makeStyles(theme => ({
   flashCardPreview: {
@@ -21,65 +22,6 @@ const useStyles = makeStyles(theme => ({
     width: 199,
   },
   markdownContainer: {
-    '& ol': {
-      paddingLeft: theme.spacing(2),
-      margin: 0
-    },
-    '& ul': {
-      paddingLeft: theme.spacing(2),
-      margin: 0
-    },
-    '& li': {
-      margin: 0
-    },
-    '& h1': {
-      fontSize: 18,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& h2': {
-      fontSize: 14,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& u': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& s': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      margin: 0,
-    },
-    '& strong': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& span': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& div': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
-    '& p': {
-      fontSize: 11,
-      textOverflow: 'ellipsis',
-      margin: 0,
-      overflow: 'hidden'
-    },
     maxHeight: 35,
     marginLeft: 8,
     textOverflow: 'ellipsis',
@@ -146,7 +88,7 @@ const FeedFlashcards = ({ deck }) => {
           </Grid>}
           {strip(question) && <Grid item xs={questionImageUrl ? 9 : 12}>
             <div className={classes.markdownContainer}>
-              <Markdown>{question}</Markdown>
+              <CustomQuill value={question} readOnly />
             </div>
           </Grid>}
         </Grid>
@@ -161,7 +103,7 @@ const FeedFlashcards = ({ deck }) => {
           </Grid>}
           {strip(answer) && <Grid item xs={answerImageUrl ? 9 : 12}>
             <div className={classes.markdownContainer}>
-              <Markdown>{answer}</Markdown>
+              <CustomQuill value={answer} readOnly />
             </div>
           </Grid>}
         </Grid>
