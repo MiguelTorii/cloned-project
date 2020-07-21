@@ -4,7 +4,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import withStyles from '@material-ui/core/styles/withStyles';
 import cx from 'classnames'
-import queryString from 'query-string'
 import './quill.custom.css';
 import MathQuill from './Math'
 

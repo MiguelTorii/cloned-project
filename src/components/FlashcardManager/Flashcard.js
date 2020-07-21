@@ -2,7 +2,6 @@
 // @flow
 import React, { useRef, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import sanitizeHtml from 'sanitize-html';
 import ReactCardFlip from 'react-card-flip';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -116,10 +115,6 @@ const Flashcard = ({
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [animationEnded, setAnimationEnded] = useState(false);
   const refCard = useRef(null);
-
-  const createMarkup = (html) => {
-    return { __html: sanitizeHtml(html) };
-  }
 
   const usePrevious = (value) => {
     const ref = useRef();

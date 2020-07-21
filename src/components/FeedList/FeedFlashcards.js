@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Markdown from 'components/Markdown';
 import LoadImg from 'components/LoadImg'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
