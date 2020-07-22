@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 // @flow
 
-import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns'
+import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign'
@@ -23,23 +23,16 @@ export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaig
   try {
     const { campaign } = getState()
 
-    if (campaignId === WORKFLOW_CAMPAIGN) {
-      if (campaign.workflowExperience === null || reset) {
-        const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
-
-        dispatch(requestGetCampaign({ campaign: 'workflowExperience', active: !isDisabled && id === 2 }));
-      }
-    }
-
-    if (campaignId === NEW_CLASSES_CAMPAIGN){
+    if (campaignId === LANDING_PAGE_CAMPAIGN){
       if (campaign.newClassExperience === null || reset) {
-        const { id, is_disabled: isDisabled } = await getCampaign({ campaignId })
+        const { id } = await getCampaign({ campaignId })
 
-        dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: !isDisabled && id === 3 }));
+        dispatch(requestGetCampaign({ campaign: 'landingPageCampaign', active: id === 4 }));
+        dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: id !== 1 }));
       }
     }
   } catch(e) {
-    if (campaignId === NEW_CLASSES_CAMPAIGN)
+    if (campaignId === LANDING_PAGE_CAMPAIGN)
       dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: false }));
     return null
   }

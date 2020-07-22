@@ -300,7 +300,7 @@ type Props = {
   userClasses: Object,
   onManageBlockedUsers: Function,
   newClassExperience: boolean,
-  workflowExperience: boolean,
+  landingPageCampaign: boolean,
   updateFeed: Function,
   location: {
     search: string
@@ -561,7 +561,7 @@ class MainLayout extends React.Component<Props, State> {
       </Menu>
     );
 
-    const { updateFeed, newClassExperience, userClasses, workflowExperience } = this.props
+    const { updateFeed, newClassExperience, userClasses, landingPageCampaign } = this.props
 
     const renderCreatePostMenu = (
       <Menu
@@ -638,18 +638,6 @@ class MainLayout extends React.Component<Props, State> {
             icon={Videos}
           />
         </MenuItem>
-        {!workflowExperience && <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link="/reminders"
-        >
-          <MenuItemContent
-            primaryText="Create a Reminder"
-            secondaryText="Earn 300 points for creating a reminder, then 400 points for completing it"
-            icon={Reminders}
-          />
-        </MenuItem>}
       </Menu>
     );
 
@@ -696,7 +684,7 @@ class MainLayout extends React.Component<Props, State> {
               />
             </ListItem>
           </Tooltip>
-          {workflowExperience && <ListItem
+          {landingPageCampaign && <ListItem
             button
             component={MyLink}
             link="/"
@@ -716,10 +704,25 @@ class MainLayout extends React.Component<Props, State> {
             MyLink={MyLink}
             userClasses={userClasses}
             updateFeed={updateFeed}
+            landingPageCampaign={landingPageCampaign}
             newClassExperience={newClassExperience}
-            workflowExperience={workflowExperience}
             openClassmatesDialog={openClassmatesDialog}
           />
+          {!landingPageCampaign && <ListItem
+            button
+            component={MyLink}
+            link="/workflow"
+            className={classNames(
+              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          >
+            <ListItemIcon>
+              <CalendarTodayIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Workflow"
+            />
+          </ListItem>}
           <ListItem
             button
             component={MyLink}
@@ -733,21 +736,6 @@ class MainLayout extends React.Component<Props, State> {
               primary="Chats"
             />
           </ListItem>
-          {!workflowExperience && <ListItem
-            button
-            component={MyLink}
-            link="/reminders"
-            className={classNames(
-              ['/reminders'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <CalendarTodayIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="My Reminders"
-            />
-          </ListItem>}
           <ListItem
             button
             component={MyLink}
@@ -949,7 +937,7 @@ class MainLayout extends React.Component<Props, State> {
           onCancel={this.handleCloseUseCases}
           title="How to use CircleIn for Studying"
         >
-          <UseCases onRedirect={this.handleCloseUseCases} workflowExperience={workflowExperience} />
+          <UseCases onRedirect={this.handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
         </Dialog>
       </Fragment>
     );

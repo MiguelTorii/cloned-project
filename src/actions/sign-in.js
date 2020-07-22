@@ -2,7 +2,7 @@
 
 import { push } from 'connected-react-router';
 import store from 'store';
-import { WORKFLOW_CAMPAIGN, NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
 import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
@@ -99,8 +99,7 @@ export const signIn = ({
     store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
-    await dispatch(campaignActions.requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN, reset: true }))
-    await dispatch(campaignActions.requestCampaign({ campaignId: WORKFLOW_CAMPAIGN, reset: true }))
+    await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;

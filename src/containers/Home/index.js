@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as campaignActions from 'actions/campaign'
-import { NEW_CLASSES_CAMPAIGN, WORKFLOW_CAMPAIGN } from 'constants/campaigns'
+import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
 import { sync } from '../../actions/user';
@@ -29,16 +29,15 @@ const Home = ({
   userId,
   userSync
 }) => {
-  const [newWorkflowExperience, setNewWorkflowExperience] = useState(null)
+  const [landingPage, setLandingPage] = useState(null)
 
   useEffect(() => {
-    requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN })
-    requestCampaign({ campaignId: WORKFLOW_CAMPAIGN })
+    requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN })
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    setNewWorkflowExperience(campaign.workflowExperience)
+    setLandingPage(campaign.landingPageCampaign)
   }, [campaign])
 
   useEffect(() => {
@@ -50,13 +49,13 @@ const Home = ({
     // eslint-disable-next-line
   }, [userId])
 
-  if(newWorkflowExperience === null) return (
+  if(landingPage === null) return (
     <div className={classes.loading}>
       <CircularProgress />
     </div>
   )
 
-  return newWorkflowExperience ? <Workflow /> : <Classes />
+  return landingPage ? <Workflow /> : <Classes />
 }
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({

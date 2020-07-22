@@ -2,7 +2,7 @@
 
 import { push } from 'connected-react-router';
 import store from 'store';
-import { NEW_CLASSES_CAMPAIGN } from 'constants/campaigns'
+import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
 import { signUpActions } from '../constants/action-types';
 import type { Action } from '../types/action';
@@ -103,7 +103,7 @@ export const signUp = ({
 
     await dispatch(setUser({ user }));
 
-    await dispatch(campaignActions.requestCampaign({ campaignId: NEW_CLASSES_CAMPAIGN, reset: true }))
+    await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
     try {
       if (referralCode !== '') {
         setReferral({ userId: user.userId, referralCode });

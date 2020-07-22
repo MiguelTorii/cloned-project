@@ -14,13 +14,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import * as campaignActions from 'actions/campaign';
-import { WORKFLOW_CAMPAIGN } from 'constants/campaigns';
+import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
 import type { CampaignState } from 'reducers/campaign';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
-import Onboarding from '../Onboarding';
 import OnboardingV2 from '../OnboardingV2';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
@@ -88,7 +87,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     } = this.props;
 
     if (userId !== '') this.handleCheckUpdate();
-    requestCampaign({ campaignId: WORKFLOW_CAMPAIGN });
+    requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
   };
 
   componentDidUpdate = prevProps => {
@@ -172,7 +171,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       updateOnboarding
     } = this.props;
 
-    if (userId === '' || campaign.workflowExperience === null) return null;
+    if (userId === '' || campaign.landingPageCampaign === null) return null;
 
     const {
       open,
@@ -298,19 +297,11 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        {
-          campaign.workflowExperience
-            ? <OnboardingV2
-              open={viewedOnboarding !== null && !viewedOnboarding}
-              updateOnboarding={updateOnboarding}
-              userId={userId}
-            />
-            : <Onboarding
-              open={viewedOnboarding !== null && !viewedOnboarding}
-              updateOnboarding={updateOnboarding}
-              userId={userId}
-            />
-        }
+        <OnboardingV2
+          open={viewedOnboarding !== null && !viewedOnboarding}
+          updateOnboarding={updateOnboarding}
+          userId={userId}
+        />
       </ErrorBoundary>
     );
   }

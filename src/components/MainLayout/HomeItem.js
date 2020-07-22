@@ -25,7 +25,7 @@ const HomeItem = ({
   updateFeed,
   openClassmatesDialog,
   newClassExperience,
-  workflowExperience,
+  landingPageCampaign,
   createPostOpen,
 }: Props) => {
   const [classList, setClassList] = useState([])
@@ -87,7 +87,7 @@ const HomeItem = ({
     }
   }, [newClassExperience, userClasses])
 
-  const classesPath = workflowExperience ? '/classes' : '/'
+  const classesPath = landingPageCampaign ? '/classes' : '/'
   const isHome = [classesPath].includes(window.location.pathname)
 
 
