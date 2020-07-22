@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,6 +8,7 @@ import * as campaignActions from 'actions/campaign'
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
+import Feed from 'pages/Feed'
 import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 
@@ -29,16 +30,9 @@ const Home = ({
   userId,
   userSync
 }) => {
-  const [landingPage, setLandingPage] = useState(null)
-
   useEffect(() => {
     requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN })
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    setLandingPage(campaign.landingPageCampaign)
-  }, [campaign])
+  }, [requestCampaign])
 
   useEffect(() => {
     const init = async () => {
@@ -49,13 +43,14 @@ const Home = ({
     // eslint-disable-next-line
   }, [userId])
 
-  if(landingPage === null) return (
+  if(campaign.newClassExperience === null) return (
     <div className={classes.loading}>
       <CircularProgress />
     </div>
   )
 
-  return landingPage ? <Workflow /> : <Classes />
+  if (!campaign.newClassExperience) return <Feed />
+  return campaign.landingPageCampaign ? <Workflow /> : <Classes />
 }
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
