@@ -45,7 +45,6 @@ import Links from '../../assets/svg/links.svg';
 import Logo from '../../assets/svg/app-logo-white.svg';
 import Notes from '../../assets/svg/notes.svg';
 import Questions  from '../../assets/svg/questions.svg';
-import Reminders from '../../assets/svg/reminders.svg';
 import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import GetApp from '../GetApp';
