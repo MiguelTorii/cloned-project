@@ -10,6 +10,7 @@ export const getCampaign = async ({ campaignId }: {
 }): Promise<Object> => {
   try {
     const token = await getToken();
+    // if (!token) return
     const result = await axios.get(`${API_ROUTES.CAMPAIGN}/${campaignId}/variations/me`, {
       headers: {
         Authorization: `Bearer ${token}`

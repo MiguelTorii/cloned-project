@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import type { SelectType } from '../../types/models';
+import { useAuth0 } from "@auth0/auth0-react";
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
@@ -46,38 +46,33 @@ type Props = {
   pushTo: Function,
   updateSchool: Function
 };
+const Auth = ({ classes, pushTo, updateSchool }: Props) => {
+  const [school] = useState(null)
+  const [error] = useState(false)
+  const [lti, setLit] = useState(false)
+  const [redirectMessage, setRedirectMessage] = useState(false)
+  const { user, loginWithRedirect } = useAuth0();
+  console.log(user)
 
-type State = {
-  school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
-  error: boolean,
-  lti: boolean,
-  redirectMessage: string
-};
-
-class Auth extends React.Component<Props, State> {
-  state = {
-    school: null,
-    error: false,
-    lti: false,
-    redirectMessage: '',
-  };
-
-  handleChange = value => {
+  const handleChange = useCallback(value => {
     if (!value) return;
     const { lmsTypeId, launchType, redirect_message: redirectMessage } = value;
     if (launchType === 'lti') {
-      this.setState({ lti: true, redirectMessage});
+      setLit(true)
+      setRedirectMessage(redirectMessage)
     } else if (lmsTypeId === 0) {
-      const { updateSchool, pushTo } = this.props;
       const { label, value: selectValue, ...school } = value;
       updateSchool({ school });
       pushTo('/login')
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
+    } else if (value.id === 55) {
+      // alert(JSON.stringify(value))
+      window.location.replace('https://circlein-dev.us.auth0.com/samlp/Z9tv8MvsY8JcS2Z8uedkLBPjyyrAnI7K')
     } else {
       const responseType = 'code';
       const obj = {
-        uri: value.uri,
+        uri: value.uri, 
         lms_type_id: value.lmsTypeId,
         response_type: responseType,
         client_id: value.clientId,
@@ -93,11 +88,12 @@ class Auth extends React.Component<Props, State> {
       if (value.scope) {
         uri = `${uri}&scope=${value.scope}`;
       }
+
       window.location.replace(uri);
     }
-  };
+  }, [loginWithRedirect, pushTo, updateSchool])
 
-  handleLoadOptions = async value => {
+  const handleLoadOptions = useCallback(async value => {
     if (value.trim().length > 1) {
       const schools = await searchSchools({ query: value });
 
@@ -117,48 +113,40 @@ class Auth extends React.Component<Props, State> {
       options: [],
       hasMore: false
     };
-  };
+  }, [])
 
-  handleClose = () => {
-    this.setState({ lti: false });
-  };
+  const handleClose = useCallback(() => setLit(false), [])
 
-  render() {
-    const {
-      classes,
-    } = this.props;
-    const { redirectMessage, school, error, lti } = this.state;
-
-    return (
-      <main className={classes.main}>
-        <Grid container justify="space-around">
-          <Grid item xs={12} lg={6}>
-            <div className={classes.grid}>
-              <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
-              <ErrorBoundary>
-                <AuthSearchSchool
-                  school={school}
-                  error={error}
-                  onChange={this.handleChange}
-                  onLoad={this.handleLoadOptions}
-                />
-              </ErrorBoundary>
-            </div>
-          </Grid>
-        </Grid>
-        <Dialog
-          onCancel={this.handleClose}
-          onOk={this.handleClose}
-          open={lti}
-          showActions
-        >
-          <div className={classes.content}>
-            <Typography color="textPrimary">{redirectMessage}</Typography>
+  return (
+    <main className={classes.main}>
+      <button onClick={loginWithRedirect}>Login</button>
+      <Grid container justify="space-around">
+        <Grid item xs={12} lg={6}>
+          <div className={classes.grid}>
+            <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
+            <ErrorBoundary>
+              <AuthSearchSchool
+                school={school}
+                error={error}
+                onChange={handleChange}
+                onLoad={handleLoadOptions}
+              />
+            </ErrorBoundary>
           </div>
-        </Dialog>
-      </main>
-    );
-  }
+        </Grid>
+      </Grid>
+      <Dialog
+        onCancel={handleClose}
+        onOk={handleClose}
+        open={lti}
+        showActions
+      >
+        <div className={classes.content}>
+          <Typography color="textPrimary">{redirectMessage}</Typography>
+        </div>
+      </Dialog>
+    </main>
+  );
 }
 
 const mapStateToProps = ({ user, auth }: StoreState): {} => ({
