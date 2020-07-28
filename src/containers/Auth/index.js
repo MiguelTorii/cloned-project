@@ -7,7 +7,7 @@ import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { useAuth0 } from "@auth0/auth0-react";
+import Auth0Lock from 'auth0-lock';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
@@ -51,8 +51,6 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
   const [error] = useState(false)
   const [lti, setLit] = useState(false)
   const [redirectMessage, setRedirectMessage] = useState(false)
-  const { user, loginWithRedirect } = useAuth0();
-  console.log(user)
 
   const handleChange = useCallback(value => {
     if (!value) return;
@@ -67,12 +65,20 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (value.id === 55) {
-      // alert(JSON.stringify(value))
-      window.location.replace('https://circlein-dev.us.auth0.com/samlp/Z9tv8MvsY8JcS2Z8uedkLBPjyyrAnI7K')
+      const lock = new Auth0Lock('Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj', 'circlein-dev.us.auth0.com', {
+        auth: {
+          redirectUrl: `${window.location.origin}/saml`,
+          audience: 'https://circlein-dev.us.auth0.com/api/v2/',
+          responseType: 'token',
+          params: { scope: 'openid' }
+        }
+      });
+
+      lock.show();
     } else {
       const responseType = 'code';
       const obj = {
-        uri: value.uri, 
+        uri: value.uri,
         lms_type_id: value.lmsTypeId,
         response_type: responseType,
         client_id: value.clientId,
@@ -91,7 +97,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
       window.location.replace(uri);
     }
-  }, [loginWithRedirect, pushTo, updateSchool])
+  }, [pushTo, updateSchool])
 
   const handleLoadOptions = useCallback(async value => {
     if (value.trim().length > 1) {
@@ -119,7 +125,6 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
   return (
     <main className={classes.main}>
-      <button onClick={loginWithRedirect}>Login</button>
       <Grid container justify="space-around">
         <Grid item xs={12} lg={6}>
           <div className={classes.grid}>
