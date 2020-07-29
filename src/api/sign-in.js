@@ -22,6 +22,17 @@ export const signInUser = async (
   }
 };
 
+export const samlLogin = async (token): User | {} => {
+  try {
+    const result = await axios.post(API_ROUTES.SAML_LOGIN, { token });
+    const { data = {} } = result;
+    return (data: User | {});
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+};
+
 export const checkUser = async (): User | {} => {
   try {
     const token = store.get('REFRESH_TOKEN');

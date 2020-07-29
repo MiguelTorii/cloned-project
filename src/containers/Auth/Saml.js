@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import queryString from 'query-string';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default () => {
+import * as signInActions from 'actions/sign-in';
+
+const Saml = ({ samlLogin }) => {
   const getAccessToken = (url) => {
     const start = url.indexOf('access_token');
     const search = `?${url.substring(start)}`;
@@ -11,7 +15,7 @@ export default () => {
   }
 
   useEffect(() => {
-    console.log(getAccessToken(window.location.href));
+    samlLogin(getAccessToken(window.location.href));
   })
 
   return (
@@ -19,3 +23,15 @@ export default () => {
   )
 }
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      samlLogin: signInActions.samlLogin,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Saml);

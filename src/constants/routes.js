@@ -37,6 +37,7 @@ export const API_ROUTES = {
   VERIFY_CODE: `${API_URL}/auth/verify_sms_code`,
   RESET_PASSWORD: `${API_URL}/auth/password_reset`,
   CHANGE_PASSWORD: `${API_URL}/auth/change_password`,
+  SAML_LOGIN: `${API_URL}/auth/saml/login`,
   LMS_SCHOOLS: `${API_URL}/lms/schools`,
   LMS_USER: `${API_URL}/lms/oauth2/token`,
   LMS_LOGIN: `${API_URL}/lms/auth/login`,
