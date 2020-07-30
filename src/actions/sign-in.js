@@ -150,6 +150,7 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
     store.set('SEGMENT', user.segment);
 
     await dispatch(setUser({ user }));
+    await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;
