@@ -7,6 +7,20 @@ import cx from 'classnames'
 import './quill.custom.css';
 import MathQuill from './Math'
 
+window.katex.oldRender = window.katex.render
+window.katex.render = (value, node) => {
+  // eslint-disable-next-line
+  node.innerHTML = `$${value}$`
+}
+
+const renderFormulas = () => {
+  const formulas = document.getElementsByClassName('ql-formula')
+  formulas.forEach(f => {
+    const formulaArray = f.innerHTML.split('$')
+    if (formulaArray.length === 3) window.katex.oldRender(formulaArray[1], f)
+  })
+}
+
 const styles = {
   readOnly: {
     '& .ql-toolbar': {
@@ -50,6 +64,7 @@ class CustomQuill extends React.PureComponent<Props> {
   editor: ?Object;
 
   componentDidMount() {
+    renderFormulas()
     const enableMathQuillFormulaAuthoring = MathQuill();
     enableMathQuillFormulaAuthoring(this.editor.editor,{
       displayHistory: true,
@@ -58,7 +73,7 @@ class CustomQuill extends React.PureComponent<Props> {
         ["\\frac{x}{y}","\\frac"],
         ["{a}^{b}", "^"],
         // eslint-disable-next-line
-        ["\\int", "\int"],
+     ["\\int", "\int"],
         ["n \\choose k","\\choose"]
       ]
     });
@@ -66,6 +81,8 @@ class CustomQuill extends React.PureComponent<Props> {
 
   render() {
     const { classes, placeholder, value, onChange, readOnly } = this.props;
+    renderFormulas()
+
     return (
       <ReactQuill
         disabled

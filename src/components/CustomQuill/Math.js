@@ -180,6 +180,7 @@ export default () => {
           autofocusFormulaField(mqField);
 
           insertAfter(mqInput, latexInput);
+
           return mqField;
         },
         destroy() {
@@ -216,7 +217,7 @@ export default () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
 
-        katex.render(displayOperator, button, {
+        katex.oldRender(displayOperator, button, {
           throwOnError: false
         });
         button.onclick = () => {
@@ -274,7 +275,7 @@ export default () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
 
-        katex.render(latex, button, {
+        katex.oldRender(latex, button, {
           throwOnError: false
         });
         button.onclick = () => {
