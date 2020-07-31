@@ -229,7 +229,8 @@ export const updateUser = ({ user }: { user: User }) => async (
   store.set('USER_ID', user.userId);
   store.set('SEGMENT', user.segment);
 
-  dispatch(setUser({ user }));
+  await dispatch(setUser({ user }));
+  await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
 };
 
 export const signOut = () => async (dispatch: Dispatch) => {
