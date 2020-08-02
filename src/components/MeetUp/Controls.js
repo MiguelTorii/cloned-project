@@ -7,22 +7,33 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import CallEndIcon from '@material-ui/icons/CallEnd';
+import Tooltip from '@material-ui/core/Tooltip';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import FeaturedVideoIcon from '@material-ui/icons/FeaturedVideo';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
-import CastForEducationIcon from '@material-ui/icons/CastForEducation';
+// import CastForEducationIcon from '@material-ui/icons/CastForEducation';
 
 const styles = theme => ({
   root: {
     position: 'absolute',
     bottom: 0,
-    width: '100%',
+    // width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 900
+    zIndex: 1400
+    // backgroundColor: 'white'
   },
   fab: {
     margin: theme.spacing(2)
+  },
+  hangup: {
+    background: 'red',
+    margin: theme.spacing(2),
+  },
+  tooltip: {
+    fontSize: 14,
   }
 });
 
@@ -34,11 +45,15 @@ type Props = {
   isScreenSharingSupported: boolean,
   isSharing: boolean,
   isSharingData: boolean,
+  isVideoSwitching: boolean,
+  isAudioSwitching: boolean,
   endCall: Function,
   disableVideo: Function,
   disableAudio: Function,
-  shareScreen: Function,
-  shareData: Function
+  dominantToggle: Function,
+  dominantView: boolean,
+  shareScreen: Function
+  // shareData: Function
 };
 
 type State = {};
@@ -53,60 +68,132 @@ class Controls extends React.PureComponent<Props, State> {
       isScreenSharingSupported,
       isSharing,
       isSharingData,
+      dominantToggle,
+      dominantView,
+      isVideoSwitching,
+      isAudioSwitching,
       disableVideo,
       disableAudio,
       endCall,
       shareScreen,
-      shareData
     } = this.props;
 
     return (
       <div className={classes.root}>
-        <Fab
-          color={isVideoEnabled ? 'primary' : 'default'}
-          aria-label="disable-video"
-          onClick={disableVideo}
-          className={classes.fab}
-          disabled={!isConnected}
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title={isVideoEnabled ? 'Turn off camera' : 'Turn on camera'}
         >
-          {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
-        </Fab>
-        <Fab
-          color={isAudioEnabled ? 'primary' : 'default'}
-          aria-label="disable-audio"
-          className={classes.fab}
-          onClick={disableAudio}
-          disabled={!isConnected}
+          <div>
+            <Fab
+              size='small'
+              color={isVideoEnabled ? 'primary' : 'default'}
+              aria-label='disable-video'
+              onClick={disableVideo}
+              className={classes.fab}
+              disabled={!isConnected || isVideoSwitching}
+            >
+              {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
+            </Fab>
+          </div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title={isAudioEnabled ? 'Turn off microphone' : 'Turn on microphone'}
         >
-          {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
-        </Fab>
-        <Fab
-          color={!isSharing ? 'primary' : 'default'}
-          aria-label="share-screen"
-          className={classes.fab}
-          disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-          onClick={shareScreen}
+          <div>
+            <Fab
+              size='small'
+              color={isAudioEnabled ? 'primary' : 'default'}
+              aria-label='disable-audio'
+              className={classes.fab}
+              onClick={disableAudio}
+              disabled={!isConnected || isAudioSwitching}
+            >
+              {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
+            </Fab>
+          </div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title='Leave call'
         >
-          {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
-        </Fab>
-        <Fab
+          <div>
+            <Fab
+              color='secondary'
+              aria-label='call-end'
+              className={classes.hangup}
+              onClick={endCall}
+              disabled={!isConnected}
+            >
+              <CallEndIcon />
+            </Fab>
+          </div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title={isSharing ? 'Stop presenting' : 'Present your screen'}
+        >
+          <div>
+            <Fab
+              size='small'
+              color={!isSharing ? 'primary' : 'default'}
+              aria-label='share-screen'
+              className={classes.fab}
+              disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+              onClick={shareScreen}
+            >
+              {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
+            </Fab>
+          </div>
+        </Tooltip>
+        <Tooltip
+          arrow
+          classes={{
+            tooltip: classes.tooltip
+          }}
+          placement='bottom'
+          title={!dominantView ? 'Speaker View' : 'Gallery View'}
+        >
+          <div>
+            <Fab
+              size='small'
+              color="primary"
+              aria-label='share-screen'
+              className={classes.fab}
+              disabled={!isConnected}
+              onClick={dominantToggle}
+            >
+              {!dominantView ? <FeaturedVideoIcon /> : <ViewModuleIcon />}
+            </Fab>
+          </div>
+        </Tooltip>
+        {/* <Fab
+          size='small'
           color={!isSharingData ? 'primary' : 'default'}
-          aria-label="share-data"
+          aria-label='share-data'
           className={classes.fab}
           disabled={isSharing || !isConnected}
           onClick={shareData}
         >
           <CastForEducationIcon />
-        </Fab>
-        <Fab
-          color="primary"
-          aria-label="call-end"
-          className={classes.fab}
-          onClick={endCall}
-          disabled={!isConnected}
-        >
-          <CallEndIcon />
-        </Fab>
+        </Fab> */}
       </div>
     );
   }

@@ -8,7 +8,7 @@ const CIRCLEIN_EVENT_NAMES = [
   'Chat- Send Message',
   'Video- Start Video',
   'Video- Start Video',
-  'Video- Start Video',
+  'Video- End Video',
   'Video- Session Length',
 ];
 
@@ -20,14 +20,20 @@ const toEventData = (eventName: string, props: object): EventData => {
 
   if (props.Length) customProps.duration_ms = parseInt(props.Length, 10) * 1000;
 
-  if (category === 'Chat') objectId = props['Channel SID'];
-  if (category === 'Video') objectId = props.channelName;
+  if (category === 'Chat') {
+    objectId = props['Channel SID'];
+    customProps.type = 'Sent'
+  }
+  if (category === 'Video') {
+    objectId = props.channelName;
+    customProps.type = props.type
+    customProps.timestamp = props.timestamp
+  }
 
   return {
     ...customProps,
     category,
     objectId,
-    type: category === 'Video' ? 'Ended' : 'Sent',
   }
 }
 

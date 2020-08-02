@@ -8,8 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
-import Preview from './Preview2';
-import MeetUp from './MeetUp2';
+import Preview from './Preview';
+import MeetUp from './MeetUp';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
