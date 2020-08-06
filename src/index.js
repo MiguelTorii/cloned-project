@@ -61,6 +61,7 @@ import {
 } from './constants/app';
 import withTracker from './withTracker';
 import Chat from './pages/Chat'
+import './index.css'
 
 const store = configureStore();
 
