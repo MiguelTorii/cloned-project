@@ -327,7 +327,7 @@ const LeaderBoardTabs = ({
                   </div>
                 </div>
                 <div className={classes.footnote}>
-                    *Learn more about how to qualify by clicking Info
+                  *Must earn 200k points per class in a week to earn an MVP. Learn more about how to qualify by clicking more info
                 </div>
               </div>
             </div>
@@ -343,7 +343,7 @@ const LeaderBoardTabs = ({
             <span className={classes.count}>{tuesdayPoints}</span>
           </div>
           <div className={classes.footnote}>
-            *You must earn a minimum of 150,000 points to qualify for 1st Tuesday Rewards
+            *You must earn a minimum of 200,000 points per class on CircleIn to qualify for Monthly Rewards
           </div>
         </div>
         <div className={classes.rewardContainer}>

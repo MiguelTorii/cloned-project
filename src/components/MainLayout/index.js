@@ -564,7 +564,7 @@ class MainLayout extends React.Component<Props, State> {
         >
           <MenuItemContent
             primaryText="Share Notes"
-            secondaryText="Earn 10k points for first page, 5k for second page, then more points for each page after"
+            secondaryText="Earn 10k points points for every page"
             icon={Notes}
           />
         </MenuItem>
@@ -576,7 +576,7 @@ class MainLayout extends React.Component<Props, State> {
         >
           <MenuItemContent
             primaryText="Ask a Question"
-            secondaryText="Earn 1k for answering a question, and 25k if your answer is chosen as Best Answer"
+            secondaryText="Earn 2k points for answering a question and 40k if your answer is chosen as Best Answer"
             icon={Questions}
           />
         </MenuItem>
@@ -594,7 +594,7 @@ class MainLayout extends React.Component<Props, State> {
           >
             <MenuItemContent
               primaryText="Create Flashcards"
-              secondaryText="Earn 5k points for the first 4 cards, then 2.5k for each card after"
+              secondaryText="Earn 1k points per card"
               icon={FlashCards}
             />
           </Tooltip>
@@ -607,7 +607,7 @@ class MainLayout extends React.Component<Props, State> {
         >
           <MenuItemContent
             primaryText="Share a Link"
-            secondaryText="Earn 2k points for each link shared"
+            secondaryText="Earn 5k points for each link shared"
             icon={Links}
           />
         </MenuItem>
@@ -619,8 +619,8 @@ class MainLayout extends React.Component<Props, State> {
           link="/video-call"
         >
           <MenuItemContent
-            primaryText="Video Meet-Up"
-            secondaryText="Earn 20k points for starting a video meet-up, then 50k points after 10 minutes"
+            primaryText="Video Meetup"
+            secondaryText="Earn 20k points for initiating a video session, then 50k points for staying on for at least 10 minutes"
             icon={Videos}
           />
         </MenuItem>
