@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
-import * as campaignActions from 'actions/campaign'
-import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
 import Feed from 'pages/Feed'
@@ -26,14 +24,9 @@ const styles = () => ({
 const Home = ({
   campaign,
   classes,
-  requestCampaign,
   userId,
   userSync
 }) => {
-  useEffect(() => {
-    requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN })
-  }, [requestCampaign])
-
   useEffect(() => {
     const init = async () => {
       userSync({ userId })
@@ -61,7 +54,6 @@ const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      requestCampaign: campaignActions.requestCampaign,
       userSync: sync
     },
     dispatch
