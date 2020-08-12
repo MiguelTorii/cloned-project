@@ -51,6 +51,7 @@ import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
 import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
+import Miss from './pages/Miss'
 import {
   GOOGLE_ANALYTICS,
   SENTRY,
@@ -212,7 +213,7 @@ ReactDOM.render(
             <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
             <Route exact path="/redirect" component={Redirect} />
             <Route exact path="/sandbox" component={Sandbox} />
-            <Route render={() => <div>Miss</div>} />
+            <Route component={Miss} />
           </Switch>
         </div>
       </ConnectedRouter>

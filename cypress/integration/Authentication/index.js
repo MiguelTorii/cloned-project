@@ -1,4 +1,4 @@
-const url = 'http://dev-app2.circleinapp.com/'
+const url = Cypress.env('url')
 
 describe('Authentication', () => {
   it('Greets user', () => {

@@ -1,12 +1,10 @@
-const url = 'http://dev-app2.circleinapp.com/'
-
 describe('Workflow', () => {
   beforeEach(() => {
     cy.login()
   })
 
   it('Creates task', () => {
-    cy.visit(url)
+    cy.visit(Cypress.env('url'))
     cy.get('[style="background-color: rgb(196, 89, 97);"] > .MuiGrid-direction-xs-column > :nth-child(2) > .MuiButtonBase-root > .MuiButton-label').click()
     cy.get('.MuiInputBase-root').type('Create Test Task')
     cy.get('.MuiButton-contained').click()
@@ -24,7 +22,7 @@ describe('Workflow', () => {
       .trigger("dragstart")
       .trigger("dragleave");
 
-    cy.get('[style="background-color: rgb(116, 193, 130);"] > .jss222')
+    cy.get('#board-Done')
       .trigger("dragenter")
       .trigger("dragover")
       .trigger("drop")

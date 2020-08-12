@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', () => {
-  cy.request('POST', 'https://dev-api.circleinapp.com/v1/auth/login', {"email":"felipe.machado+demo8@toptal.com","password":"bababa","school_id":4})
+  cy.request('POST', `${Cypress.env('api')}/auth/login`, {"email":"felipe.machado+e2e@toptal.com","password":"bababa","school_id":4})
     .then(user => {
       window.localStorage.setItem('TOKEN', user.body.jwt_token)
       window.localStorage.setItem('REFRESH_TOKEN', user.body.refresh_token)

@@ -116,7 +116,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
   ), [handleKeyDown, handleChange, classes, newInputValue])
 
   return useMemo(() => (
-    <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }}>
+    <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }} id={`board-${name}`}>
       <Grid container justify='space-between' alignItems='center' direction='column'>
         <Grid item className={classes.headerItem}>
           <Typography className={classes.title}>{name}</Typography>

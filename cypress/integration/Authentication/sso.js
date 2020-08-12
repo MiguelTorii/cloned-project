@@ -1,9 +1,8 @@
-const url = 'https://dev-app2.circleinapp.com/'
-
+const url = Cypress.env('url')
 
 describe('Single Sign On', () => {
   it('login using sso', () => {
-    cy.request('GET', 'https://dev-api.circleinapp.com/v1/search/school?query=arts').then(res => {
+    cy.request('GET', `${Cypress.env('api')}/search/school?query=arts`).then(res => {
       const s = res.body.schools[0]
       const responseType = 'code';
       const obj = {

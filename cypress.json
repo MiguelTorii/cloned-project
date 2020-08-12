@@ -1,5 +1,9 @@
 {
   "video": false,
   "chromeWebSecurity": false,
-  "projectId": "circlein"
+  "projectId": "circlein",
+  "env": {
+    "api": "https://dev-api.circleinapp.com/v1",
+    "url": "https://dev-app2.circleinapp.com/"
+  }
 }
