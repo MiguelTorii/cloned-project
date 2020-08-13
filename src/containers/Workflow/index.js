@@ -154,7 +154,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const {tasks, dragId} = state
   const [classList, setClassList] = useState({})
-  const {data: {firstName, userId}, syncData: {viewedOnboarding}, userClasses} = user
+  const {data: {firstName, userId}, syncData: {viewedOnboarding}, userClasses, announcementData} = user
   const [listView, setListView] = useState(false)
   const [calendarView, setCalendarView] = useState(false)
   const [tips, setTips] = useState(false)
@@ -333,6 +333,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   return (
     <WorkflowProvider value={{
       enqueueSnackbar,
+      announcementData,
       userId,
       handleAddTask,
       updateCategory,

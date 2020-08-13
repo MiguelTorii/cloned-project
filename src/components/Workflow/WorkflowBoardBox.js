@@ -59,6 +59,17 @@ const useStyles = makeStyles(theme => ({
       background: 'rgba(0,0,0,0)'
     }
   },
+  containerAnnouncement: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'start',
+    height: 'calc(100vh - 320px)',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    '&::-webkit-scrollbar-corner': {
+      background: 'rgba(0,0,0,0)'
+    }
+  },
   inputContainer: {
     position: 'relative'
   },
@@ -76,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }) => {
-  const { handleAddTask } = useContext(WorkflowContext)
+  const { handleAddTask, announcementData } = useContext(WorkflowContext)
   const classes = useStyles()
   const [showNew, setShowNew] = useState(false)
   const [newInputValue, setNewInputValue] = useState('')
@@ -115,6 +126,8 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
     </div>
   ), [handleKeyDown, handleChange, classes, newInputValue])
 
+  const containerStyle = useMemo(() => announcementData ? classes.containerAnnouncement : classes.listContainer, [announcementData, classes.containerAnnouncement, classes.listContainer])
+
   return useMemo(() => (
     <Grid ref={drop} className={classes.container} style={{ backgroundColor: bgcolor }} id={`board-${name}`}>
       <Grid container justify='space-between' alignItems='center' direction='column'>
@@ -127,7 +140,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
           </Button>
         </Grid>
       </Grid>
-      <Grid container className={classes.listContainer}>
+      <Grid container className={containerStyle}>
         <div className={classes.newContainer}>
           {showNew &&
           <WorkflowBoardCard
@@ -140,7 +153,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }
         {list}
       </Grid>
     </Grid>
-  ), [bgcolor, buttonColor, classes.button, classes.container, classes.headerItem, classes.listContainer, classes.newContainer, classes.title, closeNew, drop, handleNew, list, name, newInput, openNew, showNew])
+  ), [bgcolor, buttonColor, classes.button, classes.container, classes.headerItem, classes.newContainer, classes.title, closeNew, containerStyle, drop, handleNew, list, name, newInput, openNew, showNew])
 }
 
 export default memo(WorkflowBoardBox)
