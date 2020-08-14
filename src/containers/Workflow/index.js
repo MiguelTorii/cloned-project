@@ -262,7 +262,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
         title,
         categoryId,
         sectionId,
-        date: moment.utc(date).valueOf(),
+        date: date ? moment.utc(date).valueOf() : null,
         description
       })
 
