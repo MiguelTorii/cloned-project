@@ -90,11 +90,11 @@ const LeaderBoardTabs = ({
   classes,
   handleCloseDialog,
   openDialog,
-  eligibilitySubtitle,
+  eligibilitySubtitleDialog,
   amount,
   numberOfWinners,
   dialogTitle,
-  eligibility
+  eligibilityDialog
 }) => {
   const imgStyle = {
     width: 75,
@@ -102,7 +102,7 @@ const LeaderBoardTabs = ({
     marginRight: 5,
   }
 
-  const subtitle = eligibilitySubtitle && eligibilitySubtitle.split('.')
+  const subtitle = eligibilitySubtitleDialog && eligibilitySubtitleDialog.split('.')
 
   return (
     <Dialog
@@ -128,7 +128,7 @@ const LeaderBoardTabs = ({
           <div style={{ maxWidth: 250 }}>
             <div className={classes.highlight}>Eligibility Requirements</div>
             <div className={classes.label}>
-              {eligibility}
+              {eligibilityDialog}
             </div>
           </div>
         </div>

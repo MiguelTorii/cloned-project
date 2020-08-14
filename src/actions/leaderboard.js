@@ -157,6 +157,8 @@ const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
       numberOfWinners: res.number_of_winners,
       eligibility: res.eligibility,
       eligibilitySubtitle: res.eligibility_subtitle,
+      eligibilityDialog: res.eligibility_dialog,
+      eligibilitySubtitleDialog: res.eligibility_subtitle_dialog,
     }
     dispatch(
       updateLeaderboardGrandInfoRequest({ grandInfo })
