@@ -15,6 +15,7 @@ const styles = theme => ({
     fontSize: 14,
   },
   label: {
+    whiteSpace: 'pre-wrap',
     fontSize: 18,
     fontWeight: 800,
     lineHeight: 1.1,
@@ -34,6 +35,7 @@ const styles = theme => ({
   },
   dialogFootnote: {
     ...styles.footnote,
+    whiteSpace: 'pre-wrap',
     textAlign: 'center',
   },
   hr: {
@@ -102,8 +104,6 @@ const LeaderBoardTabs = ({
     marginRight: 5,
   }
 
-  const subtitle = eligibilitySubtitleDialog && eligibilitySubtitleDialog.split('.')
-
   return (
     <Dialog
       className={classes.dialog}
@@ -132,7 +132,7 @@ const LeaderBoardTabs = ({
             </div>
           </div>
         </div>
-        {subtitle && subtitle.map(l => l && <div key={l} className={classes.dialogFootnote}>{l}.</div>)}
+        <div className={classes.dialogFootnote}>{eligibilitySubtitleDialog}</div>
         <div
           className={classes.title}>
             Best Practices to Earn MVPs:

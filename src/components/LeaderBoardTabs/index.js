@@ -126,11 +126,13 @@ const styles = theme => ({
     lineHeight: 1.1,
   },
   labelSmall: {
+    whiteSpace: 'pre-wrap',
     fontSize: 14,
     fontWeight: 'bold',
     lineHeight: 1.4,
   },
   footnote: {
+    whiteSpace: 'pre-wrap',
     color: theme.circleIn.palette.primaryText2,
     fontSize: 12,
   },
@@ -327,7 +329,10 @@ const LeaderBoardTabs = ({
                   </div>
                 </div>
                 <div className={classes.footnote}>
-                  *Must earn 200k points per class in a week to earn an MVP. Learn more about how to qualify by clicking more info
+                  *Must earn 200k points per class in a week to earn an MVP.
+                </div>
+                <div className={classes.footnote}>
+                  Learn more about how to qualify by clicking more info
                 </div>
               </div>
             </div>
