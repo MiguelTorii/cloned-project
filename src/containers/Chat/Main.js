@@ -18,6 +18,7 @@ import Grid from '@material-ui/core/Grid'
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { logEvent } from 'api/analytics';
 import { getCampaign } from 'api/campaign';
+import findIndex from 'lodash/findIndex'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,8 +129,11 @@ const Main = ({
       try {
         channel.setAllMessagesConsumed()
       } catch(e) {}
-      setMessages([...messages, newMessage])
-      setTimeout(handleScrollToBottom, 100)
+      const index = findIndex(messages, m => m.sid === newMessage.sid)
+      if(index === -1) {
+        setMessages([...messages, newMessage])
+        setTimeout(handleScrollToBottom, 100)
+      }
     }
     // eslint-disable-next-line
   }, [newMessage])
