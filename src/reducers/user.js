@@ -33,7 +33,8 @@ export type UserState = {
     resourcesBody: string,
     resourcesTitle: string,
     viewedTooltips: Array<number>,
-    viewedOnboarding: boolean
+    viewedOnboarding: boolean,
+    helpLink: string
   },
   announcementData: Announcement,
   errorMessage: {
@@ -81,6 +82,7 @@ const defaultState = {
     resourcesTitle: '',
     viewedTooltips: null,
     viewedOnboarding: null,
+    helpLink: ''
   },
   runningTour: false,
   isLoading: false,
@@ -153,6 +155,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     return update(state, {
       syncData: {
         display: { $set: action.payload.display },
+        helpLink: { $set: action.payload.helpLink },
         largeLogo: { $set: action.payload.largeLogo },
         resourcesBody: { $set: action.payload.resourcesBody },
         resourcesTitle: { $set: action.payload.resourcesTitle },

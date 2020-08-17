@@ -271,6 +271,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  helpLink: string,
   width: string,
   runningTour: boolean,
   userId: string,
@@ -408,8 +409,13 @@ class MainLayout extends React.Component<Props, State> {
   };
 
   handleOpenHowEarnPoints = () => {
-    this.setState({ openHowEarnPoints: true });
-    this.handleMenuClose();
+    const { helpLink } = this.props
+    if (helpLink) {
+      window.open(helpLink, '_blank')
+    } else {
+      this.setState({ openHowEarnPoints: true });
+      this.handleMenuClose();
+    }
   };
 
   handleCloseHowEarnPoints = () => {

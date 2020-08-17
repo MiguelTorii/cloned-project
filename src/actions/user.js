@@ -46,7 +46,7 @@ export const fetchClasses = () => async (
 
 const updateTourAction = ({
   runningTour
-} : {
+}: {
   runningTour: boolean
 }): Action  => ({
   type: userActions.UPDATE_TOUR,
@@ -63,6 +63,7 @@ export const updateTour = runningTour => (
 
 const syncSuccessAction = ({
   display,
+  helpLink,
   largeLogo,
   smallLogo,
   resourcesBody,
@@ -71,6 +72,7 @@ const syncSuccessAction = ({
   viewedTooltips
 }: {
     display: boolean,
+    helpLink: string,
     largeLogo: string,
     smallLogo: string,
     resourcesBody: string,
@@ -85,6 +87,7 @@ const syncSuccessAction = ({
     smallLogo,
     resourcesBody,
     resourcesTitle,
+    helpLink,
     viewedOnboarding,
     viewedTooltips
   }
@@ -136,7 +139,8 @@ export const getAnnouncement = (
   const announcement = await fetchAnnouncement(announcementId);
   const campaign = await getCampaign({ campaignId });
 
-  if (announcement && !campaign.is_disabled && campaign.variation_key !== 'hidden') {
+  // eslint-disable-next-line
+  if (announcement && !campaign?.is_disabled && campaign?.variation_key !== 'hidden') {
     dispatch(getAnnouncementSuccessAction(announcement));
   }
 };

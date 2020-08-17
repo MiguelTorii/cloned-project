@@ -212,7 +212,10 @@ class Layout extends React.PureComponent<Props, State> {
     const {
       data: { userId, firstName, lastName, profileImage },
       runningTour,
-      userClasses
+      userClasses,
+      syncData: {
+        helpLink
+      }
     } = user;
 
     const {
@@ -251,6 +254,7 @@ class Layout extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <MainLayout
+            helpLink={helpLink}
             unreadMessages={unreadMessages}
             userId={userId}
             runningTour={runningTour}

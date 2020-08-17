@@ -914,11 +914,13 @@ export const getSync = async ({
           feed_resources_body: resourcesBody
         },
         viewed_tool_tips: viewedTooltips,
-        viewed_onboarding: viewedOnboarding
+        viewed_onboarding: viewedOnboarding,
+        hc_link: helpLink
       }
     } = result
     return {
       smallLogo,
+      helpLink,
       largeLogo,
       display,
       resourcesTitle,
