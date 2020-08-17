@@ -21,7 +21,7 @@ const styles = theme => ({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     backgroundColor: theme.circleIn.palette.appBar,
-    borderWidth: 1,
+    borderWidth: 0,
     borderStyle: 'solid',
     borderBottomWidth: 0,
     borderColor: theme.circleIn.palette.borderColor,
@@ -34,6 +34,7 @@ const styles = theme => ({
   header: {
     background: '#C7D3DA',
     color: theme.circleIn.palette.normalButtonText1,
+    borderRadius: theme.spacing(1/2, 1/2, 0, 0),
     display: 'flex',
     minHeight: 40
   },
