@@ -195,7 +195,7 @@ const styles = theme => ({
   },
   step: {
     display: 'flex',
-    height: 700,
+    height: '100%',
   },
   stepper: {
     alignItems: 'center',
@@ -399,7 +399,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         <div
           className={cx(classes.formFlex, classes.formRow)}
         >
-          <DateInput style={{ marginTop: 10 }} selected={dueDate} />
+          <DateInput style={{ marginTop: 10 }} selected={dueDate} onChange={updateDueDate} />
           <div style={{ marginLeft: 24, flex: 1 }}>
             <div className={classes.subtitle} style={{ marginTop: 10 }}>
               Task Status
