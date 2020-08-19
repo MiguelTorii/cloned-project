@@ -44,6 +44,9 @@ const useStyles = makeStyles(theme => ({
 const SelectedImage = ({
   handleRemoveImg,
   image,
+  alt='',
+  className,
+  disableContainerStyles,
   imageStyle,
 }) => {
   const classes = useStyles()
@@ -58,11 +61,11 @@ const SelectedImage = ({
 
   return (
     <div
-      className={classes.imgContainer}
+      className={clsx(!disableContainerStyles && classes.imgContainer)}
       onMouseEnter={onHoverEnter}
       onMouseLeave={onHoverLeave}
     >
-      <LoadImg url={image} style={imageStyle} />
+      <LoadImg url={image} style={imageStyle} alt={alt} className={className} />
       <div
         className={clsx(classes.buttonGroup, !hover && classes.hidden)}
       >

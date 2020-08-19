@@ -10,6 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import CustomQuill from 'components/CustomQuill'
+import SelectedImage from 'components/SelectedImage'
 
 const styles = theme => ({
   actions: {
@@ -53,6 +54,7 @@ const styles = theme => ({
   media: {
     alignItems: 'center',
     display: 'flex',
+    position: 'relative',
     justifyContent: 'center',
     width: '50%'
   },
@@ -200,7 +202,7 @@ const Flashcard = ({
           {
             answerImage &&
             <div className={classes.media}>
-              <img alt='card media' src={answerImage} className={classes.image} />
+              <SelectedImage image={answerImage} className={classes.image} alt='flashcard answer' disableContainerStyles />
             </div>
           }
           {
@@ -220,7 +222,7 @@ const Flashcard = ({
         {
           questionImage &&
           <div className={classes.media}>
-            <img alt='card media' src={questionImage} className={classes.image} />
+            <SelectedImage image={questionImage} className={classes.image} alt='flashcard question' disableContainerStyles />
           </div>
         }
         {
