@@ -734,7 +734,7 @@ class MainLayout extends React.Component<Props, State> {
             link="/leaderboard"
             className={classNames(
               'tour-onboarding-leaderboard',
-              !qs.sectionId && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
+              !qs.class && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           >
             <ListItemIcon>
