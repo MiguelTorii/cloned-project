@@ -7,7 +7,8 @@ import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Auth0Lock from 'auth0-lock';
+// import Auth0Lock from 'auth0-lock';
+import { useAuth0 } from "@auth0/auth0-react"
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
@@ -51,6 +52,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
   const [error] = useState(false)
   const [lti, setLit] = useState(false)
   const [redirectMessage, setRedirectMessage] = useState(false)
+  const { loginWithRedirect } = useAuth0()
 
   const handleChange = useCallback(value => {
     if (!value) return;
@@ -65,16 +67,17 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (value.id === 55) {
-      const lock = new Auth0Lock('Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj', 'circlein-dev.us.auth0.com', {
-        auth: {
-          redirectUrl: `${window.location.origin}/saml`,
-          audience: 'https://circlein-dev.us.auth0.com/api/v2/',
-          responseType: 'token',
-          params: { scope: 'openid' }
-        }
-      });
+      loginWithRedirect()
+      // const lock = new Auth0Lock('Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj', 'circlein-dev.us.auth0.com', {
+      // auth: {
+      // redirectUrl: `${window.location.origin}/saml`,
+      // audience: 'https://circlein-dev.us.auth0.com/api/v2/',
+      // responseType: 'token',
+      // params: { scope: 'openid' }
+      // }
+      // });
 
-      lock.show();
+      // lock.show();
     } else {
       const responseType = 'code';
       const obj = {
@@ -97,7 +100,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
       window.location.replace(uri);
     }
-  }, [pushTo, updateSchool])
+  }, [loginWithRedirect, pushTo, updateSchool])
 
   const handleLoadOptions = useCallback(async value => {
     if (value.trim().length > 1) {

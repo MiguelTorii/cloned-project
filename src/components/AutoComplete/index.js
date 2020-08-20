@@ -21,11 +21,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import type { SelectType } from '../../types/models';
 
-const Link = React.forwardRef(({ href, ...props }, ref) => (
-  <a ref={ref} href="https://www.circleinapp.com/waitlist" {...props}>
+const Link = (props) => (
+  <a href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
-));
+)
 
 const styles = theme => ({
   root: {
@@ -259,15 +259,15 @@ function Menu({ selectProps, children, innerProps }) {
     >
       {children}
       {isSchoolSearch && (
-        <MenuItem
-          component={Link}
-          style={{
-            fontWeight: 400,
-            color: '#5dcbfd'
-          }}
-          {...innerProps}
-        >
-          Can't find your school? Click Here
+        <MenuItem>
+          <Link
+            style={{
+              textDecoration: 'none',
+              fontWeight: 400,
+              color: '#5dcbfd'
+            }}
+            {...innerProps}
+          />
         </MenuItem>
       )}
     </Paper>
