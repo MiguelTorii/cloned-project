@@ -72,6 +72,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       webAuth.authorize({
         audience: 'https://circlein-dev.us.auth0.com/api/v2/',
         redirectUri: `${window.location.origin}/saml`,
+        connection: 'Test-Columbia-College',
         responseType: 'token'
       })
     } else {
