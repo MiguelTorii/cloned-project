@@ -28,8 +28,10 @@ const useStyles = makeStyles(theme => ({
   dialog: {
     borderRadius: 20,
     width: 600,
+    minHeight: 440,
+    overflow: 'visible',
     '& .MuiDialogContent-root': {
-      overflowY: 'auto'
+      overflowY: 'visible'
     }
   },
   dialogImg: {

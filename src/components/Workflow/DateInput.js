@@ -69,7 +69,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
     const nowTime = moment().format('HH:mm:ss')
     if (date) {
       setDate(date)
-      onChange(new Date(`${date} ${time || nowTime}`))
+      onChange(moment(`${date} ${time || nowTime}`, 'YYYY-MM-DD HH:mm:ss').toDate())
     }
   }, [time, onChange])
 
@@ -78,7 +78,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
     const nowDate = moment().format('YYYY-MM-DD')
     if (time) {
       setTime(time)
-      onChange(new Date(`${date || nowDate} ${time}`))
+      onChange(moment(`${date || nowDate} ${time}`, 'YYYY-MM-DD HH:mm:ss').toDate())
     }
   }, [date, onChange])
 

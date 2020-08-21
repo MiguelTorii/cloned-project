@@ -53,6 +53,10 @@
   z-index: 10 !important;
 }
 
+.ql-picker-options {
+  z-index: 10 !important;
+}
+
 .mathquill4quill-mathquill-input {
   border: 1px solid #ccc;
   font-size: 13px;

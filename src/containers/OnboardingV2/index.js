@@ -196,6 +196,8 @@ const styles = theme => ({
   step: {
     display: 'flex',
     height: '100%',
+    // eslint-disable-next-line
+    height: '-webkit-fill-available'
   },
   stepper: {
     alignItems: 'center',
