@@ -72,7 +72,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
 
     this.handleDebounceFetchNotifications = debounce(
       this.handleDebounceFetchNotifications,
-      10181
+      15181
     );
 
     await this.handleFetchNotifications();
