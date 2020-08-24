@@ -2,6 +2,7 @@
 // @flow
 
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
+import store from 'store'
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign'
@@ -24,7 +25,7 @@ export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaig
     const { campaign } = getState()
 
     if (campaignId === LANDING_PAGE_CAMPAIGN){
-      if (campaign.newClassExperience === null || reset) {
+      if ((campaign.newClassExperience === null || reset) && store.get('TOKEN')) {
         const { id } = await getCampaign({ campaignId })
 
         dispatch(requestGetCampaign({ campaign: 'landingPageCampaign', active: id === 4 }));
