@@ -7,18 +7,9 @@ import cx from 'classnames'
 import './quill.custom.css';
 import MathQuill from './Math'
 
-window.katex.oldRender = window.katex.render
-window.katex.render = (value, node) => {
+window.katex.render = (value, node, { color, dpi }) => {
   // eslint-disable-next-line
-  node.innerHTML = `$${value}$`
-}
-
-const renderFormulas = () => {
-  const formulas = document.getElementsByClassName('ql-formula')
-  formulas.forEach(f => {
-    const formulaArray = f.innerHTML.split('$')
-    if (formulaArray.length === 3) window.katex.oldRender(formulaArray[1], f)
-  })
+  node.innerHTML = `<img src='https://private.codecogs.com/png.download?\\dpi{${dpi || 120}}\\color{${color || 'White'}}${value}' />`
 }
 
 const styles = {
@@ -64,7 +55,6 @@ class CustomQuill extends React.PureComponent<Props> {
   editor: ?Object;
 
   componentDidMount() {
-    renderFormulas()
     const enableMathQuillFormulaAuthoring = MathQuill();
     enableMathQuillFormulaAuthoring(this.editor.editor,{
       displayHistory: true,
@@ -81,7 +71,6 @@ class CustomQuill extends React.PureComponent<Props> {
 
   render() {
     const { classes, placeholder, value, onChange, readOnly } = this.props;
-    renderFormulas()
 
     return (
       <ReactQuill

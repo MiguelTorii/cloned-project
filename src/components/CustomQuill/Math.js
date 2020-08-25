@@ -217,7 +217,9 @@ export default () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
 
-        katex.oldRender(displayOperator, button, {
+        katex.render(displayOperator, button, {
+          color: 'Black',
+          dpi: 100,
           throwOnError: false
         });
         button.onclick = () => {
@@ -275,7 +277,9 @@ export default () => {
         const button = document.createElement("button");
         button.setAttribute("type", "button");
 
-        katex.oldRender(latex, button, {
+        katex.render(latex, button, {
+          color: 'Black',
+          dpi: 100,
           throwOnError: false
         });
         button.onclick = () => {
