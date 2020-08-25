@@ -7,7 +7,7 @@ import { push } from 'connected-react-router';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-//import auth0 from 'auth0-js'
+import auth0 from 'auth0-js'
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
@@ -64,7 +64,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       pushTo('/login')
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
-    }/* else if (value.id === 57) {
+    } else if (value.id === 57) {
       const webAuth = new auth0.WebAuth({
         domain:       'circlein-dev.us.auth0.com',
         clientID:     'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
@@ -86,7 +86,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
         connection: 'Lamar-State-College-Test2',
         responseType: 'token'
       })
-    }*/ else {
+    } else {
       const responseType = 'code';
       const obj = {
         uri: value.uri,
