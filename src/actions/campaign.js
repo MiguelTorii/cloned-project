@@ -25,7 +25,7 @@ export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaig
     const { campaign } = getState()
 
     if (campaignId === LANDING_PAGE_CAMPAIGN){
-      if ((campaign.newClassExperience === null || reset) && store.get('TOKEN')) {
+      if ((campaign.newClassExperience === null || reset)/* && store.get('TOKEN')*/) {
         const { id } = await getCampaign({ campaignId })
 
         dispatch(requestGetCampaign({ campaign: 'landingPageCampaign', active: id === 4 }));
