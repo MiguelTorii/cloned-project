@@ -23,7 +23,7 @@ const setClassesAction = ({
   }
 })
 
-export const fetchClasses = () => async (
+export const fetchClasses = (skipCache) => async (
   dispatch: Dispatch,
   getState: Function
 ) => {
@@ -33,7 +33,7 @@ export const fetchClasses = () => async (
         data: { userId }
       }
     } = getState()
-    const res= await getUserClasses({ userId })
+    const res= await getUserClasses({ userId, skipCache })
     const { classes: classList, emptyState, permissions: { canAddClasses } } = res
 
     dispatch(setClassesAction({ userClasses: {

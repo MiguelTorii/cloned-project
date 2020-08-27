@@ -1,5 +1,7 @@
 // @flow
 import axios from 'axios';
+import store from 'store'
+import moment from 'moment'
 import { API_ROUTES } from '../constants/routes';
 import type {
   Profile,
@@ -138,21 +140,44 @@ export const searchUsers = async ({
   }
 };
 
+const getClassesCache = () => {
+  try {
+    const {result, expires } = JSON.parse(store.get('CLASSES_CACHE'))
+    if (moment().valueOf() > expires) return null
+    return result
+  } catch(e) {
+    return null
+  }
+}
+
+const setClassesCache = result => {
+  store.set('CLASSES_CACHE', JSON.stringify({ result, expires: moment().add(5, 'minute').valueOf() }))
+}
+
 export const getUserClasses = async ({
-  userId
+  userId,
+  skipCache
 }: {
-  userId: string
+  userId: string,
+  skipCache: boolean
 }): Promise<UserClasses> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
+
+    let result = null
+    const cache = getClassesCache()
+    if (!cache || skipCache) {
+      result = await axios.get(
       `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
         }
       }
-    );
+      );
+      setClassesCache(result)
+    } else result = cache
+
     const {
       data: { classes = [], permissions = {}, empty_state: empty = {}  }
     } = result;

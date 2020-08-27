@@ -238,7 +238,7 @@ const AddRemoveClasses = (props: Props) => {
         }
       }
 
-      await updateClasses()
+      await updateClasses(true)
     } catch (e) {
       enqueueSnackbar({
         notification: {
