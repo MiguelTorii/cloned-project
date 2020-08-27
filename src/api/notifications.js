@@ -111,3 +111,22 @@ export const getNotification = async ({
     return { title: '', body: '', details: '', created: '' };
   }
 };
+
+export const postPing = async (): Promise<Object> => {
+  try {
+    const token = await getToken();
+
+    await axios.post(
+      `${API_ROUTES.PING}`, {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return {}
+  } catch (err) {
+    console.log(err);
+    return {}
+  }
+};

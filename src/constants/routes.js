@@ -72,6 +72,7 @@ export const API_ROUTES = {
   TWILIO_TOKEN: `${API_URL}/twilio/access_token`,
   SEARCH_USERS: `${API_URL}/search`,
   NOTIFICATIONS: `${API_URL}/notifications`,
+  PING: `${API_URL}/ping`,
   SCHOOL_USERS: `${API_URL}/school`,
   CHAT: `${API_URL}/chat`,
   LEADERBOARD: `${API_URL_V1_1}/leaderboard`,

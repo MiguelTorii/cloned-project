@@ -12,6 +12,7 @@ import Notifications from '../../components/Notifications';
 import CustomNotification from '../../components/Notifications/CustomNotification';
 import {
   getNotifications,
+  postPing,
   setNotificationsRead,
   getNotification
 } from '../../api/notifications';
@@ -59,6 +60,11 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
+    if (
+      this.handleDebouncePing.cancel &&
+      typeof this.handleDebouncePing.cancel === 'function'
+    )
+      this.handleDebouncePing.cancel()
     window.addEventListener('offline', () => {
       if (
         this.handleDebounceFetchNotifications.cancel &&
@@ -68,16 +74,24 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     });
     window.addEventListener('online', () => {
       this.handleDebounceFetchNotifications();
+      this.handleDebouncePing()
     });
 
     this.handleDebounceFetchNotifications = debounce(
       this.handleDebounceFetchNotifications,
-      15181
+      30181
+    );
+
+    this.handleDebouncePing = debounce(
+      this.handleDebouncePing,
+      300000
     );
 
     await this.handleFetchNotifications();
+    await this.handlePing()
 
     this.handleDebounceFetchNotifications();
+    this.handleDebouncePing()
   };
 
   componentDidUpdate = prevProps => {
@@ -105,10 +119,23 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   componentWillUnmount = () => {
     this.mounted = false;
     if (
+      this.handleDebouncePing.cancel &&
+      typeof this.handleDebouncePing.cancel === 'function'
+    )
+      this.handleDebouncePing.cancel()
+    if (
       this.handleDebounceFetchNotifications.cancel &&
       typeof this.handleDebounceFetchNotifications.cancel === 'function'
     )
       this.handleDebounceFetchNotifications.cancel();
+  };
+
+  handleDebouncePing = async () => {
+    try {
+      await this.handlePing();
+    } finally {
+      if (this.mounted) this.handleDebouncePing();
+    }
   };
 
   handleDebounceFetchNotifications = async () => {
@@ -118,6 +145,10 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       if (this.mounted) this.handleDebounceFetchNotifications();
     }
   };
+
+  handlePing = async () => {
+    await postPing()
+  }
 
   handleFetchNotifications = async () => {
     const {
