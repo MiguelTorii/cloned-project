@@ -64,7 +64,8 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       pushTo('/login')
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
-    } else if (value.id === 57) {
+    } else if (launchType === 'saml') {
+      const connection = value.id === 57 ? 'Test-Columbia-College' : 'Lamar-State-College-Test2'
       const webAuth = new auth0.WebAuth({
         domain:       'circlein-dev.us.auth0.com',
         clientID:     'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
@@ -72,18 +73,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       webAuth.authorize({
         audience: 'https://circlein-dev.us.auth0.com/api/v2/',
         redirectUri: `${window.location.origin}/saml`,
-        connection: 'Test-Columbia-College',
-        responseType: 'token'
-      })
-    } else if (value.id === 55) {
-      const webAuth = new auth0.WebAuth({
-        domain:       'circlein-dev.us.auth0.com',
-        clientID:     'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
-      });
-      webAuth.authorize({
-        audience: 'https://circlein-dev.us.auth0.com/api/v2/',
-        redirectUri: `${window.location.origin}/saml`,
-        connection: 'Lamar-State-College-Test2',
+        connection,
         responseType: 'token'
       })
     } else {
