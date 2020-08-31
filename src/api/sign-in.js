@@ -120,6 +120,7 @@ export const searchSchools = async ({
       emailDomain: school.email_domain || [],
       scope: String((school.scope: string) || ''),
       launchType: String((school.launch_type: string) || ''),
+      connection: String((school.auth0_connection_name: string) || ''),
       redirect_message: String((school.redirect_message: string) || '')
     }));
   } catch (err) {

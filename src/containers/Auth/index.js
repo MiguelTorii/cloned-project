@@ -54,7 +54,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
   const handleChange = useCallback(value => {
     if (!value) return;
-    const { lmsTypeId, launchType, redirect_message: redirectMessage } = value;
+    const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = value;
     if (launchType === 'lti') {
       setLit(true)
       setRedirectMessage(redirectMessage)
@@ -65,7 +65,6 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
     } else if (lmsTypeId === -1) {
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (launchType === 'saml') {
-      const connection = value.id === 57 ? 'Test-Columbia-College' : 'Lamar-State-College-Test2'
       const webAuth = new auth0.WebAuth({
         domain:       'circlein-dev.us.auth0.com',
         clientID:     'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
