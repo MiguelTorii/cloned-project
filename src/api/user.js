@@ -10,9 +10,7 @@ import type {
   BlockedUsers,
   StudyCircle,
   UserStats,
-  DailyRewards,
   HomeCard,
-  DailyStreaksCard,
   QuestsCard,
   CurrentSeasonCard,
   InviteCard

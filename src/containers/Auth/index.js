@@ -8,6 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import auth0 from 'auth0-js'
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app'
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import loginBackground from '../../assets/img/login-background.png';
@@ -66,11 +67,11 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (launchType === 'saml') {
       const webAuth = new auth0.WebAuth({
-        domain:       'circlein-dev.us.auth0.com',
-        clientID:     'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
+        domain:       AUTH0_DOMAIN,
+        clientID:     AUTH0_CLIENT_ID
       });
       webAuth.authorize({
-        audience: 'https://circlein-dev.us.auth0.com/api/v2/',
+        audience: `https://${AUTH0_DOMAIN}/api/v2/`,
         redirectUri: `${window.location.origin}/saml`,
         connection,
         responseType: 'token'

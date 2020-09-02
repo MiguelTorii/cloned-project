@@ -1,5 +1,15 @@
 // @flow
 
+export const AUTH0_DOMAIN =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'circlein-production.us.auth0.com'
+    : 'circlein-dev.us.auth0.com'
+
+export const AUTH0_CLIENT_ID =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'Fm9qMmK1krorvq9yRz1KAsI3O24V6KV5'
+    : 'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
+
 export const ALGOLIA_APP_ID =
   process.env.REACT_APP_STAGE === 'production' ? 'GBPN91RQFL' : 'GBPN91RQFL';
 
@@ -16,8 +26,8 @@ export const REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
     ? 'https://app.circleinapp.com/oauth'
     : process.env.REACT_APP_STAGE === 'demo'
-    ? 'https://demo.circleinapp.com/oauth'
-    : 'https://dev-app2.circleinapp.com/oauth';
+      ? 'https://demo.circleinapp.com/oauth'
+      : 'https://dev-app2.circleinapp.com/oauth';
 
 export const GOOGLE_ANALYTICS =
   process.env.REACT_APP_STAGE === 'production'

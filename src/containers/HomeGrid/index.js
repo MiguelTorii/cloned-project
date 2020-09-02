@@ -16,7 +16,6 @@ import AddRemoveClasses from 'components/AddRemoveClasses';
 import type { State as StoreState } from '../../types/state';
 import type {
   HomeCard,
-  DailyStreaksCard as StreaksCard,
   QuestsCard as QuestsCardState,
   CurrentSeasonCard,
   InviteCard
@@ -32,7 +31,6 @@ import ErrorBoundary from '../ErrorBoundary';
 import RequestClass from '../RequestClass';
 import * as notificationsActions from '../../actions/notifications';
 import YourMonthCard from '../../components/YourMonthCard';
-import DailyStreaksCard from '../../components/DailyStreaksCard';
 import WeeklyStudyPackCard from '../../components/WeeklyStudyPackCard';
 import QuestsCard from '../../components/QuestsCard';
 import SeasonStatsCard from '../../components/SeasonStatsCard';
@@ -95,7 +93,6 @@ type State = {
   currentSeasonCard: CurrentSeasonCard,
   inviteCard: InviteCard,
   isHomeCardLoading: boolean,
-  isDailyStreaksCardLoading: boolean,
   isQuestsCardLoading: boolean,
   isCurrentSeasonCardLoading: boolean,
   isInviteCardLoading: boolean,
@@ -155,7 +152,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
       title: ''
     },
     isHomeCardLoading: true,
-    isDailyStreaksCardLoading: true,
     isQuestsCardLoading: true,
     isCurrentSeasonCardLoading: true,
     isInviteCardLoading: true,
@@ -253,19 +249,16 @@ class HomeGrid extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      enqueueSnackbar,
       user: {
         data: { userId, rank }
       }
     } = this.props;
     const {
       homeCard,
-      dailyStreaksCard,
       questsCard,
       currentSeasonCard,
       inviteCard,
       isHomeCardLoading,
-      isDailyStreaksCardLoading,
       isQuestsCardLoading,
       isCurrentSeasonCardLoading,
       isInviteCardLoading,
@@ -305,12 +298,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
                 data={homeCard}
                 rank={rank}
                 isLoading={isHomeCardLoading}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <DailyStreaksCard
-                data={dailyStreaksCard}
-                isLoading={isDailyStreaksCardLoading}
               />
             </Grid>
             <Grid item xs={12} md={6} hidden>

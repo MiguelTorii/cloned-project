@@ -423,12 +423,6 @@ export type CalendarEvent = {
 
 export type CalendarEvents = Array<CalendarEvent>;
 
-export type DailyRewards = {
-  givenPoints: number,
-  pointsLeft: number,
-  stage: number
-};
-
 export type AvailableReward = {
   bgColor: string,
   displayName: string,
@@ -514,20 +508,6 @@ export type HomeCard = {
   },
   slots: Array<HomeCardSlot>,
   order: Array<HomeCardOrder>
-};
-
-export type DailyStreaksCard = {
-  title: string,
-  currentDay: number,
-  hasSeen: boolean,
-  subtitle: {
-    text: string,
-    style: Array<CardStyle>
-  },
-  tiers: Array<{
-    day: number,
-    points: number
-  }>
 };
 
 export type Quest = {
