@@ -36,7 +36,6 @@ import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 // import StudyCircle from './pages/StudyCircle';
 import FloatingChat from './containers/FloatingChat';
-import DailyRewards from './containers/DailyRewards';
 import UpdateLMSUser from './containers/UpdateLMSUser';
 import { Referral } from './containers/Referrals';
 import Saml from './containers/Auth/Saml';
@@ -86,7 +85,6 @@ ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider>
       {/* <Tour /> */}
-      <DailyRewards />
       <UpdateLMSUser />
       <ConnectedRouter history={history}>
         <div>

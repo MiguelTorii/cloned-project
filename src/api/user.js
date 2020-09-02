@@ -572,41 +572,6 @@ export const getUserStats = async ({
   }
 };
 
-export const getDailyRewards = async ({
-  userId
-}: {
-  userId: string
-}): Promise<DailyRewards> => {
-  try {
-    const token = await getToken();
-
-    const result = await axios.post(
-      `${API_ROUTES.USER}/${userId}/check_in`,
-      {
-        user_id: Number(userId)
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    const { data = {} } = result;
-    const { reward = {} } = data;
-    return {
-      givenPoints: Number((reward.given_points: number) || 0),
-      pointsLeft: Number((reward.points_left: number) || 0),
-      stage: Number((reward.stage: number) || 0)
-    };
-  } catch (err) {
-    return {
-      givenPoints: 0,
-      pointsLeft: 0,
-      stage: 0
-    };
-  }
-};
-
 export const updateProfile = async ({
   userId,
   fields
@@ -715,48 +680,6 @@ export const getHome = async (): Promise<HomeCard> => {
         style: []
       },
       title: ''
-    };
-  }
-};
-
-export const getDailyStreaks = async (): Promise<DailyStreaksCard> => {
-  try {
-    const token = await getToken();
-
-    const result = await axios.get(API_ROUTES.STREAKS, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const { data } = result;
-
-    return {
-      title: String((data.title: string) || ''),
-      currentDay: Number((data.current_day: number) || 0),
-      hasSeen: Boolean((data.has_seen: boolean) || false),
-      subtitle: {
-        text: String(((data.subtitle || {}).text: string) || ''),
-        style: ((data.subtitle || {}).style || []).map(s => ({
-          substring: String((s.substring: string) || ''),
-          textColor: String((s.text_color: string) || ''),
-          weight: String((s.weight: string) || '')
-        }))
-      },
-      tiers: data.tiers.map(tier => ({
-        day: Number((tier.day: number) || 0),
-        points: Number((tier.points: number) || 0)
-      }))
-    };
-  } catch (err) {
-    return {
-      title: '',
-      currentDay: 0,
-      hasSeen: false,
-      subtitle: {
-        text: '',
-        style: []
-      },
-      tiers: []
     };
   }
 };

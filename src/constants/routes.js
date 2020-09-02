@@ -85,7 +85,6 @@ export const API_ROUTES = {
   SEARCH: `${API_URL}/search`,
   SEARCH_SCHOOLS: `${API_URL}/search/school`,
   SEARCH_CLASS: `${API_URL}/search/class`,
-  STREAKS: `${API_URL}/streaks`,
   QUESTS: `${API_URL}/quests`,
   INVITE: `${API_URL}/invite`,
   CURRENT_SEASON: `${API_URL}/season/current`,

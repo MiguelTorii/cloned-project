@@ -24,7 +24,6 @@ import type {
 import type { UserState } from '../../reducers/user';
 import {
   getHome,
-  getDailyStreaks,
   getQuests,
   getCurrentSeason,
   getInvite
@@ -169,18 +168,6 @@ class HomeGrid extends React.PureComponent<Props, State> {
     try {
       const homeCard = await getHome();
       if (this.mounted) this.setState({ homeCard, isHomeCardLoading: false });
-      getDailyStreaks()
-        .then(result => {
-          if (this.mounted)
-            this.setState({
-              dailyStreaksCard: result,
-              isDailyStreaksCardLoading: false
-            });
-          window.scrollTo(0, 0);
-        })
-        .catch(() => {
-          if (this.mounted) this.setState({ isDailyStreaksCardLoading: false });
-        });
       getQuests()
         .then(result => {
           if (this.mounted)
