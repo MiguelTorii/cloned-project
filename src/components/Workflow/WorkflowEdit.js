@@ -77,6 +77,7 @@ const WorkflowEdit = ({
 }: Props) => {
   const {
     classList,
+    canAddClasses,
     updateItem
   } = useContext(WorkflowContext)
   const classes = useStyles()
@@ -247,9 +248,9 @@ const WorkflowEdit = ({
                   </MenuItem>
                 )
               })}
-              {/* <MenuItem value='new' className={classes.newClass}> */}
-              {/* Add Classes */}
-              {/* </MenuItem> */}
+              {canAddClasses && <MenuItem value='new' className={classes.newClass}>
+               Add Classes
+              </MenuItem>}
             </Select>
           </FormControl>
           <AddRemoveClasses
@@ -275,7 +276,7 @@ const WorkflowEdit = ({
         {/* </Grid> */}
       </Grid>
     </Dialog>
-  ), [categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
+  ), [canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
 }
 
 export default memo(WorkflowEdit)

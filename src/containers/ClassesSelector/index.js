@@ -123,6 +123,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
       variant,
       label,
       user: {
+        userClasses: { canAddClasses },
         isLoading,
         error,
         data: { userId }
@@ -155,9 +156,9 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                     {userClass.label}
                   </MenuItem>
                 ))}
-                {/* <MenuItem value="new" className={classes.newClass}> */}
-                {/* Add Classes */}
-                {/* </MenuItem> */}
+                {canAddClasses && <MenuItem value="new" className={classes.newClass}>
+                 Add Classes
+                </MenuItem>}
               </SelectValidator>
             </FormControl>
           </div>

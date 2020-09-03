@@ -488,6 +488,8 @@ class MainLayout extends React.Component<Props, State> {
       </div>
     )
 
+    const { updateFeed, newClassExperience, userClasses, landingPageCampaign } = this.props
+
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -499,9 +501,9 @@ class MainLayout extends React.Component<Props, State> {
         <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
           My Profile
         </MenuItem>
-        {/* <MenuItem onClick={this.handleManageClasses}> */}
-        {/* Add/Remove Classes */}
-        {/* </MenuItem> */}
+        {userClasses.canAddClasses && <MenuItem onClick={this.handleManageClasses}>
+         Add/Remove Classes
+        </MenuItem>}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleOpenReferralStatus}>Referred Classmates</MenuItem>
         <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
@@ -552,8 +554,6 @@ class MainLayout extends React.Component<Props, State> {
         </MenuItem>
       </Menu>
     );
-
-    const { updateFeed, newClassExperience, userClasses, landingPageCampaign } = this.props
 
     const renderCreatePostMenu = (
       <Menu
