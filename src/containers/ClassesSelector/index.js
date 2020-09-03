@@ -68,7 +68,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
     const {classId, sectionId} = nextProps
     if (classId && sectionId) this.setState({value: JSON.stringify({classId, sectionId})})
   }
-  
+
   handleLoadClasses = async () => {
     try {
       const {
@@ -155,17 +155,17 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                     {userClass.label}
                   </MenuItem>
                 ))}
-                <MenuItem value="new" className={classes.newClass}>
-                  Add Classes
-                </MenuItem>
+                {/* <MenuItem value="new" className={classes.newClass}> */}
+                {/* Add Classes */}
+                {/* </MenuItem> */}
               </SelectValidator>
             </FormControl>
           </div>
         </ErrorBoundary>
         <ErrorBoundary>
-          <AddRemoveClasses 
-            open={open} 
-            onClose={this.handleCloseManageClasses} 
+          <AddRemoveClasses
+            open={open}
+            onClose={this.handleCloseManageClasses}
             onOpenRequestClass={this.handleOpenRequestClass}
           />
         </ErrorBoundary>
