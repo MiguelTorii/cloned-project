@@ -560,12 +560,6 @@ export type InviteCard = {
   title: string
 };
 
-export type ChatPoints = {
-  currentWeekCount: number,
-  logId: number,
-  points: number
-};
-
 export type CreateChat = {
   chatId: string,
   groupName: string,

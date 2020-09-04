@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Fragment } from 'react';
-import debounce from 'lodash/debounce';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import cx from 'classnames';
@@ -23,7 +22,6 @@ import ChatChannelViewMembers from './ChatChannelViewMembers';
 import ChatChannelAddMembers from './ChatChannelAddMembers';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
-import { postMessageCount } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -87,7 +85,7 @@ type State = {
   scroll: boolean,
   viewMembers: boolean,
   loading: boolean,
-  images: Array<{ src: string }>,
+  images: Array<{src: string}>,
   expanded: boolean,
   count: number,
   addMembers: boolean
@@ -123,7 +121,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    this.handleMessageCount = debounce(this.handleMessageCount, 5000);
     try {
       const {
         channel,
@@ -176,7 +173,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         } else {
           try {
             channel.setAllMessagesConsumed();
-          } catch(e) {}
+          } catch (e) {}
         }
         this.handleScrollToBottom();
       });
@@ -194,13 +191,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
       channel.on('typingStarted', member => {
         if (!this.mounted) return;
-        try{
+        try {
           member.getUser().then(user => {
             const { state } = user;
             const { friendlyName } = state;
             this.setState({ typing: friendlyName });
           });
-        } catch(e) {}
+        } catch (e) {}
       });
 
       channel.on('typingEnded', () => {
@@ -277,10 +274,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
           props: { Content: 'Text', 'Channel SID': channel.sid }
         });
         this.setState(({ count }) => ({ count: count + 1 }));
-        this.handleMessageCount();
         onSend();
       } else {
-        this.setState({ createMessage: { message, messageAttributes }})
+        this.setState({ createMessage: { message, messageAttributes } })
       }
     } catch (err) {
       console.log(err);
@@ -330,7 +326,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
         props: { Content: 'Image', 'Channel SID': channel.sid }
       });
       this.setState(({ count }) => ({ count: count + 1 }));
-      this.handleMessageCount();
       onSend();
     } catch (err) {
       console.log(err);
@@ -441,40 +436,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleExpand = () => {
     this.setState(({ expanded }) => ({ expanded: !expanded }));
-  };
-
-  handleMessageCount = async () => {
-    const { count } = this.state;
-    const {
-      user: {
-        data: { userId }
-      },
-      channel
-    } = this.props;
-    const { sid } = channel;
-    const { points } = await postMessageCount({
-      userId,
-      count,
-      sid
-    });
-    if (points > 0) {
-      const { enqueueSnackbar, classes } = this.props;
-      enqueueSnackbar(`Awesome! You've earned ${points} points for messages`, {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'left'
-        },
-        autoHideDuration: 2000,
-        ContentProps: {
-          classes: {
-            root: classes.stackbar
-          }
-        }
-      });
-    }
-
-    this.setState({ count: 0 });
   };
 
   renderMessage = (item, profileURLs) => {
@@ -598,11 +559,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
               }}
             >
               {newChannel &&
-                    <CreateChatChannelInput
-                      createMessage={createMessage}
-                      onOpenChannel={handleChannelCreated}
-                      handleClearCreateMessage={this.handleClearCreateMessage}
-                    />
+                <CreateChatChannelInput
+                  createMessage={createMessage}
+                  onOpenChannel={handleChannelCreated}
+                  handleClearCreateMessage={this.handleClearCreateMessage}
+                />
               }
               <InfiniteScroll
                 threshold={50}

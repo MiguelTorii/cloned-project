@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-syntax */
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/media-has-caption */
 // @flow
 import React, { Fragment } from 'react';
-import debounce from 'lodash/debounce';
 import cx from 'classnames';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
@@ -24,7 +24,6 @@ import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEvent } from '../../api/analytics';
 import { getPresignedURL } from '../../api/media';
-import { postMessageCount } from '../../api/chat';
 
 const styles = theme => ({
   root: {
@@ -66,8 +65,7 @@ type Props = {
   user: User,
   open: boolean,
   channel: Object,
-  onUnreadUpdate: Function,
-  enqueueSnackbar: Function
+  onUnreadUpdate: Function
 };
 
 type State = {
@@ -78,8 +76,7 @@ type State = {
   typing: string,
   scroll: boolean,
   loading: boolean,
-  images: Array<{ src: string }>,
-  count: number
+  images: Array<{src: string}>
 };
 
 class VideoChatChannel extends React.Component<Props, State> {
@@ -92,12 +89,18 @@ class VideoChatChannel extends React.Component<Props, State> {
     scroll: true,
     loading: false,
     images: [],
-    count: 0
   };
+
+  mounted: boolean
+
+  // eslint-disable-next-line no-undef
+  end: ?HTMLDivElement;
+
+  // eslint-disable-next-line no-undef
+  scrollParentRef: ?HTMLDivElement;
 
   componentDidMount = async () => {
     this.mounted = true;
-    this.handleMessageCount = debounce(this.handleMessageCount, 5000);
     try {
       const { channel } = this.props;
       //   try {
@@ -204,8 +207,6 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: { Content: 'Text', 'Channel SID': channel.sid }
       });
-      this.setState(({ count }) => ({ count: count + 1 }));
-      this.handleMessageCount();
     } catch (err) {
       console.log(err);
     } finally {
@@ -248,8 +249,6 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: { Content: 'Image', 'Channel SID': channel.sid }
       });
-      this.setState(({ count }) => ({ count: count + 1 }));
-      this.handleMessageCount();
     } catch (err) {
       console.log(err);
     } finally {
@@ -309,47 +308,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     this.setState({ images: [] });
   };
 
-  handleMessageCount = async () => {
-    const { count } = this.state;
-    const {
-      user: { userId },
-      channel
-    } = this.props;
-    const { sid } = channel;
-    const { points } = await postMessageCount({
-      userId,
-      count,
-      sid
-    });
-    if (points > 0) {
-      const { enqueueSnackbar, classes } = this.props;
-      enqueueSnackbar(`Awesome! You've earned ${points} points for messages`, {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'left'
-        },
-        autoHideDuration: 2000,
-        ContentProps: {
-          classes: {
-            root: classes.stackbar
-          }
-        }
-      });
-    }
-
-    this.setState({ count: 0 });
-  };
-
-  handleStartVideoCall = () => { };
-
-  mounted: boolean
-
-  // eslint-disable-next-line no-undef
-  end: ?HTMLDivElement;
-
-  // eslint-disable-next-line no-undef
-  scrollParentRef: ?HTMLDivElement;
+  handleStartVideoCall = () => {};
 
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;
@@ -440,7 +399,7 @@ class VideoChatChannel extends React.Component<Props, State> {
                 isReverse
                 getScrollParent={() => this.scrollParentRef}
               >
-                {messageItems.slice(0,2).map(item =>
+                {messageItems.slice(0, 2).map(item =>
                   this.renderMessage(item, profileURLs)
                 )}
                 {loading && (

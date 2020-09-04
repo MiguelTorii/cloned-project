@@ -8,6 +8,7 @@
   ],
   "plugins": ["prettier", "jsx-a11y", "flowtype", "react-hooks"],
   "rules": {
+    "object-curly-spacing": 2,
     "react/jsx-filename-extension": [
       1,
       {
