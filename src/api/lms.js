@@ -47,6 +47,8 @@ export const signLMSUser = async ({
       redirect_uri: redirectUri
     });
     const { data = {} } = result;
+    // eslint-disable-next-line
+    if (data?.redirect_url) window.location = data.redirect_url
     return userToCamelCase(data);
   } catch (err) {
     console.log(err);

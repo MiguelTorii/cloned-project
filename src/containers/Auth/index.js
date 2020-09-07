@@ -67,10 +67,9 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (launchType === 'saml') {
       const webAuth = new auth0.WebAuth({
-        domain:       AUTH0_DOMAIN,
-        clientID:     AUTH0_CLIENT_ID
+        domain: AUTH0_DOMAIN,
+        clientID: AUTH0_CLIENT_ID
       });
-      console.log({AUTH0_DOMAIN, AUTH0_CLIENT_ID, value})
       webAuth.authorize({
         redirectUri: `${window.location.origin}/saml`,
         connection,
@@ -90,7 +89,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
       let uri = `${value.authUri}?client_id=${
         value.clientId
-      }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
+        }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
 
       if (value.scope) {
         uri = `${uri}&scope=${value.scope}`;
