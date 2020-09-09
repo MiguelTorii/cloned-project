@@ -1,10 +1,10 @@
 // @flow
 
-import React, {useRef, useEffect, useState, useCallback, useReducer} from 'react'
-import {connect} from 'react-redux'
-import {withStyles} from '@material-ui/core/styles'
+import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 import * as notificationsActions from 'actions/notifications'
-import {bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 import Grid from '@material-ui/core/Grid'
 import CreateWorkflow from 'components/Workflow/CreateWorkflow'
 import WorkflowList from 'components/Workflow/WorkflowList'
@@ -19,8 +19,8 @@ import {
   updateTodosOrdering,
   getTodos
 } from 'api/workflow'
-import type {UserState} from 'reducers/user'
-import type {State as StoreState} from 'types/state'
+import type { UserState } from 'reducers/user'
+import type { State as StoreState } from 'types/state'
 import ErrorBoundary from 'containers/ErrorBoundary'
 import Typography from '@material-ui/core/Typography'
 import moment from 'moment'
@@ -89,14 +89,14 @@ type Props = {
 };
 
 function reducer(state, action) {
-  const {type} = action
+  const { type } = action
   switch (type) {
   case 'INIT':
     return update(state, {
-      tasks: {$set: action.tasks}
+      tasks: { $set: action.tasks }
     })
   case 'ADD_TASK':
-    return {...state, tasks: [{...action.task}, ...state.tasks]}
+    return { ...state, tasks: [{ ...action.task }, ...state.tasks] }
   case 'ARCHIVE_TASK':
     return update(state, {
       tasks: {
@@ -118,7 +118,7 @@ function reducer(state, action) {
     return update(state, {
       tasks: {
         [action.index]: {
-          categoryId: {$set: action.categoryId},
+          categoryId: { $set: action.categoryId },
         }
       }
     })
@@ -127,19 +127,19 @@ function reducer(state, action) {
     return update(state, {
       tasks: {
         [action.index]: {
-          title: {$set: action.title},
-          categoryId: {$set: action.categoryId || 0},
-          description: {$set: action.description || ''},
-          date: {$set: action.date},
-          sectionId: {$set: action.sectionId || ''},
-          status: {$set: action.status},
-          notifications: {$set: action.notifications || []},
-          images: {$set: action.images}
+          title: { $set: action.title },
+          categoryId: { $set: action.categoryId || 0 },
+          description: { $set: action.description || '' },
+          date: { $set: action.date },
+          sectionId: { $set: action.sectionId || '' },
+          status: { $set: action.status },
+          notifications: { $set: action.notifications || [] },
+          images: { $set: action.images }
         }
       }
     })
   case 'DRAG_UPDATE':
-    return update(state, {dragId: {$set: action.dragId}})
+    return update(state, { dragId: { $set: action.dragId } })
   default:
     return state
   }
@@ -150,13 +150,13 @@ const initialState = {
   tasks: []
 }
 
-const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
+const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const {tasks, dragId} = state
+  const { tasks, dragId } = state
   const [classList, setClassList] = useState({})
   const {
-    data: {firstName, userId},
-    syncData: {viewedOnboarding},
+    data: { firstName, userId },
+    syncData: { viewedOnboarding },
     userClasses,
     announcementData
   } = user
@@ -184,7 +184,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
       const res = await getTodos()
 
       if (res) {
-        dispatch({type: 'INIT', tasks: res})
+        dispatch({ type: 'INIT', tasks: res })
       } else {
         enqueueSnackbar(createSnackbar('Failed to initialize', classes.snackbar, 'error'))
       }
@@ -194,19 +194,19 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   }, [dispatch, classes, enqueueSnackbar, viewedOnboarding])
 
   const archiveTask = useCallback(async task => {
-    const res = await archiveTodo({id: task.id})
-    if (res?.id) dispatch({type: 'ARCHIVE_TASK', index: task.index})
+    const res = await archiveTodo({ id: task.id })
+    if (res?.id) dispatch({ type: 'ARCHIVE_TASK', index: task.index })
   }, [dispatch])
 
   const moveTask = useCallback((dragIndex, hoverIndex) => {
     const dragTask = state.tasks[dragIndex]
-    dispatch({type: 'REORDER', dragIndex, hoverIndex, dragTask})
+    dispatch({ type: 'REORDER', dragIndex, hoverIndex, dragTask })
   }, [state, dispatch])
 
   const dragCategoryId = useRef()
   const updateCategory = useCallback(async (index, categoryId) => {
     dragCategoryId.current = categoryId
-    dispatch({type: 'UPDATE_CATEGORY', index, categoryId})
+    dispatch({ type: 'UPDATE_CATEGORY', index, categoryId })
   }, [dispatch])
 
   const [prevDragId, setPrevDragId] = useState(null)
@@ -214,21 +214,21 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
     let ordering = []
     tasks.forEach((t, position) => {
       if (t.order !== position) {
-        ordering = [...ordering, {id: t.id, position}]
+        ordering = [...ordering, { id: t.id, position }]
       }
     })
-    await updateTodosOrdering({ordering})
+    await updateTodosOrdering({ ordering })
   }, [tasks])
 
   const onDrag = useCallback(async dragId => {
     if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
-      const res = await updateTodoCategory({id: prevDragId, categoryId: dragCategoryId.current})
+      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId.current })
       if (res?.points) enqueueSnackbar(createSnackbar(
         `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
         classes.snackbar,
         'success'))
     }
-    dispatch({type: 'DRAG_UPDATE', dragId})
+    dispatch({ type: 'DRAG_UPDATE', dragId })
   }, [dispatch, dragCategoryId, prevDragId, enqueueSnackbar, firstName, classes])
 
   useEffect(() => {
@@ -252,7 +252,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
   const [expanded, setExpanded] = useState([true, true, true, true])
 
   const handleExpand = useCallback(index => expand => {
-    setExpanded(update(expanded, {[index - 1]: {$set: expand}}))
+    setExpanded(update(expanded, { [index - 1]: { $set: expand } }))
   }, [expanded])
 
   useEffect(() => {
@@ -298,7 +298,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
     }
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
-  const updateItem = useCallback(async ({index, title, date, categoryId, description, sectionId, id, status, images}) => {
+  const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status, images }) => {
     if (id === -1) {
       await handleAddTask({
         title,
@@ -324,7 +324,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
       })
 
       if (res?.id) {
-        dispatch({type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status, images})
+        dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status, images })
         if (res?.points) enqueueSnackbar(createSnackbar(
           `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
           classes.snackbar,
@@ -363,7 +363,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
             color="textPrimary"
             className={classes.title}
           >
-          Workflow
+            Workflow
           </Typography>
           <Grid container alignItems='center'>
             <Button
@@ -371,21 +371,21 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
               className={classes.button}
               onClick={showBoardView}
             >
-            Board View
+              Board View
             </Button>
             <Button
               color={cx(listView && !calendarView ? 'primary' : 'default')}
               onClick={showListView}
               className={classes.button}
             >
-            List View
+              List View
             </Button>
             <Button
               color={cx(calendarView ? 'primary' : 'default')}
               onClick={showCalendarView}
               className={classes.button}
             >
-            Calendar View
+              Calendar View
             </Button>
             <div className={classes.divider}>|</div>
             <Button
@@ -393,7 +393,7 @@ const Workflow = ({user, enqueueSnackbar, classes}: Props) => {
               onClick={openTips}
               className={classes.button}
             >
-            Tips & Tricks
+              Tips & Tricks
             </Button>
           </Grid>
           {calendarView && <Paper elevation={0} className={classes.bodyCalendar}>

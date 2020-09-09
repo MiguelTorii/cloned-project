@@ -249,7 +249,7 @@ const WorkflowEdit = ({
                 )
               })}
               {canAddClasses && <MenuItem value='new' className={classes.newClass}>
-               Add Classes
+                Add Classes
               </MenuItem>}
             </Select>
           </FormControl>

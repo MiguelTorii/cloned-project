@@ -35,6 +35,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   animation: {
+    width: '100%',
+    objectFit: 'scale-down',
     height: 220
   },
   borders: {
@@ -87,7 +89,7 @@ const Tips = ({ open, close }) => {
             <Grid container>
               <Typography className={classes.titleSecondary}>How can I start using Workflow?</Typography>
               <Typography className={classes.text}>
-                  You can start with tasks from your planner, syllabus, or from brainstorming. Once you have a solid task list, place them into Upcoming.
+                You can start with tasks from your planner, syllabus, or from brainstorming. Once you have a solid task list, place them into Upcoming.
               </Typography>
               <Typography className={classes.text}>
                 <b>DID YOU KNOW?</b> You can add due dates and tag classes for tasks on Workflow!
@@ -99,7 +101,7 @@ const Tips = ({ open, close }) => {
             <Grid container>
               <Typography className={classes.titleSecondary}>Break down large tasks into small steps.</Typography>
               <Typography className={classes.text}>
-                  Break large tasks down into steps, and create a task for each step in Upcoming. Organize them chronologically (or by priority) and start chipping away!
+                Break large tasks down into steps, and create a task for each step in Upcoming. Organize them chronologically (or by priority) and start chipping away!
               </Typography>
             </Grid>
           </Grid>
@@ -108,7 +110,7 @@ const Tips = ({ open, close }) => {
             <Grid container>
               <Typography className={classes.titleSecondary}>Prevent burn-out from too many tasks.</Typography>
               <Typography className={classes.text}>
-                  Have no more than four tasks in In Progress to focus better and avoid task overload.
+                Have no more than four tasks in In Progress to focus better and avoid task overload.
               </Typography>
               <Typography className={classes.text}>
                 <b>DID YOU KNOW?</b> Placing higher priority tasks towards the top of the list is a great way to organize!

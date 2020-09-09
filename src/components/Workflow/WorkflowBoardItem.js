@@ -10,7 +10,7 @@ const WorkflowBoardItem = ({
   onOpen,
   showDetails,
 }) => {
-  const date = useMemo(() => clsx(task.date && moment(task.date).format('MMM D')), [task.date])
+  const date = useMemo(() => clsx(task.date && moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')), [task.date])
   const selectedClass = useMemo(() => classList[task.sectionId], [classList, task.sectionId])
 
   return useMemo(() => (

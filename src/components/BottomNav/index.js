@@ -21,6 +21,7 @@ const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink ref={re
 
 const styles = () => ({
   bottomNav: {
+    zIndex: 1,
     width: '100%',
     position: 'fixed',
     bottom: 0

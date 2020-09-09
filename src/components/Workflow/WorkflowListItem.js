@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 // import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
-import { makeStyles , useTheme } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 // import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -130,7 +130,7 @@ const WorkflowListItem = ({
         </Grid>
         <Grid item xs={2} md={2} className={classes.itemDetails}>
           {task.date && <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
-            {moment(task.date).format('MMM D')}
+            {moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')}
           </Typography>}
         </Grid>
         <Grid item xs={3} md={3} className={classes.itemDetails}>
@@ -141,7 +141,8 @@ const WorkflowListItem = ({
           />}
         </Grid>
       </Grid>
-    )}, [task, classList, classes, title, isDragging, showDetails, openConfirmArchive, onOpen])
+    )
+  }, [task, classList, classes, title, isDragging, showDetails, openConfirmArchive, onOpen])
 
   return useMemo(() => (
     <ListItem
