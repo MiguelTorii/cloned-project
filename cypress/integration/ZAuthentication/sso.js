@@ -18,7 +18,7 @@ describe('Single Sign On', () => {
       cy.get('#pseudonym_session_unique_id').type('jon+190@circleinapp.com')
       cy.get('#pseudonym_session_password').type('abcd1234{enter}')
       cy.contains('Authorize').click()
-      cy.contains('Workflow')
+      cy.url().should('eq', 'https://insights.circleinapp.com/login')
     })
   })
 })
