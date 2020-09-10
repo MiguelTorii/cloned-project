@@ -1,6 +1,5 @@
 import React, { memo, useMemo } from 'react'
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard'
-import clsx from 'clsx'
 import moment from 'moment'
 
 const WorkflowBoardItem = ({
@@ -10,7 +9,15 @@ const WorkflowBoardItem = ({
   onOpen,
   showDetails,
 }) => {
-  const date = useMemo(() => clsx(task.date && moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')), [task.date])
+  const date = useMemo(() => {
+    if (task.date) {
+      if (typeof task.date.getMonth === 'function') {
+        return moment(task.date).format('MMM D')
+      }
+      return moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')
+    }
+    return ''
+  }, [task.date])
   const selectedClass = useMemo(() => classList[task.sectionId], [classList, task.sectionId])
 
   return useMemo(() => (

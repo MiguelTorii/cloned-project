@@ -108,6 +108,15 @@ const WorkflowListItem = ({
   const downMd = useMediaQuery(theme.breakpoints.down('md'))
   const downSm = useMediaQuery(theme.breakpoints.down('sm'))
   const downXs = useMediaQuery(theme.breakpoints.down('xs'))
+  const date = useMemo(() => {
+    if (task.date) {
+      if (typeof task.date.getMonth === 'function') {
+        return moment(task.date).format('MMM D')
+      }
+      return moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')
+    }
+    return ''
+  }, [task.date])
 
   const title = getTitle(downMd, downSm, downXs, task.title)
   const renderTask = useMemo(() => {
@@ -130,7 +139,7 @@ const WorkflowListItem = ({
         </Grid>
         <Grid item xs={2} md={2} className={classes.itemDetails}>
           {task.date && <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
-            {moment(`${task.date.replace(' ', 'T')}Z`).format('MMM D')}
+            {date}
           </Typography>}
         </Grid>
         <Grid item xs={3} md={3} className={classes.itemDetails}>
@@ -142,7 +151,7 @@ const WorkflowListItem = ({
         </Grid>
       </Grid>
     )
-  }, [task, classList, classes, title, isDragging, showDetails, openConfirmArchive, onOpen])
+  }, [classList, task.sectionId, task.date, classes.titleContainer, classes.taskTitle, classes.detailsButton, classes.iconButton, classes.itemDetails, classes.dateText, classes.chip, classes.ellipsis, title, isDragging, showDetails, onOpen, openConfirmArchive, date])
 
   return useMemo(() => (
     <ListItem

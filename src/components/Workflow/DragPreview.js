@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     zIndex: 1004,
     left: 0,
     top: 0,
-    maxWidth: 31*8,
+    maxWidth: 31 * 8,
   },
   list: {
     position: 'fixed',
@@ -63,14 +63,14 @@ const DragPreview = () => {
   const date = clsx(task.date && moment(task.date).format('MMM D'))
   const selectedClass = classList[task.sectionId]
 
-  const container = listView ? classes.list: classes.card
+  const container = listView ? classes.list : classes.card
   return (
     <div className={container}>
       <div
         style={getItemStyles(initialOffset, currentOffset)}
       >
         {listView
-          ? <WorkflowListItem task={task} classList={classList}/>
+          ? <WorkflowListItem task={task} classList={classList} />
           : <WorkflowBoardCard title={task.title} date={date} selectedClass={selectedClass} />
         }
       </div>

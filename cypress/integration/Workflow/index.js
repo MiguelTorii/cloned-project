@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 describe('Workflow', () => {
   beforeEach(() => {
     cy.login()
@@ -14,7 +16,12 @@ describe('Workflow', () => {
   it('Edit task', () => {
     cy.contains('Create Test Task').click()
     cy.get('[rows="1"]').clear().type('Create Test Task Edit')
+    cy.contains('Time').parent().within(() => {
+      cy.get('input').click()
+    })
+    cy.contains('3:00 PM').click({ force: true })
     cy.contains('Save').click()
+    cy.contains(moment().format('MMM D'))
   })
 
   it('Moves task to done', () => {
@@ -37,13 +44,15 @@ describe('Workflow', () => {
     cy.contains('Delete').click()
   })
 
-  // it('Create/Delete task in List View', () => {
-  // cy.contains('List View').click()
-  // cy.get('.MuiInputBase-input').click().type('Create Test Task List View')
-  // cy.contains('Add Task').click()
-  // cy.contains('Create Test Task List View').click()
-  // cy.contains('Delete').click()
-  // cy.wait(1000)
-  // cy.contains('Delete').click()
-  // })
+  it('List View', () => {
+    cy.contains('List View').click({ force: true })
+    cy.contains('Add Task')
+    cy.contains('Due Date')
+  })
+
+  it('Calendar View', () => {
+    cy.contains('Calendar View').click({ force: true })
+    cy.contains('Add Task')
+    cy.contains('Wed')
+  })
 })
