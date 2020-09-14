@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { getInitials} from 'utils/chat'
+import { getInitials } from 'utils/chat'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
@@ -123,12 +123,12 @@ const RightMenu = ({
       setInitials('')
       setOtherUser(null)
       setGroupImage(null)
-      if(local[channel.sid].members.length === 2) {
+      if (local[channel.sid]?.members?.length && local[channel.sid]?.members?.length === 2) {
         local[channel.sid].members.forEach(u => {
           if (Number(u.userId) !== Number(userId)) {
             setOtherUser(u)
             setGroupImage(u.image)
-            setInitials(getInitials({name: `${u.firstname} ${u.lastname}`}))
+            setInitials(getInitials({ name: `${u.firstname} ${u.lastname}` }))
           }
         })
       } else {
@@ -226,10 +226,10 @@ const RightMenu = ({
                           alt={fullName}
                           src={m.image}
                         >
-                          {getInitials({name: fullName})}
+                          {getInitials({ name: fullName })}
                         </Avatar>
                       </ListItemAvatar>
-                      {fullName} {[2,3].includes(m.roleId) && m.role && <TutorBadge text={m.role} />}
+                      {fullName} {[2, 3].includes(m.roleId) && m.role && <TutorBadge text={m.role} />}
                       <ListItemSecondaryAction>
                         <RouterLink to={`/profile/${m.userId}`}>
                           <ArrowForwardIosIcon className={classes.icon} />

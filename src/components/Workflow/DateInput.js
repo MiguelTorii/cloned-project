@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 // eslint-disable-next-line
-const  DateInputComponent = forwardRef((props, ref) => {
+const DateInputComponent = forwardRef((props, ref) => {
   const { component: Component, inputRef, ...other } = props;
   // eslint-disable-next-line
   return <Component {...other} ref={(ref) => inputRef(ReactDOM.findDOMNode(ref))} />;
