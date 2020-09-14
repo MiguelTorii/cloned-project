@@ -18,9 +18,9 @@ const styles = () => ({
   }
 })
 
+const backend = isMobile ? TouchBackend : HTML5Backend
 
-const WorkflowPage = ({classes }: Props) => {
-  const backend = isMobile ? TouchBackend : HTML5Backend
+const WorkflowPage = ({ classes }: Props) => {
   return (
     <DndProvider backend={backend}>
       <main>
