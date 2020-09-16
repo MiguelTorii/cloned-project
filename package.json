@@ -15,7 +15,7 @@
     "@material-ui/lab": "^4.0.0-alpha.41",
     "@material-ui/pickers": "^3.2.9",
     "@microlink/react": "^4.0.0",
-    "@sentry/browser": "^5.3.0",
+    "@sentry/browser": "^5.23.0",
     "@sentry/cli": "^1.52.1",
     "add": "^2.0.6",
     "algoliasearch": "^3.32.1",
