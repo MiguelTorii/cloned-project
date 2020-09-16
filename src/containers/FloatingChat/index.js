@@ -17,14 +17,17 @@ type Props = {
   }
 };
 
-const Chat = ({ user, width, location: { pathname }}: Props) => {
+const Chat = ({ user, width, location: { pathname } }: Props) => {
   const {
     data: { userId }
   } = user;
 
   useEffect(() => {
     window.onunhandledrejection = e => {
-      if (["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)) {
+      if (
+        e?.reason?.message &&
+        ["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)
+      ) {
         e.preventDefault()
       }
     }
