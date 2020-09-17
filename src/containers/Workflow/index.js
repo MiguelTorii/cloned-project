@@ -262,6 +262,10 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
 
   const handleAddTask = useCallback(async ({ title, categoryId, date, sectionId, description }) => {
+    if (!title) {
+      enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'))
+      return
+    }
     try {
       const res = await createTodo({
         title,
@@ -299,6 +303,10 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
   const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status, images }) => {
+    if (!title) {
+      enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'))
+      return
+    }
     if (id === -1) {
       await handleAddTask({
         title,

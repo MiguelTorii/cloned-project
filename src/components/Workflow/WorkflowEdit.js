@@ -127,7 +127,7 @@ const WorkflowEdit = ({
       status: task.status,
       images: imagesRef.current?.images
     })
-    onClose()
+    if (title) onClose()
   }, [updateItem, onClose, task, title, date, categoryId, description, sectionId, imagesRef])
 
   const updateTitle = useCallback(e => {
