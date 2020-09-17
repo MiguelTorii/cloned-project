@@ -71,6 +71,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
         clientID: AUTH0_CLIENT_ID
       });
       webAuth.authorize({
+        audience: `https://${AUTH0_DOMAIN}/api/v2/`,
         redirectUri: `${window.location.origin}/saml`,
         connection,
         responseType: 'token'
