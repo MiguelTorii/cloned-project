@@ -53,7 +53,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [emptyVisibility, setEmptyVisibility] = useState(false)
   const [emptyBody, setEmptyBody] = useState('')
 
-  const handleLeaveClass = async ({sectionId, classId, userId}) => {
+  const handleLeaveClass = async ({ sectionId, classId, userId }) => {
     await leaveUserClass({
       sectionId,
       classId,
@@ -62,11 +62,13 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     fetchClasses()
   }
 
+  useEffect(() => fetchClasses(true), [fetchClasses])
+
   useEffect(() => {
     try {
       const {
         // eslint-disable-next-line
-        userClasses: { classList, canAddClasses, emptyState }
+        userClasses: {classList, canAddClasses, emptyState}
       } = user
 
       if (emptyState && emptyState.visibility) {
@@ -103,8 +105,8 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         )
         setCanAddClasses(canAddClasses)
       }
-    // eslint-disable-next-line no-empty
-    } catch(e) {}
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
     // eslint-disable-next-line
   }, [user])
 
@@ -138,7 +140,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             bgColor={cl.bgColor}
             canLeave={cl.canLeave}
             handleLeaveClass={cl.handleLeaveClass}
-            navigate={() => navigate({...cl})}
+            navigate={() => navigate({ ...cl })}
           />
         </Grid>
       ))}
@@ -149,18 +151,18 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
           onClick={() => setOpenAddClasses(true)}
           color="primary"
         >
-            + Add More Classes
+          + Add More Classes
         </Button>
       </Grid>}
       {emptyVisibility &&
-            <Grid container justify='center' item xs={12}>
-              <Grid item xs={12} md={9}>
-                <Empty
-                  logo={emptyLogo}
-                  body={emptyBody}
-                />
-              </Grid>
-            </Grid>}
+        <Grid container justify='center' item xs={12}>
+          <Grid item xs={12} md={9}>
+            <Empty
+              logo={emptyLogo}
+              body={emptyBody}
+            />
+          </Grid>
+        </Grid>}
     </Grid>
   );
 }
