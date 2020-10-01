@@ -49,7 +49,7 @@ type Props = {
   delay: ?number,
   id: number,
   hidden: ?boolean,
-  location: { pathname: string },
+  location: {pathname: string},
   placement: string,
   text: string,
   viewedOnboarding: boolean,
@@ -101,7 +101,7 @@ const Tooltip = ({
     ) {
       result = false;
     } else {
-      switch(id) {
+      switch (id) {
       case CHAT:
         result = true;
         break;
@@ -111,7 +111,7 @@ const Tooltip = ({
       case NEW_POST:
         result = (
           viewedTooltips.includes(CHAT) &&
-          pathname.indexOf('/feed') === 0
+            pathname.indexOf('/feed') === 0
         );
         break;
       case BOOKMARKS:
@@ -122,7 +122,7 @@ const Tooltip = ({
       case THANKS:
         result = (
           viewedTooltips.includes(CHAT) &&
-          viewedTooltips.includes(BOOKMARKS)
+            viewedTooltips.includes(BOOKMARKS)
         );
         break;
       case FLASHCARD_BOTTOM:
@@ -192,7 +192,7 @@ const Tooltip = ({
 }
 
 const mapStateToProps = (
-  { user: { syncData: { viewedOnboarding, viewedTooltips }}, dialog: { visible } }): {} => ({
+  { user: { syncData: { viewedOnboarding, viewedTooltips } }, dialog: { visible } }): {} => ({
   dialogVisible: visible,
   viewedOnboarding,
   viewedTooltips

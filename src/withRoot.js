@@ -205,6 +205,11 @@ const theme = createMuiTheme({
         backgroundColor: circleInTheme.danger,
         color: circleInTheme.primaryText1
       }
+    },
+    MuiTooltip: {
+      popper: {
+        zIndex: 1300
+      }
     }
   }
 });
