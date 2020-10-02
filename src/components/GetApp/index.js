@@ -50,7 +50,7 @@ type Props = {
 
 const GetApp = (props: Props) => {
   const { classes, open, onClose } = props;
-  const {innerWidth} = window
+  const { innerWidth } = window
 
   return (
     <Dialog

@@ -16,6 +16,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as campaignActions from 'actions/campaign';
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
 import type { CampaignState } from 'reducers/campaign';
+import GetAppDialog from 'components/GetAppDialog'
+import { confirmTooltip as confirmTooltipAction } from 'actions/user';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -56,6 +58,7 @@ type Props = {
   checkUserSession: Function,
   updateOnboarding: Function,
   campaign: CampaignState,
+  confirmTooltip: Function,
   requestCampaign: Function
 };
 
@@ -77,6 +80,11 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     grade: '',
     email: '',
   };
+
+  handleViewGetApp = async () => {
+    const { confirmTooltip } = this.props
+    await confirmTooltip(4432);
+  }
 
   componentDidMount = () => {
     const {
@@ -165,7 +173,10 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
       classes,
       user: {
         data: { userId, updateProfile, segment },
-        syncData: { viewedOnboarding }
+        syncData: {
+          viewedOnboarding,
+          viewedTooltips
+        }
       },
       campaign,
       updateOnboarding
@@ -302,6 +313,10 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
           updateOnboarding={updateOnboarding}
           userId={userId}
         />
+        <GetAppDialog
+          open={viewedTooltips && !viewedTooltips.includes(4432)}
+          onClose={this.handleViewGetApp}
+        />
       </ErrorBoundary>
     );
   }
@@ -317,6 +332,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       checkUserSession: signInActions.checkUserSession,
       updateOnboarding: userActions.updateOnboarding,
+      confirmTooltip: confirmTooltipAction,
       requestCampaign: campaignActions.requestCampaign
     },
     dispatch

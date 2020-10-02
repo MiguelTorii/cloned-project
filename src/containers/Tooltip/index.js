@@ -80,6 +80,10 @@ const Tooltip = ({
   const FLASHCARD_BOTTOM = 4212
   const FLASHCARD_TOP = 5436
 
+  // not an actual tooltip
+  // eslint-disable-next-line
+  const GET_APP_POPUP = 4432
+
   const TRANSITION_TIME = 750;
 
   const [open, setOpen] = useState(false);
