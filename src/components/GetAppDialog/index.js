@@ -22,11 +22,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   title: {
-    fontSize: 48
+    fontSize: 48,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 24
+    }
   },
   subtitle: {
     fontSize: 48,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 24
+    }
   },
   description: {
     fontSize: 16,
@@ -45,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
     width: 133,
   },
   imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
     position: 'relative',
   },
   imageMessage: {
@@ -56,12 +64,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgba(0, 133, 255, 0.67)',
     borderRadius: 20,
     width: 188,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+      left: '10vw'
+    }
   },
   imagePhone: {
     objectFit: 'scale-down',
     width: 419,
-    [theme.breakpoints.down('xs')]: {
-      width: '50vw',
+    [theme.breakpoints.down('sm')]: {
+      width: '40vw',
     }
   }
 }))
