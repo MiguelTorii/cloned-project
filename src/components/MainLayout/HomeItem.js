@@ -69,7 +69,7 @@ const HomeItem = ({
   const { classId, sectionId } = decypherClass()
 
   useEffect(() => {
-    if(newClassExperience && userClasses && userClasses.classList) {
+    if (newClassExperience && userClasses && userClasses.classList) {
       setClassList(
         userClasses.classList.map(cl => {
           const classInter = cl.section.map(s => ({
@@ -118,7 +118,7 @@ const HomeItem = ({
           {newClassExperience ? <GradCapIcon className={classNames("whiteSvg")} /> : <ViewListIcon />}
         </ListItemIcon>
         <ListItemText
-          primary={!newClassExperience ? "Study" : "My Classes"}
+          primary={!newClassExperience ? "Study" : "Classes"}
         />
       </ListItem>
       {classList.map(cl => cl && (
@@ -139,12 +139,12 @@ const HomeItem = ({
             {renderCircle(cl.color)}
             <Typography className={classes.typo}>{cl.courseDisplayName}</Typography>
           </ListItem>
-          {sectionId === String(cl.sectionId) && classId=== String(cl.classId) &&
-              <SubMenu
-                createPostOpen={createPostOpen}
-                MyLink={MyLink}
-                openClassmatesDialog={openClassmatesDialog}
-              />}
+          {sectionId === String(cl.sectionId) && classId === String(cl.classId) &&
+            <SubMenu
+              createPostOpen={createPostOpen}
+              MyLink={MyLink}
+              openClassmatesDialog={openClassmatesDialog}
+            />}
         </div>
       ))}
     </div>

@@ -3,6 +3,7 @@
 import { NotesType } from 'reducers/notes'
 import * as api from 'api/notes'
 import moment from 'moment'
+import { logEventLocally } from 'api/analytics';
 import { notesActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -67,6 +68,12 @@ export const updateNote = ({ note }: {note: NotesType}) => async (dispatch: Disp
     const res = await api.updateNote({ note })
 
     if (res.success) {
+      logEventLocally({
+        category: 'Note',
+        objectId: note.id,
+        sectionId: note.sectionId,
+        type: 'Updated',
+      });
       const filtered = notes.filter(n => n.id !== note.id)
       const newNote = {
         ...note,
@@ -87,7 +94,13 @@ export const saveNoteAction = ({ note }: {note: NotesType}) => async (dispatch: 
     const { note_id: noteId } = await api.postNote({ note, sectionId, classId })
 
     if (noteId) {
-      dispatch(addNote({ note: { ...note, id: noteId } }))
+      logEventLocally({
+        category: 'Note',
+        objectId: noteId,
+        sectionId,
+        type: 'Created',
+      });
+      dispatch(addNote({ note: { ...note, id: noteId, classId, sectionId } }))
     }
     else dispatch(loadingAction({ loading: false }))
   } catch (err) {
@@ -99,6 +112,12 @@ export const setCurrentNote = ({ note }: {note: NotesType}) => async (dispatch: 
   if (note) {
     const res = await api.getNote({ noteId: note.id })
     dispatch(setCurrentNoteAction({ note: res }))
+    logEventLocally({
+      category: 'Note',
+      objectId: note.id,
+      sectionId: note.sectionId,
+      type: 'Opened',
+    });
   } else {
     dispatch(setCurrentNoteAction({ note: null }))
   }

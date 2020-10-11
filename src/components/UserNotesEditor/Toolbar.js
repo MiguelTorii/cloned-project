@@ -1,5 +1,12 @@
 import React from "react";
 import { Quill } from "react-quill";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+  toolbar: {},
+  firstline: {},
+  secondline: {}
+}))
 
 const CustomUndo = () => (
   <svg viewBox="0 0 18 18">
@@ -41,6 +48,9 @@ Quill.register(Font, true);
 
 export const modules = {
   formula: true,
+  clipboard: {
+    matchVisual: false,
+  },
   toolbar: {
     container: "#toolbar",
     handlers: {
@@ -76,65 +86,63 @@ export const formats = [
   "code-block"
 ];
 
-export const QuillToolbar = () => (
-  <div id="toolbar">
-    <span className="ql-formats">
-      {/* <select className="ql-font" defaultValue="arial"> */}
-      {/* <option value="arial">Arial</option> */}
-      {/* <option value="comic-sans">Comic Sans</option> */}
-      {/* <option value="courier-new">Courier New</option> */}
-      {/* <option value="georgia">Georgia</option> */}
-      {/* <option value="helvetica">Helvetica</option> */}
-      {/* <option value="lucida">Lucida</option> */}
-      {/* </select> */}
-      <select className="ql-header" defaultValue="3">
-        <option value="1">Heading</option>
-        <option value="2">Subheading</option>
-        <option value="3">Normal</option>
-      </select>
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-bold" />
-      <button type='button' className="ql-italic" />
-      <button type='button' className="ql-underline" />
-      <button type='button' className="ql-strike" />
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-list" value="ordered" />
-      <button type='button' className="ql-list" value="bullet" />
-      <button type='button' className="ql-indent" value="-1" />
-      <button type='button' className="ql-indent" value="+1" />
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-script" value="super" />
-      <button type='button' className="ql-script" value="sub" />
-      <button type='button' className="ql-blockquote" />
-      <button type='button' className="ql-direction" />
-    </span>
-    <span className="ql-formats">
-      <select className="ql-align" />
-      <select className="ql-color" />
-      <select className="ql-background" />
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-link" />
-      {/* <button type='button' className="ql-image" /> */}
-      <button type='button' className="ql-video" />
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-formula" />
-      <button type='button' className="ql-code-block" />
-      <button type='button' className="ql-clean" />
-    </span>
-    <span className="ql-formats">
-      <button type='button' className="ql-undo">
-        <CustomUndo />
-      </button>
-      <button type='button' className="ql-redo">
-        <CustomRedo />
-      </button>
-    </span>
-  </div>
-);
+export const QuillToolbar = () => {
+  const classes = useStyles()
+  return (
+    <div id="toolbar" className={classes.toolbar}>
+      <div className={classes.firstline}>
+        <span className="ql-formats">
+          <select className="ql-header" defaultValue="3">
+            <option value="1">Heading</option>
+            <option value="2">Subheading</option>
+            <option value="3">Normal</option>
+          </select>
+        </span>
+        <span className="ql-formats">
+          <button type='button' className="ql-bold" />
+          <button type='button' className="ql-italic" />
+          <button type='button' className="ql-underline" />
+          <button type='button' className="ql-strike" />
+        </span>
+        <span className="ql-formats">
+          <button type='button' className="ql-list" value="ordered" />
+          <button type='button' className="ql-list" value="bullet" />
+          <button type='button' className="ql-indent" value="-1" />
+          <button type='button' className="ql-indent" value="+1" />
+        </span>
+        <span className="ql-formats">
+          <select className="ql-align" />
+          <select className="ql-color" />
+          <select className="ql-background" />
+        </span>
+      </div>
+      <div className={classes.secondline}>
+        <span className="ql-formats">
+          <button type='button' className="ql-script" value="super" />
+          <button type='button' className="ql-script" value="sub" />
+          <button type='button' className="ql-blockquote" />
+          <button type='button' className="ql-direction" />
+        </span>
+        <span className="ql-formats">
+          <button type='button' className="ql-link" />
+          <button type='button' className="ql-video" />
+        </span>
+        <span className="ql-formats">
+          <button type='button' className="ql-formula" />
+          <button type='button' className="ql-code-block" />
+          <button type='button' className="ql-clean" />
+        </span>
+        <span className="ql-formats">
+          <button type='button' className="ql-undo">
+            <CustomUndo />
+          </button>
+          <button type='button' className="ql-redo">
+            <CustomRedo />
+          </button>
+        </span>
+      </div>
+    </div>
+  )
+}
 
 export default QuillToolbar;

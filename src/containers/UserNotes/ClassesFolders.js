@@ -51,7 +51,7 @@ const ClassesFolders = ({
           className={classes.listItem}
         >
           <ListItemIcon>
-            <FolderOpenIcon style={{ color: cl.color }} />
+            <FolderOpenIcon style={{ color: cl?.color }} />
           </ListItemIcon>
           <ListItemText
             primary={renderTitleAndTooltip(cl.name, idx)}

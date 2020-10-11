@@ -149,8 +149,8 @@ const UserNotesContainer = ({
           onClick={goBack}
         >
           <ArrowBackIosRoundedIcon />
-          <FolderOpenIcon className={classes.folder} style={{ color: selectedClass.color }} />
-          <Typography className={classes.classesTypo}>{selectedClass.name}</Typography>
+          <FolderOpenIcon className={classes.folder} style={{ color: selectedClass?.color }} />
+          <Typography className={classes.classesTypo}>{selectedClass?.name}</Typography>
         </Grid>}
         {emptyFolder && !loading && <EmptyNotes />}
         <UserNotesEditor

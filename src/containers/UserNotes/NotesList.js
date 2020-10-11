@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   listSecondary: {
     overflow: 'hidden',
-    maxHeight: 18,
+    cursor: 'pointer',
+    maxHeight: 24,
     '& .ql-editor': {
       padding: 0,
     },

@@ -689,7 +689,7 @@ class MainLayout extends React.Component<Props, State> {
               <CalendarTodayIcon />
             </ListItemIcon>
             <ListItemText
-              primary="My Workflow"
+              primary="Workflow"
             />
           </ListItem>}
           {newNotesScreen && <ListItem
@@ -704,7 +704,7 @@ class MainLayout extends React.Component<Props, State> {
               <BookOutlinedIcon />
             </ListItemIcon>
             <ListItemText
-              primary="My Notes"
+              primary="Notes"
             />
           </ListItem>}
           <HomeItem
@@ -728,7 +728,7 @@ class MainLayout extends React.Component<Props, State> {
               <CalendarTodayIcon />
             </ListItemIcon>
             <ListItemText
-              primary="My Workflow"
+              primary="Workflow"
             />
           </ListItem>}
           <ListItem
@@ -779,7 +779,7 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemIcon>
               <GradCapIcon className={classNames("whiteSvg")} />
             </ListItemIcon>
-            <ListItemText primary="My Classes" />
+            <ListItemText primary="Classes" />
           </div>}
           {!newClassExperience && <ListItemText>
             <ClassList

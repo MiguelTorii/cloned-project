@@ -96,9 +96,9 @@ const timeFromNow = note => {
     const { lastModified } = note
     if (typeof lastModified === 'string') {
       const utc = `${lastModified.replace(' ', 'T')}Z`
-      return moment(utc).calendar()
+      return moment(utc).fromNow()
     }
-    return moment(lastModified).calendar()
+    return moment(lastModified).fromNow()
   } catch (e) {
     return ''
   }
