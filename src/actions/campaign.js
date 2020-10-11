@@ -19,22 +19,31 @@ const requestGetCampaign = ({ campaign, active }: {
 });
 
 
-export const requestCampaign = ({ campaignId, reset }: { reset: boolean, campaignId: string }) => async (dispatch: Dispatch, getState: Function) => {
-  try {
-    const { campaign } = getState()
+export const requestCampaign = ({ campaignId, reset }: {reset: boolean, campaignId: string}) => async (dispatch: Dispatch, getState: Function) => {
+  const { campaign } = getState()
 
-    if (campaignId === LANDING_PAGE_CAMPAIGN){
-      if (campaign.newClassExperience === null || reset) {
+  if (campaignId === LANDING_PAGE_CAMPAIGN) {
+    if (campaign.newClassExperience === null || reset) {
+      try {
         const { id } = await getCampaign({ campaignId })
 
         dispatch(requestGetCampaign({ campaign: 'landingPageCampaign', active: id === 4 }));
         dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: id !== 1 }));
+      } catch (e) {
+        if (campaignId === LANDING_PAGE_CAMPAIGN)
+          dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: false }));
       }
     }
-  } catch(e) {
-    if (campaignId === LANDING_PAGE_CAMPAIGN)
-      dispatch(requestGetCampaign({ campaign: 'newClassExperience', active: false }));
-    return null
+
+    if (campaign.newNotesScreen === null || reset) {
+      try {
+        const { id } = await getCampaign({ campaignId: 11 })
+
+        dispatch(requestGetCampaign({ campaign: 'newNotesScreen', active: id === 2 }));
+      } catch (e) {
+        dispatch(requestGetCampaign({ campaign: 'newNotesScreen', active: false }));
+      }
+    }
   }
   return null
 };

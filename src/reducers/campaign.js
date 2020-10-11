@@ -13,6 +13,7 @@ export type CampaignState = {
 
 const defaultState = {
   newClassExperience: null,
+  newNotesScreen: null,
   landingPageCampaign: null
 };
 

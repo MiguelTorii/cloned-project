@@ -89,14 +89,14 @@ const GetAppDialog = ({ open, onClose }: Props) => {
       fullWidth
       maxWidth='md'
       onCancel={onClose}
-      open={open}
+      open={Boolean(open)}
     >
       <Grid container className={classes.container}>
-        <Grid xs={12} md={6} className={classes.imageContainer}>
+        <Grid item xs={12} md={6} className={classes.imageContainer}>
           <LoadImg url={getappphone} className={classes.imagePhone} />
           <Typography className={classes.imageMessage}><b>Remember:</b> Allow Push Notifications to get messages!</Typography>
         </Grid>
-        <Grid xs={12} md={6} className={classes.containerText}>
+        <Grid item xs={12} md={6} className={classes.containerText}>
           <Typography className={classes.title}>Get the Mobile App.</Typography>
           <Typography className={classes.subtitle}><b>Message Instantly.</b></Typography>
           <Typography className={classes.description}>From quick questions on-the-go, messages between you and your group members, to checking reminders while you’re out - the mobile CircleIn app let’s you be the best student you can be, anywhere you go.</Typography>

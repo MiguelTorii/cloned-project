@@ -51,6 +51,7 @@ import TermsOfUse from './pages/TermsOfUse';
 import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
 import Miss from './pages/Miss'
+import UserNotes from './pages/UserNotes'
 import {
   GOOGLE_ANALYTICS,
   SENTRY,
@@ -91,6 +92,7 @@ ReactDOM.render(
           <FloatingChat />
           <Switch>
             <Route exact path="/" component={withTracker(Home)} />
+            <Route exact path="/notes" component={withTracker(UserNotes)} />
             <Route exact path="/classes" component={withTracker(Classes)} />
             <Route exact path="/feed" component={withTracker(Feed)} />
             <Route exact path="/workflow" component={withTracker(Workflow)} />

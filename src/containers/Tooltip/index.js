@@ -80,6 +80,10 @@ const Tooltip = ({
   const FLASHCARD_BOTTOM = 4212
   const FLASHCARD_TOP = 5436
 
+  const NOTES_GET_STARTED = 5909
+  const NOTES_CLASS_FOLDER = 9002
+  const NOTES_FULLSCREEN = 1204
+
   // not an actual tooltip
   // eslint-disable-next-line
   const GET_APP_POPUP = 4432
@@ -106,6 +110,15 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
+      case NOTES_GET_STARTED:
+        result = true
+        break
+      case NOTES_CLASS_FOLDER:
+        result = true
+        break
+      case NOTES_FULLSCREEN:
+        result = true
+        break
       case CHAT:
         result = true;
         break;

@@ -44,7 +44,7 @@ import FlashCards from '../../assets/svg/flashcards.svg';
 import Links from '../../assets/svg/links.svg';
 import Logo from '../../assets/svg/app-logo-white.svg';
 import Notes from '../../assets/svg/notes.svg';
-import Questions  from '../../assets/svg/questions.svg';
+import Questions from '../../assets/svg/questions.svg';
 import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import GetApp from '../GetApp';
@@ -53,6 +53,7 @@ import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -488,7 +489,7 @@ class MainLayout extends React.Component<Props, State> {
       </div>
     )
 
-    const { updateFeed, newClassExperience, userClasses, landingPageCampaign } = this.props
+    const { updateFeed, newClassExperience, userClasses, landingPageCampaign, newNotesScreen } = this.props
 
     const renderMenu = (
       <Menu
@@ -502,7 +503,7 @@ class MainLayout extends React.Component<Props, State> {
           My Profile
         </MenuItem>
         {userClasses.canAddClasses && <MenuItem onClick={this.handleManageClasses}>
-         Add/Remove Classes
+          Add/Remove Classes
         </MenuItem>}
         <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
         <MenuItem onClick={this.handleOpenReferralStatus}>Referred Classmates</MenuItem>
@@ -689,6 +690,21 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText
               primary="My Workflow"
+            />
+          </ListItem>}
+          {newNotesScreen && <ListItem
+            button
+            component={MyLink}
+            className={classNames(
+              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+            link='/notes'
+          >
+            <ListItemIcon>
+              <BookOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="My Notes"
             />
           </ListItem>}
           <HomeItem

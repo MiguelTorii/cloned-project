@@ -149,11 +149,11 @@ class Layout extends React.PureComponent<Props, State> {
 
   handleOpenRequestClass = () => {
     this.handleCloseManageClasses();
-    this.setState({openRequestClass: true})
+    this.setState({ openRequestClass: true })
   }
 
   handleCloseRequestClass = () => {
-    this.setState({openRequestClass: false})
+    this.setState({ openRequestClass: false })
   }
 
   handleNotificationClick = ({
@@ -224,7 +224,7 @@ class Layout extends React.PureComponent<Props, State> {
 
     let unreadMessages = 0
     Object.keys(local).forEach(l => {
-      if(local[l]?.unread) unreadMessages += Number(local[l].unread)
+      if (local[l]?.unread) unreadMessages += Number(local[l].unread)
     })
 
     if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) return null
@@ -259,6 +259,7 @@ class Layout extends React.PureComponent<Props, State> {
             userId={userId}
             runningTour={runningTour}
             landingPageCampaign={campaign.landingPageCampaign}
+            newNotesScreen={campaign.newNotesScreen}
             newClassExperience={campaign.newClassExperience}
             initials={initials}
             pushTo={push}

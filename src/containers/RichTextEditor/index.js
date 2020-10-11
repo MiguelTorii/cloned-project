@@ -76,15 +76,15 @@ const RichTextEditor = ({
   }, []);
 
   useEffect(() => {
-    if(rte.current) {
-      const {editor} = rte.current
+    if (rte.current) {
+      const { editor } = rte.current
       if (setEditor) setEditor(editor)
       editor
         .getEditor()
         .getModule('toolbar')
         .addHandler('image', handleImageInput);
     }
-  },[handleImageInput, setEditor])
+  }, [handleImageInput, setEditor])
 
   const handleInputChange = useCallback(async () => {
     if (
@@ -94,7 +94,7 @@ const RichTextEditor = ({
       fileInput.current.files.length > 0 &&
       fileInput.current.files[0].size < 8000000
     ) {
-      if(setLoadingImage) setLoadingImage(true)
+      if (setLoadingImage) setLoadingImage(true)
       setLoading(true)
       try {
         const file = fileInput.current.files[0];
