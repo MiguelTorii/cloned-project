@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import CustomQuill from 'components/CustomQuill'
 import List from '@material-ui/core/List';
 import cx from 'classnames'
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       maxWidth: '55vw',
-      fontSize: 16
+      fontSize: '16px !important',
     },
     fontSize: 12
   },
@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
   delete: {
     position: 'absolute',
     right: 0
+  },
+  hidden: {
+    display: 'none'
   }
 }))
 
@@ -80,9 +83,19 @@ const NotesList = ({
 }) => {
   const classes = useStyles()
   const [hovered, setHovered] = useState(null)
+  const [refresh, setRefresh] = useState(null)
 
   const onHover = useCallback(i => setHovered(i), [])
   const onLeave = useCallback(() => setHovered(null), [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefresh(moment().format())
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
 
   return (
     <List className={cx(hasNotes && classes.listRoot)}>
@@ -117,6 +130,7 @@ const NotesList = ({
             >
               <DeleteIcon fontSize="small" />
             </IconButton>}
+            <div className={classes.hidden}>{refresh}</div>
           </div>
         ))}
     </List>

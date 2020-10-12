@@ -123,6 +123,16 @@ const UserNotesEditor = ({
   useEffect(() => setDebouncedNote(note), [note, setDebouncedNote])
 
   useEffect(() => {
+    setLastSave(timeFromNow(currentNote))
+    const interval = setInterval(() => {
+      if (currentNote) setLastSave(timeFromNow(currentNote))
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    }
+  }, [currentNote]);
+
+  useEffect(() => {
     if (debouncedNote && !isEqual(debouncedNote, prevSaved)) {
       updateNote({ note: debouncedNote })
       setPrevSaved(prevSaved)

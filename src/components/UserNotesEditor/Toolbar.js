@@ -2,6 +2,10 @@ import React from "react";
 import { Quill } from "react-quill";
 import { makeStyles } from '@material-ui/core/styles';
 
+const fontSizeStyle = Quill.import('attributors/style/size');
+fontSizeStyle.whitelist = ['8px', '9px', '10px', '11px', '13px', '14px', '18px', '24px', '30px', '36px', '48px', '60px', '72px', '96px'];
+Quill.register(fontSizeStyle, true);
+
 const useStyles = makeStyles(() => ({
   toolbar: {},
   firstline: {},
@@ -83,6 +87,7 @@ export const formats = [
   "link",
   "image",
   "color",
+  "size",
   "code-block"
 ];
 
@@ -96,6 +101,22 @@ export const QuillToolbar = () => {
             <option value="1">Heading</option>
             <option value="2">Subheading</option>
             <option value="3">Normal</option>
+          </select>
+          <select className="ql-size">
+            <option value='8px'>8</option>
+            <option value="9px">9</option>
+            <option value="10px">10</option>
+            <option value="11px">11</option>
+            <option value="13px" defaultValue>13</option>
+            <option value="14px">14</option>
+            <option value="18px">18</option>
+            <option value="24px">24</option>
+            <option value="30px">30</option>
+            <option value="36px">36</option>
+            <option value="48px">48</option>
+            <option value="60px">60</option>
+            <option value="72px">72</option>
+            <option value="96px">96</option>
           </select>
         </span>
         <span className="ql-formats">
