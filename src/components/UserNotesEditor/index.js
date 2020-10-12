@@ -148,7 +148,7 @@ const UserNotesEditor = ({
   }, [debouncedNote, prevSaved, updateNote])
 
   const onExit = useCallback(() => {
-    if (note && prevSaved && note.title !== prevSaved.title && note.content !== prevSaved.content) {
+    if (note && prevSaved && (note.title !== prevSaved.title || note.content !== prevSaved.content)) {
       updateNote({ note })
       setPrevSaved(prevSaved)
     }

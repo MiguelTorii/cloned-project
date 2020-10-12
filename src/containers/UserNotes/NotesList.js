@@ -12,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 const useStyles = makeStyles((theme) => ({
   listPrimary: {
     fontSize: 20,
+    maxWidth: '55vw',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 24,
     '& .ql-editor': {
       padding: 0,
+      maxWidth: '55vw',
     },
     '& .ql-editor :first-child': {
       color: theme.circleIn.palette.primaryText2,
