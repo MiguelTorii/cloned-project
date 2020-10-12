@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -119,13 +119,14 @@ const UserNotesEditor = ({
   const [lastSave, setLastSave] = useState(null)
   const [debouncedNote, setDebouncedNote] = useDebounce(null, 2000)
   const [prevSaved, setPrevSaved] = useState(null)
+  const curNoteRef = useRef(null)
 
   useEffect(() => setDebouncedNote(note), [note, setDebouncedNote])
 
   useEffect(() => {
     setLastSave(timeFromNow(currentNote))
     const interval = setInterval(() => {
-      if (currentNote) setLastSave(timeFromNow(currentNote))
+      if (currentNote) setLastSave(timeFromNow(curNoteRef.current))
     }, 60000);
     return () => {
       clearInterval(interval);
@@ -134,14 +135,20 @@ const UserNotesEditor = ({
 
   useEffect(() => {
     if (debouncedNote && !isEqual(debouncedNote, prevSaved)) {
-      updateNote({ note: debouncedNote })
+      updateNote({
+        note: {
+          ...debouncedNote,
+          lastModified: new Date()
+        }
+      })
       setPrevSaved(prevSaved)
+      curNoteRef.current = { ...debouncedNote, lastModified: new Date() }
       setLastSave(timeFromNow({ lastModified: new Date() }))
     }
   }, [debouncedNote, prevSaved, updateNote])
 
   const onExit = useCallback(() => {
-    if (!isEqual(note, prevSaved)) {
+    if (note && prevSaved && note.title !== prevSaved.title && note.content !== prevSaved.content) {
       updateNote({ note })
       setPrevSaved(prevSaved)
     }
@@ -152,6 +159,7 @@ const UserNotesEditor = ({
     if (currentNote !== null) {
       setNote(currentNote)
       setLastSave(timeFromNow(currentNote))
+      curNoteRef.current = currentNote
       setPrevSaved(currentNote)
     } else {
       setNote(null)

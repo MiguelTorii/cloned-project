@@ -126,7 +126,6 @@ const UserNotesContainer = ({
 
   const goBack = useCallback(() => setSectionId({ sectionId: null, classId: null }), [setSectionId])
 
-
   const emptyFolder = useMemo(() => !hasNotes && isFolder, [hasNotes, isFolder])
 
   return (
