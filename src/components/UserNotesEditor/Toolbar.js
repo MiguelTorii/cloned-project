@@ -5,6 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 const fontSizeStyle = Quill.import('attributors/style/size');
 fontSizeStyle.whitelist = ['8px', '9px', '10px', '11px', '13px', '14px', '18px', '24px', '30px', '36px', '48px', '60px', '72px', '96px'];
 Quill.register(fontSizeStyle, true);
+const Link = Quill.import('formats/link');
+Link.sanitize = function link(url) {
+  if (!url.includes('http') || !url.includes('https')) {
+    return `https://${url}`
+  }
+  return url
+}
 
 const useStyles = makeStyles(() => ({
   toolbar: {},
