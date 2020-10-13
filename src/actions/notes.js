@@ -127,13 +127,15 @@ export const setSectionId = ({ sectionId, classId }: {sectionId: number, classId
   dispatch(setSectionIdAction({ sectionId, classId }))
 }
 
-export const deleteNoteAction = ({ id }: {note: number}) => async (dispatch: Dispatch, getState: Function) => {
+export const deleteNoteAction = ({ note }: {note: NotesType}) => async (dispatch: Dispatch, getState: Function) => {
   try {
     const { notes: { data: { notes } } } = getState()
-    const note = notes[id]
     dispatch(loadingAction({ loading: true }))
     const { success } = await api.deleteNote({ note })
-    if (success) dispatch(removeNote({ id }))
+    if (success) {
+      const id = notes.findIndex(n => n.id === note.id)
+      dispatch(removeNote({ id }))
+    }
     else dispatch(loadingAction({ loading: false }))
   } catch (err) {
     dispatch(loadingAction({ loading: false }))

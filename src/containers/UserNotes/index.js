@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import OnboardingNotes from 'containers/OnboardingNotes'
+import { confirmTooltip as confirmTooltipAction } from 'actions/user';
 import type { State as StoreState } from '../../types/state';
 import DeleteNote from './DeleteNote';
 import NotesList from './NotesList';
@@ -55,6 +57,8 @@ export const blankNote = {
 
 const UserNotesContainer = ({
   saveNoteAction,
+  viewedTooltips,
+  confirmTooltip,
   userId,
   updateNote,
   userSync,
@@ -74,6 +78,10 @@ const UserNotesContainer = ({
   const [classList, setClassList] = useState([])
 
   const selectedClass = useMemo(() => classList.find(cl => cl.sectionId === sectionId), [classList, sectionId])
+
+  const updateOnboarding = useCallback(async () => {
+    await confirmTooltip(8453)
+  }, [confirmTooltip])
 
   useEffect(() => {
     const init = async () => {
@@ -120,9 +128,9 @@ const UserNotesContainer = ({
 
   const handleDeleteNote = useCallback(async () => {
     handleClose()
-    await deleteNote({ id: confirmDelete })
+    await deleteNote({ note: confirmDelete })
     closeConfirmDelete()
-  }, [confirmDelete, deleteNote, closeConfirmDelete, handleClose])
+  }, [closeConfirmDelete, confirmDelete, deleteNote, handleClose])
 
   const goBack = useCallback(() => setSectionId({ sectionId: null, classId: null }), [setSectionId])
 
@@ -130,6 +138,11 @@ const UserNotesContainer = ({
 
   return (
     <div className={classes.container}>
+      <OnboardingNotes
+        userId={userId}
+        updateOnboarding={updateOnboarding}
+        open={Boolean(viewedTooltips && !viewedTooltips.includes(8453))}
+      />
       <DeleteNote
         handleDeleteNote={handleDeleteNote}
         confirmDelete={confirmDelete}
@@ -183,6 +196,7 @@ const UserNotesContainer = ({
 const mapStateToProps = ({ user, notes }: StoreState): {} => ({
   userId: user.data.userId,
   userClasses: user.userClasses,
+  viewedTooltips: user.syncData.viewedTooltips,
   notes: notes.data.notes,
   currentNote: notes.data.currentNote,
   loading: notes.data.loading,
@@ -197,6 +211,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       getNotes: notesActions.getNotes,
       userSync: sync,
       deleteNote: notesActions.deleteNoteAction,
+      confirmTooltip: confirmTooltipAction,
       setCurrentNote: notesActions.setCurrentNote,
       setSectionId: notesActions.setSectionId
     },

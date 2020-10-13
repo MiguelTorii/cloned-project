@@ -31,8 +31,10 @@ import HomeItem from 'components/MainLayout/HomeItem'
 import ClassList from 'components/ClassList'
 import queryString from 'query-string'
 import clsx from 'clsx'
+import GetAppDialog from 'components/GetAppDialog';
 import { withRouter } from 'react-router';
 import ClassmatesDialog from 'components/ClassmatesDialog'
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { decypherClass } from 'utils/crypto'
 import logo from '../../assets/svg/circlein_logo.svg';
@@ -47,13 +49,11 @@ import Notes from '../../assets/svg/notes.svg';
 import Questions from '../../assets/svg/questions.svg';
 import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
-import GetApp from '../GetApp';
 import UseCases from '../UseCases';
 import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (![
@@ -932,7 +932,7 @@ class MainLayout extends React.Component<Props, State> {
             {children}
           </main>
         </div>
-        <GetApp
+        <GetAppDialog
           open={openGetApp}
           onClose={this.handleCloseGetApp}
         />

@@ -128,7 +128,7 @@ const NotesList = ({
             {i === hovered && <IconButton
               aria-label="delete"
               className={classes.delete}
-              onClick={() => openConfirmDelete(i)}
+              onClick={() => openConfirmDelete(n)}
             >
               <DeleteIcon fontSize="small" />
             </IconButton>}
