@@ -14,6 +14,8 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import OnboardingNotes from 'containers/OnboardingNotes'
+import Tooltip from 'containers/Tooltip';
+import Button from '@material-ui/core/Button';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
 import type { State as StoreState } from '../../types/state';
 import DeleteNote from './DeleteNote';
@@ -47,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
   folder: {
     margin: theme.spacing(0, 1)
+  },
+  createNote: {
+    margin: theme.spacing(2, 0)
   }
 }))
 
@@ -165,16 +170,29 @@ const UserNotesContainer = ({
           <Typography className={classes.classesTypo}>{selectedClass?.name}</Typography>
         </Grid>}
         {emptyFolder && !loading && <EmptyNotes />}
-        <UserNotesEditor
+        {isFolder && !loading && (
+          <Tooltip
+            id={5909}
+            delay={600}
+            placement="right"
+            text="Your notes will appear on this screen. Tap here to create your first notes."
+          >
+            <Button
+              variant={hasNotes ? "text" : 'contained'}
+              className={cx(hasNotes && classes.createNote)}
+              color="primary"
+              onClick={createNote}
+            >
+              {hasNotes ? '+ Create New Notes' : 'Get Started'}
+            </Button>
+          </Tooltip>
+        )}
+        {currentNote && <UserNotesEditor
           handleClose={handleClose}
           updateNote={updateNote}
           currentNote={currentNote}
-          notes={notes}
           openConfirmDelete={openConfirmDelete}
-          isFolder={isFolder}
-          loading={loading}
-          createNote={createNote}
-        />
+        />}
         {isFolder && <NotesList
           notes={notes}
           hasNotes={hasNotes}

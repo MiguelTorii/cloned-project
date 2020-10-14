@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
   delete: {
     color: theme.circleIn.palette.danger
-  }
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -105,23 +105,27 @@ const timeFromNow = note => {
 }
 
 const UserNotesEditor = ({
-  notes,
   currentNote,
-  createNote,
   updateNote,
-  loading,
   openConfirmDelete,
-  isFolder,
   handleClose
 }) => {
   const classes = useStyles();
   const [note, setNote] = useState(currentNote)
+  const [savedState, setSavedState] = useState('hidden')
   const [lastSave, setLastSave] = useState(null)
   const [debouncedNote, setDebouncedNote] = useDebounce(null, 2000)
   const [prevSaved, setPrevSaved] = useState(null)
   const curNoteRef = useRef(null)
 
   useEffect(() => setDebouncedNote(note), [note, setDebouncedNote])
+
+  const renderSaved = useMemo(() => {
+    if (savedState === 'hidden') return null
+    if (savedState === 'saving') return <div className={classes.lastSaved}>Saving...</div>
+    return <div className={classes.lastSaved}>Last Saved {lastSave}</div>
+
+  }, [classes.lastSaved, lastSave, savedState])
 
   useEffect(() => {
     setLastSave(timeFromNow(currentNote))
@@ -135,15 +139,18 @@ const UserNotesEditor = ({
 
   useEffect(() => {
     if (debouncedNote && !isEqual(debouncedNote, prevSaved)) {
+      const now = new Date()
       updateNote({
         note: {
           ...debouncedNote,
-          lastModified: new Date()
+          lastModified: now
         }
       })
       setPrevSaved(prevSaved)
-      curNoteRef.current = { ...debouncedNote, lastModified: new Date() }
-      setLastSave(timeFromNow({ lastModified: new Date() }))
+      curNoteRef.current = { ...debouncedNote, lastModified: now }
+      setLastSave(timeFromNow({ lastModified: now }))
+      setSavedState('show')
+      setTimeout(() => setSavedState('hidden'), 120000)
     }
   }, [debouncedNote, prevSaved, updateNote])
 
@@ -162,6 +169,8 @@ const UserNotesEditor = ({
       curNoteRef.current = currentNote
       setPrevSaved(currentNote)
     } else {
+      setPrevSaved(null)
+      setSavedState('hidden')
       setNote(null)
     }
   }, [currentNote])
@@ -185,6 +194,7 @@ const UserNotesEditor = ({
   }, [])
 
   const updateTitle = useCallback(v => {
+    setSavedState('saving')
     const title = v.target.value
     setNote(n => ({
       ...n,
@@ -193,6 +203,7 @@ const UserNotesEditor = ({
   }, [])
 
   const updateBody = useCallback(v => {
+    setSavedState('saving')
     setNote(n => ({
       ...n,
       content: v
@@ -200,7 +211,6 @@ const UserNotesEditor = ({
   }, [])
 
   const hasNote = useMemo(() => currentNote !== null, [currentNote])
-  const hasNotes = useMemo(() => notes.length !== 0, [notes])
   const [menuAnchor, setMenuAchor] = useState(null)
   const handleClickMenu = useCallback((event) => {
     setMenuAchor(event.currentTarget);
@@ -217,22 +227,6 @@ const UserNotesEditor = ({
 
   return (
     <div>
-      {isFolder && !loading && (
-        <Tooltip
-          id={5909}
-          delay={600}
-          placement="right"
-          text="Your notes will appear on this screen. Tap here to create your first notes."
-        >
-          <Button
-            variant={hasNotes ? "text" : 'contained'}
-            color="primary"
-            onClick={createNote}
-          >
-            {hasNotes ? '+ Create New Notes' : 'Get Started'}
-          </Button>
-        </Tooltip>
-      )}
       <Dialog
         fullScreen
         open={hasNote}
@@ -243,7 +237,7 @@ const UserNotesEditor = ({
           <Toolbar className={classes.toolbar}>
             <div className={classes.savedContainer}>
               <div className={classes.visible}>Visible to you only</div>
-              <div className={classes.lastSaved}>Last Saved {lastSave}</div>
+              {renderSaved}
             </div>
             <Button variant='contained' color='primary' onClick={onExit} className={classes.exit}>
               Exit NoteTaker

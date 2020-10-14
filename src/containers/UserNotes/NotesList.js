@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   listRoot: {
     padding: 0,
-    borderBottom: `1px solid ${theme.palette.text.primary}`,
+    borderBottom: `1px solid #324F61`,
   },
   date: {
     fontSize: 12,
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.circleIn.palette.primaryText2,
   },
   itemContainer: {
-    borderTop: `1px solid ${theme.palette.text.primary}`,
+    borderTop: `1px solid #324F61`,
     alignItems: 'center',
     display: 'flex'
   },

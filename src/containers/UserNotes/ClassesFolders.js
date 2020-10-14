@@ -7,9 +7,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import Tooltip from 'containers/Tooltip';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   listItem: {
-    borderBottom: `1px solid ${theme.palette.text.primary}`,
+    borderBottom: `1px solid #324F61`,
   },
   listRoot: {
     padding: 0,
