@@ -141,12 +141,16 @@ const UserNotesContainer = ({
 
   const emptyFolder = useMemo(() => !hasNotes && isFolder, [hasNotes, isFolder])
 
+  const onboardingOpen = useMemo(() => (
+    Boolean(viewedTooltips && !viewedTooltips.includes(8453))
+  ), [viewedTooltips])
+
   return (
     <div className={classes.container}>
       <OnboardingNotes
         userId={userId}
         updateOnboarding={updateOnboarding}
-        open={Boolean(viewedTooltips && !viewedTooltips.includes(8453))}
+        open={onboardingOpen}
       />
       <DeleteNote
         handleDeleteNote={handleDeleteNote}
@@ -175,6 +179,7 @@ const UserNotesContainer = ({
             id={5909}
             delay={600}
             placement="right"
+            hidden={onboardingOpen}
             text="Your notes will appear on this screen. Tap here to create your first notes."
           >
             <Button
@@ -200,6 +205,7 @@ const UserNotesContainer = ({
           editNote={editNote}
         />}
         {sectionId === null && <ClassesFolders
+          openConfirmDelete={openConfirmDelete}
           setSectionId={setSectionId}
           classList={classList}
         />}

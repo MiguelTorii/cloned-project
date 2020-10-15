@@ -105,6 +105,7 @@ const timeFromNow = note => {
 }
 
 const UserNotesEditor = ({
+  onboardingOpen,
   currentNote,
   updateNote,
   openConfirmDelete,
@@ -194,7 +195,7 @@ const UserNotesEditor = ({
   }, [])
 
   const updateTitle = useCallback(v => {
-    setSavedState('saving')
+    setTimeout(() => setSavedState('saving'), 100)
     const title = v.target.value
     setNote(n => ({
       ...n,
@@ -203,7 +204,7 @@ const UserNotesEditor = ({
   }, [])
 
   const updateBody = useCallback(v => {
-    setSavedState('saving')
+    setTimeout(() => setSavedState('saving'), 100)
     setNote(n => ({
       ...n,
       content: v
@@ -277,6 +278,7 @@ const UserNotesEditor = ({
               <Tooltip
                 id={1204}
                 delay={600}
+                hidden={onboardingOpen}
                 placement="right"
                 text="Start typing and we'll save the document for you as you go! Exit when finished."
               >

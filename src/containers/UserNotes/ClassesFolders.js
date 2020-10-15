@@ -19,12 +19,13 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const renderTitleAndTooltip = (name, idx) => (
+const renderTitleAndTooltip = (name, idx, onboardingOpen) => (
   <div style={{ display: 'flex' }}>
     {name}
     {idx === 0 && (
       <Tooltip
         id={9002}
+        hidden={onboardingOpen}
         delay={600}
         placement="right"
         text="Select a class to view the notes inside, or to create new notes."
@@ -37,6 +38,7 @@ const renderTitleAndTooltip = (name, idx) => (
 
 const ClassesFolders = ({
   setSectionId,
+  onboardingOpen,
   classList
 }) => {
   const classes = useStyles()
@@ -54,7 +56,7 @@ const ClassesFolders = ({
             <FolderOpenIcon style={{ color: cl?.color }} />
           </ListItemIcon>
           <ListItemText
-            primary={renderTitleAndTooltip(cl.name, idx)}
+            primary={renderTitleAndTooltip(cl.name, idx, onboardingOpen)}
             className={classes.title}
           />
         </ListItem>
