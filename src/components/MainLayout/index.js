@@ -37,6 +37,7 @@ import ClassmatesDialog from 'components/ClassmatesDialog'
 import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { decypherClass } from 'utils/crypto'
+import QuickNotes from 'containers/QuickNotes'
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -848,6 +849,7 @@ class MainLayout extends React.Component<Props, State> {
               </Link>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
+                <QuickNotes />
                 <IconButton
                   color="inherit"
                   onClick={this.handleNotificationOpen}

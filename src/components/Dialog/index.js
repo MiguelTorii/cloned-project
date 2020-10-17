@@ -1,8 +1,6 @@
 /* eslint-disable react/no-danger */
 // @flow
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -10,7 +8,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
-import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
 import cx from 'classnames'
 
 export const dialogStyle = {
@@ -73,26 +70,25 @@ const Dialog = ({
   children,
   classes,
   className,
-  disableBackdropClick=false,
-  disableActions=false,
-  disableOk=false,
-  disableEscapeKeyDown=false,
-  loading=false,
-  okTitle="Got it!",
-  secondaryOkTitle="",
-  secondaryRemoveTitle="",
+  disableBackdropClick = false,
+  disableActions = false,
+  disableOk = false,
+  disableEscapeKeyDown = false,
+  loading = false,
+  okTitle = "Got it!",
+  secondaryOkTitle = "",
+  secondaryRemoveTitle = "",
   onCancel,
   onOk = () => {},
   onSecondaryOk = () => {},
   onSecondaryRemove = () => {},
   open,
-  showActions=false,
-  showCancel=false,
-  showHeader=true,
-  setOkRef= () => {},
-  rightButton=null,
+  showActions = false,
+  showCancel = false,
+  showHeader = true,
+  setOkRef = () => {},
+  rightButton = null,
   title,
-  updateVisibility,
   ...props
 }: {
   ariaDescribedBy: ?string,
@@ -114,13 +110,12 @@ const Dialog = ({
   showCancel: ?boolean,
   showHeader: ?boolean,
   title: ?ReactNode,
-  updateVisibility: Function,
   rightButton: ?ReactNode,
   props: Object
 }) => {
-  useEffect(() => {
-    updateVisibility(open);
-  }, [open, updateVisibility]);
+  // useEffect(() => {
+  // updateVisibility(open);
+  // }, [open, updateVisibility]);
 
   return (
     <MuiDialog
@@ -147,7 +142,7 @@ const Dialog = ({
         classes={{ root: classes.contentRoot }}>
         {
           title &&
-          typeof title === 'string' ?
+            typeof title === 'string' ?
             <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
             title
         }
@@ -169,14 +164,14 @@ const Dialog = ({
           {rightButton}
           {
             secondaryRemoveTitle &&
-          <Button
-            className={cx(classes.button, classes.removeButton)}
-            color="secondary"
-            disabled={disableActions}
-            onClick={onSecondaryRemove}
-          >
-            {secondaryRemoveTitle}
-          </Button>
+            <Button
+              className={cx(classes.button, classes.removeButton)}
+              color="secondary"
+              disabled={disableActions}
+              onClick={onSecondaryRemove}
+            >
+              {secondaryRemoveTitle}
+            </Button>
           }
           {
             showCancel &&
@@ -192,15 +187,15 @@ const Dialog = ({
           }
           {
             secondaryOkTitle &&
-          <Button
-            className={classes.button}
-            color="primary"
-            disabled={disableActions}
-            onClick={onSecondaryOk}
-            variant="contained"
-          >
-            {secondaryOkTitle}
-          </Button>
+            <Button
+              className={classes.button}
+              color="primary"
+              disabled={disableActions}
+              onClick={onSecondaryOk}
+              variant="contained"
+            >
+              {secondaryOkTitle}
+            </Button>
           }
           <Button
             className={classes.button}
@@ -218,16 +213,5 @@ const Dialog = ({
   )
 }
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      updateVisibility: updateVisiblityAction
-    },
-    dispatch
-  );
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(Dialog));
+export default withStyles(styles)(Dialog);
 

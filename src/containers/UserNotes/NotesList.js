@@ -116,6 +116,7 @@ const NotesList = ({
             >
               <ListItemText
                 primary={n.title}
+                secondaryTypographyProps={{ component: 'div' }}
                 secondary={<CustomQuill value={n.content} readOnly />}
                 classes={{
                   primary: classes.listPrimary,

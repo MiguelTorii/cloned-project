@@ -62,6 +62,7 @@ export const blankNote = {
 
 const UserNotesContainer = ({
   saveNoteAction,
+  initialLoading,
   viewedTooltips,
   confirmTooltip,
   userId,
@@ -73,6 +74,7 @@ const UserNotesContainer = ({
   deleteNote,
   userClasses,
   sectionId,
+  classId,
   setSectionId,
   setCurrentNote,
   currentNote
@@ -126,8 +128,8 @@ const UserNotesContainer = ({
   }, [getNotes, isFolder])
 
   const createNote = useCallback(async () => {
-    saveNoteAction({ note: blankNote })
-  }, [saveNoteAction])
+    saveNoteAction({ note: blankNote, sectionId, classId })
+  }, [classId, saveNoteAction, sectionId])
 
   const handleClose = useCallback(() => setCurrentNote({ note: null }), [setCurrentNote])
 
@@ -173,8 +175,8 @@ const UserNotesContainer = ({
           <FolderOpenIcon className={classes.folder} style={{ color: selectedClass?.color }} />
           <Typography className={classes.classesTypo}>{selectedClass?.name}</Typography>
         </Grid>}
-        {emptyFolder && !loading && <EmptyNotes />}
-        {isFolder && !loading && (
+        {emptyFolder && !initialLoading && <EmptyNotes />}
+        {isFolder && !initialLoading && (
           <Tooltip
             id={5909}
             delay={600}
@@ -209,7 +211,7 @@ const UserNotesContainer = ({
           setSectionId={setSectionId}
           classList={classList}
         />}
-        {loading && <div className={classes.loading}>
+        {(loading || initialLoading) && <div className={classes.loading}>
           <CircularProgress />
         </div>}
       </Paper >
@@ -224,7 +226,9 @@ const mapStateToProps = ({ user, notes }: StoreState): {} => ({
   notes: notes.data.notes,
   currentNote: notes.data.currentNote,
   loading: notes.data.loading,
-  sectionId: notes.data.sectionId
+  initialLoading: notes.data.initialLoading,
+  sectionId: notes.data.sectionId,
+  classId: notes.data.classId
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

@@ -13,9 +13,10 @@ const updateNotes = ({ notes }: {notes: array<NotesType>}): Action => ({
   notes
 });
 
-const addNote = ({ note }: {note: NotesType}): Action => ({
+const addNote = ({ notes, quicknoteId }: {notes: NotesType, quicknote: number}): Action => ({
   type: notesActions.ADD_NOTE,
-  note
+  quicknoteId,
+  notes
 });
 
 const removeNote = ({ id }: {id: number}): Action => ({
@@ -38,6 +39,23 @@ const setSectionIdAction = ({ sectionId, classId }: {sectionId: number, classId:
   sectionId,
   classId
 })
+
+const updateQuickNoteContentAction = ({ content }: {content: string}): Action => ({
+  type: notesActions.UPDATE_QUICKNOTE_CONTENT,
+  content,
+})
+
+const resetQuickNoteAction = () => ({
+  type: notesActions.RESET_QUICKNOTE
+})
+
+export const updateQuickNoteContent = ({ content }: {content: string}) => async (dispatch: Dispatch) => {
+  dispatch(updateQuickNoteContentAction({ content }))
+}
+
+export const resetQuickNote = () => async (dispatch: Dispatch) => {
+  dispatch(resetQuickNoteAction())
+}
 
 const sortNotes = notes => (
   notes.sort((a, b) => {
@@ -62,7 +80,7 @@ export const getNotes = () => async (dispatch: Dispatch, getState: Function) => 
 
 export const updateNote = ({ note }: {note: NotesType}) => async (dispatch: Dispatch, getState: Function) => {
   try {
-    const { notes: { data: { notes } } } = getState()
+    const { notes: { data: { notes, sectionId } } } = getState()
     dispatch(loadingAction({ loading: true }))
 
     const res = await api.updateNote({ note })
@@ -79,7 +97,9 @@ export const updateNote = ({ note }: {note: NotesType}) => async (dispatch: Disp
         ...note,
         lastModified: new Date()
       }
-      dispatch(updateNotes({ notes: [newNote, ...filtered] }))
+      if (sectionId === note.sectionId)
+        dispatch(updateNotes({ notes: [newNote, ...filtered] }))
+      dispatch(loadingAction({ loading: false }))
     }
     else dispatch(loadingAction({ loading: false }))
   } catch (err) {
@@ -87,10 +107,10 @@ export const updateNote = ({ note }: {note: NotesType}) => async (dispatch: Disp
   }
 };
 
-export const saveNoteAction = ({ note }: {note: NotesType}) => async (dispatch: Dispatch, getState: Function) => {
+export const saveNoteAction = ({ note, sectionId, classId, quicknote }: {note: NotesType, classId: number, sectionId: number, quicknote: boolean}) => async (dispatch: Dispatch, getState: Function) => {
   try {
-    const { notes: { data: { sectionId, classId } } } = getState()
     dispatch(loadingAction({ loading: true }))
+    const { notes: { data: { notes, sectionId: curSectionId } } } = getState()
     const { note_id: noteId } = await api.postNote({ note, sectionId, classId })
 
     if (noteId) {
@@ -100,9 +120,24 @@ export const saveNoteAction = ({ note }: {note: NotesType}) => async (dispatch: 
         sectionId,
         type: 'Created',
       });
-      dispatch(addNote({ note: { ...note, id: noteId, classId, sectionId } }))
+      const newNote = {
+        ...note,
+        id: noteId,
+        classId,
+        sectionId,
+        lastModified: new Date()
+      }
+      if (curSectionId === sectionId)
+        dispatch(addNote({
+          quicknoteId: quicknote ? noteId : null,
+          notes: [newNote, ...notes]
+        }))
+      else dispatch(addNote({
+        quicknoteId: quicknote ? noteId : null,
+        notes
+      }))
     }
-    else dispatch(loadingAction({ loading: false }))
+    dispatch(loadingAction({ loading: false }))
   } catch (err) {
     dispatch(loadingAction({ loading: false }))
   }

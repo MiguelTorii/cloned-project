@@ -137,7 +137,7 @@ const RichTextEditor = ({
   return (
     <ErrorBoundary>
       <div className={classes.root}>
-        <div className={classes.quill}>
+        <div className={classes.quill} id='quill-editor'>
           <CustomQuill
             placeholder={placeholder}
             value={value}

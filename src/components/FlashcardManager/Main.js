@@ -108,7 +108,7 @@ const styles = theme => ({
     fontWeight: 'bold',
     margin: theme.spacing(2, 0),
     marginRight: theme.spacing(),
-    padding: theme.spacing(1/2, 5)
+    padding: theme.spacing(1 / 2, 5)
   },
   buttonText: {
     marginLeft: theme.spacing()
@@ -121,7 +121,7 @@ const Transition = React.forwardRef((props, ref) => {
 
 type Props = {
   classes: Object,
-  flashcards: Array<Flashcard & { id: string }>,
+  flashcards: Array<Flashcard & {id: string}>,
   match: {
     params: {
       flashcardId: string
@@ -142,7 +142,7 @@ const initialDecks = {
 
 const FlashcardManager = ({
   loadData,
-  match : { params: { flashcardId } },
+  match: { params: { flashcardId } },
   postId,
   feedId,
   classes,
@@ -176,7 +176,7 @@ const FlashcardManager = ({
 
     orgFlashcards.forEach(card => {
       const deck = previousDecks ? previousDecks[String(card.id)] : 'main'
-      if (deck) current[deck] = [...current[deck] , card]
+      if (deck) current[deck] = [...current[deck], card]
       else current.main = [...current.main, card]
     })
 
@@ -212,13 +212,13 @@ const FlashcardManager = ({
     }
   }
 
-  useEffect (() => {
+  useEffect(() => {
     const saveDeck = () => {
       const current = {}
       decks.main.forEach(d => {current[d.id] = 'main'})
       decks.difficult.forEach(d => {current[d.id] = 'difficult'})
-      decks.medium.forEach(d => {current[d.id] = 'medium' })
-      decks.easy.forEach(d =>  {current[d.id] = 'easy' })
+      decks.medium.forEach(d => {current[d.id] = 'medium'})
+      decks.easy.forEach(d => {current[d.id] = 'easy'})
       store.set(`flashcards${postId}`, JSON.stringify(current))
     }
     saveDeck()
@@ -294,8 +294,8 @@ const FlashcardManager = ({
   const ScoreBox = React.forwardRef(({ deckId, title, value }, ref) => (
     <div
       className={classes.scoreBox}
-      onClick={() => handleDeckSwitch(deckId) }
-      onKeyUp={() => handleDeckSwitch(deckId) }
+      onClick={() => handleDeckSwitch(deckId)}
+      onKeyUp={() => handleDeckSwitch(deckId)}
       role='button'
       ref={ref}
       tabIndex='0'
@@ -343,7 +343,7 @@ const FlashcardManager = ({
         <Button aria-label="Share" onClick={onShare}>
           <ShareIcon />
           <Typography variant="subtitle1" className={classes.buttonText}>
-              Share
+            Share
           </Typography>
         </Button>
       </div>
@@ -377,7 +377,7 @@ const FlashcardManager = ({
                 variant="contained"
                 onClick={() => setResetOpen(true)}
               >
-                  Start Over
+                Start Over
               </Button>
               <Button
                 className={classes.button}
@@ -385,7 +385,7 @@ const FlashcardManager = ({
                 variant="contained"
                 onClick={handleClose}
               >
-              Done
+                Done
               </Button>
             </div>
           </Toolbar>
@@ -451,7 +451,7 @@ const FlashcardManager = ({
                 questionImage={currentDeck[currentIndex].questionImage}
               />
               : <div className={classes.emptyState}>
-                  You don't have any cards in this stack! <br /><br />
+                You don't have any cards in this stack! <br /><br />
                   Click a different stack on the left side to view more cards.
               </div>
           }
@@ -500,7 +500,7 @@ const FlashcardManager = ({
       </Dialog>
       <Dialog
         okTitle="Yes"
-        onCancel={() => { setResetOpen(false) }}
+        onCancel={() => {setResetOpen(false)}}
         onOk={() => {
           setResetOpen(false);
           resetState();
@@ -510,7 +510,7 @@ const FlashcardManager = ({
         showCancel
         title="Start Over"
       >
-          If you Start Over, then you'll reset your progress. Are you sure you want to restart?
+        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </Dialog>
     </>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import cx from 'classnames'
 import { Quill } from "react-quill";
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -16,7 +17,8 @@ Link.sanitize = function link(url) {
 const useStyles = makeStyles(() => ({
   toolbar: {},
   firstline: {},
-  secondline: {}
+  secondline: {},
+  hidden: { display: 'none' }
 }))
 
 const CustomUndo = () => (
@@ -98,10 +100,10 @@ export const formats = [
   "code-block"
 ];
 
-export const QuillToolbar = () => {
+export const QuillToolbar = ({ hidden }) => {
   const classes = useStyles()
   return (
-    <div id="toolbar" className={classes.toolbar}>
+    <div id="toolbar" className={cx(hidden && classes.hidden, classes.toolbar)}>
       <div className={classes.firstline}>
         <span className="ql-formats">
           <select className="ql-header" defaultValue="3">

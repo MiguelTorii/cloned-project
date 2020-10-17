@@ -15,7 +15,9 @@ export type NotesType = {
   created: date,
   lastModified: date,
   id: number,
-  sectionId?: number
+  sectionId?: number,
+  quicknoteId?: number,
+  quicknoteContent: string
 };
 
 export type NotesState = {
@@ -33,7 +35,10 @@ const defaultState = {
     currentNote: null,
     sectionId: null,
     classId: null,
+    quicknoteId: null,
+    quicknoteContent: '',
     notes: [],
+    initialLoading: false,
     loading: false
   }
 };
@@ -43,10 +48,24 @@ export default (
   action: Action
 ): NotesState => {
   switch (action.type) {
+  case notesActions.RESET_QUICKNOTE:
+    return update(state, {
+      data: {
+        quicknoteContent: { $set: '' },
+        quicknoteId: { $set: null }
+      }
+    })
+  case notesActions.UPDATE_QUICKNOTE_CONTENT:
+    return update(state, {
+      data: {
+        quicknoteContent: { $set: action.content }
+      }
+    })
   case notesActions.SET_SECTION_ID:
     return update(state, {
       data: {
         notes: { $set: [] },
+        initialLoading: { $set: action.sectionId !== null },
         sectionId: { $set: action.sectionId },
         classId: { $set: action.classId },
       }
@@ -55,6 +74,8 @@ export default (
     return update(state, {
       data: {
         currentNote: { $set: action.note },
+        quicknoteContent: { $set: '' },
+        quicknoteId: { $set: null }
       }
     });
   case notesActions.LOADING_NOTES:
@@ -74,6 +95,7 @@ export default (
     return update(state, {
       data: {
         loading: { $set: false },
+        initialLoading: { $set: false },
         notes: { $set: action.notes },
       }
     });
@@ -81,8 +103,9 @@ export default (
     return update(state, {
       data: {
         loading: { $set: false },
-        notes: { $push: [action.note] },
-        currentNote: { $set: action.note }
+        notes: { $set: action.notes },
+        currentNote: { $set: action.quicknoteId ? null : action.note },
+        quicknoteId: { $set: action.quicknoteId ? action.quicknoteId : null }
       }
     });
   case rootActions.CLEAR_STATE:

@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
 import MathQuill from 'components/CustomQuill/Math'
 import { useDebounce } from '@react-hook/debounce'
-import isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
@@ -139,7 +138,9 @@ const UserNotesEditor = ({
   }, [currentNote]);
 
   useEffect(() => {
-    if (debouncedNote && !isEqual(debouncedNote, prevSaved)) {
+    if (debouncedNote &&
+      (debouncedNote.title !== prevSaved.title ||
+        debouncedNote.content !== prevSaved.content)) {
       const now = new Date()
       updateNote({
         note: {
@@ -147,7 +148,7 @@ const UserNotesEditor = ({
           lastModified: now
         }
       })
-      setPrevSaved(prevSaved)
+      setPrevSaved({ ...debouncedNote, lastModified: now })
       curNoteRef.current = { ...debouncedNote, lastModified: now }
       setLastSave(timeFromNow({ lastModified: now }))
       setSavedState('show')
@@ -158,7 +159,7 @@ const UserNotesEditor = ({
   const onExit = useCallback(() => {
     if (note && prevSaved && (note.title !== prevSaved.title || note.content !== prevSaved.content)) {
       updateNote({ note })
-      setPrevSaved(prevSaved)
+      setPrevSaved(note)
     }
     handleClose()
   }, [handleClose, note, prevSaved, updateNote])
