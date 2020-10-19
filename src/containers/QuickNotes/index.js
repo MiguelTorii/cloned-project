@@ -222,25 +222,26 @@ const QuickNotes = ({
       await saveContent(quicknoteContent)
     }
     resetQuickNote()
-    await enqueueSnackbar({
-      notification: {
-        message: `Your note was saved at ${selectedClass.name} folder`,
-        options: {
-          variant: 'info',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left'
-          },
-          autoHideDuration: 5000,
-          ContentProps: {
-            classes: {
-              root: classes.stackbar
+    if (quicknoteContent) {
+      await enqueueSnackbar({
+        notification: {
+          message: `Your note was saved at ${selectedClass.name} folder`,
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 5000,
+            ContentProps: {
+              classes: {
+                root: classes.stackbar
+              }
             }
           }
         }
-      }
-    });
-
+      });
+    }
   }, [classes.stackbar, debouncedContent, enqueueSnackbar, handleClose, quicknoteContent, resetQuickNote, saveContent, selectedClass])
 
   return (

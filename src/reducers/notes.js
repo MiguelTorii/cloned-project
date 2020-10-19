@@ -104,7 +104,7 @@ export default (
       data: {
         loading: { $set: false },
         notes: { $set: action.notes },
-        currentNote: { $set: action.quicknoteId ? null : action.note },
+        currentNote: { $set: action.quicknoteId ? null : action.notes[0] },
         quicknoteId: { $set: action.quicknoteId ? action.quicknoteId : null }
       }
     });
