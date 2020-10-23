@@ -119,7 +119,13 @@ const QuickNotes = ({
 
   const saveContent = useCallback(async content => {
     const now = new Date()
-    if (!content || content === '<p><br></p>') return
+    if (
+      !content ||
+      content === '<p><br></p>' ||
+      !selectedClass ||
+      !selectedClass.sectionId ||
+      !selectedClass.classId
+    ) return
     setPrevContent(debouncedContent)
     if (!quicknoteId) {
       await saveNoteAction({
@@ -222,7 +228,7 @@ const QuickNotes = ({
       await saveContent(quicknoteContent)
     }
     resetQuickNote()
-    if (quicknoteContent) {
+    if (quicknoteContent && selectedClass?.name) {
       await enqueueSnackbar({
         notification: {
           message: `Your note was saved at ${selectedClass.name} folder`,

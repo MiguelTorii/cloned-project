@@ -31,7 +31,7 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
     maxHeight: 300,
-    overflow: 'auto',
+    overflow: 'hidden',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start'
@@ -44,6 +44,9 @@ const styles = theme => ({
   pdf: {
     height: '85vh',
     width: '100%'
+  },
+  buttonBase: {
+    marginRight: theme.spacing(),
   }
 });
 
@@ -67,13 +70,13 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
   const [selected, setSelected] = useState('')
 
   useEffect(() => {
-    const init = async() => {
+    const init = async () => {
       const fileNames = pdfs.map(p => p.src)
       setUrls(fileNames)
     }
     init()
     // eslint-disable-next-line
-  },[])
+  }, [])
 
   const handleClose = () => setSelected('')
 
@@ -81,8 +84,12 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
     <div className={classes.root}>
       <div className={classes.gallery}>
         {urls.map(url => (
-          <ButtonBase key={url} onClick={() => setSelected(url)}>
-            <PdfComponent 
+          <ButtonBase
+            key={url}
+            onClick={() => setSelected(url)}
+            className={classes.buttonBase}
+          >
+            <PdfComponent
               url={url}
               height={120}
               width={120}
@@ -108,12 +115,12 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          {Boolean(selected) && 
-                <iframe 
-                  title='pdf' 
-                  className={classes.pdf}
-                  src={`/pdf/web/viewer.html?file=${selected}`} 
-                />
+          {Boolean(selected) &&
+            <iframe
+              title='pdf'
+              className={classes.pdf}
+              src={`/pdf/web/viewer.html?file=${selected}`}
+            />
           }
         </DialogContent>
       </Dialog>

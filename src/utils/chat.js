@@ -10,9 +10,9 @@ export const getTitle = (channel: Object, userId: string) => {
   try {
     const {
       state,
-      state: { attributes = {} }
+      channelState: { attributes = {} }
     } = channel;
-    const friendlyName = channel.state.attributes.friendlyName || '';
+    const friendlyName = channel.channelState.friendlyName || '';
     const { users } = attributes;
     if (attributes.friendlyName && attributes.friendlyName !== '') {
       return attributes.friendlyName;
@@ -205,6 +205,6 @@ export const processMessages = ({
   }
 };
 
-export const getInitials = ({ name = '' }: { name: string }) => {
+export const getInitials = ({ name = '' }: {name: string}) => {
   return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 };

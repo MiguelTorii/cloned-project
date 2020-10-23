@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
   },
   videoButton: {
     backgroundColor: theme.circleIn.palette.darkActionBlue,
-    padding: theme.spacing(1/2),
+    padding: theme.spacing(1 / 2),
   },
   videoIcon: {
-    marginRight: theme.spacing(1/2),
-    paddingBottom: theme.spacing(1/8)
+    marginRight: theme.spacing(1 / 2),
+    paddingBottom: theme.spacing(1 / 8)
   }
 }))
 
@@ -125,12 +125,12 @@ const Main = ({
   }, [local, channel])
 
   useEffect(() => {
-    if(channel && newMessage && channel.sid === newMessage.channel.sid) {
+    if (channel && newMessage && channel.sid === newMessage.channel.sid) {
       try {
         channel.setAllMessagesConsumed()
-      } catch(e) {}
+      } catch (e) {}
       const index = findIndex(messages, m => m.sid === newMessage.sid)
-      if(index === -1) {
+      if (index === -1) {
         setMessages([...messages, newMessage])
         setTimeout(handleScrollToBottom, 100)
       }
@@ -169,10 +169,10 @@ const Main = ({
             setTyping('')
           })
         }
-      } catch(e) {}
+      } catch (e) {}
     }
 
-    if(channel) init()
+    if (channel) init()
     // eslint-disable-next-line
   }, [channel])
 
@@ -209,7 +209,7 @@ const Main = ({
 
   const getRole = userId => {
     if (!members[userId]) return null
-    const {role, roleId} = members[userId]
+    const { role, roleId } = members[userId]
     if ([2, 3].includes(roleId)) {
       return role
     }
@@ -355,7 +355,7 @@ const Main = ({
     }
   }
 
-  const  handleImageClose = () => setImages([])
+  const handleImageClose = () => setImages([])
 
   const startVideo = useCallback(() =>
     window.open(`/video-call/${channel.sid}`, '_blank'),

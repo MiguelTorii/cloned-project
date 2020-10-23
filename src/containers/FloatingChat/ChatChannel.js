@@ -69,7 +69,6 @@ type Props = {
   onRemove: Function,
   newChannel: boolean,
   handleChannelCreated: Function,
-  enqueueSnackbar: Function,
   onSend: Function
 };
 
@@ -499,7 +498,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       newChannel,
       channel: {
         sid,
-        state: {
+        channelState: {
           attributes: { groupType = '' }
         }
       },

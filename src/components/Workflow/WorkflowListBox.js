@@ -1,7 +1,7 @@
 import React from 'react'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import cx from 'classnames'
@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
   },
   panel: {
     position: 'inherit',
-    '& .MuiExpansionPanelSummary-root': {
+    '& .MuiAccordionSummary-root': {
       borderBottom: `1px solid ${theme.circleIn.palette.borderColor}`,
       padding: 0,
       margin: theme.spacing(0, 3)
     },
-    '& .MuiExpansionPanelSummary-content': {
+    '& .MuiAccordionSummary-content': {
       margin: 0,
       flexGrow: 0
     },
@@ -33,20 +33,20 @@ const WorkflowListBox = ({ drop, name, tasks, list, isExpanded, onExpand }) => {
   const classes = useStyles()
 
   return (
-    <ExpansionPanel
+    <Accordion
       ref={drop}
       elevation={0}
       className={cx(classes.panel)}
       expanded={isExpanded}
       onChange={onExpand}
     >
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
         <Typography className={classes.header}>{name} ({tasks.length})</Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>
+      </AccordionSummary>
+      <AccordionDetails className={classes.details}>
         {list}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
 
   )
 }

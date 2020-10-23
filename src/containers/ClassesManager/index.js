@@ -14,9 +14,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 // import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -70,7 +70,7 @@ type State = {
   availableClasses: Array<Object>,
   search: string,
   loading: boolean,
-  selectedClasses: Array<{ classId: number, sectionId: number }>,
+  selectedClasses: Array<{classId: number, sectionId: number}>,
   errorText: boolean
 };
 
@@ -160,7 +160,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     });
     this.setState(newState);
 
-    if(event.target.checked){
+    if (event.target.checked) {
       try {
         const {
           user: {
@@ -173,16 +173,16 @@ class ClassesManager extends React.PureComponent<Props, State> {
         const { classes } = await getUserClasses({ userId });
         this.setState({ userClasses: classes, loading: false });
         fetchFeed()
-      // this.setState({ loading: false });
-      } catch(err) {
-      // this.setState({ loading: false });
+        // this.setState({ loading: false });
+      } catch (err) {
+        // this.setState({ loading: false });
       } finally {
         logEvent({ event: 'Join Class- Joined Class', props: { 'Section ID': sectionId } });
       }
     }
   };
 
-  handleRemoveClass = ({ classId }: { classId: number }) => async () => {
+  handleRemoveClass = ({ classId }: {classId: number}) => async () => {
     const {
       user: {
         data: { userId }
@@ -308,7 +308,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
             <ListItemText
               primary={`${section.subject} ${item.className}: ${
                 section.firstName
-              } ${section.lastName} - ${section.section}`}
+                } ${section.lastName} - ${section.section}`}
               primaryTypographyProps={{
                 noWrap: true
               }}
@@ -360,7 +360,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
   renderCollegeClasses = () => {
     const { userClasses, availableClasses, search } = this.state;
     // eslint-disable-next-line func-names
-    const sortedClasses = availableClasses.sort(function(a, b) {
+    const sortedClasses = availableClasses.sort(function (a, b) {
       // eslint-disable-next-line no-nested-ternary
       return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
     });
@@ -371,22 +371,22 @@ class ClassesManager extends React.PureComponent<Props, State> {
       if (items.length > 0) result.push({ name: item.name, classes: items });
       return result;
     }, []);
-    console.log(userClasses)
+
     return (
       <div>
         {filteredClasses.map(item => (
-          <ExpansionPanel key={item.name}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Accordion key={item.name}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{item.name}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <div>
                 {item.classes.map(o => (
-                  <ExpansionPanel key={o.classId}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Accordion key={o.classId}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography>{o.class}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
                       <FormGroup>
                         {o.section.map(b => (
                           <FormControlLabel
@@ -419,16 +419,16 @@ class ClassesManager extends React.PureComponent<Props, State> {
                             }
                             label={`Section ${
                               b.section
-                            }: ${b.firstName} ${b.lastName}`}
+                              }: ${b.firstName} ${b.lastName}`}
                           />
                         ))}
                       </FormGroup>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                    </AccordionDetails>
+                  </Accordion>
                 ))}
               </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </div>
     );
@@ -453,11 +453,11 @@ class ClassesManager extends React.PureComponent<Props, State> {
     return (
       <div>
         {filteredClasses.map(item => (
-          <ExpansionPanel key={item.name}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Accordion key={item.name}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{item.name}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <FormGroup>
                 {item.classes.map(o => (
                   <FormControlLabel
@@ -477,8 +477,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
                   />
                 ))}
               </FormGroup>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         ))}
       </div>
     );
@@ -549,7 +549,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
               color="inherit"
               className={classes.link}
             >
-                Click here
+              Click here
             </Link></Typography>
           </DialogContent>
           <DialogActions>

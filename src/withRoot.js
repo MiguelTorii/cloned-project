@@ -134,9 +134,6 @@ const theme = createMuiTheme({
       textColorPrimary: {
         color: circleInTheme.tabColor
       },
-      label: {
-        textTransform: 'capitalize'
-      }
     },
     MuiFab: {
       label: {

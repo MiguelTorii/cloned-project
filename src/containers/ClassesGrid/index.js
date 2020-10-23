@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
@@ -53,69 +53,77 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [emptyVisibility, setEmptyVisibility] = useState(false)
   const [emptyBody, setEmptyBody] = useState('')
 
-  const handleLeaveClass = async ({ sectionId, classId, userId }) => {
+  const handleLeaveClass = useCallback(async ({ sectionId, classId, userId }) => {
     await leaveUserClass({
       sectionId,
       classId,
       userId
     })
     fetchClasses()
-  }
-
-  useEffect(() => fetchClasses(true), [fetchClasses])
+  }, [fetchClasses])
 
   useEffect(() => {
-    try {
-      const {
-        // eslint-disable-next-line
-        userClasses: {classList, canAddClasses, emptyState}
-      } = user
+    const init = async () => {
+      fetchClasses(true)
+    }
 
-      if (emptyState && emptyState.visibility) {
+    init()
+  }, [fetchClasses])
+
+  useEffect(() => {
+    const init = async () => {
+      try {
         const {
-          visibility,
-          logo,
-          body
-        } = emptyState
-        setEmptyLogo(logo)
-        setEmptyBody(body)
-        setEmptyVisibility(visibility)
-      }
+          userClasses: { classList, canAddClasses, emptyState }
+        } = user
 
-      if (classList) {
-        setClassList(
-          classList.map(cl => {
-            const classesInter = cl.section.map(s => ({
-              sectionDisplayName: s.sectionDisplayName,
-              instructorDisplayName: s.instructorDisplayName,
-              sectionId: s.sectionId,
-              classId: cl.classId,
-              courseDisplayName: cl.courseDisplayName,
-              bgColor: cl.bgColor,
-              handleLeaveClass: () => handleLeaveClass({
+        if (emptyState && emptyState.visibility) {
+          const {
+            visibility,
+            logo,
+            body
+          } = emptyState
+          setEmptyLogo(logo)
+          setEmptyBody(body)
+          setEmptyVisibility(visibility)
+        }
+
+        if (classList) {
+          setClassList(
+            classList.map(cl => {
+              const classesInter = cl.section.map(s => ({
+                sectionDisplayName: s.sectionDisplayName,
+                instructorDisplayName: s.instructorDisplayName,
                 sectionId: s.sectionId,
                 classId: cl.classId,
-                userId: String(user.data.userId)
-              }),
-              canLeave: cl.permissions.canLeave
-            }))
-            if (classesInter.length > 0) return classesInter[0]
-            return null
-          })
-        )
-        setCanAddClasses(canAddClasses)
-      }
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-    // eslint-disable-next-line
-  }, [user])
+                courseDisplayName: cl.courseDisplayName,
+                bgColor: cl.bgColor,
+                handleLeaveClass: () => handleLeaveClass({
+                  sectionId: s.sectionId,
+                  classId: cl.classId,
+                  userId: String(user.data.userId)
+                }),
+                canLeave: cl.permissions.canLeave
+              }))
+              if (classesInter.length > 0) return classesInter[0]
+              return null
+            })
+          )
+          setCanAddClasses(canAddClasses)
+        }
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
+    }
 
-  const navigate = ({ courseDisplayName, sectionId, classId }) => {
+    init()
+  }, [handleLeaveClass, user])
+
+  const navigate = useCallback(({ courseDisplayName, sectionId, classId }) => {
     document.title = courseDisplayName
     pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}`)
-  }
+  }, [pushTo])
 
-  const hasClasses = classList && classList.length > 0
+  const hasClasses = useMemo(() => classList && classList.length > 0, [classList])
 
   return (
     <Grid

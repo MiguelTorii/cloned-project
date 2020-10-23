@@ -141,7 +141,7 @@ const FloatingChat = ({
   );
 
   useEffect(() => {
-    if(local) {
+    if (local) {
       let unread = 0
       const cl = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
         if (!local[a].lastMessage.message) return 0
@@ -158,7 +158,7 @@ const FloatingChat = ({
   const [prevMessageId, setPrevMessageId] = useState('')
 
   useEffect(() => {
-    const handleMessage =() =>{
+    const handleMessage = () => {
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
       const { firstName, lastName } = attributes;
@@ -187,19 +187,21 @@ const FloatingChat = ({
                   root: classes.snackbarStyle
                 }
               }
-            }}});
+            }
+          }
+        });
         updateTitleAction({
           title: `${firstName} ${lastName} sent you a message:`,
           body
         });
       }
     }
-    if(newMessage && prevMessageId !== newMessage.sid) handleMessage()
+    if (newMessage && prevMessageId !== newMessage.sid) handleMessage()
 
     // eslint-disable-next-line
   }, [newMessage, local, prevMessageId])
 
-  const { location: { pathname}} = router
+  const { location: { pathname } } = router
   useEffect(() => {
     const offlineListener = () => {
       console.log('**** offline ****');
@@ -227,20 +229,20 @@ const FloatingChat = ({
         window.removeEventListener('online', onlineListener)
         if (
           updateOpenChannelsDebounce.cancel &&
-      typeof updateOpenChannelsDebounce.cancel === 'function'
+          typeof updateOpenChannelsDebounce.cancel === 'function'
         )
           updateOpenChannelsDebounce.cancel();
 
         if (
           handleInitChatDebounce.cancel &&
-      typeof handleInitChatDebounce.cancel === 'function'
+          typeof handleInitChatDebounce.cancel === 'function'
         )
           handleInitChatDebounce.cancel();
         handleShutdownChat();
       };
     }
 
-    if(pathname !== '/chat') return init()
+    if (pathname !== '/chat') return init()
 
     // eslint-disable-next-line
   }, [pathname])
@@ -317,7 +319,7 @@ const FloatingChat = ({
     setCreateChat(null)
   };
 
-  if (pathname === '/chat' ||  userId === '' || !client) return null;
+  if (pathname === '/chat' || userId === '' || !client) return null;
 
   return (
     <Fragment>
@@ -349,7 +351,7 @@ const FloatingChat = ({
                 on: () => {},
                 typing: () => {},
                 sendMessage: () => {},
-                state: { attributes: { friendlyName: 'New Chat' } }
+                channelState: { attributes: { friendlyName: 'New Chat' } }
               }}
             />}
           </ErrorBoundary>

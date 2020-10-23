@@ -14,9 +14,9 @@ import GroupIcon from '@material-ui/icons/Group';
 import BlockUser from 'containers/Chat/BlockUser'
 import RemoveChat from 'containers/Chat/RemoveChat'
 import AddMembers from 'containers/Chat/AddMembers'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
 import TutorBadge from 'components/TutorBadge'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   expandedRotate: {
     margin: '0 !important',
     minHeight: '0 !important',
-    '& .MuiExpansionPanelSummary-expandIcon.Mui-expanded': {
+    '& .MuiAccordionSummary-expandIcon.Mui-expanded': {
       transform: 'rotate(90deg)'
     }
   }
@@ -187,7 +187,7 @@ const RightMenu = ({
             root: classes.usersContainer
           }}
         >
-          <ExpansionPanel
+          <Accordion
             elevation={0}
             classes={{
               root: classes.membersExpansion,
@@ -195,7 +195,7 @@ const RightMenu = ({
             }}
             TransitionProps={{ unmountOnExit: true }}
           >
-            <ExpansionPanelSummary
+            <AccordionSummary
               expandIcon={<ArrowForwardIosIcon />}
               classes={{
                 root: classes.membersSummary,
@@ -205,8 +205,8 @@ const RightMenu = ({
             >
               <Typography className={classes.usersTitle}>In this chat...</Typography>
               <Typography className={classes.usersCount}>{local[channel.sid].members.length}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.membersDetails}>
+            </AccordionSummary>
+            <AccordionDetails className={classes.membersDetails}>
               <List dense className={classes.listRoot}>
                 {local[channel.sid].members.map(m => {
                   const fullName = `${m.firstname} ${m.lastname}`
@@ -239,8 +239,8 @@ const RightMenu = ({
                   );
                 })}
               </List>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         </Grid>
         <AddMembers
           userId={userId}
