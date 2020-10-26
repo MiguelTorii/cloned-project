@@ -17,6 +17,7 @@ import OnboardingNotes from 'containers/OnboardingNotes'
 import Tooltip from 'containers/Tooltip';
 import Button from '@material-ui/core/Button';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
+import GiveFeedback from 'containers/GiveFeedback'
 import type { State as StoreState } from '../../types/state';
 import DeleteNote from './DeleteNote';
 import NotesList from './NotesList';
@@ -52,6 +53,13 @@ const useStyles = makeStyles((theme) => ({
   },
   createNote: {
     margin: theme.spacing(2, 0)
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  feedback: {
+    cursor: 'pointer'
   }
 }))
 
@@ -83,6 +91,15 @@ const UserNotesContainer = ({
   const hasNotes = useMemo(() => notes.length !== 0, [notes])
   const [confirmDelete, setConfirmDelete] = useState(null)
   const [classList, setClassList] = useState([])
+  const [openFeedback, setOpenFeedback] = useState(false)
+
+  const handleOpenFeedback = useCallback(() => {
+    setOpenFeedback(true)
+  }, [])
+
+  const handleCloseFeedback = useCallback(() => {
+    setOpenFeedback(false)
+  }, [])
 
   const selectedClass = useMemo(() => classList.find(cl => cl.sectionId === sectionId), [classList, sectionId])
 
@@ -159,7 +176,22 @@ const UserNotesContainer = ({
         confirmDelete={confirmDelete}
         closeConfirmDelete={closeConfirmDelete}
       />
-      <Typography variant='h6'>My Notes</Typography>
+      <GiveFeedback
+        origin='Notes'
+        open={openFeedback}
+        onClose={handleCloseFeedback}
+      />
+      <div className={classes.header}>
+        <Typography variant='h6'>My Notes</Typography>
+        <Typography
+          variant='caption'
+          color='primary'
+          className={classes.feedback}
+          onClick={handleOpenFeedback}
+        >
+          Give Feedback
+        </Typography>
+      </div>
       <Paper className={cx(
         classes.paper,
         emptyFolder && classes.centralize

@@ -68,10 +68,10 @@ export const getUserProfile = async ({
     const newabout = about.map(item => ({
       ...item,
       section:
-        item.section ===
-        'Do you like helping others with homework study help, if so, which subjects?'
-          ? 'Do you enjoy getting involved in helping classmates?'
-          : item.section
+    item.section ===
+      'Do you like helping others with homework study help, if so, which subjects?'
+      ? 'Do you enjoy getting involved in helping classmates?'
+      : item.section
     }));
 
     return { userProfile, about: newabout, userStatistics };
@@ -140,10 +140,10 @@ export const searchUsers = async ({
 
 const getClassesCache = () => {
   try {
-    const {result, expires } = JSON.parse(store.get('CLASSES_CACHE'))
+    const { result, expires } = JSON.parse(store.get('CLASSES_CACHE'))
     if (moment().valueOf() > expires) return null
     return result
-  } catch(e) {
+  } catch (e) {
     return null
   }
 }
@@ -166,18 +166,18 @@ export const getUserClasses = async ({
     const cache = getClassesCache()
     if (!cache || skipCache) {
       result = await axios.get(
-      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+        `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
       );
       setClassesCache(result)
     } else result = cache
 
     const {
-      data: { classes = [], permissions = {}, empty_state: empty = {}  }
+      data: { classes = [], permissions = {}, empty_state: empty = {} }
     } = result;
 
     const userClasses = classes.map(userClass => ({
@@ -286,7 +286,7 @@ export const getAvailableSubjects = async (): Array => {
     );
 
     const {
-      data: {subjects = []}
+      data: { subjects = [] }
     } = result;
 
     return subjects;
@@ -312,7 +312,7 @@ export const getAvailableSubjectsClasses = async ({
     );
 
     const {
-      data: {classes = []}
+      data: { classes = [] }
     } = result;
 
     return classes;
@@ -339,7 +339,7 @@ export const getAvailableClassesSections = async ({
     );
 
     const {
-      data: {sections = []}
+      data: { sections = [] }
     } = result;
 
     return sections;
@@ -364,7 +364,7 @@ export const leaveUserClass = async ({
     if (sectionId) {
       url = `${
         API_ROUTES.USER_CLASS
-      }/${classId}?user_id=${userId}&section_id=${sectionId}`;
+        }/${classId}?user_id=${userId}&section_id=${sectionId}`;
     } else {
       url = `${API_ROUTES.USER_CLASS}/${classId}?user_id=${userId}`;
     }
@@ -575,7 +575,7 @@ export const updateProfile = async ({
   fields
 }: {
   userId: string,
-  fields: Array<{ field: string, updated_value: string }>
+  fields: Array<{field: string, updated_value: string}>
 }): Promise<Object> => {
   try {
     const token = await getToken();
@@ -879,3 +879,26 @@ export const getSync = async ({
   }
 };
 
+export const sendFeedback = async ({ origin, feedback }): Promise<object> => {
+  try {
+    const token = await getToken();
+
+    const result = await axios.post(
+      `${API_ROUTES.FEEDBACK}`,
+      {
+        origin,
+        feedback
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+}

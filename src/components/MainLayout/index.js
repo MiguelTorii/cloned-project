@@ -38,6 +38,7 @@ import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { decypherClass } from 'utils/crypto'
 import QuickNotes from 'containers/QuickNotes'
+import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined'
 import logo from '../../assets/svg/circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
@@ -53,6 +54,7 @@ import './currentRoute.css'
 import UseCases from '../UseCases';
 import Dialog from '../Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints';
+import GiveFeedback from '../../containers/GiveFeedback'
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
 
@@ -204,7 +206,7 @@ const styles = theme => ({
     background: theme.circleIn.palette.buttonBackground,
     paddingTop: 0,
     paddingBottom: 0,
-    margin: theme.spacing(2),
+    margin: theme.spacing(1, 2),
     '&:hover': {
       background: theme.circleIn.palette.primaryText2
     },
@@ -212,12 +214,23 @@ const styles = theme => ({
   otherPath: {
     width: 'auto',
     borderRadius: theme.spacing(6),
-    margin: theme.spacing(2),
+    margin: theme.spacing(1, 2),
     paddingTop: 0,
     paddingBottom: 0,
     '&:hover': {
       background: theme.circleIn.palette.primaryText2
     },
+  },
+  lastItem: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    margin: theme.spacing(1, 2),
+    paddingTop: 0,
+    paddingBottom: 0,
+    '&:hover': {
+      background: theme.circleIn.palette.primaryText2
+    },
+    marginTop: 'auto'
   },
   myClasses: {
     display: 'flex',
@@ -227,7 +240,10 @@ const styles = theme => ({
     paddingLeft: 16,
   },
   drawerList: {
-    overflow: 'auto !important'
+    overflow: 'auto !important',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1
   },
   backHeader: {
     margin: theme.spacing(2)
@@ -269,6 +285,9 @@ const styles = theme => ({
     height: 2,
     margin: '6px 0px',
   },
+  bulb: {
+    transform: 'rotate(180deg)'
+  }
 });
 
 type Props = {
@@ -315,6 +334,7 @@ class MainLayout extends React.Component<Props, State> {
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
     openGetApp: false,
+    openFeedback: false,
     openHowEarnPoints: false,
     openUseCases: false,
     openClassmates: false,
@@ -410,6 +430,15 @@ class MainLayout extends React.Component<Props, State> {
     this.setState({ openGetApp: false });
   };
 
+  handleOpenFeedback = () => {
+    this.setState({ openFeedback: true });
+    this.handleMenuClose();
+  };
+
+  handleCloseFeedback = () => {
+    this.setState({ openFeedback: false });
+  };
+
   handleOpenHowEarnPoints = () => {
     const { helpLink } = this.props
     if (helpLink) {
@@ -452,6 +481,7 @@ class MainLayout extends React.Component<Props, State> {
       mobileMoreAnchorEl,
       createPostAnchorEl,
       openGetApp,
+      openFeedback,
       openHowEarnPoints,
       openClassmates,
       openUseCases
@@ -817,6 +847,16 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Help" />
           </ListItem>
+          <ListItem
+            button
+            onClick={this.handleOpenFeedback}
+            className={classes.lastItem}
+          >
+            <ListItemIcon>
+              <WbIncandescentOutlinedIcon className={classes.bulb} />
+            </ListItemIcon>
+            <ListItemText primary="Give Feedback" />
+          </ListItem>
         </List>
       </Fragment>
     );
@@ -937,6 +977,11 @@ class MainLayout extends React.Component<Props, State> {
         <GetAppDialog
           open={openGetApp}
           onClose={this.handleCloseGetApp}
+        />
+        <GiveFeedback
+          origin='Side Menu'
+          open={openFeedback}
+          onClose={this.handleCloseFeedback}
         />
         <HowDoIEarnPoints
           open={openHowEarnPoints}

@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 24,
     padding: theme.spacing(2),
+    textAlign: 'center',
     fontWeight: 'bold'
   },
   subtitle: {
