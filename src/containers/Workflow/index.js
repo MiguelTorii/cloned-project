@@ -302,7 +302,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     }
   }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName])
 
-  const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status, images }) => {
+  const updateItem = useCallback(async ({ index, title, date, categoryId, description, sectionId, id, status, images, reminder }) => {
     if (!title) {
       enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'))
       return
@@ -312,6 +312,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         title,
         sectionId: Number(sectionId),
         categoryId: Number(categoryId),
+        reminder,
         description,
         date,
       })
@@ -327,6 +328,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         sectionId: Number(sectionId),
         categoryId: Number(newCategory),
         description,
+        reminder,
         date: moment.utc(date).valueOf(),
         status,
       })

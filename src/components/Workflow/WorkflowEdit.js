@@ -3,7 +3,7 @@
 import React, { memo, useMemo, useRef, useContext, useState, useEffect, useCallback } from 'react'
 import Dialog from 'components/Dialog'
 import TextField from '@material-ui/core/TextField'
-// import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button'
 import DateInput from 'components/Workflow/DateInput'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
@@ -14,12 +14,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import {
   workflowCategories,
-  // remiderTime
+  remiderTime
 } from 'constants/common'
 import RichTextEditor from 'containers/RichTextEditor'
 // import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
 import Notification from 'components/Workflow/Notification'
+import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
   newClass: {
@@ -69,6 +70,27 @@ type Props = {
   open: boolean
 };
 
+const getNotificationTime = (notifications, date) => {
+  try{
+    if(
+      notifications &&
+      notifications.length === 1 &&
+      date
+    ) {
+      const { value }= remiderTime[notifications[0].key]
+      const diffNow = moment(date).valueOf() / 1000 - moment().valueOf() / 1000
+      return value < diffNow ? value: null
+    }
+  } catch(e) {
+    return null
+  }
+  return null
+}
+
+const isFuture = date => {
+  return moment(date).valueOf() - moment().valueOf() > 0
+}
+
 const WorkflowEdit = ({
   task,
   onClose,
@@ -102,6 +124,7 @@ const WorkflowEdit = ({
     setTitle(task.title)
     setDescription(task.description)
     setSectionId(task.sectionId)
+    if(open)console.log(task)
     if (task.images) setImages(task.images)
 
     if (task.date) {
@@ -111,7 +134,7 @@ const WorkflowEdit = ({
         setDate(new Date(`${task.date.replace(' ', 'T')}Z`))
       }
     }
-  }, [task, setImages])
+  }, [task, setImages, open])
 
   const updateTask = useCallback(async () => {
     // const images =  await imagesRef.current?.handleUploadImages()
@@ -125,10 +148,11 @@ const WorkflowEdit = ({
       sectionId,
       id: task.id,
       status: task.status,
+      reminder: getNotificationTime(notifications, date),
       images: imagesRef.current?.images
     })
     if (title) onClose()
-  }, [updateItem, onClose, task, title, date, categoryId, description, sectionId, imagesRef])
+  }, [notifications, updateItem, task.index, task.id, task.status, title, date, categoryId, description, sectionId, onClose])
 
   const updateTitle = useCallback(e => {
     setTitle(e.target.value)
@@ -151,10 +175,10 @@ const WorkflowEdit = ({
     else setSectionId(e.target.value)
   }, [handleOpenManageClass])
 
-  // const addNotification = useCallback(() => {
-  // const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
-  // setNotifications(n => [...n, { key: other[0] }])
-  // }, [notifications, setNotifications])
+  const addNotification = useCallback(() => {
+    const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
+    setNotifications(n => [...n, { key: other[0] }])
+  }, [notifications, setNotifications])
 
   const editNotification = useCallback((e, index) => {
     const { key, value } = e.target
@@ -180,7 +204,6 @@ const WorkflowEdit = ({
       onOk={updateTask}
       secondaryRemoveTitle='Delete'
       onSecondaryRemove={openConfirmArchive}
-      // rightButton={<div>Test</div>}
       showActions
       okTitle='Save'
     >
@@ -259,7 +282,7 @@ const WorkflowEdit = ({
           />
         </Grid>
         <Grid item xs={12}>
-          {notifications.map((n, index) => (
+          {isFuture(date) && notifications.map((n, index) => (
             <Notification
               n={n}
               key={`reminders-${n.key}`}
@@ -270,13 +293,13 @@ const WorkflowEdit = ({
             />
           ))}
         </Grid>
-        {/* notifications.length < 2 && <Button onClick={addNotification}>Add Notification</Button> */}
+        {notifications.length < 1 && isFuture(date) && <Button onClick={addNotification}>Add Notification</Button>}
         {/* <Grid xs={12} item> */}
         {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
         {/* </Grid> */}
       </Grid>
     </Dialog>
-  ), [canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
+  ), [addNotification, canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
 }
 
 export default memo(WorkflowEdit)
