@@ -2,10 +2,15 @@ import React from "react";
 import cx from 'classnames'
 import { Quill } from "react-quill";
 import { makeStyles } from '@material-ui/core/styles';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import Tooltip from '@material-ui/core/Tooltip';
+import ReactDOMServer from 'react-dom/server';
 
+const icons = Quill.import('ui/icons');
 const fontSizeStyle = Quill.import('attributors/style/size');
 fontSizeStyle.whitelist = ['8px', '9px', '10px', '11px', '13px', '14px', '18px', '24px', '30px', '36px', '48px', '60px', '72px', '96px'];
 Quill.register(fontSizeStyle, true);
+
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
   if (!url.includes('http') || !url.includes('https')) {
@@ -15,11 +20,24 @@ Link.sanitize = function link(url) {
 }
 
 const useStyles = makeStyles(() => ({
-  toolbar: {},
+  toolbar: {
+    textAlign: 'center'
+  },
   firstline: {},
   secondline: {},
-  hidden: { display: 'none' }
-}))
+  hidden: { display: 'none' },
+  highlighter: {
+    height: 14,
+    width: 14,
+    '&:hover': {
+      color: '#06c'
+    }
+  },
+  highlighterContainer: { 
+    textAlign: 'center', 
+    paddingTop: 0.5 
+  }
+}));
 
 const CustomUndo = () => (
   <svg viewBox="0 0 18 18">
@@ -101,16 +119,37 @@ export const formats = [
 ];
 
 export const QuillToolbar = ({ hidden }) => {
-  const classes = useStyles()
+  const classes = useStyles();
+  icons['background'] = ReactDOMServer.renderToString(
+    <div className={classes.highlighterContainer}>
+      <BorderColorIcon className={classes.highlighter} />
+    </div>
+  );
+
   return (
     <div id="toolbar" className={cx(hidden && classes.hidden, classes.toolbar)}>
-      <div className={classes.firstline}>
-        <span className="ql-formats">
+      <span className="ql-formats">
+        <Tooltip title="Undo" aria-label="undo">
+          <button type='button' className="ql-undo">
+            <CustomUndo />
+          </button>
+        </Tooltip>
+        <Tooltip title="Redo" aria-label="redo">
+          <button type='button' className="ql-redo">
+            <CustomRedo />
+          </button>
+        </Tooltip>
+      </span>
+
+      <span className="ql-formats">
+        <Tooltip title="Styles" aria-label="styles">
           <select className="ql-header" defaultValue="3">
             <option value="1">Heading</option>
             <option value="2">Subheading</option>
             <option value="3">Normal</option>
           </select>
+        </Tooltip>
+        <Tooltip title="Font size" aria-label="font-size">
           <select className="ql-size">
             <option value='8px'>8</option>
             <option value="9px">9</option>
@@ -127,50 +166,39 @@ export const QuillToolbar = ({ hidden }) => {
             <option value="72px">72</option>
             <option value="96px">96</option>
           </select>
-        </span>
-        <span className="ql-formats">
-          <button type='button' className="ql-bold" />
-          <button type='button' className="ql-italic" />
-          <button type='button' className="ql-underline" />
-          <button type='button' className="ql-strike" />
-        </span>
-        <span className="ql-formats">
-          <button type='button' className="ql-list" value="ordered" />
-          <button type='button' className="ql-list" value="bullet" />
-          <button type='button' className="ql-indent" value="-1" />
-          <button type='button' className="ql-indent" value="+1" />
-        </span>
-        <span className="ql-formats">
-          <select className="ql-align" />
-          <select className="ql-color" />
-          <select className="ql-background" />
-        </span>
-      </div>
-      <div className={classes.secondline}>
-        <span className="ql-formats">
-          <button type='button' className="ql-script" value="super" />
-          <button type='button' className="ql-script" value="sub" />
-          <button type='button' className="ql-blockquote" />
-          <button type='button' className="ql-direction" />
-        </span>
-        <span className="ql-formats">
-          <button type='button' className="ql-link" />
-          <button type='button' className="ql-video" />
-        </span>
-        <span className="ql-formats">
-          <button type='button' className="ql-formula" />
-          <button type='button' className="ql-code-block" />
-          <button type='button' className="ql-clean" />
-        </span>
-        <span className="ql-formats">
-          <button type='button' className="ql-undo">
-            <CustomUndo />
-          </button>
-          <button type='button' className="ql-redo">
-            <CustomRedo />
-          </button>
-        </span>
-      </div>
+        </Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Bold (⌘B)" aria-label="bold"><button type='button' className="ql-bold" /></Tooltip>
+        <Tooltip title="Italic (⌘I)" aria-label="italic"><button type='button' className="ql-italic" /></Tooltip>
+        <Tooltip title="Underline (⌘U)" aria-label="underline"><button type='button' className="ql-underline" /></Tooltip>
+        <Tooltip title="Strike" aria-label="strike"><button type='button' className="ql-strike" /></Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Numbered list" aria-label="numbered-list"><button type='button' className="ql-list" value="ordered" /></Tooltip>
+        <Tooltip title="Bulleted list" aria-label="bulleted-list"><button type='button' className="ql-list" value="bullet" /></Tooltip>
+        <Tooltip title="Decrease indent" aria-label="decrease-indent"><button type='button' className="ql-indent" value="-1" /></Tooltip>
+        <Tooltip title="Increase indent" aria-label="increase-indent"><button type='button' className="ql-indent" value="+1" /></Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Align" aria-label="align"><select className="ql-align" /></Tooltip>
+        <Tooltip title="Text color" aria-label="text-color"><select className="ql-color" /></Tooltip>
+        <Tooltip title="Highlight color" aria-label="highlight-color"><select className="ql-background" /></Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Superscript" aria-label="superscript"><button type='button' className="ql-script" value="super" /></Tooltip>
+        <Tooltip title="Subscript" aria-label="subscript"><button type='button' className="ql-script" value="sub" /></Tooltip>
+        <Tooltip title="Block quote" aria-label="block-quote"><button type='button' className="ql-blockquote" /></Tooltip>
+        <Tooltip title="Direction" aria-label="direction"><button type='button' className="ql-direction" /></Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Link" aria-label="Link"><button type='button' className="ql-link" /></Tooltip>
+      </span>
+      <span className="ql-formats">
+        <Tooltip title="Formula" aria-label="formula"><button type='button' className="ql-formula" /></Tooltip>
+        <Tooltip title="Code Block" aria-label="code-block"><button type='button' className="ql-code-block" /></Tooltip>
+        <Tooltip title="Clean" aria-label="clean"><button type='button' className="ql-clean" /></Tooltip>
+      </span>
     </div>
   )
 }

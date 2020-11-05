@@ -18,6 +18,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Tooltip from 'containers/Tooltip';
 import EditorToolbar, { modules, formats } from "./Toolbar"
 
+import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
+
 window.katex = {}
 window.katex.render = (value, node, { color, dpi }) => {
   // eslint-disable-next-line
@@ -28,15 +30,19 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
   },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
+  btnGroupContainer: {
+    minWidth: 400
   },
-  toolbar: {
-    justifyContent: 'flex-end'
+  circleInLogo: {
+    height: 36,
+    marginRight: 15,
+    width: 36
   },
-  saveButton: {
-    marginRight: theme.spacing(2),
+  delete: {
+    color: theme.circleIn.palette.danger,
+    height: 18,
+    width: 18,
+    display: 'inline-block'
   },
   editor: {
     padding: theme.spacing(0, 1, 2, 1),
@@ -54,6 +60,20 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.common.black
     }
   },
+  editorToolbar: {
+    marginBottom: 40
+  },
+  exit: {
+    fontWeight: 'bold',
+    position: 'static'
+  },
+  exitBtnContainer: {
+    margin: 10,
+    display: 'inline-block'
+  },
+  header: {
+    display: 'flex'
+  },
   innerContainerEditor: {
     display: 'flex',
     flexDirection: 'column',
@@ -64,25 +84,33 @@ const useStyles = makeStyles((theme) => ({
   lastSaved: {
     color: theme.circleIn.palette.primaryText2
   },
-  visible: {
-    fontWeight: 'bold',
-    color: theme.circleIn.palette.primaryText1
+  saveButton: {
+    marginRight: theme.spacing(2),
   },
   savedContainer: {
-    display: 'flex',
+    position: 'relative',
+    display: 'inline-block',
     fontSize: 12,
     marginRight: theme.spacing(2),
     textAlign: 'end',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
-  exit: {
-    fontWeight: 'bold'
+  savedContainerTop: {
+    top: 8
   },
-  header: {
-    display: 'flex'
+  savedSection: {
+    textAlign: 'right',
+    padding: '10px 0',
+    minWidth: 300,
+    width: '100%'
   },
-  delete: {
-    color: theme.circleIn.palette.danger
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
+  visible: {
+    fontWeight: 'bold',
+    color: theme.circleIn.palette.primaryText1
   },
 }));
 
@@ -237,26 +265,38 @@ const UserNotesEditor = ({
       >
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <div className={classes.savedContainer}>
-              <div className={classes.visible}>Visible to you only</div>
-              {renderSaved}
+            <img className={classes.circleInLogo} src={CircleInLogo} />
+            <TextField
+              fullWidth
+              InputProps={{ disableUnderline: true }}
+              size="small"
+              placeholder="Untitled"
+              value={note?.title}
+              onChange={updateTitle}
+            />
+            <div className={classes.savedSection}>
+              <div className={classes.btnGroupContainer}>
+                <div className={`${classes.savedContainer} ${(renderSaved ? classes.savedContainerTop : null)} `}>
+                  <div className={classes.visible}>Visible to you only</div>
+                  {renderSaved}
+                </div>
+                <div className={classes.exitBtnContainer}>
+                  <Button variant='contained' color='primary' onClick={onExit} className={classes.exit}>
+                    Exit NoteTaker
+                  </Button>
+                </div>
+              </div>
             </div>
-            <Button variant='contained' color='primary' onClick={onExit} className={classes.exit}>
-              Exit NoteTaker
-            </Button>
           </Toolbar>
         </AppBar>
         {hasNote && (
           <Grid container justify='center' className={classes.editor}>
-            <Grid item xs={12} md={6} className={classes.innerContainerEditor}>
+            <div className={classes.editorToolbar}>
               <EditorToolbar />
-              <div className={classes.header}>
-                <TextField
-                  fullWidth
-                  placeholder='Untitled'
-                  value={note?.title}
-                  onChange={updateTitle}
-                />
+            </div> 
+            <Grid item xs={12} md={6} className={classes.innerContainerEditor}>
+              {/* commenting out this delete menu for now, need to determine where to place it with the title section moved */}
+              {/* <div className={classes.header}>
                 <IconButton
                   aria-label="more"
                   aria-controls="menu"
@@ -275,7 +315,7 @@ const UserNotesEditor = ({
                     Delete
                   </MenuItem>
                 </Menu>
-              </div>
+              </div> */}
               <Tooltip
                 id={1204}
                 delay={600}
