@@ -838,7 +838,13 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
           {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
-          <a onClick={() => this.handleBlogLinkClicked()} className={classes.blogLink} href="https://blog.circleinapp.com/" target="_blank">
+          <a
+            onClick={() => this.handleBlogLinkClicked()}
+            className={classes.blogLink}
+            href="https://blog.circleinapp.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Tooltip
               id={3181}
               delay={600}

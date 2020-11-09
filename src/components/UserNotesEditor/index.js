@@ -11,10 +11,10 @@ import Grid from '@material-ui/core/Grid'
 import MathQuill from 'components/CustomQuill/Math'
 import { useDebounce } from '@react-hook/debounce'
 import moment from 'moment'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+// import IconButton from '@material-ui/core/IconButton'
+// import Menu from '@material-ui/core/Menu'
+// import MenuItem from '@material-ui/core/MenuItem'
+// import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Tooltip from 'containers/Tooltip';
 import EditorToolbar, { modules, formats } from "./Toolbar"
 
@@ -241,19 +241,19 @@ const UserNotesEditor = ({
   }, [])
 
   const hasNote = useMemo(() => currentNote !== null, [currentNote])
-  const [menuAnchor, setMenuAchor] = useState(null)
-  const handleClickMenu = useCallback((event) => {
-    setMenuAchor(event.currentTarget);
-  }, [])
+  // const [menuAnchor, setMenuAchor] = useState(null)
+  // const handleClickMenu = useCallback((event) => {
+  // setMenuAchor(event.currentTarget);
+  // }, [])
 
-  const handleCloseMenu = useCallback(() => {
-    setMenuAchor(null);
-  }, [])
+  // const handleCloseMenu = useCallback(() => {
+  // setMenuAchor(null);
+  // }, [])
 
-  const handleDelete = useCallback(() => {
-    openConfirmDelete(currentNote)
-    setMenuAchor(null);
-  }, [currentNote, openConfirmDelete])
+  // const handleDelete = useCallback(() => {
+  // openConfirmDelete(currentNote)
+  // setMenuAchor(null);
+  // }, [currentNote, openConfirmDelete])
 
   return (
     <div>
@@ -265,7 +265,7 @@ const UserNotesEditor = ({
       >
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <img className={classes.circleInLogo} src={CircleInLogo} />
+            <img className={classes.circleInLogo} src={CircleInLogo} alt='CircleIn logo' />
             <TextField
               fullWidth
               InputProps={{ disableUnderline: true }}
@@ -293,7 +293,7 @@ const UserNotesEditor = ({
           <Grid container justify='center' className={classes.editor}>
             <div className={classes.editorToolbar}>
               <EditorToolbar />
-            </div> 
+            </div>
             <Grid item xs={12} md={7} className={classes.innerContainerEditor}>
               {/* commenting out this delete menu for now, need to determine where to place it with the title section moved */}
               {/* <div className={classes.header}>
