@@ -184,7 +184,6 @@ const QuickNotes = ({
         <div className={classes.lastSaved}>Last Saved {lastSaved}</div>
       </Tooltip>
     )
-
   }, [classes.lastSaved, lastSaved, savedState, viewedOnboarding])
 
   const classList = useMemo(() => {
@@ -229,6 +228,7 @@ const QuickNotes = ({
     }
     resetQuickNote()
     if (quicknoteContent && selectedClass?.name) {
+      setTimeout(() => setSavedState('hidden'), 100);
       await enqueueSnackbar({
         notification: {
           message: `Your note was saved at ${selectedClass.name} folder`,

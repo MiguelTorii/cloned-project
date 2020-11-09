@@ -17,6 +17,9 @@ import ErrorBoundary from '../ErrorBoundary';
 import RequestClass from '../RequestClass';
 
 const styles = theme => ({
+  formControl: {
+    width: '100%'
+  },
   root: {
     padding: theme.spacing(2)
   },
@@ -51,7 +54,6 @@ class ClassesSelector extends React.PureComponent<Props, State> {
     open: false,
     openRequestClass: false
   };
-
 
   componentWillUnmount = () => {
     this.mounted = false;
@@ -141,6 +143,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
             <FormControl variant="outlined" fullWidth>
               <SelectValidator
                 // native
+                className={classes.formControl}
                 value={value}
                 name="userClasses"
                 disabled={isEdit}

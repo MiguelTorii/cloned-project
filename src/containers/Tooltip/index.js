@@ -77,8 +77,9 @@ const Tooltip = ({
   const THANKS = 2197;
   const FLASHCARDS = 1194;
   const NEW_POST = 5792;
-  const FLASHCARD_BOTTOM = 4212
-  const FLASHCARD_TOP = 5436
+  const FLASHCARD_BOTTOM = 4212;
+  const FLASHCARD_TOP = 5436;
+  const STUDENT_BLOG = 3181;
 
   const NOTES_QUICKNOTE = 2341
   const NOTES_GET_STARTED = 5909
@@ -87,7 +88,7 @@ const Tooltip = ({
 
   // not an actual tooltip
   // eslint-disable-next-line
-  const GET_APP_POPUP = 4432
+  const GET_APP_POPUP = 4432;
 
   const TRANSITION_TIME = 750;
 
@@ -115,17 +116,18 @@ const Tooltip = ({
         result = viewedTooltips.includes(CHAT);
         break
       case NOTES_GET_STARTED:
-        result = (
-          viewedTooltips.includes(CHAT)
-        );
-        break
+        result = true;
+        break;
       case NOTES_CLASS_FOLDER:
         result = viewedTooltips.includes(CHAT);
         break
       case NOTES_FULLSCREEN:
-        result = true
-        break
+        result = true;
+        break;
       case CHAT:
+        result = true;
+        break;
+      case STUDENT_BLOG:
         result = true;
         break;
       case FLASHCARDS:

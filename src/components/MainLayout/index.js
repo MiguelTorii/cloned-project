@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton';
+import LaptopIcon from '@material-ui/icons/Laptop';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -93,6 +94,10 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
+  },
+  blogLink: {
+    color: '#fff',
+    textDecoration: 'none'
   },
   menuButton: {
     [theme.breakpoints.up('sm')]: {
@@ -330,6 +335,7 @@ type State = {
 class MainLayout extends React.Component<Props, State> {
   state = {
     open: false,
+    blogLinkClicked: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -344,6 +350,10 @@ class MainLayout extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.appBarRef = React.createRef();
+  }
+
+  handleBlogLinkClicked = () => {
+    this.setState({ blogLinkClicked: true });
   }
 
   handleAnnouncementLoaded = () => {
@@ -827,6 +837,25 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
+          {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
+          <a onClick={() => this.handleBlogLinkClicked()} className={classes.blogLink} href="https://blog.circleinapp.com/" target="_blank">
+            <Tooltip
+              id={3181}
+              delay={600}
+              hidden
+              placement="top"
+              text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
+            >
+              <ListItem
+                className={classes.otherPath}
+              >
+                <ListItemIcon>
+                  <LaptopIcon />
+                </ListItemIcon>
+                <ListItemText primary="Student Blog" />
+              </ListItem>
+            </Tooltip>
+          </a>
           <ListItem
             button
             onClick={this.handleOpenGetApp}

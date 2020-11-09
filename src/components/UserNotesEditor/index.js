@@ -294,7 +294,7 @@ const UserNotesEditor = ({
             <div className={classes.editorToolbar}>
               <EditorToolbar />
             </div> 
-            <Grid item xs={12} md={6} className={classes.innerContainerEditor}>
+            <Grid item xs={12} md={7} className={classes.innerContainerEditor}>
               {/* commenting out this delete menu for now, need to determine where to place it with the title section moved */}
               {/* <div className={classes.header}>
                 <IconButton
