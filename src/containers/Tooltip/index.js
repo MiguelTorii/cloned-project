@@ -80,6 +80,7 @@ const Tooltip = ({
   const FLASHCARD_BOTTOM = 4212
   const FLASHCARD_TOP = 5436
 
+  const NOTES_QUICKNOTE = 2341
   const NOTES_GET_STARTED = 5909
   const NOTES_CLASS_FOLDER = 9002
   const NOTES_FULLSCREEN = 1204
@@ -110,11 +111,16 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
+      case NOTES_QUICKNOTE:
+        result = viewedTooltips.includes(CHAT);
+        break
       case NOTES_GET_STARTED:
-        result = true
+        result = (
+          viewedTooltips.includes(CHAT)
+        );
         break
       case NOTES_CLASS_FOLDER:
-        result = true
+        result = viewedTooltips.includes(CHAT);
         break
       case NOTES_FULLSCREEN:
         result = true

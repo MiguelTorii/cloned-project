@@ -46,6 +46,7 @@ const styles = theme => ({
   dialog: {
     ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
+    zIndex: 1300,
     height: 700,
   },
   step: {

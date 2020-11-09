@@ -205,7 +205,7 @@ const theme = createMuiTheme({
     },
     MuiTooltip: {
       popper: {
-        zIndex: 1300
+        zIndex: 1200
       }
     }
   }

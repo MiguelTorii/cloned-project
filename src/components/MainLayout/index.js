@@ -902,7 +902,7 @@ class MainLayout extends React.Component<Props, State> {
                 </IconButton>
                 <Tooltip
                   id={3292}
-                  placement="bottom"
+                  placement="left"
                   text="Setup a group chat with your class to connect on topics and discuss problems"
                 >
                   <IconButton
