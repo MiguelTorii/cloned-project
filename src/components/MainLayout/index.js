@@ -97,8 +97,6 @@ const styles = theme => ({
   },
   blogLink: {
     marginTop: 'auto',
-    color: '#fff',
-    textDecoration: 'none'
   },
   menuButton: {
     [theme.breakpoints.up('sm')]: {
@@ -336,7 +334,6 @@ type State = {
 class MainLayout extends React.Component<Props, State> {
   state = {
     open: false,
-    blogLinkClicked: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
     createPostAnchorEl: null,
@@ -353,12 +350,8 @@ class MainLayout extends React.Component<Props, State> {
     this.appBarRef = React.createRef();
   }
 
-  handleBlogLinkClicked = () => {
-    this.setState({ blogLinkClicked: true });
-  }
-
   handleAnnouncementLoaded = () => {
-    this.setState({ announcementLoaded: true });
+    // this.setState({ announcementLoaded: true });
   }
 
   handleDrawerOpen = () => {
@@ -459,6 +452,10 @@ class MainLayout extends React.Component<Props, State> {
       this.handleMenuClose();
     }
   };
+
+  handleOpenBlog = () => {
+    window.open('https://blog.circleinapp.com/', '_blank')
+  }
 
   handleCloseHowEarnPoints = () => {
     this.setState({ openHowEarnPoints: false });
@@ -859,13 +856,7 @@ class MainLayout extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Help" />
           </ListItem>
-          <a
-            onClick={() => this.handleBlogLinkClicked()}
-            className={classes.blogLink}
-            href="https://blog.circleinapp.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <div className={classes.blogLink}>
             <Tooltip
               id={3181}
               delay={600}
@@ -874,7 +865,9 @@ class MainLayout extends React.Component<Props, State> {
               text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
             >
               <ListItem
+                button
                 className={classes.otherPath}
+                onClick={this.handleOpenBlog}
               >
                 <ListItemIcon>
                   <LaptopIcon />
@@ -882,7 +875,7 @@ class MainLayout extends React.Component<Props, State> {
                 <ListItemText primary="Student Blog" />
               </ListItem>
             </Tooltip>
-          </a>
+          </div>
           <ListItem
             button
             onClick={this.handleOpenFeedback}
