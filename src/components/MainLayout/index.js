@@ -96,6 +96,7 @@ const styles = theme => ({
     })
   },
   blogLink: {
+    marginTop: 'auto',
     color: '#fff',
     textDecoration: 'none'
   },
@@ -226,6 +227,7 @@ const styles = theme => ({
       background: theme.circleIn.palette.primaryText2
     },
   },
+
   lastItem: {
     width: 'auto',
     borderRadius: theme.spacing(6),
@@ -235,7 +237,6 @@ const styles = theme => ({
     '&:hover': {
       background: theme.circleIn.palette.primaryText2
     },
-    marginTop: 'auto'
   },
   myClasses: {
     display: 'flex',
@@ -838,6 +839,26 @@ class MainLayout extends React.Component<Props, State> {
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
           {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
+          <ListItem
+            button
+            onClick={this.handleOpenGetApp}
+            className={classes.otherPath}
+          >
+            <ListItemIcon>
+              <SystemUpdateIcon />
+            </ListItemIcon>
+            <ListItemText primary="Get the Mobile App" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={this.handleOpenHowEarnPoints}
+            className={classes.otherPath}
+          >
+            <ListItemIcon>
+              <HelpOutline />
+            </ListItemIcon>
+            <ListItemText primary="Help" />
+          </ListItem>
           <a
             onClick={() => this.handleBlogLinkClicked()}
             className={classes.blogLink}
@@ -862,26 +883,6 @@ class MainLayout extends React.Component<Props, State> {
               </ListItem>
             </Tooltip>
           </a>
-          <ListItem
-            button
-            onClick={this.handleOpenGetApp}
-            className={classes.otherPath}
-          >
-            <ListItemIcon>
-              <SystemUpdateIcon />
-            </ListItemIcon>
-            <ListItemText primary="Get the Mobile App" />
-          </ListItem>
-          <ListItem
-            button
-            onClick={this.handleOpenHowEarnPoints}
-            className={classes.otherPath}
-          >
-            <ListItemIcon>
-              <HelpOutline />
-            </ListItemIcon>
-            <ListItemText primary="Help" />
-          </ListItem>
           <ListItem
             button
             onClick={this.handleOpenFeedback}
