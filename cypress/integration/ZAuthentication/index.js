@@ -7,11 +7,11 @@ describe('Authentication', () => {
   })
 
   it('Selects school wrong school goes back and change it', () => {
-    cy.contains('Search your school/college').click().type('Demo School 50')
+    // cy.contains('Search your school/college').click().type('Demo School 50')
+    // cy.get('#react-select-2-option-0').click('center')
+    // cy.contains('Select a Different School').click()
+    cy.contains('Search your school/college').click().type('Demo School 10')
     cy.get('#react-select-2-option-0').click('center')
-    cy.contains('Select a Different School').click()
-    cy.contains('Search your school/college').click().type('Demo School 8')
-    cy.get('#react-select-3-option-0').click('center')
   })
 
   it('goes to registration page', () => {
@@ -23,9 +23,9 @@ describe('Authentication', () => {
 
   it('uses wrong password', () => {
     cy.visit(`${url}auth`)
-    cy.contains('Search your school/college').click().type('Demo School 8')
+    cy.contains('Search your school/college').click().type('Demo School 10')
     cy.get('#react-select-2-option-0').click('center')
-    cy.get('input').type('felipe.machado+demo8@toptal.com')
+    cy.get('input').type('felipe.machado+demo10@toptal.com')
     cy.contains('Next').click()
     cy.contains('Password')
     cy.contains('Sign In').click()
