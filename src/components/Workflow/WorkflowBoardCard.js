@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
 
 const getHeight = text => {
   const el = document.createElement('div')
@@ -94,6 +95,13 @@ const useStyles = makeStyles(theme => ({
   },
   buttons: {
     height: theme.spacing(5)
+  },
+  bell: {
+    color: theme.circleIn.palette.normalButtonText1,
+    position: 'absolute',
+    top: theme.spacing(),
+    right: theme.spacing(),
+    opacity: 0.5,
   }
 }))
 
@@ -106,6 +114,7 @@ const WorkflowBoardCard = ({
   date,
   selectedClass,
   openConfirmArchive,
+  hasNotification,
   showDetails,
 }) => {
   const classes = useStyles()
@@ -136,6 +145,7 @@ const WorkflowBoardCard = ({
       <Grid container className={classes.container} direction='row'>
         <Grid item xs={12}>
           {newInput || <Typography variant='body1' className={cx(classes.title, lineStyle)}>{clampTitle}</Typography>}
+          {hasNotification && <NotificationsActiveIcon className={classes.bell} />}
         </Grid>
         <Grid container alignContent='flex-end' alignItems='center' className={classes.bottom}>
           {selectedClass && <Grid item xs={5}>

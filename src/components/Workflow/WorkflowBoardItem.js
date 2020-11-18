@@ -26,12 +26,13 @@ const WorkflowBoardItem = ({
         onOpen={onOpen}
         title={task.title}
         date={date}
+        hasNotification={Boolean(task.firstNotificationSeconds)}
         openConfirmArchive={openConfirmArchive}
         showDetails={showDetails}
         selectedClass={selectedClass}
       />
     </div>
-  ), [date, onOpen, openConfirmArchive, selectedClass, showDetails, task.title])
+  ), [date, onOpen, openConfirmArchive, selectedClass, showDetails, task.firstNotificationSeconds, task.title])
 }
 
 export default memo(WorkflowBoardItem)

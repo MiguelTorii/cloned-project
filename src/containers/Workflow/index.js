@@ -130,6 +130,7 @@ function reducer(state, action) {
           title: { $set: action.title },
           categoryId: { $set: action.categoryId || 0 },
           description: { $set: action.description || '' },
+          firstNotificationSeconds: { $set: action.firstNotificationSeconds },
           date: { $set: action.date },
           sectionId: { $set: action.sectionId || '' },
           status: { $set: action.status },
@@ -334,7 +335,18 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       })
 
       if (res?.id) {
-        dispatch({ type: 'UPDATE_ITEM', index, title, date, categoryId: newCategory, description, sectionId, status, images })
+        dispatch({
+          type: 'UPDATE_ITEM',
+          index,
+          title,
+          date,
+          categoryId: newCategory,
+          description,
+          sectionId,
+          status,
+          firstNotificationSeconds: reminder || 0,
+          images
+        })
         if (res?.points) enqueueSnackbar(createSnackbar(
           `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
           classes.snackbar,
