@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush, goBack } from 'connected-react-router';
@@ -48,13 +48,13 @@ type Props = {
   pop: Function
 };
 
-const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
+const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   const [photoNote, setPhotoNote] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
 
   const {
-    data: { 
+    data: {
       userId,
       firstName: myFirstName,
       lastName: myLastName,
@@ -62,7 +62,7 @@ const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
     }
   } = user;
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const pn = await getNotes({ userId, noteId });
     setPhotoNote(pn)
     const {
@@ -73,13 +73,12 @@ const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
       event: 'Feed- View Photo Note',
       props: { 'Internal ID': feedId }
     });
-  };
+  }, [noteId, userId]);
 
   useEffect(() => {
     setPhotoNote(null)
     loadData()
-    // eslint-disable-next-line
-  }, [noteId])
+  }, [loadData, noteId])
 
   const handleBookmark = async () => {
     if (!photoNote) return;
@@ -104,7 +103,7 @@ const ViewNotes = ({pop, classes, noteId, push, user, router}: Props) => {
     setDeletePost(true)
   };
 
-  const handleDeleteClose = ({ deleted }: { deleted: ?boolean }) => {
+  const handleDeleteClose = ({ deleted }: {deleted: ?boolean}) => {
     if (deleted && deleted === true) {
       push('/feed');
     }

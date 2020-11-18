@@ -71,18 +71,49 @@ type Props = {
 };
 
 const getNotificationTime = (notifications, date) => {
-  try{
-    if(
+  try {
+    if (
       notifications &&
       notifications.length === 1 &&
       date
     ) {
-      const { value }= remiderTime[notifications[0].key]
-      const diffNow = moment(date).valueOf() / 1000 - moment().valueOf() / 1000
-      return value < diffNow ? value: null
+      const now = moment().valueOf()
+      const due = moment(date).valueOf()
+      const { value } = remiderTime[notifications[0].key]
+      const diffNow = due - now - (value * 1000)
+      return due - now > 0 ? Math.floor(diffNow / 1000) : null
     }
-  } catch(e) {
+  } catch (e) {
     return null
+  }
+  return null
+}
+
+const toISO = date => {
+  if (typeof date === 'string') {
+    return `${date.replace(' ', 'T')}Z`
+  }
+  return date
+}
+
+const getNotificationOptions = (seconds, updated, due) => {
+  if (seconds && updated && due) {
+    const dueValue = moment(toISO(due)).valueOf()
+    const updatedValue = moment(toISO(updated)).valueOf()
+    const optionSeconds = Math.floor((dueValue - updatedValue - (seconds * 1000)) / 1000)
+
+    const now = moment().valueOf()
+    if (now + (optionSeconds * 1000) > dueValue) return null
+
+    const option = Object.keys(remiderTime).reduce((prev, cur) => {
+      return (
+        Math.abs(cur - optionSeconds)
+          < Math.abs(prev - optionSeconds)
+          ? cur
+          : prev
+      )
+    })
+    return option
   }
   return null
 }
@@ -113,7 +144,7 @@ const WorkflowEdit = ({
     // images,
     setImages
   ] = useState([])
-  const [notifications, setNotifications] = useState([])
+  const [notifications, setNotifications] = useState(null)
   const imagesRef = useRef(null)
 
   const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), [])
@@ -124,7 +155,6 @@ const WorkflowEdit = ({
     setTitle(task.title)
     setDescription(task.description)
     setSectionId(task.sectionId)
-    if(open)console.log(task)
     if (task.images) setImages(task.images)
 
     if (task.date) {
@@ -135,6 +165,23 @@ const WorkflowEdit = ({
       }
     }
   }, [task, setImages, open])
+
+  useEffect(() => {
+    const notificationValue = getNotificationOptions(
+      task.firstNotificationSeconds,
+      task.notificationLastUpdated,
+      task.date
+    )
+
+    if (!notifications) {
+      if (notificationValue) {
+        setNotifications([{ key: notificationValue }])
+      } else {
+        setNotifications([])
+      }
+    }
+
+  }, [notifications, task])
 
   const updateTask = useCallback(async () => {
     // const images =  await imagesRef.current?.handleUploadImages()
@@ -177,7 +224,10 @@ const WorkflowEdit = ({
 
   const addNotification = useCallback(() => {
     const other = Object.keys(remiderTime).filter(n => !notifications.includes(n))
-    setNotifications(n => [...n, { key: other[0] }])
+    setNotifications(n => [
+      ...n,
+      { key: other.includes('86400') ? '86400' : other[0] }
+    ])
   }, [notifications, setNotifications])
 
   const editNotification = useCallback((e, index) => {
@@ -251,6 +301,19 @@ const WorkflowEdit = ({
           </FormControl>
         </Grid>
         <Grid item xs={12}>
+          {isFuture(date) && notifications && notifications.map((n, index) => (
+            <Notification
+              n={n}
+              key={`reminders-${n.key}`}
+              dueDate={date}
+              index={index}
+              editNotification={editNotification}
+              deleteNotification={deleteNotification}
+            />
+          ))}
+        </Grid>
+        {notifications && notifications.length < 1 && isFuture(date) && <Button onClick={addNotification}>Add Notification</Button>}
+        <Grid item xs={12}>
           <FormControl className={classes.selectForm}>
             <InputLabel>What class is this for?</InputLabel>
             <Select
@@ -281,19 +344,6 @@ const WorkflowEdit = ({
             onClose={handleCloseManageClasses}
           />
         </Grid>
-        <Grid item xs={12}>
-          {isFuture(date) && notifications.map((n, index) => (
-            <Notification
-              n={n}
-              key={`reminders-${n.key}`}
-              dueDate={date}
-              index={index}
-              editNotification={editNotification}
-              deleteNotification={deleteNotification}
-            />
-          ))}
-        </Grid>
-        {notifications.length < 1 && isFuture(date) && <Button onClick={addNotification}>Add Notification</Button>}
         {/* <Grid xs={12} item> */}
         {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
         {/* </Grid> */}

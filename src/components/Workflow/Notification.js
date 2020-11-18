@@ -106,9 +106,10 @@ const Notification = ({
           onClose={closeSelect}
           onChange={value => editNotification(value, index)}
         >
-          {Object.keys(options).map(w => (
-            <MenuItem key={`time-${w}`} value={w}>{remiderTime[w].label}</MenuItem>
-          ))}
+          {Object.keys(options)
+            .map(w => (
+              <MenuItem key={`time-${w}`} value={w}>{remiderTime[w].label}</MenuItem>
+            ))}
           {/* {menuComponent(true)} */}
           {/* <DatePicker */}
           {/* selected={currentDate} */}

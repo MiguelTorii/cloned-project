@@ -25,6 +25,8 @@ export const getTodos = async () => {
       id: d.id,
       order: d.order,
       status: d.status,
+      firstNotificationSeconds: d.first_notification_seconds,
+      notificationLastUpdated: d.notification_last_updated,
       title: d.title,
       date: d.due_date || '',
       notifications: []
@@ -58,7 +60,7 @@ export const createTodo = async ({
         category: categoryId,
         due_date: date,
         section_id: sectionId,
-        notification_seconds_until: reminder,
+        notification_seconds_until: reminder || 0,
         description,
       },
       {
@@ -105,7 +107,7 @@ export const updateTodo = async ({
         category: categoryId,
         description,
         due_date: date,
-        notification_seconds_until: reminder,
+        notification_seconds_until: reminder || 0,
         status
       },
       {
