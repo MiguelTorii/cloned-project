@@ -5,7 +5,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,44 +12,20 @@ import Badge from '@material-ui/core/Badge';
 import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton';
-import LaptopIcon from '@material-ui/icons/Laptop';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
+import DrawerMenu from 'components/MainLayout/Drawer'
+import CreatePostMenu from 'components/MainLayout/CreatePostMenu'
+import MobileMenu from 'components/MainLayout/MobileMenu'
 import MenuIcon from '@material-ui/icons/Menu';
-import AddIcon from '@material-ui/icons/Add';
-import StoreIcon from '@material-ui/icons/Store';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-import Typography from '@material-ui/core/Typography';
-import HomeItem from 'components/MainLayout/HomeItem'
-import ClassList from 'components/ClassList'
-import queryString from 'query-string'
 import clsx from 'clsx'
 import GetAppDialog from 'components/GetAppDialog';
 import { withRouter } from 'react-router';
-import ClassmatesDialog from 'components/ClassmatesDialog'
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import { decypherClass } from 'utils/crypto'
 import QuickNotes from 'containers/QuickNotes'
-import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined'
 import logo from '../../assets/svg/circlein_logo.svg';
-// $FlowIgnore
-import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
-// $FlowIgnore
-import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
-import FlashCards from '../../assets/svg/flashcards.svg';
-import Links from '../../assets/svg/links.svg';
-import Logo from '../../assets/svg/app-logo-white.svg';
-import Notes from '../../assets/svg/notes.svg';
-import Questions from '../../assets/svg/questions.svg';
-import Videos from '../../assets/svg/videos.svg';
 import './currentRoute.css'
 import UseCases from '../UseCases';
 import Dialog from '../Dialog';
@@ -94,9 +69,6 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
-  },
-  blogLink: {
-    marginTop: 'auto',
   },
   menuButton: {
     [theme.breakpoints.up('sm')]: {
@@ -176,66 +148,7 @@ const styles = theme => ({
       marginBottom: theme.spacing(8)
     }
   },
-  currentRoute: {
-    color: theme.palette.primary.main
-  },
-  newItem: {
-    width: 'auto',
-    justifyContent: 'center',
-    margin: theme.spacing(2),
-    paddingTop: 0,
-    paddingBottom: 0,
-    borderRadius: theme.spacing(6),
-    background: theme.circleIn.palette.brand,
-    '&:hover': {
-      background: theme.circleIn.palette.primaryText2
-    },
-    marginTop: theme.spacing(2)
-  },
-  newRoot: {
-    flex: 'inherit'
-  },
-  newLabel: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  newIcon: {
-    color: 'black',
-    fontWeight: 'bold'
-  },
-  currentPath: {
-    width: 'auto',
-    borderRadius: theme.spacing(6),
-    background: theme.circleIn.palette.buttonBackground,
-    paddingTop: 0,
-    paddingBottom: 0,
-    margin: theme.spacing(1, 2),
-    '&:hover': {
-      background: theme.circleIn.palette.primaryText2
-    },
-  },
-  otherPath: {
-    width: 'auto',
-    borderRadius: theme.spacing(6),
-    margin: theme.spacing(1, 2),
-    paddingTop: 0,
-    paddingBottom: 0,
-    '&:hover': {
-      background: theme.circleIn.palette.primaryText2
-    },
-  },
 
-  lastItem: {
-    width: 'auto',
-    borderRadius: theme.spacing(6),
-    margin: theme.spacing(1, 2),
-    paddingTop: 0,
-    paddingBottom: 0,
-    '&:hover': {
-      background: theme.circleIn.palette.primaryText2
-    },
-  },
   myClasses: {
     display: 'flex',
     marginLeft: 16,
@@ -243,62 +156,15 @@ const styles = theme => ({
     paddingRight: 16,
     paddingLeft: 16,
   },
-  drawerList: {
-    overflow: 'auto !important',
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1
-  },
-  backHeader: {
-    margin: theme.spacing(2)
-  },
   backContainer: {
     cursor: 'pointer'
   },
-  backTitle: {
-    width: '100%',
-    fontSize: 20,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  icon: {
-    height: 36,
-    marginLeft: 4,
-    marginRight: 20,
-    width: 36,
-  },
-  menuItemContent: {
-    alignItems: 'center',
-    display: 'flex',
-    marginRight: 10,
-  },
-  primaryItem: {
-    color: theme.circleIn.palette.primaryText1,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  secondaryItem: {
-    color: theme.circleIn.palette.primaryText2,
-    fontSize: 14,
-  },
-  hr: {
-    background: theme.circleIn.palette.appBar,
-    border: 'none',
-    color: theme.circleIn.palette.appBar,
-    height: 2,
-    margin: '6px 0px',
-  },
-  bulb: {
-    transform: 'rotate(180deg)'
-  }
 });
 
 type Props = {
   classes: Object,
   helpLink: string,
   width: string,
-  runningTour: boolean,
   userId: string,
   initials: string,
   userProfileUrl: string,
@@ -341,7 +207,6 @@ class MainLayout extends React.Component<Props, State> {
     openFeedback: false,
     openHowEarnPoints: false,
     openUseCases: false,
-    openClassmates: false,
     createPostOpen: false
   };
 
@@ -453,10 +318,6 @@ class MainLayout extends React.Component<Props, State> {
     }
   };
 
-  handleOpenBlog = () => {
-    window.open('https://blog.circleinapp.com/', '_blank')
-  }
-
   handleCloseHowEarnPoints = () => {
     this.setState({ openHowEarnPoints: false });
   };
@@ -470,17 +331,6 @@ class MainLayout extends React.Component<Props, State> {
     this.setState({ openUseCases: false });
   };
 
-  getCourseDisplayName = classList => {
-    const query = queryString.parse(window.location.search)
-
-    if (query.classId && classList) {
-      const { classId } = decypherClass(query.class)
-      const c = classList.find(cl => cl.classId === Number(classId))
-      if (c) return c.courseDisplayName
-    }
-    return ''
-  }
-
   render() {
     const {
       open,
@@ -491,7 +341,6 @@ class MainLayout extends React.Component<Props, State> {
       openGetApp,
       openFeedback,
       openHowEarnPoints,
-      openClassmates,
       openUseCases
     } = this.state;
     const {
@@ -505,7 +354,6 @@ class MainLayout extends React.Component<Props, State> {
       unreadMessages,
       location: { search = '' },
       pathname,
-      runningTour,
     } = this.props;
 
     let appBarHeight = 0;
@@ -517,16 +365,6 @@ class MainLayout extends React.Component<Props, State> {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
-
-    const MenuItemContent = ({ primaryText, secondaryText, icon }) => (
-      <div className={classes.menuItemContent}>
-        <img src={icon} alt="icon" className={classes.icon} />
-        <div className={classes.menuItem}>
-          <div className={classes.primaryItem}>{primaryText}</div>
-          <div className={classes.secondaryItem}>{secondaryText}</div>
-        </div>
-      </div>
-    )
 
     const { updateFeed, newClassExperience, userClasses, landingPageCampaign, newNotesScreen } = this.props
 
@@ -551,344 +389,52 @@ class MainLayout extends React.Component<Props, State> {
     );
 
     const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMobileMenuClose}
-      >
-        {width !== 'xs' && (
-          <MenuItem
-            onClick={this.handleNotificationOpen}
-            aria-haspopup="true"
-            aria-owns={open ? 'notifications-popper' : undefined}
-          >
-            <IconButton color="inherit">
-              <Badge badgeContent={unreadCount} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <p>Notifications</p>
-          </MenuItem>
-        )}
-        <MenuItem
-          button
-          component={MyLink}
-          link='/chat'
-        >
-          <IconButton
-            color="inherit"
-          >
-            <Badge badgeContent={unreadMessages} color="secondary">
-              <ChatIcon />
-            </Badge>
-          </IconButton>
-          <p>Chats</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <Avatar src={userProfileUrl}>{initials}</Avatar>
-          </IconButton>
-          <p>Account</p>
-        </MenuItem>
-      </Menu>
+      <MobileMenu
+        mobileMoreAnchorEl={mobileMoreAnchorEl}
+        MyLink={MyLink}
+        isMobileMenuOpen={isMobileMenuOpen}
+        handleMobileMenuClose={this.handleMobileMenuClose}
+        handleNotificationOpen={this.handleNotificationOpen}
+        open={open}
+        unreadMessages={unreadMessages}
+        width={width}
+        unreadCount={unreadCount}
+        handleProfileMenuOpen={this.handleProfileMenuOpen}
+        initials={initials}
+        userProfileUrl={userProfileUrl}
+      />
     );
 
     const renderCreatePostMenu = (
-      <Menu
-        id="simple-menu"
-        anchorEl={createPostAnchorEl}
-        open={isCreatePostMenuOpen}
-        onClose={this.handleCreatePostMenuClose}
-      >
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link={`/create/notes${search}`}
-        >
-          <MenuItemContent
-            primaryText="Share Notes"
-            secondaryText="Earn 10k points points for every page"
-            icon={Notes}
-          />
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link={`/create/question${search}`}
-        >
-          <MenuItemContent
-            primaryText="Ask a Question"
-            secondaryText="Earn 2k points for answering a question and 40k if your answer is chosen as Best Answer"
-            icon={Questions}
-          />
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link={`/create/flashcards${search}`}
-        >
-          <Tooltip
-            id={1194}
-            delay={600}
-            placement="top"
-            text="Create a set of flashcards now, and continue to edit them weekly as part of your studying for each class"
-          >
-            <MenuItemContent
-              primaryText="Create Flashcards"
-              secondaryText="Earn 1k points per card"
-              icon={FlashCards}
-            />
-          </Tooltip>
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link={`/create/sharelink${search}`}
-        >
-          <MenuItemContent
-            primaryText="Share a Link"
-            secondaryText="Earn 5k points for each link shared"
-            icon={Links}
-          />
-        </MenuItem>
-        <hr className={classes.hr} />
-        <MenuItem
-          button
-          onClick={this.handleCreatePostMenuClose}
-          component={MyLink}
-          link="/video-call"
-        >
-          <MenuItemContent
-            primaryText="Video Meetup"
-            secondaryText="Earn 20k points for initiating a video session, then 50k points for staying on for at least 10 minutes"
-            icon={Videos}
-          />
-        </MenuItem>
-      </Menu>
-    );
-
-    const courseDisplayName = this.getCourseDisplayName(userClasses.classList)
-
-    const qs = queryString.parse(search)
-
-    const openClassmatesDialog = () => this.setState({ openClassmates: true })
-    const closeClassmatesDialog = () => this.setState({ openClassmates: false })
+      <CreatePostMenu
+        MyLink={MyLink}
+        createPostAnchorEl={createPostAnchorEl}
+        isCreatePostMenuOpen={isCreatePostMenuOpen}
+        search={search}
+        handleCreatePostMenuClose={this.handleCreatePostMenuClose}
+      />
+    )
 
     const drawer = (
-      <Fragment>
-        <ClassmatesDialog
-          close={closeClassmatesDialog}
-          state={openClassmates}
-          courseDisplayName={courseDisplayName}
-        />
-        <List className={clsx(!runningTour && classes.drawerList)} style={{ marginTop: appBarHeight }}>
-          {/* TODO: move this to feed top */}
-          {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
-            <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
-          </div>}
-          <Tooltip
-            hidden={createPostOpen}
-            id={5792}
-            placement="right"
-            text="Now that you’re in your class, click here to post on the feed and start earning points!"
-          >
-            <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={this.handleCreatePostMenuOpen}>
-              <ListItemIcon>
-                <AddIcon
-                  className={classes.newIcon}
-                />
-              </ListItemIcon>
-              <ListItemText
-                primary="New"
-                classes={{
-                  root: classes.newRoot,
-                  primary: classes.newLabel
-                }}
-                primaryTypographyProps={{
-                  color: pathname.includes('/create') ? 'primary' : 'textPrimary'
-                }}
-              />
-            </ListItem>
-          </Tooltip>
-          {landingPageCampaign && <ListItem
-            button
-            component={MyLink}
-            link="/"
-            className={classNames(
-              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <CalendarTodayIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Workflow"
-            />
-          </ListItem>}
-          {newNotesScreen && <ListItem
-            button
-            component={MyLink}
-            className={classNames(
-              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-            link='/notes'
-          >
-            <ListItemIcon>
-              <BookOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Notes"
-            />
-          </ListItem>}
-          <HomeItem
-            createPostOpen={createPostOpen}
-            MyLink={MyLink}
-            userClasses={userClasses}
-            updateFeed={updateFeed}
-            landingPageCampaign={landingPageCampaign}
-            newClassExperience={newClassExperience}
-            openClassmatesDialog={openClassmatesDialog}
-          />
-          {!landingPageCampaign && <ListItem
-            button
-            component={MyLink}
-            link="/workflow"
-            className={classNames(
-              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <CalendarTodayIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Workflow"
-            />
-          </ListItem>}
-          <ListItem
-            button
-            component={MyLink}
-            className={classes.otherPath}
-            link='/chat'
-          >
-            <ListItemIcon>
-              <ChatIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Chats"
-            />
-          </ListItem>
-          <ListItem
-            button
-            component={MyLink}
-            link="/leaderboard"
-            className={classNames(
-              'tour-onboarding-leaderboard',
-              !qs.class && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <LeaderboardIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Leaderboard"
-            />
-          </ListItem>
-          <ListItem
-            button
-            component={MyLink}
-            link="/store"
-            className={classNames(
-              ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          >
-            <ListItemIcon>
-              <StoreIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Rewards Store"
-            />
-          </ListItem>
-          {!newClassExperience && <div className={classes.myClasses}>
-            <ListItemIcon>
-              <GradCapIcon className={classNames("whiteSvg")} />
-            </ListItemIcon>
-            <ListItemText primary="Classes" />
-          </div>}
-          {!newClassExperience && <ListItemText>
-            <ClassList
-              onClick={this.handleManageClasses}
-            />
-          </ListItemText>}
-          <ListItem
-            button
-            className={classes.otherPath}
-            onClick={this.handleOpenUseCases}
-          >
-            <ListItemIcon>
-              <img src={Logo} alt="logo" />
-            </ListItemIcon>
-            <ListItemText primary="Studying on CircleIn" />
-          </ListItem>
-          {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
-          <ListItem
-            button
-            onClick={this.handleOpenGetApp}
-            className={classes.otherPath}
-          >
-            <ListItemIcon>
-              <SystemUpdateIcon />
-            </ListItemIcon>
-            <ListItemText primary="Get the Mobile App" />
-          </ListItem>
-          <ListItem
-            button
-            onClick={this.handleOpenHowEarnPoints}
-            className={classes.otherPath}
-          >
-            <ListItemIcon>
-              <HelpOutline />
-            </ListItemIcon>
-            <ListItemText primary="Help" />
-          </ListItem>
-          <div className={classes.blogLink}>
-            <Tooltip
-              id={3181}
-              delay={600}
-              hidden
-              placement="top"
-              text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
-            >
-              <ListItem
-                button
-                className={classes.otherPath}
-                onClick={this.handleOpenBlog}
-              >
-                <ListItemIcon>
-                  <LaptopIcon />
-                </ListItemIcon>
-                <ListItemText primary="Student Blog" />
-              </ListItem>
-            </Tooltip>
-          </div>
-          <ListItem
-            button
-            onClick={this.handleOpenFeedback}
-            className={classes.lastItem}
-          >
-            <ListItemIcon>
-              <WbIncandescentOutlinedIcon className={classes.bulb} />
-            </ListItemIcon>
-            <ListItemText primary="Give Feedback" />
-          </ListItem>
-        </List>
-      </Fragment>
-    );
+      <DrawerMenu
+        handleCreatePostMenuOpen={this.handleCreatePostMenuOpen}
+        appBarHeight={appBarHeight}
+        updateFeed={updateFeed}
+        newNotesScreen={newNotesScreen}
+        newClassExperience={newClassExperience}
+        createPostOpen={createPostOpen}
+        handleOpenGetApp={this.handleOpenGetApp}
+        handleOpenFeedback={this.handleOpenFeedback}
+        MyLink={MyLink}
+        search={search}
+        pathname={pathname}
+        handleManageClasses={this.handleManageClasses}
+        handleOpenUseCases={this.handleOpenUseCases}
+        handleOpenHowEarnPoints={this.handleOpenHowEarnPoints}
+        landingPageCampaign={landingPageCampaign}
+        userClasses={userClasses}
+      />
+    )
 
     return (
       <Fragment>
