@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { memo, Fragment, useState, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -10,14 +10,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
 import Link from '@material-ui/core/Link';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import DrawerMenu from 'components/MainLayout/Drawer'
 import CreatePostMenu from 'components/MainLayout/CreatePostMenu'
 import MobileMenu from 'components/MainLayout/MobileMenu'
+import TopMenu from 'components/MainLayout/TopMenu'
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -169,6 +168,7 @@ type Props = {
   initials: string,
   userProfileUrl: string,
   children: any,
+  newNotesScreen: boolean,
   unreadCount: number,
   unreadMessages: number,
   pathname: string,
@@ -178,6 +178,7 @@ type Props = {
   userClasses: Object,
   onManageBlockedUsers: Function,
   newClassExperience: boolean,
+  onOpenReferralStatus: Function,
   landingPageCampaign: boolean,
   updateFeed: Function,
   location: {
@@ -185,393 +186,353 @@ type Props = {
   }
 };
 
-type State = {
-  announcementLoaded: boolean,
-  open: boolean,
-  anchorEl: ?string,
-  mobileMoreAnchorEl: ?string,
-  createPostAnchorEl: ?string,
-  openGetApp: boolean,
-  openHowEarnPoints: boolean,
-  openUseCases: boolean,
-  createPostOpen: boolean
-};
-
-class MainLayout extends React.Component<Props, State> {
-  state = {
-    open: false,
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    createPostAnchorEl: null,
-    openGetApp: false,
-    openFeedback: false,
-    openHowEarnPoints: false,
-    openUseCases: false,
-    createPostOpen: false
-  };
-
-  constructor(props) {
-    super(props);
-    this.appBarRef = React.createRef();
+const MainLayout = ({
+  classes,
+  helpLink,
+  width,
+  userId,
+  initials,
+  newNotesScreen,
+  userProfileUrl,
+  children,
+  unreadCount,
+  unreadMessages,
+  pathname,
+  handleNotificationOpen,
+  handleSignOut,
+  onManageClasses,
+  userClasses,
+  onManageBlockedUsers,
+  newClassExperience,
+  landingPageCampaign,
+  onOpenReferralStatus,
+  updateFeed,
+  location: {
+    search
   }
+}: Props) => {
+  const [open, setOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
+  const [createPostAnchorEl, setCreatePostAnchorEl] = useState(null)
+  const [openGetApp, setOpenGetApp] = useState(false)
+  const [openFeedback, setOpenFeedback] = useState(false)
+  const [openHowEarnPoints, setOpenHowEarnPoints] = useState(false)
+  const [openUseCases, setOpenUseCases] = useState(false)
+  const [createPostOpen, setCreatePostOpen] = useState(false)
+  const appBarRef = useRef()
 
-  handleAnnouncementLoaded = () => {
-    // this.setState({ announcementLoaded: true });
-  }
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
+  const handleAnnouncementLoaded = useCallback(() => {
+  }, [])
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+  const handleDrawerOpen = useCallback(() => {
+    setOpen(true)
+  }, [])
 
-  handleProfileMenuOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+  const handleDrawerClose = useCallback(() => {
+    setOpen(false)
+  }, [])
 
-  handleMenuClose = () => {
-    this.setState({ anchorEl: null });
-    this.handleMobileMenuClose();
-  };
+  const handleProfileMenuOpen = useCallback(event => {
+    setAnchorEl(event.currentTarget)
+  }, [])
 
-  handleMobileMenuOpen = event => {
-    this.setState({ mobileMoreAnchorEl: event.currentTarget });
-  };
+  const handleMobileMenuOpen = useCallback(event => {
+    setMobileMoreAnchorEl(event.currentTarget)
+  }, [])
 
-  handleMobileMenuClose = () => {
-    this.setState({ mobileMoreAnchorEl: null });
-  };
+  const handleMobileMenuClose = useCallback(() => {
+    setMobileMoreAnchorEl(null)
+  }, [])
 
-  handleCreatePostMenuOpen = event => {
-    this.setState({ createPostAnchorEl: event.currentTarget, createPostOpen: true });
-  };
+  const handleMenuClose = useCallback(() => {
+    setAnchorEl(null)
+    handleMobileMenuClose();
+  }, [handleMobileMenuClose])
 
-  handleCreatePostMenuClose = () => {
-    this.setState({ createPostAnchorEl: null, createPostOpen: false });
-  };
+  const handleCreatePostMenuOpen = useCallback(event => {
+    setCreatePostAnchorEl(event.currentTarget)
+    setCreatePostOpen(true)
+  }, [])
 
-  handleNotificationOpen = event => {
-    const { handleNotificationOpen } = this.props;
+  const handleCreatePostMenuClose = useCallback(() => {
+    setCreatePostAnchorEl(null)
+    setCreatePostOpen(false)
+  }, [])
+
+  const handleNotificationOpenCur = useCallback(event => {
     handleNotificationOpen(event);
-    this.handleMobileMenuClose();
-    this.handleMenuClose();
-  };
+    handleMobileMenuClose();
+    handleMenuClose();
+  }, [handleMenuClose, handleMobileMenuClose, handleNotificationOpen])
 
-  handleSignOut = () => {
-    const { handleSignOut } = this.props;
+  const handleSignOutCur = useCallback(() => {
     handleSignOut();
-    this.handleMobileMenuClose();
-    this.handleMenuClose();
-  };
+    handleMobileMenuClose();
+    handleMenuClose();
+  }, [handleMenuClose, handleMobileMenuClose, handleSignOut])
 
-  handleManageClasses = () => {
-    const { onManageClasses } = this.props;
-    this.handleMenuClose();
+  const handleManageClasses = useCallback(() => {
+    handleMenuClose();
     onManageClasses();
-  };
+  }, [handleMenuClose, onManageClasses])
 
-  handleOpenReferralStatus = () => {
-    const { onOpenReferralStatus } = this.props;
-    this.handleMenuClose();
+  const handleOpenReferralStatus = useCallback(() => {
+    handleMenuClose();
     onOpenReferralStatus();
-  };
+  }, [handleMenuClose, onOpenReferralStatus])
 
-  handleReferralStatus = () => {
-    const { onManageBlockedUsers } = this.props;
-    this.handleMenuClose();
+  const handleBlockedUsers = useCallback(() => {
+    handleMenuClose();
     onManageBlockedUsers();
-  };
+  }, [handleMenuClose, onManageBlockedUsers])
 
-  handleBlockedUsers = () => {
-    const { onManageBlockedUsers } = this.props;
-    this.handleMenuClose();
-    onManageBlockedUsers();
-  };
+  const handleOpenGetApp = useCallback(() => {
+    setOpenGetApp(true)
+    handleMenuClose();
+  }, [handleMenuClose])
 
-  handleOpenGetApp = () => {
-    this.setState({ openGetApp: true });
-    this.handleMenuClose();
-  };
+  const handleCloseGetApp = useCallback(() => {
+    setOpenGetApp(false)
+  }, [])
 
-  handleCloseGetApp = () => {
-    this.setState({ openGetApp: false });
-  };
+  const handleOpenFeedback = useCallback(() => {
+    setOpenFeedback(true)
+    handleMenuClose();
+  }, [handleMenuClose])
 
-  handleOpenFeedback = () => {
-    this.setState({ openFeedback: true });
-    this.handleMenuClose();
-  };
+  const handleCloseFeedback = useCallback(() => {
+    setOpenFeedback(false)
+  }, [])
 
-  handleCloseFeedback = () => {
-    this.setState({ openFeedback: false });
-  };
-
-  handleOpenHowEarnPoints = () => {
-    const { helpLink } = this.props
+  const handleOpenHowEarnPoints = useCallback(() => {
     if (helpLink) {
       window.open(helpLink, '_blank')
     } else {
-      this.setState({ openHowEarnPoints: true });
-      this.handleMenuClose();
+      setOpenHowEarnPoints(true)
+      handleMenuClose();
     }
-  };
+  }, [handleMenuClose, helpLink])
 
-  handleCloseHowEarnPoints = () => {
-    this.setState({ openHowEarnPoints: false });
-  };
+  const handleCloseHowEarnPoints = useCallback(() => {
+    setOpenHowEarnPoints(false)
+  }, [])
 
-  handleOpenUseCases = () => {
-    this.setState({ openUseCases: true });
-    this.handleMenuClose();
-  };
+  const handleOpenUseCases = useCallback(() => {
+    setOpenUseCases(true)
+    handleMenuClose();
+  }, [handleMenuClose])
 
-  handleCloseUseCases = () => {
-    this.setState({ openUseCases: false });
-  };
+  const handleCloseUseCases = useCallback(() => {
+    setOpenUseCases(false)
+  }, [])
 
-  render() {
-    const {
-      open,
-      anchorEl,
-      createPostOpen,
-      mobileMoreAnchorEl,
-      createPostAnchorEl,
-      openGetApp,
-      openFeedback,
-      openHowEarnPoints,
-      openUseCases
-    } = this.state;
-    const {
-      classes,
-      userId,
-      initials,
-      userProfileUrl,
-      width,
-      children,
-      unreadCount,
-      unreadMessages,
-      location: { search = '' },
-      pathname,
-    } = this.props;
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
 
-    let appBarHeight = 0;
+  const renderMenu = (
+    <TopMenu
+      anchorEl={anchorEl}
+      isMenuOpen={isMenuOpen}
+      handleMenuClose={handleMenuClose}
+      handleBlockedUsers={handleBlockedUsers}
+      handleOpenReferralStatus={handleOpenReferralStatus}
+      handleManageClasses={handleManageClasses}
+      userClasses={userClasses}
+      MyLink={MyLink}
+      userId={userId}
+      handleSignOut={handleSignOutCur}
+      search={search}
+    />
+  );
 
-    if (this.appBarRef.current && this.appBarRef.current.clientHeight) {
-      appBarHeight = this.appBarRef.current.clientHeight;
-    }
+  const renderMobileMenu = (
+    <MobileMenu
+      mobileMoreAnchorEl={mobileMoreAnchorEl}
+      MyLink={MyLink}
+      isMobileMenuOpen={isMobileMenuOpen}
+      handleMobileMenuClose={handleMobileMenuClose}
+      handleNotificationOpen={handleNotificationOpenCur}
+      open={open}
+      unreadMessages={unreadMessages}
+      width={width}
+      unreadCount={unreadCount}
+      handleProfileMenuOpen={handleProfileMenuOpen}
+      initials={initials}
+      userProfileUrl={userProfileUrl}
+    />
+  );
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
+  const renderCreatePostMenu = (
+    <CreatePostMenu
+      MyLink={MyLink}
+      createPostAnchorEl={createPostAnchorEl}
+      isCreatePostMenuOpen={isCreatePostMenuOpen}
+      search={search}
+      handleCreatePostMenuClose={handleCreatePostMenuClose}
+    />
+  )
 
-    const { updateFeed, newClassExperience, userClasses, landingPageCampaign, newNotesScreen } = this.props
+  const drawer = (
+    <DrawerMenu
+      handleCreatePostMenuOpen={handleCreatePostMenuOpen}
+      appBarHeight={62}
+      updateFeed={updateFeed}
+      newNotesScreen={newNotesScreen}
+      newClassExperience={newClassExperience}
+      createPostOpen={createPostOpen}
+      handleOpenGetApp={handleOpenGetApp}
+      handleOpenFeedback={handleOpenFeedback}
+      MyLink={MyLink}
+      search={search}
+      pathname={pathname}
+      handleManageClasses={handleManageClasses}
+      handleOpenUseCases={handleOpenUseCases}
+      handleOpenHowEarnPoints={handleOpenHowEarnPoints}
+      landingPageCampaign={landingPageCampaign}
+      userClasses={userClasses}
+    />
+  )
 
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
-          My Profile
-        </MenuItem>
-        {userClasses.canAddClasses && <MenuItem onClick={this.handleManageClasses}>
-          Add/Remove Classes
-        </MenuItem>}
-        <MenuItem onClick={this.handleBlockedUsers}>Unblock Users</MenuItem>
-        <MenuItem onClick={this.handleOpenReferralStatus}>Referred Classmates</MenuItem>
-        <MenuItem onClick={this.handleSignOut}>Logout</MenuItem>
-      </Menu>
-    );
-
-    const renderMobileMenu = (
-      <MobileMenu
-        mobileMoreAnchorEl={mobileMoreAnchorEl}
-        MyLink={MyLink}
-        isMobileMenuOpen={isMobileMenuOpen}
-        handleMobileMenuClose={this.handleMobileMenuClose}
-        handleNotificationOpen={this.handleNotificationOpen}
-        open={open}
-        unreadMessages={unreadMessages}
-        width={width}
-        unreadCount={unreadCount}
-        handleProfileMenuOpen={this.handleProfileMenuOpen}
-        initials={initials}
-        userProfileUrl={userProfileUrl}
-      />
-    );
-
-    const renderCreatePostMenu = (
-      <CreatePostMenu
-        MyLink={MyLink}
-        createPostAnchorEl={createPostAnchorEl}
-        isCreatePostMenuOpen={isCreatePostMenuOpen}
-        search={search}
-        handleCreatePostMenuClose={this.handleCreatePostMenuClose}
-      />
-    )
-
-    const drawer = (
-      <DrawerMenu
-        handleCreatePostMenuOpen={this.handleCreatePostMenuOpen}
-        appBarHeight={appBarHeight}
-        updateFeed={updateFeed}
-        newNotesScreen={newNotesScreen}
-        newClassExperience={newClassExperience}
-        createPostOpen={createPostOpen}
-        handleOpenGetApp={this.handleOpenGetApp}
-        handleOpenFeedback={this.handleOpenFeedback}
-        MyLink={MyLink}
-        search={search}
-        pathname={pathname}
-        handleManageClasses={this.handleManageClasses}
-        handleOpenUseCases={this.handleOpenUseCases}
-        handleOpenHowEarnPoints={this.handleOpenHowEarnPoints}
-        landingPageCampaign={landingPageCampaign}
-        userClasses={userClasses}
-      />
-    )
-
-    return (
-      <Fragment>
-        <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
-          <AppBar
-            ref={this.appBarRef}
-            position="fixed"
-            className={classNames(classes.appBar, {
-              [classes.appBarShift]: open
-            })}
-          >
-            <Toolbar disableGutters={!open}>
-              <Hidden smUp implementation="css">
+  return (
+    <Fragment>
+      <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
+        <AppBar
+          ref={appBarRef}
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: open
+          })}
+        >
+          <Toolbar disableGutters={!open}>
+            <Hidden smUp implementation="css">
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={handleDrawerOpen}
+                className={classNames(classes.menuButton, {
+                  [classes.hide]: open
+                })}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Hidden>
+            <Link href="/" component={MyLink} link="/">
+              <img src={logo} alt="Logo" className={classes.logo} />
+            </Link>
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <QuickNotes />
+              <IconButton
+                color="inherit"
+                onClick={handleNotificationOpenCur}
+                aria-owns={open ? 'notifications-popper' : undefined}
+                aria-haspopup="true"
+              >
+                <Badge badgeContent={unreadCount} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <Tooltip
+                id={3292}
+                placement="left"
+                text="Setup a group chat with your class to connect on topics and discuss problems"
+              >
                 <IconButton
                   color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.handleDrawerOpen}
-                  className={classNames(classes.menuButton, {
-                    [classes.hide]: open
-                  })}
+                  component={MyLink}
+                  link='/chat'
                 >
-                  <MenuIcon />
-                </IconButton>
-              </Hidden>
-              <Link href="/" component={MyLink} link="/">
-                <img src={logo} alt="Logo" className={classes.logo} />
-              </Link>
-              <div className={classes.grow} />
-              <div className={classes.sectionDesktop}>
-                <QuickNotes />
-                <IconButton
-                  color="inherit"
-                  onClick={this.handleNotificationOpen}
-                  aria-owns={open ? 'notifications-popper' : undefined}
-                  aria-haspopup="true"
-                >
-                  <Badge badgeContent={unreadCount} color="secondary">
-                    <NotificationsIcon />
+                  <Badge badgeContent={unreadMessages} color="secondary">
+                    <ChatIcon />
                   </Badge>
                 </IconButton>
-                <Tooltip
-                  id={3292}
-                  placement="left"
-                  text="Setup a group chat with your class to connect on topics and discuss problems"
-                >
-                  <IconButton
-                    color="inherit"
-                    component={MyLink}
-                    link='/chat'
-                  >
-                    <Badge badgeContent={unreadMessages} color="secondary">
-                      <ChatIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <IconButton
-                  aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <Avatar className='avatar-menu' src={userProfileUrl}>{initials}</Avatar>
-                </IconButton>
-              </div>
-              <div className={classes.sectionMobile}>
-                <IconButton
-                  aria-haspopup="true"
-                  onClick={this.handleMobileMenuOpen}
-                  color="inherit"
-                >
-                  <MoreIcon />
-                </IconButton>
-              </div>
-            </Toolbar>
-            <AnnouncementBanner onLoaded={this.handleAnnouncementLoaded} />
-          </AppBar>
-          {renderMenu}
-          {renderMobileMenu}
-          {renderCreatePostMenu}
-          <Hidden smUp implementation="css">
-            <Drawer
-              id='mobileMenu'
-              variant="temporary"
-              open={open && width === 'xs'}
-              onClose={this.handleDrawerClose}
-              classes={{
-                paper: classes.drawerPaper
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          {pathname !== '/chat' && <Hidden xsDown implementation="css">
-            <Drawer
-              id='desktopMenu'
-              variant="permanent"
-              className={classNames(
-                classes.drawer,
-                classes.drawerOpen,
-              )}
-              classes={{
-                paper: classNames(
-                  classes.drawerOpen
-                )
-              }}
-              open={open}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>}
-          <main className={classes.content} style={{ marginTop: appBarHeight }}>
-            {children}
-          </main>
-        </div>
-        <GetAppDialog
-          open={openGetApp}
-          onClose={this.handleCloseGetApp}
-        />
-        <GiveFeedback
-          origin='Side Menu'
-          open={openFeedback}
-          onClose={this.handleCloseFeedback}
-        />
-        <HowDoIEarnPoints
-          open={openHowEarnPoints}
-          onClose={this.handleCloseHowEarnPoints}
-        />
-        <Dialog
-          open={openUseCases}
-          onCancel={this.handleCloseUseCases}
-          title="How to use CircleIn for Studying"
-        >
-          <UseCases onRedirect={this.handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
-        </Dialog>
-      </Fragment>
-    );
-  }
+              </Tooltip>
+              <IconButton
+                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar className='avatar-menu' src={userProfileUrl}>{initials}</Avatar>
+              </IconButton>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+          <AnnouncementBanner onLoaded={handleAnnouncementLoaded} />
+        </AppBar>
+        {renderMenu}
+        {renderMobileMenu}
+        {renderCreatePostMenu}
+        <Hidden smUp implementation="css">
+          <Drawer
+            id='mobileMenu'
+            variant="temporary"
+            open={open && width === 'xs'}
+            onClose={handleDrawerClose}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        {pathname !== '/chat' && <Hidden xsDown implementation="css">
+          <Drawer
+            id='desktopMenu'
+            variant="permanent"
+            className={classNames(
+              classes.drawer,
+              classes.drawerOpen,
+            )}
+            classes={{
+              paper: classNames(
+                classes.drawerOpen
+              )
+            }}
+            open={open}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>}
+        <main className={classes.content} style={{
+          marginTop: appBarRef.current?.clientHeight || 0
+        }}>
+          {children}
+        </main>
+      </div>
+      <GetAppDialog
+        open={openGetApp}
+        onClose={handleCloseGetApp}
+      />
+      <GiveFeedback
+        origin='Side Menu'
+        open={openFeedback}
+        onClose={handleCloseFeedback}
+      />
+      <HowDoIEarnPoints
+        open={openHowEarnPoints}
+        onClose={handleCloseHowEarnPoints}
+      />
+      <Dialog
+        open={openUseCases}
+        onCancel={handleCloseUseCases}
+        title="How to use CircleIn for Studying"
+      >
+        <UseCases onRedirect={handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
+      </Dialog>
+    </Fragment>
+  );
 }
 
-export default withStyles(styles)(withWidth()(withRouter(MainLayout)));
+export default memo(withStyles(styles)(withWidth()(withRouter(MainLayout))));
