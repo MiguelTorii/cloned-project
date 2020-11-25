@@ -1,7 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
-import type { Node } from 'react';
+import React, { useMemo, useEffect, Fragment, useState, useCallback } from 'react';
 import * as campaignActions from 'actions/campaign';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
@@ -52,118 +51,105 @@ type Props = {
   children: Object,
   user: UserState,
   campaign: CampaignState,
-  isNaked?: boolean,
+  isNaked: boolean,
   location: {pathname: string},
   checkUserSession: Function,
   signOut: Function,
   fetchFeed: Function,
   updateFilter: Function,
   requestCampaign: Function,
-  openCreateChatGroup: Function,
   push: Function
 };
 
-type State = {
-  manageClasses: boolean,
-  manageBlockedUsers: boolean,
-  anchorEl: Node,
-  announcements: boolean,
-  unreadCount: number,
-  openRequestClass: boolean,
-  referralStatus: boolean
-};
+const Layout = ({
+  classes,
+  fetchClasses,
+  children,
+  user,
+  chat,
+  campaign,
+  isNaked = false,
+  location: {
+    pathname
+  },
+  checkUserSession,
+  signOut,
+  fetchFeed,
+  updateFilter,
+  requestCampaign,
+  push
+}: Props) => {
+  const [manageClasses, setManageClasses] = useState(false)
+  const [manageBlockedUsers, setManageBlockedUsers] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [openRequestClass, setOpenRequestClass] = useState(false)
+  const [referralStatus, setRefererralStatus] = useState(false)
 
-class Layout extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    isNaked: false
-  };
-
-  state = {
-    manageClasses: false,
-    manageBlockedUsers: false,
-    anchorEl: null,
-    unreadCount: 0,
-    openRequestClass: false,
-    referralStatus: false
-  };
-
-  loadUser = async () => {
-    const { fetchClasses, checkUserSession, requestCampaign } = this.props;
+  const loadUser = useCallback(async () => {
     await checkUserSession();
     fetchClasses()
     requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
-  }
+  }, [checkUserSession, fetchClasses, requestCampaign])
 
-  componentDidMount = () => {
-    this.loadUser()
-  };
+  useEffect(() => {
+    loadUser()
+  }, [loadUser])
 
-  handleNotificationOpen = event => {
+  const handleNotificationOpen = useCallback(event => {
     const { currentTarget } = event;
-    this.setState({ anchorEl: currentTarget });
-  };
+    setAnchorEl(currentTarget)
+  }, [])
 
-  handleNotificationClose = () => {
-    this.setState({ anchorEl: null });
-  };
+  const handleNotificationClose = useCallback(() => {
+    setAnchorEl(null)
+  }, [])
 
-  handleOpenManageClasses = () => {
-    this.setState({ manageClasses: true });
-  };
+  const handleOpenManageClasses = useCallback(() => {
+    setManageClasses(true)
+  }, [])
 
-  handleOpenBlockedUsers = () => {
-    this.setState({ manageBlockedUsers: true });
-  };
+  const handleOpenBlockedUsers = useCallback(() => {
+    setManageBlockedUsers(true)
+  }, [])
 
-  handleCloseManageClasses = () => {
-    const { fetchFeed } = this.props
+  const handleCloseManageClasses = useCallback(() => {
     fetchFeed()
-    this.setState({ manageClasses: false });
-  };
+    setManageClasses(false)
+  }, [fetchFeed])
 
-  handleCloseManageBlockedUsers = () => {
-    this.setState({ manageBlockedUsers: false });
-  };
+  const handleCloseManageBlockedUsers = useCallback(() => {
+    setManageBlockedUsers(false)
+  }, [])
 
-  handleOpenStartVideoMeetUp = () => {}
+  const handleOpenReferralStatus = useCallback(() => {
+    setRefererralStatus(true)
+  }, [])
 
-  handleCloseStartVideoMeetUp = () => {}
+  const handleCloseReferralStatus = useCallback(() => {
+    setRefererralStatus(false)
+  }, [])
 
-  handleOpenReferralStatus = () => {
-    this.setState({ referralStatus: true });
-  };
+  const handleUpdateUnreadCount = useCallback(unreadCount => {
+    setUnreadCount(unreadCount)
+  }, [])
 
-  handleCloseReferralStatus = () => {
-    this.setState({ referralStatus: false });
-  };
+  const handleOpenRequestClass = useCallback(() => {
+    handleCloseManageClasses();
+    setOpenRequestClass(true)
+  }, [handleCloseManageClasses])
 
-  handleCreateChatGroupChannel = () => {
-    this.handleCloseAnnouncements();
-    const { openCreateChatGroup } = this.props;
-    openCreateChatGroup();
-  };
+  const handleCloseRequestClass = useCallback(() => {
+    setOpenRequestClass(false)
+  }, [])
 
-  handleUpdateUnreadCount = unreadCount => {
-    this.setState({ unreadCount });
-  };
-
-  handleOpenRequestClass = () => {
-    this.handleCloseManageClasses();
-    this.setState({ openRequestClass: true })
-  }
-
-  handleCloseRequestClass = () => {
-    this.setState({ openRequestClass: false })
-  }
-
-  handleNotificationClick = ({
+  const handleNotificationClick = useCallback(({
     typeId,
     postId
   }: {
     typeId: number,
     postId: number
   }) => {
-    const { push } = this.props;
     switch (typeId) {
     case 3:
       push(`/flashcards/${postId}`);
@@ -180,153 +166,133 @@ class Layout extends React.PureComponent<Props, State> {
     default:
       break;
     }
-  };
+  }, [push])
 
-  renderChildren = () => {
+  const renderChildren = useCallback(() => {
     const {
-      user: { data, isLoading },
-      children,
-      classes
-    } = this.props;
+      data, isLoading
+    } = user;
     if (data.userId && !isLoading) return children;
     return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
-  };
+  }, [children, classes.loader, user])
 
-  render() {
-    const {
-      user,
-      classes,
-      signOut,
-      isNaked,
-      campaign,
-      location: { pathname },
-      updateFilter,
-      push,
-      chat,
-      fetchFeed
-    } = this.props;
-    const {
-      data: { userId, firstName, lastName, profileImage },
-      runningTour,
-      userClasses,
-      syncData: {
-        helpLink
-      }
-    } = user;
+  const {
+    data: { userId, firstName, lastName, profileImage },
+    runningTour,
+    userClasses,
+    syncData: {
+      helpLink
+    }
+  } = user;
 
-    const {
-      data: { local }
-    } = chat
+  const {
+    data: { local }
+  } = chat
 
+  const unreadMessages = useMemo(() => {
     let unreadMessages = 0
     Object.keys(local).forEach(l => {
       if (local[l]?.unread) unreadMessages += Number(local[l].unread)
     })
+    return unreadMessages
+  }, [local])
 
-    if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) return null
 
-    const {
-      manageClasses,
-      manageBlockedUsers,
-      anchorEl,
-      unreadCount,
-      openRequestClass,
-      referralStatus
-    } = this.state;
-    if (isNaked) return this.renderChildren();
+  const name = useMemo(() => `${firstName} ${lastName}`, [firstName, lastName])
+  const initials = useMemo(() => name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '', [name])
 
-    const name = `${firstName} ${lastName}`;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+  const updateFeed = useCallback(async (sectionId, classId) => {
+    await updateFilter({
+      field: 'userClasses',
+      value: [JSON.stringify({ classId, sectionId })]
+    });
+    await fetchFeed()
+  }, [fetchFeed, updateFilter])
 
-    const updateFeed = async (sectionId, classId) => {
-      await updateFilter({
-        field: 'userClasses',
-        value: [JSON.stringify({ classId, sectionId })]
-      });
-      await fetchFeed()
-    }
+  if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) return null
 
-    return (
-      <Fragment>
-        <ErrorBoundary>
-          <MainLayout
-            helpLink={helpLink}
-            unreadMessages={unreadMessages}
-            userId={userId}
-            runningTour={runningTour}
-            landingPageCampaign={campaign.landingPageCampaign}
-            newNotesScreen={campaign.newNotesScreen}
-            newClassExperience={campaign.newClassExperience}
-            initials={initials}
-            pushTo={push}
-            userProfileUrl={profileImage}
-            unreadCount={unreadCount}
-            pathname={pathname}
-            updateFeed={updateFeed}
-            userClasses={userClasses}
-            handleNotificationOpen={this.handleNotificationOpen}
-            handleSignOut={signOut}
-            onManageClasses={this.handleOpenManageClasses}
-            onManageBlockedUsers={this.handleOpenBlockedUsers}
-            onOpenAnnouncements={this.handleOpenAnnouncements}
-            onOpenReferralStatus={this.handleOpenReferralStatus}
-          >
-            {this.renderChildren()}
-          </MainLayout>
-        </ErrorBoundary>
-        <Hidden smUp implementation="css">
-          <BottomNav />
-        </Hidden>
-        <ErrorBoundary>
-          <Notifications
-            anchorEl={anchorEl}
-            onClose={this.handleNotificationClose}
-            onUpdateUnreadCount={this.handleUpdateUnreadCount}
-            onClick={this.handleNotificationClick}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <AddRemoveClasses
-            open={manageClasses}
-            onClose={this.handleCloseManageClasses}
-            onOpenRequestClass={this.handleOpenRequestClass}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <BlockedUsersManager
-            open={manageBlockedUsers}
-            onClose={this.handleCloseManageBlockedUsers}
-          />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Dialog
-            className={classes.dialog}
-            onCancel={this.handleCloseReferralStatus}
-            open={referralStatus}
-            title="Referred Classmates Status"
-          >
-            <ReferralStatus />
-          </Dialog>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Announcements />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <WebNotifications />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <RequestClass open={openRequestClass} onClose={this.handleCloseRequestClass} />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Notifier />
-        </ErrorBoundary>
-      </Fragment>
-    );
-  }
+  if (isNaked) return renderChildren();
+
+  return (
+    <Fragment>
+      <ErrorBoundary>
+        <MainLayout
+          helpLink={helpLink}
+          unreadMessages={unreadMessages}
+          userId={userId}
+          runningTour={runningTour}
+          landingPageCampaign={campaign.landingPageCampaign}
+          newNotesScreen={campaign.newNotesScreen}
+          newClassExperience={campaign.newClassExperience}
+          initials={initials}
+          pushTo={push}
+          userProfileUrl={profileImage}
+          unreadCount={unreadCount}
+          pathname={pathname}
+          updateFeed={updateFeed}
+          userClasses={userClasses}
+          handleNotificationOpen={handleNotificationOpen}
+          handleSignOut={signOut}
+          onManageClasses={handleOpenManageClasses}
+          onManageBlockedUsers={handleOpenBlockedUsers}
+          // onOpenAnnouncements={handleOpenAnnouncements}
+          onOpenReferralStatus={handleOpenReferralStatus}
+        >
+          {renderChildren()}
+        </MainLayout>
+      </ErrorBoundary>
+      <Hidden smUp implementation="css">
+        <BottomNav />
+      </Hidden>
+      <ErrorBoundary>
+        <Notifications
+          anchorEl={anchorEl}
+          onClose={handleNotificationClose}
+          onUpdateUnreadCount={handleUpdateUnreadCount}
+          onClick={handleNotificationClick}
+        />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <AddRemoveClasses
+          open={manageClasses}
+          onClose={handleCloseManageClasses}
+          onOpenRequestClass={handleOpenRequestClass}
+        />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <BlockedUsersManager
+          open={manageBlockedUsers}
+          onClose={handleCloseManageBlockedUsers}
+        />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Dialog
+          className={classes.dialog}
+          onCancel={handleCloseReferralStatus}
+          open={referralStatus}
+          title="Referred Classmates Status"
+        >
+          <ReferralStatus />
+        </Dialog>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Announcements />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <WebNotifications />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Notifier />
+      </ErrorBoundary>
+    </Fragment>
+  );
 }
 
 const mapStateToProps = ({ chat, user, campaign }: StoreState): {} => ({

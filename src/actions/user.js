@@ -30,25 +30,34 @@ export const fetchClasses = (skipCache) => async (
   try {
     const {
       user: {
+        userClasses,
         data: { userId }
       }
     } = getState()
-    const res= await getUserClasses({ userId, skipCache })
+    const res = await getUserClasses({ userId, skipCache })
     const { classes: classList, emptyState, permissions: { canAddClasses } } = res
 
-    dispatch(setClassesAction({ userClasses: {
-      classList,
-      canAddClasses,
-      emptyState,
-    }}))
-  } catch(e) {}
+    if (
+      userClasses.classList.length !== classList.length ||
+      userClasses.canAddClasses !== canAddClasses
+    ) {
+      dispatch(setClassesAction({
+        userClasses: {
+          classList,
+          canAddClasses,
+          emptyState,
+        }
+      }
+      ))
+    }
+  } catch (e) {}
 }
 
 const updateTourAction = ({
   runningTour
 }: {
   runningTour: boolean
-}): Action  => ({
+}): Action => ({
   type: userActions.UPDATE_TOUR,
   payload: {
     runningTour
@@ -71,14 +80,14 @@ const syncSuccessAction = ({
   viewedOnboarding,
   viewedTooltips
 }: {
-    display: boolean,
-    helpLink: string,
-    largeLogo: string,
-    smallLogo: string,
-    resourcesBody: string,
-    resourcesTitle: string,
-    viewedOnboarding: boolean,
-    viewedTooltips: Array<number>
+  display: boolean,
+  helpLink: string,
+  largeLogo: string,
+  smallLogo: string,
+  resourcesBody: string,
+  resourcesTitle: string,
+  viewedOnboarding: boolean,
+  viewedTooltips: Array<number>
 }): Action => ({
   type: userActions.SYNC_SUCCESS,
   payload: {
@@ -121,7 +130,7 @@ const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
   }
 })
 
-export const updateOnboarding = ({ viewedOnboarding }: { viewedOnboarding: boolean } ) => (
+export const updateOnboarding = ({ viewedOnboarding }: {viewedOnboarding: boolean}) => (
   dispatch: Dispatch
 ) => {
   dispatch(updateOnboardingAction(viewedOnboarding))
@@ -133,14 +142,14 @@ const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
 });
 
 export const getAnnouncement = (
-  { announcementId, campaignId }: { announcementId: number, campaignId: number }) => async (
+  { announcementId, campaignId }: {announcementId: number, campaignId: number}) => async (
   dispatch: Dispatch
 ) => {
   const announcement = await fetchAnnouncement(announcementId);
   const campaign = await getCampaign({ campaignId });
 
   // eslint-disable-next-line
-  if (announcement && !campaign?.is_disabled && campaign?.variation_key !== 'hidden') {
+    if (announcement && !campaign?.is_disabled && campaign?.variation_key !== 'hidden') {
     dispatch(getAnnouncementSuccessAction(announcement));
   }
 };

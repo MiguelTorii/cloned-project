@@ -14,6 +14,7 @@ import { hotjar } from 'react-hotjar';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
+import './wdyr'
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';

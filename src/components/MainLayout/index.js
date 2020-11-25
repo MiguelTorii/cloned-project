@@ -535,4 +535,5 @@ const MainLayout = ({
   );
 }
 
+// MainLayout.whyDidYouRender= true
 export default memo(withStyles(styles)(withWidth()(withRouter(MainLayout))));

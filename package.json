@@ -18,6 +18,7 @@
     "@react-hook/debounce": "^3.0.0",
     "@sentry/browser": "^5.23.0",
     "@sentry/cli": "^1.52.1",
+    "@welldone-software/why-did-you-render": "^6.0.3",
     "add": "^2.0.6",
     "algoliasearch": "^3.32.1",
     "array-move": "^2.1.0",
