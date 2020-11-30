@@ -67,6 +67,35 @@ export const fetchFeed = async ({
   }
 };
 
+export const saveQuizAnswers = async ({
+  results
+}: {
+  results: array
+}): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(`${API_ROUTES.FLASHCARDS}/save_quiz_answers`, {
+      answers: results
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const {
+      data: {
+        session_id: sessionId
+      }
+    } = result
+    return {
+      sessionId
+    }
+  } catch (err) {
+    return null;
+  }
+};
+
+
 export const feedResources = async ({
   userId
 }: {
@@ -177,13 +206,13 @@ export const postEvent = async ({
       category,
       type
     }
-    ,{
+    , {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
 
-    const { data: { success }} = result
+    const { data: { success } } = result
     return success
   } catch (err) {
     return null;

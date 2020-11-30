@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { useMemo, useEffect, useCallback, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Fade';
 import { withRouter } from 'react-router';
+import cx from 'clsx'
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 
 const styles = theme => ({
@@ -38,6 +39,9 @@ const styles = theme => ({
     marginRight: -4,
     marginTop: -2,
     textAlign: 'right'
+  },
+  overDialog: {
+    zIndex: 1400
   }
 });
 
@@ -56,6 +60,27 @@ type Props = {
   viewedTooltips: Array<number>
 };
 
+const CHAT = 3292;
+const LEADERBOARD = 6938;
+const BOOKMARKS = 9043;
+const THANKS = 2197;
+const FLASHCARDS = 1194;
+const NEW_POST = 5792;
+const FLASHCARD_BOTTOM = 4212;
+const FLASHCARD_TOP = 5436;
+const STUDENT_BLOG = 3181;
+
+const NOTES_QUICKNOTE = 2341
+const NOTES_GET_STARTED = 5909
+const NOTES_CLASS_FOLDER = 9002
+const NOTES_FULLSCREEN = 1204
+
+// not an actual tooltip
+// eslint-disable-next-line
+const GET_APP_POPUP = 4432;
+
+const TRANSITION_TIME = 750;
+
 const Tooltip = ({
   children,
   classes,
@@ -70,27 +95,6 @@ const Tooltip = ({
   viewedOnboarding,
   viewedTooltips
 }: Props) => {
-
-  const CHAT = 3292;
-  const LEADERBOARD = 6938;
-  const BOOKMARKS = 9043;
-  const THANKS = 2197;
-  const FLASHCARDS = 1194;
-  const NEW_POST = 5792;
-  const FLASHCARD_BOTTOM = 4212;
-  const FLASHCARD_TOP = 5436;
-  const STUDENT_BLOG = 3181;
-
-  const NOTES_QUICKNOTE = 2341
-  const NOTES_GET_STARTED = 5909
-  const NOTES_CLASS_FOLDER = 9002
-  const NOTES_FULLSCREEN = 1204
-
-  // not an actual tooltip
-  // eslint-disable-next-line
-  const GET_APP_POPUP = 4432;
-
-  const TRANSITION_TIME = 750;
 
   const [open, setOpen] = useState(false);
 
@@ -176,10 +180,17 @@ const Tooltip = ({
     isOpen();
   }, [isOpen])
 
+  const overDialog = useMemo(() => {
+    return cx(
+      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM)
+      && classes.overDialog)
+  }, [classes.overDialog, id])
+
   return (
     <MuiTooltip
       arrow
       classes={{
+        popper: overDialog,
         arrow: classes.arrow,
         tooltip: classes.tooltip,
       }}

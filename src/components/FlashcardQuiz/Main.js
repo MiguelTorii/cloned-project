@@ -15,7 +15,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
 import Dialog from 'components/Dialog';
-import { generateQuiz } from 'api/feed';
+import { saveQuizAnswers, generateQuiz } from 'api/feed';
 
 const useStyles = makeStyles(theme => ({
   answer: {
@@ -271,7 +271,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             {
               answers.map((answer, i) => (
                 (answer.available !== false || answer.id === answerId) &&
-                <MenuItem value={answer.id}>{alphabet.split('')[i]}</MenuItem>
+                <MenuItem key={answer.id} value={answer.id}>{alphabet.split('')[i]}</MenuItem>
               ))
             }
           </Select>
@@ -287,7 +287,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               <>
                 <div
                   className={classes.link}
-                  onKeyUp={() => { }}
+                  onKeyUp={() => {}}
                   onClick={() => {
                     setIsPhotoExpanded({
                       ...isPhotoExpanded,
@@ -306,7 +306,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             question_image_url && (photoExpanded || !question) &&
             <div
               className={classes.media}
-              onKeyUp={() => { }}
+              onKeyUp={() => {}}
               tabIndex={0}
               role='button'
               onClick={() => {
@@ -338,7 +338,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             <>
               <div
                 className={classes.link}
-                onKeyUp={() => { }}
+                onKeyUp={() => {}}
                 onClick={() => {
                   setIsPhotoExpanded({
                     ...isPhotoExpanded,
@@ -358,7 +358,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           <div className={classes.media}>
             <div
               className={classes.media}
-              onKeyUp={() => { }}
+              onKeyUp={() => {}}
               tabIndex={0}
               role='button'
               onClick={() => {
@@ -445,7 +445,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               <>
                 <div
                   className={classes.link}
-                  onKeyUp={() => { }}
+                  onKeyUp={() => {}}
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsPhotoExpanded({
@@ -465,7 +465,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             option_image_url && (photoExpanded || !optionText) &&
             <div
               className={classes.media}
-              onKeyUp={() => { }}
+              onKeyUp={() => {}}
               tabIndex={0}
               role='button'
               onClick={() => {
@@ -495,7 +495,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             <>
               <div
                 className={classes.link}
-                onKeyUp={() => { }}
+                onKeyUp={() => {}}
                 onClick={() => {
                   setIsPhotoExpanded({
                     ...isPhotoExpanded,
@@ -514,7 +514,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           question_image_url && (!question || photoExpanded) &&
           <div
             className={classes.media}
-            onKeyUp={() => { }}
+            onKeyUp={() => {}}
             tabIndex={0}
             role='button'
             onClick={() => {
@@ -528,7 +528,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         <div className={classes.choices}>
           {
             answers.map((answer, i) => (
-              <Choice answer={answer} index={i} />
+              <Choice key={`${answer.id}-choice`} answer={answer} index={i} />
             ))
           }
         </div>
@@ -544,7 +544,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     numberOfAnsweredMultiQuestions);
 
   return (
-    <div>
+    <Grid item xs={12} md={12}>
       <div className={classes.content}>
         <div className={classes.header}>
           <div className={classes.title}>Matching</div>
@@ -560,7 +560,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             </div>
             {
               questions.map(question => (
-                <Question question={question} />
+                <Question key={`${question.id}-question`} question={question} />
               ))
             }
           </Grid>
@@ -570,26 +570,28 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             </div>
             {
               answers.map((answer, i) => (
-                <Answer answer={answer} char={alphabet.split('')[i]} />
+                <Answer key={`${answer.id}-answer`} answer={answer} char={alphabet.split('')[i]} />
               ))
             }
           </Grid>
-          <Grid item xs={12} md={12}>
-            <div
-              className={classes.title}
-              style={{ paddingTop: 24, paddingBottom: 8 }}
-            >
-              Multiple Choice
-            </div>
-            <div className={classes.subtitle}>
-              Answer these next questions by clicking on the answer you believe is correct.
-            </div>
-            {
-              multiQuestions.map((multiQuestion, i) => (
-                <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
-              ))
-            }
-          </Grid>
+          {multiQuestions.length > 0 && (
+            <Grid item xs={12} md={12}>
+              <div
+                className={classes.title}
+                style={{ paddingTop: 24, paddingBottom: 8 }}
+              >
+                Multiple Choice
+              </div>
+              <div className={classes.subtitle}>
+                Answer these next questions by clicking on the answer you believe is correct.
+              </div>
+              {
+                multiQuestions.map((multiQuestion, i) => (
+                  <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
+                ))
+              }
+            </Grid>
+          )}
         </Grid>
       </div>
       <div className={classes.buttons}>
@@ -599,13 +601,18 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               className={classes.button}
               color='primary'
               disabled={!canEvaluate}
-              onClick={() => {
+              onClick={async () => {
                 setIsEvaluationMode(true);
                 const numberOfCorrectMatchingQuestions = questions.filter(q => q.answerId === q.id).length;
                 const numberOfCorrectMultiQuestions = multiQuestions.filter(q => q.answerId === q.id).length;
                 setIsQuizCompleted(true);
                 document.querySelector('[aria-labelledby="circle-in-dialog-content"]').scroll(0, 0);
                 setScore(`${numberOfCorrectMatchingQuestions + numberOfCorrectMultiQuestions} / ${numberOfQuestions}`);
+                const results = [...questions, ...multiQuestions].map(q => ({
+                  question_id: q.id,
+                  answer_id: q.answerId
+                }))
+                await saveQuizAnswers({ results })
               }}
               variant='contained'
             >
@@ -639,7 +646,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       >
         <img className={classes.dialogImage} src={dialogImageUrl} alt="dialog" />
       </Dialog>
-    </div>
+    </Grid>
   );
 }
 
