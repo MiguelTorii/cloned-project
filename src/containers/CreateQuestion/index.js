@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -10,16 +10,16 @@ import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { decypherClass } from 'utils/crypto'
+import AnonymousButton from 'components/AnonymousButton';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
 import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import RichTextEditor from '../RichTextEditor';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createQuestion, getQuestion, updateQuestion } from '../../api/posts';
+import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
@@ -30,6 +30,9 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  anonymouslyExplanation: {
+    fontSize: 12
   }
 });
 
@@ -45,70 +48,51 @@ type Props = {
   enqueueSnackbar: Function
 };
 
-type State = {
-  loading: boolean,
-  title: string,
-  body: string,
-  classId: number,
-  sectionId: ?number,
-  tags: Array<SelectType>,
-  tagsError: boolean,
-  errorDialog: boolean,
-  errorTitle: string,
-  changed: ?boolean,
-  errorBody: string
-};
+const CreateQuestion = ({
+  classes,
+  user: {
+    data: {
+      segment,
+      userId
+    }
+  },
+  campaign,
+  pushTo,
+  questionId,
+  location: {
+    search
+  },
+  enqueueSnackbar
+}: Props) => {
+  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+  const [classId, setClassId] = useState(0)
+  const [sectionId, setSectionId] = useState(null)
+  const [errorDialog, setErrorDialog] = useState(false)
+  const [anonymousActive, setAnonymousActive] = useState(false)
+  const [changed, setChanged] = useState(null)
+  const [errorBody, setErrorBody] = useState('')
+  const [errorTitle, setErrorTitle] = useState('')
 
-class CreateQuestion extends React.PureComponent<Props, State> {
-  state = {
-    loading: false,
-    title: '',
-    body: '',
-    classId: 0,
-    sectionId: null,
-    tags: [],
-    // tagsError: false,
-    errorDialog: false,
-    errorTitle: '',
-    changed: null,
-    errorBody: ''
-  };
-
-  handlePush = path => {
-    const { location: { search }, pushTo, campaign } = this.props
-    if(campaign.newClassExperience) {
+  const handlePush = useCallback(path => {
+    if (campaign.newClassExperience) {
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
     }
-  }
+  }, [campaign.newClassExperience, pushTo, search])
 
-  componentDidMount = () => {
-    const { questionId } = this.props
-    if( questionId) this.loadData()
-
-    const { classId, sectionId } = decypherClass()
-
-    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
-    logEvent({
-      event: 'Home- Start Ask Question',
-      props: {}
-    });
-  };
-
-  loadData = async () => {
-    const {
-      user: {
-        data: { userId, segment }
-      },
-      questionId
-    } = this.props;
-    const question = await getQuestion({ userId, questionId });
+  const loadData = useCallback(async () => {
+    const question = await api.getQuestion({ userId, questionId });
     const { classes } = await getUserClasses({ userId });
     const userClasses = processClasses({ classes, segment });
     const { sectionId } = JSON.parse(userClasses[0].value);
     const { body, title, classId } = question
-    this.setState({ body, title, classId, sectionId });
+    setBody(body)
+    setTitle(title)
+    setClassId(classId)
+    setSectionId(sectionId)
     const {
       postInfo: { feedId }
     } = question;
@@ -117,20 +101,25 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       event: 'Feed- Edit Question',
       props: { 'Internal ID': feedId }
     });
-  };
+  }, [questionId, segment, userId])
 
-  updateQuestion = async () => {
-    this.setState({ loading: true });
+  useEffect(() => {
+    if (questionId && userId) loadData()
+    const { classId, sectionId } = decypherClass()
+
+    setClassId(Number(classId))
+    setSectionId(Number(sectionId))
+    logEvent({
+      event: 'Home- Start Ask Question',
+      props: {}
+    });
+
+  }, [loadData, questionId, userId])
+
+  const updateQuestion = useCallback(async () => {
+    setLoading(true)
     try {
-      const {
-        user: {
-          data: { userId = '' }
-        },
-        questionId
-      } = this.props;
-      const { title, body, classId, sectionId } = this.state;
-
-      const res = await updateQuestion({
+      const res = await api.updateQuestion({
         userId,
         questionId,
         title,
@@ -141,7 +130,6 @@ class CreateQuestion extends React.PureComponent<Props, State> {
 
       if (!res.success) throw new Error('Couldnt update')
 
-      const { enqueueSnackbar, classes } = this.props;
       enqueueSnackbar({
         notification: {
           message: `Successfully updated`,
@@ -162,46 +150,30 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         }
       });
 
-      this.handlePush(`/question/${questionId}`);
-      this.setState({ loading: false })
+      handlePush(`/question/${questionId}`);
+      setLoading(false)
     } catch (err) {
-      this.setState({
-        loading: false,
-        errorDialog: true,
-        errorTitle: 'Unknown Error',
-        errorBody: 'Please try again'
-      });
+      setLoading(false)
+      setErrorBody('Please try again')
+      setErrorTitle('Unknown Error')
+      setErrorDialog(true)
     }
-  };
+  }, [body, classId, classes.stackbar, enqueueSnackbar, handlePush, questionId, sectionId, title, userId])
 
-  createQuestion = async () => {
-    const { tags } = this.state;
-    if (tags.length < 0) {
-      // this.setState({ tagsError: true });
-      return;
-    }
-    // this.setState({ tagsError: false });
-    this.setState({ loading: true });
+  const createQuestion = useCallback(async () => {
+    setLoading(true)
     try {
-      const {
-        user: {
-          data: { userId = '' }
-        },
-      } = this.props;
-      const { title, body, classId, sectionId } = this.state;
-
-      const tagValues = tags.map(item => Number(item.value));
       const {
         points,
         user: { firstName },
         questionId,
-      } = await createQuestion({
+      } = await api.createQuestion({
         userId,
         title,
         body,
+        anonymous: anonymousActive,
         classId,
         sectionId,
-        tags: tagValues
       });
 
       logEventLocally({
@@ -211,7 +183,6 @@ class CreateQuestion extends React.PureComponent<Props, State> {
       });
 
       if (points > 0) {
-        const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar({
           notification: {
             message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
@@ -233,142 +204,131 @@ class CreateQuestion extends React.PureComponent<Props, State> {
         });
       }
 
-      this.handlePush('/feed');
+      handlePush('/feed');
     } catch (err) {
-      this.setState({
-        loading: false,
-        errorDialog: true,
-        errorTitle: 'Unknown Error',
-        errorBody: 'Please try again'
-      });
+      setLoading(false)
+      setErrorBody('Please try again')
+      setErrorTitle('Unknown Error')
+      setErrorDialog(true)
     }
-  };
+  }, [anonymousActive, body, classId, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
 
-  handleSubmit = event => {
+  const handleSubmit = useCallback(event => {
     event.preventDefault();
-    const { questionId } = this.props
-    if(questionId) this.updateQuestion()
-    else this.createQuestion()
-  }
+    if (questionId) updateQuestion()
+    else createQuestion()
+  }, [createQuestion, questionId, updateQuestion])
 
-  handleTextChange = name => event => {
-    this.setState({ changed: true })
-    this.setState({ [name]: event.target.value });
-  };
+  const handleTextChange = useCallback(() => event => {
+    setChanged(true)
+    setTitle(event.target.value)
+  }, [])
 
-  handleRTEChange = value => {
-    const { changed } = this.state
-    if (changed === null) this.setState({ changed: false })
-    else this.setState({ changed: true })
-    this.setState({ body: value });
-  };
+  const handleRTEChange = useCallback(value => {
+    if (changed === null) setChanged(false)
+    else setChanged(true)
+    setBody(value)
+  }, [changed])
 
-  handleClassChange = ({
+  const handleClassChange = useCallback(({
     classId,
     sectionId
   }: {
     classId: number,
     sectionId: number
   }) => {
-    this.setState({ classId, sectionId });
-  };
+    setSectionId(sectionId)
+    setClassId(classId)
+  }, [])
 
-  // handleTagsChange = values => {
-  // this.setState({ tags: values });
-  // if (values.length === 0) this.setState({ tagsError: true });
-  // else this.setState({ tagsError: false });
-  // };
+  const handleErrorDialogClose = useCallback(() => {
+    setErrorDialog(false)
+    setErrorTitle('')
+    setErrorBody('')
+  }, [])
 
-  handleErrorDialogClose = () => {
-    this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
-  };
+  const toggleAnonymousActive = useCallback(() => {
+    setAnonymousActive(a => !a)
+  }, [])
 
-  render() {
-    const { questionId, classes } = this.props;
-    const {
-      loading,
-      classId,
-      sectionId,
-      title,
-      body,
-      // tags,
-      // tagsError,
-      errorDialog,
-      errorTitle,
-      changed,
-      errorBody
-    } = this.state;
 
-    return (
-      <div className={classes.root}>
-        <ErrorBoundary>
-          <CreatePostForm
-            title="Ask a Question"
-            subtitle="When you enter a question here, the question gets sent to your classmates to provide you with the help you need"
-            loading={loading}
-            changed={changed}
-            handleSubmit={this.handleSubmit}
-            buttonLabel={questionId ? 'Save' : 'Create'}
-          >
-            <Grid container alignItems="center">
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">
-                  What's your question?
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <OutlinedTextValidator
-                  label="Enter your question here"
-                  onChange={this.handleTextChange}
-                  name="title"
-                  value={title}
-                  validators={['required']}
-                  errorMessages={['Title is required']}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Description</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <RichTextEditor
-                  placeholder="Add more details to your question to increase the chances of getting an answer"
-                  value={body}
-                  onChange={this.handleRTEChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Class</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                <ClassesSelector
-                  classId={classId}
-                  sectionId={sectionId}
-                  onChange={this.handleClassChange} />
-              </Grid>
-              {/* <Grid item xs={12} sm={2}> */}
-              {/* <Typography variant="subtitle1">Tags</Typography> */}
-              {/* </Grid> */}
-              {/* <Grid item xs={12} sm={10}> */}
-              {/* <TagsAutoComplete */}
-              {/* tags={tags} */}
-              {/* error={tagsError} */}
-              {/* onChange={this.handleTagsChange} */}
-              {/* /> */}
-              {/* </Grid> */}
+  return (
+    <div className={classes.root}>
+      <ErrorBoundary>
+        <CreatePostForm
+          title="Ask a Question"
+          subtitle="When you enter a question here, the question gets sent to your classmates to provide you with the help you need"
+          loading={loading}
+          changed={changed}
+          handleSubmit={handleSubmit}
+          buttonLabel={questionId ? 'Save' : 'Create'}
+        >
+          <Grid container alignItems="center">
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">
+                What's your question?
+              </Typography>
             </Grid>
-          </CreatePostForm>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <SimpleErrorDialog
-            open={errorDialog}
-            title={errorTitle}
-            body={errorBody}
-            handleClose={this.handleErrorDialogClose}
-          />
-        </ErrorBoundary>
-      </div>
-    );
-  }
+            <Grid item xs={12} sm={10}>
+              <OutlinedTextValidator
+                label="Enter your question here"
+                onChange={handleTextChange}
+                name="title"
+                value={title}
+                validators={['required']}
+                errorMessages={['Title is required']}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Description</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <RichTextEditor
+                placeholder="Add more details to your question to increase the chances of getting an answer"
+                value={body}
+                onChange={handleRTEChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Class</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <ClassesSelector
+                classId={classId}
+                sectionId={sectionId}
+                onChange={handleClassChange} />
+            </Grid>
+            {!questionId && (
+              <Grid item xs={12} sm={2}>
+                <Typography variant="subtitle1">Ask Anonymously</Typography>
+              </Grid>
+            )}
+            {!questionId && (
+              <Grid item xs={12} sm={10}>
+                <AnonymousButton
+                  active={anonymousActive}
+                  toggleActive={toggleAnonymousActive}
+                />
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Typography className={classes.anonymouslyExplanation}>
+                When you post a question anonymously, classmates cannot see who asked the question. However, your post can still be flagged for academic dishonesty.
+              </Typography>
+            </Grid>
+          </Grid>
+        </CreatePostForm>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <SimpleErrorDialog
+          open={errorDialog}
+          title={errorTitle}
+          body={errorBody}
+          handleClose={handleErrorDialogClose}
+        />
+      </ErrorBoundary>
+    </div >
+  );
 }
 
 const mapStateToProps = ({ user, campaign }: StoreState): {} => ({

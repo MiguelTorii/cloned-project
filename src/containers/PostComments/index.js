@@ -78,11 +78,13 @@ class ViewNotes extends React.PureComponent<Props, State> {
   handlePostComment = async ({
     comment,
     rootCommentId,
-    parentCommentId
+    parentCommentId,
+    anonymous
   }: {
     comment: string,
     rootCommentId: number,
-    parentCommentId: number
+    parentCommentId: number,
+    anonymous: boolean
   }) => {
     if (comment.trim() === '') return;
     const {
@@ -98,6 +100,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         userId,
         postId,
         typeId,
+        anonymous,
         comment,
         rootCommentId,
         parentCommentId
@@ -161,7 +164,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleBestAnswer = async ({ commentId }: { commentId: number }) => {
+  handleBestAnswer = async ({ commentId }: {commentId: number}) => {
     const {
       user: {
         data: { userId }

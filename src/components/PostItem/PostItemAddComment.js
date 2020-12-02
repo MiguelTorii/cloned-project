@@ -1,12 +1,14 @@
 // @flow
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import AnonymousButton from 'components/AnonymousButton';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography'
 import RichTextEditor from '../../containers/RichTextEditor';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
@@ -49,124 +51,120 @@ type Props = {
   userId: string,
   profileImageUrl: string,
   name: string,
-  isReply?: boolean,
-  rte?: boolean,
+  isReply: boolean,
+  rte: boolean,
   readOnly: boolean,
   isQuestion: boolean,
   onPostComment: Function,
-  onCancelComment?: Function
+  onCancelComment: Function
 };
 
-type State = {
-  value: string
-};
+const PostItemAddComment = ({
+  isReply = false,
+  rte = false,
+  onCancelComment = () => {},
+  classes,
+  userId,
+  profileImageUrl,
+  name,
+  readOnly,
+  isQuestion,
+  onPostComment,
+}: Props) => {
+  const [value, setValue] = useState('')
+  const [anonymousActive, setAnonymousActive] = useState(false)
 
-class PostItemAddComment extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    isReply: false,
-    rte: false,
-    onCancelComment: () => {}
-  };
+  const toggleAnonymousActive = useCallback(() => {
+    setAnonymousActive(a => !a)
+  }, [])
 
-  state = {
-    value: ''
-  };
+  const handleChange = useCallback(event => {
+    setValue(event.target.value)
+  }, [])
 
-  handleChange = event => {
-    this.setState({ value: event.target.value });
-  };
+  const handleRTEChange = useCallback(value => {
+    if (value.trim() === '<p><br></p>') setValue('')
+    else setValue(value)
+  }, [])
 
-  handleRTEChange = value => {
-    if (value.trim() === '<p><br></p>') this.setState({ value: '' });
-    else this.setState({ value });
-  };
-
-  handleClick = () => {
-    const { onPostComment, onCancelComment } = this.props;
-    const { value } = this.state;
-    onPostComment({ comment: value });
-    this.setState({ value: '' });
+  const handleClick = useCallback(() => {
+    onPostComment({
+      comment: value,
+      anonymous: anonymousActive
+    });
+    setValue('')
     if (onCancelComment) onCancelComment();
-  };
+  }, [anonymousActive, onCancelComment, onPostComment, value])
 
-  handleCancel = () => {
-    this.setState({ value: '' });
-    const { onCancelComment } = this.props;
+  const handleCancel = useCallback(() => {
+    setValue('')
     if (onCancelComment) onCancelComment();
-  };
+  }, [onCancelComment])
 
-  render() {
-    const {
-      classes,
-      userId,
-      rte,
-      profileImageUrl,
-      name,
-      isReply,
-      readOnly,
-      isQuestion
-    } = this.props;
-    const { value } = this.state;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
-    return (
-      <div className={cx(classes.container, isReply && classes.reply)}>
-        <div className={classes.body}>
-          <Link
-            // className={classes.avatar}
-            component={MyLink}
-            href={`/profile/${userId}`}
-          >
-            <Avatar src={profileImageUrl}>{initials}</Avatar>
-          </Link>
-          {rte && !readOnly ? (
-            <RichTextEditor
-              placeholder={
-                isQuestion
-                  ? 'Have an answer or a comment? Enter it here'
-                  : 'Have a question or a comment? Enter it here'
-              }
-              value={value}
-              onChange={this.handleRTEChange}
-            />
-          ) : (
-            <TextField
-              id="outlined-bare"
-              placeholder={
-                isQuestion
-                  ? 'Have an answer or a comment? Enter it here'
-                  : 'Have a question or a comment? Enter it here'
-              }
-              value={value}
-              margin="normal"
-              variant="outlined"
-              className={classes.textField}
-              fullWidth
-              disabled={readOnly}
-              onChange={this.handleChange}
-            />
-          )}
-        </div>
-        <div className={classes.actions}>
-          <Button
-            onClick={this.handleCancel}
+  const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+  return (
+    <div className={cx(classes.container, isReply && classes.reply)}>
+      <div className={classes.body}>
+        <Link
+          // className={classes.avatar}
+          component={MyLink}
+          href={`/profile/${userId}`}
+        >
+          <Avatar src={profileImageUrl}>{initials}</Avatar>
+        </Link>
+        {rte && !readOnly ? (
+          <RichTextEditor
+            placeholder={
+              isQuestion
+                ? 'Have an answer or a comment? Enter it here'
+                : 'Have a question or a comment? Enter it here'
+            }
+            value={value}
+            onChange={handleRTEChange}
+          />
+        ) : (
+          <TextField
+            id="outlined-bare"
+            placeholder={
+              isQuestion
+                ? 'Have an answer or a comment? Enter it here'
+                : 'Have a question or a comment? Enter it here'
+            }
+            value={value}
+            margin="normal"
+            variant="outlined"
+            className={classes.textField}
+            fullWidth
             disabled={readOnly}
-            color="secondary"
-            // variant="contained"
-          >
-            Cancel
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            disabled={value.trim() === '' || readOnly}
-            onClick={this.handleClick}
-          >
-            Comment
-          </Button>
-        </div>
+            onChange={handleChange}
+          />
+        )}
       </div>
-    );
-  }
+      <div className={classes.actions}>
+        {/* <Typography variant="subtitle1">Comment Anonymously</Typography> */}
+        {/* <AnonymousButton */}
+        {/* active={anonymousActive} */}
+        {/* toggleActive={toggleAnonymousActive} */}
+        {/* /> */}
+        <Button
+          onClick={handleCancel}
+          disabled={readOnly}
+          color="secondary"
+        // variant="contained"
+        >
+          Cancel
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          disabled={value.trim() === '' || readOnly}
+          onClick={handleClick}
+        >
+          Comment
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export default withStyles(styles)(PostItemAddComment);

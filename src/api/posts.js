@@ -277,12 +277,14 @@ export const createQuestion = async ({
   title,
   body,
   classId,
+  anonymous,
   sectionId,
   tags
 }: {
   userId: string,
   title: string,
   body: string,
+  anonymous: boolean,
   classId: number,
   sectionId: ?number,
   tags: Array<number>
@@ -293,6 +295,7 @@ export const createQuestion = async ({
       `${API_ROUTES.QUESTION}`,
       {
         user_id: Number(userId),
+        anonymous,
         question_title: title,
         question_body: body,
         class_id: classId,
@@ -495,8 +498,7 @@ export const getPostComments = async ({
   try {
     const token = await getToken();
     const result = await axios.get(
-      `${
-        API_ROUTES.FEED
+      `${API_ROUTES.FEED
       }/${postId}/comments?user_id=${userId}&type_id=${typeId}`,
       {
         headers: {
@@ -521,12 +523,14 @@ export const createComment = async ({
   typeId,
   comment,
   rootCommentId,
+  anonymous,
   parentCommentId
 }: {
   userId: string,
   postId: number,
   typeId: number,
   comment: string,
+  anonymous: boolean,
   rootCommentId: ?number,
   parentCommentId: ?number
 }) => {
@@ -538,6 +542,7 @@ export const createComment = async ({
         user_id: Number(userId),
         type_id: typeId,
         comment,
+        anonymous,
         root_comment_id: rootCommentId,
         parent_comment_id: parentCommentId
       },
@@ -716,8 +721,7 @@ export const removeFromStudyCircle = async ({
     const token = await getToken();
 
     const result = await axios.delete(
-      `${
-        API_ROUTES.STUDY_CIRCLE
+      `${API_ROUTES.STUDY_CIRCLE
       }/${userId}?study_circle_id=${classmateId}&study_circle_type_id=${studyCircleTypeId}`,
       {
         headers: {
@@ -1000,7 +1004,7 @@ export const updatePostView = async ({
   }
 };
 
-export const getPostInfo = async ({ hid }: { hid: string }): Promise<Post> => {
+export const getPostInfo = async ({ hid }: {hid: string}): Promise<Post> => {
   try {
     const token = await getToken();
 
