@@ -25,7 +25,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     color: theme.circleIn.palette.disabled,
     display: 'flex',
+    '& ul': {
+      wordBreak: 'break-word',
+      padding: 0,
+      margin: 0,
+    },
     '& p': {
+      wordBreak: 'break-word',
       padding: 0,
       margin: 0,
     }
@@ -47,7 +53,13 @@ const useStyles = makeStyles(theme => ({
     outlineStyle: 'none',
     paddingBottom: theme.spacing(),
     position: 'relative',
+    '& ol': {
+      wordBreak: 'break-word',
+      padding: 0,
+      margin: 0,
+    },
     '& p': {
+      wordBreak: 'break-word',
       padding: 0,
       margin: 0,
     }
@@ -107,6 +119,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 8,
     paddingLeft: theme.spacing(2),
     '& p': {
+      wordBreak: 'break-word',
       padding: 0,
       margin: 0,
     }
@@ -122,6 +135,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(2),
     paddingTop: theme.spacing(2),
     '& p': {
+      wordBreak: 'break-word',
       padding: 0,
       margin: 0,
     }
