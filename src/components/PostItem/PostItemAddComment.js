@@ -3,12 +3,12 @@ import React, { useState, useCallback } from 'react';
 import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import AnonymousButton from 'components/AnonymousButton';
+// import AnonymousButton from 'components/AnonymousButton';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography'
+// import Typography from '@material-ui/core/Typography'
 import RichTextEditor from '../../containers/RichTextEditor';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
@@ -72,11 +72,11 @@ const PostItemAddComment = ({
   onPostComment,
 }: Props) => {
   const [value, setValue] = useState('')
-  const [anonymousActive, setAnonymousActive] = useState(false)
+  // const [anonymousActive, setAnonymousActive] = useState(false)
 
-  const toggleAnonymousActive = useCallback(() => {
-    setAnonymousActive(a => !a)
-  }, [])
+  // const toggleAnonymousActive = useCallback(() => {
+  // setAnonymousActive(a => !a)
+  // }, [])
 
   const handleChange = useCallback(event => {
     setValue(event.target.value)
@@ -90,11 +90,11 @@ const PostItemAddComment = ({
   const handleClick = useCallback(() => {
     onPostComment({
       comment: value,
-      anonymous: anonymousActive
+      // anonymous: anonymousActive
     });
     setValue('')
     if (onCancelComment) onCancelComment();
-  }, [anonymousActive, onCancelComment, onPostComment, value])
+  }, [onCancelComment, onPostComment, value])
 
   const handleCancel = useCallback(() => {
     setValue('')
