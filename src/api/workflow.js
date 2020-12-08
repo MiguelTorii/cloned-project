@@ -40,7 +40,6 @@ export const createTodo = async ({
   title,
   categoryId,
   sectionId,
-  reminder,
   date,
   description
 }: {
@@ -60,7 +59,6 @@ export const createTodo = async ({
         category: categoryId,
         due_date: date,
         section_id: sectionId,
-        notification_seconds_until: reminder || 0,
         description,
       },
       {
