@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 import Lottie from 'react-lottie'
@@ -25,6 +25,10 @@ import creditCardAnimation from 'assets/lottie/creditcard.json'
 import flipCardAnimation from 'assets/lottie/flip-card.json'
 import moneyStackAnimation from 'assets/lottie/money-stack.json'
 import onlineMathAnimation from 'assets/lottie/online-math-courses.json'
+
+import { detect } from 'detect-browser';
+
+const browser = detect();
 
 const centered = {
   alignItems: 'center',
@@ -195,9 +199,9 @@ const styles = theme => ({
   },
   step: {
     display: 'flex',
-    height: '100%',
-    // eslint-disable-next-line
-    height: '-webkit-fill-available'
+    height: browser.name === 'safari'
+      ? '-webkit-fill-available'
+      : '100%'
   },
   stepper: {
     alignItems: 'center',
@@ -371,7 +375,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
 
   const MockedBoard = () => (
     <div className={classes.board}>
-      <div className={classes.boardColumn} style={{ backgroundColor: '#EBAF64'}}>
+      <div className={classes.boardColumn} style={{ backgroundColor: '#EBAF64' }}>
         <div className={classes.boardHeader}>Upcoming</div>
         <div className={classes.boardTask}>{trunc(tasks.task1)}</div>
         <div className={classes.boardTask}>{trunc(tasks.task2)}</div>
@@ -414,7 +418,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           </div>
         </div>
         <div>
-          <Select value={1} style={{width: '100%' }}>
+          <Select value={1} style={{ width: '100%' }}>
             <MenuItem value={1}>
               <span style={{ color: formColor }}> What class is this for?</span>
             </MenuItem>
@@ -584,4 +588,4 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   );
 }
 
-export default withStyles(styles)(Onboarding);
+export default memo(withStyles(styles)(Onboarding));
