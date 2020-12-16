@@ -298,15 +298,13 @@ const CreateQuestion = ({
                 sectionId={sectionId}
                 onChange={handleClassChange} />
             </Grid>
-            {/* TODO: remove false when ready to use */}
-            {!questionId && false && (
+            {!questionId && (
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Ask Anonymously</Typography>
               </Grid>
             )}
 
-            {/* TODO: remove false when ready to use */}
-            {!questionId && false && (
+            {!questionId && (
               <Grid item xs={12} sm={10}>
                 <AnonymousButton
                   active={anonymousActive}

@@ -18,7 +18,7 @@ import {
 import RichTextEditor from 'containers/RichTextEditor'
 // import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
-// import Notification from 'components/Workflow/Notification'
+import Notification from 'components/Workflow/Notification'
 import moment from 'moment'
 
 const useStyles = makeStyles(theme => ({
@@ -117,9 +117,9 @@ const getNotificationOptions = (seconds, updated, due) => {
   return null
 }
 
-// const isFuture = date => {
-// return moment(date).valueOf() - moment().valueOf() > 0
-// }
+const isFuture = date => {
+  return moment(date).valueOf() - moment().valueOf() > 0
+}
 
 const WorkflowEdit = ({
   task,
@@ -224,22 +224,22 @@ const WorkflowEdit = ({
     else setSectionId(e.target.value)
   }, [handleOpenManageClass])
 
-  // const editNotification = useCallback((e, index) => {
-  // const { key, value } = e.target
-  // if (key === 'custom') {
-  // setNotifications(n => n.map((v, i) => i === index ? { key: key + index, value } : v))
-  // return
-  // }
+  const editNotification = useCallback((e, index) => {
+    const { key, value } = e.target
+    if (key === 'custom') {
+      setNotifications(n => n.map((v, i) => i === index ? { key: key + index, value } : v))
+      return
+    }
 
-  // if (!notifications.includes(value)) {
-  // setNotifications(n => n.map((v, i) => i === index ? { key: value } : v))
-  // }
-  // }, [notifications, setNotifications])
+    if (!notifications.includes(value)) {
+      setNotifications(n => n.map((v, i) => i === index ? { key: value } : v))
+    }
+  }, [notifications, setNotifications])
 
-  // const deleteNotification = useCallback(() => {
-  // setNotifications([{ key: '' }])
-  // // setNotifications(n => n.filter((_, idx) => idx !== index))
-  // }, [setNotifications])
+  const deleteNotification = useCallback(() => {
+    setNotifications([{ key: '' }])
+    // setNotifications(n => n.filter((_, idx) => idx !== index))
+  }, [setNotifications])
 
   return useMemo(() => (
     <Dialog
@@ -295,18 +295,18 @@ const WorkflowEdit = ({
             </Select>
           </FormControl>
         </Grid>
-        {/* <Grid item xs={12}> */}
-        {/* {isFuture(date) && notifications && notifications.map((n, index) => ( */}
-        {/* <Notification */}
-        {/* n={n} */}
-        {/* key={`reminders-${n.key}`} */}
-        {/* dueDate={date} */}
-        {/* index={index} */}
-        {/* editNotification={editNotification} */}
-        {/* deleteNotification={deleteNotification} */}
-        {/* /> */}
-        {/* ))} */}
-        {/* </Grid> */}
+        <Grid item xs={12}>
+          {isFuture(date) && notifications && notifications.map((n, index) => (
+            <Notification
+              n={n}
+              key={`reminders-${n.key}`}
+              dueDate={date}
+              index={index}
+              editNotification={editNotification}
+              deleteNotification={deleteNotification}
+            />
+          ))}
+        </Grid>
         <Grid item xs={12}>
           <FormControl className={classes.selectForm}>
             <InputLabel>What class is this for?</InputLabel>
@@ -343,7 +343,7 @@ const WorkflowEdit = ({
         {/* </Grid> */}
       </Grid>
     </Dialog>
-  ), [canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, description, handleCloseManageClasses, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
+  ), [canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
 }
 
 export default memo(WorkflowEdit)
