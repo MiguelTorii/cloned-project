@@ -78,16 +78,24 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     email: '',
   };
 
-  componentDidMount = () => {
+  init = async () => {
     const {
       requestCampaign,
+      checkUserSession,
       user: {
         data: { userId }
       }
     } = this.props;
+    const loggedIn = await checkUserSession()
+    if (loggedIn) {
+      if (userId !== '') this.handleCheckUpdate();
+      requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
+    }
 
-    if (userId !== '') this.handleCheckUpdate();
-    requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
+  }
+
+  componentDidMount = () => {
+    this.init()
   };
 
   componentDidUpdate = prevProps => {

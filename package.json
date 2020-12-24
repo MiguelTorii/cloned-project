@@ -109,7 +109,7 @@
     "prettier": "^1.16.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_STAGE=dev react-scripts start",
     "lint": "eslint src || exit 0",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build": "react-scripts build",

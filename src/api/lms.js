@@ -28,6 +28,7 @@ export const getLMSSchools = async (): Promise<LMSSchools> => {
 export const signLMSUser = async ({
   code,
   grantType,
+  roleId,
   clientId,
   lmsTypeId,
   redirectUri
@@ -36,18 +37,20 @@ export const signLMSUser = async ({
   grantType: string,
   clientId: string,
   lmsTypeId: number,
+  roleId: number,
   redirectUri: string
 }): Promise<Object> => {
   try {
     const result = await axios.post(API_ROUTES.LMS_USER, {
       code,
       grant_type: grantType,
+      application_id: roleId,
       client_id: clientId,
       lms_type_id: lmsTypeId,
       redirect_uri: redirectUri
     });
     const { data = {} } = result;
-    // eslint-disable-next-line
+
     if (data?.redirect_url) window.location = data.redirect_url
     return userToCamelCase(data);
   } catch (err) {

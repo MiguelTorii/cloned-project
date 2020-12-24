@@ -7,13 +7,15 @@ import type { User, Schools } from '../types/models';
 export const signInUser = async (
   email: string,
   password: string,
-  schoolId: number
+  schoolId: number,
+  isAdmin: boolean
 ): Promise<User | {}> => {
   try {
     const result = await axios.post(API_ROUTES.LOGIN, {
       email,
       password,
-      school_id: schoolId
+      school_id: schoolId,
+      application_id: isAdmin ? 2 : 1
     });
     const { data } = result;
     return data;
@@ -47,6 +49,7 @@ export const checkUser = async (): User | {} => {
       token,
       segment
     });
+
     const { data = {} } = result;
     return (data: User | {});
   } catch (err) {

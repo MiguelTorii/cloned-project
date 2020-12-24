@@ -6,6 +6,19 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { ReferralData, School } from '../types/models';
 
+const setRole = ({ role }): Action => ({
+  type: authActions.UPDATE_AUTH_ROLE,
+  payload: {
+    role
+  }
+});
+
+export const updateRole = ({ role }) => async (
+  dispatch: Dispatch
+) => {
+  dispatch(setRole({ role }));
+};
+
 const setSchool = ({ school }: { school: ?School }): Action => ({
   type: authActions.UPDATE_AUTH_SCHOOL_REQUEST,
   payload: {

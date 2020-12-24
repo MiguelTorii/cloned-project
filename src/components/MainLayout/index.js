@@ -453,6 +453,7 @@ const MainLayout = ({
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
+                id='avatar-menu'
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >

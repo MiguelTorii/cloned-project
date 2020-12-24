@@ -22,7 +22,8 @@ export type AuthState = {
 
 const defaultState = {
   data: {
-    school: null
+    school: null,
+    role: ''
   },
   isLoading: false,
   error: false,
@@ -35,6 +36,12 @@ const defaultState = {
 
 export default (state: AuthState = defaultState, action: Action): AuthState => {
   switch (action.type) {
+  case authActions.UPDATE_AUTH_ROLE:
+    return update(state, {
+      data: {
+        role: { $set: action.payload.role }
+      }
+    });
   case authActions.UPDATE_AUTH_SCHOOL_REQUEST:
     return update(state, {
       data: {

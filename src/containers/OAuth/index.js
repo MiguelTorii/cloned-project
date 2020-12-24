@@ -45,6 +45,7 @@ class OAuth extends React.Component<Props> {
         lmsTypeId: jRes.lms_type_id,
         redirectUri: jRes.redirect_uri
       });
+
       updateUser({ user });
     } catch (err) {
       pushTo('/login');

@@ -106,7 +106,8 @@ export const sync = userId => async (
   dispatch: Dispatch
 ) => {
   const result = await getSync(userId)
-  dispatch(syncSuccessAction(result))
+  if (result)
+    dispatch(syncSuccessAction(result))
 }
 
 const confirmTooltipSuccessAction = (tooltipId: number): Action => ({

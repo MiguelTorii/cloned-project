@@ -42,11 +42,13 @@ import { Referral } from './containers/Referrals';
 import Saml from './containers/Auth/Saml';
 // import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
 import Auth from './pages/Auth';
+import AuthRedirect from './pages/AuthRedirect';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import OAuth from './pages/OAuth';
+import OAuthRedirect from './pages/OAuthRedirect';
 import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
 import Redirect from './pages/Redirect';
@@ -190,6 +192,8 @@ ReactDOM.render(
             {/* path="/study-circle" */}
             {/* component={withTracker(StudyCircle)} */}
             {/* /> */}
+            <Route exact path="/new" component={withTracker(AuthRedirect)} />
+            <Route exact path="/new-oauth" component={withTracker(OAuthRedirect)} />
             <Route exact path="/auth" component={withTracker(Auth)} />
             <Route exact path="/login" component={withTracker(SignIn)} />
             <Route exact path="/signup" component={withTracker(SignUp)} />

@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 import store from 'store';
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
+import { redirectNonce } from 'api/utils'
 import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -18,7 +19,7 @@ const requestUserCheck = (): Action => ({
   type: signInActions.CHECK_USER_REQUEST
 });
 
-const setUser = ({ user }: { user: User }): Action => ({
+const setUser = ({ user }: {user: User}): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
   payload: {
     user
@@ -61,19 +62,23 @@ const clearError = (): Action => ({
 export const signIn = ({
   email,
   password,
-  schoolId
+  schoolId,
+  role
 }: {
   email: string,
   password: string,
+  role: string,
   schoolId: number
 }) => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignIn());
     // $FlowFixMe
-    const result = await signInUser(email, password, schoolId);
+    const result = await signInUser(email, password, schoolId, role === 'faculty');
 
     const user: User = {
       userId: (result.user_id: string) || '',
+      redirectUri: (result.redirect_uri: string) || '',
+      nonce: (result.nonce: string) || '',
       email: (result.email: string) || '',
       firstName: (result.first_name: string) || '',
       lastName: (result.last_name: string) || '',
@@ -92,6 +97,9 @@ export const signIn = ({
       lmsTypeId: (result.lms_type_id: number) || -1,
       lmsUser: (result.lms_user: boolean) || false
     };
+
+    const redirected = redirectNonce(user)
+    if (redirected) return  () => {}
 
     store.set('TOKEN', user.jwtToken);
     store.set('REFRESH_TOKEN', user.refreshToken);
@@ -114,7 +122,7 @@ export const signIn = ({
         })
       );
     return dispatch(
-      setError({ title: 'Unknown error', body: 'Please contact us' })
+      setError({ title: 'Hm, something’s wrong.', body: 'There was an issue logging you in. Please check your email or password, or try logging in using a different role. Contact us at support@circleinapp.com if you continue to experience issues logging in.' })
     );
   }
 };
@@ -126,6 +134,8 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
     const user: User = {
       userId: (result.user_id: string) || '',
       email: (result.email: string) || '',
+      redirectUri: (result.redirect_uri: string) || '',
+      nonce: (result.nonce: string) || '',
       firstName: (result.first_name: string) || '',
       lastName: (result.last_name: string) || '',
       school: (result.school: string) || '',
@@ -143,6 +153,9 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
       lmsTypeId: (result.lms_type_id: number) || -1,
       lmsUser: (result.lms_user: boolean) || false
     };
+
+    const redirected = redirectNonce(user)
+    if (redirected) return  () => {}
 
     store.set('TOKEN', user.jwtToken);
     store.set('REFRESH_TOKEN', user.refreshToken);
@@ -208,20 +221,35 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       store.set('SEGMENT', user.segment);
 
       dispatch(setUser({ user }));
-    } else {
-      store.remove('TOKEN');
-      store.remove('REFRESH_TOKEN');
-      store.remove('USER_ID');
-      store.remove('SEGMENT');
-      await dispatch(clearError());
-      dispatch(push('/login'));
+      return true
     }
+    store.remove('TOKEN');
+    store.remove('REFRESH_TOKEN');
+    store.remove('USER_ID');
+    store.remove('SEGMENT');
+    await dispatch(clearError());
   } catch (err) {
+    console.log(err)
+  }
+  // TODO: redirect urls before login should remove the code bellow
+  if (
+    ![
+      '/new-oauth',
+      '/new',
+      '/oauth',
+      '/forgot_password',
+      '/reset_password',
+      '/terms-of-use',
+      '/redirect',
+      '/saml'
+    ].includes(window.location.pathname)
+  ) {
     dispatch(push('/login'));
   }
+  return false
 };
 
-export const updateUser = ({ user }: { user: User }) => async (
+export const updateUser = ({ user }: {user: User}) => async (
   dispatch: Dispatch
 ) => {
   store.set('TOKEN', user.jwtToken);
@@ -240,6 +268,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
     store.clearAll()
     dispatch(clearUser());
     dispatch(push('/login'));
+    // window.location.href = 'https://www.circleinapp.com/'
   } catch (err) {
     dispatch(push('/login'));
   }
