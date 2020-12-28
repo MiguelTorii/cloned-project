@@ -141,8 +141,8 @@ class Seasons extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, seasons } = this.props;
-    // const { 
-    // value, 
+    // const {
+    // value,
     // open
     // } = this.state;
 

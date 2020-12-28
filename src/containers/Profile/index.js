@@ -37,7 +37,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ProfileHeader from '../../components/Profile/header';
 import ProfileAbout from '../../components/Profile/about';
-import ProfileSeasons from '../../components/Profile/seasons';
+// import ProfileSeasons from '../../components/Profile/seasons';
 import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
 import StudyCircleDialog from '../../components/StudyCircleDialog';
@@ -459,7 +459,7 @@ class Profile extends React.PureComponent<Props, State> {
       );
     if (error) return <Redirect to="/" />;
     const seasons = processSeasons(userStatistics);
-    
+
     return (
       <Fragment>
         <div className={classes.root}>
@@ -510,11 +510,11 @@ class Profile extends React.PureComponent<Props, State> {
                 />
               </ErrorBoundary>
             </Grid>
-            <Grid item xs={12} md={12} hidden={tab !== 0}>
-              <ErrorBoundary>
-                <ProfileSeasons seasons={seasons} />
-              </ErrorBoundary>
-            </Grid>
+            {/* <Grid item xs={12} md={12} hidden={tab !== 0}> */}
+            {/* <ErrorBoundary> */}
+            {/* <ProfileSeasons seasons={seasons} /> */}
+            {/* </ErrorBoundary> */}
+            {/* </Grid> */}
             <Grid item xs={12} md={12} hidden={tab !== 1}>
               <ErrorBoundary>
                 <ProfilePosts
