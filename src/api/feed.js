@@ -168,8 +168,9 @@ export const fetchFeedv2 = async ({
   try {
     const filterSection = sectionId ? `&section_id=${sectionId}` : ''
     const token = await getToken();
+    const myPosts = bookmarked ? '' : `user_id=${userId}`
     const result = await axios.get(
-      `${API_ROUTES.FEED_V1_1}?user_id=${userId}${filterSection}&bookmarked=${Boolean(
+      `${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(
         bookmarked
       ).toString()}`,
       {
