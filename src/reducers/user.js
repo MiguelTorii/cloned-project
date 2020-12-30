@@ -36,6 +36,7 @@ export type UserState = {
     viewedOnboarding: boolean,
     helpLink: string
   },
+  expertMode: boolean,
   announcementData: Announcement,
   errorMessage: {
     title: string,
@@ -84,10 +85,16 @@ const defaultState = {
     viewedOnboarding: null,
     helpLink: ''
   },
+  expertMode: null,
+  isExpert: false,
   runningTour: false,
   isLoading: false,
   error: false,
   announcementData: null,
+  dialogMessage: {
+    title: '',
+    body: ''
+  },
   errorMessage: {
     title: '',
     body: '',
@@ -112,8 +119,9 @@ export default (state: UserState = defaultState, action: Action): UserState => {
   case signUpActions.SIGN_UP_USER_SUCCESS:
   case signInActions.SIGN_IN_USER_SUCCESS:
     return update(state, {
-      // $FlowFixMe
       data: { $set: action.payload.user },
+      isExpert: { $set: action.payload.isExpert },
+      expertMode: { $set: action.payload.expertMode },
       isLoading: { $set: false }
     });
   case signUpActions.SIGN_UP_USER_ERROR:
@@ -139,8 +147,8 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     });
   case userActions.UPDATE_CLASSES:
     return update(state, {
-      // $FlowFixMe
-      userClasses: { $set: action.payload.userClasses }
+      userClasses: { $set: action.payload.userClasses },
+      isLoading: { $set: false }
     })
   case userActions.UPDATE_TOUR:
     return update(state, {
@@ -186,6 +194,28 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         $set: action.payload.announcement
       },
     });
+  case userActions.TOGGLE_EXPERT_MODE:
+    return update(state, {
+      isLoading: { $set: true },
+      dialogMessage: {
+        title: {
+          $set: !state.expertMode
+            ? 'Taking you to Expert Mode... \r\n Sit tight!'
+            : 'Taking you to Student Mode... \r\n Sit tight!'
+        },
+      },
+      expertMode: {
+        $set: !state.expertMode
+      }
+    })
+  case userActions.CLEAR_DIALOG_MESSAGE:
+    return update(state, {
+      isLoading: { $set: false },
+      dialogMessage: {
+        title: { $set: '' },
+        body: { $set: '' }
+      }
+    })
   default:
     return state;
   }

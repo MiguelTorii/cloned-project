@@ -132,6 +132,56 @@ export const updateFlashcards = async ({
   }
 };
 
+export const createBatchPhotoNote = async ({
+  userId,
+  title,
+  fileNames,
+  comment,
+  sectionIds,
+  tags
+}: {
+  userId: string,
+  title: string,
+  fileNames: Array<string>,
+  sectionIds: Array<number>,
+  comment: string,
+  tags: Array<number>
+}): Promise<PostResponse> => {
+  try {
+    const body = {
+      user_id: Number(userId),
+      title,
+      file_names: fileNames,
+      comment,
+      section_ids: sectionIds,
+      tags
+    }
+
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.BATCH_PHOTO_NOTE}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    try {
+      logEvent({ event: 'Feed- Create Photo Note', props: { Title: title } });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
 export const createPhotoNote = async ({
   userId,
   title,
@@ -150,18 +200,20 @@ export const createPhotoNote = async ({
   tags: Array<number>
 }): Promise<PostResponse> => {
   try {
+    const body = {
+      user_id: Number(userId),
+      title,
+      class_id: classId,
+      section_id: sectionId,
+      file_names: fileNames,
+      comment,
+      tags
+    }
+
     const token = await getToken();
     const result = await axios.post(
       `${API_ROUTES.PHOTO_NOTE}`,
-      {
-        user_id: Number(userId),
-        title,
-        class_id: classId,
-        section_id: sectionId,
-        file_names: fileNames,
-        comment,
-        tags
-      },
+      body,
       {
         headers: {
           Authorization: `Bearer ${token}`

@@ -54,6 +54,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   const [deletePost, setDeletePost] = useState(false)
 
   const {
+    expertMode,
     data: {
       userId,
       firstName: myFirstName,
@@ -151,6 +152,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
         <PostItem feedId={feedId}>
           <ErrorBoundary>
             <PostItemHeader
+              expertMode={expertMode}
               pushTo={push}
               router={router}
               pop={pop}

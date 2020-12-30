@@ -8,11 +8,14 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
+import * as chatActions from 'actions/chat'
+import { bindActionCreators } from 'redux'
 import AutoComplete from '../AutoComplete'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
 import type { UserState } from '../../reducers/user'
 import type { ChatState } from '../../reducers/chat'
+import BatchMessage from '../../containers/Chat/BatchMessage'
 
 const styles = theme => ({
   validatorForm: {
@@ -56,6 +59,7 @@ const CreateChatChannelInput = ({
   createMessage,
   onOpenChannel,
   handleClearCreateMessage,
+  closeNewChannel,
   chat,
 }: Props) => {
   const [chatType, setChatType] = useState('single')
@@ -66,8 +70,8 @@ const CreateChatChannelInput = ({
   const [error, setError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  const { data: { userId, schoolId }} = user
-  const { data: { client }} = chat
+  const { data: { userId, schoolId } } = user
+  const { data: { client } } = chat
 
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') setChatType('group')
@@ -201,6 +205,11 @@ const CreateChatChannelInput = ({
         >
           <CheckCircleOutlineRoundedIcon/>
         </IconButton>
+        <BatchMessage
+          closeNewChannel={closeNewChannel}
+          user={user}
+          chat={chat}
+        />
       </div>
     </ValidatorForm>
   )
@@ -211,8 +220,16 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   chat
 })
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      closeNewChannel: chatActions.closeNewChannel,
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(CreateChatChannelInput))
 

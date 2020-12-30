@@ -6,6 +6,38 @@ import { API_ROUTES } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
 import { getToken } from './utils';
 
+export const sendBatchMessage = async ({
+  message,
+  chatIds
+}: {
+  message: string,
+  chatIds: array
+}) => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.BATCH_MESSAGE}`,
+      {
+        message,
+        chat_ids: chatIds
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data
+    } = result
+
+    return data
+  } catch (err) {
+    return null;
+  }
+}
+
 export const getClassmates = async ({
   classId,
   sectionId

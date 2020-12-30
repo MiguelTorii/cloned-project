@@ -1,16 +1,17 @@
 // @flow
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import uuidv4 from 'uuid/v4';
 import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
-import { Prompt , withRouter } from 'react-router'
+import { Prompt, withRouter } from 'react-router'
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import { decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -26,7 +27,6 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
-import { getUserClasses } from '../../api/user';
 
 const styles = theme => ({
   flashcards: {
@@ -43,7 +43,8 @@ type Props = {
   classes: Object,
   user: UserState,
   location: {
-    search: string
+    search: string,
+    pathname: string
   },
   pushTo: Function,
   flashcardId: ?number,
@@ -58,11 +59,16 @@ const CreateFlashcards = ({
   pushTo,
   flashcardId,
   campaign,
-  enqueueSnackbar
+  enqueueSnackbar,
+  location: {
+    pathname
+  }
 }: Props) => {
   const { search } = location;
   const {
     data: { userId, segment, grade },
+    userClasses,
+    expertMode
   } = user;
   const [classId, setClassId] = useState(0);
   const [sectionId, setSectionId] = useState(null);
@@ -77,6 +83,8 @@ const CreateFlashcards = ({
   const [errorTitle, setErrorTitle] = useState('');
   const [errorBody, setErrorBody] = useState('');
   const [changed, setChanged] = useState(false);
+  const [classList, setClassList] = useState([])
+  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
@@ -93,9 +101,9 @@ const CreateFlashcards = ({
       flashcardId
     });
 
-    const { classes } = await getUserClasses({ userId });
-    const userClasses = processClasses({ classes, segment });
-    const { sectionId } = JSON.parse(userClasses[0].value);
+    const { classList: classes } = userClasses
+    const uc = processClasses({ classes, segment });
+    const { sectionId } = JSON.parse(uc[0].value);
     const { deck = [], title, classId, tags = [], summary } = res;
     setSectionId(sectionId);
     setClassId(classId);
@@ -113,7 +121,7 @@ const CreateFlashcards = ({
     setTags(tags);
     setSummary(summary);
     return null;
-  }, [flashcardId, segment, userId]);
+  }, [flashcardId, segment, userClasses, userId]);
 
   const updateFlashcards = useCallback(async () => {
     if (tags.length < 0) {
@@ -270,13 +278,30 @@ const CreateFlashcards = ({
     []
   );
 
-  const handleClassChange = useCallback(
-    ({ classId: cid, sectionId: sid }) => {
-      setClassId(cid);
-      setSectionId(sid);
-    },
-    []
-  );
+  const handleClassChange = useCallback(({
+    classId,
+    sectionId
+  }: {
+    classId: number,
+    sectionId: number
+  }) => {
+    const selected = userClasses.classList.find(c => c.classId === classId)
+    if (selected) setClassList([{
+      ...selected,
+      sectionId
+    }])
+    setSectionId(sectionId)
+    setClassId(classId)
+  }, [userClasses.classList])
+
+  const handleClasses = useCallback(classList => {
+    setClassList(classList)
+    if (classList.length > 0) {
+      setSectionId(classList[0].sectionId)
+      setClassId(classList[0].classId)
+    }
+  }, [])
+
 
   // const handleTagsChange = useCallback(values => {
   // setTags(values);
@@ -426,11 +451,19 @@ const CreateFlashcards = ({
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-              <ClassesSelector
-                onChange={handleClassChange}
-                classId={classId}
-                sectionId={sectionId}
-              />
+
+              {expertMode && !isEdit ? (
+                <ClassMultiSelect
+                  selected={classList}
+                  onSelect={handleClasses}
+                />
+              ) : (
+                <ClassesSelector
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={handleClassChange}
+                />
+              )}
             </Grid>
             <Grid item xs={12} sm={2}>
               <Typography variant="subtitle1">Description</Typography>

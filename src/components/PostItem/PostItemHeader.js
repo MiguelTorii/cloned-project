@@ -89,7 +89,7 @@ type Props = {
   postId: number,
   typeId: number,
   pushTo: Function,
-  pop: Function,
+  expertMode: boolean,
   router: Object,
   onDelete: Function
 };
@@ -144,6 +144,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     const {
       classes,
       router,
+      expertMode,
       currentUserId,
       userId,
       name,
@@ -214,6 +215,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     } = router
 
     const goToFeed = () => pushTo(`/feed?${queryString.stringify(query)}`)
+    console.log({ expertMode })
 
     return (
       <Fragment>
@@ -248,12 +250,15 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Link>{' '}
               {[2, 3].includes(roleId) && role && <TutorBadge text={role} />}
             </Typography>
-            {!newClassExperience && <Typography component="p" variant="subtitle1" noWrap>
-              {classroomName}
-            </Typography>}
-            <Typography component="p" variant="subtitle1" noWrap>
-              {fromNow}
-            </Typography>
+            {(!newClassExperience || expertMode) ? (
+              <Typography component="p" variant="subtitle1" noWrap>
+                {classroomName} • {fromNow}
+              </Typography>
+            ) : (
+              <Typography component="p" variant="subtitle1" noWrap>
+                {fromNow}
+              </Typography>
+            )}
           </div>
           <Tooltip
             id={9043}

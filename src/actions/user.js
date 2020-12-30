@@ -7,9 +7,25 @@ import {
   getUserClasses,
   getSync
 } from 'api/user'
+import { push } from 'connected-react-router';
+import store from 'store'
+import isEqual from 'lodash/isEqual'
+import * as feedActions from 'actions/feed';
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models'
+
+const clearDialogMessageAction = (): Action => ({
+  type: userActions.CLEAR_DIALOG_MESSAGE
+})
+
+export const clearDialogMessage = () => (dispatch: Dispatch) => {
+  dispatch(clearDialogMessageAction())
+}
+
+const toggleExpertModeAction = (): Action => ({
+  type: userActions.TOGGLE_EXPERT_MODE
+})
 
 const setClassesAction = ({
   userClasses,
@@ -31,14 +47,32 @@ export const fetchClasses = (skipCache) => async (
     const {
       user: {
         userClasses,
-        data: { userId }
+        data: { userId },
+        expertMode
       }
     } = getState()
-    const res = await getUserClasses({ userId, skipCache })
+
+    const res = await getUserClasses({ userId, skipCache, expertMode })
     const { classes: classList, emptyState, permissions: { canAddClasses } } = res
 
+    if (expertMode) {
+      store.remove('CLASSES_CACHE')
+
+      const value = classList.map(cl => (
+        JSON.stringify({
+          classId: cl.classId,
+          sectionId: cl.section[0].sectionId
+        })
+      ))
+
+      dispatch(feedActions.updateFilter({
+        value,
+        field: 'userClasses',
+      }))
+    }
+
     if (
-      userClasses.classList.length !== classList.length ||
+      !isEqual(userClasses.classList, classList) ||
       userClasses.canAddClasses !== canAddClasses
     ) {
       dispatch(setClassesAction({
@@ -50,7 +84,25 @@ export const fetchClasses = (skipCache) => async (
       }
       ))
     }
-  } catch (e) {}
+  } catch (e) {/* NONE */}
+}
+
+export const toggleExpertMode = () => (
+  dispatch: Dispatch,
+  getState: Function
+) => {
+  const {
+    router: {
+      location: {
+        pathname
+      }
+    }
+  } = getState()
+
+  dispatch(toggleExpertModeAction())
+  dispatch(fetchClasses(true))
+
+  if (pathname === '/feed') dispatch(push('/'))
 }
 
 const updateTourAction = ({

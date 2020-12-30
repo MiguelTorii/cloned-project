@@ -109,6 +109,10 @@ const removeChannel = ({ sid }: { sid: string }): Action => ({
   payload: { sid }
 })
 
+const closeNewChannelAction = () => ({
+  type: chatActions.CLOSE_NEW_CHANNEL
+})
+
 const shutdown = (): Action => ({
   type: chatActions.SHUTDOWN_CHAT,
 })
@@ -128,8 +132,12 @@ const createNewChannel = ({ newChannel, openChannels }: { newChannel: boolean, o
   payload: { newChannel, openChannels }
 })
 
+export const closeNewChannel = () => (dispatch: Dispatch) => {
+  dispatch(closeNewChannelAction())
+}
+
 export const handleNewChannel = newChannel => (dispatch: Dispatch, getState: Function) => {
-  const { chat: { data: { openChannels }}} = getState()
+  const { chat: { data: { openChannels } } } = getState()
   const availableSlots = getAvailableSlots(window.innerWidth);
   const newState = update(openChannels, {
     $apply: b => {
@@ -246,7 +254,7 @@ export const handleInitChat = () =>
 
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
-          const {sid} = channel
+          const { sid } = channel
           setTimeout(async () => {
             const members = await fetchMembers(sid)
             dispatch(addChannel({ channel, userId, members }))
@@ -301,7 +309,7 @@ export const handleInitChat = () =>
 
 export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Function) => {
   const {
-    chat: { data: { client, channels }}
+    chat: { data: { client, channels } }
   } = getState()
 
   if (client) {
@@ -323,7 +331,7 @@ export const handleBlockUser = ({ blockedUserId }) => async () => {
 }
 
 export const handleMuteChannel = ({ sid }) => async (dispatch: Dispatch, getState: Function) => {
-  const { chat: { data: { local }}}= getState()
+  const { chat: { data: { local } } }= getState()
   const { muted } = local[sid]
   const res = muted ? await unmuteChannel(sid) : await muteChannel(sid)
   if (res && res.success) dispatch(muteChannelLocal({ sid }));
@@ -337,7 +345,7 @@ export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch
 }
 
 export const handleRoomClick = channel => async (dispatch: Dispatch, getState: Function) => {
-  const { chat: { data: { openChannels }}} = getState()
+  const { chat: { data: { openChannels } } } = getState()
   try {
     const availableSlots = getAvailableSlots(window.innerWidth);
 
@@ -359,7 +367,7 @@ export const handleRoomClick = channel => async (dispatch: Dispatch, getState: F
 };
 
 export const updateOpenChannels = () => async (dispatch: Dispatch, getState: Function) => {
-  const { chat: { data: { openChannels }}} = getState()
+  const { chat: { data: { openChannels } } } = getState()
   try {
     const availableSlots = getAvailableSlots(window.innerWidth);
     if (availableSlots === 0) {
@@ -378,7 +386,7 @@ export const updateOpenChannels = () => async (dispatch: Dispatch, getState: Fun
 };
 
 export const handleChannelClose = (sid: string) => async (dispatch: Dispatch, getState: Function) => {
-  const { chat: { data: { openChannels }}} = getState()
+  const { chat: { data: { openChannels } } } = getState()
   dispatch(setOpenChannels({ openChannels: openChannels.filter(oc => oc.sid !== sid) }))
 }
 

@@ -75,6 +75,7 @@ const Layout = ({
   checkUserSession,
   signOut,
   fetchFeed,
+  toggleExpertMode,
   updateFilter,
   requestCampaign,
   push
@@ -184,6 +185,8 @@ const Layout = ({
     data: { userId, firstName, lastName, profileImage },
     runningTour,
     userClasses,
+    expertMode,
+    isExpert,
     syncData: {
       helpLink
     }
@@ -221,6 +224,9 @@ const Layout = ({
     <Fragment>
       <ErrorBoundary>
         <MainLayout
+          expertMode={expertMode}
+          isExpert={isExpert}
+          toggleExpertMode={toggleExpertMode}
           helpLink={helpLink}
           unreadMessages={unreadMessages}
           userId={userId}
@@ -311,6 +317,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       fetchFeed: feedActions.fetchFeed,
       updateFilter: feedActions.updateFilter,
       fetchClasses: userActions.fetchClasses,
+      toggleExpertMode: userActions.toggleExpertMode,
       push: routePush,
       requestCampaign: campaignActions.requestCampaign
     },

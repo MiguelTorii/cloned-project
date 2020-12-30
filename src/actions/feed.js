@@ -112,10 +112,10 @@ export const fetchFeed = () => async (
   try {
     const {
       feed: {
-        data: { filters }
+        data: { filters },
       },
       user: {
-        data: { userId, schoolId }
+        data: { userId, schoolId },
       }
     } = getState();
 
@@ -129,8 +129,6 @@ export const fetchFeed = () => async (
       fromDate,
       toDate
     } = filters;
-
-    // const { classId, sectionId } = JSON.parse(userClass);
 
     dispatch(requestFetchFeed());
     const feed = await feedApi.fetchFeed({

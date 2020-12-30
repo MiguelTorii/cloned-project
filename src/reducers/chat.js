@@ -71,7 +71,7 @@ const mergeObjects = (first, second) => {
 }
 
 const removeParam = (obj, id) => {
-  const {[id]: removed, ...rest} = obj
+  const { [id]: removed, ...rest } = obj
   return rest
 }
 
@@ -133,7 +133,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           }
         }
       }
-    }}
+    } }
   case chatActions.INIT_LOCAL_CHAT:
     return {
       ...state,
@@ -141,13 +141,13 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       data: {
         ...state.data,
         local: mergeObjects(state.data.local, action.payload.local)
-      }}
+      } }
   case chatActions.INIT_CLIENT_CHAT:
     return { ...state, data: {
       ...state.data,
       online: true,
       client: action.payload.client
-    }}
+    } }
   case chatActions.INIT_CHANNELS_CHAT:
     return {
       ...state,
@@ -155,7 +155,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         ...state.data,
         local: mergeObjects(state.data.local, action.payload.local),
         channels: action.payload.channels
-      }}
+      } }
   case chatActions.UPDATE_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,
@@ -163,7 +163,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       local: { ...state.data.local, [action.payload.channel.sid]: {
         ...state.data.local[action.payload.channel.sid], unread: action.payload.unread
       } }
-    }}
+    } }
   case chatActions.ADD_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,
@@ -187,14 +187,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         }
       },
       channels: [action.payload.channel, ...state.data.channels]
-    }}
+    } }
   case chatActions.REMOVE_CHANNEL_CHAT:
     return { ...state, data: {
       ...state.data,
       channels: state.data.channels.filter(c => c.sid !== action.payload.sid),
       local: { ...removeParam(state.data.local, action.payload.sid) },
       openChannels: state.data.openChannels.filter(c => c.sid !== action.payload.sid)
-    }}
+    } }
   case chatActions.UPDATE_MEMBERS_CHAT:
     return { ...state, data: {
       ...state.data,
@@ -205,7 +205,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           members: action.payload.members
         }
       }
-    }}
+    } }
   case chatActions.REMOVE_MEMBER_CHAT:
     return { ...state, data: {
       ...state.data,
@@ -218,7 +218,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           ))
         }
       }
-    }}
+    } }
   case chatActions.MUTE_CHANNEL:
     return {
       ...state,
@@ -241,13 +241,19 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       online: false,
       openChannels: [],
       unread: 0
-    }}
+    } }
+  case chatActions.CLOSE_NEW_CHANNEL:
+    return { ...state, data: {
+      ...state.data,
+      newChannel: false
+    }
+    }
   case chatActions.SET_OPEN_CHANNELS:
     return { ...state, data: {
       ...state.data,
       openChannels: action.payload.openChannels,
       newChannel: false
-    }}
+    } }
   case rootActions.CLEAR_STATE:
     return defaultState;
   default:

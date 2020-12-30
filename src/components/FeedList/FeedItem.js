@@ -401,7 +401,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { newClassExperience, classes, userId, data, onPostClick } = this.props;
+    const { expertMode, newClassExperience, classes, userId, data, onPostClick } = this.props;
     const { moreAnchorEl } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials =
@@ -522,10 +522,10 @@ class FeedItem extends React.PureComponent<Props, State> {
             subheader={
               <CardActionArea disabled>
                 <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
-                  {!newClassExperience && <Typography component="p" noWrap>
+                  {(!newClassExperience || expertMode) && <Typography component="p" noWrap>
                     {data.courseDisplayName}
                   </Typography>}
-                  {!newClassExperience && <Typography
+                  {(!newClassExperience || expertMode) && <Typography
                     component="p"
                     noWrap
                     style={{ marginRight: 5, marginLeft: 5 }}

@@ -27,7 +27,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DialogTitle from '../../components/DialogTitle';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { UserClass, Permissions } from '../../types/models';
+import type { UserClass } from '../../types/models';
 import {
   getUserClasses,
   getAvailableClasses,
@@ -66,9 +66,9 @@ type Props = {
 
 type State = {
   userClasses: Array<UserClass>,
-  permissions: Permissions,
   availableClasses: Array<Object>,
   search: string,
+  canAddClasses: boolean,
   loading: boolean,
   selectedClasses: Array<{classId: number, sectionId: number}>,
   errorText: boolean
@@ -77,9 +77,7 @@ type State = {
 class ClassesManager extends React.PureComponent<Props, State> {
   state = {
     userClasses: [],
-    permissions: {
-      canAddClasses: false
-    },
+    canAddClasses: false,
     availableClasses: [],
     search: '',
     loading: false,
@@ -98,12 +96,15 @@ class ClassesManager extends React.PureComponent<Props, State> {
   handleLoadClasses = async () => {
     const {
       user: {
-        data: { userId, schoolId }
+        data: { userId, schoolId },
+        userClasses: {
+          classList,
+          canAddClasses
+        }
       }
     } = this.props;
     this.setState({ loading: true });
     try {
-      const userClass = await getUserClasses({ userId })
       const ac = await getAvailableClasses({ userId, schoolId })
       const availableClasses = [];
       const keys = Object.keys(ac);
@@ -111,11 +112,10 @@ class ClassesManager extends React.PureComponent<Props, State> {
       for (const key of keys) {
         availableClasses.push({ name: key, classes: ac[key] });
       }
-      const { classes = [], permissions } = userClass || {};
 
       this.setState({
         userClasses: classes,
-        permissions,
+        canAddClasses,
         availableClasses,
         loading: false
       });
@@ -164,13 +164,13 @@ class ClassesManager extends React.PureComponent<Props, State> {
       try {
         const {
           user: {
-            data: { userId }
+            data: { userId },
+            userClasses: { classList: classes }
           },
           fetchFeed
         } = this.props;
         // this.setState({ loading: true });
         await joinClass({ classId, sectionId, userId });
-        const { classes } = await getUserClasses({ userId });
         this.setState({ userClasses: classes, loading: false });
         fetchFeed()
         // this.setState({ loading: false });
@@ -185,14 +185,14 @@ class ClassesManager extends React.PureComponent<Props, State> {
   handleRemoveClass = ({ classId }: {classId: number}) => async () => {
     const {
       user: {
-        data: { userId }
+        data: { userId },
+        userClasses: { classList: classes }
       },
       fetchFeed
     } = this.props;
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, userId });
-      const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes });
       fetchFeed()
     } finally {
@@ -209,14 +209,14 @@ class ClassesManager extends React.PureComponent<Props, State> {
   }) => async () => {
     const {
       user: {
-        data: { userId }
+        data: { userId },
+        userClasses: { classList: classes }
       },
       fetchFeed
     } = this.props;
     this.setState({ loading: true });
     try {
       await leaveUserClass({ classId, sectionId, userId });
-      const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes });
       fetchFeed()
     } finally {
@@ -234,7 +234,8 @@ class ClassesManager extends React.PureComponent<Props, State> {
     try {
       const {
         user: {
-          data: { userId }
+          data: { userId },
+          userClasses: { classList: classes }
         },
         fetchFeed
       } = this.props;
@@ -244,7 +245,6 @@ class ClassesManager extends React.PureComponent<Props, State> {
         // eslint-disable-next-line no-await-in-loop
         await joinClass({ classId, sectionId, userId });
       }
-      const { classes } = await getUserClasses({ userId });
       this.setState({ userClasses: classes, loading: false });
       fetchFeed()
     } catch (err) {
@@ -497,7 +497,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       onOpenRequestClass
     } = this.props;
     const {
-      permissions: { canAddClasses },
+      canAddClasses,
       loading,
       errorText
     } = this.state;

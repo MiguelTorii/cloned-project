@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -11,6 +11,7 @@ import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { decypherClass } from 'utils/crypto'
 import AnonymousButton from 'components/AnonymousButton';
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreatePostForm from '../../components/CreatePostForm';
@@ -23,7 +24,6 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
-import { getUserClasses } from '../../api/user';
 import type { CampaignState } from '../../reducers/campaign';
 
 const styles = theme => ({
@@ -43,7 +43,8 @@ type Props = {
   pushTo: Function,
   questionId: number,
   location: {
-    search: string
+    search: string,
+    pathname: string
   },
   enqueueSnackbar: Function
 };
@@ -51,16 +52,19 @@ type Props = {
 const CreateQuestion = ({
   classes,
   user: {
+    expertMode,
     data: {
       segment,
       userId
-    }
+    },
+    userClasses,
   },
   campaign,
   pushTo,
   questionId,
   location: {
-    search
+    search,
+    pathname
   },
   enqueueSnackbar
 }: Props) => {
@@ -74,6 +78,8 @@ const CreateQuestion = ({
   const [changed, setChanged] = useState(null)
   const [errorBody, setErrorBody] = useState('')
   const [errorTitle, setErrorTitle] = useState('')
+  const [classList, setClassList] = useState([])
+  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
@@ -85,9 +91,8 @@ const CreateQuestion = ({
 
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({ userId, questionId });
-    const { classes } = await getUserClasses({ userId });
-    const userClasses = processClasses({ classes, segment });
-    const { sectionId } = JSON.parse(userClasses[0].value);
+    const uc = processClasses({ classes: userClasses.classList, segment });
+    const { sectionId } = JSON.parse(uc[0].value);
     const { body, title, classId } = question
     setBody(body)
     setTitle(title)
@@ -101,7 +106,7 @@ const CreateQuestion = ({
       event: 'Feed- Edit Question',
       props: { 'Internal ID': feedId }
     });
-  }, [questionId, segment, userId])
+  }, [questionId, segment, userClasses.classList, userId])
 
   useEffect(() => {
     if (questionId && userId) loadData()
@@ -237,9 +242,14 @@ const CreateQuestion = ({
     classId: number,
     sectionId: number
   }) => {
+    const selected = userClasses.classList.find(c => c.classId === classId)
+    if (selected) setClassList([{
+      ...selected,
+      sectionId
+    }])
     setSectionId(sectionId)
     setClassId(classId)
-  }, [])
+  }, [userClasses.classList])
 
   const handleErrorDialogClose = useCallback(() => {
     setErrorDialog(false)
@@ -251,6 +261,13 @@ const CreateQuestion = ({
     setAnonymousActive(a => !a)
   }, [])
 
+  const handleClasses = useCallback(classList => {
+    setClassList(classList)
+    if (classList.length > 0) {
+      setSectionId(classList[0].sectionId)
+      setClassId(classList[0].classId)
+    }
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -293,10 +310,19 @@ const CreateQuestion = ({
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-              <ClassesSelector
-                classId={classId}
-                sectionId={sectionId}
-                onChange={handleClassChange} />
+
+              {expertMode && !isEdit ? (
+                <ClassMultiSelect
+                  selected={classList}
+                  onSelect={handleClasses}
+                />
+              ) : (
+                <ClassesSelector
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={handleClassChange}
+                />
+              )}
             </Grid>
             {!questionId && (
               <Grid item xs={12} sm={2}>

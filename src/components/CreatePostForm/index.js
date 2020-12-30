@@ -106,7 +106,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       handleSubmit
     } = this.props;
 
-    const { location: {pathname}} = window
+    const { location: { pathname } } = window
     const isEdit = pathname.includes('/edit')
 
     return (
@@ -129,7 +129,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  disabled={loading || (isEdit && !changed) || errorMessage}
+                  disabled={Boolean(loading || (isEdit && !changed) || errorMessage)}
                   className={classes.submit}
                 >
                   {loading ? (

@@ -59,7 +59,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
       classId,
       userId
     })
-    fetchClasses()
+    fetchClasses(true)
   }, [fetchClasses])
 
   useEffect(() => {

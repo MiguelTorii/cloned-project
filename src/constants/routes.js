@@ -24,6 +24,7 @@ export const VIDEO_SHARE_URL =
       : 'https://dev-app2.circleinapp.com/video-call';
 
 export const API_ROUTES = {
+  BATCH_MESSAGE: `${API_URL_V1_1}/batch/chat/message`,
   FEEDBACK: `${API_URL}/feedback`,
   NOTES: `${API_URL_V1_1}/notes`,
   TODO: `${API_URL_V1_1}/todo`,
@@ -63,6 +64,7 @@ export const API_ROUTES = {
   SECTIONS: `${API_URL_V1_2}/school/classes/sections`,
   MEDIA_URL: `${API_URL}/media/url`,
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
+  BATCH_PHOTO_NOTE: `${API_URL_V1_1}/batch/photo_note`,
   QUESTION: `${API_URL}/question`,
   DECK: `${API_URL}/deck`,
   FLASHCARDS: `${API_URL_V1_1}/deck`,

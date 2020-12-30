@@ -9,6 +9,7 @@ import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { decypherClass } from 'utils/crypto'
@@ -21,11 +22,10 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { updateShareURL, createShareLink , getShareLink } from '../../api/posts';
+import { updateShareURL, createShareLink, getShareLink } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
-import { getUserClasses } from '../../api/user';
 import type { CampaignState } from '../../reducers/campaign';
 
 const styles = theme => ({
@@ -63,6 +63,7 @@ type State = {
   errorDialog: boolean,
   errorTitle: string,
   changed: ?boolean,
+  classList: array,
   errorBody: string
 };
 
@@ -74,6 +75,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     url: '',
     preview: '',
     classId: 0,
+    classList: [],
     sectionId: null,
     tags: [],
     changed: null,
@@ -85,7 +87,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   handlePush = path => {
     const { location: { search }, pushTo, campaign } = this.props
-    if(campaign.newClassExperience) {
+    if (campaign.newClassExperience) {
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
@@ -109,16 +111,16 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   loadData = async () => {
     const {
       user: {
-        data: { userId, segment }
+        data: { userId, segment },
+        userClasses: { classList: classes }
       },
       sharelinkId
     } = this.props;
     try {
       const shareLink = await getShareLink({ userId, sharelinkId });
-      const { classes } = await getUserClasses({ userId });
       const userClasses = processClasses({ classes, segment });
       const { sectionId } = JSON.parse(userClasses[0].value);
-      const { classId, summary, title, uri} = shareLink
+      const { classId, summary, title, uri } = shareLink
       this.updatePreview(uri)
       this.setState({
         title,
@@ -135,7 +137,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         event: 'Feed- Edit Link',
         props: { 'Internal ID': feedId }
       });
-    } catch(e) {
+    } catch (e) {
       this.handlePush('/feed')
     }
   };
@@ -302,8 +304,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   handleSubmit = event => {
     event.preventDefault();
-    const {sharelinkId} = this.props
-    if(sharelinkId) this.updateSharelink()
+    const { sharelinkId } = this.props
+    if (sharelinkId) this.updateSharelink()
     else this.createSharelink()
   }
 
@@ -312,6 +314,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     if (name === 'url') this.updatePreview(event.target.value);
   };
 
+
   handleClassChange = ({
     classId,
     sectionId
@@ -319,8 +322,27 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     classId: number,
     sectionId: number
   }) => {
-    this.setState({ classId, sectionId });
+    const { user } = this.props
+    const selected = user.userClasses.classList.find(c => c.classId === classId)
+    if (selected) this.setState({ classList: [selected] });
+    this.setState({ classId, sectionId })
   };
+
+  handleClasses = classList => {
+    this.setState({ classList })
+    if (classList.length > 0) {
+      this.setState({
+        sectionId: classList[0].sectionId,
+        classId: classList[0].classId
+      })
+    } else {
+      this.setState({
+        sectionId: null,
+        classId: 0
+      })
+    }
+  }
+
 
   // handleTagsChange = values => {
   // this.setState({ tags: values });
@@ -337,7 +359,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { sharelinkId, classes } = this.props;
+    const { location: { pathname }, user, sharelinkId, classes } = this.props;
+    const { expertMode } = user
     const {
       loading,
       title,
@@ -349,10 +372,12 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       // tags,
       // tagsError,
       errorDialog,
+      classList,
       changed,
       errorTitle,
       errorBody
     } = this.state;
+    const isEdit = pathname.includes('/edit')
 
     return (
       <div className={classes.root}>
@@ -385,11 +410,18 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                <ClassesSelector
-                  classId={classId}
-                  sectionId={sectionId}
-                  onChange={this.handleClassChange}
-                />
+                {expertMode && !isEdit ? (
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={this.handleClasses}
+                  />
+                ) : (
+                  <ClassesSelector
+                    classId={classId}
+                    sectionId={sectionId}
+                    onChange={this.handleClassChange}
+                  />
+                )}
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Description</Typography>

@@ -1,16 +1,16 @@
 /* eslint-disable func-names */
 // @flow
 
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
-import { push as routePush } from 'connected-react-router';
-import { Redirect } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { withStyles } from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {push as routePush} from 'connected-react-router';
+import {Redirect} from 'react-router-dom';
+import {bindActionCreators} from 'redux';
+import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { withRouter } from 'react-router';
+import {withRouter} from 'react-router';
 import type {
   UserProfile,
   About,
@@ -18,17 +18,17 @@ import type {
   FeedItem,
   StudyCircle
 } from '../../types/models';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
+import type {UserState} from '../../reducers/user';
+import type {State as StoreState} from '../../types/state';
 import {
   getUserProfile,
   updateProfile,
   updateUserProfileUrl,
   getStudyCircle
 } from '../../api/user';
-import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
-import { getPresignedURL } from '../../api/media';
-import { fetchFeedv2 } from '../../api/feed';
+import {addToStudyCircle, removeFromStudyCircle} from '../../api/posts';
+import {getPresignedURL} from '../../api/media';
+import {fetchFeedv2} from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import * as feedActions from '../../actions/feed';
@@ -42,8 +42,8 @@ import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
 import StudyCircleDialog from '../../components/StudyCircleDialog';
 import ErrorBoundary from '../ErrorBoundary';
-import { processSeasons } from './utils';
-import { logEvent } from '../../api/analytics';
+import {processSeasons} from './utils';
+import {logEvent} from '../../api/analytics';
 
 const styles = theme => ({
   root: {
@@ -138,20 +138,20 @@ class Profile extends React.PureComponent<Props, State> {
     this.handleGetProfile();
     this.handleFetchFeed();
     this.handleFetchBookmarks();
-    const { edit, match: { params } } = this.props;
+    const {edit, match: {params}} = this.props;
 
     if (params.tab) {
-      this.setState({ tab: Number(params.tab) });
+      this.setState({tab: Number(params.tab)});
     }
 
-    this.setState({ edit });
+    this.setState({edit});
   };
 
   handleGetProfile = async () => {
     try {
-      const { userId } = this.props;
+      const {userId} = this.props;
       if (userId !== '') {
-        const { userProfile, about, userStatistics } = await getUserProfile({
+        const {userProfile, about, userStatistics} = await getUserProfile({
           userId
         });
 
@@ -163,17 +163,17 @@ class Profile extends React.PureComponent<Props, State> {
         });
       }
     } catch (err) {
-      this.setState({ error: true, isLoading: false });
+      this.setState({error: true, isLoading: false});
     }
   };
 
   handleFetchFeed = () => {
-    const { userId } = this.props;
+    const {userId} = this.props;
     if (userId !== '') {
       fetchFeedv2({
         userId,
       }).then(feed => {
-        this.setState({ feed });
+        this.setState({feed});
       });
     }
   };
@@ -181,7 +181,7 @@ class Profile extends React.PureComponent<Props, State> {
   handleFetchBookmarks = () => {
     const {
       user: {
-        data: { userId: ownId }
+        data: {userId: ownId}
       },
       userId,
     } = this.props;
@@ -192,29 +192,29 @@ class Profile extends React.PureComponent<Props, State> {
         sectionId: '',
         bookmarked: true
       }).then(bookmarks => {
-        this.setState({ bookmarks });
+        this.setState({bookmarks});
       });
     }
   };
 
   handleOpenEdit = () => {
-    this.setState({ edit: true });
+    this.setState({edit: true});
   };
 
   handleCloseEdit = () => {
-    this.setState({ edit: false });
+    this.setState({edit: false});
   };
 
   handleSubmit = async fields => {
     const {
       user: {
-        data: { userId }
+        data: {userId}
       }
     } = this.props;
     this.handleCloseEdit();
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     try {
-      await updateProfile({ userId, fields });
+      await updateProfile({userId, fields});
     } finally {
       this.handleGetProfile();
     }
@@ -223,11 +223,11 @@ class Profile extends React.PureComponent<Props, State> {
   handleUpdateProfileImage = async file => {
     const {
       user: {
-        data: { userId }
+        data: {userId}
       },
       checkUserSession
     } = this.props;
-    this.setState({ uploading: true });
+    this.setState({uploading: true});
     try {
       const result = await getPresignedURL({
         userId,
@@ -235,7 +235,7 @@ class Profile extends React.PureComponent<Props, State> {
         mediaType: file.type
       });
 
-      const { mediaId, url } = result;
+      const {mediaId, url} = result;
 
       await axios.put(url, file, {
         headers: {
@@ -243,22 +243,22 @@ class Profile extends React.PureComponent<Props, State> {
         }
       });
 
-      await updateUserProfileUrl({ userId, mediaId });
+      await updateUserProfileUrl({userId, mediaId});
       // eslint-disable-next-line func-names
-      await setTimeout(function() {}, 1000);
+      await setTimeout(function () {}, 1000);
       await this.handleGetProfile();
       checkUserSession();
     } finally {
-      this.setState({ uploading: false });
+      this.setState({uploading: false});
     }
   };
 
   handleStartChat = () => {
-    const { openChannelWithEntity } = this.props;
+    const {openChannelWithEntity} = this.props;
     const {
-      userProfile: { userId, firstName, lastName }
+      userProfile: {userId, firstName, lastName}
     } = this.state;
-    this.setState({ chatLoading: true });
+    this.setState({chatLoading: true});
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
@@ -266,16 +266,16 @@ class Profile extends React.PureComponent<Props, State> {
       entityVideo: false
     });
     setTimeout(() => {
-      this.setState({ chatLoading: false });
+      this.setState({chatLoading: false});
     }, 2000);
   };
 
   handleStartVideo = () => {
-    const { openChannelWithEntity } = this.props;
+    const {openChannelWithEntity} = this.props;
     const {
-      userProfile: { userId, firstName, lastName }
+      userProfile: {userId, firstName, lastName}
     } = this.state;
-    this.setState({ chatLoading: true });
+    this.setState({chatLoading: true});
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
@@ -283,20 +283,20 @@ class Profile extends React.PureComponent<Props, State> {
       entityVideo: true
     });
     setTimeout(() => {
-      this.setState({ chatLoading: false });
+      this.setState({chatLoading: false});
     }, 2000);
   };
 
   handleTabChange = (event, value) => {
-    this.setState({ tab: value });
+    this.setState({tab: value});
   };
 
-  handleShare = ({ feedId }: { feedId: number }) => {
-    this.setState({ feedId });
+  handleShare = ({feedId}: {feedId: number}) => {
+    this.setState({feedId});
   };
 
   handleShareClose = () => {
-    this.setState({ feedId: null });
+    this.setState({feedId: null});
   };
 
   handleBookmark = ({
@@ -308,53 +308,53 @@ class Profile extends React.PureComponent<Props, State> {
   }) => {
     const {
       user: {
-        data: { userId }
+        data: {userId}
       },
       updateBookmark
     } = this.props;
 
-    updateBookmark({ feedId, userId, bookmarked });
+    updateBookmark({feedId, userId, bookmarked});
   };
 
-  handleReport = ({ feedId, ownerId }) => {
-    this.setState({ report: { feedId, ownerId } });
+  handleReport = ({feedId, ownerId}) => {
+    this.setState({report: {feedId, ownerId}});
   };
 
   handleReportClose = () => {
-    this.setState({ report: null });
+    this.setState({report: null});
   };
 
-  handleDelete = ({ feedId }) => {
-    this.setState({ deletePost: { feedId } });
+  handleDelete = ({feedId}) => {
+    this.setState({deletePost: {feedId}});
   };
 
-  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+  handleDeleteClose = ({deleted}: {deleted?: boolean}) => {
     if (deleted && deleted === true) {
       this.handleFetchFeed();
     }
-    this.setState({ deletePost: null });
+    this.setState({deletePost: null});
   };
 
   handleStudyCircle = async () => {
     const {
       user: {
-        data: { userId }
+        data: {userId}
       }
     } = this.props;
     const {
-      userProfile: { userId: ownerId, inStudyCircle }
+      userProfile: {userId: ownerId, inStudyCircle}
     } = this.state;
     try {
-      this.setState({ isStudyCircleLoading: true });
+      this.setState({isStudyCircleLoading: true});
       if (!inStudyCircle) {
-        await addToStudyCircle({ userId, classmateId: ownerId, feedId: null });
+        await addToStudyCircle({userId, classmateId: ownerId, feedId: null});
         logEvent({
           event: 'Feed- Added to Study Circle',
-          props: { Source: 'Profile' }
+          props: {Source: 'Profile'}
         });
-        this.setState({ studyCircle: true, loading: true });
-        const circle = await getStudyCircle({ userId });
-        this.setState({ circle });
+        this.setState({studyCircle: true, loading: true});
+        const circle = await getStudyCircle({userId});
+        this.setState({circle});
       } else {
         await removeFromStudyCircle({
           userId,
@@ -363,21 +363,21 @@ class Profile extends React.PureComponent<Props, State> {
         });
         logEvent({
           event: 'Feed- Removed from Study Circle',
-          props: { Source: 'Profile' }
+          props: {Source: 'Profile'}
         });
       }
     } finally {
       await this.handleGetProfile();
-      this.setState({ isStudyCircleLoading: false, loading: false });
+      this.setState({isStudyCircleLoading: false, loading: false});
     }
   };
 
   handleStudyCircleClose = () => {
-    this.setState({ studyCircle: false });
+    this.setState({studyCircle: false});
   };
 
-  handleUserClick = ({ userId }: { userId: string }) => {
-    const { push } = this.props;
+  handleUserClick = ({userId}: {userId: string}) => {
+    const {push} = this.props;
     push(`/profile/${userId}`);
   };
 
@@ -390,23 +390,23 @@ class Profile extends React.PureComponent<Props, State> {
     postId: number,
     feedId: number
   }) => () => {
-    const { push } = this.props;
+    const {push} = this.props;
     push(`/feed?id=${feedId}`);
     switch (typeId) {
-    case 3:
-      push(`/flashcards/${postId}`);
-      break;
-    case 4:
-      push(`/notes/${postId}`);
-      break;
-    case 5:
-      push(`/sharelink/${postId}`);
-      break;
-    case 6:
-      push(`/question/${postId}`);
-      break;
-    default:
-      break;
+      case 3:
+        push(`/flashcards/${postId}`);
+        break;
+      case 4:
+        push(`/notes/${postId}`);
+        break;
+      case 5:
+        push(`/sharelink/${postId}`);
+        break;
+      case 6:
+        push(`/question/${postId}`);
+        break;
+      default:
+        break;
     }
   };
 
@@ -414,9 +414,9 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
-      user: { data: userData },
+      user: {data: userData},
     } = this.props;
-    const { segment = '', profileImage } = userData;
+    const {segment = '', profileImage} = userData;
     const {
       userProfile,
       about,
@@ -602,7 +602,7 @@ class Profile extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({user}: StoreState): {} => ({
   user
 });
 

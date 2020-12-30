@@ -154,10 +154,12 @@ const setClassesCache = result => {
 
 export const getUserClasses = async ({
   userId,
-  skipCache
+  skipCache,
+  expertMode
 }: {
   userId: string,
-  skipCache: boolean
+  skipCache: boolean,
+  expertMode: boolean
 }): Promise<UserClasses> => {
   try {
     const token = await getToken();
@@ -165,8 +167,9 @@ export const getUserClasses = async ({
     let result = null
     const cache = getClassesCache()
     if (!cache || skipCache) {
+      const appId = expertMode ? 3 : 1
       result = await axios.get(
-        `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}`,
+        `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}&application_id=${appId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

@@ -7,10 +7,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EmptyState from 'components/FeedList/EmptyState';
-import FeedItem from './feed-item';
 import EmptyFeed from 'assets/svg/empty-feed.svg'
 import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg'
 import EmptyMyPosts from 'assets/svg/empty-my-posts.svg'
+import FeedItem from './FeedItem';
 
 const styles = theme => ({
   container: {
@@ -200,6 +200,7 @@ class FeedList extends React.PureComponent<Props, State> {
       fromFeedId,
       onLoadMore,
       newClassExperience,
+      expertMode,
       onUserClick,
       location: { pathname },
     } = this.props;
@@ -235,6 +236,7 @@ class FeedList extends React.PureComponent<Props, State> {
               {items.map(item => (
                 <FeedItem
                   key={item.feedId}
+                  expertMode={expertMode}
                   userId={userId}
                   data={item}
                   handleShareClick={handleShare}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getClassmates } from 'api/chat'
 import { getReferralProgram } from 'api/referral';
@@ -34,6 +34,8 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
   const [referralProgram, setReferralProgram] = useState(null);
   const [campaign, setCampaign] = useState(null);
 
+  const isExpert = useMemo(() => state === 'student', [state])
+
   useEffect(() => {
     const init = async () => {
       const { classId, sectionId } = decypherClass()
@@ -64,7 +66,7 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
     return (
       <div>
         <div className={classes.text}>
-          Dont's see your classmates?
+          Dont's see {isExpert ? 'students' : 'your classmates'}?
           <div
             className={classes.link}
             onClick={() => {
@@ -93,14 +95,23 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
       <Dialog
         className={classes.dialog}
         onCancel={close}
-        open={state}
-        title={`${courseDisplayName} Classmates`}
+        maxWidth='sm'
+        fullWidth
+        open={Boolean(state)}
+        title={isExpert ? 'Students' : `${courseDisplayName} Classmates`}
       >
         <div className={classes.text}>
-          Classmates who have joined CircleIn
+          {isExpert ? 'Students' : 'Classmates'} who have joined CircleIn
         </div>
         <List className={classes.list}>
-          {classmates.map(c => <Classmate videoEnabled={videoEnabled} close={close} key={c.userId} classmate={c} />)}
+          {classmates.map(c => (
+            <Classmate
+              videoEnabled={videoEnabled && !isExpert}
+              close={close}
+              key={c.userId}
+              classmate={c}
+            />
+          ))}
           <Invite />
         </List>
       </Dialog>

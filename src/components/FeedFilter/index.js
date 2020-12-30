@@ -3,13 +3,11 @@ import React, { Fragment } from 'react';
 import update from 'immutability-helper';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -19,6 +17,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 
@@ -86,7 +85,7 @@ const styles = theme => ({
     margin: theme.spacing(2)
   },
   formButton: {
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(),
     textDecoration: 'none'
   },
   button: {
@@ -109,11 +108,13 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   courseDisplayName: string,
+  expertMode: boolean,
   newClassExperience: boolean,
   query: string,
   userClasses: Array<string>,
   postTypes: Array<string>,
   classesList: Array<{ value: string, label: string }>,
+  classList: array,
   fromDate: ?Object,
   toDate: ?Object,
   onChange: Function,
@@ -134,26 +135,40 @@ type State = {
 class FeedFilter extends React.PureComponent<Props, State> {
   state = {
     open: false,
+    openClassFilter: false,
     postTypes: [],
-    userClasses: []
+    selectedUserClasses: []
   };
 
   mounted: boolean;
 
   componentDidMount = () => {
     this.mounted = true;
-  };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    const { postTypes, userClasses } = this.props;
-    const { open } = this.state;
-    if (open !== prevState.open && open) {
-      this.setState({ postTypes, userClasses });
+    const { classList, userClasses } = this.props
+    if (classList) {
+      const selectedUserClasses = userClasses.map(uc => {
+        const { classId } = JSON.parse(uc)
+        const sc = classList.find(c => classId === c.classId)
+        return {
+          ...sc,
+          sectionId: sc.section[0].sectionId
+        }
+      })
+      this.setState({ selectedUserClasses })
     }
   };
 
   componentWillUnmount = () => {
     this.mounted = false;
+  };
+
+  handleClickClasses = () => {
+    const { onOpenFilter } = this.props;
+    this.setState({
+      openClassFilter: true
+    });
+    onOpenFilter();
   };
 
   handleClick = () => {
@@ -165,7 +180,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, openClassFilter: false });
   };
 
   handleChange = name => event => {
@@ -186,6 +201,16 @@ class FeedFilter extends React.PureComponent<Props, State> {
     });
     this.setState(newState);
   };
+
+  handleChangeClasses = selected => {
+    const userClasses = selected.map(s => ({
+      ...s,
+      label: s.className,
+      value: `{"classId": ${s.classId}, "sectionId": ${s.sectionId}}`
+    }))
+
+    this.setState({ userClasses, selectedUserClasses: selected })
+  }
 
   handleSelectAll = name => () => {
     const { classesList } = this.props;
@@ -218,6 +243,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
   handleApplyFilters = () => {
     const { onApplyFilters } = this.props;
     const { postTypes, userClasses } = this.state;
+
+    const userClassesValues = userClasses.map(uc => uc.value)
     const filters = [
       {
         name: 'postTypes',
@@ -225,7 +252,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       },
       {
         name: 'userClasses',
-        value: userClasses
+        value: userClassesValues
       }
     ];
     onApplyFilters(filters);
@@ -235,6 +262,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
   handleClearFilters = () => {
     const { onClearFilters } = this.props;
     onClearFilters();
+    this.setState({ postTypes: [], userClasses: [] })
     this.handleClose();
   };
 
@@ -257,14 +285,15 @@ class FeedFilter extends React.PureComponent<Props, State> {
       toDate,
       onChange,
       onRefresh,
+      expertMode,
       onChangeDateRange,
       newClassExperience,
+      userClasses,
       onClearSearch,
     } = this.props;
-    const { open, postTypes, userClasses } = this.state;
+    const { openClassFilter, selectedUserClasses, open, postTypes } = this.state;
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
-    const dudUrl = 'javascript:;';
     const isPostTypesSelected = postTypes.length > 0;
     const isUserClassesSelected = userClasses.length > 0;
 
@@ -276,8 +305,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
               className={classes.input}
               // type="search"
               placeholder={
-                courseDisplayName ? 
-                  `Search for posts in ${courseDisplayName}` : 
+                courseDisplayName ?
+                  `Search for posts in ${courseDisplayName}` :
                   'To search add some posts first'
               }
               value={query}
@@ -321,10 +350,19 @@ class FeedFilter extends React.PureComponent<Props, State> {
               onClick={this.handleClick}
               variant={filterCount > 0 ? "contained" : "outlined"}
             >
-              <Badge badgeContent={filterCount} color="secondary">
                 Filters
-              </Badge>
             </Button>
+            {expertMode && <Button
+              aria-haspopup="true"
+              aria-label="Filter"
+              aria-owns={open ? 'filter-popper' : undefined}
+              className={classes.filterButton}
+              color="primary"
+              onClick={this.handleClickClasses}
+              variant={userClasses.length > 0 ? "contained" : "outlined"}
+            >
+                Classes
+            </Button>}
           </div>
         </Paper>
         <Dialog
@@ -338,7 +376,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
           title="Filter Posts by:"
         >
           <Grid container>
-            {!newClassExperience && <Grid item xs={12} sm={6} className={classes.option}>
+            {(!newClassExperience) && <Grid item xs={12} sm={6} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel component="legend">Courses</FormLabel>
                 <FormGroup>
@@ -359,26 +397,23 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   ))}
                 </FormGroup>
               </FormControl>
+
               {isUserClassesSelected ? (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
+                <Button
+                  color='primary'
                   className={classes.formButton}
                   onClick={this.handleDeselectAll('userClasses')}
                 >
                   Deselect All
-                </Link>
+                </Button>
               ) : (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
+                <Button
+                  color='primary'
                   className={classes.formButton}
                   onClick={this.handleSelectAll('userClasses')}
                 >
                     Select All
-                </Link>
+                </Button>
               )}
             </Grid>}
             <Grid item xs={12} sm={6} className={classes.option}>
@@ -403,25 +438,21 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 </FormGroup>
               </FormControl>
               {isPostTypesSelected ? (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
+                <Button
+                  color='primary'
                   className={classes.formButton}
                   onClick={this.handleDeselectAll('postTypes')}
                 >
                   Deselect All
-                </Link>
+                </Button>
               ) : (
-                <Link
-                  href={dudUrl}
-                  component="button"
-                  variant="body2"
+                <Button
+                  color='primary'
                   className={classes.formButton}
                   onClick={this.handleSelectAll('postTypes')}
                 >
                     Select All
-                </Link>
+                </Button>
               )}
             </Grid>
           </Grid>
@@ -436,6 +467,26 @@ class FeedFilter extends React.PureComponent<Props, State> {
             </Button>
             <span className={classes.grow} />
           </div>
+        </Dialog>
+        <Dialog
+          open={openClassFilter}
+          fullWidth
+          maxWidth='sm'
+          title='Filter feed by class'
+          onCancel={this.handleClose}
+          secondaryVariant='text'
+          onSecondaryOk={this.handleClearFilters}
+          onOk={this.handleApplyFilters}
+          secondaryOkTitle='Reset'
+          showActions
+          okTitle='Search'
+        >
+          <ClassMultiSelect
+            variant='standard'
+            placeholder='Select Classes...'
+            selected={selectedUserClasses}
+            onSelect={this.handleChangeClasses}
+          />
         </Dialog>
       </Fragment>
     );

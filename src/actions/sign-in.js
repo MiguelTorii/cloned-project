@@ -19,10 +19,16 @@ const requestUserCheck = (): Action => ({
   type: signInActions.CHECK_USER_REQUEST
 });
 
-const setUser = ({ user }: {user: User}): Action => ({
+const setUser = ({ user, expertMode, isExpert }: {
+  user: User,
+  expertMode: boolean,
+    isExpert: boolean
+}): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
   payload: {
-    user
+    user,
+    expertMode,
+    isExpert
   }
 });
 
@@ -73,9 +79,17 @@ export const signIn = ({
   try {
     dispatch(requestSignIn());
     // $FlowFixMe
-    const result = await signInUser(email, password, schoolId, role === 'faculty');
+    let appId = 1
+    if (role === 'faculty') {
+      appId = 2
+    }
+    if(role === 'tutor') {
+      appId = 3
+    }
+    const result = await signInUser(email, password, schoolId, appId);
 
     const user: User = {
+      appAccess: (result.app_access) || [1],
       userId: (result.user_id: string) || '',
       redirectUri: (result.redirect_uri: string) || '',
       nonce: (result.nonce: string) || '',
@@ -106,7 +120,10 @@ export const signIn = ({
     store.set('USER_ID', user.userId);
     store.set('SEGMENT', user.segment);
 
-    await dispatch(setUser({ user }));
+    const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
+    const expertMode = user.appAccess.includes(3) && !user.appAccess.includes(1)
+    dispatch(setUser({ user, isExpert, expertMode }));
+
     await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
     return dispatch(push('/'));
   } catch (err) {
@@ -186,16 +203,22 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
 export const clearSignInError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
 
-export const checkUserSession = () => async (dispatch: Dispatch) => {
+export const checkUserSession = () => async (dispatch: Dispatch, getState: Function) => {
   try {
     dispatch(requestUserCheck());
     // $FlowFixMe
     const result = await checkUser();
+    const {
+      user: {
+        expertMode
+      }
+    } = getState()
     const error =
       Object.entries(result).length === 0 && result.constructor === Object;
     if (!error) {
       const user: User = {
         userId: (result.user_id: string) || '',
+        appAccess: (result.app_access) || [1],
         email: (result.email: string) || '',
         firstName: (result.first_name: string) || '',
         lastName: (result.last_name: string) || '',
@@ -220,7 +243,13 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       store.set('USER_ID', user.userId);
       store.set('SEGMENT', user.segment);
 
-      dispatch(setUser({ user }));
+      const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
+      if (expertMode === null) {
+        const expertMode = user.appAccess.includes(3) && !user.appAccess.includes(1)
+        dispatch(setUser({ user, isExpert, expertMode }));
+      } else {
+        dispatch(setUser({ user, isExpert, expertMode }));
+      }
       return true
     }
     store.remove('TOKEN');
@@ -249,7 +278,7 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
   return false
 };
 
-export const updateUser = ({ user }: {user: User}) => async (
+export const updateUser = ({ user }: { user: User }) => async (
   dispatch: Dispatch
 ) => {
   store.set('TOKEN', user.jwtToken);

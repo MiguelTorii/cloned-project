@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useMemo, useCallback, useEffect, useState} from 'react'
+import React, { useMemo, useCallback, useEffect, useState } from 'react'
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
@@ -108,8 +108,8 @@ const Chat = ({
   getOnboardingList,
   onboardingListVisible
 }: Props) => {
-  const { isLoading, data: { client, channels, newMessage, local, newChannel }} = chat
-  const { data: { userId, schoolId }} = user
+  const { isLoading, data: { client, channels, newMessage, local, newChannel } } = chat
+  const { data: { userId, schoolId } } = user
   const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
@@ -149,14 +149,14 @@ const Chat = ({
   }, [channelList, currentChannel, local, newChannel])
 
   useEffect(() => {
-    if(width !== prevWidth) {
+    if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0)
-        if(currentChannel) setLeftSpace(0)
+        if (currentChannel) setLeftSpace(0)
         else setLeftSpace(curSize)
       } else {
         setLeftSpace(curSize)
-        if(currentChannel) setRightSpace(3)
+        if (currentChannel) setRightSpace(3)
         else setRightSpace(0)
       }
     }
@@ -171,7 +171,7 @@ const Chat = ({
     return () => {
       if (
         handleInitChatDebounce.cancel &&
-      typeof handleInitChatDebounce.cancel === 'function'
+        typeof handleInitChatDebounce.cancel === 'function'
       )
         handleInitChatDebounce.cancel();
       handleShutdownChat();
@@ -184,13 +184,13 @@ const Chat = ({
     if (!currentChannel) setRightSpace(0)
   }, [currentChannel, width])
 
-  const handleBlock = async blockedUserId => {
+  const handleBlock = useCallback(async blockedUserId => {
     try {
       await blockUser({ userId, blockedUserId: String(blockedUserId) });
       await handleBlockUser({ blockedUserId });
       setCurrentChannel(null)
-    } catch (err) {}
-  }
+    } catch (err) {/* NONE */}
+  }, [handleBlockUser, userId])
 
   const onCollapseLeft = useCallback(() => {
     if (width === 'xs') {
@@ -207,11 +207,12 @@ const Chat = ({
   }, [width, curSize, rightSpace])
 
 
-  const renderIcon = d => {
-    return ( d
+  const renderIcon = useCallback(d => {
+    return (d
       ? <ArrowBackIcon className={classes.icon} />
       : <ArrowForwardIcon className={classes.icon} />
-    )}
+    )
+  }, [classes.icon])
 
   return (
     <Grid className={classes.container} direction='row' container>
@@ -233,7 +234,7 @@ const Chat = ({
       >
         {renderIcon(rightSpace === 0)}
       </IconButton>}
-      <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left: classes.hidden}>
+      <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
         <LeftMenu
           channels={channels}
           channelList={channelList}
@@ -249,7 +250,7 @@ const Chat = ({
           handleRemoveChannel={handleRemove}
         />
       </Grid>
-      <Grid item xs={12-leftSpace-rightSpace} className={classes.main}>
+      <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
         <Main
           newMessage={newMessage}
           onCollapseLeft={onCollapseLeft}
@@ -266,7 +267,7 @@ const Chat = ({
           }}
         />
       </Grid>
-      <Grid item xs={rightSpace || 1} className={rightSpace !==0 ? classes.right : classes.hidden}>
+      <Grid item xs={rightSpace || 1} className={rightSpace !== 0 ? classes.right : classes.hidden}>
         <RightMenu
           handleRemoveChannel={handleRemove}
           handleBlock={handleBlock}

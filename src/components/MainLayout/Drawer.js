@@ -21,6 +21,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import queryString from 'query-string'
 import { decypherClass } from 'utils/crypto'
 import ListItemText from '@material-ui/core/ListItemText';
+import anon from 'assets/svg/anon.svg'
+import anoff from 'assets/svg/anoff.svg'
+import Grid from '@material-ui/core/Grid'
 import Tooltip from '../../containers/Tooltip';
 import Logo from '../../assets/svg/app-logo-white.svg';
 // $FlowIgnore
@@ -106,7 +109,32 @@ const useStyles = makeStyles((theme) => ({
   },
   bulb: {
     transform: 'rotate(180deg)'
-  }
+  },
+  expertContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(0, 2)
+  },
+  expertToggle: {
+    cursor: 'pointer',
+    height: 35,
+    width: 50
+  },
+  expertTitle: {
+    fontWeight: 'bold'
+  },
+  item: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    paddingTop: 0,
+    paddingBottom: 0,
+    marginLeft: theme.spacing(6),
+    marginRight: theme.spacing(3),
+    '&:hover': {
+      background: theme.circleIn.palette.primaryText2
+    },
+  },
 }));
 
 const Drawer = ({
@@ -125,17 +153,20 @@ const Drawer = ({
   handleOpenUseCases,
   handleOpenHowEarnPoints,
   landingPageCampaign,
+  expertMode,
+  isExpert,
+  toggleExpertMode,
   userClasses
 }) => {
   const classes = useStyles()
-  const [openClassmates, setOpenClassmates] = useState(false)
+  const [openClassmates, setOpenClassmates] = useState(null)
 
-  const openClassmatesDialog = useCallback(() => {
-    setOpenClassmates(true)
+  const openClassmatesDialog = useCallback(name => () => {
+    setOpenClassmates(name)
   }, [])
 
   const closeClassmatesDialog = useCallback(() => {
-    setOpenClassmates(false)
+    setOpenClassmates(null)
   }, [])
 
   const courseDisplayName = useMemo(() => {
@@ -155,7 +186,83 @@ const Drawer = ({
 
 
 
-  const qs = queryString.parse(window.location.search)
+  const qs = useMemo(() => (
+    queryString.parse(search)
+  ), [search])
+
+  const button = useMemo(() => (
+    <Grid onClick={toggleExpertMode}>
+      {expertMode ? <img alt='on' src={anon} className={classes.expertToggle} />
+        : <img alt='off' src={anoff} className={classes.expertToggle} />}
+    </Grid>
+  ), [classes.expertToggle, expertMode, toggleExpertMode])
+
+  const expertMenu = useMemo (() => expertMode && (
+    <div>
+      <ListItem
+        button
+        component={MyLink}
+        link="/feed"
+        className={classNames(
+          ['/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
+        )}
+      >
+        <ListItemIcon>
+          <GradCapIcon className={classNames("whiteSvg")} />
+        </ListItemIcon>
+        <ListItemText
+          primary="Class Feed"
+        />
+      </ListItem>
+      <ListItem
+        button
+        component={MyLink}
+        link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
+        className={classNames(
+          classes.item,
+          ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="My Posts"
+          classes={{
+            primary: classes.label
+          }}
+        />
+      </ListItem>
+      <ListItem
+        button
+        component={MyLink}
+        link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
+        className={classNames(
+          classes.item,
+          ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="Bookmarks"
+          classes={{
+            primary: classes.label
+          }}
+        />
+      </ListItem>
+      <ListItem
+        button
+        onClick={openClassmatesDialog('student')}
+        className={classNames(
+          classes.item,
+          classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="Students"
+          classes={{
+            primary: classes.label
+          }}
+        />
+      </ListItem>
+    </div>
+  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, openClassmatesDialog, pathname, qs])
 
   return (
     <Fragment>
@@ -165,9 +272,11 @@ const Drawer = ({
         courseDisplayName={courseDisplayName}
       />
       <List className={classes.drawerList} style={{ marginTop: appBarHeight }}>
-        {/* TODO: move this to feed top */}
-        {false && newClassExperience && courseDisplayName && <div className={classes.backHeader}>
-          <Typography className={classes.backTitle}>{courseDisplayName}</Typography>
+        {isExpert && <div className={classes.expertContainer}>
+          <Typography className={classes.expertTitle}>
+            Expert Mode
+          </Typography>
+          {button}
         </div>}
         <Tooltip
           hidden={createPostOpen}
@@ -193,6 +302,7 @@ const Drawer = ({
             />
           </ListItem>
         </Tooltip>
+        {expertMenu}
         {landingPageCampaign && <ListItem
           button
           component={MyLink}
@@ -223,15 +333,15 @@ const Drawer = ({
             primary="Notes"
           />
         </ListItem>}
-        <HomeItem
+        {!expertMode && <HomeItem
           createPostOpen={createPostOpen}
           MyLink={MyLink}
           userClasses={userClasses}
           updateFeed={updateFeed}
           landingPageCampaign={landingPageCampaign}
           newClassExperience={newClassExperience}
-          openClassmatesDialog={openClassmatesDialog}
-        />
+          openClassmatesDialog={openClassmatesDialog('classmate')}
+        />}
         {!landingPageCampaign && <ListItem
           button
           component={MyLink}

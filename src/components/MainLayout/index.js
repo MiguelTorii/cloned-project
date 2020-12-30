@@ -18,7 +18,9 @@ import CreatePostMenu from 'components/MainLayout/CreatePostMenu'
 import MobileMenu from 'components/MainLayout/MobileMenu'
 import TopMenu from 'components/MainLayout/TopMenu'
 import MenuIcon from '@material-ui/icons/Menu';
+import Typography from '@material-ui/core/Typography'
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import UserDialog from 'containers/UserDialog'
 import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx'
 import GetAppDialog from 'components/GetAppDialog';
@@ -158,6 +160,14 @@ const styles = theme => ({
   backContainer: {
     cursor: 'pointer'
   },
+  expertChip: {
+    color: theme.circleIn.palette.darkActionBlue,
+    fontWeight: 'bold',
+    backgroundColor: theme.circleIn.palette.textOffwhite,
+    borderRadius: theme.spacing(2),
+    marginLeft: theme.spacing(),
+    padding: theme.spacing(0, 1)
+  }
 });
 
 type Props = {
@@ -183,7 +193,10 @@ type Props = {
   updateFeed: Function,
   location: {
     search: string
-  }
+  },
+  expertMode: boolean,
+  isExpert: boolean,
+  toggleExpertMode: Function
 };
 
 const MainLayout = ({
@@ -191,6 +204,9 @@ const MainLayout = ({
   helpLink,
   width,
   userId,
+  expertMode,
+  isExpert,
+  toggleExpertMode,
   initials,
   newNotesScreen,
   userProfileUrl,
@@ -377,6 +393,9 @@ const MainLayout = ({
 
   const drawer = (
     <DrawerMenu
+      expertMode={expertMode}
+      isExpert={isExpert}
+      toggleExpertMode={toggleExpertMode}
       handleCreatePostMenuOpen={handleCreatePostMenuOpen}
       appBarHeight={62}
       updateFeed={updateFeed}
@@ -399,6 +418,7 @@ const MainLayout = ({
   return (
     <Fragment>
       <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
+        <UserDialog />
         <AppBar
           ref={appBarRef}
           position="fixed"
@@ -422,6 +442,11 @@ const MainLayout = ({
             <Link href="/" component={MyLink} link="/">
               <img src={logo} alt="Logo" className={classes.logo} />
             </Link>
+            {expertMode && (
+              <Typography className={classes.expertChip}>
+                EXPERT MODE
+              </Typography>
+            )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <QuickNotes />

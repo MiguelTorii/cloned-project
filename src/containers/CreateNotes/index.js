@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider'
 import withWidth from '@material-ui/core/withWidth'
 import { withRouter } from 'react-router';
 import { decypherClass } from 'utils/crypto'
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -22,10 +23,9 @@ import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { getNotes, updatePhotoNote, createPhotoNote , createShareLink } from '../../api/posts';
+import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote, createShareLink } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
-import { getUserClasses } from '../../api/user';
 import { logEventLocally } from '../../api/analytics';
 
 const styles = theme => ({
@@ -73,7 +73,8 @@ type Props = {
   width: string,
   enqueueSnackbar: Function,
   location: {
-    search: string
+    search: string,
+    pathname: string
   }
 };
 
@@ -111,6 +112,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     errorTitle: '',
     isEdit: false,
     hasImages: false,
+    classList: [],
     errorBody: ''
   };
 
@@ -120,7 +122,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   handlePush = path => {
     const { location: { search }, pushTo, campaign } = this.props
-    if(campaign.newClassExperience) {
+    if (campaign.newClassExperience) {
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
@@ -136,15 +138,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
   loadData = async () => {
     const {
       user: {
-        data: { userId, segment }
+        data: { userId, segment },
+        userClasses: { classList: classes }
       },
       noteId,
     } = this.props;
     try {
-      if(!noteId) return
+      if (!noteId) return
       this.setState({ isEdit: true })
       const photoNote = await getNotes({ userId, noteId: parseInt(noteId, 10) });
-      const { classes } = await getUserClasses({ userId });
       const userClasses = processClasses({ classes, segment });
       const { sectionId } = JSON.parse(userClasses[0].value);
 
@@ -164,7 +166,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         tags,
         notes
       })
-    } catch(e) {
+    } catch (e) {
       this.handlePush('/feed');
     }
   };
@@ -263,10 +265,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
       try {
         const {
           user: {
-            data: { userId = '' }
+            data: { userId = '' },
+            expertMode
           },
         } = this.props;
-        const { title, classId, sectionId, summary } = this.state;
+        const { classList, title, classId, sectionId, summary } = this.state;
+        const sectionIds = classList.map(c => c.sectionId)
         const images = await this.uploadImages.handleUploadImages();
         const fileNames = images.map(item => item.id);
         const tagValues = tags.map(item => Number(item.value));
@@ -275,7 +279,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
           points,
           user: { firstName },
           photoNoteId
-        } = await createPhotoNote({
+        } = expertMode ? await createBatchPhotoNote({
+          userId,
+          title,
+          sectionIds,
+          fileNames,
+          comment: summary,
+          tags: tagValues
+        }) :  await createPhotoNote({
           userId,
           title,
           classId,
@@ -409,13 +420,29 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { noteId } = this.props
     const { url } = this.state
     if (url) this.createSharelink()
-    if(noteId) this.updateNotes()
+    if (noteId) this.updateNotes()
     else this.createNotes()
   }
 
   handleTextChange = name => event => {
     this.setState({ [name]: event.target.value, changed: true });
   };
+
+  handleClasses = classList => {
+    this.setState({ classList })
+    if (classList.length > 0) {
+      this.setState({
+        sectionId: classList[0].sectionId,
+        classId: classList[0].classId
+      })
+    } else {
+      this.setState({
+        sectionId: null,
+        classId: 0
+      })
+    }
+  }
+
 
   handleClassChange = ({
     classId,
@@ -424,7 +451,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
     classId: number,
     sectionId: number
   }) => {
-    this.setState({ classId, sectionId });
+    const { user } = this.props
+    const selected = user.userClasses.classList.find(c => c.classId === classId)
+    if (selected) this.setState({ classList: [selected] });
+    this.setState({ classId, sectionId })
   };
 
   // handleTagsChange = values => {
@@ -466,7 +496,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         align="left"
         className={classes.errorMessage}
       >
-          You must type 50 characters or more in the summary to post these notes.
+        You must type 50 characters or more in the summary to post these notes.
       </Typography>
     )
 
@@ -475,7 +505,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      width
+      width,
+      user: {
+        expertMode
+      }
     } = this.props;
 
 
@@ -484,16 +517,17 @@ class CreateNotes extends React.PureComponent<Props, State> {
       // tagsError,
       loading,
       title,
+      classId,
+      sectionId,
       summary,
       errorDialog,
       errorTitle,
-      classId,
       notes,
-      sectionId,
       isEdit,
       url,
       changed,
       hasImages,
+      classList,
       errorBody
     } = this.state;
 
@@ -531,13 +565,20 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>}
               <Grid item xs={12} md={10}>
-                <ClassesSelector
-                  classId={classId}
-                  sectionId={sectionId}
-                  label={notSm ? '' : 'Class'}
-                  variant={notSm ? null : 'standard'}
-                  onChange={this.handleClassChange}
-                />
+                {expertMode && !isEdit ? (
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={this.handleClasses}
+                  />
+                ) : (
+                  <ClassesSelector
+                    classId={classId}
+                    sectionId={sectionId}
+                    label={notSm ? '' : 'Class'}
+                    variant={notSm ? null : 'standard'}
+                    onChange={this.handleClassChange}
+                  />
+                )}
               </Grid>
 
               {notSm && <Grid item md={2}>
@@ -613,7 +654,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1" className={classes.divisorOr}>OR</Typography>
               </Grid>}
               {notSm && !url && <Grid item md={2} />}
-              {!url &&<Grid item xs={12} md={10}>
+              {!url && <Grid item xs={12} md={10}>
                 <UploadImages
                   notes={notes}
                   imageChange={this.imageChange}

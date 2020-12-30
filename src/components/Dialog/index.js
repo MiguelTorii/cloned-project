@@ -78,6 +78,7 @@ const Dialog = ({
   okTitle = "Got it!",
   secondaryOkTitle = "",
   secondaryRemoveTitle = "",
+  secondaryVariant = 'contained',
   onCancel,
   onOk = () => {},
   onSecondaryOk = () => {},
@@ -192,7 +193,7 @@ const Dialog = ({
               color="primary"
               disabled={disableActions}
               onClick={onSecondaryOk}
-              variant="contained"
+              variant={secondaryVariant}
             >
               {secondaryOkTitle}
             </Button>

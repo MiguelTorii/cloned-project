@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import type { FeedItem as FeedItemState } from '../../types/models';
-import FeedItem from '../FeedList/feed-item';
+import FeedItem from '../FeedList/FeedItem';
 
 const styles = theme => ({
   container: {

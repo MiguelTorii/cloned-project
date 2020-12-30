@@ -18,7 +18,6 @@ import { bindActionCreators } from 'redux'
 import {
   leaveUserClass,
   joinClass,
-  getUserClasses,
   getAvailableClassesSections,
   getAvailableSubjectsClasses,
   getAvailableSubjects
@@ -87,7 +86,11 @@ const AddRemoveClasses = (props: Props) => {
     fetchClasses: updateClasses,
     open,
     user: {
-      data: { userId, schoolId }
+      data: { userId, schoolId },
+      userClasses: {
+        canAddClasses: cac,
+        classList
+      }
     },
     onClose
   } = props;
@@ -100,11 +103,9 @@ const AddRemoveClasses = (props: Props) => {
 
   const fetchUserClasses = async () => {
     try {
-      const res = await getUserClasses({ userId })
-      const { permissions: { canAddClasses: cac } } = res
       setCanAddClasses(cac)
       const sectionsObj = {}
-      res.classes.forEach(c => {
+      classList.forEach(c => {
         const { section, permissions } = c
         section.forEach(s => {
           sectionsObj[`sc${s.sectionId}`] = { canLeave: permissions.canLeave }

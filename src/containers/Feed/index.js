@@ -49,7 +49,7 @@ type Props = {
   campaign: CampaignState,
   updateFeedLimit: Function,
   updateScrollData: Function,
-  resetScrollPosition: Function,
+  resetScrollPosition: Function
 };
 
 type State = {
@@ -87,8 +87,19 @@ class Feed extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    const { classId, sectionId, updateFilter, feed: { scrollData }, resetScrollData  } 
-      = this.props;
+    const {
+      classId,
+      sectionId,
+      updateFilter,
+      feed: { scrollData },
+      resetScrollData,
+      push,
+      user: {
+        expertMode
+      }
+    }= this.props;
+
+    if (!expertMode && !classId) push('/')
 
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
@@ -96,9 +107,9 @@ class Feed extends React.PureComponent<Props, State> {
         value: [JSON.stringify({ classId, sectionId })]
       });
     }
-    
+
     this.handleUpdateFilter()
-    
+
     window.addEventListener('offline', () => {
       if (
         this.handleFetchFeed.cancel &&
@@ -282,7 +293,8 @@ class Feed extends React.PureComponent<Props, State> {
       push,
       user: {
         data: { userId },
-        userClasses: { classList }
+        userClasses: { classList },
+        expertMode
       },
       feed: {
         data: {
@@ -312,9 +324,11 @@ class Feed extends React.PureComponent<Props, State> {
               query={query}
               from={from}
               userClasses={userClasses}
+              expertMode={expertMode}
               courseDisplayName={courseName}
               postTypes={postTypes}
               classesList={processClasses({ classes: classList })}
+              classList={classList}
               newClassExperience={campaign.newClassExperience}
               fromDate={fromDate}
               toDate={toDate}
@@ -330,6 +344,7 @@ class Feed extends React.PureComponent<Props, State> {
               isLoading={isLoading}
               userId={userId}
               items={items}
+              expertMode={expertMode}
               newClassExperience={campaign.newClassExperience}
               hasMore={hasMore}
               fromFeedId={fromFeedId}

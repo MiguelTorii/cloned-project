@@ -8,14 +8,14 @@ export const signInUser = async (
   email: string,
   password: string,
   schoolId: number,
-  isAdmin: boolean
+  appId: int
 ): Promise<User | {}> => {
   try {
     const result = await axios.post(API_ROUTES.LOGIN, {
       email,
       password,
       school_id: schoolId,
-      application_id: isAdmin ? 2 : 1
+      application_id: appId
     });
     const { data } = result;
     return data;

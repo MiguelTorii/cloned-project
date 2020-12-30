@@ -27,7 +27,7 @@ type Props = {
 };
 
 
-const FeedPage = ({classes, location}: Props) => {
+const FeedPage = ({ classes, location }: Props) => {
   const {
     feedId, from
   } = queryString.parse(location.search)

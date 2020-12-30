@@ -81,7 +81,7 @@ class DateRange extends React.PureComponent<Props, State> {
   };
 
   handleClick = () => {
-    this.setState({open: true})
+    this.setState({ open: true })
   };
 
   handleReset = () => {
@@ -179,7 +179,7 @@ class DateRange extends React.PureComponent<Props, State> {
         <Fragment>
           <div className={classes.buttonWrapper}>
             <Button
-              variant="outlined"
+              variant={from && to ? "contained" : "outlined"}
               color="primary"
               className={classes.root}
               onClick={this.handleClick}
@@ -202,7 +202,7 @@ class DateRange extends React.PureComponent<Props, State> {
             onClear={this.handleReset}
             value={null}
             onChange={this.handleDateChange}
-            onClose={() => this.setState({ open: false})}
+            onClose={() => this.setState({ open: false })}
             onOpen={this.handleOpen}
             inputVariant="outlined"
             label=""

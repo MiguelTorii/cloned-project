@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react'
+import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { processMessages, fetchAvatars, getTitle, getAvatar } from 'utils/chat'
@@ -73,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
   videoIcon: {
     marginRight: theme.spacing(1 / 2),
     paddingBottom: theme.spacing(1 / 8)
+  },
+  selectClasses: {
+    float: 'right'
   }
 }))
 
@@ -103,7 +106,7 @@ const Main = ({
     data: { userId, firstName, lastName }
   } = user
 
-  const handleScrollToBottom = () => {
+  const handleScrollToBottom = useCallback(() => {
     try {
       if (scroll && end.current) {
         end.current.scrollIntoView({ behavior: 'instant' })
@@ -111,7 +114,7 @@ const Main = ({
     } catch (err) {
       console.log(err)
     }
-  }
+  }, [scroll])
 
   useEffect(() => {
     if (channel && local && local[channel.sid]) {
@@ -176,12 +179,12 @@ const Main = ({
     // eslint-disable-next-line
   }, [channel])
 
-  const messageItems = processMessages({
+  const messageItems = useMemo(() => processMessages({
     items: messages,
     userId
-  })
+  }), [messages, userId])
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     setScroll(false)
     try {
       if (paginator.hasPrevPage) {
@@ -194,29 +197,31 @@ const Main = ({
     } catch (err) {
       console.log(err)
     }
-  }
+  }, [messages, paginator])
 
-  const handleImageClick = src => setImages([{ src }])
+  const handleImageClick = useCallback(src => {
+    setImages([{ src }])
+  }, [])
 
-  const handleStartVideoCall = () => {
+  const handleStartVideoCall = useCallback(() => {
     logEvent({
       event: 'Video- Start Video',
       props: { 'Initiated From': 'Chat' }
     });
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
-  };
+  }, [channel])
 
-  const getRole = userId => {
+  const getRole = useCallback(userId => {
     if (!members[userId]) return null
     const { role, roleId } = members[userId]
     if ([2, 3].includes(roleId)) {
       return role
     }
     return null
-  }
+  }, [members])
 
-  const renderMessage = (item, profileURLs) => {
+  const renderMessage = useCallback((item, profileURLs) => {
     const { id, type } = item
     const role = getRole(item.author)
     try {
@@ -266,9 +271,9 @@ const Main = ({
       console.log(err)
       return null
     }
-  }
+  }, [getRole, handleImageClick, handleScrollToBottom, handleStartVideoCall])
 
-  const onSendMessage = async message => {
+  const onSendMessage = useCallback(async message => {
     setScroll(true)
     if (!channel) return
 
@@ -298,18 +303,18 @@ const Main = ({
     } finally {
       setLoading(false)
     }
-  }
+  }, [channel, firstName, lastName, onSend])
 
-  const onTyping = () => {
+  const onTyping = useCallback(() => {
     if (!channel) return
     try {
       channel.typing()
     } catch (err) {
       console.log(err)
     }
-  }
+  }, [channel])
 
-  const onSendInput = async file => {
+  const onSendInput = useCallback(async file => {
     setLoading(true)
     if (!channel) return
 
@@ -353,15 +358,15 @@ const Main = ({
       setLoading(false)
       // this.setState({ loading: false })
     }
-  }
+  }, [channel, firstName, lastName, userId])
 
-  const handleImageClose = () => setImages([])
+  const handleImageClose = useCallback(() => setImages([]), [])
 
-  const startVideo = useCallback(() =>
-    window.open(`/video-call/${channel.sid}`, '_blank'),
-  [channel])
+  const startVideo = useCallback(() => {
+    window.open(`/video-call/${channel.sid}`, '_blank')
+  }, [channel])
 
-  const videoEnabled = (campaign && campaign.variation_key && campaign.variation_key !== 'hidden');
+  const videoEnabled = useMemo(() => (campaign && campaign.variation_key && campaign.variation_key !== 'hidden'), [campaign])
 
   return (
     <div className={classes.root}>
@@ -384,6 +389,7 @@ const Main = ({
             </Button>
           }
         </Grid>}
+
       </div>
       <div className={classes.messageContainer}>
         {(!channel || messageItems.length === 1) && <EmptyMain noChannel={!channel} />}
@@ -430,4 +436,4 @@ const Main = ({
   )
 }
 
-export default Main
+export default memo(Main)

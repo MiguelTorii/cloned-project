@@ -11,7 +11,6 @@ import AddRemoveClasses from 'components/AddRemoveClasses';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
-import { getUserClasses } from '../../api/user';
 import { processClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import RequestClass from '../RequestClass';
@@ -61,27 +60,32 @@ class ClassesSelector extends React.PureComponent<Props, State> {
 
   componentDidMount = async () => {
     this.mounted = true;
-    const { location: {pathname}} = window
+    const { location: { pathname } } = window
     if (pathname.includes('/edit')) this.setState({ isEdit: true })
     await this.handleLoadClasses();
   };
 
   componentWillReceiveProps = nextProps => {
-    const {classId, sectionId} = nextProps
-    if (classId && sectionId) this.setState({value: JSON.stringify({classId, sectionId})})
+    const { classId, sectionId } = nextProps
+    if (classId && sectionId) this.setState({ value: JSON.stringify({ classId, sectionId }) })
   }
 
   handleLoadClasses = async () => {
     try {
       const {
         user: {
-          data: { userId, segment }
-        }
+          data: { segment },
+          userClasses: { classList: classes }
+        },
+        classId,
+        sectionId
       } = this.props;
-      const { classes } = await getUserClasses({ userId });
 
       const userClasses = processClasses({ classes, segment });
-      if (this.mounted) this.setState({ userClasses });
+      if (this.mounted) {
+        this.setState({ userClasses });
+        if (classId && sectionId) this.setState({ value: JSON.stringify({ classId, sectionId }) })
+      }
     } catch (err) {
       console.log(err);
     }
@@ -149,6 +153,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                 disabled={isEdit}
                 onChange={this.handleChange}
                 variant={variant || "outlined"}
+                multiple
                 label={label}
                 validators={['required']}
                 errorMessages={['User Classes is required']}
@@ -160,7 +165,7 @@ class ClassesSelector extends React.PureComponent<Props, State> {
                   </MenuItem>
                 ))}
                 {canAddClasses && <MenuItem value="new" className={classes.newClass}>
-                 Add Classes
+                  Add Classes
                 </MenuItem>}
               </SelectValidator>
             </FormControl>
