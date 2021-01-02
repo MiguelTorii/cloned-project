@@ -25,7 +25,7 @@ import anon from 'assets/svg/anon.svg'
 import anoff from 'assets/svg/anoff.svg'
 import Grid from '@material-ui/core/Grid'
 import Tooltip from '../../containers/Tooltip';
-import Logo from '../../assets/svg/app-logo-white.svg';
+import Logo from '../../assets/svg/icon_ic_simple_circlein_logo.svg';
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 // $FlowIgnore
@@ -50,34 +50,32 @@ const useStyles = makeStyles((theme) => ({
   },
   newItem: {
     width: 'auto',
-    justifyContent: 'center',
-    margin: theme.spacing(2),
-    paddingTop: 0,
-    paddingBottom: 0,
-    borderRadius: theme.spacing(6),
-    background: theme.circleIn.palette.brand,
-    '&:hover': {
-      background: theme.circleIn.palette.primaryText2
-    },
+    margin: theme.spacing(),
+    padding: 0,
+    paddingLeft: theme.spacing(3),
+    borderRadius: theme.spacing(),
     marginTop: theme.spacing(2)
   },
   newRoot: {
     flex: 'inherit'
   },
   newLabel: {
-    color: 'black',
-    fontSize: 20,
+    color: theme.circleIn.palette.primaryText1,
+    fontSize: 18,
     fontWeight: 'bold'
   },
   currentPath: {
     width: 'auto',
     borderRadius: theme.spacing(6),
-    background: theme.circleIn.palette.buttonBackground,
+    background: theme.circleIn.palette.hoverMenu,
+    '& span': {
+      fontWeight: 'bold',
+    },
     paddingTop: 0,
     paddingBottom: 0,
     margin: theme.spacing(1, 2),
     '&:hover': {
-      background: theme.circleIn.palette.primaryText2
+      background: theme.circleIn.palette.hoverMenu
     },
   },
   otherPath: {
@@ -87,11 +85,28 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0,
     '&:hover': {
-      background: theme.circleIn.palette.primaryText2
+      background: theme.circleIn.palette.hoverMenu
     },
   },
-  blogLink: {
+  otherBlue: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    color: theme.circleIn.palette.brand,
+    margin: theme.spacing(1, 2),
+    paddingTop: 0,
+    paddingBottom: 0,
+    '&:hover': {
+      background: theme.circleIn.palette.hoverMenu
+    },
+  },
+  separator: {
     marginTop: 'auto',
+  },
+  verticalSpacing: {
+    margin: theme.spacing(2, 0, 1, 0)
+  },
+  iconColorBrand: {
+    color: theme.circleIn.palette.brand
   },
   lastItem: {
     width: 'auto',
@@ -100,8 +115,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0,
     '&:hover': {
-      background: theme.circleIn.palette.primaryText2
+      background: theme.circleIn.palette.hoverMenu
     },
+  },
+  newIconContainer: {
+    padding: theme.spacing(3/2),
+    borderRadius: '50%',
+    marginRight: theme.spacing(),
+    backgroundImage: `linear-gradient(to top, #94daf9, ${theme.circleIn.palette.primaryii222})`
   },
   newIcon: {
     color: 'black',
@@ -132,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(6),
     marginRight: theme.spacing(3),
     '&:hover': {
-      background: theme.circleIn.palette.primaryText2
+      background: theme.circleIn.palette.hoverMenu
     },
   },
 }));
@@ -155,6 +176,7 @@ const Drawer = ({
   landingPageCampaign,
   expertMode,
   isExpert,
+  userId,
   toggleExpertMode,
   userClasses
 }) => {
@@ -267,6 +289,8 @@ const Drawer = ({
   return (
     <Fragment>
       <ClassmatesDialog
+        userId={userId}
+        userClasses={userClasses}
         close={closeClassmatesDialog}
         state={openClassmates}
         courseDisplayName={courseDisplayName}
@@ -285,13 +309,13 @@ const Drawer = ({
           text="Now that you’re in your class, click here to post on the feed and start earning points!"
         >
           <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={handleCreatePostMenuOpen}>
-            <ListItemIcon>
+            <ListItemIcon className={classes.newIconContainer}>
               <AddIcon
                 className={classes.newIcon}
               />
             </ListItemIcon>
             <ListItemText
-              primary="New"
+              primary="Create New Post"
               classes={{
                 root: classes.newRoot,
                 primary: classes.newLabel
@@ -414,7 +438,7 @@ const Drawer = ({
         </ListItemText>}
         <ListItem
           button
-          className={classes.otherPath}
+          className={classes.otherBlue}
           onClick={handleOpenUseCases}
         >
           <ListItemIcon>
@@ -425,16 +449,6 @@ const Drawer = ({
         {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
         <ListItem
           button
-          onClick={handleOpenGetApp}
-          className={classes.otherPath}
-        >
-          <ListItemIcon>
-            <SystemUpdateIcon />
-          </ListItemIcon>
-          <ListItemText primary="Get the Mobile App" />
-        </ListItem>
-        <ListItem
-          button
           onClick={handleOpenHowEarnPoints}
           className={classes.otherPath}
         >
@@ -443,25 +457,37 @@ const Drawer = ({
           </ListItemIcon>
           <ListItemText primary="Help" />
         </ListItem>
-        <div className={classes.blogLink}>
-          <Tooltip
-            id={3181}
-            delay={600}
-            hidden
-            placement="top"
-            text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
+        <div className={classes.separator}>
+          <ListItem
+            button
+            onClick={handleOpenGetApp}
+            className={classes.otherBlue}
           >
-            <ListItem
-              button
-              className={classes.otherPath}
-              onClick={handleOpenBlog}
+            <ListItemIcon>
+              <SystemUpdateIcon className={classes.iconColorBrand}/>
+            </ListItemIcon>
+            <ListItemText primary="Get the Mobile App" />
+          </ListItem>
+          <div className={classes.verticalSpacing}>
+            <Tooltip
+              id={3181}
+              delay={600}
+              hidden
+              placement="top"
+              text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
             >
-              <ListItemIcon>
-                <LaptopIcon />
-              </ListItemIcon>
-              <ListItemText primary="Student Blog" />
-            </ListItem>
-          </Tooltip>
+              <ListItem
+                button
+                className={classes.otherPath}
+                onClick={handleOpenBlog}
+              >
+                <ListItemIcon>
+                  <LaptopIcon />
+                </ListItemIcon>
+                <ListItemText primary="Student Blog" />
+              </ListItem>
+            </Tooltip>
+          </div>
         </div>
         <ListItem
           button

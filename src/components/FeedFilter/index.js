@@ -146,10 +146,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
     this.mounted = true;
 
     const { classList, userClasses } = this.props
+
     if (classList) {
       const selectedUserClasses = userClasses.map(uc => {
         const { classId } = JSON.parse(uc)
         const sc = classList.find(c => classId === c.classId)
+        if (!sc) return null
         return {
           ...sc,
           sectionId: sc.section[0].sectionId

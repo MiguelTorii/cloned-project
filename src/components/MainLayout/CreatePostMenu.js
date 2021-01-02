@@ -122,8 +122,8 @@ const CreatePostMenu = ({
         link={`/create/sharelink${search}`}
       >
         <MenuItemContent
-          primaryText="Share a Link"
-          secondaryText="Earn 5k points for each link shared"
+          primaryText="Share a Resource"
+          secondaryText="Earn 5k points for each resource shared"
           icon={Links}
         />
       </MenuItem>

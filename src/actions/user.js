@@ -102,7 +102,12 @@ export const toggleExpertMode = () => (
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
 
-  if (pathname === '/feed') dispatch(push('/'))
+  if ([
+    '/feed',
+    '/my_posts',
+    '/leaderboard',
+    '/bookmarks'
+  ].includes(pathname)) dispatch(push('/'))
 }
 
 const updateTourAction = ({

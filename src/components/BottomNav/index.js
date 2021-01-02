@@ -135,7 +135,7 @@ class BottomNav extends React.PureComponent<Props, State> {
                   <AddIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Share a Link"
+                  primary="Share a Resource"
                   secondary="200 - 500 points"
                   secondaryTypographyProps={{ color: 'textPrimary' }}
                 />

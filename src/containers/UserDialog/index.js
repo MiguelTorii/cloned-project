@@ -37,8 +37,7 @@ const UserDialog = ({
   const classes = useStyles()
 
   useEffect(() => {
-    if (!isLoading) setTimeout(() => clear(), 500)
-    setTimeout(() => clear(), 5000)
+    if (!isLoading) setTimeout(() => clear(), 1000)
   }, [clear, isLoading])
 
   if(!title) return null

@@ -183,6 +183,7 @@ const Layout = ({
 
   const {
     data: { userId, firstName, lastName, profileImage },
+    announcementData,
     runningTour,
     userClasses,
     expertMode,
@@ -225,6 +226,7 @@ const Layout = ({
       <ErrorBoundary>
         <MainLayout
           expertMode={expertMode}
+          announcementData={announcementData}
           isExpert={isExpert}
           toggleExpertMode={toggleExpertMode}
           helpLink={helpLink}

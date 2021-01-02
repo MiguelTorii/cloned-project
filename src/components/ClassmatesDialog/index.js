@@ -9,7 +9,7 @@ import { ReferralInvite } from 'containers/Referrals';
 import Classmate from 'components/ClassmatesDialog/Classmate'
 import { decypherClass } from 'utils/crypto'
 
-const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
+const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName }) => {
   const classes = makeStyles(theme => ({
     dialog: {
       ...dialogStyle,
@@ -37,24 +37,57 @@ const ClassmatesDialog = ({ close, state, courseDisplayName }) => {
   const isExpert = useMemo(() => state === 'student', [state])
 
   useEffect(() => {
-    const init = async () => {
+    const initClassmates = async () => {
       const { classId, sectionId } = decypherClass()
       if (!sectionId && !classId) return
-      let res = await getClassmates({
+      const res = await getClassmates({
         sectionId,
         classId
       })
-      if (res) setClassmates(res)
+      if (res) {
+        const classmates = res.filter(r => Number(r.userId) !== Number(userId))
+        setClassmates(classmates)
+      }
+    }
+
+    const initStudents = async () => {
+      if(userClasses && userClasses.classList) {
+        const students = {}
+        const res = await Promise.all(
+          userClasses.classList.map(async cl => {
+            if (cl && cl.classId && cl.section) {
+              const users = await getClassmates({
+                sectionId: cl.section[0].sectionId,
+                classId: cl.classId
+              })
+
+              users.forEach(u => {
+                if (Number(userId) !== Number(u.userId)) students[u.userId] = u
+              })
+            }
+          }
+          )
+        )
+
+        if (res) setClassmates(Object.keys(students).map(s => (
+          students[s]
+        )))
+      }
+    }
+
+    const init = async () => {
+      if (state === 'classmate') initClassmates()
+      else initStudents()
 
       const aCampaign = await getCampaign({ campaignId: 9 });
       setCampaign(aCampaign);
 
-      res = await getReferralProgram();
+      const res = await getReferralProgram();
       setReferralProgram(res);
     }
 
     if (state) init()
-  }, [state])
+  }, [state, userClasses, userId])
 
   if (!campaign) return null
 

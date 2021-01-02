@@ -38,10 +38,10 @@ const styles = theme => ({
   },
   leftCharactersRed: {
     marginRight: theme.spacing(2),
-    color: theme.circleIn.palette.danger,
+    color: theme.circleIn.palette.brand,
   },
   errorMessage: {
-    color: theme.circleIn.palette.danger,
+    color: theme.circleIn.palette.brand,
     fontWeight: 'bold',
     marginLeft: theme.spacing(),
   },
@@ -582,7 +582,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               </Grid>
 
               {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Summary of notes</Typography>
+                <Typography variant="subtitle1">Description of notes</Typography>
               </Grid>}
               <Grid item xs={12} md={10}>
                 <OutlinedTextValidator

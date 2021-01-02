@@ -33,12 +33,16 @@ const circleInTheme = {
   profilebgColor: '#bdbdbd',
   danger: '#f34f47',
   flashcardBackground: '#324F61',
-  deepSeaOcean: '#225D89'
+  deepSeaOcean: '#225D89',
+  hoverMenu: '#2e434f',
+  primaryii222: '#1e88e5'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      hoverMenu: circleInTheme.hoverMenu,
+      primaryii222: circleInTheme.primaryii222,
       deepSeaOcean: circleInTheme.deepSeaOcean,
       flashcardBackground: circleInTheme.flashcardBackground,
       danger: circleInTheme.danger,

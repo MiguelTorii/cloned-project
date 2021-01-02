@@ -121,7 +121,8 @@ export const signIn = ({
     store.set('SEGMENT', user.segment);
 
     const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
-    const expertMode = user.appAccess.includes(3) && !user.appAccess.includes(1)
+    const expertMode = (user.appAccess.includes(3) && !user.appAccess.includes(1)) ||
+      (user.appAccess.includes(3) && store.get('ROLE') === 'tutor')
     dispatch(setUser({ user, isExpert, expertMode }));
 
     await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
@@ -245,7 +246,8 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
 
       const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
       if (expertMode === null) {
-        const expertMode = user.appAccess.includes(3) && !user.appAccess.includes(1)
+        const expertMode = (user.appAccess.includes(3) && !user.appAccess.includes(1)) ||
+      (user.appAccess.includes(3) && store.get('ROLE') === 'tutor')
         dispatch(setUser({ user, isExpert, expertMode }));
       } else {
         dispatch(setUser({ user, isExpert, expertMode }));

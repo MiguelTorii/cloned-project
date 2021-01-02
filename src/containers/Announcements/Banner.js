@@ -109,7 +109,7 @@ const Banner = ({
     title,
   } = announcement;
 
-  const text = subtitle.replace("{{time_left}}", minutesRemaining);
+  const text = subtitle && subtitle.replace("{{time_left}}", minutesRemaining);
 
   return (
     <div className={classes.body}>

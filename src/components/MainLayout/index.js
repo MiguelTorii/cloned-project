@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, Fragment, useState, useRef, useCallback } from 'react';
+import React, { useMemo, memo, Fragment, useState, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -196,11 +196,13 @@ type Props = {
   },
   expertMode: boolean,
   isExpert: boolean,
+  announcementData: ?Object,
   toggleExpertMode: Function
 };
 
 const MainLayout = ({
   classes,
+  announcementData,
   helpLink,
   width,
   userId,
@@ -391,16 +393,21 @@ const MainLayout = ({
     />
   )
 
+  const appBarHeight = useMemo(() => (
+    announcementData ? 120 : 62
+  ), [announcementData])
+
   const drawer = (
     <DrawerMenu
       expertMode={expertMode}
       isExpert={isExpert}
       toggleExpertMode={toggleExpertMode}
       handleCreatePostMenuOpen={handleCreatePostMenuOpen}
-      appBarHeight={62}
+      appBarHeight={appBarHeight}
       updateFeed={updateFeed}
       newNotesScreen={newNotesScreen}
       newClassExperience={newClassExperience}
+      userId={userId}
       createPostOpen={createPostOpen}
       handleOpenGetApp={handleOpenGetApp}
       handleOpenFeedback={handleOpenFeedback}

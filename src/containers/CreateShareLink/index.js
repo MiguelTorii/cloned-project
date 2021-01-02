@@ -383,7 +383,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <ErrorBoundary>
           <CreatePostForm
-            title="Share Link"
+            title="Share Resource"
             subtitle="If you find something helpful or insightful, get the link, and share with your classmates. You’ll find out quickly that other students will benefit like you."
             loading={loading}
             buttonLabel={sharelinkId ? 'Save' : 'Create'}
@@ -393,7 +393,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             <Grid container alignItems="center">
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">
-                  What's the title of your link??
+                  What's the title of your resource?
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
