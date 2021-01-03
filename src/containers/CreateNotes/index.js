@@ -626,29 +626,31 @@ class CreateNotes extends React.PureComponent<Props, State> {
               {/* /> */}
               {/* </Grid> */}
               {notSm && <Grid item md={2} />}
-              <Grid
-                container
-                item
-                xs={12}
-                md={10}
-                justify='center'
-                alignItems='center'
-              >
-                <Grid item xs={2} md={2}>
-                  <Divider light />
+              {!expertMode && (
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  md={10}
+                  justify='center'
+                  alignItems='center'
+                >
+                  <Grid item xs={2} md={2}>
+                    <Divider light />
+                  </Grid>
+                  <Grid item xs={7} md={7}>
+                    <Typography className={classes.divisorTitle} variant="subtitle1">Choose how to share notes</Typography>
+                  </Grid>
+                  <Grid item xs={2} md={2}>
+                    <Divider light />
+                  </Grid>
                 </Grid>
-                <Grid item xs={7} md={7}>
-                  <Typography className={classes.divisorTitle} variant="subtitle1">Choose how to share notes</Typography>
-                </Grid>
-                <Grid item xs={2} md={2}>
-                  <Divider light />
-                </Grid>
-              </Grid>
+              )}
 
-              {notSm && !hasImages && <Grid item xs={12} md={2}>
+              {notSm && !hasImages && !expertMode && <Grid item xs={12} md={2}>
                 <Typography variant="subtitle1">Link to Google Docs</Typography>
               </Grid>}
-              {!hasImages && <Grid item xs={12} md={10}>
+              {!hasImages && !expertMode && <Grid item xs={12} md={10}>
                 <OutlinedTextValidator
                   onChange={this.handleTextChange}
                   label={!notSm ? 'Link to Google Docs (public link)' : 'Public link'}
@@ -657,12 +659,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   value={url}
                 />
               </Grid>}
-              {notSm && !url && !hasImages && <Grid item md={2} />}
-              {!url && !hasImages && <Grid item xs={12} md={10}>
+              {notSm && !url && !hasImages && !expertMode && <Grid item md={2} />}
+              {!url && !hasImages && !expertMode && <Grid item xs={12} md={10}>
                 <Typography variant="subtitle1" className={classes.divisorOr}>OR</Typography>
               </Grid>}
               {notSm && !url && <Grid item md={2} />}
-              {!url && <Grid item xs={12} md={10}>
+              {!url && <Grid item xs={12} md={expertMode ? 12 : 10}>
                 <UploadImages
                   notes={notes}
                   imageChange={this.imageChange}
