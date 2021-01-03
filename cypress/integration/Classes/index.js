@@ -6,7 +6,7 @@ describe('Classes', () => {
   it('Renders classes page', () => {
     cy.visit(`${Cypress.env('url')}classes`)
     // cy.contains('+ Add More Classes')
-    cy.contains('Fundamentals of Chemistry')
+    cy.contains('Literature I')
   })
 
   // it('Navigates to feed', () => {

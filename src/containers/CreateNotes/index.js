@@ -303,7 +303,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         });
 
         setTimeout(() => {
-          if (points > 0) {
+          if (points > 0 && !expertMode) {
             const { enqueueSnackbar, classes } = this.props;
             enqueueSnackbar({
               notification: {
@@ -485,10 +485,16 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 
   errorMessage = () => {
-    const { classes } = this.props
+    const {
+      classes,
+      user: {
+        expertMode
+      }
+    } = this.props
     const { summary } = this.state
 
     if (Number(this.getLeftCharts(summary)) <= 0) return null
+    if (expertMode) return <div />
 
     return (
       <Typography
@@ -589,12 +595,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   onChange={this.handleTextChange}
                   name="summary"
                   multiline
-                  label={notSm ? '' : 'Summary'}
+                  label={notSm ? '' : 'Description'}
                   variant={notSm ? null : 'standard'}
                   rows={notSm ? 4 : 1}
                   value={summary}
                   validators={['required']}
-                  errorMessages={['Summary is required']}
+                  errorMessages={['Description is required']}
                 />
                 <Typography
                   variant="subtitle1"
@@ -602,7 +608,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   className={Number(this.getLeftCharts(summary)) > 0 ? classes.leftCharactersRed : classes.leftCharacters}
                 >{`${this.getLeftCharts(
                   summary
-                )} more characters to earn points`}</Typography>
+                )} ${expertMode
+                  ? 'more characters required'
+                  : 'more characters to earn points'}`}</Typography>
               </Grid>
 
               {/* {notSm && <Grid item md={2}> */}

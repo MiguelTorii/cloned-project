@@ -6,7 +6,7 @@ describe('Notes', () => {
   it('Creates note', () => {
     cy.visit(`${Cypress.env('url')}notes`)
     cy.contains('My Notes').parent().parent().within(() => {
-      cy.contains('Fundamentals of Chemistry').click()
+      cy.contains('Literature I').click()
     })
     // cy.contains('Now, you can type class notes right inside of CircleIn.')
     // cy.contains('Organization just got so much easier.')

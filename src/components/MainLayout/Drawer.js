@@ -422,7 +422,7 @@ const Drawer = ({
             <StoreIcon />
           </ListItemIcon>
           <ListItemText
-            primary="Rewards Store"
+            primary="Your Rewards"
           />
         </ListItem>
         {!newClassExperience && <div className={classes.myClasses}>
