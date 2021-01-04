@@ -3,6 +3,7 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
+import store from 'store'
 import withRoot from '../../withRoot';
 import Auth from '../../containers/AuthRedirect';
 
@@ -19,7 +20,9 @@ type Props = {
 type State = {};
 
 class AuthPage extends React.Component<ProvidedProps & Props, State> {
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    store.set('NEW_AUTH', true)
+  };
 
   render() {
     const { classes } = this.props;

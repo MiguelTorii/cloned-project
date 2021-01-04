@@ -275,7 +275,12 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
       '/saml'
     ].includes(window.location.pathname)
   ) {
-    dispatch(push('/login'));
+    const newAuth = store.get('NEW_AUTH')
+    if (newAuth) {
+      dispatch(push('/new'));
+    } else {
+      dispatch(push('/login'));
+    }
   }
   return false
 };
@@ -294,14 +299,24 @@ export const updateUser = ({ user }: { user: User }) => async (
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
+    const newAuth = store.get('NEW_AUTH')
     dispatch(clearState())
     dispatch(requestSignOut());
     store.clearAll()
     dispatch(clearUser());
-    dispatch(push('/login'));
+    if (newAuth) {
+      dispatch(push('/new'));
+    } else {
+      dispatch(push('/login'));
+    }
     // window.location.href = 'https://www.circleinapp.com/'
   } catch (err) {
-    dispatch(push('/login'));
+    const newAuth = store.get('NEW_AUTH')
+    if (newAuth) {
+      dispatch(push('/new'));
+    } else {
+      dispatch(push('/login'));
+    }
   }
 };
 
