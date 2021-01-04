@@ -501,6 +501,8 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     const newTask = await createTodo({ title: task1, categoryId });
     await updateTodo({
       ...newTask,
+      title: task1,
+      categoryId,
       sectionId: '',
       date: moment(dueDate).valueOf(),
       status: 1,
