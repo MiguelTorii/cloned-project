@@ -18,7 +18,13 @@ import Link from '@material-ui/core/Link';
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
+  textRoot: {
+    width: 0
+  },
   fullname: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     color: theme.circleIn.palette.primaryText1
   },
   buttons: {
@@ -74,6 +80,7 @@ const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmat
       </ListItemAvatar>
       <ListItemText
         classes={{
+          root: classes.textRoot,
           primary: classes.fullname
         }}
         primary={`${classmate.firstName} ${classmate.lastName}`}

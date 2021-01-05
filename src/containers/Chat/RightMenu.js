@@ -229,7 +229,7 @@ const RightMenu = ({
                           {getInitials({ name: fullName })}
                         </Avatar>
                       </ListItemAvatar>
-                      {fullName} {[2, 3].includes(m.roleId) && m.role && <TutorBadge text={m.role} />}
+                      {fullName} {m.role && <TutorBadge text={m.role} />}
                       <ListItemSecondaryAction>
                         <RouterLink to={`/profile/${m.userId}`}>
                           <ArrowForwardIosIcon className={classes.icon} />

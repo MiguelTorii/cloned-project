@@ -512,7 +512,7 @@ class FeedItem extends React.PureComponent<Props, State> {
                       alt="Rank"
                       className={classes.rank}
                     /> */}
-                    {[2, 3].includes(data.roleId) && data.role && (
+                    {data.role && (
                       <TutorBadge text={data.role} />
                     )}
                   </Typography>

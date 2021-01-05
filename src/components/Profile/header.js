@@ -231,7 +231,6 @@ class Header extends React.PureComponent<Props, State> {
       tab,
       // inStudyCircle,
       isCirclein,
-      roleId,
       role,
       onStartChat,
       onStartVideo,
@@ -305,7 +304,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={8} sm={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
-                {name} {[2,3].includes(roleId) && role && <TutorBadge text={role} />}
+                {name} {role && <TutorBadge text={role} />}
               </Typography>
               <Grid
                 justify='space-between'

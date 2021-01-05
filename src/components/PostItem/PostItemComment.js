@@ -238,7 +238,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   href={`/profile/${ownerId}`}
                   className={classes.link}
                 >
-                  {name} {[2, 3].includes(roleId) && role && <TutorBadge text={role} />}
+                  {name} {role && <TutorBadge text={role} />}
                 </Link>
               </Typography>
               <Typography

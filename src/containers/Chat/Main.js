@@ -214,11 +214,8 @@ const Main = ({
 
   const getRole = useCallback(userId => {
     if (!members[userId]) return null
-    const { role, roleId } = members[userId]
-    if ([2, 3].includes(roleId)) {
-      return role
-    }
-    return null
+    const { role } = members[userId]
+    return role
   }, [members])
 
   const renderMessage = useCallback((item, profileURLs) => {

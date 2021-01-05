@@ -111,6 +111,7 @@ const SelectRole = ({
         connection,
         responseType: 'token'
       })
+      return true
     } else {
       const responseType = 'code';
       const origin = `${window.location.origin}/new-oauth`

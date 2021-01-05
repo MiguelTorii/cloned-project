@@ -246,7 +246,10 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { onApplyFilters } = this.props;
     const { postTypes, userClasses } = this.state;
 
-    const userClassesValues = userClasses.map(uc => uc.value)
+    const userClassesValues = userClasses
+      ? userClasses.map(uc => uc.value)
+      : []
+
     const filters = [
       {
         name: 'postTypes',
