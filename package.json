@@ -119,10 +119,6 @@
     "cypress": "cypress open",
     "eject": "react-scripts eject"
   },
-  "resolutions": {
-    "jest/jest-cli/jest-haste-map/sane": "4.1.0",
-    "webpack/watchpack/chokidar/fsevents": "2.2.1"
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
