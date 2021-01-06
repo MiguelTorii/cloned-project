@@ -3,15 +3,16 @@ import React, { memo, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import LoadImg from 'components/LoadImg';
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import LoadImg from 'components/LoadImg'
 import Tooltip from '@material-ui/core/Tooltip'
-import more from 'assets/svg/ic_moreinfo.svg';
+import more from 'assets/svg/ic_moreinfo.svg'
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app'
 import auth0 from 'auth0-js'
 import store from 'store'
-import Dialog from '../../components/Dialog';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from 'components/Dialog'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -83,22 +84,32 @@ const SelectRole = ({
 }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleClose = useCallback(() => {
     setOpen(false)
   }, [])
 
   const onChange = useCallback(value => {
-    if (!value) return false
+    setLoading(true)
+    if (!value || role === 'email') {
+      setLoading(false)
+      return false
+    }
+
     const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = value;
     if (launchType === 'lti') {
       updateError({
         title: '',
         body: redirectMessage
       })
+
+      setLoading(false)
     } else if (lmsTypeId === 0) {
       /* NONE */
+      setLoading(false)
     } else if (lmsTypeId === -1) {
+      setLoading(false)
       window.location.replace('https://circleinapp.com/whitelist');
     } else if (launchType === 'saml') {
       const webAuth = new auth0.WebAuth({
@@ -111,6 +122,7 @@ const SelectRole = ({
         connection,
         responseType: 'token'
       })
+      setLoading(false)
       return true
     } else {
       const responseType = 'code';
@@ -136,11 +148,13 @@ const SelectRole = ({
         uri = `${uri}&scope=${value.scope}`;
       }
 
+      setLoading(false)
       window.location.replace(uri);
       return true
     }
+    setLoading(false)
     return false
-  }, [updateError])
+  }, [role, updateError])
 
   const onClick = useCallback(async() => {
     const redirect = await onChange(school)
@@ -197,7 +211,10 @@ const SelectRole = ({
         onClick={onClick}
         color='primary'
       >
-        Select Role
+        {loading
+          ? <CircularProgress size={20} color='secondary' />
+          : 'Select Role'
+        }
       </Button>
 
       <Dialog

@@ -124,20 +124,18 @@ const Login = ({
         Login
         </Button>
       </form>
-      {role !== 'email' && (
-        <div className={classes.signup}>
-          <Typography>Or, </Typography>
-          <Button
-            onClick={goSignup}
-            className={classes.orButton}
-            disableElevation
-            disableFocusRipple
-            disableRipple
-          >
+      <div className={classes.signup}>
+        <Typography>Or, </Typography>
+        <Button
+          onClick={goSignup}
+          className={classes.orButton}
+          disableElevation
+          disableFocusRipple
+          disableRipple
+        >
         Sign Up
-          </Button>
-        </div>
-      )}
+        </Button>
+      </div>
       {['student', 'tutor'].includes(role) && (
         <div className={classes.scanContainer}>
           <Typography className={classes.scanText}>

@@ -130,7 +130,6 @@ type Props = {
   onThanks: Function,
   onReport: Function,
   onDelete: Function,
-  roleId: number,
   role: string,
   onBestAnswer: Function
 };
@@ -214,7 +213,6 @@ class PostItemComment extends React.PureComponent<Props, State> {
       readOnly,
       accepted,
       hasBestAnswer,
-      roleId,
       role,
       isOwner
     } = this.props;
