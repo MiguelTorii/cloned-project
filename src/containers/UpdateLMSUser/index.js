@@ -20,7 +20,7 @@ import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
-import OnboardingV2 from '../OnboardingV2';
+import OnboardingProgress from '../OnboardingProgress';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
@@ -307,7 +307,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        <OnboardingV2
+        <OnboardingProgress
           open={viewedOnboarding !== null && !viewedOnboarding}
           updateOnboarding={updateOnboarding}
           userId={userId}

@@ -70,6 +70,7 @@ const Dialog = ({
   children,
   classes,
   className,
+  contentClassName,
   disableBackdropClick = false,
   disableActions = false,
   disableOk = false,
@@ -140,7 +141,7 @@ const Dialog = ({
       }
       <DialogContent
         aria-labelledby='circle-in-dialog-content'
-        classes={{ root: classes.contentRoot }}>
+        classes={{ root: contentClassName || classes.contentRoot }}>
         {
           title &&
             typeof title === 'string' ?
