@@ -69,18 +69,14 @@ type Props = {
   open: boolean
 };
 
-const getNotificationTime = (notifications, date) => {
+const getNotificationTime = (notifications) => {
   try {
     if (
       notifications &&
-      notifications.length === 1 &&
-      date
+      notifications.length === 1
     ) {
-      const now = moment().valueOf()
-      const due = moment(date).valueOf()
       const { value } = remiderTime[notifications[0].key]
-      const diffNow = due - now - (value * 1000)
-      return due - now > 0 ? Math.floor(diffNow / 1000) : null
+      return value
     }
   } catch (e) {
     return null
@@ -196,7 +192,7 @@ const WorkflowEdit = ({
       sectionId,
       id: task.id,
       status: task.status,
-      reminder: getNotificationTime(notifications, date),
+      reminder: getNotificationTime(notifications),
       images: imagesRef.current?.images
     })
     if (title) onClose()
