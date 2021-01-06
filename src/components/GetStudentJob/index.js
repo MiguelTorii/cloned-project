@@ -7,7 +7,7 @@ import PdfComponent from 'components/PdfGallery/PdfComponent'
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-const STUDENT_JOB_PDF_URI = "http://media.circleinapp.com/CircleIn+Student+Ambassador.pdf"
+const STUDENT_JOB_PDF_URI = "https://media.circleinapp.com/CircleIn+Student+Ambassador.pdf"
 
 type Props = {
   open: boolean, onClose: Function
