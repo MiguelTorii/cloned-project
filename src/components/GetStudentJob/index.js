@@ -7,10 +7,7 @@ import PdfComponent from 'components/PdfGallery/PdfComponent'
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-const STUDENT_JOB_PDF_URI = "https://f.hubspotusercontent00.net/hubfs/5258553/Spring%202021%20Awareness%20Resources/CircleIn%20Student%20Ambassador.pdf"
-const COS_PDF_URL = process.env.NODE_ENV === 'development'
-  ? `https://cors-anywhere.herokuapp.com/${STUDENT_JOB_PDF_URI}`
-  : STUDENT_JOB_PDF_URI;
+const STUDENT_JOB_PDF_URI = "http://media.circleinapp.com/CircleIn+Student+Ambassador.pdf"
 
 type Props = {
   open: boolean, onClose: Function
@@ -24,7 +21,7 @@ const GetAppDialog = ({ open, onClose }: Props) => {
       open={Boolean(open)}
     >
       <PdfComponent
-        url={COS_PDF_URL}
+        url={STUDENT_JOB_PDF_URI}
         height="100%"
         width="100%"
         radius={10}
