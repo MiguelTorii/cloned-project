@@ -24,6 +24,7 @@ import UserDialog from 'containers/UserDialog'
 import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx'
 import GetAppDialog from 'components/GetAppDialog';
+import GetStudentJob from 'components/GetStudentJob';
 import { withRouter } from 'react-router';
 import QuickNotes from 'containers/QuickNotes'
 import logo from '../../assets/svg/circlein_logo.svg';
@@ -238,6 +239,7 @@ const MainLayout = ({
   const [openHowEarnPoints, setOpenHowEarnPoints] = useState(false)
   const [openUseCases, setOpenUseCases] = useState(false)
   const [createPostOpen, setCreatePostOpen] = useState(false)
+  const [openStudentJobs, setOpenStudentJobs] = useState(false)
   const appBarRef = useRef()
 
 
@@ -342,6 +344,14 @@ const MainLayout = ({
     handleMenuClose();
   }, [handleMenuClose])
 
+  const handleOpenStudentJobs = useCallback(() => {
+    setOpenStudentJobs(true)
+  }, [])
+
+  const handleCloseStudentJobs = useCallback(() => {
+    setOpenStudentJobs(false)
+  }, [])
+
   const handleCloseUseCases = useCallback(() => {
     setOpenUseCases(false)
   }, [])
@@ -416,6 +426,7 @@ const MainLayout = ({
       pathname={pathname}
       handleManageClasses={handleManageClasses}
       handleOpenUseCases={handleOpenUseCases}
+      handleOpenStudentJobs={handleOpenStudentJobs}
       handleOpenHowEarnPoints={handleOpenHowEarnPoints}
       landingPageCampaign={landingPageCampaign}
       userClasses={userClasses}
@@ -547,6 +558,10 @@ const MainLayout = ({
       <GetAppDialog
         open={openGetApp}
         onClose={handleCloseGetApp}
+      />
+      <GetStudentJob
+        open={openStudentJobs}
+        onClose={handleCloseStudentJobs}
       />
       <GiveFeedback
         origin='Side Menu'

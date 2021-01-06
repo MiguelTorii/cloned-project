@@ -31,6 +31,8 @@ import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg'
 // $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 
+import { ReactComponent as HandshakeIcon } from '../../assets/svg/hand_shake.svg';
+
 const useStyles = makeStyles((theme) => ({
   backHeader: {
     margin: theme.spacing(2)
@@ -145,6 +147,9 @@ const useStyles = makeStyles((theme) => ({
   expertTitle: {
     fontWeight: 'bold'
   },
+  pr1: {
+    paddingRight: theme.spacing(0.6)
+  },
   item: {
     width: 'auto',
     borderRadius: theme.spacing(6),
@@ -172,6 +177,7 @@ const Drawer = ({
   appBarHeight,
   handleCreatePostMenuOpen,
   handleOpenUseCases,
+  handleOpenStudentJobs,
   handleOpenHowEarnPoints,
   landingPageCampaign,
   expertMode,
@@ -468,6 +474,20 @@ const Drawer = ({
             </ListItemIcon>
             <ListItemText primary="Get the Mobile App" />
           </ListItem>
+
+          <div className={classes.verticalSpacing}>
+            <ListItem
+              button
+              onClick={handleOpenStudentJobs}
+              className={classes.otherPath}
+            >
+              <ListItemIcon>
+                <HandshakeIcon className={classes.pr1}/>
+              </ListItemIcon>
+              <ListItemText primary="Student Jobs" />
+            </ListItem>
+          </div>
+
           <div className={classes.verticalSpacing}>
             <Tooltip
               id={3181}
