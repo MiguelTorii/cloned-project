@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
-import { decypherClass } from 'utils/crypto'
+import { cypher, decypherClass } from 'utils/crypto'
 import AnonymousButton from 'components/AnonymousButton';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import type { UserState } from '../../reducers/user';
@@ -63,7 +63,6 @@ const CreateQuestion = ({
   pushTo,
   questionId,
   location: {
-    search,
     pathname
   },
   enqueueSnackbar
@@ -83,11 +82,14 @@ const CreateQuestion = ({
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
+      const search = !expertMode
+        ? `?class=${cypher(`${classId}:${sectionId}`)}`
+        : ''
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
     }
-  }, [campaign.newClassExperience, pushTo, search])
+  }, [campaign.newClassExperience, classId, expertMode, pushTo, sectionId])
 
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({ userId, questionId });
@@ -171,15 +173,37 @@ const CreateQuestion = ({
       const {
         points,
         user: { firstName },
+        classes: resClasses,
         questionId,
-      } = await api.createQuestion({
-        userId,
-        title,
-        body,
-        anonymous: anonymousActive,
-        classId,
-        sectionId,
-      });
+      } = expertMode
+        ? await api.createBatchQuestion({
+          userId,
+          title,
+          sectionIds: classList.map(c => c.sectionId),
+          body,
+        })
+        : await api.createQuestion({
+          userId,
+          title,
+          body,
+          anonymous: anonymousActive,
+          classId,
+          sectionId,
+        });
+
+      let hasError = false
+      if (expertMode && resClasses) {
+        resClasses.forEach(r => {
+          if (r.status !== 'Success') hasError = true
+        })
+        if (hasError || resClasses.length === 0) {
+          setLoading(false)
+          setErrorBody('Please try again')
+          setErrorTitle('Error creating questions')
+          setErrorDialog(true)
+          return
+        }
+      }
 
       logEventLocally({
         category: 'Question',
@@ -187,10 +211,15 @@ const CreateQuestion = ({
         type: 'Created',
       });
 
-      if (points > 0) {
+      if (
+        points > 0 ||
+        expertMode
+      ){
         enqueueSnackbar({
           notification: {
-            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            message: !expertMode
+              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+              : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -216,7 +245,7 @@ const CreateQuestion = ({
       setErrorTitle('Unknown Error')
       setErrorDialog(true)
     }
-  }, [anonymousActive, body, classId, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
+  }, [anonymousActive, body, classId, classList, classes.stackbar, enqueueSnackbar, expertMode, handlePush, sectionId, title, userId])
 
   const handleSubmit = useCallback(event => {
     event.preventDefault();
@@ -306,11 +335,11 @@ const CreateQuestion = ({
                 onChange={handleRTEChange}
               />
             </Grid>
+
             <Grid item xs={12} sm={2}>
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-
               {expertMode && !isEdit ? (
                 <ClassMultiSelect
                   selected={classList}
@@ -324,13 +353,14 @@ const CreateQuestion = ({
                 />
               )}
             </Grid>
-            {!questionId && (
+
+            {!questionId && !expertMode && (
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Ask Anonymously</Typography>
               </Grid>
             )}
 
-            {!questionId && (
+            {!questionId && !expertMode && (
               <Grid item xs={12} sm={10}>
                 <AnonymousButton
                   active={anonymousActive}

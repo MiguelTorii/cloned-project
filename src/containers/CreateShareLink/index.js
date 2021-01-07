@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
-import { decypherClass } from 'utils/crypto'
+import { cypher, decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -22,7 +22,7 @@ import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { updateShareURL, createShareLink, getShareLink } from '../../api/posts';
+import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
@@ -86,8 +86,20 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   handlePush = path => {
-    const { location: { search }, pushTo, campaign } = this.props
+    const {
+      pushTo,
+      campaign,
+      user: {
+        expertMode
+      }
+    } = this.props
+
+    const { sectionId, classId } = this.state
+
     if (campaign.newClassExperience) {
+      const search = !expertMode
+        ? `?class=${cypher(`${classId}:${sectionId}`)}`
+        : ''
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
@@ -222,33 +234,60 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     try {
       const {
         user: {
-          data: { userId = '' }
+          data: { userId = '' },
+          expertMode,
         },
       } = this.props;
-      const { title, summary, url, classId, sectionId } = this.state;
+      const { classList, title, summary, url, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
 
 
-      const res = await createShareLink({
-        userId,
-        title,
-        summary,
-        uri: url,
-        classId,
-        sectionId,
-        tags: tagValues
-      });
+      const res = expertMode
+        ? await createBatchShareLink({
+          userId,
+          title,
+          summary,
+          uri: url,
+          sectionIds: classList.map(c => c.sectionId),
+          tags: tagValues
+        })
+        :  await createShareLink({
+          userId,
+          title,
+          summary,
+          uri: url,
+          classId,
+          sectionId,
+          tags: tagValues
+        });
 
       const {
         points,
         linkId,
+        classes: resClasses,
         user: { firstName }
       } = res
 
       const { enqueueSnackbar, classes } = this.props;
 
-      if (linkId === 0) {
+      let hasError = false
+      if (expertMode) {
+        resClasses.forEach(r => {
+          if (r.status !== 'Success') hasError = true
+        })
+        if (hasError || resClasses.length === 0) {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Website not allowed',
+            errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+          });
+          return
+        }
+      }
+
+      if (!expertMode && !linkId) {
         this.setState({
           loading: false,
           errorDialog: true,
@@ -269,10 +308,12 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         type: 'Created',
       });
 
-      if (points > 0) {
+      if (points > 0 || expertMode) {
         enqueueSnackbar({
           notification: {
-            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            message: !expertMode
+              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+              : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -407,23 +448,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 />
               </Grid>
               <Grid item xs={12} sm={2}>
-                <Typography variant="subtitle1">Class</Typography>
-              </Grid>
-              <Grid item xs={12} sm={10}>
-                {expertMode && !isEdit ? (
-                  <ClassMultiSelect
-                    selected={classList}
-                    onSelect={this.handleClasses}
-                  />
-                ) : (
-                  <ClassesSelector
-                    classId={classId}
-                    sectionId={sectionId}
-                    onChange={this.handleClassChange}
-                  />
-                )}
-              </Grid>
-              <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Description</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
@@ -451,6 +475,25 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['URL is required']}
                 />
               </Grid>
+
+              <Grid item xs={12} sm={2}>
+                <Typography variant="subtitle1">Class</Typography>
+              </Grid>
+              <Grid item xs={12} sm={10}>
+                {expertMode && !isEdit ? (
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={this.handleClasses}
+                  />
+                ) : (
+                  <ClassesSelector
+                    classId={classId}
+                    sectionId={sectionId}
+                    onChange={this.handleClassChange}
+                  />
+                )}
+              </Grid>
+
               <Grid item xs={12} sm={2} />
               <Grid item xs={12} sm={10} className={classes.preview}>
                 <LinkPreview uri={preview} />

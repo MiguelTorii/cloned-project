@@ -123,6 +123,7 @@ export const postToCamelCase = (post: Object): Post => {
 
 export const postResponseToCamelCase = (response: Object): PostResponse => {
   return {
+    classes: response.classes || [],
     communityServiceHours: Number(
       (response.community_service_hours: number) || 0
     ),

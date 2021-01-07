@@ -11,7 +11,7 @@ import { processClasses } from 'containers/ClassesSelector/utils';
 import Divider from '@material-ui/core/Divider'
 import withWidth from '@material-ui/core/withWidth'
 import { withRouter } from 'react-router';
-import { decypherClass } from 'utils/crypto'
+import { decypherClass , cypher } from 'utils/crypto'
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
@@ -23,10 +23,11 @@ import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote, createShareLink } from '../../api/posts';
+import { createBatchShareLink, createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote, createShareLink } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEventLocally } from '../../api/analytics';
+
 
 const styles = theme => ({
   stackbar: {
@@ -121,8 +122,20 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   handlePush = path => {
-    const { location: { search }, pushTo, campaign } = this.props
+    const {
+      pushTo,
+      campaign,
+      user: {
+        expertMode
+      }
+    } = this.props
+
+    const { sectionId, classId } = this.state
+
     if (campaign.newClassExperience) {
+      const search = !expertMode
+        ? `?class=${cypher(`${classId}:${sectionId}`)}`
+        : ''
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
@@ -182,28 +195,57 @@ class CreateNotes extends React.PureComponent<Props, State> {
     try {
       const {
         user: {
-          data: { userId = '' }
+          data: { userId = '' },
+          expertMode
         },
       } = this.props;
-      const { title, summary, url, classId, sectionId } = this.state;
+      const { classList, title, summary, url, classId, sectionId } = this.state;
 
       const tagValues = tags.map(item => Number(item.value));
+
+      const res = expertMode
+        ? await createBatchShareLink({
+          userId,
+          title,
+          summary,
+          uri: url,
+          sectionIds: classList.map(c => c.sectionId),
+          tags: tagValues
+        })
+        :  await createShareLink({
+          userId,
+          title,
+          summary,
+          uri: url,
+          classId,
+          sectionId,
+          tags: tagValues
+        });
 
       const {
         points,
         linkId,
+        classes: resClasses,
         user: { firstName }
-      } = await createShareLink({
-        userId,
-        title,
-        summary,
-        uri: url,
-        classId,
-        sectionId,
-        tags: tagValues
-      });
+      } = res
 
-      if (linkId === 0) {
+      let hasError = false
+      if (expertMode && resClasses) {
+        resClasses.forEach(r => {
+          if (r.status !== 'Success') hasError = true
+        })
+        if (hasError || resClasses.length === 0) {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Website not allowed',
+            errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+          });
+          return
+        }
+      }
+
+      if (!expertMode && !linkId) {
         this.setState({
           loading: false,
           errorDialog: true,
@@ -219,11 +261,16 @@ class CreateNotes extends React.PureComponent<Props, State> {
         type: 'Created',
       });
 
-      if (points > 0) {
+      if (
+        (points > 0 && !expertMode) ||
+        (expertMode && !hasError)
+      ) {
         const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar({
           notification: {
-            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            message: !expertMode
+              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+              : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -278,6 +325,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         const {
           points,
           user: { firstName },
+          classes: resClasses,
           photoNoteId
         } = expertMode ? await createBatchPhotoNote({
           userId,
@@ -302,12 +350,30 @@ class CreateNotes extends React.PureComponent<Props, State> {
           type: 'Created',
         });
 
+        let hasError = false
+        if (expertMode && resClasses) {
+          resClasses.forEach(r => {
+            if (r.status !== 'Success') hasError = true
+          })
+          if (hasError || resClasses.length === 0) {
+            this.setState({
+              loading: false,
+              errorDialog: true,
+              errorTitle: 'Error creating posts',
+              errorBody: 'Please try again'
+            });
+            return
+          }
+        }
+
         setTimeout(() => {
-          if (points > 0 && !expertMode) {
+          if (points > 0 || expertMode) {
             const { enqueueSnackbar, classes } = this.props;
             enqueueSnackbar({
               notification: {
-                message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+                message: !expertMode
+                  ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+                  : 'All posts were created successfully',
                 nextPath: '/feed',
                 options: {
                   variant: 'success',
@@ -568,26 +634,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
               </Grid>
 
               {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Class</Typography>
-              </Grid>}
-              <Grid item xs={12} md={10}>
-                {expertMode && !isEdit ? (
-                  <ClassMultiSelect
-                    selected={classList}
-                    onSelect={this.handleClasses}
-                  />
-                ) : (
-                  <ClassesSelector
-                    classId={classId}
-                    sectionId={sectionId}
-                    label={notSm ? '' : 'Class'}
-                    variant={notSm ? null : 'standard'}
-                    onChange={this.handleClassChange}
-                  />
-                )}
-              </Grid>
-
-              {notSm && <Grid item md={2}>
                 <Typography variant="subtitle1">Description of notes</Typography>
               </Grid>}
               <Grid item xs={12} md={10}>
@@ -625,32 +671,51 @@ class CreateNotes extends React.PureComponent<Props, State> {
               {/* onChange={this.handleTagsChange} */}
               {/* /> */}
               {/* </Grid> */}
-              {notSm && <Grid item md={2} />}
-              {!expertMode && (
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  md={10}
-                  justify='center'
-                  alignItems='center'
-                >
-                  <Grid item xs={2} md={2}>
-                    <Divider light />
-                  </Grid>
-                  <Grid item xs={7} md={7}>
-                    <Typography className={classes.divisorTitle} variant="subtitle1">Choose how to share notes</Typography>
-                  </Grid>
-                  <Grid item xs={2} md={2}>
-                    <Divider light />
-                  </Grid>
-                </Grid>
-              )}
 
-              {notSm && !hasImages && !expertMode && <Grid item xs={12} md={2}>
+              {notSm && <Grid item md={2}>
+                <Typography variant="subtitle1">Class</Typography>
+              </Grid>}
+              <Grid item xs={12} md={10}>
+                {expertMode && !isEdit ? (
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={this.handleClasses}
+                  />
+                ) : (
+                  <ClassesSelector
+                    classId={classId}
+                    sectionId={sectionId}
+                    label={notSm ? '' : 'Class'}
+                    variant={notSm ? null : 'standard'}
+                    onChange={this.handleClassChange}
+                  />
+                )}
+              </Grid>
+
+              {notSm && <Grid item md={2} />}
+              <Grid
+                container
+                item
+                xs={12}
+                md={10}
+                justify='center'
+                alignItems='center'
+              >
+                <Grid item xs={2} md={2}>
+                  <Divider light />
+                </Grid>
+                <Grid item xs={7} md={7}>
+                  <Typography className={classes.divisorTitle} variant="subtitle1">Choose how to share notes</Typography>
+                </Grid>
+                <Grid item xs={2} md={2}>
+                  <Divider light />
+                </Grid>
+              </Grid>
+
+              {notSm && !hasImages && <Grid item xs={12} md={2}>
                 <Typography variant="subtitle1">Link to Google Docs</Typography>
               </Grid>}
-              {!hasImages && !expertMode && <Grid item xs={12} md={10}>
+              {!hasImages && <Grid item xs={12} md={10}>
                 <OutlinedTextValidator
                   onChange={this.handleTextChange}
                   label={!notSm ? 'Link to Google Docs (public link)' : 'Public link'}
@@ -659,12 +724,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   value={url}
                 />
               </Grid>}
-              {notSm && !url && !hasImages && !expertMode && <Grid item md={2} />}
-              {!url && !hasImages && !expertMode && <Grid item xs={12} md={10}>
+              {notSm && !url && !hasImages && <Grid item md={2} />}
+              {!url && !hasImages && <Grid item xs={12} md={10}>
                 <Typography variant="subtitle1" className={classes.divisorOr}>OR</Typography>
               </Grid>}
               {notSm && !url && <Grid item md={2} />}
-              {!url && <Grid item xs={12} md={expertMode ? 12 : 10}>
+              {!url && <Grid item xs={12} md={10}>
                 <UploadImages
                   notes={notes}
                   imageChange={this.imageChange}

@@ -21,6 +21,60 @@ import {
   postResponseToCamelCase
 } from './utils';
 
+export const createBatchFlashcards = async ({
+  userId,
+  title,
+  summary,
+  deck,
+  sectionIds,
+  tags,
+  grade
+}: {
+  userId: string,
+  title: string,
+  summary: string,
+  deck: Array<Flashcard>,
+  sectionIds: Array<number>,
+  tags: Array<number>,
+  grade: number
+}): Promise<PostResponse> => {
+  try {
+    const newDeck = deck.map(d => ({
+      question: d.question,
+      answer: d.answer,
+      answer_image_url: clsx(d.answerImage),
+      question_image_url: clsx(d.questionImage)
+    }))
+
+    const token = await getToken();
+    const result = await axios.post(
+      API_ROUTES.BATCH_DECK,
+      {
+        user_id: Number(userId),
+        title,
+        summary,
+        deck: newDeck,
+        grade_level: grade,
+        token: 'NA',
+        section_ids: sectionIds,
+        tags
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
 export const createFlashcards = async ({
   userId,
   title,
@@ -324,6 +378,7 @@ export const updateQuestion = async ({
     return {}
   }
 };
+
 export const createQuestion = async ({
   userId,
   title,
@@ -371,6 +426,47 @@ export const createQuestion = async ({
   }
 };
 
+export const createBatchQuestion = async ({
+  userId,
+  title,
+  body,
+  sectionIds,
+  tags
+}: {
+  userId: string,
+  sectionIds: Array<number>,
+  title: string,
+  body: string,
+  tags: Array<number>
+}): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.BATCH_QUESTION}`,
+      {
+        user_id: Number(userId),
+        section_ids: sectionIds,
+        question_title: title,
+        question_body: body,
+        tags
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data = {} } = result;
+    const { id = {} } = data;
+    const response = postResponseToCamelCase(id);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
 export const createShareLink = async ({
   userId,
   title,
@@ -399,6 +495,51 @@ export const createShareLink = async ({
         uri,
         class_id: classId,
         section_id: sectionId,
+        tags
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
+export const createBatchShareLink = async ({
+  userId,
+  title,
+  summary,
+  uri,
+  sectionIds,
+  tags
+}: {
+  userId: string,
+  title: string,
+  sectionIds: Array<number>,
+  summary: string,
+  uri: string,
+  classId: number,
+  sectionId: ?number,
+  tags: Array<number>
+}): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.BATCH_LINK}`,
+      {
+        user_id: Number(userId),
+        title,
+        summary,
+        uri,
+        section_ids: sectionIds,
         tags
       },
       {

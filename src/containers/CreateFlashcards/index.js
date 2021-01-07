@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
-import { decypherClass } from 'utils/crypto'
+import { cypher, decypherClass } from 'utils/crypto'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -43,7 +43,6 @@ type Props = {
   classes: Object,
   user: UserState,
   location: {
-    search: string,
     pathname: string
   },
   pushTo: Function,
@@ -55,7 +54,6 @@ type Props = {
 const CreateFlashcards = ({
   classes,
   user,
-  location,
   pushTo,
   flashcardId,
   campaign,
@@ -64,7 +62,6 @@ const CreateFlashcards = ({
     pathname
   }
 }: Props) => {
-  const { search } = location;
   const {
     data: { userId, segment, grade },
     userClasses,
@@ -88,11 +85,14 @@ const CreateFlashcards = ({
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
+      const search = !expertMode
+        ? `?class=${cypher(`${classId}:${sectionId}`)}`
+        : ''
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);
     }
-  }, [campaign, pushTo, search]);
+  }, [campaign.newClassExperience, classId, expertMode, pushTo, sectionId]);
 
   const loadData = useCallback(async () => {
     if (!flashcardId) return null;
@@ -203,22 +203,53 @@ const CreateFlashcards = ({
       const {
         points,
         user: { firstName },
+        classes: resClasses,
         fcId
-      } = await api.createFlashcards({
-        userId,
-        title,
-        summary,
-        deck: flashcards.map(item => ({
-          question: item.question,
-          answer: item.answer,
-          questionImage: item.questionImage,
-          answerImage: item.answerImage
-        })),
-        grade,
-        classId,
-        sectionId,
-        tags: tagValues
-      });
+      } = expertMode
+        ? await api.createBatchFlashcards({
+          userId,
+          title,
+          summary,
+          deck: flashcards.map(item => ({
+            question: item.question,
+            answer: item.answer,
+            questionImage: item.questionImage,
+            answerImage: item.answerImage
+          })),
+          grade,
+          sectionIds: classList.map(c => c.sectionId),
+          tags: tagValues
+        })
+        : await api.createFlashcards({
+          userId,
+          title,
+          summary,
+          deck: flashcards.map(item => ({
+            question: item.question,
+            answer: item.answer,
+            questionImage: item.questionImage,
+            answerImage: item.answerImage
+          })),
+          grade,
+          classId,
+          sectionId,
+          tags: tagValues
+        });
+
+      let hasError = false
+      if (expertMode && resClasses) {
+        resClasses.forEach(r => {
+          if (r.status !== 'Success') hasError = true
+        })
+        if (hasError || resClasses.length === 0) {
+          setLoading(false)
+          setErrorBody('Please try again')
+          setErrorTitle('Error creating flashcards')
+          setErrorDialog(true)
+          return
+        }
+      }
+
 
       logEvent({
         event: 'Feed- Create Flashcards',
@@ -231,10 +262,15 @@ const CreateFlashcards = ({
         type: 'Created'
       });
 
-      if (points > 0) {
+      if (
+        (points > 0 && !expertMode) ||
+        (expertMode)
+      ) {
         await enqueueSnackbar({
           notification: {
-            message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+            message: !expertMode
+              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+              : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -260,7 +296,7 @@ const CreateFlashcards = ({
       setErrorTitle('Unknown Error');
       setErrorBody('Please try again');
     }
-  }, [classId, classes, flashcards, enqueueSnackbar, grade, handlePush, sectionId, summary, userId, tags, title]);
+  }, [tags, flashcards, expertMode, userId, title, summary, grade, classList, classId, sectionId, handlePush, enqueueSnackbar, classes.stackbar]);
 
   const handleSubmit = useCallback(() => {
     setChanged(false)
@@ -404,7 +440,7 @@ const CreateFlashcards = ({
     const { classId, sectionId } = decypherClass()
     setClassId(Number(classId));
     setSectionId(Number(sectionId));
-  }, [loadData, search]);
+  }, [loadData]);
 
   const onUnload = e => {
     e.preventDefault();
@@ -448,24 +484,6 @@ const CreateFlashcards = ({
               />
             </Grid>
             <Grid item xs={12} sm={2}>
-              <Typography variant="subtitle1">Class</Typography>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-
-              {expertMode && !isEdit ? (
-                <ClassMultiSelect
-                  selected={classList}
-                  onSelect={handleClasses}
-                />
-              ) : (
-                <ClassesSelector
-                  classId={classId}
-                  sectionId={sectionId}
-                  onChange={handleClassChange}
-                />
-              )}
-            </Grid>
-            <Grid item xs={12} sm={2}>
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
@@ -490,6 +508,26 @@ const CreateFlashcards = ({
             {/* onChange={handleTagsChange} */}
             {/* /> */}
             {/* </Grid> */}
+
+            <Grid item xs={12} sm={2}>
+              <Typography variant="subtitle1">Class</Typography>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+
+              {expertMode && !isEdit ? (
+                <ClassMultiSelect
+                  selected={classList}
+                  onSelect={handleClasses}
+                />
+              ) : (
+                <ClassesSelector
+                  classId={classId}
+                  sectionId={sectionId}
+                  onChange={handleClassChange}
+                />
+              )}
+            </Grid>
+
             <Grid item xs={12} sm={12}>
               <Typography variant="subtitle1">Flashcards</Typography>
             </Grid>
