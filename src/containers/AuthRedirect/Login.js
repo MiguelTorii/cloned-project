@@ -80,7 +80,7 @@ const Login = ({
   } ,[setScreen])
 
   const onChange = useCallback(field => e => {
-    if(e?.target?.value) {
+    if(e?.target) {
       const { value } = e.target
       if (field === 'email') setEmail(value)
       if(field === 'password') setPassword(value)

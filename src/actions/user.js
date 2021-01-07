@@ -92,22 +92,19 @@ export const toggleExpertMode = () => (
   getState: Function
 ) => {
   const {
-    router: {
-      location: {
-        pathname
-      }
+    user: {
+      expertMode
     }
   } = getState()
 
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
 
-  if ([
-    '/feed',
-    '/my_posts',
-    '/leaderboard',
-    '/bookmarks'
-  ].includes(pathname)) dispatch(push('/'))
+  if (!expertMode) {
+    dispatch(push('/feed'))
+  } else {
+    dispatch(push('/'))
+  }
 }
 
 const updateTourAction = ({

@@ -68,6 +68,7 @@ const ClassMultiSelect = ({
     <div className={classes.root}>
       <Autocomplete
         multiple
+        openOnFocus
         getOptionSelected={(option, value) => {
           return value.classId === option.classId && value.sectionId === option.sectionId
         }}

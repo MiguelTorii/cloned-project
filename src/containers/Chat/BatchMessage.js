@@ -49,7 +49,7 @@ const BatchMessage = ({
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState(null)
-  const { expertMode, isExpert } = user
+  const { isExpert } = user
   const { data: { local } } = chat
 
   const readyToSend = useMemo(() => (
@@ -85,10 +85,9 @@ const BatchMessage = ({
   }, [closeNewChannel, local, message, selectedClasses])
 
   if (
-    !expertMode && (
-      !isExpert ||
+    !isExpert ||
     pathname !== '/chat'
-    )) return null
+  ) return null
 
   return (
     <div
