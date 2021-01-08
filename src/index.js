@@ -194,7 +194,8 @@ ReactDOM.render(
             {/* /> */}
             <Route exact path="/new" component={withTracker(AuthRedirect)} />
             <Route exact path="/new-oauth" component={withTracker(OAuthRedirect)} />
-            <Route exact path="/auth" component={withTracker(Auth)} />
+            <Route exact path="/auth" component={withTracker(AuthRedirect)} />
+            <Route exact path="/old" component={withTracker(Auth)} />
             <Route exact path="/login" component={withTracker(SignIn)} />
             <Route exact path="/signup" component={withTracker(SignUp)} />
             <Route exact path="/saml" component={withTracker(Saml)} />

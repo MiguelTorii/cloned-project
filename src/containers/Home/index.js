@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
 import Feed from 'pages/Feed'
+import AuthRedirect from 'pages/AuthRedirect';
 import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 
@@ -24,31 +25,32 @@ const styles = () => ({
 const Home = ({
   campaign,
   classes,
-  userId,
-  userSync
+  userSync,
+  user
 }) => {
+  const { data: { userId }, isLoading } = user
   useEffect(() => {
     const init = async () => {
       userSync({ userId })
     }
 
     if (userId) init()
-    // eslint-disable-next-line
-  }, [userId])
+  }, [userId, userSync])
 
-  if(campaign.newClassExperience === null) return (
+  if(isLoading && !userId) return (
     <div className={classes.loading}>
       <CircularProgress />
     </div>
   )
 
+  if(!userId) return <AuthRedirect />
   if (!campaign.newClassExperience) return <Feed />
   return campaign.landingPageCampaign ? <Workflow /> : <Classes />
 }
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
   campaign,
-  userId: user.data.userId
+  user,
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

@@ -262,12 +262,15 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
   } catch (err) {
     console.log(err)
   }
+
   // TODO: redirect urls before login should remove the code bellow
   if (
-    ![
+    ! [
       '/new-oauth',
       '/new',
+      '/old',
       '/oauth',
+      '/auth',
       '/forgot_password',
       '/reset_password',
       '/terms-of-use',
@@ -275,12 +278,7 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
       '/saml'
     ].includes(window.location.pathname)
   ) {
-    const newAuth = store.get('NEW_AUTH')
-    if (newAuth) {
-      dispatch(push('/new'));
-    } else {
-      dispatch(push('/login'));
-    }
+    dispatch(push('/'));
   }
   return false
 };
@@ -299,24 +297,13 @@ export const updateUser = ({ user }: { user: User }) => async (
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
-    const newAuth = store.get('NEW_AUTH')
     dispatch(clearState())
     dispatch(requestSignOut());
     store.clearAll()
     dispatch(clearUser());
-    if (newAuth) {
-      dispatch(push('/new'));
-    } else {
-      dispatch(push('/login'));
-    }
     // window.location.href = 'https://www.circleinapp.com/'
   } catch (err) {
-    const newAuth = store.get('NEW_AUTH')
-    if (newAuth) {
-      dispatch(push('/new'));
-    } else {
-      dispatch(push('/login'));
-    }
+    // NONE
   }
 };
 
