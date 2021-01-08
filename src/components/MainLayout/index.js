@@ -173,7 +173,7 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  helpLink: string,
+  // helpLink: string,
   width: string,
   userId: string,
   initials: string,
@@ -204,7 +204,7 @@ type Props = {
 const MainLayout = ({
   classes,
   announcementData,
-  helpLink,
+  // helpLink,
   width,
   userId,
   expertMode,
@@ -327,13 +327,14 @@ const MainLayout = ({
   }, [])
 
   const handleOpenHowEarnPoints = useCallback(() => {
-    if (helpLink) {
-      window.open(helpLink, '_blank')
-    } else {
-      setOpenHowEarnPoints(true)
-      handleMenuClose();
-    }
-  }, [handleMenuClose, helpLink])
+    window.open('https://support.circleinapp.com/', '_blank')
+    // if (helpLink) {
+    // window.open(helpLink, '_blank')
+    // } else {
+    // setOpenHowEarnPoints(true)
+    // handleMenuClose();
+    // }
+  }, [])
 
   const handleCloseHowEarnPoints = useCallback(() => {
     setOpenHowEarnPoints(false)
