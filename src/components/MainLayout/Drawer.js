@@ -26,6 +26,7 @@ import anoff from 'assets/svg/anoff.svg'
 import Grid from '@material-ui/core/Grid'
 import Tooltip from '../../containers/Tooltip';
 import Logo from '../../assets/svg/icon_ic_simple_circlein_logo.svg';
+import FlashcardsIcon from '../../assets/svg/flashcards-menu.svg';
 // $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 // $FlowIgnore
@@ -161,6 +162,10 @@ const useStyles = makeStyles((theme) => ({
       background: theme.circleIn.palette.hoverMenu
     },
   },
+  flashcardsIcon: {
+    width: 24,
+    height: 24
+  }
 }));
 
 const Drawer = ({
@@ -363,6 +368,25 @@ const Drawer = ({
             primary="Notes"
           />
         </ListItem>}
+        <ListItem
+          button
+          component={MyLink}
+          className={classNames(
+            ['/create/flashcards'].includes(pathname) ? classes.currentPath : classes.otherPath
+          )}
+          link={`/create/flashcards${search}`}
+        >
+          <ListItemIcon>
+            <img
+              src={FlashcardsIcon}
+              alt='flashcards-menu'
+              className={classes.flashcardsIcon}
+            />
+          </ListItemIcon>
+          <ListItemText
+            primary="Flashcards"
+          />
+        </ListItem>
         {!expertMode && <HomeItem
           createPostOpen={createPostOpen}
           MyLink={MyLink}

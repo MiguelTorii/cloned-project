@@ -37,12 +37,16 @@ const HomeItem = ({
       paddingTop: 0,
       paddingBottom: 0,
       margin: theme.spacing(2),
+      marginTop: theme.spacing(),
       '&:hover': {
-        background: theme.circleIn.palette.primaryText2
+        background: theme.circleIn.palette.hoverMenu
       },
     },
     currentPath: {
-      background: theme.circleIn.palette.buttonBackground,
+      '& span': {
+        fontWeight: 'bold',
+      },
+      background: theme.circleIn.palette.hoverMenu,
     },
     otherPath: {
       background: theme.circleIn.palette.modalBackground,
