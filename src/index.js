@@ -46,7 +46,7 @@ import AuthRedirect from './pages/AuthRedirect';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+// import ResetPassword from './pages/ResetPassword';
 import OAuth from './pages/OAuth';
 import OAuthRedirect from './pages/OAuthRedirect';
 import Canvas from './pages/Canvas';
@@ -195,6 +195,7 @@ ReactDOM.render(
             <Route exact path="/new" component={withTracker(AuthRedirect)} />
             <Route exact path="/new-oauth" component={withTracker(OAuthRedirect)} />
             <Route exact path="/auth" component={withTracker(AuthRedirect)} />
+            <Route exact path="/reset_password" component={withTracker(AuthRedirect)} />
             <Route exact path="/old" component={withTracker(Auth)} />
             <Route exact path="/login" component={withTracker(SignIn)} />
             <Route exact path="/signup" component={withTracker(SignUp)} />
@@ -205,11 +206,11 @@ ReactDOM.render(
               path="/forgot_password"
               component={withTracker(ForgotPassword)}
             />
-            <Route
-              exact
-              path="/reset_password"
-              component={withTracker(ResetPassword)}
-            />
+            {/* <Route */}
+            {/* exact */}
+            {/* path="/reset_password" */}
+            {/* component={withTracker(ResetPassword)} */}
+            {/* /> */}
             <Route exact path="/oauth" component={withTracker(OAuth)} />
             <Route
               exact

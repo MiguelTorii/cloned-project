@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   loginButton: {
     marginTop: theme.spacing(2),
+    fontWeight: 'bold',
     width: 160
   },
   orButton: {
@@ -71,8 +72,11 @@ const Login = ({
   const [password, setPassword] = useState('')
 
   const onLogin = useCallback(() => {
-    const { id: schoolId } = school
-    signIn({ email, password, schoolId, role })
+    signIn({
+      email,
+      password,
+      schoolId: school?.id,
+      role })
   }, [email, password, role, school, signIn])
 
   const goSignup = useCallback(() => {
@@ -91,6 +95,10 @@ const Login = ({
     e.preventDefault()
     onLogin()
   }, [onLogin])
+
+  const forgotPassword = useCallback(() => {
+    setScreen('forgotPassword')
+  }, [setScreen])
 
   return (
     <div className={classes.container}>
@@ -124,6 +132,13 @@ const Login = ({
         Login
         </Button>
       </form>
+      <Button
+        className={classes.loginButton}
+        onClick={forgotPassword}
+        color='primary'
+      >
+        Forgot Password
+      </Button>
       <div className={classes.signup}>
         <Typography>Or, </Typography>
         <Button

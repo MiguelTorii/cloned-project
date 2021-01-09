@@ -268,6 +268,7 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
     ! [
       '/new-oauth',
       '/new',
+      '/reset_password',
       '/old',
       '/oauth',
       '/auth',

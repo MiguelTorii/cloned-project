@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,6 +13,8 @@ import SelectRole from 'containers/AuthRedirect/SelectRole'
 import * as signInActions from 'actions/sign-in';
 import Login from 'containers/AuthRedirect/Login'
 import SignUp from 'containers/AuthRedirect/SignUp'
+import ForgotPassword from 'containers/AuthRedirect/ForgotPassword'
+import NewPassword from 'containers/AuthRedirect/NewPassword'
 import Paper from '@material-ui/core/Paper';
 import LoadImg from 'components/LoadImg';
 import cx from 'classnames'
@@ -92,7 +94,9 @@ type Props = {
   signIn: Function,
   signUp: Function,
   clearError: Function,
-  updateError: Function
+  updateError: Function,
+  search: string,
+  pathname: string
 };
 
 const Auth = ({
@@ -105,8 +109,15 @@ const Auth = ({
   updateError,
   signUp,
   clearError,
+  search,
+  pathname
 }: Props) => {
-  const [screen, setScreen] = useState('school')
+  const [screen, setScreen] = useState(
+    pathname === '/reset_password'
+      ? 'newPassword'
+      : 'school'
+  )
+  // const [screen, setScreen] = useState('school')
   const {
     data: { school, role }
   } = auth
@@ -120,37 +131,63 @@ const Auth = ({
       updateError={updateError}
       updateRole={updateRole}
     />
+
     if (screen === 'login') return <Login
       school={school}
       signIn={signIn}
       role={role}
       setScreen={setScreen}
     />
+
     if (screen === 'signup') return <SignUp
       school={school}
       updateError={updateError}
       setScreen={setScreen}
       signUp={signUp}
     />
+
+    if (screen === 'forgotPassword') return <ForgotPassword
+      setScreen={setScreen}
+      updateError={updateError}
+    />
+
+    if (screen === 'newPassword') return <NewPassword
+      updateError={updateError}
+      signIn={signIn}
+      search={search}
+    />
+
     return <SelectSchool
       school={school}
       updateSchool={updateSchool}
       setScreen={setScreen}
     />
-  } , [role, school, screen, signIn, signUp, updateError, updateRole, updateSchool])
+  } , [role, school, screen, search, signIn, signUp, updateError, updateRole, updateSchool])
 
   const goBack = useCallback(() => {
     if (screen === 'role') setScreen('school')
     if (screen === 'login') setScreen('role')
     if (screen === 'signup') setScreen('role')
+    if (screen === 'forgotPassword') setScreen('login')
   }, [screen])
 
   const isPhone = useMemo(() => (
-    ['login', 'signup'].includes(screen)
+    [
+      'login',
+      'signup',
+      'forgotPassword',
+      'newPassword'
+    ].includes(screen)
   ), [screen])
 
   const renderBack = useMemo(() => {
-    if(!['role', 'login', 'signup'].includes(screen)) {
+    if(![
+      'role',
+      'login',
+      'signup',
+      'forgotPassword',
+      'newPassword'
+    ].includes(screen)) {
       return null
     }
 
@@ -236,7 +273,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
+export default memo(connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Auth));
+)(withStyles(styles)(Auth)));
