@@ -3,22 +3,21 @@ import axios from 'axios';
 import store from 'store';
 import { API_ROUTES } from '../constants/routes';
 import type { User, Schools } from '../types/models';
+import { userToCamelCase } from './utils';
 
 export const signInUser = async (
   email: string,
   password: string,
   schoolId: number,
-  appId: int
 ): Promise<User | {}> => {
   try {
     const result = await axios.post(API_ROUTES.LOGIN, {
       email,
       password,
       school_id: schoolId,
-      application_id: appId
     });
     const { data } = result;
-    return data;
+    return userToCamelCase(data);
   } catch (err) {
     throw err;
   }
@@ -26,21 +25,11 @@ export const signInUser = async (
 
 export const samlLogin = async (token): User | {} => {
   try {
-    const role = store.get('ROLE')
-    let appId = 1
-    if (role === 'faculty') {
-      appId = 2
-    }
-    if(role === 'tutor') {
-      appId = 3
-    }
-
     const result = await axios.post(API_ROUTES.SAML_LOGIN, {
-      application_id: appId,
       token
     });
     const { data = {} } = result;
-    return (data: User | {});
+    return userToCamelCase(data);
   } catch (err) {
     console.log(err);
     return {};
@@ -63,7 +52,7 @@ export const checkUser = async (): User | {} => {
     });
 
     const { data = {} } = result;
-    return (data: User | {});
+    return userToCamelCase(data);
   } catch (err) {
     console.log(err);
     return {};

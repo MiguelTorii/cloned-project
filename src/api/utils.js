@@ -13,34 +13,6 @@ import type {
   PostResponse
 } from '../types/models';
 
-const getOrigin = url => {
-  if(url && url.includes('/')) {
-    const pathArray = url.split( '/' );
-    if (pathArray.length > 2) {
-      const protocol = pathArray[0];
-      const host = pathArray[2]
-      return `${protocol}//${host}`;
-    }
-  }
-  return null
-}
-
-export const redirectNonce = (user) => {
-  if (user && user.redirectUri) {
-    const origin = getOrigin(user.redirectUri)
-    if (
-      process.env.REACT_APP_STAGE !== 'dev' &&
-      origin &&
-      origin !== window.location.origin &&
-      user.nonce
-    ) {
-      window.location.href = `${origin}/redirect?nonce=${user.nonce}&redirect=true`
-      return true
-    }
-  }
-  return false
-}
-
 export const getToken = async (): Promise<string> => {
   try {
     const token = store.get('TOKEN');
@@ -189,8 +161,7 @@ export const commentsToCamelCase = (comments: Object): Comments => {
 
 export const userToCamelCase = (user: Object): User => {
   return {
-    nonce: (user.nonce: string) || '',
-    redirectUri: (user.redirect_uri: string) || '',
+    permission: (user.permission: array) || [1],
     userId: (user.user_id: string) || '',
     email: (user.email: string) || '',
     firstName: (user.first_name: string) || '',

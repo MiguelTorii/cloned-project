@@ -1,13 +1,11 @@
 // @flow
 
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import store from 'store'
-import { redirectNonce } from 'api/utils'
 import type { State as StoreState } from '../../types/state';
 import { signLMSUser } from '../../api/lms';
 import * as signInActions from '../../actions/sign-in';
@@ -38,10 +36,6 @@ const OAuthRedirect = ({
   pushTo,
   // user
 }: Props) => {
-  const roleId = useMemo(() => {
-    return store.get('ROLE') === 'faculty' ? 2 : 1
-  }, [])
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -53,25 +47,18 @@ const OAuthRedirect = ({
           code,
           grantType,
           clientId: jRes.client_id,
-          roleId,
           lmsTypeId: jRes.lms_type_id,
-          redirectUri: jRes.redirect_uri
         });
-
-        const redirected = redirectNonce(user)
-        if (redirected) return
 
         updateUser({ user });
 
-        if (!user.userId) pushTo('/new')
-        else pushTo('/')
       } catch (err) {
-        pushTo('/new');
+        console.log(err)
       }
     }
 
     init()
-  } ,[code, pushTo, roleId, state, updateUser])
+  } ,[code, pushTo, state, updateUser])
 
   return (
     <main className={classes.main}>

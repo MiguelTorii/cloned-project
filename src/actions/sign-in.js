@@ -4,11 +4,10 @@ import { push } from 'connected-react-router';
 import store from 'store';
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
-import { redirectNonce } from 'api/utils'
 import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import type { User, UpdateProfile } from '../types/models';
+import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
 
 const requestSignIn = (): Action => ({
@@ -65,67 +64,37 @@ const clearError = (): Action => ({
   type: signInActions.SIGN_IN_USER_CLEAR_ERROR
 });
 
+export const updateUser = ({ user }: { user: User }) => async (
+  dispatch: Dispatch
+) => {
+  store.set('TOKEN', user.jwtToken);
+  store.set('REFRESH_TOKEN', user.refreshToken);
+  store.set('USER_ID', user.userId);
+  store.set('SEGMENT', user.segment);
+
+  const isExpert = user.permission.includes(1) && user.permission.includes(3)
+  const expertMode = (user.permission.includes(3) && !user.permission.includes(1)) ||
+      (user.permission.includes(3) && store.get('ROLE') === 'tutor')
+  dispatch(setUser({ user, isExpert, expertMode }));
+
+  await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
+};
+
+
 export const signIn = ({
   email,
   password,
   schoolId,
-  role
 }: {
   email: string,
   password: string,
-  role: string,
   schoolId: number
 }) => async (dispatch: Dispatch) => {
   try {
     dispatch(requestSignIn());
-    // $FlowFixMe
-    let appId = 1
-    if (role === 'faculty') {
-      appId = 2
-    }
-    if(role === 'tutor') {
-      appId = 3
-    }
-    const result = await signInUser(email, password, schoolId, appId);
+    const user = await signInUser(email, password, schoolId);
 
-    const user: User = {
-      appAccess: (result.app_access) || [1],
-      userId: (result.user_id: string) || '',
-      redirectUri: (result.redirect_uri: string) || '',
-      nonce: (result.nonce: string) || '',
-      email: (result.email: string) || '',
-      firstName: (result.first_name: string) || '',
-      lastName: (result.last_name: string) || '',
-      school: (result.school: string) || '',
-      schoolId: (result.school_id: number) || 0,
-      segment: (result.segment: string) || '',
-      twilioToken: (result.twilio_token: string) || '',
-      canvasUser: (result.canvas_user: boolean) || false,
-      grade: (result.grade_id: number) || 0,
-      jwtToken: (result.jwt_token: string) || '',
-      refreshToken: (result.refresh_token: string) || '',
-      profileImage: (result.profile_image_url: string) || '',
-      rank: (result.rank: number) || 0,
-      referralCode: (result.referral_code: string) || '',
-      updateProfile: (result.update_profile: Array<UpdateProfile>) || [],
-      lmsTypeId: (result.lms_type_id: number) || -1,
-      lmsUser: (result.lms_user: boolean) || false
-    };
-
-    const redirected = redirectNonce(user)
-    if (redirected) return  () => {}
-
-    store.set('TOKEN', user.jwtToken);
-    store.set('REFRESH_TOKEN', user.refreshToken);
-    store.set('USER_ID', user.userId);
-    store.set('SEGMENT', user.segment);
-
-    const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
-    const expertMode = (user.appAccess.includes(3) && !user.appAccess.includes(1)) ||
-      (user.appAccess.includes(3) && store.get('ROLE') === 'tutor')
-    dispatch(setUser({ user, isExpert, expertMode }));
-
-    await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
+    dispatch(updateUser({ user }))
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;
@@ -147,41 +116,9 @@ export const signIn = ({
 
 export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
   try {
-    const result = await samlSignin(token);
+    const user = await samlSignin(token);
 
-    const user: User = {
-      userId: (result.user_id: string) || '',
-      email: (result.email: string) || '',
-      redirectUri: (result.redirect_uri: string) || '',
-      nonce: (result.nonce: string) || '',
-      firstName: (result.first_name: string) || '',
-      lastName: (result.last_name: string) || '',
-      school: (result.school: string) || '',
-      schoolId: (result.school_id: number) || 0,
-      segment: (result.segment: string) || '',
-      twilioToken: (result.twilio_token: string) || '',
-      canvasUser: (result.canvas_user: boolean) || false,
-      grade: (result.grade_id: number) || 0,
-      jwtToken: (result.jwt_token: string) || '',
-      refreshToken: (result.refresh_token: string) || '',
-      profileImage: (result.profile_image_url: string) || '',
-      rank: (result.rank: number) || 0,
-      referralCode: (result.referral_code: string) || '',
-      updateProfile: (result.update_profile: Array<UpdateProfile>) || [],
-      lmsTypeId: (result.lms_type_id: number) || -1,
-      lmsUser: (result.lms_user: boolean) || false
-    };
-
-    const redirected = redirectNonce(user)
-    if (redirected) return  () => {}
-
-    store.set('TOKEN', user.jwtToken);
-    store.set('REFRESH_TOKEN', user.refreshToken);
-    store.set('USER_ID', user.userId);
-    store.set('SEGMENT', user.segment);
-
-    await dispatch(setUser({ user }));
-    await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
+    dispatch(updateUser({ user }))
     return dispatch(push('/'));
   } catch (err) {
     const { response = {} } = err;
@@ -204,54 +141,14 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
 export const clearSignInError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
 
-export const checkUserSession = () => async (dispatch: Dispatch, getState: Function) => {
+export const checkUserSession = () => async (dispatch: Dispatch) => {
   try {
     dispatch(requestUserCheck());
     // $FlowFixMe
-    const result = await checkUser();
-    const {
-      user: {
-        expertMode
-      }
-    } = getState()
-    const error =
-      Object.entries(result).length === 0 && result.constructor === Object;
-    if (!error) {
-      const user: User = {
-        userId: (result.user_id: string) || '',
-        appAccess: (result.app_access) || [1],
-        email: (result.email: string) || '',
-        firstName: (result.first_name: string) || '',
-        lastName: (result.last_name: string) || '',
-        school: (result.school: string) || '',
-        schoolId: (result.school_id: number) || 0,
-        segment: (result.segment: string) || '',
-        twilioToken: (result.twilio_token: string) || '',
-        canvasUser: (result.canvas_user: boolean) || false,
-        grade: (result.grade_id: number) || 0,
-        jwtToken: (result.jwt_token: string) || '',
-        refreshToken: (result.refresh_token: string) || '',
-        profileImage: (result.profile_image_url: string) || '',
-        rank: (result.rank: number) || 0,
-        referralCode: (result.referral_code: string) || '',
-        updateProfile: (result.update_profile: Array<UpdateProfile>) || [],
-        lmsTypeId: (result.lms_type_id: number) || -1,
-        lmsUser: (result.lms_user: boolean) || false
-      };
+    const user = await checkUser();
 
-      store.set('TOKEN', user.jwtToken);
-      store.set('REFRESH_TOKEN', user.refreshToken);
-      store.set('USER_ID', user.userId);
-      store.set('SEGMENT', user.segment);
-
-      const isExpert = user.appAccess.includes(1) && user.appAccess.includes(3)
-      if (expertMode === null) {
-        const expertMode = (user.appAccess.includes(3) && !user.appAccess.includes(1)) ||
-      (user.appAccess.includes(3) && store.get('ROLE') === 'tutor')
-        dispatch(setUser({ user, isExpert, expertMode }));
-      } else {
-        dispatch(setUser({ user, isExpert, expertMode }));
-      }
+    if (user.email) {
+      dispatch(updateUser({ user }))
       return true
     }
     store.remove('TOKEN');
@@ -282,18 +179,6 @@ export const checkUserSession = () => async (dispatch: Dispatch, getState: Funct
     dispatch(push('/'));
   }
   return false
-};
-
-export const updateUser = ({ user }: { user: User }) => async (
-  dispatch: Dispatch
-) => {
-  store.set('TOKEN', user.jwtToken);
-  store.set('REFRESH_TOKEN', user.refreshToken);
-  store.set('USER_ID', user.userId);
-  store.set('SEGMENT', user.segment);
-
-  await dispatch(setUser({ user }));
-  await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
 };
 
 export const signOut = () => async (dispatch: Dispatch) => {

@@ -4,7 +4,6 @@ import { push } from 'connected-react-router';
 import store from 'store';
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
-import { redirectNonce } from 'api/utils'
 import { signUpActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -78,7 +77,6 @@ export const signUp = ({
 
     const user: User = {
       userId: (result.user_id: string) || '',
-      redirectUri: (result.redirect_uri: string) || '',
       nonce: (result.nonce: string) || '',
       email: (result.email: string) || '',
       firstName: (result.first_name: string) || '',
@@ -98,9 +96,6 @@ export const signUp = ({
       lmsTypeId: (result.lms_type_id: number) || -1,
       lmsUser: (result.lms_user: boolean) || false
     };
-
-    const redirected = redirectNonce(user)
-    if (redirected) return  () => {}
 
     store.set('TOKEN', user.jwtToken);
     store.set('REFRESH_TOKEN', user.refreshToken);

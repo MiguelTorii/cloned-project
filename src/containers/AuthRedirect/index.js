@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import SelectSchool from 'containers/AuthRedirect/SelectSchool'
-import SelectRole from 'containers/AuthRedirect/SelectRole'
 import * as signInActions from 'actions/sign-in';
 import Login from 'containers/AuthRedirect/Login'
 import SignUp from 'containers/AuthRedirect/SignUp'
@@ -105,7 +104,6 @@ const Auth = ({
   user,
   updateSchool,
   signIn,
-  updateRole,
   updateError,
   signUp,
   clearError,
@@ -124,14 +122,6 @@ const Auth = ({
   const { error, errorMessage } = user;
 
   const renderScreen = useMemo(() => {
-    if (screen === 'role') return <SelectRole
-      setScreen={setScreen}
-      school={school}
-      role={role}
-      updateError={updateError}
-      updateRole={updateRole}
-    />
-
     if (screen === 'login') return <Login
       school={school}
       signIn={signIn}
@@ -162,11 +152,10 @@ const Auth = ({
       updateSchool={updateSchool}
       setScreen={setScreen}
     />
-  } , [role, school, screen, search, signIn, signUp, updateError, updateRole, updateSchool])
+  } , [role, school, screen, search, signIn, signUp, updateError, updateSchool])
 
   const goBack = useCallback(() => {
-    if (screen === 'role') setScreen('school')
-    if (screen === 'login') setScreen('role')
+    if (screen === 'login') setScreen('school')
     if (screen === 'signup') setScreen('role')
     if (screen === 'forgotPassword') setScreen('login')
   }, [screen])
@@ -182,7 +171,6 @@ const Auth = ({
 
   const renderBack = useMemo(() => {
     if(![
-      'role',
       'login',
       'signup',
       'forgotPassword',
@@ -264,7 +252,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       signIn: signInActions.signIn,
-      updateRole: authActions.updateRole,
       updateSchool: authActions.updateSchool,
       signUp: signUpActions.signUp,
       updateError: signUpActions.updateError,

@@ -4,7 +4,10 @@ import AutoComplete from 'components/AutoComplete';
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { searchSchools } from 'api/sign-in';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app'
+import auth0 from 'auth0-js'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const SelectSchool = ({ school, setScreen, updateSchool }) => {
+const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
   const classes = useStyles()
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onLoad = useCallback(async value => {
     setError(false)
@@ -54,15 +58,77 @@ const SelectSchool = ({ school, setScreen, updateSchool }) => {
     updateSchool({ school: value });
   }, [updateSchool])
 
-  const onSelect = useCallback(() => {
-    if(school) setScreen('role')
-    else setError(true)
-  }, [school, setScreen])
+  const onClick = useCallback(() => {
+    setLoading(true)
+    if (!school) {
+      setLoading(false)
+      return false
+    }
+
+    const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
+    if (launchType === 'lti') {
+      updateError({
+        title: '',
+        body: redirectMessage
+      })
+
+      setLoading(false)
+    } else if (lmsTypeId === 0) {
+      /* NONE */
+      setLoading(false)
+    } else if (lmsTypeId === -1) {
+      setLoading(false)
+      window.location.replace('https://circleinapp.com/whitelist');
+    } else if (launchType === 'saml') {
+      const webAuth = new auth0.WebAuth({
+        domain: AUTH0_DOMAIN,
+        clientID: AUTH0_CLIENT_ID
+      });
+      webAuth.authorize({
+        audience: `https://${AUTH0_DOMAIN}/api/v2/`,
+        redirectUri: `${window.location.origin}/saml`,
+        connection,
+        responseType: 'token'
+      })
+      setLoading(false)
+      return true
+    } else {
+      const responseType = 'code';
+      const origin = `${window.location.origin}/new-oauth`
+      const obj = {
+        uri: school.uri,
+        lms_type_id: school.lmsTypeId,
+        response_type: responseType,
+        client_id: school.clientId,
+        // redirect_uri: REDIRECT_URI.replace('oauth', 'new-oauth')
+        redirect_uri: origin
+      };
+
+      const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
+
+      let uri = `${school.authUri}?client_id=${
+        school.clientId
+        }&response_type=${responseType}&redirect_uri=${
+          origin
+        }&state=${buff}`;
+
+      if (school.scope) {
+        uri = `${uri}&scope=${school.scope}`;
+      }
+
+      setLoading(false)
+      window.location.replace(uri);
+      return true
+    }
+    setLoading(false)
+    setScreen('login')
+    return false
+  }, [school, setScreen, updateError])
 
   const onSubmit = useCallback(e => {
     e.preventDefault()
-    onSelect()
-  }, [onSelect])
+    onClick()
+  }, [onClick])
 
   return (
     <div className={classes.container}>
@@ -84,11 +150,14 @@ const SelectSchool = ({ school, setScreen, updateSchool }) => {
       </form>
       <Button
         variant='contained'
-        onClick={onSelect}
-        disabled={!school}
+        onClick={onClick}
+        disabled={!school || loading}
         color='primary'
       >
-        Select School
+        {loading
+          ? <CircularProgress size={20} color='secondary' />
+          : 'Select School'
+        }
       </Button>
     </div>
   )

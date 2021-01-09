@@ -23,7 +23,7 @@ export type AuthState = {
 const defaultState = {
   data: {
     school: null,
-    role: ''
+    role: 'student'
   },
   isLoading: false,
   error: false,
