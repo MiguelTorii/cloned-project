@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
-import { HideUntilLoaded } from 'react-animation'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import HideUntilLoaded from './HideUntilLoaded'
 
 const LoadImg = ({ url, loadingSize, style, fallback, className, alt }) => {
   const [fallbackComponent, setFallbackComponent] = useState(null)

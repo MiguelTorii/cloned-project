@@ -20,13 +20,11 @@ const requestUserCheck = (): Action => ({
 
 const setUser = ({ user, expertMode, isExpert }: {
   user: User,
-  expertMode: boolean,
-    isExpert: boolean
+  isExpert: boolean
 }): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
   payload: {
     user,
-    expertMode,
     isExpert
   }
 });
@@ -65,18 +63,15 @@ const clearError = (): Action => ({
 });
 
 export const updateUser = ({ user }: { user: User }) => async (
-  dispatch: Dispatch
+  dispatch: Dispatch,
 ) => {
   store.set('TOKEN', user.jwtToken);
   store.set('REFRESH_TOKEN', user.refreshToken);
   store.set('USER_ID', user.userId);
   store.set('SEGMENT', user.segment);
 
-  const isExpert = user.permission.includes(1) && user.permission.includes(3)
-  const expertMode = (user.permission.includes(3) && !user.permission.includes(1)) ||
-      (user.permission.includes(3) && store.get('ROLE') === 'tutor')
-  dispatch(setUser({ user, isExpert, expertMode }));
-
+  const isExpert = user.permission.includes('expert_mode_access')
+  dispatch(setUser({ user, isExpert }));
   await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
 };
 
@@ -186,6 +181,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
     dispatch(clearState())
     dispatch(requestSignOut());
     store.clearAll()
+    dispatch(push('/'));
     dispatch(clearUser());
     // window.location.href = 'https://www.circleinapp.com/'
   } catch (err) {

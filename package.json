@@ -14,7 +14,7 @@
     "@material-ui/icons": "^4.2.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.9",
-    "@microlink/react": "^4.0.0",
+    "@microlink/react": "^5.5.3",
     "@react-hook/debounce": "^3.0.0",
     "@sentry/browser": "^5.23.0",
     "@sentry/cli": "^1.52.1",
