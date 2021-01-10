@@ -161,7 +161,8 @@ export const commentsToCamelCase = (comments: Object): Comments => {
 
 export const userToCamelCase = (user: Object): User => {
   return {
-    permission: (user.permission: array) || [1],
+    permission: (user.permission: array) || [],
+    nonce: (user.nonce: string) || '',
     userId: (user.user_id: string) || '',
     email: (user.email: string) || '',
     firstName: (user.first_name: string) || '',

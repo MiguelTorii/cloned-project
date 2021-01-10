@@ -100,7 +100,6 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
         lms_type_id: school.lmsTypeId,
         response_type: responseType,
         client_id: school.clientId,
-        // redirect_uri: REDIRECT_URI.replace('oauth', 'new-oauth')
         redirect_uri: origin
       };
 

@@ -28,6 +28,10 @@ type Props = {
   pushTo: Function
 };
 
+const origin = window.location.origin.includes('dev')
+  ? 'https://dev-app2.circleinapp.com/new-oauth'
+  : 'https://app.circleinapp.com/new-oauth'
+
 const OAuthRedirect = ({
   code,
   state,
@@ -50,6 +54,10 @@ const OAuthRedirect = ({
           lmsTypeId: jRes.lms_type_id,
           redirectUri: jRes.redirect_uri
         });
+
+        if (jRes.dashboard) {
+          window.location.href = `${origin}?nonce=${user.nonce}`
+        }
 
         updateUser({ user });
         pushTo('/')
