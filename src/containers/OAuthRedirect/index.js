@@ -48,9 +48,11 @@ const OAuthRedirect = ({
           grantType,
           clientId: jRes.client_id,
           lmsTypeId: jRes.lms_type_id,
+          redirectUri: jRes.redirect_uri
         });
 
         updateUser({ user });
+        pushTo('/')
 
       } catch (err) {
         console.log(err)
