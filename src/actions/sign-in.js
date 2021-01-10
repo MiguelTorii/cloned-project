@@ -158,7 +158,6 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
   // TODO: redirect urls before login should remove the code bellow
   if (
     ! [
-      '/new-oauth',
       '/new',
       '/reset_password',
       '/old',

@@ -193,7 +193,7 @@ ReactDOM.render(
             {/* component={withTracker(StudyCircle)} */}
             {/* /> */}
             <Route exact path="/new" component={withTracker(AuthRedirect)} />
-            <Route exact path="/new-oauth" component={withTracker(OAuthRedirect)} />
+            <Route exact path="/oauth" component={withTracker(OAuthRedirect)} />
             <Route exact path="/auth" component={withTracker(AuthRedirect)} />
             <Route exact path="/reset_password" component={withTracker(AuthRedirect)} />
             <Route exact path="/old" component={withTracker(Auth)} />
@@ -211,7 +211,7 @@ ReactDOM.render(
             {/* path="/reset_password" */}
             {/* component={withTracker(ResetPassword)} */}
             {/* /> */}
-            <Route exact path="/oauth" component={withTracker(OAuth)} />
+            {/* <Route exact path="/oauth" component={withTracker(OAuth)} /> */}
             <Route
               exact
               path="/terms-of-use"

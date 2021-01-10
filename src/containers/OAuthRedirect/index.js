@@ -29,8 +29,8 @@ type Props = {
 };
 
 const origin = window.location.origin.includes('dev')
-  ? 'https://dev-app2.circleinapp.com/new-oauth'
-  : 'https://app.circleinapp.com/new-oauth'
+  ? 'https://insights-dev.circleinapp.com/oauth'
+  : 'https://insights.circleinapp.com/oauth'
 
 const OAuthRedirect = ({
   code,
