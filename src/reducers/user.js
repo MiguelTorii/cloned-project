@@ -121,6 +121,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     return update(state, {
       data: { $set: action.payload.user },
       isExpert: { $set: action.payload.isExpert },
+      expertMode: { $set: action.payload.expertMode },
       isLoading: { $set: false }
     });
   case signUpActions.SIGN_UP_USER_ERROR:

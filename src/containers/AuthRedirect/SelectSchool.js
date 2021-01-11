@@ -73,7 +73,8 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
       })
 
       setLoading(false)
-    } else if (lmsTypeId === 0) {
+      return false
+    } if (lmsTypeId === 0) {
       /* NONE */
       setLoading(false)
     } else if (lmsTypeId === -1) {
@@ -94,7 +95,7 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
       return true
     } else {
       const responseType = 'code';
-      const origin = `${window.location.origin}/new-oauth`
+      const origin = `${window.location.origin}/oauth`
       const obj = {
         uri: school.uri,
         lms_type_id: school.lmsTypeId,

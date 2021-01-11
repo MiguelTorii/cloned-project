@@ -81,6 +81,9 @@ const styles = theme => ({
     flexDirection: 'column',
     display: 'flex',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    },
     justifyContent: 'center',
   }
 });
@@ -88,8 +91,6 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   auth: Object,
-  updateSchool: Function,
-  updateRole: Function,
   signIn: Function,
   signUp: Function,
   clearError: Function,
@@ -151,6 +152,7 @@ const Auth = ({
       school={school}
       updateSchool={updateSchool}
       setScreen={setScreen}
+      updateError={updateError}
     />
   } , [role, school, screen, search, signIn, signUp, updateError, updateSchool])
 
@@ -212,7 +214,7 @@ const Auth = ({
             color="textPrimary"
             className={cx(isPhone && classes.imgPhone, classes.imgText)}
           >
-            When students are connected to the help of their classmates with just a touch of the finger, there’s nothing they can’t do.
+            CircleIn is an easy-to-use studying app. You can work together with your classmates and take some of student life stress off your plate.
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>

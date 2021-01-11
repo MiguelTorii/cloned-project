@@ -50,6 +50,7 @@ const OAuthRedirect = ({
         const user = await signLMSUser({
           code,
           grantType,
+          dashboard: Boolean(jRes.dashboard),
           clientId: jRes.client_id,
           lmsTypeId: jRes.lms_type_id,
           redirectUri: jRes.redirect_uri

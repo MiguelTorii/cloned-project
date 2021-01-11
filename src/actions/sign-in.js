@@ -20,11 +20,13 @@ const requestUserCheck = (): Action => ({
 
 const setUser = ({ user, expertMode, isExpert }: {
   user: User,
-  isExpert: boolean
+  isExpert: boolean,
+  expertMode: boolean
 }): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
   payload: {
     user,
+    expertMode,
     isExpert
   }
 });
@@ -64,14 +66,32 @@ const clearError = (): Action => ({
 
 export const updateUser = ({ user }: { user: User }) => async (
   dispatch: Dispatch,
+  getState: Function
 ) => {
   store.set('TOKEN', user.jwtToken);
   store.set('REFRESH_TOKEN', user.refreshToken);
   store.set('USER_ID', user.userId);
   store.set('SEGMENT', user.segment);
+  const {
+    user: {
+      expertMode
+    }
+  } = getState()
 
-  const isExpert = user.permission.includes('expert_mode_access')
-  dispatch(setUser({ user, isExpert }));
+  const isExpert = user.permission.includes('expert_mode_access') &&
+    user.permission.includes('main_application_access')
+
+
+  let curExpertMode = expertMode
+  if (curExpertMode === null) {
+    curExpertMode = false
+    if (
+      user.permission.includes('expert_mode_access') &&
+    !user.permission.includes('main_application_access')
+    ) curExpertMode = true
+  }
+
+  dispatch(setUser({ user, isExpert, expertMode: curExpertMode }));
   await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
 };
 

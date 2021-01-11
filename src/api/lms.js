@@ -30,23 +30,27 @@ export const signLMSUser = async ({
   grantType,
   clientId,
   lmsTypeId,
+  dashboard,
   redirectUri
 }: {
   code: string,
   grantType: string,
   clientId: string,
   lmsTypeId: number,
+  dashboard: boolean,
   redirectUri: string
 }): Promise<Object> => {
   try {
     const result = await axios.post(API_ROUTES.LMS_USER, {
       code,
+      dashboard,
       grant_type: grantType,
       client_id: clientId,
       lms_type_id: lmsTypeId,
       redirect_uri: redirectUri
     });
     const { data = {} } = result;
+    console.log(JSON.stringify(data))
 
     if (data?.redirect_url) window.location = data.redirect_url
     return userToCamelCase(data);

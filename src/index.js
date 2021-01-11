@@ -47,7 +47,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 // import ResetPassword from './pages/ResetPassword';
-import OAuth from './pages/OAuth';
+// import OAuth from './pages/OAuth';
 import OAuthRedirect from './pages/OAuthRedirect';
 import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
