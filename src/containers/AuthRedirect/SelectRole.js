@@ -126,13 +126,12 @@ const SelectRole = ({
       return true
     } else {
       const responseType = 'code';
-      const origin = `${window.location.origin}/new-oauth`
+      const origin = `${window.location.origin}/oauth`
       const obj = {
         uri: value.uri,
         lms_type_id: value.lmsTypeId,
         response_type: responseType,
         client_id: value.clientId,
-        // redirect_uri: REDIRECT_URI.replace('oauth', 'new-oauth')
         redirect_uri: origin
       };
 

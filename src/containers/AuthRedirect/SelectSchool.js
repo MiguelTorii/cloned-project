@@ -66,6 +66,15 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
     }
 
     const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
+    // if (true) {
+    // updateError({
+    // title: 'You are early and we love it!',
+    // body: "Please type in your email to be notified when it goes live.",
+    // action: true
+    // })
+    // setLoading(false)
+    // return
+    // }
     if (launchType === 'lti') {
       updateError({
         title: '',

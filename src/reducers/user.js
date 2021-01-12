@@ -41,7 +41,12 @@ export type UserState = {
   errorMessage: {
     title: string,
     body: string,
+    acttion: boolean,
     showSignup: boolean
+  },
+  dialogMessage: {
+    title: string,
+    body: string
   }
 };
 
@@ -98,7 +103,8 @@ const defaultState = {
   errorMessage: {
     title: '',
     body: '',
-    showSignup: false
+    showSignup: false,
+    action: false
   }
 };
 
@@ -129,11 +135,9 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     return update(state, {
       error: { $set: true },
       errorMessage: {
-        // $FlowFixMe
         title: { $set: action.payload.title },
-        // $FlowFixMe
         body: { $set: action.payload.body },
-        // $FlowFixMe
+        action: { $set: action.payload.action },
         showSignup: { $set: action.payload.showSignup }
       },
       isLoading: { $set: false }
@@ -142,6 +146,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
   case signInActions.SIGN_IN_USER_CLEAR_ERROR:
     return update(state, {
       error: { $set: defaultState.error },
+      action: { $set: defaultState.action },
       errorMessage: { $set: defaultState.errorMessage },
       isLoading: { $set: false }
     });

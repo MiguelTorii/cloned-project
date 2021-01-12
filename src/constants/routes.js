@@ -24,6 +24,7 @@ export const VIDEO_SHARE_URL =
       : 'https://dev-app2.circleinapp.com/video-call';
 
 export const API_ROUTES = {
+  REQUEST: `${API_URL}/request`,
   BATCH_MESSAGE: `${API_URL_V1_1}/batch/chat/message`,
   FEEDBACK: `${API_URL}/feedback`,
   NOTES: `${API_URL_V1_1}/notes`,

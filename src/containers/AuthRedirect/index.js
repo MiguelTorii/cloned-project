@@ -17,6 +17,8 @@ import NewPassword from 'containers/AuthRedirect/NewPassword'
 import Paper from '@material-ui/core/Paper';
 import LoadImg from 'components/LoadImg';
 import cx from 'classnames'
+import TextField from '@material-ui/core/TextField'
+import { emailRequest } from 'api/sign-in'
 import type { State as StoreState } from '../../types/state';
 import loginBackground from '../../assets/svg/new-auth-bg.svg';
 import IsoPhone from '../../assets/svg/IsoPhone.svg';
@@ -85,6 +87,9 @@ const styles = theme => ({
       display: 'none'
     },
     justifyContent: 'center',
+  },
+  body: {
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -121,6 +126,7 @@ const Auth = ({
     data: { school, role }
   } = auth
   const { error, errorMessage } = user;
+  const [email, setEmail] = useState('')
 
   const renderScreen = useMemo(() => {
     if (screen === 'login') return <Login
@@ -194,6 +200,29 @@ const Auth = ({
     clearError()
   }, [clearError])
 
+  const onSend = useCallback(async () => {
+    await emailRequest({
+      email,
+      reason: 'Students Access'
+    })
+    updateError({
+      title: '',
+      body: (
+        <Typography>
+            Email successfully sent!
+        </Typography>
+      )
+    })
+  }, [email, updateError])
+
+  const onOk = useCallback(() => {
+    if(errorMessage.action) {
+      onSend()
+    } else {
+      handleClose()
+    }
+  }, [errorMessage.action, handleClose, onSend])
+
   return (
     <main className={classes.main}>
       <Grid
@@ -231,15 +260,26 @@ const Auth = ({
         onCancel={handleClose}
         title={errorMessage.title}
         fullWidth
-        maxWidth='xs'
+        maxWidth='sm'
         showActions
         okTitle='Ok'
-        onOk={handleClose}
+        onOk={onOk}
         open={error}
       >
-        <Typography>
-          {errorMessage.body}
-        </Typography>
+        <div>
+          <Typography className={classes.body}>
+            {errorMessage.body}
+          </Typography>
+          {errorMessage.action && (
+            <TextField
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete='on'
+              fullWidth
+              placeholder='Email'
+            />
+          )}
+        </div>
       </Dialog>
     </main>
   );

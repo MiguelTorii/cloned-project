@@ -46,16 +46,19 @@ const clearUser = (): Action => ({
 const setError = ({
   title,
   body,
+  action = false,
   showSignup = false
 }: {
   title: string,
   body: string,
+  action?: boolean,
   showSignup?: boolean
 }): Action => ({
   type: signInActions.SIGN_IN_USER_ERROR,
   payload: {
     title,
     body,
+    action,
     showSignup
   }
 });
@@ -210,10 +213,12 @@ export const signOut = () => async (dispatch: Dispatch) => {
 
 export const updateError = ({
   title,
-  body
+  body,
+  action
 }: {
   title: string,
-  body: string
+  body: string,
+  action?: boolean
 }) => async (dispatch: Dispatch) => {
-  dispatch(setError({ title, body }));
+  dispatch(setError({ title, body, action }));
 };

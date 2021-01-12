@@ -5,6 +5,26 @@ import { API_ROUTES } from '../constants/routes';
 import type { User, Schools } from '../types/models';
 import { userToCamelCase } from './utils';
 
+export const emailRequest = async ({
+  email,
+  reason
+}: {
+  email: string,
+  reason: string
+}): {} => {
+  try {
+    const result = await axios.post(API_ROUTES.REQUEST, {
+      email,
+      reason
+    });
+    const { data = {} } = result;
+    return data;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+};
+
 export const signInUser = async (
   email: string,
   password: string,
