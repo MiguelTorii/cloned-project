@@ -8,14 +8,16 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import LoadImg from 'components/LoadImg';
+import emptyNotification from 'assets/svg/no-notification.svg'
+import readNotificationAll from 'assets/svg/read_all.svg'
 import NotificationItem from './notification-item';
 import type { Notification as NotificationState } from '../../types/models';
 
 const styles = theme => ({
   root: {
-    // width: 376,
     padding: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
@@ -31,7 +33,31 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing(2)
+    flexDirection: 'column',
+    padding: theme.spacing(2),
+    height: 450
+  },
+  notificationTab: {
+    color: theme.circleIn.palette.primaryText1,
+    fontWeight: 'bold',
+    padding: 0,
+    minWidth: 0
+  },
+  readAllTab: {
+    fontSize: 12
+  },
+  currentWrapper: {
+    padding: theme.spacing(0.5, 2),
+  },
+  wrapper: {
+    backgroundColor: '#e9ecef',
+    color: 'black !important',
+    borderRadius: 24,
+    padding: theme.spacing(0.5, 2),
+    minHeight: 0
+  },
+  selectedReadAll: {
+    filter: 'invert(200%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)'
   },
   progress: {
     display: 'flex',
@@ -52,7 +78,6 @@ type Props = {
   notifications: Array<NotificationState>,
   tab: number,
   loading: boolean,
-  // eslint-disable-next-line no-undef
   anchorEl: HTMLElement,
   isPage: boolean,
   onNotificationClose: Function,
@@ -90,9 +115,29 @@ class Notifications extends React.PureComponent<Props, State> {
           textColor="primary"
           onChange={onTabChange}
         >
-          <Tab label="Posts" />
-          <Tab label="Recommended" />
-          <Tab label="Announcements" />
+          <Tab
+            className={classes.notificationTab}
+            classes={{ wrapper: tab === 0 ? classes.wrapper : classes.currentWrapper }}
+            label="Posts"
+          />
+          <Tab
+            className={classes.notificationTab}
+            classes={{ wrapper: tab === 1 ? classes.wrapper : classes.currentWrapper }}
+            label="Recommended"
+          />
+          <Tab
+            className={classes.notificationTab}
+            classes={{ wrapper: tab === 2 ? classes.wrapper : classes.currentWrapper }}
+            label="Announcements"
+          />
+          <Tab
+            className={cx(classes.notificationTab, classes.readAllTab)}
+            label="Read all"
+            classes={{ wrapper: tab === 3 ? classes.wrapper : classes.currentWrapper }}
+            icon={
+              <LoadImg url={readNotificationAll} className={tab === 3 ? classes.selectedReadAll : ''} />
+            }
+          />
         </Tabs>
         <List className={classes.root}>
           {notifications.map(item => (
@@ -105,8 +150,12 @@ class Notifications extends React.PureComponent<Props, State> {
         </List>
         {notifications.length === 0 && (
           <div className={classes.empty}>
+            <LoadImg url={emptyNotification} style={{ width: '100%' }} />
             <Typography align="center" variant="h6">
-              No notifications yet. We will keep you posted
+              No notifications yet.
+            </Typography>
+            <Typography align="center" variant="body2">
+              When something exciting arrives, we’ll let you know right away!
             </Typography>
           </div>
         )}
