@@ -240,8 +240,6 @@ const MainLayout = ({
   const [openUseCases, setOpenUseCases] = useState(false)
   const [createPostOpen, setCreatePostOpen] = useState(false)
   const [openStudentJobs, setOpenStudentJobs] = useState(false)
-  const appBarRef = useRef()
-
 
   const handleAnnouncementLoaded = useCallback(() => {
   }, [])
@@ -439,7 +437,6 @@ const MainLayout = ({
       <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
         <UserDialog />
         <AppBar
-          ref={appBarRef}
           position="fixed"
           className={classNames(classes.appBar, {
             [classes.appBarShift]: open
@@ -551,7 +548,7 @@ const MainLayout = ({
           </Drawer>
         </Hidden>}
         <main className={classes.content} style={{
-          marginTop: appBarRef.current?.clientHeight || 0
+          marginTop: appBarHeight
         }}>
           {children}
         </main>

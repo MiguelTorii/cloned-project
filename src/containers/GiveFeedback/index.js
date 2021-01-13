@@ -54,7 +54,7 @@ const GiveFeedback = ({ open, onClose, origin }: Props) => {
         <Typography className={classes.body}>How do you think we can make CircleIn better for you? Have an idea that you'd like us to work on? Just enter it here and include your email so we can thank you!</Typography>
         <TextField
           fullWidth
-          error={error}
+          error={Boolean(error)}
           helperText={error}
           variant='outlined'
           onChange={onChange}
