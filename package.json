@@ -112,7 +112,6 @@
     "start": "REACT_APP_STAGE=dev react-scripts start",
     "lint": "eslint src || exit 0",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
-    "build": "react-scripts build",
     "build:production": "yarn install && ./build.sh production",
     "build:sourcemaps": "./build.sh",
     "cy": "cypress run --spec 'cypress/**/*.js'",

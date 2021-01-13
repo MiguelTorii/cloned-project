@@ -8,6 +8,9 @@
 [context.production]
   command = "yarn build:sourcemaps"
 
+[context.prod]
+  command = "yarn build:production"
+
 [context.demo]
   command = "REACT_APP_STAGE=demo npm run build"
 
