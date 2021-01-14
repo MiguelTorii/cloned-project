@@ -403,8 +403,8 @@ const MainLayout = ({
   )
 
   const appBarHeight = useMemo(() => (
-    announcementData ? 120 : 62
-  ), [announcementData])
+    pathname !== '/chat' && announcementData ? 120 : 62
+  ), [announcementData, pathname])
 
   const drawer = (
     <DrawerMenu
