@@ -12,6 +12,7 @@ import SelectSchool from 'containers/AuthRedirect/SelectSchool'
 import * as signInActions from 'actions/sign-in';
 import Login from 'containers/AuthRedirect/Login'
 import SignUp from 'containers/AuthRedirect/SignUp'
+import WalkThrough from 'containers/AuthRedirect/WalkThrough'
 import ForgotPassword from 'containers/AuthRedirect/ForgotPassword'
 import NewPassword from 'containers/AuthRedirect/NewPassword'
 import Paper from '@material-ui/core/Paper';
@@ -88,6 +89,15 @@ const styles = theme => ({
     },
     justifyContent: 'center',
   },
+  walkthrough: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    width: '100%',
+    margin: 0,
+  },
+  contentClass: {
+    padding: '0px !important'
+  },
   body: {
     marginBottom: theme.spacing(2)
   }
@@ -129,37 +139,40 @@ const Auth = ({
   const [email, setEmail] = useState('')
 
   const renderScreen = useMemo(() => {
-    if (screen === 'login') return <Login
-      school={school}
-      signIn={signIn}
-      role={role}
-      setScreen={setScreen}
-    />
-
-    if (screen === 'signup') return <SignUp
-      school={school}
-      updateError={updateError}
-      setScreen={setScreen}
-      signUp={signUp}
-    />
-
-    if (screen === 'forgotPassword') return <ForgotPassword
-      setScreen={setScreen}
-      updateError={updateError}
-    />
-
-    if (screen === 'newPassword') return <NewPassword
-      updateError={updateError}
-      signIn={signIn}
-      search={search}
-    />
-
-    return <SelectSchool
-      school={school}
-      updateSchool={updateSchool}
-      setScreen={setScreen}
-      updateError={updateError}
-    />
+    switch(screen) {
+    case 'login':
+      return <Login
+        school={school}
+        signIn={signIn}
+        role={role}
+        setScreen={setScreen}
+      />
+    case 'signup':
+      return <SignUp
+        school={school}
+        updateError={updateError}
+        setScreen={setScreen}
+        signUp={signUp}
+      />
+    case 'forgotPassword':
+      return <ForgotPassword
+        setScreen={setScreen}
+        updateError={updateError}
+      />
+    case 'newPassword':
+      return <NewPassword
+        updateError={updateError}
+        signIn={signIn}
+        search={search}
+      />
+    default:
+      return <SelectSchool
+        school={school}
+        setScreen={setScreen}
+        updateSchool={updateSchool}
+        updateError={updateError}
+      />
+    }
   } , [role, school, screen, search, signIn, signUp, updateError, updateSchool])
 
   const goBack = useCallback(() => {
@@ -256,6 +269,14 @@ const Auth = ({
           </Paper>
         </Grid>
       </Grid>
+      <Dialog
+        open={screen === 'walk'}
+        className={classes.walkthrough}
+        contentClassName={classes.contentClass}
+        showHeader={false}
+      >
+        <WalkThrough setScreen={setScreen} school={school} />
+      </Dialog>
       <Dialog
         onCancel={handleClose}
         title={errorMessage.title}
