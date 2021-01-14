@@ -36,7 +36,12 @@ const ClassMultiSelect = ({
     try {
       const classList = {}
       user.userClasses.classList.forEach(cl => {
-        if (cl.section && cl.section.length > 0)
+        if (
+          cl.section &&
+          cl.section.length > 0 &&
+          cl.className &&
+          cl.bgColor
+        )
           cl.section.forEach(s => {
             classList[s.sectionId] = cl
           })
@@ -82,7 +87,6 @@ const ClassMultiSelect = ({
         ]}
         defaultValue={[]}
         getOptionLabel={o => o.className}
-        freeSolo
         disableCloseOnSelect
         renderOption={(option, { selected }) => (
           <React.Fragment>

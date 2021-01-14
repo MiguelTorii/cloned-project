@@ -1,5 +1,5 @@
 // @flow
-import React, { useMemo, memo, Fragment, useState, useRef, useCallback } from 'react';
+import React, { useMemo, memo, Fragment, useState, useCallback } from 'react';
 import classNames from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
