@@ -46,12 +46,12 @@ const clearUser = (): Action => ({
 const setError = ({
   title,
   body,
-  action = false,
+  action = '',
   showSignup = false
 }: {
   title: string,
   body: string,
-  action?: boolean,
+  action?: string,
   showSignup?: boolean
 }): Action => ({
   type: signInActions.SIGN_IN_USER_ERROR,
@@ -136,8 +136,9 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
   try {
     const user = await samlSignin(token);
 
-    dispatch(updateUser({ user }))
-    return dispatch(push('/'));
+    if (user.jwtToken)
+      dispatch(updateUser({ user }))
+    return dispatch(push('/', { error: !user.jwtToken }));
   } catch (err) {
     const { response = {} } = err;
     const { data = {} } = response;

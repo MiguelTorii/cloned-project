@@ -105,7 +105,7 @@ const WalkThrough = ({ setScreen, school }) => {
     }
 
     window.location.replace(uri);
-  }, [school.authUri, school.clientId, school.lmsTypeId, school.scope, school.uri])
+  }, [school])
 
   const renderWebView = () => (
     <div className={classes.container}>

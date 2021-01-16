@@ -1,6 +1,6 @@
 // @flow
 
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { useEffect, memo, useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -110,6 +110,7 @@ type Props = {
   signUp: Function,
   clearError: Function,
   updateError: Function,
+  state: Object,
   search: string,
   pathname: string
 };
@@ -117,6 +118,7 @@ type Props = {
 const Auth = ({
   classes,
   auth,
+  state,
   user,
   updateSchool,
   signIn,
@@ -137,6 +139,16 @@ const Auth = ({
   } = auth
   const { error, errorMessage } = user;
   const [email, setEmail] = useState('')
+
+  useEffect(() => {
+    if (state?.error) {
+      updateError({
+        title: 'Oops! 🙊',
+        body: 'This is the login page for the main application where students collaborate. We have a separate login page for the Insights Dashboard!',
+        action: 'loginFail'
+      })
+    }
+  }, [state, updateError])
 
   const renderScreen = useMemo(() => {
     switch(screen) {
@@ -228,13 +240,26 @@ const Auth = ({
     })
   }, [email, updateError])
 
+  const redirectDashboard = useCallback(() => {
+    const origin = window.location.origin.includes('dev')
+      ? 'https://insights-dev.circleinapp.com/'
+      : 'https://insights.circleinapp.com/'
+
+    window.location.href = origin
+  }, [])
+
   const onOk = useCallback(() => {
-    if(errorMessage.action) {
+    switch(errorMessage.action) {
+    case 'email':
       onSend()
-    } else {
+      break
+    case 'loginFail':
+      redirectDashboard()
+      break
+    default:
       handleClose()
     }
-  }, [errorMessage.action, handleClose, onSend])
+  }, [errorMessage.action, handleClose, onSend, redirectDashboard])
 
   return (
     <main className={classes.main}>
@@ -283,7 +308,13 @@ const Auth = ({
         fullWidth
         maxWidth='sm'
         showActions
-        okTitle='Ok'
+        showCancel={errorMessage.action === 'loginFail'}
+        cancelTitle='Got it'
+        okTitle={
+          errorMessage.action === 'loginFail'
+            ? 'Take me there!'
+            :'Ok'
+        }
         onOk={onOk}
         open={error}
       >
@@ -291,7 +322,7 @@ const Auth = ({
           <Typography className={classes.body}>
             {errorMessage.body}
           </Typography>
-          {errorMessage.action && (
+          {errorMessage.action === 'email' && (
             <TextField
               value={email}
               onChange={e => setEmail(e.target.value)}

@@ -70,7 +70,7 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
     // updateError({
     // title: 'You are early and we love it!',
     // body: "Please type in your email to be notified when it goes live.",
-    // action: true
+    // action: 'email'
     // })
     // setLoading(false)
     // return

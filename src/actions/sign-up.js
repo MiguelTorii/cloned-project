@@ -24,11 +24,11 @@ const setUser = ({ user }: { user: User }): Action => ({
 const setError = ({
   title,
   body,
-  action = false,
+  action = '',
 }: {
   title: string,
   body: string,
-  action: boolean
+  action: string
 }): Action => ({
   type: signUpActions.SIGN_UP_USER_ERROR,
   payload: {
@@ -133,7 +133,7 @@ export const updateError = ({
 }: {
   title: string,
   body: string,
-  action?: boolean
+  action?: string
 }) => async (dispatch: Dispatch) => {
   return dispatch(setError({ title, body, action }));
 };

@@ -78,6 +78,7 @@ const Dialog = ({
   loading = false,
   okTitle = "Got it!",
   secondaryOkTitle = "",
+  cancelTitle = 'Cancel',
   secondaryRemoveTitle = "",
   secondaryVariant = 'contained',
   onCancel,
@@ -103,6 +104,7 @@ const Dialog = ({
   disableEscapeKeyDown: ?boolean,
   loading: ?boolean,
   okTitle: ?string,
+  cancelTitle: ?string,
   secondaryOkTitle: ?string,
   onCancel: Function,
   onOk: ?Function,
@@ -184,7 +186,7 @@ const Dialog = ({
               disabled={disableActions}
               onClick={onCancel}
             >
-              Cancel
+              {cancelTitle}
             </Button>
           }
           {

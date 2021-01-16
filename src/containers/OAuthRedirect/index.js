@@ -1,11 +1,12 @@
 // @flow
 
-import React, { useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import queryString from 'query-string'
 import type { State as StoreState } from '../../types/state';
 import { signLMSUser } from '../../api/lms';
 import * as signInActions from '../../actions/sign-in';
@@ -22,8 +23,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   // user: UserState,
-  code: string,
-  state: string,
+  search: string,
   updateUser: Function,
   pushTo: Function
 };
@@ -33,13 +33,17 @@ const origin = window.location.origin.includes('dev')
   : 'https://insights.circleinapp.com/oauth'
 
 const OAuthRedirect = ({
-  code,
-  state,
+  search,
   classes,
   updateUser,
   pushTo,
   // user
 }: Props) => {
+  const {
+    state,
+    code
+  } = useMemo(() => queryString.parse(search), [search])
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -65,6 +69,7 @@ const OAuthRedirect = ({
 
       } catch (err) {
         console.log(err)
+        pushTo('/', { error: true })
       }
     }
 

@@ -12,6 +12,7 @@ const styles = () => ({});
 type Props = {
   classes: Object,
   location: {
+    state: Object,
     pathname: string,
     search: string
   }
@@ -21,6 +22,7 @@ const AuthPage = ({
   classes,
   location : {
     search,
+    state,
     pathname
   }
 }: Props) => {
@@ -28,6 +30,7 @@ const AuthPage = ({
     <main className={classes.main}>
       <CssBaseline />
       <Auth
+        state={state}
         search={search}
         pathname={pathname}
       />
