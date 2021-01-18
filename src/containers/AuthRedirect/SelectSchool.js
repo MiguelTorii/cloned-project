@@ -68,8 +68,8 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
     const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
     // if (true) {
     // updateError({
-    // title: 'You are early and we love it!',
-    // body: "Please type in your email to be notified when it goes live.",
+    // title: "You're early and we love it!",
+    // body: "Type in your email and we will notify you when CircleIn goes live at your school!",
     // action: 'email'
     // })
     // setLoading(false)
