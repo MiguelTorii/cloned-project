@@ -66,15 +66,19 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
     }
 
     const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
-    // if (true) {
-    // updateError({
-    // title: "You're early and we love it!",
-    // body: "Type in your email and we will notify you when CircleIn goes live at your school!",
-    // action: 'email'
-    // })
-    // setLoading(false)
-    // return
-    // }
+    if (
+      ![100, 46, 65, 126, 116, 110, 124, 43, 104, 98, 73, 68, 70, 27, 14, 56, 117, 131, 96, 77, 42, 121, 138, 80, 119, 16, 31, 76, 108, 97, 51, 94, 37, 17, 135, 105, 66, 53, 33, 52, 106, 137, 102, 114, 127, 115, 113, 125, 128, 134, 93, 58].includes(school.id) &&
+      window.location.origin.includes('https://app.circleinapp.com/')
+    ) {
+      updateError({
+        title: "You're early and we love it!",
+        body: "Type in your email and we will notify you when CircleIn goes live at your school!",
+        action: 'email'
+      })
+      setLoading(false)
+      return false
+    }
+
     if (launchType === 'lti') {
       updateError({
         title: '',
