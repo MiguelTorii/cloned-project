@@ -62,10 +62,11 @@ const OAuthRedirect = ({
 
         if (jRes.dashboard) {
           window.location.href = `${origin}?nonce=${user.nonce}`
+          return
         }
 
         updateUser({ user });
-        pushTo('/')
+        pushTo('/', { error: !user.jwtToken })
 
       } catch (err) {
         console.log(err)

@@ -160,7 +160,10 @@ export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
 export const clearSignInError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
 
-export const checkUserSession = () => async (dispatch: Dispatch) => {
+export const checkUserSession = () => async (
+  dispatch: Dispatch,
+  getState: Function
+) => {
   try {
     dispatch(requestUserCheck());
     // $FlowFixMe
@@ -179,6 +182,14 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
     console.log(err)
   }
 
+  const {
+    router: {
+      location: {
+        pathname
+      }
+    }
+  } = getState()
+
   // TODO: redirect urls before login should remove the code bellow
   if (
     ! [
@@ -192,7 +203,8 @@ export const checkUserSession = () => async (dispatch: Dispatch) => {
       '/terms-of-use',
       '/redirect',
       '/saml'
-    ].includes(window.location.pathname)
+    ].includes(pathname) &&
+    !pathname.includes('/canvas')
   ) {
     dispatch(push('/'));
   }

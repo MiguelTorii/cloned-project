@@ -50,7 +50,6 @@ export const signLMSUser = async ({
       redirect_uri: redirectUri
     });
     const { data = {} } = result;
-    console.log(JSON.stringify(data))
 
     if (data?.redirect_url) window.location = data.redirect_url
     return userToCamelCase(data);
@@ -77,7 +76,7 @@ export const checkCanvasUser = async ({
   }
 };
 
-// NOT BEING USED
+// LTI
 export const checkLMSUser = async ({
   nonce
 }: {
