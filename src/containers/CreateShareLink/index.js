@@ -85,19 +85,29 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     errorBody: ''
   };
 
+  canBatchPost = () => {
+    const {
+      user: {
+        expertMode,
+        data: {
+          permission
+        }
+      }
+    } = this.props
+
+    return expertMode && permission.includes('one_touch_send_posts')
+  }
+
   handlePush = path => {
     const {
       pushTo,
       campaign,
-      user: {
-        expertMode
-      }
     } = this.props
 
     const { sectionId, classId } = this.state
 
     if (campaign.newClassExperience) {
-      const search = !expertMode
+      const search = !this.canBatchPost()
         ? `?class=${cypher(`${classId}:${sectionId}`)}`
         : ''
       pushTo(`${path}${search}`)
@@ -235,7 +245,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const {
         user: {
           data: { userId = '' },
-          expertMode,
         },
       } = this.props;
       const { classList, title, summary, url, classId, sectionId } = this.state;
@@ -243,7 +252,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const tagValues = tags.map(item => Number(item.value));
 
 
-      const res = expertMode
+      const res = this.canBatchPost()
         ? await createBatchShareLink({
           userId,
           title,
@@ -272,7 +281,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const { enqueueSnackbar, classes } = this.props;
 
       let hasError = false
-      if (expertMode) {
+      if (this.canBatchPost()) {
         resClasses.forEach(r => {
           if (r.status !== 'Success') hasError = true
         })
@@ -287,7 +296,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         }
       }
 
-      if (!expertMode && !linkId) {
+      if (!this.canBatchPost() && !linkId) {
         this.setState({
           loading: false,
           errorDialog: true,
@@ -308,10 +317,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         type: 'Created',
       });
 
-      if (points > 0 || expertMode) {
+      if (points > 0 || this.canBatchPost()) {
         enqueueSnackbar({
           notification: {
-            message: !expertMode
+            message: !this.canBatchPost()
               ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
               : 'All posts were created successfully',
             nextPath: '/feed',
@@ -400,8 +409,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { location: { pathname }, user, sharelinkId, classes } = this.props;
-    const { expertMode } = user
+    const { location: { pathname }, sharelinkId, classes } = this.props;
     const {
       loading,
       title,
@@ -480,7 +488,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 <Typography variant="subtitle1">Class</Typography>
               </Grid>
               <Grid item xs={12} sm={10}>
-                {expertMode && !isEdit ? (
+                {this.canBatchPost() && !isEdit ? (
                   <ClassMultiSelect
                     selected={classList}
                     onSelect={this.handleClasses}

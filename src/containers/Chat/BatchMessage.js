@@ -49,8 +49,12 @@ const BatchMessage = ({
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState(null)
-  const { isExpert } = user
+  const { isExpert, data: { permission } } = user
   const { data: { local } } = chat
+
+  const canBatchMessage = useMemo(() => (
+    isExpert && permission.includes('one_touch_send_chat')
+  ), [isExpert, permission])
 
   const readyToSend = useMemo(() => (
     Boolean((message && selectedClasses.length > 0) || !loading)
@@ -85,7 +89,7 @@ const BatchMessage = ({
   }, [closeNewChannel, local, message, selectedClasses])
 
   if (
-    !isExpert ||
+    !canBatchMessage ||
     pathname !== '/chat'
   ) return null
 

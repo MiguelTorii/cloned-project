@@ -417,8 +417,7 @@ export const createQuestion = async ({
     );
 
     const { data = {} } = result;
-    const { id = {} } = data;
-    const response = postResponseToCamelCase(id);
+    const response = postResponseToCamelCase(data);
     return response;
   } catch (err) {
     console.log(err);
@@ -458,8 +457,7 @@ export const createBatchQuestion = async ({
     );
 
     const { data = {} } = result;
-    const { id = {} } = data;
-    const response = postResponseToCamelCase(id);
+    const response = postResponseToCamelCase(data);
     return response;
   } catch (err) {
     console.log(err);

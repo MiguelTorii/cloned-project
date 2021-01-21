@@ -54,6 +54,7 @@ const CreateQuestion = ({
   user: {
     expertMode,
     data: {
+      permission,
       segment,
       userId
     },
@@ -79,17 +80,20 @@ const CreateQuestion = ({
   const [errorTitle, setErrorTitle] = useState('')
   const [classList, setClassList] = useState([])
   const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
+  const canBatchPost = useMemo(() => (
+    expertMode && permission.includes('one_touch_send_posts')
+  ), [expertMode, permission])
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
-      const search = !expertMode
+      const search = !canBatchPost
         ? `?class=${cypher(`${classId}:${sectionId}`)}`
         : ''
       pushTo(`${path}${search}`)
     } else {
       pushTo(path)
     }
-  }, [campaign.newClassExperience, classId, expertMode, pushTo, sectionId])
+  }, [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId])
 
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({ userId, questionId });
@@ -175,7 +179,7 @@ const CreateQuestion = ({
         user: { firstName },
         classes: resClasses,
         questionId,
-      } = expertMode
+      } = canBatchPost
         ? await api.createBatchQuestion({
           userId,
           title,
@@ -192,7 +196,7 @@ const CreateQuestion = ({
         });
 
       let hasError = false
-      if (expertMode && resClasses) {
+      if (canBatchPost && resClasses) {
         resClasses.forEach(r => {
           if (r.status !== 'Success') hasError = true
         })
@@ -213,11 +217,11 @@ const CreateQuestion = ({
 
       if (
         points > 0 ||
-        expertMode
+        canBatchPost
       ){
         enqueueSnackbar({
           notification: {
-            message: !expertMode
+            message: !canBatchPost
               ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
               : 'All posts were created successfully',
             nextPath: '/feed',
@@ -245,7 +249,7 @@ const CreateQuestion = ({
       setErrorTitle('Unknown Error')
       setErrorDialog(true)
     }
-  }, [anonymousActive, body, classId, classList, classes.stackbar, enqueueSnackbar, expertMode, handlePush, sectionId, title, userId])
+  }, [anonymousActive, body, classId, classList, classes.stackbar, enqueueSnackbar, canBatchPost, handlePush, sectionId, title, userId])
 
   const handleSubmit = useCallback(event => {
     event.preventDefault();
@@ -340,7 +344,7 @@ const CreateQuestion = ({
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-              {expertMode && !isEdit ? (
+              {canBatchPost && !isEdit ? (
                 <ClassMultiSelect
                   selected={classList}
                   onSelect={handleClasses}
@@ -354,13 +358,13 @@ const CreateQuestion = ({
               )}
             </Grid>
 
-            {!questionId && !expertMode && (
+            {!questionId && !canBatchPost && (
               <Grid item xs={12} sm={2}>
                 <Typography variant="subtitle1">Ask Anonymously</Typography>
               </Grid>
             )}
 
-            {!questionId && !expertMode && (
+            {!questionId && !canBatchPost && (
               <Grid item xs={12} sm={10}>
                 <AnonymousButton
                   active={anonymousActive}

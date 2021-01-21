@@ -92,6 +92,11 @@ export const toggleExpertMode = () => (
   getState: Function
 ) => {
   const {
+    router: {
+      location: {
+        pathname
+      }
+    },
     user: {
       expertMode
     }
@@ -100,10 +105,12 @@ export const toggleExpertMode = () => (
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
 
-  if (!expertMode) {
-    dispatch(push('/feed'))
-  } else {
-    dispatch(push('/'))
+  if(!pathname.includes('/create')) {
+    if (!expertMode) {
+      dispatch(push('/feed'))
+    } else {
+      dispatch(push('/'))
+    }
   }
 }
 

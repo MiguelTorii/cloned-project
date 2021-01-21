@@ -63,7 +63,7 @@ const CreateFlashcards = ({
   }
 }: Props) => {
   const {
-    data: { userId, segment, grade },
+    data: { userId, segment, grade, permission },
     userClasses,
     expertMode
   } = user;
@@ -82,17 +82,20 @@ const CreateFlashcards = ({
   const [changed, setChanged] = useState(false);
   const [classList, setClassList] = useState([])
   const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
+  const canBatchPost = useMemo(() => (
+    expertMode && permission.includes('one_touch_send_posts')
+  ), [expertMode, permission])
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
-      const search = !expertMode
+      const search = !canBatchPost
         ? `?class=${cypher(`${classId}:${sectionId}`)}`
         : ''
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);
     }
-  }, [campaign.newClassExperience, classId, expertMode, pushTo, sectionId]);
+  }, [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]);
 
   const loadData = useCallback(async () => {
     if (!flashcardId) return null;
@@ -205,7 +208,7 @@ const CreateFlashcards = ({
         user: { firstName },
         classes: resClasses,
         fcId
-      } = expertMode
+      } = canBatchPost
         ? await api.createBatchFlashcards({
           userId,
           title,
@@ -237,7 +240,7 @@ const CreateFlashcards = ({
         });
 
       let hasError = false
-      if (expertMode && resClasses) {
+      if (canBatchPost && resClasses) {
         resClasses.forEach(r => {
           if (r.status !== 'Success') hasError = true
         })
@@ -263,12 +266,12 @@ const CreateFlashcards = ({
       });
 
       if (
-        (points > 0 && !expertMode) ||
-        (expertMode)
+        (points > 0 && !canBatchPost) ||
+        (canBatchPost)
       ) {
         await enqueueSnackbar({
           notification: {
-            message: !expertMode
+            message: !canBatchPost
               ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
               : 'All posts were created successfully',
             nextPath: '/feed',
@@ -296,7 +299,7 @@ const CreateFlashcards = ({
       setErrorTitle('Unknown Error');
       setErrorBody('Please try again');
     }
-  }, [tags, flashcards, expertMode, userId, title, summary, grade, classList, classId, sectionId, handlePush, enqueueSnackbar, classes.stackbar]);
+  }, [tags, flashcards, canBatchPost, userId, title, summary, grade, classList, classId, sectionId, handlePush, enqueueSnackbar, classes.stackbar]);
 
   const handleSubmit = useCallback(() => {
     setChanged(false)
@@ -514,7 +517,7 @@ const CreateFlashcards = ({
             </Grid>
             <Grid item xs={12} sm={10}>
 
-              {expertMode && !isEdit ? (
+              {canBatchPost && !isEdit ? (
                 <ClassMultiSelect
                   selected={classList}
                   onSelect={handleClasses}
