@@ -223,14 +223,18 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   const onDrag = useCallback(async dragId => {
     if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
-      const res = await updateTodoCategory({ id: prevDragId, categoryId: dragCategoryId.current })
+      const task = tasks.find(t => t.id === prevDragId)
+      const res = await updateTodo({
+        ...task,
+        categoryId: dragCategoryId.current
+      })
       if (res?.points) enqueueSnackbar(createSnackbar(
         `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
         classes.snackbar,
         'success'))
     }
     dispatch({ type: 'DRAG_UPDATE', dragId })
-  }, [dispatch, dragCategoryId, prevDragId, enqueueSnackbar, firstName, classes])
+  }, [prevDragId, tasks, enqueueSnackbar, firstName, classes.snackbar])
 
   useEffect(() => {
     if (dragId !== prevDragId && dragId === null) reorder()

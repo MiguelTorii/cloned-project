@@ -123,36 +123,6 @@ export const updateTodo = async ({
   }
 };
 
-export const updateTodoCategory = async ({
-  id,
-  categoryId,
-}: {
-  id: number,
-  categoryId: number
-}) => {
-  try {
-    const token = await getToken();
-
-    const result = await axios.put(
-      `${API_ROUTES.TODO}/${id}/edit`,
-      {
-        category: categoryId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    const { data } = result;
-    return data;
-  } catch (err) {
-    console.log(err);
-    return {};
-  }
-};
-
 export const updateTodosOrdering = async ({
   ordering,
 }: {
