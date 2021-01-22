@@ -13,7 +13,6 @@ import Paper from '@material-ui/core/Paper'
 import update from 'immutability-helper'
 import {
   createTodo,
-  updateTodoCategory,
   updateTodo,
   archiveTodo,
   updateTodosOrdering,
