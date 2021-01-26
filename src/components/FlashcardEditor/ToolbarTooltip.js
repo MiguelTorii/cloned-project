@@ -9,6 +9,9 @@ const useStyles = makeStyles(() => ({
   },
   tooltip: {
     fontSize: 14,
+  },
+  popper: {
+    zIndex: 1500,
   }
 }))
 
@@ -94,11 +97,11 @@ function reducer(state, action) {
   const { type, params } = action
   switch (type) {
   case 'ADD_ELEMENT':
-    return { ...state, [params.name]: { ...state[params.name], el: params.el }}
+    return { ...state, [params.name]: { ...state[params.name], el: params.el } }
   case 'SHOW':
-    return { ...state, [params.name]: { ...state[params.name], open: true }}
+    return { ...state, [params.name]: { ...state[params.name], open: true } }
   case 'HIDE':
-    return { ...state, [params.name]: { ...state[params.name], open: false }}
+    return { ...state, [params.name]: { ...state[params.name], open: false } }
   default:
     return state
   }
@@ -143,7 +146,8 @@ const ToolbarTooltip = ({ toolbar }) => {
             key={k}
             title={renderTooltip(state[k].text, state[k].shortcut)}
             classes={{
-              tooltip: classes.tooltip
+              tooltip: classes.tooltip,
+              popper: classes.popper
             }}
             arrow
             PopperProps={{

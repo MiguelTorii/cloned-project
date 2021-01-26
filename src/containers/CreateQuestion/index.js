@@ -12,6 +12,7 @@ import { withRouter } from 'react-router';
 import { cypher, decypherClass } from 'utils/crypto'
 import AnonymousButton from 'components/AnonymousButton';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreatePostForm from '../../components/CreatePostForm';
@@ -79,6 +80,9 @@ const CreateQuestion = ({
   const [errorBody, setErrorBody] = useState('')
   const [errorTitle, setErrorTitle] = useState('')
   const [classList, setClassList] = useState([])
+  const [questionToolbar, setQuestionToolbar] = useState(null)
+  const [editor, setEditor] = useState(null)
+
   const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
   const canBatchPost = useMemo(() => (
     expertMode && permission.includes('one_touch_send_posts')
@@ -126,6 +130,12 @@ const CreateQuestion = ({
     });
 
   }, [loadData, questionId, userId])
+
+  useEffect(() => {
+    if (editor) {
+      setQuestionToolbar(editor.getEditor().theme.modules.toolbar)
+    }
+  }, [editor])
 
   const updateQuestion = useCallback(async () => {
     setLoading(true)
@@ -333,7 +343,9 @@ const CreateQuestion = ({
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
+              <ToolbarTooltip toolbar={questionToolbar}/>
               <RichTextEditor
+                setEditor={setEditor}
                 placeholder="Add more details to your question to increase the chances of getting an answer"
                 value={body}
                 onChange={handleRTEChange}

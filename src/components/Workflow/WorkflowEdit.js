@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import AddRemoveClasses from 'components/AddRemoveClasses'
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
 import {
   workflowCategories,
   remiderTime
@@ -135,6 +136,9 @@ const WorkflowEdit = ({
   const [title, setTitle] = useState(task.title)
   const [sectionId, setSectionId] = useState(task.sectionId)
   const [openAddClasses, setOpenAddClasses] = useState(false)
+  const [additionalDetailToolbar, setAdditionalDetailToolbar] = useState(null)
+  const [editor, setEditor] = useState(null)
+
   const [
     // images,
     setImages
@@ -160,6 +164,12 @@ const WorkflowEdit = ({
       }
     }
   }, [task, setImages, open])
+
+  useEffect(() => {
+    if (editor) {
+      setAdditionalDetailToolbar(editor.getEditor().theme.modules.toolbar)
+    }
+  }, [editor])
 
   useEffect(() => {
     const notificationValue = getNotificationOptions(
@@ -263,7 +273,9 @@ const WorkflowEdit = ({
           />
         </Grid>
         <Grid item xs={12} className={classes.richText}>
+          <ToolbarTooltip toolbar={additionalDetailToolbar}/>
           <RichTextEditor
+            setEditor={setEditor}
             placeholder='Additional Details'
             value={description}
             onChange={updateDescription}
@@ -339,7 +351,7 @@ const WorkflowEdit = ({
         {/* </Grid> */}
       </Grid>
     </Dialog>
-  ), [canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
+  ), [additionalDetailToolbar, canAddClasses, categoryId, classList, classes.container, classes.dialog, classes.emptyOption, classes.newClass, classes.richText, classes.select, classes.selectForm, classes.title, date, deleteNotification, description, editNotification, handleCloseManageClasses, notifications, onClose, open, openAddClasses, openConfirmArchive, sectionId, title, updateClass, updateDate, updateDescription, updateTask, updateTitle, updateType])
 }
 
 export default memo(WorkflowEdit)
