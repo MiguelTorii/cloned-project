@@ -20,8 +20,15 @@ const PdfComponent = ({ url, radius, height, width }) => {
 
   const classes = useStyles()
 
+  const onDocumentLoadError = error => {
+    console.log(`Error while loading page! ${error.message}`)
+  }
+
   return (
-    <Document file={{ url }}>
+    <Document
+      file={{ url }}
+      onLoadError={onDocumentLoadError}
+    >
       <Page pageNumber={1} className={classes.canvas} />
     </Document>
   );

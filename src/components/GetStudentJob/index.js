@@ -1,11 +1,10 @@
 // @flow
 import React from 'react'
 import Dialog from 'components/Dialog'
-import pdfjs from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import { pdfjs } from 'react-pdf';
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const STUDENT_JOB_PDF_URI = "https://media.circleinapp.com/CircleIn+Student+Ambassador.pdf"
 
