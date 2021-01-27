@@ -19,7 +19,7 @@ const ctrl = window.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'
 
 const initialState = {
   header: {
-    text: '',
+    text: 'Font Style',
     el: null,
     open: false
   },
@@ -97,11 +97,29 @@ function reducer(state, action) {
   const { type, params } = action
   switch (type) {
   case 'ADD_ELEMENT':
-    return { ...state, [params.name]: { ...state[params.name], el: params.el } }
+    return {
+      ...state,
+      [params.name]: {
+        ...state[params.name],
+        el: params.element
+      }
+    }
   case 'SHOW':
-    return { ...state, [params.name]: { ...state[params.name], open: true } }
+    return {
+      ...state,
+      [params.name]: {
+        ...state[params.name],
+        open: true
+      }
+    }
   case 'HIDE':
-    return { ...state, [params.name]: { ...state[params.name], open: false } }
+    return {
+      ...state,
+      [params.name]: {
+        ...state[params.name],
+        open: false
+      }
+    }
   default:
     return state
   }
@@ -115,13 +133,17 @@ const ToolbarTooltip = ({ toolbar }) => {
     if (toolbar) {
       toolbar.controls.forEach(([n, el], k) => {
         let name = n
+
+        const element = name === 'header'
+          ? el.parentElement.firstElementChild.firstElementChild
+          : el
+
         if (name === 'list') name = k === 6 ? 'ordered': 'unordered'
         if (name === 'indent') name = k === 8 ? 'tab': 'untab'
-        // eslint-disable-next-line
-        el.onmouseenter = () => dispatch({ type: 'SHOW', params: { name }})
-        // eslint-disable-next-line
-        el.onmouseleave = () => dispatch({ type: 'HIDE', params: { name }})
-        dispatch({ type: 'ADD_ELEMENT', params: { name, el } })
+
+        element.onmouseenter = () => dispatch({ type: 'SHOW', params: { name } })
+        element.onmouseleave = () => dispatch({ type: 'HIDE', params: { name } })
+        dispatch({ type: 'ADD_ELEMENT', params: { name, element } })
       })
     }
   }, [toolbar, dispatch])

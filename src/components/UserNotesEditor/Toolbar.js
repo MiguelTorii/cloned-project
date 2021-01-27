@@ -143,6 +143,8 @@ export const QuillToolbar = ({ hidden }) => {
         <Tooltip
           title="Undo"
           aria-label="undo"
+          arrow
+          placement='top'
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
@@ -152,10 +154,16 @@ export const QuillToolbar = ({ hidden }) => {
             <CustomUndo />
           </button>
         </Tooltip>
-        <Tooltip title="Redo" aria-label="redo" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Redo"
+          aria-label="redo"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-redo">
             <CustomRedo />
           </button>
@@ -166,95 +174,151 @@ export const QuillToolbar = ({ hidden }) => {
         <Tooltip
           title="Font Styles"
           aria-label="Font styles"
+          arrow
+          placement='top'
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <select
-            className="ql-header"
-            defaultValue="3"
-          >
-            <option value="1">Heading</option>
-            <option value="2">Subheading</option>
-            <option value="3">Normal</option>
-          </select>
+          <div>
+            <select
+              className="ql-header"
+              defaultValue="3"
+            >
+              <option value="1">Heading</option>
+              <option value="2">Subheading</option>
+              <option value="3">Normal</option>
+            </select>
+          </div>
         </Tooltip>
         <Tooltip
           title="Font size"
           aria-label="font-size"
+          arrow
+          placement='top'
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <select className="ql-size">
-            <option value='8px'>8</option>
-            <option value="9px">9</option>
-            <option value="10px">10</option>
-            <option value="11px">11</option>
-            <option value="13px" defaultValue>13</option>
-            <option value="14px">14</option>
-            <option value="18px">18</option>
-            <option value="24px">24</option>
-            <option value="30px">30</option>
-            <option value="36px">36</option>
-            <option value="48px">48</option>
-            <option value="60px">60</option>
-            <option value="72px">72</option>
-            <option value="96px">96</option>
-          </select>
+          <div>
+            <select className="ql-size">
+              <option value='8px'>8</option>
+              <option value="9px">9</option>
+              <option value="10px">10</option>
+              <option value="11px">11</option>
+              <option value="13px" defaultValue>13</option>
+              <option value="14px">14</option>
+              <option value="18px">18</option>
+              <option value="24px">24</option>
+              <option value="30px">30</option>
+              <option value="36px">36</option>
+              <option value="48px">48</option>
+              <option value="60px">60</option>
+              <option value="72px">72</option>
+              <option value="96px">96</option>
+            </select>
+          </div>
         </Tooltip>
       </span>
       <span className="ql-formats">
-        <Tooltip title="Bold (⌘B)" aria-label="bold" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Bold (⌘B)"
+          aria-label="bold"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-bold" />
         </Tooltip>
-        <Tooltip title="Italic (⌘I)" aria-label="italic" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Italic (⌘I)"
+          aria-label="italic"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-italic" />
         </Tooltip>
-        <Tooltip title="Underline (⌘U)" aria-label="underline" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Underline (⌘U)"
+          aria-label="underline"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-underline" />
         </Tooltip>
-        <Tooltip title="Strike" aria-label="strike" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Strike"
+          aria-label="strike"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-strike" />
         </Tooltip>
       </span>
       <span className="ql-formats">
-        <Tooltip title="Numbered list" aria-label="numbered-list"  classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Numbered list"
+          aria-label="numbered-list"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-list" value="ordered" />
         </Tooltip>
-        <Tooltip title="Bulleted list" aria-label="bulleted-list" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Bulleted list"
+          aria-label="bulleted-list"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-list" value="bullet" />
         </Tooltip>
-        <Tooltip title="Decrease indent" aria-label="decrease-indent" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Decrease indent"
+          aria-label="decrease-indent"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-indent" value="-1" />
         </Tooltip>
-        <Tooltip title="Increase indent" aria-label="increase-indent" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Increase indent"
+          aria-label="increase-indent"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-indent" value="+1" />
         </Tooltip>
       </span>
@@ -262,81 +326,145 @@ export const QuillToolbar = ({ hidden }) => {
         <Tooltip
           title="Align"
           aria-label="align"
+          arrow
+          placement='top'
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <select className="ql-align" />
+          <div>
+            <select className="ql-align" />
+          </div>
         </Tooltip>
-        <Tooltip title="Text color" aria-label="text-color" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Text color"
+          aria-label="text-color"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <div>
             <select className="ql-color" />
           </div>
         </Tooltip>
-        <Tooltip title="Highlight color" aria-label="highlight-color" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Highlight color"
+          aria-label="highlight-color"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <div>
             <select className="ql-background" />
           </div>
         </Tooltip>
       </span>
       <span className="ql-formats">
-        <Tooltip title="Superscript" aria-label="superscript" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Superscript"
+          aria-label="superscript"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-script" value="super" />
         </Tooltip>
-        <Tooltip title="Subscript" aria-label="subscript" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Subscript"
+          aria-label="subscript"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-script" value="sub" />
         </Tooltip>
-        <Tooltip title="Block quote" aria-label="block-quote" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Block quote"
+          aria-label="block-quote"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-blockquote" />
         </Tooltip>
-        <Tooltip title="Direction" aria-label="direction" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Direction"
+          aria-label="direction"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-direction" />
         </Tooltip>
       </span>
       <span className="ql-formats">
-        <Tooltip title="Link" aria-label="Link" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Link"
+          aria-label="Link"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-link" />
         </Tooltip>
       </span>
       <span className="ql-formats">
-        <Tooltip title="Formula" aria-label="formula" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Formula"
+          aria-label="formula"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-formula" />
         </Tooltip>
-        <Tooltip title="Code Block" aria-label="code-block" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Code Block"
+          aria-label="code-block"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-code-block" />
         </Tooltip>
-        <Tooltip title="Clean" aria-label="clean" classes={{
-          tooltip: classes.tooltip,
-          popper: classes.popper
-        }}>
+        <Tooltip
+          title="Clean"
+          aria-label="clean"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
           <button type='button' className="ql-clean" />
         </Tooltip>
       </span>

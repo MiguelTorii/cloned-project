@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 // import Typography from '@material-ui/core/Typography'
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
 import RichTextEditor from '../../containers/RichTextEditor';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
@@ -72,11 +73,20 @@ const PostItemAddComment = ({
   onPostComment,
 }: Props) => {
   const [value, setValue] = useState('')
+  const [commentToolbar, setCommentToolbar] = useState(null)
+  const [editor, setEditor] = useState(null)
+
   // const [anonymousActive, setAnonymousActive] = useState(false)
 
   // const toggleAnonymousActive = useCallback(() => {
   // setAnonymousActive(a => !a)
   // }, [])
+
+  useEffect(() => {
+    if (editor) {
+      setCommentToolbar(editor.getEditor().theme.modules.toolbar)
+    }
+  }, [editor])
 
   const handleChange = useCallback(event => {
     setValue(event.target.value)
@@ -113,15 +123,19 @@ const PostItemAddComment = ({
           <Avatar src={profileImageUrl}>{initials}</Avatar>
         </Link>
         {rte && !readOnly ? (
-          <RichTextEditor
-            placeholder={
-              isQuestion
-                ? 'Have an answer or a comment? Enter it here'
-                : 'Have a question or a comment? Enter it here'
-            }
-            value={value}
-            onChange={handleRTEChange}
-          />
+          <>
+            <ToolbarTooltip toolbar={commentToolbar}/>
+            <RichTextEditor
+              setEditor={setEditor}
+              placeholder={
+                isQuestion
+                  ? 'Have an answer or a comment? Enter it here'
+                  : 'Have a question or a comment? Enter it here'
+              }
+              value={value}
+              onChange={handleRTEChange}
+            />
+          </>
         ) : (
           <TextField
             id="outlined-bare"
