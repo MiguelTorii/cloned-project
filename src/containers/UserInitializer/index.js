@@ -13,9 +13,6 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import * as campaignActions from 'actions/campaign';
-import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
-import type { CampaignState } from 'reducers/campaign';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -54,9 +51,7 @@ type Props = {
   classes: Object,
   user: UserState,
   checkUserSession: Function,
-  updateOnboarding: Function,
-  campaign: CampaignState,
-  requestCampaign: Function
+  updateOnboarding: Function
 };
 
 type State = {
@@ -68,7 +63,7 @@ type State = {
   email: string
 };
 
-class UpdateLMSUser extends React.PureComponent<Props, State> {
+class UserInitializer extends React.PureComponent<Props, State> {
   state = {
     open: false,
     loading: false,
@@ -80,7 +75,6 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
 
   init = async () => {
     const {
-      requestCampaign,
       checkUserSession,
       user: {
         data: { userId }
@@ -89,9 +83,7 @@ class UpdateLMSUser extends React.PureComponent<Props, State> {
     const loggedIn = await checkUserSession()
     if (loggedIn) {
       if (userId !== '') this.handleCheckUpdate();
-      requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
     }
-
   }
 
   componentDidMount = () => {
@@ -327,7 +319,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       checkUserSession: signInActions.checkUserSession,
       updateOnboarding: userActions.updateOnboarding,
-      requestCampaign: campaignActions.requestCampaign
     },
     dispatch
   );
@@ -335,4 +326,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRoot(withStyles(styles)(UpdateLMSUser)));
+)(withRoot(withStyles(styles)(UserInitializer)));

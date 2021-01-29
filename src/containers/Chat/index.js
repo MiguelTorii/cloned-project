@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useMemo, useCallback, useEffect, useState } from 'react'
-import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
@@ -84,8 +83,6 @@ type Props = {
   user: UserState,
   width: string,
   handleRemoveChannel: Function,
-  handleInitChat: Function,
-  handleShutdownChat: Function,
   handleBlockUser: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
@@ -96,8 +93,6 @@ type Props = {
 
 const Chat = ({
   handleRemoveChannel,
-  handleInitChat,
-  handleShutdownChat,
   handleBlockUser,
   handleMuteChannel,
   handleNewChannel,
@@ -163,21 +158,6 @@ const Chat = ({
 
     setPrevWidth(width)
   }, [prevWidth, width, curSize, currentChannel])
-
-  useEffect(() => {
-    const handleInitChatDebounce = debounce(handleInitChat, 1000);
-    handleInitChatDebounce();
-
-    return () => {
-      if (
-        handleInitChatDebounce.cancel &&
-        typeof handleInitChatDebounce.cancel === 'function'
-      )
-        handleInitChatDebounce.cancel();
-      handleShutdownChat();
-    };
-
-  }, [handleInitChat, handleShutdownChat])
 
   useEffect(() => {
     if (currentChannel && width !== 'xs') setRightSpace(3)
@@ -291,8 +271,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       handleMuteChannel: chatActions.handleMuteChannel,
-      handleInitChat: chatActions.handleInitChat,
-      handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleNewChannel: chatActions.handleNewChannel,

@@ -4,6 +4,8 @@ import { push } from 'connected-react-router';
 import store from 'store';
 import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
+import * as chatActions from 'actions/chat'
+import * as userActions from 'actions/user'
 import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -95,6 +97,8 @@ export const updateUser = ({ user }: { user: User }) => async (
   }
 
   dispatch(setUser({ user, isExpert, expertMode: curExpertMode }));
+  dispatch(userActions.fetchClasses())
+  dispatch(chatActions.handleInitChat())
   await dispatch(campaignActions.requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN, reset: true }))
 };
 
@@ -213,6 +217,7 @@ export const checkUserSession = () => async (
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
+    dispatch(chatActions.handleShutdownChat())
     dispatch(clearState())
     dispatch(requestSignOut());
     store.clearAll()

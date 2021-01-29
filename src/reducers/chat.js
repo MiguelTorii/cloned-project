@@ -86,7 +86,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         openChannels: action.payload.openChannels
       }
     }
-  case chatActions.START_LOADING:
+  case chatActions.CHAT_START_LOADING:
     return {
       ...state,
       isLoading: true

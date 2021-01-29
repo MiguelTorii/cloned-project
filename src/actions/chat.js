@@ -66,7 +66,7 @@ const newMessage = ({ message }): Action => ({
 })
 
 const startLoading = (): Action => ({
-  type: chatActions.START_LOADING,
+  type: chatActions.CHAT_START_LOADING,
 })
 
 const initLocal = ({ local }: { local: Object }): Action => ({

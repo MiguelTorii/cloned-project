@@ -37,7 +37,7 @@ import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 // import StudyCircle from './pages/StudyCircle';
 import FloatingChat from './containers/FloatingChat';
-import UpdateLMSUser from './containers/UpdateLMSUser';
+import UserInitializer from './containers/UserInitializer';
 import { Referral } from './containers/Referrals';
 import Saml from './containers/Auth/Saml';
 // import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
@@ -89,7 +89,7 @@ ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider>
       {/* <Tour /> */}
-      <UpdateLMSUser />
+      <UserInitializer />
       <ConnectedRouter history={history}>
         <div>
           <FloatingChat />

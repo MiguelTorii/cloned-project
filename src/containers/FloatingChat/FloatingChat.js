@@ -61,8 +61,6 @@ type Props = {
   classes: Object,
   user: UserState,
   chat: ChatState,
-  handleInitChat: Function,
-  handleShutdownChat: Function,
   handleBlockUser: Function,
   handleRemoveChannel: Function,
   handleRoomClick: Function,
@@ -84,8 +82,6 @@ const FloatingChat = ({
   chat,
   push,
   router,
-  handleInitChat,
-  handleShutdownChat,
   handleBlockUser,
   handleRemoveChannel,
   handleRoomClick,
@@ -203,74 +199,32 @@ const FloatingChat = ({
 
   const { location: { pathname } } = router
   useEffect(() => {
-    const offlineListener = () => {
-      console.log('**** offline ****');
-      handleShutdownChat();
-    }
+    handleNewChannelClose()
+    const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
+    window.addEventListener('resize', updateOpenChannelsDebounce);
 
-    const onlineListener = () => {
-      console.log('**** online ****');
-      if (!online) window.location.reload();
-    }
-
-
-    const init = () => {
-      handleNewChannelClose()
-      const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
-      const handleInitChatDebounce = debounce(handleInitChat, 1000);
-      window.addEventListener('resize', updateOpenChannelsDebounce);
-      window.addEventListener('offline', offlineListener)
-      window.addEventListener('online', onlineListener)
-      handleInitChatDebounce();
-
-      return () => {
-        window.removeEventListener('resize', updateOpenChannelsDebounce)
-        window.removeEventListener('offline', offlineListener)
-        window.removeEventListener('online', onlineListener)
-        if (
-          updateOpenChannelsDebounce.cancel &&
+    return () => {
+      window.removeEventListener('resize', updateOpenChannelsDebounce)
+      if (
+        updateOpenChannelsDebounce.cancel &&
           typeof updateOpenChannelsDebounce.cancel === 'function'
-        )
-          updateOpenChannelsDebounce.cancel();
-
-        if (
-          handleInitChatDebounce.cancel &&
-          typeof handleInitChatDebounce.cancel === 'function'
-        )
-          handleInitChatDebounce.cancel();
-        handleShutdownChat();
-      };
-    }
-
-    if (pathname !== '/chat') return init()
-
-    // eslint-disable-next-line
-  }, [pathname])
+      )
+        updateOpenChannelsDebounce.cancel();
+    };
+  }, [handleNewChannelClose, updateOpenChannels])
 
   const prevChat = usePrevious(chat)
-  const prevUser = usePrevious(user)
 
   const handleCreateChannelOpen = type => {
     setCreateChat(type)
   };
 
   useEffect(() => {
-    if (prevUser && prevChat && pathname !== '/chat') {
-      const {
-        data: { userId: prevUserId }
-      } = prevUser
-
+    if (prevChat && pathname !== '/chat') {
       const {
         data: { uuid: prevUuid }
       } = prevChat
 
-      if (prevUserId !== '' && userId === '') {
-        handleShutdownChat();
-      } else if (
-        prevUserId === '' && userId !== '' && !online
-      ) {
-        handleInitChat();
-      }
       if (uuid !== prevUuid && uuid !== '')
         handleCreateChannelOpen('group');
 
@@ -405,9 +359,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       push: routePush,
-      handleInitChat: chatActions.handleInitChat,
       handleMuteChannel: chatActions.handleMuteChannel,
-      handleShutdownChat: chatActions.handleShutdownChat,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleRoomClick: chatActions.handleRoomClick,

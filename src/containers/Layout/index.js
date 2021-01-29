@@ -1,7 +1,6 @@
 // @flow
 
-import React, { useMemo, useEffect, Fragment, useState, useCallback } from 'react';
-import * as campaignActions from 'actions/campaign';
+import React, { useMemo, useState, useCallback } from 'react';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,7 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses'
-import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralStatus } from 'containers/Referrals';
 import * as userActions from '../../actions/user'
@@ -47,23 +45,19 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
-  fetchClasses: Function,
   children: Object,
   user: UserState,
   campaign: CampaignState,
   isNaked: boolean,
   location: {pathname: string},
-  checkUserSession: Function,
   signOut: Function,
   fetchFeed: Function,
   updateFilter: Function,
-  requestCampaign: Function,
   push: Function
 };
 
 const Layout = ({
   classes,
-  fetchClasses,
   children,
   user,
   chat,
@@ -72,12 +66,10 @@ const Layout = ({
   location: {
     pathname
   },
-  checkUserSession,
   signOut,
   fetchFeed,
   toggleExpertMode,
   updateFilter,
-  requestCampaign,
   push
 }: Props) => {
   const [manageClasses, setManageClasses] = useState(false)
@@ -86,16 +78,6 @@ const Layout = ({
   const [unreadCount, setUnreadCount] = useState(0)
   const [openRequestClass, setOpenRequestClass] = useState(false)
   const [referralStatus, setRefererralStatus] = useState(false)
-
-  const loadUser = useCallback(async () => {
-    await checkUserSession();
-    fetchClasses()
-    requestCampaign({ campaignId: LANDING_PAGE_CAMPAIGN });
-  }, [checkUserSession, fetchClasses, requestCampaign])
-
-  useEffect(() => {
-    loadUser()
-  }, [loadUser])
 
   const handleNotificationOpen = useCallback(event => {
     const { currentTarget } = event;
@@ -222,7 +204,7 @@ const Layout = ({
   if (isNaked) return renderChildren();
 
   return (
-    <Fragment>
+    <>
       <ErrorBoundary>
         <MainLayout
           expertMode={expertMode}
@@ -299,7 +281,7 @@ const Layout = ({
       <ErrorBoundary>
         <Notifier />
       </ErrorBoundary>
-    </Fragment>
+    </>
   );
 }
 
@@ -313,15 +295,12 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       enqueueSnackbar: notificationsActions.enqueueSnackbar,
-      checkUserSession: signInActions.checkUserSession,
       signOut: signInActions.signOut,
       openCreateChatGroup: chatActions.openCreateChatGroup,
       fetchFeed: feedActions.fetchFeed,
       updateFilter: feedActions.updateFilter,
-      fetchClasses: userActions.fetchClasses,
       toggleExpertMode: userActions.toggleExpertMode,
       push: routePush,
-      requestCampaign: campaignActions.requestCampaign
     },
     dispatch
   );
