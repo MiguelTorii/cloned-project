@@ -134,6 +134,7 @@ export const searchSchools = async ({
     const { schools = [] } = data;
 
     return schools.map(school => ({
+      studentLive: Number((school.student_live: number) || 0),
       id: Number((school.id: number) || 0),
       clientId: String((school.client_id: string) || ''),
       school: String((school.school: string) || ''),
