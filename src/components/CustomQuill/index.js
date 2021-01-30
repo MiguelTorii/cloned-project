@@ -7,12 +7,6 @@ import cx from 'classnames'
 import './quill.custom.css';
 import MathQuill from './Math'
 
-window.katex = {}
-window.katex.render = (value, node, { color, dpi }) => {
-  // eslint-disable-next-line
-  node.innerHTML = `<img src='https://private.codecogs.com/png.download?\\dpi{${dpi || 120}}\\color{${color || 'White'}}${value}' />`
-}
-
 const styles = {
   readOnly: {
     '& .ql-toolbar': {

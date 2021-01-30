@@ -16,6 +16,7 @@ import moment from 'moment'
 // import MenuItem from '@material-ui/core/MenuItem'
 // import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Tooltip from 'containers/Tooltip';
+import setFormulasColor from 'utils/quill'
 import EditorToolbar, { modules, formats } from "./Toolbar"
 
 import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
@@ -23,7 +24,7 @@ import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
 window.katex = {}
 window.katex.render = (value, node, { color, dpi }) => {
   // eslint-disable-next-line
-  node.innerHTML = `<img src='https://private.codecogs.com/png.download?\\dpi{${dpi || 100}}\\color{${color || 'Black'}}${value}' />`
+  node.innerHTML = `<img src='https://private.codecogs.com/png.download?\\dpi{${dpi || 100}}\\color{${color || 'White'}}${value}' />`
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -185,6 +186,7 @@ const UserNotesEditor = ({
   }, [debouncedNote, prevSaved, updateNote])
 
   const onExit = useCallback(() => {
+    setFormulasColor('White')
     if (note && prevSaved && (note.title !== prevSaved.title || note.content !== prevSaved.content)) {
       updateNote({ note })
       setPrevSaved(note)
@@ -240,7 +242,11 @@ const UserNotesEditor = ({
     }))
   }, [])
 
-  const hasNote = useMemo(() => currentNote !== null, [currentNote])
+  const hasNote = useMemo(() => {
+    const hasNote = currentNote !== null
+    if (hasNote) setFormulasColor('Black')
+    return hasNote
+  }, [currentNote])
   // const [menuAnchor, setMenuAchor] = useState(null)
   // const handleClickMenu = useCallback((event) => {
   // setMenuAchor(event.currentTarget);
@@ -257,9 +263,9 @@ const UserNotesEditor = ({
 
   return (
     <div>
-      <Dialog
+      {hasNote && <Dialog
         fullScreen
-        open={hasNote}
+        open
         onClose={onExit}
         TransitionComponent={Transition}
       >
@@ -335,7 +341,7 @@ const UserNotesEditor = ({
             </Grid>
           </Grid>
         )}
-      </Dialog>
+      </Dialog>}
     </div >
   );
 }
