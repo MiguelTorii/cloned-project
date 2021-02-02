@@ -25,13 +25,11 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'scale-down'
   },
   scanText: {
-    marginTop: theme.spacing(4),
     fontWeight: 800,
     fontSize: 12,
     textAlign: 'center'
   },
-  signup: {
-    marginTop: theme.spacing(2),
+  forgotPassword: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -58,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%'
+  },
+  activateButton: {
+    color: theme.circleIn.palette.brand,
+    textDecoration: 'underline',
+    marginTop: theme.spacing(2)
   }
 }))
 
@@ -79,8 +82,8 @@ const Login = ({
       role })
   }, [email, password, role, school, signIn])
 
-  const goSignup = useCallback(() => {
-    setScreen('signup')
+  const goFirstTime = useCallback(() => {
+    setScreen('firstTime')
   } ,[setScreen])
 
   const onChange = useCallback(field => e => {
@@ -133,29 +136,25 @@ const Login = ({
         </Button>
       </form>
       <Button
-        className={classes.loginButton}
-        onClick={forgotPassword}
-        color='primary'
+        onClick={goFirstTime}
+        className={classes.activateButton}
+        disableElevation
+        disableFocusRipple
+        disableRipple
       >
-        Forgot Password
+          First time here? Activate your account!
       </Button>
-      <div className={classes.signup}>
+      <div className={classes.forgotPassword}>
         <Typography>Or, </Typography>
         <Button
-          onClick={goSignup}
           className={classes.orButton}
-          disableElevation
-          disableFocusRipple
-          disableRipple
+          onClick={forgotPassword}
         >
-        Sign Up
+        Forgot Password
         </Button>
       </div>
       {['student', 'tutor'].includes(role) && (
         <div className={classes.scanContainer}>
-          <Typography className={classes.scanText}>
-        Scan to download CircleIn Mobile - great for messaging classmates!
-          </Typography>
           <LoadImg url={getappqrcode} className={classes.qr} />
           <Grid container justify='space-around'>
             <a href="https://apps.apple.com/us/app/circlein-circle-in-daily/id969803973">
@@ -167,6 +166,9 @@ const Login = ({
           </Grid>
         </div>
       )}
+      <Typography className={classes.scanText}>
+Scan to download CircleIn Mobile - great for studyin on-the-go!
+      </Typography>
     </div>
   )
 }

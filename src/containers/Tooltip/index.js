@@ -74,6 +74,7 @@ const NOTES_QUICKNOTE = 2341
 const NOTES_GET_STARTED = 5909
 const NOTES_CLASS_FOLDER = 9002
 const NOTES_FULLSCREEN = 1204
+const QUICKNOTES_SAVED = 3499
 
 // not an actual tooltip
 // eslint-disable-next-line
@@ -182,7 +183,7 @@ const Tooltip = ({
 
   const overDialog = useMemo(() => {
     return cx(
-      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM)
+      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM || id === QUICKNOTES_SAVED)
       && classes.overDialog)
   }, [classes.overDialog, id])
 

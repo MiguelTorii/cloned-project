@@ -14,6 +14,7 @@ import Login from 'containers/AuthRedirect/Login'
 import SignUp from 'containers/AuthRedirect/SignUp'
 import WalkThrough from 'containers/AuthRedirect/WalkThrough'
 import ForgotPassword from 'containers/AuthRedirect/ForgotPassword'
+import FirstTime from 'containers/AuthRedirect/FirstTime'
 import NewPassword from 'containers/AuthRedirect/NewPassword'
 import Paper from '@material-ui/core/Paper';
 import LoadImg from 'components/LoadImg';
@@ -22,7 +23,7 @@ import TextField from '@material-ui/core/TextField'
 import { emailRequest } from 'api/sign-in'
 import type { State as StoreState } from '../../types/state';
 import loginBackground from '../../assets/svg/new-auth-bg.svg';
-import IsoPhone from '../../assets/svg/IsoPhone.svg';
+import CircleInPhone from '../../assets/img/CircleInPhone.png';
 import authImage from '../../assets/img/new-auth.png';
 import * as authActions from '../../actions/auth';
 import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
@@ -72,7 +73,7 @@ const styles = theme => ({
   },
   imgPhone: {
     position: 'relative',
-    top: -60
+    top: -10
   },
   backButton: {
     position: 'absolute',
@@ -133,7 +134,7 @@ const Auth = ({
       ? 'newPassword'
       : 'school'
   )
-  // const [screen, setScreen] = useState('school')
+
   const {
     data: { school, role }
   } = auth
@@ -166,6 +167,11 @@ const Auth = ({
         setScreen={setScreen}
         signUp={signUp}
       />
+    case 'firstTime':
+      return <FirstTime
+        setScreen={setScreen}
+        updateError={updateError}
+      />
     case 'forgotPassword':
       return <ForgotPassword
         setScreen={setScreen}
@@ -191,6 +197,7 @@ const Auth = ({
     if (screen === 'login') setScreen('school')
     if (screen === 'signup') setScreen('role')
     if (screen === 'forgotPassword') setScreen('login')
+    if (screen === 'firstTime') setScreen('login')
   }, [screen])
 
   const isPhone = useMemo(() => (
@@ -198,6 +205,7 @@ const Auth = ({
       'login',
       'signup',
       'forgotPassword',
+      'firstTime',
       'newPassword'
     ].includes(screen)
   ), [screen])
@@ -207,7 +215,7 @@ const Auth = ({
       'login',
       'signup',
       'forgotPassword',
-      'newPassword'
+      'firstTime',
     ].includes(screen)) {
       return null
     }
@@ -274,14 +282,14 @@ const Auth = ({
       >
         <Grid item xs={12} md={6} className={classes.imgContainer}>
           <LoadImg
-            url={isPhone ? IsoPhone: authImage}
+            url={isPhone ? CircleInPhone: authImage}
             className={classes.img}
           />
           <Typography
             color="textPrimary"
             className={cx(isPhone && classes.imgPhone, classes.imgText)}
           >
-            CircleIn is an easy-to-use studying app. You can work together with your classmates and take some of student life stress off your plate.
+            CircleIn is an all-in-one studying app to connect with classmates instantly, take notes, make flashcards and organize all your schoolwork and win gift cards for studying!
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
