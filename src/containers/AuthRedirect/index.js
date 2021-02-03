@@ -234,18 +234,20 @@ const Auth = ({
   }, [clearError])
 
   const onSend = useCallback(async () => {
-    await emailRequest({
-      email,
-      reason: 'Students Access'
-    })
-    updateError({
-      title: '',
-      body: (
-        <Typography>
-            Email successfully sent!
-        </Typography>
-      )
-    })
+    if (email) {
+      await emailRequest({
+        email,
+        reason: 'Students Access'
+      })
+      updateError({
+        title: '',
+        body: (
+          <Typography>
+              Email successfully sent!
+          </Typography>
+        )
+      })
+    }
   }, [email, updateError])
 
   const redirectDashboard = useCallback(() => {
