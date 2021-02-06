@@ -20,12 +20,26 @@ import { connect } from 'react-redux';
 import moment from 'moment'
 import * as notificationsActions from 'actions/notifications';
 import Tooltip from 'containers/Tooltip';
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    borderRadius: theme.spacing(),
     padding: theme.spacing(3),
+    borderRadius: theme.spacing(2),
+    '& .MuiInputLabel-shrink': {
+      display: 'none'
+    },
+    '& .ql-editor.ql-blank::before': {
+      fontWeight: 400,
+      left: 0,
+      right: 0,
+      color: theme.circleIn.palette.textSubtitleBody,
+      opacity: 1,
+      fontSize: 16
+    },
     '& div': {
+      minWidth: 200,
       maxHeight: 'inherit'
     },
     '& #quill-editor': {
@@ -35,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
       padding: 0
     },
     '& .MuiPaper-elevation8': {
+      borderRadius: theme.spacing(2),
       overflow: 'inherit',
     },
     '& .quill': {
@@ -42,11 +57,11 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
     },
     '& .ql-container.ql-snow': {
-      borderRadius: theme.spacing(),
-      border: `1px solid ${theme.circleIn.palette.rowSelection}`,
+      border: 'none',
       maxHeight: 'inherit'
     },
     '& .ql-editor': {
+      padding: 0,
       maxHeight: 200,
       width: 380,
       height: 200
@@ -75,10 +90,23 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold'
   },
   button: {
+    background: 'linear-gradient(102.03deg, #94DAF9 0%, #1E88E5 100%)',
+    borderRadius: theme.spacing(),
+    color: theme.circleIn.palette.textOffwhite,
     fontWeight: 'bold'
   },
   stackbar: {
     color: theme.circleIn.palette.primaryText1
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: 700
+  },
+  classLabel: {
+    fontWeight: 800,
+    fontSize: 18,
+    color: theme.circleIn.palette.textOffwhite,
   }
 }))
 
@@ -166,9 +194,11 @@ const QuickNotes = ({
   }, [debouncedContent, prevContent, saveContent, selectedClass])
 
   const handleUpdate = useCallback(text => {
-    setTimeout(() => setSavedState('saving'), 100)
+    setTimeout(() => {
+      if (selectedClass) setSavedState('saving')
+    }, 100)
     updateQuickNoteContent({ content: text })
-  }, [updateQuickNoteContent])
+  }, [selectedClass, updateQuickNoteContent])
 
   const renderSaved = useMemo(() => {
     if (savedState === 'hidden') return null
@@ -181,10 +211,12 @@ const QuickNotes = ({
         placement="bottom"
         text="We save your QuickNotes with the date and time you created it."
       >
-        <div className={classes.lastSaved}>Last Saved {lastSaved}</div>
+        <div className={classes.lastSaved}>
+          Saved to your class folder for later.
+        </div>
       </Tooltip>
     )
-  }, [classes.lastSaved, lastSaved, savedState, viewedOnboarding])
+  }, [classes.lastSaved, savedState, viewedOnboarding])
 
   const classList = useMemo(() => {
     if (userClasses?.classList) {
@@ -197,9 +229,6 @@ const QuickNotes = ({
           sectionId: c.section[0].sectionId,
           classId: c.classId
         }))
-      if (classList.length > 0) {
-        setSelectedClass(classList[0])
-      }
       return classList
     }
     return []
@@ -217,9 +246,8 @@ const QuickNotes = ({
     if (debouncedContent !== quicknoteContent) {
       await saveContent(quicknoteContent)
     }
-    resetQuickNote()
     setSelectedClass(cl)
-  }, [debouncedContent, quicknoteContent, resetQuickNote, saveContent])
+  }, [debouncedContent, quicknoteContent, saveContent])
 
   const saveAndClose = useCallback(async () => {
     handleClose()
@@ -278,27 +306,41 @@ const QuickNotes = ({
         }}
       >
         <Paper className={classes.container}>
-          <Select
-            className={classes.select}
-            classes={{
-              selectMenu: classes.menuTypeInput
-            }}
-            value={selectedClass?.sectionId || ''}
-          >
-            {classList.map(cl => (
-              <MenuItem
-                key={cl.sectionId}
-                onClick={() => updateClass(cl)}
-                value={cl.sectionId}
-                className={classes.menuItem}
-              >
-                <FolderOpenIcon style={{ color: cl?.color }} />
-                <Typography className={classes.menuTypo}>{cl.name}</Typography>
-              </MenuItem>
-            ))}
-          </Select>
+          <Typography className={classes.title}>
+            QuickNotes
+          </Typography>
+          <FormControl className={classes.formControl}>
+            <InputLabel
+              className={classes.classLabel}
+              id="select-label"
+            >
+              Which class is this for?
+            </InputLabel>
+            <Select
+              className={classes.select}
+              labelWidth={200}
+              labelId='select-label'
+              classes={{
+                selectMenu: classes.menuTypeInput
+              }}
+              value={selectedClass?.sectionId || ''}
+            >
+              {classList.map(cl => (
+                <MenuItem
+                  key={cl.sectionId}
+                  onClick={() => updateClass(cl)}
+                  value={cl.sectionId}
+                  className={classes.menuItem}
+                >
+                  <FolderOpenIcon style={{ color: cl?.color }} />
+                  <Typography className={classes.menuTypo}>{cl.name}</Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <EditorToolbar hidden />
           <ReactQuill
+            placeholder='Write all your brilliant ideas, a-ha moments, reminders and anything you need here 📝'
             theme="snow"
             value={quicknoteContent}
             onChange={handleUpdate}
@@ -308,11 +350,10 @@ const QuickNotes = ({
           <div className={classes.savedContainer}>
             <Button
               variant='contained'
-              color="primary"
               className={classes.button}
               onClick={saveAndClose}
             >
-              Save and close
+              Close
             </Button>
             {renderSaved}
           </div>

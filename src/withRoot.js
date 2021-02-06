@@ -35,12 +35,14 @@ const circleInTheme = {
   flashcardBackground: '#324F61',
   deepSeaOcean: '#225D89',
   hoverMenu: '#2e434f',
-  primaryii222: '#1e88e5'
+  primaryii222: '#1e88e5',
+  textSubtitleBody: '#ADBBC4'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      textSubtitleBody: circleInTheme.textSubtitleBody,
       hoverMenu: circleInTheme.hoverMenu,
       primaryii222: circleInTheme.primaryii222,
       deepSeaOcean: circleInTheme.deepSeaOcean,
