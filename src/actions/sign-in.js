@@ -86,15 +86,13 @@ export const updateUser = ({ user }: { user: User }) => async (
   const isExpert = user.permission.includes('expert_mode_access') &&
     user.permission.includes('main_application_access')
 
-
   let curExpertMode = expertMode
   if (curExpertMode === null) {
-    curExpertMode = false
-    if (
-      user.permission.includes('expert_mode_access') &&
-    !user.permission.includes('main_application_access')
-    ) curExpertMode = true
+    curExpertMode = !!(user.permission.includes('expert_mode_access') &&
+    !user.permission.includes('main_application_access'))
   }
+
+  localStorage.setItem("EXPERT_MODE", curExpertMode);
 
   dispatch(setUser({ user, isExpert, expertMode: curExpertMode }));
   dispatch(userActions.fetchClasses())

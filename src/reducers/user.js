@@ -90,7 +90,9 @@ const defaultState = {
     viewedOnboarding: null,
     helpLink: ''
   },
-  expertMode: null,
+  expertMode: localStorage.getItem('EXPERT_MODE')
+    ? localStorage.getItem('EXPERT_MODE') === 'true'
+    : null,
   isExpert: false,
   runningTour: false,
   isLoading: false,

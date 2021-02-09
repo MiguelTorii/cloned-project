@@ -1,37 +1,38 @@
 // @flow
 import React, { memo, useCallback, useState, useMemo, Fragment } from 'react'
-import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
+import classNames from 'classnames';
+import queryString from 'query-string'
+
+import { makeStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import LaptopIcon from '@material-ui/icons/Laptop';
+import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
+import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import HelpOutline from '@material-ui/icons/HelpOutline';
-import ClassmatesDialog from 'components/ClassmatesDialog'
 import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined'
 import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import classNames from 'classnames';
 import ChatIcon from '@material-ui/icons/Chat';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles'
+
+import { decypherClass } from 'utils/crypto'
+
 import HomeItem from 'components/MainLayout/HomeItem'
 import ClassList from 'components/ClassList'
-import StoreIcon from '@material-ui/icons/Store';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import queryString from 'query-string'
-import { decypherClass } from 'utils/crypto'
-import ListItemText from '@material-ui/core/ListItemText';
-import anon from 'assets/svg/anon.svg'
-import anoff from 'assets/svg/anoff.svg'
-import Grid from '@material-ui/core/Grid'
+import ClassmatesDialog from 'components/ClassmatesDialog'
+import CustomSwitch from 'components/MainLayout/Switch';
 import Tooltip from '../../containers/Tooltip';
+
 import Logo from '../../assets/svg/icon_ic_simple_circlein_logo.svg';
 import FlashcardsIcon from '../../assets/svg/flashcards-menu.svg';
-// $FlowIgnore
 import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
-// $FlowIgnore
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
-
 import { ReactComponent as HandshakeIcon } from '../../assets/svg/hand_shake.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -224,11 +225,16 @@ const Drawer = ({
   ), [search])
 
   const button = useMemo(() => (
-    <Grid onClick={toggleExpertMode}>
-      {expertMode ? <img alt='on' src={anon} className={classes.expertToggle} />
-        : <img alt='off' src={anoff} className={classes.expertToggle} />}
-    </Grid>
-  ), [classes.expertToggle, expertMode, toggleExpertMode])
+    <FormControlLabel
+      control={
+        <CustomSwitch
+          checked={expertMode}
+          onChange={toggleExpertMode}
+          name="expert-mode"
+        />
+      }
+    />
+  ), [expertMode, toggleExpertMode])
 
   const expertMenu = useMemo (() => expertMode && (
     <div>

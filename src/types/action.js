@@ -44,7 +44,7 @@ export type UPDATE_CLASSES = {
   payload: {
     runningTour: boolean
   }
-}
+};
 
 export type SignOutUserRequest = {
   type: 'SIGN_OUT_USER_REQUEST'
@@ -69,4 +69,4 @@ export type Action =
   | SignInUserClearError
   | CheckUserRequest
   | SignOutUserRequest
-  | OpenCreateChatGroupChannelRequest
+  | OpenCreateChatGroupChannelRequest;

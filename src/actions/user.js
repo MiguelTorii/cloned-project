@@ -102,6 +102,8 @@ export const toggleExpertMode = () => (
     }
   } = getState()
 
+  localStorage.setItem('EXPERT_MODE', !expertMode)
+
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
 
