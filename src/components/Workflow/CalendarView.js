@@ -1,13 +1,13 @@
-import React, { useContext, useRef, useEffect, useState, useCallback} from 'react'
-import {makeStyles} from '@material-ui/core/styles'
+import React, { useContext, useRef, useEffect, useState, useCallback } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from "@fullcalendar/interaction"
-import {workflowCategories} from 'constants/common'
+import { workflowCategories } from 'constants/common'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
-import Dialog, {dialogStyle} from 'components/Dialog'
+import Dialog, { dialogStyle } from 'components/Dialog'
 import Typography from '@material-ui/core/Typography'
 import CalendarControls from 'components/Workflow/CalendarControls'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
@@ -90,9 +90,9 @@ const CalendarView = () => {
   const closeConfirmArchive = useCallback(() => setConfirmArchive(false), [])
 
   const onOpenEdit = useCallback(e => {
-    const {event: {extendedProps: {index}}} = e
+    const { event: { extendedProps: { index } } } = e
     const task = tasks[index]
-    setCurrentTask({...task, index})
+    setCurrentTask({ ...task, index })
   }, [tasks])
 
   const onCloseEdit = useCallback(() => setCurrentTask(null), [])
@@ -128,8 +128,8 @@ const CalendarView = () => {
   }, [tasks])
 
   const onDrop = useCallback(async e => {
-    const {event: {start, extendedProps: {index}}} = e
-    await updateItem({...tasks[index], date: start, index})
+    const { event: { start, extendedProps: { index } } } = e
+    await updateItem({ ...tasks[index], date: start, index })
   }, [updateItem, tasks])
 
   const onViewChange = useCallback(e => {
@@ -140,7 +140,7 @@ const CalendarView = () => {
     if (e?.dateStr && e?.draggedEl?.dataset?.event) {
       const task = JSON.parse(e?.draggedEl?.dataset?.event)
       const date = new Date(e.dateStr.includes('T') ? e.dateStr : `${e.dateStr} 12:00:00`)
-      await updateItem({...task, date})
+      await updateItem({ ...task, date })
     }
   }, [updateItem])
 
@@ -158,7 +158,7 @@ const CalendarView = () => {
   }, [doubleClick])
 
   const onDateClick = useCallback(e => {
-    const {dateStr} = e
+    const { dateStr } = e
     if (!doubleClick) {
       setDoubleClick(dateStr)
       setTimeout(() => setDoubleClick(null), 1000)
@@ -200,6 +200,7 @@ const CalendarView = () => {
         themeSystem='bootstrap'
         slotMinTime='06:00:00'
         slotMaxTime='20:00:00'
+        defaultTimedEventDuration='00:00'
         drop={onExternalDrop}
         eventDrop={onDrop}
         eventClick={onOpenEdit}
