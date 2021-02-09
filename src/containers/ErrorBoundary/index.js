@@ -18,9 +18,20 @@ type State = {
 class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false };
 
+  skip = (error: Error) => {
+    if (error.includes('exception captured with keys: current, from, message, to, transition')) return true
+    return false
+  }
+
   componentDidCatch(error: Error, info: Object) {
     this.setState({ hasError: true });
-    if (process.env.NODE_ENV !== 'development') Sentry.captureException(error, { extra: info });
+    if (
+      process.env.NODE_ENV !== 'development'
+    ) {
+      if (!this.skip(error)) {
+        Sentry.captureException(error, { extra: info });
+      }
+    }
     // eslint-disable-next-line
     else console.log('Boundary: ', error)
   }

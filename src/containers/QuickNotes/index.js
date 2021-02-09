@@ -17,7 +17,6 @@ import { bindActionCreators } from 'redux';
 import * as notesActions from 'actions/notes'
 import { useDebounce } from '@react-hook/debounce'
 import { connect } from 'react-redux';
-import moment from 'moment'
 import * as notificationsActions from 'actions/notifications';
 import Tooltip from 'containers/Tooltip';
 import InputLabel from '@material-ui/core/InputLabel'
@@ -110,19 +109,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const timeFromNow = note => {
-  try {
-    const { lastModified } = note
-    if (typeof lastModified === 'string') {
-      const utc = `${lastModified.replace(' ', 'T')}Z`
-      return moment(utc).calendar()
-    }
-    return moment(lastModified).calendar()
-  } catch (e) {
-    return ''
-  }
-}
-
 const QuickNotes = ({
   enqueueSnackbar,
   userClasses,
@@ -139,7 +125,6 @@ const QuickNotes = ({
   const classes = useStyles()
   const [selectedClass, setSelectedClass] = useState(null)
   const [prevContent, setPrevContent] = useState('')
-  const [lastSaved, setLastSaved] = useState('')
   const [savedState, setSavedState] = useState('hidden')
   const [debouncedContent, setDebouncedContent] = useDebounce('', 2000)
 
@@ -182,7 +167,6 @@ const QuickNotes = ({
     }
     setSavedState('show')
     setTimeout(() => setSavedState('hidden'), 60000)
-    setLastSaved(timeFromNow({ lastModified: now }))
   }, [debouncedContent, quicknoteId, saveNoteAction, selectedClass, updateNote])
 
   useEffect(() => {

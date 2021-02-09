@@ -1,12 +1,12 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 
-export default function withTracker(
+const withTracker = (
   WrappedComponent: Object,
   options: Object = {}
-) {
+) => {
   const trackPage = page => {
     ReactGA.set({
       page,
@@ -19,29 +19,25 @@ export default function withTracker(
     location: Object
   };
 
-  return class WithTracker extends Component<Props> {
-    componentDidMount() {
-      const {
-        location: { pathname }
-      } = this.props;
-      trackPage(pathname);
-    }
+  const WithTracker = ({
+    location: {
+      pathname
+    },
+    ...rest
+  }: Props) => {
+    const [prevPathname, setPrevPathname] = useState('')
 
-    componentWillReceiveProps(nextProps: Object) {
-      const {
-        location: { pathname }
-      } = this.props;
-      const {
-        location: { pathname: nextPathname }
-      } = nextProps;
-
-      if (pathname !== nextPathname) {
-        trackPage(nextPathname);
+    useEffect (() => {
+      if (prevPathname !== pathname) {
+        trackPage(pathname);
+        setPrevPathname(pathname)
       }
-    }
+    }, [pathname, prevPathname])
 
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  };
+    return <WrappedComponent {...rest} />;
+  }
+
+  return memo(WithTracker)
 }
+
+export default withTracker
