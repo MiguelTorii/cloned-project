@@ -2,7 +2,8 @@
 import axios from 'axios';
 import { API_ROUTES } from 'constants/routes';
 import type { OnboardingList } from 'types/models';
-import { getToken } from './utils';
+import { getToken, onboardingToCamelCase } from './utils';
+
 
 export const completeOnboardingList = async (): Promise => {
   try {
@@ -32,8 +33,8 @@ export const fetchOnboardingList = async (): Promise<OnboardingList> => {
       }
     });
 
-    return result.data || [];
+    return onboardingToCamelCase(result.data);
   } catch (err) {
-    return [];
+    return onboardingToCamelCase({});
   }
 };

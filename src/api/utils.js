@@ -51,6 +51,14 @@ export const getToken = async (): Promise<string> => {
   }
 };
 
+export const onboardingToCamelCase = (onboarding: Object) => {
+  return {
+    checklist: onboarding.checklist || [],
+    visible: Boolean((onboarding.visible: boolean) || false)
+  };
+};
+
+
 export const postToCamelCase = (post: Object): Post => {
   return {
     body: String((post.body: string) || ''),

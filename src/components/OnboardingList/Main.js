@@ -122,7 +122,7 @@ const OnboardingList = ({
 
   if (
     !viewedOnboarding ||
-    onboardingList.checklist.length < 1 ||
+    onboardingList?.checklist?.length < 1 ||
     !onboardingList.visible
   )
     return null;
@@ -206,7 +206,7 @@ const OnboardingList = ({
   )
 }
 
-const mapStateToProps = ({ user: { syncData: { viewedOnboarding }}, onboarding }): {} => ({
+const mapStateToProps = ({ user: { syncData: { viewedOnboarding } }, onboarding }): {} => ({
   onboardingList: onboarding.onboardingList,
   viewedOnboarding
 });
