@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   ValidatorForm,
   TextValidator,
@@ -60,7 +60,8 @@ type State = {
   firstName: string,
   lastName: string,
   grade: string | number,
-  email: string
+  email: string,
+  windowWidth: number
 };
 
 class UserInitializer extends React.PureComponent<Props, State> {
@@ -71,7 +72,12 @@ class UserInitializer extends React.PureComponent<Props, State> {
     lastName: '',
     grade: '',
     email: '',
+    windowWidth: window.innerWidth
   };
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
 
   init = async () => {
     const {
@@ -84,6 +90,8 @@ class UserInitializer extends React.PureComponent<Props, State> {
     if (loggedIn) {
       if (userId !== '') this.handleCheckUpdate();
     }
+
+    window.addEventListener("resize", this.updateDimensions);
   }
 
   componentDidMount = () => {
@@ -104,6 +112,10 @@ class UserInitializer extends React.PureComponent<Props, State> {
 
     if (userId !== '' && prevUserId === '') this.handleCheckUpdate();
   };
+
+  updateDimensions = () => {
+    this.setState({ windowWidth: window.innerWidth });
+  }
 
   handleCheckUpdate = () => {
     const {
@@ -182,10 +194,11 @@ class UserInitializer extends React.PureComponent<Props, State> {
       lastName,
       grade,
       email,
+      windowWidth
     } = this.state;
 
     const renderForm = (
-      <Fragment>
+      <>
         {updateProfile.map(({ field }) => {
           switch (field) {
           case 'first_name':
@@ -269,7 +282,7 @@ class UserInitializer extends React.PureComponent<Props, State> {
             return null;
           }
         })}
-      </Fragment>
+      </>
     );
 
     return (
@@ -299,11 +312,13 @@ class UserInitializer extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        <OnboardingProgress
-          open={viewedOnboarding !== null && !viewedOnboarding}
-          updateOnboarding={updateOnboarding}
-          userId={userId}
-        />
+        {windowWidth > 700 &&
+          <OnboardingProgress
+            open={viewedOnboarding !== null && !viewedOnboarding}
+            updateOnboarding={updateOnboarding}
+            userId={userId}
+          />
+        }
       </ErrorBoundary>
     );
   }

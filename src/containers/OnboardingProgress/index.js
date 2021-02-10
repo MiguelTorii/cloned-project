@@ -10,7 +10,7 @@ import ErrorBoundary from 'containers/ErrorBoundary';
 import Dialog from 'components/Dialog';
 import LoadImg from 'components/LoadImg'
 
-import classesImg from 'assets/img/circleIn-guru-happy-black-girl.png';
+import classesImg from 'assets/img/circleIn-fem-mascot.png';
 import studentWin from 'assets/gif/student-winning.gif';
 import notes from 'assets/gif/notes.gif';
 import workflowDemo from 'assets/gif/wf.gif';
@@ -40,8 +40,9 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
 
   const Intro = () => (
     <div className={classes.demoClass}>
-      <LoadImg url={classesImg} style={{ width: '100%', marginBottom: -5 }} />
-      <AppLogo className={classes.demoLogo}/>
+      <div className={classes.femGirl}>
+        <LoadImg url={classesImg} style={{ width: '100%', marginBottom: -5 }} />
+      </div>
     </div>
   );
 
