@@ -22,8 +22,10 @@ type Props = {
       userId: string
     }
   },
-  location: {
-    search: string
+  history: {
+    location: {
+      search: string
+    }
   }
 };
 
@@ -43,7 +45,9 @@ class ProfilePage extends React.Component<Props, State> {
       match: {
         params: { userId = '' }
       },
-      location: { search = {} }
+      history: {
+        location: { search = {} }
+      }
     } = this.props;
     if (userId !== '') this.setState({ userId: String(userId) });
 
