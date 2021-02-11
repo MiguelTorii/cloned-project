@@ -467,7 +467,7 @@ const CreateFlashcards = ({
         <CreatePostForm
           title={`${flashcardId ? 'Edit' : 'Create'} Flashcards`}
           buttonLabel={flashcardId ? 'Update' : 'Create'}
-          subtitle="Yes, tests are make or break. Take a little time to get prepared, and when you create your cards, they will go on the feed where classmates can also view them."
+          subtitle="Time to study! 🙌🏽 Flashcards are very helpful to learn formulas, new terms, study material for quizzes/homework, help your brain memorize new information and so much more. Plus you can add images!"
           loading={loading}
           changed={changed}
           handleSubmit={handleSubmit}

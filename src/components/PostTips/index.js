@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 const texts = {
   flashcards: {
     tips: [
-      'Break complex topics into multiple bite-sized questions!',
+      `Do NOT navigate away from this page if you didn't finish creating your flashcards or they will be deleted. Come back when you can finish creating flashcards in one sitting. You cannot currently save your flashcards if you don't finish, you can only post them and review after posting.`,
       'In study mode, use the shuffle feature to challenge your memorization skills',
       'Try to keep it one question or term per flashcard',
       'Read your flashcards outloud to commit them to memory!'
