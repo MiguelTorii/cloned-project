@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false };
 
   skip = (error: Error) => {
-    if (error.includes('exception captured with keys: current, from, message, to, transition')) return true
+    if (JSON.stringify(error).includes('exception captured with keys: current, from, message, to, transition')) return true
     return false
   }
 
