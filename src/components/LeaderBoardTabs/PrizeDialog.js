@@ -7,7 +7,7 @@ import LoadImg from '../LoadImg'
 import shareNotes from '../../assets/svg/share_notes.svg';
 import answerQuestions from '../../assets/svg/answer_questions.svg';
 import studyVirtually from '../../assets/svg/study-virtually.svg';
-import powerHour from '../../assets/svg/power_hour.svg';
+// import powerHour from '../../assets/svg/power_hour.svg';
 
 const styles = theme => ({
   highlight: {
@@ -81,11 +81,11 @@ const mvpActions = [
     title: 'Study virtually.',
     text: 'Connect over video with classmates or project groups.'
   },
-  {
-    imageUrl: powerHour,
-    title: 'Utilize Power Hour!',
-    text: 'Posts and answers earn double the points during Power Hour.'
-  },
+  // {
+  //   imageUrl: powerHour,
+  //   title: 'Utilize Power Hour!',
+  //   text: 'Posts and answers earn double the points during Power Hour.'
+  // },
 ];
 
 const LeaderBoardTabs = ({
