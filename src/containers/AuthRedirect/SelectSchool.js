@@ -106,8 +106,30 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
       setLoading(false)
       return true
     } else {
-      setScreen('walk')
+      const responseType = 'code';
+      const origin = `${window.location.origin}/oauth`
+      const obj = {
+        uri: school.uri,
+        lms_type_id: school.lmsTypeId,
+        response_type: responseType,
+        client_id: school.clientId,
+        redirect_uri: origin
+      };
+
+      const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
+
+      let uri = `${school.authUri}?client_id=${
+        school.clientId
+        }&response_type=${responseType}&redirect_uri=${
+          origin
+        }&state=${buff}`;
+
+      if (school.scope) {
+        uri = `${uri}&scope=${school.scope}`;
+      }
+
       setLoading(false)
+      window.location.replace(uri);
       return true
     }
     setLoading(false)
