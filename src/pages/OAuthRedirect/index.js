@@ -10,21 +10,21 @@ const styles = () => ({});
 
 type Props = {
   classes: Object,
-  location: {
-    search: string
+  history: {
+    locatoin: Object
   }
 };
 
 const OAuthPage = ({
   classes,
-  location: {
-    search
+  history: {
+    location
   }
 }: Props) => {
   return (
     <main className={classes.main}>
       <CssBaseline />
-      <OAuth search={search} />
+      <OAuth search={location.search} />
     </main>
   );
 }
