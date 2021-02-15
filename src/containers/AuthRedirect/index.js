@@ -56,7 +56,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(2, 4, 6, 4)
+    padding: theme.spacing(2, 4, 4, 4)
   },
   container: {
     height: '100vh',

@@ -62,16 +62,16 @@ const Empty = ({ classes, logo, body }: Props) => {
           {logo && <img alt='logo' className={classes.img} src={logo} />}
         </div>
       </Grid>
-      <Grid 
+      <Grid
         container
         className={classes.textContainer}
         alignItems='center'
         justify='center'
         spacing={2}
       >
-        {body.split('\n').map(b => <Typography key={b} className={classes.text}>
-          <Linkify properties={{target: '_blank' }}>
-            {b}
+        {body.split('\n').map(line => <Typography key={line} className={classes.text}>
+          <Linkify properties={{ target: '_blank' }}>
+            {line}
           </Linkify>
         </Typography>)}
       </Grid>

@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app'
 import auth0 from 'auth0-js'
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
+  },
+  link: {
+    fontSize: 12,
+    marginTop: theme.spacing(3)
   }
 }))
 
@@ -171,6 +176,28 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
           : 'Select School'
         }
       </Button>
+      <Typography
+        variant="subtitle1"
+        className={classes.link}
+        align="center"
+      >
+        {
+          "By searching for and selecting your school, I agree to CircleIn's  "
+        }
+        <Link
+          href="https://s3.amazonaws.com/myqvo/terms_of_use.pdf"
+          target='_blank'
+        >
+              Terms of Service
+        </Link>
+        {" and "}
+        <Link
+          href="https://s3.amazonaws.com/myqvo/privacy_policy.pdf"
+          target='_blank'
+        >
+              Privacy Policy
+        </Link>
+      </Typography>
     </div>
   )
 }
