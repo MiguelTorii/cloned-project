@@ -27,6 +27,9 @@ import Button from '@material-ui/core/Button'
 import Tips from 'components/Workflow/Tips'
 import cx from 'classnames'
 import { WorkflowProvider } from 'containers/Workflow/WorkflowContext'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import IconButton from '@material-ui/core/IconButton'
+import Box from '@material-ui/core/Box'
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -49,7 +52,6 @@ const createSnackbar = (message, style, variant) => ({
 
 const styles = theme => ({
   title: {
-    marginTop: theme.spacing(),
     fontWeight: 700,
     fontSize: 28,
   },
@@ -156,7 +158,6 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [classList, setClassList] = useState({})
   const {
     data: { firstName, userId },
-    syncData: { viewedOnboarding },
     userClasses,
     announcementData
   } = user
@@ -179,19 +180,19 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   const showCalendarView = useCallback(() => setCalendarView(true), [])
 
-  useEffect(() => {
-    const init = async () => {
-      const res = await getTodos()
+  const init = useCallback(async () => {
+    const res = await getTodos()
 
-      if (res) {
-        dispatch({ type: 'INIT', tasks: res })
-      } else {
-        enqueueSnackbar(createSnackbar('Failed to initialize', classes.snackbar, 'error'))
-      }
+    if (res) {
+      dispatch({ type: 'INIT', tasks: res })
+    } else {
+      enqueueSnackbar(createSnackbar('Failed to initialize', classes.snackbar, 'error'))
     }
+  }, [classes.snackbar, enqueueSnackbar])
 
+  useEffect(() => {
     init()
-  }, [dispatch, classes, enqueueSnackbar, viewedOnboarding])
+  }, [init])
 
   const archiveTask = useCallback(async task => {
     const res = await archiveTodo({ id: task.id })
@@ -384,12 +385,26 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       <Grid container direction='column' spacing={0} className={classes.container}>
         <ErrorBoundary>
           <Tips open={tips} close={closeTips} />
-          <Typography
-            color="textPrimary"
-            className={classes.title}
+          <Box
+            display='flex'
+            alignItems='center'
           >
+            <Typography
+              component='span'
+              color="textPrimary"
+              className={classes.title}
+            >
             Workflow
-          </Typography>
+            </Typography>
+            <IconButton
+              onClick={init}
+              color="primary"
+              aria-label="refresh"
+              component="span"
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Box>
           <Grid container alignItems='center'>
             <Button
               color={cx(!listView && !calendarView ? 'primary' : 'default')}
