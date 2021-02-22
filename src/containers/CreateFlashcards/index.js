@@ -9,10 +9,14 @@ import { push } from 'connected-react-router';
 import { Prompt, withRouter } from 'react-router'
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import { cypher, decypherClass } from 'utils/crypto'
+import { useDebounce } from '@react-hook/debounce'
+import store from 'store'
+import Dialog, { dialogStyle } from 'components/Dialog';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -36,6 +40,14 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  dialog: {
+    ...dialogStyle,
+    width: 600,
+  },
+  clearButton: {
+    width: '100%',
+    marginTop: theme.spacing()
   }
 });
 
@@ -85,6 +97,49 @@ const CreateFlashcards = ({
   const canBatchPost = useMemo(() => (
     expertMode && permission.includes('one_touch_send_posts')
   ), [expertMode, permission])
+  const [debounceState, setDebounceState] = useDebounce({}, 1000)
+  const [confirmClearDialog, setConfirmClear] = useState(false)
+
+  const openConfirmDialog = useCallback(() => setConfirmClear(true), [])
+  const closeConfirmDialog = useCallback(() => setConfirmClear(false), [])
+
+  useEffect(() => {
+    setDebounceState({
+      summary,
+      title,
+      flashcards: flashcards.map(f => ({
+        ...f,
+        isNew: false
+      }))
+    })
+  }, [flashcards, setDebounceState, summary, title])
+
+  useEffect(() => {
+    if (
+      !isEdit && (
+        title || summary || flashcards.length > 0
+      )
+    ) store.set('FLASHCARDS_CACHE', debounceState)
+  }, [debounceState, flashcards.length, isEdit, summary, title])
+
+  useEffect(() => {
+    if (!isEdit) {
+      const savedState = store.get('FLASHCARDS_CACHE')
+      if (savedState) {
+        setTitle(t => savedState?.title || t)
+        setSummary(s => savedState?.summary || s)
+        setFlashcards(f => savedState?.flashcards || f)
+      }
+    }
+  }, [isEdit])
+
+  const clearFlashcards = useCallback(() => {
+    setTitle('')
+    setSummary('')
+    setFlashcards([])
+    store.remove('FLASHCARDS_CACHE')
+    closeConfirmDialog()
+  }, [closeConfirmDialog])
 
   const handlePush = useCallback(path => {
     if (campaign.newClassExperience) {
@@ -555,6 +610,15 @@ const CreateFlashcards = ({
                 loading={loading}
                 onClick={handleAddNew}
               />
+              {Boolean(title || flashcards.length > 0 || summary) && (
+                <Button
+                  onClick={openConfirmDialog}
+                  className={classes.clearButton}
+                  variant='contained'
+                >
+                  Clear
+                </Button>
+              )}
             </Grid>
           </Grid>
         </CreatePostForm>
@@ -567,6 +631,17 @@ const CreateFlashcards = ({
           handleClose={handleErrorDialogClose}
         />
       </ErrorBoundary>
+
+      <Dialog
+        className={classes.dialog}
+        onCancel={closeConfirmDialog}
+        open={confirmClearDialog}
+        okTitle='Clear'
+        onOk={clearFlashcards}
+        showActions
+        showCancel
+        title="Are you  sure you want to clear this Flashcards?"
+      />
     </div>
   );
 };
