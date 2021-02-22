@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { pdfjs } from 'react-pdf';
@@ -127,4 +127,5 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
   );
 }
 
-export default withStyles(styles)(PdfGallery);
+export default memo(withStyles(styles)(PdfGallery))
+

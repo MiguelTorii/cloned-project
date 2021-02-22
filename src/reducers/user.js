@@ -38,6 +38,7 @@ export type UserState = {
   },
   expertMode: boolean,
   announcementData: Announcement,
+  bannerHeight: number,
   errorMessage: {
     title: string,
     body: string,
@@ -90,6 +91,7 @@ const defaultState = {
     viewedOnboarding: null,
     helpLink: ''
   },
+  bannerHeight: 0,
   expertMode: localStorage.getItem('EXPERT_MODE')
     ? localStorage.getItem('EXPERT_MODE') === 'true'
     : null,
@@ -112,6 +114,10 @@ const defaultState = {
 
 export default (state: UserState = defaultState, action: Action): UserState => {
   switch (action.type) {
+  case userActions.SET_BANNER_HEIGHT:
+    return update(state, {
+      bannerHeight: { $set: action.payload.bannerHeight }
+    })
   case signUpActions.SIGN_UP_USER_REQUEST:
   case signInActions.SIGN_IN_USER_REQUEST:
     return update(state, {

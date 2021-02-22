@@ -53,7 +53,8 @@ type Props = {
   signOut: Function,
   fetchFeed: Function,
   updateFilter: Function,
-  push: Function
+  push: Function,
+  setBannerHeight: Function
 };
 
 const Layout = ({
@@ -70,7 +71,8 @@ const Layout = ({
   fetchFeed,
   toggleExpertMode,
   updateFilter,
-  push
+  push,
+  setBannerHeight
 }: Props) => {
   const [manageClasses, setManageClasses] = useState(false)
   const [manageBlockedUsers, setManageBlockedUsers] = useState(false)
@@ -165,6 +167,7 @@ const Layout = ({
 
   const {
     data: { userId, firstName, lastName, profileImage },
+    bannerHeight,
     announcementData,
     runningTour,
     userClasses,
@@ -207,6 +210,8 @@ const Layout = ({
     <>
       <ErrorBoundary>
         <MainLayout
+          bannerHeight={bannerHeight}
+          setBannerHeight={setBannerHeight}
           expertMode={expertMode}
           announcementData={announcementData}
           isExpert={isExpert}
@@ -300,6 +305,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       fetchFeed: feedActions.fetchFeed,
       updateFilter: feedActions.updateFilter,
       toggleExpertMode: userActions.toggleExpertMode,
+      setBannerHeight: userActions.setBannerHeight,
       push: routePush,
     },
     dispatch

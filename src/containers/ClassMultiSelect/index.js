@@ -26,13 +26,17 @@ const useStyles = makeStyles((theme) => ({
 const ClassMultiSelect = ({
   user,
   selected,
+  allLabel,
   placeholder = '',
+  containerStyle,
+  externalOptions,
   variant,
-  onSelect
+  onSelect,
 }) => {
   const classes = useStyles();
 
   const options = useMemo(() => {
+    if (externalOptions) return externalOptions
     try {
       const classList = {}
       user.userClasses.classList.forEach(cl => {
@@ -53,7 +57,7 @@ const ClassMultiSelect = ({
         }
       })
     } finally {/* NONE */}
-  }, [user.userClasses.classList])
+  }, [externalOptions, user.userClasses.classList])
 
   const onChange = useCallback((_, value) => {
     if (value.find(o => o.value === 'all')) {
@@ -68,9 +72,8 @@ const ClassMultiSelect = ({
     selected.length === options.length
   ), [options.length, selected.length])
 
-
   return (
-    <div className={classes.root}>
+    <div className={containerStyle || classes.root}>
       <Autocomplete
         multiple
         openOnFocus
@@ -102,7 +105,7 @@ const ClassMultiSelect = ({
           </React.Fragment>
         )}
         renderTags={(value, getTagProps) => {
-          if (allSelected) return 'All Classes Selected'
+          if (allSelected) return allLabel || 'All Classes Selected'
           return value.map((option, index) => (
             <Chip
               variant="outlined"

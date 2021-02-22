@@ -209,6 +209,8 @@ const MainLayout = ({
   userId,
   expertMode,
   isExpert,
+  bannerHeight,
+  setBannerHeight,
   toggleExpertMode,
   initials,
   newNotesScreen,
@@ -355,11 +357,11 @@ const MainLayout = ({
     setOpenUseCases(false)
   }, [])
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isCreatePostMenuOpen = Boolean(createPostAnchorEl);
+  const isMenuOpen = useMemo(() => Boolean(anchorEl), [anchorEl])
+  const isMobileMenuOpen = useMemo(() => Boolean(mobileMoreAnchorEl), [mobileMoreAnchorEl])
+  const isCreatePostMenuOpen = useMemo(() => Boolean(createPostAnchorEl), [createPostAnchorEl])
 
-  const renderMenu = (
+  const renderMenu = useMemo(() => (
     <TopMenu
       anchorEl={anchorEl}
       isMenuOpen={isMenuOpen}
@@ -373,9 +375,9 @@ const MainLayout = ({
       handleSignOut={handleSignOutCur}
       search={search}
     />
-  );
+  ), [anchorEl, handleBlockedUsers, handleManageClasses, handleMenuClose, handleOpenReferralStatus, handleSignOutCur, isMenuOpen, search, userClasses, userId])
 
-  const renderMobileMenu = (
+  const renderMobileMenu = useMemo(() => (
     <MobileMenu
       mobileMoreAnchorEl={mobileMoreAnchorEl}
       MyLink={MyLink}
@@ -390,9 +392,9 @@ const MainLayout = ({
       initials={initials}
       userProfileUrl={userProfileUrl}
     />
-  );
+  ), [handleMobileMenuClose, handleNotificationOpenCur, handleProfileMenuOpen, initials, isMobileMenuOpen, mobileMoreAnchorEl, open, unreadCount, unreadMessages, userProfileUrl, width])
 
-  const renderCreatePostMenu = (
+  const renderCreatePostMenu = useMemo(() => (
     <CreatePostMenu
       MyLink={MyLink}
       createPostAnchorEl={createPostAnchorEl}
@@ -400,13 +402,13 @@ const MainLayout = ({
       search={search}
       handleCreatePostMenuClose={handleCreatePostMenuClose}
     />
-  )
+  ), [createPostAnchorEl, handleCreatePostMenuClose, isCreatePostMenuOpen, search])
 
   const appBarHeight = useMemo(() => (
-    pathname !== '/chat' && announcementData ? 120 : 62
-  ), [announcementData, pathname])
+    pathname !== '/chat' && announcementData ? bannerHeight + 68 : 68
+  ), [announcementData, bannerHeight, pathname])
 
-  const drawer = (
+  const drawer = useMemo(() => (
     <DrawerMenu
       expertMode={expertMode}
       isExpert={isExpert}
@@ -430,7 +432,7 @@ const MainLayout = ({
       landingPageCampaign={landingPageCampaign}
       userClasses={userClasses}
     />
-  )
+  ), [appBarHeight, createPostOpen, expertMode, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId])
 
   return (
     <Fragment>
@@ -511,7 +513,13 @@ const MainLayout = ({
               </IconButton>
             </div>
           </Toolbar>
-          <AnnouncementBanner onLoaded={handleAnnouncementLoaded} />
+
+          <AnnouncementBanner
+            bannerHeight={bannerHeight}
+            setBannerHeight={setBannerHeight}
+            onLoaded={handleAnnouncementLoaded}
+          />
+
         </AppBar>
         {renderMenu}
         {renderMobileMenu}

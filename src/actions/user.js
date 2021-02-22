@@ -7,13 +7,23 @@ import {
   getUserClasses,
   getSync
 } from 'api/user'
-import { push } from 'connected-react-router';
 import store from 'store'
 import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models'
+
+const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
+  type: userActions.SET_BANNER_HEIGHT,
+  payload: {
+    bannerHeight
+  }
+})
+
+export const setBannerHeight = ({ bannerHeight }: {bannerHeight: number}) => (dispatch: Dispatch) => {
+  dispatch(setBannerHeightAction({ bannerHeight }))
+}
 
 const clearDialogMessageAction = (): Action => ({
   type: userActions.CLEAR_DIALOG_MESSAGE
@@ -92,11 +102,6 @@ export const toggleExpertMode = () => (
   getState: Function
 ) => {
   const {
-    router: {
-      location: {
-        pathname
-      }
-    },
     user: {
       expertMode
     }
@@ -106,14 +111,6 @@ export const toggleExpertMode = () => (
 
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
-
-  if(!pathname.includes('/create')) {
-    if (!expertMode) {
-      dispatch(push('/feed'))
-    } else {
-      dispatch(push('/'))
-    }
-  }
 }
 
 const updateTourAction = ({

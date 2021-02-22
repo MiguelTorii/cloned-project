@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -45,7 +45,7 @@ const styles = theme => ({
   image: {
     height: '100%',
     left: 16,
-    position: 'absolute',
+    maxHeight: 56
   },
   text: {
     alignItems: 'center',
@@ -62,6 +62,8 @@ const styles = theme => ({
 
 type Props = {
   announcement: Anouncement,
+  bannerHeight: number,
+  setBannerHeight: Function,
   classes: Object,
   getAnnouncement: Function,
   location: { pathname: string },
@@ -72,11 +74,14 @@ const Banner = ({
   announcement,
   classes,
   getAnnouncement,
+  bannerHeight,
+  setBannerHeight,
   location: { pathname },
   onLoaded,
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [minutesRemaining, setMinutesRemaining] = useState(60 - new Date().getMinutes());
+  const bannerRef = useRef(null)
 
   useEffect(() => {
     getAnnouncement({ announcementId: 1, campaignId: 7 });
@@ -92,6 +97,23 @@ const Banner = ({
 
     return () => clearInterval(intervalId);
   }, [getAnnouncement]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (
+        announcement &&
+        bannerRef.current &&
+        bannerRef.current.clientHeight !== bannerHeight
+      ) {
+        setTimeout(() => setBannerHeight({
+          bannerHeight: bannerRef.current.clientHeight
+        }), 100)
+      }
+    }
+    handleWindowResize()
+    window.addEventListener('resize', handleWindowResize)
+    return () => window.removeEventListener('resize', handleWindowResize)
+  }, [announcement, bannerHeight, setBannerHeight])
 
   useEffect(() => {
     if (announcement) onLoaded();
@@ -112,9 +134,9 @@ const Banner = ({
   const text = subtitle && subtitle.replace("{{time_left}}", minutesRemaining);
 
   return (
-    <div className={classes.body}>
+    <div ref={bannerRef} className={classes.body}>
       <div className={classes.image}>
-        {isActive && <img src={imageUrl} alt="gift" style={{ height: '100%' }} />}
+        {isActive && <img src={imageUrl} alt="gift" style={{ maxHeight: 56 }} />}
       </div>
       <div className={classes.content}>
         <div className={classes.title}>
@@ -122,18 +144,18 @@ const Banner = ({
         </div>
         <div className={classes.text}>
           {isActive ? text : "Today's Hourly Giveaway has ended! Come back tomorrow for more prizes."}
-          <Button
-            classes={{
-              root: classes.button,
-              label: classes.buttonLabel,
-            }}
-            color='primary'
-            onClick={() => setDialogOpen(true)}
-          >
-            Learn More
-          </Button>
         </div>
       </div>
+      <Button
+        classes={{
+          root: classes.button,
+          label: classes.buttonLabel,
+        }}
+        color='primary'
+        onClick={() => setDialogOpen(true)}
+      >
+            Learn More
+      </Button>
       <Dialog
         onCancel={() => setDialogOpen(false)}
         open={dialogOpen}
