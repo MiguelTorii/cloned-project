@@ -93,6 +93,8 @@ export const fetchClasses = (skipCache) => async (
         }
       }
       ))
+    } else {
+      dispatch(clearDialogMessageAction())
     }
   } catch (e) {/* NONE */}
 }

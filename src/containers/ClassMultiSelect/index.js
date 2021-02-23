@@ -106,7 +106,7 @@ const ClassMultiSelect = ({
         )}
         renderTags={(value, getTagProps) => {
           if (allSelected) return allLabel || 'All Classes Selected'
-          return value.map((option, index) => (
+          return value.map((option, index) => option && (
             <Chip
               variant="outlined"
               classes={{
