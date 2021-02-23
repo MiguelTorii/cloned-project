@@ -31,6 +31,7 @@ const ClassMultiSelect = ({
   containerStyle,
   externalOptions,
   variant,
+  noEmpty,
   onSelect,
 }) => {
   const classes = useStyles();
@@ -60,13 +61,14 @@ const ClassMultiSelect = ({
   }, [externalOptions, user.userClasses.classList])
 
   const onChange = useCallback((_, value) => {
+    if (noEmpty && value.length === 0) return
     if (value.find(o => o.value === 'all')) {
       onSelect(options)
     }
     else {
       onSelect(value)
     }
-  }, [onSelect, options])
+  }, [noEmpty, onSelect, options])
 
   const allSelected = useMemo(() => (
     selected.length === options.length
@@ -76,6 +78,7 @@ const ClassMultiSelect = ({
     <div className={containerStyle || classes.root}>
       <Autocomplete
         multiple
+        disableClearable={noEmpty}
         openOnFocus
         getOptionSelected={(option, value) => {
           return value.classId === option.classId && value.sectionId === option.sectionId

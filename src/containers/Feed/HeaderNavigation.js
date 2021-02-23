@@ -155,6 +155,7 @@ const HeaderNavigation = ({
   return (
     <Box>
       <ClassMultiSelect
+        noEmpty
         variant='standard'
         allLabel={`${firstName}'s Classes`}
         containerStyle={classes.classSelector}
