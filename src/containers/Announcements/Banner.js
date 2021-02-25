@@ -36,7 +36,7 @@ const styles = theme => ({
     alignItems: 'center',
     background: '#e9ecef',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     padding: '4px 0px',
     position: 'relative',
   },
@@ -65,8 +65,7 @@ const styles = theme => ({
     color: theme.circleIn.palette.action,
     fontSize: 14,
     fontWeight: 'bold',
-    paddingLeft: 4,
-    marginLeft: theme.spacing(4)
+    paddingLeft: 4
   },
   content: {
     alignItems: 'center',
