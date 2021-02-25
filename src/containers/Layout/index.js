@@ -306,6 +306,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateFilter: feedActions.updateFilter,
       toggleExpertMode: userActions.toggleExpertMode,
       setBannerHeight: userActions.setBannerHeight,
+      // getVaiation: userActions.getVaiation,
       push: routePush,
     },
     dispatch

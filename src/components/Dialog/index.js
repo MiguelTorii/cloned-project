@@ -78,6 +78,7 @@ const Dialog = ({
   loading = false,
   okTitle = "Got it!",
   secondaryOkTitle = "",
+  maxWidth="lg",
   cancelTitle = 'Cancel',
   secondaryRemoveTitle = "",
   secondaryVariant = 'contained',
@@ -128,7 +129,7 @@ const Dialog = ({
       classes={{ paper: className || classes.dialogPaper, container: classes.container }}
       disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown={disableEscapeKeyDown}
-      maxWidth="lg"
+      maxWidth={maxWidth}
       disableRestoreFocus
       onClose={onCancel}
       open={open}

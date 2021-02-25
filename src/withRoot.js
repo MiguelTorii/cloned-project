@@ -17,6 +17,7 @@ const circleInTheme = {
   borders: '#566c77',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
+  secondaryText: '#ffffff',
   normalButtonText1: '#090909',
   textOffwhite: '#f9f9f9',
   appBar: '#37474f', // validate
@@ -58,6 +59,7 @@ const theme = createMuiTheme({
       modalBackground: circleInTheme.modalBackground,
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
+      secondaryText: circleInTheme.secondaryText,
       textOffwhite: circleInTheme.textOffwhite,
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
