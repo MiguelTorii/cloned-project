@@ -198,7 +198,8 @@ type Props = {
   expertMode: boolean,
   isExpert: boolean,
   announcementData: ?Object,
-  toggleExpertMode: Function
+  toggleExpertMode: Function,
+  viewedOnboarding: Boolean
 };
 
 const MainLayout = ({
@@ -228,6 +229,7 @@ const MainLayout = ({
   landingPageCampaign,
   onOpenReferralStatus,
   updateFeed,
+  viewedOnboarding,
   location: {
     search
   }
@@ -412,6 +414,7 @@ const MainLayout = ({
     <DrawerMenu
       expertMode={expertMode}
       isExpert={isExpert}
+      viewedOnboarding={viewedOnboarding}
       toggleExpertMode={toggleExpertMode}
       handleCreatePostMenuOpen={handleCreatePostMenuOpen}
       appBarHeight={appBarHeight}
@@ -432,7 +435,7 @@ const MainLayout = ({
       landingPageCampaign={landingPageCampaign}
       userClasses={userClasses}
     />
-  ), [appBarHeight, createPostOpen, expertMode, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId])
+  ), [appBarHeight, createPostOpen, expertMode, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId, viewedOnboarding])
 
   return (
     <Fragment>

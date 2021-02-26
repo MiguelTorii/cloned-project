@@ -11,6 +11,7 @@ import queryString from 'query-string'
 import HeaderNavigation from 'containers/Feed/HeaderNavigation'
 import { decypherClass } from 'utils/crypto'
 import ClassmatesDialog from 'components/ClassmatesDialog'
+import Tooltip from 'containers/Tooltip'
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
@@ -398,23 +399,30 @@ class Feed extends React.PureComponent<Props, State> {
               onChangeDateRange={this.handleChangeDateRange}
               onClearSearch={this.handleClearSearch}
             />
-            <FeedList
-              isLoading={isLoading}
-              userId={userId}
-              items={items}
-              expertMode={expertMode}
-              newClassExperience={campaign.newClassExperience}
-              hasMore={hasMore}
-              fromFeedId={fromFeedId}
-              handleShare={this.handleShare}
-              onPostClick={this.handlePostClick}
-              onBookmark={this.handleBookmark}
-              pushTo={push}
-              onReport={this.handleReport}
-              onDelete={this.handleDelete}
-              onLoadMore={this.handleLoadMore}
-              onUserClick={this.handleUserClick}
-            />
+            <Tooltip
+              id={9045}
+              hidden={!expertMode}
+              placement="right"
+              text="When you're in Expert Mode, you see posts from all your classes at once."
+            >
+              <FeedList
+                isLoading={isLoading}
+                userId={userId}
+                items={items}
+                expertMode={expertMode}
+                newClassExperience={campaign.newClassExperience}
+                hasMore={hasMore}
+                fromFeedId={fromFeedId}
+                handleShare={this.handleShare}
+                onPostClick={this.handlePostClick}
+                onBookmark={this.handleBookmark}
+                pushTo={push}
+                onReport={this.handleReport}
+                onDelete={this.handleDelete}
+                onLoadMore={this.handleLoadMore}
+                onUserClick={this.handleUserClick}
+              />
+            </Tooltip>
           </div>
         </ErrorBoundary>
         <ErrorBoundary>

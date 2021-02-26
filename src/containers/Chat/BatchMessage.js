@@ -12,6 +12,7 @@ import { ChatState } from 'reducers/chat'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { sendBatchMessage } from 'api/chat'
 import { withRouter } from 'react-router'
+import Tooltip from 'containers/Tooltip'
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {
@@ -97,13 +98,19 @@ const BatchMessage = ({
     <div
       className={classes.selectClasses}
     >
-      <Button
-        variant='contained'
-        onClick={openDialog}
-        color='primary'
+      <Tooltip
+        id={9048}
+        placement="left"
+        text="Send one message to all the classes you support - all at once. 🎉"
       >
+        <Button
+          variant='contained'
+          onClick={openDialog}
+          color='primary'
+        >
         Select Classes
-      </Button>
+        </Button>
+      </Tooltip>
       <Dialog
         open={open}
         fullWidth
@@ -123,12 +130,18 @@ const BatchMessage = ({
             setInput={setInput}
           />
 
-          <ClassMultiSelect
-            variant='standard'
-            placeholder='Select Classes...'
-            selected={selectedClasses}
-            onSelect={setSelectedClasses}
-          />
+          <Tooltip
+            id={9049}
+            placement="right"
+            text="Here is where you can select which classes you want to message. 👋"
+          >
+            <ClassMultiSelect
+              variant='standard'
+              placeholder='Select Classes...'
+              selected={selectedClasses}
+              onSelect={setSelectedClasses}
+            />
+          </Tooltip>
 
           <Button
             variant='contained'

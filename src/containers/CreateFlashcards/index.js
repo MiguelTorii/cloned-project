@@ -17,6 +17,7 @@ import { cypher, decypherClass } from 'utils/crypto'
 import { useDebounce } from '@react-hook/debounce'
 import store from 'store'
 // import Dialog, { dialogStyle } from 'components/Dialog';
+import Tooltip from 'containers/Tooltip'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -572,10 +573,16 @@ const CreateFlashcards = ({
             <Grid item xs={12} sm={10}>
 
               {canBatchPost && !isEdit ? (
-                <ClassMultiSelect
-                  selected={classList}
-                  onSelect={handleClasses}
-                />
+                <Tooltip
+                  id={9050}
+                  placement="right"
+                  text="In Expert Mode, you can post the same thing in more than one class! 🙌"
+                >
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={handleClasses}
+                  />
+                </Tooltip>
               ) : (
                 <ClassesSelector
                   classId={classId}

@@ -15,8 +15,8 @@ import cx from 'classnames'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import moment from 'moment'
-
 import * as OnboardingActions from 'actions/onboarding';
+
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';

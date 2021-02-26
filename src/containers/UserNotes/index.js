@@ -22,7 +22,6 @@ import type { State as StoreState } from '../../types/state';
 import DeleteNote from './DeleteNote';
 import NotesList from './NotesList';
 import ClassesFolders from './ClassesFolders';
-import { sync } from '../../actions/user';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -75,7 +74,6 @@ const UserNotesContainer = ({
   confirmTooltip,
   userId,
   updateNote,
-  userSync,
   loading,
   getNotes,
   notes,
@@ -106,14 +104,6 @@ const UserNotesContainer = ({
   const updateOnboarding = useCallback(async () => {
     await confirmTooltip(8453)
   }, [confirmTooltip])
-
-  useEffect(() => {
-    const init = async () => {
-      userSync({ userId })
-    }
-
-    if (userId) init()
-  }, [userId, userSync]);
 
   useEffect(() => {
     if (userClasses?.classList) {
@@ -269,7 +259,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       saveNoteAction: notesActions.saveNoteAction,
       updateNote: notesActions.updateNote,
       getNotes: notesActions.getNotes,
-      userSync: sync,
       deleteNote: notesActions.deleteNoteAction,
       confirmTooltip: confirmTooltipAction,
       setCurrentNote: notesActions.setCurrentNote,

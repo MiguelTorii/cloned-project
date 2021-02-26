@@ -13,6 +13,7 @@ import ClassMultiSelect from 'containers/ClassMultiSelect'
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { cypher, decypherClass } from 'utils/crypto'
+import Tooltip from 'containers/Tooltip'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -489,10 +490,16 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} sm={10}>
                 {this.canBatchPost() && !isEdit ? (
-                  <ClassMultiSelect
-                    selected={classList}
-                    onSelect={this.handleClasses}
-                  />
+                  <Tooltip
+                    id={9050}
+                    placement="right"
+                    text="In Expert Mode, you can post the same thing in more than one class! 🙌"
+                  >
+                    <ClassMultiSelect
+                      selected={classList}
+                      onSelect={this.handleClasses}
+                    />
+                  </Tooltip>
                 ) : (
                   <ClassesSelector
                     classId={classId}

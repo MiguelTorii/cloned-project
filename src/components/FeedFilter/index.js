@@ -17,6 +17,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
+import Tooltip from 'containers/Tooltip'
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 
@@ -284,6 +285,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       classes,
       courseDisplayName,
       classesList,
+      expertMode,
       query,
       fromDate,
       toDate,
@@ -344,17 +346,24 @@ class FeedFilter extends React.PureComponent<Props, State> {
               to={toDate}
               onChange={onChangeDateRange}
             />
-            <Button
-              aria-haspopup="true"
-              aria-label="Filter"
-              aria-owns={open ? 'filter-popper' : undefined}
-              className={classes.filterButton}
-              color="primary"
-              onClick={this.handleClick}
-              variant={filterCount > 0 ? "contained" : "outlined"}
+            <Tooltip
+              id={9047}
+              hidden={!expertMode}
+              placement="right"
+              text="You can sort posts by date and filter posts by type!"
             >
+              <Button
+                aria-haspopup="true"
+                aria-label="Filter"
+                aria-owns={open ? 'filter-popper' : undefined}
+                className={classes.filterButton}
+                color="primary"
+                onClick={this.handleClick}
+                variant={filterCount > 0 ? "contained" : "outlined"}
+              >
                 Filters
-            </Button>
+              </Button>
+            </Tooltip>
           </div>
         </Paper>
         <Dialog

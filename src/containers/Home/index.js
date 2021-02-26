@@ -1,6 +1,5 @@
 // @flow
-import React, { useEffect } from 'react'
-import { bindActionCreators } from 'redux';
+import React from 'react'
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,7 +7,6 @@ import Workflow from 'pages/Workflow'
 import Classes from 'pages/Classes'
 import Feed from 'pages/Feed'
 import AuthRedirect from 'pages/AuthRedirect';
-import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 
 const styles = () => ({
@@ -25,17 +23,9 @@ const styles = () => ({
 const Home = ({
   campaign,
   classes,
-  userSync,
   user
 }) => {
   const { data: { userId }, isLoading } = user
-  useEffect(() => {
-    const init = async () => {
-      userSync({ userId })
-    }
-
-    if (userId) init()
-  }, [userId, userSync])
 
   if(isLoading && !userId) return (
     <div className={classes.loading}>
@@ -53,15 +43,8 @@ const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
   user,
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      userSync: sync
-    },
-    dispatch
-  );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(withStyles(styles)(Home));

@@ -10,6 +10,8 @@ import type { State as StoreState } from 'types/state';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Tooltip from 'containers/Tooltip'
+import Paper from '@material-ui/core/Paper'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -31,6 +33,7 @@ const ClassMultiSelect = ({
   containerStyle,
   externalOptions,
   variant,
+  textFieldStyle = '',
   noEmpty,
   onSelect,
 }) => {
@@ -78,6 +81,15 @@ const ClassMultiSelect = ({
     <div className={containerStyle || classes.root}>
       <Autocomplete
         multiple
+        PaperComponent={props => (
+          <Tooltip
+            id={9051}
+            placement="right"
+            text="Simply Select All, or just check the boxes of the classes to post."
+          >
+            <Paper {...props} />
+          </Tooltip>
+        )}
         disableClearable={noEmpty}
         openOnFocus
         getOptionSelected={(option, value) => {
@@ -125,7 +137,8 @@ const ClassMultiSelect = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            fullWidth
+            fullWidth={!textFieldStyle}
+            className={textFieldStyle}
             placeholder={allSelected ? '' : placeholder}
             variant={variant || "outlined"}
             label=''

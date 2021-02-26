@@ -186,6 +186,7 @@ const Drawer = ({
   expertMode,
   isExpert,
   toggleExpertMode,
+  viewedOnboarding
 }) => {
   const classes = useStyles()
 
@@ -259,12 +260,21 @@ const Drawer = ({
   return (
     <Fragment>
       <List className={classes.drawerList} style={{ marginTop: appBarHeight }}>
-        {isExpert && <div className={classes.expertContainer}>
-          <Typography className={classes.expertTitle}>
+        {isExpert && (
+          <Tooltip
+            id={9044}
+            delay={600}
+            placement="right"
+            text="You can easily toggle between Expert Mode and Student Mode! 🙌🏽"
+          >
+            <div className={classes.expertContainer}>
+              <Typography className={classes.expertTitle}>
             Expert Mode
-          </Typography>
-          {button}
-        </div>}
+              </Typography>
+              {button}
+            </div>
+          </Tooltip>
+        )}
         {createNewPost}
         {expertMenu}
         {landingPageCampaign && <ListItem

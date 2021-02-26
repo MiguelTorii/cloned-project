@@ -174,6 +174,7 @@ const Layout = ({
     expertMode,
     isExpert,
     syncData: {
+      viewedOnboarding,
       helpLink
     }
   } = user;
@@ -210,6 +211,7 @@ const Layout = ({
     <>
       <ErrorBoundary>
         <MainLayout
+          viewedOnboarding={viewedOnboarding}
           bannerHeight={bannerHeight}
           setBannerHeight={setBannerHeight}
           expertMode={expertMode}

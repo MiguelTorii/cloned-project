@@ -22,6 +22,7 @@ const styles = theme => ({
     width: 255,
   },
   text: {
+    fontSize: 18,
     lineHeight: 1.4,
   },
   arrow: {
@@ -76,6 +77,16 @@ const NOTES_CLASS_FOLDER = 9002
 const NOTES_FULLSCREEN = 1204
 const QUICKNOTES_SAVED = 3499
 
+const EXPERT_BUTTON = 9044
+const EXPERT_FEED = 9045
+const EXPERT_CLASS_SELECT = 9046
+const EXPERT_FEED_FILTERS = 9047
+const EXPERT_BATCH_CHAT_BUTTON = 9048
+const EXPERT_BATCH_CHAT_SELECT_CLASSES = 9049
+const EXPERT_POST_SELECT_CLASSES = 9050
+const EXPERT_MULTIPLE_CLASS_SELECT = 9051
+
+
 // not an actual tooltip
 // eslint-disable-next-line
 const GET_APP_POPUP = 4432;
@@ -117,6 +128,27 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
+      case EXPERT_MULTIPLE_CLASS_SELECT:
+        result = viewedTooltips.includes(EXPERT_POST_SELECT_CLASSES)
+        break
+      case EXPERT_POST_SELECT_CLASSES:
+        result = viewedTooltips.includes(EXPERT_BUTTON)
+        break
+      case EXPERT_BATCH_CHAT_BUTTON:
+        result = true
+        break
+      case EXPERT_FEED_FILTERS:
+        result = viewedTooltips.includes(EXPERT_CLASS_SELECT)
+        break
+      case EXPERT_CLASS_SELECT:
+        result = viewedTooltips.includes(EXPERT_FEED)
+        break
+      case EXPERT_FEED:
+        result = viewedTooltips.includes(EXPERT_BUTTON)
+        break
+      case EXPERT_BUTTON:
+        result = viewedTooltips.includes(NEW_POST)
+        break
       case NOTES_QUICKNOTE:
         result = viewedTooltips.includes(CHAT);
         break
@@ -183,7 +215,7 @@ const Tooltip = ({
 
   const overDialog = useMemo(() => {
     return cx(
-      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM || id === QUICKNOTES_SAVED)
+      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM || id === QUICKNOTES_SAVED || id === EXPERT_BATCH_CHAT_SELECT_CLASSES)
       && classes.overDialog)
   }, [classes.overDialog, id])
 

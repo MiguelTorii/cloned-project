@@ -7,8 +7,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { cypher } from 'utils/crypto'
 import cx from 'clsx'
 import queryString from 'query-string'
+import Tooltip from 'containers/Tooltip'
 
 const useStyles = makeStyles(theme => ({
+  classTextField: {
+    width: '80%'
+  },
   links: {
     padding: theme.spacing(0, 1)
   },
@@ -154,16 +158,23 @@ const HeaderNavigation = ({
 
   return (
     <Box>
-      <ClassMultiSelect
-        noEmpty
-        variant='standard'
-        allLabel={`${firstName}'s Classes`}
-        containerStyle={classes.classSelector}
-        externalOptions={options}
-        placeholder='Select Classes...'
-        selected={selectedClasses}
-        onSelect={onSelect}
-      />
+      <Tooltip
+        id={9046}
+        placement="left"
+        text="Sort the Class Feed by selecting classes in this dropdown menu. :)"
+      >
+        <ClassMultiSelect
+          noEmpty
+          variant='standard'
+          allLabel={`${firstName}'s Classes`}
+          containerStyle={classes.classSelector}
+          textFieldStyle={classes.classTextField}
+          externalOptions={options}
+          placeholder='Select Classes...'
+          selected={selectedClasses}
+          onSelect={onSelect}
+        />
+      </Tooltip>
       <Box className={classes.links}>
         <Button
           onClick={navigate('/feed', {})}

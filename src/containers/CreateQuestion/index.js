@@ -13,6 +13,7 @@ import { cypher, decypherClass } from 'utils/crypto'
 import AnonymousButton from 'components/AnonymousButton';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
+import Tooltip from 'containers/Tooltip'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreatePostForm from '../../components/CreatePostForm';
@@ -357,10 +358,16 @@ const CreateQuestion = ({
             </Grid>
             <Grid item xs={12} sm={10}>
               {canBatchPost && !isEdit ? (
-                <ClassMultiSelect
-                  selected={classList}
-                  onSelect={handleClasses}
-                />
+                <Tooltip
+                  id={9050}
+                  placement="right"
+                  text="In Expert Mode, you can post the same thing in more than one class! 🙌"
+                >
+                  <ClassMultiSelect
+                    selected={classList}
+                    onSelect={handleClasses}
+                  />
+                </Tooltip>
               ) : (
                 <ClassesSelector
                   classId={classId}

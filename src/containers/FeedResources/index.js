@@ -12,7 +12,6 @@ import withWidth from '@material-ui/core/withWidth';
 import Linkify from 'react-linkify'
 import OnboardingList from 'components/OnboardingList';
 import { ReferralCTA } from '../Referrals'
-import { sync } from '../../actions/user';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 
@@ -62,11 +61,10 @@ type Props = {
   width: string,
   gridRef: Object,
   user: UserState,
-  userSync: Function,
   onboardingListVisible: boolean
 };
 
-const FeedResources = ({ gridRef, width, classes, user, userSync, onboardingListVisible }: Props) => {
+const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }: Props) => {
   const {
     data: {
       userId
@@ -79,15 +77,6 @@ const FeedResources = ({ gridRef, width, classes, user, userSync, onboardingList
     }
   } = user;
   const [scrollYPos, setScrollYPos] = useState(0);
-
-  useEffect(() => {
-    const init = async () => {
-      userSync({ userId })
-    }
-
-    if (userId) init()
-    // eslint-disable-next-line
-  }, [userId]);
 
   const handleScroll = () => {
     const { scrollY } = window;
@@ -165,7 +154,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       push: routePush,
-      userSync: sync,
     },
     dispatch
   );
