@@ -135,7 +135,7 @@ const Banner = ({
   const [durationTimer, setDurationTimer] = useState('')
   const [endDate, setEndDate] = useState('')
   const [noGift, setNoGift] = useState(false)
-  const [isExpand, setIsExpand] = useState(false)
+  const [isExpand, setIsExpand] = useState(true)
   const bannerRef = useRef(null)
 
   const getDuration = useCallback(() => {
