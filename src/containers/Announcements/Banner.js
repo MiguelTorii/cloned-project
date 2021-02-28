@@ -122,6 +122,7 @@ type Props = {
 };
 
 const Banner = ({
+  expertMode,
   announcement,
   classes,
   getAnnouncement,
@@ -173,6 +174,7 @@ const Banner = ({
 
   useEffect(() => {
     if (
+      !expertMode &&
       announcement &&
       bannerRef.current &&
       bannerRef.current.clientHeight !== bannerHeight
@@ -181,7 +183,7 @@ const Banner = ({
         bannerHeight: bannerRef.current.clientHeight
       })
     }
-  }, [announcement, bannerHeight, isExpand, setBannerHeight])
+  }, [announcement, bannerHeight, expertMode, isExpand, setBannerHeight])
 
   useEffect(() => {
     getAnnouncement({ announcementId: 1, campaignId: 7 })
@@ -347,13 +349,14 @@ const Banner = ({
       </div>
     )
   }
-  return !noGift
+  return !expertMode && !noGift
     ? <AirpodsGift />
     : <HourlyGift />
 }
 
-const mapStateToProps = ({ user: { announcementData } }): {} => ({
-  announcement: announcementData
+const mapStateToProps = ({ user: { announcementData, expertMode } }): {} => ({
+  announcement: announcementData,
+  expertMode
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
