@@ -21,12 +21,6 @@ import EditorToolbar, { modules, formats } from "./Toolbar"
 
 import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
 
-window.katex = {}
-window.katex.render = (value, node, { color, dpi }) => {
-  // eslint-disable-next-line
-  node.innerHTML = `<img src='https://private.codecogs.com/png.download?\\dpi{${dpi || 100}}\\color{${color || 'White'}}${value}' />`
-}
-
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
