@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import Linkify from 'react-linkify'
-import OnboardingList from 'components/OnboardingList';
 import { ReferralCTA } from '../Referrals'
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -66,9 +65,6 @@ type Props = {
 
 const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }: Props) => {
   const {
-    data: {
-      userId
-    },
     syncData: {
       display,
       smallLogo,
@@ -119,7 +115,6 @@ const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }:
   return (
     <div className={classes.container} style={{ top, width: widthParent }}>
       <div className={classes.content}></div>
-      <OnboardingList isNarrowBox />
       {
         display &&
         <Paper className={classes.paper}>
