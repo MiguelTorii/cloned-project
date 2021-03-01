@@ -33,7 +33,7 @@ const modules = {
       { indent: '-1' },
       { indent: '+1' }
     ],
-    // ['formula'],
+    ['formula'],
     ['image'],
     ['clean']
   ]

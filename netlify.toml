@@ -5,7 +5,7 @@
 
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
-[context.production]
+[context.development]
   command = "yarn build:sourcemaps"
 
 [context.prod]

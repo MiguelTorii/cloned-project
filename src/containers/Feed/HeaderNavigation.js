@@ -11,7 +11,10 @@ import Tooltip from 'containers/Tooltip'
 
 const useStyles = makeStyles(theme => ({
   classTextField: {
-    width: '80%'
+    minWidth: 400,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: 330
+    }
   },
   links: {
     padding: theme.spacing(0, 1)

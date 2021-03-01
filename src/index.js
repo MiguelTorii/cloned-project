@@ -14,6 +14,7 @@ import { hotjar } from 'react-hotjar';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home'
 import Classes from 'pages/Classes';
+import defaultKatexRender from 'utils/quill'
 import './wdyr'
 import configureStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
@@ -67,6 +68,8 @@ import withTracker from './withTracker';
 import Chat from './pages/Chat'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
+
+defaultKatexRender('White')
 
 const store = configureStore();
 

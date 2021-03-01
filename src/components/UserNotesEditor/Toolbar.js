@@ -431,18 +431,18 @@ export const QuillToolbar = ({ hidden }) => {
         </Tooltip>
       </span>
       <span className="ql-formats">
-        {/* <Tooltip */}
-        {/* title="Formula" */}
-        {/* aria-label="formula" */}
-        {/* arrow */}
-        {/* placement='top' */}
-        {/* classes={{ */}
-        {/* tooltip: classes.tooltip, */}
-        {/* popper: classes.popper */}
-        {/* }} */}
-        {/* > */}
-        {/* <button type='button' className="ql-formula" /> */}
-        {/* </Tooltip> */}
+        <Tooltip
+          title="Formula"
+          aria-label="formula"
+          arrow
+          placement='top'
+          classes={{
+            tooltip: classes.tooltip,
+            popper: classes.popper
+          }}
+        >
+          <button type='button' className="ql-formula" />
+        </Tooltip>
         <Tooltip
           title="Code Block"
           aria-label="code-block"
