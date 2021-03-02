@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { memo, useState, useCallback } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import HideUntilLoaded from './HideUntilLoaded'
 
@@ -24,4 +24,4 @@ const LoadImg = ({ url, loadingSize, style, fallback, className, alt }) => {
   )
 }
 
-export default LoadImg
+export default memo(LoadImg)

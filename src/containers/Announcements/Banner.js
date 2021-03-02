@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useMemo, memo, useRef, useEffect, useState, useCallback } from 'react'
 import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -7,8 +7,6 @@ import moment from 'moment'
 import momentTz from 'moment-timezone'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
-
-import { getVariation } from 'api/variation'
 
 import Dialog, { dialogStyle } from 'components/Dialog'
 import LoadImg from 'components/LoadImg'
@@ -138,15 +136,24 @@ const Banner = ({
   const [noGift, setNoGift] = useState(false)
   const [isExpand, setIsExpand] = useState(true)
   const bannerRef = useRef(null)
+  const [hourlyReward, setHourlyReward] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [popupTitle, setPopupTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
+  const [text, setText] = useState('')
+  const [isActive, setIsActive] = useState(false)
 
   const getDuration = useCallback(() => {
     const currentDateTime = momentTz().tz("America/New_York")
     const endDateTime = momentTz(endDate).tz("America/New_York")
 
     const duration = moment.duration(endDateTime.diff(currentDateTime))
+
     const days = duration.days()
     const hours = duration.hours()
     const minutes = duration.minutes()
+    if (!duration._isValid) return
 
     if (days <= 0 && hours <= 0 && minutes <= 0) {
       setNoGift(true)
@@ -158,19 +165,6 @@ const Banner = ({
       `
     setDurationTimer(durationTimer)
   }, [endDate])
-
-  useEffect(() => {
-    async function getEndDae() {
-      const result = await getVariation()
-
-      if (result)  {
-        setEndDate(result.endDate)
-      } else {
-        setNoGift(true)
-      }
-    }
-    getEndDae()
-  }, [])
 
   useEffect(() => {
     if (
@@ -186,25 +180,26 @@ const Banner = ({
   }, [announcement, bannerHeight, expertMode, isExpand, setBannerHeight])
 
   useEffect(() => {
-    getAnnouncement({ announcementId: 1, campaignId: 7 })
+    if(!announcement) getAnnouncement({ announcementId: 1, campaignId: 7 })
 
     const intervalId = setInterval(() => {
       const currentMinute = new Date().getMinutes();
       setMinutesRemaining(60 - currentMinute)
+      setIsActive((new Date().getHours() >= 8) && (new Date().getHours() < 20))
       if (currentMinute === 1) {
         getAnnouncement({ announcementId: 1, campaignId: 7 })
       }
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [getAnnouncement]);
+  }, [announcement, getAnnouncement]);
 
   useEffect(() => {
     getDuration()
 
     const timer = setInterval(() => {
       getDuration()
-    }, 1000);
+    }, 30000);
 
     return () => clearInterval(timer)
   }, [getDuration])
@@ -227,24 +222,21 @@ const Banner = ({
   }, [announcement, bannerHeight, setBannerHeight])
 
   useEffect(() => {
-    if (announcement) onLoaded();
-  }, [announcement, onLoaded])
+    if (announcement) {
+      onLoaded();
+      setHourlyReward(announcement.hourlyReward)
+      setImageUrl(announcement.imageUrl)
+      setTitle(announcement.title)
+      setPopupTitle(announcement.popupTitle)
+      setSubtitle(announcement.subtitle)
+      setEndDate(announcement.endDate)
+      setText(announcement.subtitle && announcement.subtitle.replace("{{time_left}}", minutesRemaining))
+    }
+  }, [announcement, minutesRemaining, onLoaded, subtitle])
 
-  if (!announcement || pathname === '/chat') return null;
 
-  const isActive = (new Date().getHours() >= 8) && (new Date().getHours() < 20);
 
-  const {
-    hourlyReward,
-    imageUrl,
-    popupTitle,
-    subtitle,
-    title,
-  } = announcement;
-
-  const text = subtitle && subtitle.replace("{{time_left}}", minutesRemaining);
-
-  const AirpodsGift = () => {
+  const AirpodsGift = useMemo(() => {
     return (
       <div ref={bannerRef} className={classes.body}>
         <div className={classes.image}>
@@ -258,7 +250,10 @@ const Banner = ({
                 Apple AirPods Giveaway 🎉
                 </span>
                 <span role="img" aria-label="timer" className={classes.timer}>
-                  {durationTimer} left! 🔥
+                  {durationTimer
+                    ? `${durationTimer} left! 🔥`
+                    : '...'
+                  }
                 </span>
               </div>
             </>
@@ -268,7 +263,7 @@ const Banner = ({
               </div>
               <div className={classes.text}>
                 <span role="img" aria-label="timer">
-                🎉 {durationTimer} left in the giveaway. Time to hustle! 🔥
+                  {durationTimer ? `🎉 ${durationTimer} left in the giveaway. Time to hustle! 🔥` : '...'}
                 </span>
               </div>
             </>}
@@ -309,9 +304,9 @@ const Banner = ({
         </Dialog>
       </div>
     )
-  }
+  }, [classes.body, classes.button, classes.buttonLabel, classes.buttons, classes.content, classes.dialog, classes.dialogContent, classes.dialogTitle, classes.image, classes.text, classes.timer, classes.title, dialogOpen, durationTimer, isExpand])
 
-  const HourlyGift = () => {
+  const HourlyGift = useMemo(() => {
     return (
       <div ref={bannerRef} className={classes.hourlyBody}>
         <div className={classes.image}>
@@ -348,10 +343,12 @@ const Banner = ({
         </Dialog>
       </div>
     )
-  }
+  }, [classes.button, classes.content, classes.dialog, classes.dialogContent, classes.hourlyBody, classes.hourlyButtonLabel, classes.image, classes.text, classes.title, dialogOpen, hourlyReward, imageUrl, isActive, popupTitle, text, title])
+
+  if (!announcement || pathname === '/chat') return null;
   return !expertMode && !noGift
-    ? <AirpodsGift />
-    : <HourlyGift />
+    ? AirpodsGift
+    : HourlyGift
 }
 
 const mapStateToProps = ({ user: { announcementData, expertMode } }): {} => ({
@@ -367,7 +364,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
+// Banner.whyDidYouRender= true
+export default memo(connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(withStyles(styles)(Banner)));
+)(withRouter(withStyles(styles)(Banner))))

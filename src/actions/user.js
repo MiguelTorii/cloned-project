@@ -10,6 +10,8 @@ import {
 import store from 'store'
 import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
+import { push } from 'connected-react-router';
+import { getVariation } from 'api/variation'
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models'
@@ -104,6 +106,11 @@ export const toggleExpertMode = () => (
   const {
     user: {
       expertMode
+    },
+    router: {
+      location: {
+        pathname
+      }
     }
   } = getState()
 
@@ -112,7 +119,6 @@ export const toggleExpertMode = () => (
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
   setTimeout(() => dispatch(clearDialogMessageAction()), 2000)
-
 }
 
 const updateTourAction = ({
@@ -210,9 +216,13 @@ export const getAnnouncement = (
 ) => {
   const announcement = await fetchAnnouncement(announcementId);
   const campaign = await getCampaign({ campaignId });
+  const variation = await getVariation()
 
   // eslint-disable-next-line
     if (announcement && !campaign?.is_disabled && campaign?.variation_key !== 'hidden') {
-    dispatch(getAnnouncementSuccessAction(announcement));
+    dispatch(getAnnouncementSuccessAction({
+      announcement,
+      endDate: variation?.endDate
+    }));
   }
 };
