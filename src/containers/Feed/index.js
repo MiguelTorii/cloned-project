@@ -229,12 +229,11 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   updateFeed = async (filters) => {
-    const { updateFilter, fetchFeed } = this.props
+    const { updateFilter } = this.props
     await updateFilter({
       field: 'userClasses',
       value: filters
     });
-    await fetchFeed()
   }
 
   handleUserClick = ({ userId }: { userId: string }) => {

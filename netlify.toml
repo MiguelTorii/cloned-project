@@ -1,7 +1,7 @@
 [build]
   base    = ""
   publish = "build"
-  command = "REACT_APP_STAGE=dev npm run build"
+  command = "yarn build:sourcemaps"
 
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
@@ -22,7 +22,7 @@
 # Branch Deploy context: All deploys that are not in
 # an active Deploy Preview will inherit these settings.
 [context.branch-deploy]
-  command = "REACT_APP_STAGE=dev npm run build"
+  command = "yarn build:sourcemaps"
 
 [[redirects]]
     from    = "/*"

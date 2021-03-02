@@ -93,8 +93,6 @@ export const fetchClasses = (skipCache) => async (
         }
       }
       ))
-    } else {
-      dispatch(clearDialogMessageAction())
     }
   } catch (e) {/* NONE */}
 }
@@ -113,6 +111,8 @@ export const toggleExpertMode = () => (
 
   dispatch(toggleExpertModeAction())
   dispatch(fetchClasses(true))
+  setTimeout(() => dispatch(clearDialogMessageAction()), 2000)
+
 }
 
 const updateTourAction = ({
