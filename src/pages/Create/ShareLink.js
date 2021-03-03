@@ -17,17 +17,17 @@ type Props = {
 };
 
 const CreateShareLinkPage = (props: Props) => {
-  const {match: {params: { sharelinkId }}} = props
+  const { match: { params: { sharelinkId } } } = props
 
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={12} md={9}>
             <CreateShareLink sharelinkId={sharelinkId} />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={12} md={3}>
             <PostTips type="shareLink" />
           </Grid>
         </Grid>

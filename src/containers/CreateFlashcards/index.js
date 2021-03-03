@@ -528,10 +528,10 @@ const CreateFlashcards = ({
           handleSubmit={handleSubmit}
         >
           <Grid container alignItems="center">
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Title</Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <OutlinedTextValidator
                 label="Title"
                 onChange={handleTextChange}
@@ -541,10 +541,10 @@ const CreateFlashcards = ({
                 errorMessages={['Title is required']}
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <OutlinedTextValidator
                 label="Description"
                 onChange={handleTextChange}
@@ -567,10 +567,10 @@ const CreateFlashcards = ({
             {/* /> */}
             {/* </Grid> */}
 
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
 
               {canBatchPost && !isEdit ? (
                 <Tooltip
@@ -592,10 +592,10 @@ const CreateFlashcards = ({
               )}
             </Grid>
 
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Flashcards</Typography>
             </Grid>
-            <Grid item xs={12} sm={12} className={classes.flashcards}>
+            <Grid item xs={12} sm={12} md={10} className={classes.flashcards}>
               {flashcards.map((flashcard, index) => (
                 <FlashcardEditor
                   key={flashcard.id}

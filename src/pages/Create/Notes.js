@@ -24,10 +24,10 @@ const CreateNotesPage = (props: Props) => {
       <CssBaseline />
       <Layout>
         <Grid container>
-          <Grid item xs={12} sm={9}>
+          <Grid item sm={12} md={9}>
             <CreateNotes noteId={noteId} />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item sm={12} md={3}>
             <PostTips type="notes" />
           </Grid>
         </Grid>
