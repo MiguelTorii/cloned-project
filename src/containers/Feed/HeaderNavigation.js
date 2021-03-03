@@ -20,7 +20,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1)
   },
   classSelector: {
-    padding: theme.spacing(1, 2)
+    maxWidth: 400,
+    padding: theme.spacing(1, 2),
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 330
+    }
   },
   currentPath: {
     color: theme.circleIn.palette.action,

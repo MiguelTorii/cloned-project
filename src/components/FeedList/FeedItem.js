@@ -523,7 +523,7 @@ class FeedItem extends React.PureComponent<Props, State> {
               <CardActionArea disabled>
                 <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
                   {(!newClassExperience || expertMode) && <Typography component="p" noWrap>
-                    {data.courseDisplayName}
+                    {data.classroomName}
                   </Typography>}
                   {(!newClassExperience || expertMode) && <Typography
                     component="p"
