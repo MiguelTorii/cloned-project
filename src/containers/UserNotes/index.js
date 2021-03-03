@@ -83,7 +83,8 @@ const UserNotesContainer = ({
   classId,
   setSectionId,
   setCurrentNote,
-  currentNote
+  currentNote,
+  exitNoteTaker
 }) => {
   const classes = useStyles()
   const hasNotes = useMemo(() => notes.length !== 0, [notes])
@@ -221,6 +222,7 @@ const UserNotesContainer = ({
           updateNote={updateNote}
           currentNote={currentNote}
           openConfirmDelete={openConfirmDelete}
+          exitNoteTaker={exitNoteTaker}
         />}
         {isFolder && <NotesList
           notes={notes}
@@ -236,7 +238,7 @@ const UserNotesContainer = ({
         {(loading || initialLoading) && <div className={classes.loading}>
           <CircularProgress />
         </div>}
-      </Paper >
+      </Paper>
     </div>
   )
 }
@@ -262,7 +264,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       deleteNote: notesActions.deleteNoteAction,
       confirmTooltip: confirmTooltipAction,
       setCurrentNote: notesActions.setCurrentNote,
-      setSectionId: notesActions.setSectionId
+      setSectionId: notesActions.setSectionId,
+      exitNoteTaker: notesActions.exitNoteTaker
     },
     dispatch
   );
