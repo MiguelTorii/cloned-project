@@ -378,13 +378,13 @@ const CreateQuestion = ({
             </Grid>
 
             {!questionId && !canBatchPost && (
-              <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={12} md={2}>
                 <Typography variant="subtitle1">Ask Anonymously</Typography>
               </Grid>
             )}
 
             {!questionId && !canBatchPost && (
-              <Grid item xs={12} sm={10}>
+              <Grid item xs={12} sm={12} md={10}>
                 <AnonymousButton
                   active={anonymousActive}
                   toggleActive={toggleAnonymousActive}
