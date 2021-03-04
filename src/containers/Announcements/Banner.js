@@ -166,6 +166,15 @@ const Banner = ({
     setDurationTimer(durationTimer)
   }, [endDate])
 
+  const initialTimer = useCallback(() => {
+    const currentMinute = new Date().getMinutes();
+    setMinutesRemaining(60 - currentMinute)
+    setIsActive((new Date().getHours() >= 8) && (new Date().getHours() < 20))
+    if (currentMinute === 1) {
+      getAnnouncement({ announcementId: 1, campaignId: 7 })
+    }
+  }, [getAnnouncement])
+
   useEffect(() => {
     if (
       !expertMode &&
@@ -181,18 +190,13 @@ const Banner = ({
 
   useEffect(() => {
     if(!announcement) getAnnouncement({ announcementId: 1, campaignId: 7 })
-
+    initialTimer()
     const intervalId = setInterval(() => {
-      const currentMinute = new Date().getMinutes();
-      setMinutesRemaining(60 - currentMinute)
-      setIsActive((new Date().getHours() >= 8) && (new Date().getHours() < 20))
-      if (currentMinute === 1) {
-        getAnnouncement({ announcementId: 1, campaignId: 7 })
-      }
+      initialTimer()
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [announcement, getAnnouncement]);
+  }, [announcement, getAnnouncement, initialTimer]);
 
   useEffect(() => {
     getDuration()
@@ -224,17 +228,15 @@ const Banner = ({
   useEffect(() => {
     if (announcement) {
       onLoaded();
-      setHourlyReward(announcement.hourlyReward)
-      setImageUrl(announcement.imageUrl)
-      setTitle(announcement.title)
-      setPopupTitle(announcement.popupTitle)
-      setSubtitle(announcement.subtitle)
+      setHourlyReward(announcement.announcement.hourlyReward)
+      setImageUrl(announcement.announcement.imageUrl)
+      setTitle(announcement.announcement.title)
+      setPopupTitle(announcement.announcement.popupTitle)
+      setSubtitle(announcement.announcement.subtitle)
       setEndDate(announcement.endDate)
-      setText(announcement.subtitle && announcement.subtitle.replace("{{time_left}}", minutesRemaining))
+      setText(announcement.announcement.subtitle && announcement.announcement.subtitle.replace("{{time_left}}", minutesRemaining))
     }
   }, [announcement, minutesRemaining, onLoaded, subtitle])
-
-
 
   const AirpodsGift = useMemo(() => {
     return (
