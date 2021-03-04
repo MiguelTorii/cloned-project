@@ -10,7 +10,6 @@ import {
 import store from 'store'
 import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
-import { push } from 'connected-react-router';
 import { getVariation } from 'api/variation'
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
@@ -107,11 +106,6 @@ export const toggleExpertMode = () => (
     user: {
       expertMode
     },
-    router: {
-      location: {
-        pathname
-      }
-    }
   } = getState()
 
   localStorage.setItem('EXPERT_MODE', !expertMode)

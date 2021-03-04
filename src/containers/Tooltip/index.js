@@ -90,6 +90,10 @@ const EXPERT_MULTIPLE_CLASS_SELECT = 9051
 // not an actual tooltip
 // eslint-disable-next-line
 const GET_APP_POPUP = 4432;
+// eslint-disable-next-line
+const ONBOARDING_EXPERT = 9052
+// eslint-disable-next-line
+const ONBOARDING_NOTES = 8453
 
 const TRANSITION_TIME = 750;
 
