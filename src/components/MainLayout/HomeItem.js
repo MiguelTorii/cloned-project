@@ -145,7 +145,7 @@ const HomeItem = ({
             className={classNames(
               classes.classes,
               classes.item,
-              sectionId === String(cl.sectionId) && classId === String(cl.classId) ? classes.otherPath : null
+              sectionId === String(cl.sectionId) && classId === String(cl.classId) ? classes.currentPath : classes.otherPath
             )}
           >
             {renderCircle(cl.color)}
