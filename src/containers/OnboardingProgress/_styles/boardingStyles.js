@@ -132,13 +132,8 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   femGirl: {
-    padding: theme.spacing(7, 7, 0, 7),
-    [theme.breakpoints.down('md')]: {
-      padding: 0
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      maxWidth: 'calc(100% - 60px)',
-    }
+    padding: theme.spacing(3, 3, 0, 5),
+    width: '100%'
   },
   dialog: {
     ...dialogStyle,
