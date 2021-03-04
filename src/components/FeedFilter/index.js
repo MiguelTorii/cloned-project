@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from 'containers/Tooltip'
+import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 
@@ -296,7 +297,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       userClasses,
       onClearSearch,
     } = this.props;
-    const { open, postTypes } = this.state;
+    const { openClassFilter, selectedUserClasses, open, postTypes } = this.state;
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
     const isPostTypesSelected = postTypes.length > 0;
@@ -364,6 +365,17 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 Filters
               </Button>
             </Tooltip>
+            {expertMode && <Button
+              aria-haspopup="true"
+              aria-label="Filter"
+              aria-owns={open ? 'filter-popper' : undefined}
+              className={classes.filterButton}
+              color="primary"
+              onClick={this.handleClickClasses}
+              variant={userClasses.length > 0 ? "contained" : "outlined"}
+            >
+                Classes
+            </Button>}
           </div>
         </Paper>
         <Dialog
@@ -468,6 +480,27 @@ class FeedFilter extends React.PureComponent<Props, State> {
             </Button>
             <span className={classes.grow} />
           </div>
+        </Dialog>
+        <Dialog
+          open={openClassFilter}
+          fullWidth
+          maxWidth='sm'
+          title='Filter feed by class'
+          onCancel={this.handleClose}
+          secondaryVariant='text'
+          onSecondaryOk={this.handleClearFilters}
+          onOk={this.handleApplyFilters}
+          secondaryOkTitle='Reset'
+          showActions
+          okTitle='Search'
+        >
+          <ClassMultiSelect
+            noEmpty
+            variant='standard'
+            placeholder='Select Classes...'
+            selected={selectedUserClasses}
+            onSelect={this.handleChangeClasses}
+          />
         </Dialog>
       </Fragment>
     );

@@ -99,7 +99,7 @@ const defaultState = {
   runningTour: false,
   isLoading: false,
   error: false,
-  announcementData: null,
+  announcementData: undefined,
   dialogMessage: {
     title: '',
     body: ''

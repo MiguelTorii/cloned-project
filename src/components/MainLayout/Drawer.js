@@ -1,8 +1,10 @@
 // @flow
-import React, { memo, useCallback, useMemo, Fragment } from 'react'
+import React, { useState, memo, useCallback, useMemo, Fragment } from 'react'
 import classNames from 'classnames';
 import queryString from 'query-string'
 
+import { decypherClass } from 'utils/crypto'
+import ClassmatesDialog from 'components/ClassmatesDialog'
 import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
@@ -186,9 +188,32 @@ const Drawer = ({
   expertMode,
   isExpert,
   toggleExpertMode,
-  viewedOnboarding
+  updateFeed,
+  userId,
+  userClasses
 }) => {
   const classes = useStyles()
+  const [openClassmates, setOpenClassmates] = useState(null)
+
+  const openClassmatesDialog = useCallback(name => () => {
+    setOpenClassmates(name)
+  }, [])
+
+  const closeClassmatesDialog = useCallback(() => {
+    setOpenClassmates(null)
+  }, [])
+
+  const courseDisplayName = useMemo(() => {
+    const query = queryString.parse(search)
+
+    if (query.classId && userClasses?.classList) {
+      const { classId } = decypherClass(query.class)
+      const c = userClasses.classList.find(cl => cl.classId === Number(classId))
+      if (c) return c.courseDisplayName
+    }
+    return ''
+  }, [search, userClasses.classList])
+
 
   const handleOpenBlog = useCallback(() => {
     window.open('https://blog.circleinapp.com/', '_blank')
@@ -217,18 +242,66 @@ const Drawer = ({
         component={MyLink}
         link="/feed"
         className={classNames(
-          ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
+          // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
+          ['/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
         )}
       >
         <ListItemIcon>
           <GradCapIcon className={classNames("whiteSvg")} />
         </ListItemIcon>
         <ListItemText
-          primary="Class Feeds"
+          primary="Class Feed"
+        />
+      </ListItem>
+      <ListItem
+        button
+        component={MyLink}
+        link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
+        className={classNames(
+          classes.item,
+          ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="My Posts"
+          classes={{
+            primary: classes.label
+          }}
+        />
+      </ListItem>
+      <ListItem
+        button
+        component={MyLink}
+        link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
+        className={classNames(
+          classes.item,
+          ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="Bookmarks"
+          classes={{
+            primary: classes.label
+          }}
+        />
+      </ListItem>
+      <ListItem
+        button
+        onClick={openClassmatesDialog('student')}
+        className={classNames(
+          classes.item,
+          classes.otherPath
+        )}
+      >
+        <ListItemText
+          primary="Students"
+          classes={{
+            primary: classes.label
+          }}
         />
       </ListItem>
     </div>
-  ), [MyLink, classes.currentPath, classes.otherPath, expertMode, pathname])
+  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, openClassmatesDialog, pathname, qs])
 
   const createNewPost = useMemo(() => (
     <Tooltip
@@ -259,6 +332,13 @@ const Drawer = ({
 
   return (
     <Fragment>
+      <ClassmatesDialog
+        userId={userId}
+        userClasses={userClasses}
+        close={closeClassmatesDialog}
+        state={openClassmates}
+        courseDisplayName={courseDisplayName}
+      />
       <List className={classes.drawerList} style={{ marginTop: appBarHeight }}>
         {isExpert && (
           <Tooltip
@@ -329,6 +409,11 @@ const Drawer = ({
         {!expertMode && <HomeItem
           MyLink={MyLink}
           newClassExperience={newClassExperience}
+          createPostOpen={createPostOpen}
+          userClasses={userClasses}
+          updateFeed={updateFeed}
+          landingPageCampaign={landingPageCampaign}
+          openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
         {!landingPageCampaign && <ListItem
           button
