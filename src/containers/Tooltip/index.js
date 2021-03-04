@@ -219,7 +219,13 @@ const Tooltip = ({
 
   const overDialog = useMemo(() => {
     return cx(
-      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM || id === QUICKNOTES_SAVED || id === EXPERT_BATCH_CHAT_SELECT_CLASSES)
+      ([
+        FLASHCARD_TOP,
+        FLASHCARD_BOTTOM,
+        QUICKNOTES_SAVED,
+        EXPERT_MULTIPLE_CLASS_SELECT,
+        EXPERT_BATCH_CHAT_SELECT_CLASSES
+      ].includes(id))
       && classes.overDialog)
   }, [classes.overDialog, id])
 

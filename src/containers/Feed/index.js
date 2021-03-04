@@ -409,7 +409,7 @@ class Feed extends React.PureComponent<Props, State> {
             <Tooltip
               id={9045}
               hidden={!expertMode}
-              placement="right"
+              placement="right-start"
               text="When you're in Expert Mode, you see posts from all your classes at once."
             >
               <FeedList
