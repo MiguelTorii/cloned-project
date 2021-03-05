@@ -308,7 +308,7 @@ const LeaderBoardTabs = ({
                   </Button>
                 </div>
               </div>
-              <div style={{ marginLeft: 16}}>
+              <div style={{ marginLeft: 16 }}>
                 <div style={{ marginBottom: 2 }}>
                   <Typography variant="h5">{text}</Typography>
                 </div>
@@ -348,7 +348,7 @@ const LeaderBoardTabs = ({
             <span className={classes.count}>{tuesdayPoints}</span>
           </div>
           <div className={classes.footnote}>
-            *You must earn a minimum of 200,000 points per class on CircleIn to qualify for Monthly Rewards
+            *You must earn a minimum of 200,000 points on CircleIn to qualify for Monthly Rewards
           </div>
         </div>
         <div className={classes.rewardContainer}>
