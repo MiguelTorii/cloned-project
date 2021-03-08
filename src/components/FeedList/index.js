@@ -150,10 +150,15 @@ class FeedList extends React.PureComponent<Props, State> {
     const { classes, expertMode } = this.props;
 
     if (expertMode) return (
-      <Box>
+      <Box
+        justifyContent='center'
+        alignItems='center'
+        display='flex'
+        flexDirection='column'
+      >
         <Box className={classes.expertContainerText}>
           <Box
-            justify='center'
+            justifyContent='center'
             alignItems='center'
             display='flex'
             flexDirection='column'
