@@ -12,28 +12,40 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import LaptopIcon from '@material-ui/icons/Laptop';
-import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
-import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-import WbIncandescentOutlinedIcon from '@material-ui/icons/WbIncandescentOutlined'
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import ChatIcon from '@material-ui/icons/Chat';
 import Typography from '@material-ui/core/Typography';
 
 
 import HomeItem from 'components/MainLayout/HomeItem'
 import ClassList from 'components/ClassList'
 import CustomSwitch from 'components/MainLayout/Switch';
-import Tooltip from '../../containers/Tooltip';
+import Tooltip from 'containers/Tooltip';
 
-import Logo from '../../assets/svg/icon_ic_simple_circlein_logo.svg';
-import FlashcardsIcon from '../../assets/svg/flashcards-menu.svg';
-import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
-import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
-import { ReactComponent as HandshakeIcon } from '../../assets/svg/hand_shake.svg';
+import Avatar from '@material-ui/core/Avatar';
+import { ReactComponent as ClassFeedIconOff } from 'assets/svg/class-feed-icon-off.svg';
+import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on.svg';
+import { ReactComponent as ChatIconOn } from 'assets/svg/chat-icon-on.svg';
+import { ReactComponent as ChatIconOff } from 'assets/svg/chat-icon-off.svg';
+import { ReactComponent as FeedbackIconOff } from 'assets/svg/feedback-icon-off.svg';
+import { ReactComponent as FeedbackIconOn } from 'assets/svg/feedback-icon-on.svg';
+import { ReactComponent as FlashcardsIconOff } from 'assets/svg/flashcards-icon-off.svg';
+import FlashcardsIconOn from 'assets/img/flashcards-icon-on.png';
+import { ReactComponent as GetAppIconOff } from 'assets/svg/get-app-icon-off.svg';
+import { ReactComponent as GetAppIconOn } from 'assets/svg/get-app-icon-on.svg';
+import { ReactComponent as HelpIcon } from 'assets/svg/help-icon.svg';
+import { ReactComponent as LeaderboardIconOff } from 'assets/svg/leaderboard-icon-off.svg';
+import { ReactComponent as LeaderboardIconOn } from 'assets/svg/leaderboard-icon-on.svg';
+import { ReactComponent as NotesIconOff } from 'assets/svg/notes-icon-off.svg';
+import { ReactComponent as NotesIconOn } from 'assets/svg/notes-icon-on.svg';
+import { ReactComponent as RewardsIconOff } from 'assets/svg/rewards-icon-off.svg';
+import { ReactComponent as RewardsIconOn } from 'assets/svg/rewards-icon-on.svg';
+import { ReactComponent as StudentBlogIconOff } from 'assets/svg/student-blog-icon-off.svg';
+import { ReactComponent as StudentBlogIconOn } from 'assets/svg/student-blog-icon-on.svg';
+import { ReactComponent as WorkflowIconOff } from 'assets/svg/workflow-icon-off.svg';
+import { ReactComponent as WorkflowIconOn } from 'assets/svg/workflow-icon-on.svg';
+import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
+import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
+import DrawerItem from 'components/MainLayout/DrawerItem'
 
 const useStyles = makeStyles((theme) => ({
   backHeader: {
@@ -166,6 +178,18 @@ const useStyles = makeStyles((theme) => ({
   flashcardsIcon: {
     width: 24,
     height: 24
+  },
+  flashcardIconOn: {
+    objectFit: 'scale-down',
+    maxHeight: 32,
+    maxWidth: 28
+  },
+  divider: {
+    margin: theme.spacing(2, 2, 1, 2),
+    border: '1px solid #C5C5C6'
+  },
+  avatar: {
+    marginRight: theme.spacing()
   }
 }));
 
@@ -182,7 +206,6 @@ const Drawer = ({
   appBarHeight,
   handleCreatePostMenuOpen,
   handleOpenUseCases,
-  handleOpenStudentJobs,
   handleOpenHowEarnPoints,
   landingPageCampaign,
   expertMode,
@@ -190,6 +213,9 @@ const Drawer = ({
   toggleExpertMode,
   updateFeed,
   userId,
+  fullName,
+  userProfileUrl,
+  initials,
   userClasses
 }) => {
   const classes = useStyles()
@@ -237,22 +263,18 @@ const Drawer = ({
 
   const expertMenu = useMemo (() => expertMode && (
     <div>
-      <ListItem
-        button
-        component={MyLink}
-        link="/feed"
-        className={classNames(
+      <DrawerItem
+        listItemClass={classNames(
           // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
           ['/feed'].includes(pathname) ? classes.currentPath : classes.otherPath
         )}
-      >
-        <ListItemIcon>
-          <GradCapIcon className={classNames("whiteSvg")} />
-        </ListItemIcon>
-        <ListItemText
-          primary="Class Feed"
-        />
-      </ListItem>
+        link="/feed"
+        pathname={pathname}
+        OnIcon={<ClassFeedIconOn />}
+        primaryText='Class Feed'
+        component={MyLink}
+        OffIcon={<ClassFeedIconOff />}
+      />
       <ListItem
         button
         component={MyLink}
@@ -357,55 +379,43 @@ const Drawer = ({
         )}
         {createNewPost}
         {expertMenu}
-        {landingPageCampaign && <ListItem
-          button
-          component={MyLink}
-          link="/"
-          className={classNames(
-            ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-        >
-          <ListItemIcon>
-            <CalendarTodayIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Workflow"
+        {landingPageCampaign && (
+          <DrawerItem
+            OnIcon={<WorkflowIconOn />}
+            primaryText='Workflow'
+            pathname={pathname}
+            component={MyLink}
+            link="/"
+            OffIcon={<WorkflowIconOff/>}
+            listItemClass={classNames(
+              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
           />
-        </ListItem>}
-        {newNotesScreen && <ListItem
-          button
-          component={MyLink}
-          className={classNames(
-            ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-          link='/notes'
-        >
-          <ListItemIcon>
-            <BookOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Notes"
+        )}
+        {newNotesScreen && (
+          <DrawerItem
+            OnIcon={<NotesIconOn />}
+            primaryText='Notes'
+            pathname={pathname}
+            component={MyLink}
+            link="/notes"
+            OffIcon={<NotesIconOff />}
+            listItemClass={classNames(
+              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
           />
-        </ListItem>}
-        <ListItem
-          button
+        )}
+        <DrawerItem
+          OnIcon={<img src={FlashcardsIconOn} alt='flashcards on' className={classes.flashcardIconOn} />}
+          primaryText='Flashcards'
+          pathname={pathname}
           component={MyLink}
-          className={classNames(
+          link={`/create/flashcards${search}`}
+          OffIcon={<FlashcardsIconOff />}
+          listItemClass={classNames(
             ['/create/flashcards'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
-          link={`/create/flashcards${search}`}
-        >
-          <ListItemIcon>
-            <img
-              src={FlashcardsIcon}
-              alt='flashcards-menu'
-              className={classes.flashcardsIcon}
-            />
-          </ListItemIcon>
-          <ListItemText
-            primary="Flashcards"
-          />
-        </ListItem>
+        />
         {!expertMode && <HomeItem
           MyLink={MyLink}
           newClassExperience={newClassExperience}
@@ -415,67 +425,52 @@ const Drawer = ({
           landingPageCampaign={landingPageCampaign}
           openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
-        {!landingPageCampaign && <ListItem
-          button
-          component={MyLink}
-          link="/workflow"
-          className={classNames(
-            ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-        >
-          <ListItemIcon>
-            <CalendarTodayIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Workflow"
+        {!landingPageCampaign && (
+          <DrawerItem
+            OnIcon={<WorkflowIconOn />}
+            primaryText='Workflow'
+            pathname={pathname}
+            component={MyLink}
+            link="/workflow"
+            OffIcon={<WorkflowIconOff/>}
+            listItemClass={classNames(
+              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
           />
-        </ListItem>}
-        <ListItem
-          button
+        )}
+        <DrawerItem
+          OnIcon={<ChatIconOn />}
+          primaryText='Chats'
+          pathname={pathname}
           component={MyLink}
-          className={classes.otherPath}
-          link='/chat'
-        >
-          <ListItemIcon>
-            <ChatIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Chats"
-          />
-        </ListItem>
-        <ListItem
-          button
+          link="/chat"
+          OffIcon={<ChatIconOff />}
+          listItemClass={classes.otherPath}
+        />
+        <DrawerItem
+          OnIcon={<LeaderboardIconOn />}
+          primaryText='Leaderboard'
+          pathname={!qs.class && pathname}
           component={MyLink}
           link="/leaderboard"
-          className={classNames(
-            'tour-onboarding-leaderboard',
+          OffIcon={<LeaderboardIconOff />}
+          listItemClass={
             !qs.class && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-        >
-          <ListItemIcon>
-            <LeaderboardIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Leaderboard"
-          />
-        </ListItem>
-        <ListItem
-          button
+          }
+        />
+        <DrawerItem
+          OnIcon={<RewardsIconOn />}
+          primaryText='Your Rewards'
+          pathname={pathname}
           component={MyLink}
           link="/store"
-          className={classNames(
+          OffIcon={<RewardsIconOff/>}
+          listItemClass={classNames(
             ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
-        >
-          <ListItemIcon>
-            <StoreIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Your Rewards"
-          />
-        </ListItem>
+        />
         {!newClassExperience && <div className={classes.myClasses}>
-          <ListItemIcon>
+          <ListItemIcon className={classes.menuIcon}>
             <GradCapIcon className={classNames("whiteSvg")} />
           </ListItemIcon>
           <ListItemText primary="Classes" />
@@ -490,77 +485,68 @@ const Drawer = ({
           className={classes.otherBlue}
           onClick={handleOpenUseCases}
         >
-          <ListItemIcon>
-            <img src={Logo} alt="logo" />
+          <ListItemIcon className={classes.menuIcon}>
+            <CircleInLogoIcon />
           </ListItemIcon>
           <ListItemText primary="Studying on CircleIn" />
         </ListItem>
-        {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
+
+        <div className={classes.divider} />
+
         <ListItem
           button
           onClick={handleOpenHowEarnPoints}
           className={classes.otherPath}
         >
-          <ListItemIcon>
-            <HelpOutline />
+          <ListItemIcon className={classes.menuIcon}>
+            <HelpIcon />
           </ListItemIcon>
-          <ListItemText primary="Help" />
+          <ListItemText primary="Student Help Center" />
         </ListItem>
+        <DrawerItem
+          onClick={handleOpenGetApp}
+          listItemClass={classes.otherPath}
+          OnIcon={<GetAppIconOn />}
+          primaryText='Get the Mobile App'
+          OffIcon={<GetAppIconOff />}
+        />
+        {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
+        <Tooltip
+          id={3181}
+          delay={600}
+          hidden
+          placement="top"
+          text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
+        >
+          <DrawerItem
+            onClick={handleOpenBlog}
+            listItemClass={classes.otherPath}
+            OnIcon={<StudentBlogIconOn />}
+            primaryText='Student Blog'
+            OffIcon={<StudentBlogIconOff />}
+          />
+        </Tooltip>
+        <DrawerItem
+          onClick={handleOpenFeedback}
+          listItemClass={classes.lastItem}
+          OnIcon={<FeedbackIconOn />}
+          primaryText='Give Feedback'
+          OffIcon={<FeedbackIconOff/>}
+        />
         <div className={classes.separator}>
-          <ListItem
-            button
-            onClick={handleOpenGetApp}
-            className={classes.otherBlue}
-          >
-            <ListItemIcon>
-              <SystemUpdateIcon className={classes.iconColorBrand}/>
-            </ListItemIcon>
-            <ListItemText primary="Get the Mobile App" />
-          </ListItem>
-
-          <div className={classes.verticalSpacing}>
-            <ListItem
-              button
-              onClick={handleOpenStudentJobs}
-              className={classes.otherPath}
-            >
-              <ListItemIcon>
-                <HandshakeIcon className={classes.pr1}/>
-              </ListItemIcon>
-              <ListItemText primary="Student Jobs" />
-            </ListItem>
-          </div>
-
-          <div className={classes.verticalSpacing}>
-            <Tooltip
-              id={3181}
-              delay={600}
-              hidden
-              placement="top"
-              text="Visit our student blog and learn successful study habits, how to remain calm before finals, and more!"
-            >
-              <ListItem
-                button
-                className={classes.otherPath}
-                onClick={handleOpenBlog}
-              >
-                <ListItemIcon>
-                  <LaptopIcon />
-                </ListItemIcon>
-                <ListItemText primary="Student Blog" />
-              </ListItem>
-            </Tooltip>
-          </div>
         </div>
         <ListItem
           button
-          onClick={handleOpenFeedback}
-          className={classes.lastItem}
+          link={`/profile/${userId}`}
+          component={MyLink}
+          className={classes.otherPath}
         >
-          <ListItemIcon>
-            <WbIncandescentOutlinedIcon className={classes.bulb} />
-          </ListItemIcon>
-          <ListItemText primary="Give Feedback" />
+          <Avatar
+            className={classes.avatar}
+            src={userProfileUrl}>
+            {initials}
+          </Avatar>
+          <ListItemText primary={fullName} />
         </ListItem>
       </List>
     </Fragment>

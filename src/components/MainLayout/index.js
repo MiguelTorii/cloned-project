@@ -162,9 +162,8 @@ const styles = theme => ({
     cursor: 'pointer'
   },
   expertChip: {
-    color: theme.circleIn.palette.darkActionBlue,
     fontWeight: 'bold',
-    backgroundColor: theme.circleIn.palette.textOffwhite,
+    color: theme.circleIn.palette.textOffwhite,
     borderRadius: theme.spacing(2),
     marginLeft: theme.spacing(),
     padding: theme.spacing(0, 1)
@@ -199,7 +198,8 @@ type Props = {
   isExpert: boolean,
   announcementData: ?Object,
   toggleExpertMode: Function,
-  viewedOnboarding: Boolean
+  viewedOnboarding: boolean,
+  fullName: string
 };
 
 const MainLayout = ({
@@ -208,6 +208,7 @@ const MainLayout = ({
   // helpLink,
   width,
   userId,
+  fullName,
   expertMode,
   isExpert,
   bannerHeight,
@@ -422,6 +423,9 @@ const MainLayout = ({
       newNotesScreen={newNotesScreen}
       newClassExperience={newClassExperience}
       userId={userId}
+      initials={initials}
+      fullName={fullName}
+      userProfileUrl={userProfileUrl}
       createPostOpen={createPostOpen}
       handleOpenGetApp={handleOpenGetApp}
       handleOpenFeedback={handleOpenFeedback}
@@ -435,7 +439,7 @@ const MainLayout = ({
       landingPageCampaign={landingPageCampaign}
       userClasses={userClasses}
     />
-  ), [appBarHeight, createPostOpen, expertMode, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId, viewedOnboarding])
+  ), [appBarHeight, createPostOpen, expertMode, fullName, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, initials, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId, userProfileUrl, viewedOnboarding])
 
   return (
     <Fragment>

@@ -1,81 +1,89 @@
 // @flow
 
-import React , { useEffect, useState, memo }from 'react'
+import React , { useCallback, useEffect, useState, memo }from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
-import ViewListIcon from '@material-ui/icons/ViewList';
+import { ReactComponent as ClassFeedIconOff } from 'assets/svg/class-feed-icon-off.svg';
+import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on.svg';
 // $FlowIgnore
 import Typography from '@material-ui/core/Typography';
 import SubMenu from 'components/MainLayout/SubMenu'
 import { cypher, decypherClass } from 'utils/crypto'
-import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
 
 type Props = {
   newClassExperience: boolean,
   MyLink: Function,
-    userClasses: Object,
-updateFeed: Function,
+  userClasses: Object,
+  updateFeed: Function,
   openClassmatesDialog: Function
 };
+
+const useStyles = makeStyles(theme => ({
+  item: {
+    width: 'auto',
+    borderRadius: theme.spacing(6),
+    paddingTop: 0,
+    paddingBottom: 0,
+    margin: theme.spacing(1, 2, 1, 2),
+    '&:hover': {
+      background: theme.circleIn.palette.hoverMenu
+    },
+  },
+  currentPath: {
+    '& span': {
+      fontWeight: 'bold',
+    },
+    background: theme.circleIn.palette.hoverMenu,
+  },
+  otherPath: {
+    '&:hover': {
+      background: theme.circleIn.palette.hoverMenu
+    },
+  },
+  classes: {
+    fontSize: 14,
+    paddingTop: 0,
+    paddingBottom: 0,
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    textAlign: 'center'
+  },
+  typo: {
+    // textOverflow: 'ellipsis',
+    textAlign: 'left',
+    fontSize: 14,
+    fontWeight: 600,
+    whiteSpace: 'pre-wrap',
+    overflow: 'hidden',
+    marginLeft: theme.spacing(2),
+  },
+  menuIcon: {
+    marginRight: theme.spacing(),
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}))
 
 const HomeItem = ({
   MyLink,
   newClassExperience,
-
   landingPageCampaign,
-
   createPostOpen,
   updateFeed,
-
   openClassmatesDialog,
-
   userClasses,
 }: Props) => {
+  const classes = useStyles()
   const [classList, setClassList] = useState([])
+  const [hoverState, setHoverState] = useState(false)
 
-  const classes = makeStyles(theme => ({
-    item: {
-      width: 'auto',
-      borderRadius: theme.spacing(6),
-      paddingTop: 0,
-      paddingBottom: 0,
-      margin: theme.spacing(1, 2, 1, 2),
-      '&:hover': {
-        background: theme.circleIn.palette.hoverMenu
-      },
-    },
-    currentPath: {
-      '& span': {
-        fontWeight: 'bold',
-      },
-      background: theme.circleIn.palette.hoverMenu,
-    },
-    otherPath: {
-      '&:hover': {
-        background: theme.circleIn.palette.hoverMenu
-      },
-    },
-    classes: {
-      fontSize: 14,
-      paddingTop: 0,
-      paddingBottom: 0,
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-      textAlign: 'center'
-    },
-    typo: {
-      // textOverflow: 'ellipsis',
-      textAlign: 'left',
-      fontSize: 14,
-      fontWeight: 600,
-      whiteSpace: 'pre-wrap',
-      overflow: 'hidden',
-      marginLeft: theme.spacing(2),
-    }
-  }))()
+  const onHover = useCallback((hover) => () => {
+    setHoverState(hover)
+  }, [])
+
   const { classId, sectionId } = decypherClass()
 
   useEffect(() => {
@@ -117,6 +125,8 @@ const HomeItem = ({
       <ListItem
         button
         component={MyLink}
+        onMouseOver={onHover(true)}
+        onMouseLeave={onHover(false)}
         // link='/feed'
         link={classesPath}
         className={classNames(
@@ -125,8 +135,11 @@ const HomeItem = ({
           // ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname) ? classes.currentPath : classes.otherPath
         )}
       >
-        <ListItemIcon>
-          {newClassExperience ? <GradCapIcon className={classNames("whiteSvg")} /> : <ViewListIcon />}
+        <ListItemIcon className={classes.menuIcon}>
+          {hoverState || isHome
+            ? <ClassFeedIconOn />
+            : <ClassFeedIconOff />
+          }
         </ListItemIcon>
         <ListItemText
           primary={!newClassExperience ? "Study" : "Classes"}

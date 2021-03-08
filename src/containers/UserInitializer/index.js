@@ -327,12 +327,12 @@ class UserInitializer extends React.PureComponent<Props, State> {
         )}
         {windowWidth > 700 &&
           <OnboardingExpert
-            open={
+            open={Boolean(
               isExpert &&
               viewedOnboarding &&
               viewedTooltips &&
               !viewedTooltips.includes(9052)
-            }
+            )}
             updateOnboarding={() => confirmTooltip(9052)}
             userId={userId}
           />
