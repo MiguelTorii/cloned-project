@@ -43,9 +43,11 @@ import { ReactComponent as StudentBlogIconOff } from 'assets/svg/student-blog-ic
 import { ReactComponent as StudentBlogIconOn } from 'assets/svg/student-blog-icon-on.svg';
 import { ReactComponent as WorkflowIconOff } from 'assets/svg/workflow-icon-off.svg';
 import { ReactComponent as WorkflowIconOn } from 'assets/svg/workflow-icon-on.svg';
+import { ReactComponent as OneTouchSendIcon } from 'assets/svg/oneTouchSendIcon.svg';
 import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
 import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem'
+import BatchMessageDialog from 'containers/BatchMessageDialog'
 
 const useStyles = makeStyles((theme) => ({
   backHeader: {
@@ -220,6 +222,10 @@ const Drawer = ({
 }) => {
   const classes = useStyles()
   const [openClassmates, setOpenClassmates] = useState(null)
+  const [openOneTouchSend, setOpenOneTouchSend] = useState(false)
+
+  const handleOpenOneTouchSend = useCallback(() => setOpenOneTouchSend(true),[])
+  const handleCloseOneTouchSend = useCallback(() => setOpenOneTouchSend(false),[])
 
   const openClassmatesDialog = useCallback(name => () => {
     setOpenClassmates(name)
@@ -245,6 +251,10 @@ const Drawer = ({
     window.open('https://blog.circleinapp.com/', '_blank')
   }, [])
 
+  const handleOpenTutorHelp = useCallback(() => {
+    window.open('https://tutors.circleinapp.com/home', '_blank')
+  }, [])
+
   const qs = useMemo(() => (
     queryString.parse(search)
   ), [search])
@@ -263,6 +273,10 @@ const Drawer = ({
 
   const expertMenu = useMemo (() => expertMode && (
     <div>
+      <BatchMessageDialog
+        open={openOneTouchSend}
+        closeDialog={handleCloseOneTouchSend}
+      />
       <DrawerItem
         listItemClass={classNames(
           // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
@@ -323,7 +337,7 @@ const Drawer = ({
         />
       </ListItem>
     </div>
-  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, openClassmatesDialog, pathname, qs])
+  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, handleCloseOneTouchSend, openClassmatesDialog, openOneTouchSend, pathname, qs])
 
   const createNewPost = useMemo(() => (
     <Tooltip
@@ -448,6 +462,13 @@ const Drawer = ({
           listItemClass={classes.otherPath}
         />
         <DrawerItem
+          OnIcon={<OneTouchSendIcon />}
+          primaryText='One-Touch Send'
+          onClick={handleOpenOneTouchSend}
+          OffIcon={<OneTouchSendIcon />}
+          listItemClass={classes.otherPath}
+        />
+        {!expertMode && <DrawerItem
           OnIcon={<LeaderboardIconOn />}
           primaryText='Leaderboard'
           pathname={!qs.class && pathname}
@@ -457,10 +478,10 @@ const Drawer = ({
           listItemClass={
             !qs.class && ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
           }
-        />
-        <DrawerItem
+        />}
+        {!expertMode && <DrawerItem
           OnIcon={<RewardsIconOn />}
-          primaryText='Your Rewards'
+          primaryText='Rewards Store'
           pathname={pathname}
           component={MyLink}
           link="/store"
@@ -468,7 +489,7 @@ const Drawer = ({
           listItemClass={classNames(
             ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
-        />
+        />}
         {!newClassExperience && <div className={classes.myClasses}>
           <ListItemIcon className={classes.menuIcon}>
             <GradCapIcon className={classNames("whiteSvg")} />
@@ -480,7 +501,7 @@ const Drawer = ({
             onClick={handleManageClasses}
           />
         </ListItemText>}
-        <ListItem
+        {!expertMode && <ListItem
           button
           className={classes.otherBlue}
           onClick={handleOpenUseCases}
@@ -489,11 +510,21 @@ const Drawer = ({
             <CircleInLogoIcon />
           </ListItemIcon>
           <ListItemText primary="Studying on CircleIn" />
-        </ListItem>
+        </ListItem>}
 
         <div className={classes.divider} />
+        {expertMode && <ListItem
+          button
+          onClick={handleOpenTutorHelp}
+          className={classes.otherPath}
+        >
+          <ListItemIcon className={classes.menuIcon}>
+            <HelpIcon />
+          </ListItemIcon>
+          <ListItemText primary="Tutor Help Center" />
+        </ListItem>}
 
-        <ListItem
+        {!expertMode && <ListItem
           button
           onClick={handleOpenHowEarnPoints}
           className={classes.otherPath}
@@ -502,16 +533,16 @@ const Drawer = ({
             <HelpIcon />
           </ListItemIcon>
           <ListItemText primary="Student Help Center" />
-        </ListItem>
-        <DrawerItem
+        </ListItem>}
+        {!expertMode && <DrawerItem
           onClick={handleOpenGetApp}
           listItemClass={classes.otherPath}
           OnIcon={<GetAppIconOn />}
           primaryText='Get the Mobile App'
           OffIcon={<GetAppIconOff />}
-        />
+        />}
         {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
-        <Tooltip
+        {!expertMode && <Tooltip
           id={3181}
           delay={600}
           hidden
@@ -525,7 +556,7 @@ const Drawer = ({
             primaryText='Student Blog'
             OffIcon={<StudentBlogIconOff />}
           />
-        </Tooltip>
+        </Tooltip>}
         <DrawerItem
           onClick={handleOpenFeedback}
           listItemClass={classes.lastItem}
