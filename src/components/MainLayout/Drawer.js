@@ -43,7 +43,8 @@ import { ReactComponent as StudentBlogIconOff } from 'assets/svg/student-blog-ic
 import { ReactComponent as StudentBlogIconOn } from 'assets/svg/student-blog-icon-on.svg';
 import { ReactComponent as WorkflowIconOff } from 'assets/svg/workflow-icon-off.svg';
 import { ReactComponent as WorkflowIconOn } from 'assets/svg/workflow-icon-on.svg';
-import { ReactComponent as OneTouchSendIcon } from 'assets/svg/oneTouchSendIcon.svg';
+import { ReactComponent as OneTouchSendIconOn } from 'assets/svg/one-touch-send-icon-on.svg';
+import { ReactComponent as OneTouchSendIconOff } from 'assets/svg/one-touch-send-icon-off.svg';
 import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
 import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem'
@@ -462,10 +463,10 @@ const Drawer = ({
           listItemClass={classes.otherPath}
         />
         <DrawerItem
-          OnIcon={<OneTouchSendIcon />}
+          OnIcon={<OneTouchSendIconOn />}
           primaryText='One-Touch Send'
           onClick={handleOpenOneTouchSend}
-          OffIcon={<OneTouchSendIcon />}
+          OffIcon={<OneTouchSendIconOff />}
           listItemClass={classes.otherPath}
         />
         {!expertMode && <DrawerItem
