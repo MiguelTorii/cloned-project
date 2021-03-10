@@ -176,6 +176,10 @@ const Banner = ({
   }, [getAnnouncement])
 
   useEffect(() => {
+    if (!bannerRef.current) {
+      setBannerHeight({ bannerHeight: 0 })
+    }
+
     if (
       !expertMode &&
       announcement &&
@@ -348,9 +352,10 @@ const Banner = ({
   }, [classes.button, classes.content, classes.dialog, classes.dialogContent, classes.hourlyBody, classes.hourlyButtonLabel, classes.image, classes.text, classes.title, dialogOpen, hourlyReward, imageUrl, isActive, popupTitle, text, title])
 
   if (!announcement || pathname === '/chat') return null;
-  return !expertMode && !noGift
-    ? AirpodsGift
-    : HourlyGift
+
+  if (expertMode) return null
+
+  return !noGift ? AirpodsGift: HourlyGift
 }
 
 const mapStateToProps = ({ user: { announcementData, expertMode } }): {} => ({
