@@ -166,9 +166,12 @@ const HeaderNavigation = ({
   return (
     <Box>
       <Tooltip
-        id={9046}
-        placement="left"
-        text="Sort the Class Feed by selecting classes in this dropdown menu. :)"
+        id={9055}
+        placement="right"
+        okButton='Got it!'
+        totalSteps={2}
+        completedSteps={1}
+        text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
       >
         <ClassMultiSelect
           noEmpty

@@ -3,8 +3,8 @@ import React, { useState, memo, useCallback, useMemo, Fragment } from 'react'
 import classNames from 'classnames';
 import queryString from 'query-string'
 
-import { decypherClass } from 'utils/crypto'
-import ClassmatesDialog from 'components/ClassmatesDialog'
+// import { decypherClass } from 'utils/crypto'
+// import ClassmatesDialog from 'components/ClassmatesDialog'
 import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
@@ -221,30 +221,30 @@ const Drawer = ({
   userClasses
 }) => {
   const classes = useStyles()
-  const [openClassmates, setOpenClassmates] = useState(null)
+  // const [openClassmates, setOpenClassmates] = useState(null)
   const [openOneTouchSend, setOpenOneTouchSend] = useState(false)
 
   const handleOpenOneTouchSend = useCallback(() => setOpenOneTouchSend(true),[])
   const handleCloseOneTouchSend = useCallback(() => setOpenOneTouchSend(false),[])
 
-  const openClassmatesDialog = useCallback(name => () => {
-    setOpenClassmates(name)
-  }, [])
+  // const openClassmatesDialog = useCallback(name => () => {
+  // setOpenClassmates(name)
+  // }, [])
 
-  const closeClassmatesDialog = useCallback(() => {
-    setOpenClassmates(null)
-  }, [])
+  // const closeClassmatesDialog = useCallback(() => {
+  // setOpenClassmates(null)
+  // }, [])
 
-  const courseDisplayName = useMemo(() => {
-    const query = queryString.parse(search)
+  // const courseDisplayName = useMemo(() => {
+  // const query = queryString.parse(search)
 
-    if (query.classId && userClasses?.classList) {
-      const { classId } = decypherClass(query.class)
-      const c = userClasses.classList.find(cl => cl.classId === Number(classId))
-      if (c) return c.courseDisplayName
-    }
-    return ''
-  }, [search, userClasses.classList])
+  // if (query.classId && userClasses?.classList) {
+  // const { classId } = decypherClass(query.class)
+  // const c = userClasses.classList.find(cl => cl.classId === Number(classId))
+  // if (c) return c.courseDisplayName
+  // }
+  // return ''
+  // }, [search, userClasses.classList])
 
 
   const handleOpenBlog = useCallback(() => {
@@ -321,23 +321,23 @@ const Drawer = ({
           }}
         />
       </ListItem>
-      <ListItem
-        button
-        onClick={openClassmatesDialog('student')}
-        className={classNames(
-          classes.item,
-          classes.otherPath
-        )}
-      >
-        <ListItemText
-          primary="Students"
-          classes={{
-            primary: classes.label
-          }}
-        />
-      </ListItem>
+      {/* <ListItem */}
+      {/* button */}
+      {/* onClick={openClassmatesDialog('student')} */}
+      {/* className={classNames( */}
+      {/* classes.item, */}
+      {/* classes.otherPath */}
+      {/* )} */}
+      {/* > */}
+      {/* <ListItemText */}
+      {/* primary="Students" */}
+      {/* classes={{ */}
+      {/* primary: classes.label */}
+      {/* }} */}
+      {/* /> */}
+      {/* </ListItem> */}
     </div>
-  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, handleCloseOneTouchSend, openClassmatesDialog, openOneTouchSend, pathname, qs])
+  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, handleCloseOneTouchSend, openOneTouchSend, pathname, qs])
 
   const createNewPost = useMemo(() => (
     <Tooltip
@@ -368,13 +368,13 @@ const Drawer = ({
 
   return (
     <Fragment>
-      <ClassmatesDialog
-        userId={userId}
-        userClasses={userClasses}
-        close={closeClassmatesDialog}
-        state={openClassmates}
-        courseDisplayName={courseDisplayName}
-      />
+      {/* <ClassmatesDialog */}
+      {/* userId={userId} */}
+      {/* userClasses={userClasses} */}
+      {/* close={closeClassmatesDialog} */}
+      {/* state={openClassmates} */}
+      {/* courseDisplayName={courseDisplayName} */}
+      {/* /> */}
       <List className={classes.drawerList} style={{ marginTop: appBarHeight }}>
         {isExpert && (
           <Tooltip
@@ -433,11 +433,11 @@ const Drawer = ({
         {!expertMode && <HomeItem
           MyLink={MyLink}
           newClassExperience={newClassExperience}
-          createPostOpen={createPostOpen}
-          userClasses={userClasses}
-          updateFeed={updateFeed}
-          landingPageCampaign={landingPageCampaign}
-          openClassmatesDialog={openClassmatesDialog('classmate')}
+          // createPostOpen={createPostOpen}
+          // userClasses={userClasses}
+          // updateFeed={updateFeed}
+          // landingPageCampaign={landingPageCampaign}
+          // openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
         {!landingPageCampaign && (
           <DrawerItem

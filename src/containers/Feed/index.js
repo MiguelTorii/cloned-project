@@ -8,7 +8,7 @@ import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import { processClasses } from 'containers/ClassesSelector/utils'
 import queryString from 'query-string'
-// import HeaderNavigation from 'containers/Feed/HeaderNavigation'
+import HeaderNavigation from 'containers/Feed/HeaderNavigation'
 import { decypherClass } from 'utils/crypto'
 import ClassmatesDialog from 'components/ClassmatesDialog'
 import Tooltip from 'containers/Tooltip'
@@ -95,12 +95,12 @@ class Feed extends React.PureComponent<Props, State> {
       updateFilter,
       feed: { scrollData },
       resetScrollData,
-      push,
-      user: {
-        expertMode
-      }
+      // push,
+      // user: {
+      // expertMode
+      // }
     }= this.props;
-    if (!expertMode && !classId) push('/')
+    // if (!expertMode && !classId) push('/')
 
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
@@ -332,7 +332,7 @@ class Feed extends React.PureComponent<Props, State> {
       user: {
         data: {
           userId,
-          // firstName
+          firstName
         },
         userClasses: { classList },
         expertMode
@@ -345,13 +345,13 @@ class Feed extends React.PureComponent<Props, State> {
         },
         isLoading
       },
-      // router: {
-      // location: {
-      // search,
-      // pathname,
-      // state
-      // }
-      // },
+      router: {
+        location: {
+          search,
+          pathname,
+          state
+        }
+      },
       feedId: fromFeedId,
       campaign
     } = this.props;
@@ -375,17 +375,17 @@ class Feed extends React.PureComponent<Props, State> {
               state={openClassmates}
               courseDisplayName={this.courseDisplayName()}
             />
-            {/* <HeaderNavigation */}
-            {/* firstName={firstName} */}
-            {/* state={state} */}
-            {/* classList={classList} */}
-            {/* openClassmatesDialog={this.openClassmatesDialog} */}
-            {/* pathname={pathname} */}
-            {/* expertMode={expertMode} */}
-            {/* search={search} */}
-            {/* updateFeed={this.updateFeed} */}
-            {/* push={push} */}
-            {/* /> */}
+            <HeaderNavigation
+              firstName={firstName}
+              state={state}
+              classList={classList}
+              openClassmatesDialog={this.openClassmatesDialog}
+              pathname={pathname}
+              expertMode={expertMode}
+              search={search}
+              updateFeed={this.updateFeed}
+              push={push}
+            />
             <FeedFilter
               query={query}
               from={from}
