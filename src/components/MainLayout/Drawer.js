@@ -462,13 +462,13 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
-        <DrawerItem
+        {expertMode && <DrawerItem
           OnIcon={<OneTouchSendIconOn />}
           primaryText='One-Touch Send'
           onClick={handleOpenOneTouchSend}
           OffIcon={<OneTouchSendIconOff />}
           listItemClass={classes.otherPath}
-        />
+        />}
         {!expertMode && <DrawerItem
           OnIcon={<LeaderboardIconOn />}
           primaryText='Leaderboard'
