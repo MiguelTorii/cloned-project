@@ -315,6 +315,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             <InputBase
               className={classes.input}
               // type="search"
+              startAdornment={<SearchIcon />}
               placeholder={
                 courseDisplayName ?
                   `Search for posts` :
@@ -335,7 +336,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 )
               }
             />
-            <SearchIcon />
             <Divider className={classes.divider} />
             <IconButton
               color="primary"
