@@ -353,31 +353,22 @@ class FeedFilter extends React.PureComponent<Props, State> {
               onChange={onChangeDateRange}
             />
             <Tooltip
-              id={9056}
+              id={9047}
+              hidden={!expertMode}
               placement="right"
-              totalSteps={2}
-              hidden={expertMode}
-              completedSteps={2}
-              text="Dates and filters are here and just above this box is a new “Search bar!” Happy studying!"
+              text="You can sort posts by date and filter posts by type!"
             >
-              <Tooltip
-                id={9047}
-                hidden={!expertMode}
-                placement="right"
-                text="You can sort posts by date and filter posts by type!"
+              <Button
+                aria-haspopup="true"
+                aria-label="Filter"
+                aria-owns={open ? 'filter-popper' : undefined}
+                className={classes.filterButton}
+                color="primary"
+                onClick={this.handleClick}
+                variant={filterCount > 0 ? "contained" : "outlined"}
               >
-                <Button
-                  aria-haspopup="true"
-                  aria-label="Filter"
-                  aria-owns={open ? 'filter-popper' : undefined}
-                  className={classes.filterButton}
-                  color="primary"
-                  onClick={this.handleClick}
-                  variant={filterCount > 0 ? "contained" : "outlined"}
-                >
                 Filters
-                </Button>
-              </Tooltip>
+              </Button>
             </Tooltip>
             {/* {expertMode && <Button */}
             {/* aria-haspopup="true" */}

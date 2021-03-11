@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { cypher } from 'utils/crypto'
 import cx from 'clsx'
 import queryString from 'query-string'
-import Tooltip from 'containers/Tooltip'
 
 const useStyles = makeStyles(theme => ({
   classTextField: {
@@ -165,26 +164,17 @@ const HeaderNavigation = ({
 
   return (
     <Box>
-      <Tooltip
-        id={9055}
-        placement="right"
-        okButton='Got it!'
-        totalSteps={2}
-        completedSteps={1}
-        text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
-      >
-        <ClassMultiSelect
-          noEmpty
-          variant='standard'
-          allLabel={`${firstName}'s Classes`}
-          containerStyle={classes.classSelector}
-          textFieldStyle={classes.classTextField}
-          externalOptions={options}
-          placeholder='Select Classes...'
-          selected={selectedClasses}
-          onSelect={onSelect}
-        />
-      </Tooltip>
+      <ClassMultiSelect
+        noEmpty
+        variant='standard'
+        allLabel={`${firstName}'s Classes`}
+        containerStyle={classes.classSelector}
+        textFieldStyle={classes.classTextField}
+        externalOptions={options}
+        placeholder='Select Classes...'
+        selected={selectedClasses}
+        onSelect={onSelect}
+      />
       <Box className={classes.links}>
         <Button
           onClick={navigate('/feed', {})}

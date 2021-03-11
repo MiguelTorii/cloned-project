@@ -64,7 +64,7 @@ type Props = {
   viewedOnboarding: boolean,
   viewedTooltips: Array<number>,
   totalSteps: ?number,
-  completedsteps: ?number
+  completedSteps: ?number
 };
 
 const CHAT = 3292;
@@ -94,7 +94,6 @@ const EXPERT_MULTIPLE_CLASS_SELECT = 9051
 
 const NEW_FEED_CLASSES = 9054
 const STUDENT_FEED_CLASSES = 9055
-const STUDENT_FEED_FILTERS = 9056
 
 
 // not an actual tooltip
@@ -158,9 +157,6 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
-      case STUDENT_FEED_FILTERS:
-        result = viewedTooltips.includes(STUDENT_FEED_CLASSES)
-        break
       case STUDENT_FEED_CLASSES:
         result = viewedTooltips.includes(NEW_FEED_CLASSES)
         break
