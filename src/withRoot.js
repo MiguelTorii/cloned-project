@@ -13,7 +13,7 @@ const circleInTheme = {
   action: '#49afd9',
   rowSelection: '#324f61',
   primaryBackground: '#18191A',
-  modalBackground: '#242526',
+  modalBackground: '#37393E',
   borders: '#566c77',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
@@ -204,6 +204,11 @@ const theme = createMuiTheme({
     MuiDrawer: {
       paperAnchorDockedLeft: {
         borderRight: 'none'
+      }
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: 10,
       }
     },
     MuiBadge: {

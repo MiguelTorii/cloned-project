@@ -10,6 +10,9 @@ import queryString from 'query-string'
 
 const useStyles = makeStyles(theme => ({
   classTextField: {
+    '& div': {
+      fontSize: 30,
+    },
     minWidth: 400,
     [theme.breakpoints.down('sm')]: {
       minWidth: 330

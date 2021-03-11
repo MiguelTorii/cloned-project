@@ -317,7 +317,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
               // type="search"
               placeholder={
                 courseDisplayName ?
-                  `Search for posts in ${courseDisplayName}` :
+                  `Search for posts` :
                   'To search add some posts first'
               }
               value={query}

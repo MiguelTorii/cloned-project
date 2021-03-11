@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     color: theme.circleIn.palette.primaryText1
+  },
+  dropdownIcon: {
+    color: theme.circleIn.palette.brand
   }
 }));
 
@@ -144,7 +147,7 @@ const ClassMultiSelect = ({
             completedSteps={1}
             text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
           >
-            <ArrowDropDownIcon />
+            <ArrowDropDownIcon className={classes.dropdownIcon} />
           </Tooltip>
         }
         renderInput={(params) => (
