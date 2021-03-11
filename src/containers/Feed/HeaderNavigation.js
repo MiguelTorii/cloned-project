@@ -1,5 +1,6 @@
 // @flow
-import React, { useEffect, useMemo, memo, useCallback, useState } from 'react'
+import React, { useEffect, useMemo, memo, useCallback } from 'react'
+
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -9,10 +10,12 @@ import cx from 'clsx'
 import queryString from 'query-string'
 
 const useStyles = makeStyles(theme => ({
-  classTextField: {
+  allClasses: {
     '& div': {
       fontSize: 30,
     },
+  },
+  classTextField: {
     minWidth: 400,
     [theme.breakpoints.down('sm')]: {
       minWidth: 330
@@ -42,10 +45,14 @@ type Props = {
   state: Object,
   firstName: string,
   expertMode: boolean,
-  classList: Array
+  classList: Array,
+  selectedClasses: Array,
+  setSelectedClasses: Function
 };
 
 const HeaderNavigation = ({
+  selectedClasses,
+  setSelectedClasses,
   openClassmatesDialog,
   classList,
   push,
@@ -79,7 +86,8 @@ const HeaderNavigation = ({
     } finally {/* NONE */}
   }, [classList])
 
-  const [selectedClasses, setSelectedClasses] = useState([])
+  const allSelected = useMemo(() => options.length === selectedClasses.length, [options.length, selectedClasses.length])
+
   const classes= useStyles()
 
   const handleFilters = useCallback(options => {
@@ -89,7 +97,7 @@ const HeaderNavigation = ({
       sectionId: o.sectionId
     })))
     updateFeed(filters)
-  }, [updateFeed])
+  }, [setSelectedClasses, updateFeed])
 
   useEffect(() => {
     if (state?.selectedClasses) {
@@ -172,7 +180,7 @@ const HeaderNavigation = ({
         variant='standard'
         allLabel={`${firstName}'s Classes`}
         containerStyle={classes.classSelector}
-        textFieldStyle={classes.classTextField}
+        textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
         externalOptions={options}
         placeholder='Select Classes...'
         selected={selectedClasses}
@@ -205,14 +213,12 @@ const HeaderNavigation = ({
         >
             Bookmarks
         </Button>
-        {selectedClasses.length === 1 && (
-          <>
-            <span> | </span>
-            <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')} >
-      Classmates
-            </Button>
-          </>
-        )}
+        <>
+          <span> | </span>
+          <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')} >
+            {expertMode ? 'Students' : 'Classmates'}
+          </Button>
+        </>
 
         {selectedClasses.length === 1 && !expertMode && (
           <>

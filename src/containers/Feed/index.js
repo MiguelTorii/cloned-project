@@ -59,7 +59,8 @@ type Props = {
 type State = {
   feedId: ?number,
   report: ?Object,
-  deletePost: ?Object
+  deletePost: ?Object,
+  selectedClasses: Array
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -67,6 +68,7 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: null,
     report: null,
     deletePost: null,
+    selectedClasses: []
   };
 
   mounted: boolean;
@@ -76,6 +78,11 @@ class Feed extends React.PureComponent<Props, State> {
     if (from !== prevProps.from) {
       this.handleUpdateFilter()
     }
+  }
+
+
+  setSelectedClasses = selectedClasses => {
+    this.setState({ selectedClasses })
   }
 
   handleUpdateFilter = () => {
@@ -355,7 +362,13 @@ class Feed extends React.PureComponent<Props, State> {
       feedId: fromFeedId,
       campaign
     } = this.props;
-    const { feedId, report, deletePost, openClassmates } = this.state;
+    const {
+      feedId,
+      report,
+      deletePost,
+      openClassmates,
+      selectedClasses
+    } = this.state;
 
 
     let courseName = '';
@@ -370,12 +383,16 @@ class Feed extends React.PureComponent<Props, State> {
           <div className={classes.root}>
             <ClassmatesDialog
               userId={userId}
+              selectedClasses={selectedClasses}
               userClasses={userClasses}
               close={this.closeClassmatesDialog}
+              expertMode={expertMode}
               state={openClassmates}
               courseDisplayName={this.courseDisplayName()}
             />
             <HeaderNavigation
+              selectedClasses={selectedClasses}
+              setSelectedClasses={this.setSelectedClasses}
               firstName={firstName}
               state={state}
               classList={classList}
