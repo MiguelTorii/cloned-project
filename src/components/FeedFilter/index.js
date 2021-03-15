@@ -104,6 +104,9 @@ const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginTop: theme.spacing(1),
   },
+  searchIcon: {
+    opacity: 0.3
+  }
 });
 
 type Props = {
@@ -315,7 +318,11 @@ class FeedFilter extends React.PureComponent<Props, State> {
             <InputBase
               className={classes.input}
               // type="search"
-              startAdornment={<SearchIcon />}
+              startAdornment={<SearchIcon
+                classes={{
+                  root: classes.searchIcon
+                }}
+              />}
               placeholder={
                 courseDisplayName ?
                   `Search for posts` :

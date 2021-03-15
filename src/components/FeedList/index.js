@@ -182,10 +182,8 @@ class FeedList extends React.PureComponent<Props, State> {
     if (pathname === '/bookmarks') return (
       <EmptyState
         imageUrl={EmptyBookmarks}
-        title="Bookmark helpful study material to review later"
-      >
-        Once you bookmark a post on the Class Feed, it’ll appear here
-      </EmptyState>
+        title="When you bookmark posts you can search for them!"
+      />
     )
 
     if (pathname === '/my_posts') return (
