@@ -199,7 +199,7 @@ class FeedList extends React.PureComponent<Props, State> {
       <EmptyState imageUrl={EmptyFeed} title=""
       >
         <div className={classes.title2}>
-          Click <p className={classes.newPost}>+ New</p> to post and earn points,
+          Click <p className={classes.newPost}>+ Create New Post</p> to post and earn points,
           and get yourself closer to winning a gift card or scholarship!
         </div>
       </EmptyState>

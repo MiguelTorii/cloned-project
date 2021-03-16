@@ -329,7 +329,7 @@ const LeaderBoardTabs = ({
                   </div>
                 </div>
                 <div className={classes.footnote}>
-                  *Must earn 200k points per class in a week to earn an MVP.
+                  *Must earn 200k points in a week to earn an MVP.
                 </div>
                 <div className={classes.footnote}>
                   Learn more about how to qualify by clicking more info

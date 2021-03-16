@@ -68,7 +68,7 @@ const HourlyGifts = ({ classes, hourlyReward }: Props) => {
         </div>
         <div className={classes.text}>
           It's super simple to win a $10 - $50 {hourlyReward} (maybe even $100)!
-          Click the <p className={classes.newPost}>+ New</p> button, and share notes,
+          Click the <p className={classes.newPost}>+ Create New Post</p> button, and share notes,
           create flashcards or share a helpful link to win
         </div>
       </div>
