@@ -324,7 +324,7 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props
     const query = queryString.parse(search)
 
-    if (query.classId && userClasses?.classList) {
+    if (query.class && userClasses?.classList) {
       const { classId } = decypherClass(query.class)
       const selectedCourse = userClasses.classList.find(cl => cl.classId === Number(classId))
       if (selectedCourse) return selectedCourse.courseDisplayName
@@ -387,6 +387,7 @@ class Feed extends React.PureComponent<Props, State> {
               userClasses={userClasses}
               close={this.closeClassmatesDialog}
               expertMode={expertMode}
+              // state
               state={openClassmates}
               courseDisplayName={this.courseDisplayName()}
             />

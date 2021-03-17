@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
 import * as chatActions from 'actions/chat'
 import { bindActionCreators } from 'redux'
+import { sendMessage } from 'api/chat'
 import AutoComplete from '../AutoComplete'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
@@ -138,7 +139,13 @@ const CreateChatChannelInput = ({
       if (chatId !== '') {
         try {
           const channel = await client.getChannelBySid(chatId)
-          if (createMessage) await channel.sendMessage(createMessage.message, createMessage.messageAttributes)
+          if (createMessage) {
+            await sendMessage({
+              message: createMessage.message,
+              ...createMessage.messageAttributes,
+              chatId: channel.sid
+            })
+          }
           onOpenChannel({ channel })
         } catch (e) {
           setIsLoading(false)

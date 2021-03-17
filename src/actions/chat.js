@@ -9,13 +9,16 @@ import {
   unmuteChannel,
   renewTwilioToken,
   leaveChat,
-  blockChatUser
+  blockChatUser,
+  createChannel
 } from 'api/chat';
 import Chat from 'twilio-chat';
 import update from 'immutability-helper';
+import { push } from 'connected-react-router';
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
+
 
 const getAvailableSlots = width => {
   try {
@@ -127,10 +130,47 @@ const muteChannelLocal = ({ sid }: { sid: string }) => ({
   payload: { sid }
 })
 
+const setCurrentChannelAction = ({ currentChannel }: { currentChannel: Object }) => ({
+  type: chatActions.SET_CURRENT_CHANNEL,
+  payload: { currentChannel }
+})
+
 const createNewChannel = ({ newChannel, openChannels }: { newChannel: boolean, openChannels: array }) => ({
   type: chatActions.CREATE_NEW_CHANNEL,
   payload: { newChannel, openChannels }
 })
+
+const setMainMessageAction = ({ mainMessage }: { mainMessage: string }) => ({
+  type: chatActions.SET_MAIN_MESSAGE,
+  payload: { mainMessage }
+})
+
+export const setMainMessage = (mainMessage) => (dispatch: Dispatch) => {
+  dispatch(setMainMessageAction({ mainMessage }))
+}
+
+
+const fetchMembers = async sid => {
+  const res = await getGroupMembers({ chatId: sid })
+  const members = res.map(m => ({
+    registered: m.registered,
+    firstname: m.firstName,
+    lastname: m.lastName,
+    image: m.profileImageUrl,
+    roleId: m.roleId,
+    role: m.role,
+    userId: m.userId
+  }))
+  return members
+}
+
+export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
+  if (currentChannel) {
+    const members = await fetchMembers(currentChannel.sid)
+    dispatch(updateMembers({ members, channelId: currentChannel.sid }))
+  }
+  dispatch(setCurrentChannelAction({ currentChannel }))
+}
 
 export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction())
@@ -152,28 +192,6 @@ export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
 };
 
-export const openChannelWithEntity = ({
-  entityId,
-  entityFirstName,
-  entityLastName,
-  entityVideo
-}: {
-  entityId: string,
-  entityFirstName: string,
-  entityLastName: string,
-  entityVideo: boolean
-}) => async (dispatch: Dispatch) => {
-  dispatch(
-    requestStartChannelWithEntity({
-      entityId,
-      entityFirstName,
-      entityLastName,
-      entityVideo,
-      entityUuid: uuidv4()
-    })
-  );
-};
-
 const initLocalChannels = async dispatch => {
   try {
     dispatch(startLoading())
@@ -184,18 +202,59 @@ const initLocalChannels = async dispatch => {
   }
 }
 
-const fetchMembers = async sid => {
-  const res = await getGroupMembers({ chatId: sid })
-  const members = res.map(m => ({
-    firstname: m.firstName,
-    lastname: m.lastName,
-    image: m.profileImageUrl,
-    roleId: m.roleId,
-    role: m.role,
-    userId: m.userId
-  }))
-  return members
-}
+export const openChannelWithEntity = ({
+  entityId,
+  entityFirstName,
+  entityLastName,
+  entityVideo,
+  fullscreen = false,
+  notRegistered = false,
+}: {
+  entityId: string,
+  entityFirstName: string,
+  entityLastName: string,
+  entityVideo: boolean,
+  fullscreen: boolean,
+  notRegistered: boolean
+}) => async (dispatch: Dispatch, getState: Function) => {
+  if (!fullscreen) {
+    dispatch(
+      requestStartChannelWithEntity({
+        entityId,
+        entityFirstName,
+        entityLastName,
+        entityVideo,
+        entityUuid: uuidv4()
+      })
+    );
+  } else {
+    const { chatId, isNewChat } = await createChannel({
+      users: [entityId],
+    });
+
+    if (isNewChat) await initLocalChannels(dispatch)
+    const {
+      chat: {
+        data: {
+          local
+        }
+      }
+    } = getState()
+    const currentChannel = local[chatId]
+    if (currentChannel) {
+      dispatch(setCurrentChannelAction({
+        currentChannel: currentChannel.twilioChannel
+      }))
+      if (notRegistered) {
+        dispatch(setMainMessageAction({
+          mainMessage: "Hey! Let's connect and study together!"
+        }))
+      }
+      dispatch(push('/chat'))
+    }
+
+  }
+};
 
 export const handleInitChat = () =>
   async (dispatch: Dispatch, getState: Function) => {
@@ -362,6 +421,10 @@ export const handleRoomClick = channel => async (dispatch: Dispatch, getState: F
         return [channel, ...newB];
       }
     });
+    if (channel) {
+      const members = await fetchMembers(channel.sid)
+      dispatch(updateMembers({ members, channelId: channel.sid }))
+    }
     dispatch(setOpenChannels({ openChannels: newState }))
   } catch (err) {}
 };

@@ -37,12 +37,14 @@ const circleInTheme = {
   deepSeaOcean: '#225D89',
   hoverMenu: '#3A3B3B',
   primaryii222: '#1e88e5',
-  textSubtitleBody: '#ADBBC4'
+  textSubtitleBody: '#ADBBC4',
+  sendMessageButton: '#1E88E5'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      sendMessageButton: circleInTheme.sendMessageButton,
       textSubtitleBody: circleInTheme.textSubtitleBody,
       hoverMenu: circleInTheme.hoverMenu,
       primaryii222: circleInTheme.primaryii222,

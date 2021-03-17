@@ -13,6 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { getCampaign } from 'api/campaign';
+import { sendMessage } from 'api/chat'
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -57,6 +58,12 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
+  },
+  unregisteredMessage: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginBottom: theme.spacing()
   }
 });
 
@@ -64,6 +71,7 @@ type Props = {
   classes: Object,
   user: UserState,
   channel: Object,
+  getMembers: Function,
   onClose: Function,
   onBlock: Function,
   onRemove: Function,
@@ -266,7 +274,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const { newChannel } = this.props
     try {
       if (!newChannel) {
-        await channel.sendMessage(message, messageAttributes);
+        await sendMessage({
+          message,
+          chatId: channel.sid,
+          ...messageAttributes
+        });
 
         logEvent({
           event: 'Chat- Send Message',
@@ -319,7 +331,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
         isVideoNotification: false
       };
 
-      await channel.sendMessage('Uploaded a image', messageAttributes);
+      await sendMessage({
+        message: 'Uploaded a image',
+        ...messageAttributes,
+        chatId: channel.sid
+      })
       logEvent({
         event: 'Chat- Send Message',
         props: { Content: 'Image', 'Channel SID': channel.sid }
@@ -489,6 +505,38 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
   };
 
+  unregisteredUserMessage = () => {
+    const { user, channel, classes, getMembers } = this.props
+    const { messages } = this.state
+    const members = getMembers(channel)
+    const keys = Object.keys(members)
+    const otherUser = keys.length !== 2
+      ? null
+      : members[keys.find(key => key !== user.data.userId)]
+    const hasUnregistered = Boolean(keys.find(key => !members[key].registered))
+    if (otherUser && hasUnregistered && messages.length > 0) {
+      return (
+        <Typography
+          className={classes.unregisteredMessage}
+        >
+          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
+        </Typography>
+      )
+    }
+
+    if (hasUnregistered && messages.length > 0) {
+      return (
+        <Typography
+          className={classes.unregisteredMessage}
+        >
+        There are some users who hasn't logged into CircleIn yet. We've sent them a notification...
+        </Typography>
+      )
+    }
+
+    return null
+  }
+
   render() {
     const {
       classes,
@@ -592,6 +640,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 >{`${typing} is typing ...`}</Typography>
               </div>
             )}
+            {this.unregisteredUserMessage()}
             <ChatTextField
               hideImage={newChannel}
               expanded={expanded}

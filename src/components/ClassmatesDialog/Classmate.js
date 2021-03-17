@@ -1,6 +1,7 @@
 // @flow
 
-import React from 'react';
+import React, { useState,useMemo, useCallback } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import * as chatActions from 'actions/chat';
@@ -14,6 +15,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
+import ChatIcon from '@material-ui/icons/Chat';
+import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 
 import clsx from 'clsx'
 
@@ -32,8 +35,18 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  messageMargin: {
-    marginRight: theme.spacing()
+  sendMessage: {
+    fontWeight: 'bold',
+    backgroundColor: theme.circleIn.palette.sendMessageButton,
+    borderRadius: theme.spacing(2),
+    color: theme.circleIn.palette.textOffwhite
+  },
+  videoChat: {
+    fontWeight: 'bold',
+    color: theme.circleIn.palette.textOffwhite,
+    marginLeft: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.brand,
+    borderRadius: theme.spacing(2),
   }
 }));
 
@@ -52,21 +65,47 @@ type Props = {
   width: string
 };
 
-const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmate }: Props) => {
-  const classes = useStyles();
+const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
+  <RouterLink to={href} {...props} ref={ref} />);
 
-  const openChat = isVideo => {
+const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, width, classmate }: Props) => {
+  const classes = useStyles();
+  const [loadingMessage, setLoadingMessage] = useState(false)
+  const [loadingVideo, setLoadingVideo] = useState(false)
+
+  const openChat = useCallback(isVideo => {
+    if (isVideo) setLoadingVideo(true)
+    else setLoadingMessage(true)
     openChannelWithEntity({
       entityId: classmate.userId,
       entityFirstName: classmate.firstName,
       entityLastName: classmate.lastName,
-      entityVideo: isVideo
+      entityVideo: isVideo,
+      notRegistered: classmate.notRegistered,
+      fullscreen: true && !isVideo
     })
-    close()
-  }
+    setTimeout(() => {
+      setLoadingVideo(false)
+      setLoadingMessage(false)
+    }, 2000)
+  }, [classmate.firstName, classmate.lastName, classmate.notRegistered, classmate.userId, openChannelWithEntity])
 
-  const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
-    <RouterLink to={href} {...props} ref={ref} />);
+  const classList = useMemo(() => {
+
+    if (courseDisplayName) return null
+
+    return (
+`${classmate.classes[0].className} ${
+  classmate.classes.length > 1
+    ? `, ${classmate.classes[1].className}`
+    : ''
+} ${
+  classmate.classes.length > 2
+    ? `, +${classmate.classes.length - 2} more`
+    : ''
+}`
+    )},[classmate.classes, courseDisplayName])
+
 
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
@@ -81,27 +120,37 @@ const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmat
       <ListItemText
         classes={{
           root: classes.textRoot,
-          primary: classes.fullname
+          primary: classes.fullname,
+          secondary: classes.fullname
         }}
         primary={`${classmate.firstName} ${classmate.lastName}`}
+        secondary={classList}
       />
       <ListSubheader component='div' disableGutters>
         <Button
-          className={classes.messageMargin}
-          variant="outlined"
+          className={classes.sendMessage}
+          variant="contained"
           onClick={() => openChat(false)}
+          startIcon={<ChatIcon />}
           color="primary"
         >
-         Send Message
+          {!loadingMessage ? 'Send Message' : <CircularProgress size={20}/>}
         </Button>
         {
           videoEnabled &&
           <Button
-            variant="outlined"
+            variant="contained"
+            disabled={classmate.notRegistered}
+            className={classes.videoChat}
+            startIcon={
+              <VideocamRoundedIcon
+                color={classmate.notRegistered ? 'disabled' : 'inherit'}
+              />
+            }
             onClick={() => openChat(true)}
             color="primary"
           >
-            Start Video
+            {loadingVideo ? <CircularProgress size={20} /> : 'Study Room'}
           </Button>
         }
       </ListSubheader>
