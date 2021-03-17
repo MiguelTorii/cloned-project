@@ -508,6 +508,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
   unregisteredUserMessage = () => {
     const { user, channel, classes, getMembers } = this.props
     const { messages } = this.state
+    if (!channel?.sid) return null
     const members = getMembers(channel)
     const keys = Object.keys(members)
     const otherUser = keys.length !== 2
