@@ -32,18 +32,20 @@ const circleInTheme = {
   snackbar: '#114255',
   disabled: '#6d7884',
   profilebgColor: '#bdbdbd',
-  danger: '#f34f47',
+  danger: '#F54F47',
   flashcardBackground: '#324F61',
   deepSeaOcean: '#225D89',
   hoverMenu: '#3A3B3B',
   primaryii222: '#1e88e5',
   textSubtitleBody: '#ADBBC4',
-  sendMessageButton: '#1E88E5'
+  sendMessageButton: '#1E88E5',
+  textNormalButton: '#090909'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      textNormalButton: circleInTheme.textNormalButton,
       sendMessageButton: circleInTheme.sendMessageButton,
       textSubtitleBody: circleInTheme.textSubtitleBody,
       hoverMenu: circleInTheme.hoverMenu,

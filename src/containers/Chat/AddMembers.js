@@ -5,12 +5,18 @@ import Button from '@material-ui/core/Button'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import { searchUsers } from 'api/user'
 import { addGroupMembers } from 'api/chat'
+import AddUserIcon from 'assets/svg/add-user.svg'
 
 const useStyles = makeStyles((theme) => ({
   addLabel: {
-    color: theme.circleIn.palette.brand
+    color: theme.circleIn.palette.textNormalButton,
+    fontSize: 14,
+    fontWeight: 700
   },
   addButton: {
+    background: 'linear-gradient(180deg, #94DAF9 17.71%, #1E88E5 90.44%)',
+    boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
+    borderRadius: 100,
     border: `1px solid ${theme.circleIn.palette.brand}`
   },
   addMembers: {
@@ -64,7 +70,7 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
     }
   }, [userId, schoolId, members])
 
-  const onSubmit = useCallback(async ({selectedUsers}) => {
+  const onSubmit = useCallback(async ({ selectedUsers }) => {
     setLoading(true)
     try{
       await addGroupMembers({
@@ -88,12 +94,13 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
       <Button
         onClick={handleCreateChannelOpen}
         variant='outlined'
+        startIcon={<img src={AddUserIcon} alt='Add user' />}
         classes={{
           label: classes.addLabel,
           root: classes.addButton
         }}
       >
-           Add Member
+           Add a classmate
       </Button>
       <CreateChatChannelDialog
         title='Add Members'

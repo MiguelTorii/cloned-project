@@ -60,7 +60,6 @@ type ClassmateType = {
 type Props = {
   classmate: ClassmateType,
   openChannelWithEntity: Function,
-  close: Function,
   videoEnabled: boolean,
   width: string
 };

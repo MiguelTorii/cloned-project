@@ -14,7 +14,7 @@ import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import Button from '@material-ui/core/Button';
 import EmptyMain from 'containers/Chat/EmptyMain'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Grid from '@material-ui/core/Grid'
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { logEvent } from 'api/analytics';
@@ -68,8 +68,11 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none'
   },
   videoButton: {
-    backgroundColor: theme.circleIn.palette.darkActionBlue,
-    padding: theme.spacing(1 / 2),
+    backgroundColor: theme.circleIn.palette.brand,
+    fontWeight: 'bold',
+    padding: theme.spacing(1/2, 1),
+    color: theme.circleIn.palette.textOffwhite,
+    borderRadius: theme.spacing(2),
   },
   videoIcon: {
     marginRight: theme.spacing(1 / 2),
@@ -418,7 +421,7 @@ const Main = ({
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
           <Typography className={classes.headerTitle}>{title}</Typography>
-          {
+          { otherUser?.registered &&
             videoEnabled &&
             <Button
               variant='contained'
@@ -429,7 +432,7 @@ const Main = ({
               }}
               color='primary'
             >
-              <VideocamIcon className={classes.videoIcon} /> Start Video
+              <VideocamRoundedIcon className={classes.videoIcon} /> Study Room
             </Button>
           }
         </Grid>}

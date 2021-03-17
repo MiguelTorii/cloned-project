@@ -36,9 +36,10 @@ const styles = theme => ({
     textAlign: 'center'
   },
   closeIcon: {
+    float: 'right',
     color: theme.circleIn.palette.primaryText1,
     cursor: 'pointer',
-    marginLeft: 20,
+    marginRight: 20,
     marginTop: 20
   },
   hr: {
