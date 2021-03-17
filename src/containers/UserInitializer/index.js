@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import OnboardingExpert from 'components/OnboardingExpert'
+import DarkModeDialog from 'components/DarkModeDialog'
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -323,6 +324,16 @@ class UserInitializer extends React.PureComponent<Props, State> {
             open={viewedOnboarding !== null && !viewedOnboarding}
             updateOnboarding={updateOnboarding}
             userId={userId}
+          />
+        )}
+        {windowWidth > 700 && (
+          <DarkModeDialog
+            open={Boolean(
+              viewedOnboarding &&
+              viewedTooltips &&
+              !viewedTooltips.includes(9058)
+            )}
+            finish={() => confirmTooltip(9058)}
           />
         )}
         {windowWidth > 700 &&

@@ -94,6 +94,8 @@ const EXPERT_MULTIPLE_CLASS_SELECT = 9051
 
 const NEW_FEED_CLASSES = 9054
 const STUDENT_FEED_CLASSES = 9055
+const STUDENT_CLASS_LEADERBOARD = 9056
+const STUDENT_CLASSMATES = 9057
 
 
 // not an actual tooltip
@@ -157,6 +159,12 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
+      case STUDENT_CLASSMATES:
+        result = viewedTooltips.includes(STUDENT_CLASS_LEADERBOARD)
+        break
+      case STUDENT_CLASS_LEADERBOARD:
+        result = viewedTooltips.includes(STUDENT_FEED_CLASSES)
+        break
       case STUDENT_FEED_CLASSES:
         result = viewedTooltips.includes(NEW_FEED_CLASSES)
         break

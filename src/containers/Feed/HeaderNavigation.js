@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import { cypher } from 'utils/crypto'
+import Tooltip from 'containers/Tooltip'
 import cx from 'clsx'
 import queryString from 'query-string'
 
@@ -216,7 +217,16 @@ const HeaderNavigation = ({
         <>
           <span> | </span>
           <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')} >
-            {expertMode ? 'Students' : 'Classmates'}
+            <Tooltip
+              id={9057}
+              placement="right"
+              okButton='End'
+              totalSteps={3}
+              completedSteps={3}
+              text='You can see a list of your classmates in each class or all your classes at once by selecting “Classmates”. 🎉'
+            >
+              {expertMode ? 'Students' : 'Classmates'}
+            </Tooltip>
           </Button>
         </>
 

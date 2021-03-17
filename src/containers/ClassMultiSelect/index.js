@@ -140,14 +140,23 @@ const ClassMultiSelect = ({
         }
         popupIcon={
           <Tooltip
-            id={9055}
+            id={9056}
             placement="right"
             okButton='Got it!'
-            totalSteps={1}
-            completedSteps={1}
-            text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
+            totalSteps={3}
+            completedSteps={2}
+            text="To check out your Class Leaderboard, select one class at a time... 🏆"
           >
-            <ArrowDropDownIcon className={classes.dropdownIcon} />
+            <Tooltip
+              id={9055}
+              placement="right"
+              okButton='Got it!'
+              totalSteps={3}
+              completedSteps={1}
+              text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
+            >
+              <ArrowDropDownIcon className={classes.dropdownIcon} />
+            </Tooltip>
           </Tooltip>
         }
         renderInput={(params) => (
