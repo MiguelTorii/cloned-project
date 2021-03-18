@@ -324,6 +324,17 @@ const Drawer = ({
           }}
         />
       </ListItem>
+      <DrawerItem
+        OnIcon={<MyClassOn />}
+        primaryText='My Classes'
+        pathname={pathname}
+        component={MyLink}
+        link="/classes"
+        OffIcon={<MyClassOff />}
+        listItemClass={classNames(
+          ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+        )}
+      />
       {/* <ListItem */}
       {/* button */}
       {/* onClick={openClassmatesDialog('student')} */}
@@ -396,17 +407,6 @@ const Drawer = ({
         )}
         {createNewPost}
         {expertMenu}
-        <DrawerItem
-          OnIcon={<MyClassOn />}
-          primaryText='My Classes'
-          pathname={pathname}
-          component={MyLink}
-          link="/classes"
-          OffIcon={<MyClassOff />}
-          listItemClass={classNames(
-            ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-        />
         {landingPageCampaign && (
           <DrawerItem
             OnIcon={<WorkflowIconOn />}
@@ -452,6 +452,17 @@ const Drawer = ({
           // updateFeed={updateFeed}
           // landingPageCampaign={landingPageCampaign}
           // openClassmatesDialog={openClassmatesDialog('classmate')}
+        />}
+        {!expertMode && <DrawerItem
+          OnIcon={<MyClassOn />}
+          primaryText='My Classes'
+          pathname={pathname}
+          component={MyLink}
+          link="/classes"
+          OffIcon={<MyClassOff />}
+          listItemClass={classNames(
+            ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+          )}
         />}
         {!landingPageCampaign && (
           <DrawerItem
