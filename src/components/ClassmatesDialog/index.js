@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { getClassmates } from 'api/chat'
 import { getReferralProgram } from 'api/referral';
@@ -9,7 +9,15 @@ import { ReferralInvite } from 'containers/Referrals';
 import Classmate from 'components/ClassmatesDialog/Classmate'
 import { decypherClass } from 'utils/crypto'
 
-const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName }) => {
+const ClassmatesDialog = ({
+  userId,
+  userClasses,
+  expertMode,
+  close,
+  state,
+  courseDisplayName,
+  selectedClasses
+}) => {
   const classes = makeStyles(theme => ({
     dialog: {
       ...dialogStyle,
@@ -33,8 +41,6 @@ const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName
   const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
   const [campaign, setCampaign] = useState(null);
-
-  const isExpert = useMemo(() => state === 'student', [state])
 
   useEffect(() => {
     const initClassmates = async () => {
@@ -63,8 +69,28 @@ const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName
       }
     }
 
+    const initSelectedClassesClassmates = async () => {
+      const students = {}
+      await Promise.all(selectedClasses.map(async selectedClass => {
+        const classmates = await getClassmates({
+          sectionId: selectedClass.sectionId,
+          classId: selectedClass.classId
+        })
+        classmates.forEach(classmate => {
+          students[classmate.userId] = classmate
+        })
+      }))
+
+      const res = Object.values(students)
+      const classmates = res.filter(classmate => Number(classmate.userId) !== Number(userId))
+      setClassmates(classmates)
+    }
+
     const init = async () => {
-      if (state === 'classmate') initClassmates()
+      if (selectedClasses.length > 0) {
+        initSelectedClassesClassmates()
+      }
+      else if (state === 'classmate') initClassmates()
       else initStudents()
 
       const aCampaign = await getCampaign({ campaignId: 9 });
@@ -75,7 +101,7 @@ const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName
     }
 
     if (state) init()
-  }, [state, userClasses, userId])
+  }, [selectedClasses, selectedClasses.length, state, userClasses, userId])
 
   if (!campaign) return null
 
@@ -87,7 +113,7 @@ const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName
     return (
       <div>
         <div className={classes.text}>
-          Dont's see {isExpert ? 'students' : 'your classmates'}?
+          Dont's see {expertMode ? 'students' : 'your classmates'}?
           <div
             className={classes.link}
             onClick={() => {
@@ -119,15 +145,15 @@ const ClassmatesDialog = ({ userId, userClasses, close, state, courseDisplayName
         maxWidth='sm'
         fullWidth
         open={Boolean(state)}
-        title={isExpert ? 'Students' : `${courseDisplayName} Classmates`}
+        title={expertMode ? 'Students' : `${courseDisplayName} Classmates`}
       >
         <div className={classes.text}>
-          {isExpert ? 'Students' : 'Classmates'} who have joined CircleIn
+          {expertMode ? 'Students' : 'Classmates'} who have joined CircleIn
         </div>
         <List className={classes.list}>
           {classmates.map(c => (
             <Classmate
-              videoEnabled={videoEnabled && !isExpert}
+              videoEnabled={videoEnabled && !expertMode}
               close={close}
               key={c.userId}
               classmate={c}

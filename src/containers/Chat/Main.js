@@ -103,6 +103,7 @@ const Main = ({
   const [campaign, setCampaign] = useState(null);
 
   const {
+    expertMode,
     data: { userId, firstName, lastName }
   } = user
 
@@ -389,7 +390,9 @@ const Main = ({
 
       </div>
       <div className={classes.messageContainer}>
-        {(!channel || messageItems.length === 1) && <EmptyMain noChannel={!channel} />}
+        {(!channel || messageItems.length === 1) && (
+          <EmptyMain noChannel={!channel} expertMode={expertMode} />
+        )}
         {channel && <InfiniteScroll
           className={classes.messageScroll}
           threshold={50}

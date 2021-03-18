@@ -27,10 +27,18 @@ const useStyles = makeStyles((theme) => ({
   link: {
     fontSize: 12,
     marginTop: theme.spacing(3)
+  },
+  externalUser: {
+    marginTop: theme.spacing(2),
+    textTransform: 'inherit',
+    '& span': {
+      fontSize: 14,
+      textDecoration: 'underline'
+    }
   }
 }))
 
-const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
+const SelectSchool = ({ updateError, school, setScreen, updateSchool, setLoginAsExternalUser }) => {
   const classes = useStyles()
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -142,6 +150,11 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
     return false
   }, [school, setScreen, updateError])
 
+  const loginAsExternal = useCallback(() => {
+    setLoginAsExternalUser(true)
+    setScreen('login')
+  }, [setLoginAsExternalUser, setScreen])
+
   const onSubmit = useCallback(e => {
     e.preventDefault()
     onClick()
@@ -176,6 +189,15 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool }) => {
           : 'Select School'
         }
       </Button>
+
+      <Button
+        onClick={loginAsExternal}
+        className={classes.externalUser}
+        color='primary'
+      >
+        Login as an external user
+      </Button>
+
       <Typography
         variant="subtitle1"
         className={classes.link}

@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from 'containers/Tooltip'
+// import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 
@@ -103,6 +104,9 @@ const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginTop: theme.spacing(1),
   },
+  searchIcon: {
+    opacity: 0.3
+  }
 });
 
 type Props = {
@@ -296,7 +300,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
       userClasses,
       onClearSearch,
     } = this.props;
-    const { open, postTypes } = this.state;
+    const {
+      // openClassFilter,
+      // selectedUserClasses,
+      open,
+      postTypes
+    } = this.state;
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
     const isPostTypesSelected = postTypes.length > 0;
@@ -309,9 +318,14 @@ class FeedFilter extends React.PureComponent<Props, State> {
             <InputBase
               className={classes.input}
               // type="search"
+              startAdornment={<SearchIcon
+                classes={{
+                  root: classes.searchIcon
+                }}
+              />}
               placeholder={
                 courseDisplayName ?
-                  `Search for posts in ${courseDisplayName}` :
+                  `Search for posts` :
                   'To search add some posts first'
               }
               value={query}
@@ -329,7 +343,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 )
               }
             />
-            <SearchIcon />
             <Divider className={classes.divider} />
             <IconButton
               color="primary"
@@ -364,6 +377,17 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 Filters
               </Button>
             </Tooltip>
+            {/* {expertMode && <Button */}
+            {/* aria-haspopup="true" */}
+            {/* aria-label="Filter" */}
+            {/* aria-owns={open ? 'filter-popper' : undefined} */}
+            {/* className={classes.filterButton} */}
+            {/* color="primary" */}
+            {/* onClick={this.handleClickClasses} */}
+            {/* variant={userClasses.length > 0 ? "contained" : "outlined"} */}
+            {/* > */}
+            {/* Classes */}
+            {/* </Button>} */}
           </div>
         </Paper>
         <Dialog
@@ -469,6 +493,27 @@ class FeedFilter extends React.PureComponent<Props, State> {
             <span className={classes.grow} />
           </div>
         </Dialog>
+        {/* <Dialog */}
+        {/* open={openClassFilter} */}
+        {/* fullWidth */}
+        {/* maxWidth='sm' */}
+        {/* title='Filter feed by class' */}
+        {/* onCancel={this.handleClose} */}
+        {/* secondaryVariant='text' */}
+        {/* onSecondaryOk={this.handleClearFilters} */}
+        {/* onOk={this.handleApplyFilters} */}
+        {/* secondaryOkTitle='Reset' */}
+        {/* showActions */}
+        {/* okTitle='Search' */}
+        {/* > */}
+        {/* <ClassMultiSelect */}
+        {/* noEmpty */}
+        {/* variant='standard' */}
+        {/* placeholder='Select Classes...' */}
+        {/* selected={selectedUserClasses} */}
+        {/* onSelect={this.handleChangeClasses} */}
+        {/* /> */}
+        {/* </Dialog> */}
       </Fragment>
     );
   }

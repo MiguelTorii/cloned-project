@@ -211,6 +211,7 @@ const Layout = ({
     <>
       <ErrorBoundary>
         <MainLayout
+          fullName={name}
           viewedOnboarding={viewedOnboarding}
           bannerHeight={bannerHeight}
           setBannerHeight={setBannerHeight}

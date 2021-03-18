@@ -19,7 +19,10 @@ const styles = theme => ({
   },
   quill: {
     padding: theme.spacing(2),
-    maxHeight: 200
+    maxHeight: 200,
+    '& .ql-editor': {
+      minHeight: 70
+    }
   },
   input: {
     display: 'none'

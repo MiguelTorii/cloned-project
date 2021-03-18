@@ -45,6 +45,8 @@ type State = {
 };
 
 class Feed extends React.PureComponent<ProvidedProps & Props, State> {
+  mounted: boolean;
+
   static defaultProps = {
     isPage: false,
     onUpdateUnreadCount: () => {}
@@ -57,6 +59,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     details: '',
     loading: true
   };
+
 
   componentDidMount = async () => {
     this.mounted = true;
@@ -211,8 +214,6 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   handleCloseCustomNotification = () => {
     this.setState({ title: '', details: '' });
   };
-
-  mounted: boolean;
 
   render() {
     const { classes, isPage, anchorEl, onClose } = this.props;

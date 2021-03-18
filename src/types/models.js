@@ -293,6 +293,7 @@ export type ReferralData = {
 };
 
 export type Announcement = {
+  endDate: string,
   hourlyReward: string,
   imageUrl: string,
   popupTitle: string,

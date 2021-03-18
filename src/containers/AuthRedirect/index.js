@@ -135,6 +135,8 @@ const Auth = ({
       : 'school'
   )
 
+  const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false)
+
   const {
     data: { school, role }
   } = auth
@@ -159,6 +161,7 @@ const Auth = ({
         signIn={signIn}
         role={role}
         setScreen={setScreen}
+        isLoginAsExternalUser={isLoginAsExternalUser}
       />
     case 'signup':
       return <SignUp
@@ -189,12 +192,16 @@ const Auth = ({
         setScreen={setScreen}
         updateSchool={updateSchool}
         updateError={updateError}
+        setLoginAsExternalUser={setLoginAsExternalUser}
       />
     }
-  } , [role, school, screen, search, signIn, signUp, updateError, updateSchool])
+  } , [isLoginAsExternalUser, role, school, screen, search, signIn, signUp, updateError, updateSchool])
 
   const goBack = useCallback(() => {
-    if (screen === 'login') setScreen('school')
+    if (screen === 'login') {
+      setLoginAsExternalUser(false)
+      setScreen('school')
+    }
     if (screen === 'signup') setScreen('role')
     if (screen === 'forgotPassword') setScreen('login')
     if (screen === 'firstTime') setScreen('login')

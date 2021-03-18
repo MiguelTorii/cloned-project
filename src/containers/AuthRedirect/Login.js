@@ -68,7 +68,8 @@ const Login = ({
   role,
   setScreen,
   school,
-  signIn
+  signIn,
+  isLoginAsExternalUser
 }) => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
@@ -135,7 +136,7 @@ const Login = ({
         Login
         </Button>
       </form>
-      <Button
+      {!isLoginAsExternalUser && <Button
         onClick={goFirstTime}
         className={classes.activateButton}
         disableElevation
@@ -143,7 +144,7 @@ const Login = ({
         disableRipple
       >
           First time here? Activate your account!
-      </Button>
+      </Button>}
       <div className={classes.forgotPassword}>
         <Typography>Or, </Typography>
         <Button

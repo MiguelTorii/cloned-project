@@ -10,6 +10,9 @@ import EmptyState from 'components/FeedList/EmptyState';
 import EmptyFeed from 'assets/svg/empty-feed.svg'
 import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg'
 import EmptyMyPosts from 'assets/svg/empty-my-posts.svg'
+import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg'
+import LoadImg from 'components/LoadImg'
+import Box from '@material-ui/core/Box'
 import FeedItem from './FeedItem';
 
 const styles = theme => ({
@@ -98,6 +101,13 @@ const styles = theme => ({
     margin: '0px 3px',
     padding: '0px 16px',
     width: 100,
+  },
+  expertTitle: {
+    fontSize: 24,
+    fontWeight: 400
+  },
+  expertContainerText: {
+    margin: theme.spacing(2, 0)
   }
 });
 
@@ -137,15 +147,43 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   getEmptyState = pathname => {
-    const { classes } = this.props;
+    const { classes, expertMode } = this.props;
+
+    if (expertMode) return (
+      <Box
+        justifyContent='center'
+        alignItems='center'
+        display='flex'
+        flexDirection='column'
+      >
+        <Box className={classes.expertContainerText}>
+          <Box
+            justifyContent='center'
+            alignItems='center'
+            display='flex'
+            flexDirection='column'
+          >
+            <Typography className={classes.expertTitle}>
+          Welcome! <span role='img' aria-label='wave'>👋</span> We’ve been waiting for you!
+            </Typography>
+            <Typography className={classes.expertTitle}>
+          Start supporting your students by posting a
+            </Typography>
+            <Typography className={classes.expertTitle}>
+          “hello” and your “office hours”. :)
+            </Typography>
+          </Box>
+        </Box>
+        <LoadImg url={ExpertFeedEmpty} />
+      </Box>
+    )
+
 
     if (pathname === '/bookmarks') return (
       <EmptyState
         imageUrl={EmptyBookmarks}
-        title="Bookmark helpful study material to review later"
-      >
-        Once you bookmark a post on the Class Feed, it’ll appear here
-      </EmptyState>
+        title="When you bookmark posts you can search for them!"
+      />
     )
 
     if (pathname === '/my_posts') return (
@@ -161,7 +199,7 @@ class FeedList extends React.PureComponent<Props, State> {
       <EmptyState imageUrl={EmptyFeed} title=""
       >
         <div className={classes.title2}>
-          Click <p className={classes.newPost}>+ New</p> to post and earn points,
+          Click <p className={classes.newPost}>+ Create New Post</p> to post and earn points,
           and get yourself closer to winning a gift card or scholarship!
         </div>
       </EmptyState>

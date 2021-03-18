@@ -13,6 +13,8 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import OnboardingExpert from 'components/OnboardingExpert'
+import DarkModeDialog from 'components/DarkModeDialog'
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -21,6 +23,7 @@ import OnboardingProgress from '../OnboardingProgress';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
+import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
 
@@ -51,6 +54,7 @@ type Props = {
   classes: Object,
   user: UserState,
   checkUserSession: Function,
+  confirmTooltip: Function,
   updateOnboarding: Function
 };
 
@@ -176,12 +180,15 @@ class UserInitializer extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
+        isExpert,
         data: { userId, updateProfile, segment },
         syncData: {
+          viewedTooltips,
           viewedOnboarding,
         }
       },
       campaign,
+      confirmTooltip,
       updateOnboarding
     } = this.props;
 
@@ -312,10 +319,32 @@ class UserInitializer extends React.PureComponent<Props, State> {
             </ValidatorForm>
           </div>
         </Dialog>
-        {windowWidth > 700 &&
+        {windowWidth > 700 && (
           <OnboardingProgress
             open={viewedOnboarding !== null && !viewedOnboarding}
             updateOnboarding={updateOnboarding}
+            userId={userId}
+          />
+        )}
+        {windowWidth > 700 && (
+          <DarkModeDialog
+            open={Boolean(
+              viewedOnboarding &&
+              viewedTooltips &&
+              !viewedTooltips.includes(9058)
+            )}
+            finish={() => confirmTooltip(9058)}
+          />
+        )}
+        {windowWidth > 700 &&
+          <OnboardingExpert
+            open={Boolean(
+              isExpert &&
+              viewedOnboarding &&
+              viewedTooltips &&
+              !viewedTooltips.includes(9052)
+            )}
+            updateOnboarding={() => confirmTooltip(9052)}
             userId={userId}
           />
         }
@@ -334,6 +363,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       checkUserSession: signInActions.checkUserSession,
       updateOnboarding: userActions.updateOnboarding,
+      confirmTooltip: confirmTooltipAction
     },
     dispatch
   );

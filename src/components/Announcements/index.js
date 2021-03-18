@@ -7,7 +7,7 @@ import chatImg from 'assets/img/chat_img.png';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
 import Dialog, { dialogStyle } from '../Dialog';
 
-const styles = (theme) => ({
+const styles = ( theme) => ({
   dialog: {
     ...dialogStyle,
     maxWidth: 700,
@@ -101,7 +101,7 @@ const Announcements = ({
 }
 
 const mapStateToProps = (
-  { user: { syncData: { viewedOnboarding, viewedTooltips }, data: { schoolId } }}): {} => ({
+  { user: { syncData: { viewedOnboarding, viewedTooltips }, data: { schoolId } } }): {} => ({
   schoolId: Number(schoolId),
   viewedOnboarding,
   viewedTooltips,

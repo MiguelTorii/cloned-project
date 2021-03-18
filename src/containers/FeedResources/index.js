@@ -24,7 +24,6 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: theme.spacing(),
     marginBottom: theme.spacing(2)
   },
   img: {

@@ -53,7 +53,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
   const [deletePost, setDeletePost] = useState(false)
 
   const {
-    data: { 
+    data: {
       userId,
       firstName: myFirstName,
       lastName: myLastName,

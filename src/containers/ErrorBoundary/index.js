@@ -29,6 +29,7 @@ class ErrorBoundary extends React.Component<Props, State> {
       process.env.NODE_ENV !== 'development'
     ) {
       if (!this.skip(error)) {
+        console.log('Debug:', error, JSON.stringify(error))
         Sentry.captureException(error, { extra: info });
       }
     }

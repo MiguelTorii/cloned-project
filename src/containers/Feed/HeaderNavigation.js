@@ -1,15 +1,21 @@
 // @flow
-import React, { useEffect, useMemo, memo, useCallback, useState } from 'react'
+import React, { useEffect, useMemo, memo, useCallback } from 'react'
+
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import { cypher } from 'utils/crypto'
+import Tooltip from 'containers/Tooltip'
 import cx from 'clsx'
 import queryString from 'query-string'
-import Tooltip from 'containers/Tooltip'
 
 const useStyles = makeStyles(theme => ({
+  allClasses: {
+    '& div': {
+      fontSize: 30,
+    },
+  },
   classTextField: {
     minWidth: 400,
     [theme.breakpoints.down('sm')]: {
@@ -20,7 +26,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1)
   },
   classSelector: {
-    padding: theme.spacing(1, 2)
+    maxWidth: 400,
+    padding: theme.spacing(1, 2),
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 330
+    }
   },
   currentPath: {
     color: theme.circleIn.palette.action,
@@ -36,10 +46,14 @@ type Props = {
   state: Object,
   firstName: string,
   expertMode: boolean,
-  classList: Array
+  classList: Array,
+  selectedClasses: Array,
+  setSelectedClasses: Function
 };
 
 const HeaderNavigation = ({
+  selectedClasses,
+  setSelectedClasses,
   openClassmatesDialog,
   classList,
   push,
@@ -73,7 +87,8 @@ const HeaderNavigation = ({
     } finally {/* NONE */}
   }, [classList])
 
-  const [selectedClasses, setSelectedClasses] = useState([])
+  const allSelected = useMemo(() => options.length === selectedClasses.length, [options.length, selectedClasses.length])
+
   const classes= useStyles()
 
   const handleFilters = useCallback(options => {
@@ -83,7 +98,7 @@ const HeaderNavigation = ({
       sectionId: o.sectionId
     })))
     updateFeed(filters)
-  }, [updateFeed])
+  }, [setSelectedClasses, updateFeed])
 
   useEffect(() => {
     if (state?.selectedClasses) {
@@ -161,23 +176,17 @@ const HeaderNavigation = ({
 
   return (
     <Box>
-      <Tooltip
-        id={9046}
-        placement="left"
-        text="Sort the Class Feed by selecting classes in this dropdown menu. :)"
-      >
-        <ClassMultiSelect
-          noEmpty
-          variant='standard'
-          allLabel={`${firstName}'s Classes`}
-          containerStyle={classes.classSelector}
-          textFieldStyle={classes.classTextField}
-          externalOptions={options}
-          placeholder='Select Classes...'
-          selected={selectedClasses}
-          onSelect={onSelect}
-        />
-      </Tooltip>
+      <ClassMultiSelect
+        noEmpty
+        variant='standard'
+        allLabel={`${firstName}'s Classes`}
+        containerStyle={classes.classSelector}
+        textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
+        externalOptions={options}
+        placeholder='Select Classes...'
+        selected={selectedClasses}
+        onSelect={onSelect}
+      />
       <Box className={classes.links}>
         <Button
           onClick={navigate('/feed', {})}
@@ -205,14 +214,21 @@ const HeaderNavigation = ({
         >
             Bookmarks
         </Button>
-        {selectedClasses.length === 1 && (
-          <>
-            <span> | </span>
-            <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')} >
-      Classmates
-            </Button>
-          </>
-        )}
+        <>
+          <span> | </span>
+          <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')} >
+            <Tooltip
+              id={9057}
+              placement="right"
+              okButton='End'
+              totalSteps={3}
+              completedSteps={3}
+              text='You can see a list of your classmates in each class or all your classes at once by selecting “Classmates”. 🎉'
+            >
+              {expertMode ? 'Students' : 'Classmates'}
+            </Tooltip>
+          </Button>
+        </>
 
         {selectedClasses.length === 1 && !expertMode && (
           <>

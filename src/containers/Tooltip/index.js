@@ -8,9 +8,11 @@ import MuiTooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box'
 import Zoom from '@material-ui/core/Fade';
 import { withRouter } from 'react-router';
 import cx from 'clsx'
+import cryptoRandomString from 'crypto-random-string'
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 
 const styles = theme => ({
@@ -33,7 +35,8 @@ const styles = theme => ({
   button: {
     borderColor: theme.circleIn.palette.primaryText1,
     color: theme.circleIn.palette.primaryText1,
-    marginTop: 16,
+    marginTop: theme.spacing(),
+    marginLeft: 'auto',
     marginBottom: 2,
   },
   close: {
@@ -57,8 +60,11 @@ type Props = {
   location: {pathname: string},
   placement: string,
   text: string,
+  okButton: ?string,
   viewedOnboarding: boolean,
-  viewedTooltips: Array<number>
+  viewedTooltips: Array<number>,
+  totalSteps: ?number,
+  completedSteps: ?number
 };
 
 const CHAT = 3292;
@@ -86,12 +92,34 @@ const EXPERT_BATCH_CHAT_SELECT_CLASSES = 9049
 const EXPERT_POST_SELECT_CLASSES = 9050
 const EXPERT_MULTIPLE_CLASS_SELECT = 9051
 
+const NEW_FEED_CLASSES = 9054
+const STUDENT_FEED_CLASSES = 9055
+const STUDENT_CLASS_LEADERBOARD = 9056
+const STUDENT_CLASSMATES = 9057
+
 
 // not an actual tooltip
 // eslint-disable-next-line
 const GET_APP_POPUP = 4432;
+// eslint-disable-next-line
+const ONBOARDING_EXPERT = 9052
+// eslint-disable-next-line
+const ONBOARDING_NOTES = 8453
 
 const TRANSITION_TIME = 750;
+
+const TooltipStep = ({ completed }) => (
+  <div
+    style={{
+      borderRadius: '50%',
+      margin: 4,
+      width: 12,
+      height:12,
+      backgroundColor: completed ? '#FFFFFF' : 'transparent',
+      border: '1px solid #FFFFFF'
+    }}
+  />
+)
 
 const Tooltip = ({
   children,
@@ -104,8 +132,11 @@ const Tooltip = ({
   location: { pathname },
   placement,
   text,
+  okButton = 'Got it',
   viewedOnboarding,
-  viewedTooltips
+  viewedTooltips,
+  totalSteps,
+  completedSteps,
 }: Props) => {
 
   const [open, setOpen] = useState(false);
@@ -128,6 +159,18 @@ const Tooltip = ({
       result = false;
     } else {
       switch (id) {
+      case STUDENT_CLASSMATES:
+        result = viewedTooltips.includes(STUDENT_CLASS_LEADERBOARD)
+        break
+      case STUDENT_CLASS_LEADERBOARD:
+        result = viewedTooltips.includes(STUDENT_FEED_CLASSES)
+        break
+      case STUDENT_FEED_CLASSES:
+        result = viewedTooltips.includes(NEW_FEED_CLASSES)
+        break
+      case NEW_FEED_CLASSES:
+        result = viewedTooltips.includes(NEW_POST)
+        break
       case EXPERT_MULTIPLE_CLASS_SELECT:
         result = viewedTooltips.includes(EXPERT_POST_SELECT_CLASSES)
         break
@@ -215,7 +258,13 @@ const Tooltip = ({
 
   const overDialog = useMemo(() => {
     return cx(
-      (id === FLASHCARD_TOP || id === FLASHCARD_BOTTOM || id === QUICKNOTES_SAVED || id === EXPERT_BATCH_CHAT_SELECT_CLASSES)
+      ([
+        FLASHCARD_TOP,
+        FLASHCARD_BOTTOM,
+        QUICKNOTES_SAVED,
+        EXPERT_MULTIPLE_CLASS_SELECT,
+        EXPERT_BATCH_CHAT_SELECT_CLASSES
+      ].includes(id))
       && classes.overDialog)
   }, [classes.overDialog, id])
 
@@ -244,13 +293,33 @@ const Tooltip = ({
             <Typography variant="subtitle1" className={classes.text}>
               {text}
             </Typography>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              onClick={(e) => onClick(e)}
+            <Box
+              display='flex'
             >
-              Got it
-            </Button>
+              {totalSteps > 0 && (
+                <Box
+                  display='flex'
+                  position='absolute'
+                  right='45%'
+                  bottom='8px'
+                >
+                  <TooltipStep completed />
+                  {[...Array(completedSteps)].map(() => (
+                    <TooltipStep key={cryptoRandomString({ length: 10, type: 'base64' })} completed />
+                  ))}
+                  {[...Array(totalSteps - completedSteps)].map(() => (
+                    <TooltipStep key={cryptoRandomString({ length: 10, type: 'base64' })} />
+                  ))}
+                </Box>
+              )}
+              <Button
+                className={classes.button}
+                variant="outlined"
+                onClick={(e) => onClick(e)}
+              >
+                {okButton}
+              </Button>
+            </Box>
           </div>
         </div>
       }

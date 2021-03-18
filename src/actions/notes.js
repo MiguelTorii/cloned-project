@@ -176,3 +176,7 @@ export const deleteNoteAction = ({ note }: {note: NotesType}) => async (dispatch
     dispatch(loadingAction({ loading: false }))
   }
 };
+
+export const exitNoteTaker = ({ category, objectId, type, sectoinId }) => async() => {
+  logEventLocally({ category, objectId, sectoinId, type });
+}

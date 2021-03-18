@@ -59,7 +59,8 @@ type Props = {
 type State = {
   feedId: ?number,
   report: ?Object,
-  deletePost: ?Object
+  deletePost: ?Object,
+  selectedClasses: Array
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -67,6 +68,7 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: null,
     report: null,
     deletePost: null,
+    selectedClasses: []
   };
 
   mounted: boolean;
@@ -76,6 +78,11 @@ class Feed extends React.PureComponent<Props, State> {
     if (from !== prevProps.from) {
       this.handleUpdateFilter()
     }
+  }
+
+
+  setSelectedClasses = selectedClasses => {
+    this.setState({ selectedClasses })
   }
 
   handleUpdateFilter = () => {
@@ -95,7 +102,12 @@ class Feed extends React.PureComponent<Props, State> {
       updateFilter,
       feed: { scrollData },
       resetScrollData,
+      // push,
+      // user: {
+      // expertMode
+      // }
     }= this.props;
+    // if (!expertMode && !classId) push('/')
 
     if (classId >= 0 && sectionId >= 0) {
       updateFilter({
@@ -229,12 +241,11 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   updateFeed = async (filters) => {
-    const { updateFilter, fetchFeed } = this.props
+    const { updateFilter } = this.props
     await updateFilter({
       field: 'userClasses',
       value: filters
     });
-    await fetchFeed()
   }
 
   handleUserClick = ({ userId }: { userId: string }) => {
@@ -326,7 +337,10 @@ class Feed extends React.PureComponent<Props, State> {
       classes,
       push,
       user: {
-        data: { userId, firstName },
+        data: {
+          userId,
+          firstName
+        },
         userClasses: { classList },
         expertMode
       },
@@ -348,7 +362,13 @@ class Feed extends React.PureComponent<Props, State> {
       feedId: fromFeedId,
       campaign
     } = this.props;
-    const { feedId, report, deletePost, openClassmates } = this.state;
+    const {
+      feedId,
+      report,
+      deletePost,
+      openClassmates,
+      selectedClasses
+    } = this.state;
 
 
     let courseName = '';
@@ -363,12 +383,16 @@ class Feed extends React.PureComponent<Props, State> {
           <div className={classes.root}>
             <ClassmatesDialog
               userId={userId}
+              selectedClasses={selectedClasses}
               userClasses={userClasses}
               close={this.closeClassmatesDialog}
+              expertMode={expertMode}
               state={openClassmates}
               courseDisplayName={this.courseDisplayName()}
             />
             <HeaderNavigation
+              selectedClasses={selectedClasses}
+              setSelectedClasses={this.setSelectedClasses}
               firstName={firstName}
               state={state}
               classList={classList}
@@ -402,7 +426,7 @@ class Feed extends React.PureComponent<Props, State> {
             <Tooltip
               id={9045}
               hidden={!expertMode}
-              placement="right"
+              placement="right-start"
               text="When you're in Expert Mode, you see posts from all your classes at once."
             >
               <FeedList

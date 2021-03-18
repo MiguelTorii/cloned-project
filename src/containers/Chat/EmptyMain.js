@@ -3,6 +3,8 @@
 import React from 'react'
 import EmptyMainChat from 'assets/svg/empty_main_chat.svg'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import ExpertEmptyChat from 'assets/svg/expertEmptyChat.svg'
 import { makeStyles } from '@material-ui/core/styles'
 import LoadImg from 'components/LoadImg'
 
@@ -29,6 +31,16 @@ const useStyles = makeStyles((theme) => ({
     color: theme.circleIn.palette.primaryText2,
     marginTop: theme.spacing(),
     textAlign: 'center'
+  },
+  expertTitle: {
+    fontSize: 24,
+    fontWeight: 400
+  },
+  expertContainerText: {
+    margin: theme.spacing(2, 0)
+  },
+  expertContainer: {
+    height: '100%'
   }
 }))
 
@@ -38,8 +50,38 @@ type Props = {
 
 const imageStyle = { maxWidth: '100%' }
 
-const EmptyMain = ({noChannel}: Props) => {
+const EmptyMain = ({ noChannel, expertMode }: Props) => {
   const classes = useStyles()
+
+  if (expertMode) return (
+    <Box
+      justifyContent='center'
+      className={classes.expertContainer}
+      alignItems='center'
+      display='flex'
+      flexDirection='column'
+    >
+      <Box className={classes.expertContainerText}>
+        <Box
+          justifyContent='center'
+          alignItems='center'
+          display='flex'
+          flexDirection='column'
+        >
+          <Typography className={classes.expertTitle}>
+            Hey! <span role='img' aria-label='wave'>👋</span> We’re so happy you’re here!
+          </Typography>
+          <Typography className={classes.expertTitle}>
+We bet your students are too, introduce yourself
+          </Typography>
+          <Typography className={classes.expertTitle}>
+by sending a message to all of your classes!
+          </Typography>
+        </Box>
+      </Box>
+      <LoadImg url={ExpertEmptyChat} />
+    </Box>
+  )
 
   return (
     <div className={classes.container}>

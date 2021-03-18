@@ -12,15 +12,15 @@ const circleInTheme = {
   brand: '#03A9F4',
   action: '#49afd9',
   rowSelection: '#324f61',
-  primaryBackground: '#1b2a32',
-  modalBackground: '#22343c',
+  primaryBackground: '#18191A',
+  modalBackground: '#37393E',
   borders: '#566c77',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
-  secondaryText: '#ffffff',
+  secondaryText: '#E4E6EA',
   normalButtonText1: '#090909',
   textOffwhite: '#f9f9f9',
-  appBar: '#37474f', // validate
+  appBar: '#3A3B3B', // validate
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
   dividerColor: '#ffffff', // validate
@@ -35,7 +35,7 @@ const circleInTheme = {
   danger: '#f34f47',
   flashcardBackground: '#324F61',
   deepSeaOcean: '#225D89',
-  hoverMenu: '#2e434f',
+  hoverMenu: '#3A3B3B',
   primaryii222: '#1e88e5',
   textSubtitleBody: '#ADBBC4'
 };
@@ -99,6 +99,7 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
+    color: circleInTheme.primaryText1,
     fontSize: 14,
     fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
   },
@@ -203,6 +204,11 @@ const theme = createMuiTheme({
     MuiDrawer: {
       paperAnchorDockedLeft: {
         borderRight: 'none'
+      }
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: 10,
       }
     },
     MuiBadge: {

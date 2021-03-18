@@ -131,7 +131,8 @@ const UserNotesEditor = ({
   currentNote,
   updateNote,
   openConfirmDelete,
-  handleClose
+  handleClose,
+  exitNoteTaker
 }) => {
   const classes = useStyles();
   const [note, setNote] = useState(currentNote)
@@ -186,7 +187,13 @@ const UserNotesEditor = ({
       setPrevSaved(note)
     }
     handleClose()
-  }, [handleClose, note, prevSaved, updateNote])
+    exitNoteTaker({
+      category: 'Note',
+      objectId: note.id,
+      type: 'Closed',
+      sectionId: note.sectionId
+    })
+  }, [exitNoteTaker, handleClose, note, prevSaved, updateNote])
 
   useEffect(() => {
     if (currentNote !== null) {
@@ -336,7 +343,7 @@ const UserNotesEditor = ({
           </Grid>
         )}
       </Dialog>}
-    </div >
+    </div>
   );
 }
 

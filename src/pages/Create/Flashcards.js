@@ -17,16 +17,16 @@ type Props = {
 };
 
 const CreateShareLinkPage = (props: Props) => {
-  const {match: {params: { flashcardId }}} = props
+  const { match: { params: { flashcardId } } } = props
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container>
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={12} md={9}>
             <CreateFlashcards flashcardId={flashcardId}/>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={0} md={3}>
             <PostTips type="flashcards" />
           </Grid>
         </Grid>

@@ -325,12 +325,12 @@ const CreateQuestion = ({
           buttonLabel={questionId ? 'Save' : 'Create'}
         >
           <Grid container alignItems="center">
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">
                 What's your question?
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <OutlinedTextValidator
                 label="Enter your question here"
                 onChange={handleTextChange}
@@ -340,10 +340,10 @@ const CreateQuestion = ({
                 errorMessages={['Title is required']}
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
               <ToolbarTooltip toolbar={questionToolbar}/>
               <RichTextEditor
                 setEditor={setEditor}
@@ -353,10 +353,10 @@ const CreateQuestion = ({
               />
             </Grid>
 
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={12} md={2}>
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12} sm={12} md={10}>
               {canBatchPost && !isEdit ? (
                 <Tooltip
                   id={9050}
@@ -378,13 +378,13 @@ const CreateQuestion = ({
             </Grid>
 
             {!questionId && !canBatchPost && (
-              <Grid item xs={12} sm={2}>
+              <Grid item xs={12} sm={12} md={2}>
                 <Typography variant="subtitle1">Ask Anonymously</Typography>
               </Grid>
             )}
 
             {!questionId && !canBatchPost && (
-              <Grid item xs={12} sm={10}>
+              <Grid item xs={12} sm={12} md={10}>
                 <AnonymousButton
                   active={anonymousActive}
                   toggleActive={toggleAnonymousActive}

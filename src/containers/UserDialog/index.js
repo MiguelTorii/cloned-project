@@ -1,10 +1,8 @@
 // @flow
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles'
 import type { State as StoreState } from 'types/state';
-import * as userActions from 'actions/user'
 import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles((theme) => ({
@@ -31,14 +29,9 @@ const useStyles = makeStyles((theme) => ({
 
 const UserDialog = ({
   user,
-  clear
 }) => {
-  const { dialogMessage: { title }, isLoading } = user
+  const { dialogMessage: { title } } = user
   const classes = useStyles()
-
-  useEffect(() => {
-    if (!isLoading) setTimeout(() => clear(), 2000)
-  }, [clear, isLoading])
 
   if(!title) return null
   return (
@@ -54,15 +47,7 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user,
 })
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      clear: userActions.clearDialogMessage
-    },
-    dispatch
-  )
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(UserDialog)

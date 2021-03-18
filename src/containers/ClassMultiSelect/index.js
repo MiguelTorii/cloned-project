@@ -12,6 +12,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Tooltip from 'containers/Tooltip'
 import Paper from '@material-ui/core/Paper'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     color: theme.circleIn.palette.primaryText1
+  },
+  dropdownIcon: {
+    color: theme.circleIn.palette.brand
   }
 }));
 
@@ -133,6 +137,27 @@ const ClassMultiSelect = ({
             />
           ))
         }
+        }
+        popupIcon={
+          <Tooltip
+            id={9056}
+            placement="right"
+            okButton='Got it!'
+            totalSteps={3}
+            completedSteps={2}
+            text="To check out your Class Leaderboard, select one class at a time... 🏆"
+          >
+            <Tooltip
+              id={9055}
+              placement="right"
+              okButton='Got it!'
+              totalSteps={3}
+              completedSteps={1}
+              text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
+            >
+              <ArrowDropDownIcon className={classes.dropdownIcon} />
+            </Tooltip>
+          </Tooltip>
         }
         renderInput={(params) => (
           <TextField
