@@ -392,6 +392,7 @@ const Main = ({
   const videoEnabled = useMemo(() => (campaign && campaign.variation_key && campaign.variation_key !== 'hidden'), [campaign])
 
   const unregisteredUserMessage = useMemo(() => {
+    if (newChannel) return null
     if (otherUser && hasUnregistered && messageItems.length !== 1) {
       return (
         <Typography
@@ -413,7 +414,7 @@ const Main = ({
     }
 
     return null
-  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, otherUser])
+  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser])
 
   return (
     <div className={classes.root}>
@@ -443,6 +444,7 @@ const Main = ({
           <EmptyMain
             otherUser={otherUser}
             noChannel={!channel}
+            newChannel={newChannel}
             expertMode={expertMode}
           />
         )}

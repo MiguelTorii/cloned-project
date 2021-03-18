@@ -311,6 +311,13 @@ export const handleInitChat = () =>
       dispatch(initClient({ client }));
       dispatch(initChannels({ channels, local }))
 
+      if (
+        channels.length > 0 &&
+        local[channels[0]]
+      ) {
+        setCurrentChannel(local[channels[0]].twilioChannel)
+      }
+
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {
           const { sid } = channel

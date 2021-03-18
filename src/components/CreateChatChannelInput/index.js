@@ -11,6 +11,7 @@ import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutline
 import * as chatActions from 'actions/chat'
 import { bindActionCreators } from 'redux'
 import { sendMessage } from 'api/chat'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AutoComplete from '../AutoComplete'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
@@ -158,11 +159,11 @@ const CreateChatChannelInput = ({
     }
   }, [users, chatType, client, name, onOpenChannel, type, createMessage])
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (users.length === 0) setError(true)
     else {
       setError(false)
-      onSubmit({ chatType, name, type, selectedUsers: users })
+      await onSubmit({ chatType, name, type, selectedUsers: users })
       setName('')
       setType('')
       setUsers([])
@@ -177,10 +178,10 @@ const CreateChatChannelInput = ({
       handleClearCreateMessage()
     }
 
-    if (createMessage) {
+    if (createMessage && !isLoading) {
       createChannel()
     }
-  }, [createMessage, handleClearCreateMessage, handleSubmit])
+  }, [createMessage, handleClearCreateMessage, handleSubmit, isLoading])
 
   return (
     <ValidatorForm
@@ -208,9 +209,10 @@ const CreateChatChannelInput = ({
           className={classes.button}
           onClick={handleSubmit}
           variant="contained"
+          disabled={isLoading}
           color="primary"
         >
-          <CheckCircleOutlineRoundedIcon/>
+          {isLoading ? <CircularProgress /> : <CheckCircleOutlineRoundedIcon/>}
         </IconButton>
         <BatchMessage
           closeNewChannel={closeNewChannel}

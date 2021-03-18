@@ -55,10 +55,10 @@ type Props = {
 
 const imageStyle = { maxWidth: '100%' }
 
-const EmptyMain = ({ otherUser, noChannel, expertMode }: Props) => {
+const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
   const classes = useStyles()
 
-  if (otherUser && !otherUser.registered) {
+  if (otherUser && !otherUser.registered && !newChannel) {
     return (
       <Box
         justifyContent='center'

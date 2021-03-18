@@ -153,10 +153,6 @@ const Chat = ({
   }, [local])
 
   useEffect(() => {
-    if (channelList.length > 0 && !currentChannel && !newChannel) setCurrentChannel(local[channelList[0]].twilioChannel)
-  }, [channelList, currentChannel, local, newChannel, setCurrentChannel])
-
-  useEffect(() => {
     if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0)
