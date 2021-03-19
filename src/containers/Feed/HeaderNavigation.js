@@ -244,9 +244,10 @@ const HeaderNavigation = ({
               id={9057}
               placement="right"
               okButton='End'
-              totalSteps={3}
-              completedSteps={3}
+              totalSteps={2}
+              completedSteps={2}
               text='You can see a list of your classmates in each class or all your classes at once by selecting “Classmates”. 🎉'
+              delay={500}
             >
               {expertMode ? 'Students' : 'Classmates'}
             </Tooltip>

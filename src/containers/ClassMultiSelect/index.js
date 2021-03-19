@@ -143,16 +143,18 @@ const ClassMultiSelect = ({
             id={9056}
             placement="right"
             okButton='Got it!'
-            totalSteps={3}
-            completedSteps={2}
+            delay={500}
+            totalSteps={2}
+            completedSteps={1}
             text="To check out your Class Leaderboard, select one class at a time... 🏆"
           >
             <Tooltip
               id={9055}
               placement="right"
               okButton='Got it!'
-              totalSteps={3}
-              completedSteps={1}
+              totalSteps={2}
+              delay={500}
+              completedSteps={0}
               text="You can now easily switch to see all your classes using this drop-down menu! 🎉"
             >
               <ArrowDropDownIcon className={classes.dropdownIcon} />

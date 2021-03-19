@@ -132,8 +132,6 @@ const HomeItem = ({
         id={9054}
         placement="right"
         okButton='Okay!'
-        totalSteps={3}
-        completedSteps={0}
         text="Hey! 👋 We moved “classes”.
 Classes will not appear in this left navigation.
 "
