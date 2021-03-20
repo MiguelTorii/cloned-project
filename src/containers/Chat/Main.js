@@ -112,16 +112,15 @@ const Main = ({
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null);
+  const memberKeys = useMemo(() => Object.keys(members), [members])
   const otherUser = useMemo(() => {
-    const keys = Object.keys(members)
-    if (keys.length !== 2) return null
-    return members[keys.find(key => key !== user.data.userId)]
-  }, [members, user])
+    if (memberKeys.length !== 2) return null
+    return members[memberKeys.find(key => key !== user.data.userId)]
+  }, [memberKeys, members, user.data.userId])
 
   const hasUnregistered = useMemo(() => {
-    const keys = Object.keys(members)
-    return Boolean(keys.find(key => !members[key].registered))
-  }, [members])
+    return Boolean(memberKeys.find(key => !members[key].registered))
+  }, [memberKeys, members])
 
   const {
     expertMode,
@@ -422,7 +421,7 @@ const Main = ({
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
           <Typography className={classes.headerTitle}>{title}</Typography>
-          { otherUser?.registered &&
+          { (otherUser?.registered || memberKeys.length > 2) &&
             videoEnabled &&
             <Button
               variant='contained'
