@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700
   },
   addButton: {
+    minWidth: 164,
     background: 'linear-gradient(180deg, #94DAF9 17.71%, #1E88E5 90.44%)',
     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
     borderRadius: 100,

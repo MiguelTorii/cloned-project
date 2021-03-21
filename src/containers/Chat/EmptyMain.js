@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   titleMessage: {
+    marginBottom: theme.spacing(2),
     fontSize: 26,
     color: theme.circleIn.palette.primaryText1,
     marginTop: theme.spacing(),

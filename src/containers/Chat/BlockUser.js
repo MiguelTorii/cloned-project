@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700
   },
   blockButton: {
+    minWidth: 164,
     background: '#FFFFFF',
     marginBottom: theme.spacing(1/2),
     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',

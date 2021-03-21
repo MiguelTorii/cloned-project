@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700
   },
   blockButton: {
+    minWidth: 164,
     background: theme.circleIn.palette.danger,
     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
     borderRadius: 100

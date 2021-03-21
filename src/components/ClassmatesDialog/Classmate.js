@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     backgroundColor: theme.circleIn.palette.sendMessageButton,
     borderRadius: theme.spacing(2),
+    minWidth: 163,
     color: theme.circleIn.palette.textOffwhite
   },
   videoChat: {
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   invite: {
     fontWeight: 'bold',
     color: theme.circleIn.palette.textOffwhite,
+    minWidth: 163,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.greenInvite,
     borderRadius: theme.spacing(2),
