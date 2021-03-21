@@ -164,7 +164,7 @@ const Main = ({
 
   useEffect(() => {
     const init = async () => {
-      setTitle(getTitle(channel, userId))
+      setTitle(getTitle(channel, userId, local[channel.sid].members))
       try {
         channel.setAllMessagesConsumed()
 

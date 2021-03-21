@@ -71,6 +71,7 @@ type Props = {
   classes: Object,
   user: UserState,
   channel: Object,
+  localChannel: Object,
   getMembers: Function,
   onClose: Function,
   onBlock: Function,
@@ -131,6 +132,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     try {
       const {
         channel,
+        localChannel,
         user: {
           data: { userId }
         },
@@ -141,7 +143,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         console.log(err);
       }
 
-      const title = getTitle(channel, userId);
+      const title = getTitle(channel, userId, localChannel.members);
       this.setState({ title });
 
       try {
@@ -184,17 +186,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
         }
         this.handleScrollToBottom();
       });
-      channel.on(
-        'updated',
-        async ({ channel: updatedChannel, updateReasons }) => {
-          if (!this.mounted) return;
-          if (updateReasons.indexOf('attributes') > -1) {
-            this.setState({
-              title: getTitle(updatedChannel, userId)
-            });
-          }
-        }
-      );
 
       channel.on('typingStarted', member => {
         if (!this.mounted) return;

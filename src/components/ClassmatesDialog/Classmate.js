@@ -17,6 +17,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import ChatIcon from '@material-ui/icons/Chat';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
+import InviteIcon from 'assets/svg/invite-icon.svg'
 
 import clsx from 'clsx'
 
@@ -46,6 +47,14 @@ const useStyles = makeStyles(theme => ({
     color: theme.circleIn.palette.textOffwhite,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.brand,
+    minWidth: 163,
+    borderRadius: theme.spacing(2),
+  },
+  invite: {
+    fontWeight: 'bold',
+    color: theme.circleIn.palette.textOffwhite,
+    marginLeft: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.greenInvite,
     borderRadius: theme.spacing(2),
   }
 }));
@@ -72,8 +81,8 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
   const [loadingMessage, setLoadingMessage] = useState(false)
   const [loadingVideo, setLoadingVideo] = useState(false)
 
-  const openChat = useCallback(isVideo => {
-    if (isVideo) setLoadingVideo(true)
+  const openChat = useCallback((videoButton, isVideo) => () => {
+    if (videoButton) setLoadingVideo(true)
     else setLoadingMessage(true)
     openChannelWithEntity({
       entityId: classmate.userId,
@@ -86,7 +95,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
     setTimeout(() => {
       setLoadingVideo(false)
       setLoadingMessage(false)
-    }, 2000)
+    }, 4000)
   }, [classmate.firstName, classmate.lastName, classmate.notRegistered, classmate.userId, openChannelWithEntity])
 
   const classList = useMemo(() => {
@@ -104,6 +113,11 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
     : ''
 }`
     )},[classmate.classes, courseDisplayName])
+
+  const videoButtonText = useMemo(() => {
+    if (loadingVideo) return <CircularProgress size={20}/>
+    return classmate.notRegistered ? 'Invite to CircleIn' : 'Study Room'
+  }, [classmate.notRegistered, loadingVideo])
 
 
   return (
@@ -129,7 +143,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
         <Button
           className={classes.sendMessage}
           variant="contained"
-          onClick={() => openChat(false)}
+          onClick={openChat(false, false)}
           startIcon={<ChatIcon />}
           color="primary"
         >
@@ -139,17 +153,18 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
           videoEnabled &&
           <Button
             variant="contained"
-            disabled={classmate.notRegistered}
-            className={classes.videoChat}
-            startIcon={
-              <VideocamRoundedIcon
-                color={classmate.notRegistered ? 'disabled' : 'inherit'}
-              />
+            className={classmate.notRegistered
+              ? classes.invite
+              : classes.videoChat
             }
-            onClick={() => openChat(true)}
+            startIcon={!classmate.notRegistered
+              ? <VideocamRoundedIcon />
+              : <img alt='invite' src={InviteIcon} />
+            }
+            onClick={openChat(true, !classmate.notRegistered)}
             color="primary"
           >
-            {loadingVideo ? <CircularProgress size={20} /> : 'Study Room'}
+            {videoButtonText}
           </Button>
         }
       </ListSubheader>

@@ -193,7 +193,11 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           sid: action.payload.channel.sid,
           unread: 0,
           twilioChannel: action.payload.channel,
-          title: getTitle(action.payload.channel, action.payload.userId),
+          title: getTitle(
+            action.payload.channel,
+            action.payload.userId,
+            action.payload.members
+          ),
           members: action.payload.members,
           lastMessage: {
             user: {

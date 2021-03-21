@@ -259,11 +259,9 @@ const FloatingChat = ({
 
   const handleChannelCreated = ({
     channel,
-    message,
     startVideo = false
   }: {
     channel: Object,
-    messsage: string,
     startVideo: boolean
   }) => {
     handleNewChannelClose()
@@ -297,6 +295,7 @@ const FloatingChat = ({
               getMembers={getMembers}
               user={user}
               channel={item}
+              localChannel={local[item.sid]}
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
