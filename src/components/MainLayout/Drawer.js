@@ -453,17 +453,26 @@ const Drawer = ({
           // landingPageCampaign={landingPageCampaign}
           // openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
-        {!expertMode && <DrawerItem
-          OnIcon={<MyClassOn />}
-          primaryText='My Classes'
-          pathname={pathname}
-          component={MyLink}
-          link="/classes"
-          OffIcon={<MyClassOff />}
-          listItemClass={classNames(
-            ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
-          )}
-        />}
+        {!expertMode && (
+          <Tooltip
+            id={9054}
+            placement="right"
+            okButton='Okay!'
+            text="Hey! You can access your classes by clicking “My Classes”"
+          >
+            <DrawerItem
+              OnIcon={<MyClassOn />}
+              primaryText='My Classes'
+              pathname={pathname}
+              component={MyLink}
+              link="/classes"
+              OffIcon={<MyClassOff />}
+              listItemClass={classNames(
+                ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+              )}
+            />
+          </Tooltip>
+        )}
         {!landingPageCampaign && (
           <DrawerItem
             OnIcon={<WorkflowIconOn />}

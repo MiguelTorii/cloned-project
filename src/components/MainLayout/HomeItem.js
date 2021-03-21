@@ -17,7 +17,6 @@ import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on
 // import Typography from '@material-ui/core/Typography';
 // import SubMenu from 'components/MainLayout/SubMenu'
 // import { cypher, decypherClass } from 'utils/crypto'
-import Tooltip from 'containers/Tooltip'
 
 type Props = {
   // newClassExperience: boolean,
@@ -128,39 +127,30 @@ const HomeItem = ({
     <div
       className="tour-onboarding-study"
     >
-      <Tooltip
-        id={9054}
-        placement="right"
-        okButton='Okay!'
-        text="Hey! 👋 We moved “classes”.
-Classes will not appear in this left navigation.
-"
+      <ListItem
+        button
+        component={MyLink}
+        onMouseOver={onHover(true)}
+        onMouseLeave={onHover(false)}
+        link='/feed'
+        // link={classesPath}
+        className={classNames(
+          classes.item,
+          // isHome ? classes.currentPath : null
+          ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname) ? classes.currentPath : classes.otherPath
+        )}
       >
-        <ListItem
-          button
-          component={MyLink}
-          onMouseOver={onHover(true)}
-          onMouseLeave={onHover(false)}
-          link='/feed'
-          // link={classesPath}
-          className={classNames(
-            classes.item,
-            // isHome ? classes.currentPath : null
-            ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname) ? classes.currentPath : classes.otherPath
-          )}
-        >
-          <ListItemIcon className={classes.menuIcon}>
-            {hoverState || ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname)
-              ? <ClassFeedIconOn />
-              : <ClassFeedIconOff />
-            }
-          </ListItemIcon>
-          <ListItemText
+        <ListItemIcon className={classes.menuIcon}>
+          {hoverState || ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname)
+            ? <ClassFeedIconOn />
+            : <ClassFeedIconOff />
+          }
+        </ListItemIcon>
+        <ListItemText
           // primary={!newClassExperience ? "Study" : "Classes"}
-            primary='Class Feeds'
-          />
-        </ListItem>
-      </Tooltip>
+          primary='Class Feeds'
+        />
+      </ListItem>
       {/* {classList.map(cl => cl && ( */}
       {/* <div */}
       {/* key={cl.sectionId} */}
