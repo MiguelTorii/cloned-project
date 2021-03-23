@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useMemo, memo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, memo, useCallback } from 'react'
 
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Box from '@material-ui/core/Box'
@@ -64,6 +64,7 @@ const HeaderNavigation = ({
   updateFeed,
   state
 }: Props) => {
+  const [prevFilters, setPrevFilters] = useState('')
   const options = useMemo(() => {
     try {
       const newClassList = {}
@@ -97,8 +98,11 @@ const HeaderNavigation = ({
       classId: o.classId,
       sectionId: o.sectionId
     })))
-    updateFeed(filters)
-  }, [setSelectedClasses, updateFeed])
+    if (prevFilters !== String(filters)) {
+      setPrevFilters(String(filters))
+      updateFeed(filters)
+    }
+  }, [prevFilters, setSelectedClasses, updateFeed])
 
   useEffect(() => {
     const query = queryString.parse(search)

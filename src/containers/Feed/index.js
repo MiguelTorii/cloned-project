@@ -74,7 +74,9 @@ class Feed extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   componentDidUpdate(prevProps) {
-    const { from } = this.props
+    const {
+      from,
+    } = this.props
     if (from !== prevProps.from) {
       this.handleUpdateFilter()
     }
@@ -246,6 +248,7 @@ class Feed extends React.PureComponent<Props, State> {
       field: 'userClasses',
       value: filters
     });
+    this.handleFetchFeed()
   }
 
   handleUserClick = ({ userId }: { userId: string }) => {
