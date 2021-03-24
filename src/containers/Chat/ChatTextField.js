@@ -200,8 +200,8 @@ const ChatTextField = ({
   }, [])
 
   const handleSelect = useCallback(emoji => {
-    setMessage(m => `${m}${emoji}`)
-  }, [setMessage])
+    setMessage(`${message}${emoji}`)
+  }, [message, setMessage])
 
 
   return (
