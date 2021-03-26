@@ -25,12 +25,13 @@ const styles = theme => ({
   },
   root: {
     ...theme.mixins.gutters(),
+    backgroundColor: theme.circleIn.palette.feedBackground,
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   marginBottom: {
     marginBottom: theme.spacing()
@@ -66,6 +67,7 @@ const styles = theme => ({
   },
   loader: {
     position: 'absolute',
+    zIndex: 9999,
     bottom: 0,
     width: '100%',
     display: 'flex',
@@ -132,8 +134,23 @@ type Props = {
 type State = {};
 
 class FeedList extends React.PureComponent<Props, State> {
-  state = {};
+  // eslint-disable-next-line no-undef
+  scrollParentRef: ?HTMLDivElement;
 
+  selectedRef: {
+    // eslint-disable-next-line no-undef
+    el: ?HTMLDivElement
+  };
+
+  mounted: boolean;
+
+  constructor(props) {
+    super(props)
+    this.quillRefs = {}
+    this.newComments = {}
+  }
+
+  // eslint-disable-next-line react/sort-comp
   componentDidMount = () => {
     this.mounted = true;
   };
@@ -164,13 +181,13 @@ class FeedList extends React.PureComponent<Props, State> {
             flexDirection='column'
           >
             <Typography className={classes.expertTitle}>
-          Welcome! <span role='img' aria-label='wave'>👋</span> We’ve been waiting for you!
+              Welcome! <span role='img' aria-label='wave'>👋</span> We’ve been waiting for you!
             </Typography>
             <Typography className={classes.expertTitle}>
-          Start supporting your students by posting a
+              Start supporting your students by posting a
             </Typography>
             <Typography className={classes.expertTitle}>
-          “hello” and your “office hours”. :)
+              “hello” and your “office hours”. :)
             </Typography>
           </Box>
         </Box>
@@ -212,15 +229,13 @@ class FeedList extends React.PureComponent<Props, State> {
     }
   };
 
-  // eslint-disable-next-line no-undef
-  scrollParentRef: ?HTMLDivElement;
+  setQuillRefs = (feedId, ref) => {
+    this.quillRefs[feedId] = ref
+  }
 
-  selectedRef: {
-    // eslint-disable-next-line no-undef
-    el: ?HTMLDivElement
-  };
-
-  mounted: boolean;
+  setNewComments = (feedId, content) => {
+    this.newComments[feedId] = content
+  }
 
   render() {
     const {
@@ -268,7 +283,7 @@ class FeedList extends React.PureComponent<Props, State> {
               loadMore={onLoadMore}
               hasMore={hasMore}
               useWindow
-              initialLoad={false}
+              initialLoad
               getScrollParent={() => this.scrollParentRef}
             >
               {items.map(item => (
@@ -288,6 +303,10 @@ class FeedList extends React.PureComponent<Props, State> {
                   onReport={onReport}
                   onDelete={onDelete}
                   onUserClick={onUserClick}
+                  setQuillRefs={this.setQuillRefs}
+                  quillRefs={this.quillRefs}
+                  setNewComments={this.setNewComments}
+                  newComments={this.newComments}
                 />
               ))
               }

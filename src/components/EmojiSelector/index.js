@@ -48,7 +48,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, emoIconStyle } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -62,7 +62,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
           aria-owns={open ? 'simple-popper' : undefined}
           aria-haspopup="true"
         >
-          <SentimentSatisfiedOutlinedIcon />
+          <SentimentSatisfiedOutlinedIcon className={emoIconStyle}/>
         </IconButton>
         <Popover
           id="simple-popper"

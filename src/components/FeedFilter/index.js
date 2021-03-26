@@ -48,7 +48,8 @@ const styles = theme => ({
     paddingBottom: theme.spacing(),
     margin: theme.spacing(),
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: theme.circleIn.palette.feedBackground
   },
   filtersHeader: {
     display: 'flex',

@@ -1,13 +1,16 @@
 // @flow
 import React, { Fragment } from 'react';
-import moment from 'moment';
 import { Link as RouterLink } from 'react-router-dom';
+import moment from 'moment';
+import queryString from 'query-string';
+
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -19,10 +22,12 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
-import queryString from 'query-string';
+import ShareIcon from '@material-ui/icons/Share';
+
 import TutorBadge from 'components/TutorBadge'
 import CustomQuill from 'components/CustomQuill'
-import Tooltip from '../../containers/Tooltip';
+import Tooltip from 'containers/Tooltip';
+import SharePost from 'containers/SharePost';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -103,7 +108,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
   };
 
   state = {
-    moreAnchorEl: null
+    moreAnchorEl: null,
+    open: false
   };
 
   handleMenuOpen = event => {
@@ -126,6 +132,11 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     onDelete();
   };
 
+  handleShare = () => {
+    const { open } = this.state
+    this.setState({ open: !open });
+  };
+
   handleEdit = () => {
     const {
       postId,
@@ -141,6 +152,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
 
   render() {
     const {
+      hideShare,
+      feedId,
       classes,
       router,
       expertMode,
@@ -159,7 +172,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       newClassExperience,
       onBookmark
     } = this.props;
-    const { moreAnchorEl } = this.state;
+    const { moreAnchorEl, open } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
@@ -213,7 +226,6 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     } = router
 
     const goToFeed = () => pushTo(`/feed?${queryString.stringify(query)}`)
-    console.log({ expertMode })
 
     return (
       <Fragment>
@@ -258,6 +270,10 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Typography>
             )}
           </div>
+          {hideShare && <Button aria-label="Share" onClick={this.handleShare}>
+            <ShareIcon />
+          </Button>}
+          <SharePost feedId={feedId} open={open} onClose={this.handleShare} />
           <Tooltip
             id={9043}
             placement="right"

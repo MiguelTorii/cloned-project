@@ -46,7 +46,7 @@ type Props = {
   router: Object
 };
 
-const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) => { 
+const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) => {
   const [question, setQuestion] = useState(null)
   const [report, setReport] = useState(false)
   const [deletePost, setDeletePost] = useState(false)
@@ -59,12 +59,12 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
       profileImage
     }
   } = user
-    
+
   const loadData = async () => {
     const question = await getQuestion({ userId, questionId });
     setQuestion(question)
     const {
-      postInfo: { 
+      postInfo: {
         feedId
       }
     } = question;
@@ -137,6 +137,8 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
         <PostItem feedId={feedId}>
           <ErrorBoundary>
             <PostItemHeader
+              hideShare
+              feedId={feedId}
               currentUserId={userId}
               router={router}
               pop={pop}

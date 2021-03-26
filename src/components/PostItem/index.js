@@ -31,6 +31,7 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.feedBackground,
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(2)
     },

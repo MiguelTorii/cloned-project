@@ -1,10 +1,9 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ShareIcon from '@material-ui/icons/Share';
 import Tooltip from '../../containers/Tooltip';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
@@ -12,6 +11,8 @@ import Tooltip from '../../containers/Tooltip';
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
+import thanksSvg from '../../assets/svg/thanks.svg'
+import commentSvg from '../../assets/svg/comment.svg'
 // $FlowIgnore
 // import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
 
@@ -20,11 +21,21 @@ const styles = theme => ({
     marginTop: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'space-between'
+  },
+  buttonActions: {
+    display: 'flex'
   },
   buttonText: {
-    marginLeft: theme.spacing()
-  }
+    display: 'flex',
+    alignItems: 'center',
+    color: theme.palette.primary.primaryColor,
+    marginRight: theme.spacing(3),
+  },
+  actionIcon: {
+    fontSize: 16,
+    marginRight: theme.spacing(1)
+  },
 });
 
 type Props = {
@@ -37,11 +48,8 @@ type Props = {
   viewCount: number,
   isThanksLoading: boolean,
   // isStudyCircleLoading: boolean,
-  isQuestion: boolean,
   noThanks: boolean,
-  onShare: Function,
-  onThanks: Function,
-  hideShare: ?boolean
+  onThanks: Function
   // onStudyCircle: Function
 };
 
@@ -64,28 +72,19 @@ class PostItemActions extends React.PureComponent<Props> {
     const {
       classes,
       isOwner,
-      thanked,
+      // thanked,
       // inStudyCircle,
       questionsCount,
       thanksCount,
       viewCount,
       noThanks,
-      isQuestion,
-      onShare,
       onThanks,
-      hideShare,
       // onStudyCircle
     } = this.props;
 
     return (
-      <Fragment>
-        <div className={classes.root}>
-          {!hideShare && <Button aria-label="Share" onClick={onShare}>
-            <ShareIcon />
-            <Typography variant="subtitle1" className={classes.buttonText}>
-              Share
-            </Typography>
-          </Button>}
+      <>
+        {/* <div className={classes.root}>
           {!isOwner && (
             <Fragment>
               {!noThanks && (
@@ -95,7 +94,11 @@ class PostItemActions extends React.PureComponent<Props> {
                   text="When your classmates post, be sure to thank them"
                 >
                   <Button aria-label="Thanks" onClick={onThanks}>
-                    {this.renderThanks()}
+                    <img
+                      src={thanksSvg}
+                      className={classes.actionIcon}
+                      alt="thanks"
+                    />
                     <Typography
                       variant="subtitle1"
                       className={classes.buttonText}
@@ -105,27 +108,56 @@ class PostItemActions extends React.PureComponent<Props> {
                   </Button>
                 </Tooltip>
               )}
-              {/* <Button aria-label="Add to Study Circle" onClick={onStudyCircle}> */}
-              {/* {this.renderStudyCircle()} */}
-              {/* <Typography variant="subtitle1" className={classes.buttonText}> */}
-              {/* {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle */}
-              {/* </Typography> */}
-              {/* </Button> */}
+              <Button aria-label="Add to Study Circle" onClick={onStudyCircle}>
+                {this.renderStudyCircle()}
+                <Typography variant="subtitle1" className={classes.buttonText}>
+                  {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle
+                </Typography>
+              </Button>
             </Fragment>
           )}
-        </div>
+        </div> */}
         <div className={classes.root}>
-          <Typography variant="h6" className={classes.buttonText}>
-            {`${questionsCount} ${isQuestion ? 'answers' : 'comments'}`}
-          </Typography>
-          <Typography variant="h6" className={classes.buttonText}>
-            {`${thanksCount} thanks`}
-          </Typography>
-          <Typography variant="h6" className={classes.buttonText}>
+          <div className={classes.buttonActions}>
+            {!isOwner && (
+              <>
+                {!noThanks && (
+                  <Tooltip
+                    id={2197}
+                    placement="top"
+                    text="When your classmates post, be sure to thank them"
+                  >
+                    <Button aria-label="Thanks" onClick={onThanks}>
+                      <img
+                        src={thanksSvg}
+                        className={classes.actionIcon}
+                        alt="thanks"
+                      />
+                      <Typography
+                        variant="subtitle1"
+                        className={classes.buttonText}
+                      >
+                        {thanksCount}
+                      </Typography>
+                    </Button>
+                  </Tooltip>
+                )}
+                <Typography variant="subtitle1" className={classes.buttonText}>
+                  <img
+                    src={commentSvg}
+                    className={classes.actionIcon}
+                    alt="comment"
+                  />
+                  {questionsCount}
+                </Typography>
+              </>
+            )}
+          </div>
+          <Typography variant="subtitle1" className={classes.buttonText}>
             {`${viewCount} views`}
           </Typography>
         </div>
-      </Fragment>
+      </>
     );
   }
 }
