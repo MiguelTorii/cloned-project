@@ -56,6 +56,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         }
       }
     } = this.props;
+
     const {
       chat: {
         data: { entityUuid: prevEntityUuid }

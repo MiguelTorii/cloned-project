@@ -24,7 +24,9 @@ export type ChatState = {
     unread: number,
     local: Object,
     online: boolean,
+    currentChannel: ?Object,
     newChannel: boolean,
+    mainMessage: string,
     newMessage: ?Object
   },
   error: boolean,
@@ -36,6 +38,7 @@ export type ChatState = {
 
 const defaultState = {
   data: {
+    mainMessage: '',
     uuid: '',
     entityId: '',
     entityFirstName: '',
@@ -47,6 +50,7 @@ const defaultState = {
     openChannels: [],
     unread: 0,
     local: {},
+    currentChannel: null,
     online: false,
     newChannel: false,
     newMessage: null,
@@ -77,6 +81,22 @@ const removeParam = (obj, id) => {
 
 export default (state: ChatState = defaultState, action: Action): ChatState => {
   switch (action.type) {
+  case chatActions.SET_MAIN_MESSAGE:
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        mainMessage: action.payload.mainMessage,
+      }
+    }
+  case chatActions.SET_CURRENT_CHANNEL:
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        currentChannel: action.payload.currentChannel,
+      }
+    }
   case chatActions.CREATE_NEW_CHANNEL:
     return {
       ...state,
@@ -173,7 +193,11 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           sid: action.payload.channel.sid,
           unread: 0,
           twilioChannel: action.payload.channel,
-          title: getTitle(action.payload.channel, action.payload.userId),
+          title: getTitle(
+            action.payload.channel,
+            action.payload.userId,
+            action.payload.members
+          ),
           members: action.payload.members,
           lastMessage: {
             user: {

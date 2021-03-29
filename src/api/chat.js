@@ -6,6 +6,44 @@ import { API_ROUTES } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
 import { getToken } from './utils';
 
+export const sendMessage = async ({
+  message,
+  chatId,
+  imageKey,
+  isVideoNotification,
+}: {
+  message: string,
+  chatId: array,
+  imageKey: string,
+  isVideoNotification: boolean
+}) => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.SEND_MESSAGE}`,
+      {
+        message,
+        chat_id: chatId,
+        image_url: imageKey,
+        is_video_notification: isVideoNotification
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const {
+      data
+    } = result
+
+    return data
+  } catch (err) {
+    return null;
+  }
+}
+
 export const sendBatchMessage = async ({
   message,
   chatIds
@@ -63,6 +101,7 @@ export const getClassmates = async ({
     } = result
 
     return members.map(m => ({
+      notRegistered: !m.registered,
       firstName: m.first_name,
       lastName: m.last_name,
       userId: m.user_id,
@@ -292,6 +331,7 @@ export const getGroupMembers = async ({
     const { users = [] } = data;
 
     return users.map(user => ({
+      registered: Boolean((user.registered) || false),
       firstName: String((user.first_name: string) || ''),
       hours: Number((user.hours: number) || 0),
       role: String((user.role: string) || ''),

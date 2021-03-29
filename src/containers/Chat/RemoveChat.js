@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Dialog, { dialogStyle } from 'components/Dialog';
+import leaveGroup from 'assets/svg/leave-group.svg'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -13,10 +14,14 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2100
   },
   blockLabel: {
-    color: theme.circleIn.palette.danger
+    color: theme.circleIn.palette.textNormalButton,
+    fontWeight: 700
   },
   blockButton: {
-    border: `1px solid ${theme.circleIn.palette.danger}`
+    minWidth: 164,
+    background: theme.circleIn.palette.danger,
+    boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
+    borderRadius: 100
   },
   removeChannel: {
     marginTop: theme.spacing()
@@ -47,12 +52,13 @@ const RemoveChat = ({ channel, handleRemoveChannel }) => {
       <Button
         onClick={handleRemoveOpen}
         variant='outlined'
+        startIcon={<img src={leaveGroup} alt='Leave group' />}
         classes={{
           label: classes.blockLabel,
           root: classes.blockButton
         }}
       >
-           Remove
+           Leave Group
       </Button>
       <Dialog
         ariaDescribedBy="remove-dialog-description"

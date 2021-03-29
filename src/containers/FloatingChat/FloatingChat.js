@@ -113,6 +113,18 @@ const FloatingChat = ({
     }
   } = chat
 
+  const getMembers = useCallback(channel => {
+    if (channel && local && local[channel.sid]) {
+      const { members } = local[channel.sid]
+      const newMembers = {}
+      members.forEach(m => {
+        newMembers[m.userId] = m
+      })
+      return newMembers
+    }
+    return []
+  }, [local])
+
   const {
     data: { userId, profileImage }
   } = user
@@ -247,11 +259,9 @@ const FloatingChat = ({
 
   const handleChannelCreated = ({
     channel,
-    message,
     startVideo = false
   }: {
     channel: Object,
-    messsage: string,
     startVideo: boolean
   }) => {
     handleNewChannelClose()
@@ -282,8 +292,10 @@ const FloatingChat = ({
           {openChannels.map(item => (
             <ChatChannel
               key={`op${item.sid}`}
+              getMembers={getMembers}
               user={user}
               channel={item}
+              localChannel={local[item.sid]}
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}

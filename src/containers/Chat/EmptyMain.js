@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box'
 import ExpertEmptyChat from 'assets/svg/expertEmptyChat.svg'
 import { makeStyles } from '@material-ui/core/styles'
 import LoadImg from 'components/LoadImg'
+import EmptyUnregistered from 'assets/svg/emptyChatUnregistered.svg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   titleMessage: {
+    marginBottom: theme.spacing(2),
     fontSize: 26,
     color: theme.circleIn.palette.primaryText1,
     marginTop: theme.spacing(),
@@ -39,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   expertContainerText: {
     margin: theme.spacing(2, 0)
   },
+  unregisterContainer: {
+    height: '100%',
+    margin: theme.spacing(0, 2)
+  },
   expertContainer: {
     height: '100%'
   }
@@ -50,8 +56,32 @@ type Props = {
 
 const imageStyle = { maxWidth: '100%' }
 
-const EmptyMain = ({ noChannel, expertMode }: Props) => {
+const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
   const classes = useStyles()
+
+  if (otherUser && !otherUser.registered && !newChannel) {
+    return (
+      <Box
+        justifyContent='center'
+        className={classes.unregisterContainer}
+        alignItems='center'
+        display='flex'
+        flexDirection='column'
+      >
+        <Typography
+          classes={{
+            root: classes.titleMessage
+          }}
+        >
+        Hey! <span role='img' aria-label='wave'>👋</span> We’re so happy you’re here!
+This classmate isn't on CircleIn yet but you can
+still send them a chat. They will receive an email
+        to let them know you messaged them!
+        </Typography>
+        <LoadImg url={EmptyUnregistered} />
+      </Box>
+    )
+  }
 
   if (expertMode) return (
     <Box

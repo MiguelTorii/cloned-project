@@ -101,7 +101,7 @@ const LeftMenu = ({
   useEffect(() => {
     if (search && channels) {
       const list = channels.map(c=> ({
-        name: getTitle(c, userId),
+        name: getTitle(c, userId, local[c.sid].members),
         channel: c
       }))
 
@@ -118,17 +118,17 @@ const LeftMenu = ({
     } else {
       setSearchChannels(channels.map(c => c.sid))
     }
-  }, [search, channels, userId])
+  }, [search, channels, userId, local])
 
   return (
     <Grid item classes={{ root: classes.container }}>
       <Grid
         container
-        classes={{ root: classes.container}}
+        classes={{ root: classes.container }}
       >
         <Grid
           container
-          classes={{ root: classes.header}}
+          classes={{ root: classes.header }}
           justify='center'
           alignItems='center'
           direction='column'

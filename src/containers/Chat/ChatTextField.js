@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 // @flow
-import React from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -88,200 +88,189 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   onSendMessage: Function,
+  expanded: boolean,
   onSendInput: Function,
-  onTyping: Function
-};
-
-type State = {
+  onTyping: Function,
   message: string,
-  addNextLine: boolean,
-  image: ?Object,
-  input: ?Object,
-  isHover: boolean
+  setMessage: Function
 };
 
-class ChatTextField extends React.PureComponent<Props, State> {
-  state = {
-    message: '',
-    addNextLine: false,
-    image: null,
-    input: null,
-    isHover: false
-  };
+const ChatTextField = ({
+  classes,
+  message,
+  setMessage,
+  onSendMessage,
+  onSendInput,
+  expanded,
+  onTyping
+}: Props) => {
+  const [addNextLine, setAddNextLine] = useState(false)
+  const [image, setImage] = useState(null)
+  const [input, setInput] = useState(null)
+  const [isHover, setIsHover] = useState(false)
+  const fileInput = useRef(null)
 
-  handleSubmit = event => {
+  const handleSubmit = useCallback(event => {
     event.preventDefault();
-    const { onSendMessage, onSendInput } = this.props;
-    const { message, input } = this.state;
 
     if (input) {
       onSendInput(input);
-      this.setState({ input: null, image: null, isHover: false });
+      setInput(null)
+      setImage(null)
+      setIsHover(false)
     }
 
     if (message.trim() !== '') {
       onSendMessage(message);
-      this.setState({ message: '' });
+      setMessage('')
     }
-  };
+  }, [input, message, onSendInput, onSendMessage, setMessage])
 
-  handleChange = event => {
-    const { onTyping } = this.props;
-    this.setState({ message: event.target.value });
+  const handleChange = useCallback(event => {
+    setMessage(event.target.value)
     onTyping();
-  };
+  }, [onTyping, setMessage])
 
-  handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
-  };
+  const handleOpenInputFile = useCallback(() => {
+    if (fileInput.current) fileInput.current.click();
+  }, [])
 
-  handleKeyDown = event => {
-    const { addNextLine, input } = this.state;
-    const { onSendInput } = this.props;
+  const handleKeyDown = useCallback(event => {
     if (event.keyCode === 13 && !addNextLine) {
       event.preventDefault();
-      const { onSendMessage } = this.props;
-      const { message } = this.state;
       if (message.trim() !== '') {
         onSendMessage(message);
-        this.setState({ message: '' });
+        setMessage('')
       }
       if (input) {
         onSendInput(input);
-        this.setState({ input: null, image: null, isHover: false });
+        setInput(null)
+        setImage(null)
+        setIsHover(false)
       }
     }
     if (event.keyCode === 16) {
-      this.setState({ addNextLine: true });
+      setAddNextLine(true)
     }
-  };
+  }, [addNextLine, input, message, onSendInput, onSendMessage, setMessage])
 
-  handleKeyUp = event => {
+  const handleKeyUp = useCallback(event => {
     if (event.keyCode === 16) {
-      this.setState({ addNextLine: false });
+      setAddNextLine(false)
     }
-  };
+  }, [])
 
-  handleInputChange = () => {
-    // const { onSendInput } = this.props;
+  const handleInputChange = useCallback(() => {
     if (
-      this.fileInput &&
-      this.fileInput.files &&
-      this.fileInput.files.length > 0
+      fileInput.current &&
+      fileInput.current.files &&
+      fileInput.current.files.length > 0
     ) {
       const reader = new FileReader();
       reader.onload = event => {
         if (
-          this.fileInput &&
-          this.fileInput.files &&
-          this.fileInput.files.length > 0
+          fileInput.current &&
+          fileInput.current.files &&
+          fileInput.current.files.length > 0
         ) {
-          this.setState({
-            image: event.target.result,
-            input: this.fileInput.files[0]
-          });
+          setImage(event.target.result)
+          setInput(fileInput.current.files[0])
         }
-        if (this.fileInput) {
-          this.fileInput.value = '';
+        if (fileInput.current) {
+          fileInput.current.value = '';
         }
       };
 
-      reader.readAsDataURL(this.fileInput.files[0]);
+      reader.readAsDataURL(fileInput.current.files[0]);
     }
-  };
+  }, [])
 
-  handleRemoveImg = () => {
-    this.setState({ image: null, input: null, isHover: false });
-  };
+  const handleRemoveImg = useCallback(() => {
+    setInput(null)
+    setImage(null)
+    setIsHover(false)
+  }, [])
 
-  handleMouseEnter = () => {
-    this.setState({ isHover: true });
-  };
+  const handleMouseEnter = useCallback(() => {
+    setIsHover(true)
+  }, [])
 
-  handleMouseLeave = () => {
-    this.setState({ isHover: false });
-  };
+  const handleMouseLeave = useCallback(() => {
+    setIsHover(false)
+  }, [])
 
-  handleSelect = emoji => {
-    this.setState(({ message }) => ({ message: `${message}${emoji}` }));
-  };
+  const handleSelect = useCallback(emoji => {
+    setMessage(`${message}${emoji}`)
+  }, [message, setMessage])
 
-  // eslint-disable-next-line no-undef
-  fileInput: ?HTMLInputElement;
 
-  render() {
-    const { classes, expanded } = this.props;
-    const { message, image, isHover } = this.state;
-
-    return (
-      <Paper className={classes.root} elevation={1}>
-        <div className={classes.iconButton}>
-          <IconButton
-            className={classes.imgIcon}
-            onClick={this.handleOpenInputFile}
-            aria-label="Insert Photo"
-          >
-            <InsertPhotoIcon />
-          </IconButton>
-        </div>
-        <form
-          autoComplete="off"
-          className={classes.form}
-          onSubmit={this.handleSubmit}
+  return (
+    <Paper className={classes.root} elevation={1}>
+      <div className={classes.iconButton}>
+        <IconButton
+          className={classes.imgIcon}
+          onClick={handleOpenInputFile}
+          aria-label="Insert Photo"
         >
-          <div className={classes.inputContainer}>
-            <input
-              accept="image/*"
-              className={classes.input}
-              ref={fileInput => {
-                this.fileInput = fileInput;
-              }}
-              onChange={this.handleInputChange}
-              type="file"
+          <InsertPhotoIcon />
+        </IconButton>
+      </div>
+      <form
+        autoComplete="off"
+        className={classes.form}
+        onSubmit={handleSubmit}
+      >
+        <div className={classes.inputContainer}>
+          <input
+            accept="image/*"
+            className={classes.input}
+            ref={fileInput}
+            onChange={handleInputChange}
+            type="file"
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              height: '100%',
+              width: '100%',
+              minHeight: 44
+            }}
+          >
+            {image && (
+              <ButtonBase
+                className={classes.imgContainer}
+                onClick={handleRemoveImg}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img className={classes.img} src={image} alt="test" />
+                {isHover && (
+                  <div className={classes.clearIcon}>
+                    <ClearIcon fontSize="small" />
+                  </div>
+                )}
+              </ButtonBase>
+            )}
+            <InputBase
+              value={message}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
+              className={classes.textfield}
+              inputComponent={Textarea}
+              inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, width: '100%' } }}
+              multiline
+              rowsMax={2}
+              placeholder="Type a message"
+              autoComplete="off"
+              autoFocus
             />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                height: '100%',
-                width: '100%',
-                minHeight: 44
-              }}
-            >
-              {image && (
-                <ButtonBase
-                  className={classes.imgContainer}
-                  onClick={this.handleRemoveImg}
-                  onMouseEnter={this.handleMouseEnter}
-                  onMouseLeave={this.handleMouseLeave}
-                >
-                  <img className={classes.img} src={image} alt="test" />
-                  {isHover && (
-                    <div className={classes.clearIcon}>
-                      <ClearIcon fontSize="small" />
-                    </div>
-                  )}
-                </ButtonBase>
-              )}
-              <InputBase
-                value={message}
-                onChange={this.handleChange}
-                onKeyDown={this.handleKeyDown}
-                onKeyUp={this.handleKeyUp}
-                className={classes.textfield}
-                inputComponent={Textarea}
-                inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, width: '100%' } }}
-                multiline
-                rowsMax={2}
-                placeholder="Type a message"
-                autoComplete="off"
-                autoFocus
-              />
-            </div>
-            <EmojiSelector onSelect={this.handleSelect} />
           </div>
-          {(message || image) &&
+          <EmojiSelector onSelect={handleSelect} />
+        </div>
+        {(message || image) &&
           <Tooltip
             arrow
             classes={{
@@ -305,11 +294,10 @@ class ChatTextField extends React.PureComponent<Props, State> {
               </IconButton>
             </div>
           </Tooltip>
-          }
-        </form>
-      </Paper>
-    );
-  }
+        }
+      </form>
+    </Paper>
+  );
 }
 
 export default withStyles(styles)(ChatTextField);

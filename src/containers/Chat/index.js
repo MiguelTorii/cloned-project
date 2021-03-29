@@ -88,6 +88,7 @@ type Props = {
   handleNewChannel: Function,
   // markAsCompleted: Function,
   getOnboardingList: Function,
+  setCurrentChannel: Function,
   onboardingListVisible: boolean
 };
 
@@ -96,16 +97,28 @@ const Chat = ({
   handleBlockUser,
   handleMuteChannel,
   handleNewChannel,
+  setCurrentChannel,
   width,
   chat,
   user,
+  setMainMessage,
   // markAsCompleted,
   getOnboardingList,
   onboardingListVisible
 }: Props) => {
-  const { isLoading, data: { client, channels, newMessage, local, newChannel } } = chat
+  const {
+    isLoading,
+    data: {
+      client,
+      channels,
+      newMessage,
+      local,
+      newChannel,
+      mainMessage,
+      currentChannel
+    }
+  } = chat
   const { data: { userId, schoolId } } = user
-  const [currentChannel, setCurrentChannel] = useState(null)
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
@@ -115,14 +128,14 @@ const Chat = ({
   const onNewChannel = useCallback(async () => {
     await handleNewChannel(true)
     setCurrentChannel(null)
-  }, [handleNewChannel])
+  }, [handleNewChannel, setCurrentChannel])
 
-  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [])
+  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [setCurrentChannel])
 
   const onOpenChannel = useCallback(async ({ channel }) => {
     setCurrentChannel(channel)
     await handleNewChannel(false)
-  }, [handleNewChannel])
+  }, [handleNewChannel, setCurrentChannel])
 
   const handleRemove = useCallback(async sid => {
     clearCurrentChannel()
@@ -138,10 +151,6 @@ const Chat = ({
     })
     setChannelList(channelList)
   }, [local])
-
-  useEffect(() => {
-    if (channelList.length > 0 && !currentChannel && !newChannel) setCurrentChannel(local[channelList[0]].twilioChannel)
-  }, [channelList, currentChannel, local, newChannel])
 
   useEffect(() => {
     if (width !== prevWidth) {
@@ -170,7 +179,7 @@ const Chat = ({
       await handleBlockUser({ blockedUserId });
       setCurrentChannel(null)
     } catch (err) {/* NONE */}
-  }, [handleBlockUser, userId])
+  }, [handleBlockUser, setCurrentChannel, userId])
 
   const onCollapseLeft = useCallback(() => {
     if (width === 'xs') {
@@ -233,6 +242,8 @@ const Chat = ({
       <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
         <Main
           newMessage={newMessage}
+          setMainMessage={setMainMessage}
+          mainMessage={mainMessage}
           onCollapseLeft={onCollapseLeft}
           onCollapseRight={onCollapseRight}
           local={local}
@@ -273,7 +284,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleMuteChannel: chatActions.handleMuteChannel,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
+      setMainMessage: chatActions.setMainMessage,
       handleNewChannel: chatActions.handleNewChannel,
+      setCurrentChannel: chatActions.setCurrentChannel,
       getOnboardingList: OnboardingActions.getOnboardingList,
       // markAsCompleted: OnboardingActions.markAsCompleted
     },

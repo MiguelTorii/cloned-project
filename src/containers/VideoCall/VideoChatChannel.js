@@ -17,6 +17,7 @@ import {
   getAvatar,
   fetchAvatars
 } from 'utils/chat';
+import { sendMessage } from 'api/chat'
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
@@ -91,7 +92,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     images: [],
   };
 
-  mounted: boolean
+  mounted: boolean;
 
   // eslint-disable-next-line no-undef
   end: ?HTMLDivElement;
@@ -201,7 +202,11 @@ class VideoChatChannel extends React.Component<Props, State> {
     };
     this.setState({ loading: true });
     try {
-      await channel.sendMessage(message, messageAttributes);
+      await sendMessage({
+        message,
+        chatId: channel.sid,
+        ...messageAttributes
+      });
 
       logEvent({
         event: 'Chat- Send Message',
@@ -244,7 +249,11 @@ class VideoChatChannel extends React.Component<Props, State> {
         isVideoNotification: false
       };
 
-      await channel.sendMessage('Uploaded a image', messageAttributes);
+      await sendMessage({
+        message: 'Uploaded a image',
+        chatId: channel.sid,
+        ...messageAttributes
+      });
       logEvent({
         event: 'Chat- Send Message',
         props: { Content: 'Image', 'Channel SID': channel.sid }

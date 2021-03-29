@@ -8,12 +8,13 @@ import ChatTextField from 'containers/Chat/ChatTextField'
 import ChatMessage from 'components/FloatingChat/ChatMessage'
 import axios from 'axios'
 import { getPresignedURL } from 'api/media'
+import { sendMessage } from 'api/chat'
 import Lightbox from 'react-images'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import Button from '@material-ui/core/Button';
 import EmptyMain from 'containers/Chat/EmptyMain'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Grid from '@material-ui/core/Grid'
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { logEvent } from 'api/analytics';
@@ -67,8 +68,11 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none'
   },
   videoButton: {
-    backgroundColor: theme.circleIn.palette.darkActionBlue,
-    padding: theme.spacing(1 / 2),
+    backgroundColor: theme.circleIn.palette.brand,
+    fontWeight: 'bold',
+    padding: theme.spacing(1/2, 1),
+    color: theme.circleIn.palette.textOffwhite,
+    borderRadius: theme.spacing(2),
   },
   videoIcon: {
     marginRight: theme.spacing(1 / 2),
@@ -76,11 +80,18 @@ const useStyles = makeStyles((theme) => ({
   },
   selectClasses: {
     float: 'right'
+  },
+  unregisteredMessage: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: theme.spacing()
   }
 }))
 
 const Main = ({
   channel,
+  mainMessage,
+  setMainMessage,
   newMessage,
   onOpenChannel,
   local,
@@ -101,6 +112,15 @@ const Main = ({
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null);
+  const memberKeys = useMemo(() => Object.keys(members), [members])
+  const otherUser = useMemo(() => {
+    if (memberKeys.length !== 2) return null
+    return members[memberKeys.find(key => key !== user.data.userId)]
+  }, [memberKeys, members, user.data.userId])
+
+  const hasUnregistered = useMemo(() => {
+    return Boolean(memberKeys.find(key => !members[key].registered))
+  }, [memberKeys, members])
 
   const {
     expertMode,
@@ -144,7 +164,7 @@ const Main = ({
 
   useEffect(() => {
     const init = async () => {
-      setTitle(getTitle(channel, userId))
+      setTitle(getTitle(channel, userId, local[channel.sid].members))
       try {
         channel.setAllMessagesConsumed()
 
@@ -288,7 +308,7 @@ const Main = ({
     }
     setLoading(true)
     try {
-      await channel.sendMessage(message, messageAttributes)
+      await sendMessage({ message, ...messageAttributes, chatId: channel.sid })
 
       logEvent({
         event: 'Chat- Send Message',
@@ -343,7 +363,11 @@ const Main = ({
         props: { Content: 'Image', 'Channel SID': channel.sid }
       });
 
-      await channel.sendMessage('Uploaded a image', messageAttributes)
+      await sendMessage({
+        message: 'Uploaded a image',
+        ...messageAttributes,
+        chatId: channel.sid
+      })
       logEvent({
         event: 'Chat- Send Message',
         props: { Content: 'Image' }
@@ -366,13 +390,38 @@ const Main = ({
 
   const videoEnabled = useMemo(() => (campaign && campaign.variation_key && campaign.variation_key !== 'hidden'), [campaign])
 
+  const unregisteredUserMessage = useMemo(() => {
+    if (newChannel) return null
+    if (otherUser && hasUnregistered && messageItems.length !== 1) {
+      return (
+        <Typography
+          className={classes.unregisteredMessage}
+        >
+          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
+        </Typography>
+      )
+    }
+
+    if (hasUnregistered && messageItems.length !== 1) {
+      return (
+        <Typography
+          className={classes.unregisteredMessage}
+        >
+        There are some users who hasn't logged into CircleIn yet. We've sent them a notification...
+        </Typography>
+      )
+    }
+
+    return null
+  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser])
+
   return (
     <div className={classes.root}>
       <div className={classes.header}>
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
           <Typography className={classes.headerTitle}>{title}</Typography>
-          {
+          { (otherUser?.registered || memberKeys.length > 2) &&
             videoEnabled &&
             <Button
               variant='contained'
@@ -383,7 +432,7 @@ const Main = ({
               }}
               color='primary'
             >
-              <VideocamIcon className={classes.videoIcon} /> Start Video
+              <VideocamRoundedIcon className={classes.videoIcon} /> Study Room
             </Button>
           }
         </Grid>}
@@ -391,7 +440,12 @@ const Main = ({
       </div>
       <div className={classes.messageContainer}>
         {(!channel || messageItems.length === 1) && (
-          <EmptyMain noChannel={!channel} expertMode={expertMode} />
+          <EmptyMain
+            otherUser={otherUser}
+            noChannel={!channel}
+            newChannel={newChannel}
+            expertMode={expertMode}
+          />
         )}
         {channel && <InfiniteScroll
           className={classes.messageScroll}
@@ -421,9 +475,12 @@ const Main = ({
           {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
         </Typography>
       </div>}
+      {unregisteredUserMessage}
       {channel && <ChatTextField
         onSendMessage={onSendMessage}
         onTyping={onTyping}
+        message={mainMessage}
+        setMessage={setMainMessage}
         onSendInput={onSendInput}
       />}
       <Lightbox

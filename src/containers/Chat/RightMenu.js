@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { getInitials } from 'utils/chat'
 import Typography from '@material-ui/core/Typography'
@@ -117,14 +117,15 @@ const RightMenu = ({
   const [groupImage, setGroupImage] = useState(null)
   const [initials, setInitials] = useState('')
   const [otherUser, setOtherUser] = useState(null)
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local])
 
   useEffect(() => {
-    if (channel && local[channel.sid]) {
+    if (channel && localChannel) {
       setInitials('')
       setOtherUser(null)
       setGroupImage(null)
-      if (local[channel.sid]?.members?.length && local[channel.sid]?.members?.length === 2) {
-        local[channel.sid].members.forEach(u => {
+      if (localChannel?.members?.length && localChannel?.members?.length === 2) {
+        localChannel.members.forEach(u => {
           if (Number(u.userId) !== Number(userId)) {
             setOtherUser(u)
             setGroupImage(u.image)
@@ -132,12 +133,12 @@ const RightMenu = ({
           }
         })
       } else {
-        setGroupImage(local[channel.sid].thumbnail)
+        setGroupImage(localChannel.thumbnail)
       }
     }
-  }, [local, channel, userId])
+  }, [local, channel, userId, localChannel])
 
-  if (!channel || !local[channel.sid]) return null
+  if (!channel || !localChannel) return null
 
   return (
     <Grid
@@ -173,7 +174,7 @@ const RightMenu = ({
             root: classes.infoContainer
           }}
         >
-          <Typography className={classes.title}>{local[channel.sid].title}</Typography>
+          <Typography className={classes.title}>{localChannel && localChannel.title}</Typography>
           <Avatar
             src={groupImage}
             alt='group-image'
@@ -204,11 +205,11 @@ const RightMenu = ({
               }}
             >
               <Typography className={classes.usersTitle}>In this chat...</Typography>
-              <Typography className={classes.usersCount}>{local[channel.sid].members.length}</Typography>
+              <Typography className={classes.usersCount}>{localChannel && localChannel.members.length}</Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.membersDetails}>
               <List dense className={classes.listRoot}>
-                {local[channel.sid].members.map(m => {
+                {localChannel?.members.map(m => {
                   const fullName = `${m.firstname} ${m.lastname}`
                   return (
                     <ListItem

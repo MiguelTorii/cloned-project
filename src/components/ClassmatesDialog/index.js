@@ -32,7 +32,9 @@ const ClassmatesDialog = ({
     list: {
       overflowY: 'scroll'
     },
-    text: {
+    courseDisplayName: {
+      fontSize: 24,
+      textDecoration: 'italic',
       padding: '16px 8px',
     }
   }))()
@@ -77,7 +79,11 @@ const ClassmatesDialog = ({
           classId: selectedClass.classId
         })
         classmates.forEach(classmate => {
-          students[classmate.userId] = classmate
+          const classes = students[classmate.userId] ? students[classmate.userId].classes : []
+          students[classmate.userId] = {
+            ...classmate,
+            classes: [...classes, selectedClass]
+          }
         })
       }))
 
@@ -142,19 +148,19 @@ const ClassmatesDialog = ({
       <Dialog
         className={classes.dialog}
         onCancel={close}
-        maxWidth='sm'
+        maxWidth='md'
         fullWidth
         open={Boolean(state)}
-        title={expertMode ? 'Students' : `${courseDisplayName} Classmates`}
+        title={expertMode ? 'Students' : `Classmates`}
       >
-        <div className={classes.text}>
-          {expertMode ? 'Students' : 'Classmates'} who have joined CircleIn
+        <div className={classes.courseDisplayName}>
+          {courseDisplayName}
         </div>
         <List className={classes.list}>
           {classmates.map(c => (
             <Classmate
+              courseDisplayName={courseDisplayName}
               videoEnabled={videoEnabled && !expertMode}
-              close={close}
               key={c.userId}
               classmate={c}
             />

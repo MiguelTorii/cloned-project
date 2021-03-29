@@ -1,9 +1,11 @@
 // @flow
 
-import React, { useState } from 'react'
+import React, {
+// useState
+} from 'react'
 import EmptyLeftChat from 'assets/svg/empty_left_chat.svg'
-import InviteDialog from 'components/InviteDialog'
-import Button from '@material-ui/core/Button'
+// import InviteDialog from 'components/InviteDialog'
+// import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import LoadImg from 'components/LoadImg'
@@ -49,17 +51,17 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
-  const [inviteDialog, setInviteDialog] = useState(false)
-  const handleInviteClose = () => setInviteDialog(false)
-  const handleInviteOpen = () => setInviteDialog(true)
+  // const [inviteDialog, setInviteDialog] = useState(false)
+  // const handleInviteClose = () => setInviteDialog(false)
+  // const handleInviteOpen = () => setInviteDialog(true)
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
-      <InviteDialog
-        handleClose={handleInviteClose}
-        open={inviteDialog}
-      />
+      {/* <InviteDialog */}
+      {/* handleClose={handleInviteClose} */}
+      {/* open={inviteDialog} */}
+      {/* /> */}
       {emptyChannels && <div className={classes.messageContainer}>
         <LoadImg url={EmptyLeftChat} alt='emptychat' style={{ margin: 'auto', display: 'flex' }} />
         <Typography
@@ -73,15 +75,15 @@ const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
           <CircularProgress />
         </div>}
       </div>}
-      <Button
-        variant='contained'
-        onClick={handleInviteOpen}
-        classes={{
-          root: classes.inviteButton
-        }}
-      >
-          Invite Classmates
-      </Button>
+      {/* <Button */}
+      {/* variant='contained' */}
+      {/* onClick={handleInviteOpen} */}
+      {/* classes={{ */}
+      {/* root: classes.inviteButton */}
+      {/* }} */}
+      {/* > */}
+      {/* Invite Classmates */}
+      {/* </Button> */}
     </div>
   )
 }

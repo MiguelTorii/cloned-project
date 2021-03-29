@@ -6,7 +6,7 @@ import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 import type { ChatMessages } from '../../types/models';
 
-export const getTitle = (channel: Object, userId: string) => {
+export const getTitle = (channel: Object, userId: string, members: array) => {
   try {
     const {
       state,
@@ -18,13 +18,13 @@ export const getTitle = (channel: Object, userId: string) => {
       return attributes.friendlyName;
     }
     if (users) {
-      const filter = users.filter(o => {
+      const filter = members.filter(o => {
         if (o.userId) return o.userId.toString() !== userId.toString();
         return false;
       });
       if (filter.length > 0) {
         return filter
-          .map(user => `${user.firstName} ${user.lastName}`)
+          .map(user => `${user.firstname} ${user.lastname}`)
           .join(', ');
       }
     } else if (friendlyName !== '') return friendlyName;

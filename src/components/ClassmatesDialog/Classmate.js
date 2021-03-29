@@ -1,6 +1,7 @@
 // @flow
 
-import React from 'react';
+import React, { useState,useMemo, useCallback } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import * as chatActions from 'actions/chat';
@@ -14,6 +15,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
+import ChatIcon from '@material-ui/icons/Chat';
+import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
+import InviteIcon from 'assets/svg/invite-icon.svg'
 
 import clsx from 'clsx'
 
@@ -32,8 +36,28 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  messageMargin: {
-    marginRight: theme.spacing()
+  sendMessage: {
+    fontWeight: 'bold',
+    backgroundColor: theme.circleIn.palette.sendMessageButton,
+    borderRadius: theme.spacing(2),
+    minWidth: 163,
+    color: theme.circleIn.palette.textOffwhite
+  },
+  videoChat: {
+    fontWeight: 'bold',
+    color: theme.circleIn.palette.textOffwhite,
+    marginLeft: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.brand,
+    minWidth: 163,
+    borderRadius: theme.spacing(2),
+  },
+  invite: {
+    fontWeight: 'bold',
+    color: theme.circleIn.palette.textOffwhite,
+    minWidth: 163,
+    marginLeft: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.greenInvite,
+    borderRadius: theme.spacing(2),
   }
 }));
 
@@ -47,26 +71,56 @@ type ClassmateType = {
 type Props = {
   classmate: ClassmateType,
   openChannelWithEntity: Function,
-  close: Function,
   videoEnabled: boolean,
   width: string
 };
 
-const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmate }: Props) => {
-  const classes = useStyles();
+const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
+  <RouterLink to={href} {...props} ref={ref} />);
 
-  const openChat = isVideo => {
+const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, width, classmate }: Props) => {
+  const classes = useStyles();
+  const [loadingMessage, setLoadingMessage] = useState(false)
+  const [loadingVideo, setLoadingVideo] = useState(false)
+
+  const openChat = useCallback((videoButton, isVideo) => () => {
+    if (videoButton) setLoadingVideo(true)
+    else setLoadingMessage(true)
     openChannelWithEntity({
       entityId: classmate.userId,
       entityFirstName: classmate.firstName,
       entityLastName: classmate.lastName,
-      entityVideo: isVideo
+      entityVideo: isVideo,
+      notRegistered: classmate.notRegistered,
+      fullscreen: true && !isVideo
     })
-    close()
-  }
+    setTimeout(() => {
+      setLoadingVideo(false)
+      setLoadingMessage(false)
+    }, 4000)
+  }, [classmate.firstName, classmate.lastName, classmate.notRegistered, classmate.userId, openChannelWithEntity])
 
-  const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
-    <RouterLink to={href} {...props} ref={ref} />);
+  const classList = useMemo(() => {
+
+    if (courseDisplayName) return null
+
+    return (
+`${classmate.classes[0].className} ${
+  classmate.classes.length > 1
+    ? `, ${classmate.classes[1].className}`
+    : ''
+} ${
+  classmate.classes.length > 2
+    ? `, +${classmate.classes.length - 2} more`
+    : ''
+}`
+    )},[classmate.classes, courseDisplayName])
+
+  const videoButtonText = useMemo(() => {
+    if (loadingVideo) return <CircularProgress size={20}/>
+    return classmate.notRegistered ? 'Invite to CircleIn' : 'Study Room'
+  }, [classmate.notRegistered, loadingVideo])
+
 
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
@@ -81,27 +135,38 @@ const Classmate = ({ videoEnabled, close, openChannelWithEntity, width, classmat
       <ListItemText
         classes={{
           root: classes.textRoot,
-          primary: classes.fullname
+          primary: classes.fullname,
+          secondary: classes.fullname
         }}
         primary={`${classmate.firstName} ${classmate.lastName}`}
+        secondary={classList}
       />
       <ListSubheader component='div' disableGutters>
         <Button
-          className={classes.messageMargin}
-          variant="outlined"
-          onClick={() => openChat(false)}
+          className={classes.sendMessage}
+          variant="contained"
+          onClick={openChat(false, false)}
+          startIcon={<ChatIcon />}
           color="primary"
         >
-         Send Message
+          {!loadingMessage ? 'Send Message' : <CircularProgress size={20}/>}
         </Button>
         {
           videoEnabled &&
           <Button
-            variant="outlined"
-            onClick={() => openChat(true)}
+            variant="contained"
+            className={classmate.notRegistered
+              ? classes.invite
+              : classes.videoChat
+            }
+            startIcon={!classmate.notRegistered
+              ? <VideocamRoundedIcon />
+              : <img alt='invite' src={InviteIcon} />
+            }
+            onClick={openChat(true, !classmate.notRegistered)}
             color="primary"
           >
-            Start Video
+            {videoButtonText}
           </Button>
         }
       </ListSubheader>

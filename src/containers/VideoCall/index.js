@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import adapter from 'webrtc-adapter';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { sendMessage } from 'api/chat'
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
@@ -96,7 +97,11 @@ class VideoCall extends React.Component<Props, State> {
         imageKey: '',
         isVideoNotification: true
       };
-      channel.sendMessage('Joined Video', messageAttributes);
+      sendMessage({
+        chatId: channel.sid,
+        message: 'Joined Video',
+        ...messageAttributes
+      });
       this.setState({
         join: true,
         channel,

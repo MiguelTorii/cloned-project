@@ -74,7 +74,9 @@ class Feed extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   componentDidUpdate(prevProps) {
-    const { from } = this.props
+    const {
+      from,
+    } = this.props
     if (from !== prevProps.from) {
       this.handleUpdateFilter()
     }
@@ -246,6 +248,7 @@ class Feed extends React.PureComponent<Props, State> {
       field: 'userClasses',
       value: filters
     });
+    this.handleFetchFeed()
   }
 
   handleUserClick = ({ userId }: { userId: string }) => {
@@ -324,7 +327,7 @@ class Feed extends React.PureComponent<Props, State> {
     } = this.props
     const query = queryString.parse(search)
 
-    if (query.classId && userClasses?.classList) {
+    if (query.class && userClasses?.classList) {
       const { classId } = decypherClass(query.class)
       const selectedCourse = userClasses.classList.find(cl => cl.classId === Number(classId))
       if (selectedCourse) return selectedCourse.courseDisplayName

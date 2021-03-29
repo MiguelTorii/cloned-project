@@ -47,6 +47,8 @@ import { ReactComponent as OneTouchSendIconOn } from 'assets/svg/one-touch-send-
 import { ReactComponent as OneTouchSendIconOff } from 'assets/svg/one-touch-send-icon-off.svg';
 import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
 import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
+import { ReactComponent as MyClassOff } from 'assets/svg/myclass-inactive.svg';
+import { ReactComponent as MyClassOn } from 'assets/svg/myclass-active.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem'
 import BatchMessageDialog from 'containers/BatchMessageDialog'
 
@@ -322,6 +324,17 @@ const Drawer = ({
           }}
         />
       </ListItem>
+      <DrawerItem
+        OnIcon={<MyClassOn />}
+        primaryText='My Classes'
+        pathname={pathname}
+        component={MyLink}
+        link="/classes"
+        OffIcon={<MyClassOff />}
+        listItemClass={classNames(
+          ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+        )}
+      />
       {/* <ListItem */}
       {/* button */}
       {/* onClick={openClassmatesDialog('student')} */}
@@ -386,7 +399,7 @@ const Drawer = ({
           >
             <div className={classes.expertContainer}>
               <Typography className={classes.expertTitle}>
-            Expert Mode
+                Expert Mode
               </Typography>
               {button}
             </div>
@@ -440,6 +453,26 @@ const Drawer = ({
           // landingPageCampaign={landingPageCampaign}
           // openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
+        {!expertMode && (
+          <Tooltip
+            id={9054}
+            placement="right"
+            okButton='Okay!'
+            text="Hey! You can access your classes by clicking “My Classes”"
+          >
+            <DrawerItem
+              OnIcon={<MyClassOn />}
+              primaryText='My Classes'
+              pathname={pathname}
+              component={MyLink}
+              link="/classes"
+              OffIcon={<MyClassOff />}
+              listItemClass={classNames(
+                ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+              )}
+            />
+          </Tooltip>
+        )}
         {!landingPageCampaign && (
           <DrawerItem
             OnIcon={<WorkflowIconOn />}
