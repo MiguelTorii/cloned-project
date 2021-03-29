@@ -17,7 +17,6 @@ import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on
 // import Typography from '@material-ui/core/Typography';
 // import SubMenu from 'components/MainLayout/SubMenu'
 // import { cypher, decypherClass } from 'utils/crypto'
-import Tooltip from 'containers/Tooltip'
 
 type Props = {
   // newClassExperience: boolean,
