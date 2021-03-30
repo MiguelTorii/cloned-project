@@ -34,6 +34,7 @@ type Props = {
   user: User,
   roomName: string,
   updateLoading: Function,
+  pushTo: Function,
   onJoin: Function
 };
 
@@ -131,23 +132,23 @@ class Preview extends React.Component<Props, State> {
     this.setState({ [`selected${kind}`]: deviceId });
     let track = null;
     switch (kind) {
-      case 'audioinput':
-        track = await utils.applyAudioInputDeviceSelection(
-          deviceId,
-          this.meetupPreview.current.audioinput.current
-        );
-        this.setState({ [`${kind}track`]: track });
-        break;
-      case 'videoinput':
-        track = await utils.applyVideoInputDeviceSelection(
-          deviceId,
-          this.meetupPreview.current.videoinput.current
-        );
-        this.setState({ [`${kind}track`]: track });
-        break;
-      case 'audiooutput':
-      default:
-        break;
+    case 'audioinput':
+      track = await utils.applyAudioInputDeviceSelection(
+        deviceId,
+        this.meetupPreview.current.audioinput.current
+      );
+      this.setState({ [`${kind}track`]: track });
+      break;
+    case 'videoinput':
+      track = await utils.applyVideoInputDeviceSelection(
+        deviceId,
+        this.meetupPreview.current.videoinput.current
+      );
+      this.setState({ [`${kind}track`]: track });
+      break;
+    case 'audiooutput':
+    default:
+      break;
     }
   };
 
@@ -182,6 +183,7 @@ class Preview extends React.Component<Props, State> {
     const {
       classes,
       user: { firstName, lastName, profileImage },
+      pushTo,
       roomName
     } = this.props;
     const {
@@ -213,6 +215,7 @@ class Preview extends React.Component<Props, State> {
             selectedaudiooutput={selectedaudiooutput}
             isVideoEnabled={videoinputEnabled}
             isAudioEnabled={audioinputEnabled}
+            pushTo={pushTo}
             error={error}
             onUpdateDeviceSelection={this.handleUpdateDeviceSelection}
             onDisableDevice={this.handleDisableDevice}

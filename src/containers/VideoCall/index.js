@@ -6,6 +6,8 @@ import adapter from 'webrtc-adapter';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { sendMessage } from 'api/chat'
+import { push } from 'connected-react-router';
+import { bindActionCreators } from 'redux';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
@@ -33,6 +35,7 @@ const styles = () => ({
 type Props = {
   classes: Object,
   roomId: string,
+  pushTo: Function,
   user: UserState
 };
 
@@ -150,7 +153,8 @@ class VideoCall extends React.Component<Props, State> {
   renderComponent = () => {
     const {
       roomId,
-      user: { data }
+      user: { data },
+      pushTo
     } = this.props;
     const {
       join,
@@ -163,6 +167,7 @@ class VideoCall extends React.Component<Props, State> {
       return (
         <Preview
           user={data}
+          pushTo={pushTo}
           roomName={roomId}
           updateLoading={this.handleUpdateLoading}
           onJoin={this.handleJoinRoom}
@@ -226,7 +231,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      pushTo: push
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(VideoCall));

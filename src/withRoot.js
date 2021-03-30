@@ -41,12 +41,14 @@ const circleInTheme = {
   textSubtitleBody: '#ADBBC4',
   sendMessageButton: '#1E88E5',
   textNormalButton: '#090909',
-  greenInvite: '#3B700D'
+  greenInvite: '#3B700D',
+  white: '#FFFFFF',
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      white: circleInTheme.white,
       greenInvite: circleInTheme.greenInvite,
       textNormalButton: circleInTheme.textNormalButton,
       sendMessageButton: circleInTheme.sendMessageButton,
