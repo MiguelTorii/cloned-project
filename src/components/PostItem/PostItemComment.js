@@ -30,6 +30,7 @@ import PostItemAddComment from './PostItemAddComment';
 import Dialog from '../Dialog';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
+import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
 import thanksSvg from '../../assets/svg/thanks.svg'
 import commentSvg from '../../assets/svg/comment.svg'
 
@@ -108,6 +109,14 @@ const styles = theme => ({
     alignItems: 'center',
     fontSize: 16,
     color: theme.circleIn.palette.primaryText1,
+  },
+  thanked: {
+    marginRight: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 16,
+    color: theme.circleIn.palette.brand,
   },
   actionIcon: {
     display: 'flex',
@@ -377,8 +386,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 <strong>{thanksCount}</strong>
               </Typography> :
                 <IconButton onClick={this.handleThanks} disabled={isLoading}>
-                  <div className={classes.actionIcon}>{thanked ? <ThanksIcon /> : <ThanksIcon />}</div>
-                  <strong className={classes.thanks}>{thanksCount}</strong>
+                  <div className={classes.actionIcon}>{thanked ? <ThankedIcon /> : <ThanksIcon />}</div>
+                  <strong className={cx(thanked ? classes.thanked : classes.thanks)}>{thanksCount}</strong>
                 </IconButton>
               }
 

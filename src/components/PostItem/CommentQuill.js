@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
 import EditorToolbar, { formats } from './Toolbar'
-import postCommentSvg from '../../assets/svg/postComment.svg'
 import { getPresignedURL } from '../../api/media';
 
 const styles = theme => ({
@@ -60,6 +59,13 @@ const styles = theme => ({
     borderRadius: 50,
     marginLeft: theme.spacing(),
     backgroundImage: `linear-gradient(107.98deg, #5dc8fd -09.19%, #0074b5 122.45%)`
+  },
+  disablePostComment: {
+    padding: theme.spacing(0.5, 1.5),
+    borderRadius: 50,
+    marginLeft: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.disableButtonColor,
+    color: `${theme.circleIn.palette.white} !important`
   },
   postCommentAction: {
     display: 'flex',
@@ -219,18 +225,21 @@ const CommentQuill = ({
           )}
         </div>
         <div className={classes.postCommentAction}>
-          <Button
+          {value ? <Button
             className={classes.postComment}
-            disabled={!value}
             onClick={handleClick(quill)}
           >
-            <b>POST</b>
-            <img
-              src={postCommentSvg}
-              className={classes.postCommentIcon}
-              alt="post-comment"
-            />
+            <b>Comment</b>
           </Button>
+            : <Button
+              classes={{
+                disabled: classes.disablePostComment
+              }}
+              disabled
+              onClick={handleClick(quill)}
+            >
+              <b>Comment</b>
+            </Button> }
         </div>
       </div>
 
