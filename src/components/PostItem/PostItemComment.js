@@ -25,7 +25,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import TutorBadge from 'components/TutorBadge'
 import CustomQuill from 'components/CustomQuill'
-import SkeletonLoad from 'components/PostItem//SkeletonLoad';
+import SkeletonLoad from 'components/PostItem/SkeletonLoad';
 import PostItemAddComment from './PostItemAddComment';
 import Dialog from '../Dialog';
 // $FlowIgnore

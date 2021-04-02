@@ -3,25 +3,40 @@
 // @flow
 import React, { Fragment } from 'react';
 import Video from 'twilio-video';
+import moment from 'moment'
+import queryString from 'query-string'
+import { connect } from 'react-redux';
+import { decypherClass } from 'utils/crypto'
 import first from 'lodash/first';
 import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import moment from 'moment'
+// import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Input from '@material-ui/core/Input';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
-import VideoChatChannel from './VideoChatChannel';
-import Controls from '../../components/MeetUp/Controls';
-import LeftPanel from '../../components/MeetUp/LeftPanel';
-import Thumbnails from '../../components/MeetUp/Thumbnails';
-import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
+// import VideoChatChannel from './VideoChatChannel';
+import Controls from '../../components/MeetUp/CallControls';
+// import LeftPanel from '../../components/MeetUp/LeftPanel';
+// import Thumbnails from '../../components/MeetUp/Thumbnails';
+// import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
 import VideoGrid from '../../components/MeetUp/VideoGrid';
+import MeetingDetails from '../../components/MeetUp/MeetingDetails';
 import SharingScreenControl from '../../components/MeetUp/SharingScreenControl';
-import NoParticipants from '../../components/MeetUp/NoParticipants';
+// import NoParticipants from '../../components/MeetUp/NoParticipants';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
 import Dialog from '../../components/Dialog';
+import ClassmatesDialog from '../../components/ClassmatesDialog'
 import VideoPointsDialog from '../../components/VideoPointsDialog';
 import { renewTwilioToken } from '../../api/chat';
 import { getUserProfile } from '../../api/user';
@@ -32,6 +47,7 @@ import {
 } from '../../api/video';
 import { logEvent } from '../../api/analytics';
 import * as utils from './utils';
+import { VIDEO_SHARE_URL } from '../../constants/routes';
 
 const styles = theme => ({
   root: {
@@ -53,6 +69,20 @@ const styles = theme => ({
     width: '300px !important',
     height: 'auto !important'
   },
+  settings: {
+    zIndex: 9999,
+    position: 'absolute',
+    top: theme.spacing(3),
+    left: theme.spacing(3)
+  },
+  settingBtn: {
+    backgroundColor: theme.circleIn.palette.appBar,
+    color: theme.circleIn.palette.white,
+    border: `1px solid ${theme.circleIn.palette.borderColor}`,
+    boxSizing: 'border-box',
+    boxShadow: '0px 4px 4px rgb(0 0 0 / 25%)',
+    borderRadius: 10
+  },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -66,6 +96,71 @@ const styles = theme => ({
     left: 0,
     padding: theme.spacing(2),
     zIndex: 9999
+  },
+  letsGo: {
+    margin: theme.spacing(4, 0),
+    minWidth: 340,
+    borderRadius: 20,
+    color: theme.circleIn.palette.white,
+    fontWeight: 700,
+    fontSize: 20,
+    background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)'
+  },
+  dialog: {
+    width: 600,
+    '& > :first-child': {
+      height: 20,
+      zIndex: 999999
+    }
+  },
+  options: {
+    width: '100%',
+    padding: theme.spacing(2, 0)
+  },
+  optionLabel: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: theme.circleIn.palette.secondaryText
+  },
+  contentClassName: {
+    '& > #circle-in-dialog-title': {
+      borderBottom: `1px solid ${theme.circleIn.palette.white}`,
+      paddingBottom: theme.spacing(3)
+    }
+  },
+  dropdownArrow: {
+    color: theme.circleIn.palette.brand,
+    fontSize: 28
+  },
+  controlOptions: {
+    backgroundColor: theme.circleIn.palette.secondaryText,
+    border: `1px solid ${theme.circleIn.palette.appBar}`,
+    boxSizing: 'border-box',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: 10,
+    color: theme.circleIn.palette.appBar,
+    paddingLeft: theme.spacing(3)
+  },
+  optionFocused: {
+    backgroundColor: theme.circleIn.palette.secondaryText,
+    border: `1px solid ${theme.circleIn.palette.appBar}`,
+    boxSizing: 'border-box',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: 10,
+    color: theme.circleIn.palette.appBar,
+  },
+  controlOptionLabel: {
+    '&::before': {
+      border: 'none',
+    },
+    '&:hover:not(.Mui-disabled):before': {
+      border: 'none',
+    }
+  },
+  report: {
+    color: theme.circleIn.palette.danger,
+    display: 'flex',
+    alignItems: 'center'
   },
   pointsButton: {
     animation:
@@ -90,10 +185,10 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: User,
-  videoinput: string,
-  audioinput: string,
+  selectedvideoinput: string,
+  selectedaudioinput: string,
   roomName: string,
-  channel: ?Object,
+  // channel: ?Object,
   leaveRoom: Function,
   updateLoading: Function,
   enqueueSnackbar: Function
@@ -123,7 +218,10 @@ type State = {
   openVideoPoints: boolean,
   postingPoints: boolean,
   noPointsAllowed: boolean,
-  earned: boolean
+  earned: boolean,
+  isOpenMeetingDetails: boolean,
+  openSettings: boolean,
+  openClassmates: string
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -153,7 +251,13 @@ class MeetUp extends React.Component<Props, State> {
     noPointsAllowed: false,
     dominantView: false,
     earned: false,
+    isOpenMeetingDetails: false,
+    currentClassList: [],
+    openClassmates: '',
+    openSettings: false
   };
+
+  meetingUriRef: Object;
 
   whiteboard: Object;
 
@@ -169,9 +273,13 @@ class MeetUp extends React.Component<Props, State> {
     super(props);
     // $FlowIgnore
     this.whiteboard = React.createRef();
+    this.meetingUriRef = React.createRef();
+    this.audioinput = React.createRef();
+    this.videoinput = React.createRef();
   }
 
   componentDidMount = async () => {
+    const { user: { userClasses: { classList } } } = this.props
     this.notInitiator = false;
     this.initiator = false;
     this.pointsStarted = false;
@@ -180,15 +288,36 @@ class MeetUp extends React.Component<Props, State> {
     this.started = new Date().getTime();
 
     const {
-      user: { userId, firstName, lastName, profileImage }
+      user: { data: { userId, firstName, lastName, profileImage } }
     } = this.props;
 
     const noPointsAllowed = await checkVideoSession({ userId });
+
+    const newClassList = {}
+    classList.forEach(cl => {
+      if (
+        cl.section &&
+          cl.section.length > 0 &&
+          cl.className &&
+          cl.bgColor
+      )
+        cl.section.forEach(s => {
+          newClassList[s.sectionId] = cl
+        })
+    })
+
+    const currentClassList = Object.keys(newClassList).map(sectionId => {
+      return {
+        ...newClassList[sectionId],
+        sectionId: Number(sectionId),
+      }
+    })
 
     this.setState({
       profiles: {
         [userId]: { firstName, lastName, userProfileUrl: profileImage }
       },
+      currentClassList,
       noPointsAllowed
     });
     this.handleStartCall();
@@ -236,24 +365,24 @@ class MeetUp extends React.Component<Props, State> {
   handleStartCall = async () => {
     try {
       const {
-        user: { userId },
-        videoinput,
-        audioinput,
+        user: { data: { userId } },
+        selectedvideoinput,
+        selectedaudioinput,
         roomName,
         updateLoading
       } = this.props;
       const tracks = [];
 
-      if (videoinput !== '') {
+      if (selectedvideoinput !== '') {
         const localVideoTrack = await Video.createLocalVideoTrack({
-          deviceId: videoinput
+          deviceId: selectedvideoinput
         });
         tracks.push(localVideoTrack);
       }
 
-      if (audioinput !== '') {
+      if (selectedaudioinput !== '') {
         const localAudioTrack = await Video.createLocalAudioTrack({
-          deviceId: audioinput
+          deviceId: selectedaudioinput
         });
         tracks.push(localAudioTrack);
       }
@@ -267,8 +396,8 @@ class MeetUp extends React.Component<Props, State> {
         tracks,
         dominantSpeaker: true,
         insights: false,
-        video: videoinput !== '',
-        audio: audioinput !== ''
+        video: selectedvideoinput !== '',
+        audio: selectedaudioinput !== ''
       });
 
       window.addEventListener('beforeunload', this.handleWindowClose)
@@ -388,20 +517,6 @@ class MeetUp extends React.Component<Props, State> {
         this.pointsStarted = false;
         this.handleWindowClose()
         window.removeEventListener('beforeunload', this.handleWindowClose)
-        // if (this.started) {
-        // const elapsed = parseInt(
-        // (new Date().getTime() - this.started) / 1000
-        // ,10);
-        // logEvent({
-        // event: 'Video- Session Length',
-        // props: {
-        // Length: elapsed,
-        // channelName: videoRoom.name,
-        // 'Channel SID': videoRoom.sid,
-        // }
-        // });
-        // }
-
         this.started = 0;
       });
 
@@ -467,7 +582,7 @@ class MeetUp extends React.Component<Props, State> {
 
   handleDisableVideo = async () => {
     try {
-      const { videoinput } = this.props;
+      const { selectedvideoinput } = this.props;
       const { videoRoom, participants } = this.state;
       this.setState({ isVideoSwitching: true });
       const localPartcipant = participants.find(item => item.type === 'local');
@@ -476,7 +591,7 @@ class MeetUp extends React.Component<Props, State> {
         const tracks = video.filter(track => track.name !== 'localPartcipant');
         if (tracks.length === 0) {
           const newLocalVideoTrack = await Video.createLocalVideoTrack({
-            deviceId: videoinput
+            deviceId: selectedvideoinput
           });
 
           if (videoRoom && videoRoom.localParticipant && newLocalVideoTrack) {
@@ -508,7 +623,7 @@ class MeetUp extends React.Component<Props, State> {
 
   handleDisableAudio = async () => {
     try {
-      const { audioinput } = this.props;
+      const { selectedaudioinput } = this.props;
       const { videoRoom, participants } = this.state;
       this.setState({ isAudioSwitching: true });
       const localPartcipant = participants.find(item => item.type === 'local');
@@ -516,7 +631,7 @@ class MeetUp extends React.Component<Props, State> {
         const { audio = [] } = localPartcipant;
         if (audio.length === 0) {
           const newLocalAudioTrack = await Video.createLocalAudioTrack({
-            deviceId: audioinput
+            deviceId: selectedaudioinput
           });
 
           if (videoRoom && videoRoom.localParticipant && newLocalAudioTrack) {
@@ -638,6 +753,21 @@ class MeetUp extends React.Component<Props, State> {
     this.setState({ lineWidth: size, isText: false, eraser: true });
   };
 
+  handleMeetingDetails = () => {
+    const { isOpenMeetingDetails } = this.state;
+    this.setState({ isOpenMeetingDetails: !isOpenMeetingDetails })
+  }
+
+  setMeetingUriRef = ref => {
+    this.meetingUriRef = ref
+  }
+
+  handleCopyMeetingUri = () => {
+    const el = this.meetingUriRef
+    el.select()
+    document.execCommand("copy")
+  }
+
   handleSave = () => {
     const { current } = this.whiteboard;
     if (current) {
@@ -715,7 +845,7 @@ class MeetUp extends React.Component<Props, State> {
     try {
       this.setState({ postingPoints: true });
       const {
-        user: { userId }
+        user: { data: { userId } }
       } = this.props;
       const { videoRoom, participants } = this.state;
       if (videoRoom && this.started) {
@@ -757,10 +887,74 @@ class MeetUp extends React.Component<Props, State> {
     this.setState({ dominantView: !dominantView })
   }
 
-  render() {
-    const { classes, user, channel } = this.props;
-    const { userId, firstName, lastName, profileImage } = user;
+  handleChange = kind => event => {
+    const { onUpdateDeviceSelection } = this.props;
+    onUpdateDeviceSelection(kind, event.target.value);
+  };
+
+  openSettings = () => {
+    this.setState({ openSettings: true });
+  };
+
+  closeSettings = () => {
+    this.setState({ openSettings: false });
+  };
+
+  openClassmatesDialog = () => {
+    const { user:  { expertMode } } = this.props
+    this.setState({
+      openClassmates: expertMode ? 'student' : 'classmate',
+      isOpenMeetingDetails: false
+    })
+  }
+
+  closeClassmatesDialog = () => {
+    this.setState({ openClassmates: '' })
+  }
+
+  courseDisplayName = () => {
     const {
+      user: {
+        userClasses
+      },
+      router: {
+        location: {
+          search
+        }
+      }
+    } = this.props
+    const query = queryString.parse(search)
+
+    if (query.class && userClasses?.classList) {
+      const { classId } = decypherClass(query.class)
+      const selectedCourse = userClasses.classList.find(cl => cl.classId === Number(classId))
+      if (selectedCourse) return selectedCourse.courseDisplayName
+    }
+    return ''
+  }
+
+  render() {
+    const {
+      classes,
+      user,
+      // channel,
+      roomName,
+      selectedvideoinput,
+      videoinput,
+      selectedaudioinput,
+      audioinput,
+    } = this.props;
+    const {
+      data: {
+        userId,
+        firstName,
+        lastName,
+        // profileImage,
+      },
+      expertMode,
+    } = user;
+    const {
+      currentClassList,
       videoRoom,
       lockedParticipant,
       participants,
@@ -771,8 +965,8 @@ class MeetUp extends React.Component<Props, State> {
       isVideoSwitching,
       isAudioSwitching,
       screenTrack,
-      type,
-      unread,
+      // type,
+      // unread,
       dataTrack,
       drawData,
       lineWidth,
@@ -780,11 +974,15 @@ class MeetUp extends React.Component<Props, State> {
       isText,
       eraser,
       canvasImg,
-      points,
+      // points,
       openVideoPoints,
       dominantView,
-      postingPoints
+      postingPoints,
+      openSettings,
+      isOpenMeetingDetails,
+      openClassmates
     } = this.state;
+
     const localPartcipant = participants.find(item => item.type === 'local');
 
     const isVideoEnabled = localPartcipant && localPartcipant.video.length > 0;
@@ -794,8 +992,19 @@ class MeetUp extends React.Component<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
-            {participants.length < 2 && <NoParticipants />}
-            <LeftPanel
+            <div className={classes.settings}>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.settingBtn}
+                startIcon={<SettingsIcon />}
+                onClick={this.openSettings}
+              >
+                Settings
+              </Button>
+            </div>
+            {/* {participants.length < 2 && <NoParticipants />} */}
+            {/* <LeftPanel
               participants={participants.length}
               localParticipant={
                 <LocalThumbnail
@@ -807,8 +1016,8 @@ class MeetUp extends React.Component<Props, State> {
                   profileImage={profileImage}
                   video={
                     localPartcipant &&
-                  localPartcipant.video.length > 0 &&
-                  localPartcipant.video[0]
+                    localPartcipant.video.length > 0 &&
+                    localPartcipant.video[0]
                   }
                   isVideo={isVideoEnabled}
                   isMic={isAudioEnabled}
@@ -827,7 +1036,7 @@ class MeetUp extends React.Component<Props, State> {
                 channel && (
                   <VideoChatChannel
                     open={type === 'chat'}
-                    user={user}
+                    user={user.data}
                     channel={channel}
                     onUnreadUpdate={this.handleUnreadUpdate}
                   />
@@ -835,7 +1044,7 @@ class MeetUp extends React.Component<Props, State> {
               }
               unread={unread}
               onTabChange={this.handleTabChange}
-            />
+            /> */}
             <Controls
               isConnected={Boolean(videoRoom)}
               dominantToggle={this.dominantToggle}
@@ -849,6 +1058,8 @@ class MeetUp extends React.Component<Props, State> {
               isSharingData={Boolean(dataTrack)}
               isVideoSwitching={isVideoSwitching}
               isAudioSwitching={isAudioSwitching}
+              isOpenMeetingDetails={isOpenMeetingDetails}
+              openMeetingDetails={this.handleMeetingDetails}
               endCall={this.handleEndCall}
               disableVideo={this.handleDisableVideo}
               disableAudio={this.handleDisableAudio}
@@ -908,7 +1119,7 @@ class MeetUp extends React.Component<Props, State> {
             </div>
           </Dialog>
         </ErrorBoundary>
-        <ErrorBoundary>
+        {/* <ErrorBoundary>
           {points && (
             <div className={classes.points}>
               <Fab
@@ -922,7 +1133,7 @@ class MeetUp extends React.Component<Props, State> {
               </Fab>
             </div>
           )}
-        </ErrorBoundary>
+        </ErrorBoundary> */}
         <ErrorBoundary>
           <VideoPointsDialog
             open={openVideoPoints}
@@ -931,9 +1142,128 @@ class MeetUp extends React.Component<Props, State> {
             onSubmit={this.handlePointsSubmit}
           />
         </ErrorBoundary>
+        <ErrorBoundary>
+          {isOpenMeetingDetails
+            ? <MeetingDetails
+              setRef={this.setMeetingUriRef}
+              meetingUriRef={this.meetingUriRef}
+              onClose={this.handleMeetingDetails}
+              onCopy={this.handleCopyMeetingUri}
+              openClassmatesDialog={this.openClassmatesDialog}
+              meetingUri={`${VIDEO_SHARE_URL}/${roomName}`}
+            />
+            : null
+          }
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ClassmatesDialog
+            meetingInvite
+            userId={userId}
+            selectedClasses={currentClassList}
+            close={this.closeClassmatesDialog}
+            expertMode={expertMode}
+            state={openClassmates}
+            courseDisplayName={this.courseDisplayName()}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Dialog
+            className={classes.dialog}
+            onCancel={this.closeSettings}
+            open={openSettings}
+            showActions={false}
+            contentClassName={classes.contentClassName}
+            title="Audio/Visual Settings ⚙️"
+          >
+            <FormControl classes={{ root: classes.options }}>
+              <InputLabel
+                classes={{
+                  root: classes.optionLabel
+                }}
+                htmlFor="audioinput-native-helper"
+              >
+                Video
+              </InputLabel>
+              <NativeSelect
+                value={selectedvideoinput}
+                onChange={this.handleChange('videoinput')}
+                classes={{
+                  root: classes.controlOptions,
+                  icon: classes.dropdownArrow
+                }}
+                input={
+                  <Input
+                    classes={{
+                      root: classes.controlOptionLabel,
+                      focused: classes.optionFocused,
+                    }}
+                    name="videoinput" id="videoinput-native-helper"
+                  />
+                }
+              >
+                {videoinput.map(item => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </NativeSelect>
+            </FormControl>
+            <FormControl classes={{ root: classes.options }}>
+              <InputLabel
+                classes={{
+                  root: classes.optionLabel
+                }}
+                htmlFor="audioinput-native-helper"
+              >
+                Mic
+              </InputLabel>
+              <NativeSelect
+                value={selectedaudioinput}
+                classes={{
+                  root: classes.controlOptions,
+                  icon: classes.dropdownArrow
+                }}
+                onChange={this.handleChange('audioinput')}
+                input={
+                  <Input
+                    classes={{
+                      root: classes.controlOptionLabel,
+                      focused: classes.optionFocused,
+                    }}
+                    name="audioinput" id="audioinput-native-helper"
+                  />
+                }
+              >
+                {audioinput.map(item => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </NativeSelect>
+            </FormControl>
+            <Box className={classes.options}>
+              <Typography className={classes.report}>
+                <ReportFlag /> &nbsp; Report an Issue
+              </Typography>
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.letsGo}
+                onClick={this.closeSettings}
+              >
+                Save
+              </Button>
+            </Box>
+          </Dialog>
+        </ErrorBoundary>
       </Fragment>
     );
   }
 }
+const mapStateToProps = ({ router }: StoreState): {} => ({
+  router,
+});
 
-export default withStyles(styles)(withSnackbar(MeetUp));
+export default connect(mapStateToProps, null)(withStyles(styles)(withSnackbar(MeetUp)));

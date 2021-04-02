@@ -34,6 +34,8 @@ const circleInTheme = {
   disabled: '#6d7884',
   profilebgColor: '#bdbdbd',
   danger: '#F54F47',
+  dangerBackground: '#A61515',
+  videoThumbDefaultBackground: '#C4C4C4',
   flashcardBackground: '#324F61',
   deepSeaOcean: '#225D89',
   hoverMenu: '#3A3B3B',
@@ -41,14 +43,16 @@ const circleInTheme = {
   textSubtitleBody: '#ADBBC4',
   sendMessageButton: '#1E88E5',
   textNormalButton: '#090909',
-  greenInvite: '#3B700D',
+  greenInvite: '#256F28',
   white: '#FFFFFF',
+  black: '#000000'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
       white: circleInTheme.white,
+      black: circleInTheme.black,
       greenInvite: circleInTheme.greenInvite,
       textNormalButton: circleInTheme.textNormalButton,
       sendMessageButton: circleInTheme.sendMessageButton,
@@ -70,6 +74,8 @@ const theme = createMuiTheme({
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
       secondaryText: circleInTheme.secondaryText,
+      dangerBackground: circleInTheme.dangerBackground,
+      videoThumbDefaultBackground: circleInTheme.videoThumbDefaultBackground,
       textOffwhite: circleInTheme.textOffwhite,
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
