@@ -14,6 +14,7 @@ import set from 'lodash/set'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import CloseIcon from '@material-ui/icons/Close';
 import ErrorBoundary from '../ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
 
@@ -32,6 +33,7 @@ const styles = theme => ({
   title: {
     width: '100%',
     textAlign: 'center',
+    marginTop: theme.spacing(),
     fontSize: 24,
     fontWeight: 700,
   },
@@ -56,7 +58,14 @@ const styles = theme => ({
     fontSize: 14,
     marginLeft: theme.spacing(),
     fontWeight: 700,
-  }
+  },
+  closeIcon: {
+    color: '#979797',
+    cursor: 'pointer',
+    position: 'absolute',
+    right: 13,
+    top: 5,
+  },
 });
 
 function TabPanel(props) {
@@ -115,7 +124,7 @@ type Props = {
   chat: Object
 };
 
-const StudyRoomChat = ({ open, user, router, classes, chat }: Props) => {
+const StudyRoomChat = ({ handleClose, open, user, router, classes, chat }: Props) => {
   const [members, setMembers] = useState({})
   const [tabs, setTabs] = useState(1)
   const channelId = useMemo(() => {
@@ -165,6 +174,7 @@ const StudyRoomChat = ({ open, user, router, classes, chat }: Props) => {
   return (
     <ErrorBoundary>
       <div className={classes.root}>
+        <CloseIcon className={classes.closeIcon} onClick={handleClose} />
         <Typography className={classes.title}>Study Room</Typography>
         <StyledTabs value={tabs} onChange={handleChangeTabs}>
           <StyledTab label="Participants" id='participants' />

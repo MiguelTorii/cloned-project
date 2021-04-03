@@ -30,10 +30,10 @@ const styles = theme => ({
     position: 'relative',
   },
   messageContainerNoImg: {
-    height: 420,
+    height: 405,
   },
   messageContainerImg: {
-    height: 315,
+    height: 300,
   },
   typing: {
     minHeight: 28,

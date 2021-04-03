@@ -1000,7 +1000,7 @@ class MeetUp extends React.Component<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
-            <StudyRoomChat open={chatOpen} />
+            <StudyRoomChat open={chatOpen} handleClose={this.toggleChat} />
             <div className={classes.settings}>
               <Button
                 variant="contained"
