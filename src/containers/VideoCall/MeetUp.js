@@ -11,6 +11,7 @@ import first from 'lodash/first';
 import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
+import StudyRoomChat from 'containers/StudyRoomChat'
 // import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -254,6 +255,7 @@ class MeetUp extends React.Component<Props, State> {
     isOpenMeetingDetails: false,
     currentClassList: [],
     openClassmates: '',
+    chatOpen: false,
     openSettings: false
   };
 
@@ -933,6 +935,11 @@ class MeetUp extends React.Component<Props, State> {
     return ''
   }
 
+  toggleChat = () => {
+    const { chatOpen } = this.state
+    this.setState({ chatOpen: !chatOpen })
+  }
+
   render() {
     const {
       classes,
@@ -980,6 +987,7 @@ class MeetUp extends React.Component<Props, State> {
       postingPoints,
       openSettings,
       isOpenMeetingDetails,
+      chatOpen,
       openClassmates
     } = this.state;
 
@@ -992,6 +1000,7 @@ class MeetUp extends React.Component<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
+            <StudyRoomChat open={chatOpen} />
             <div className={classes.settings}>
               <Button
                 variant="contained"
@@ -1048,6 +1057,7 @@ class MeetUp extends React.Component<Props, State> {
             <Controls
               isConnected={Boolean(videoRoom)}
               dominantToggle={this.dominantToggle}
+              toggleChat={this.toggleChat}
               dominantView={dominantView}
               isVideoEnabled={isVideoEnabled}
               isAudioEnabled={isAudioEnabled}

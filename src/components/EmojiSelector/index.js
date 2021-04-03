@@ -10,6 +10,9 @@ import 'emoji-mart/css/emoji-mart.css';
 const styles = () => ({
   button: {
     padding: 10
+  },
+  poper: {
+    zIndex: '1700 !important'
   }
 });
 
@@ -68,6 +71,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
           id="simple-popper"
           open={open}
           anchorEl={anchorEl}
+          className={classes.poper}
           onClose={this.handleClose}
           anchorOrigin={{
             vertical: 'bottom',

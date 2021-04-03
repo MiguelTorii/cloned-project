@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
-import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
+// import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
 import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';
 
 const styles = theme => ({
@@ -108,7 +108,6 @@ type Props = {
   endCall: Function,
   disableVideo: Function,
   disableAudio: Function,
-  dominantToggle: Function,
   shareScreen: Function,
   openMeetingDetails: Function
   // shareData: Function
@@ -150,7 +149,7 @@ class Controls extends React.PureComponent<Props, State> {
       isScreenSharingSupported,
       isSharing,
       isSharingData,
-      dominantToggle,
+      toggleChat,
       isVideoSwitching,
       isAudioSwitching,
       disableVideo,
@@ -249,7 +248,7 @@ class Controls extends React.PureComponent<Props, State> {
                   Participant
               </span>
             </div>}
-        </Button>
+        </Button> */}
 
         <Button
           size='small'
@@ -257,7 +256,7 @@ class Controls extends React.PureComponent<Props, State> {
           aria-label='share-screen'
           className={classes.fab}
           disabled={!isConnected}
-          onClick={dominantToggle}
+          onClick={toggleChat}
         >
           {!isSharing
             ? <div className={classes.controlButtons}>
@@ -272,7 +271,7 @@ class Controls extends React.PureComponent<Props, State> {
                 Chat
               </span>
             </div>}
-        </Button> */}
+        </Button>
       </div>
     )
   }
