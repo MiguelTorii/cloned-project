@@ -20,20 +20,19 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
-import SettingsIcon from '@material-ui/icons/Settings';
+// import SettingsIcon from '@material-ui/icons/Settings';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
-// import VideoChatChannel from './VideoChatChannel';
+import VideoChatChannel from './VideoChatChannel';
 import Controls from '../../components/MeetUp/CallControls';
-// import LeftPanel from '../../components/MeetUp/LeftPanel';
-// import Thumbnails from '../../components/MeetUp/Thumbnails';
-// import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
+import LeftPanel from '../../components/MeetUp/LeftPanel';
+import Thumbnails from '../../components/MeetUp/Thumbnails';
+import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
 import VideoGrid from '../../components/MeetUp/VideoGrid';
 import MeetingDetails from '../../components/MeetUp/MeetingDetails';
 import SharingScreenControl from '../../components/MeetUp/SharingScreenControl';
-// import NoParticipants from '../../components/MeetUp/NoParticipants';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
 import Dialog from '../../components/Dialog';
@@ -944,7 +943,7 @@ class MeetUp extends React.Component<Props, State> {
     const {
       classes,
       user,
-      // channel,
+      channel,
       roomName,
       selectedvideoinput,
       videoinput,
@@ -956,7 +955,7 @@ class MeetUp extends React.Component<Props, State> {
         userId,
         firstName,
         lastName,
-        // profileImage,
+        profileImage,
       },
       expertMode,
     } = user;
@@ -972,8 +971,8 @@ class MeetUp extends React.Component<Props, State> {
       isVideoSwitching,
       isAudioSwitching,
       screenTrack,
-      // type,
-      // unread,
+      type,
+      unread,
       dataTrack,
       drawData,
       lineWidth,
@@ -1001,19 +1000,18 @@ class MeetUp extends React.Component<Props, State> {
         <ErrorBoundary>
           <div className={classes.root}>
             <StudyRoomChat open={chatOpen} handleClose={this.toggleChat} />
-            <div className={classes.settings}>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.settingBtn}
-                startIcon={<SettingsIcon />}
-                onClick={this.openSettings}
-              >
-                Settings
-              </Button>
-            </div>
-            {/* {participants.length < 2 && <NoParticipants />} */}
-            {/* <LeftPanel
+            {/* <div className={classes.settings}> */}
+            {/* <Button */}
+            {/* variant="contained" */}
+            {/* color="secondary" */}
+            {/* className={classes.settingBtn} */}
+            {/* startIcon={<SettingsIcon />} */}
+            {/* onClick={this.openSettings} */}
+            {/* > */}
+            {/* Settings */}
+            {/* </Button> */}
+            {/* </div> */}
+            <LeftPanel
               participants={participants.length}
               localParticipant={
                 <LocalThumbnail
@@ -1053,7 +1051,7 @@ class MeetUp extends React.Component<Props, State> {
               }
               unread={unread}
               onTabChange={this.handleTabChange}
-            /> */}
+            />
             <Controls
               isConnected={Boolean(videoRoom)}
               dominantToggle={this.dominantToggle}
