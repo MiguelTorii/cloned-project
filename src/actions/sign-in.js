@@ -89,7 +89,7 @@ export const updateUser = ({ user }: { user: User }) => async (
   const isExpert = user.permission.includes('expert_mode_access') &&
     user.permission.includes('main_application_access')
 
-  let curExpertMode = expertMode
+  let curExpertMode = expertMode || localStorage.getItem('EXPERT_MODE') === 'true'
   if (curExpertMode === null) {
     curExpertMode = !!(user.permission.includes('expert_mode_access') &&
     !user.permission.includes('main_application_access'))
@@ -220,8 +220,8 @@ export const signOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(chatActions.handleShutdownChat())
     dispatch(clearState())
-    dispatch(requestSignOut());
     store.clearAll()
+    dispatch(requestSignOut());
     dispatch(push('/'));
     dispatch(clearUser());
     // window.location.href = 'https://www.circleinapp.com/'

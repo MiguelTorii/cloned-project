@@ -15,11 +15,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ErrorBoundary from '../ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
 
 const styles = theme => ({
   root: {
+    display: 'flex',
+    flexDirection: 'column',
     position: 'absolute',
     bottom:145,
     right: 60,
@@ -75,6 +78,7 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
+      style={{ overflow: 'auto' }}
       {...other}
     >
       {value === index && (
@@ -173,44 +177,49 @@ const StudyRoomChat = ({ handleClose, open, user, router, classes, chat }: Props
   if (!open) return null
   return (
     <ErrorBoundary>
-      <div className={classes.root}>
-        <CloseIcon className={classes.closeIcon} onClick={handleClose} />
-        <Typography className={classes.title}>Study Room</Typography>
-        <StyledTabs value={tabs} onChange={handleChangeTabs}>
-          <StyledTab label="Participants" id='participants' />
-          <StyledTab label="Chat" id='chat' />
-        </StyledTabs>
-        <TabPanel value={tabs} index={0}>
-          <div className={classes.memberContainer}>
-            <Typography className={classes.memberTitle}>All</Typography>
-            {Object.keys(members).map(member => {
+      <ClickAwayListener onClickAway={handleClose}>
+        <div className={classes.root}>
+          <CloseIcon className={classes.closeIcon} onClick={handleClose} />
+          <Typography className={classes.title}>Study Room</Typography>
+          <StyledTabs value={tabs} onChange={handleChangeTabs}>
+            <StyledTab label="Participants" id='participants' />
+            <StyledTab label="Chat" id='chat' />
+          </StyledTabs>
+          <TabPanel
+            value={tabs}
+            index={0}
+          >
+            <div className={classes.memberContainer}>
+              <Typography className={classes.memberTitle}>All</Typography>
+              {Object.keys(members).map(member => {
 
-              const memberObj = members[member]
-              const { avatar, firstname, lastname } = memberObj
+                const memberObj = members[member]
+                const { avatar, firstname, lastname } = memberObj
 
-              return (
-                <div key={member} className={classes.member}>
-                  <Avatar
-                    src={avatar}
-                    className={classes.avatar}
-                  >
-                    {firstname[0]}{lastname[0]}
-                  </Avatar>
-                  <Typography className={classes.fullname}>{firstname} {lastname}</Typography>
-                </div>
-              )
-            })}
-          </div>
-        </TabPanel>
-        <TabPanel value={tabs} index={1}>
-          <Chat
-            user={user}
-            channel={channel}
-            members={members}
-            chat={chat}
-          />
-        </TabPanel>
-      </div>
+                return (
+                  <div key={member} className={classes.member}>
+                    <Avatar
+                      src={avatar}
+                      className={classes.avatar}
+                    >
+                      {firstname[0]}{lastname[0]}
+                    </Avatar>
+                    <Typography className={classes.fullname}>{firstname} {lastname}</Typography>
+                  </div>
+                )
+              })}
+            </div>
+          </TabPanel>
+          <TabPanel value={tabs} index={1}>
+            <Chat
+              user={user}
+              channel={channel}
+              members={members}
+              chat={chat}
+            />
+          </TabPanel>
+        </div>
+      </ClickAwayListener>
     </ErrorBoundary>
   )
 }

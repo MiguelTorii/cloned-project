@@ -92,9 +92,7 @@ const defaultState = {
     helpLink: ''
   },
   bannerHeight: 0,
-  expertMode: localStorage.getItem('EXPERT_MODE')
-    ? localStorage.getItem('EXPERT_MODE') === 'true'
-    : null,
+  expertMode: false,
   isExpert: false,
   runningTour: false,
   isLoading: false,
