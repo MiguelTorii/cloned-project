@@ -10,6 +10,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import Badge from '@material-ui/core/Badge';
 
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
 // import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
@@ -91,6 +92,11 @@ const styles = theme => ({
   },
   tooltip: {
     fontSize: 14,
+  },
+  badge: {
+    top: 10,
+    right: 15,
+    zIndex: 1700
   }
 });
 
@@ -109,7 +115,8 @@ type Props = {
   disableVideo: Function,
   disableAudio: Function,
   shareScreen: Function,
-  openMeetingDetails: Function
+  openMeetingDetails: Function,
+  unreadMessageCount: ?number
   // shareData: Function
 };
 
@@ -154,6 +161,7 @@ class Controls extends React.PureComponent<Props, State> {
       isAudioSwitching,
       disableVideo,
       disableAudio,
+      unreadMessageCount,
       shareScreen,
     } = this.props
 
@@ -250,28 +258,36 @@ class Controls extends React.PureComponent<Props, State> {
             </div>}
         </Button> */}
 
-        <Button
-          size='small'
-          color="default"
-          aria-label='share-screen'
-          className={classes.fab}
-          disabled={!isConnected}
-          onClick={toggleChat}
+        <Badge
+          badgeContent={unreadMessageCount}
+          color="error"
+          classes={{
+            badge: classes.badge
+          }}
         >
-          {!isSharing
-            ? <div className={classes.controlButtons}>
-              <ChatIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+          <Button
+            size='small'
+            color="default"
+            aria-label='share-screen'
+            className={classes.fab}
+            disabled={!isConnected}
+            onClick={toggleChat}
+          >
+            {!isSharing
+              ? <div className={classes.controlButtons}>
+                <ChatIcon className={classes.controlIcons}/>
+                <span className={classes.controlLabel}>
                 Chat
-              </span>
-            </div>
-            : <div className={classes.controlButtons}>
-              <ChatIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+                </span>
+              </div>
+              : <div className={classes.controlButtons}>
+                <ChatIcon className={classes.controlIcons}/>
+                <span className={classes.controlLabel}>
                 Chat
-              </span>
-            </div>}
-        </Button>
+                </span>
+              </div>}
+          </Button>
+        </Badge>
       </div>
     )
   }

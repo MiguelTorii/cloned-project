@@ -102,7 +102,10 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.hoverMenu,
     color: theme.circleIn.palette.secondaryText,
     wordWrap: 'break-word',
-    width: '100%'
+    width: '100%',
+    '& a': {
+      color: theme.circleIn.palette.brand
+    }
     // 'word-break': 'break-all'
   },
   right: {

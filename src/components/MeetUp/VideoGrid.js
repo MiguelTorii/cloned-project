@@ -59,9 +59,6 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'flex-start'
   },
-  galleryViewPagination: {
-    height: '100%'
-  },
   galleryView: {
     overflowY: 'scroll',
     height: '100% !important',
@@ -69,15 +66,18 @@ const styles = theme => ({
   },
   pagination: {
     width: '100%',
-    position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    marginTop: theme.spacing(2),
     alignItems: 'center'
   },
   view: {
     padding: theme.spacing(1.5)
   },
   gridContainer: {
+    position: 'relative',
     height: 'calc(100% - 70px)',
     width: '100%',
     margin: 0,
@@ -98,6 +98,15 @@ const styles = theme => ({
     boxSizing: 'border-box',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     borderRadius: 10
+  },
+  paginationItem: {
+    fontSize: 0,
+    border: '1px white solid',
+    height: 10,
+    minWidth: 10,
+    '&.MuiPaginationItem-page.Mui-selected': {
+      backgroundColor: 'white'
+    }
   }
 });
 
@@ -238,23 +247,6 @@ const VideoGrid = ({
           classes.galleryViews,
           viewMode === 'gallery-view' && classes.selectedGalleryViewMode
         )}>
-          {totalPageCount > 1 && <Pagination
-            classes={{
-              root: cx(classes.pagination, viewMode === 'gallery-view' && classes.galleryViewPagination)
-            }}
-            hideNextButton
-            hidePrevButton
-            renderItem={item =>
-              <PaginationItem
-                {...item}
-                size='small'
-                selected
-              />
-            }
-            onChange={handlePageChange}
-            count={totalPageCount}
-            page={selectedPage}
-          />}
           <Paper className={classes.viewGalleryMode} elevation={3}>
             <Typography className={cx(classes.view, classes.pr0)} variant="body1">
               View
@@ -294,6 +286,23 @@ const VideoGrid = ({
               : classes.galleryView
           )}
         >
+          {totalPageCount > 1 && <Pagination
+            classes={{
+              root: cx(classes.pagination)
+            }}
+            hideNextButton
+            hidePrevButton
+            renderItem={item =>
+              <PaginationItem
+                {...item}
+                className={classes.paginationItem}
+                size='small'
+              />
+            }
+            onChange={handlePageChange}
+            count={totalPageCount}
+            page={selectedPage}
+          />}
           {renderParticipants()}
         </Grid>
       </Paper>

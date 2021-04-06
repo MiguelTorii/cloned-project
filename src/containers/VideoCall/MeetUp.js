@@ -23,6 +23,7 @@ import Input from '@material-ui/core/Input';
 // import SettingsIcon from '@material-ui/icons/Settings';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 
+import get from 'lodash/get'
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
 import VideoChatChannel from './VideoChatChannel';
@@ -190,6 +191,7 @@ type Props = {
   roomName: string,
   // channel: ?Object,
   leaveRoom: Function,
+  chat: Object,
   updateLoading: Function,
   enqueueSnackbar: Function
 };
@@ -949,6 +951,7 @@ class MeetUp extends React.Component<Props, State> {
       videoinput,
       selectedaudioinput,
       audioinput,
+      chat,
     } = this.props;
     const {
       data: {
@@ -995,6 +998,7 @@ class MeetUp extends React.Component<Props, State> {
     const isVideoEnabled = localPartcipant && localPartcipant.video.length > 0;
     const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0;
 
+    const unreadMessageCount = get(chat, `data.local.${channel.sid}.unread`)
     return (
       <Fragment>
         <ErrorBoundary>
@@ -1073,6 +1077,7 @@ class MeetUp extends React.Component<Props, State> {
               disableAudio={this.handleDisableAudio}
               shareScreen={this.handleShareScreen}
               shareData={this.handleShareData}
+              unreadMessageCount={unreadMessageCount}
             />
             <SharingScreenControl
               isSharing={Boolean(screenTrack)}
@@ -1270,8 +1275,9 @@ class MeetUp extends React.Component<Props, State> {
     );
   }
 }
-const mapStateToProps = ({ router }: StoreState): {} => ({
+const mapStateToProps = ({ router, chat }: StoreState): {} => ({
   router,
+  chat
 });
 
 export default connect(mapStateToProps, null)(withStyles(styles)(withSnackbar(MeetUp)));
