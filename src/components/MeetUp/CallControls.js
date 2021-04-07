@@ -3,6 +3,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CallEndIcon from '@material-ui/icons/CallEnd';
 import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
@@ -27,6 +29,11 @@ const styles = theme => ({
     zIndex: 1400,
     backgroundColor: theme.circleIn.palette.primaryBackground
   },
+  mainControls: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   disalbedRoot: {
     position: 'absolute',
     bottom: 0,
@@ -39,7 +46,10 @@ const styles = theme => ({
     opacity: 0.85
   },
   fab: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      margin: 0
+    }
   },
   controlButtons: {
     display: 'flex',
@@ -50,7 +60,11 @@ const styles = theme => ({
   controlIcons: {
     height: 40,
     width: 40,
-    color: theme.circleIn.palette.white
+    color: theme.circleIn.palette.white,
+    [theme.breakpoints.down('sm')]: {
+      height: 30,
+      width: 30,
+    }
   },
   controlLabel: {
     marginTop: theme.spacing(0.5),
@@ -68,6 +82,9 @@ const styles = theme => ({
     '&:hover': {
       background: theme.circleIn.palette.dangerBackground,
       color: theme.circleIn.palette.white,
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0.5, 1),
     }
   },
   disableControl: {
@@ -88,6 +105,9 @@ const styles = theme => ({
     '&:hover': {
       background: theme.circleIn.palette.appBar,
       color: theme.circleIn.palette.white,
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0.5, 1),
     }
   },
   tooltip: {
@@ -143,10 +163,6 @@ class Controls extends React.PureComponent<Props, State> {
     this.setState({ windowWidth: window.innerWidth })
   }
 
-  renderMobileControls = () => {
-    return null
-  }
-
   renderControls = () => {
     const {
       classes,
@@ -164,6 +180,7 @@ class Controls extends React.PureComponent<Props, State> {
       unreadMessageCount,
       shareScreen,
     } = this.props
+    const { windowWidth } = this.state
 
     return (
       <div className={classes.mainControls}>
@@ -178,15 +195,15 @@ class Controls extends React.PureComponent<Props, State> {
           {!isAudioEnabled
             ? <div className={classes.controlButtons}>
               <MicOffIcon className={classes.controlIcons} />
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                 Turn on Mic
-              </span>
+              </span>}
             </div>
             : <div className={classes.controlButtons}>
               <MicIcon className={classes.controlIcons} />
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                 Turn off Mic
-              </span>
+              </span>}
             </div>}
         </Button>
 
@@ -201,18 +218,18 @@ class Controls extends React.PureComponent<Props, State> {
           {!isVideoEnabled
             ? <div className={classes.controlButtons}>
               <VideocamOffIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                   Stop Camera
-              </span>
+              </span>}
             </div>
             : <div className={classes.controlButtons}>
               <VideocamIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                   Start Camera
-              </span>
+              </span>}
             </div>}
         </Button>
-        <Button
+        {windowWidth > 720 && <Button
           size='small'
           color='default'
           aria-label='share-screen'
@@ -223,17 +240,17 @@ class Controls extends React.PureComponent<Props, State> {
           {!isSharing
             ? <div className={classes.controlButtons}>
               <ShareScreenIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                   Sharing Screen
-              </span>
+              </span>}
             </div>
             : <div className={classes.controlButtons}>
               <StopScreenShareIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
                   Stop Sharing
-              </span>
+              </span>}
             </div>}
-        </Button>
+        </Button>}
 
         {/* <Button
           size='small'
@@ -276,15 +293,15 @@ class Controls extends React.PureComponent<Props, State> {
             {!isSharing
               ? <div className={classes.controlButtons}>
                 <ChatIcon className={classes.controlIcons}/>
-                <span className={classes.controlLabel}>
+                {windowWidth > 720 && <span className={classes.controlLabel}>
                 Chat
-                </span>
+                </span>}
               </div>
               : <div className={classes.controlButtons}>
                 <ChatIcon className={classes.controlIcons}/>
-                <span className={classes.controlLabel}>
-                Chat
-                </span>
+                {windowWidth > 720 && <span className={classes.controlLabel}>
+                  Chat
+                </span>}
               </div>}
           </Button>
         </Badge>
@@ -317,10 +334,10 @@ class Controls extends React.PureComponent<Props, State> {
               : <ArrowDropUpIcon className={classes.meetingDetailShow} />
             }
           >
-            Study Room Details
+            {windowWidth > 720 ?  'Study Room Details' : <AddCircleIcon />}
           </Button>
         </div>
-        {windowWidth > 720 ? this.renderControls() : this.renderMobileControls()}
+        {this.renderControls()}
         <div className={classes.endMeeting}>
           <Button
             variant="contained"
@@ -333,7 +350,7 @@ class Controls extends React.PureComponent<Props, State> {
             onClick={endCall}
             disabled={!isConnected}
           >
-              Exit Study Room
+            {windowWidth > 720 ? 'Exit Study Room' : <CallEndIcon />}
           </Button>
         </div>
       </div>

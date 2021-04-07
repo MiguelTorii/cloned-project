@@ -1079,10 +1079,10 @@ class MeetUp extends React.Component<Props, State> {
               shareData={this.handleShareData}
               unreadMessageCount={unreadMessageCount}
             />
-            <SharingScreenControl
+            {/* <SharingScreenControl
               isSharing={Boolean(screenTrack)}
               onStopSharing={this.handleShareScreen}
-            />
+            /> */}
             <VideoGrid
               participants={participants}
               dominantView={dominantView}

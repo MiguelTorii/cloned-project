@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import React from 'react';
 import cx from 'classnames';
@@ -25,8 +26,11 @@ const styles = theme => ({
     position: 'relative',
     borderRadius: 10
   },
+  shareGalleryInitials: {
+    fontSize: '6vw !important'
+  },
   video: {
-    height: '100%   !important',
+    height: '100% !important',
     width: '100%',
     '& video': {
       width: '100%',
@@ -57,7 +61,10 @@ const styles = theme => ({
     padding: theme.spacing(2),
     backgroundColor: theme.circleIn.palette.appBar,
     borderRadius: 10,
-    zIndex: 9
+    zIndex: 9,
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1)
+    },
   },
   icon: {
     height: 28,
@@ -77,7 +84,11 @@ const styles = theme => ({
   mediumUsername: {
     fontWeight: 'bold',
     fontSize: '.9vw',
-    marginRight: theme.spacing(1.5)
+    marginRight: theme.spacing(1.5),
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1),
+      fontSize: '1.2vw'
+    },
   },
   minimizeMic: {
     padding: theme.spacing(1)
@@ -90,7 +101,11 @@ const styles = theme => ({
   minimizeUsername: {
     fontWeight: 'bold',
     fontSize: 14,
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1),
+      fontSize: '1.5vw'
+    },
   },
   black: {
     position: 'absolute',
@@ -105,8 +120,11 @@ const styles = theme => ({
   },
   initials: {
     fontWeight:700,
-    fontSize: 150,
+    fontSize: '9vw',
     color: '#000000'
+  },
+  minimizeInitials: {
+    fontSize: '7vw'
   },
   profile: {
     width: '100%',
@@ -121,6 +139,22 @@ const styles = theme => ({
     justifyContent: 'center',
     flexDirection: 'column',
   },
+  shareGalleryVideo: {
+    padding: theme.spacing(1, 0)
+  },
+  shareGalleryView: {
+    flexBasis: 'auto',
+    justifyContent: 'flex-start',
+    paddingBottom: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    overflowY: 'scroll'
+  },
+  shareGalleryMic: {
+    padding: theme.spacing(1)
+  },
+  shareGalleryUsername: {
+    fontSize: 12
+  }
 });
 
 type Props = {
@@ -131,6 +165,7 @@ type Props = {
   isMic: boolean,
   video: ?Object,
   isVisible: boolean,
+  isSharedGallery: boolean,
   count: number
 };
 
@@ -142,6 +177,9 @@ class VideoGridItem extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     // $FlowIgnore
+    this.state = {
+      windowWidth: window.innerWidth
+    }
     this.videoinput = React.createRef();
   }
 
@@ -150,6 +188,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     if (video) {
       this.videoinput.current.appendChild(video.attach());
     }
+
+    window.addEventListener("resize", this.updateDimensions);
   };
 
   componentWillUnmount = () => {
@@ -159,7 +199,13 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       const attachedElements = video.detach();
       attachedElements.forEach(element => element.remove());
     }
+
+    window.removeEventListener("resize", this.updateDimensions);
   };
+
+  updateDimensions = () => {
+    this.setState({ windowWidth: window.innerWidth })
+  }
 
   render() {
     const {
@@ -171,35 +217,46 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       isMic,
       isVisible,
       count,
+      isSharedGallery,
       // highlight,
       viewMode
-    } = this.props;
+    } = this.props
+
+    const { windowWidth } = this.state
 
     let xs = 0
     let height = ''
+    let shareThumbnailHeight = ''
     const initials = `${firstName !== '' ? firstName.charAt(0) : ''}${
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
 
     const isScreen = video && video.name === 'screenSharing';
 
-    if (viewMode === 'minimize') {
-      xs = 3
+    if (isSharedGallery) {
+      xs = 12
+      shareThumbnailHeight='25%'
+    } else if (viewMode === 'minimize') {
+      xs = windowWidth > 600 ? 3 : windowWidth > 400 ? 4 : 6
       height = `${140}px`
     } else if (viewMode === 'medium-view') {
-      xs = 3
+      xs = windowWidth > 600 ? 3 : 6
       height = '33.3%'
     } else {
       const factor = Math.ceil(Math.sqrt(count))
-      xs = 12 / factor
-      height = `${100 / factor}%`
+      xs = windowWidth > 600 ? 12 / factor : 12
+      height = windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`
     }
 
     // const activeBorder = highlight ? { border: '1px solid #03A9F4' } : {}
     return (
       <Grid
         item xs={xs}
-        style={{ height }}
+        style={{
+          height: isSharedGallery ? shareThumbnailHeight : height,
+          flexBasis: isSharedGallery ? 'auto' : '100%'
+        }}
+        className={cx(isSharedGallery && classes.shareGalleryVideo)}
         hidden={!isVisible}
       >
         <div className={classes.root}>
@@ -212,7 +269,11 @@ class VideoGridItem extends React.PureComponent<Props, State> {
             ) : (
               <div className={classes.profile}>
                 <Typography
-                  className={classes.initials}
+                  className={cx(
+                    classes.initials,
+                    viewMode === 'minimize' && classes.minimizeInitials,
+                    isSharedGallery && classes.shareGalleryInitials
+                  )}
                 >
                   {initials}
                 </Typography>
@@ -222,7 +283,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
           {!isMic && (
             <div className={cx(
               classes.mic,
-              viewMode === 'minimize' && classes.minimizeMic
+              viewMode === 'minimize' && classes.minimizeMic,
+              isSharedGallery && classes.shareGalleryMic
             )}>
               <Mute className={cx(
                 classes.icon,
@@ -232,6 +294,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               <Typography
                 className={cx(
                   classes.username,
+                  isSharedGallery && classes.shareGalleryUsername,
                   viewMode === 'minimize' && classes.minimizeUsername,
                   viewMode === 'medium-view' && classes.mediumUsername
                 )}

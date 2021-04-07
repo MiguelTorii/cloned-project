@@ -10,7 +10,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import { ReactComponent as GalleryMediumView } from 'assets/svg/gallery-medium-view.svg';
+import { ReactComponent as SelectedGalleryMediumView } from 'assets/svg/selected-gallery-medium-view.svg';
 import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
+import { ReactComponent as SelectedGalleryView } from 'assets/svg/selected-gallery-view.svg';
 import VideoGridItem from './VideoGridItem';
 
 const styles = theme => ({
@@ -29,7 +31,8 @@ const styles = theme => ({
   },
   minimizePaperRoot: {
     height: 'auto !important',
-    maxWidth: 900
+    maxWidth: 900,
+    width: 'auto !important'
   },
   notGalleyView: {
     display: 'flex',
@@ -47,7 +50,10 @@ const styles = theme => ({
   },
   galleryViewPaperContainer: {
     maxWidth: 'calc(100% - 300px)',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '100%'
+    },
   },
   galleryViews: {
     display: 'flex',
@@ -57,7 +63,13 @@ const styles = theme => ({
   },
   selectedGalleryViewMode: {
     justifyContent: 'center',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('md')]: {
+      height: 100,
+      position: 'absolute',
+      zIndex: 9,
+      right: theme.spacing(5)
+    }
   },
   galleryView: {
     overflowY: 'scroll',
@@ -97,7 +109,18 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.primaryBackground,
     boxSizing: 'border-box',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10
+    borderRadius: 10,
+    overflow: 'hidden'
+  },
+  shareGalleryView: {
+    flexDirection: 'column',
+    maxWidth: 200,
+    paddingBottom: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    justifyContent: 'flex-start',
+    position: 'relative',
+    height: 'auto',
+    right: 0
   },
   paginationItem: {
     fontSize: 0,
@@ -107,6 +130,16 @@ const styles = theme => ({
     '&.MuiPaginationItem-page.Mui-selected': {
       backgroundColor: 'white'
     }
+  },
+  sharedGalleryView: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: 0,
+      background: 'transparent'
+    },
   }
 });
 
@@ -131,13 +164,41 @@ const VideoGrid = ({
   sharingTrackId,
 }: Props) => {
   const [dominant, setDominant] = useState('')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [pageCount, setPageCount] = useState(4)
   const [selectedPage, setSelectedPage] = useState(1)
   const [viewMode, setViewMode] = useState('gallery-view')
 
   useEffect(() => {
     if (dominantSpeaker) setDominant(dominantSpeaker)
-  }, [dominantSpeaker])
+
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleWindowResize)
+    return () => window.removeEventListener('resize', handleWindowResize)
+  }, [dominantSpeaker, windowWidth])
+
+  useEffect(() => {
+    if (viewMode === 'medium-view') {
+      setPageCount(windowWidth > 600 ? 12 : 6)
+    }
+
+    if (viewMode === 'minimize') {
+      if (windowWidth > 600) {
+        setPageCount(4)
+      } else if (windowWidth > 400) {
+        setPageCount(3)
+      } else {
+        setPageCount(2)
+      }
+    }
+  }, [viewMode, windowWidth])
+
+  useEffect(() => {
+    if (sharingTrackId) setViewMode('gallery-view')
+  }, [sharingTrackId])
 
   const isVisible = (id, other) => {
     if (lockedParticipant) {
@@ -162,15 +223,17 @@ const VideoGrid = ({
   const totalPageCount = useMemo(() => Math.ceil(participants.length / pageCount), [pageCount, participants.length])
 
   const changeViewMode = useCallback(mode => {
-    setViewMode(mode)
-    if (mode === 'gallery-view') {
-      setPageCount(4)
-    } else if (mode === 'medium-view') {
-      setPageCount(12)
-    } else {
-      setPageCount(4)
+    if (!sharingTrackId) {
+      setViewMode(mode)
+      if (mode === 'gallery-view') {
+        setPageCount(4)
+      } else if (mode === 'medium-view') {
+        setPageCount(12)
+      } else {
+        setPageCount(4)
+      }
     }
-  }, [])
+  }, [sharingTrackId])
 
   const handlePageChange = useCallback((event, page) => {
     setSelectedPage(page)
@@ -182,7 +245,7 @@ const VideoGrid = ({
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
       const numberOfParticipants =
-        sharingTrackId || lockedParticipant || (dominantView && dominant)
+        sharingTrackId || (dominantView && dominant)
           ? 1
           : participants.length
       if (item.video.length === 0) {
@@ -197,6 +260,7 @@ const VideoGrid = ({
             count={numberOfParticipants}
             isVisible={isVisible(item.participant.sid)}
             viewMode={viewMode}
+            isSharedGallery={false}
             //! sharingTrackId && !lockedParticipant ||
             // (sharingTrackId === item.participant.sid && !lockedParticipant) ||
             // (!dominantView && lockedParticipant === item.participant.sid) ||
@@ -222,6 +286,7 @@ const VideoGrid = ({
             isSharing={Boolean(track.id === sharingTrackId)}
             isVisible={isVisible(item.participant.sid, id)}
             viewMode={viewMode}
+            isSharedGallery={false}
             //! sharingTrackId && !lockedParticipant ||
             // (sharingTrackId === id && !lockedParticipant) ||
             // (!dominantView && lockedParticipant === id) ||
@@ -232,6 +297,51 @@ const VideoGrid = ({
       });
     });
   };
+
+  const renderGalleryListView = () => {
+    return participants.map(item => {
+      const profile = profiles[item.participant.identity] || {};
+      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+
+      if (!item.video.length) {
+        return (
+          <VideoGridItem
+            key={item.participant.sid}
+            isSharedGallery
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={userProfileUrl}
+            isVideo={false}
+            isMic={item.audio.length > 0}
+            count={1}
+            isVisible={!isVisible(item.participant.sid)}
+            viewMode={viewMode}
+          />
+        )
+      }
+
+      return item.video.map(track => {
+        const id = item.type === 'local' ? track.id : track.sid;
+        const isVideo = item.video.length !== 0
+        return (
+          <VideoGridItem
+            key={id}
+            isSharedGallery
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={userProfileUrl}
+            video={track}
+            isVideo={isVideo}
+            isMic={item.audio.length > 0}
+            highlight={dominantSpeaker === item.participant.sid}
+            count={participants.length}
+            isVisible={!isVisible(item.participant.sid, id)}
+            viewMode={viewMode}
+          />
+        );
+      });
+    });
+  }
 
   return (
     <div className={cx(classes.root, viewMode === 'minimize' && classes.minimizeRoot)}>
@@ -245,7 +355,8 @@ const VideoGrid = ({
       >
         {participants.length > 1 && <div className={cx(
           classes.galleryViews,
-          viewMode === 'gallery-view' && classes.selectedGalleryViewMode
+          viewMode === 'gallery-view' && classes.selectedGalleryViewMode,
+          sharingTrackId && classes.shareGalleryView
         )}>
           <Paper className={classes.viewGalleryMode} elevation={3}>
             <Typography className={cx(classes.view, classes.pr0)} variant="body1">
@@ -263,15 +374,24 @@ const VideoGrid = ({
               onClick={() => changeViewMode('medium-view')}
               aria-label="gallery-medium-view"
             >
-              <GalleryMediumView />
+              {viewMode === 'medium-view'
+                ? <SelectedGalleryMediumView />
+                : <GalleryMediumView />
+              }
             </IconButton>
             <IconButton
               onClick={() => changeViewMode('gallery-view')}
               aria-label="gallery-view"
             >
-              <GalleryView />
+              {viewMode === 'gallery-view'
+                ? <SelectedGalleryView />
+                : <GalleryView />
+              }
             </IconButton>
           </Paper>
+          {sharingTrackId && <div className={classes.sharedGalleryView}>
+            {renderGalleryListView()}
+          </div>}
         </div>}
         <Grid
           container

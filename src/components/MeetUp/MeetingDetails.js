@@ -21,7 +21,8 @@ const styles = theme => ({
     left: theme.spacing(3),
     maxWidth: 300,
     borderRadius: 20,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    zIndex: 10
   },
   header: {
     color: theme.circleIn.palette.white
