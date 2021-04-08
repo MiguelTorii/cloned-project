@@ -40,6 +40,7 @@ const ClassMultiSelect = ({
   textFieldStyle = '',
   noEmpty,
   onSelect,
+  schoolId
 }) => {
   const classes = useStyles();
 
@@ -108,7 +109,7 @@ const ClassMultiSelect = ({
           ...options
         ]}
         defaultValue={[]}
-        getOptionLabel={o => o.className}
+        getOptionLabel={o => `${o.section ? `${o.section[0].section}-` : '' } ${o.className}`}
         disableCloseOnSelect
         renderOption={(option, { selected }) => (
           <React.Fragment>
@@ -120,7 +121,10 @@ const ClassMultiSelect = ({
                 checked={selected}
               />
             )}
-            {option.className}
+            {`${schoolId === '119' && option.section
+              ? `${option.section[0].section}-`
+              : ''
+            } ${option.className}`}
           </React.Fragment>
         )}
         renderTags={(value, getTagProps) => {

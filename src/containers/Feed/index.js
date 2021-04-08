@@ -342,6 +342,7 @@ class Feed extends React.PureComponent<Props, State> {
       user: {
         data: {
           userId,
+          schoolId,
           firstName
         },
         userClasses: { classList },
@@ -398,6 +399,7 @@ class Feed extends React.PureComponent<Props, State> {
               selectedClasses={selectedClasses}
               setSelectedClasses={this.setSelectedClasses}
               firstName={firstName}
+              schoolId={schoolId}
               state={state}
               classList={classList}
               openClassmatesDialog={this.openClassmatesDialog}
@@ -436,6 +438,7 @@ class Feed extends React.PureComponent<Props, State> {
               <FeedList
                 isLoading={isLoading}
                 userId={userId}
+                schoolId={schoolId}
                 items={items}
                 expertMode={expertMode}
                 newClassExperience={campaign.newClassExperience}

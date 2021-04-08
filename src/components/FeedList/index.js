@@ -255,6 +255,7 @@ class FeedList extends React.PureComponent<Props, State> {
       newClassExperience,
       expertMode,
       onUserClick,
+      schoolId,
       location: { pathname },
     } = this.props;
 
@@ -289,6 +290,7 @@ class FeedList extends React.PureComponent<Props, State> {
               {items.map(item => (
                 <FeedItem
                   key={item.feedId}
+                  schoolId={schoolId}
                   expertMode={expertMode}
                   userId={userId}
                   data={item}
