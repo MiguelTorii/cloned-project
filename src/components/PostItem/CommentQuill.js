@@ -127,7 +127,8 @@ const CommentQuill = ({
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
-        if (quill.getSelection()) {
+        if (quill.getSelection(true)) {
+          onChange(quill.container.firstChild.innerHTML)
           const currentFocusPosition = quill.getSelection(true).index
           const leftPosition = quill.getBounds(currentFocusPosition).left
           const currentTooltipWidth = document.getElementById(`comment-toolbar-${feedId}`)
@@ -143,9 +144,8 @@ const CommentQuill = ({
           if (!quill.container.firstChild.innerText.trim()) {
             quill.focus()
             setIsNewLine(false)
+            quill.container.firstChild.innerHTML = ''
           }
-
-          onChange(quill.container.firstChild.innerHTML)
         }
       });
     }
@@ -202,8 +202,8 @@ const CommentQuill = ({
     if (quill) {
       const cursorPosition = quill.getSelection(true).index
 
-      quill.insertText(cursorPosition, emoji)
-      quill.setSelection(cursorPosition + 1)
+      quill.insertText(cursorPosition, `${emoji  }`)
+      quill.setSelection(cursorPosition + 2)
 
       const currentContent = quill.root.innerHTML
       setValue(currentContent)
