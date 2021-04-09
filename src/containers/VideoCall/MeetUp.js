@@ -999,6 +999,7 @@ class MeetUp extends React.Component<Props, State> {
     const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0;
 
     const unreadMessageCount = get(chat, `data.local.${channel.sid}.unread`)
+    const localSharing = get(localPartcipant, 'video.length', 0)
     return (
       <Fragment>
         <ErrorBoundary>
@@ -1061,6 +1062,7 @@ class MeetUp extends React.Component<Props, State> {
               dominantToggle={this.dominantToggle}
               toggleChat={this.toggleChat}
               dominantView={dominantView}
+              localSharing={localSharing}
               isVideoEnabled={isVideoEnabled}
               isAudioEnabled={isAudioEnabled}
               isScreenSharingSupported={Boolean(
@@ -1079,10 +1081,10 @@ class MeetUp extends React.Component<Props, State> {
               shareData={this.handleShareData}
               unreadMessageCount={unreadMessageCount}
             />
-            {/* <SharingScreenControl
+            <SharingScreenControl
               isSharing={Boolean(screenTrack)}
               onStopSharing={this.handleShareScreen}
-            /> */}
+            />
             <VideoGrid
               participants={participants}
               dominantView={dominantView}

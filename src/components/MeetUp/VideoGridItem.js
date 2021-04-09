@@ -195,9 +195,11 @@ class VideoGridItem extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
-      if (video.stop) video.stop();
-      const attachedElements = video.detach();
-      attachedElements.forEach(element => element.remove());
+      // Removing this to fix the sharing screen problem
+      // and let react unmount handle kiling the video streams
+      // if (video.stop) video.stop();
+      // const attachedElements = video.detach();
+      // attachedElements.forEach(element => element.remove());
     }
 
     window.removeEventListener("resize", this.updateDimensions);

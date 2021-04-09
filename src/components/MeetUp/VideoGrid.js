@@ -200,7 +200,7 @@ const VideoGrid = ({
     if (sharingTrackId) setViewMode('gallery-view')
   }, [sharingTrackId])
 
-  const isVisible = (id, other) => {
+  const isVisible = useCallback((id, other) => {
     if (lockedParticipant) {
       if (lockedParticipant === (other || id)) return true
       return false
@@ -217,7 +217,7 @@ const VideoGrid = ({
     }
 
     return true
-  }
+  }, [dominant, dominantView, lockedParticipant, sharingTrackId])
 
   const currentPageParticipants = useMemo(() => participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage), [pageCount, participants, selectedPage])
   const totalPageCount = useMemo(() => Math.ceil(participants.length / pageCount), [pageCount, participants.length])
@@ -239,7 +239,7 @@ const VideoGrid = ({
     setSelectedPage(page)
   }, [])
 
-  const renderParticipants = () => {
+  const renderParticipants = useCallback(() => {
     return currentPageParticipants.map((item) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
@@ -296,9 +296,9 @@ const VideoGrid = ({
         );
       });
     });
-  };
+  }, [currentPageParticipants, dominant, dominantSpeaker, dominantView, isVisible, participants.length, profiles, sharingTrackId, viewMode])
 
-  const renderGalleryListView = () => {
+  const renderGalleryListView = useCallback(() => {
     return participants.map(item => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
@@ -341,7 +341,7 @@ const VideoGrid = ({
         );
       });
     });
-  }
+  }, [dominantSpeaker, isVisible, participants, profiles, viewMode])
 
   return (
     <div className={cx(classes.root, viewMode === 'minimize' && classes.minimizeRoot)}>

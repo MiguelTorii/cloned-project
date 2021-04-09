@@ -136,6 +136,7 @@ type Props = {
   disableAudio: Function,
   shareScreen: Function,
   openMeetingDetails: Function,
+  localSharing: number,
   unreadMessageCount: ?number
   // shareData: Function
 };
@@ -177,6 +178,7 @@ class Controls extends React.PureComponent<Props, State> {
       isAudioSwitching,
       disableVideo,
       disableAudio,
+      localSharing,
       unreadMessageCount,
       shareScreen,
     } = this.props
@@ -237,7 +239,7 @@ class Controls extends React.PureComponent<Props, State> {
           disabled={!isScreenSharingSupported || isSharingData || !isConnected}
           onClick={shareScreen}
         >
-          {!isSharing
+          {localSharing !== 2
             ? <div className={classes.controlButtons}>
               <ShareScreenIcon className={classes.controlIcons}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
