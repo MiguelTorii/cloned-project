@@ -229,10 +229,3 @@ export const getAnnouncement = (
     }));
   }
 };
-
-export const getExpertMode = (userId: string) => async (dispatch: Dispatch) => {
-  const expertMode = !!await apiGetExpertMode(userId);
-
-  dispatch(setExpertModeAction(expertMode));
-  setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
-};

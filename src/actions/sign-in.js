@@ -12,6 +12,7 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
+import { apiGetExpertMode } from '../api/user';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -81,13 +82,12 @@ export const updateUser = ({ user }: { user: User }) => async (
   dispatch(sync({ userId: user.userId }))
 
   const isExpert = user.permission.includes('expert_mode_access') &&
-    user.permission.includes('main_application_access')
+    user.permission.includes('main_application_access');
+  let expertMode = false;
 
-  dispatch(setUser({ user, isExpert }));
+  if (isExpert) expertMode = await apiGetExpertMode(user.userId);
 
-  if (isExpert) {
-    dispatch(getExpertMode(user.userId));
-  }
+  dispatch(setUser({ user, isExpert, expertMode }));
 
   dispatch(userActions.fetchClasses())
   dispatch(chatActions.handleInitChat())
