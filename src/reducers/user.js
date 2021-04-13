@@ -129,13 +129,13 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       isLoading: { $set: true }
     });
   case signUpActions.SIGN_UP_USER_SUCCESS:
-  case signInActions.SIGN_IN_USER_SUCCESS:
+  case signInActions.SIGN_IN_USER_SUCCESS: {
     return update(state, {
       data: { $set: action.payload.user },
       isExpert: { $set: action.payload.isExpert },
-      expertMode: { $set: action.payload.expertMode },
       isLoading: { $set: false }
     });
+  }
   case signUpActions.SIGN_UP_USER_ERROR:
   case signInActions.SIGN_IN_USER_ERROR:
     return update(state, {
@@ -205,20 +205,21 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         $set: action.payload.announcement
       },
     });
-  case userActions.TOGGLE_EXPERT_MODE:
+  case userActions.SET_EXPERT_MODE: {
     return update(state, {
       isLoading: { $set: true },
       dialogMessage: {
         title: {
-          $set: !state.expertMode
+          $set: action.payload.expertMode
             ? 'Taking you to Expert Mode... \r\n Sit tight!'
             : 'Taking you to Student Mode... \r\n Sit tight!'
         },
       },
       expertMode: {
-        $set: !state.expertMode
+        $set: action.payload.expertMode
       }
-    })
+    });
+  }
   case userActions.CLEAR_DIALOG_MESSAGE:
     return update(state, {
       isLoading: { $set: false },
