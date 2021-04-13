@@ -23,6 +23,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
+    minHeight: 120
   },
   textField: {
     marginLeft: theme.spacing(2)

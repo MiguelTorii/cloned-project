@@ -396,11 +396,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 variant="subtitle2"
                 className={classes.thanks}
               >
-                <img
-                  src={commentSvg}
-                  className={classes.actionIcon}
-                  alt="thanks"
-                />
+                <IconButton onClick={this.handleShowAddComment}>
+                  <img
+                    src={commentSvg}
+                    className={classes.actionIcon}
+                    alt="thanks"
+                  />
+                </IconButton>
               </Typography>
             </div>
           </div>

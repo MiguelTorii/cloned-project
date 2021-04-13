@@ -144,7 +144,6 @@ const CommentQuill = ({
           if (!quill.container.firstChild.innerText.trim()) {
             quill.focus()
             setIsNewLine(false)
-            quill.container.firstChild.innerHTML = ''
           }
         }
       });
@@ -196,7 +195,7 @@ const CommentQuill = ({
     if (quill) {
       quill.getModule('toolbar').addHandler('image', selectLocalImage);
     }
-  }, [feedId, quill, selectLocalImage])
+  }, [quill, selectLocalImage])
 
   const insertEmoji = useCallback(emoji => {
     if (quill) {

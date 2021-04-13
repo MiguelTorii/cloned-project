@@ -88,7 +88,7 @@ export const formats = [
   "bullet",
   "indent",
   "image",
-  // "formula"
+  "formula"
 ];
 
 export const QuillToolbar = ({ id, handleSelect }) => {
@@ -162,7 +162,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
         >
           <button type='button' className="ql-image" />
         </Tooltip>
-        {/* <Tooltip
+        <Tooltip
           title="Formula"
           aria-label="formula"
           arrow
@@ -173,7 +173,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           }}
         >
           <button type='button' className="ql-formula" />
-        </Tooltip> */}
+        </Tooltip>
         <Tooltip
           title="EmoJi (⌘J)"
           aria-label="emoji"

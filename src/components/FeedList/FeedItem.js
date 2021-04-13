@@ -1,7 +1,9 @@
 // @flow
 /* eslint-disable jsx-a11y/accessible-emoji */
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import cx from 'classnames'
+import { connect } from 'react-redux'
 import Image from "react-graceful-image"
 import moment from 'moment'
 
@@ -30,17 +32,20 @@ import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import CreateIcon from '@material-ui/icons/Create'
 
-import PostComments from 'containers/PostComments';
+import PostComments from 'containers/PostComments'
 
 import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
 import FeedFlashcards from 'components/FeedList/FeedFlashcards'
 
+import * as api from '../../api/posts'
+
 import linkPost from '../../assets/svg/ic_link_post.svg'
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg'
 import questionPost from '../../assets/svg/ic_question_post.svg'
 import thanksSvg from '../../assets/svg/thanks.svg'
+import thankedSvg from '../../assets/svg/thanked.svg'
 import commentSvg from '../../assets/svg/comment.svg'
 
 const styles = theme => ({
@@ -114,6 +119,9 @@ const styles = theme => ({
   actionIcon: {
     fontSize: 16,
     marginRight: theme.spacing(1)
+  },
+  thankedMark: {
+    color: theme.circleIn.palette.brand
   },
   rank: {
     width: 15
@@ -275,9 +283,40 @@ const FeedItem = ({
   schoolId,
   onUserClick,
   onPostClick,
+  user,
 }) => {
+  const currentUserId = useMemo(() => user.data.userId, [user.data.userId])
   const [moreAnchorEl, setAnchorEl] = useState(null)
-  const isMenuOpen = Boolean(moreAnchorEl);
+  const [thanksCount, setThanksCount] = useState(0)
+  const [thanked, setThanked] = useState(false)
+  const isMenuOpen = Boolean(moreAnchorEl)
+
+  const loadData = useCallback(async(typeId) => {
+    if (typeId === 3) {
+      const currentFlashCard = await api.getFlashcards({ userId: currentUserId, flashcardId: data.postId })
+      setThanked(currentFlashCard.thanked)
+    }
+    if (typeId === 4) {
+      const currentNote = await api.getNotes({ userId: currentUserId, noteId: data.postId })
+      setThanked(currentNote.thanked)
+    }
+    if (typeId === 5) {
+      const currentSharelink = await api.getShareLink({ userId: currentUserId, sharelinkId: data.postId })
+      setThanked(currentSharelink.thanked)
+    }
+    if (typeId === 6) {
+      const currentQuestion = await api.getQuestion({ userId: currentUserId, questionId: data.postId })
+      setThanked(currentQuestion.thanked)
+    }
+  }, [currentUserId, data.postId])
+
+  useEffect(() => {
+    setThanksCount(data.postInfo.thanksCount)
+  }, [data.postInfo.thanksCount])
+
+  useEffect(() => {
+    loadData(data.typeId)
+  }, [data.typeId, loadData])
 
   const handleMenuOpen = useCallback(event => {
     setAnchorEl(event.currentTarget)
@@ -291,6 +330,17 @@ const FeedItem = ({
     const { feedId } = data
     handleShareClick({ feedId })
   }, [data, handleShareClick])
+
+  const handleThanks = useCallback(async () => {
+    if (thanked) {
+      setThanksCount(thanksCount - 1)
+    } else {
+      setThanksCount(thanksCount + 1)
+    }
+    const { postId, typeId } = data
+    await api.updateThanks({ userId: currentUserId, postId, typeId })
+    await loadData(typeId)
+  }, [currentUserId, data, loadData, thanked, thanksCount])
 
   const handleBookmark = useCallback(() => {
     const { feedId, bookmarked } = data
@@ -577,9 +627,7 @@ const FeedItem = ({
         >
           <CardContent className={classes.postTitle}>
             <Typography component="p" variant="h5">
-              {
-                !newClassExperience ? data.title : getTitle(data)
-              }
+              {!newClassExperience ? data.title : getTitle(data)}
             </Typography>
           </CardContent>
           <CardContent className={classes.content}>
@@ -602,19 +650,27 @@ const FeedItem = ({
             ))}
           </CardContent>
         </CardActionArea>
-        <CardActions className={classes.actions} disableactionspacing='true'>
+        {currentUserId !== ownerId && <CardActions className={classes.actions} disableactionspacing='true'>
           <div className={classes.stats}>
             <Typography
               component="p"
               variant="subtitle1"
-              className={classes.actionIcons}
+              className={cx(classes.actionIcons, thanked && classes.thankedMark)}
             >
-              <img
-                src={thanksSvg}
-                className={classes.actionIcon}
-                alt="thanks"
-              />
-              <strong>{data.postInfo.thanksCount}</strong>
+              <IconButton aria-label="Share" onClick={handleThanks}>
+                {thanked
+                  ? <img
+                    src={thankedSvg}
+                    className={classes.actionIcon}
+                    alt="thanked"
+                  />
+                  :<img
+                    src={thanksSvg}
+                    className={classes.actionIcon}
+                    alt="thanks"
+                  />}
+              </IconButton>
+              <strong>{thanksCount}</strong>
             </Typography>
             <Typography
               component="p"
@@ -636,7 +692,7 @@ const FeedItem = ({
           >
             <strong>{data.postInfo.viewCount}</strong> &nbsp; views
           </Typography>
-        </CardActions>
+        </CardActions>}
         {renderMenu}
 
         <PostComments
@@ -649,4 +705,11 @@ const FeedItem = ({
   )
 }
 
-export default withStyles(styles)(FeedItem)
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+})
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(FeedItem))
