@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 // @flow
 import React, { Fragment } from 'react';
+import cx from 'classnames';
 import Video from 'twilio-video';
 import moment from 'moment'
 import queryString from 'query-string'
@@ -12,28 +13,29 @@ import debounce from 'lodash/debounce';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import StudyRoomChat from 'containers/StudyRoomChat'
-// import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton'
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
-// import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 
 import get from 'lodash/get'
+import GalleryViewMode from './GalleryView'
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
-import VideoChatChannel from './VideoChatChannel';
+// import VideoChatChannel from './VideoChatChannel';
 import Controls from '../../components/MeetUp/CallControls';
-import LeftPanel from '../../components/MeetUp/LeftPanel';
+// import LeftPanel from '../../components/MeetUp/LeftPanel';
 import Thumbnails from '../../components/MeetUp/Thumbnails';
-import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
+// import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
 import VideoGrid from '../../components/MeetUp/VideoGrid';
 import MeetingDetails from '../../components/MeetUp/MeetingDetails';
-import SharingScreenControl from '../../components/MeetUp/SharingScreenControl';
+// import SharingScreenControl from '../../components/MeetUp/SharingScreenControl';
 import Whiteboard from '../../components/MeetUp/Whiteboard';
 import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
 import Dialog from '../../components/Dialog';
@@ -61,6 +63,35 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  speakerViewThumbnails: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    width: 'calc(100% - 400px)',
+    top: 50
+  },
+  sideBySideViewThumbnail: {
+    top: 'auto',
+    right: 10,
+    width: 200,
+    height: 'calc(100% - 200px)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: theme.spacing(3),
+    position: 'absolute'
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 'auto',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(3, 3, 0, 3)
+  },
   canvasWrapper: {
     backgroundColor: 'white',
     padding: theme.spacing(),
@@ -79,7 +110,6 @@ const styles = theme => ({
   settingBtn: {
     backgroundColor: theme.circleIn.palette.appBar,
     color: theme.circleIn.palette.white,
-    border: `1px solid ${theme.circleIn.palette.borderColor}`,
     boxSizing: 'border-box',
     boxShadow: '0px 4px 4px rgb(0 0 0 / 25%)',
     borderRadius: 10
@@ -201,7 +231,7 @@ type State = {
   participants: Array<Object>,
   videoRoom: ?Object,
   isVideoSharing: boolean,
-  sharingTrackId: string,
+  sharingTrackIds: array,
   screenTrack: ?Object,
   dominantSpeaker: string,
   profiles: Object,
@@ -223,7 +253,9 @@ type State = {
   earned: boolean,
   isOpenMeetingDetails: boolean,
   openSettings: boolean,
-  openClassmates: string
+  openClassmates: string,
+  videMode: string,
+  selectedScreenShareId: string
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -232,7 +264,7 @@ class MeetUp extends React.Component<Props, State> {
     participants: [],
     videoRoom: null,
     isVideoSharing: false,
-    sharingTrackId: '',
+    sharingTrackIds: [],
     screenTrack: null,
     dominantSpeaker: '',
     profiles: {},
@@ -257,7 +289,9 @@ class MeetUp extends React.Component<Props, State> {
     currentClassList: [],
     openClassmates: '',
     chatOpen: false,
-    openSettings: false
+    openSettings: false,
+    viewMode: 'gallery-view',
+    selectedScreenShareId: ''
   };
 
   meetingUriRef: Object;
@@ -365,6 +399,10 @@ class MeetUp extends React.Component<Props, State> {
       this.handleSession.cancel();
   };
 
+  handleChangeView = viewMode => {
+    this.setState({ viewMode })
+  }
+
   handleStartCall = async () => {
     try {
       const {
@@ -435,13 +473,16 @@ class MeetUp extends React.Component<Props, State> {
       });
 
       videoRoom.on('participantConnected', async participant => {
+        const { sharingTrackIds } = this.state
         this.handleAddParticipant(participant);
         participant.tracks.forEach(publication => {
           const { track } = publication;
           this.handleAddParticipant(participant, track);
           const { name = '', sid = '', kind = '' } = track || {};
           if (name === 'screenSharing') {
-            this.setState({ isVideoSharing: true, sharingTrackId: sid });
+            const screenSharingIds = [...sharingTrackIds];
+            screenSharingIds.push(sid);
+            this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds });
           }
           else if (kind === 'data') {
             track.on('message', data => {
@@ -491,7 +532,10 @@ class MeetUp extends React.Component<Props, State> {
         this.handleAddParticipant(participant, track);
         const { name = '', sid = '', kind = '' } = track;
         if (name === 'screenSharing') {
-          this.setState({ isVideoSharing: true, sharingTrackId: sid });
+          const { sharingTrackIds } = this.state;
+          const screenSharingIds = [...sharingTrackIds];
+          screenSharingIds.push(sid);
+          this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds });
         }else if (kind === 'data') {
           track.on('message', data => {
             const message = JSON.parse(data);
@@ -505,9 +549,13 @@ class MeetUp extends React.Component<Props, State> {
 
       videoRoom.on('trackUnsubscribed', (track, publication, participant) => {
         this.handleRemoveTrack(participant, track);
-        const { name = '' } = track;
+        const { name = '', sid } = track;
         if (name === 'screenSharing') {
-          this.setState({ isVideoSharing: false, sharingTrackId: '' });
+          const { sharingTrackIds } = this.state;
+          const screenSharingIds = [...sharingTrackIds];
+          const index = screenSharingIds.indexOf(sid);
+          screenSharingIds.splice(index, 1)
+          this.setState({ isVideoSharing: false, sharingTrackIds: screenSharingIds });
         }
       });
 
@@ -661,7 +709,7 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handleShareScreen = async () => {
-    const { videoRoom, screenTrack } = this.state;
+    const { videoRoom, screenTrack, sharingTrackIds } = this.state;
 
     if (!screenTrack && navigator && navigator.mediaDevices) {
       const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -685,18 +733,23 @@ class MeetUp extends React.Component<Props, State> {
           localScreenTrack,
           true
         );
-        this.setState({ sharingTrackId: localScreenTrack.id });
+        const screenSharingIds = [...sharingTrackIds];
+        screenSharingIds.push(localScreenTrack.id);
+        this.setState({ sharingTrackIds: screenSharingIds });
         videoRoom.localParticipant.publishTrack(newScreenTrack, {
           name: 'screenSharing'
         });
       }
     } else if (videoRoom && videoRoom.localParticipant) {
+      const screenSharingIds = [...sharingTrackIds];
       if (screenTrack) {
+        const index = screenSharingIds.indexOf(screenTrack.id);
+        screenSharingIds.splice(index, 1);
         this.handleRemoveTrack(videoRoom.localParticipant, screenTrack, true);
         screenTrack.stop();
         videoRoom.localParticipant.unpublishTrack(screenTrack);
       }
-      this.setState({ screenTrack: null, sharingTrackId: '' });
+      this.setState({ screenTrack: null, sharingTrackIds: screenSharingIds });
     }
   };
 
@@ -830,6 +883,10 @@ class MeetUp extends React.Component<Props, State> {
     this.setState({ openVideoPoints: false });
   };
 
+  handleSelectedScreenSharing = value => {
+    this.setState({ selectedScreenShareId: value })
+  }
+
   handlePointsSubmit = async ({
     purpose,
     classId,
@@ -944,6 +1001,9 @@ class MeetUp extends React.Component<Props, State> {
   render() {
     const {
       classes,
+      currentUser: {
+        data: { userId: currentUserId }
+      },
       user,
       channel,
       roomName,
@@ -958,7 +1018,7 @@ class MeetUp extends React.Component<Props, State> {
         userId,
         firstName,
         lastName,
-        profileImage,
+        // profileImage,
       },
       expertMode,
     } = user;
@@ -969,13 +1029,13 @@ class MeetUp extends React.Component<Props, State> {
       participants,
       isVideoSharing,
       dominantSpeaker,
-      sharingTrackId,
+      sharingTrackIds,
       profiles,
       isVideoSwitching,
       isAudioSwitching,
-      screenTrack,
-      type,
-      unread,
+      // screenTrack,
+      // type,
+      // unread,
       dataTrack,
       drawData,
       lineWidth,
@@ -990,7 +1050,9 @@ class MeetUp extends React.Component<Props, State> {
       openSettings,
       isOpenMeetingDetails,
       chatOpen,
-      openClassmates
+      openClassmates,
+      viewMode,
+      selectedScreenShareId
     } = this.state;
 
     const localPartcipant = participants.find(item => item.type === 'local');
@@ -1005,18 +1067,54 @@ class MeetUp extends React.Component<Props, State> {
         <ErrorBoundary>
           <div className={classes.root}>
             <StudyRoomChat open={chatOpen} handleClose={this.toggleChat} />
-            {/* <div className={classes.settings}> */}
-            {/* <Button */}
-            {/* variant="contained" */}
-            {/* color="secondary" */}
-            {/* className={classes.settingBtn} */}
-            {/* startIcon={<SettingsIcon />} */}
-            {/* onClick={this.openSettings} */}
-            {/* > */}
-            {/* Settings */}
-            {/* </Button> */}
-            {/* </div> */}
-            <LeftPanel
+            <div className={classes.header}>
+              {viewMode === 'gallery-view'
+                ? <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.settingBtn}
+                  startIcon={<SettingsIcon />}
+                  // onClick={this.openSettings}
+                >
+                  Settings
+                </Button>
+                : <IconButton
+                  variant="contained"
+                  color="secondary"
+                  className={classes.settingBtn}
+                  aria-label="settings"
+                  size="small"
+                >
+                  <SettingsIcon />
+                </IconButton>}
+              {participants.length > 1 && <GalleryViewMode
+                localSharing={localSharing}
+                isSharing={isVideoSharing}
+                currentView={viewMode}
+                onChange={this.handleChangeView}
+              />}
+            </div>
+            {participants.length > 1 &&
+              ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 &&
+              <div className={cx(
+                viewMode === 'speaker-view' && classes.speakerViewThumbnails,
+                viewMode === 'side-by-side' && classes.sideBySideViewThumbnail
+              )}>
+                <Thumbnails
+                  participants={participants}
+                  currentUserId={currentUserId}
+                  profiles={profiles}
+                  viewMode={viewMode}
+                  isSharing={isVideoSharing}
+                  localSharing={localSharing}
+                  lockedParticipant={lockedParticipant}
+                  sharingTrackIds={sharingTrackIds}
+                  selectedScreenShareId={selectedScreenShareId}
+                  dominantSpeaker={dominantSpeaker}
+                  onLockParticipant={this.handleLockParticipant}
+                />
+              </div>}
+            {/* {participants.length > 1 &&  <LeftPanel
               participants={participants.length}
               localParticipant={
                 <LocalThumbnail
@@ -1040,7 +1138,7 @@ class MeetUp extends React.Component<Props, State> {
                   participants={participants}
                   profiles={profiles}
                   lockedParticipant={lockedParticipant}
-                  sharingTrackId={sharingTrackId}
+                  sharingTrackIds={sharingTrackIds}
                   onLockParticipant={this.handleLockParticipant}
                 />
               }
@@ -1056,7 +1154,7 @@ class MeetUp extends React.Component<Props, State> {
               }
               unread={unread}
               onTabChange={this.handleTabChange}
-            />
+            />} */}
             <Controls
               isConnected={Boolean(videoRoom)}
               dominantToggle={this.dominantToggle}
@@ -1081,18 +1179,23 @@ class MeetUp extends React.Component<Props, State> {
               shareData={this.handleShareData}
               unreadMessageCount={unreadMessageCount}
             />
-            <SharingScreenControl
+            {/* <SharingScreenControl
               isSharing={Boolean(screenTrack)}
               onStopSharing={this.handleShareScreen}
-            />
+            /> */}
             <VideoGrid
               participants={participants}
               dominantView={dominantView}
               profiles={profiles}
               lockedParticipant={lockedParticipant}
               dominantSpeaker={dominantSpeaker}
-              sharingTrackId={sharingTrackId}
+              sharingTrackIds={sharingTrackIds}
+              isSharing={isVideoSharing}
+              localSharing={localSharing}
               isDataSharing={Boolean(dataTrack)}
+              viewMode={viewMode}
+              handleSelectedScreenSharing={this.handleSelectedScreenSharing}
+              currentUserId={currentUserId}
             />
             {Boolean(dataTrack) && (
               <Fragment>
@@ -1277,7 +1380,8 @@ class MeetUp extends React.Component<Props, State> {
     );
   }
 }
-const mapStateToProps = ({ router, chat }: StoreState): {} => ({
+const mapStateToProps = ({ user, router, chat }: StoreState): {} => ({
+  currentUser: user,
   router,
   chat
 });

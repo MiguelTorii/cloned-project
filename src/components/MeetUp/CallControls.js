@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
 
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CallEndIcon from '@material-ui/icons/CallEnd';
-import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
@@ -17,6 +17,7 @@ import Badge from '@material-ui/core/Badge';
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
 // import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
 import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';
+import { ReactComponent as SharedScreenIcon } from 'assets/svg/shared-screen.svg';
 
 const styles = theme => ({
   root: {
@@ -70,6 +71,12 @@ const styles = theme => ({
     marginTop: theme.spacing(0.5),
     fontWeight: 700,
     color: theme.circleIn.palette.white
+  },
+  sharingBtn: {
+    color: theme.circleIn.palette.brand
+  },
+  nonEffect: {
+    color: theme.circleIn.palette.danger
   },
   hangup: {
     background: theme.circleIn.palette.dangerBackground,
@@ -196,7 +203,7 @@ class Controls extends React.PureComponent<Props, State> {
         >
           {!isAudioEnabled
             ? <div className={classes.controlButtons}>
-              <MicOffIcon className={classes.controlIcons} />
+              <MicOffIcon className={cx(classes.controlIcons, classes.nonEffect)} />
               {windowWidth > 720 && <span className={classes.controlLabel}>
                 Turn on Mic
               </span>}
@@ -219,15 +226,15 @@ class Controls extends React.PureComponent<Props, State> {
         >
           {!isVideoEnabled
             ? <div className={classes.controlButtons}>
-              <VideocamOffIcon className={classes.controlIcons}/>
+              <VideocamOffIcon className={cx(classes.controlIcons, classes.nonEffect)}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Stop Camera
+                Stop Camera
               </span>}
             </div>
             : <div className={classes.controlButtons}>
               <VideocamIcon className={classes.controlIcons}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Start Camera
+                Start Camera
               </span>}
             </div>}
         </Button>
@@ -243,13 +250,13 @@ class Controls extends React.PureComponent<Props, State> {
             ? <div className={classes.controlButtons}>
               <ShareScreenIcon className={classes.controlIcons}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Sharing Screen
+                Sharing Screen
               </span>}
             </div>
-            : <div className={classes.controlButtons}>
-              <StopScreenShareIcon className={classes.controlIcons}/>
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Stop Sharing
+            : <div className={cx(classes.controlButtons, isSharing && classes.sharingBtn)}>
+              <SharedScreenIcon className={classes.controlIcons}/>
+              {windowWidth > 720 && <span className={cx(classes.controlLabel, localSharing === 2 && classes.sharingBtn)}>
+                Sharing
               </span>}
             </div>}
         </Button>}

@@ -22,7 +22,7 @@ import ErrorBoundary from '../ErrorBoundary';
 const styles = theme => ({
   root: {
     position: 'relative',
-    backgroundColor: theme.circleIn.palette.feedBackground
+    backgroundColor: theme.circleIn.palette.black
   },
   loading: {
     height: '100vh',
@@ -250,8 +250,6 @@ class VideoCall extends React.Component<Props, State> {
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
-
-  mounted: boolean;
 
   renderComponent = () => {
     const {

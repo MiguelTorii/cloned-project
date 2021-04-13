@@ -1,43 +1,37 @@
+/* eslint-disable no-nested-ternary */
 // @flow
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
-import MinimizeIcon from '@material-ui/icons/Minimize';
-import { ReactComponent as GalleryMediumView } from 'assets/svg/gallery-medium-view.svg';
-import { ReactComponent as SelectedGalleryMediumView } from 'assets/svg/selected-gallery-medium-view.svg';
-import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
-import { ReactComponent as SelectedGalleryView } from 'assets/svg/selected-gallery-view.svg';
-import VideoGridItem from './VideoGridItem';
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import cx from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Pagination from '@material-ui/lab/Pagination'
+import PaginationItem from '@material-ui/lab/PaginationItem'
+import VideoGridItem from './VideoGridItem'
 
 const styles = theme => ({
   root: {
-    height: '100vh',
+    height: 'calc(100vh - 150px)',
     overflow: 'hidden',
-    width: 'calc(100vw)',
+    width: '100vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  minimizeRoot: {
-    display: 'block',
-    alignItems: 'flex-start',
-    paddingTop: theme.spacing(12)
+  speakerViewRoot: {
+    alignItems: 'flex-end',
   },
-  minimizePaperRoot: {
-    height: 'auto !important',
-    maxWidth: 900,
-    width: 'auto !important'
+  sideBySideRoot: {
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start'
+  },
+  sideBySideView: {
+    height: 'calc(100% - 100px) !important',
+    paddingLeft: `${theme.spacing(0)}px !important`,
+    paddingBottom: `${theme.spacing(0)}px !important`
   },
   notGalleyView: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    'alignContent': 'start'
+    height: 'calc(100% - 100px) !important',
+    padding: `${theme.spacing(1.5)}px !important`
   },
   paperContainer: {
     width: '100%',
@@ -74,26 +68,26 @@ const styles = theme => ({
   galleryView: {
     overflowY: 'scroll',
     height: '100% !important',
-    paddingTop: `${theme.spacing(3)}px !important`
-  },
-  pagination: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    marginTop: theme.spacing(2),
-    alignItems: 'center'
   },
   view: {
     padding: theme.spacing(1.5)
   },
   gridContainer: {
     position: 'relative',
-    height: 'calc(100% - 70px)',
     width: '100%',
+    height: '100%',
     margin: 0,
     padding: theme.spacing(0, 3, 3, 3)
+  },
+  initialContainer: {
+    position: 'relative',
+    width: 'calc(100% - 200px)',
+    height: '100%',
+    margin: 0,
+    padding: theme.spacing(0, 3, 3, 3),
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
   },
   pr0: {
     paddingRight: 0,
@@ -122,11 +116,20 @@ const styles = theme => ({
     height: 'auto',
     right: 0
   },
+  pagination: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    alignItems: 'center'
+  },
   paginationItem: {
     fontSize: 0,
     border: '1px white solid',
     height: 10,
     minWidth: 10,
+    margin: theme.spacing(0, 0.5),
     '&.MuiPaginationItem-page.Mui-selected': {
       backgroundColor: 'white'
     }
@@ -141,7 +144,7 @@ const styles = theme => ({
       background: 'transparent'
     },
   }
-});
+})
 
 type Props = {
   classes: Object,
@@ -150,7 +153,10 @@ type Props = {
   lockedParticipant: string,
   dominantSpeaker: string,
   dominantView: boolean,
-  sharingTrackId: string
+  sharingTrackIds: array,
+  currentUserId: string,
+  viewMode: string,
+  handleSelectedScreenSharing: Function
   // isDataSharing: boolean
 };
 
@@ -161,13 +167,16 @@ const VideoGrid = ({
   dominantSpeaker,
   dominantView,
   lockedParticipant,
-  sharingTrackId,
+  sharingTrackIds,
+  viewMode,
+  currentUserId,
+  handleSelectedScreenSharing
 }: Props) => {
   const [dominant, setDominant] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [pageCount, setPageCount] = useState(4)
+  const [totalPageCount, setTotalPageCount] = useState(1)
+  const [pageSize, setPageSize] = useState(12)
   const [selectedPage, setSelectedPage] = useState(1)
-  const [viewMode, setViewMode] = useState('gallery-view')
 
   useEffect(() => {
     if (dominantSpeaker) setDominant(dominantSpeaker)
@@ -181,33 +190,49 @@ const VideoGrid = ({
   }, [dominantSpeaker, windowWidth])
 
   useEffect(() => {
-    if (viewMode === 'medium-view') {
-      setPageCount(windowWidth > 600 ? 12 : 6)
+    if (windowWidth < 700) {
+      setPageSize(2)
     }
-
-    if (viewMode === 'minimize') {
-      if (windowWidth > 600) {
-        setPageCount(4)
-      } else if (windowWidth > 400) {
-        setPageCount(3)
-      } else {
-        setPageCount(2)
-      }
-    }
-  }, [viewMode, windowWidth])
+  }, [windowWidth])
 
   useEffect(() => {
-    if (sharingTrackId) setViewMode('gallery-view')
-  }, [sharingTrackId])
+    switch(viewMode) {
+    case 'gallery-view':
+      setPageSize(12)
+      break
+    case 'speaker-view':
+      if (sharingTrackIds.length) setPageSize(1)
+      break
+    case 'side-by-side':
+      if (sharingTrackIds.length) setPageSize(1)
+      break
+    default:
+      break
+    }
+  }, [sharingTrackIds.length, viewMode])
 
-  const isVisible = useCallback((id, other) => {
-    if (lockedParticipant) {
-      if (lockedParticipant === (other || id)) return true
+  const numberOfParticipants = useMemo(() =>
+    sharingTrackIds.length ||
+    (dominantView && dominant) ||
+    viewMode === 'speaker-view' ||
+    viewMode === 'side-by-side'
+      ? 1
+      : participants.length,
+  [dominant, dominantView, participants.length, sharingTrackIds, viewMode])
+
+  const isVisible = useCallback((viewMode, identity, id, other) => {
+    if (viewMode === 'speaker-view' || viewMode === 'side-by-side') {
+      if (sharingTrackIds.length) {
+        if (sharingTrackIds.indexOf(id) > -1 || sharingTrackIds.indexOf(other) > -1) return true
+        return false
+      }
+      if (dominantSpeaker && dominantSpeaker === id) return true
+      if (!dominantSpeaker && currentUserId === identity) return true
       return false
     }
 
-    if (sharingTrackId) {
-      if (sharingTrackId === id || sharingTrackId === other) return true
+    if (lockedParticipant) {
+      if (lockedParticipant === (other || id)) return true
       return false
     }
 
@@ -217,23 +242,32 @@ const VideoGrid = ({
     }
 
     return true
-  }, [dominant, dominantView, lockedParticipant, sharingTrackId])
+  }, [currentUserId, dominant, dominantSpeaker, dominantView, lockedParticipant, sharingTrackIds])
 
-  const currentPageParticipants = useMemo(() => participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage), [pageCount, participants, selectedPage])
-  const totalPageCount = useMemo(() => Math.ceil(participants.length / pageCount), [pageCount, participants.length])
+  const galleryTotalPageCount = useMemo(() => Math.ceil(participants.length / pageSize), [pageSize, participants])
 
-  const changeViewMode = useCallback(mode => {
-    if (!sharingTrackId) {
-      setViewMode(mode)
-      if (mode === 'gallery-view') {
-        setPageCount(4)
-      } else if (mode === 'medium-view') {
-        setPageCount(12)
-      } else {
-        setPageCount(4)
-      }
+  const currentPageParticipants = useMemo(() => {
+    if (viewMode === 'gallery-view')
+      return participants
+        .slice(pageSize * (selectedPage - 1), pageSize * selectedPage)
+    if (sharingTrackIds.length) {
+      const sharedParticipants = []
+      participants.forEach(item => {
+        const sharedParticipant = item.video.length && item.video.filter(track =>
+          sharingTrackIds.indexOf(item.type === 'local' ? track.id : track.sid) > -1
+        )
+
+        if (sharedParticipant.length) {
+          sharedParticipants.push(item)
+        }
+      })
+
+      setTotalPageCount(Math.ceil(sharedParticipants.length / pageSize))
+
+      return sharedParticipants.slice(pageSize * (selectedPage - 1), pageSize * selectedPage)
     }
-  }, [sharingTrackId])
+    return participants
+  }, [pageSize, participants, selectedPage, sharingTrackIds, viewMode])
 
   const handlePageChange = useCallback((event, page) => {
     setSelectedPage(page)
@@ -241,193 +275,103 @@ const VideoGrid = ({
 
   const renderParticipants = useCallback(() => {
     return currentPageParticipants.map((item) => {
-      const profile = profiles[item.participant.identity] || {};
-      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+      const profile = profiles[item.participant.identity] || {}
+      const { firstName = '', lastName = '', userProfileUrl = '' } = profile
 
-      const numberOfParticipants =
-        sharingTrackId || (dominantView && dominant)
-          ? 1
-          : participants.length
       if (item.video.length === 0) {
         return (
           <VideoGridItem
             key={item.participant.sid}
-            firstName={firstName}
-            lastName={lastName}
+            firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+            lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
             isVideo={false}
+            totalPageCount={totalPageCount}
+            selectedPage={selectedPage}
+            setSelectedPage={setSelectedPage}
+            handleSelectedScreenSharing={handleSelectedScreenSharing}
+            sharingType={item.type}
+            sharingTrackIds={sharingTrackIds}
             isMic={item.audio.length > 0}
             count={numberOfParticipants}
-            isVisible={isVisible(item.participant.sid)}
-            viewMode={viewMode}
-            isSharedGallery={false}
-            //! sharingTrackId && !lockedParticipant ||
-            // (sharingTrackId === item.participant.sid && !lockedParticipant) ||
-            // (!dominantView && lockedParticipant === item.participant.sid) ||
-            // (dominantView && dominant === item.participant.sid)
-            // }
-          />
-        );
-      }
-      return item.video.map(track => {
-        const id = item.type === 'local' ? track.id : track.sid;
-        const isVideo = item.video.length !== 0
-        return (
-          <VideoGridItem
-            key={id}
-            firstName={firstName}
-            lastName={lastName}
-            profileImage={userProfileUrl}
-            video={track}
-            isVideo={isVideo}
-            isMic={item.audio.length > 0}
-            highlight={dominantSpeaker === item.participant.sid}
-            count={numberOfParticipants}
-            isSharing={Boolean(track.id === sharingTrackId)}
-            isVisible={isVisible(item.participant.sid, id)}
-            viewMode={viewMode}
-            isSharedGallery={false}
-            //! sharingTrackId && !lockedParticipant ||
-            // (sharingTrackId === id && !lockedParticipant) ||
-            // (!dominantView && lockedParticipant === id) ||
-            // (dominantView && dominant === id)
-            // }
-          />
-        );
-      });
-    });
-  }, [currentPageParticipants, dominant, dominantSpeaker, dominantView, isVisible, participants.length, profiles, sharingTrackId, viewMode])
-
-  const renderGalleryListView = useCallback(() => {
-    return participants.map(item => {
-      const profile = profiles[item.participant.identity] || {};
-      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
-
-      if (!item.video.length) {
-        return (
-          <VideoGridItem
-            key={item.participant.sid}
-            isSharedGallery
-            firstName={firstName}
-            lastName={lastName}
-            profileImage={userProfileUrl}
-            isVideo={false}
-            isMic={item.audio.length > 0}
-            count={1}
-            isVisible={!isVisible(item.participant.sid)}
+            isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid)}
             viewMode={viewMode}
           />
         )
       }
-
       return item.video.map(track => {
-        const id = item.type === 'local' ? track.id : track.sid;
+        const id = item.type === 'local' ? track.id : track.sid
         const isVideo = item.video.length !== 0
         return (
           <VideoGridItem
             key={id}
-            isSharedGallery
-            firstName={firstName}
-            lastName={lastName}
+            firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+            lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
             video={track}
             isVideo={isVideo}
+            totalPageCount={totalPageCount}
+            selectedPage={selectedPage}
+            setSelectedPage={setSelectedPage}
+            handleSelectedScreenSharing={handleSelectedScreenSharing}
+            sharingType={item.type}
+            sharingTrackIds={sharingTrackIds}
             isMic={item.audio.length > 0}
             highlight={dominantSpeaker === item.participant.sid}
-            count={participants.length}
-            isVisible={!isVisible(item.participant.sid, id)}
+            count={numberOfParticipants}
+            isSharing={Boolean(sharingTrackIds.indexOf(track.id) > -1)}
+            isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid, id)}
             viewMode={viewMode}
           />
-        );
-      });
-    });
-  }, [dominantSpeaker, isVisible, participants, profiles, viewMode])
+        )
+      })
+    })
+  }, [currentPageParticipants, currentUserId, dominantSpeaker, handleSelectedScreenSharing, isVisible, numberOfParticipants, profiles, selectedPage, sharingTrackIds, totalPageCount, viewMode])
 
   return (
-    <div className={cx(classes.root, viewMode === 'minimize' && classes.minimizeRoot)}>
-      <Paper
+    <div className={cx(
+      classes.root,
+      viewMode === 'speaker-view' && classes.speakerViewRoot,
+      viewMode === 'side-by-side' && classes.sideBySideRoot
+    )}>
+      <Grid
+        container
+        spacing={1}
+        justify='center'
+        alignItems='center'
+        alignContent='center'
         className={cx(
-          classes.paperContainer,
-          viewMode === 'minimize' && classes.minimizePaperRoot,
-          viewMode === 'gallery-view' && classes.galleryViewPaperContainer
+          numberOfParticipants > 4
+            ? classes.gridContainer
+            : classes.initialContainer,
+          viewMode !== 'gallery-view'
+            ? viewMode === 'side-by-side'
+              ? classes.sideBySideView
+              : classes.notGalleyView
+            : classes.galleryView
         )}
-        elevation={3}
       >
-        {participants.length > 1 && <div className={cx(
-          classes.galleryViews,
-          viewMode === 'gallery-view' && classes.selectedGalleryViewMode,
-          sharingTrackId && classes.shareGalleryView
-        )}>
-          <Paper className={classes.viewGalleryMode} elevation={3}>
-            <Typography className={cx(classes.view, classes.pr0)} variant="body1">
-              View
-            </Typography>
-            <IconButton
-              className={classes.pr0}
-              onClick={() => changeViewMode('minimize')}
-              aria-label="minimize"
-            >
-              <MinimizeIcon />
-            </IconButton>
-            <IconButton
-              className={classes.pr0}
-              onClick={() => changeViewMode('medium-view')}
-              aria-label="gallery-medium-view"
-            >
-              {viewMode === 'medium-view'
-                ? <SelectedGalleryMediumView />
-                : <GalleryMediumView />
-              }
-            </IconButton>
-            <IconButton
-              onClick={() => changeViewMode('gallery-view')}
-              aria-label="gallery-view"
-            >
-              {viewMode === 'gallery-view'
-                ? <SelectedGalleryView />
-                : <GalleryView />
-              }
-            </IconButton>
-          </Paper>
-          {sharingTrackId && <div className={classes.sharedGalleryView}>
-            {renderGalleryListView()}
-          </div>}
-        </div>}
-        <Grid
-          container
-          spacing={1}
-          justify='center'
-          alignItems='center'
-          alignContent='center'
-          className={cx(
-            classes.gridContainer,
-            viewMode !== 'gallery-view'
-              ? classes.notGalleyView
-              : classes.galleryView
-          )}
-        >
-          {totalPageCount > 1 && <Pagination
-            classes={{
-              root: cx(classes.pagination)
-            }}
-            hideNextButton
-            hidePrevButton
-            renderItem={item =>
-              <PaginationItem
-                {...item}
-                className={classes.paginationItem}
-                size='small'
-              />
-            }
-            onChange={handlePageChange}
-            count={totalPageCount}
-            page={selectedPage}
-          />}
-          {renderParticipants()}
-        </Grid>
-      </Paper>
+        {viewMode === 'gallery-view' && galleryTotalPageCount > 1 && <Pagination
+          classes={{
+            root: cx(classes.pagination)
+          }}
+          hideNextButton
+          hidePrevButton
+          renderItem={item =>
+            <PaginationItem
+              {...item}
+              className={classes.paginationItem}
+              size='small'
+            />
+          }
+          onChange={handlePageChange}
+          count={galleryTotalPageCount}
+          page={selectedPage}
+        />}
+        {renderParticipants()}
+      </Grid>
     </div>
-  );
+  )
 }
 
-export default withStyles(styles)(VideoGrid);
+export default withStyles(styles)(VideoGrid)
