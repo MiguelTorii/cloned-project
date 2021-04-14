@@ -310,7 +310,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
             <ListItemText inset primary="Report" />
           </MenuItem>
         )}
-        {isOwn && !isReply && (
+        {isOwn && isReply && (
           <MenuItem onClick={this.handleDelete}>
             <ListItemIcon color="inherit">
               <DeleteIcon />

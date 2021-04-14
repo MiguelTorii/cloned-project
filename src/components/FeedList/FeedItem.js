@@ -650,14 +650,18 @@ const FeedItem = ({
             ))}
           </CardContent>
         </CardActionArea>
-        {currentUserId !== ownerId && <CardActions className={classes.actions} disableactionspacing='true'>
+        <CardActions className={classes.actions} disableactionspacing='true'>
           <div className={classes.stats}>
             <Typography
               component="p"
               variant="subtitle1"
               className={cx(classes.actionIcons, thanked && classes.thankedMark)}
             >
-              <IconButton aria-label="Share" onClick={handleThanks}>
+              <IconButton
+                aria-label="Share"
+                disabled={currentUserId === ownerId}
+                onClick={handleThanks}
+              >
                 {thanked
                   ? <img
                     src={thankedSvg}
@@ -692,7 +696,7 @@ const FeedItem = ({
           >
             <strong>{data.postInfo.viewCount}</strong> &nbsp; views
           </Typography>
-        </CardActions>}
+        </CardActions>
         {renderMenu}
 
         <PostComments
