@@ -302,22 +302,19 @@ class PostItemComment extends React.PureComponent<Props, State> {
         ): (
           <span className={classes.grow} />
         )}
-        {!isOwn && (
-          <MenuItem onClick={this.handleReport}>
+        {!isOwn
+          ? <MenuItem onClick={this.handleReport}>
             <ListItemIcon color="inherit">
               <ReportIcon />
             </ListItemIcon>
             <ListItemText inset primary="Report" />
           </MenuItem>
-        )}
-        {isOwn && isReply && (
-          <MenuItem onClick={this.handleDelete}>
+          : <MenuItem onClick={this.handleDelete}>
             <ListItemIcon color="inherit">
               <DeleteIcon />
             </ListItemIcon>
             <ListItemText inset primary="Delete" />
-          </MenuItem>
-        )}
+          </MenuItem>}
       </Menu>
     );
 

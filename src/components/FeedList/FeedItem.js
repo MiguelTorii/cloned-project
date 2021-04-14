@@ -332,14 +332,14 @@ const FeedItem = ({
   }, [data, handleShareClick])
 
   const handleThanks = useCallback(async () => {
+    const { postId, typeId } = data
+    await api.updateThanks({ userId: currentUserId, postId, typeId })
+    await loadData(typeId)
     if (thanked) {
       setThanksCount(thanksCount - 1)
     } else {
       setThanksCount(thanksCount + 1)
     }
-    const { postId, typeId } = data
-    await api.updateThanks({ userId: currentUserId, postId, typeId })
-    await loadData(typeId)
   }, [currentUserId, data, loadData, thanked, thanksCount])
 
   const handleBookmark = useCallback(() => {
@@ -512,7 +512,7 @@ const FeedItem = ({
         </ListItemIcon>
         <ListItemText inset primary="Bookmark" />
       </MenuItem>
-      {data.userId !== ownerId ? (
+      {data.userId !== currentUserId ? (
         <MenuItem onClick={handleReport}>
           <ListItemIcon color="inherit">
             <ReportIcon />
@@ -536,7 +536,7 @@ const FeedItem = ({
         </div>
       )}
     </Menu>
-  ), [classes.bookmarked, data.bookmarked, data.userId, handleBookmark, handleDelete, handleEdit, handleMenuClose, handleReport, isMenuOpen, moreAnchorEl, ownerId])
+  ), [classes.bookmarked, currentUserId, data.bookmarked, data.userId, handleBookmark, handleDelete, handleEdit, handleMenuClose, handleReport, isMenuOpen, moreAnchorEl])
 
   return (
     <div>
