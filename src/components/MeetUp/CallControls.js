@@ -15,7 +15,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Badge from '@material-ui/core/Badge';
 
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
-// import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
+import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
 import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';
 import { ReactComponent as SharedScreenIcon } from 'assets/svg/shared-screen.svg';
 
@@ -171,6 +171,11 @@ class Controls extends React.PureComponent<Props, State> {
     this.setState({ windowWidth: window.innerWidth })
   }
 
+  handleOpen = value => {
+    const { toggleChat } = this.props
+    toggleChat(value)
+  }
+
   renderControls = () => {
     const {
       classes,
@@ -180,7 +185,6 @@ class Controls extends React.PureComponent<Props, State> {
       isScreenSharingSupported,
       isSharing,
       isSharingData,
-      toggleChat,
       isVideoSwitching,
       isAudioSwitching,
       disableVideo,
@@ -261,28 +265,21 @@ class Controls extends React.PureComponent<Props, State> {
             </div>}
         </Button>}
 
-        {/* <Button
+        <Button
           size='small'
           color='default'
-          aria-label='share-screen'
+          aria-label='participant'
           className={classes.fab}
           disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-          onClick={shareScreen}
+          onClick={() => this.handleOpen(0)}
         >
-          {!isSharing
-            ? <div className={classes.controlButtons}>
-              <ParticipantIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
-                  Participant
-              </span>
-            </div>
-            : <div className={classes.controlButtons}>
-              <ParticipantIcon className={classes.controlIcons}/>
-              <span className={classes.controlLabel}>
-                  Participant
-              </span>
-            </div>}
-        </Button> */}
+          <div className={classes.controlButtons}>
+            <ParticipantIcon className={classes.controlIcons}/>
+            {windowWidth > 720 && <span className={classes.controlLabel}>
+              Participant
+            </span>}
+          </div>
+        </Button>
 
         <Badge
           badgeContent={unreadMessageCount}
@@ -294,16 +291,16 @@ class Controls extends React.PureComponent<Props, State> {
           <Button
             size='small'
             color="default"
-            aria-label='share-screen'
+            aria-label='chat'
             className={classes.fab}
             disabled={!isConnected}
-            onClick={toggleChat}
+            onClick={() => this.handleOpen(1)}
           >
             {!isSharing
               ? <div className={classes.controlButtons}>
                 <ChatIcon className={classes.controlIcons}/>
                 {windowWidth > 720 && <span className={classes.controlLabel}>
-                Chat
+                  Chat
                 </span>}
               </div>
               : <div className={classes.controlButtons}>

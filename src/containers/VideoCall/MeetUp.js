@@ -254,8 +254,9 @@ type State = {
   isOpenMeetingDetails: boolean,
   openSettings: boolean,
   openClassmates: string,
-  videMode: string,
-  selectedScreenShareId: string
+  viewMode: string,
+  selectedScreenShareId: string,
+  selectedTab: number
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -291,7 +292,8 @@ class MeetUp extends React.Component<Props, State> {
     chatOpen: false,
     openSettings: false,
     viewMode: 'gallery-view',
-    selectedScreenShareId: ''
+    selectedScreenShareId: '',
+    selectedTab: 1
   };
 
   meetingUriRef: Object;
@@ -993,9 +995,12 @@ class MeetUp extends React.Component<Props, State> {
     return ''
   }
 
-  toggleChat = () => {
-    const { chatOpen } = this.state
-    this.setState({ chatOpen: !chatOpen })
+  openChat = value => {
+    this.setState({ chatOpen: true, selectedTab: value })
+  }
+
+  closeChat = () => {
+    this.setState({ chatOpen: false })
   }
 
   render() {
@@ -1011,7 +1016,7 @@ class MeetUp extends React.Component<Props, State> {
       videoinput,
       selectedaudioinput,
       audioinput,
-      chat,
+      chat
     } = this.props;
     const {
       data: {
@@ -1033,6 +1038,7 @@ class MeetUp extends React.Component<Props, State> {
       profiles,
       isVideoSwitching,
       isAudioSwitching,
+      selectedTab,
       // screenTrack,
       // type,
       // unread,
@@ -1066,7 +1072,11 @@ class MeetUp extends React.Component<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
-            <StudyRoomChat open={chatOpen} handleClose={this.toggleChat} />
+            <StudyRoomChat
+              open={chatOpen}
+              handleClose={this.closeChat}
+              selectedTab={selectedTab}
+            />
             <div className={classes.header}>
               {viewMode === 'gallery-view'
                 ? <Button
@@ -1074,7 +1084,7 @@ class MeetUp extends React.Component<Props, State> {
                   color="secondary"
                   className={classes.settingBtn}
                   startIcon={<SettingsIcon />}
-                  // onClick={this.openSettings}
+                  onClick={this.openSettings}
                 >
                   Settings
                 </Button>
@@ -1158,7 +1168,7 @@ class MeetUp extends React.Component<Props, State> {
             <Controls
               isConnected={Boolean(videoRoom)}
               dominantToggle={this.dominantToggle}
-              toggleChat={this.toggleChat}
+              toggleChat={this.openChat}
               dominantView={dominantView}
               localSharing={localSharing}
               isVideoEnabled={isVideoEnabled}
@@ -1315,7 +1325,8 @@ class MeetUp extends React.Component<Props, State> {
                       root: classes.controlOptionLabel,
                       focused: classes.optionFocused,
                     }}
-                    name="videoinput" id="videoinput-native-helper"
+                    name="videoinput"
+                    id="videoinput-native-helper"
                   />
                 }
               >
@@ -1348,7 +1359,8 @@ class MeetUp extends React.Component<Props, State> {
                       root: classes.controlOptionLabel,
                       focused: classes.optionFocused,
                     }}
-                    name="audioinput" id="audioinput-native-helper"
+                    name="audioinput"
+                    id="audioinput-native-helper"
                   />
                 }
               >

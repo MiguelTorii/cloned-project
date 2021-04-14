@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
-import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
+// import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
 import { ReactComponent as SpeakerView } from 'assets/svg/speaker-view.svg';
 import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
 import { ReactComponent as SideBySideView } from 'assets/svg/side-by-side.svg';
@@ -128,7 +128,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
                   <div className={classes.checked}><ViewChecked /></div>}
         </div>
       </MenuItem>
-      <MenuItem
+      {/* <MenuItem
         onClick={selctView('fullscreen-view')}
         classes={{ root: classes.viewItem }}
       >
@@ -142,7 +142,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
           {currentView === 'fullscreen-view' &&
                   <div className={classes.checked}><ViewChecked /></div>}
         </div>
-      </MenuItem>
+      </MenuItem> */}
     </MenuList>
   ), [classes.center, classes.checked, classes.view, classes.viewItem, currentView, isSharing, localSharing, selctView])
 

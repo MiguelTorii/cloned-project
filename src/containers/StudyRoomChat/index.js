@@ -125,12 +125,17 @@ type Props = {
   user: Object,
   router: Object,
   open: boolean,
-  chat: Object
+  chat: Object,
+  selectedTab: number
 };
 
-const StudyRoomChat = ({ handleClose, open, user, router, classes, chat }: Props) => {
+const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selectedTab }: Props) => {
   const [members, setMembers] = useState({})
   const [tabs, setTabs] = useState(1)
+
+  useEffect(() => {
+    if (typeof selectedTab === 'number') setTabs(selectedTab)
+  }, [selectedTab])
   const channelId = useMemo(() => {
     const pathname = get(router, 'location.pathname')
     if(pathname) {

@@ -193,7 +193,7 @@ const VideoGrid = ({
   useEffect(() => {
     if (windowWidth < 700) {
       setPageSize(2)
-    }
+    } else setPageSize(12)
   }, [windowWidth])
 
   useEffect(() => {
@@ -303,6 +303,7 @@ const VideoGrid = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             isVideo={false}
             totalPageCount={totalPageCount}
             selectedPage={selectedPage}

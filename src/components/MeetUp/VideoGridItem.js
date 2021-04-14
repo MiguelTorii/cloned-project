@@ -36,7 +36,7 @@ const styles = theme => ({
     '& video': {
       width: '100%',
       height: '100%   !important',
-      objectFit: 'fill',
+      objectFit: 'container',
       boxSizing: 'border-box',
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     }
@@ -78,6 +78,7 @@ const styles = theme => ({
     backgroundColor: 'rgba(44, 45, 45, .75)',
     zIndex: 9,
     minWidth: 200,
+    minHeight: 50,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1)
     },
@@ -252,6 +253,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       totalPageCount,
       selectedPage,
       sharingTrackIds,
+      sharingType,
       viewMode
     } = this.props
 
@@ -269,9 +271,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     xs = windowWidth > 600 ? 12 / factor : 12
     height = windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`
 
-    const activeBorder = highlight ? { border: '4px solid #03A9F4' } : {}
-    const isScreenShare = ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1
-      && sharingTrackIds.length
+    const isScreenShare = !!(['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && sharingTrackIds.length)
+    const activeBorder = highlight && !isScreenShare ? { border: '4px solid #03A9F4' } : {}
     return (
       <Grid
         item xs={xs}
@@ -302,7 +303,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               <div
                 className={cx(
                   classes.video,
-                  !isScreenShare && classes.cameraVideo,
+                  sharingType === 'local' && classes.cameraVideo,
                   isScreen && classes.screen
                 )}
                 ref={this.videoinput}

@@ -148,6 +148,11 @@ class VideoCall extends React.Component<Props, State> {
     let track = null;
     switch (kind) {
     case 'audioinput':
+      console.log('--------here---')
+      console.log(this.meetupRef)
+      console.log(this.meetupRef.current)
+      console.log(this.meetupRef.current.audioinput)
+      console.log(this.meetupRef.current.audioinput.current)
       track = await utils.applyAudioInputDeviceSelection(
         deviceId,
         this.meetupRef.current.audioinput.current

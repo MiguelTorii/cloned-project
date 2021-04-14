@@ -153,7 +153,8 @@ type Props = {
   video: ?Object,
   // isPinned: boolean,
   isVideo: boolean,
-  isMic: boolean
+  isMic: boolean,
+  highlight: boolean
   // isDataSharing: boolean,
   // isSharing: boolean
 };
@@ -183,6 +184,9 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       lastName,
       profileImage,
       isVisible,
+      highlight,
+      sharingTrackIds,
+      viewMode,
       // isPinned,
       isVideo,
       isMic,
@@ -193,8 +197,14 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
 
+    const isScreenShare = !!(['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && sharingTrackIds.length)
+    const activeBorder = highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {}
+
     return (
-      <div className={cx(classes.root, isVisible && classes.hide)}>
+      <div
+        className={cx(classes.root, isVisible && classes.hide)}
+        style={{ ...activeBorder }}
+      >
         <div className={classes.videoWrapper}>
           {isVideo ? (
             <div

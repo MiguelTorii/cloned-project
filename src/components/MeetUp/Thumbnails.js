@@ -126,6 +126,12 @@ const Thumbnails = ({
     setSelectedPage(page)
   }, [])
 
+  const setHighlight = useCallback((id, audio) => {
+    if (dominantSpeaker === id) return true
+    if (!dominantSpeaker && audio) return true
+    return false
+  }, [dominantSpeaker])
+
   const renderParticipants = useCallback(() => {
     return currentPageParticipants.map(item => {
       const profile = profiles[item.participant.identity] || {};
@@ -144,9 +150,12 @@ const Thumbnails = ({
             firstName={firstName}
             lastName={lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             isPinned={lockedParticipant === item.participant.sid}
             isVideo={false}
             isVisible={false}
+            sharingTrackIds={sharingTrackIds}
+            viewMode={viewMode}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />
@@ -158,6 +167,7 @@ const Thumbnails = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}
             isPinned={
               item.type === 'local'
@@ -165,6 +175,8 @@ const Thumbnails = ({
                 : lockedParticipant === track.sid
             }
             isVideo
+            sharingTrackIds={sharingTrackIds}
+            viewMode={viewMode}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />
@@ -189,9 +201,12 @@ const Thumbnails = ({
           firstName={firstName}
           lastName={lastName}
           profileImage={userProfileUrl}
+          highlight={setHighlight(item.participant.sid, item.audio.length)}
           isPinned={lockedParticipant === item.participant.sid}
           isVideo={false}
           isVisible={false}
+          sharingTrackIds={sharingTrackIds}
+          viewMode={viewMode}
           isMic={item.audio.length > 0}
           isDataSharing={item.data.length > 0}
         />
@@ -205,9 +220,12 @@ const Thumbnails = ({
               firstName={firstName}
               lastName={lastName}
               profileImage={userProfileUrl}
+              highlight={setHighlight(item.participant.sid, item.audio.length)}
               isPinned={lockedParticipant === item.participant.sid}
               isVideo={false}
               isVisible={false}
+              sharingTrackIds={sharingTrackIds}
+              viewMode={viewMode}
               isMic={item.audio.length > 0}
               isDataSharing={item.data.length > 0}
             />
@@ -219,6 +237,7 @@ const Thumbnails = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}
             isPinned={
               item.type === 'local'
@@ -226,6 +245,8 @@ const Thumbnails = ({
                 : lockedParticipant === track.sid
             }
             isVideo
+            sharingTrackIds={sharingTrackIds}
+            viewMode={viewMode}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />
@@ -244,6 +265,7 @@ const Thumbnails = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={filterCamera[0]}
             isPinned={
               item.type === 'local'
@@ -251,6 +273,8 @@ const Thumbnails = ({
                 : lockedParticipant === filterCamera[0].sid
             }
             isVideo
+            sharingTrackIds={sharingTrackIds}
+            viewMode={viewMode}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />
@@ -262,6 +286,7 @@ const Thumbnails = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}
             isPinned={
               item.type === 'local'
@@ -269,6 +294,8 @@ const Thumbnails = ({
                 : lockedParticipant === track.sid
             }
             isVideo
+            sharingTrackIds={sharingTrackIds}
+            viewMode={viewMode}
             isMic={item.audio.length > 0}
             isDataSharing={item.data.length > 0}
           />
@@ -276,7 +303,7 @@ const Thumbnails = ({
         return null
       });
     });
-  }, [currentPageParticipants, currentUserId, dominantSpeaker, lockedParticipant, profiles, selectedScreenShareId, sharingTrackIds]);
+  }, [currentPageParticipants, currentUserId, dominantSpeaker, lockedParticipant, profiles, selectedScreenShareId, setHighlight, sharingTrackIds, viewMode]);
 
   const goBack = useCallback(() => {
     if (selectedPage !== 1) {

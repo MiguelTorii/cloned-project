@@ -108,7 +108,10 @@ const styles = theme => ({
     width: '100% !important',
     objectFit: 'cover',
     borderRadius: 20,
-    height: '248px  !important'
+    height: '248px  !important',
+    transform: 'rotateY(180deg)',
+    '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+    '-moz-transform': 'rotateY(180deg)' /* Firefox */
   },
   letsGo: {
     margin: theme.spacing(4, 0),
