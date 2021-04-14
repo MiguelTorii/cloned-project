@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import Pagination from '@material-ui/lab/Pagination'
 import PaginationItem from '@material-ui/lab/PaginationItem'
 import VideoGridItem from './VideoGridItem'
+import AudioTrack from './AudioTrack';
 
 const styles = theme => ({
   root: {
@@ -273,6 +274,23 @@ const VideoGrid = ({
     setSelectedPage(page)
   }, [])
 
+  const setHighlight = useCallback((id, audio) => {
+    if (dominantSpeaker === id) return true
+    if (!dominantSpeaker && audio) return true
+    return false
+  }, [dominantSpeaker])
+
+  const renderAudio = useCallback(() => {
+    return participants.map(item => {
+      if (item.type !== 'local' && item.audio.length > 0) {
+        return item.audio.map(track => (
+          <AudioTrack key={track.sid} audio={track} />
+        ));
+      }
+      return null;
+    });
+  }, [participants]);
+
   const renderParticipants = useCallback(() => {
     return currentPageParticipants.map((item) => {
       const profile = profiles[item.participant.identity] || {}
@@ -317,7 +335,7 @@ const VideoGrid = ({
             sharingType={item.type}
             sharingTrackIds={sharingTrackIds}
             isMic={item.audio.length > 0}
-            highlight={dominantSpeaker === item.participant.sid}
+            highlight={setHighlight(item.participant.sid, item.audio.length)}
             count={numberOfParticipants}
             isSharing={Boolean(sharingTrackIds.indexOf(track.id) > -1)}
             isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid, id)}
@@ -326,7 +344,7 @@ const VideoGrid = ({
         )
       })
     })
-  }, [currentPageParticipants, currentUserId, dominantSpeaker, handleSelectedScreenSharing, isVisible, numberOfParticipants, profiles, selectedPage, sharingTrackIds, totalPageCount, viewMode])
+  }, [currentPageParticipants, currentUserId, handleSelectedScreenSharing, isVisible, numberOfParticipants, profiles, selectedPage, setHighlight, sharingTrackIds, totalPageCount, viewMode])
 
   return (
     <div className={cx(
@@ -369,6 +387,7 @@ const VideoGrid = ({
           page={selectedPage}
         />}
         {renderParticipants()}
+        {viewMode === 'gallery-view' && renderAudio()}
       </Grid>
     </div>
   )
