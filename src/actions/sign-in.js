@@ -6,7 +6,7 @@ import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns'
 import * as campaignActions from 'actions/campaign'
 import * as chatActions from 'actions/chat'
 import * as userActions from 'actions/user'
-import { getExpertMode, sync } from 'actions/user';
+import { sync } from 'actions/user';
 import { signInActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';

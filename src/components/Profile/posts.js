@@ -16,6 +16,7 @@ const styles = theme => ({
   },
   root: {
     ...theme.mixins.gutters(),
+    backgroundColor: theme.circleIn.palette.feedBackground,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
     flex: 1

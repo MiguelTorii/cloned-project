@@ -5,7 +5,7 @@ import { getCampaign } from 'api/campaign';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
-  getSync, apiGetExpertMode, apiSetExpertMode
+  getSync, apiSetExpertMode
 } from 'api/user';
 import store from 'store'
 import isEqual from 'lodash/isEqual'
