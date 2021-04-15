@@ -1120,6 +1120,7 @@ class MeetUp extends React.Component<Props, State> {
                   className={classes.settingBtn}
                   aria-label="settings"
                   size="small"
+                  onClick={this.openSettings}
                 >
                   <SettingsIcon />
                 </IconButton>}
@@ -1137,6 +1138,7 @@ class MeetUp extends React.Component<Props, State> {
                 viewMode === 'side-by-side' && classes.sideBySideViewThumbnail
               )}>
                 <Thumbnails
+                  meetupRef={meetupRef}
                   participants={participants}
                   currentUserId={currentUserId}
                   profiles={profiles}

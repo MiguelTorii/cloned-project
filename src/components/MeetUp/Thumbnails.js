@@ -92,6 +92,7 @@ const Thumbnails = ({
   dominantSpeaker,
   viewMode,
   selectedScreenShareId,
+  meetupRef
 }) => {
   const [pageCount, setPageCount] = useState(5)
   const [selectedPage, setSelectedPage] = useState(1)
@@ -319,14 +320,27 @@ const Thumbnails = ({
 
   const renderAudio = useCallback(() => {
     return participants.map(item => {
-      if (item.type !== 'local' && item.audio.length > 0) {
+      if (item.audio.length > 0) {
         return item.audio.map(track => (
-          <AudioTrack key={track.sid} audio={track} />
+          <AudioTrack
+            type={item.type}
+            key={item.type === 'local' ? track.id : track.sid}
+            audio={track}
+            innerRef={meetupRef}
+          />
         ));
+      }
+      if (!item.audio.length && item.type === 'local') {
+        return <AudioTrack
+          type={item.type}
+          key='no-audio'
+          audio={null}
+          innerRef={meetupRef}
+        />
       }
       return null;
     });
-  }, [participants]);
+  }, [meetupRef, participants]);
 
   return (
     <div className={cx(
