@@ -252,7 +252,6 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       highlight,
       totalPageCount,
       selectedPage,
-      sharingTrackIds,
       sharingType,
       viewMode
     } = this.props
@@ -271,8 +270,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     xs = windowWidth > 600 ? 12 / factor : 12
     height = windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`
 
-    const isScreenShare = !!(['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && sharingTrackIds.length)
-    const activeBorder = highlight && !isScreenShare ? { border: '4px solid #03A9F4' } : {}
+    const activeBorder = highlight ? { border: '4px solid #03A9F4' } : {}
     return (
       <Grid
         item xs={xs}

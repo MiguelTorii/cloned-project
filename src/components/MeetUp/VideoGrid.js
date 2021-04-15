@@ -171,7 +171,8 @@ const VideoGrid = ({
   sharingTrackIds,
   viewMode,
   currentUserId,
-  handleSelectedScreenSharing
+  handleSelectedScreenSharing,
+  meetupRef
 }: Props) => {
   const [dominant, setDominant] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
@@ -282,14 +283,27 @@ const VideoGrid = ({
 
   const renderAudio = useCallback(() => {
     return participants.map(item => {
-      if (item.type !== 'local' && item.audio.length > 0) {
+      if (item.audio.length > 0) {
         return item.audio.map(track => (
-          <AudioTrack key={track.sid} audio={track} />
+          <AudioTrack
+            type={item.type}
+            key={item.type === 'local' ? track.id : track.sid}
+            audio={track}
+            innerRef={meetupRef}
+          />
         ));
+      }
+      if (!item.audio.length && item.type === 'local') {
+        return <AudioTrack
+          type={item.type}
+          key='no-audio'
+          audio={null}
+          innerRef={meetupRef}
+        />
       }
       return null;
     });
-  }, [participants]);
+  }, [meetupRef, participants]);
 
   const renderParticipants = useCallback(() => {
     return currentPageParticipants.map((item) => {
@@ -310,7 +324,6 @@ const VideoGrid = ({
             setSelectedPage={setSelectedPage}
             handleSelectedScreenSharing={handleSelectedScreenSharing}
             sharingType={item.type}
-            sharingTrackIds={sharingTrackIds}
             isMic={item.audio.length > 0}
             count={numberOfParticipants}
             isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid)}
@@ -334,7 +347,6 @@ const VideoGrid = ({
             setSelectedPage={setSelectedPage}
             handleSelectedScreenSharing={handleSelectedScreenSharing}
             sharingType={item.type}
-            sharingTrackIds={sharingTrackIds}
             isMic={item.audio.length > 0}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             count={numberOfParticipants}

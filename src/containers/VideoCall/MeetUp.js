@@ -958,8 +958,33 @@ class MeetUp extends React.Component<Props, State> {
     this.setState({ openSettings: true });
   };
 
-  closeSettings = () => {
+  closeSettings = async () => {
     this.setState({ openSettings: false });
+
+    const { selectedaudioinput } = this.props;
+    const { videoRoom, participants } = this.state;
+    this.setState({ isAudioSwitching: false });
+    const localPartcipant = participants.find(item => item.type === 'local');
+    if (localPartcipant) {
+      const { audio = [] } = localPartcipant;
+      for (const track of audio) {
+        track.stop();
+        if (videoRoom) {
+          videoRoom.localParticipant.unpublishTrack(track);
+
+          const newLocalAudioTrack = await Video.createLocalAudioTrack({
+            deviceId: selectedaudioinput
+          });
+
+          videoRoom.localParticipant.publishTrack(newLocalAudioTrack);
+          this.handleAddParticipant(
+            videoRoom.localParticipant,
+            newLocalAudioTrack,
+            true
+          );
+        }
+      }
+    }
   };
 
   openClassmatesDialog = () => {
@@ -1016,7 +1041,8 @@ class MeetUp extends React.Component<Props, State> {
       videoinput,
       selectedaudioinput,
       audioinput,
-      chat
+      chat,
+      meetupRef
     } = this.props;
     const {
       data: {
@@ -1195,6 +1221,7 @@ class MeetUp extends React.Component<Props, State> {
             /> */}
             <VideoGrid
               participants={participants}
+              meetupRef={meetupRef}
               dominantView={dominantView}
               profiles={profiles}
               lockedParticipant={lockedParticipant}
