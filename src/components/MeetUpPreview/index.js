@@ -4,12 +4,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Input from '@material-ui/core/Input';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
@@ -17,7 +14,7 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Box from '@material-ui/core/Box'
 import ReplyIcon from '@material-ui/icons/Reply';
-import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+import DeviceSettings from '../MeetUp/DeviceSettings';
 import Dialog, { dialogStyle } from '../Dialog';
 
 const styles = theme => ({
@@ -141,14 +138,6 @@ const styles = theme => ({
     ...dialogStyle,
     width: 600,
   },
-  settingsModal: {
-    ...dialogStyle,
-    width: 600,
-    '& > :first-child': {
-      height: 20,
-      zIndex: 999999
-    }
-  },
   rules: {
     fontSize: 16,
     fontWeight: 400
@@ -164,55 +153,9 @@ const styles = theme => ({
   icon: {
     fontSize: 50
   },
-  options: {
-    width: '100%',
-    padding: theme.spacing(2, 0)
-  },
-  optionLabel: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    color: theme.circleIn.palette.secondaryText
-  },
-  contentClassName: {
-    '& > #circle-in-dialog-title': {
-      borderBottom: `1px solid ${theme.circleIn.palette.white}`,
-      paddingBottom: theme.spacing(3)
-    }
-  },
-  dropdownArrow: {
-    color: theme.circleIn.palette.brand,
-    fontSize: 28
-  },
-  controlOptions: {
-    backgroundColor: theme.circleIn.palette.secondaryText,
-    border: `1px solid ${theme.circleIn.palette.appBar}`,
-    boxSizing: 'border-box',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
-    paddingLeft: theme.spacing(3)
-  },
-  optionFocused: {
-    backgroundColor: theme.circleIn.palette.secondaryText,
-    border: `1px solid ${theme.circleIn.palette.appBar}`,
-    boxSizing: 'border-box',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
-  },
-  controlOptionLabel: {
-    '&::before': {
-      border: 'none',
-    },
-    '&:hover:not(.Mui-disabled):before': {
-      border: 'none',
-    }
-  },
-  report: {
-    color: theme.circleIn.palette.danger,
-    display: 'flex',
-    alignItems: 'center'
-  },
+  avatarImage: {
+    objectFit: 'fill'
+  }
 });
 
 type Props = {
@@ -289,6 +232,7 @@ class Preview extends React.Component<Props, State> {
       audioinput,
       videoinput,
       error,
+      profileImage,
       onJoin
     } = this.props;
     const { open } = this.state;
@@ -310,15 +254,29 @@ class Preview extends React.Component<Props, State> {
               id="videoinputpreview"
               autoPlay
             />
-            {!isVideoEnabled && (
-              <div className={classes.profile}>
-                <Typography
+            {!isVideoEnabled && <div className={classes.profile}>
+              {profileImage
+                ? <Avatar
+                  alt={initials}
+                  variant="square"
+                  src={profileImage}
+                  classes={{
+                    img: classes.avatarImage
+                  }}
+                  classNames={classes.profileImage}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 20,
+                  }}
+                />
+                : <Typography
                   className={classes.initials}
                 >
                   {initials}
                 </Typography>
-              </div>
-            )}
+              }
+            </div>}
           </div>
           <Box
             className={classes.box}
@@ -390,96 +348,15 @@ class Preview extends React.Component<Props, State> {
             By joining this call, you agree to abide by and respect CircleIn’s Community Rules
           </Typography>
         </Paper>
-        <Dialog
-          className={classes.settingsModal}
-          onCancel={this.closeSettings}
-          open={open}
-          showActions={false}
-          contentClassName={classes.contentClassName}
-          title="Audio/Visual Settings ⚙️"
-        >
-          <FormControl classes={{ root: classes.options }}>
-            <InputLabel
-              classes={{
-                root: classes.optionLabel
-              }}
-              htmlFor="audioinput-native-helper"
-            >
-                Video
-            </InputLabel>
-            <NativeSelect
-              value={selectedvideoinput}
-              onChange={this.handleChange('videoinput')}
-              classes={{
-                root: classes.controlOptions,
-                icon: classes.dropdownArrow
-              }}
-              input={
-                <Input
-                  classes={{
-                    root: classes.controlOptionLabel,
-                    focused: classes.optionFocused,
-                  }}
-                  name="videoinput" id="videoinput-native-helper"
-                />
-              }
-            >
-              {videoinput.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-          <FormControl classes={{ root: classes.options }}>
-            <InputLabel
-              classes={{
-                root: classes.optionLabel
-              }}
-              htmlFor="audioinput-native-helper"
-            >
-                Mic
-            </InputLabel>
-            <NativeSelect
-              value={selectedaudioinput}
-              classes={{
-                root: classes.controlOptions,
-                icon: classes.dropdownArrow
-              }}
-              onChange={this.handleChange('audioinput')}
-              input={
-                <Input
-                  classes={{
-                    root: classes.controlOptionLabel,
-                    focused: classes.optionFocused,
-                  }}
-                  name="audioinput" id="audioinput-native-helper"
-                />
-              }
-            >
-              {audioinput.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-          <Box className={classes.options}>
-            <Typography className={classes.report}>
-              <ReportFlag /> &nbsp; Report an Issue
-            </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.letsGo}
-              onClick={this.closeSettings}
-            >
-                Save
-            </Button>
-          </Box>
-        </Dialog>
+        <DeviceSettings
+          closeSettings={this.closeSettings}
+          handleChange={this.handleChange}
+          videoinput={videoinput}
+          audioinput={audioinput}
+          selectedvideoinput={selectedvideoinput}
+          selectedaudioinput={selectedaudioinput}
+          openSettings={open}
+        />
         <Dialog
           className={classes.dialog}
           disableBackdropClick

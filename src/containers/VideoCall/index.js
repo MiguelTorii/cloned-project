@@ -16,7 +16,6 @@ import Preview from './Preview';
 import MeetUp from './MeetUp';
 import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import Controls from '../../components/MeetUp/CallControls';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = theme => ({
@@ -235,12 +234,42 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleLeaveRoom = () => {
+  handleLeaveRoom = async () => {
     this.setState({
       join: false,
-      // selectedaudioinput: '',
-      // selectedvideoinput: ''
+      selectedaudioinput: '',
+      selectedvideoinput: ''
     });
+
+    try {
+      if (navigator && navigator.mediaDevices)
+        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
+      const deviceSelectionOptions =
+        (await this.handleUpdateDeviceSelectionOptions()) || {};
+      for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
+        const kindDeviceInfos = deviceSelectionOptions[kind] || [];
+        const devices = [];
+        kindDeviceInfos.forEach(kindDeviceInfo => {
+          const { deviceId } = kindDeviceInfo;
+          const label =
+            kindDeviceInfo.label ||
+            `Device [ id: ${deviceId.substr(0, 5)}... ]`;
+          devices.push({ label, value: deviceId });
+        });
+        this.setState({
+          [kind]: devices
+        });
+        if (devices.length > 0) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.handleUpdateDeviceSelection(kind, devices[0].value);
+          this.setState({ [`${kind}Enabled`]: true });
+        }
+      }
+    } catch (err) {
+      this.setState({ error: true });
+    } finally {
+      this.handleUpdateLoading(false);
+    }
   };
 
   handleUpdateLoading = loading => {
@@ -345,9 +374,6 @@ class VideoCall extends React.Component<Props, State> {
             )}
           </ErrorBoundary>
           <ErrorBoundary>{this.renderComponent()}</ErrorBoundary>
-          <ErrorBoundary>
-            <Controls />
-          </ErrorBoundary>
           <ErrorBoundary>
             <SimpleErrorDialog
               open={errorDialog}

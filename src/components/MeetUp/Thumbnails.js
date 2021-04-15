@@ -150,6 +150,7 @@ const Thumbnails = ({
             key={item.participant.sid}
             firstName={firstName}
             lastName={lastName}
+            isLocal={item.type === 'local'}
             profileImage={userProfileUrl}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             isPinned={lockedParticipant === item.participant.sid}
@@ -167,6 +168,7 @@ const Thumbnails = ({
             key={item.type === 'local' ? track.id : track.sid}
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
+            isLocal={item.type === 'local'}
             profileImage={userProfileUrl}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}
@@ -201,6 +203,7 @@ const Thumbnails = ({
           key={item.participant.sid}
           firstName={firstName}
           lastName={lastName}
+          isLocal={item.type === 'local'}
           profileImage={userProfileUrl}
           highlight={setHighlight(item.participant.sid, item.audio.length)}
           isPinned={lockedParticipant === item.participant.sid}
@@ -220,6 +223,7 @@ const Thumbnails = ({
               key={item.participant.sid}
               firstName={firstName}
               lastName={lastName}
+              isLocal={item.type === 'local'}
               profileImage={userProfileUrl}
               highlight={setHighlight(item.participant.sid, item.audio.length)}
               isPinned={lockedParticipant === item.participant.sid}
@@ -237,6 +241,7 @@ const Thumbnails = ({
             key={item.type === 'local' ? track.id : track.sid}
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
+            isLocal={item.type === 'local'}
             profileImage={userProfileUrl}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}
@@ -266,6 +271,7 @@ const Thumbnails = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            isLocal={item.type === 'local'}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={filterCamera[0]}
             isPinned={
@@ -286,6 +292,7 @@ const Thumbnails = ({
             key={item.type === 'local' ? track.id : track.sid}
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
+            isLocal={item.type === 'local'}
             profileImage={userProfileUrl}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             video={track}

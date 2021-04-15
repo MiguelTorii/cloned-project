@@ -1,56 +1,50 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 // @flow
-import React, { Fragment } from 'react';
-import cx from 'classnames';
-import Video from 'twilio-video';
+import React, { Fragment } from 'react'
+import cx from 'classnames'
+import Video from 'twilio-video'
 import moment from 'moment'
 import queryString from 'query-string'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { decypherClass } from 'utils/crypto'
-import first from 'lodash/first';
-import debounce from 'lodash/debounce';
-import { withSnackbar } from 'notistack';
-import { withStyles } from '@material-ui/core/styles';
+import first from 'lodash/first'
+import debounce from 'lodash/debounce'
+import { withSnackbar } from 'notistack'
+import { withStyles } from '@material-ui/core/styles'
 import StudyRoomChat from 'containers/StudyRoomChat'
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Input from '@material-ui/core/Input';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+import SettingsIcon from '@material-ui/icons/Settings'
 
 import get from 'lodash/get'
 import GalleryViewMode from './GalleryView'
-import type { User } from '../../types/models';
-import ErrorBoundary from '../ErrorBoundary';
-// import VideoChatChannel from './VideoChatChannel';
-import Controls from '../../components/MeetUp/CallControls';
-// import LeftPanel from '../../components/MeetUp/LeftPanel';
-import Thumbnails from '../../components/MeetUp/Thumbnails';
-// import LocalThumbnail from '../../components/MeetUp/LocalThumbnail';
-import VideoGrid from '../../components/MeetUp/VideoGrid';
-import MeetingDetails from '../../components/MeetUp/MeetingDetails';
-// import SharingScreenControl from '../../components/MeetUp/SharingScreenControl';
-import Whiteboard from '../../components/MeetUp/Whiteboard';
-import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
-import Dialog from '../../components/Dialog';
+import type { User } from '../../types/models'
+import ErrorBoundary from '../ErrorBoundary'
+import Controls from '../../components/MeetUp/CallControls'
+import DeviceSettings from '../../components/MeetUp/DeviceSettings'
+import Thumbnails from '../../components/MeetUp/Thumbnails'
+import VideoGrid from '../../components/MeetUp/VideoGrid'
+import MeetingDetails from '../../components/MeetUp/MeetingDetails'
+import Whiteboard from '../../components/MeetUp/Whiteboard'
+import WhiteboardControls from '../../components/MeetUp/WhiteboardControls'
+import Dialog from '../../components/Dialog'
 import ClassmatesDialog from '../../components/ClassmatesDialog'
-import VideoPointsDialog from '../../components/VideoPointsDialog';
-import { renewTwilioToken } from '../../api/chat';
-import { getUserProfile } from '../../api/user';
+import VideoPointsDialog from '../../components/VideoPointsDialog'
+import { renewTwilioToken } from '../../api/chat'
+import { getUserProfile } from '../../api/user'
 import {
   checkVideoSession,
   setVideoInitiator,
   postVideoPoints
-} from '../../api/video';
-import { logEvent } from '../../api/analytics';
-import * as utils from './utils';
-import { VIDEO_SHARE_URL } from '../../constants/routes';
+} from '../../api/video'
+// import VideoChatChannel from './VideoChatChannel'
+// import LocalThumbnail from '../../components/MeetUp/LocalThumbnail'
+// import LeftPanel from '../../components/MeetUp/LeftPanel'
+// import SharingScreenControl from '../../components/MeetUp/SharingScreenControl'
+import { logEvent } from '../../api/analytics'
+import * as utils from './utils'
+import { VIDEO_SHARE_URL } from '../../constants/routes'
 
 const styles = theme => ({
   root: {
@@ -128,71 +122,6 @@ const styles = theme => ({
     padding: theme.spacing(2),
     zIndex: 9999
   },
-  letsGo: {
-    margin: theme.spacing(4, 0),
-    minWidth: 340,
-    borderRadius: 20,
-    color: theme.circleIn.palette.white,
-    fontWeight: 700,
-    fontSize: 20,
-    background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)'
-  },
-  dialog: {
-    width: 600,
-    '& > :first-child': {
-      height: 20,
-      zIndex: 999999
-    }
-  },
-  options: {
-    width: '100%',
-    padding: theme.spacing(2, 0)
-  },
-  optionLabel: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    color: theme.circleIn.palette.secondaryText
-  },
-  contentClassName: {
-    '& > #circle-in-dialog-title': {
-      borderBottom: `1px solid ${theme.circleIn.palette.white}`,
-      paddingBottom: theme.spacing(3)
-    }
-  },
-  dropdownArrow: {
-    color: theme.circleIn.palette.brand,
-    fontSize: 28
-  },
-  controlOptions: {
-    backgroundColor: theme.circleIn.palette.secondaryText,
-    border: `1px solid ${theme.circleIn.palette.appBar}`,
-    boxSizing: 'border-box',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
-    paddingLeft: theme.spacing(3)
-  },
-  optionFocused: {
-    backgroundColor: theme.circleIn.palette.secondaryText,
-    border: `1px solid ${theme.circleIn.palette.appBar}`,
-    boxSizing: 'border-box',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
-  },
-  controlOptionLabel: {
-    '&::before': {
-      border: 'none',
-    },
-    '&:hover:not(.Mui-disabled):before': {
-      border: 'none',
-    }
-  },
-  report: {
-    color: theme.circleIn.palette.danger,
-    display: 'flex',
-    alignItems: 'center'
-  },
   pointsButton: {
     animation:
       'points 1s infinite, createBox 0.5s, vibrate 0.3s linear infinite both'
@@ -211,7 +140,7 @@ const styles = theme => ({
       'box-shadow': '0 0 0 0 rgba(73, 175, 217, 0)'
     }
   }
-});
+})
 
 type Props = {
   classes: Object,
@@ -294,7 +223,7 @@ class MeetUp extends React.Component<Props, State> {
     viewMode: 'gallery-view',
     selectedScreenShareId: '',
     selectedTab: 1
-  };
+  }
 
   meetingUriRef: Object;
 
@@ -309,28 +238,26 @@ class MeetUp extends React.Component<Props, State> {
   started: number;
 
   constructor(props) {
-    super(props);
+    super(props)
     // $FlowIgnore
-    this.whiteboard = React.createRef();
-    this.meetingUriRef = React.createRef();
-    this.audioinput = React.createRef();
-    this.videoinput = React.createRef();
+    this.whiteboard = React.createRef()
+    this.meetingUriRef = React.createRef()
   }
 
   componentDidMount = async () => {
     const { user: { userClasses: { classList } } } = this.props
-    this.notInitiator = false;
-    this.initiator = false;
-    this.pointsStarted = false;
+    this.notInitiator = false
+    this.initiator = false
+    this.pointsStarted = false
 
-    this.handleSession = debounce(this.handleSession, 1000);
-    this.started = new Date().getTime();
+    this.handleSession = debounce(this.handleSession, 1000)
+    this.started = new Date().getTime()
 
     const {
       user: { data: { userId, firstName, lastName, profileImage } }
-    } = this.props;
+    } = this.props
 
-    const noPointsAllowed = await checkVideoSession({ userId });
+    const noPointsAllowed = await checkVideoSession({ userId })
 
     const newClassList = {}
     classList.forEach(cl => {
@@ -358,17 +285,17 @@ class MeetUp extends React.Component<Props, State> {
       },
       currentClassList,
       noPointsAllowed
-    });
-    this.handleStartCall();
-  };
+    })
+    this.handleStartCall()
+  }
 
   componentDidUpdate = () => {
-    const { participants } = this.state;
+    const { participants } = this.state
     if (participants.length > 1 && !this.pointsStarted) {
-      this.pointsStarted = true;
-      this.handleSession();
-    } else if (participants.length <= 1) this.pointsStarted = false;
-  };
+      this.pointsStarted = true
+      this.handleSession()
+    } else if (participants.length <= 1) this.pointsStarted = false
+  }
 
   handleWindowClose = ev => {
     if (ev) ev.preventDefault()
@@ -382,24 +309,24 @@ class MeetUp extends React.Component<Props, State> {
           type: 'Ended',
           'Channel SID': videoRoom.sid,
         }
-      });
+      })
     }
   }
 
   componentWillUnmount = () => {
     window.removeEventListener('beforeunload', this.handleWindowClose)
-    const { videoRoom } = this.state;
+    const { videoRoom } = this.state
     if (videoRoom) {
-      videoRoom.disconnect();
-      this.setState({ videoRoom: null });
+      videoRoom.disconnect()
+      this.setState({ videoRoom: null })
     }
 
     if (
       this.handleSession.cancel &&
       typeof this.handleSession.cancel === 'function'
     )
-      this.handleSession.cancel();
-  };
+      this.handleSession.cancel()
+  }
 
   handleChangeView = viewMode => {
     this.setState({ viewMode })
@@ -413,26 +340,26 @@ class MeetUp extends React.Component<Props, State> {
         selectedaudioinput,
         roomName,
         updateLoading
-      } = this.props;
-      const tracks = [];
+      } = this.props
+      const tracks = []
 
       if (selectedvideoinput !== '') {
         const localVideoTrack = await Video.createLocalVideoTrack({
           deviceId: selectedvideoinput
-        });
-        tracks.push(localVideoTrack);
+        })
+        tracks.push(localVideoTrack)
       }
 
       if (selectedaudioinput !== '') {
         const localAudioTrack = await Video.createLocalAudioTrack({
           deviceId: selectedaudioinput
-        });
-        tracks.push(localAudioTrack);
+        })
+        tracks.push(localAudioTrack)
       }
 
       const accessToken = await renewTwilioToken({
         userId
-      });
+      })
 
       const videoRoom = await Video.connect(accessToken, {
         name: roomName,
@@ -441,7 +368,7 @@ class MeetUp extends React.Component<Props, State> {
         insights: false,
         video: selectedvideoinput !== '',
         audio: selectedaudioinput !== ''
-      });
+      })
 
       window.addEventListener('beforeunload', this.handleWindowClose)
       logEvent({
@@ -452,10 +379,10 @@ class MeetUp extends React.Component<Props, State> {
           type: 'Started',
           'Channel SID': videoRoom.sid,
         }
-      });
-      this.setState({ videoRoom });
+      })
+      this.setState({ videoRoom })
 
-      const { localParticipant } = videoRoom;
+      const { localParticipant } = videoRoom
       this.setState(prevState => ({
         participants: [
           ...prevState.participants,
@@ -467,44 +394,44 @@ class MeetUp extends React.Component<Props, State> {
             data: []
           }
         ]
-      }));
+      }))
 
       videoRoom.participants.forEach(participant => {
-        this.handleAddParticipant(participant);
-        if (!this.initiator) this.notInitiator = true;
-      });
+        this.handleAddParticipant(participant)
+        if (!this.initiator) this.notInitiator = true
+      })
 
       videoRoom.on('participantConnected', async participant => {
         const { sharingTrackIds } = this.state
-        this.handleAddParticipant(participant);
+        this.handleAddParticipant(participant)
         participant.tracks.forEach(publication => {
-          const { track } = publication;
-          this.handleAddParticipant(participant, track);
-          const { name = '', sid = '', kind = '' } = track || {};
+          const { track } = publication
+          this.handleAddParticipant(participant, track)
+          const { name = '', sid = '', kind = '' } = track || {}
           if (name === 'screenSharing') {
-            const screenSharingIds = [...sharingTrackIds];
-            screenSharingIds.push(sid);
-            this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds });
+            const screenSharingIds = [...sharingTrackIds]
+            screenSharingIds.push(sid)
+            this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds })
           }
           else if (kind === 'data') {
             track.on('message', data => {
-              const message = JSON.parse(data);
-              const { type = '' } = message;
-              if (type === 'drawing') this.handleDataReceived(data);
-              else if (type === 'texting') this.handleDataReceived(data);
-              else if (type === 'cursor') this.handleDataReceived(data);
-            });
+              const message = JSON.parse(data)
+              const { type = '' } = message
+              if (type === 'drawing') this.handleDataReceived(data)
+              else if (type === 'texting') this.handleDataReceived(data)
+              else if (type === 'cursor') this.handleDataReceived(data)
+            })
           }
-        });
+        })
         if (!this.notInitiator && !this.initiator) {
-          this.initiator = true;
-          const { sid } = videoRoom;
+          this.initiator = true
+          const { sid } = videoRoom
           const success = await setVideoInitiator({
             userId,
             sid
-          });
+          })
           if (success) {
-            const { enqueueSnackbar, classes } = this.props;
+            const { enqueueSnackbar, classes } = this.props
             enqueueSnackbar(
               'Congratulations, you have just earned some points because you initiated a Video meet-up. Good Work!',
               {
@@ -520,64 +447,64 @@ class MeetUp extends React.Component<Props, State> {
                   }
                 }
               }
-            );
+            )
           }
         }
-      });
+      })
 
       videoRoom.on('participantDisconnected', participant => {
-        this.handleRemoveParticipant(participant);
-      });
+        this.handleRemoveParticipant(participant)
+      })
 
       videoRoom.on('trackSubscribed', (track, publication, participant) => {
 
-        this.handleAddParticipant(participant, track);
-        const { name = '', sid = '', kind = '' } = track;
+        this.handleAddParticipant(participant, track)
+        const { name = '', sid = '', kind = '' } = track
         if (name === 'screenSharing') {
-          const { sharingTrackIds } = this.state;
-          const screenSharingIds = [...sharingTrackIds];
-          screenSharingIds.push(sid);
-          this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds });
+          const { sharingTrackIds } = this.state
+          const screenSharingIds = [...sharingTrackIds]
+          screenSharingIds.push(sid)
+          this.setState({ isVideoSharing: true, sharingTrackIds: screenSharingIds })
         }else if (kind === 'data') {
           track.on('message', data => {
-            const message = JSON.parse(data);
-            const { type = '' } = message;
-            if (type === 'drawing') this.handleDataReceived(data);
-            else if (type === 'texting') this.handleDataReceived(data);
-            else if (type === 'cursor') this.handleDataReceived(data);
-          });
+            const message = JSON.parse(data)
+            const { type = '' } = message
+            if (type === 'drawing') this.handleDataReceived(data)
+            else if (type === 'texting') this.handleDataReceived(data)
+            else if (type === 'cursor') this.handleDataReceived(data)
+          })
         }
-      });
+      })
 
       videoRoom.on('trackUnsubscribed', (track, publication, participant) => {
-        this.handleRemoveTrack(participant, track);
-        const { name = '', sid } = track;
+        this.handleRemoveTrack(participant, track)
+        const { name = '', sid } = track
         if (name === 'screenSharing') {
-          const { sharingTrackIds } = this.state;
-          const screenSharingIds = [...sharingTrackIds];
-          const index = screenSharingIds.indexOf(sid);
+          const { sharingTrackIds } = this.state
+          const screenSharingIds = [...sharingTrackIds]
+          const index = screenSharingIds.indexOf(sid)
           screenSharingIds.splice(index, 1)
-          this.setState({ isVideoSharing: false, sharingTrackIds: screenSharingIds });
+          this.setState({ isVideoSharing: false, sharingTrackIds: screenSharingIds })
         }
-      });
+      })
 
       videoRoom.on('dominantSpeakerChanged', participant => {
-        if (participant) this.setState({ dominantSpeaker: participant.sid });
-        else this.setState({ dominantSpeaker: '' });
-      });
+        if (participant) this.setState({ dominantSpeaker: participant.sid })
+        else this.setState({ dominantSpeaker: '' })
+      })
 
       videoRoom.on('disconnected', () => {
-        this.pointsStarted = false;
+        this.pointsStarted = false
         this.handleWindowClose()
         window.removeEventListener('beforeunload', this.handleWindowClose)
-        this.started = 0;
-      });
+        this.started = 0
+      })
 
-      updateLoading(false);
+      updateLoading(false)
     } catch (err) {
-      this.handleEndCall();
+      this.handleEndCall()
     }
-  };
+  }
 
   handleAddParticipant = (participant, track, local = false) => {
     const newState = utils.addParticipant(
@@ -585,234 +512,234 @@ class MeetUp extends React.Component<Props, State> {
       participant,
       track,
       local
-    );
-    this.setState(newState);
-    this.handleLoadProfile(participant);
-  };
+    )
+    this.setState(newState)
+    this.handleLoadProfile(participant)
+  }
 
   handleRemoveParticipant = participant => {
-    const newState = utils.removeParticipant(this.state, participant);
-    this.setState(newState);
-  };
+    const newState = utils.removeParticipant(this.state, participant)
+    this.setState(newState)
+  }
 
   handleRemoveTrack = (participant, track, local = false) => {
-    const newState = utils.removeTrack(this.state, participant, track, local);
-    this.setState(newState);
-  };
+    const newState = utils.removeTrack(this.state, participant, track, local)
+    this.setState(newState)
+  }
 
   handleLoadProfile = async participant => {
-    const { profiles } = this.state;
+    const { profiles } = this.state
 
     if (participant && !profiles[participant.identity]) {
       const { userProfile } = await getUserProfile({
         userId: participant.identity
-      });
-      const { firstName, lastName, userProfileUrl } = userProfile;
+      })
+      const { firstName, lastName, userProfileUrl } = userProfile
       const newState = utils.addProfile(this.state, {
         userId: participant.identity,
         firstName,
         lastName,
         userProfileUrl
-      });
-      this.setState(newState);
+      })
+      this.setState(newState)
     }
-  };
+  }
 
   handleEndCall = async () => {
-    const { videoRoom } = this.state;
-    const { leaveRoom } = this.props;
+    const { videoRoom } = this.state
+    const { leaveRoom } = this.props
     if (videoRoom) {
-      await videoRoom.disconnect();
+      await videoRoom.disconnect()
     }
-    leaveRoom();
-  };
+    await leaveRoom()
+  }
 
   handleLockParticipant = sid => {
     this.setState(({ lockedParticipant }) => ({
       lockedParticipant: lockedParticipant === sid ? '' : sid
-    }));
-  };
+    }))
+  }
 
   handleDisableVideo = async () => {
     try {
-      const { selectedvideoinput } = this.props;
-      const { videoRoom, participants } = this.state;
-      this.setState({ isVideoSwitching: true });
-      const localPartcipant = participants.find(item => item.type === 'local');
+      const { selectedvideoinput } = this.props
+      const { videoRoom, participants } = this.state
+      this.setState({ isVideoSwitching: true })
+      const localPartcipant = participants.find(item => item.type === 'local')
       if (localPartcipant) {
-        const { video = [] } = localPartcipant;
-        const tracks = video.filter(track => track.name !== 'localPartcipant');
+        const { video = [] } = localPartcipant
+        const tracks = video.filter(track => track.name !== 'localPartcipant')
         if (tracks.length === 0) {
           const newLocalVideoTrack = await Video.createLocalVideoTrack({
             deviceId: selectedvideoinput
-          });
+          })
 
           if (videoRoom && videoRoom.localParticipant && newLocalVideoTrack) {
-            await videoRoom.localParticipant.publishTrack(newLocalVideoTrack);
+            await videoRoom.localParticipant.publishTrack(newLocalVideoTrack)
             await this.handleAddParticipant(
               videoRoom.localParticipant,
               newLocalVideoTrack,
               true
-            );
+            )
           }
         } else {
           for (const track of tracks) {
-            await track.stop();
+            await track.stop()
             if (videoRoom) {
-              await videoRoom.localParticipant.unpublishTrack(track);
+              await videoRoom.localParticipant.unpublishTrack(track)
               await this.handleRemoveTrack(
                 videoRoom.localParticipant,
                 track,
                 true
-              );
+              )
             }
           }
         }
       }
     } finally {
-      this.setState({ isVideoSwitching: false });
+      this.setState({ isVideoSwitching: false })
     }
-  };
+  }
 
   handleDisableAudio = async () => {
     try {
-      const { selectedaudioinput } = this.props;
-      const { videoRoom, participants } = this.state;
-      this.setState({ isAudioSwitching: true });
-      const localPartcipant = participants.find(item => item.type === 'local');
+      const { selectedaudioinput } = this.props
+      const { videoRoom, participants } = this.state
+      this.setState({ isAudioSwitching: true })
+      const localPartcipant = participants.find(item => item.type === 'local')
       if (localPartcipant) {
-        const { audio = [] } = localPartcipant;
+        const { audio = [] } = localPartcipant
         if (audio.length === 0) {
           const newLocalAudioTrack = await Video.createLocalAudioTrack({
             deviceId: selectedaudioinput
-          });
+          })
 
           if (videoRoom && videoRoom.localParticipant && newLocalAudioTrack) {
-            videoRoom.localParticipant.publishTrack(newLocalAudioTrack);
+            videoRoom.localParticipant.publishTrack(newLocalAudioTrack)
             this.handleAddParticipant(
               videoRoom.localParticipant,
               newLocalAudioTrack,
               true
-            );
+            )
           }
         } else {
           for (const track of audio) {
-            track.stop();
+            track.stop()
             if (videoRoom) {
-              videoRoom.localParticipant.unpublishTrack(track);
-              this.handleRemoveTrack(videoRoom.localParticipant, track, true);
+              videoRoom.localParticipant.unpublishTrack(track)
+              this.handleRemoveTrack(videoRoom.localParticipant, track, true)
             }
           }
         }
       }
     } finally {
-      this.setState({ isAudioSwitching: false });
+      this.setState({ isAudioSwitching: false })
     }
-  };
+  }
 
   handleShareScreen = async () => {
-    const { videoRoom, screenTrack, sharingTrackIds } = this.state;
+    const { videoRoom, screenTrack, sharingTrackIds } = this.state
 
     if (!screenTrack && navigator && navigator.mediaDevices) {
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true
-      });
-      const newScreenTrack = first(stream.getVideoTracks());
+      })
+      const newScreenTrack = first(stream.getVideoTracks())
 
       newScreenTrack.addEventListener('ended', () => {
-        this.handleShareScreen();
-      });
+        this.handleShareScreen()
+      })
 
-      const localScreenTrack = await new Video.LocalVideoTrack(newScreenTrack);
+      const localScreenTrack = await new Video.LocalVideoTrack(newScreenTrack)
 
       this.setState({
         screenTrack: localScreenTrack
-      });
+      })
 
       if (videoRoom && videoRoom.localParticipant) {
         this.handleAddParticipant(
           videoRoom.localParticipant,
           localScreenTrack,
           true
-        );
-        const screenSharingIds = [...sharingTrackIds];
-        screenSharingIds.push(localScreenTrack.id);
-        this.setState({ sharingTrackIds: screenSharingIds });
+        )
+        const screenSharingIds = [...sharingTrackIds]
+        screenSharingIds.push(localScreenTrack.id)
+        this.setState({ sharingTrackIds: screenSharingIds })
         videoRoom.localParticipant.publishTrack(newScreenTrack, {
           name: 'screenSharing'
-        });
+        })
       }
     } else if (videoRoom && videoRoom.localParticipant) {
-      const screenSharingIds = [...sharingTrackIds];
+      const screenSharingIds = [...sharingTrackIds]
       if (screenTrack) {
-        const index = screenSharingIds.indexOf(screenTrack.id);
-        screenSharingIds.splice(index, 1);
-        this.handleRemoveTrack(videoRoom.localParticipant, screenTrack, true);
-        screenTrack.stop();
-        videoRoom.localParticipant.unpublishTrack(screenTrack);
+        const index = screenSharingIds.indexOf(screenTrack.id)
+        screenSharingIds.splice(index, 1)
+        this.handleRemoveTrack(videoRoom.localParticipant, screenTrack, true)
+        screenTrack.stop()
+        videoRoom.localParticipant.unpublishTrack(screenTrack)
       }
-      this.setState({ screenTrack: null, sharingTrackIds: screenSharingIds });
+      this.setState({ screenTrack: null, sharingTrackIds: screenSharingIds })
     }
-  };
+  }
 
   handleShareData = async () => {
-    const { videoRoom, dataTrack } = this.state;
+    const { videoRoom, dataTrack } = this.state
     if (!dataTrack) {
-      const localDataTrack = await new Video.LocalDataTrack();
+      const localDataTrack = await new Video.LocalDataTrack()
       this.setState({
         dataTrack: localDataTrack
-      });
+      })
       if (videoRoom && videoRoom.localParticipant) {
         this.handleAddParticipant(
           videoRoom.localParticipant,
           localDataTrack,
           true
-        );
+        )
 
         videoRoom.localParticipant.publishTrack(localDataTrack, {
           name: 'whiteBoard'
-        });
+        })
       }
     } else if (videoRoom && videoRoom.localParticipant) {
       if (dataTrack) {
-        this.handleRemoveTrack(videoRoom.localParticipant, dataTrack, true);
-        videoRoom.localParticipant.unpublishTrack(dataTrack);
+        this.handleRemoveTrack(videoRoom.localParticipant, dataTrack, true)
+        videoRoom.localParticipant.unpublishTrack(dataTrack)
       }
-      this.setState({ dataTrack: null });
+      this.setState({ dataTrack: null })
     }
-  };
+  }
 
   handleTabChange = type => {
-    this.setState({ type });
-  };
+    this.setState({ type })
+  }
 
   handleUnreadUpdate = count => {
-    if (!count) this.setState({ unread: 0 });
-    else this.setState(({ unread }) => ({ unread: unread + count }));
-  };
+    if (!count) this.setState({ unread: 0 })
+    else this.setState(({ unread }) => ({ unread: unread + count }))
+  }
 
   handleDataReceived = drawData => {
-    this.setState({ drawData });
-  };
+    this.setState({ drawData })
+  }
 
   handlePencilChange = size => {
-    this.setState({ lineWidth: size, isText: false, eraser: false });
-  };
+    this.setState({ lineWidth: size, isText: false, eraser: false })
+  }
 
   handleTextChange = () => {
-    this.setState({ isText: true, eraser: false });
-  };
+    this.setState({ isText: true, eraser: false })
+  }
 
   handleColorChange = color => {
-    this.setState({ color });
-  };
+    this.setState({ color })
+  }
 
   handleErase = size => {
-    this.setState({ lineWidth: size, isText: false, eraser: true });
-  };
+    this.setState({ lineWidth: size, isText: false, eraser: true })
+  }
 
   handleMeetingDetails = () => {
-    const { isOpenMeetingDetails } = this.state;
+    const { isOpenMeetingDetails } = this.state
     this.setState({ isOpenMeetingDetails: !isOpenMeetingDetails })
   }
 
@@ -827,63 +754,63 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleSave = () => {
-    const { current } = this.whiteboard;
+    const { current } = this.whiteboard
     if (current) {
-      const { canvas } = current;
+      const { canvas } = current
       if (canvas) {
-        const { current: currentCanvas } = canvas;
+        const { current: currentCanvas } = canvas
         if (currentCanvas) {
-          const canvasImg = currentCanvas.toDataURL('image/png');
-          this.setState({ canvasImg });
+          const canvasImg = currentCanvas.toDataURL('image/png')
+          this.setState({ canvasImg })
         }
       }
     }
-  };
+  }
 
   handleCanvasClose = () => {
-    this.setState({ canvasImg: '' });
-  };
+    this.setState({ canvasImg: '' })
+  }
 
   handleClear = () => {
-    const { current } = this.whiteboard;
+    const { current } = this.whiteboard
     if (current) {
-      const { canvas } = current;
+      const { canvas } = current
       if (canvas) {
-        const { current: currentCanvas } = canvas;
+        const { current: currentCanvas } = canvas
         if (currentCanvas) {
-          const context = currentCanvas.getContext('2d');
-          context.clearRect(0, 0, currentCanvas.width, currentCanvas.height);
+          const context = currentCanvas.getContext('2d')
+          context.clearRect(0, 0, currentCanvas.width, currentCanvas.height)
         }
       }
     }
-  };
+  }
 
   handleSendDataMessage = data => {
-    const { dataTrack } = this.state;
+    const { dataTrack } = this.state
     if (dataTrack) {
-      dataTrack.send(data);
+      dataTrack.send(data)
     }
   }
 
   handleSession = () => {
-    const { earned, points, noPointsAllowed } = this.state;
+    const { earned, points, noPointsAllowed } = this.state
     if (this.pointsStarted && !earned && !points && !noPointsAllowed) {
-      const elapsed = Number((new Date().getTime() - this.started) / 1000);
+      const elapsed = Number((new Date().getTime() - this.started) / 1000)
 
       if (elapsed > 600) {
-        this.setState({ points: true });
+        this.setState({ points: true })
       }
     }
-    if (this.pointsStarted) this.handleSession();
-  };
+    if (this.pointsStarted) this.handleSession()
+  }
 
   handleOpenClaimPoints = () => {
-    this.setState({ openVideoPoints: true });
-  };
+    this.setState({ openVideoPoints: true })
+  }
 
   handleVideoPointsClose = () => {
-    this.setState({ openVideoPoints: false });
-  };
+    this.setState({ openVideoPoints: false })
+  }
 
   handleSelectedScreenSharing = value => {
     this.setState({ selectedScreenShareId: value })
@@ -905,20 +832,20 @@ class MeetUp extends React.Component<Props, State> {
     help: string
   }) => {
     try {
-      this.setState({ postingPoints: true });
+      this.setState({ postingPoints: true })
       const {
         user: { data: { userId } }
-      } = this.props;
-      const { videoRoom, participants } = this.state;
+      } = this.props
+      const { videoRoom, participants } = this.state
       if (videoRoom && this.started) {
-        const { sid } = videoRoom;
+        const { sid } = videoRoom
         const length = Number(
           Number((new Date().getTime() - this.started) / 1000).toFixed(0)
-        );
+        )
 
         const participantsForPoints = participants
           .map(item => Number(item.participant.identity))
-          .filter(item => item !== Number(userId));
+          .filter(item => item !== Number(userId))
 
         await postVideoPoints({
           userId,
@@ -930,7 +857,7 @@ class MeetUp extends React.Component<Props, State> {
           participants: participantsForPoints,
           classId,
           sectionId
-        });
+        })
       }
 
       this.setState({
@@ -938,11 +865,11 @@ class MeetUp extends React.Component<Props, State> {
         earned: true,
         openVideoPoints: false,
         postingPoints: false
-      });
+      })
     } catch (err) {
-      this.setState({ postingPoints: false });
+      this.setState({ postingPoints: false })
     }
-  };
+  }
 
   dominantToggle = () => {
     const { dominantView } = this.state
@@ -950,42 +877,42 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleChange = kind => event => {
-    const { onUpdateDeviceSelection } = this.props;
-    onUpdateDeviceSelection(kind, event.target.value);
-  };
+    const { onUpdateDeviceSelection } = this.props
+    onUpdateDeviceSelection(kind, event.target.value)
+  }
 
   openSettings = () => {
-    this.setState({ openSettings: true });
-  };
+    this.setState({ openSettings: true })
+  }
 
   closeSettings = async () => {
-    this.setState({ openSettings: false });
+    this.setState({ openSettings: false })
 
-    const { selectedaudioinput } = this.props;
-    const { videoRoom, participants } = this.state;
-    this.setState({ isAudioSwitching: false });
-    const localPartcipant = participants.find(item => item.type === 'local');
+    const { selectedaudioinput } = this.props
+    const { videoRoom, participants } = this.state
+    this.setState({ isAudioSwitching: false })
+    const localPartcipant = participants.find(item => item.type === 'local')
     if (localPartcipant) {
-      const { audio = [] } = localPartcipant;
+      const { audio = [] } = localPartcipant
       for (const track of audio) {
-        track.stop();
+        track.stop()
         if (videoRoom) {
-          videoRoom.localParticipant.unpublishTrack(track);
+          videoRoom.localParticipant.unpublishTrack(track)
 
           const newLocalAudioTrack = await Video.createLocalAudioTrack({
             deviceId: selectedaudioinput
-          });
+          })
 
-          videoRoom.localParticipant.publishTrack(newLocalAudioTrack);
+          videoRoom.localParticipant.publishTrack(newLocalAudioTrack)
           this.handleAddParticipant(
             videoRoom.localParticipant,
             newLocalAudioTrack,
             true
-          );
+          )
         }
       }
     }
-  };
+  }
 
   openClassmatesDialog = () => {
     const { user:  { expertMode } } = this.props
@@ -1043,7 +970,7 @@ class MeetUp extends React.Component<Props, State> {
       audioinput,
       chat,
       meetupRef
-    } = this.props;
+    } = this.props
     const {
       data: {
         userId,
@@ -1052,7 +979,7 @@ class MeetUp extends React.Component<Props, State> {
         // profileImage,
       },
       expertMode,
-    } = user;
+    } = user
     const {
       currentClassList,
       videoRoom,
@@ -1085,12 +1012,12 @@ class MeetUp extends React.Component<Props, State> {
       openClassmates,
       viewMode,
       selectedScreenShareId
-    } = this.state;
+    } = this.state
 
-    const localPartcipant = participants.find(item => item.type === 'local');
+    const localPartcipant = participants.find(item => item.type === 'local')
 
-    const isVideoEnabled = localPartcipant && localPartcipant.video.length > 0;
-    const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0;
+    const isVideoEnabled = localPartcipant && localPartcipant.video.length > 0
+    const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0
 
     const unreadMessageCount = get(chat, `data.local.${channel.sid}.unread`)
     const localSharing = get(localPartcipant, 'video.length', 0)
@@ -1126,7 +1053,7 @@ class MeetUp extends React.Component<Props, State> {
                 </IconButton>}
               {participants.length > 1 && <GalleryViewMode
                 localSharing={localSharing}
-                isSharing={isVideoSharing}
+                isSharing={!!sharingTrackIds.length}
                 currentView={viewMode}
                 onChange={this.handleChangeView}
               />}
@@ -1324,107 +1251,24 @@ class MeetUp extends React.Component<Props, State> {
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          <Dialog
-            className={classes.dialog}
-            onCancel={this.closeSettings}
-            open={openSettings}
-            showActions={false}
-            contentClassName={classes.contentClassName}
-            title="Audio/Visual Settings ⚙️"
-          >
-            <FormControl classes={{ root: classes.options }}>
-              <InputLabel
-                classes={{
-                  root: classes.optionLabel
-                }}
-                htmlFor="audioinput-native-helper"
-              >
-                Video
-              </InputLabel>
-              <NativeSelect
-                value={selectedvideoinput}
-                onChange={this.handleChange('videoinput')}
-                classes={{
-                  root: classes.controlOptions,
-                  icon: classes.dropdownArrow
-                }}
-                input={
-                  <Input
-                    classes={{
-                      root: classes.controlOptionLabel,
-                      focused: classes.optionFocused,
-                    }}
-                    name="videoinput"
-                    id="videoinput-native-helper"
-                  />
-                }
-              >
-                {videoinput.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-            <FormControl classes={{ root: classes.options }}>
-              <InputLabel
-                classes={{
-                  root: classes.optionLabel
-                }}
-                htmlFor="audioinput-native-helper"
-              >
-                Mic
-              </InputLabel>
-              <NativeSelect
-                value={selectedaudioinput}
-                classes={{
-                  root: classes.controlOptions,
-                  icon: classes.dropdownArrow
-                }}
-                onChange={this.handleChange('audioinput')}
-                input={
-                  <Input
-                    classes={{
-                      root: classes.controlOptionLabel,
-                      focused: classes.optionFocused,
-                    }}
-                    name="audioinput"
-                    id="audioinput-native-helper"
-                  />
-                }
-              >
-                {audioinput.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </FormControl>
-            <Box className={classes.options}>
-              <Typography className={classes.report}>
-                <ReportFlag /> &nbsp; Report an Issue
-              </Typography>
-            </Box>
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.letsGo}
-                onClick={this.closeSettings}
-              >
-                Save
-              </Button>
-            </Box>
-          </Dialog>
+          <DeviceSettings
+            closeSettings={this.closeSettings}
+            handleChange={this.handleChange}
+            videoinput={videoinput}
+            audioinput={audioinput}
+            selectedvideoinput={selectedvideoinput}
+            selectedaudioinput={selectedaudioinput}
+            openSettings={openSettings}
+          />
         </ErrorBoundary>
       </Fragment>
-    );
+    )
   }
 }
 const mapStateToProps = ({ user, router, chat }: StoreState): {} => ({
   currentUser: user,
   router,
   chat
-});
+})
 
-export default connect(mapStateToProps, null)(withStyles(styles)(withSnackbar(MeetUp)));
+export default connect(mapStateToProps, null)(withStyles(styles)(withSnackbar(MeetUp)))

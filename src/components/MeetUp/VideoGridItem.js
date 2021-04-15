@@ -48,6 +48,13 @@ const styles = theme => ({
       '-moz-transform': 'rotateY(180deg)' /* Firefox */
     }
   },
+  shareScreen: {
+    '& video': {
+      transform: 'rotateY(360deg)',
+      '-webkit-transform': 'rotateY(360deg)', /* Safari and Chrome */
+      '-moz-transform': 'rotateY(360deg)' /* Firefox */
+    }
+  },
   singleAvataravatar: {
     ...centerStyles,
     flexDirection: 'column',
@@ -253,7 +260,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       totalPageCount,
       selectedPage,
       sharingType,
-      viewMode
+      viewMode,
+      isSharing
     } = this.props
 
     const { windowWidth } = this.state
@@ -301,7 +309,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               <div
                 className={cx(
                   classes.video,
-                  sharingType === 'local' && classes.cameraVideo,
+                  !isSharing && sharingType === 'local' && classes.cameraVideo,
+                  isSharing && classes.shareScreen,
                   isScreen && classes.screen
                 )}
                 ref={this.videoinput}

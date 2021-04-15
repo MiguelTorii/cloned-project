@@ -73,7 +73,7 @@ const styles = theme => ({
     '& video': {
       width: '100%',
       height: '100%   !important',
-      objectFit: 'fill',
+      objectFit: 'container',
       boxSizing: 'border-box',
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     }
@@ -143,6 +143,13 @@ const styles = theme => ({
     fontSize: 16,
     marginRight: theme.spacing(3)
   },
+  cameraVideo: {
+    '& video': {
+      transform: 'rotateY(180deg)',
+      '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+      '-moz-transform': 'rotateY(180deg)' /* Firefox */
+    }
+  },
 });
 
 type Props = {
@@ -154,7 +161,8 @@ type Props = {
   // isPinned: boolean,
   isVideo: boolean,
   isMic: boolean,
-  highlight: boolean
+  highlight: boolean,
+  isLocal: boolean
   // isDataSharing: boolean,
   // isSharing: boolean
 };
@@ -187,6 +195,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       highlight,
       sharingTrackIds,
       viewMode,
+      isLocal,
       // isPinned,
       isVideo,
       isMic,
@@ -208,7 +217,10 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
         <div className={classes.videoWrapper}>
           {isVideo ? (
             <div
-              className={classes.video}
+              className={cx(
+                classes.video,
+                isLocal && classes.cameraVideo
+              )}
               ref={this.videoinput}
             />
           ) : profileImage ? (

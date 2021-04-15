@@ -326,6 +326,7 @@ const VideoGrid = ({
             sharingType={item.type}
             isMic={item.audio.length > 0}
             count={numberOfParticipants}
+            isSharing={!!sharingTrackIds.length}
             isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid)}
             viewMode={viewMode}
           />
@@ -350,7 +351,7 @@ const VideoGrid = ({
             isMic={item.audio.length > 0}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
             count={numberOfParticipants}
-            isSharing={Boolean(sharingTrackIds.indexOf(track.id) > -1)}
+            isSharing={!!sharingTrackIds.length}
             isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid, id)}
             viewMode={viewMode}
           />
