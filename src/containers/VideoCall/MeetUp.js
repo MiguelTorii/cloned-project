@@ -1081,15 +1081,14 @@ class MeetUp extends React.Component<Props, State> {
                 >
                   <SettingsIcon />
                 </IconButton>}
-              {participants.length > 1 && <GalleryViewMode
+              <GalleryViewMode
                 localSharing={localSharing}
                 isSharing={!!sharingTrackIds.length}
                 currentView={viewMode}
                 onChange={this.handleChangeView}
-              />}
+              />
             </div>
-            {participants.length > 1 &&
-              ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 &&
+            {['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 &&
               <div className={cx(
                 viewMode === 'speaker-view' && classes.speakerViewThumbnails,
                 viewMode === 'side-by-side' && classes.sideBySideViewThumbnail

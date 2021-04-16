@@ -214,7 +214,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     } = this.props
     if (video) {
       this.videoinput.current.appendChild(video.attach())
-      if (isSharing) {
+      if (!localSharing && isSharing) {
         handleSelectedScreenSharing(video.sid)
       }
       if (localSharing) {
