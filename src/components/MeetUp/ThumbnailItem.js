@@ -262,7 +262,13 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
             </div>
           )}
         </div>
-        <div className={cx(hover && (firstName || lastName) ? classes.mic : classes.hide)}>
+        <div className={cx(
+          !isMic
+            ? classes.mic
+            : hover && (firstName || lastName)
+              ? classes.mic
+              : classes.hide
+        )}>
           {!isMic && <Mute className={classes.icon} />}
           <Typography
             className={classes.username}

@@ -214,13 +214,11 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     } = this.props
     if (video) {
       this.videoinput.current.appendChild(video.attach())
-      if (!localSharing && isSharing) {
+
+      if (localSharing && sharingTrackIds.indexOf(video.id) > -1) {
+        handleSelectedScreenSharing(video.id)
+      } else if (isSharing && sharingTrackIds.indexOf(video.sid) > -1) {
         handleSelectedScreenSharing(video.sid)
-      }
-      if (localSharing) {
-        if (sharingTrackIds.indexOf(video.id) > -1) {
-          handleSelectedScreenSharing(video.id)
-        }
       }
     }
 
@@ -291,7 +289,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       selectedPage,
       sharingType,
       viewMode,
-      isSharing
+      isSharing,
+      sharingTrackIds
     } = this.props
 
     const { windowWidth, hover } = this.state
@@ -308,7 +307,9 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     xs = windowWidth > 600 ? 12 / factor : 12
     height = windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`
 
-    const activeBorder = highlight ? { border: '4px solid #03A9F4' } : {}
+    const activeBorder = highlight && !sharingTrackIds.length
+      ? { border: '4px solid #03A9F4' }
+      : {}
     return (
       <Grid
         item xs={xs}
@@ -372,7 +373,13 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               </div>
             )}
           </div>
-          <div className={cx(hover && (firstName || lastName) ? classes.mic : classes.hidden)}>
+          <div className={cx(
+            !isMic
+              ? classes.mic
+              : hover && (firstName || lastName)
+                ? classes.mic
+                : classes.hidden
+          )}>
             {!isMic && <Mute className={classes.icon} />}
             <Typography className={classes.username} variant="h6">
               {`${firstName} ${lastName}`}

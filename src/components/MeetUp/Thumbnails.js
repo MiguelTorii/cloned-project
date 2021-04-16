@@ -219,8 +219,8 @@ const Thumbnails = ({
       }
 
       return item.video.map(track => {
-        if (item.video.length < 2 && (selectedScreenShareId === track.id || selectedScreenShareId === track.sid)) {
-          if (item.video.length === 1) {
+        if (item.video.length === 1) {
+          if (selectedScreenShareId === track.id || selectedScreenShareId === track.sid) {
             return <ThumbnailItem
               key={item.participant.sid}
               firstName={firstName}
@@ -237,8 +237,7 @@ const Thumbnails = ({
               isDataSharing={item.data.length > 0}
             />
           }
-          return null
-        } if (item.video.length === 1) {
+
           return <ThumbnailItem
             key={item.type === 'local' ? track.id : track.sid}
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
@@ -267,11 +266,6 @@ const Thumbnails = ({
             }
             return selectedScreenShareId !== video.sid
           })
-
-          // console.log('--------here--------')
-          // console.log(selectedScreenShareId)
-          // console.log(item)
-          // console.log(filterCamera)
 
           return <ThumbnailItem
             key={item.type === 'local' ? filterCamera[0].id : filterCamera[0].sid}
