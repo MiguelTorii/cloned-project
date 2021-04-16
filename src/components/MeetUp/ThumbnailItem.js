@@ -5,6 +5,7 @@ import React from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // import PersonIcon from '@material-ui/icons/Person';
 // import LockIcon from '@material-ui/icons/Lock';
@@ -37,7 +38,7 @@ const styles = theme => ({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.5),
     backgroundColor: 'rgba(44, 45, 45, .75)',
     zIndex: 999,
     minWidth: 130,
@@ -99,8 +100,9 @@ const styles = theme => ({
   },
   icon: {
     color: 'white',
-    width: 24,
-    height: 24
+    width: 14,
+    height: 14,
+    marginRight: theme.spacing(1)
   },
   avatar: {
     display: 'flex',
@@ -140,7 +142,7 @@ const styles = theme => ({
   },
   username: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 12,
     marginRight: theme.spacing(3)
   },
   cameraVideo: {
@@ -175,6 +177,9 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     // $FlowIgnore
+    this.state = {
+      hover: false
+    }
     this.videoinput = React.createRef();
   }
 
@@ -184,6 +189,14 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       this.videoinput.current.appendChild(video.attach());
     }
   };
+
+  onMouseOver = () => {
+    this.setState({ hover: true })
+  }
+
+  onMouseOut = () => {
+    this.setState({ hover: false })
+  }
 
   render() {
     const {
@@ -202,6 +215,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       // isDataSharing,
       // isSharing
     } = this.props;
+    const { hover } = this.state
     const initials = `${firstName !== '' ? firstName === 'You' ? 'You' : firstName.charAt(0) : ''}${
       lastName !== '' ? lastName.charAt(0) : ''
     }`;
@@ -210,7 +224,9 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
     const activeBorder = highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {}
 
     return (
-      <div
+      <Box
+        onMouseOver={() => this.onMouseOver()}
+        onMouseOut={() => this.onMouseOut()}
         className={cx(classes.root, isVisible && classes.hide)}
         style={{ ...activeBorder }}
       >
@@ -246,7 +262,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
             </div>
           )}
         </div>
-        <div className={classes.mic}>
+        <div className={cx(hover && (firstName || lastName) ? classes.mic : classes.hide)}>
           {!isMic && <Mute className={classes.icon} />}
           <Typography
             className={classes.username}
@@ -255,8 +271,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
             {`${firstName} ${lastName}`}
           </Typography>
         </div>
-
-      </div>
+      </Box>
     );
   }
 }

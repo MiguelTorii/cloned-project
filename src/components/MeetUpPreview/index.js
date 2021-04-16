@@ -263,7 +263,7 @@ class Preview extends React.Component<Props, State> {
                   classes={{
                     img: classes.avatarImage
                   }}
-                  classNames={classes.profileImage}
+                  className={classes.profileImage}
                   style={{
                     width: '100%',
                     height: '100%',

@@ -109,6 +109,8 @@ const Thumbnails = ({
   useEffect(() => {
     if (windowWidth < 700) {
       setPageCount(2)
+    } else {
+      setPageCount(5)
     }
   }, [windowWidth])
 
@@ -265,6 +267,11 @@ const Thumbnails = ({
             }
             return selectedScreenShareId !== video.sid
           })
+
+          // console.log('--------here--------')
+          // console.log(selectedScreenShareId)
+          // console.log(item)
+          // console.log(filterCamera)
 
           return <ThumbnailItem
             key={item.type === 'local' ? filterCamera[0].id : filterCamera[0].sid}

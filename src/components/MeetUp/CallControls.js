@@ -250,7 +250,7 @@ class Controls extends React.PureComponent<Props, State> {
           disabled={!isScreenSharingSupported || isSharingData || !isConnected}
           onClick={shareScreen}
         >
-          {localSharing !== 2
+          {!localSharing
             ? <div className={classes.controlButtons}>
               <ShareScreenIcon className={classes.controlIcons}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>

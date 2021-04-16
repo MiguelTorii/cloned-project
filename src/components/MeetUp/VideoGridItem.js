@@ -81,24 +81,32 @@ const styles = theme => ({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1.5),
     backgroundColor: 'rgba(44, 45, 45, .75)',
     zIndex: 9,
     minWidth: 200,
     minHeight: 50,
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1)
+      padding: theme.spacing(1),
+      minWidth: 130,
+      minHeight: 35,
     },
   },
+  hidden: {
+    display: 'none'
+  },
   icon: {
-    height: 28,
-    width: 28,
+    height: 24,
+    width: 24,
     marginRight: theme.spacing(2)
   },
   username: {
     fontWeight: 'bold',
-    fontSize: '1.3vw',
-    marginRight: theme.spacing(3)
+    fontSize: '1vw',
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 12
+    }
   },
   black: {
     ...centerStyles,
@@ -110,7 +118,7 @@ const styles = theme => ({
     backgroundColor: 'black',
   },
   initials: {
-    fontWeight:700,
+    fontWeight: 700,
     fontSize: '9vw',
     color: '#000000'
   },
@@ -190,16 +198,30 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     super(props)
     // $FlowIgnore
     this.state = {
-      windowWidth: window.innerWidth
+      windowWidth: window.innerWidth,
+      hover: false,
     }
     this.videoinput = React.createRef()
   }
 
   componentDidMount = () => {
-    const { video, sharingType, handleSelectedScreenSharing } = this.props
+    const {
+      video,
+      handleSelectedScreenSharing,
+      isSharing,
+      sharingTrackIds,
+      localSharing,
+    } = this.props
     if (video) {
       this.videoinput.current.appendChild(video.attach())
-      handleSelectedScreenSharing(sharingType === 'local' ? video.id : video.sid)
+      if (isSharing) {
+        handleSelectedScreenSharing(video.sid)
+      }
+      if (localSharing) {
+        if (sharingTrackIds.indexOf(video.id) > -1) {
+          handleSelectedScreenSharing(video.id)
+        }
+      }
     }
 
     window.addEventListener("resize", this.updateDimensions)
@@ -245,6 +267,14 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     this.setState({ windowWidth: window.innerWidth })
   }
 
+  onMouseOver = () => {
+    this.setState({ hover: true })
+  }
+
+  onMouseOut = () => {
+    this.setState({ hover: false })
+  }
+
   render() {
     const {
       classes,
@@ -264,7 +294,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
       isSharing
     } = this.props
 
-    const { windowWidth } = this.state
+    const { windowWidth, hover } = this.state
 
     let xs = 0
     let height = ''
@@ -282,6 +312,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     return (
       <Grid
         item xs={xs}
+        onMouseOver={() => this.onMouseOver()}
+        onMouseOut={() => this.onMouseOut()}
         style={{
           height,
           flexBasis: '100%'
@@ -340,7 +372,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               </div>
             )}
           </div>
-          <div className={classes.mic}>
+          <div className={cx(hover && (firstName || lastName) ? classes.mic : classes.hidden)}>
             {!isMic && <Mute className={classes.icon} />}
             <Typography className={classes.username} variant="h6">
               {`${firstName} ${lastName}`}

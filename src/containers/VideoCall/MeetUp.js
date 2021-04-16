@@ -222,7 +222,8 @@ class MeetUp extends React.Component<Props, State> {
     openSettings: false,
     viewMode: 'gallery-view',
     selectedScreenShareId: '',
-    selectedTab: 1
+    selectedTab: 1,
+    localSharing: false
   }
 
   meetingUriRef: Object;
@@ -546,9 +547,13 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleEndCall = async () => {
-    const { videoRoom } = this.state
+    const { videoRoom, screenTrack } = this.state
     const { leaveRoom } = this.props
     if (videoRoom) {
+      if (screenTrack) {
+        await screenTrack.stop()
+        await videoRoom.localParticipant.unpublishTrack(screenTrack)
+      }
       await videoRoom.disconnect()
     }
     await leaveRoom()
@@ -563,12 +568,15 @@ class MeetUp extends React.Component<Props, State> {
   handleDisableVideo = async () => {
     try {
       const { selectedvideoinput } = this.props
-      const { videoRoom, participants } = this.state
-      this.setState({ isVideoSwitching: true })
+      const { videoRoom, participants, sharingTrackIds } = this.state
       const localPartcipant = participants.find(item => item.type === 'local')
+
+      this.setState({ isVideoSwitching: true })
+
       if (localPartcipant) {
         const { video = [] } = localPartcipant
         const tracks = video.filter(track => track.name !== 'localPartcipant')
+
         if (tracks.length === 0) {
           const newLocalVideoTrack = await Video.createLocalVideoTrack({
             deviceId: selectedvideoinput
@@ -582,16 +590,30 @@ class MeetUp extends React.Component<Props, State> {
               true
             )
           }
+        } else if (tracks.length === 1 && sharingTrackIds.indexOf(tracks[0].id) > -1) {
+          const newLocalVideoTrack = await Video.createLocalVideoTrack({
+            deviceId: selectedvideoinput
+          })
+          if (videoRoom && videoRoom.localParticipant && newLocalVideoTrack) {
+            await videoRoom.localParticipant.publishTrack(newLocalVideoTrack)
+            await this.handleAddParticipant(
+              videoRoom.localParticipant,
+              newLocalVideoTrack,
+              true
+            )
+          }
         } else {
           for (const track of tracks) {
-            await track.stop()
-            if (videoRoom) {
-              await videoRoom.localParticipant.unpublishTrack(track)
-              await this.handleRemoveTrack(
-                videoRoom.localParticipant,
-                track,
-                true
-              )
+            if (sharingTrackIds.indexOf(track.name) === -1) {
+              await track.stop()
+              if (videoRoom) {
+                await videoRoom.localParticipant.unpublishTrack(track)
+                await this.handleRemoveTrack(
+                  videoRoom.localParticipant,
+                  track,
+                  true
+                )
+              }
             }
           }
         }
@@ -651,9 +673,13 @@ class MeetUp extends React.Component<Props, State> {
       })
 
       const localScreenTrack = await new Video.LocalVideoTrack(newScreenTrack)
+      const screenSharingIds = [...sharingTrackIds]
+      screenSharingIds.push(localScreenTrack.id)
 
       this.setState({
-        screenTrack: localScreenTrack
+        screenTrack: localScreenTrack,
+        localSharing: true,
+        sharingTrackIds: screenSharingIds,
       })
 
       if (videoRoom && videoRoom.localParticipant) {
@@ -662,9 +688,6 @@ class MeetUp extends React.Component<Props, State> {
           localScreenTrack,
           true
         )
-        const screenSharingIds = [...sharingTrackIds]
-        screenSharingIds.push(localScreenTrack.id)
-        this.setState({ sharingTrackIds: screenSharingIds })
         videoRoom.localParticipant.publishTrack(newScreenTrack, {
           name: 'screenSharing'
         })
@@ -678,7 +701,11 @@ class MeetUp extends React.Component<Props, State> {
         screenTrack.stop()
         videoRoom.localParticipant.unpublishTrack(screenTrack)
       }
-      this.setState({ screenTrack: null, sharingTrackIds: screenSharingIds })
+      this.setState({
+        screenTrack: null,
+        sharingTrackIds: screenSharingIds,
+        localSharing: false
+      })
     }
   }
 
@@ -813,7 +840,7 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleSelectedScreenSharing = value => {
-    this.setState({ selectedScreenShareId: value })
+    if (value) this.setState({ selectedScreenShareId: value })
   }
 
   handlePointsSubmit = async ({
@@ -1011,16 +1038,19 @@ class MeetUp extends React.Component<Props, State> {
       chatOpen,
       openClassmates,
       viewMode,
-      selectedScreenShareId
+      selectedScreenShareId,
+      localSharing
     } = this.state
 
     const localPartcipant = participants.find(item => item.type === 'local')
 
-    const isVideoEnabled = localPartcipant && localPartcipant.video.length > 0
+    const videoExists = localPartcipant &&
+      localPartcipant.video.length > 0 &&
+      localPartcipant.video.find(track => sharingTrackIds.indexOf(track.id) === -1)
     const isAudioEnabled = localPartcipant && localPartcipant.audio.length > 0
 
     const unreadMessageCount = get(chat, `data.local.${channel.sid}.unread`)
-    const localSharing = get(localPartcipant, 'video.length', 0)
+
     return (
       <Fragment>
         <ErrorBoundary>
@@ -1126,7 +1156,7 @@ class MeetUp extends React.Component<Props, State> {
               toggleChat={this.openChat}
               dominantView={dominantView}
               localSharing={localSharing}
-              isVideoEnabled={isVideoEnabled}
+              isVideoEnabled={!!videoExists}
               isAudioEnabled={isAudioEnabled}
               isScreenSharingSupported={Boolean(
                 navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia

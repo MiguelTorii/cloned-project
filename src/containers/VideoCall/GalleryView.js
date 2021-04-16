@@ -59,7 +59,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    if (localSharing === 2 || isSharing) {
+    if (localSharing || isSharing) {
       onChange('speaker-view')
     }
   }, [localSharing, onChange, isSharing])
@@ -82,7 +82,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
 
   const renderMenu = useMemo(() => (
     <MenuList>
-      {isSharing || localSharing === 2
+      {isSharing || localSharing
         ? <MenuItem
           onClick={selctView('side-by-side')}
           classes={{ root: classes.viewItem }}

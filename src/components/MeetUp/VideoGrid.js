@@ -155,6 +155,7 @@ type Props = {
   dominantSpeaker: string,
   dominantView: boolean,
   sharingTrackIds: array,
+  localSharing: boolean,
   currentUserId: string,
   viewMode: string,
   handleSelectedScreenSharing: Function
@@ -169,6 +170,7 @@ const VideoGrid = ({
   dominantView,
   lockedParticipant,
   sharingTrackIds,
+  localSharing,
   viewMode,
   currentUserId,
   handleSelectedScreenSharing,
@@ -216,8 +218,7 @@ const VideoGrid = ({
   const numberOfParticipants = useMemo(() =>
     sharingTrackIds.length ||
     (dominantView && dominant) ||
-    viewMode === 'speaker-view' ||
-    viewMode === 'side-by-side'
+    ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1
       ? 1
       : participants.length,
   [dominant, dominantView, participants.length, sharingTrackIds, viewMode])
@@ -318,7 +319,9 @@ const VideoGrid = ({
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
             highlight={setHighlight(item.participant.sid, item.audio.length)}
+            sharingTrackIds={sharingTrackIds}
             isVideo={false}
+            localSharing={localSharing}
             totalPageCount={totalPageCount}
             selectedPage={selectedPage}
             setSelectedPage={setSelectedPage}
@@ -341,6 +344,8 @@ const VideoGrid = ({
             firstName={item.participant.identity === currentUserId ? 'You' : firstName}
             lastName={item.participant.identity === currentUserId ? '' : lastName}
             profileImage={userProfileUrl}
+            localSharing={localSharing}
+            sharingTrackIds={sharingTrackIds}
             video={track}
             isVideo={isVideo}
             totalPageCount={totalPageCount}
@@ -358,7 +363,7 @@ const VideoGrid = ({
         )
       })
     })
-  }, [currentPageParticipants, currentUserId, handleSelectedScreenSharing, isVisible, numberOfParticipants, profiles, selectedPage, setHighlight, sharingTrackIds, totalPageCount, viewMode])
+  }, [currentPageParticipants, currentUserId, handleSelectedScreenSharing, isVisible, localSharing, numberOfParticipants, profiles, selectedPage, setHighlight, sharingTrackIds, totalPageCount, viewMode])
 
   return (
     <div className={cx(
