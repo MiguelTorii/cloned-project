@@ -597,3 +597,10 @@ export type OnboardingList = {
   checklist: Array<OnboardingListItem>,
   visible: boolean
 };
+
+export type StudyRoomOnboardingStepData = {
+  imageUrl: string,
+  title: string,
+  text: string,
+  actionText: string
+};
