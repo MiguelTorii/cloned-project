@@ -14,6 +14,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Badge from '@material-ui/core/Badge';
 
+import Tooltip from 'containers/Tooltip';
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
 import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
 import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';
@@ -265,52 +266,61 @@ class Controls extends React.PureComponent<Props, State> {
             </div>}
         </Button>}
 
-        <Button
-          size='small'
-          color='default'
-          aria-label='participant'
-          className={classes.fab}
-          disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-          onClick={() => this.handleOpen(0)}
-        >
-          <div className={classes.controlButtons}>
-            <ParticipantIcon className={classes.controlIcons}/>
-            {windowWidth > 720 && <span className={classes.controlLabel}>
-              Participant
-            </span>}
-          </div>
-        </Button>
-
-        <Badge
-          badgeContent={unreadMessageCount}
-          color="error"
-          classes={{
-            badge: classes.badge
-          }}
+        <Tooltip
+          id={9062}
+          placement="top"
+          variant="secondary"
+          text="Open a chat with study room participants and see a list of participants and invitees. 🎉"
+          totalSteps={4}
+          okButton="Nice!"
+          completedSteps={2}
         >
           <Button
             size='small'
-            color="default"
-            aria-label='chat'
+            color='default'
+            aria-label='participant'
             className={classes.fab}
-            disabled={!isConnected}
-            onClick={() => this.handleOpen(1)}
+            disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+            onClick={() => this.handleOpen(0)}
           >
-            {!isSharing
-              ? <div className={classes.controlButtons}>
-                <ChatIcon className={classes.controlIcons}/>
-                {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Chat
-                </span>}
-              </div>
-              : <div className={classes.controlButtons}>
-                <ChatIcon className={classes.controlIcons}/>
-                {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Chat
-                </span>}
-              </div>}
+            <div className={classes.controlButtons}>
+              <ParticipantIcon className={classes.controlIcons}/>
+              {windowWidth > 720 && <span className={classes.controlLabel}>
+              Participant
+              </span>}
+            </div>
           </Button>
-        </Badge>
+          <Badge
+            badgeContent={unreadMessageCount}
+            color="error"
+            classes={{
+              badge: classes.badge
+            }}
+          >
+            <Button
+              size='small'
+              color="default"
+              aria-label='chat'
+              className={classes.fab}
+              disabled={!isConnected}
+              onClick={() => this.handleOpen(1)}
+            >
+              {!isSharing
+                ? <div className={classes.controlButtons}>
+                  <ChatIcon className={classes.controlIcons}/>
+                  {windowWidth > 720 && <span className={classes.controlLabel}>
+                  Chat
+                  </span>}
+                </div>
+                : <div className={classes.controlButtons}>
+                  <ChatIcon className={classes.controlIcons}/>
+                  {windowWidth > 720 && <span className={classes.controlLabel}>
+                  Chat
+                  </span>}
+                </div>}
+            </Button>
+          </Badge>
+        </Tooltip>
       </div>
     )
   }

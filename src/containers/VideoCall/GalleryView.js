@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
+import Tooltip from 'containers/Tooltip'
 // import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
 import { ReactComponent as SpeakerView } from 'assets/svg/speaker-view.svg';
 import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
@@ -113,21 +114,31 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
             <div className={classes.checked}><ViewChecked /></div>}
           </div>
         </MenuItem>}
-      <MenuItem
-        onClick={selctView('speaker-view')}
-        classes={{ root: classes.viewItem }}
+      <Tooltip
+        id={9063}
+        placement="right"
+        variant="secondary"
+        text="Change screen views here. You can also select different views when sharing screen."
+        totalSteps={4}
+        completedSteps={3}
+        okButton="Nice!"
       >
-        <div className={classes.view}>
-          <div className={classes.center}>
-            <ListItemIcon>
-              <SpeakerView />
-            </ListItemIcon>
-            <Typography variant="inherit">Speaker</Typography>
+        <MenuItem
+          onClick={selctView('speaker-view')}
+          classes={{ root: classes.viewItem }}
+        >
+          <div className={classes.view}>
+            <div className={classes.center}>
+              <ListItemIcon>
+                <SpeakerView />
+              </ListItemIcon>
+              <Typography variant="inherit">Speaker</Typography>
+            </div>
+            {currentView === 'speaker-view' &&
+                    <div className={classes.checked}><ViewChecked /></div>}
           </div>
-          {currentView === 'speaker-view' &&
-                  <div className={classes.checked}><ViewChecked /></div>}
-        </div>
-      </MenuItem>
+        </MenuItem>
+      </Tooltip>
       {/* <MenuItem
         onClick={selctView('fullscreen-view')}
         classes={{ root: classes.viewItem }}

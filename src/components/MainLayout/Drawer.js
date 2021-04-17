@@ -497,13 +497,21 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
-        {/* <DrawerItem
-          onClick={handleOpenGetApp}
-          listItemClass={classes.otherPath}
-          OnIcon={<OnStudyRoom />}
-          primaryText='Study Room'
-          OffIcon={<OffStudyRoom />}
-        /> */}
+        {/* <Tooltip
+          id={9058}
+          placement="right"
+          variant="secondary"
+          text="Pssst! You can start video chatting from the left navigation! 😍"
+          okButton="Nice!"
+        >
+          <DrawerItem
+            onClick={handleOpenGetApp}
+            listItemClass={classes.otherPath}
+            OnIcon={<OnStudyRoom />}
+            primaryText='Study Room'
+            OffIcon={<OffStudyRoom />}
+          />
+        </Tooltip> */}
         {expertMode && <DrawerItem
           OnIcon={<OneTouchSendIconOn />}
           primaryText='One-Touch Send'

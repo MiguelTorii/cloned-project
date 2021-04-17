@@ -3,6 +3,7 @@
 // @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Tooltip from 'containers/Tooltip';
 import type { User } from '../../types/models';
 import ErrorBoundary from '../ErrorBoundary';
 import MeetupPreview from '../../components/MeetUpPreview';
@@ -74,26 +75,36 @@ class Preview extends React.Component<Props, State> {
     return (
       <ErrorBoundary>
         <div className={classes.root}>
-          <MeetupPreview
-            pushTo={pushTo}
-            innerRef={meetupPreview}
-            roomName={roomName}
-            firstName={firstName}
-            lastName={lastName}
-            profileImage={profileImage}
-            audioinput={audioinput}
-            videoinput={videoinput}
-            audiooutput={audiooutput}
-            selectedvideoinput={selectedvideoinput}
-            selectedaudioinput={selectedaudioinput}
-            selectedaudiooutput={selectedaudiooutput}
-            isVideoEnabled={videoinputEnabled}
-            isAudioEnabled={audioinputEnabled}
-            error={error}
-            onUpdateDeviceSelection={onUpdateDeviceSelection}
-            onDisableDevice={onDisableDevice}
-            onJoin={this.handleJoin}
-          />
+          <Tooltip
+            id={9060}
+            placement="right"
+            variant="secondary"
+            text="Meet the new Study Room, a friendlier video chat experience! 😌"
+            totalSteps={4}
+            completedSteps={0}
+            okButton="Nice!"
+          >
+            <MeetupPreview
+              pushTo={pushTo}
+              innerRef={meetupPreview}
+              roomName={roomName}
+              firstName={firstName}
+              lastName={lastName}
+              profileImage={profileImage}
+              audioinput={audioinput}
+              videoinput={videoinput}
+              audiooutput={audiooutput}
+              selectedvideoinput={selectedvideoinput}
+              selectedaudioinput={selectedaudioinput}
+              selectedaudiooutput={selectedaudiooutput}
+              isVideoEnabled={videoinputEnabled}
+              isAudioEnabled={audioinputEnabled}
+              error={error}
+              onUpdateDeviceSelection={onUpdateDeviceSelection}
+              onDisableDevice={onDisableDevice}
+              onJoin={this.handleJoin}
+            />
+          </Tooltip>
         </div>
       </ErrorBoundary>
     );

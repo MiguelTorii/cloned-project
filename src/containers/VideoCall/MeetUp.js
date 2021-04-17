@@ -18,6 +18,7 @@ import IconButton from '@material-ui/core/IconButton'
 import SettingsIcon from '@material-ui/icons/Settings'
 
 import get from 'lodash/get'
+import Tooltip from 'containers/Tooltip'
 import GalleryViewMode from './GalleryView'
 import type { User } from '../../types/models'
 import ErrorBoundary from '../ErrorBoundary'
@@ -1061,26 +1062,36 @@ class MeetUp extends React.Component<Props, State> {
               selectedTab={selectedTab}
             />
             <div className={classes.header}>
-              {viewMode === 'gallery-view'
-                ? <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.settingBtn}
-                  startIcon={<SettingsIcon />}
-                  onClick={this.openSettings}
-                >
+              <Tooltip
+                id={9064}
+                placement="bottom-start"
+                variant="secondary"
+                text="You can change your audio/visual settings or report an issue here. Happy studying!"
+                totalSteps={4}
+                completedSteps={4}
+                okButton="Yay! 🎉"
+              >
+                {viewMode === 'gallery-view'
+                  ? <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.settingBtn}
+                    startIcon={<SettingsIcon />}
+                    onClick={this.openSettings}
+                  >
                   Settings
-                </Button>
-                : <IconButton
-                  variant="contained"
-                  color="secondary"
-                  className={classes.settingBtn}
-                  aria-label="settings"
-                  size="small"
-                  onClick={this.openSettings}
-                >
-                  <SettingsIcon />
-                </IconButton>}
+                  </Button>
+                  : <IconButton
+                    variant="contained"
+                    color="secondary"
+                    className={classes.settingBtn}
+                    aria-label="settings"
+                    size="small"
+                    onClick={this.openSettings}
+                  >
+                    <SettingsIcon />
+                  </IconButton>}
+              </Tooltip>
               <GalleryViewMode
                 localSharing={localSharing}
                 isSharing={!!sharingTrackIds.length}
