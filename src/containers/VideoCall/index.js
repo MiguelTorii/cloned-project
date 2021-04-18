@@ -87,6 +87,15 @@ class VideoCall extends React.Component<Props, State> {
       adapter.browserShim.shimGetDisplayMedia(window, 'screen');
     }
 
+    await this.initialDevices()
+  };
+
+  componentWillUnmount = () => {
+    this.mounted = false;
+    this.handleDetachtracks()
+  };
+
+  initialDevices = async () => {
     try {
       if (navigator && navigator.mediaDevices)
         navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
@@ -116,18 +125,16 @@ class VideoCall extends React.Component<Props, State> {
     } finally {
       this.handleUpdateLoading(false);
     }
-  };
+  }
 
-  componentWillUnmount = () => {
-    this.mounted = false;
-
+  handleDetachtracks = () => {
     for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
       const { state } = this;
       if (state[`${kind}track`]) {
         utils.detachTrack(state[`${kind}track`]);
       }
     }
-  };
+  }
 
   handleUpdateDeviceSelectionOptions = () => {
     return (
@@ -234,44 +241,6 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleLeaveRoom = async () => {
-    this.setState({
-      join: false,
-      selectedaudioinput: '',
-      selectedvideoinput: ''
-    });
-
-    try {
-      if (navigator && navigator.mediaDevices)
-        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
-      const deviceSelectionOptions =
-        (await this.handleUpdateDeviceSelectionOptions()) || {};
-      for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
-        const kindDeviceInfos = deviceSelectionOptions[kind] || [];
-        const devices = [];
-        kindDeviceInfos.forEach(kindDeviceInfo => {
-          const { deviceId } = kindDeviceInfo;
-          const label =
-            kindDeviceInfo.label ||
-            `Device [ id: ${deviceId.substr(0, 5)}... ]`;
-          devices.push({ label, value: deviceId });
-        });
-        this.setState({
-          [kind]: devices
-        });
-        if (devices.length > 0) {
-          // eslint-disable-next-line no-await-in-loop
-          await this.handleUpdateDeviceSelection(kind, devices[0].value);
-          this.setState({ [`${kind}Enabled`]: true });
-        }
-      }
-    } catch (err) {
-      this.setState({ error: true });
-    } finally {
-      this.handleUpdateLoading(false);
-    }
-  };
-
   handleUpdateLoading = loading => {
     this.setState({ loading });
   };
@@ -342,8 +311,9 @@ class VideoCall extends React.Component<Props, State> {
         error={error}
         onUpdateDeviceSelection={this.handleUpdateDeviceSelection}
         onDisableDevice={this.handleDisableDevice}
-        leaveRoom={this.handleLeaveRoom}
         updateLoading={this.handleUpdateLoading}
+        initialDevices={this.initialDevices}
+        handleDetachtracks={this.handleDetachtracks}
       />
     );
   };

@@ -150,7 +150,6 @@ type Props = {
   selectedaudioinput: string,
   roomName: string,
   // channel: ?Object,
-  leaveRoom: Function,
   chat: Object,
   updateLoading: Function,
   enqueueSnackbar: Function
@@ -549,7 +548,6 @@ class MeetUp extends React.Component<Props, State> {
 
   handleEndCall = async () => {
     const { videoRoom, screenTrack } = this.state
-    const { leaveRoom } = this.props
     if (videoRoom) {
       if (screenTrack) {
         await screenTrack.stop()
@@ -557,7 +555,7 @@ class MeetUp extends React.Component<Props, State> {
       }
       await videoRoom.disconnect()
     }
-    await leaveRoom()
+    await window.location.reload();
   }
 
   handleLockParticipant = sid => {
@@ -568,7 +566,7 @@ class MeetUp extends React.Component<Props, State> {
 
   handleDisableVideo = async () => {
     try {
-      const { selectedvideoinput } = this.props
+      const { selectedvideoinput, onDisableDevice } = this.props
       const { videoRoom, participants, sharingTrackIds } = this.state
       const localPartcipant = participants.find(item => item.type === 'local')
 
@@ -606,6 +604,7 @@ class MeetUp extends React.Component<Props, State> {
         } else {
           for (const track of tracks) {
             if (sharingTrackIds.indexOf(track.name) === -1) {
+              onDisableDevice('videoinput');
               await track.stop()
               if (videoRoom) {
                 await videoRoom.localParticipant.unpublishTrack(track)
