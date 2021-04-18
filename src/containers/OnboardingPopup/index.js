@@ -1,10 +1,12 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
+import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 import { ONBOARDING_STEPS } from './steps';
 import OnboardingStep from './OnboardingStep';
 
@@ -22,16 +24,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const OnboardingPopup = ({  user }) => {
+const STUDY_ROOM_ONBOARDING_POPUP_ID = 9065
+
+const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (user?.data?.userId) {
-      setOpen(localStorage.getItem('SHOW_ONBOARDING_POPUP') !== 'false')
+    if (
+      !!viewedTooltips?.length &&
+      viewedTooltips.indexOf(STUDY_ROOM_ONBOARDING_POPUP_ID) === -1
+    ) {
+      setOpen(true)
     }
-  }, [user])
+  }, [viewedTooltips])
 
   const closePopup = () => {
     setOpen(false);
@@ -39,7 +46,7 @@ const OnboardingPopup = ({  user }) => {
 
   const onStepAction = () => {
     if (step >= ONBOARDING_STEPS.length - 1) {
-      localStorage.setItem('SHOW_ONBOARDING_POPUP', 'false');
+      confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID)
       closePopup();
     } else {
       setStep(step + 1);
@@ -66,10 +73,18 @@ const OnboardingPopup = ({  user }) => {
 };
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+  viewedTooltips: user.syncData.viewedTooltips
 });
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      confirmTooltip: confirmTooltipAction
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(withRoot(OnboardingPopup));
