@@ -215,6 +215,12 @@ const VideoGrid = ({
     }
   }, [sharingTrackIds.length, viewMode])
 
+  useEffect(() => {
+    if (!localSharing && !!sharingTrackIds.length) {
+      setSelectedPage(1)
+    }
+  }, [localSharing, sharingTrackIds])
+
   const numberOfParticipants = useMemo(() =>
     sharingTrackIds.length ||
     (dominantView && dominant) ||

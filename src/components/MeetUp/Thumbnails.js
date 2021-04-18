@@ -92,7 +92,8 @@ const Thumbnails = ({
   dominantSpeaker,
   viewMode,
   selectedScreenShareId,
-  meetupRef
+  meetupRef,
+  localSharing
 }) => {
   const [pageCount, setPageCount] = useState(5)
   const [selectedPage, setSelectedPage] = useState(1)
@@ -119,11 +120,21 @@ const Thumbnails = ({
     else setPageCount(4)
   }, [viewMode])
 
-  const totalPageCount = useMemo(() => Math.ceil(participants.length / pageCount)
-    , [pageCount, participants.length])
+  const totalPageCount = useMemo(() => {
+    const participantsLength = localSharing
+      ? participants.length
+      : participants.length - 1
+    return Math.ceil(participantsLength / pageCount)
+  }, [localSharing, pageCount, participants.length])
+
   const currentPageParticipants = useMemo(() => {
-    return participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage)
-  }, [pageCount, participants, selectedPage])
+    if (localSharing) {
+      return participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage)
+    }
+    return participants.filter(item => item.type !== 'local')
+      .slice(pageCount * (selectedPage - 1), pageCount * selectedPage)
+
+  }, [localSharing, pageCount, participants, selectedPage])
 
   const handlePageChange = useCallback((event, page) => {
     setSelectedPage(page)

@@ -71,7 +71,10 @@ const styles = theme => ({
   controlLabel: {
     marginTop: theme.spacing(0.5),
     fontWeight: 700,
-    color: theme.circleIn.palette.white
+    color: theme.circleIn.palette.white,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   sharingBtn: {
     color: theme.circleIn.palette.brand
@@ -233,13 +236,13 @@ class Controls extends React.PureComponent<Props, State> {
             ? <div className={classes.controlButtons}>
               <VideocamOffIcon className={cx(classes.controlIcons, classes.nonEffect)}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
-                Stop Camera
+                Start Camera
               </span>}
             </div>
             : <div className={classes.controlButtons}>
               <VideocamIcon className={classes.controlIcons}/>
               {windowWidth > 720 && <span className={classes.controlLabel}>
-                Start Camera
+                Stop Camera
               </span>}
             </div>}
         </Button>
@@ -275,7 +278,7 @@ class Controls extends React.PureComponent<Props, State> {
           okButton="Nice!"
           completedSteps={2}
         >
-          <Button
+          {windowWidth > 720 && <Button
             size='small'
             color='default'
             aria-label='participant'
@@ -289,7 +292,7 @@ class Controls extends React.PureComponent<Props, State> {
               Participant
               </span>}
             </div>
-          </Button>
+          </Button>}
           <Badge
             badgeContent={unreadMessageCount}
             color="error"

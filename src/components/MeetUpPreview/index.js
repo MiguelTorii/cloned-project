@@ -90,7 +90,13 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    minHeight: 70
+    minHeight: 70,
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minWidth: 40
+    }
   },
   controlLabel: {
     position: 'absolute',
@@ -100,6 +106,9 @@ const styles = theme => ({
     fontWeight: 700,
     bottom: -2,
     minWidth: 130,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   video: {
     width: '100% !important',
@@ -149,6 +158,9 @@ const styles = theme => ({
     width: '100%',
     border: '1px solid #FFFFFF',
     borderRadius: 20,
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: 0
+    }
   },
   icon: {
     fontSize: 50
