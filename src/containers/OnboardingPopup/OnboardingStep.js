@@ -1,12 +1,13 @@
+// @flow
 import React from 'react';
-import type { StudyRoomOnboardingStepData } from '../../types/models';
 import { makeStyles } from '@material-ui/core';
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from '@material-ui/core/Typography';
+import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import ActionButton from './ActionButton';
 import Ellipses from './Ellipses';
-import CloseIcon from "@material-ui/icons/Close";
-import LoadImg from '../../components/LoadImg';
-import Typography from '@material-ui/core/Typography';
+// import LoadImg from '../../components/LoadImg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -129,7 +130,7 @@ const OnboardingStep = ({ data, step, totalSteps, onAction, onClose }: Props) =>
     <div className={classes.root}>
       <CloseIcon
         className={classes.closeIcon}
-        onClick={() => onClose()}
+        onClick={onClose}
       />
       <div className={classes.imageContainer}>
         <img src={data.imageUrl} alt="Study Room Onboarding" />

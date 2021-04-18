@@ -96,9 +96,9 @@ ReactDOM.render(
       <SnackbarProvider>
         {/* <Tour /> */}
         <UserInitializer />
-        <OnboardingPopup />
         <ConnectedRouter history={history}>
           <div>
+            <OnboardingPopup />
             <FloatingChat />
             <Switch>
               <Route exact path="/" component={withTracker(Home)} />
