@@ -55,15 +55,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
+function GalleryViewMode({ onChange, currentView, isSharing }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    if (localSharing || isSharing) {
+    if (isSharing) {
       onChange('speaker-view')
     }
-  }, [localSharing, onChange, isSharing])
+  }, [onChange, isSharing])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,7 +83,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
 
   const renderMenu = useMemo(() => (
     <MenuList>
-      {isSharing || localSharing
+      {isSharing
         ? <MenuItem
           onClick={selctView('side-by-side')}
           classes={{ root: classes.viewItem }}
@@ -155,7 +155,7 @@ function GalleryViewMode({ onChange, currentView, localSharing, isSharing }) {
         </div>
       </MenuItem> */}
     </MenuList>
-  ), [classes.center, classes.checked, classes.view, classes.viewItem, currentView, isSharing, localSharing, selctView])
+  ), [classes.center, classes.checked, classes.view, classes.viewItem, currentView, isSharing, selctView])
 
   return (
     <div>

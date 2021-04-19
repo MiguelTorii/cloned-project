@@ -1106,7 +1106,6 @@ class MeetUp extends React.Component<Props, State> {
                   </IconButton>}
               </Tooltip>
               <GalleryViewMode
-                localSharing={localSharing}
                 isSharing={!!sharingTrackIds.length}
                 currentView={viewMode}
                 onChange={this.handleChangeView}
@@ -1124,7 +1123,6 @@ class MeetUp extends React.Component<Props, State> {
                   profiles={profiles}
                   viewMode={viewMode}
                   isSharing={isVideoSharing}
-                  localSharing={localSharing}
                   lockedParticipant={lockedParticipant}
                   sharingTrackIds={sharingTrackIds}
                   selectedScreenShareId={selectedScreenShareId}

@@ -23,7 +23,8 @@ const styles = theme => ({
   },
   sideBySideRoot: {
     alignItems: 'flex-end',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    height: 'calc(100vh - 175px)'
   },
   sideBySideView: {
     height: 'calc(100% - 100px) !important',
