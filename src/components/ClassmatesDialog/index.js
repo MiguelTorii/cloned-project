@@ -173,11 +173,16 @@ const ClassmatesDialog = ({
     }
   }
 
+  const handleCloseModal = () => {
+    setSearchKey('');
+    close()
+  }
+
   return (
     <div>
       <Dialog
         className={classes.dialog}
-        onCancel={close}
+        onCancel={handleCloseModal}
         maxWidth='md'
         fullWidth
         contentClassName={classes.contentClassName}
@@ -201,7 +206,7 @@ const ClassmatesDialog = ({
             <Classmate
               meetingInvite={meetingInvite}
               courseDisplayName={courseDisplayName}
-              videoEnabled={videoEnabled && !expertMode}
+              videoEnabled={meetingInvite ? videoEnabled :  videoEnabled && !expertMode}
               key={c.userId}
               classmate={c}
             />

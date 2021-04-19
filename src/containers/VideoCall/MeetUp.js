@@ -185,7 +185,9 @@ type State = {
   openClassmates: string,
   viewMode: string,
   selectedScreenShareId: string,
-  selectedTab: number
+  selectedTab: number,
+  localSharing: boolean,
+  hover: boolean
 };
 
 class MeetUp extends React.Component<Props, State> {
@@ -223,7 +225,8 @@ class MeetUp extends React.Component<Props, State> {
     viewMode: 'gallery-view',
     selectedScreenShareId: '',
     selectedTab: 1,
-    localSharing: false
+    localSharing: false,
+    hover: false
   }
 
   meetingUriRef: Object;
@@ -908,6 +911,14 @@ class MeetUp extends React.Component<Props, State> {
     onUpdateDeviceSelection(kind, event.target.value)
   }
 
+  onMouseOver = () => {
+    this.setState({ hover: true })
+  }
+
+  onMouseOut = () => {
+    this.setState({ hover: false })
+  }
+
   openSettings = () => {
     this.setState({ openSettings: true })
   }
@@ -1039,7 +1050,8 @@ class MeetUp extends React.Component<Props, State> {
       openClassmates,
       viewMode,
       selectedScreenShareId,
-      localSharing
+      localSharing,
+      hover
     } = this.state
 
     const localPartcipant = participants.find(item => item.type === 'local')
@@ -1070,9 +1082,10 @@ class MeetUp extends React.Component<Props, State> {
                 completedSteps={4}
                 okButton="Yay! 🎉"
               >
-                {viewMode === 'gallery-view'
+                {hover
                   ? <Button
                     variant="contained"
+                    onMouseOut={() => this.onMouseOut()}
                     color="secondary"
                     className={classes.settingBtn}
                     startIcon={<SettingsIcon />}
@@ -1081,6 +1094,7 @@ class MeetUp extends React.Component<Props, State> {
                   Settings
                   </Button>
                   : <IconButton
+                    onMouseOver={() => this.onMouseOver()}
                     variant="contained"
                     color="secondary"
                     className={classes.settingBtn}
