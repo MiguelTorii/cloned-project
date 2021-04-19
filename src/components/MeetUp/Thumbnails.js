@@ -131,10 +131,13 @@ const Thumbnails = ({
     if (localSharing) {
       return participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage)
     }
-    return participants.filter(item => item.type !== 'local')
+    return participants.filter(item => {
+      if (dominantSpeaker && dominantSpeaker !== item.participant.sid) return item
+      if (!dominantSpeaker && item.participant.identity !== currentUserId) return item
+      return null
+    }).filter(item => item)
       .slice(pageCount * (selectedPage - 1), pageCount * selectedPage)
-
-  }, [localSharing, pageCount, participants, selectedPage])
+  }, [currentUserId, dominantSpeaker, localSharing, pageCount, participants, selectedPage])
 
   const handlePageChange = useCallback((event, page) => {
     setSelectedPage(page)
@@ -155,9 +158,6 @@ const Thumbnails = ({
        * Not shared screen (filter inactive speakers)
        */
       if (!sharingTrackIds.length) {
-        if (dominantSpeaker === item.participant.sid) return null
-        if (!dominantSpeaker && item.participant.identity === currentUserId)
-          return null
         if (item.video.length === 0) {
           return <ThumbnailItem
             key={item.participant.sid}
@@ -323,7 +323,7 @@ const Thumbnails = ({
         return null
       });
     });
-  }, [currentPageParticipants, currentUserId, dominantSpeaker, lockedParticipant, profiles, selectedScreenShareId, setHighlight, sharingTrackIds, viewMode]);
+  }, [currentPageParticipants, currentUserId, lockedParticipant, profiles, selectedScreenShareId, setHighlight, sharingTrackIds, viewMode]);
 
   const goBack = useCallback(() => {
     if (selectedPage !== 1) {
