@@ -14,6 +14,7 @@ const circleInTheme = {
   rowSelection: '#324f61',
   primaryBackground: '#18191A',
   modalBackground: '#37393E',
+  feedBackground: '#242526',
   borders: '#566c77',
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
@@ -33,6 +34,8 @@ const circleInTheme = {
   disabled: '#6d7884',
   profilebgColor: '#bdbdbd',
   danger: '#F54F47',
+  dangerBackground: '#A61515',
+  videoThumbDefaultBackground: '#C4C4C4',
   flashcardBackground: '#324F61',
   deepSeaOcean: '#225D89',
   hoverMenu: '#3A3B3B',
@@ -40,12 +43,17 @@ const circleInTheme = {
   textSubtitleBody: '#ADBBC4',
   sendMessageButton: '#1E88E5',
   textNormalButton: '#090909',
-  greenInvite: '#3B700D'
+  greenInvite: '#256F28',
+  white: '#FFFFFF',
+  disableButtonColor: '#626365',
+  black: '#000000'
 };
 
 const theme = createMuiTheme({
   circleIn: {
     palette: {
+      white: circleInTheme.white,
+      black: circleInTheme.black,
       greenInvite: circleInTheme.greenInvite,
       textNormalButton: circleInTheme.textNormalButton,
       sendMessageButton: circleInTheme.sendMessageButton,
@@ -57,6 +65,7 @@ const theme = createMuiTheme({
       danger: circleInTheme.danger,
       borders: circleInTheme.borders,
       brand: circleInTheme.brand,
+      feedBackground: circleInTheme.feedBackground,
       darkActionBlue: circleInTheme.darkActionBlue,
       rowSelection: circleInTheme.rowSelection,
       buttonBackground: circleInTheme.buttonBackground,
@@ -66,6 +75,8 @@ const theme = createMuiTheme({
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
       secondaryText: circleInTheme.secondaryText,
+      dangerBackground: circleInTheme.dangerBackground,
+      videoThumbDefaultBackground: circleInTheme.videoThumbDefaultBackground,
       textOffwhite: circleInTheme.textOffwhite,
       normalButtonText1: circleInTheme.normalButtonText1,
       borderColor: circleInTheme.inputBorderColor,
@@ -73,7 +84,8 @@ const theme = createMuiTheme({
       success: circleInTheme.success,
       snackbar: circleInTheme.snackbar,
       disabled: circleInTheme.disabled,
-      profilebgColor: circleInTheme.profilebgColor
+      profilebgColor: circleInTheme.profilebgColor,
+      disableButtonColor: circleInTheme.disableButtonColor
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

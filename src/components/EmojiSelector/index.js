@@ -10,6 +10,9 @@ import 'emoji-mart/css/emoji-mart.css';
 const styles = () => ({
   button: {
     padding: 10
+  },
+  poper: {
+    zIndex: '1700 !important'
   }
 });
 
@@ -48,7 +51,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, emoIconStyle } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -62,12 +65,13 @@ class EmojiSelector extends React.PureComponent<Props, State> {
           aria-owns={open ? 'simple-popper' : undefined}
           aria-haspopup="true"
         >
-          <SentimentSatisfiedOutlinedIcon />
+          <SentimentSatisfiedOutlinedIcon className={emoIconStyle}/>
         </IconButton>
         <Popover
           id="simple-popper"
           open={open}
           anchorEl={anchorEl}
+          className={classes.poper}
           onClose={this.handleClose}
           anchorOrigin={{
             vertical: 'bottom',

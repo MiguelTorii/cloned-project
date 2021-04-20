@@ -56,6 +56,7 @@ const HeaderNavigation = ({
   setSelectedClasses,
   openClassmatesDialog,
   classList,
+  schoolId,
   push,
   search,
   pathname,
@@ -212,6 +213,7 @@ const HeaderNavigation = ({
         externalOptions={options}
         placeholder='Select Classes...'
         selected={selectedClasses}
+        schoolId={schoolId}
         onSelect={onSelect}
       />
       <Box className={classes.links}>

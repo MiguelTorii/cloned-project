@@ -16,8 +16,15 @@ import cryptoRandomString from 'crypto-random-string'
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 
 const styles = theme => ({
-  tooltip: {
+  primaryTooltip: {
     background: '#7572f7',
+    borderRadius: 8,
+    padding: '8px 12px',
+    pointerEvents: 'initial',
+    width: 255,
+  },
+  secondaryTooltip: {
+    background: theme.circleIn.palette.brand,
     borderRadius: 8,
     padding: '8px 12px',
     pointerEvents: 'initial',
@@ -27,9 +34,14 @@ const styles = theme => ({
     fontSize: 18,
     lineHeight: 1.4,
   },
-  arrow: {
+  primaryArrow: {
     color: '#7572f7',
     fontSize: 12,
+    marginTop: 0,
+  },
+  secondaryArrow: {
+    color: theme.circleIn.palette.brand,
+    fontSize: 24,
     marginTop: 0,
   },
   button: {
@@ -64,6 +76,7 @@ type Props = {
   viewedOnboarding: boolean,
   viewedTooltips: Array<number>,
   totalSteps: ?number,
+  variant: ?string,
   completedSteps: ?number
 };
 
@@ -135,6 +148,7 @@ const Tooltip = ({
   okButton = 'Got it',
   viewedOnboarding,
   viewedTooltips,
+  variant = 'primary',
   totalSteps,
   completedSteps,
 }: Props) => {
@@ -273,8 +287,12 @@ const Tooltip = ({
       arrow
       classes={{
         popper: overDialog,
-        arrow: classes.arrow,
-        tooltip: classes.tooltip,
+        arrow: variant === 'secondary'
+          ? classes.secondaryArrow
+          : classes.primaryArrow,
+        tooltip: variant === 'secondary'
+          ? classes.secondaryTooltip
+          : classes.primaryTooltip,
       }}
       open={open}
       placement={placement}

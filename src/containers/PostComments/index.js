@@ -2,14 +2,17 @@
 
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import PostItemAddComment from 'components/PostItem/PostItemAddComment';
+import PostItemComment from 'components/PostItem/PostItemComment';
+import SkeletonLoad from 'components/PostItem//SkeletonLoad';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
-import PostItemComment from '../../components/PostItem/PostItemComment';
+
 import Report from '../Report';
 import {
   getPostComments,
@@ -35,6 +38,9 @@ const styles = theme => ({
   },
   divider: {
     marginTop: theme.spacing(2)
+  },
+  viewMore: {
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -68,12 +74,19 @@ class ViewNotes extends React.PureComponent<Props, State> {
     comments: null,
     items: [],
     isLoading: false,
-    report: null
+    report: null,
+    loadViewMoreComment: false,
+    replyCommentId: 0
   };
 
-  componentDidMount = () => {
-    this.loadData();
+  componentDidMount = async () => {
+    await this.loadData()
+    this.realTimeLoadData = setInterval(await this.loadData, 5000);
   };
+
+  componentWillUnmount() {
+    clearInterval(this.realTimeLoadData);
+  }
 
   handlePostComment = async ({
     comment,
@@ -94,7 +107,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
       postId,
       typeId
     } = this.props;
-    this.setState({ isLoading: true });
+    if (rootCommentId) {
+      this.setState({ replyCommentId: parentCommentId });
+    } else {
+      this.setState({ isLoading: true });
+    }
     try {
       await createComment({
         userId,
@@ -107,7 +124,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       });
       await this.loadData();
     } finally {
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, replyCommentId: 0 });
       logEvent({
         event: 'Feed- Ask Question',
         props: {}
@@ -195,8 +212,13 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const result = await getPostComments({ userId, postId, typeId });
     const items = processComments(result.comments);
 
-    this.setState({ comments: result, items });
+    this.setState({ comments: result, items: items.reverse() });
   };
+
+  viewMoreComment = () => {
+    const { loadViewMoreComment } = this.state;
+    this.setState({ loadViewMoreComment: !loadViewMoreComment })
+  }
 
   render() {
     const {
@@ -207,15 +229,22 @@ class ViewNotes extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       hasBestAnswer,
-      isOwner
+      isOwner,
+      feedId
     } = this.props;
-    const { comments, items, isLoading, report } = this.state;
+    const {
+      comments,
+      items,
+      isLoading,
+      report,
+      loadViewMoreComment,
+      replyCommentId
+    } = this.state;
     if (!comments) return null;
 
     const name = `${firstName} ${lastName}`;
     return (
       <Fragment>
-        <Divider light className={classes.divider} />
         {readOnly && (
           <Paper className={classes.readOnly} elevation={8}>
             <Typography variant="h6">
@@ -231,31 +260,98 @@ class ViewNotes extends React.PureComponent<Props, State> {
             rte
             readOnly={readOnly}
             isQuestion={isQuestion}
+            feedId={feedId}
             onPostComment={this.handlePostComment}
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          {items.map((item, index) => (
-            <Fragment key={item.id}>
+          {loadViewMoreComment
+            ? items.map((item) => (
+              <Fragment key={item.id}>
+                <PostItemComment
+                  id={item.id}
+                  replyCommentId={replyCommentId}
+                  role={item.user.role}
+                  roleId={item.user.roleId}
+                  ownProfileUrl={profileImage}
+                  ownName={name}
+                  ownerId={item.user.userId}
+                  firstName={item.user.firstName}
+                  lastName={item.user.lastName}
+                  profileImageUrl={item.user.profileImageUrl}
+                  created={item.created}
+                  comment={item.comment}
+                  thanksCount={item.thanksCount}
+                  thanked={item.thanked}
+                  rootCommentId={item.id}
+                  accepted={item.accepted}
+                  isLoading={isLoading}
+                  isQuestion={isQuestion}
+                  isOwn={item.user.userId === userId}
+                  readOnly={readOnly}
+                  hasBestAnswer={hasBestAnswer}
+                  isOwner={Boolean(isOwner)}
+                  onPostComment={this.handlePostComment}
+                  onThanks={this.handleThanks}
+                  onDelete={this.handleDelete}
+                  onReport={this.handleReport}
+                  onBestAnswer={this.handleBestAnswer}
+                  userId={userId}
+                />
+                {item.children.reverse().map(reply => (
+                  <PostItemComment
+                    key={reply.id}
+                    id={reply.id}
+                    replyCommentId={replyCommentId}
+                    ownProfileUrl={profileImage}
+                    ownName={name}
+                    role={reply.user.role}
+                    roleId={reply.user.roleId}
+                    replyTo={reply.replyTo}
+                    firstName={reply.user.firstName}
+                    lastName={reply.user.lastName}
+                    profileImageUrl={reply.user.profileImageUrl}
+                    created={reply.created}
+                    comment={reply.comment}
+                    thanksCount={reply.thanksCount}
+                    thanked={reply.thanked}
+                    rootCommentId={item.id}
+                    isLoading={isLoading}
+                    isOwn={reply.user.userId === userId}
+                    isReply
+                    readOnly={readOnly}
+                    hasBestAnswer={hasBestAnswer}
+                    isOwner={Boolean(isOwner)}
+                    onPostComment={this.handlePostComment}
+                    onThanks={this.handleThanks}
+                    onDelete={this.handleDelete}
+                    onReport={this.handleReport}
+                    onBestAnswer={this.handleBestAnswer}
+                    userId={userId}
+                  />
+                ))}
+              </Fragment>
+            ))
+            : (!!items.length && <div key={items[0].id}>
               <PostItemComment
-                id={item.id}
-                role={item.user.role}
-                roleId={item.user.roleId}
+                id={items[0].id}
+                role={items[0].user.role}
+                roleId={items[0].user.roleId}
                 ownProfileUrl={profileImage}
                 ownName={name}
-                ownerId={item.user.userId}
-                firstName={item.user.firstName}
-                lastName={item.user.lastName}
-                profileImageUrl={item.user.profileImageUrl}
-                created={item.created}
-                comment={item.comment}
-                thanksCount={item.thanksCount}
-                thanked={item.thanked}
-                rootCommentId={item.id}
-                accepted={item.accepted}
+                ownerId={items[0].user.userId}
+                firstName={items[0].user.firstName}
+                lastName={items[0].user.lastName}
+                profileImageUrl={items[0].user.profileImageUrl}
+                created={items[0].created}
+                comment={items[0].comment}
+                thanksCount={items[0].thanksCount}
+                thanked={items[0].thanked}
+                rootCommentId={items[0].id}
+                accepted={items[0].accepted}
                 isLoading={isLoading}
                 isQuestion={isQuestion}
-                isOwn={item.user.userId === userId}
+                isOwn={items[0].user.userId === userId}
                 readOnly={readOnly}
                 hasBestAnswer={hasBestAnswer}
                 isOwner={Boolean(isOwner)}
@@ -265,39 +361,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 onReport={this.handleReport}
                 onBestAnswer={this.handleBestAnswer}
               />
-              {item.children.map(reply => (
-                <PostItemComment
-                  key={reply.id}
-                  id={reply.id}
-                  ownProfileUrl={profileImage}
-                  ownName={name}
-                  role={reply.user.role}
-                  roleId={reply.user.roleId}
-                  replyTo={reply.replyTo}
-                  firstName={reply.user.firstName}
-                  lastName={reply.user.lastName}
-                  profileImageUrl={reply.user.profileImageUrl}
-                  created={reply.created}
-                  comment={reply.comment}
-                  thanksCount={reply.thanksCount}
-                  thanked={reply.thanked}
-                  rootCommentId={item.id}
-                  isLoading={isLoading}
-                  isOwn={reply.user.userId === userId}
-                  isReply
-                  readOnly={readOnly}
-                  hasBestAnswer={hasBestAnswer}
-                  isOwner={Boolean(isOwner)}
-                  onPostComment={this.handlePostComment}
-                  onThanks={this.handleThanks}
-                  onDelete={this.handleDelete}
-                  onReport={this.handleReport}
-                  onBestAnswer={this.handleBestAnswer}
-                />
-              ))}
-              {index + 1 < items.length && <Divider light />}
-            </Fragment>
-          ))}
+              {!!replyCommentId && <SkeletonLoad />}
+            </div>)}
         </ErrorBoundary>
         <ErrorBoundary>
           <Report
@@ -306,6 +371,17 @@ class ViewNotes extends React.PureComponent<Props, State> {
             objectId={(report || {}).commentId || -1}
             onClose={this.handleReportClose}
           />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <div>
+            {comments.comments.length > 1 ? <Button
+              className={classes.viewMore}
+              color="secondary"
+              onClick={this.viewMoreComment}
+            >
+              {!loadViewMoreComment ? 'View more comments' : 'View less comments'}
+            </Button> : null}
+          </div>
         </ErrorBoundary>
       </Fragment>
     );

@@ -9,7 +9,8 @@ const styles = () => ({
 
 type Props = {
   classes: Object,
-  audio: ?Object
+  audio: ?Object,
+  type: boolean
 };
 
 type State = {};
@@ -24,8 +25,8 @@ class AudioTrack extends React.PureComponent<Props, State> {
   }
 
   componentDidMount = () => {
-    const { audio } = this.props;
-    if (audio) {
+    const { audio, type } = this.props;
+    if (audio && type !== 'local') {
       this.audioinput.current.appendChild(audio.attach());
     }
   };
@@ -38,14 +39,14 @@ class AudioTrack extends React.PureComponent<Props, State> {
     }
   };
 
-  audioinput: Object;
-
   render() {
-    const { classes } = this.props;
+    const { classes, type } = this.props;
 
     return (
       <div className={classes.root}>
-        <div className={classes.audio} ref={this.audioinput} />
+        {type !== 'local'
+          ? <div className={classes.audio} ref={this.audioinput} />
+          : <audio ref={this.audioinput} id="localaudioinput" autoPlay />}
       </div>
     );
   }

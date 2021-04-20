@@ -3,7 +3,6 @@
 import React, { Fragment } from 'react';
 import PostActions from '../../components/PostItem/PostItemActions';
 import StudyCircleDialog from '../../components/StudyCircleDialog';
-import SharePost from '../SharePost';
 import {
   updateThanks,
   addToStudyCircle,
@@ -30,7 +29,6 @@ type Props = {
   viewCount: number,
   isQuestion?: boolean,
   ownName: string,
-  hideShare: ?boolean,
   onReload: Function
 };
 
@@ -49,7 +47,6 @@ class PostItemActions extends React.PureComponent<Props, State> {
   };
 
   state = {
-    open: false,
     studyCircle: false,
     isThanksLoading: false,
     isStudyCircleLoading: false,
@@ -60,10 +57,6 @@ class PostItemActions extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     const { userId, postId, typeId } = this.props;
     updatePostView({ userId, postId, typeId });
-  };
-
-  handleShare = () => {
-    this.setState({ open: true });
   };
 
   handleThanks = async () => {
@@ -103,10 +96,6 @@ class PostItemActions extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   handleStudyCircleClose = () => {
     this.setState({ studyCircle: false });
   };
@@ -115,9 +104,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
     const {
       userId,
       ownerId,
-      feedId,
       thanked,
-      hideShare,
       inStudyCircle,
       questionsCount,
       thanksCount,
@@ -128,7 +115,6 @@ class PostItemActions extends React.PureComponent<Props, State> {
       ownName
     } = this.props;
     const {
-      open,
       studyCircle,
       isThanksLoading,
       isStudyCircleLoading,
@@ -140,7 +126,6 @@ class PostItemActions extends React.PureComponent<Props, State> {
       <Fragment>
         <ErrorBoundary>
           <PostActions
-            hideShare={hideShare}
             thanked={thanked}
             isOwner={Boolean(Number(userId) === Number(ownerId))}
             inStudyCircle={inStudyCircle}
@@ -151,13 +136,9 @@ class PostItemActions extends React.PureComponent<Props, State> {
             isStudyCircleLoading={isStudyCircleLoading}
             noThanks={userId === ownerId}
             isQuestion={isQuestion}
-            onShare={this.handleShare}
             onThanks={this.handleThanks}
             onStudyCircle={this.handleStudyCircle}
           />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          {!hideShare && <SharePost feedId={feedId} open={open} onClose={this.handleClose} />}
         </ErrorBoundary>
         <ErrorBoundary>
           <StudyCircleDialog

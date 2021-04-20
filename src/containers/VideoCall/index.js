@@ -1,7 +1,10 @@
+/* eslint-disable no-restricted-syntax */
 // @flow
 import React, { Fragment } from 'react';
 import Chat from 'twilio-chat';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
 import adapter from 'webrtc-adapter';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -11,12 +14,14 @@ import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
 import Preview from './Preview';
 import MeetUp from './MeetUp';
+import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: theme.circleIn.palette.black
   },
   loading: {
     height: '100vh',
@@ -58,18 +63,125 @@ class VideoCall extends React.Component<Props, State> {
     errorDialog: false,
     errorTitle: '',
     errorBody: '',
-    channel: null
+    channel: null,
+    videoinput: [],
+    audioinput: [],
+    audiooutput: [],
+    selectedaudiooutput: '',
+    videoinputtrack: null,
+    audioinputtrack: null,
+    videoinputEnabled: false,
+    audioinputEnabled: false,
+    error: false
   };
 
-  componentDidMount = () => {
+  constructor(props) {
+    super(props);
+    // $FlowIgnore
+    this.meetupRef = React.createRef();
+  }
+
+  componentDidMount = async () => {
     this.mounted = true;
     if (adapter.browserDetails.browser === 'firefox') {
       adapter.browserShim.shimGetDisplayMedia(window, 'screen');
     }
+
+    await this.initialDevices()
   };
 
   componentWillUnmount = () => {
     this.mounted = false;
+    this.handleDetachtracks()
+  };
+
+  initialDevices = async () => {
+    try {
+      if (navigator && navigator.mediaDevices)
+        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
+      const deviceSelectionOptions =
+        (await this.handleUpdateDeviceSelectionOptions()) || {};
+      for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
+        const kindDeviceInfos = deviceSelectionOptions[kind] || [];
+        const devices = [];
+        kindDeviceInfos.forEach(kindDeviceInfo => {
+          const { deviceId } = kindDeviceInfo;
+          const label =
+            kindDeviceInfo.label ||
+            `Device [ id: ${deviceId.substr(0, 5)}... ]`;
+          devices.push({ label, value: deviceId });
+        });
+        this.setState({
+          [kind]: devices
+        });
+        if (devices.length > 0) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.handleUpdateDeviceSelection(kind, devices[0].value);
+          this.setState({ [`${kind}Enabled`]: true });
+        }
+      }
+    } catch (err) {
+      this.setState({ error: true });
+    } finally {
+      this.handleUpdateLoading(false);
+    }
+  }
+
+  handleDetachtracks = () => {
+    for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
+      const { state } = this;
+      if (state[`${kind}track`]) {
+        utils.detachTrack(state[`${kind}track`]);
+      }
+    }
+  }
+
+  handleUpdateDeviceSelectionOptions = () => {
+    return (
+      navigator &&
+      navigator.mediaDevices &&
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: true })
+        .then(utils.getDeviceSelectionOptions)
+        .catch(err => {
+          throw err;
+        })
+    );
+  };
+
+  handleUpdateDeviceSelection = async (kind, deviceId) => {
+    this.setState({ [`selected${kind}`]: deviceId });
+    let track = null;
+    switch (kind) {
+    case 'audioinput':
+      track = await utils.applyAudioInputDeviceSelection(
+        deviceId,
+        this.meetupRef.current.audioinput.current
+      );
+      this.setState({ [`${kind}track`]: track });
+      break;
+    case 'videoinput':
+      track = await utils.applyVideoInputDeviceSelection(
+        deviceId,
+        this.meetupRef.current.videoinput.current
+      );
+      this.setState({ [`${kind}track`]: track });
+      break;
+    case 'audiooutput':
+    default:
+      break;
+    }
+  };
+
+  handleDisableDevice = async kind => {
+    const { state } = this;
+    if (state[`${kind}track`]) {
+      await utils.detachTrack(state[`${kind}track`]);
+      this.setState({ [`${kind}Enabled`]: false, [`${kind}track`]: null });
+    } else if (state[`selected${kind}`]) {
+      this.handleUpdateDeviceSelection(kind, state[`selected${kind}`]);
+      this.setState({ [`${kind}Enabled`]: true });
+    }
   };
 
   handleJoinRoom = async ({ audioinput, videoinput }) => {
@@ -129,14 +241,6 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleLeaveRoom = () => {
-    this.setState({
-      join: false,
-      selectedaudioinput: '',
-      selectedvideoinput: ''
-    });
-  };
-
   handleUpdateLoading = loading => {
     this.setState({ loading });
   };
@@ -145,25 +249,46 @@ class VideoCall extends React.Component<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  mounted: boolean;
-
   renderComponent = () => {
     const {
       roomId,
-      user: { data }
+      user,
+      user: { data },
+      pushTo
     } = this.props;
+
     const {
       join,
       selectedvideoinput,
       selectedaudioinput,
-      channel
+      channel,
+      audioinput,
+      audiooutput,
+      videoinput,
+      selectedaudiooutput,
+      videoinputEnabled,
+      audioinputEnabled,
+      error
     } = this.state;
 
     if (!join) {
       return (
         <Preview
+          meetupPreview={this.meetupRef}
+          pushTo={pushTo}
           user={data}
           roomName={roomId}
+          audioinput={audioinput}
+          audiooutput={audiooutput}
+          videoinput={videoinput}
+          selectedvideoinput={selectedvideoinput}
+          selectedaudioinput={selectedaudioinput}
+          selectedaudiooutput={selectedaudiooutput}
+          videoinputEnabled={videoinputEnabled}
+          audioinputEnabled={audioinputEnabled}
+          error={error}
+          onUpdateDeviceSelection={this.handleUpdateDeviceSelection}
+          onDisableDevice={this.handleDisableDevice}
           updateLoading={this.handleUpdateLoading}
           onJoin={this.handleJoinRoom}
         />
@@ -171,13 +296,24 @@ class VideoCall extends React.Component<Props, State> {
     }
     return (
       <MeetUp
-        user={data}
-        videoinput={selectedvideoinput}
-        audioinput={selectedaudioinput}
+        user={user}
+        meetupRef={this.meetupRef}
+        selectedvideoinput={selectedvideoinput}
+        selectedaudioinput={selectedaudioinput}
+        audioinput={audioinput}
+        audiooutput={audiooutput}
+        videoinput={videoinput}
         roomName={roomId}
         channel={channel}
-        leaveRoom={this.handleLeaveRoom}
+        selectedaudiooutput={selectedaudiooutput}
+        videoinputEnabled={videoinputEnabled}
+        audioinputEnabled={audioinputEnabled}
+        error={error}
+        onUpdateDeviceSelection={this.handleUpdateDeviceSelection}
+        onDisableDevice={this.handleDisableDevice}
         updateLoading={this.handleUpdateLoading}
+        initialDevices={this.initialDevices}
+        handleDetachtracks={this.handleDetachtracks}
       />
     );
   };
@@ -226,7 +362,15 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      pushTo: push
+    },
+    dispatch
+  );
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(VideoCall));

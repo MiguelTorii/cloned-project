@@ -69,6 +69,7 @@ type ClassmateType = {
 };
 
 type Props = {
+  meetingInvite: boolean,
   classmate: ClassmateType,
   openChannelWithEntity: Function,
   videoEnabled: boolean,
@@ -78,7 +79,14 @@ type Props = {
 const MyProfileLink = React.forwardRef(({ href, ...props }, ref) =>
   <RouterLink to={href} {...props} ref={ref} />);
 
-const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, width, classmate }: Props) => {
+const Classmate = ({
+  courseDisplayName,
+  videoEnabled,
+  openChannelWithEntity,
+  width,
+  classmate,
+  meetingInvite
+}: Props) => {
   const classes = useStyles();
   const [loadingMessage, setLoadingMessage] = useState(false)
   const [loadingVideo, setLoadingVideo] = useState(false)
@@ -105,15 +113,15 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
     if (courseDisplayName) return null
 
     return (
-`${classmate.classes[0].className} ${
-  classmate.classes.length > 1
-    ? `, ${classmate.classes[1].className}`
-    : ''
-} ${
-  classmate.classes.length > 2
-    ? `, +${classmate.classes.length - 2} more`
-    : ''
-}`
+      `${classmate.classes[0].className} ${
+        classmate.classes.length > 1
+          ? `, ${classmate.classes[1].className}`
+          : ''
+      } ${
+        classmate.classes.length > 2
+          ? `, +${classmate.classes.length - 2} more`
+          : ''
+      }`
     )},[classmate.classes, courseDisplayName])
 
   const videoButtonText = useMemo(() => {
@@ -142,7 +150,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
         secondary={classList}
       />
       <ListSubheader component='div' disableGutters>
-        <Button
+        {!meetingInvite && <Button
           className={classes.sendMessage}
           variant="contained"
           onClick={openChat(false, false)}
@@ -150,7 +158,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, openChannelWithEntity, wid
           color="primary"
         >
           {!loadingMessage ? 'Send Message' : <CircularProgress size={20}/>}
-        </Button>
+        </Button>}
         {
           videoEnabled &&
           <Button

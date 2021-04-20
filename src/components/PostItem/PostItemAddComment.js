@@ -1,18 +1,10 @@
 // @flow
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import cx from 'classnames';
-import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-// import AnonymousButton from 'components/AnonymousButton';
-import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-// import Typography from '@material-ui/core/Typography'
-import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
-import RichTextEditor from '../../containers/RichTextEditor';
-
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} />);
+import CommentQuill from './CommentQuill'
+import SkeletonLoad from './SkeletonLoad';
 
 const styles = theme => ({
   container: {
@@ -31,10 +23,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
-    maxWidth: 200,
-    [theme.breakpoints.up('sm')]: {
-      maxWidth: 600
-    }
+    minHeight: 120
   },
   textField: {
     marginLeft: theme.spacing(2)
@@ -49,9 +38,8 @@ const styles = theme => ({
 
 type Props = {
   classes: Object,
+  feedId: string,
   userId: string,
-  profileImageUrl: string,
-  name: string,
   isReply: boolean,
   rte: boolean,
   readOnly: boolean,
@@ -61,81 +49,59 @@ type Props = {
 };
 
 const PostItemAddComment = ({
+  commentId,
   isReply = false,
   rte = false,
   onCancelComment = () => {},
   classes,
-  userId,
-  profileImageUrl,
-  name,
   readOnly,
   isQuestion,
   onPostComment,
+  feedId,
+  userId
 }: Props) => {
   const [value, setValue] = useState('')
-  const [commentToolbar, setCommentToolbar] = useState(null)
-  const [editor, setEditor] = useState(null)
-
-  // const [anonymousActive, setAnonymousActive] = useState(false)
-
-  // const toggleAnonymousActive = useCallback(() => {
-  // setAnonymousActive(a => !a)
-  // }, [])
-
-  useEffect(() => {
-    if (editor) {
-      setCommentToolbar(editor.getEditor().theme.modules.toolbar)
-    }
-  }, [editor])
+  const [showError, setShowError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleChange = useCallback(event => {
     setValue(event.target.value)
   }, [])
 
-  const handleRTEChange = useCallback(value => {
-    if (value.trim() === '<p><br></p>') setValue('')
-    else setValue(value)
+  const handleRTEChange = useCallback(updatedValue => {
+    if (updatedValue.trim() === '<p><br></p>') setValue('')
+    else setValue(updatedValue)
   }, [])
 
-  const handleClick = useCallback(() => {
-    onPostComment({
-      comment: value,
-      // anonymous: anonymousActive
-    });
-    setValue('')
-    if (onCancelComment) onCancelComment();
+  const handleClick = useCallback((quill) => async () => {
+    setIsLoading(true)
+    if (value.trim() === '' || !value) {
+      setShowError(true)
+    } else {
+      await onPostComment({ comment: value });
+      setValue('')
+      if (quill) {
+        quill.setText('')
+      }
+      if (onCancelComment) onCancelComment()
+    }
+    setIsLoading(false)
   }, [onCancelComment, onPostComment, value])
 
-  const handleCancel = useCallback(() => {
-    setValue('')
-    if (onCancelComment) onCancelComment();
-  }, [onCancelComment])
-
-  const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
   return (
     <div className={cx(classes.container, isReply && classes.reply)}>
       <div className={classes.body}>
-        <Link
-          // className={classes.avatar}
-          component={MyLink}
-          href={`/profile/${userId}`}
-        >
-          <Avatar src={profileImageUrl}>{initials}</Avatar>
-        </Link>
+
         {rte && !readOnly ? (
-          <>
-            <ToolbarTooltip toolbar={commentToolbar}/>
-            <RichTextEditor
-              setEditor={setEditor}
-              placeholder={
-                isQuestion
-                  ? 'Have an answer or a comment? Enter it here'
-                  : 'Have a question or a comment? Enter it here'
-              }
-              value={value}
-              onChange={handleRTEChange}
-            />
-          </>
+          <CommentQuill
+            value={value}
+            userId={userId}
+            onChange={handleRTEChange}
+            feedId={isReply ? commentId : feedId}
+            setValue={setValue}
+            handleClick={handleClick}
+            showError={showError}
+          />
         ) : (
           <TextField
             id="outlined-bare"
@@ -154,29 +120,7 @@ const PostItemAddComment = ({
           />
         )}
       </div>
-      <div className={classes.actions}>
-        {/* <Typography variant="subtitle1">Comment Anonymously</Typography> */}
-        {/* <AnonymousButton */}
-        {/* active={anonymousActive} */}
-        {/* toggleActive={toggleAnonymousActive} */}
-        {/* /> */}
-        <Button
-          onClick={handleCancel}
-          disabled={readOnly}
-          color="secondary"
-        // variant="contained"
-        >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          disabled={value.trim() === '' || readOnly}
-          onClick={handleClick}
-        >
-          Comment
-        </Button>
-      </div>
+      {isLoading && <SkeletonLoad />}
     </div>
   );
 }

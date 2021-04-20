@@ -68,6 +68,7 @@ import withTracker from './withTracker';
 import Chat from './pages/Chat'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
+import OnboardingPopup from './containers/OnboardingPopup';
 
 defaultKatexRender('White')
 
@@ -95,6 +96,7 @@ ReactDOM.render(
       <SnackbarProvider>
         {/* <Tour /> */}
         <UserInitializer />
+        <OnboardingPopup />
         <ConnectedRouter history={history}>
           <div>
             <FloatingChat />

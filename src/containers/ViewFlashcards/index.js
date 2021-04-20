@@ -182,6 +182,8 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
         <PostItem feedId={feedId}>
           <ErrorBoundary>
             <PostItemHeader
+              hideShare
+              feedId={feedId}
               currentUserId={userId}
               router={router}
               pop={pop}
@@ -233,7 +235,6 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           </ErrorBoundary>
           <ErrorBoundary>
             <PostItemActions
-              hideShare
               userId={userId}
               ownerId={ownerId}
               feedId={feedId}

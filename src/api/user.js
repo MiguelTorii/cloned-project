@@ -905,3 +905,40 @@ export const sendFeedback = async ({ origin, feedback }): Promise<object> => {
     return {};
   }
 }
+
+export const apiGetExpertMode = async (userId: string): Promise<object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.USER}/${userId}/expert_mode`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return result.data.expert_mode;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const apiSetExpertMode = async (userId: string, expert_mode: string): Promise<object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/expert_mode`,
+      { expert_mode },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return result.data.success;
+  } catch (err) {
+    return false;
+  }
+};

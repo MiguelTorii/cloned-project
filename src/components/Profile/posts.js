@@ -16,6 +16,7 @@ const styles = theme => ({
   },
   root: {
     ...theme.mixins.gutters(),
+    backgroundColor: theme.circleIn.palette.feedBackground,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
     flex: 1
@@ -42,6 +43,20 @@ type Props = {
 };
 
 class ProfilePosts extends React.PureComponent<Props> {
+  constructor(props) {
+    super(props)
+    this.quillRefs = {}
+    this.newComments = {}
+  }
+
+  setQuillRefs = (feedId, ref) => {
+    this.quillRefs[feedId] = ref
+  }
+
+  setNewComments = (feedId, content) => {
+    this.newComments[feedId] = content
+  }
+
   render() {
     const {
       classes,
@@ -96,6 +111,10 @@ class ProfilePosts extends React.PureComponent<Props> {
               onDelete={onDelete}
               pushTo={pushTo}
               onUserClick={onUserClick}
+              setQuillRefs={this.setQuillRefs}
+              quillRefs={this.quillRefs}
+              setNewComments={this.setNewComments}
+              newComments={this.newComments}
             />
           ))}
         </Paper>

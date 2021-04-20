@@ -4,7 +4,7 @@ import type { Node } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-//import ButtonBase from '@material-ui/core/ButtonBase';
+// import ButtonBase from '@material-ui/core/ButtonBase';
 import Drawer from '@material-ui/core/Drawer';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -15,10 +15,10 @@ import GroupIcon from '@material-ui/icons/Group';
 
 const styles = theme => ({
   root: {
+    display: 'none',
     position: 'absolute',
     top: 0,
     left: 0,
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 810,

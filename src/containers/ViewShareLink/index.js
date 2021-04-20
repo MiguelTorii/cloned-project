@@ -137,6 +137,8 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
         <PostItem feedId={feedId}>
           <ErrorBoundary>
             <PostItemHeader
+              hideShare
+              feedId={feedId}
               currentUserId={userId}
               router={router}
               pop={pop}

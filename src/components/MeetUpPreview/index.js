@@ -4,21 +4,18 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
-import Avatar from '@material-ui/core/Avatar';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Input from '@material-ui/core/Input';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Box from '@material-ui/core/Box'
+import ReplyIcon from '@material-ui/icons/Reply';
+import DeviceSettings from '../MeetUp/DeviceSettings';
 import Dialog, { dialogStyle } from '../Dialog';
-import { VIDEO_SHARE_URL } from '../../constants/routes';
 
 const styles = theme => ({
   root: {
@@ -37,12 +34,13 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    maxWidth: 654,
+    height: 612,
     minWidth: 240,
-    minHeight: 200
   },
   videoWrapper: {
-    height: 180,
-    width: 320,
+    width: '100%',
+    borderRadius: 20,
     backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',
@@ -67,10 +65,16 @@ const styles = theme => ({
     justifyContent: 'center',
     zIndex: 1200
   },
+  initials: {
+    fontWeight:700,
+    fontSize: 150,
+    color: '#000000'
+  },
   profile: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#C4C4C4',
+    borderRadius: 20,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -80,29 +84,96 @@ const styles = theme => ({
     flexDirection: 'column',
     zIndex: 1100
   },
-  fab: {
-    margin: theme.spacing(2)
+  control: {
+    position: 'relative',
+    minWidth: 130,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    minHeight: 70,
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minWidth: 40
+    }
+  },
+  controlLabel: {
+    position: 'absolute',
+    left: 0,
+    color: theme.circleIn.palette.secondaryText,
+    fontSize: 16,
+    fontWeight: 700,
+    bottom: -2,
+    minWidth: 130,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   video: {
-    width: 'auto    !important',
-    maxWidth: '320px !important',
-    height: '100%   !important'
+    width: '100% !important',
+    objectFit: 'cover',
+    borderRadius: 20,
+    height: '248px  !important',
+    transform: 'rotateY(180deg)',
+    '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+    '-moz-transform': 'rotateY(180deg)' /* Firefox */
+  },
+  letsGo: {
+    margin: theme.spacing(4, 0),
+    minWidth: 340,
+    borderRadius: 20,
+    color: theme.circleIn.palette.white,
+    fontWeight: 700,
+    fontSize: 20,
+    background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)'
+  },
+  ready: {
+    textAlign: 'center',
+    borderBottom: '1px solid #FFFFFF',
+    padding: theme.spacing(),
+    fontSize: 24,
+    fontWeight: 400,
+    margin: theme.spacing(2, 0),
+    width: '100%'
   },
   margin: {
     marginTop: theme.spacing(2)
   },
+  tada: {
+    marginLeft: theme.spacing()
+  },
   dialog: {
     ...dialogStyle,
-    width: 600
+    width: 600,
+  },
+  rules: {
+    fontSize: 16,
+    fontWeight: 400
+  },
+  box: {
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(0, 2, 1, 2),
+    letterSpacing: 0.25,
+    width: '100%',
+    border: '1px solid #FFFFFF',
+    borderRadius: 20,
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: 0
+    }
+  },
+  icon: {
+    fontSize: 50
+  },
+  avatarImage: {
+    objectFit: 'fill'
   }
 });
 
 type Props = {
   classes: Object,
-  roomName: string,
   firstName: string,
   lastName: string,
-  profileImage: string,
   selectedaudioinput: string,
   selectedvideoinput: string,
   audioinput: Array<Object>,
@@ -112,6 +183,7 @@ type Props = {
   isAudioEnabled: boolean,
   onUpdateDeviceSelection: Function,
   onDisableDevice: Function,
+  pushTo: Function,
   onJoin: Function
 };
 
@@ -155,28 +227,24 @@ class Preview extends React.Component<Props, State> {
     this.setState({ open: false });
   };
 
-  audioinput: Object;
-
-  videoinput: Object;
-
-  previewAudio: Object | null;
-
-  previewVideo: Object | null;
+  goBack = () => {
+    const { pushTo } = this.props
+    pushTo('/')
+  }
 
   render() {
     const {
       classes,
       firstName,
       lastName,
-      profileImage,
       selectedaudioinput,
       selectedvideoinput,
       isVideoEnabled,
       isAudioEnabled,
-      roomName,
       audioinput,
       videoinput,
       error,
+      profileImage,
       onJoin
     } = this.props;
     const { open } = this.state;
@@ -187,6 +255,9 @@ class Preview extends React.Component<Props, State> {
     return (
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={1}>
+          <Typography component="p" variant="h4" className={classes.ready}>
+            Ready to Join? <span role='img' aria-label='rocket'>🚀</span>
+          </Typography>
           <div className={classes.videoWrapper}>
             <audio ref={this.audioinput} id="audioinputpreview" autoPlay />
             <video
@@ -195,118 +266,109 @@ class Preview extends React.Component<Props, State> {
               id="videoinputpreview"
               autoPlay
             />
-            <div className={classes.mediaDevices}>
-              <Fab
-                color="primary"
-                className={classes.fab}
-                aria-label="Settings"
-                onClick={this.openSettings}
-                size="small"
-              >
-                <SettingsIcon />
-              </Fab>
-            </div>
-            <div className={classes.mediaControls}>
-              <Fab
-                color={isVideoEnabled ? 'primary' : 'default'}
-                aria-label="disable-video"
-                disabled={selectedvideoinput === ''}
-                onClick={this.disableCamera}
-                className={classes.fab}
-                size="small"
-              >
-                {!isVideoEnabled ? <VideocamOffIcon /> : <VideocamIcon />}
-              </Fab>
-              <Fab
-                color={isAudioEnabled ? 'primary' : 'default'}
-                aria-label="disable-audio"
-                disabled={selectedaudioinput === ''}
-                onClick={this.disableAudio}
-                className={classes.fab}
-                size="small"
-              >
-                {!isAudioEnabled ? <MicOffIcon /> : <MicIcon />}
-              </Fab>
-            </div>
-            {!isVideoEnabled && (
-              <div className={classes.profile}>
-                <Avatar
+            {!isVideoEnabled && <div className={classes.profile}>
+              {profileImage
+                ? <Avatar
                   alt={initials}
-                  src={profileImage !== '' ? profileImage : ''}
-                  style={{ width: 60, height: 60 }}
+                  variant="square"
+                  src={profileImage}
+                  classes={{
+                    img: classes.avatarImage
+                  }}
+                  className={classes.profileImage}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 20,
+                  }}
+                />
+                : <Typography
+                  className={classes.initials}
                 >
                   {initials}
-                </Avatar>
-                {firstName !== '' && (
-                  <Typography
-                    color="textPrimary"
-                    variant="subtitle2"
-                  >{`${firstName} ${lastName}`}</Typography>
-                )}
-              </div>
-            )}
+                </Typography>
+              }
+            </div>}
           </div>
-          <Typography component="p" variant="h4" className={classes.margin}>
-            Ready to Join?
-          </Typography>
-          <Typography component="p" variant="h5" className={classes.margin}>
-            First, share the link to invite others to join you
-          </Typography>
-          <Typography component="p" variant="h6" className={classes.margin}>
-            {`${VIDEO_SHARE_URL}/${roomName}`}
-          </Typography>
+          <Box
+            className={classes.box}
+            display='flex'
+            alignItems='space-between'
+            justifyContent='space-between'
+          >
+            <Button
+              color="default"
+              aria-label="disable-video"
+              disabled={selectedvideoinput === ''}
+              onClick={this.disableCamera}
+              className={classes.control}
+              size="small"
+            >
+              <Box>
+                {!isVideoEnabled ? <VideocamOffIcon className={classes.icon} /> : <VideocamIcon className={classes.icon} />}
+                <Typography className={classes.controlLabel}>Turn {isVideoEnabled ? 'off' : 'on'} camera</Typography>
+              </Box>
+            </Button>
+            <Button
+              color="default"
+              aria-label="disable-audio"
+              disabled={selectedaudioinput === ''}
+              onClick={this.disableAudio}
+              className={classes.control}
+              size="small"
+            >
+              <Box>
+                {!isAudioEnabled ? <MicOffIcon className={classes.icon} /> : <MicIcon className={classes.icon} />}
+                <Typography className={classes.controlLabel}>{isAudioEnabled ? 'Mute your' : 'Turn on'} mic</Typography>
+              </Box>
+            </Button>
+            <Button
+              color="default"
+              className={classes.control}
+              aria-label="Settings"
+              onClick={this.openSettings}
+              size="small"
+            >
+              <Box>
+                <SettingsIcon className={classes.icon} />
+                <Typography className={classes.controlLabel}>A/V Settings</Typography>
+              </Box>
+            </Button>
+            <Button
+              color="default"
+              className={classes.control}
+              aria-label="Settings"
+              onClick={this.goBack}
+              size="small"
+            >
+              <Box>
+                <ReplyIcon className={classes.icon} />
+                <Typography className={classes.controlLabel}>Back</Typography>
+              </Box>
+            </Button>
+          </Box>
           <Button
             variant="contained"
             color="primary"
-            className={classes.margin}
+            className={classes.letsGo}
             onClick={onJoin}
             disabled={error}
           >
-            Join Meet up
+            LET'S GO! <span className={classes.tada} role='img' aria-label='tada'> 🎉</span>
           </Button>
+          <Typography component="p" className={classes.rules}>
+            By joining this call, you agree to abide by and respect CircleIn’s Community Rules
+          </Typography>
         </Paper>
-        <Dialog
-          className={classes.dialog}
-          okTitle="Done"
-          onCancel={this.closeSettings}
-          onOk={this.closeSettings}
-          open={open}
-          showActions
-          title="General"
-        >
-          <FormControl>
-            <InputLabel htmlFor="videoinput-native-helper">Video</InputLabel>
-            <NativeSelect
-              value={selectedvideoinput}
-              onChange={this.handleChange('videoinput')}
-              input={
-                <Input name="videoinput" id="videoinput-native-helper" />
-              }
-            >
-              {videoinput.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="audioinput-native-helper">Mic</InputLabel>
-            <NativeSelect
-              value={selectedaudioinput}
-              onChange={this.handleChange('audioinput')}
-              input={
-                <Input name="audioinput" id="audioinput-native-helper" />
-              }
-            >
-              {audioinput.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-        </Dialog>
+        <DeviceSettings
+          closeSettings={this.closeSettings}
+          handleChange={this.handleChange}
+          videoinput={videoinput}
+          audioinput={audioinput}
+          selectedvideoinput={selectedvideoinput}
+          selectedaudioinput={selectedaudioinput}
+          openSettings={open}
+        />
         <Dialog
           className={classes.dialog}
           disableBackdropClick

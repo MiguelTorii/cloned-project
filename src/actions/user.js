@@ -5,8 +5,8 @@ import { getCampaign } from 'api/campaign';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
-  getSync
-} from 'api/user'
+  getSync, apiSetExpertMode
+} from 'api/user';
 import store from 'store'
 import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
@@ -33,10 +33,6 @@ const clearDialogMessageAction = (): Action => ({
 export const clearDialogMessage = () => (dispatch: Dispatch) => {
   dispatch(clearDialogMessageAction())
 }
-
-const toggleExpertModeAction = (): Action => ({
-  type: userActions.TOGGLE_EXPERT_MODE
-})
 
 const setClassesAction = ({
   userClasses,
@@ -98,21 +94,34 @@ export const fetchClasses = (skipCache) => async (
   } catch (e) {/* NONE */}
 }
 
-export const toggleExpertMode = () => (
+export const setExpertModeAction = (expertMode) => ({
+  type: userActions.SET_EXPERT_MODE,
+  payload: { expertMode }
+});
+
+export const toggleExpertMode = () => async (
   dispatch: Dispatch,
   getState: Function
 ) => {
   const {
     user: {
+      data: { userId },
       expertMode
     },
-  } = getState()
+  } = getState();
 
-  localStorage.setItem('EXPERT_MODE', !expertMode)
+  const newExpertMode = !expertMode;
+  dispatch(setExpertModeAction(newExpertMode));
 
-  dispatch(toggleExpertModeAction())
-  dispatch(fetchClasses(true))
-  setTimeout(() => dispatch(clearDialogMessageAction()), 2000)
+  const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
+
+  if (apiSuccess) {
+    dispatch(fetchClasses(true));
+  } else {
+    dispatch(setExpertModeAction(expertMode));
+  }
+
+  setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
 }
 
 const updateTourAction = ({
