@@ -17,6 +17,8 @@ import AddMembers from 'containers/Chat/AddMembers'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
+
+import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
@@ -223,12 +225,14 @@ const RightMenu = ({
                       }}
                     >
                       <ListItemAvatar>
-                        <Avatar
-                          alt={fullName}
-                          src={m.image}
-                        >
-                          {getInitials({ name: fullName })}
-                        </Avatar>
+                        <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.primaryBackground">
+                          <Avatar
+                            alt={fullName}
+                            src={m.image}
+                          >
+                            {getInitials({ name: fullName })}
+                          </Avatar>
+                        </OnlineBadge>
                       </ListItemAvatar>
                       {fullName} {m.role && <TutorBadge text={m.role} />}
                       <ListItemSecondaryAction>

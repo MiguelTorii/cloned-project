@@ -17,9 +17,10 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import ChatIcon from '@material-ui/icons/Chat';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
-import InviteIcon from 'assets/svg/invite-icon.svg'
-
 import clsx from 'clsx'
+
+import OnlineBadge from 'components/OnlineBadge';
+import InviteIcon from 'assets/svg/invite-icon.svg'
 
 const useStyles = makeStyles(theme => ({
   textRoot: {
@@ -129,15 +130,16 @@ const Classmate = ({
     return classmate.notRegistered ? 'Invite to CircleIn' : 'Study Room'
   }, [classmate.notRegistered, loadingVideo])
 
-
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
       <ListItemAvatar>
         <Link href={`/profile/${classmate.userId}`} component={MyProfileLink}>
-          <Avatar
-            alt={`Avatar n°${classmate.userId}`}
-            src={classmate.image}
-          />
+          <OnlineBadge isOnline={classmate.isOnline} bgColorPath="circleIn.palette.modalBackground">
+            <Avatar
+              alt={`Avatar n°${classmate.userId}`}
+              src={classmate.image}
+            />
+          </OnlineBadge>
         </Link>
       </ListItemAvatar>
       <ListItemText

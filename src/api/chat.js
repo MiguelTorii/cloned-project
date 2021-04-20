@@ -105,7 +105,8 @@ export const getClassmates = async ({
       firstName: m.first_name,
       lastName: m.last_name,
       userId: m.user_id,
-      image: m.profile_image_url
+      image: m.profile_image_url,
+      isOnline: m.is_online
     }));
   } catch (err) {
     return null;
@@ -258,7 +259,8 @@ export const getChannels = async (): Promise<Object> => {
           userId: u.user_id,
           image: u.profile_image_url,
           role: u.role,
-          roleId: u.role_id
+          roleId: u.role_id,
+          isOnline: u.is_online,
         }))
       }
     });
@@ -343,7 +345,8 @@ export const getGroupMembers = async ({
       scholarshipPoints: Number((user.scholarship_points: number) || 0),
       schoolId: Number((user.school_id: number) || 0),
       state: String((user.state: string) || ''),
-      userId: String((user.user_id: string) || '')
+      userId: String((user.user_id: string) || ''),
+      isOnline: Boolean((user.is_online) || false)
     }));
   } catch (err) {
     console.log(err);

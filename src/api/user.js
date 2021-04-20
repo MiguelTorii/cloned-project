@@ -48,7 +48,8 @@ export const getUserProfile = async ({
       role: String((user_profile.role: string) || ''),
       school: String((user_profile.school: string) || ''),
       state: String((user_profile.state: string) || ''),
-      userProfileUrl: String((user_profile.user_profile_url: string) || '')
+      userProfileUrl: String((user_profile.user_profile_url: string) || ''),
+      isOnline: Boolean((user_profile.is_online: boolean) || false),
     };
 
     const userStatistics = user_statistics.map(stats => ({
@@ -131,6 +132,7 @@ export const searchUsers = async ({
       school: user.school,
       userId: user.user_id,
       relationship: user.relationship,
+      isOnline: user.is_online,
     }));
   } catch (err) {
     console.log(err);

@@ -448,7 +448,8 @@ class Profile extends React.PureComponent<Props, State> {
       grade,
       joined,
       role,
-      roleId
+      roleId,
+      isOnline
     } = userProfile;
 
     if (isLoading)
@@ -491,6 +492,7 @@ class Profile extends React.PureComponent<Props, State> {
                   inStudyCircle={false}
                   isStudyCircleLoading={isStudyCircleLoading}
                   isCirclein={userId === '0'}
+                  isOnline={isOnline}
                   role={role}
                   roleId={roleId}
                   onStartChat={this.handleStartChat}

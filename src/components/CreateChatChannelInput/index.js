@@ -103,16 +103,12 @@ const CreateChatChannelInput = ({
       const initials =
         name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
       return {
+        ...user,
         value: user.userId,
         label: name,
-        school: user.school,
-        grade: user.grade,
+        userId: Number(user.userId),
         avatar: user.profileImageUrl,
         initials,
-        userId: Number(user.userId),
-        firstName: user.firstName,
-        lastName: user.lastName,
-        relationship: user.relationship
       }
     })
     const ordered = options.sort((a, b) => {

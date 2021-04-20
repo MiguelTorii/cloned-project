@@ -16,8 +16,10 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 import ErrorBoundary from '../ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
+import OnlineBadge from 'components/OnlineBadge';
 
 const styles = theme => ({
   root: {
@@ -199,16 +201,18 @@ const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selecte
               {Object.keys(members).map(member => {
 
                 const memberObj = members[member]
-                const { avatar, firstname, lastname } = memberObj
+                const { avatar, firstname, lastname, isOnline } = memberObj
 
                 return (
                   <div key={member} className={classes.member}>
-                    <Avatar
-                      src={avatar}
-                      className={classes.avatar}
-                    >
-                      {firstname[0]}{lastname[0]}
-                    </Avatar>
+                    <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.primaryBackground">
+                      <Avatar
+                        src={avatar}
+                        className={classes.avatar}
+                      >
+                        {firstname[0]}{lastname[0]}
+                      </Avatar>
+                    </OnlineBadge>
                     <Typography className={classes.fullname}>{firstname} {lastname}</Typography>
                   </div>
                 )

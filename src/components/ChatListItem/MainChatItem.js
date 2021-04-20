@@ -13,7 +13,9 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
 import Dialog, { dialogStyle } from 'components/Dialog';
+import OnlineBadge from 'components/OnlineBadge';
 
 const styles = theme => ({
   dialog: {
@@ -60,6 +62,8 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   isLoading: boolean,
+  isDirectChat: boolean,
+  isOnline: boolean,
   imageProfile: string,
   name: string,
   roomName: string,
@@ -77,6 +81,8 @@ type Props = {
 const MainChatItem = ({
   classes,
   isLoading,
+  isDirectChat,
+  isOnline,
   imageProfile,
   name,
   roomName,
@@ -150,9 +156,11 @@ const MainChatItem = ({
         })}
         onClick={onClick}
       >
-        <Avatar src={imageProfile}>
-          {initials !== '' ? initials : <GroupIcon />}
-        </Avatar>
+        <OnlineBadge isVisible={isDirectChat} isOnline={isOnline} bgColorPath={ dark ? "circleIn.palette.primaryBackground" : "circleIn.palette.appBar" }>
+          <Avatar src={imageProfile}>
+            {initials || <GroupIcon />}
+          </Avatar>
+        </OnlineBadge>
         <div className={classes.grow}>
           <Typography variant="subtitle1" noWrap>
             {roomName}

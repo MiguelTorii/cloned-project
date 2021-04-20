@@ -18,14 +18,18 @@ type Props = {
 const ChatListItem = ({ dark, handleMuteChannel, selected, onOpenChannel, handleRemoveChannel, channel, userId }: Props) => {
   const [name, setName] = useState('')
   const [thumbnail, setThumbnail] = useState('')
+  const [isOnline, setIsOnline] = useState(false)
+  const [isDirectChat, setIsDirectChat] = useState(false)
 
   useEffect(() => {
     if(channel && channel.members) {
       if(channel.members.length === 2) {
-        channel.members.forEach(u => {
-          if (Number(u.userId) !== Number(userId)) {
-            setName(`${u.firstname} ${u.lastname}`)
-            setThumbnail(u.image)
+        setIsDirectChat(true)
+        channel.members.forEach(member => {
+          if (Number(member.userId) !== Number(userId)) {
+            setName(`${member.firstname} ${member.lastname}`)
+            setThumbnail(member.image)
+            setIsOnline(member.isOnline)
           }
         })
       } else {
@@ -45,6 +49,8 @@ const ChatListItem = ({ dark, handleMuteChannel, selected, onOpenChannel, handle
         roomId={channel.sid}
         handleRemoveChannel={handleRemoveChannel}
         isLoading={false}
+        isOnline={isOnline}
+        isDirectChat={isDirectChat}
         imageProfile={thumbnail}
         dark={dark}
         selected={selected}

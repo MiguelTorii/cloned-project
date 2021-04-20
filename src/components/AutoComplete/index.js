@@ -19,7 +19,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
+
 import type { SelectType } from '../../types/models';
+import OnlineBadge from 'components/OnlineBadge';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
@@ -137,16 +139,16 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   );
 }
 
-function Option({
-  innerRef,
-  innerProps,
-  isFocused,
-  isSelected,
-  children,
-  data
-}) {
-  const { avatar = '', initials = '', school = '', noAvatar = false, relationship = '' } =
-    data || {};
+function Option({ innerRef, innerProps, isFocused, isSelected, children, data }) {
+  const {
+    avatar = '',
+    initials = '',
+    school = '',
+    noAvatar = false,
+    relationship = '',
+    isOnline = false
+  } = data || {};
+
   if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
     return (
       <ListItem
@@ -159,9 +161,11 @@ function Option({
         {...innerProps}
       >
         <ListItemAvatar>
-          <Avatar alt={initials} src={avatar}>
-            {initials}
-          </Avatar>
+          <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.modalBackground">
+            <Avatar alt={initials} src={avatar}>
+              {initials}
+            </Avatar>
+          </OnlineBadge>
         </ListItemAvatar>
         <ListItemText
           primary={children}

@@ -159,7 +159,8 @@ const fetchMembers = async sid => {
     image: m.profileImageUrl,
     roleId: m.roleId,
     role: m.role,
-    userId: m.userId
+    userId: m.userId,
+    isOnline: m.isOnline
   }))
   return members
 }
