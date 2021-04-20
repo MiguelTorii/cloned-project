@@ -79,8 +79,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
     replyCommentId: 0
   };
 
-c
-
   componentDidMount = () => {
     this.loadData()
   }
