@@ -79,16 +79,9 @@ class ViewNotes extends React.PureComponent<Props, State> {
     replyCommentId: 0
   };
 
-  // componentDidMount = async () => {
-  //   await this.loadData()
-  //   this.realTimeLoadData = setInterval(await this.loadData, 5000);
-  // };
+c
 
-  // componentWillUnmount() {
-  //   clearInterval(this.realTimeLoadData);
-  // }
-
-  componentDidMount() {
+  componentDidMount = () => {
     this.loadData()
   }
 
