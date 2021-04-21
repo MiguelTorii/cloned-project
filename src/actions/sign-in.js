@@ -12,7 +12,7 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
-import { apiGetExpertMode } from '../api/user';
+import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -89,7 +89,9 @@ export const updateUser = ({ user }: { user: User }) => async (
 
   let expertMode = false;
 
-  if (isExpert || isTutor) expertMode = await apiGetExpertMode(user.userId);
+  if (isExpert) expertMode = await apiGetExpertMode(user.userId);
+
+  if (isTutor) expertMode = await apiSetExpertMode(user.userId, true)
 
   dispatch(setUser({ user, isExpert, expertMode }));
 
