@@ -13,6 +13,7 @@ import Tab from '@material-ui/core/Tab';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { getCampaign } from 'api/campaign';
+import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
 import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
@@ -88,14 +89,14 @@ const styles = theme => ({
     backgroundColor: 'rgba(0,0,0,0.8)'
   },
   bigAvatar: {
-    width: 90,
-    height: 90,
-    [theme.breakpoints.up('sm')]: {
+    width: 120,
+    height: 120,
+    fontSize: theme.typography.h2.fontSize,
+    [theme.breakpoints.up('md')]: {
       width: 170,
-      height: 170
+      height: 170,
+      fontSize: theme.typography.h1.fontSize,
     },
-    fontSize: theme.typography.h1.fontSize,
-    margin: theme.spacing(2)
   },
   img: {
     textAlign: 'center'
@@ -232,6 +233,7 @@ class Header extends React.PureComponent<Props, State> {
       tab,
       // inStudyCircle,
       isCirclein,
+      isOnline,
       role,
       onStartChat,
       onStartVideo,
@@ -248,16 +250,18 @@ class Header extends React.PureComponent<Props, State> {
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <Grid container>
-            <Grid item xs={4} className={classes.gridAvatar}>
+            <Grid item xs={12} md={4} className={classes.gridAvatar}>
               <div className={classes.avatar}>
-                <Avatar
-                  alt={initials}
-                  src={userProfileUrl}
-                  className={classes.bigAvatar}
-                  classes={{ img: classes.img }}
-                >
-                  {initials}
-                </Avatar>
+                <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={false}>
+                  <Avatar
+                    alt={initials}
+                    src={userProfileUrl}
+                    className={classes.bigAvatar}
+                    classes={{ img: classes.img }}
+                  >
+                    {initials}
+                  </Avatar>
+                </OnlineBadge>
                 {uploading && (
                   <div className={classes.progress}>
                     <CircularProgress />
@@ -303,7 +307,7 @@ class Header extends React.PureComponent<Props, State> {
               {/* </Button> */}
               {/* )} */}
             </Grid>
-            <Grid item xs={8} sm={8} className={classes.gridInfo}>
+            <Grid item xs={12} md={8} className={classes.gridInfo}>
               <Typography variant="h2" gutterBottom>
                 {name} {role && <TutorBadge text={role} />}
               </Typography>

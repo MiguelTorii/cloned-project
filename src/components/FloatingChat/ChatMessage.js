@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
+
+import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
@@ -131,7 +133,7 @@ type Props = {
   onImageClick: Function
 };
 
-class ChatMessageDate extends React.PureComponent<Props> {
+class ChatMessage extends React.PureComponent<Props> {
   static defaultProps = {
     userId: '',
     name: '',
@@ -242,7 +244,8 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { role, classes, userId, name, avatar, isOwn, messageList } = this.props;
+    const { role, classes, userId, isUserOnline, name, avatar, isOwn, messageList } = this.props;
+
     const initials =
       name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
@@ -257,9 +260,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <Avatar alt={name} src={avatar}>
-              {initials}
-            </Avatar>
+            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.appBar">
+              <Avatar alt={name} src={avatar}>
+                {initials}
+              </Avatar>
+            </OnlineBadge>
           </ListItemAvatar>
         )}
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
@@ -294,4 +299,4 @@ class ChatMessageDate extends React.PureComponent<Props> {
   }
 }
 
-export default withStyles(styles)(ChatMessageDate);
+export default withStyles(styles)(ChatMessage);

@@ -13,11 +13,11 @@ const styles = theme => {
     },
     badge: {
       position: 'absolute',
-      bottom: 0,
-      right: 0,
-      width: 11,
-      height: 11,
-      boxShadow: props => `0 0 0 3px ${get(theme, props.bgColorPath)}`,
+      bottom: ({ fromChat }) => fromChat ? 0 : 2,
+      right: ({ fromChat }) => fromChat ? 0: 2,
+      width: ({ fromChat }) => fromChat ? 11 : 32,
+      height: ({ fromChat }) => fromChat ? 11 : 32,
+      boxShadow: props => `${get(theme, props.bgColorPath)} 0 0 0 ${props.fromChat ? 3 : 7}px`,
       borderRadius: '50%',
       backgroundColor: props => props.isOnline ? greenRingColor : get(theme, props.bgColorPath),
       '&::after': {
@@ -27,7 +27,7 @@ const styles = theme => {
         width: '100%',
         height: '100%',
         borderRadius: '50%',
-        border: props => `3px solid ${props.isOnline ? greenRingColor : grayRingColor}`,
+        border: props => `${props.fromChat ? 3 : 8.5}px solid ${props.isOnline ? greenRingColor : grayRingColor}`,
         content: '""',
       },
     }
@@ -39,6 +39,7 @@ type Props = {
   isVisible: boolean,
   isOnline: boolean,
   backColor: string,
+  fromChat: boolean,
   children: Node,
 };
 
@@ -56,6 +57,7 @@ const OnlineBadge = ({ isVisible, classes, children }: Props) => (
 OnlineBadge.defaultProps = {
   isVisible: true,
   isOnline: false,
+  fromChat: true,
   bgColorPath: "circleIn.palette.modalBackground",
 }
 

@@ -444,6 +444,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState(({ expanded }) => ({ expanded: !expanded }));
   };
 
+  isMemberOnline = (userId) => {
+    const { members = [] } = this.props.localChannel;
+    const found = members.find(member => member.userId === userId);
+    return found?.isOnline;
+  }
+
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;
     try {
@@ -455,6 +461,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           <ChatMessage
             key={id}
             userId={item.author}
+            isUserOnline={this.isMemberOnline(item.author)}
             name={item.name}
             messageList={item.messageList}
             avatar={getAvatar({ id: item.author, profileURLs })}

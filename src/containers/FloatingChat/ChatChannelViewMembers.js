@@ -11,6 +11,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import OnlineBadge from 'components/OnlineBadge';
 import { getInitials } from 'utils/chat';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import type { ChatUser } from '../../types/models';
@@ -117,32 +119,34 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             title="Members"
           >
             <List className={classes.list}>
-              {members.map(value => (
-                <ListItem key={value.userId} role={undefined} dense>
+              {members.map(member => (
+                <ListItem key={member.userId} role={undefined} dense>
                   <ListItemAvatar>
-                    <Avatar
-                      alt={`${value.firstName} ${value.lastName}`}
-                      src={value.profileImageUrl}
-                    >
-                      {getInitials({
-                        name: `${value.firstName} ${value.lastName}`
-                      })}
-                    </Avatar>
+                    <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.modalBackground">
+                      <Avatar
+                        alt={`${member.firstName} ${member.lastName}`}
+                        src={member.profileImageUrl}
+                      >
+                        {getInitials({
+                          name: `${member.firstName} ${member.lastName}`
+                        })}
+                      </Avatar>
+                    </OnlineBadge>
                   </ListItemAvatar>
                   <ListItemText
                     primary={
-                      Number(userId) === Number(value.userId)
+                      Number(userId) === Number(member.userId)
                         ? 'me'
-                        : `${value.firstName} ${value.lastName}`
+                        : `${member.firstName} ${member.lastName}`
                     }
                   />
-                  {Number(userId) !== Number(value.userId) && (
+                  {Number(userId) !== Number(member.userId) && (
                     <ListItemSecondaryAction>
                       <div className={classes.wrapper}>
                         <Button
                           onClick={this.handleOpenConfirm({
-                            blockedUserId: value.userId,
-                            name: `${value.firstName} ${value.lastName}`
+                            blockedUserId: member.userId,
+                            name: `${member.firstName} ${member.lastName}`
                           })}
                           disabled={loading}
                           color="secondary"
