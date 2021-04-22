@@ -135,7 +135,7 @@ const CreatePostMenu = ({
         link="/video-call"
       >
         <MenuItemContent
-          primaryText="Video Meetup"
+          primaryText="Study Room"
           secondaryText="Earn 20k points for initiating a video session, then 50k points for staying on for at least 10 minutes"
           icon={Videos}
         />

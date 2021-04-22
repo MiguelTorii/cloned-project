@@ -49,8 +49,8 @@ import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
 import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
 import { ReactComponent as MyClassOff } from 'assets/svg/myclass-inactive.svg';
 import { ReactComponent as MyClassOn } from 'assets/svg/myclass-active.svg';
-// import { ReactComponent as OffStudyRoom } from 'assets/svg/inactive-study-room.svg';
-// import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg';
+import { ReactComponent as OffStudyRoom } from 'assets/svg/inactive-study-room.svg';
+import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem'
 import BatchMessageDialog from 'containers/BatchMessageDialog'
 
@@ -497,8 +497,8 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
-        {/* <Tooltip
-          id={9058}
+        <Tooltip
+          id={9059}
           placement="right"
           variant="secondary"
           text="Pssst! You can start video chatting from the left navigation! 😍"
@@ -508,10 +508,12 @@ const Drawer = ({
             onClick={handleOpenGetApp}
             listItemClass={classes.otherPath}
             OnIcon={<OnStudyRoom />}
+            component={MyLink}
+            link="/video-call"
             primaryText='Study Room'
             OffIcon={<OffStudyRoom />}
           />
-        </Tooltip> */}
+        </Tooltip>
         {expertMode && <DrawerItem
           OnIcon={<OneTouchSendIconOn />}
           primaryText='One-Touch Send'
