@@ -33,8 +33,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     backgroundColor: theme.circleIn.palette.primaryBackground,
-    bottom: 0,
     width: '100%',
+    borderRadius: 20
   },
   inputContainer: {
     display: 'flex',
@@ -48,9 +48,18 @@ const styles = theme => ({
     flex: 1,
     display: 'flex',
   },
+  inputWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    minHeight: 44
+  },
   textfield: {
     width: '100%',
-    height: 50,
+    height: 'auto',
     backgroundColor: theme.circleIn.palette.hoverMenu,
     paddingLeft: theme.spacing(),
     borderRadius: 10,
@@ -229,16 +238,7 @@ const ChatTextField = ({
           >
             <InsertPhotoIcon />
           </IconButton>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              height: '100%',
-              width: '100%',
-              minHeight: 44
-            }}
-          >
+          <div className={classes.inputWrapper}>
             {image && (
               <ButtonBase
                 className={classes.imgContainer}
@@ -261,7 +261,7 @@ const ChatTextField = ({
               onKeyUp={handleKeyUp}
               className={classes.textfield}
               inputComponent={Textarea}
-              inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, width: '100%' } }}
+              inputProps={{ style: { maxHeight: expanded ? 200 : 40, paddingTop: 5, width: '100%', height: 'auto' } }}
               multiline
               rowsMax={2}
               placeholder="Write a message ..."

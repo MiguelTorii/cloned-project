@@ -49,7 +49,7 @@ const styles = theme => ({
     paddingTop: theme.spacing(3),
     position: 'absolute',
     left: -25,
-    zIndex: '9999',
+    zIndex: '1400',
     background: 'rgba(24, 25, 26, 0.75)',
     borderRadius: 10
   },
@@ -62,7 +62,7 @@ const styles = theme => ({
     paddingTop: theme.spacing(3),
     position: 'absolute',
     right: -25,
-    zIndex: '9999',
+    zIndex: '1400',
     background: 'rgba(24, 25, 26, 0.75)',
     borderRadius: 10
   },
