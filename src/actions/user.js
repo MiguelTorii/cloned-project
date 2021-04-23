@@ -1,7 +1,6 @@
 // @flow
 import { userActions } from 'constants/action-types'
-import { getAnnouncement as fetchAnnouncement } from 'api/announcement';
-import { getCampaign } from 'api/campaign';
+import { getAnnouncement as fetchAnnouncement, getAnnouncementCampaign } from 'api/announcement';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
@@ -10,7 +9,6 @@ import {
 import store from 'store'
 import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
-import { getVariation } from 'api/variation'
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models'
@@ -213,19 +211,17 @@ const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
   payload: { announcement }
 });
 
-export const getAnnouncement = (
-  { announcementId, campaignId }: {announcementId: number, campaignId: number}) => async (
-  dispatch: Dispatch
-) => {
-  const announcement = await fetchAnnouncement(announcementId);
-  const campaign = await getCampaign({ campaignId });
-  const variation = await getVariation()
+export const getAnnouncement = () => async (dispatch: Dispatch) => {
+  const { is_disabled, variation_key, data } = await getAnnouncementCampaign();
 
-  // eslint-disable-next-line
-    if (announcement && !campaign?.is_disabled && campaign?.variation_key !== 'hidden') {
+  if (!is_disabled && variation_key !== 'hidden' && data) {
+    const { end_date, announcement_id } = data;
+    const announcement = await fetchAnnouncement(announcement_id);
+
     dispatch(getAnnouncementSuccessAction({
-      announcement,
-      endDate: variation?.endDate
+      ...announcement,
+      endDate: end_date,
+      id: announcement_id
     }));
   }
 };

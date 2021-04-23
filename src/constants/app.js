@@ -60,3 +60,12 @@ export const ANDROID_REDIRECT_URI =
     : 'circleinapp://dev-app2.circleinapp.com/oauth';
 
 export const RELEASE = 'V2.0.30';
+
+export const TIME_ZONE = 'America/New_York';
+
+export const INTERVAL = {
+  SECOND: 1000,
+  MINUTE: 60 * 1000
+};
+
+export const DURATION_REPLACE_TEXT = '{{ time_left }}';

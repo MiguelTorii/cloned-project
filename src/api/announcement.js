@@ -18,6 +18,8 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
         hourly_reward: hourlyReward,
         image_url: imageUrl,
         popup_title: popupTitle,
+        popup_content: popupContent,
+        popup_title_image: popupTitleImage,
         subtitle,
         title,
         variation_id: variationId,
@@ -27,6 +29,8 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
         hourlyReward,
         imageUrl,
         popupTitle,
+        popupTitleImage,
+        popupContent,
         subtitle,
         title,
         variationId,
@@ -38,3 +42,18 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
     return null;
   }
 };
+
+export const getAnnouncementCampaign = async (): Promise<Object> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(`${API_ROUTES.GET_ANNOUNCEMENT_CAMPAIGN}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return result.data;
+  } catch (err) {
+    return null;
+  }
+}

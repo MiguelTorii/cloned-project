@@ -293,12 +293,15 @@ export type ReferralData = {
 };
 
 export type Announcement = {
+  id: number,
   endDate: string,
   hourlyReward: string,
   imageUrl: string,
-  popupTitle: string,
-  subtitle: string,
   title: string,
+  subtitle: string,
+  popupTitleImage: string,
+  popupTitle: string,
+  popupContent: string,
   variationId: number
 };
 

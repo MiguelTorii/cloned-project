@@ -55,7 +55,7 @@ type Props = {
   hourlyReward: string
 };
 
-const HourlyGifts = ({ classes, hourlyReward }: Props) => {
+const HourlyGiveawayPopup = ({ classes, hourlyReward }: Props) => {
   const imgStyle = {
     width: 30
   };
@@ -155,4 +155,4 @@ const HourlyGifts = ({ classes, hourlyReward }: Props) => {
   )
 }
 
-export default withStyles(styles)(HourlyGifts);
+export default withStyles(styles)(HourlyGiveawayPopup);
