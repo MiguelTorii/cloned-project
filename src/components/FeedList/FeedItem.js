@@ -598,7 +598,7 @@ const FeedItem = ({
             <CardActionArea disabled>
               <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
                 <Typography component="p" noWrap>
-                  {schoolId === '119' && data.courseDisplayName}
+                  {schoolId === '119' && `${data.courseDisplayName}  `}
                   {data.classroomName}
                 </Typography>
                 <Typography

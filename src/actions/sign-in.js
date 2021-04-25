@@ -84,7 +84,7 @@ export const updateUser = ({ user }: { user: User }) => async (
   const isExpert = user.permission.includes('expert_mode_access') &&
     user.permission.includes('main_application_access');
 
-  const isTutor = user.permission.indexOf('expert_mode_access') &&
+  const isTutor = user.permission.includes('expert_mode_access') &&
     user.permission.indexOf('main_application_access') === -1;
 
   let expertMode = false;
