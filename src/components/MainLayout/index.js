@@ -544,7 +544,7 @@ const MainLayout = ({
             {drawer}
           </Drawer>
         </Hidden>
-        {pathname !== '/chat' && <Hidden xsDown implementation="css">
+        {/^(?!\/chat)/.test(pathname) && <Hidden xsDown implementation="css">
           <Drawer
             id='desktopMenu'
             variant="permanent"

@@ -230,6 +230,17 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         }
       }
     } }
+  case chatActions.UPDATE_SHARE_LINK_CHAT:
+    return { ...state, data: {
+      ...state.data,
+      local: {
+        ...state.data.local,
+        [action.payload.channelId]: {
+          ...state.data.local[action.payload.channelId],
+          shareLink: action.payload.shareLink
+        }
+      }
+    } }
   case chatActions.REMOVE_MEMBER_CHAT:
     return { ...state, data: {
       ...state.data,

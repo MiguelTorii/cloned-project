@@ -4,6 +4,7 @@
 import uuidv4 from 'uuid/v4';
 import {
   getGroupMembers,
+  getShareLink,
   getChannels,
   muteChannel,
   unmuteChannel,
@@ -92,6 +93,11 @@ const updateChannel = ({ channel, unread }: { channel: Object, unread: number })
   payload: { channel, unread }
 })
 
+const updateShareLink = ({ shareLink, channelId }: { channelId: number, shareLink: string }): Action => ({
+  type: chatActions.UPDATE_SHARE_LINK_CHAT,
+  payload: { shareLink, channelId }
+})
+
 const updateMembers = ({ members, channelId }: { channelId: number, members: Object }): Action => ({
   type: chatActions.UPDATE_MEMBERS_CHAT,
   payload: { members, channelId }
@@ -168,7 +174,9 @@ const fetchMembers = async sid => {
 export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
   if (currentChannel) {
     const members = await fetchMembers(currentChannel.sid)
+    const shareLink = await getShareLink(currentChannel.sid)
     dispatch(updateMembers({ members, channelId: currentChannel.sid }))
+    dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }))
   }
   dispatch(setCurrentChannelAction({ currentChannel }))
 }

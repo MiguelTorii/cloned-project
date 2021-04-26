@@ -35,6 +35,8 @@ export const API_ROUTES = {
   SEND_MESSAGE: `${API_URL}/chat/messages`,
   REQUEST: `${API_URL}/request`,
   BATCH_MESSAGE: `${API_URL_V1_1}/batch/chat/message`,
+  CHAT_SHARE_LINK: `${API_URL}/chat/link`,
+  CHAT_JOIN_LINK: `${API_URL}/chat/link/join`,
   FEEDBACK: `${API_URL}/feedback`,
   NOTES: `${API_URL_V1_1}/notes`,
   TODO: `${API_URL_V1_1}/todo`,

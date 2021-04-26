@@ -2,6 +2,7 @@
 // @flow
 import axios from 'axios';
 import moment from 'moment'
+import get from 'lodash/get';
 import { API_ROUTES } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
 import { getToken } from './utils';
@@ -382,3 +383,46 @@ export const addGroupMembers = async ({
     return {};
   }
 };
+
+export const getShareLink = async (chatId: string) => {
+  try {
+    const token = await getToken();
+    const response = await axios.post(
+      `${API_ROUTES.CHAT_SHARE_LINK}`,
+      {
+        chat_id: chatId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return get(response, 'data.url', '');
+  } catch (err) {
+    return '';
+  }
+}
+
+// Fetches chat id with the given hashed chat id
+export const getChatIdFromHash = async (hashId: string) => {
+  try {
+    const token = await getToken();
+    const response = await axios.post(
+      `${API_ROUTES.CHAT_JOIN_LINK}`,
+      {
+        hid: hashId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return get(response, 'data.chat_id', '');
+  } catch (err) {
+    return '';
+  }
+}

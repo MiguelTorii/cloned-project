@@ -46,6 +46,7 @@ const circleInTheme = {
   greenInvite: '#256F28',
   white: '#FFFFFF',
   disableButtonColor: '#626365',
+  tooltipBackground: '#3C3D3F',
   black: '#000000'
 };
 
@@ -85,7 +86,8 @@ const theme = createMuiTheme({
       snackbar: circleInTheme.snackbar,
       disabled: circleInTheme.disabled,
       profilebgColor: circleInTheme.profilebgColor,
-      disableButtonColor: circleInTheme.disableButtonColor
+      disableButtonColor: circleInTheme.disableButtonColor,
+      tooltipBackground: circleInTheme.tooltipBackground,
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

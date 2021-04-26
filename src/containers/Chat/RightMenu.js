@@ -19,13 +19,27 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 
 import OnlineBadge from 'components/OnlineBadge';
-import TutorBadge from 'components/TutorBadge'
+import TutorBadge from 'components/TutorBadge';
+import ShareLinkWidget from 'components/ShareLinkWidget';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
 });
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100%',
+    backgroundColor: theme.circleIn.palette.primaryBackground,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  scrollingContent: {
+    flexGrow: 1,
+  },
+  fixedFooter: {
+    height: theme.spacing(13.5),
+    padding: '16px 12px',
+  },
   usersContainer: {
     width: '100%',
     padding: theme.spacing(2),
@@ -49,10 +63,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-  },
-  container: {
-    flexGrow: 1,
-    backgroundColor: theme.circleIn.palette.primaryBackground,
   },
   infoContainer: {
     backgroundColor: theme.circleIn.palette.primaryBackground,
@@ -146,16 +156,10 @@ const RightMenu = ({
     <Grid
       item
       classes={{
-        root: classes.container
+        root: classes.root
       }}
     >
-      <Grid
-        container
-        classes={{
-          root: classes.container
-        }}
-        alignItems='flex-start'
-      >
+      <div className={classes.scrollingContent}>
         <Grid
           container
           alignItems='flex-start'
@@ -258,7 +262,11 @@ const RightMenu = ({
           handleRemoveChannel={handleRemoveChannel}
           channel={channel}
         />
-      </Grid>
+      </div>
+
+      <div className={classes.fixedFooter}>
+        <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" />
+      </div>
     </Grid>
   )
 }

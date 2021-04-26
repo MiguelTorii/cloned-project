@@ -66,6 +66,7 @@ import {
 } from './constants/app';
 import withTracker from './withTracker';
 import Chat from './pages/Chat'
+import ChatChannel from './pages/ChatChannel'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
@@ -106,6 +107,7 @@ ReactDOM.render(
               <Route exact path="/classes" component={withTracker(Classes)} />
               <Route exact path="/feed" component={withTracker(Feed)} />
               <Route exact path="/workflow" component={withTracker(Workflow)} />
+              <Route exact path="/chat/:hashId" component={withTracker(ChatChannel)} />
               <Route exact path="/chat" component={withTracker(Chat)} />
               <Route exact path="/bookmarks" component={withTracker(Feed)} />
               <Route exact path="/my_posts" component={withTracker(Feed)} />
