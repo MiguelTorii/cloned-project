@@ -90,7 +90,7 @@ type Props = {
 
 const CommonBanner = ({ announcement }: Props) => {
   const classes = useStyles();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [durationText, setDurationText] = useState(null);
   const [timeOver, setTimeOver] = useState(false);
@@ -146,10 +146,7 @@ const CommonBanner = ({ announcement }: Props) => {
             </> :
             <div className={classes.text}>
               <span role="img" aria-label="title" className={classes.title}>
-                { announcement.subtitle }
-              </span>
-              <span role="img" aria-label="timer" className={classes.timer}>
-                { replaceDuration(announcement.subtitle) }
+                { announcement.title }
               </span>
             </div>
         }

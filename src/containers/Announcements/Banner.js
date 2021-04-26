@@ -45,7 +45,7 @@ const Banner = ({
   }, []);
 
   useEffect(() => {
-    setBannerHeight({ bannerHeight: height });
+    setBannerHeight({ bannerHeight: undefined === height ? 0 : height });
   }, [height]);
 
   if (!announcement || expertMode || pathname === '/chat') return null;
