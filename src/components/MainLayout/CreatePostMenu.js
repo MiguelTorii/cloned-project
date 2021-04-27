@@ -80,7 +80,7 @@ const CreatePostMenu = ({
       >
         <MenuItemContent
           primaryText="Share Notes"
-          secondaryText="Earn 10k points points for every page"
+          secondaryText="Earn 10k points for every page"
           icon={Notes}
         />
       </MenuItem>
