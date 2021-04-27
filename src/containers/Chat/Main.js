@@ -198,7 +198,7 @@ const Main = ({
 
     if (channel) init()
     // eslint-disable-next-line
-  }, [channel])
+  }, [channel, channel?.channelState?.dateUpdated])
 
   const messageItems = useMemo(() => processMessages({
     items: messages,

@@ -151,6 +151,11 @@ const setMainMessageAction = ({ mainMessage }: { mainMessage: string }) => ({
   payload: { mainMessage }
 })
 
+const updateFriendlyName = ({ channel }: { channel: Object }) => ({
+  type: chatActions.UPDATE_FRIENDLY_NAME,
+  payload: { channel }
+})
+
 export const setMainMessage = (mainMessage) => (dispatch: Dispatch) => {
   dispatch(setMainMessageAction({ mainMessage }))
 }
@@ -469,3 +474,6 @@ export const handleChannelClose = (sid: string) => async (dispatch: Dispatch, ge
   dispatch(setOpenChannels({ openChannels: openChannels.filter(oc => oc.sid !== sid) }))
 }
 
+export const handleUpdateFriendlyName = (channel: Object) => async (dispatch: Dispatch, getState: Function) => {
+  dispatch(updateFriendlyName({ channel }));
+}

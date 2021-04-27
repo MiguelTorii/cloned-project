@@ -9,8 +9,9 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
-import { Link as RouterLink } from 'react-router-dom';
-import GroupIcon from '@material-ui/icons/Group';
+import { Link as RouterLink } from 'react-router-dom'
+import GroupIcon from '@material-ui/icons/Group'
+import Settings from 'containers/Chat/Settings'
 import BlockUser from 'containers/Chat/BlockUser'
 import RemoveChat from 'containers/Chat/RemoveChat'
 import AddMembers from 'containers/Chat/AddMembers'
@@ -121,7 +122,9 @@ const RightMenu = ({
   local,
   schoolId,
   handleRemoveChannel,
+  updateGroupName,
   userId,
+  permission,
   channel,
   handleBlock
 }) => {
@@ -163,13 +166,18 @@ const RightMenu = ({
         <Grid
           container
           alignItems='flex-start'
-          justify='flex-start'
+          justify='space-between'
           classes={{
             root: classes.header
           }}
           item
         >
           <Typography className={classes.headerTitle}>Chat Details</Typography>
+          <Settings
+            channel={channel}
+            permission={permission}
+            updateGroupName={updateGroupName}
+          />
         </Grid>
         <Grid
           container

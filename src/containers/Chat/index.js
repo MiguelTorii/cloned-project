@@ -1,26 +1,26 @@
 // @flow
 
 import React, { useMemo, useCallback, useEffect, useState } from 'react'
-import { connect } from 'react-redux';
-import * as chatActions from 'actions/chat';
-import { bindActionCreators } from 'redux';
-import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux'
+import * as chatActions from 'actions/chat'
+import { bindActionCreators } from 'redux'
+import Grid from '@material-ui/core/Grid'
 import LeftMenu from 'containers/Chat/LeftMenu'
 import RightMenu from 'containers/Chat/RightMenu'
 import Main from 'containers/Chat/Main'
 import { makeStyles } from '@material-ui/core/styles'
-import withWidth from '@material-ui/core/withWidth';
-import IconButton from '@material-ui/core/IconButton';
+import withWidth from '@material-ui/core/withWidth'
+import IconButton from '@material-ui/core/IconButton'
 import cx from 'classnames'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import moment from 'moment'
-import * as OnboardingActions from 'actions/onboarding';
+import * as OnboardingActions from 'actions/onboarding'
 
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import { blockUser } from '../../api/user';
-import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user'
+import type { ChatState } from '../../reducers/chat'
+import { blockUser } from '../../api/user'
+import type { State as StoreState } from '../../types/state'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -104,7 +104,8 @@ const Chat = ({
   setMainMessage,
   // markAsCompleted,
   getOnboardingList,
-  onboardingListVisible
+  onboardingListVisible,
+  handleUpdateFriendlyName
 }: Props) => {
   const {
     isLoading,
@@ -118,7 +119,7 @@ const Chat = ({
       currentChannel
     }
   } = chat
-  const { data: { userId, schoolId } } = user
+  const { data: { userId, schoolId, permission } } = user
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
@@ -141,6 +142,11 @@ const Chat = ({
     clearCurrentChannel()
     await handleRemoveChannel(sid)
   }, [handleRemoveChannel, clearCurrentChannel])
+
+  const updateGroupName = useCallback(async channel => {
+    setCurrentChannel(channel)
+    await handleUpdateFriendlyName(channel)
+  }, [handleUpdateFriendlyName, setCurrentChannel])
 
   const curSize = useMemo(() => width === 'xs' ? 6 : 3, [width])
 
@@ -194,7 +200,6 @@ const Chat = ({
     }
     setRightSpace(rightSpace ? 0 : curSize)
   }, [width, curSize, rightSpace])
-
 
   const renderIcon = useCallback(d => {
     return (d
@@ -262,8 +267,10 @@ const Chat = ({
         <RightMenu
           handleRemoveChannel={handleRemove}
           handleBlock={handleBlock}
+          updateGroupName={updateGroupName}
           userId={userId}
           schoolId={schoolId}
+          permission={permission}
           channel={currentChannel}
           local={local}
         />
@@ -288,6 +295,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleNewChannel: chatActions.handleNewChannel,
       setCurrentChannel: chatActions.setCurrentChannel,
       getOnboardingList: OnboardingActions.getOnboardingList,
+      handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
       // markAsCompleted: OnboardingActions.markAsCompleted
     },
     dispatch

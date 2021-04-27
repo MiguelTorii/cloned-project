@@ -289,6 +289,22 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       openChannels: action.payload.openChannels,
       newChannel: false
     } }
+  case chatActions.UPDATE_FRIENDLY_NAME:
+    const sid = action.payload.channel.sid;
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        local: {
+          ...state.data.local,
+          [sid]: {
+            ...state.data.local[sid],
+            twilioChannel: action.payload.channel,
+            title: action.payload.channel.friendlyName,
+          }
+        }
+      }
+    }
   case rootActions.CLEAR_STATE:
     return defaultState;
   default:
