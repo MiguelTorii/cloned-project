@@ -85,7 +85,7 @@ const Settings = ({
       />
       <Popover
         id="settings-option-popper"
-        open={Boolean(anchorEl)}
+        open={isShow && Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleSettingsClose}
         anchorOrigin={{
