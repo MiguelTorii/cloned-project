@@ -29,19 +29,19 @@ const styles = (theme) => ({
   name: {
     color: theme.circleIn.palette.darkTextColor,
     fontSize: 14,
-    lineHeight: 19,
+    lineHeight: '19px',
   },
   helperText: {
     color: theme.circleIn.palette.darkTextColor,
     fontSize: 12,
-    lineHeight: 16,
+    lineHeight: '16px',
     textAlign: 'right',
     marginRight: 0
   },
   labelText: {
     color: theme.circleIn.palette.secondaryText,
     fontSize: 18,
-    lineHeight: 25,
+    lineHeight: '25px',
   },
   spacer: {
     marginBottom: theme.spacing(1),
@@ -87,7 +87,10 @@ const EditGroupDetailsDialog = ({
     setName(e.target.value);
   }, [setName]);
 
-  const handleClose = useCallback(() => onClose(), [onClose]);
+  const handleClose = useCallback(() => {
+    setName('')
+    onClose()
+  }, [onClose]);
 
   const handleSubmit = async () => {
     if (name === channel.channelState.friendlyName) {
