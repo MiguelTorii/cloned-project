@@ -1,8 +1,8 @@
 // @flow
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import cx from 'classnames';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -63,7 +63,7 @@ type Props = {
   classes: Object,
   headerText: string,
   shareLink: string,
-  isLoading: boolean,
+  isLoading: boolean
 };
 
 const ShareLinkWidget = (props: Props) => {
@@ -89,7 +89,7 @@ const ShareLinkWidget = (props: Props) => {
         </div>
       ) : (
         <div className={classes.content}>
-          <img src={IconLink} className={classes.img} />
+          <img alt="icon-link" src={IconLink} className={classes.img} />
           <Typography className={classes.link} variant="body2">
             {shareLink}
           </Typography>
@@ -97,11 +97,19 @@ const ShareLinkWidget = (props: Props) => {
             <Tooltip
               placement="top-end"
               title="Link Copied!"
-              arrow={true}
+              arrow
               open={isTooltipShown}
-              classes={{ popper: classes.popper, tooltip: classes.tooltip, arrow: classes.arrow }}
+              classes={{
+                popper: classes.popper,
+                tooltip: classes.tooltip,
+                arrow: classes.arrow
+              }}
             >
-              <img src={IconClip} className={cx(classes.img, classes.imgCopy)} />
+              <img
+                alt="icon-clip"
+                src={IconClip}
+                className={cx(classes.img, classes.imgCopy)}
+              />
             </Tooltip>
           </CopyToClipboard>
         </div>

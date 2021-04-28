@@ -1,9 +1,9 @@
 // @flow
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { withResizeDetector, useResizeDetector } from 'react-resize-detector';
+import { withResizeDetector } from 'react-resize-detector';
 import * as userActions from 'actions/user'
 import { Announcement } from 'types/models'
 import { INTERVAL } from '../../constants/app';
@@ -13,12 +13,9 @@ import CommonBanner from './Components/CommonBanner';
 
 type Props = {
   announcement: Announcement,
-  bannerHeight: number,
   setBannerHeight: Function,
-  classes: Object,
   getAnnouncement: Function,
   location: { pathname: string },
-  onLoaded: Function,
   height: number
 };
 
@@ -42,11 +39,11 @@ const Banner = ({
     }, 1 * INTERVAL.MINUTE);
 
     return () => clearInterval(intervalID);
-  }, []);
+  }, [announcement, getAnnouncement]);
 
   useEffect(() => {
     setBannerHeight({ bannerHeight: undefined === height ? 0 : height });
-  }, [height]);
+  }, [height, setBannerHeight]);
 
   if (!announcement || expertMode || pathname === '/chat') return null;
 

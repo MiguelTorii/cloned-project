@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useEffect, useRef, useState } from 'react';
-import { compose, bindActionCreators } from 'redux';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -61,7 +61,7 @@ const ChatChannelPage = (props) => {
     };
 
     validateChatId();
-  }, []);
+  }, [hashId, props]);
 
   useEffect(() => {
     const channels = get(props, 'chat.data.channels', []);
@@ -69,7 +69,7 @@ const ChatChannelPage = (props) => {
     if (channel) {
       props.setCurrentChannel(channel);
     }
-  }, [get(props, 'chat.data.channels')]);
+  }, [chatId, props]);
 
   return (
     <main>

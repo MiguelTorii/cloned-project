@@ -4,7 +4,6 @@ import Popover from '@material-ui/core/Popover'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import SettingsIcon from '@material-ui/icons/Settings'
-import cx from 'classnames'
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +42,7 @@ type Props = {
   schoolId: string,
   channel: Object,
   permission: Object,
-  updateGroupName: Function,
+  updateGroupName: Function
 };
 
 const Settings = ({

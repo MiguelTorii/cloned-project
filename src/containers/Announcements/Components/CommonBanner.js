@@ -1,16 +1,17 @@
+// @flow
 import React, { useEffect, useState } from 'react';
-import LoadImg from '../../../components/LoadImg';
 import Button from "@material-ui/core/Button";
-import expandSvg from '../../../assets/svg/expand.svg';
-import minimizeSvg from '../../../assets/svg/minimize.svg';
-import Dialog from '../../../components/Dialog';
 import { makeStyles } from '@material-ui/core';
-import type { Announcement } from '../../../types/models';
-import { setIntervalWithFirstCall } from '../../../utils/helpers';
-import { DURATION_REPLACE_TEXT, INTERVAL, TIME_ZONE } from '../../../constants/app';
 import momentTz from 'moment-timezone';
 import moment from 'moment';
 import pluralize from 'pluralize';
+import LoadImg from '../../../components/LoadImg';
+import expandSvg from '../../../assets/svg/expand.svg';
+import minimizeSvg from '../../../assets/svg/minimize.svg';
+import Dialog from '../../../components/Dialog';
+import type { Announcement } from '../../../types/models';
+import { setIntervalWithFirstCall } from '../../../utils/helpers';
+import { DURATION_REPLACE_TEXT, INTERVAL, TIME_ZONE } from '../../../constants/app';
 import DialogContent from './DialogContent';
 
 const useStyles = makeStyles(theme => ({
@@ -115,7 +116,7 @@ const CommonBanner = ({ announcement }: Props) => {
     }, 30 * INTERVAL.SECOND);
 
     return () => clearInterval(intervalID);
-  }, []);
+  }, [announcement.endDate]);
 
   const replaceDuration = (text) => {
     return text.replace(DURATION_REPLACE_TEXT, durationText);
@@ -164,12 +165,12 @@ const CommonBanner = ({ announcement }: Props) => {
         </Button>
         {
           isExpanded ?
-          <Button onClick={() => setIsExpanded(false)}>
-            <LoadImg url={minimizeSvg} style={{ maxHeight: 10 }} />
-          </Button> :
-          <Button onClick={() => setIsExpanded(true)}>
-            <LoadImg url={expandSvg} style={{ maxHeight: 10 }} />
-          </Button>
+            <Button onClick={() => setIsExpanded(false)}>
+              <LoadImg url={minimizeSvg} style={{ maxHeight: 10 }} />
+            </Button> :
+            <Button onClick={() => setIsExpanded(true)}>
+              <LoadImg url={expandSvg} style={{ maxHeight: 10 }} />
+            </Button>
         }
       </div>
       <Dialog
