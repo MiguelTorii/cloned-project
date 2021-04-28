@@ -241,6 +241,8 @@ class MeetUp extends React.Component<Props, State> {
 
   started: number;
 
+  startTime: Object;
+
   constructor(props) {
     super(props)
     // $FlowIgnore
@@ -309,12 +311,14 @@ class MeetUp extends React.Component<Props, State> {
         event: 'Video- End Video',
         props: {
           channelName: videoRoom.name,
-          timestamp: moment().valueOf(),
+          start_time: this.startTime,
+          end_time: new Date(),
           type: 'Ended',
           'Channel SID': videoRoom.sid,
         }
       })
     }
+    this.startTime = null
   }
 
   componentWillUnmount = () => {
@@ -511,6 +515,9 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleAddParticipant = (participant, track, local = false) => {
+    if (this.state.participants.length === 1 && !this.startTime) {
+      this.startTime = new Date()
+    }
     const newState = utils.addParticipant(
       this.state,
       participant,
@@ -522,6 +529,22 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleRemoveParticipant = participant => {
+    if (this.state.participants.length === 2) {
+      const { videoRoom } = this.state
+      if(videoRoom?.name) {
+        logEvent({
+          event: 'Video- End Video',
+          props: {
+            channelName: videoRoom.name,
+            start_time: this.startTime,
+            end_time: new Date(),
+            type: 'Ended',
+            'Channel SID': videoRoom.sid,
+          }
+        })
+      }
+      this.startTime = null
+    }
     const newState = utils.removeParticipant(this.state, participant)
     this.setState(newState)
   }

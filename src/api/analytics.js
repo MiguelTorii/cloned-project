@@ -27,7 +27,8 @@ const toEventData = (eventName: string, props: object): EventData => {
   if (category === 'Video') {
     objectId = props.channelName;
     customProps.type = props.type
-    customProps.timestamp = props.timestamp
+    customProps.start_time = props.start_time
+    customProps.end_time = props.end_time
   }
 
   return {
