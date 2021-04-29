@@ -10,6 +10,7 @@ const CIRCLEIN_EVENT_NAMES = [
   'Video- Start Video',
   'Video- End Video',
   'Video- Session Length',
+  'Post- Send Time Log',
 ];
 
 const toEventData = (eventName: string, props: object): EventData => {
@@ -29,6 +30,14 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.type = props.type
     customProps.start_time = props.start_time
     customProps.end_time = props.end_time
+  }
+  if (category === 'Post') {
+    customProps.type = props.type
+    customProps.feedId = props.feedId
+    customProps.elapsed = props.elapsed
+    customProps.total_idle_time = props.total_idle_time
+    customProps.effective_time = props.effective_time
+    customProps.platform = props.platform
   }
 
   return {
