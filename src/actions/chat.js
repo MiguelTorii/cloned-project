@@ -19,6 +19,9 @@ import { push } from 'connected-react-router';
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
+import { getPresignedURL } from '../api/media';
+import axios from "axios";
+import { apiUpdateChat } from '../api/chat';
 
 
 const getAvailableSlots = width => {
@@ -159,6 +162,14 @@ const updateFriendlyName = ({ channel }: { channel: Object }) => ({
 export const setMainMessage = (mainMessage) => (dispatch: Dispatch) => {
   dispatch(setMainMessageAction({ mainMessage }))
 }
+
+export const updateChannelAttributes = (channelSid: string, attributes: Object) => ({
+  type: chatActions.UPDATE_CHANNEL_ATTRIBUTES,
+  payload: {
+    sid: channelSid,
+    attributes
+  }
+});
 
 
 const fetchMembers = async sid => {
@@ -403,6 +414,46 @@ export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Fun
   }
   dispatch(shutdown());
 }
+
+export const handleUpdateGroupPhoto = (
+  channelSid: string,
+  image: Blob,
+  callback: Function
+) => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    user: { data: { userId } }
+  } = getState();
+
+  try {
+    const result = await getPresignedURL({
+      userId,
+      type: 5,
+      mediaType: image.type
+    });
+
+    const {url, readUrl, mediaId} = result;
+
+    await axios.put(url, image, {
+      headers: {
+        'Content-Type': image.type
+      }
+    });
+
+    await apiUpdateChat(channelSid, {
+      chat_id: channelSid,
+      thumbnail: mediaId
+    });
+
+    dispatch(updateChannelAttributes(channelSid, {
+      thumbnail: readUrl
+    }));
+
+    if (callback) {
+      callback();
+    }
+  } catch (err) {
+  }
+};
 
 export const handleBlockUser = ({ blockedUserId }) => async () => {
   try {

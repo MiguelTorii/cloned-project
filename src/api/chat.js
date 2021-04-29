@@ -426,3 +426,22 @@ export const getChatIdFromHash = async (hashId: string) => {
     return '';
   }
 }
+
+export const apiUpdateChat = async (chatId: string, attributes: Object) => {
+  try {
+    const token = await getToken();
+    const response = await axios.put(
+      `${API_ROUTES.CHAT}`,
+      attributes,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (err) {
+    return null;
+  }
+};

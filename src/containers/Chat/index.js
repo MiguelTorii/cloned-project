@@ -1,10 +1,10 @@
 // @flow
 
 import React, { useMemo, useCallback, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import * as chatActions from 'actions/chat'
-import { bindActionCreators } from 'redux'
-import Grid from '@material-ui/core/Grid'
+import { connect } from 'react-redux';
+import * as chatActions from 'actions/chat';
+import { bindActionCreators } from 'redux';
+import Grid from '@material-ui/core/Grid';
 import LeftMenu from 'containers/Chat/LeftMenu'
 import RightMenu from 'containers/Chat/RightMenu'
 import Main from 'containers/Chat/Main'
@@ -17,10 +17,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import moment from 'moment'
 import * as OnboardingActions from 'actions/onboarding'
 
-import type { UserState } from '../../reducers/user'
-import type { ChatState } from '../../reducers/chat'
-import { blockUser } from '../../api/user'
-import type { State as StoreState } from '../../types/state'
+import type { UserState } from '../../reducers/user';
+import type { ChatState } from '../../reducers/chat';
+import { blockUser } from '../../api/user';
+import type { State as StoreState } from '../../types/state';
 
 const useStyles = makeStyles(theme => ({
   container: {

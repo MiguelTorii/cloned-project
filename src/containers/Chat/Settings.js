@@ -41,6 +41,7 @@ type Props = {
   userId: string,
   schoolId: string,
   channel: Object,
+  localChannel: Object,
   permission: Object,
   updateGroupName: Function
 };
@@ -52,6 +53,7 @@ const Settings = ({
   permission,
   members,
   updateGroupName,
+  localChannel
 }: Props) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -119,6 +121,7 @@ const Settings = ({
       <EditGroupDetailsDialog
         title='Event Group Details'
         channel={channel}
+        localChannel={localChannel}
         open={editGroupDetailsOpen}
         updateGroupName={updateGroupName}
         onClose={handleEditGroupDetailsClose}

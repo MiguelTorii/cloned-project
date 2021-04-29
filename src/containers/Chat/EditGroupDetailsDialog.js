@@ -1,14 +1,23 @@
 // @flow
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ValidatorForm,
 } from 'react-material-ui-form-validator'
 import withStyles from '@material-ui/core/styles/withStyles'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import TextField from '@material-ui/core/TextField'
 import Dialog, { dialogStyle } from 'components/Dialog'
 import Typography from '@material-ui/core/Typography'
+import TextField from '../../components/Basic/TextField';
+import { Box } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import GradientButton from '../../components/Basic/Buttons/GradientButton';
+import Avatar from "@material-ui/core/Avatar";
+import GroupIcon from "@material-ui/icons/Group";
+import { Create } from "@material-ui/icons";
+import AvatarEditor from '../../components/AvatarEditor';
+import { useDispatch } from 'react-redux';
+import { handleUpdateGroupPhoto } from '../../actions/chat';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -55,7 +64,23 @@ const styles = (theme) => ({
     position: 'fixed',
     top: '50%',
     left: '50%'
-  }
+  },
+  penButton: {
+    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
+    width: 32,
+    height: 32,
+    minWidth: 32,
+    position: 'absolute',
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
+    borderRadius: '100%'
+  },
+  avatar: {
+    margin: theme.spacing(2),
+    height: theme.spacing(14),
+    width: theme.spacing(14),
+    fontSize: 30
+  },
 });
 
 type Props = {
@@ -65,6 +90,7 @@ type Props = {
   updateGroupName: Function,
   title: ?string,
   channel: Object,
+  localChannel: Object
 };
 
 const EditGroupDetailsDialog = ({
@@ -77,8 +103,25 @@ const EditGroupDetailsDialog = ({
   onSubmit,
   okLabel,
   updateGroupName,
+  localChannel
 }: Props) => {
+  const dispatch = useDispatch();
   const [name, setName] = useState(channel?.channelState.friendlyName || "")
+  const [isEditingGroupPhoto, setIsEditingGroupPhoto] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [groupImage, setGroupImage] = useState(undefined); // Group Image can be URL or Blob
+
+  useEffect(() => {
+    setGroupImage(localChannel.thumbnail);
+  }, [localChannel.thumbnail]);
+
+  const groupImageUrl = useMemo(() => {
+    if (groupImage instanceof Blob) {
+      return window.URL.createObjectURL(groupImage);
+    }
+
+    return groupImage;
+  }, [groupImage]);
 
   const handleGroupNameChange = useCallback((e) => {
     if (e.target.value.length > 100) {
@@ -89,31 +132,50 @@ const EditGroupDetailsDialog = ({
 
   const handleClose = useCallback(() => {
     setName('')
+    setIsSaving(false);
     onClose()
   }, [onClose]);
 
-  const handleSubmit = async () => {
-    if (name === channel.channelState.friendlyName) {
-      onClose()
-      return;
-    }
+  const updateChannelName = async () => {
+    if (name === channel.channelState.friendlyName)
+      return ;
 
     try {
       const res = await channel.updateFriendlyName(name)
       await updateGroupName(res);
     } catch (err) {}
-    onClose()
+  };
+
+  const handleSubmit = async () => {
+    setIsSaving(true);
+
+    await updateChannelName();
+
+    if (groupImage instanceof Blob) {
+      dispatch(
+        handleUpdateGroupPhoto(
+          channel.sid,
+          groupImage,
+          handleClose
+        )
+      )
+    } else {
+      handleClose();
+    }
   }
+
+  const handleStartEditPhoto = () => setIsEditingGroupPhoto(true);
+  const handleCancelEditPhoto = () => setIsEditingGroupPhoto(false);
+  const handleSavePhoto = (imageData) => {
+    setGroupImage(imageData);
+    setIsEditingGroupPhoto(false);
+  };
 
   return (
     <Dialog
       open={open}
-      onCancel={handleClose}
-      onOk={handleSubmit}
-      showActions
-      showCancel
       title={title || "Edit Group Details"}
-      okTitle="Save Changes"
+      onCancel={handleClose}
     >
       {isLoading && <CircularProgress className={classes.progress}/>}
       <Typography variant='h6' gutterBottom>
@@ -147,6 +209,48 @@ const EditGroupDetailsDialog = ({
           />
         </div>
       </ValidatorForm>
+      <Box mt={2}>
+        <Typography variant="h5" align="center">
+          Edit Group Photo
+        </Typography>
+      </Box>
+      <Box display="flex" justifyContent="center" mt={2}>
+        <Box position="relative">
+          <Avatar
+            src={groupImageUrl}
+            alt='group-image'
+            className={classes.avatar}
+          >
+            <GroupIcon />
+          </Avatar>
+          <Button
+            onClick={handleStartEditPhoto}
+            classes={{
+              root: classes.penButton
+            }}
+          >
+            <Create />
+          </Button>
+        </Box>
+      </Box>
+      <Box display="flex" justifyContent="space-between" mt={2}>
+        <Button onClick={handleClose}>
+          Cancel
+        </Button>
+        <GradientButton
+          onClick={handleSubmit}
+          loading={isSaving}
+          disabled={isSaving}
+        >
+          Save Changes
+        </GradientButton>
+      </Box>
+      <AvatarEditor
+        open={isEditingGroupPhoto}
+        originalImage={groupImage}
+        onCancel={handleCancelEditPhoto}
+        onSave={handleSavePhoto}
+      />
     </Dialog>
   );
 }

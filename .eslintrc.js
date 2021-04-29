@@ -25,7 +25,7 @@ module.exports = {
     "import/newline-after-import": "error",
     "import/no-unresolved": 0,
     "no-trailing-spaces": 2,
-    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/exhaustive-deps": "off",
     "react-hooks/rules-of-hooks": "error",
     "no-shadow": 0,
 

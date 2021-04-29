@@ -18,10 +18,15 @@ import AddMembers from 'containers/Chat/AddMembers'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
+import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Create } from '@material-ui/icons';
 
 import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge';
 import ShareLinkWidget from 'components/ShareLinkWidget';
+import AvatarEditor from '../../components/AvatarEditor';
+import { handleUpdateGroupPhoto } from '../../actions/chat';
+import { useDispatch } from 'react-redux';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
@@ -84,8 +89,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(2),
-    height: theme.spacing(10),
-    width: theme.spacing(10),
+    height: theme.spacing(14),
+    width: theme.spacing(14),
     fontSize: 30
   },
   membersExpansion: {
@@ -115,6 +120,22 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiAccordionSummary-expandIcon.Mui-expanded': {
       transform: 'rotate(90deg)'
     }
+  },
+  penButton: {
+    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
+    width: 32,
+    height: 32,
+    minWidth: 32,
+    position: 'absolute',
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
+    borderRadius: '100%'
+  },
+  savingPhoto: {
+    position: 'absolute',
+    left: 50,
+    top: 50,
+    zIndex: 120
   }
 }))
 
@@ -129,10 +150,13 @@ const RightMenu = ({
   handleBlock
 }) => {
   const classes = useStyles()
+  const dispatch = useDispatch();
   const [groupImage, setGroupImage] = useState(null)
   const [initials, setInitials] = useState('')
   const [otherUser, setOtherUser] = useState(null)
   const localChannel = useMemo(() => channel && local[channel.sid], [channel, local])
+  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
+  const [isSavingGroupPhoto, setIsSavingGroupPhoto] = useState(false);
 
   useEffect(() => {
     if (channel && localChannel) {
@@ -152,6 +176,21 @@ const RightMenu = ({
       }
     }
   }, [local, channel, userId, localChannel])
+
+  const handleEditAvatar = () => setIsEditingAvatar(true);
+  const handleCancelEditAvatar = () => setIsEditingAvatar(false);
+
+  const handleSaveAvatar = (imageData: Blob) => {
+    setIsEditingAvatar(false);
+    setIsSavingGroupPhoto(true);
+    dispatch(
+      handleUpdateGroupPhoto(
+        channel.sid,
+        imageData,
+        () => setIsSavingGroupPhoto(false)
+      )
+    );
+  };
 
   if (!channel || !localChannel) return null
 
@@ -175,6 +214,7 @@ const RightMenu = ({
           <Typography className={classes.headerTitle}>Chat Details</Typography>
           <Settings
             channel={channel}
+            localChannel={localChannel}
             permission={permission}
             updateGroupName={updateGroupName}
           />
@@ -189,13 +229,30 @@ const RightMenu = ({
           }}
         >
           <Typography className={classes.title}>{localChannel && localChannel.title}</Typography>
-          <Avatar
-            src={groupImage}
-            alt='group-image'
-            className={classes.avatar}
-          >
-            {initials || <GroupIcon />}
-          </Avatar>
+          <Box position="relative">
+            <Avatar
+              src={groupImage}
+              alt='group-image'
+              className={classes.avatar}
+            >
+              {initials || <GroupIcon />}
+            </Avatar>
+            {
+              permission.includes('edit_group_photo_access') &&
+                <Button
+                  onClick={handleEditAvatar}
+                  classes={{
+                    root: classes.penButton
+                  }}
+                >
+                  <Create />
+                </Button>
+            }
+            {
+              isSavingGroupPhoto &&
+                <CircularProgress color="secondary" className={classes.savingPhoto} />
+            }
+          </Box>
         </Grid>
         <Grid
           classes={{
@@ -275,6 +332,13 @@ const RightMenu = ({
       <div className={classes.fixedFooter}>
         <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" />
       </div>
+
+      <AvatarEditor
+        open={isEditingAvatar}
+        originalImage={localChannel.thumbnail}
+        onCancel={handleCancelEditAvatar}
+        onSave={handleSaveAvatar}
+      />
     </Grid>
   )
 }

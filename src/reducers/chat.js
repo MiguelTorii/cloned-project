@@ -106,6 +106,17 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         openChannels: action.payload.openChannels
       }
     }
+  case chatActions.UPDATE_CHANNEL_ATTRIBUTES: {
+    return update(state, {
+      data: {
+        local: {
+          [action.payload.sid]: {
+            $merge: action.payload.attributes
+          }
+        }
+      }
+    })
+  }
   case chatActions.CHAT_START_LOADING:
     return {
       ...state,
