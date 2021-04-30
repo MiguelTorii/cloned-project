@@ -1,13 +1,11 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 // import AddIcon from '@material-ui/icons/Add';
@@ -15,10 +13,19 @@ import Tab from '@material-ui/core/Tab';
 import { getCampaign } from 'api/campaign';
 import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
-import calendarIcon from '../../assets/svg/ic_calendar.svg';
 import schoolIcon from '../../assets/svg/ic_school.svg';
 // $FlowIgnore
-import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
+// import LoadImg from '../LoadImg';
+// import ImgEmptyCover from 'assets/img/empty_cover.png';
+import ImgLogo from 'assets/svg/app-logo.svg';
+import { Hidden } from '@material-ui/core';
+import { getPointsText } from '../../utils/helpers';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import { Message, Videocam, MoreVert, Create } from '@material-ui/icons';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import IconButton from '@material-ui/core/IconButton';
+import type { About } from '../../types/models';
+import _ from 'lodash';
 
 const styles = theme => ({
   container: {
@@ -26,15 +33,32 @@ const styles = theme => ({
     maxHeight: 'inherit',
     // display: 'flex',
     // flexDirection: ''
-    padding: theme.spacing()
+    padding: theme.spacing(0, 1)
   },
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(),
-    paddingBottom: theme.spacing(),
+    padding: theme.spacing(1, 0, 3, 0),
     backgroundColor: theme.circleIn.palette.feedBackground,
     flex: 1,
     position: 'relative'
+  },
+  coverContainer: {
+    margin: theme.spacing(-1, -3, 0, -3),
+    height: 115,
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(-1, -2, 0, -2),
+      height: 70
+    }
+  },
+  actionContainer: {
+    position: 'absolute',
+    right: 10,
+    top: 10
+  },
+  cover: {
+    width: '100%',
+    minHeight: '100%'
   },
   helpButton: {
     margin: theme.spacing(2),
@@ -54,27 +78,41 @@ const styles = theme => ({
     backgroundColor: 'transparent',
     color: theme.circleIn.palette.primaryText1
   },
-  gridAvatar: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing(2)
+  logoIcon: {
+    width: 15,
+    height: 15,
+    marginRight: theme.spacing(1),
+    verticalAlign: 'middle'
+  },
+  penIcon: {
+    backgroundColor: 'rgba(36, 37, 38, 0.6)',
+    width: 32,
+    height: 32,
+    margin: theme.spacing(1)
   },
   gridInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2)
+    margin: theme.spacing(2, 0, 5, 20)
+  },
+  schoolGrid: {
+    alignItems: 'flex-end',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'flex-start'
+    }
+  },
+  avatarContainer: {
+    position: 'absolute',
+    left: theme.spacing(3),
+    top: 53,
+    [theme.breakpoints.down('sm')]: {
+      top: 5
+    }
   },
   avatar: {
-    // borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 170,
-    height: 170,
+    width: 124,
+    height: 124,
     position: 'relative'
   },
   progress: {
@@ -89,14 +127,14 @@ const styles = theme => ({
     backgroundColor: 'rgba(0,0,0,0.8)'
   },
   bigAvatar: {
-    width: 120,
-    height: 120,
-    fontSize: theme.typography.h2.fontSize,
-    [theme.breakpoints.up('md')]: {
-      width: 170,
-      height: 170,
-      fontSize: theme.typography.h1.fontSize,
+    width: 90,
+    height: 90,
+    [theme.breakpoints.up('sm')]: {
+      width: 124,
+      height: 124
     },
+    fontSize: theme.typography.h1.fontSize,
+    margin: theme.spacing(2)
   },
   img: {
     textAlign: 'center'
@@ -114,13 +152,25 @@ const styles = theme => ({
     marginLeft: theme.spacing(1/2),
     marginRight: theme.spacing(2)
   },
-  typoData: {
-    display: 'flex',
-    alignItems: 'center'
-  },
   icon: {
     width: 20,
-    height: 20
+    height: 20,
+    margin: theme.spacing(0, 1),
+    verticalAlign: 'middle'
+  },
+  uploadButton: {
+    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
+    width: 32,
+    height: 32,
+    minWidth: 32,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    borderRadius: '100%',
+    [theme.breakpoints.down('sm')]: {
+      right: 15,
+      bottom: 15
+    }
   },
   upload: {
     margin: theme.spacing(2)
@@ -129,7 +179,22 @@ const styles = theme => ({
     display: 'none'
   },
   tabs: {
-    backgroundColor: theme.circleIn.palette.appBar
+    marginTop: theme.spacing(6),
+    borderRadius: '10px 10px 0 0',
+    backgroundColor: theme.circleIn.palette.feedBackground,
+    borderBottom: `solid 1px ${theme.circleIn.palette.modalBackground}`,
+    '& .MuiTab-wrapper': {
+      textTransform: 'none',
+      fontSize: 20,
+      color: theme.circleIn.palette.primaryText1,
+      opacity: 0.6,
+    },
+    '& .Mui-selected': {
+      borderBottom: `4px solid ${theme.circleIn.palette.darkActionBlue}`,
+      '& .MuiTab-wrapper': {
+        opacity: 1
+      }
+    }
   },
   buttonText: {
     marginLeft: theme.spacing()
@@ -161,7 +226,6 @@ type Props = {
   grade: number,
   joined: string,
   chatLoading: boolean,
-  uploading: boolean,
   tab: number,
   inStudyCircle: boolean,
   isStudyCircleLoading: boolean,
@@ -170,8 +234,9 @@ type Props = {
   role: string,
   onStartChat: Function,
   onStartVideo: Function,
-  onUpdateProfileImage: Function,
-  onChange: Function
+  onChange: Function,
+  onEditProfile: Function,
+  about: Array<About>
 };
 
 type State = {
@@ -184,7 +249,7 @@ class Header extends React.PureComponent<Props, State> {
   fileInput: ?HTMLInputElement;
 
   state = {
-    videoEnabled: null,
+    videoEnabled: null
   };
 
   componentWillMount = async () => {
@@ -194,25 +259,37 @@ class Header extends React.PureComponent<Props, State> {
     });
   }
 
-  handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
+  renderNumbers = () => {
+    const { points, bestAnswers, thanks } = this.props;
+
+    return (
+      <Grid container spacing={3}>
+        <Grid item>
+          <Typography variant="body1">
+            { getPointsText(points) } Points
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1">
+            {bestAnswers.toLocaleString()} Best Answers
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1">
+            {thanks.toLocaleString()} Thanks
+          </Typography>
+        </Grid>
+      </Grid>
+    );
   };
 
-  handleInputChange = () => {
-    const { onUpdateProfileImage } = this.props;
-    if (
-      this.fileInput &&
-      this.fileInput.files &&
-      this.fileInput.files.length > 0
-    )
-      onUpdateProfileImage(this.fileInput.files[0]);
-  };
+  findAboutField = (id) => {
+    const { about } = this.props;
+    const idx = _.findIndex(about, (item) => item.id === id);
 
-  renderStudyCircle = () => {
-    const { inStudyCircle, isStudyCircleLoading } = this.props;
-    if (isStudyCircleLoading) return <CircularProgress size={24} />;
-    if (inStudyCircle) return <StudyCircleIcon />;
-    return <StudyCircleIcon />;
+    if (idx < 0) return null;
+
+    return about[idx].answer;
   };
 
   render() {
@@ -222,14 +299,10 @@ class Header extends React.PureComponent<Props, State> {
       firstName,
       lastName,
       userProfileUrl,
-      points,
-      bestAnswers,
-      thanks,
       school,
       state,
       joined,
       chatLoading,
-      uploading,
       tab,
       // inStudyCircle,
       isCirclein,
@@ -238,157 +311,156 @@ class Header extends React.PureComponent<Props, State> {
       onStartChat,
       onStartVideo,
       onChange,
+      onEditProfile
       // onStudyCircle
     } = this.props;
 
     const { videoEnabled } = this.state;
-
     const name = `${firstName} ${lastName}`;
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+
+    const bio = this.findAboutField(6);
+    const major = this.findAboutField(4);
 
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
-          <Grid container>
-            <Grid item xs={12} md={4} className={classes.gridAvatar}>
-              <div className={classes.avatar}>
-                <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={false}>
-                  <Avatar
-                    alt={initials}
-                    src={userProfileUrl}
-                    className={classes.bigAvatar}
-                    classes={{ img: classes.img }}
-                  >
-                    {initials}
-                  </Avatar>
-                </OnlineBadge>
-                {uploading && (
-                  <div className={classes.progress}>
-                    <CircularProgress />
-                  </div>
-                )}
-              </div>
-              {isMyProfile ? (
-                <Fragment>
-                  <input
-                    accept="image/*"
-                    className={classes.input}
-                    ref={fileInput => {
-                      this.fileInput = fileInput;
-                    }}
-                    onChange={this.handleInputChange}
-                    type="file"
+          <div className={classes.coverContainer}>
+            {/*<LoadImg url={ImgEmptyCover} className={classes.cover} />*/}
+          </div>
+          <div className={classes.actionContainer}>
+            {
+              isMyProfile ?
+                <IconButton
+                  classes={{root: classes.penIcon}}
+                  onClick={onEditProfile}
+                >
+                  <Create />
+                </IconButton> :
+                <IconButton>
+                  <MoreVert />
+                </IconButton>
+            }
+          </div>
+          <div className={classes.avatarContainer}>
+            <div className={classes.avatar}>
+              <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={false}>
+                <Avatar
+                  alt={initials}
+                  src={userProfileUrl}
+                  className={classes.bigAvatar}
+                  classes={{ img: classes.img }}
+                >
+                  {initials}
+                </Avatar>
+              </OnlineBadge>
+            </div>
+          </div>
+          <div className={classes.gridInfo}>
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              wrap="nowrap"
+            >
+              <Hidden smDown>
+                <Grid item xs={12} md={8}>
+                  {this.renderNumbers()}
+                </Grid>
+              </Hidden>
+              <Grid item xs={12} md={4}>
+                <Typography variant="body2" align="right">
+                  <img
+                    src={ImgLogo}
+                    className={classes.logoIcon}
+                    alt="Logo"
                   />
-                  <Button
-                    onClick={this.handleOpenInputFile}
-                    className={classes.upload}
-                    disabled={uploading}
-                    color="primary"
-                    variant="text"
-                  >
-                    Upload Profile Photo
-                  </Button>
-                </Fragment>
-              ) : null}
-              {/* ( */}
-              {/* <Button */}
-              {/* variant="outlined" */}
-              {/* color="primary" */}
-              {/* className={classes.button} */}
-              {/* onClick={onStudyCircle} */}
-              {/* > */}
-              {/* {this.renderStudyCircle()} */}
-              {/* <Typography */}
-              {/* variant="subtitle1" */}
-              {/* className={classes.buttonText} */}
-              {/* > */}
-              {/* {inStudyCircle ? 'Remove from' : 'Add to'} Study Circle */}
-              {/* </Typography> */}
-              {/* </Button> */}
-              {/* )} */}
+                  {`Joined ${moment(joined).format('MMMM YYYY')}`}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={8} className={classes.gridInfo}>
-              <Typography variant="h2" gutterBottom>
-                {name} {role && <TutorBadge text={role} />}
-              </Typography>
+          </div>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
               <Grid
-                justify='space-between'
                 container
+                direction="column"
               >
-                <Grid item xs={12} md={4} className={classes.status}>
-                  <Typography variant="h4">
-                    {points.toLocaleString()}
-                  </Typography>
-                  <Typography variant="body2" className={classes.statusLabel}>
-                    points
+                <Grid item xs={12}>
+                  <Typography variant="h5" gutterBottom>
+                    {name} {role && <TutorBadge text={role} />}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={2} className={classes.status}>
-                  <Typography variant="h4">
-                    {thanks.toLocaleString()}
-                  </Typography>
-                  <Typography variant="body2" className={classes.statusLabel}>
-                    thanks
+                <Hidden mdUp>
+                  <Grid item xs={12}>
+                    {this.renderNumbers()}
+                  </Grid>
+                </Hidden>
+                {
+                  bio &&
+                    <Grid item xs={12}>
+                      <Typography>
+                        { bio }
+                      </Typography>
+                    </Grid>
+                }
+              </Grid>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Grid
+                container
+                direction="column"
+                className={classes.schoolGrid}
+              >
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    className={classes.typoData}
+                  >
+                    <Hidden smDown>
+                      <img
+                        src={schoolIcon}
+                        alt="School"
+                        className={classes.icon}
+                      />
+                    </Hidden>
+                    {`${school}, ${state}`}
+                    <Hidden mdUp>
+                      <img
+                        src={schoolIcon}
+                        alt="School"
+                        className={classes.icon}
+                      />
+                    </Hidden>
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={2} className={classes.status}>
-                  <Typography variant="h4">
-                    {bestAnswers.toLocaleString()}
-                  </Typography>
-                  <Typography variant="body2" className={classes.statusLabel}>
-                    best answers
+                <Grid item xs={12}>
+                  <Typography>
+                    { major }
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid container>
-                <Grid item xs={12} md={12}>
-                  <Typography
-                    variant="body2"
-                    gutterBottom
-                    className={classes.typoData}
-                  >
-                    <img
-                      src={schoolIcon}
-                      alt="School"
-                      className={classes.icon}
-                    />
-                    {`${school}, ${state}`}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Typography
-                    variant="body2"
-                    gutterBottom
-                    className={classes.typoData}
-                  >
-                    <img
-                      src={calendarIcon}
-                      alt="Calendar"
-                      className={classes.icon}
-                    />
-                    {`Member Since ${moment(joined).format('MMMM YYYY')}`}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={12} hidden={isMyProfile || isCirclein}>
-                  <Button
-                    color="primary"
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item hidden={isMyProfile || isCirclein}>
+                  <GradientButton
+                    startIcon={<Message/>}
                     disabled={chatLoading}
                     onClick={onStartChat}
                   >
-                    Send {firstName} a message
-                  </Button>
+                    message
+                  </GradientButton>
                 </Grid>
-                <Grid item xs={12} md={12} hidden={isMyProfile || isCirclein}>
-                  {
-                    videoEnabled &&
-                    <Button
-                      color="primary"
-                      disabled={chatLoading}
-                      onClick={onStartVideo}
-                    >
-                      Start video study session
-                    </Button>
-                  }
+                <Grid item hidden={isMyProfile || isCirclein || !videoEnabled}>
+                  <TransparentButton
+                    startIcon={<Videocam/>}
+                    disabled={chatLoading}
+                    onClick={onStartVideo}
+                  >
+                    Study Room
+                  </TransparentButton>
                 </Grid>
               </Grid>
             </Grid>
@@ -397,8 +469,8 @@ class Header extends React.PureComponent<Props, State> {
         <Tabs
           value={tab}
           textColor="primary"
-          centered
           onChange={onChange}
+          variant="fullWidth"
           classes={{ root: classes.tabs }}
         >
           <Tab label="Profile" />

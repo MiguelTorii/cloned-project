@@ -12,6 +12,7 @@ import * as feedActions from 'actions/feed';
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models'
+import { apiGetPointsHistory } from '../api/user';
 
 const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -225,3 +226,15 @@ export const getAnnouncement = () => async (dispatch: Dispatch) => {
     }));
   }
 };
+
+export const getPointsHistory = (
+  userId: number,
+  index: number,
+  limit: number,
+  successCb: Function
+) => ({
+  isApiCall: true,
+  type: userActions.GET_POINTS_HISTORY,
+  apiCall: () => apiGetPointsHistory(userId, { index, limit }),
+  successCallback: successCb
+});

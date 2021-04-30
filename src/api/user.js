@@ -16,6 +16,7 @@ import type {
   InviteCard
 } from '../types/models';
 import { getToken } from './utils';
+import callApi from './api_base';
 
 export const getUserProfile = async ({
   userId
@@ -943,4 +944,11 @@ export const apiSetExpertMode = async (userId: string, expert_mode: string): Pro
   } catch (err) {
     return false;
   }
+};
+
+export const apiGetPointsHistory = async (userId: string, params: object): Promise<object> => {
+  return callApi({
+    url: `${API_ROUTES.USER}/${userId}/points_history`,
+    params
+  });
 };

@@ -607,3 +607,12 @@ export type StudyRoomOnboardingStepData = {
   text: string,
   actionText: string
 };
+
+export type PointsHistoryItem = {
+  user_id: number,
+  points_type_id: number,
+  points_title: string,
+  points_icon_url: string,
+  points: number,
+  date: string,
+};

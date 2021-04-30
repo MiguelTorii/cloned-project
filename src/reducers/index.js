@@ -18,6 +18,7 @@ import notifications from './notifications';
 import dialog from './dialog';
 import onboarding from './onboarding';
 import notes from './notes'
+import api from './api';
 
 const routerActions = {
   push: typeof push,
@@ -28,6 +29,7 @@ const routerActions = {
 };
 
 const reducers = {
+  api,
   user,
   chat,
   feed,

@@ -3,7 +3,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialog from '@material-ui/core/Dialog';
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { CircularProgress } from '@material-ui/core'
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -32,15 +32,15 @@ const styles = theme => ({
     fontStretch: 'normal',
     fontWeight: 'bold',
     letterSpacing: 1.1,
-    marginBottom: 16,
+    margin: theme.spacing(2, 0),
     textAlign: 'center'
   },
   closeIcon: {
-    float: 'right',
+    position: 'absolute',
     color: theme.circleIn.palette.primaryText1,
     cursor: 'pointer',
-    marginRight: 20,
-    marginTop: 20
+    right: 20,
+    top: 20
   },
   hr: {
     background: theme.circleIn.palette.appBar,
@@ -138,19 +138,28 @@ const Dialog = ({
     >
       {
         showHeader &&
-        <div>
-          <CloseIcon className={classes.closeIcon} onClick={onCancel} />
-          <hr className={classes.hr} />
-        </div>
+          <div>
+            {
+              title &&
+                (typeof title === 'string' ?
+                  <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
+                  title)
+            }
+            <CloseIcon className={classes.closeIcon} onClick={onCancel} />
+            {
+              title &&
+                <hr className={classes.hr} />
+            }
+          </div>
       }
       <DialogContent
         aria-labelledby='circle-in-dialog-content'
         classes={{ root: contentClassName || classes.contentRoot }}>
         {
-          title &&
-            typeof title === 'string' ?
-            <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
-            title
+          !showHeader && title &&
+            (typeof title === 'string' ?
+              <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
+              title)
         }
         {
           loading

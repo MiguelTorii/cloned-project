@@ -72,8 +72,7 @@ type Props = {
   // lastName: string,
   onClose: Function,
   onSubmit: Function,
-  onUpdateProfileImage: Function,
-  uploading: boolean
+  onUpdateProfileImage: Function
 };
 
 type State = {
@@ -160,25 +159,10 @@ class ProfileEdit extends React.PureComponent<Props, State> {
     this.setState({ [name]: event.target.value });
   };
 
-  handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
-  };
-
-  handleInputChange = () => {
-    const { onUpdateProfileImage } = this.props;
-    if (
-      this.fileInput &&
-      this.fileInput.files &&
-      this.fileInput.files.length > 0
-    )
-      onUpdateProfileImage(this.fileInput.files[0]);
-  };
-
   render() {
     const {
       classes,
       open,
-      uploading,
       onClose
     } = this.props;
     const {
@@ -191,7 +175,6 @@ class ProfileEdit extends React.PureComponent<Props, State> {
     return (
       <Dialog
         className={classes.dialog}
-        disableActions={uploading}
         okTitle="Save"
         onCancel={onClose}
         onOk={this.handleSubmit}

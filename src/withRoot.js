@@ -7,6 +7,7 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'notistack';
+import { responsiveFontSizes } from '@material-ui/core';
 
 const circleInTheme = {
   brand: '#03A9F4',
@@ -51,11 +52,13 @@ const circleInTheme = {
   tooltipBackground: '#3C3D3F',
 };
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   circleIn: {
     palette: {
       white: circleInTheme.white,
       black: circleInTheme.black,
+      gray1: circleInTheme.feedBackground,
+      gray2: circleInTheme.hoverMenu,
       greenInvite: circleInTheme.greenInvite,
       textNormalButton: circleInTheme.textNormalButton,
       sendMessageButton: circleInTheme.sendMessageButton,
@@ -229,8 +232,11 @@ const theme = createMuiTheme({
       }
     },
     MuiPaper: {
+      root: {
+        backgroundColor: circleInTheme.feedBackground
+      },
       rounded: {
-        borderRadius: 10,
+        borderRadius: 10
       }
     },
     MuiBadge: {
@@ -246,6 +252,8 @@ const theme = createMuiTheme({
     }
   }
 });
+
+theme = responsiveFontSizes(theme);
 
 function withRoot(Component: ComponentType<*>) {
   function WithRoot(props: Object) {
