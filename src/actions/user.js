@@ -11,8 +11,9 @@ import isEqual from 'lodash/isEqual'
 import * as feedActions from 'actions/feed';
 import type { Action } from '../types/action'
 import type { Dispatch } from '../types/store';
-import { Announcement } from '../types/models'
+import { Announcement } from '../types/models';
 import { apiGetPointsHistory } from '../api/user';
+import { checkUserSession } from './sign-in';
 
 const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -238,3 +239,23 @@ export const getPointsHistory = (
   apiCall: () => apiGetPointsHistory(userId, { index, limit }),
   successCallback: successCb
 });
+
+
+export const masquerade = (
+  userId: string,
+  refreshToken: string,
+  callback: Function
+) => async (dispatch: Dispatch) => {
+  store.set('REFRESH_TOKEN', refreshToken);
+  store.set('USER_ID', userId);
+
+  const isAuthenticated = await dispatch(checkUserSession());
+
+  if (isAuthenticated) {
+    store.set('MASQUERADING', true);
+  }
+
+  if (callback) {
+    callback(isAuthenticated);
+  }
+};

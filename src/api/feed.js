@@ -5,6 +5,7 @@ import { API_ROUTES } from '../constants/routes';
 import type { Feed } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL } from './utils';
+import { isMasquerading } from '../utils/helpers';
 
 export const fetchFeed = async ({
   userId,
@@ -200,6 +201,10 @@ export const postEvent = async ({
   category: string,
   type: string
 }): Promise<Array<Object>> => {
+
+  // In case of masquerading, don't send events
+  if (isMasquerading()) return true;
+
   try {
     const token = await getToken();
     const result = await axios.post(`${API_ROUTES.EVENT}`, {

@@ -67,7 +67,7 @@
     "react-ga": "^2.5.7",
     "react-graceful-image": "^1.2.12",
     "react-hotjar": "^2.2.0",
-    "react-idle-timer": "^4.6.1",
+    "react-idle-timer": "^4.6.2",
     "react-iframe": "^1.8.0",
     "react-images": "^0.5.19",
     "react-infinite-scroll-component": "^6.1.0",

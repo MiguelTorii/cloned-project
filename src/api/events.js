@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getToken } from './utils';
 
 import { API_ROUTES } from '../constants/routes';
+import { isMasquerading } from '../utils/helpers';
 
 const createEvent = async ({
   category,
@@ -15,6 +16,10 @@ const createEvent = async ({
   objectId: string,
   type: string
 }): void => {
+
+  // In case of masquerading, don't sent events
+  if (isMasquerading()) return true;
+
   try {
     const token = await getToken();
 

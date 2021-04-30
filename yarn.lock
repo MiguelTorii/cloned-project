@@ -11030,10 +11030,10 @@ react-hotjar@^2.2.0:
   resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-2.2.1.tgz#5f06d15a146960262dba612657c828c8b58da8a3"
   integrity sha512-rkHdsFDfI7HCKeAwkHPf8Vq7ZbpX0oE4/5GgVvNambWw8z0PSKKxi59qWYX7H+dDYjchiL3z3hrAFQ+PohgQOA==
 
-react-idle-timer@^4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.6.1.tgz#961ec0f816cda0e3899db43d6145b9de65ba93a6"
-  integrity sha512-3TNDR+fdYEZo9Fxa9vQFeP4FYLzklVc8kqE4gusKHGP/SFaVoeltefC/ngwsJ1C65PxEHNmEa11bUcsPUtev3A==
+react-idle-timer@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.6.2.tgz#25196471b4ebd33b128afe5ab080b96b1b681a66"
+  integrity sha512-EaP/yEhlwdwjd0Jckkg/gxgwLi646S6M9rSDl8/LW18uPoV+vSWS2BLy/ouoNHwpjSIKbO/jn0k+lPODg38XtA==
 
 react-iframe@^1.8.0:
   version "1.8.0"

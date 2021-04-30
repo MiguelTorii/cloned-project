@@ -70,6 +70,7 @@ import ChatChannel from './pages/ChatChannel'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
+import MasqueradeFrame from './containers/MasqueradeFrame';
 
 defaultKatexRender('White')
 
@@ -98,6 +99,7 @@ ReactDOM.render(
         {/* <Tour /> */}
         <UserInitializer />
         <OnboardingPopup />
+        <MasqueradeFrame />
         <ConnectedRouter history={history}>
           <div>
             <FloatingChat />
