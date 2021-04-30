@@ -19,6 +19,8 @@ import AvatarEditor from '../../components/AvatarEditor';
 import { useDispatch } from 'react-redux';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
+import { getTitle } from 'utils/chat'
+
 const styles = (theme) => ({
   validatorForm: {
     flex: 1,
@@ -65,6 +67,10 @@ const styles = (theme) => ({
     top: '50%',
     left: '50%'
   },
+  editDialog: {
+    maxWidth: 609,
+    width: '100%',
+  },
   penButton: {
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
     width: 32,
@@ -84,32 +90,32 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  onClose: Function,
-  onSubmit: Function,
-  onLoadOptions: Function,
-  updateGroupName: Function,
   title: ?string,
   channel: Object,
+  onClose: Function,
+  updateGroupName: Function,
   localChannel: Object
 };
 
 const EditGroupDetailsDialog = ({
-  classes,
   isLoading,
+  classes,
   title,
   channel,
   open,
   onClose,
-  onSubmit,
-  okLabel,
   updateGroupName,
   localChannel
 }: Props) => {
+  const [name, setName] = useState(localChannel.title)
   const dispatch = useDispatch();
-  const [name, setName] = useState(channel?.channelState.friendlyName || "")
   const [isEditingGroupPhoto, setIsEditingGroupPhoto] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [groupImage, setGroupImage] = useState(undefined); // Group Image can be URL or Blob
+
+  useEffect(() => {
+    setName(localChannel.title)
+  }, [localChannel])
 
   useEffect(() => {
     setGroupImage(localChannel.thumbnail);
@@ -131,7 +137,6 @@ const EditGroupDetailsDialog = ({
   }, [setName]);
 
   const handleClose = useCallback(() => {
-    setName('')
     setIsSaving(false);
     onClose()
   }, [onClose]);
@@ -175,12 +180,12 @@ const EditGroupDetailsDialog = ({
     <Dialog
       open={open}
       title={title || "Edit Group Details"}
+      className={classes.editDialog}
       onCancel={handleClose}
     >
       {isLoading && <CircularProgress className={classes.progress}/>}
       <Typography variant='h6' gutterBottom>
-        Are you sure you want to make changes to&nbsp;
-        {channel.channelState.friendlyName}?
+        Are you sure you want to make changes to&nbsp;{name}?
       </Typography>
       <div className={classes.spacer}></div>
       <ValidatorForm

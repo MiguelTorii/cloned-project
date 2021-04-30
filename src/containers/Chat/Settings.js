@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 type Props = {
-  userId: string,
-  schoolId: string,
   channel: Object,
   localChannel: Object,
   permission: Object,
@@ -47,11 +45,9 @@ type Props = {
 };
 
 const Settings = ({
-  userId,
-  schoolId,
   channel,
+  groupName,
   permission,
-  members,
   updateGroupName,
   localChannel
 }: Props) => {
