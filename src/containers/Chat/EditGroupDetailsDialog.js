@@ -19,8 +19,6 @@ import AvatarEditor from '../../components/AvatarEditor';
 import { useDispatch } from 'react-redux';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
-import { getTitle } from 'utils/chat'
-
 const styles = (theme) => ({
   validatorForm: {
     flex: 1,

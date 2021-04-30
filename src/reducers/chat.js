@@ -201,6 +201,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       local: {
         ...state.data.local,
         [action.payload.channel.sid]: {
+          ...state.data.local[action.payload.channel.sid],
           sid: action.payload.channel.sid,
           unread: 0,
           twilioChannel: action.payload.channel,

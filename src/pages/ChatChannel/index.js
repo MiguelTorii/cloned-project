@@ -34,6 +34,7 @@ const ChatChannelPage = (props) => {
   const classes = useStyles();
   const { current: hashId } = useRef(get(props, 'match.params.hashId', ''));
   const [ chatId, setChatId ] = useState('');
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const validateChatId = async () => {
@@ -66,10 +67,11 @@ const ChatChannelPage = (props) => {
   useEffect(() => {
     const channels = get(props, 'chat.data.channels', []);
     const channel = channels.find(e => e.sid === chatId);
-    if (channel) {
+    if (!loaded && channel) {
+      setLoaded(true);
       props.setCurrentChannel(channel);
     }
-  }, [chatId, props]);
+  }, [chatId, props, loaded]);
 
   return (
     <main>
