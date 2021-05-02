@@ -252,10 +252,15 @@ export const masquerade = (
   const isAuthenticated = await dispatch(checkUserSession());
 
   if (isAuthenticated) {
-    store.set('MASQUERADING', true);
+    dispatch(setIsMasquerading(true));
   }
 
   if (callback) {
     callback(isAuthenticated);
   }
 };
+
+export const setIsMasquerading = (isMasquerading: boolean) => ({
+  type: userActions.SET_IS_MASQUERADING,
+  payload: isMasquerading
+});

@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { processMessages, fetchAvatars, getTitle, getAvatar } from 'utils/chat'
+import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
 import InfiniteScroll from 'react-infinite-scroller'
 import uuidv4 from 'uuid/v4'
 import ChatTextField from 'containers/Chat/ChatTextField'

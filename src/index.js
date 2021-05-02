@@ -16,7 +16,7 @@ import Home from 'containers/Home'
 import Classes from 'pages/Classes';
 import defaultKatexRender from 'utils/quill'
 import './wdyr'
-import configureStore, { history } from './configureStore';
+import { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
@@ -71,10 +71,9 @@ import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
+import reduxStore from './configureStore';
 
 defaultKatexRender('White')
-
-const store = configureStore();
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
@@ -94,7 +93,7 @@ axios.defaults.headers.common['x-client-version'] = RELEASE;
 
 ReactDOM.render(
   <ErrorBoundary>
-    <Provider store={store}>
+    <Provider store={reduxStore}>
       <SnackbarProvider>
         {/* <Tour /> */}
         <UserInitializer />

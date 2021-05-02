@@ -11,6 +11,7 @@ import {
 } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { User, Announcement } from '../types/models';
+import store from 'store';
 
 export type UserState = {
   isLoading: boolean,
@@ -72,6 +73,7 @@ const defaultState = {
     lmsTypeId: -1,
     lmsUser: false
   },
+  isMasquerading: !!store.get('MASQUERADING'),
   userClasses: {
     classList: [],
     canAddClasses: false,
@@ -171,6 +173,14 @@ export default (state: UserState = defaultState, action: Action): UserState => {
   case signInActions.SIGN_OUT_USER_SUCCESS:
   case rootActions.CLEAR_STATE:
     return defaultState;
+  case userActions.SET_IS_MASQUERADING: {
+    store.set('MASQUERADING', action.payload);
+    return update(state, {
+      isMasquerading: {
+        $set: action.payload
+      }
+    })
+  }
   case userActions.SYNC_SUCCESS:
     return update(state, {
       syncData: {

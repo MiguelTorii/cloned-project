@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getToken } from './utils';
 
 import { API_ROUTES } from '../constants/routes';
-import { isMasquerading } from '../utils/helpers';
+import reduxStore from '../configureStore';
 
 const createEvent = async ({
   category,
@@ -17,8 +17,8 @@ const createEvent = async ({
   type: string
 }): void => {
 
-  // In case of masquerading, don't sent events
-  if (isMasquerading()) return true;
+  if (reduxStore.getState().user.isMasquerading)
+    return;
 
   try {
     const token = await getToken();

@@ -3,7 +3,6 @@ import { makeStyles, Grid, Typography, Button, Box } from '@material-ui/core';
 import { DesktopMac, Stop } from '@material-ui/icons';
 import withRoot from '../../withRoot';
 import { useDispatch, useSelector } from 'react-redux';
-import store from 'store';
 import { signOut } from '../../actions/sign-in';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +40,7 @@ const MasqueradeFrame = () => {
   const dispatch = useDispatch();
 
   // Whenever userData is updated, the component is re-rendered that the value from the storage is always updated.
-  const isMasquerade = store.get('MASQUERADING') === true;
+  const isMasquerade = useSelector((state) => state.user.isMasquerading);
 
   const handleStop = () => {
     dispatch(signOut());

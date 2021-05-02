@@ -5,7 +5,7 @@ import { API_ROUTES } from '../constants/routes';
 import type { Feed } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL } from './utils';
-import { isMasquerading } from '../utils/helpers';
+import reduxStore from '../configureStore';
 
 export const fetchFeed = async ({
   userId,
@@ -202,8 +202,8 @@ export const postEvent = async ({
   type: string
 }): Promise<Array<Object>> => {
 
-  // In case of masquerading, don't send events
-  if (isMasquerading()) return true;
+  if (reduxStore.getState().user.isMasquerading)
+    return;
 
   try {
     const token = await getToken();
