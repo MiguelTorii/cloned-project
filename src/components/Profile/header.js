@@ -15,8 +15,8 @@ import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
 import schoolIcon from '../../assets/svg/ic_school.svg';
 // $FlowIgnore
-// import LoadImg from '../LoadImg';
-// import ImgEmptyCover from 'assets/img/empty_cover.png';
+import LoadImg from '../LoadImg';
+import ImgEmptyCover from 'assets/img/empty_cover.png';
 import ImgLogo from 'assets/svg/app-logo.svg';
 import { Hidden } from '@material-ui/core';
 import { getPointsText } from '../../utils/helpers';
@@ -46,7 +46,14 @@ const styles = theme => ({
     margin: theme.spacing(-1, -3, 0, -3),
     height: 115,
     overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
+      margin: theme.spacing(-1, -3, 0, -3)
+    },
+    [theme.breakpoints.only('sm')]: {
+      margin: theme.spacing(-1, -3, 0, -3),
+      height: 90
+    },
+    [theme.breakpoints.down('xs')]: {
       margin: theme.spacing(-1, -2, 0, -2),
       height: 70
     }
@@ -326,7 +333,7 @@ class Header extends React.PureComponent<Props, State> {
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <div className={classes.coverContainer}>
-            {/*<LoadImg url={ImgEmptyCover} className={classes.cover} />*/}
+            <LoadImg url={ImgEmptyCover} className={classes.cover} />
           </div>
           <div className={classes.actionContainer}>
             {
@@ -473,7 +480,7 @@ class Header extends React.PureComponent<Props, State> {
           variant="fullWidth"
           classes={{ root: classes.tabs }}
         >
-          <Tab label="Profile" />
+          {/*<Tab label="Profile" />*/}
           <Tab label={isMyProfile ? 'My Posts' : 'Posts'} />
           {isMyProfile && <Tab label="Bookmarks" />}
         </Tabs>

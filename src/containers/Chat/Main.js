@@ -100,7 +100,6 @@ const Main = ({
   onSend
 }) => {
   const classes = useStyles()
-  const [title, setTitle] = useState('')
   const [messages, setMessages] = useState([])
   const [paginator, setPaginator] = useState(null)
   const [hasMore, setHasMore] = useState(false)
@@ -117,6 +116,7 @@ const Main = ({
     if (memberKeys.length !== 2) return null
     return members[memberKeys.find(key => key !== user.data.userId)]
   }, [memberKeys, members, user.data.userId])
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local])
 
   const hasUnregistered = useMemo(() => {
     return Boolean(memberKeys.find(key => !members[key].registered))
@@ -164,7 +164,6 @@ const Main = ({
 
   useEffect(() => {
     const init = async () => {
-      setTitle(getTitle(channel, userId, local[channel.sid].members))
       try {
         channel.setAllMessagesConsumed()
 
@@ -420,7 +419,7 @@ const Main = ({
       <div className={classes.header}>
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && <Grid container justify='space-between'>
-          <Typography className={classes.headerTitle}>{title}</Typography>
+          <Typography className={classes.headerTitle}>{localChannel.title}</Typography>
           { (otherUser?.registered || memberKeys.length > 2) &&
             videoEnabled &&
             <Button
