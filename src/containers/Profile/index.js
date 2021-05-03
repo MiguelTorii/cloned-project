@@ -134,7 +134,7 @@ class Profile extends React.PureComponent<Props, State> {
     chatLoading: false,
     error: false,
     edit: false,
-    tab: 0,
+    tab: 1,
     feedId: null,
     report: null,
     deletePost: null,
@@ -553,15 +553,15 @@ class Profile extends React.PureComponent<Props, State> {
                     />
                   </ErrorBoundary>
                 </Grid>
-                <Grid item xs={12} md={12} hidden={tab !== 0}>
-                  <ErrorBoundary>
-                    <ProfileAbout
-                      isMyProfile={userId === userData.userId}
-                      about={about}
-                      onOpenEdit={this.handleOpenEdit}
-                    />
-                  </ErrorBoundary>
-                </Grid>
+                {/*<Grid item xs={12} md={12} hidden={tab !== 0}>*/}
+                {/*  <ErrorBoundary>*/}
+                {/*    <ProfileAbout*/}
+                {/*      isMyProfile={userId === userData.userId}*/}
+                {/*      about={about}*/}
+                {/*      onOpenEdit={this.handleOpenEdit}*/}
+                {/*    />*/}
+                {/*  </ErrorBoundary>*/}
+                {/*</Grid>*/}
                 {/* <Grid item xs={12} md={12} hidden={tab !== 0}> */}
                 {/* <ErrorBoundary> */}
                 {/* <ProfileSeasons seasons={seasons} /> */}

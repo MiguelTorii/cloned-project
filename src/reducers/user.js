@@ -73,7 +73,7 @@ const defaultState = {
     lmsTypeId: -1,
     lmsUser: false
   },
-  isMasquerading: !!store.get('MASQUERADING'),
+  isMasquerading: store.get('MASQUERADING') === true,
   userClasses: {
     classList: [],
     canAddClasses: false,

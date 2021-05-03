@@ -481,8 +481,8 @@ class Header extends React.PureComponent<Props, State> {
           classes={{ root: classes.tabs }}
         >
           {/*<Tab label="Profile" />*/}
-          <Tab label={isMyProfile ? 'My Posts' : 'Posts'} />
-          {isMyProfile && <Tab label="Bookmarks" />}
+          <Tab label={isMyProfile ? 'My Posts' : 'Posts'} value={1} />
+          {isMyProfile && <Tab label="Bookmarks" value={2}/>}
         </Tabs>
       </div>
     );
