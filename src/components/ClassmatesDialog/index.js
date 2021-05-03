@@ -28,7 +28,6 @@ const ClassmatesDialog = ({
       ...dialogStyle,
       height: 700,
       '& > :first-child': {
-        height: 20,
         zIndex: 999999
       }
     },

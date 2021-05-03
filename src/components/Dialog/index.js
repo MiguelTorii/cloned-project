@@ -32,7 +32,7 @@ const styles = theme => ({
     fontStretch: 'normal',
     fontWeight: 'bold',
     letterSpacing: 1.1,
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(2, 7),
     textAlign: 'center'
   },
   closeIcon: {
@@ -62,6 +62,9 @@ const styles = theme => ({
   },
   removeButton: {
     color: theme.circleIn.palette.danger
+  },
+  headerContainer: {
+    height: 80
   }
 })
 
@@ -138,7 +141,7 @@ const Dialog = ({
     >
       {
         showHeader &&
-          <div>
+          <div className={classes.headerContainer}>
             {
               title &&
                 (typeof title === 'string' ?

@@ -36,7 +36,7 @@ import SharePost from '../SharePost';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ProfileHeader from '../../components/Profile/header';
-import ProfileAbout from '../../components/Profile/about';
+// import ProfileAbout from '../../components/Profile/about';
 // import ProfileSeasons from '../../components/Profile/seasons';
 import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
