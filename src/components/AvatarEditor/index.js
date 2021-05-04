@@ -29,7 +29,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
   const [scale, setScale] = useState(1.0);
   const [angle, setAngle] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
-  const fileInputRef = useRef(null);
+  const [fileInputRef, setFileInputRef] = useState(null);
   const editorRef = useRef(null);
   const disabledActions = useMemo(() => {
     return [scale === 1.0 && 'zoom_out'];
@@ -47,6 +47,12 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
       setImage(originalImage);
     }
   }, [originalImage]);
+
+  useEffect(() => {
+    if (fileInputRef && !originalImage) {
+      handleChangePhoto();
+    }
+  }, [fileInputRef]);
 
   // Event handlers
 
@@ -72,7 +78,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
   }
 
   const handleChangePhoto = () => {
-    fileInputRef.current.click();
+    fileInputRef.click();
   };
 
   const handleImageChange = (event) => {
@@ -159,7 +165,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
       </Grid>
       <Hidden xsUp implementation="css">
         <input
-          ref={fileInputRef}
+          ref={setFileInputRef}
           type="file"
           accept=".png,.jpg"
           onChange={handleImageChange}

@@ -24,8 +24,10 @@ import GradientButton from '../Basic/Buttons/GradientButton';
 import { Message, Videocam, MoreVert, Create } from '@material-ui/icons';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import IconButton from '@material-ui/core/IconButton';
-import type { About } from '../../types/models';
+import type { About, UserProfile } from '../../types/models';
 import _ from 'lodash';
+import PointsHistoryCard from './PointsHistoryCard';
+import Box from '@material-ui/core/Box';
 
 const styles = theme => ({
   container: {
@@ -239,10 +241,12 @@ type Props = {
   isCirclein: boolean,
   roleId: number,
   role: string,
+  profile: UserProfile,
   onStartChat: Function,
   onStartVideo: Function,
   onChange: Function,
   onEditProfile: Function,
+  onSeePointsHistoryDetails: Function,
   about: Array<About>
 };
 
@@ -315,10 +319,12 @@ class Header extends React.PureComponent<Props, State> {
       isCirclein,
       isOnline,
       role,
+      profile,
       onStartChat,
       onStartVideo,
       onChange,
-      onEditProfile
+      onEditProfile,
+      onSeePointsHistoryDetails
       // onStudyCircle
     } = this.props;
 
@@ -473,6 +479,14 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
           </Grid>
         </Paper>
+        <Hidden lgUp>
+          <Box mt={5}>
+            <PointsHistoryCard
+              profile={profile}
+              onSeeMore={onSeePointsHistoryDetails}
+            />
+          </Box>
+        </Hidden>
         <Tabs
           value={tab}
           textColor="primary"

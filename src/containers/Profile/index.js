@@ -47,6 +47,7 @@ import {logEvent} from '../../api/analytics';
 import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
+import Hidden from '@material-ui/core/Hidden';
 
 const styles = theme => ({
   root: {
@@ -545,11 +546,13 @@ class Profile extends React.PureComponent<Props, State> {
                       isOnline={isOnline}
                       role={role}
                       roleId={roleId}
+                      profile={userProfile}
                       onStartChat={this.handleStartChat}
                       onStartVideo={this.handleStartVideo}
                       onChange={this.handleTabChange}
                       onStudyCircle={this.handleStudyCircle}
                       onEditProfile={this.handleEditProfileOpen}
+                      onSeePointsHistoryDetails={() => this.switchPage(PROFILE_PAGES.points_history)}
                     />
                   </ErrorBoundary>
                 </Grid>
@@ -604,12 +607,14 @@ class Profile extends React.PureComponent<Props, State> {
             </Grid>
             <Grid item xs={12} lg={4}>
               <Grid container spacing={4}>
-                <Grid item xs={12}>
-                  <PointsHistoryCard
-                    profile={userProfile}
-                    onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
-                  />
-                </Grid>
+                <Hidden mdDown>
+                  <Grid item xs={12}>
+                    <PointsHistoryCard
+                      profile={userProfile}
+                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
+                    />
+                  </Grid>
+                </Hidden>
               </Grid>
             </Grid>
           </Grid>
