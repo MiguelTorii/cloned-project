@@ -52,6 +52,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
     if (fileInputRef && !originalImage) {
       handleChangePhoto();
     }
+    // eslint-disable-next-line
   }, [fileInputRef]);
 
   // Event handlers
