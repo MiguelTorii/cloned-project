@@ -47,6 +47,14 @@ import questionPost from '../../assets/svg/ic_question_post.svg'
 import thanksSvg from '../../assets/svg/thanks.svg'
 import thankedSvg from '../../assets/svg/thanked.svg'
 import commentSvg from '../../assets/svg/comment.svg'
+import FeedIconFlashcards from '../../assets/svg/flashcards_new.svg';
+import FeedIconResource from '../../assets/svg/links.svg';
+import FeedIconQuestion from '../../assets/svg/questions.svg';
+import FeedIconNote from '../../assets/svg/notes_new.svg';
+import FeedIconPost from '../../assets/svg/posts.svg';
+
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const styles = theme => ({
   root: {
@@ -268,8 +276,44 @@ const styles = theme => ({
   errorMessage: {
     fontSize: 12,
     color: theme.circleIn.palette.danger
+  },
+  titleText: {
+    fontSize: 18
   }
 })
+
+const FeedTypes = {
+  flashcards: {
+    id: 3,
+    url: FeedIconFlashcards,
+    title: 'Flashcards',
+    text_by: 'Created by'
+  },
+  note: {
+    id: 4,
+    url: FeedIconNote,
+    title: 'Notes',
+    text_by: 'Shared by'
+  },
+  resource: {
+    id: 5,
+    url: FeedIconResource,
+    title: 'Resource',
+    text_by: 'Shared by'
+  },
+  question: {
+    id: 6,
+    url: FeedIconQuestion,
+    title: 'Question',
+    text_by: 'Asked by'
+  },
+  post: {
+    id: 0,
+    url: FeedIconPost,
+    title: 'Post',
+    text_by: 'Posted by'
+  }
+};
 
 const FeedItem = ({
   classes,
@@ -393,12 +437,19 @@ const FeedItem = ({
   const ownerId = useMemo(() => data.userId, [data.userId])
 
   const description = useMemo(() => handleDescription(data.typeId, data.body), [data.body, data.typeId, handleDescription])
+  const feedTypeData = useMemo(() => {
+    const type = Object.values(FeedTypes).find((item) => item.id === data.typeId);
+    if (!type) {
+      throw new Error('Unknown Feed Type');
+    }
+    return type;
+  }, [data.typeId]);
 
   const renderImage = useCallback(() => {
     const { numberOfNotes } = data
     const isPdf = data.noteUrl.includes('.pdf')
     switch (data.typeId) {
-    case 3:
+    case FeedTypes.flashcards.id:
       if (!newClassExperience) {
         return (
           <div className={classes.flashCardsImage}>
@@ -418,7 +469,7 @@ const FeedItem = ({
           <FeedFlashcards deck={data.deck} />
         </div>
       )
-    case 4:
+    case FeedTypes.note.id:
       if (!newClassExperience) {
         return (
           <div className={classes.imageContainer}>
@@ -475,12 +526,12 @@ const FeedItem = ({
           }
         </div>
       )
-    case 5:
+    case FeedTypes.resource.id:
       if (!newClassExperience) {
         return <img src={linkPost} className={classes.imagePost} alt="Link" />
       }
       return <LinkPreview uri={data.uri} />
-    case 6:
+    case FeedTypes.question.id:
       return (
         <img
           src={questionPost}
@@ -548,14 +599,7 @@ const FeedItem = ({
         <CardHeader
           className={classes.header}
           avatar={
-            <ButtonBase
-              className={classes.avatar}
-              onClick={handleUserClick}
-            >
-              <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                {initials}
-              </Avatar>
-            </ButtonBase>
+            <Avatar src={feedTypeData.url} />
           }
           action={
             <>
@@ -578,41 +622,11 @@ const FeedItem = ({
             </>
           }
           title={
-            <CardActionArea
-              classes={{
-                focusHighlight: classes.cardHighlight
-              }}
-              onClick={handleUserClick}
-            >
-              <div className={classes.title}>
-                <Typography component="div" variant="h6" noWrap>
-                  {data.name}
-                  {data.role && (
-                    <TutorBadge text={data.role} />
-                  )}
-                </Typography>
-              </div>
-            </CardActionArea>
-          }
-          subheader={
-            <CardActionArea disabled>
-              <div style={{ display: 'flex', alignItems: 'center', color: '#e9ecef' }}>
-                <Typography component="p" noWrap>
-                  {schoolId === '119' && `${data.courseDisplayName}  `}
-                  {data.classroomName}
-                </Typography>
-                <Typography
-                  component="p"
-                  noWrap
-                  style={{ marginRight: 5, marginLeft: 5 }}
-                >
-                  <strong>•</strong>
-                </Typography>
-                <Typography component="p" noWrap>
-                  {fromNow}
-                </Typography>
-              </div>
-            </CardActionArea>
+            <div className={classes.title}>
+              <Typography component="div" variant="h6" noWrap>
+                {feedTypeData.title}
+              </Typography>
+            </div>
           }
         />
         <CardActionArea
@@ -650,6 +664,47 @@ const FeedItem = ({
             ))}
           </CardContent>
         </CardActionArea>
+        <CardActions>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item>
+              <Typography variant="h6" className={classes.titleText}>
+                {feedTypeData.text_by}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <ButtonBase
+                className={classes.avatar}
+                onClick={handleUserClick}
+              >
+                <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                  {initials}
+                </Avatar>
+              </ButtonBase>
+            </Grid>
+            <Grid item>
+              <CardActionArea
+                classes={{
+                  focusHighlight: classes.cardHighlight
+                }}
+                onClick={handleUserClick}
+              >
+                <Typography className={classes.titleText} component="div" variant="h6" noWrap>
+                  {data.name}
+                  {data.role && (
+                    <TutorBadge text={data.role} />
+                  )}
+                </Typography>
+              </CardActionArea>
+            </Grid>
+            <Grid item>
+              <Box ml={2}>
+                <Typography component="p" noWrap>
+                  {fromNow}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </CardActions>
         <CardActions className={classes.actions} disableactionspacing='true'>
           <div className={classes.stats}>
             <Typography
@@ -699,11 +754,13 @@ const FeedItem = ({
         </CardActions>
         {renderMenu}
 
-        <PostComments
-          feedId={data.feedId}
-          postId={data.postId}
-          typeId={data.typeId}
-        />
+        <Box mt={-5}>
+          <PostComments
+            feedId={data.feedId}
+            postId={data.postId}
+            typeId={data.typeId}
+          />
+        </Box>
       </Card>
     </div>
   )
