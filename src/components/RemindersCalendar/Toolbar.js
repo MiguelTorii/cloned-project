@@ -7,19 +7,7 @@ import Fab from '@material-ui/core/Fab';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { navigate } from './utils';
-
-const styles = theme => ({
-  main: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing()
-  },
-  fab: {
-    marginLeft: theme.spacing()
-  }
-});
+import { styles } from '../_styles/RemindersCalendar/Toolbar';
 
 type Props = {
   classes: Object,

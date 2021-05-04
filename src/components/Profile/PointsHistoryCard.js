@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { UserProfile } from '../../types/models';
 import { useDispatch, useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
-import { makeStyles } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
@@ -12,13 +11,7 @@ import Box from '@material-ui/core/Box';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import { getPointsHistory } from '../../actions/user';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2, 3/2),
-    backgroundColor: theme.circleIn.palette.gray1
-  }
-}));
+import { useStyles } from '../_styles/Profile/PointsHistoryCard';
 
 type Props = {
   profile: UserProfile,

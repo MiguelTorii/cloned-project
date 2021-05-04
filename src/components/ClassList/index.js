@@ -3,29 +3,7 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import type { UserState } from '../../reducers/user'
 import type { State as StoreState } from '../../types/state';
-
-const styles = theme => ({
-  addRm: {
-    color: theme.circleIn.palette.action,
-    width: '90%',
-    wordBreak: 'break-word',
-    cursor: 'pointer',
-    whiteSpace: 'initial',
-  },
-  container: {
-    marginLeft: 60,
-  },
-  list: {
-    overflowY: 'scroll',
-    maxHeight: 100,
-  },
-  item: {
-    width: '80%',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  }
-});
+import { styles } from '../_styles/ClassList';
 
 type Props = {
   classes: Object,

@@ -1,45 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'
 import SearchIcon from '@material-ui/icons/Search'
 import Button from '@material-ui/core/Button'
 import LoadImg from 'components/LoadImg'
-import Lightbox from 'react-images';
+import Lightbox from 'react-images'
 import clsx from 'clsx'
-
-const useStyles = makeStyles(theme => ({
-  imgContainer: {
-    position: 'absolute',
-    zIndex: 1,
-    display: 'flex',
-    top: theme.spacing(),
-    left: theme.spacing(),
-    borderRadius: theme.spacing(),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonGroup: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  button: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.8)',
-    },
-    minWidth: 0,
-  },
-  hidden: {
-    display: 'none'
-  }
-}))
+import { useStyles } from '../_styles/SelectedImage'
 
 const SelectedImage = ({
   handleRemoveImg,

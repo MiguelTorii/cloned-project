@@ -5,13 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Chip from '@material-ui/core/Chip';
 
-const styles = () => ({
-  date: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+import { styles } from '../_styles/FloatingChat/ChatMessageDate';
 
 type Props = {
   classes: Object,

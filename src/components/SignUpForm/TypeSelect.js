@@ -4,19 +4,7 @@ import React from 'react';
 import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    margin: theme.spacing(2)
-  },
-  hide: {
-    display: 'none'
-  }
-});
+import { styles } from '../_styles/SignUpForm/TypeSelect';
 
 type Props = {
   classes: Object,

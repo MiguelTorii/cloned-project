@@ -6,29 +6,8 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Dialog, { dialogStyle } from '../Dialog';
-
-const styles = () => ({
-  button: {
-    borderRadius: 8,
-    fontSize: 14,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    lineHeight: '14px',
-    margin: 10,
-    padding: '9px 18px',
-    width: 120,
-  },
-  buttons: {
-    display: 'flex',
-    marginTop: 10,
-    justifyContent: 'flex-end',
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 500
-  }
-});
+import Dialog from '../Dialog';
+import { styles } from '../_styles/SimpleErrorDialog';
 
 type Props = {
   classes: Object,

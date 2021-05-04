@@ -6,48 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { Slot } from '../../types/models';
+import { styles } from '../_styles/SelectedRewards';
 
 const items = [{ key: 1 }, { key: 2 }, { key: 3 }];
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  item: {
-    margin: theme.spacing(),
-    display: 'flex'
-  },
-  avatar: {
-    width: 20,
-    height: 20,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: theme.palette.primary.main,
-    backgroundColor: 'transparent',
-    color: theme.palette.primary.main,
-    marginRight: theme.spacing()
-  },
-  card: {
-    width: 180,
-    height: 120,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  image: {
-    width: 'auto',
-    maxWidth: 120,
-    height: 'auto',
-    maxHeight: 50
-  },
-  progress: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: theme.spacing(2)
-  }
-});
 
 type Props = {
   classes: Object,

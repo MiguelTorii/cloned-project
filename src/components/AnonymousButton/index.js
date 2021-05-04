@@ -2,15 +2,7 @@ import React, { memo, useMemo } from 'react'
 import anon from 'assets/svg/anon.svg'
 import anoff from 'assets/svg/anoff.svg'
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    cursor: 'pointer',
-    marginLeft: theme.spacing(),
-    padding: 0
-  }
-}))
+import { useStyles } from '../_styles/AnonymousButton';
 
 const AnonymousButton = ({
   active = false,

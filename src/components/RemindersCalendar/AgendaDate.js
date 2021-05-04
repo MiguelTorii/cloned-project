@@ -3,10 +3,7 @@
 
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-const styles = () => ({
-  main: {}
-});
+import { styles } from '../_styles/RemindersCalendar/AgendaDate';
 
 type Props = {
   classes: Object

@@ -14,39 +14,10 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 import ClassesSelector from '../../containers/ClassesSelector';
 import OutlinedTextValidator from '../OutlinedTextValidator';
-
-const styles = theme => ({
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(),
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  formControl: {
-    padding: theme.spacing(2)
-  },
-  picker: {
-    padding: theme.spacing(2)
-  },
-  wrapper: {
-    margin: theme.spacing(),
-    position: 'relative'
-  },
-  progress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 600
-  }
-});
+import { styles } from '../_styles/VideoPointsDialog';
 
 type Props = {
   classes: Object,

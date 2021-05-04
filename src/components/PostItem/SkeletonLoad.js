@@ -3,21 +3,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = theme => ({
-  root: {
-    width: '100%'
-  },
-  skeletonLoad: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  skeletonComment: {
-    width: '100%',
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(2)
-  }
-})
+import { styles } from '../_styles/PostItem/SkeletonLoad';
 
 const SkeletonLoad = ({ classes }) => {
   return (

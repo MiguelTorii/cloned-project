@@ -4,14 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '../Dialog';
 
-const styles = () => ({
-  details: {
-    '& img': {
-      width: '100% !important',
-      height: 'auto !important'
-    }
-  }
-});
+import { styles } from '../_styles/Notifications/CustomNotification';
 
 type Props = {
   classes: Object,

@@ -4,11 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { TextValidator } from 'react-material-ui-form-validator';
 import FormControl from '@material-ui/core/FormControl';
 
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(2)
-  }
-});
+import { styles } from '../_styles/OutlinedTextValidator';
 
 type Props = {
   classes: Object,

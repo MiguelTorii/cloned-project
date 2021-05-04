@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import withRoot from '../../withRoot';
 import Dialog from '../Dialog';
-import { makeStyles, Button, Grid, Box } from '@material-ui/core';
+import { Button, Grid, Box } from '@material-ui/core';
 import TextField from '../Basic/TextField';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import GradientButton from '../Basic/Buttons/GradientButton';
@@ -11,24 +11,7 @@ import { Create } from '@material-ui/icons';
 import { avatarTextFromName } from '../../utils/helpers';
 import type { About, UserProfile } from '../../types/models';
 import _ from 'lodash';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 610,
-    maxWidth: '100%',
-    marginLeft: 0,
-  },
-  penButton: {
-    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
-    width: 32,
-    height: 32,
-    minWidth: 32,
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    borderRadius: '100%'
-  },
-}));
+import { useStyles } from '../_styles/Profile/EditProfileModal';
 
 type Props = {
   profile: UserProfile,

@@ -15,36 +15,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 // import FormHelperText from '@material-ui/core/FormHelperText';
-import green from '@material-ui/core/colors/green';
 import { grades } from '../../constants/clients';
-
-const styles = theme => ({
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing()
-  },
-  hide: {
-    display: 'none'
-  },
-  actions: {
-    display: 'flex'
-  },
-  button: {
-    margin: theme.spacing()
-  },
-  wrapper: {
-    margin: theme.spacing(),
-    position: 'relative'
-  },
-  buttonProgress: {
-    color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12
-  }
-});
+import { styles } from '../_styles/SignUpForm/AccountForm';
 
 type Props = {
   classes: Object,

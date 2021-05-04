@@ -1,12 +1,12 @@
 // @flow
 
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import queryString from 'query-string'
 import Tooltip from '../../containers/Tooltip';
+import { useStyles } from '../_styles/MainLayout/SubMenu';
 
 type Props = {
   MyLink: Function,
@@ -18,26 +18,7 @@ const SubItems = ({
   openClassmatesDialog,
   createPostOpen
 }: Props) => {
-  const classes = makeStyles(theme => ({
-    item: {
-      width: 'auto',
-      borderRadius: theme.spacing(6),
-      paddingTop: 0,
-      paddingBottom: 0,
-      marginLeft: theme.spacing(5),
-      marginRight: theme.spacing(3),
-      '&:hover': {
-        background: theme.circleIn.palette.primaryText2
-      },
-    },
-    currentPath: {
-      background: theme.circleIn.palette.modalBackground,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: 600,
-    }
-  }))()
+  const classes = useStyles()
 
   const { pathname, search } = window.location
   const qs = queryString.parse(search)

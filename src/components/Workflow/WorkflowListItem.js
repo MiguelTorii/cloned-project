@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 // import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 // import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -15,6 +15,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Chip from '@material-ui/core/Chip'
 import cx from 'classnames'
 import Typography from '@material-ui/core/Typography'
+import { useStyles } from '../_styles/Workflow/WorkflowListItem'
 
 const getTitle = (downMd, downSm, downXs, title) => {
   if (downXs) return title
@@ -29,68 +30,6 @@ const getStyles = hide => {
     height: hide ? 0 : ""
   }
 }
-
-const useStyles = makeStyles(theme => ({
-  detailsButton: {
-    padding: theme.spacing(0, 1),
-    color: theme.circleIn.palette.action,
-    '& .MuiButtonBase-root': {
-      minHeight: 0,
-    }
-  },
-  dragIcon: {
-    height: 20,
-  },
-  dragContainer: {
-    position: 'absolute',
-    left: 0,
-    cursor: 'grab',
-  },
-  item: {
-    paddingLeft: theme.spacing(3),
-    cursor: 'pointer',
-    minHeight: 40,
-    position: 'relative',
-  },
-  chip: {
-    color: theme.circleIn.palette.primaryText1,
-    fontWeight: 'bold'
-  },
-  dateText: {
-    fontSize: 12,
-    padding: 0,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  itemDetails: {
-    cursor: 'pointer',
-    textAlign: 'left'
-  },
-  taskTitle: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    fontWeight: 'bold',
-    fontSize: 14
-  },
-  ellipsis: {
-    maxWidth: '100%',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
-  titleContainer: {
-    alignItems: 'center',
-    display: 'flex'
-  },
-  empty: {
-    height: '100%',
-    width: '100%'
-  },
-  iconButton: {
-    padding: 0
-  }
-}))
 
 const noOp = () => {}
 

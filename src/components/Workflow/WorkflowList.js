@@ -3,29 +3,10 @@ import React, { useContext, useMemo } from 'react'
 import WorkflowBox from 'components/Workflow/WorkflowBox'
 import DragPreview from 'components/Workflow/DragPreview'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
 import { workflowCategories } from 'constants/common'
 import cx from 'classnames'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
-
-const useStyles = makeStyles(theme => ({
-  item: {
-  },
-  headerText: {
-    color: theme.circleIn.palette.primaryText2,
-    textAlign: 'center'
-  },
-  classText: {
-    color: theme.circleIn.palette.primaryText2,
-  },
-  columnContainer: {
-    display: 'flex',
-  },
-  container: {
-    width: 'fit-content',
-    marginRight: theme.spacing()
-  }
-}))
+import { useStyles } from '../_styles/Workflow/WorkflowList'
 
 const WorkflowList = () => {
   const { tasks, listView } = useContext(WorkflowContext)

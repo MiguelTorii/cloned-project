@@ -6,24 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import appStore from '../../assets/img/app-store.png';
 import googlePlay from '../../assets/img/google-play.png';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  button: {
-    width: '100%',
-    cursor: 'pointer',
-    margin: theme.spacing(2)
-  },
-  img: {
-    width: '100%'
-  }
-});
+import { styles } from '../_styles/OpenApp';
 
 type Props = {
   classes: Object

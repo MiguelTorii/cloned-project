@@ -18,70 +18,16 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 import type { SelectType } from '../../types/models';
 import OnlineBadge from 'components/OnlineBadge';
+import { styles } from '../_styles/AutoComplete';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
 )
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
-  input: {
-    display: 'flex',
-    padding: theme.spacing(1, 0)
-  },
-  valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden'
-  },
-  chip: {
-    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
-    maxWidth: 160,
-    backgroundColor: theme.palette.primary.main
-  },
-  chipFocused: {
-    backgroundColor: emphasize(
-      theme.palette.type === 'light'
-        ? theme.palette.grey[300]
-        : theme.palette.grey[700],
-      0.08
-    )
-  },
-  noOptionsMessage: {
-    padding: `${theme.spacing()}px ${theme.spacing(2)}px`
-  },
-  placeholder: {
-    position: 'absolute',
-    left: 12,
-    fontSize: 12,
-    opacity: 0.7
-  },
-  paper: {
-    zIndex: 100,
-    marginTop: theme.spacing(),
-    left: 0,
-    right: 0
-  },
-  paperAbsolute: {
-    position: 'absolute',
-  },
-  paperRelative: {
-    position: 'relatve',
-  },
-  errorLabel: {
-    paddingLeft: 12
-  }
-});
 
 function NoOptionsMessage({ selectProps, innerProps, children }) {
   return (

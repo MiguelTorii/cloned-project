@@ -1,52 +1,13 @@
 import React, { useCallback, useState, useRef } from 'react'
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation'
 import Tooltip from '@material-ui/core/Tooltip'
-import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import Popper from '@material-ui/core/Popper'
 import Fade from '@material-ui/core/Fade'
 import Paper from '@material-ui/core/Paper'
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 import { Draggable } from '@fullcalendar/interaction'
-
-const useStyles = makeStyles(theme => ({
-  iconInsert: {
-    position: 'absolute',
-    bottom: -4,
-    left: -10,
-  },
-  tooltip: {
-    fontSize: 14,
-  },
-  title: {
-    maxWidth: 200,
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    fontWeight: 'bold',
-  },
-  card: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'grab',
-    marginBottom: theme.spacing(1/2),
-    borderRadius: theme.spacing(1/2),
-    padding: theme.spacing(1/2),
-    fontSize: 12,
-  },
-  popper: {
-    padding: theme.spacing(),
-    borderRadius: theme.spacing(),
-    background: theme.circleIn.palette.flashcardBackground,
-  },
-  innerPopper: {
-    maxHeight: 100,
-    overflow: 'auto',
-  },
-  dragIcon: {
-    fontSize: 14
-  }
-}))
+import { useStyles } from '../_styles/Workflow/CalendarEmptyDateTasks'
 
 const CalendarEmptyDateTasks = ({ tasksEmptyDate, onOpenEdit }) => {
   const classes = useStyles()

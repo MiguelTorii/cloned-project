@@ -6,26 +6,9 @@ import {
 } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 import AutoComplete from '../AutoComplete';
-
-const styles = () => ({
-  validatorForm: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-  },
-  input: {
-    display: 'none'
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 800
-  }
-});
+import { styles } from '../_styles/CreateChatChannelDialog';
 
 type Props = {
   classes: Object,

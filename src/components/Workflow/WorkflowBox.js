@@ -1,6 +1,5 @@
 // @flow
 import React, { memo, useContext, useMemo, useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import WorkflowItem from 'components/Workflow/WorkflowItem'
 import List from '@material-ui/core/List'
 import { useDrop } from 'react-dnd'
@@ -8,20 +7,7 @@ import WorkflowListBox from 'components/Workflow/WorkflowListBox'
 import WorkflowBoardBox from 'components/Workflow/WorkflowBoardBox'
 import { Motion, spring } from "react-motion"
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
-
-const useStyles = makeStyles(() => ({
-  header: {
-    fontWeight: 'bold',
-    fontSize: 20
-  },
-  list: {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    width: '100%',
-    padding: 0
-  },
-}))
+import { useStyles } from '../_styles/Workflow/WorkflowBox'
 
 const getHeight = text => {
   const el = document.createElement('div')

@@ -1,25 +1,12 @@
 import React, { useMemo } from 'react';
-import { makeStyles, Avatar as MuiAvatar } from '@material-ui/core';
+import { Avatar as MuiAvatar } from '@material-ui/core';
 import withRoot from '../../withRoot';
+import { useStyles } from '../_styles/Avatar';
 
 export const DEFAULT_AVATAR_SIZE = {
   desktop: 124,
   mobile: 60
 };
-
-const useStyles = makeStyles((theme) => ({
-  avatar: {
-    [theme.breakpoints.down('sm')]: {
-      width: (props) => props.mobileSize || DEFAULT_AVATAR_SIZE.mobile,
-      height: (props) => props.mobileSize || DEFAULT_AVATAR_SIZE.mobile
-    },
-    [theme.breakpoints.up('md')]: {
-      width: (props) => props.desktopSize || DEFAULT_AVATAR_SIZE.desktop,
-      height: (props) => props.desktopSize || DEFAULT_AVATAR_SIZE.desktop
-    },
-    fontSize: theme.typography.h2.fontSize
-  }
-}));
 
 type Props = {
   src: string,

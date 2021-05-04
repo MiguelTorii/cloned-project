@@ -2,45 +2,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 
-const styles = theme => ({
-  circleIn: {
-    color: theme.circleIn.palette.action
-  },
-  downloadIosButton: {
-    display: 'block',
-    color:'#000000',
-    textDecoration: 'none',
-    fontFamily: 'Helvetica, arial, sans-serif',
-    fontSize: 16,
-    borderRadius: 8,
-    margin: 5,
-    height: 45
-  },
-  downloadAndroidButton: {
-    display: 'block',
-    color: '#000000',
-    textDecoration: 'none',
-    fontFamily: 'Helvetica, arial, sans-serif',
-    fontSize: 16,
-    height: 45,
-  },
-  downloadColumn: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column'
-  },
-  downloads: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 600,
-  }
-});
+import { styles } from '../_styles/GetApp';
 
 type Props = {
   classes: Object,

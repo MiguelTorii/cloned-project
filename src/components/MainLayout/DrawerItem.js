@@ -1,19 +1,10 @@
 import React, { useState, useCallback, memo } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 
-const useStyles = makeStyles((theme) => ({
-  menuIcon: {
-    marginRight: theme.spacing(),
-    maxHeight: 28,
-    maxWidth: 28,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-}))
+import { useStyles } from '../_styles/MainLayout/DrawerItem';
 
 const DrawerItem = ({
   onClick = () => {},

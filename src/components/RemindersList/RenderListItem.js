@@ -16,29 +16,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LabelIcon from '@material-ui/icons/Label';
 import Badge from '@material-ui/core/Badge';
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import grey from '@material-ui/core/colors/grey';
 import type { ToDos } from '../../types/models';
-
-const styles = theme => ({
-  red: {
-    color: red[500]
-  },
-  blue: {
-    color: blue[500]
-  },
-  green: {
-    color: green[500]
-  },
-  grey: {
-    color: grey[500]
-  },
-  margin: {
-    padding: `0 ${theme.spacing()}px`
-  }
-});
+import { styles } from '../_styles/RemindersList/RenderListItem';
 
 type Props = {
   classes: Object,

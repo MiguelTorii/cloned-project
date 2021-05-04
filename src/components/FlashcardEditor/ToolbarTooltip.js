@@ -1,19 +1,7 @@
 import React, { useCallback, useReducer, useEffect } from 'react'
 import Tooltip from '@material-ui/core/Tooltip'
-import { makeStyles } from '@material-ui/core/styles'
 
-
-const useStyles = makeStyles(() => ({
-  tooltipContainer: {
-    textAlign: 'center'
-  },
-  tooltip: {
-    fontSize: 14,
-  },
-  popper: {
-    zIndex: 1500,
-  }
-}))
+import { useStyles } from '../_styles/FlashcardEditor/ToolbarTooltip';
 
 const ctrl = window.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'
 

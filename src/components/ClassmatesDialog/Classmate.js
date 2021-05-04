@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import * as chatActions from 'actions/chat';
 import { bindActionCreators } from 'redux';
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -22,45 +21,7 @@ import clsx from 'clsx'
 import OnlineBadge from 'components/OnlineBadge';
 import InviteIcon from 'assets/svg/invite-icon.svg'
 
-const useStyles = makeStyles(theme => ({
-  textRoot: {
-    width: 0
-  },
-  fullname: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    color: theme.circleIn.palette.primaryText1
-  },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  sendMessage: {
-    fontWeight: 'bold',
-    backgroundColor: theme.circleIn.palette.sendMessageButton,
-    borderRadius: theme.spacing(2),
-    minWidth: 163,
-    color: theme.circleIn.palette.textOffwhite
-  },
-  videoChat: {
-    fontWeight: 'bold',
-    color: theme.circleIn.palette.textOffwhite,
-    marginLeft: theme.spacing(),
-    backgroundColor: theme.circleIn.palette.brand,
-    minWidth: 163,
-    borderRadius: theme.spacing(2),
-  },
-  invite: {
-    fontWeight: 'bold',
-    color: theme.circleIn.palette.textOffwhite,
-    minWidth: 163,
-    marginLeft: theme.spacing(),
-    backgroundColor: theme.circleIn.palette.greenInvite,
-    borderRadius: theme.spacing(2),
-  }
-}));
+import { useStyles } from '../_styles/ClassmatesDialog/Classmate';
 
 type ClassmateType = {
   userId: string,

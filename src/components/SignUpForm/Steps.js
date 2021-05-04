@@ -6,16 +6,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-const styles = theme => ({
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing()
-  },
-  hide: {
-    display: 'none'
-  }
-});
+import { styles } from '../_styles/SignUpForm/Steps';
 
 type Props = {
   classes: Object,

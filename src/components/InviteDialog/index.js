@@ -1,15 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog from 'components/Dialog';
+import { useStyles } from '../_styles/InviteDialog';
 
 const InviteDialog = ({ handleClose, open }) => {
-  const classes = makeStyles(() => ({
-    dialog: {
-      ...dialogStyle,
-      width: 600
-    }
-  }))()
+  const classes = useStyles()
 
   return (
     <div>

@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { getClassmates } from 'api/chat'
 import { getReferralProgram } from 'api/referral';
 import { getCampaign } from 'api/campaign';
@@ -8,10 +7,11 @@ import List from '@material-ui/core/List';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog from 'components/Dialog';
 import { ReferralInvite } from 'containers/Referrals';
-import Classmate from 'components/ClassmatesDialog/Classmate'
-import { decypherClass } from 'utils/crypto'
+import Classmate from 'components/ClassmatesDialog/Classmate';
+import { decypherClass } from 'utils/crypto';
+import { useStyles } from '../_styles/ClassmatesDialog/index'
 
 const ClassmatesDialog = ({
   meetingInvite = false,
@@ -23,38 +23,7 @@ const ClassmatesDialog = ({
   courseDisplayName,
   selectedClasses
 }) => {
-  const classes = makeStyles(theme => ({
-    dialog: {
-      ...dialogStyle,
-      height: 700,
-      '& > :first-child': {
-        zIndex: 999999
-      }
-    },
-    contentClassName: {
-      '& > #circle-in-dialog-title': {
-        borderBottom: `1px solid ${theme.circleIn.palette.white}`,
-        paddingBottom: theme.spacing(3)
-      }
-    },
-    searchInput: {
-      padding: theme.spacing(3)
-    },
-    link: {
-      color: theme.circleIn.palette.action,
-      cursor: 'pointer',
-      display: 'inline',
-      paddingLeft: 3
-    },
-    list: {
-      overflowY: 'scroll'
-    },
-    courseDisplayName: {
-      fontSize: 24,
-      textDecoration: 'italic',
-      padding: '16px 8px',
-    }
-  }))()
+  const classes = useStyles()
 
   const [classmates, setClassmates] = useState([])
   const [searchKey, setSearchKey] = useState('')

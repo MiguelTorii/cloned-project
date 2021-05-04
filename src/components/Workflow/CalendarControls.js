@@ -1,43 +1,12 @@
 import React, {useMemo, useCallback, useEffect, useState} from 'react'
 import Grid from '@material-ui/core/Grid'
-import {makeStyles} from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Typography from '@material-ui/core/Typography'
 // import CalendarEmptyDateTasks from 'components/Workflow/CalendarEmptyDateTasks'
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginBottom: theme.spacing()
-  },
-  button: {
-    fontSize: 18,
-    padding: theme.spacing(1, 2)
-  },
-  today: {
-    fontWeight: 'bold',
-    marginLeft: theme.spacing()
-  },
-  iconButton: {
-    padding: theme.spacing(),
-    '& .MuiSvgIcon-root': {
-      fontSize: 20
-    }
-  },
-  title: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 24,
-  },
-  titleContainer: {
-    position: 'relative'
-  },
-  addTask: {
-    textAlign: 'end'
-  }
-}))
+import { useStyles } from '../_styles/Workflow/CalendarControls'
 
 const CalendarControls = ({
   // currentCalendarView,

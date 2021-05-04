@@ -2,12 +2,12 @@ import React, { useState, useCallback } from "react";
 import cx from 'classnames'
 import { Quill } from "react-quill";
 
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import EmojiSelector from 'components/EmojiSelector';
+import { useStyles } from '../_styles/PostItem/Toolbar';
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
@@ -16,67 +16,6 @@ Link.sanitize = function link(url) {
   }
   return url
 }
-
-const useStyles = makeStyles(() => ({
-  toolbar: {
-    textAlign: 'center',
-    bottom: 0,
-    right: 0,
-    position: 'absolute',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    '& .ql-formats': {
-      marginRight: 0
-    }
-  },
-  tooltip: {
-    fontSize: 14,
-  },
-  popper: {
-    zIndex: 1500
-  },
-  openSelectBox: {
-    zIndex: 2000
-  },
-  firstline: {},
-  secondline: {},
-  hidden: { display: 'none' },
-  highlighter: {
-    height: 14,
-    width: 14,
-    '&:hover': {
-      color: '#06c'
-    }
-  },
-  highlighterContainer: {
-    textAlign: 'center',
-    paddingTop: 0.5
-  },
-  emoji: {
-    display: 'flex !important',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  emoIconStyle: {
-    width: 20
-  },
-  moreHoriz: {
-    display: 'flex !important'
-  },
-  subToolbar: {
-    position: 'absolute',
-    top: -35,
-    right: 70,
-    border: '1px solid',
-    borderRadius: 5
-  },
-  show: {
-    display: 'inline-flex'
-  },
-  hide: {
-    display: 'none !important'
-  }
-}));
 
 export const formats = [
   "bold",

@@ -8,28 +8,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 import AutoComplete from '../AutoComplete';
 
-const styles = theme => ({
-  validatorForm: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    height: '65vh',
-    marginTop: theme.spacing(2)
-  },
-  input: {
-    display: 'none'
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 600
-  }
-});
+import { styles } from '../_styles/FloatingChat/AddMembers';
 
 type Props = {
   classes: Object,

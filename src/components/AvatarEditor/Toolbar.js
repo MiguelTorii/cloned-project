@@ -1,16 +1,9 @@
 import React from 'react';
 import withRoot from 'withRoot';
-import { makeStyles, Paper, Grid, IconButton } from '@material-ui/core';
+import { Paper, Grid, IconButton } from '@material-ui/core';
 import { ZoomIn, ZoomOut, RotateRight, RotateLeft } from '@material-ui/icons';
+import { useStyles } from '../_styles/AvatarEditor/Toolbar';
 import _ from 'lodash';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(0.5, 0),
-    border: 'solid 1px rgba(255, 255, 255, .25)',
-    borderRadius: 20
-  }
-}));
 
 type Props = {
   onAction: Function,

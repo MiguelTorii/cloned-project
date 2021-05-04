@@ -9,39 +9,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Quests from './Quests';
 import type { QuestsCard as QuestsCardState } from '../../types/models';
 import { renderText } from '../HomeGridList/utils';
+import { styles } from '../_styles/QuestsCard/index';
 
 // const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
-
-const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    height: '100%'
-  },
-  status: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.spacing()
-  },
-  links: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.spacing()
-  },
-  link: {
-    color: theme.palette.primary.main
-  },
-  progress: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: theme.spacing(2)
-  }
-});
 
 type Props = {
   classes: Object,

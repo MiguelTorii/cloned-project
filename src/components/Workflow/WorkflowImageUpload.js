@@ -9,75 +9,14 @@ import uuidv4 from 'uuid/v4'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import AddIcon from '@material-ui/icons/Add'
 import Grid from '@material-ui/core/Grid'
-import {makeStyles} from '@material-ui/core/styles'
 import axios from 'axios'
 import update from 'immutability-helper'
 import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import { getPresignedURLs } from '../../api/media'
-
-const useStyles = makeStyles(theme => ({
-  dropLabel: {
-    width: '100%'
-  },
-  addIcon: {
-    fontSize: theme.spacing(4)
-  },
-  dropZone: {
-    position: 'relative',
-    width: '100%',
-    minHeight: 50,
-    borderStyle: 'dashed',
-    marginTop: theme.spacing(2),
-    borderWidth: 1,
-    borderColor: theme.circleIn.palette.primaryText1,
-    cursor: 'pointer',
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5
-  },
-  stackbar: {
-    backgroundColor: theme.circleIn.palette.snackbar,
-    color: theme.circleIn.palette.primaryText1
-  },
-  uploadContainer: {
-    padding: theme.spacing(2, 0)
-  },
-  image: {
-    maxHeight: 150,
-    position: 'absolute',
-    left: '-50%',
-  },
-  imagesContainer: {
-    overflow: 'auto'
-  },
-  buttonImage: {
-    height: 150,
-  },
-  imageContainer: {
-    position: 'relative',
-    marginRight: theme.spacing(),
-    marginTop: theme.spacing(),
-    overflow: 'hidden',
-    height: 150,
-    width: 100
-  },
-  iconButton: {
-    zIndex: 1,
-    position: 'absolute',
-    right: 5,
-    padding: 0,
-    background: 'rgba(255, 255, 255, 0.5)'
-  },
-  icon: {
-    color: theme.circleIn.palette.normalButtonText1
-  }
-}))
+import { useStyles } from '../_styles/Workflow/WorkflowImageUpload'
 
 const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
   const { userId, enqueueSnackbar } = useContext(WorkflowContext)

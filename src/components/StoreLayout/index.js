@@ -4,27 +4,7 @@ import type { Node } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
-const styles = theme => ({
-  container: {
-    maxHeight: 'inherit',
-    display: 'flex',
-    padding: theme.spacing()
-  },
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(8),
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    justifyContent: 'space-between',
-    overflowY: 'auto'
-  }
-});
+import { styles } from '../_styles/StoreLayout';
 
 type Props = {
   classes: Object,

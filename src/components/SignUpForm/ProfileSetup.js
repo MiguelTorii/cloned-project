@@ -14,44 +14,10 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 // import Typography from '@material-ui/core/Typography';
 // import Divider from '@material-ui/core/Divider';
-import green from '@material-ui/core/colors/green';
 // import AutoComplete from '../AutoComplete';
 // import type { SelectType } from '../../types/models';
 import { states } from '../../constants/clients';
-
-const styles = theme => ({
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing()
-  },
-  hide: {
-    display: 'none'
-  },
-  formControl: {
-    marginBottom: theme.spacing(2)
-  },
-  title: {
-    margin: theme.spacing(2)
-  },
-  actions: {
-    display: 'flex'
-  },
-  button: {
-    margin: theme.spacing()
-  },
-  wrapper: {
-    margin: theme.spacing(),
-    position: 'relative'
-  },
-  buttonProgress: {
-    color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12
-  }
-});
+import { styles } from '../_styles/SignUpForm/ProfileSetup';
 
 type Props = {
   classes: Object,

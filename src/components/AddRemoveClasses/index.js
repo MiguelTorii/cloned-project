@@ -27,48 +27,8 @@ import * as notificationsActions from '../../actions/notifications';
 import * as userActions from '../../actions/user';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import Dialog, { dialogStyle } from '../Dialog';
-
-const styles = theme => ({
-  circleIn: {
-    color: theme.circleIn.palette.action
-  },
-  list: {
-    overflowY: 'scroll',
-  },
-  stackbar: {
-    color: theme.circleIn.palette.primaryText1
-  },
-  dialog: {
-    ...dialogStyle,
-    height: 700,
-    width: 700,
-  },
-  optionItem: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%'
-  },
-  optionName: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  optionButton: {
-    borderRadius: 8,
-    fontWeight: 'bold',
-    marginLeft: 10,
-    padding: '2px 16px',
-    width: 50,
-  },
-  autocomplete: {
-    marginBottom: 20,
-    width: '100%'
-  },
-  paper: {
-    background: theme.circleIn.palette.appBar
-  }
-});
+import Dialog from '../Dialog';
+import { styles } from '../_styles/AddRemoveClasses';
 
 type Props = {
   classes: Object,

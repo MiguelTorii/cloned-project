@@ -7,14 +7,7 @@ import Popover from '@material-ui/core/Popover';
 import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
 import 'emoji-mart/css/emoji-mart.css';
 
-const styles = () => ({
-  button: {
-    padding: 10
-  },
-  poper: {
-    zIndex: '1700 !important'
-  }
-});
+import { styles } from '../_styles/EmojiSelector';
 
 type Props = {
   classes: Object,

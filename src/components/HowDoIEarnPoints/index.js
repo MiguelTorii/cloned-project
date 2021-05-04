@@ -2,14 +2,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Dialog, { dialogStyle } from '../Dialog';
+import Dialog from '../Dialog';
 
-const styles = () => ({
-  dialog: {
-    ...dialogStyle,
-    width: 400,
-  }
-});
+import { styles } from '../_styles/HowDoIEarnPoints';
 
 type Props = {
   classes: Object,

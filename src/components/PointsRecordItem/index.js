@@ -2,25 +2,14 @@ import React, { useMemo } from 'react';
 import withRoot from '../../withRoot';
 import type { PointsHistoryItem } from '../../types/models';
 import Paper from '@material-ui/core/Paper';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import LoadImg from '../LoadImg';
 import Typography from '@material-ui/core/Typography';
 import { momentWithTimezone } from '../../utils/helpers';
 import moment from 'moment';
 
+import { useStyles } from '../_styles/PointsRecordItem';
 const IMAGE_SIZE = 32;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3/2),
-    backgroundColor: theme.circleIn.palette.gray2
-  },
-  image: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE,
-    marginRight: theme.spacing(1)
-  }
-}));
 
 type Props = {
   data: PointsHistoryItem

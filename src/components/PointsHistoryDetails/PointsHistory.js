@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import withRoot from 'withRoot';
 import {
   Hidden,
-  makeStyles,
   Paper,
   Typography,
   Box,
@@ -18,14 +17,7 @@ import GradientButton from '../Basic/Buttons/GradientButton';
 import { isApiCalling } from 'utils/helpers';
 import { userActions } from 'constants/action-types';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3, 2),
-  },
-  scroller: {
-    overflow: 'hidden !important'
-  }
-}));
+import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 
 type Props = {
   userId: number,

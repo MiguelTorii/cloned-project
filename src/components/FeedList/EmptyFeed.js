@@ -13,7 +13,6 @@ import EmptyAddProfilePhotoTwo from 'assets/svg/empty_add_profile_photo_two.svg'
 import EmptyClassGroupChatOne from 'assets/svg/empty_class_group_chat_one.svg'
 import EmptyClassGroupChatTwo from 'assets/svg/empty_class_group_chat_two.svg'
 import EmptyInvite from 'assets/svg/empty_invite.svg'
-import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as chatActions from 'actions/chat'
@@ -34,57 +33,8 @@ import { postEvent } from 'api/feed'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
 import cx from 'classnames'
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    padding: theme.spacing(),
-    paddingTop: theme.spacing(),
-    paddingBottom: theme.spacing(),
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    justifyContent: 'space-between'
-  },
-  marginBottom: {
-    marginBottom: theme.spacing()
-  },
-  container: {
-    paddingTop: theme.spacing(),
-    width: '100%',
-    marginBottom: theme.spacing()
-  },
-  imgFirst: {
-    height: 92,
-    objectFir: 'scale-down',
-    margin: theme.spacing(0,1,0,1)
-  },
-  imgSecond: {
-    height: 135,
-    objectFir: 'scale-down'
-  },
-  imgThird: {
-    height: 190,
-    objectFir: 'scale-down'
-  },
-  buttonLabel: {
-    textTransform: 'initial',
-    fontWeight: 'bold'
-  },
-  buttonSuccess: {
-    backgroundColor: theme.circleIn.palette.success,
-  },
-  hidden: {
-    display: 'none'
-  },
-  moreIcon: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-}))
+import Paper from '@material-ui/core/Paper'
+import { useStyles } from '../_styles/FeedList/EmptyFeed'
 
 type Props = {
   user: UserState,

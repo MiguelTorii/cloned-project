@@ -6,7 +6,6 @@ import React , {
   useState,
   memo
 } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,6 +17,8 @@ import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on
 // import SubMenu from 'components/MainLayout/SubMenu'
 // import { cypher, decypherClass } from 'utils/crypto'
 
+import { useStyles } from '../_styles/MainLayout/HomeItem';
+
 type Props = {
   // newClassExperience: boolean,
   MyLink: Function
@@ -25,52 +26,6 @@ type Props = {
   // updateFeed: Function,
   // openClassmatesDialog: Function
 };
-
-const useStyles = makeStyles(theme => ({
-  item: {
-    width: 'auto',
-    borderRadius: theme.spacing(6),
-    paddingTop: 0,
-    paddingBottom: 0,
-    margin: theme.spacing(1, 2, 1, 2),
-    '&:hover': {
-      background: theme.circleIn.palette.hoverMenu
-    },
-  },
-  currentPath: {
-    '& span': {
-      fontWeight: 'bold',
-    },
-    background: theme.circleIn.palette.hoverMenu,
-  },
-  otherPath: {
-    '&:hover': {
-      background: theme.circleIn.palette.hoverMenu
-    },
-  },
-  classes: {
-    fontSize: 14,
-    paddingTop: 0,
-    paddingBottom: 0,
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    textAlign: 'center'
-  },
-  typo: {
-    // textOverflow: 'ellipsis',
-    textAlign: 'left',
-    fontSize: 14,
-    fontWeight: 600,
-    whiteSpace: 'pre-wrap',
-    overflow: 'hidden',
-    marginLeft: theme.spacing(2),
-  },
-  menuIcon: {
-    marginRight: theme.spacing(),
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-}))
 
 const HomeItem = ({
   MyLink,

@@ -1,12 +1,8 @@
 import React from 'react';
 import withRoot from '../../withRoot';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2)
-  }
-}));
+import { useStyles } from '../_styles/PointsHistoryDetails/StudyStats';
 
 type Props = {
   userId: number

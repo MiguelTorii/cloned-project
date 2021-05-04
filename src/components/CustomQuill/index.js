@@ -7,20 +7,7 @@ import cx from 'classnames'
 import './quill.custom.css';
 import MathQuill from './Math'
 
-const styles = {
-  readOnly: {
-    '& .ql-toolbar': {
-      display: 'none'
-    },
-    '& .ql-container': {
-      border: 'none'
-    },
-    '& .ql-editor': {
-      maxHeight: 'none',
-      paddingTop: 0
-    }
-  }
-}
+import { styles } from '../_styles/CustomQuill';
 
 const modules = {
   formula: true,

@@ -1,17 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import withRoot from 'withRoot';
-import { CircularProgress, makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    borderRadius: 200,
-    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
-    padding: theme.spacing(3/4, 3),
-    minWidth: props => props.compact ? undefined : 160,
-    minHeight: 36
-  }
-}));
+import { CircularProgress } from '@material-ui/core';
+import { useStyles } from '../../_styles/Basic/Buttons/GradientButton';
 
 type Props = {
   children: React.ElementType,

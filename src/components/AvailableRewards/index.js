@@ -4,19 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { AvailableReward } from '../../types/models';
 import Item from './item';
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  progress: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: theme.spacing(2)
-  }
-});
+import { styles } from '../_styles/AvailableRewards';
 
 type Props = {
   classes: Object,

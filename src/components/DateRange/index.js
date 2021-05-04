@@ -10,55 +10,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const styles = theme => ({
-  buttonWrapper: {
-    position: 'relative',
-    marginTop: theme.spacing()
-  },
-  deleteIcon: {
-    position: 'absolute',
-    top: -10,
-    right: -10
-  },
-  picker: {
-    display: 'none'
-  },
-  day: {
-    width: 36,
-    height: 36,
-    fontSize: theme.typography.caption.fontSize,
-    margin: '0 2px',
-    color: theme.circleIn.palette.primaryText1
-  },
-  hover: {
-    '&:hover': {
-      backgroundColor: theme.circleIn.palette.action
-    }
-  },
-  nonCurrentMonthDay: {
-    color: theme.palette.text.disabled
-  },
-  highlightNonCurrentMonthDay: {
-    color: '#676767'
-  },
-  highlight: {
-    background: theme.palette.primary.main,
-    color: theme.palette.common.white
-  },
-  alone: {
-    backgroundColor: theme.circleIn.palette.action
-  },
-  firstHighlight: {
-    extend: 'highlight',
-    borderTopLeftRadius: '50%',
-    borderBottomLeftRadius: '50%'
-  },
-  endHighlight: {
-    extend: 'highlight',
-    borderTopRightRadius: '50%',
-    borderBottomRightRadius: '50%'
-  }
-});
+import { styles } from '../_styles/DateRange';
 
 type Props = {
   classes: Object,

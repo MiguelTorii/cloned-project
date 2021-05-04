@@ -6,27 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import type { FeedItem as FeedItemState } from '../../types/models';
 import FeedItem from '../FeedList/FeedItem';
-
-const styles = theme => ({
-  container: {
-    height: '100%',
-    maxHeight: 'inherit',
-    display: 'flex',
-    padding: theme.spacing(0, 1, 1, 1)
-  },
-  root: {
-    ...theme.mixins.gutters(),
-    backgroundColor: theme.circleIn.palette.feedBackground,
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    flex: 1,
-    borderRadius: '0 0 10px 10px'
-  },
-  nothing: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+import { styles } from '../_styles/Profile/posts';
 
 type Props = {
   classes: Object,

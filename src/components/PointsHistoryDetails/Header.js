@@ -1,35 +1,13 @@
 import React from 'react';
 import type { UserProfile } from '../../types/models';
 import withRoot from '../../withRoot';
-import { makeStyles, Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
+import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
 import Avatar from '../Avatar';
 import { avatarTextFromName, getPointsText } from '../../utils/helpers';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3)
-  },
-  mainContainer: {
-    justifyContent: 'flex-start',
-    [theme.breakpoints.up('md')]: {
-      justifyContent: 'space-between'
-    }
-  },
-  textAlign: {
-    textAlign: 'right',
-    [theme.breakpoints.down('sm')]: {
-      textAlign: 'left'
-    }
-  },
-  subtext: {
-    fontWeight: 700,
-    [theme.breakpoints.up('md')]: {
-      color: '#5F6165'
-    }
-  }
-}));
+import { useStyles } from '../_styles/PointsHistoryDetails/Header';
 
 type Props = {
   profile: UserProfile

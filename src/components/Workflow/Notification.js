@@ -8,33 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
 // import DatePicker from 'react-datepicker'
 import moment from 'moment'
 // import cx from 'classnames'
-
-const useStyles = makeStyles(() => ({
-  select: {
-    width: 350
-  },
-  selectForm: {
-    width: '100%',
-    '& .MuiInput-formControl': {
-      marginTop: 10,
-    }
-  },
-  reminder: {
-    '& .MuiInputLabel-outlined': {
-      // transform: 'translate(14px, 13px) scale(1)'
-    },
-    '& .MuiOutlinedInput-input': {
-      padding: '10.5px 16px'
-    }
-  },
-  hidden: {
-    display: 'none'
-  }
-}))
+import { useStyles } from '../_styles/Workflow/Notification'
 
 type Props = {
   dueDate: string,

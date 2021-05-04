@@ -8,14 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-const styles = theme => ({
-  root: {},
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(),
-    top: theme.spacing()
-  }
-});
+import { styles } from '../_styles/DialogTitle';
 
 type Props = {
   classes: Object,

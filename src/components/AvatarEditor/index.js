@@ -1,20 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import withRoot from 'withRoot';
 import Dialog from '../Dialog';
-import { makeStyles, Box, Grid, Button } from '@material-ui/core';
+import { Box, Grid, Button } from '@material-ui/core';
 import Toolbar from './Toolbar';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import DefaultAvatarEditor from 'react-avatar-editor';
 import _ from 'lodash';
 import Hidden from '@material-ui/core/Hidden';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 480,
-    zIndex: 2000,
-  }
-}));
+import { useStyles } from '../_styles/AvatarEditor/index';
 
 type Props = {
   originalImage: string,

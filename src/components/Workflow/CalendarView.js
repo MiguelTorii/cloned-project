@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useEffect, useState, useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -7,67 +6,11 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from "@fullcalendar/interaction"
 import { workflowCategories } from 'constants/common'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
-import Dialog, { dialogStyle } from 'components/Dialog'
+import Dialog from 'components/Dialog'
 import Typography from '@material-ui/core/Typography'
 import CalendarControls from 'components/Workflow/CalendarControls'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(),
-    '& .fc-header-toolbar': {
-      display: 'none'
-    },
-    '& .fc-event-title': {
-      fontWeight: 'bold',
-      maxWidth: 200
-    },
-    '& .fc-button': {
-      textTransform: 'capitalize'
-    },
-    '& .fc-list-day-cushion': {
-      background: theme.circleIn.palette.appBar,
-    },
-    '& .fc-day-today': {
-      background: 'rgba(255, 255, 255, 0.1)'
-    },
-    '& .fc-popover-body ': {
-      background: theme.circleIn.palette.modalBackground,
-    },
-    '& .fc-popover-header': {
-      background: theme.circleIn.palette.appBar,
-    },
-    '& .fc-daygrid-day-events': {
-      minHeight: `${theme.spacing(8)}px !important`
-    }
-  },
-  title: {
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    wordBreak: 'break-word',
-    height: '100%',
-    width: '90%'
-  },
-  classColor: {
-    width: 8,
-    height: 8,
-    marginRight: 4,
-    borderRadius: '50%',
-  },
-  eventContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 600,
-  },
-  archiveTitle: {
-    wordBreak: 'break-word',
-    fontSize: 20,
-    textAlign: 'center'
-  },
-}))
+import { useStyles } from '../_styles/Workflow/CalendarView'
 
 const CalendarView = () => {
   const {

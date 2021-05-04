@@ -4,15 +4,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-const styles = () => ({
-  main: {
-    // display: 'flex',
-    // width: '100%',
-    // alignItems: 'center',
-    // justifyContent: 'flex-end'
-  }
-});
+import { styles } from '../_styles/RemindersCalendar/EventWrapper';
 
 type Props = {
   classes: Object,

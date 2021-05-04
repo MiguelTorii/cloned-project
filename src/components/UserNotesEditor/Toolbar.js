@@ -4,9 +4,9 @@ import React from "react";
 import cx from 'classnames'
 import ReactDOMServer from 'react-dom/server';
 import { Quill } from "react-quill";
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import { useStyles } from '../_styles/UserNotesEditor';
 
 const icons = Quill.import('ui/icons');
 const fontSizeStyle = Quill.import('attributors/style/size');
@@ -20,35 +20,6 @@ Link.sanitize = function link(url) {
   }
   return url
 }
-
-const useStyles = makeStyles(() => ({
-  toolbar: {
-    textAlign: 'center'
-  },
-  tooltip: {
-    fontSize: 14,
-  },
-  popper: {
-    zIndex: 1500
-  },
-  openSelectBox: {
-    zIndex: 2000
-  },
-  firstline: {},
-  secondline: {},
-  hidden: { display: 'none' },
-  highlighter: {
-    height: 14,
-    width: 14,
-    '&:hover': {
-      color: '#06c'
-    }
-  },
-  highlighterContainer: {
-    textAlign: 'center',
-    paddingTop: 0.5
-  }
-}));
 
 const CustomUndo = () => (
   <svg viewBox="0 0 18 18">

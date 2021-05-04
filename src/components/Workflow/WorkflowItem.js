@@ -1,43 +1,16 @@
 // @flow
 import React, { memo, useContext, useRef, useState, useCallback, useMemo } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import WorkflowEdit from 'components/Workflow/WorkflowEdit'
 import { useDrag, useDrop } from 'react-dnd'
 import { getEmptyImage } from "react-dnd-html5-backend"
 import cx from 'classnames'
 import { isMobile } from "react-device-detect"
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog from 'components/Dialog';
 import WorkflowListItem from 'components/Workflow/WorkflowListItem'
 import WorkflowBoardItem from 'components/Workflow/WorkflowBoardItem'
 import WorkflowContext from 'containers/Workflow/WorkflowContext'
-
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'relative',
-  },
-  hidden: {
-    opacity: 0,
-  },
-  iconButton: {
-    padding: 0
-  },
-  dialog: {
-    ...dialogStyle,
-    width: 600,
-  },
-  archiveTitle: {
-    wordBreak: 'break-word',
-    fontSize: 20,
-    textAlign: 'center'
-  },
-  cardItem: {
-    width: 245,
-  },
-  listItem: {
-    width: '100%'
-  }
-}))
+import { useStyles } from '../_styles/Workflow/WorkflowItem'
 
 type Props = {
   task: Object,
