@@ -48,10 +48,11 @@ const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedCourse 
       display="flex"
       justifyContent="center"
       alignItems="center"
+      flexDirection="column"
     >
       <Typography className={classes.members} variant="h5">
-      Welcome To #{selectedCourse.name}
-      </Typography> <br />
+        Welcome To #{selectedCourse.name}
+      </Typography>
       <Typography className={classes.initialAlert} variant="subtitle2">
         {selectedCourse.about}
       </Typography>

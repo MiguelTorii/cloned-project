@@ -37,6 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   selectedChannel: {
     color: 'white'
+  },
+  hide: {
+    display: 'none'
   }
 }))
 
@@ -77,6 +80,7 @@ const CollapseNavbar = ({
           className={cx(
             classes.navLink,
             !channel?.channels && classes.childChannel,
+            !channel?.channels && !local[channel.id] && classes.hide
           )}
           selected={selectedChannel && selectedChannel.id === channel.id}
           classes={{ selected: classes.selected }}
@@ -93,24 +97,26 @@ const CollapseNavbar = ({
                 : <ExpandMore />
               }
             </ListItemIcon>
-            : <ListItemIcon classes={{ root: classes.channelIcon }}>
+            : local[channel.id] ? <ListItemIcon classes={{ root: classes.channelIcon }}>
               {local[channel.id]?.unread
                 ? <UnreadMessageChannelIcon />
                 : <ChannelIcon />}
-            </ListItemIcon>
+            </ListItemIcon> : null
           }
-          <ListItemText
-            classes={{ primary: cx(
-              classes.channelName,
-              !channel?.channels &&
-              local[channel.id]?.unread &&
-              classes.unreadMessageChannel
-            ) }}
-            primary={channel?.channels
-              ? channel.category_name
-              : channel.chat_name
-            }
-          />
+          {channel?.channels
+            ? <ListItemText
+              classes={{ primary: classes.channelName }}
+              primary={channel.category_name}
+            />
+            : local[channel.id]
+              ? <ListItemText
+                classes={{ primary: cx(
+                  classes.channelName,
+                local[channel.id]?.unread && classes.unreadMessageChannel
+                ) }}
+                primary={local[channel.id] && channel.chat_name}
+              />
+              : null}
         </ListItem>,
         channel?.channels && renderSubList(channel.channels, channel.category_name)
       )

@@ -31,7 +31,9 @@ const CommunityMenu = ({
     if (local && !!Object.keys(local).length) {
       COURSE_GROUPS_CHANNLES.forEach(category =>
         category.channels.forEach(channel => {
-          count += local[channel.id].unread
+          if (local[channel.id]?.unread) {
+            count += local[channel.id].unread
+          }
         })
       )
     }

@@ -29,7 +29,9 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
       if (!isLoading && !!Object.keys(local).length) {
         let count = 0;
         Object.keys(local).forEach(key => {
-          count += local[key].unread
+          if (local[key]?.unread) {
+            count += local[key].unread
+          }
         })
         setUnreadMessageCount(count)
       }
