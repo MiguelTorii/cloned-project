@@ -16,11 +16,11 @@ import {
 import Chat from 'twilio-chat';
 import update from 'immutability-helper';
 import { push } from 'connected-react-router';
+import axios from "axios";
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { getPresignedURL } from '../api/media';
-import axios from "axios";
 import { apiUpdateChat } from '../api/chat';
 
 
@@ -431,7 +431,7 @@ export const handleUpdateGroupPhoto = (
       mediaType: image.type
     });
 
-    const {url, readUrl, mediaId} = result;
+    const { url, readUrl, mediaId } = result;
 
     await axios.put(url, image, {
       headers: {
@@ -466,6 +466,10 @@ export const handleMuteChannel = ({ sid }) => async (dispatch: Dispatch, getStat
   const { muted } = local[sid]
   const res = muted ? await unmuteChannel(sid) : await muteChannel(sid)
   if (res && res.success) dispatch(muteChannelLocal({ sid }));
+}
+
+export const handleMarkAsRead = (channel: Object) => async (dispatch: Dispatch) => {
+  dispatch(updateChannel({ channel, unread: 0 }));
 }
 
 export const handleRemoveChannel = ({ sid }: { sid: string }) => async (dispatch: Dispatch) => {
@@ -525,6 +529,6 @@ export const handleChannelClose = (sid: string) => async (dispatch: Dispatch, ge
   dispatch(setOpenChannels({ openChannels: openChannels.filter(oc => oc.sid !== sid) }))
 }
 
-export const handleUpdateFriendlyName = (channel: Object) => async (dispatch: Dispatch, getState: Function) => {
+export const handleUpdateFriendlyName = (channel: Object) => async (dispatch: Dispatch) => {
   dispatch(updateFriendlyName({ channel }));
 }

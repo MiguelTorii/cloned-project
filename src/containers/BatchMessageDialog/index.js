@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Dialog from 'components/Dialog';
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import Typography from '@material-ui/core/Typography'
-import MultipleChatTextField from 'containers/Chat/MultipleChatTextField'
+import MultipleChatTextField from 'containers/CommunityChat/MultipleChatTextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { sendBatchMessage } from 'api/chat'
 import Tooltip from 'containers/Tooltip'

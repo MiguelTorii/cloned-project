@@ -110,6 +110,7 @@ ReactDOM.render(
               <Route exact path="/workflow" component={withTracker(Workflow)} />
               <Route exact path="/chat/:hashId" component={withTracker(ChatChannel)} />
               <Route exact path="/chat" component={withTracker(Chat)} />
+              {/* <Route exact path="/communities" component={withTracker(Communities)} /> */}
               <Route exact path="/bookmarks" component={withTracker(Feed)} />
               <Route exact path="/my_posts" component={withTracker(Feed)} />
               <Route exact path="/store" component={withTracker(Store)} />

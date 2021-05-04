@@ -48,6 +48,8 @@ import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
 import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
 import { ReactComponent as MyClassOff } from 'assets/svg/myclass-inactive.svg';
 import { ReactComponent as MyClassOn } from 'assets/svg/myclass-active.svg';
+// import { ReactComponent as CommunityOn } from 'assets/svg/active-community.svg';
+// import { ReactComponent as CommunityOff } from 'assets/svg/inactive-community.svg';
 import { ReactComponent as OffStudyRoom } from 'assets/svg/inactive-study-room.svg';
 import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem'
@@ -352,6 +354,16 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
+
+        {/* <DrawerItem
+          OnIcon={<CommunityOn />}
+          primaryText='Communities'
+          pathname={pathname}
+          component={MyLink}
+          link="/communities"
+          OffIcon={<CommunityOff />}
+          listItemClass={classes.otherPath}
+        /> */}
         <Tooltip
           id={9059}
           placement="right"

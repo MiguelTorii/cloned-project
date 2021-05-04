@@ -51,6 +51,7 @@ const Settings = ({
   updateGroupName,
   localChannel
 }: Props) => {
+
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)

@@ -9,7 +9,7 @@ type Props = {
   isOnline: boolean,
   backColor: string,
   fromChat: boolean,
-  children: Node,
+  children: Node
 };
 
 const OnlineBadge = ({ isVisible, classes, children }: Props) => (

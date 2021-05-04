@@ -183,7 +183,7 @@ const LeftMenu = ({
                   onOpenChannel={onOpenChannel}
                   handleRemoveChannel={handleRemoveChannel}
                   handleMuteChannel={handleMuteChannel}
-                  dark={true}
+                  dark
                 />
               </div>
             ))}

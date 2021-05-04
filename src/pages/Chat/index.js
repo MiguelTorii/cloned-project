@@ -7,14 +7,14 @@ import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import withRoot from 'withRoot';
 import Layout from 'containers/Layout';
-import Chat from 'containers/Chat';
+import Chat from 'containers/MainChat';
 
 const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex'
   },
   container: {
-    height: 'calc(100vh - 64px)',
+    height: 'calc(100vh - 68px)',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100vh - 116px)',
       marginBottom: -64

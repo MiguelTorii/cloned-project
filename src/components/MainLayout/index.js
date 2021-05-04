@@ -321,7 +321,11 @@ const MainLayout = ({
 
   return (
     <Fragment>
-      <div className={clsx(classes.root, pathname !== '/chat' && classes.marginChat)}>
+      <div className={clsx(
+        classes.root,
+        ['/chat', '/communities'].indexOf(pathname) === -1
+          && classes.marginChat
+      )}>
         <UserDialog />
         <AppBar
           position="fixed"

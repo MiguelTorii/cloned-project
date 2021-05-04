@@ -14,19 +14,87 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+// import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
+// import Checkbox from '@material-ui/core/Checkbox';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 import OnlineBadge from 'components/OnlineBadge';
-import { styles } from '../_styles/AutoComplete';
+import type { SelectType } from '../../types/models';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
 )
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    '& .MuiInputAdornment-positionStart': {
+      marginRight: 0
+    },
+  },
+  input: {
+    display: 'flex',
+    padding: theme.spacing(0)
+  },
+  valueContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flex: 1,
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  chip: {
+    margin: theme.spacing(1/8),
+    maxWidth: 160,
+    backgroundColor: theme.circleIn.palette.modalBackground,
+    color: 'white',
+    borderRadius: 2
+  },
+  chipFocused: {
+    backgroundColor: emphasize(
+      theme.palette.type === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700],
+      0.08
+    )
+  },
+  avatar: {
+    width: 40,
+    height: 40
+  },
+  noOptionsMessage: {
+    padding: `${theme.spacing()}px ${theme.spacing(2)}px`
+  },
+  placeholder: {
+    position: 'absolute',
+    left: theme.spacing(0.5),
+    fontSize: 12
+  },
+  paper: {
+    zIndex: 100,
+    left: 0,
+    right: 0
+  },
+  paperAbsolute: {
+    position: 'absolute',
+  },
+  paperRelative: {
+    position: 'relative',
+    backgroundColor: theme.circleIn.palette.modalBackground,
+  },
+  errorLabel: {
+    paddingLeft: 12
+  },
+  classmates: {
+    backgroundColor: theme.circleIn.palette.modalBackground
+  }
+});
 
 function NoOptionsMessage({ selectProps, innerProps, children }) {
   return (
@@ -57,10 +125,14 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control({ selectProps, innerProps, innerRef, children }) {
-  const { isDisabled, autoFocus, textFieldProps: {
-    relative,
-    ...otherTextFieldProps
-  } } = selectProps
+  const {
+    isDisabled,
+    autoFocus,
+    textFieldProps: {
+      relative,
+      ...otherTextFieldProps
+    }
+  } = selectProps
 
   return (
     <TextField
@@ -84,35 +156,47 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   );
 }
 
-function Option({ innerRef, innerProps, isFocused, isSelected, children, data }) {
+function Option({ innerRef, innerProps, isFocused, isSelected, children, data, selectProps }) {
   const {
     avatar = '',
     initials = '',
     school = '',
-    noAvatar = false,
     relationship = '',
+    userId = 0,
+    noAvatar = false,
     isOnline = false
   } = data || {};
 
   if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
     return (
       <ListItem
-        alignItems="flex-start"
+        alignItems="center"
         button
         selected={isFocused}
+        classes={{
+          root: selectProps.classes.classmates
+        }}
         style={{
           fontWeight: isSelected ? 500 : 400
         }}
         {...innerProps}
       >
         <ListItemAvatar>
-          <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.modalBackground">
-            <Avatar alt={initials} src={avatar}>
+          <OnlineBadge
+            isOnline={isOnline}
+            bgColorPath="circleIn.palette.modalBackground"
+          >
+            <Avatar
+              alt={initials}
+              className={selectProps.classes.avatar}
+              src={avatar}
+            >
               {initials}
             </Avatar>
           </OnlineBadge>
         </ListItemAvatar>
         <ListItemText
+          id={`id-${userId}`}
           primary={children}
           secondary={relationship}
           secondaryTypographyProps={{ color: 'textPrimary' }}
@@ -169,11 +253,6 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   if (avatar !== '' || initials !== '')
     return (
       <Chip
-        avatar={
-          <Avatar alt={initials} src={avatar}>
-            {initials}
-          </Avatar>
-        }
         tabIndex={-1}
         label={children}
         className={cx(selectProps.classes.chip, {
@@ -197,12 +276,19 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
 }
 
 function Menu({ selectProps, children, innerProps }) {
-  const { inputValue, options = [], textFieldProps, isSchoolSearch } = selectProps;
+  const {
+    inputValue,
+    options = [],
+    textFieldProps,
+    isSchoolSearch
+  } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
     <Paper square className={cx(
       selectProps.classes.paper,
-      textFieldProps.relative ? selectProps.classes.paperRelative : selectProps.classes.paperAbsolute
+      textFieldProps.relative
+        ? selectProps.classes.paperRelative
+        : selectProps.classes.paperAbsolute
     )}
     {...innerProps}
     >
@@ -257,7 +343,7 @@ type Props = {
   onLoadOptions: Function
 };
 
-const AutoComplete = ({
+const SelectClassmates = ({
   classes,
   theme,
   page = 0,
@@ -330,4 +416,4 @@ const AutoComplete = ({
   );
 }
 
-export default withStyles(styles, { withTheme: true })(AutoComplete);
+export default withStyles(styles, { withTheme: true })(SelectClassmates);

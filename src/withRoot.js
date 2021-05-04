@@ -12,6 +12,7 @@ import { responsiveFontSizes } from '@material-ui/core';
 const circleInTheme = {
   brand: '#03A9F4',
   action: '#49afd9',
+  backup: '#5A5A5A',
   rowSelection: '#324f61',
   primaryBackground: '#18191A',
   modalBackground: '#37393E',
@@ -48,6 +49,10 @@ const circleInTheme = {
   white: '#FFFFFF',
   disableButtonColor: '#626365',
   black: '#000000',
+  menuDivider: '#C7D3DA',
+  navbarBackgroundColor: '#1A1C1D',
+  navbarBorderColor: '#FFFFFF1C',
+  searchInputColor: '#484848',
   darkTextColor: '#BFBFC1',
   tooltipBackground: '#3C3D3F',
 };
@@ -57,6 +62,7 @@ let theme = createMuiTheme({
     palette: {
       white: circleInTheme.white,
       black: circleInTheme.black,
+      backup: circleInTheme.backup,
       gray1: circleInTheme.feedBackground,
       gray2: circleInTheme.hoverMenu,
       greenInvite: circleInTheme.greenInvite,
@@ -91,6 +97,10 @@ let theme = createMuiTheme({
       disabled: circleInTheme.disabled,
       profilebgColor: circleInTheme.profilebgColor,
       disableButtonColor: circleInTheme.disableButtonColor,
+      menuDivider: circleInTheme.menuDivider,
+      navbarBackgroundColor: circleInTheme.navbarBackgroundColor,
+      navbarBorderColor: circleInTheme.navbarBorderColor,
+      searchInputColor: circleInTheme.searchInputColor,
       darkTextColor: circleInTheme.darkTextColor,
       tooltipBackground: circleInTheme.tooltipBackground,
     },

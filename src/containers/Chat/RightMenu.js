@@ -24,9 +24,9 @@ import { Create } from '@material-ui/icons';
 import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge';
 import ShareLinkWidget from 'components/ShareLinkWidget';
+import { useDispatch } from 'react-redux';
 import AvatarEditor from '../../components/AvatarEditor';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
-import { useDispatch } from 'react-redux';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
