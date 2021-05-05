@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -32,16 +32,16 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatChannelPage = (props) => {
   const classes = useStyles();
-  const { current: hashId } = useRef(get(props, 'match.params.hashId', ''));
-  const [ chatId, setChatId ] = useState('');
+  const [chatId, setChatId] = useState('');
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const validateChatId = async () => {
-      const chatId = await getChatIdFromHash(hashId);
+      const hashId = get(props, 'match.params.hashId', '');
+      const resId = await getChatIdFromHash(hashId);
 
-      if (chatId) {
-        setChatId(chatId);
+      if (resId) {
+        setChatId(resId);
       } else {
         // invalid channel, redirect to homepage with notification
         props.enqueueSnackbar({
@@ -62,7 +62,8 @@ const ChatChannelPage = (props) => {
     };
 
     validateChatId();
-  }, [hashId, props]);
+  // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     const channels = get(props, 'chat.data.channels', []);
