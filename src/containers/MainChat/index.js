@@ -19,8 +19,10 @@ const MainChat = () => {
     init()
   }, [])
 
-  const renderChat = useCallback(() => campaign ? <CommunityChat /> : <Chat />
-    , [campaign])
+  const renderChat = useCallback(() => !campaign?.is_disabled
+    ? <CommunityChat />
+    : <Chat />
+  , [campaign])
 
   return loading ? <CircularProgress size={20} /> : renderChat()
 }
