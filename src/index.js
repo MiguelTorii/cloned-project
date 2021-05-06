@@ -72,6 +72,7 @@ import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
 import reduxStore from './configureStore';
+import { FlashcardsListPage } from './pages/Flashcards';
 
 defaultKatexRender('White')
 
@@ -125,6 +126,11 @@ ReactDOM.render(
                 exact
                 path="/flashcards/:flashcardId"
                 component={withTracker(FlashCards)}
+              />
+              <Route
+                exact
+                path='/flashcards'
+                component={withTracker(FlashcardsListPage)}
               />
               <Route
                 exact

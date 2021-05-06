@@ -14,6 +14,8 @@ import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models';
 import { apiGetPointsHistory } from '../api/user';
 import { checkUserSession } from './sign-in';
+import { apiFetchFeeds } from '../api/feed';
+import { bookmark } from '../api/posts';
 
 const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -240,7 +242,6 @@ export const getPointsHistory = (
   successCallback: successCb
 });
 
-
 export const masquerade = (
   userId: string,
   refreshToken: string,
@@ -263,4 +264,32 @@ export const masquerade = (
 export const setIsMasquerading = (isMasquerading: boolean) => ({
   type: userActions.SET_IS_MASQUERADING,
   payload: isMasquerading
+});
+
+export const getFlashcards = (
+  userId: number,
+  bookmarked: boolean,
+  index: number,
+  limit: number
+) => ({
+  isApiCall: true,
+  type: userActions.GET_FLASHCARDS,
+  apiCall: () => apiFetchFeeds({
+    user_id: userId,
+    bookmarked,
+    tool_type_id: 3,
+    index,
+    limit
+  })
+});
+
+export const bookmarkFlashcards = (
+  userId: number,
+  feedId: number,
+  isRemove: boolean
+) => ({
+  isApiCall: true,
+  type: userActions.BOOKMARK_FLASHCARDS,
+  meta: { feedId },
+  apiCall: () => bookmark({ feedId, userId, remove: isRemove })
 });

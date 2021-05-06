@@ -1,0 +1,42 @@
+import makeStyles from '@material-ui/core/styles/makeStyles';
+
+export default makeStyles((theme) => ({
+  root: {
+    height: 225,
+    borderRadius: '10px 10px 12px 12px',
+    backgroundColor: theme.circleIn.palette.action,
+    padding: theme.spacing(1, 0, 0, 0),
+    cursor: 'pointer'
+  },
+  contentContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: theme.circleIn.palette.appBar,
+    borderRadius: '0 0 10px 10px',
+    padding: theme.spacing(3)
+  },
+  actionBar: {
+    margin: theme.spacing(0, -3, -3, -3),
+    padding: theme.spacing(2, 3, 3, 3),
+    borderRadius: '0 0 10px 10px',
+    background: 'linear-gradient(180deg, #3A3B3B 0%, #3A3B3B 49.48%, #222222 100%)'
+  },
+  actionItem: {
+    cursor: 'pointer',
+    '&:hover, &.active': {
+      color: theme.circleIn.palette.brand
+    },
+    '&:hover svg, &.active svg': {
+      color: theme.circleIn.palette.brand,
+    }
+  },
+  subtitle: {
+    color: theme.circleIn.palette.primaryText2
+  },
+  hidden: {
+    display: 'none'
+  },
+  reportText: {
+    color: theme.circleIn.palette.danger
+  }
+}));

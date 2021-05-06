@@ -10,8 +10,9 @@ import {
   rootActions
 } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { User, Announcement } from '../types/models';
+import type { User, Announcement, FeedItem } from '../types/models';
 import store from 'store';
+import { normalizeArray } from '../utils/helpers';
 
 export type UserState = {
   isLoading: boolean,
@@ -49,6 +50,12 @@ export type UserState = {
   dialogMessage: {
     title: string,
     body: string
+  },
+  flashcards: {
+    byId: {
+      [key: string]: FeedItem
+    },
+    ids: Array<number>
   }
 };
 
@@ -109,6 +116,10 @@ const defaultState = {
     body: '',
     showSignup: false,
     action: false
+  },
+  flashcards: {
+    byId: {},
+    ids: []
   }
 };
 
@@ -239,6 +250,23 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         body: { $set: '' }
       }
     })
+  case userActions.GET_FLASHCARDS: {
+    return update(state, {
+      flashcards: { $set: normalizeArray(action.payload.posts, 'feed_id') }
+    });
+  }
+  case userActions.BOOKMARK_FLASHCARDS: {
+    return update(state, {
+      flashcards: {
+        byId: {
+          [action.meta.feedId]: data => ({
+            ...data,
+            bookmarked: !data.bookmarked
+          })
+        }
+      }
+    });
+  }
   default:
     return state;
   }

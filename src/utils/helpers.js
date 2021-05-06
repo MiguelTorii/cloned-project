@@ -22,3 +22,16 @@ export const setIntervalWithFirstCall = (func: Function, delay: number) => {
   func();
   return setInterval(func, delay);
 };
+
+export const normalizeArray = (array: Array<any>, idField: string = 'id') => {
+  let result = {};
+
+  array.forEach((item) => {
+    result[item[idField]] = item;
+  });
+
+  return {
+    byId: result,
+    ids: array.map((item) => item[idField])
+  };
+};

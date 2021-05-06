@@ -6,6 +6,7 @@ import type { Feed } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 import reduxStore from '../configureStore';
+import { callApi } from './api_base';
 
 export const fetchFeed = async ({
   userId,
@@ -244,3 +245,10 @@ export const generateQuiz = async ({
     return null;
   }
 }
+
+export const apiFetchFeeds = async (params) => {
+  return callApi({
+    url: API_ROUTES.FEED_V1_1,
+    params
+  });
+};
