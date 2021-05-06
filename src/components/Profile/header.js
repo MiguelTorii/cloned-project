@@ -21,7 +21,7 @@ import ImgLogo from 'assets/svg/app-logo.svg';
 import { Hidden } from '@material-ui/core';
 import { getPointsText } from '../../utils/helpers';
 import GradientButton from '../Basic/Buttons/GradientButton';
-import { Message, Videocam, MoreVert, Create } from '@material-ui/icons';
+import { Message, Videocam, Create } from '@material-ui/icons';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import IconButton from '@material-ui/core/IconButton';
 import type { About, UserProfile } from '../../types/models';
@@ -160,9 +160,10 @@ class Header extends React.PureComponent<Props, State> {
                 >
                   <Create />
                 </IconButton> :
-                <IconButton>
-                  <MoreVert />
-                </IconButton>
+                <div />
+                // <IconButton>
+                //   <MoreVert />
+                // </IconButton>
             }
           </div>
           <div className={classes.avatarContainer}>

@@ -7,6 +7,9 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3/4, 3),
     background: 'transparent',
     minWidth: props => props.compact ? undefined : 160,
-    minHeight: 36
+    minHeight: 36,
+    '&:disabled': {
+      color: 'white'
+    }
   }
 }))

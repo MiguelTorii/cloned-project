@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import withRoot from 'withRoot';
 import Dialog from '../Dialog';
-import { Box, Grid, Button } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import Toolbar from './Toolbar';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import GradientButton from '../Basic/Buttons/GradientButton';

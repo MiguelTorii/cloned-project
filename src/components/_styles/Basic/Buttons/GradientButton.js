@@ -6,6 +6,9 @@ export const useStyles = makeStyles((theme) => ({
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     padding: theme.spacing(3/4, 3),
     minWidth: props => props.compact ? undefined : 160,
-    minHeight: 36
+    minHeight: 36,
+    '&:disabled': {
+      color: 'white'
+    }
   }
 }))
