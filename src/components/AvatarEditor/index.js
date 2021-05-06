@@ -8,6 +8,8 @@ import GradientButton from '../Basic/Buttons/GradientButton';
 import DefaultAvatarEditor from 'react-avatar-editor';
 import _ from 'lodash';
 import Hidden from '@material-ui/core/Hidden';
+import clsx from 'clsx';
+import Dropzone from 'react-dropzone';
 import { useStyles } from '../_styles/AvatarEditor/index';
 
 type Props = {
@@ -23,11 +25,11 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
   const [scale, setScale] = useState(1.0);
   const [angle, setAngle] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
-  const [fileInputRef, setFileInputRef] = useState(null);
   const editorRef = useRef(null);
   const disabledActions = useMemo(() => {
     return [scale === 1.0 && 'zoom_out'];
   }, [scale]);
+  const [dropzoneRef, setDropzoneRef] = useState(null);
 
   useEffect(() => {
     setScale(1.0);
@@ -40,14 +42,14 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
     } else {
       setImage(originalImage);
     }
-  }, [originalImage]);
+  }, [originalImage, open]);
 
   useEffect(() => {
-    if (fileInputRef && !originalImage) {
-      handleChangePhoto();
+    if (dropzoneRef && open && !originalImage) {
+      dropzoneRef.open();
     }
     // eslint-disable-next-line
-  }, [fileInputRef]);
+  }, [dropzoneRef]);
 
   // Event handlers
 
@@ -72,13 +74,19 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
     }
   }
 
-  const handleChangePhoto = () => {
-    fileInputRef.click();
+  const handleSelectFile = () => {
+    if (dropzoneRef) {
+      dropzoneRef.open();
+    }
   };
 
-  const handleImageChange = (event) => {
-    if (event.target.files.length > 0) {
-      setImage(event.target.files[0]);
+  const handleDropzoneAccepted = (files) => {
+    setImage(files[0]);
+  };
+
+  const handleFileDialogCancel = () => {
+    if (open && !originalImage) {
+      onCancel();
     }
   };
 
@@ -100,14 +108,17 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
       });
   };
 
-  const handleDelete = () => {
-    setImage(null);
-  };
+  // const handleDelete = () => {
+  //   setImage(null);
+  // };
 
   return (
     <Dialog
       title="Edit Profile Picture"
-      className={classes.root}
+      className={clsx(
+        classes.root,
+        !image && classes.hidden
+      )}
       open={open}
       onCancel={onCancel}
     >
@@ -131,16 +142,16 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
       </Box>
       <Grid container justify="space-between">
         <Grid item>
-          <Button onClick={handleDelete}>
-            Delete
-          </Button>
+          {/*<Button onClick={handleDelete}>*/}
+          {/*  Delete*/}
+          {/*</Button>*/}
         </Grid>
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
               <TransparentButton
                 compact
-                onClick={handleChangePhoto}
+                onClick={handleSelectFile}
               >
                 Change Photo
               </TransparentButton>
@@ -158,13 +169,21 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Hidden xsUp implementation="css">
-        <input
-          ref={setFileInputRef}
-          type="file"
+      <Hidden implementation="css">
+        <Dropzone
+          ref={setDropzoneRef}
           accept=".png,.jpg"
-          onChange={handleImageChange}
-        />
+          onDropAccepted={handleDropzoneAccepted}
+          onFileDialogCancel={handleFileDialogCancel}
+        >
+          {
+            ({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+              </div>
+            )
+          }
+        </Dropzone>
       </Hidden>
     </Dialog>
   );

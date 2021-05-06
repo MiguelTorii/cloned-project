@@ -26,7 +26,7 @@ const MAX_BIO_LENGTH = 160;
 
 const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: Props) => {
   const classes = useStyles();
-  const [image, setImage] = useState(profile.userProfileUrl); // image can be URL or BLOB data from the editor.
+  const [image, setImage] = useState(null); // image can be URL or BLOB data from the editor.
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [bioText, setBioText] = useState('');
 
@@ -36,6 +36,13 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
       setBioText(about[bioIndex].answer);
     }
   }, [about]);
+
+  useEffect(() => {
+    if (open) {
+      setImage(profile.userProfileUrl);
+    }
+    // eslint-disable-next-line
+  }, [open]);
 
   // Event handlers
 
