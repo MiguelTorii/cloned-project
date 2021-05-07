@@ -2,7 +2,6 @@ export const styles = theme => ({
   dialog: {
     width: 600,
     '& > :first-child': {
-      height: 20,
       zIndex: 999999
     }
   },
@@ -53,7 +52,9 @@ export const styles = theme => ({
   report: {
     color: theme.circleIn.palette.danger,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    textDecoration: 'underline',
+    cursor: 'pointer',
   },
   letsGo: {
     margin: theme.spacing(4, 0),

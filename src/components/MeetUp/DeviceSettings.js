@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,11 +6,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
 import Box from '@material-ui/core/Box';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-// import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 import Dialog from 'components/Dialog';
+import StudyRoomReport from 'components/StudyRoomReport';
 
 import { styles } from '../_styles/MeetUp/DeviceSettings';
 
@@ -24,6 +25,11 @@ const DeviceSettings = ({
   audioinput,
   videoinput
 }) => {
+  const [openReport, setOpenReport] = useState(false)
+
+  const handleClick = useCallback(() => setOpenReport(true), [])
+  const handleClose = useCallback(() => setOpenReport(false), [])
+
   return (
     <Dialog
       className={classes.dialog}
@@ -101,11 +107,11 @@ const DeviceSettings = ({
           ))}
         </NativeSelect>
       </FormControl>
-      {/* <Box className={classes.options}>
+      <Box className={classes.options} onClick={handleClick}>
         <Typography className={classes.report}>
           <ReportFlag /> &nbsp; Report an Issue
         </Typography>
-      </Box> */}
+      </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Button
           variant="contained"
@@ -116,6 +122,10 @@ const DeviceSettings = ({
           Save
         </Button>
       </Box>
+      <StudyRoomReport
+        open={openReport}
+        handleClose={handleClose}
+      />
     </Dialog>
   )
 }

@@ -21,6 +21,7 @@ const circleInTheme = {
   primaryText1: '#e9ecef',
   primaryText2: '#adbbc4',
   secondaryText: '#E4E6EA',
+  helperText: '#979797',
   normalButtonText1: '#090909',
   textOffwhite: '#f9f9f9',
   appBar: '#3A3B3B', // validate
@@ -55,6 +56,7 @@ const circleInTheme = {
   searchInputColor: '#484848',
   darkTextColor: '#BFBFC1',
   tooltipBackground: '#3C3D3F',
+  chipBackground: '#5B5C5C'
 };
 
 let theme = createMuiTheme({
@@ -90,6 +92,7 @@ let theme = createMuiTheme({
       videoThumbDefaultBackground: circleInTheme.videoThumbDefaultBackground,
       textOffwhite: circleInTheme.textOffwhite,
       normalButtonText1: circleInTheme.normalButtonText1,
+      helperText: circleInTheme.helperText,
       borderColor: circleInTheme.inputBorderColor,
       appBar: circleInTheme.appBar,
       success: circleInTheme.success,
@@ -103,6 +106,7 @@ let theme = createMuiTheme({
       searchInputColor: circleInTheme.searchInputColor,
       darkTextColor: circleInTheme.darkTextColor,
       tooltipBackground: circleInTheme.tooltipBackground,
+      chipBackground: circleInTheme.chipBackground
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'
