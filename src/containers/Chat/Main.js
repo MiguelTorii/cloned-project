@@ -111,6 +111,7 @@ const Main = ({
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null);
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
   const memberKeys = useMemo(() => Object.keys(members), [members])
   const otherUser = useMemo(() => {
     if (memberKeys.length !== 2) return null
