@@ -15,11 +15,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   search: {
-    backgroundColor: theme.circleIn.palette.searchInputColor,
+    backgroundColor: 'rgba(34, 34, 34, 0.6)',
+    border: '1px solid rgba(95, 97, 101, 0.5)',
     color: 'white',
     fontSize: 12,
-    boxSizing: 'border-box',
-    boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'flex-start',
     padding: theme.spacing(1),
     margin: theme.spacing(0, 2)
   },
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   headerTitle: {
     margin: theme.spacing(1, 1, 0, 1),
     width: `calc(100% - ${theme.spacing(2)}px)`,
+  },
+  createNewChate: {
+    fontWeight: 'bold'
   },
   gridItem: {
     width: `calc(100% - ${theme.spacing(2)}px)`,
@@ -50,12 +55,13 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 0,
     width: 20,
     height: 20,
-    backgroundColor: theme.circleIn.palette.backup,
+    fontSize: '1rem',
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     textTransform: 'none',
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     marginLeft: theme.spacing(1),
-    borderRadius: 0
+    borderRadius: theme.spacing(0.5)
   },
   title: {
     fontSize: 22
@@ -64,9 +70,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'none'
   },
   selectClassmates: {
-    backgroundColor: theme.circleIn.palette.modalBackground,
-    marginTop: theme.spacing(),
-    padding: theme.spacing(2)
+    backgroundColor: theme.circleIn.palette.appBar,
+    marginTop: theme.spacing()
   }
 }))
 

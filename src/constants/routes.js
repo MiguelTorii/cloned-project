@@ -115,5 +115,6 @@ export const API_ROUTES = {
   REFERRAL: `${API_URL}/referral`,
   ANNOUNCEMENT: `${API_URL}/announcement`,
   ONBOARDING_STATUS: `${API_URL}/onboarding/status`,
-  GET_ANNOUNCEMENT_CAMPAIGN: `${API_URL}/campaigns/12/variations/me`
+  GET_ANNOUNCEMENT_CAMPAIGN: `${API_URL}/campaigns/12/variations/me`,
+  GET_COMMUNITY: `${API_URL}/community`
 };

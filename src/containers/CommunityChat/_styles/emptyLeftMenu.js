@@ -39,15 +39,18 @@ const useStyles = makeStyles((theme) => ({
     top: 160
   },
   message: {
-    fontSize: 20,
+    fontSize: 14,
     marginTop: theme.spacing(),
     textAlign: 'center'
   },
-  arrow: {
-    width: 120,
-    position: 'absolute',
-    right: 0,
-    top: -30
+  createDM: {
+    marginTop: theme.spacing(3),
+    width: '100%',
+    fontWeight: 'bold',
+    color: 'white',
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+    borderRadius: 20
   },
   loading: {
     width: '100%',

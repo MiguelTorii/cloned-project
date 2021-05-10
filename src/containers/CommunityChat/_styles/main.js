@@ -65,6 +65,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     fontWeight: 'bold',
     marginBottom: theme.spacing()
+  },
+  bannerImage: {
+    position: 'absolute',
+    top: 0,
+    width: '100%'
+  },
+  banner:{
+    width: '100%'
   }
 }))
 

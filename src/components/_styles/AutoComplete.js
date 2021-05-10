@@ -1,6 +1,6 @@
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
-export const styles = theme => ({
+export default theme => ({
   root: {
     flexGrow: 1
   },
@@ -8,12 +8,37 @@ export const styles = theme => ({
     display: 'flex',
     padding: theme.spacing(1, 0)
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  addClassmateInput: {
+    position: 'relative',
+    display: 'flex',
+    padding: theme.spacing(1/8)
+  },
+  startIcon: {
+    marginLeft: theme.spacing()
+  },
+  searchInput: {
+    border: '1px solid rgba(95, 97, 101, 0.5)',
+    borderRadius: theme.spacing(1),
+    backgroundColor: 'rgba(34, 34, 34, 0.6)',
+  },
   valueContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     flex: 1,
     alignItems: 'center',
     overflow: 'hidden'
+  },
+  addClassmateChip: {
+    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
+    borderRadius: 0,
+    maxWidth: 160,
+    backgroundColor: theme.circleIn.palette.appBar,
+    color: 'white'
   },
   chip: {
     margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
@@ -31,6 +56,12 @@ export const styles = theme => ({
   noOptionsMessage: {
     padding: `${theme.spacing()}px ${theme.spacing(2)}px`
   },
+  addClassmatePlaceholder: {
+    position: 'absolute',
+    left: 4,
+    fontSize: 16,
+    opacity: 0.7
+  },
   placeholder: {
     position: 'absolute',
     left: 12,
@@ -43,6 +74,18 @@ export const styles = theme => ({
     left: 0,
     right: 0
   },
+  addClassmatePaper: {
+    zIndex: 100,
+    left: 0,
+    right: 0,
+    boxShadow: 'none',
+    'border': 'none',
+    '& > :first-child' :{
+      padding: 0,
+      backgroundColor: theme.circleIn.palette.appBar,
+      width: '100%'
+    }
+  },
   paperAbsolute: {
     position: 'absolute',
   },
@@ -51,5 +94,14 @@ export const styles = theme => ({
   },
   errorLabel: {
     paddingLeft: 12
-  }
+  },
+  createDM: {
+    marginTop: theme.spacing(),
+    width: '100%',
+    fontWeight: 'bold',
+    color: 'white',
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+    borderRadius: 20
+  },
 })

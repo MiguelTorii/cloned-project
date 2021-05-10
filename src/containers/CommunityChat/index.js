@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Box from '@material-ui/core/Box'
 import * as chatActions from 'actions/chat'
+import { getCommunities } from 'api/community'
 import DirectChat from './DirectChat'
 import CollageList from './CollageList'
 import CommunityChat from './CommunityChat'
@@ -23,6 +24,16 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0)
   const [selectedCourse, setSelectedCourse] = useState(DEFAULT_COMMUNITY_MENU_ITEMS)
+  const [communityList, setCommunities] = useState([])
+
+  useEffect(() => {
+    async function fetchCommuniteis() {
+      const { communities } = await getCommunities()
+      setCommunities(communities)
+    }
+
+    fetchCommuniteis()
+  }, [])
 
   useEffect(() => {
     if (selectedCourse.id === 'chat') {
@@ -49,12 +60,13 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
         className={classes.collageList}
         direction='row'
       >
-        <CollageList
+        {communityList && <CollageList
           local={local}
           unreadMessageCount={unreadMessageCount}
           selectedCourse={selectedCourse}
+          communities={communityList}
           handleSelect={handleSelect}
-        />
+        />}
       </Box>
       {selectedCourse && selectedCourse.id === 'chat'
         ? <DirectChat />

@@ -198,7 +198,7 @@ const MainChatItem = ({
         getContentAnchorEl={null}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleRead}>Make as Read</MenuItem>
+        <MenuItem onClick={handleRead}>Mark as Read</MenuItem>
         {members && members.length > 2 && isShow &&
           <MenuItem onClick={handleEditGroup}>
           Edit Group

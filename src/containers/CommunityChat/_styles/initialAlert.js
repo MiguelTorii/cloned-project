@@ -2,12 +2,14 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: theme.spacing(3)
+    margin: theme.spacing(0, 6)
   },
   avatarProfile: {
     backgroundColor: theme.circleIn.palette.brand,
+    marginBottom: theme.spacing(2),
     color: 'white',
-    border: '2px solid white',
+    fontSize: 40,
+    fontWeight: 600,
     width: 80,
     height: 80
   },

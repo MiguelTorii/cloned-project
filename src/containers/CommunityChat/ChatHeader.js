@@ -12,6 +12,7 @@ import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg'
 import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg'
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg'
 import { ReactComponent as ChatStudyRoomMemberrs } from 'assets/svg/chat-studyroom-members.svg'
+import { ReactComponent as ChatActiveStudyRoomMemberrs } from 'assets/svg/chat-active-studyroom-members.svg'
 
 import useStyles from './_styles/chatHeader'
 
@@ -19,6 +20,7 @@ type Props = {
   channel: Object,
   title: string,
   otherUser: Array,
+  rightSpace: number,
   memberKeys: Array,
   videoEnabled: boolean,
   startVideo: Function,
@@ -31,6 +33,7 @@ const ChatHeader = ({
   channel,
   title,
   otherUser,
+  rightSpace,
   memberKeys,
   videoEnabled,
   startVideo,
@@ -128,18 +131,21 @@ const ChatHeader = ({
             className={classes.chatIcon}
             onClick={onOpenRightPanel}
           >
-            <ChatStudyRoomMemberrs />
+            {rightSpace
+              ? <ChatActiveStudyRoomMemberrs />
+              : <ChatStudyRoomMemberrs />
+            }
           </IconButton>}
         </div>
       </Grid>}
       <CreateChatChannelDialog
-        title='Add Members'
+        title='ADD CLASSMATES'
         chatType={channelType}
         onClose={handleCreateChannelClose}
         onLoadOptions={handleLoadOptions}
         onSubmit={onSubmit}
         isLoading={loading}
-        okLabel='Add'
+        okLabel='Add Classmates'
       />
     </div>
   )

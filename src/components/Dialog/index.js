@@ -30,6 +30,7 @@ const Dialog = ({
   disableEscapeKeyDown = false,
   loading = false,
   okTitle = "Got it!",
+  okButtonClass,
   secondaryOkTitle = "",
   maxWidth="lg",
   cancelTitle = 'Cancel',
@@ -53,6 +54,7 @@ const Dialog = ({
   children: Object | Array<Object>,
   classes: Object,
   className: ?string,
+  okButtonClass: ?string,
   disableBackdropClick: ?boolean,
   disableActions: ?boolean,
   disableEscapeKeyDown: ?boolean,
@@ -165,7 +167,7 @@ const Dialog = ({
             </Button>
           }
           <Button
-            className={classes.button}
+            className={cx(okButtonClass, classes.button)}
             color="primary"
             ref={setOkRef}
             disabled={disableActions || disableOk}

@@ -46,7 +46,7 @@ export const COURSE_GROUPS_CHANNLES = [
     "private": false,
     "channels":[
       {
-        "id": 'CH6553b305eae3413c83b28eab22d25d49',
+        "id": 'CH2c55e6e3e1dd4c3388b29ac640f94b36',
         "created": '2021-04-29',
         "category_id": 100,
         "community_id": 1,

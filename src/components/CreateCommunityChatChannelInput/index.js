@@ -1,16 +1,17 @@
 // @flow
 
 import React, { useCallback, useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {
   ValidatorForm,
 } from 'react-material-ui-form-validator'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { connect } from 'react-redux'
 import Typography from '@material-ui/core/Typography'
-import * as chatActions from 'actions/chat'
-import { bindActionCreators } from 'redux'
-import { sendMessage } from 'api/chat'
 import Button from '@material-ui/core/Button'
+import CloseIcon from '@material-ui/icons/Close'
+import { sendMessage } from 'api/chat'
+import * as chatActions from 'actions/chat'
 import SelectClassmates from './SelectClassmates'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
@@ -24,13 +25,18 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   typography: {
     fontSize: 20,
     color: 'white'
   },
   shortDescription: {
     fontSize: 16,
-    margin: theme.spacing(0.5, 0)
+    margin: theme.spacing(1, 0, 2, 0)
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -42,8 +48,10 @@ const styles = theme => ({
     flex: 1,
     width: '100%',
     backgroundColor: theme.circleIn.palette.feedBackground,
+    borderRadius: theme.spacing(),
     boxSizing: 'border-box',
     boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+    marginBottom: theme.spacing()
   },
   createDM: {
     marginTop: theme.spacing(),
@@ -200,9 +208,12 @@ const CreateChatChannelInput = ({
       className={classes.validatorForm}
       onSubmit={handleSubmit}
     >
-      <Typography className={classes.typography}>
-        SELECT CLASSMATES
-      </Typography>
+      <div className={classes.header}>
+        <Typography className={classes.typography} variant="h6">
+          SELECT CLASSMATES
+        </Typography>
+        <CloseIcon className={classes.closeIcon} onClick={onClosePopover} />
+      </div>
       <Typography className={classes.shortDescription}>
         Invite up to one or more classmates to chat.
       </Typography>
@@ -230,7 +241,7 @@ const CreateChatChannelInput = ({
           onClick={handleSubmit}
           color='primary'
         >
-          Create DM
+          Create New Message
         </Button>
       </div>
     </ValidatorForm>

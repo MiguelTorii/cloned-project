@@ -13,6 +13,7 @@ import * as chatActions from 'actions/chat'
 import Main from 'containers/CommunityChat/Main'
 import RightMenu from 'containers/CommunityChat/RightMenu'
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse.svg'
+import { getCommunityChannels } from 'api/community'
 import type { State as StoreState } from '../../types/state'
 import CourseChannels from './CourseChannels'
 import useStyles from './_styles/styles'
@@ -37,6 +38,7 @@ const CommunityChat = ({
   const [leftSpace, setLeftSpace] = useState(2)
   const [rightSpace, setRightSpace] = useState(0)
   const [prevWidth, setPrevWidth] = useState(null)
+  const [communityChannels, setCommunityChannels] = useState([])
 
   const [selectedChannel, setSelctedChannel] = useState(null)
 
@@ -50,6 +52,14 @@ const CommunityChat = ({
       currentChannel
     }
   } = chat
+
+  useEffect(() => {
+    async function fetchCommunityChannels(communityId) {
+      const { community_channels: channels } = await getCommunityChannels({ communityId })
+      setCommunityChannels(channels)
+    }
+    fetchCommunityChannels(selectedCourse.id)
+  }, [selectedCourse])
 
   useEffect(() => {
     const currentSelectedChannel = selectedChannel ? local[selectedChannel.id] : null
@@ -137,6 +147,7 @@ const CommunityChat = ({
           : <CourseChannels
             setSelctedChannel={setSelctedChannel}
             selectedChannel={selectedChannel}
+            communityChannels={communityChannels}
             local={local}
             course={selectedCourse}
           />}

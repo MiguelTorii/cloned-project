@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
   avatarProfile: {
     backgroundColor: theme.circleIn.palette.brand,
     color: 'white',
-    border: '2px solid white'
   },
   grow: {
     flex: 1,

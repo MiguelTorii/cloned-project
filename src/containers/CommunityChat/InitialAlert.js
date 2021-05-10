@@ -64,9 +64,11 @@ const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedCourse 
           : initials
         }
       </Avatar>
-      <Typography className={classes.members} variant="h5">{name}</Typography>
+      <Typography className={classes.members} variant="h5">
+        {local[channel.sid].members.length === 2 ? `You and ${name}` : name}
+      </Typography>
       <Typography className={classes.initialAlert} variant="subtitle2">
-      This is the beginning of your chat with {isOneToOne ? name : 'your group.'}
+        This is the beginning of your chat with {isOneToOne ? name : 'your group.'}
       </Typography>
     </Box>
 }

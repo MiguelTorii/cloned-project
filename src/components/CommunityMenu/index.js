@@ -59,7 +59,7 @@ const CommunityMenu = ({
     selected={selectedCourse && selectedCourse.id === item.id}
     classes={{ root: classes.listItem, selected: classes.selectedItem }}
     style={{
-      backgroundColor: item.color
+      backgroundColor: item.color ? item.color : '#C45960'
     }}>
     {['chat'].indexOf(item.id) > -1
       ? <StyledBadge max={99} badgeContent={unreadMessageCount} color="secondary">
@@ -67,10 +67,15 @@ const CommunityMenu = ({
           <Chat />
         </ListItemIcon>
       </StyledBadge>
-      : <StyledBadge max={99} badgeContent={unreadMessages} color="secondary">
+      : <StyledBadge
+        max={99}
+        classes={{ badge: classes.emptyUnreadMessage }}
+        badgeContent={unreadMessages || '🎉' }
+        color="secondary"
+      >
         <ListItemText
           classes={{ root: classes.itemContent }}
-          primary={item.name}
+          primary={item.name.substring(0,3).toUpperCase()}
         />
       </StyledBadge>}
   </ListItem>

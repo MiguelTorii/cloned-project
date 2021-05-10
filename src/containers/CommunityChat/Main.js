@@ -16,9 +16,11 @@ import ChatTextField from 'containers/CommunityChat/ChatTextField'
 import ChatHeader from 'containers/CommunityChat/ChatHeader'
 import EmptyMain from 'containers/CommunityChat/EmptyMain'
 import InitialAlert from 'containers/CommunityChat/InitialAlert'
+import LoadImg from 'components/LoadImg'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
+import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 import useStyles from './_styles/main'
 
 type Props = {
@@ -28,6 +30,7 @@ type Props = {
   mainMessage: Array,
   setMainMessage: Function,
   newMessage: Object,
+  rightSpace: number,
   local: Object,
   newChannel: boolean,
   user: Object,
@@ -42,6 +45,7 @@ const Main = ({
   mainMessage,
   setMainMessage,
   newMessage,
+  rightSpace,
   local,
   newChannel,
   user,
@@ -370,6 +374,7 @@ const Main = ({
       {channel && <ChatHeader
         channel={channel}
         title={local[channel.sid].title}
+        rightSpace={rightSpace}
         otherUser={otherUser}
         memberKeys={memberKeys}
         startVideo={startVideo}
@@ -397,6 +402,12 @@ const Main = ({
             initialLoad={false}
             isReverse
           >
+            {!hasMore
+              && isCommunityChat
+              && <div className={classes.bannerImage}>
+                <LoadImg className={classes.banner} style={{ width: '100%' }} url={CoverImg}/>
+              </div>
+            }
             {!hasMore && <InitialAlert
               isCommunityChat={isCommunityChat}
               selectedCourse={selectedCourse}

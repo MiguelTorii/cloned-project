@@ -27,6 +27,7 @@ const HideUntilLoaded = ({
   const styles = {
     display: 'inline-block',
     position: 'relative',
+    width: '100%',
     ...style
   }
 

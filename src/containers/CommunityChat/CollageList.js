@@ -6,14 +6,12 @@ import Divider from '@material-ui/core/Divider'
 import CommunityMenu from 'components/CommunityMenu'
 import useStyles from './_styles/collageList'
 
-import {
-  DEFAULT_COMMUNITY_MENU_ITEMS,
-  COMMUNITY_MENU,
-} from './constants'
+import { DEFAULT_COMMUNITY_MENU_ITEMS } from './constants'
 
 type Props = {
   unreadMessageCount: number,
   selectedCourse: any,
+  communities: array,
   local: Object,
   handleSelect: Function
 };
@@ -21,6 +19,7 @@ type Props = {
 const CollageList = ({
   unreadMessageCount,
   selectedCourse,
+  communities,
   local,
   handleSelect
 }: Props) => {
@@ -36,7 +35,7 @@ const CollageList = ({
       handleSelect={handleSelect}
     />
     <Divider classes={{ root: classes.divider }} />
-    {COMMUNITY_MENU.map(course => (
+    {communities.map(course => (
       <CommunityMenu
         key={course.id}
         local={local}

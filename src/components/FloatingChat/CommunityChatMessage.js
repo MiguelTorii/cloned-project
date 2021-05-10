@@ -5,6 +5,10 @@ import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,6 +16,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 // import TutorBadge from 'components/TutorBadge'
 import OnlineBadge from 'components/OnlineBadge';
+import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -101,6 +106,40 @@ const styles = theme => ({
     color: 'white',
     fontSize: '1rem',
     fontWeight: 700
+  },
+  videoAlertRoot: {
+    minWidth: 275,
+    backgroundColor: theme.circleIn.palette.appBar,
+    borderRadius: 20
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    color: 'white',
+    fontSize: 14,
+  },
+  cardContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(0, 2, 2, 2)
+  },
+  join: {
+    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: 10
+  },
+  camera: {
+    marginRight: theme.spacing(1)
   }
 });
 
@@ -142,7 +181,6 @@ class ChatMessage extends React.PureComponent<Props> {
     body,
     isVideoNotification,
     firstName,
-    lastName,
     createdAt,
     isOwn
   }: {
@@ -150,16 +188,15 @@ class ChatMessage extends React.PureComponent<Props> {
     body: string,
     isVideoNotification: boolean,
     firstName: string,
-    lastName: string,
     createdAt: string,
     isOwn: boolean
   }) => {
-    const { classes, onImageLoaded, onStartVideoCall } = this.props;
+    const { classes, onImageLoaded, onStartVideoCall, name, avatar } = this.props;
 
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
-
+    const initials =
+      name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     // eslint-disable-next-line no-script-url
-    const dudUrl = '';
 
     if (imageKey !== '') {
       return (
@@ -179,32 +216,21 @@ class ChatMessage extends React.PureComponent<Props> {
     if (isVideoNotification && !isOwn) {
       return (
         <div className={classes.bodyWrapper}>
-          <div className={classes.videoSpace}>
-            <div className={classes.video}>
-              <Typography
-                className={classes.createdAt}
-                style={{ fontStyle: 'italic' }}
-                align="center"
-              >
-                {createdAt}
+          <Card className={classes.videoAlertRoot}>
+            <CardContent classes={{ root: classes.cardContent }}>
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
+                <b>{firstName}</b>  started a Study Room 🎉
               </Typography>
-              <Typography
-                className={classes.videoTitle}
-                align="center"
-                style={{ fontStyle: 'italic' }}
-              >
-                {`${firstName} ${lastName} has invited you to a video call. `}
-                <Link
-                  href={dudUrl}
-                  color="inherit"
-                  className={classes.link}
-                  onClick={onStartVideoCall}
-                >
-                Join now!
-                </Link>
-              </Typography>
-            </div>
-          </div>
+              <Avatar alt={name} src={avatar}>
+                {initials}
+              </Avatar>
+            </CardContent>
+            <CardActions classes={{ root: classes.cardActions }}>
+              <Button className={classes.join} onClick={onStartVideoCall}>
+                <Camera className={classes.camera} /> Join Now
+              </Button>
+            </CardActions>
+          </Card>
         </div>
       );
     }
@@ -276,7 +302,6 @@ class ChatMessage extends React.PureComponent<Props> {
                 body: message.body,
                 isVideoNotification: message.isVideoNotification,
                 firstName: message.firstName,
-                lastName: message.lastName,
                 createdAt: message.createdAt,
                 isOwn
               })}

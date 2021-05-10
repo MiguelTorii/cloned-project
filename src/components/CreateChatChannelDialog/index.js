@@ -1,14 +1,14 @@
 // @flow
 
 import React, { useState, useEffect } from 'react';
-import {
-  ValidatorForm,
-} from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '../Dialog';
 import AutoComplete from '../AutoComplete';
-import { styles } from '../_styles/CreateChatChannelDialog';
+import styles from '../_styles/CreateChatChannelDialog';
 
 type Props = {
   classes: Object,
@@ -92,9 +92,10 @@ const CreateChatChannelDialog = ({
       onCancel={handleClose}
       onOk={handleSubmit}
       okTitle={okLabel || "Create"}
+      showHeader={false}
+      contentClassName={classes.contentClassName}
+      okButtonClass={classes.okButtonClass}
       showActions
-      showCancel
-      title={title || "Setup a Class Group Chat or Send a Direct Message"}
     >
       {isLoading && <CircularProgress
         style={{
@@ -103,6 +104,15 @@ const CreateChatChannelDialog = ({
           left: '50%'
         }}
       />}
+      <div className={classes.header}>
+        <Typography className={classes.label} variant="h6">
+          {title || "Setup a Class Group Chat or Send a Direct Message"}
+        </Typography>
+        <CloseIcon className={classes.closeIcon} onClick={handleClose} />
+      </div>
+      <Typography variant="subtitle1">
+        Add up to one or more classmates to chat.
+      </Typography>
       <ValidatorForm
         className={classes.validatorForm}
         onSubmit={handleSubmit}
@@ -110,10 +120,11 @@ const CreateChatChannelDialog = ({
         <div className={classes.form}>
           <div>
             <AutoComplete
+              classes={{ root: classes.searchMember }}
               values={users}
               relative
               inputValue={inputValue}
-              label="Select users"
+              searchClassmate
               placeholder="Search for classmates"
               error={error}
               errorText="You must select at least 1 classmate"

@@ -2,18 +2,21 @@
 
 import React, { useEffect, useState } from 'react'
 import List from '@material-ui/core/List'
-import Popover from '@material-ui/core/Popover';
+// import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
 
 import ChatListItem from 'components/CommunityChatListItem'
 import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput'
+import Dialog from 'components/Dialog'
 import MainChatItem from 'components/CommunityChatListItem/MainChatItem'
 import EmptyLeftMenu from 'containers/CommunityChat/EmptyLeftMenu'
+import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg'
 import { getTitle } from 'utils/chat'
 import useStyles from './_styles/leftMenu'
 
@@ -52,15 +55,15 @@ const LeftMenu = ({
   const classes = useStyles()
   const [search, setSearch] = useState()
   const [searchChannels, setSearchChannels] = useState([])
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [isOpen, setIsOpen] = useState(false)
 
-  const handleCreateNewChannel = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleCreateNewChannel = () => {
+    setIsOpen(true)
     onNewChannel()
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setIsOpen(false)
   };
 
   const onChangeSearch = e => setSearch(e.target.value)
@@ -87,9 +90,6 @@ const LeftMenu = ({
     }
   }, [search, channels, userId, local])
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'add-classmates' : undefined;
-
   return (
     <Grid item classes={{ root: classes.container }}>
       <Grid item className={classes.gridItem}>
@@ -97,6 +97,11 @@ const LeftMenu = ({
           <InputBase
             onChange={onChangeSearch}
             value={search || ''}
+            startAdornment={
+              <InputAdornment position="start">
+                <ChatSearchIcon />
+              </InputAdornment>
+            }
             placeholder="Find your chats or classmates..."
             classes={{
               root: classes.inputRoot,
@@ -110,15 +115,19 @@ const LeftMenu = ({
         container
         classes={{ root: classes.container }}
       >
-        <Grid
+        {!!channelList.length && <Grid
           container
           classes={{ root: classes.header }}
           justify='center'
           alignItems='center'
           direction='column'
         >
-          <Typography variant="subtitle1" component="p">
-            Direct Messages
+          <Typography
+            className={classes.createNewChate}
+            variant="subtitle1"
+            component="p"
+          >
+            Create New Chat
           </Typography>
 
           <Button
@@ -131,30 +140,23 @@ const LeftMenu = ({
           >
             +
           </Button>
-          <Popover
-            id={id}
-            classes={{ paper: classes.selectClassmates }}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
+          <Dialog
+            className={classes.selectClassmates}
+            open={isOpen}
+            onCancel={handleClose}
+            showHeader={false}
+            showActions={false}
           >
             {newChannel && <CreateChatChannelInput
               onClosePopover={handleClose}
               onOpenChannel={onOpenChannel}
             />}
-          </Popover>
-        </Grid>
+          </Dialog>
+        </Grid>}
         <Grid item className={classes.gridChatList}>
           <EmptyLeftMenu
             emptyChannels={channelList.length === 0}
+            handleCreateNewChannel={handleCreateNewChannel}
             isLoading={isLoading}
           />
           <List className={classes.root}>

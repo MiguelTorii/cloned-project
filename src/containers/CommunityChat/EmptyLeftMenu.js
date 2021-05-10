@@ -5,20 +5,23 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
-// import directMessageArrow from 'assets/svg/direct-message-arrow.svg'
 import useStyles from './_styles/emptyLeftMenu'
 
+type Props = {
+  isLoading: boolean,
+  emptyChannels: boolean,
+  handleCreateNewChannel: Function
+};
 
-const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
+const EmptyLeftMenu = ({
+  isLoading,
+  emptyChannels,
+  handleCreateNewChannel
+}: Props) => {
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
-      {/* {emptyChannels && <img
-        src={directMessageArrow}
-        className={classes.arrow}
-        alt="direct-message-arrow"
-      />} */}
       {emptyChannels && <div className={classes.messageContainer}>
         <Typography
           role="img"
@@ -26,18 +29,21 @@ const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
             root: classes.message
           }}
         >
-            No one to message yet 😑 <br />
-            Click  <Button
-            disabled
-            variant='contained'
-            classes={{
-              disabled: classes.newButton
-            }}
-            color='primary'
-          >
-            +
-          </Button>    to get started!
+          You have no messages yet. <br />
+          Once you’ve sent or received messages, you’ll see them here.
+          <br /> <br/>
+          Click the button below to start chatting!
         </Typography>
+
+        <Button
+          variant='contained'
+          className={classes.createDM}
+          onClick={handleCreateNewChannel}
+          color='primary'
+        >
+          Create new DM
+        </Button>
+
         {isLoading && <div className={classes.loading}>
           <CircularProgress />
         </div>}

@@ -10,25 +10,19 @@ const useStyles = makeStyles(theme => ({
     maxHeight: 120,
   },
   courseNameWithLogo: {
-    position: 'absolute',
-    background: 'rgba(0, 0, 0, 0.34)',
-    color: 'white',
-    padding: theme.spacing(1, 2),
-    fontWeight: 'bold',
-    fontSize: 26,
-    textAlign: 'center'
+    width: '100%',
+    minHeight: 60
   },
   courseName: {
     width: '100%',
-    minHeight: 100,
-    boxShadow: '0px 1px 1px #000000'
+    minHeight: 60,
+    backgroundColor: theme.circleIn.palette.modalBackground
   },
   name: {
-    background: 'rgba(0, 0, 0, 0.34)',
     color: 'white',
     padding: theme.spacing(1, 2),
     fontWeight: 'bold',
-    fontSize: 26,
+    fontSize: 20,
     textAlign: 'center'
   }
 }))

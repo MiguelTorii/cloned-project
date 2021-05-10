@@ -14,87 +14,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-// import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
-// import Checkbox from '@material-ui/core/Checkbox';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-
+import ClearIcon from '@material-ui/icons/Clear';
+import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import OnlineBadge from 'components/OnlineBadge';
 import type { SelectType } from '../../types/models';
+import styles from '../_styles/AutoComplete';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
 )
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    '& .MuiInputAdornment-positionStart': {
-      marginRight: 0
-    },
-  },
-  input: {
-    display: 'flex',
-    padding: theme.spacing(0)
-  },
-  valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden'
-  },
-  chip: {
-    margin: theme.spacing(1/8),
-    maxWidth: 160,
-    backgroundColor: theme.circleIn.palette.modalBackground,
-    color: 'white',
-    borderRadius: 2
-  },
-  chipFocused: {
-    backgroundColor: emphasize(
-      theme.palette.type === 'light'
-        ? theme.palette.grey[300]
-        : theme.palette.grey[700],
-      0.08
-    )
-  },
-  avatar: {
-    width: 40,
-    height: 40
-  },
-  noOptionsMessage: {
-    padding: `${theme.spacing()}px ${theme.spacing(2)}px`
-  },
-  placeholder: {
-    position: 'absolute',
-    left: theme.spacing(0.5),
-    fontSize: 12
-  },
-  paper: {
-    zIndex: 100,
-    left: 0,
-    right: 0
-  },
-  paperAbsolute: {
-    position: 'absolute',
-  },
-  paperRelative: {
-    position: 'relative',
-    backgroundColor: theme.circleIn.palette.modalBackground,
-  },
-  errorLabel: {
-    paddingLeft: 12
-  },
-  classmates: {
-    backgroundColor: theme.circleIn.palette.modalBackground
-  }
-});
 
 function NoOptionsMessage({ selectProps, innerProps, children }) {
   return (
@@ -131,20 +65,33 @@ function Control({ selectProps, innerProps, innerRef, children }) {
     textFieldProps: {
       relative,
       ...otherTextFieldProps
-    }
+    },
+    classes,
+    searchClassmate
   } = selectProps
 
   return (
     <TextField
+      classes={{
+        root: searchClassmate && classes.searchInput
+      }}
       fullWidth
       variant="outlined"
       disabled={isDisabled}
       InputProps={{
         inputComponent,
-        startAdornment: <InputAdornment position='start'><div /></InputAdornment>,
+        disableUnderline: searchClassmate,
+        startAdornment: <InputAdornment
+          position='start'
+          classes={{
+            positionStart: searchClassmate && classes.startIcon
+          }}
+        >
+          {searchClassmate ? <ChatSearchIcon />  :<div />}
+        </InputAdornment>,
         inputProps: {
           autoFocus,
-          className: selectProps.classes.input,
+          className: searchClassmate ? classes.addClassmateInput : classes.input,
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -219,12 +166,15 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
-  const { isDisabled } = selectProps
+  const { isDisabled, searchClassmate, classes } = selectProps
 
   return (
     <Typography
       color={isDisabled ? "textSecondary" : "textPrimary"}
-      className={selectProps.classes.placeholder}
+      className={searchClassmate
+        ? classes.addClassmatePlaceholder
+        : classes.placeholder
+      }
       {...innerProps}
     >
       {children}
@@ -250,27 +200,43 @@ function SingleValue({ selectProps, innerProps, children }) {
 
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
+  const { classes, searchClassmate } = selectProps
   if (avatar !== '' || initials !== '')
     return (
       <Chip
+        avatar={
+          !searchClassmate ? <Avatar alt={initials} src={avatar}>
+            {initials}
+          </Avatar> : null
+        }
         tabIndex={-1}
         label={children}
-        className={cx(selectProps.classes.chip, {
-          [selectProps.classes.chipFocused]: isFocused
+        className={cx(searchClassmate
+          ? classes.addClassmateChip
+          : classes.chip, {
+          [classes.chipFocused]: isFocused
         })}
         onDelete={removeProps.onClick}
-        deleteIcon={<CancelIcon {...removeProps} />}
+        deleteIcon={searchClassmate
+          ? <ClearIcon {...removeProps} />
+          : <CancelIcon {...removeProps} />
+        }
       />
     );
   return (
     <Chip
       tabIndex={-1}
       label={children}
-      className={cx(selectProps.classes.chip, {
-        [selectProps.classes.chipFocused]: isFocused
+      className={cx(searchClassmate
+        ? classes.addClassmateChip
+        : classes.chip, {
+        [classes.chipFocused]: isFocused
       })}
       onDelete={removeProps.onClick}
-      deleteIcon={<CancelIcon {...removeProps} />}
+      deleteIcon={searchClassmate
+        ? <ClearIcon {...removeProps} />
+        : <CancelIcon {...removeProps} />
+      }
     />
   );
 }
@@ -280,15 +246,19 @@ function Menu({ selectProps, children, innerProps }) {
     inputValue,
     options = [],
     textFieldProps,
-    isSchoolSearch
+    isSchoolSearch,
+    searchClassmate,
+    classes
   } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
     <Paper square className={cx(
-      selectProps.classes.paper,
+      searchClassmate
+        ? classes.addClassmatePaper
+        : classes.paper ,
       textFieldProps.relative
-        ? selectProps.classes.paperRelative
-        : selectProps.classes.paperAbsolute
+        ? classes.paperRelative
+        : classes.paperAbsolute
     )}
     {...innerProps}
     >
@@ -391,6 +361,7 @@ const SelectClassmates = ({
           value={values}
           onChange={onChange}
           loadOptions={onLoadOptions}
+          searchClassmate
           additional={{
             page
           }}

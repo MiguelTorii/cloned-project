@@ -19,6 +19,11 @@ const useStyles = makeStyles(theme => ({
   },
   selectedItem: {
     border: `3px solid ${theme.circleIn.palette.white}`
+  },
+  emptyUnreadMessage: {
+    backgroundColor: 'white',
+    right: 5,
+    top: '90%'
   }
 }))
 

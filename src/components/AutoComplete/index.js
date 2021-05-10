@@ -18,9 +18,11 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import OnlineBadge from 'components/OnlineBadge';
-import { styles } from '../_styles/AutoComplete';
+import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
+import styles from '../_styles/AutoComplete';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
@@ -57,22 +59,39 @@ function inputComponent({ inputRef, ...props }) {
 }
 
 function Control({ selectProps, innerProps, innerRef, children }) {
-  const { isDisabled, autoFocus, textFieldProps: {
-    relative,
-    ...otherTextFieldProps
-  } } = selectProps
+  const {
+    isDisabled,
+    autoFocus,
+    textFieldProps: {
+      relative,
+      ...otherTextFieldProps
+    },
+    searchClassmate,
+    classes
+  } = selectProps
 
   return (
     <TextField
       fullWidth
+      classes={{
+        root: searchClassmate && classes.searchInput
+      }}
       variant="outlined"
       disabled={isDisabled}
       InputProps={{
         inputComponent,
-        startAdornment: <InputAdornment position='start'><div /></InputAdornment>,
+        disableUnderline: searchClassmate,
+        startAdornment: <InputAdornment
+          position='start'
+          classes={{
+            positionStart: searchClassmate && classes.startIcon
+          }}
+        >
+          {searchClassmate ? <ChatSearchIcon />  :<div />}
+        </InputAdornment>,
         inputProps: {
           autoFocus,
-          className: selectProps.classes.input,
+          className: searchClassmate ? classes.addClassmateInput : classes.input,
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -135,12 +154,15 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data })
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
-  const { isDisabled } = selectProps
+  const { isDisabled, classes, searchClassmate } = selectProps
 
   return (
     <Typography
       color={isDisabled ? "textSecondary" : "textPrimary"}
-      className={selectProps.classes.placeholder}
+      className={searchClassmate
+        ? classes.addClassmatePlaceholder
+        : classes.placeholder
+      }
       {...innerProps}
     >
       {children}
@@ -166,43 +188,65 @@ function SingleValue({ selectProps, innerProps, children }) {
 
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
+  const { classes, searchClassmate } = selectProps
   if (avatar !== '' || initials !== '')
     return (
       <Chip
         avatar={
-          <Avatar alt={initials} src={avatar}>
+          !searchClassmate ? <Avatar alt={initials} src={avatar}>
             {initials}
-          </Avatar>
+          </Avatar> : null
         }
         tabIndex={-1}
         label={children}
-        className={cx(selectProps.classes.chip, {
-          [selectProps.classes.chipFocused]: isFocused
+        className={cx(searchClassmate
+          ? classes.addClassmateChip
+          : classes.chip, {
+          [classes.chipFocused]: isFocused
         })}
         onDelete={removeProps.onClick}
-        deleteIcon={<CancelIcon {...removeProps} />}
+        deleteIcon={searchClassmate
+          ? <ClearIcon {...removeProps} />
+          : <CancelIcon {...removeProps} />
+        }
       />
     );
   return (
     <Chip
       tabIndex={-1}
       label={children}
-      className={cx(selectProps.classes.chip, {
-        [selectProps.classes.chipFocused]: isFocused
+      className={cx(searchClassmate
+        ? classes.addClassmateChip
+        : classes.chip, {
+        [classes.chipFocused]: isFocused
       })}
       onDelete={removeProps.onClick}
-      deleteIcon={<CancelIcon {...removeProps} />}
+      deleteIcon={searchClassmate
+        ? <ClearIcon {...removeProps} />
+        : <CancelIcon {...removeProps} />
+      }
     />
   );
 }
 
 function Menu({ selectProps, children, innerProps }) {
-  const { inputValue, options = [], textFieldProps, isSchoolSearch } = selectProps;
+  const {
+    inputValue,
+    options = [],
+    textFieldProps,
+    isSchoolSearch,
+    searchClassmate,
+    classes
+  } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
     <Paper square className={cx(
-      selectProps.classes.paper,
-      textFieldProps.relative ? selectProps.classes.paperRelative : selectProps.classes.paperAbsolute
+      searchClassmate
+        ? classes.addClassmatePaper
+        : classes.paper ,
+      textFieldProps.relative
+        ? classes.paperRelative
+        : classes.paperAbsolute
     )}
     {...innerProps}
     >
@@ -246,6 +290,7 @@ type Props = {
   isMulti: boolean,
   error: boolean,
   errorText: string,
+  searchClassmate: boolean,
   isDisabled: boolean,
   cacheUniq: any,
   isSchoolSearch: boolean,
@@ -268,6 +313,7 @@ const AutoComplete = ({
   isMulti,
   error,
   errorText,
+  searchClassmate = false,
   onChange,
   variant,
   isDisabled = false,
@@ -302,6 +348,7 @@ const AutoComplete = ({
           }}
           inputValue={inputValue}
           components={components}
+          searchClassmate={searchClassmate}
           value={values}
           onChange={onChange}
           loadOptions={onLoadOptions}
