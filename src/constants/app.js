@@ -71,3 +71,7 @@ export const INTERVAL = {
 export const DURATION_REPLACE_TEXT = '{{ time_left }}';
 
 export const APP_ROOT_PATH = window.location.origin;
+
+export const UPLOAD_MEDIA_TYPES = {
+  FLASHCARDS: 6
+};

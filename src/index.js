@@ -72,7 +72,7 @@ import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
 import reduxStore from './configureStore';
-import { FlashcardsListPage } from './pages/Flashcards';
+import { FlashcardsListPage, FlashcardsNewPage } from './pages/Flashcards';
 
 defaultKatexRender('White')
 
@@ -124,13 +124,18 @@ ReactDOM.render(
               <Route exact path="/share/:code" component={withTracker(Share)} />
               <Route
                 exact
-                path="/flashcards/:flashcardId"
-                component={withTracker(FlashCards)}
+                path='/flashcards'
+                component={withTracker(FlashcardsListPage)}
               />
               <Route
                 exact
-                path='/flashcards'
-                component={withTracker(FlashcardsListPage)}
+                path='/flashcards/new'
+                component={withTracker(FlashcardsNewPage)}
+              />
+              <Route
+                exact
+                path="/flashcards/:flashcardId"
+                component={withTracker(FlashCards)}
               />
               <Route
                 exact

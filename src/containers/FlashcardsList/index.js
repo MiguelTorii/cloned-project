@@ -10,10 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFlashcards } from '../../actions/user';
 import FlashcardsDeck from '../../components/FlashcardsDeck';
 import LoadImg from '../../components/LoadImg';
-import ImgEmptyState from 'assets/img/no_flashcards.png';
+import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { isApiCalling } from '../../utils/helpers';
 import { userActions } from '../../constants/action-types';
+import { useHistory } from 'react-router';
 
 const Filters = {
   all: {
@@ -28,6 +29,7 @@ const FlashcardsList = () => {
   // Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const me = useSelector((state) => state.user.data);
   const decks = useSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
@@ -60,7 +62,7 @@ const FlashcardsList = () => {
   // Callbacks
   const renderEmptyState = useCallback(() => (
     <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
-      <LoadImg url={ImgEmptyState} />
+      <img src={ImgEmptyState} alt="No flashcards" />
       <Box mt={3} fontSize={24}>
         { filter === 'all' && 'No flashcard decks yet.' }
         { filter === 'bookmarked' && 'No bookmarked decks yet.' }
@@ -71,6 +73,10 @@ const FlashcardsList = () => {
       </Box>
     </Box>
   ), [filter]);
+
+  const handleCreate = useCallback(() => {
+    history.push('/flashcards/new');
+  }, [history]);
 
   // Effects
   useEffect(() => {
@@ -123,7 +129,7 @@ const FlashcardsList = () => {
           </Typography>
         </Grid>
         <Grid item>
-          <GradientButton>
+          <GradientButton onClick={handleCreate}>
             Create
           </GradientButton>
         </Grid>

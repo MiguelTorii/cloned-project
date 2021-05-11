@@ -38,6 +38,32 @@ export const enqueueSnackbar = ({
   );
 };
 
+export const showNotification = (
+  {
+    message,
+    nextPath,
+    variant = 'info',
+    vertical = 'bottom',
+    horizontal = 'left',
+    autoHideDuration = 7000
+  }
+) => {
+  return enqueueSnackbar({
+    notification: {
+      message,
+      nextPath,
+      options: {
+        variant,
+        anchorOrigin: {
+          vertical,
+          horizontal
+        },
+        autoHideDuration
+      }
+    }
+  });
+};
+
 export const closeSnackbar = ({ key }: { key: string }) => async (
   dispatch: Dispatch
 ) => {

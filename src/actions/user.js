@@ -16,6 +16,8 @@ import { apiGetPointsHistory } from '../api/user';
 import { checkUserSession } from './sign-in';
 import { apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
+import { getPresignedURL } from '../api/media';
+import axios from "axios";
 
 const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -293,3 +295,29 @@ export const bookmarkFlashcards = (
   meta: { feedId },
   apiCall: () => bookmark({ feedId, userId, remove: isRemove })
 });
+
+export const uploadMedia = async (
+  userId: string,
+  type: number,
+  file: Blob
+) => {
+  const { type: mediaType } = file;
+
+  try {
+    const mediaData = await getPresignedURL({
+      userId,
+      type,
+      mediaType
+    });
+
+    await axios.put(mediaData.url, file, {
+      headers: {
+        'Content-Type': type
+      }
+    });
+
+    return mediaData;
+  } catch (err) {
+    return null;
+  }
+};
