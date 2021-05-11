@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
       opacity: 1,
       fontSize: 16
     },
-    '& div': {
+    '& > div': {
       minWidth: 200,
       maxHeight: 'inherit'
     },
