@@ -115,7 +115,7 @@ const MainChatItem = ({
         })}
         onClick={onClick}
       >
-        <OnlineBadge isVisible={isDirectChat} isOnline={isOnline} bgColorPath={ dark ? "circleIn.palette.primaryBackground" : "circleIn.palette.appBar" }>
+        <OnlineBadge isVisible={isDirectChat} isOnline={isOnline} bgColorPath={ dark ? "circleIn.palette.feedBackground" : "circleIn.palette.appBar" }>
           <Avatar src={imageProfile}>
             {initials || <GroupIcon />}
           </Avatar>

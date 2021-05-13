@@ -205,7 +205,7 @@ const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selecte
 
                 return isOnline && (
                   <div key={member} className={classes.member}>
-                    <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.primaryBackground">
+                    <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
                       <Avatar
                         src={avatar}
                         className={classes.avatar}

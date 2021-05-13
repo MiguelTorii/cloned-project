@@ -47,6 +47,9 @@ const Dialog = ({
   setOkRef = () => {},
   rightButton = null,
   title,
+  headerTitleClass,
+  hrClass,
+  closeButtonClass,
   ...props
 }: {
   ariaDescribedBy: ?string,
@@ -70,6 +73,9 @@ const Dialog = ({
   showCancel: ?boolean,
   showHeader: ?boolean,
   title: ?ReactNode,
+  headerTitleClass: ?string,
+  hrClass: ?string,
+  closeButtonClass: ?string,
   rightButton: ?ReactNode,
   props: Object
 }) => {
@@ -96,13 +102,13 @@ const Dialog = ({
             {
               title &&
                 (typeof title === 'string' ?
-                  <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
+                  <div className={cx(headerTitleClass, classes.title)} id='circle-in-dialog-title'>{title}</div> :
                   title)
             }
             <CloseIcon className={classes.closeIcon} onClick={onCancel} />
             {
               title &&
-                <hr className={classes.hr} />
+                <hr className={cx(hrClass, classes.hr)} />
             }
           </div>
       }
@@ -146,7 +152,7 @@ const Dialog = ({
             showCancel &&
             <Button
               id='dialog-cancel-button'
-              className={classes.button}
+              className={cx(closeButtonClass, classes.button)}
               color="primary"
               disabled={disableActions}
               onClick={onCancel}

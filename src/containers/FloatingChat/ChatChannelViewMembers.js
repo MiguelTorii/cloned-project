@@ -122,7 +122,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
               {members.map(member => (
                 <ListItem key={member.userId} role={undefined} dense>
                   <ListItemAvatar>
-                    <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.modalBackground">
+                    <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.feedBackground">
                       <Avatar
                         alt={`${member.firstName} ${member.lastName}`}
                         src={member.profileImageUrl}

@@ -47,19 +47,19 @@ export const reasonList = [
 
 export const nameList = [
   {
-    value: 'Debra Morgan',
+    value: 'debra-morgan',
     text: 'Debra Morgan',
   },
   {
-    value: 'Dexter Morgan',
+    value: 'dexter-morgan1',
     text: 'Dexter Morgan',
   },
   {
-    value: 'Vince Masuka',
+    value: 'vince-masuka',
     text: 'Vince Masuka',
   },
   {
-    value: 'Maria LaGuerta',
+    value: 'maria-laGuerta',
     text: 'Maria LaGuerta',
   },
 ]

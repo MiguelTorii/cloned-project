@@ -35,7 +35,8 @@ type Props = {
   newChannel: boolean,
   user: Object,
   onSend: Function,
-  setRightPanel: Function
+  setRightPanel: Function,
+  handleBlock: Function
 };
 
 const Main = ({
@@ -50,7 +51,8 @@ const Main = ({
   newChannel,
   user,
   onSend,
-  setRightPanel
+  setRightPanel,
+  handleBlock
 }: Props) => {
   const classes = useStyles()
   const [messages, setMessages] = useState([])
@@ -217,6 +219,7 @@ const Main = ({
             role={role}
             isOnline={isOnline}
             isOwn={type === 'own'}
+            currentUserId={userId}
             userId={item.author}
             name={item.name}
             messageList={item.messageList}
@@ -224,6 +227,7 @@ const Main = ({
             onImageLoaded={handleScrollToBottom}
             onStartVideoCall={handleStartVideoCall}
             onImageClick={handleImageClick}
+            handleBlock={handleBlock}
           />
         )
       case 'end':
@@ -244,7 +248,7 @@ const Main = ({
       console.log(err)
       return null
     }
-  }, [getIsOnline, getRole, handleImageClick, handleScrollToBottom, handleStartVideoCall])
+  }, [getIsOnline, getRole, handleImageClick, handleScrollToBottom, handleStartVideoCall, handleBlock, userId])
 
   const onSendMessage = useCallback(async message => {
     setScroll(true)

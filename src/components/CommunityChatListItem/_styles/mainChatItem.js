@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   dark: {
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.navbarBackgroundColor,
   },
   selected: {
     backgroundColor: theme.circleIn.palette.rowSelection,

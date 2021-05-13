@@ -17,7 +17,6 @@ import { styles } from '../_styles/FloatingChat/ChatMessage';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
-
 type Props = {
   classes: Object,
   role: ?string,
@@ -158,7 +157,7 @@ class ChatMessage extends React.PureComponent<Props> {
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.appBar">
+            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
               <Avatar alt={name} src={avatar}>
                 {initials}
               </Avatar>

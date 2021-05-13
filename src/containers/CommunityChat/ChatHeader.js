@@ -7,7 +7,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import { searchUsers } from 'api/user'
-import { addGroupMembers } from 'api/chat'
+import { addGroupMembers, sendMessage } from 'api/chat'
+import { logEvent } from 'api/analytics';
 import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg'
 import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg'
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg'
@@ -95,6 +96,25 @@ const ChatHeader = ({
       await addGroupMembers({
         chatId: channel.sid,
         users: selectedUsers.map(user => Number(user.userId))
+      });
+
+      selectedUsers.forEach(async user => {
+        const messageAttributes = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          imageKey: 'add_new_member'
+        }
+
+        await sendMessage({
+          message: `${user.firstName} ${user.lastName} was added to the chat`,
+          chatId: channel.sid,
+          ...messageAttributes
+        })
+
+        logEvent({
+          event: 'Chat- Send Message',
+          props: { Content: 'Text', 'Channel SID': channel.sid }
+        });
       });
     } finally {
       setLoading(false)

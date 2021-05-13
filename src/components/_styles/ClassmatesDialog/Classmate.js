@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-export const useStyles = makeStyles(theme => ({
+export default makeStyles(theme => ({
   textRoot: {
     width: 0
   },
@@ -37,5 +37,9 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.greenInvite,
     borderRadius: theme.spacing(2),
+  },
+  avatarProfile: {
+    backgroundColor: theme.circleIn.palette.brand,
+    color: 'white',
   }
 }));

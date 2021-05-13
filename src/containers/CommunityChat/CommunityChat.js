@@ -62,7 +62,8 @@ const CommunityChat = ({
   }, [selectedCourse])
 
   useEffect(() => {
-    const currentSelectedChannel = selectedChannel ? local[selectedChannel.id] : null
+    const currentSelectedChannel = selectedChannel ? local[selectedChannel.chat_id] : null
+
     if (currentSelectedChannel) {
       setCurrentChannel(currentSelectedChannel.twilioChannel)
     }

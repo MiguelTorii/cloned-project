@@ -131,7 +131,7 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
         <ListItemAvatar>
           <OnlineBadge
             isOnline={isOnline}
-            bgColorPath="circleIn.palette.modalBackground"
+            bgColorPath="circleIn.palette.feedBackground"
           >
             <Avatar
               alt={initials}

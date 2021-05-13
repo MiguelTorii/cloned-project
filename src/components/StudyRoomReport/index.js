@@ -1,3 +1,4 @@
+// @flow
 import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
@@ -14,12 +15,14 @@ import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import type { UserState } from '../../reducers/user';
 
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 import Dialog from 'components/Dialog';
+import LoadImg from 'components/LoadImg';
+import ReportImage from 'assets/svg/report-done.svg';
+import type { UserState } from '../../reducers/user';
+import styles from '../_styles/StudyRoomReport';
 import { report } from '../../api/posts';
-import { styles } from '../_styles/StudyRoomReport';
 import { reasonList, nameList } from './constants';
 
 const getValue = (value) => {
@@ -28,8 +31,6 @@ const getValue = (value) => {
 
 type Props = {
   user: UserState,
-  ownerId: string,
-  objectId: number,
   open: boolean,
   handleClose: Function
 };
@@ -38,12 +39,9 @@ const ReportIssue = ({
   user: {
     data: { userId }
   },
-  ownerId,
-  objectId,
   classes,
   handleClose,
   open,
-  router,
 }: Props) => {
   const [loading, setLoading] = useState(false)
   const [reported, setReported] = useState(false)
@@ -59,7 +57,6 @@ const ReportIssue = ({
   // }, [])
 
   const handleSubmit = useCallback(async () => {
-    console.log('selectedReason', selectedReason)
     setLoading(true)
     try {
       await report({
@@ -86,7 +83,6 @@ const ReportIssue = ({
 
   const handleRemoveName = (value) => {
     const filteredList = selectedNames.filter(item => item !== value)
-    console.log('list', value, filteredList)
     setSelectedNames(filteredList)
   }
 
@@ -149,11 +145,11 @@ const ReportIssue = ({
               )}
             >
               <MenuItem value='' className={classes.emptyOption} />
-              {nameList.map((item, index) => (
+              {nameList.map(item => (
                 <MenuItem
                   className={classes.menuItem}
                   value={item.text}
-                  key={`name-item-${index}`}
+                  key={`name-item-${item.value}`}
                 >
                   {selectedNames.indexOf(item.text) > -1
                     ? <CheckCircleIcon className={classes.mr1} />
@@ -183,11 +179,11 @@ const ReportIssue = ({
               onChange={handleSelectReason}
             >
               <MenuItem value='' className={classes.emptyOption} disabled />
-              {reasonList.map((item, index) => (
+              {reasonList.map(item => (
                 <MenuItem
                   className={classes.menuItem}
                   value={item.value}
-                  key={`reason-item-${index}`}
+                  key={`reason-item-${item.value}`}
                 >
                   {selectedReason === item.value
                     ? <CheckCircleIcon className={classes.mr1} />
@@ -213,7 +209,7 @@ const ReportIssue = ({
               className={classes.cancel}
               onClick={handleClose}
             >
-              Don't Report
+              Cancel
             </Button>
             <Button
               variant="contained"
@@ -229,6 +225,9 @@ const ReportIssue = ({
 
       {reported && (
         <>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <LoadImg url={ReportImage} />
+          </Box>
           <Typography variant="body1" className={classes.finalNote}>
             Thank you for submitting your report. We take reports very seriously.
             We want you to have a sefe experience and we're sorry you're experiencing

@@ -71,35 +71,36 @@ const CollapseNavbar = ({
       setSelctedChannel(channel)
     }
   };
-
+  console.log('----selectedChannel---')
+  console.log(selectedChannel)
   const renderChannels = channels => {
     const content = []
     channels.forEach(channel => {
       content.push(
         <ListItem
-          key={channel?.channels ? channel.category_id : channel.id}
+          key={channel?.channels ? channel.created : channel.chat_id}
           className={cx(
             classes.navLink,
             !channel?.channels && classes.childChannel,
-            !channel?.channels && !local[channel.id] && classes.hide
+            !channel?.channels && !local[channel.chat_id] && classes.hide
           )}
-          selected={selectedChannel && selectedChannel.id === channel.id}
+          selected={selectedChannel && selectedChannel.chat_id === channel.chat_id}
           classes={{ selected: classes.selected }}
           onClick={handleSubList(
-            channel?.channels ? channel.category_name : channel.chat_name,
+            channel?.channels ? channel.created : channel.chat_name,
             channel
           )}
           button
         >
           {channel?.channels
             ? <ListItemIcon classes={{ root: classes.channelIcon }}>
-              {subListOpen === channel?.category_name
+              {subListOpen === channel?.created
                 ? <ExpandLess />
                 : <ExpandMore />
               }
             </ListItemIcon>
-            : local[channel.id] ? <ListItemIcon classes={{ root: classes.channelIcon }}>
-              {local[channel.id]?.unread
+            : local[channel.chat_id] ? <ListItemIcon classes={{ root: classes.channelIcon }}>
+              {local[channel.chat_id]?.unread
                 ? <UnreadMessageChannelIcon />
                 : <ChannelIcon />}
             </ListItemIcon> : null
@@ -107,19 +108,19 @@ const CollapseNavbar = ({
           {channel?.channels
             ? <ListItemText
               classes={{ primary: classes.channelName }}
-              primary={channel.category_name}
+              primary={channel.created}
             />
-            : local[channel.id]
+            : local[channel.chat_id]
               ? <ListItemText
                 classes={{ primary: cx(
                   classes.channelName,
-                local[channel.id]?.unread && classes.unreadMessageChannel
+                local[channel.chat_id]?.unread && classes.unreadMessageChannel
                 ) }}
-                primary={local[channel.id] && channel.chat_name}
+                primary={local[channel.chat_id] && channel.chat_name}
               />
               : null}
         </ListItem>,
-        channel?.channels && renderSubList(channel.channels, channel.category_name)
+        channel?.channels && renderSubList(channel.channels, channel.created)
       )
     })
 
@@ -128,6 +129,8 @@ const CollapseNavbar = ({
 
 
   const renderSubList = (childChannels, parentChannelName) => {
+    console.log('--------childChannels----')
+    console.log(childChannels)
     return <Collapse
       in={subListOpen !== parentChannelName}
       timeout="auto"

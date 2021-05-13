@@ -147,7 +147,7 @@ const MainChatItem = ({
           isVisible={isDirectChat}
           isOnline={isOnline}
           bgColorPath={dark
-            ? "circleIn.palette.primaryBackground"
+            ? "circleIn.palette.feedBackground"
             : "circleIn.palette.appBar"}
         >
           <Avatar className={classes.avatarProfile} src={imageProfile}>

@@ -21,7 +21,7 @@ import clsx from 'clsx'
 import OnlineBadge from 'components/OnlineBadge';
 import InviteIcon from 'assets/svg/invite-icon.svg'
 
-import { useStyles } from '../_styles/ClassmatesDialog/Classmate';
+import useStyles from '../_styles/ClassmatesDialog/Classmate';
 
 type ClassmateType = {
   userId: string,
@@ -91,15 +91,27 @@ const Classmate = ({
     return classmate.notRegistered ? 'Invite to CircleIn' : 'Study Room'
   }, [classmate.notRegistered, loadingVideo])
 
+  const initials = useMemo(() => {
+    const name = `${classmate?.firstName} ${classmate?.lastName}`
+
+    return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+  }, [classmate])
+
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
       <ListItemAvatar>
         <Link href={`/profile/${classmate.userId}`} component={MyProfileLink}>
-          <OnlineBadge isOnline={classmate.isOnline} bgColorPath="circleIn.palette.modalBackground">
+          <OnlineBadge
+            isOnline={classmate.isOnline}
+            bgColorPath="circleIn.palette.feedBackground"
+          >
             <Avatar
               alt={`Avatar n°${classmate.userId}`}
+              className={classes.avatarProfile}
               src={classmate.image}
-            />
+            >
+              {initials}
+            </Avatar>
           </OnlineBadge>
         </Link>
       </ListItemAvatar>

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export default theme => ({
   dialog: {
     width: 600,
     '& > :first-child': {
@@ -6,6 +6,9 @@ export const styles = theme => ({
     }
   },
   title: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     color: theme.circleIn.palette.primaryText1,
     fontSize: 28,
     fontStretch: 'normal',
@@ -61,7 +64,7 @@ export const styles = theme => ({
     color: theme.circleIn.palette.white,
 
     '&:hover': {
-      backgroundColor: theme.circleIn.palette.brand,  
+      backgroundColor: theme.circleIn.palette.brand,
     }
   },
   mr1: {
@@ -80,8 +83,8 @@ export const styles = theme => ({
   },
   finalNote: {
     color: theme.circleIn.palette.secondaryText,
-    fontSize: 18,
-    margin: theme.spacing(4),
+    fontSize: 14,
+    margin: theme.spacing(0, 3, 3, 3),
   },
   email: {
     color: theme.circleIn.palette.brand,

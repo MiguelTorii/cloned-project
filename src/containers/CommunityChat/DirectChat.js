@@ -197,6 +197,7 @@ const DirectChat = ({
           newMessage={newMessage}
           setMainMessage={setMainMessage}
           mainMessage={mainMessage}
+          handleBlock={handleBlock}
           onCollapseLeft={onCollapseLeft}
           onCollapseRight={onCollapseRight}
           local={local}
@@ -217,7 +218,6 @@ const DirectChat = ({
       >
         <RightMenu
           handleRemoveChannel={handleRemove}
-          handleBlock={handleBlock}
           userId={userId}
           schoolId={schoolId}
           channel={currentChannel}
