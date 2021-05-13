@@ -5,9 +5,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Box, CircularProgress } from '@material-ui/core';
 import { useHistory, withRouter } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
 import Auth from '../../containers/AuthRedirect';
-import { useDispatch, useSelector } from 'react-redux';
 import { masquerade } from '../../actions/user';
 
 const styles = () => ({});
@@ -29,9 +29,9 @@ const AuthPage = ({
     pathname
   }
 }: Props) => {
-  /***
+  /** *
    * Logic for masquerading starts
-   ***/
+   ** */
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -76,9 +76,9 @@ const AuthPage = ({
     );
   }
 
-  /***
+  /** *
    * Logic for masquerading ends
-   ***/
+   ** */
 
   return (
     <main className={classes.main}>

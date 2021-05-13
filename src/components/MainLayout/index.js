@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-expressions */
 // @flow
-import React, { useMemo, memo, Fragment, useState, useCallback } from 'react';
+import React, { useMemo, memo, useState, useCallback } from 'react';
 import classNames from 'classnames';
+import { withRouter } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,6 +20,7 @@ import CreatePostMenu from 'components/MainLayout/CreatePostMenu'
 import MobileMenu from 'components/MainLayout/MobileMenu'
 import TopMenu from 'components/MainLayout/TopMenu'
 import MenuIcon from '@material-ui/icons/Menu';
+import HelpIcon from '@material-ui/icons/Help';
 import Typography from '@material-ui/core/Typography'
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import UserDialog from 'containers/UserDialog'
@@ -25,7 +28,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx'
 import GetAppDialog from 'components/GetAppDialog';
 import GetStudentJob from 'components/GetStudentJob';
-import { withRouter } from 'react-router';
 import QuickNotes from 'containers/QuickNotes'
 import logo from '../../assets/svg/circlein_logo.svg';
 import './currentRoute.css'
@@ -53,6 +55,7 @@ type Props = {
   // helpLink: string,
   width: string,
   userId: string,
+  email: string,
   initials: string,
   userProfileUrl: string,
   children: any,
@@ -87,6 +90,7 @@ const MainLayout = ({
   width,
   userId,
   fullName,
+  email,
   expertMode,
   isExpert,
   bannerHeight,
@@ -126,6 +130,14 @@ const MainLayout = ({
 
   const handleAnnouncementLoaded = useCallback(() => {
   }, [])
+
+  const handleOpenWidget = useCallback(() => {
+    window?.FreshworksWidget('identify', 'ticketForm', {
+      name: fullName,
+      email
+    })
+    window?.FreshworksWidget('open');
+  }, [email, fullName])
 
   const handleDrawerOpen = useCallback(() => {
     setOpen(true)
@@ -320,7 +332,7 @@ const MainLayout = ({
   ), [appBarHeight, createPostOpen, expertMode, fullName, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, initials, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId, userProfileUrl, viewedOnboarding])
 
   return (
-    <Fragment>
+    <>
       <div className={clsx(
         classes.root,
         ['/chat', '/communities'].indexOf(pathname) === -1
@@ -356,6 +368,13 @@ const MainLayout = ({
             )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <IconButton
+                color="inherit"
+                onClick={handleOpenWidget}
+                aria-haspopup="true"
+              >
+                <HelpIcon />
+              </IconButton>
               <QuickNotes />
               <IconButton
                 color="inherit"
@@ -474,7 +493,7 @@ const MainLayout = ({
       >
         <UseCases onRedirect={handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
       </Dialog>
-    </Fragment>
+    </>
   );
 }
 

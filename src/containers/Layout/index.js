@@ -1,6 +1,9 @@
+/* eslint-disable no-sequences */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable no-unused-expressions */
 // @flow
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,6 +11,7 @@ import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
+import useScript from 'hooks/useScript'
 import AddRemoveClasses from 'components/AddRemoveClasses'
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralStatus } from 'containers/Referrals';
@@ -80,6 +84,38 @@ const Layout = ({
   const [unreadCount, setUnreadCount] = useState(0)
   const [openRequestClass, setOpenRequestClass] = useState(false)
   const [referralStatus, setRefererralStatus] = useState(false)
+
+  useScript("https://widget.freshworks.com/widgets/67000003087.js")
+
+  useEffect(() => {
+    async function loadWidget() {
+      if (typeof window !== "undefined") {
+        window.fwSettings = {
+          widget_id: 67000003087,
+          hideChatButton: true
+        }
+
+        !(function() {
+          if (typeof window.FreshworksWidget !== "function") {
+            const n = function() {
+              n.q.push(arguments)
+            }; (n.q = []), (window.FreshworksWidget = n)
+          }
+        })()
+      }
+    }
+
+    async function hideWidget() {
+      window?.FreshworksWidget('hide', 'launcher')
+    }
+
+    async function init() {
+      await loadWidget()
+      await hideWidget()
+    }
+
+    init()
+  }, [user])
 
   const handleNotificationOpen = useCallback(event => {
     const { currentTarget } = event;
@@ -166,7 +202,7 @@ const Layout = ({
   }, [children, classes.loader, user])
 
   const {
-    data: { userId, firstName, lastName, profileImage },
+    data: { userId, firstName, lastName, profileImage, email },
     bannerHeight,
     announcementData,
     runningTour,
@@ -212,6 +248,7 @@ const Layout = ({
       <ErrorBoundary>
         <MainLayout
           fullName={name}
+          email={email}
           viewedOnboarding={viewedOnboarding}
           bannerHeight={bannerHeight}
           setBannerHeight={setBannerHeight}

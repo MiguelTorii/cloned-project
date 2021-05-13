@@ -16,7 +16,7 @@ import Home from 'containers/Home'
 import Classes from 'pages/Classes';
 import defaultKatexRender from 'utils/quill'
 import './wdyr'
-import { history } from './configureStore';
+import reduxStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';
 import Feed from './pages/Feed';
@@ -71,7 +71,7 @@ import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
-import reduxStore from './configureStore';
+
 import { FlashcardsListPage, FlashcardsNewPage } from './pages/Flashcards';
 
 defaultKatexRender('White')
