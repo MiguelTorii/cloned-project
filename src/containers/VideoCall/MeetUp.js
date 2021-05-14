@@ -1091,6 +1091,7 @@ class MeetUp extends React.Component<Props, State> {
         <ErrorBoundary>
           <div className={classes.root}>
             <StudyRoomChat
+              participants={participants}
               open={chatOpen}
               handleClose={this.closeChat}
               selectedTab={selectedTab}

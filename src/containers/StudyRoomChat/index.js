@@ -128,10 +128,20 @@ type Props = {
   router: Object,
   open: boolean,
   chat: Object,
-  selectedTab: number
+  selectedTab: number,
+  participants: Object,
 };
 
-const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selectedTab }: Props) => {
+const StudyRoomChat = ({
+  handleClose,
+  open,
+  user,
+  router,
+  classes,
+  chat,
+  selectedTab,
+  participants,
+}: Props) => {
   const [members, setMembers] = useState({})
   const [tabs, setTabs] = useState(1)
 
@@ -181,6 +191,14 @@ const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selecte
     setTabs(value)
   }, [])
 
+  const participantsIdList = useMemo(() => {
+    return participants.map(p => p.participant.identity)
+  }, [participants])
+
+  const memberListOnVideo = useMemo(() => {
+    return Object.keys(members).filter(member => participantsIdList.indexOf(member) > -1)
+  }, [members, participantsIdList])
+
   if (!open) return null
   return (
     <ErrorBoundary>
@@ -198,7 +216,7 @@ const StudyRoomChat = ({ handleClose, open, user, router, classes, chat, selecte
           >
             <div className={classes.memberContainer}>
               <Typography className={classes.memberTitle}>All</Typography>
-              {Object.keys(members).map(member => {
+              {memberListOnVideo.map(member => {
 
                 const memberObj = members[member]
                 const { avatar, firstname, lastname, isOnline } = memberObj
