@@ -9,17 +9,7 @@ import { uploadMedia } from '../../actions/user';
 import { useSelector } from 'react-redux';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-type Props = {
-  label: string,
-  placeholder: string,
-  value: string,
-  imageUrl: string,
-  onChangeValue: Function,
-  onChangeImageUrl: Function,
-  containerId: string,
-  onFocus: Function
-};
+import PropTypes from 'prop-types';
 
 const RichTextEditor = (
   {
@@ -27,10 +17,11 @@ const RichTextEditor = (
     placeholder,
     value,
     imageUrl,
-    onChangeValue = () => {},
-    onChangeImageUrl = () => {},
     containerId,
-    onFocus = () => {}
+    readOnly,
+    onChangeValue,
+    onChangeImageUrl,
+    onFocus
   }: Props
 ) => {
   // Hooks
@@ -38,6 +29,7 @@ const RichTextEditor = (
   const me = useSelector((state) => state.user.data);
   const { getRootProps, getInputProps } = useDropzone({
     accept: '.png,.jpg',
+    disabled: readOnly,
     onDropAccepted: (files) => {
       setIsUploadingImage(true);
       uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0])
@@ -54,13 +46,15 @@ const RichTextEditor = (
 
   // Event Handlers
   const handleFocus = useCallback(() => {
-    setIsActive(true);
-    onFocus();
-  }, [setIsActive, onFocus]);
+    if (!readOnly) {
+      setIsActive(true);
+      onFocus();
+    }
+  }, [setIsActive, onFocus, readOnly]);
 
   const handleBlur = useCallback(() => {
-    setIsActive(false);
-  }, [setIsActive]);
+    if (!readOnly) setIsActive(false);
+  }, [setIsActive, readOnly]);
 
   const handleChangeValue = useCallback((newValue) => {
     if (newValue !== value) {
@@ -84,7 +78,7 @@ const RichTextEditor = (
       )
     }
 
-    return <IconImage />;
+    return <IconImage className={classes.imageIcon} />;
   };
 
   return (
@@ -95,13 +89,14 @@ const RichTextEditor = (
       <div className={classes.textEditor}>
         <ReactQuill
           theme="snow"
-          defaultValue={value || ''}
           placeholder={placeholder}
           modules={{
             toolbar: {
               container: `#${containerId}`
             }
           }}
+          value={value}
+          readOnly={readOnly}
           onChange={handleChangeValue}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -115,6 +110,28 @@ const RichTextEditor = (
       </div>
     </div>
   );
+};
+
+RichTextEditor.propTypes = {
+  label: PropTypes.string.isRequired,
+  containerId: PropTypes.string.isRequired,
+  readOnly: PropTypes.bool,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  imageUrl: PropTypes.string,
+  onChangeValue: PropTypes.func,
+  onChangeImageUrl: PropTypes.func,
+  onFocus: PropTypes.func
+};
+
+RichTextEditor.defaultProps = {
+  placeholder: '',
+  value: '',
+  imageUrl: '',
+  readOnly: false,
+  onChangeValue: () => {},
+  onChangeImageUrl: () => {},
+  onFocus: () => {}
 };
 
 export default withRoot(RichTextEditor);

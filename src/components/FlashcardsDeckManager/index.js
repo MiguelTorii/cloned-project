@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import Grid from "@material-ui/core/Grid";
@@ -6,32 +6,38 @@ import TextField from '../Basic/TextField';
 import Typography from "@material-ui/core/Typography";
 import IosSwitch from '../IosSwitch';
 import update from 'immutability-helper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import FlashcardsListEditor from '../FlashcardsListEditor';
 import GradientButton from '../Basic/Buttons/GradientButton';
-import { createFlashcards } from '../../api/posts';
-import { useHistory } from 'react-router';
-import { showNotification } from '../../actions/notifications';
-import { logEvent, logEventLocally } from '../../api/analytics';
+import PropTypes from 'prop-types';
 
-const FlashcardsDeckCreator = () => {
+const FlashcardsDeckManager = (
+  {
+    data,
+    title,
+    submitText,
+    isSubmitting,
+    onSubmit
+  }
+) => {
   // Hooks
   const myClasses = useSelector((state) => state.user.userClasses.classList);
-  const me = useSelector((state) => state.user.data);
-  const history = useHistory();
-  const dispatch = useDispatch();
 
   // States
   const [isValidated, setIsValidated] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [deckData, setDeckData] = useState({
     title: null,
     summary: null,
     classId: null,
     sectionId: null,
-    deck: []
+    deck: [{ id: 1 }]
   });
+
+  // Effects
+  useEffect(() => {
+    if (data) setDeckData(data);
+  }, [data, setDeckData]);
 
   // Memos
   const dropdownOptions = useMemo(() => {
@@ -64,45 +70,13 @@ const FlashcardsDeckCreator = () => {
     }));
   }, [deckData, setDeckData]);
 
-  const handleCreate = useCallback(async () => {
+  const handleSubmit = useCallback(() => {
     if (!deckData.title || !deckData.classId) {
       setIsValidated(true);
       return ;
     }
-
-    setIsSaving(true);
-    const { points, fcId } = await createFlashcards({
-      userId: me.userId,
-      grade: me.grade,
-      tags: [],
-      ...deckData
-    });
-    setIsSaving(false);
-
-    if (!fcId) {
-      dispatch(showNotification({
-        message: 'Sorry, failed to create a flashcard deck.',
-        variant: 'error'
-      }));
-    } else {
-      dispatch(showNotification({
-        message: `Congratulations ${me.firstName}, you have just earned ${points} points. Good Work!`,
-        variant: 'info',
-        nextPath: '/flashcards'
-      }));
-      logEvent({
-        event: 'Feed- Create Flashcards',
-        props: { 'Number of cards': deckData.deck.length, Title: deckData.title }
-      });
-
-      logEventLocally({
-        category: 'Flashcard',
-        objectId: fcId,
-        type: 'Created'
-      });
-      history.push('/flashcards');
-    }
-  }, [setIsValidated, deckData, me, history, dispatch]);
+    onSubmit(deckData);
+  }, [setIsValidated, deckData, onSubmit]);
 
   const handleChangeClass = useCallback((event) => {
     const [classId, sectionId] = event.target.value.split('_');
@@ -124,7 +98,7 @@ const FlashcardsDeckCreator = () => {
             InputLabelProps={{
               shrink: true
             }}
-            helperText="Please input a title"
+            helperText={isValidated && !deckData.title && "Please input a title"}
             label="Title"
             placeholder="Add a title"
             value={deckData.title || ''}
@@ -141,7 +115,7 @@ const FlashcardsDeckCreator = () => {
               shrink: true
             }}
             label="Class"
-            helperText="Please select your class"
+            helperText={isValidated && !deckData.classId && "Please select your class"}
             placeholder="Select your class"
             value={selectedDropdownValue}
             onChange={handleChangeClass}
@@ -181,23 +155,38 @@ const FlashcardsDeckCreator = () => {
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">
-          Create a new flashcard deck
+          {title}
         </Typography>
         <GradientButton
-          loading={isSaving}
-          disabled={isSaving}
-          onClick={handleCreate}
+          loading={isSubmitting}
+          disabled={isSubmitting}
+          onClick={handleSubmit}
         >
-          Create
+          {submitText}
         </GradientButton>
       </Box>
       { renderForm() }
       <FlashcardsListEditor
-        initialList={deckData.deck}
+        data={deckData.deck}
         onUpdate={(data) => handleUpdateField('deck', data)}
       />
     </>
   );
 };
 
-export default withRoot(FlashcardsDeckCreator);
+FlashcardsDeckManager.propTypes = {
+  title: PropTypes.string.isRequired,
+  submitText: PropTypes.string,
+  data: PropTypes.object,
+  isSubmitting: PropTypes.bool,
+  onSubmit: PropTypes.func
+};
+
+FlashcardsDeckManager.defaultProps = {
+  submitText: 'Save',
+  data: null,
+  isSubmitting: false,
+  onSubmit: () => {}
+};
+
+export default withRoot(FlashcardsDeckManager);

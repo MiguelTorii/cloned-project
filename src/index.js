@@ -24,7 +24,6 @@ import Workflow from './pages/Workflow';
 import LeaderBoard from './pages/LeaderBoard';
 import Notifications from './pages/Notifications';
 import Share from './pages/Share';
-import FlashCards from './pages/View/Flashcards';
 import PhotoNote from './pages/View/Notes';
 import ShareLink from './pages/View/ShareLink';
 import Question from './pages/View/Question';
@@ -71,8 +70,8 @@ import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
-
-import { FlashcardsListPage, FlashcardsNewPage } from './pages/Flashcards';
+import { FlashcardsListPage, FlashcardsShowPage } from './pages/Flashcards';
+import Flashcards from './pages/View/Flashcards';
 
 defaultKatexRender('White')
 
@@ -129,13 +128,13 @@ ReactDOM.render(
               />
               <Route
                 exact
-                path='/flashcards/new'
-                component={withTracker(FlashcardsNewPage)}
+                path="/flashcards/old/:flashcardId"
+                component={withTracker(Flashcards)}
               />
               <Route
                 exact
                 path="/flashcards/:flashcardId"
-                component={withTracker(FlashCards)}
+                component={withTracker(FlashcardsShowPage)}
               />
               <Route
                 exact

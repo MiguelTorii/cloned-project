@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import ShareLinkModal from '../ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
 import moment from 'moment';
+import { useHistory } from 'react-router';
 
 type Props = {
   data: FeedItem
@@ -24,6 +25,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   // Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const classList = useSelector((state) => state.user.userClasses.classList);
   const me = useSelector((state) => state.user.data);
 
@@ -37,7 +39,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, [data, classList]);
 
   const deckLink = useMemo(() => {
-    return `${APP_ROOT_PATH}/flashcards/${data.feed_id}`;
+    return `${APP_ROOT_PATH}/flashcards/${data.post_id}`;
   }, [data]);
 
   const shareLinkModalTitle = useMemo(() => (
@@ -55,8 +57,8 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, [data, me, dispatch]);
 
   const handleView = useCallback(() => {
-
-  }, []);
+    history.push(`/flashcards/${data.post_id}`);
+  }, [history, data]);
 
   const handleShareLink = useCallback(() => {
     setIsShareLinkModalOpen(true);
@@ -69,6 +71,11 @@ const FlashcardsDeck = ({ data }: Props) => {
   const handleCloseShareLinkModal = useCallback(() => {
     setIsShareLinkModalOpen(false);
   }, [setIsShareLinkModalOpen]);
+
+  const handleClickActionBar = useCallback((event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }, []);
 
   // Rendering
   return (
@@ -83,6 +90,7 @@ const FlashcardsDeck = ({ data }: Props) => {
           flexDirection="column"
           justifyContent="space-between"
           height="100%"
+          onClick={handleView}
         >
           <div>
             <Typography variant="h6">
@@ -111,6 +119,7 @@ const FlashcardsDeck = ({ data }: Props) => {
                 !isHover && classes.hidden
               )}
               style={{ animation: animations.fadeIn }}
+              onClick={handleClickActionBar}
             >
               <ActionBar
                 bookmarked={data.bookmarked}

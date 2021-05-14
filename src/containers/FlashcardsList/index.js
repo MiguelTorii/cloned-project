@@ -3,17 +3,19 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { useHistory } from 'react-router';
 import withRoot from '../../withRoot';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import useStyles from './styles';
 import FiltersBar from '../../components/FiltersBar';
 import { getFlashcards } from '../../actions/user';
 import FlashcardsDeck from '../../components/FlashcardsDeck';
+import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { isApiCalling } from '../../utils/helpers';
 import { userActions } from '../../constants/action-types';
+import Dialog from '../../components/Dialog';
+import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
+import SlideUp from '../../components/Transition/SlideUp';
 
 const Filters = {
   all: {
@@ -28,13 +30,13 @@ const FlashcardsList = () => {
   // Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const me = useSelector((state) => state.user.data);
   const decks = useSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
 
   // Internal states
   const [filter, setFilter] = useState('all');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Memos
   const arrFilters = useMemo(() => {
@@ -46,15 +48,15 @@ const FlashcardsList = () => {
 
   const decksToShow = useMemo(() => {
     switch (filter) {
-    case 'all':
-      return decks.ids.map((id) => decks.byId[id]);
-    case 'bookmarked':
-      return decks
-        .ids
-        .filter((id) => decks.byId[id].bookmarked)
-        .map((id) => decks.byId[id]);
-    default:
-      return [];
+      case 'all':
+        return decks.ids.map((id) => decks.byId[id]);
+      case 'bookmarked':
+        return decks
+          .ids
+          .filter((id) => decks.byId[id].bookmarked)
+          .map((id) => decks.byId[id]);
+      default:
+        return [];
     }
   }, [decks, filter]);
 
@@ -74,8 +76,13 @@ const FlashcardsList = () => {
   ), [filter]);
 
   const handleCreate = useCallback(() => {
-    history.push('/flashcards/new');
-  }, [history]);
+    // history.push('/flashcards/new');
+    setIsCreateModalOpen(true);
+  }, [setIsCreateModalOpen]);
+
+  const handleCloseCreateModal = useCallback(() => {
+    setIsCreateModalOpen(false);
+  }, [setIsCreateModalOpen]);
 
   // Effects
   useEffect(() => {
@@ -147,6 +154,16 @@ const FlashcardsList = () => {
       <Box mt={3}>
         { renderContent() }
       </Box>
+
+      { /* Render Deck Creation Dialog */ }
+      <Dialog
+        fullScreen
+        open={isCreateModalOpen}
+        onCancel={handleCloseCreateModal}
+        TransitionComponent={SlideUp}
+      >
+        <FlashcardsDeckCreator />
+      </Dialog>
     </div>
   );
 };

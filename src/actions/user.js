@@ -288,12 +288,14 @@ export const getFlashcards = (
 export const bookmarkFlashcards = (
   userId: number,
   feedId: number,
-  isRemove: boolean
+  isRemove: boolean,
+  cb: Function
 ) => ({
   isApiCall: true,
   type: userActions.BOOKMARK_FLASHCARDS,
   meta: { feedId },
-  apiCall: () => bookmark({ feedId, userId, remove: isRemove })
+  apiCall: () => bookmark({ feedId, userId, remove: isRemove }),
+  successCallback: cb
 });
 
 export const uploadMedia = async (

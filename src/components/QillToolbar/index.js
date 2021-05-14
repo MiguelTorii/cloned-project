@@ -12,7 +12,7 @@ const QuillToolbar = ({ elementId }: Props) => {
   return (
     <div
       id={elementId}
-      className={classes.toolbar}
+      className={classes.root}
     >
       <button className="ql-bold"/>
       <button className="ql-italic" />

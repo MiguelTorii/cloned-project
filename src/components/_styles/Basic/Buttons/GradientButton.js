@@ -9,6 +9,9 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: 36,
     '&:disabled': {
       color: 'white'
+    },
+    '&:hover, &:active, &:visited': {
+      background: theme.circleIn.palette.primaryii222
     }
   }
 }))

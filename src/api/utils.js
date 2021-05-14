@@ -65,6 +65,7 @@ export const postToCamelCase = (post: Object): Post => {
     summary: String((post.summary: string) || ''),
     bookmarked: Boolean((post.bookmarked: boolean) || false),
     classId: Number((post.class_id: number) || 0),
+    sectionId: Number(post.section_id || 0),
     courseDisplayName: String((post.course_display_name: string) || ''),
     classroomName: String((post.classroom_name: string) || ''),
     created: String((post.created: string) || ''),

@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
     boxShadow: '0 1px 1px rgba(0, 0, 0, 0.25)'
   },
   flashcardHeaderContent: {
+    minHeight: 40,
     backgroundColor: theme.circleIn.palette.modalBackground,
     padding: theme.spacing(0, 2, 1, 2),
     display: 'flex',
@@ -25,7 +26,13 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(3, 5)
   },
   iconButton: {
-    padding: theme.spacing(1/4)
+    padding: theme.spacing(1/4),
+    '& svg': {
+      color: theme.circleIn.palette.gray3
+    },
+    '&.active svg': {
+      color: theme.circleIn.palette.white
+    }
   },
   paddingTopZero: {
     paddingTop: 0
@@ -33,10 +40,7 @@ export default makeStyles((theme) => ({
   toolbar: {
     border: '0 !important',
     '& > *': {
-      margin: theme.spacing(0, 2),
-      [theme.breakpoints.down('md')]: {
-        margin: theme.spacing(0, 1),
-      },
+      margin: theme.spacing(0, 1),
       [theme.breakpoints.down('sm')]: {
         margin: theme.spacing(0, 1/3),
       }
@@ -81,6 +85,9 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(1/2)
+  },
+  imageIcon: {
+    color: '#5F6165'
   },
   thumbnail: {
     maxWidth: '100%',
