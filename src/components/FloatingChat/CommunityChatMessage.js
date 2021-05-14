@@ -18,7 +18,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Popover from '@material-ui/core/Popover'
 import MenuList from '@material-ui/core/MenuList'
 import MenuItem from '@material-ui/core/MenuItem'
-// import TutorBadge from 'components/TutorBadge'
+import TutorBadge from 'components/TutorBadge'
 import BlockMemberModal from 'components/BlockMemberModal'
 import OnlineBadge from 'components/OnlineBadge'
 import StudyRoomReport from 'components/StudyRoomReport'
@@ -33,7 +33,10 @@ type Props = {
   avatar: string,
   isOwn: boolean,
   isOnline: boolean,
+  role: string,
+  date: string,
   currentUserId: string,
+  isGroupChannl: boolean,
   messageList: Array<Object>,
   onImageLoaded: Function,
   onStartVideoCall: Function,
@@ -44,10 +47,13 @@ type Props = {
 const ChatMessage = ({
   userId,
   name,
+  role,
+  date,
   avatar,
   isOwn,
   isOnline,
   currentUserId,
+  isGroupChannl,
   messageList,
   onImageLoaded,
   onStartVideoCall,
@@ -166,7 +172,9 @@ const ChatMessage = ({
               onLoad={onImageLoaded}
             />
           </ButtonBase>
-          <Typography className={classes.createdAt}>{createdAt}</Typography>
+          <Typography className={classes.createdAt}>
+            {date} at {createdAt}
+          </Typography>
         </div>
       )
     }
@@ -238,12 +246,12 @@ const ChatMessage = ({
               >
                 {name}
               </Link>
-              {/* {role && <TutorBadge text={role} />} */}
+              {role && <TutorBadge text={role} />}
               <Typography
                 className={cx(classes.createdAt)}
                 variant="caption"
               >
-                {message.createdAt}
+                {date} at {message.createdAt}
               </Typography>
             </Typography>
             {showOpetions === message.sid && currentUserId !== userId && <Button
@@ -273,11 +281,12 @@ const ChatMessage = ({
                     View Profile
                   </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleOpenBlockMemberModal(userId, name)}>
-                  <Typography variant="inherit">
-                    Block Member
-                  </Typography>
-                </MenuItem>
+                {isGroupChannl &&
+                  <MenuItem onClick={handleOpenBlockMemberModal(userId, name)}>
+                    <Typography variant="inherit">
+                      Block Member
+                    </Typography>
+                  </MenuItem>}
                 <MenuItem onClick={handleOpenReport}>
                   <Typography
                     variant="inherit"

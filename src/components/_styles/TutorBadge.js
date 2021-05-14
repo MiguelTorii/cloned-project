@@ -1,13 +1,13 @@
-export const styles = theme => ({
+export default theme => ({
   root: {
     marginLeft: theme.spacing()
   },
   colorPrimary: {
-    backgroundColor: '#FFE89B',
-    color: theme.circleIn.palette.normalButtonText1,
+    backgroundColor: '#15A63D',
+    color: theme.circleIn.palette.white,
     fontWeight: 900,
     padding: 0,
-    borderRadius: 4
+    borderRadius: 20
   },
   labelSmall: {
     padding: 0,

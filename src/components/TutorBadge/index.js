@@ -2,13 +2,13 @@ import React from 'react'
 import Proptypes from 'prop-types'
 import Chip from '@material-ui/core/Chip'
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from '../_styles/TutorBadge';
+import styles from '../_styles/TutorBadge';
 
 const TutorBadge = ({ text, classes }) => (
-  <Chip 
-    size='small' 
+  <Chip
+    size='small'
     color='primary'
-    label={text} 
+    label={text}
     classes={{
       root: classes.root,
       labelSmall: classes.labelSmall,

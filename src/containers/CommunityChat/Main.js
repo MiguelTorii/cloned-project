@@ -217,10 +217,12 @@ const Main = ({
           <ChatMessage
             key={id}
             role={role}
+            date={item.date}
             isOnline={isOnline}
             isOwn={type === 'own'}
             currentUserId={userId}
             userId={item.author}
+            isGroupChannl={members.length === 2}
             name={item.name}
             messageList={item.messageList}
             avatar={getAvatar({ id: item.author, profileURLs })}
@@ -248,7 +250,7 @@ const Main = ({
       console.log(err)
       return null
     }
-  }, [getIsOnline, getRole, handleImageClick, handleScrollToBottom, handleStartVideoCall, handleBlock, userId])
+  }, [getIsOnline, getRole, handleImageClick, handleScrollToBottom, handleStartVideoCall, handleBlock, members, userId])
 
   const onSendMessage = useCallback(async message => {
     setScroll(true)
