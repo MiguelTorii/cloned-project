@@ -71,8 +71,7 @@ const CollapseNavbar = ({
       setSelctedChannel(channel)
     }
   };
-  console.log('----selectedChannel---')
-  console.log(selectedChannel)
+
   const renderChannels = channels => {
     const content = []
     channels.forEach(channel => {
@@ -127,10 +126,7 @@ const CollapseNavbar = ({
     return content;
   }
 
-
   const renderSubList = (childChannels, parentChannelName) => {
-    console.log('--------childChannels----')
-    console.log(childChannels)
     return <Collapse
       in={subListOpen !== parentChannelName}
       timeout="auto"

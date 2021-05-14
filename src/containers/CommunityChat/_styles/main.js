@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
+import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +70,8 @@ const useStyles = makeStyles((theme) => ({
   bannerImage: {
     position: 'absolute',
     top: 0,
-    width: '100%'
+    width: '100%',
+    backgroundImage: `url(${CoverImg})`
   },
   banner:{
     width: '100%'

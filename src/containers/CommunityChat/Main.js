@@ -16,11 +16,11 @@ import ChatTextField from 'containers/CommunityChat/ChatTextField'
 import ChatHeader from 'containers/CommunityChat/ChatHeader'
 import EmptyMain from 'containers/CommunityChat/EmptyMain'
 import InitialAlert from 'containers/CommunityChat/InitialAlert'
-import LoadImg from 'components/LoadImg'
+// import LoadImg from 'components/LoadImg'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
-import CoverImg from 'assets/svg/community-chat-default-cover.svg'
+// import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 import useStyles from './_styles/main'
 
 type Props = {
@@ -409,7 +409,7 @@ const Main = ({
             {!hasMore
               && isCommunityChat
               && <div className={classes.bannerImage}>
-                <LoadImg className={classes.banner} style={{ width: '100%' }} url={CoverImg}/>
+                {/* <LoadImg className={classes.banner} url={CoverImg}/> */}
               </div>
             }
             {!hasMore && <InitialAlert
