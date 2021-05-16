@@ -28,7 +28,7 @@ const RichTextEditor = (
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.png,.jpg',
+    accept: 'image/*',
     disabled: readOnly,
     onDropAccepted: (files) => {
       setIsUploadingImage(true);

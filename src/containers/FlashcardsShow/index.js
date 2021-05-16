@@ -316,7 +316,8 @@ const FlashcardsShow = () => {
 
       <Dialog
         fullScreen
-        contentClassName={classes.reviewModal}
+        className={classes.reviewModal}
+        contentClassName={classes.reviewModalContent}
         open={isReviewing}
         onCancel={handleCloseReviewModal}
         showHeader={false}

@@ -25,22 +25,27 @@ import store from 'store';
 import { shuffleArray } from '../../utils/helpers';
 import Dialog from '../Dialog';
 import _ from 'lodash';
+import { logEventLocally } from '../../api/analytics';
+import uuidv4 from "uuid/v4";
 
 export const ANSWER_LEVELS = [
   {
     level: 'easy',
+    score: 1,
     title: 'Knew It Well',
     color: '#74C182',
     emoji: '😎'
   },
   {
     level: 'medium',
+    score: 5,
     title: 'Almost Had It',
     color: '#EBAE64',
     emoji: '😅'
   },
   {
     level: 'hard',
+    score: 10,
     title: 'Didn\'t Remember',
     color: '#C45960',
     emoji: '😳'
@@ -55,23 +60,25 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   const [currentLevel, setCurrentLevel] = useState('to_review');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [currentCardList, setCurrentCardList] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
 
   // Effects
   useEffect(() => {
     setCardsLevel(store.get(`flashcards-${flashcardId}`) || {});
     setCurrentLevel('to_review');
-  }, [flashcardId, setCardsLevel]);
+    setSessionId(uuidv4());
+  }, [flashcardId]);
 
   useEffect(() => {
     setCurrentCardIndex(0);
-  }, [currentLevel, setCurrentCardIndex]);
+  }, [currentLevel]);
 
   useEffect(() => {
     setCurrentCardList(cards.filter((card) => {
       if (currentLevel === 'to_review') return !cardsLevel[card.id];
       return cardsLevel[card.id] === currentLevel;
     }));
-  }, [cards, currentLevel, cardsLevel, setCurrentCardList]);
+  }, [cards, currentLevel, cardsLevel]);
 
   useEffect(() => {
     if (!_.isEmpty(cardsLevel)) {
@@ -95,7 +102,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   // Event Handlers
   const handleExpand = useCallback(() => {
     setIsExpanded(!isExpanded);
-  }, [isExpanded, setIsExpanded]);
+  }, [isExpanded]);
 
   const handleMarkCardClick = useCallback((level) => {
     if (currentLevel === level) {
@@ -103,20 +110,29 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     } else {
       setCurrentLevel(level);
     }
-  }, [setCurrentLevel, currentLevel]);
+  }, [currentLevel]);
 
   const handlePrevCard = useCallback(() => {
     setCurrentCardIndex(currentCardIndex - 1);
-  }, [currentCardIndex, setCurrentCardIndex]);
+  }, [currentCardIndex]);
 
   const handleNextCard = useCallback(() => {
     setCurrentCardIndex(currentCardIndex + 1);
-  }, [currentCardIndex, setCurrentCardIndex]);
+  }, [currentCardIndex]);
 
   const handleSetCurrentCardLevel = useCallback((level) => {
     if (level === currentLevel) return ;
 
     const card = currentCardList[currentCardIndex];
+    const levelData = ANSWER_LEVELS.find((item) => item.level === level);
+
+    logEventLocally({
+      category: 'Flashcard',
+      flashcard_study_session_id: sessionId,
+      flashcard_user_selected_difficulty: levelData.score,
+      objectId: card.id,
+      type: 'Rated',
+    });
 
     if (currentCardIndex >= currentCardList.length - 1) {
       setCurrentCardIndex(0);
@@ -126,27 +142,27 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       ...cardsLevel,
       [card.id]: level
     });
-  }, [currentCardIndex, currentCardList, cardsLevel, setCardsLevel, currentLevel]);
+  }, [currentCardIndex, currentCardList, cardsLevel, currentLevel]);
 
   const handleShuffleDeck = useCallback(() => {
     shuffleArray(currentCardList);
     setCurrentCardList([...currentCardList]);
     setCurrentCardIndex(0);
-  }, [setCurrentCardList, currentCardList]);
+  }, [currentCardList]);
 
   const handleStartOver = useCallback(() => {
     setIsConfirmModalOpen(true);
-  }, [setIsConfirmModalOpen]);
+  }, []);
 
   const handleResetProgress = useCallback(() => {
     setIsConfirmModalOpen(false);
     setCardsLevel({});
     store.remove(`flashcards-${flashcardId}`);
-  }, [setIsConfirmModalOpen, setCardsLevel, flashcardId]);
+  }, [flashcardId]);
 
   const handleCloseConfirmModal = useCallback(() => {
     setIsConfirmModalOpen(false);
-  }, [setIsConfirmModalOpen]);
+  }, []);
 
   const renderSidebar = () => (
     <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>

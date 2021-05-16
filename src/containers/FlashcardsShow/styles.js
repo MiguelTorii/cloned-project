@@ -76,8 +76,10 @@ export default makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     cursor: 'pointer'
   },
+  reviewModalContent: {
+    padding: '0 !important'
+  },
   reviewModal: {
-    padding: '0 !important',
     borderRadius: 0
   }
 }));

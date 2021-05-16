@@ -78,12 +78,12 @@ const ActionBar = (
               </div>
               <Menu {...bindMenu(popupState)}>
                 <MenuItem onClick={() => { popupState.close(); onShareLink(); }}>Share Link</MenuItem>
-                <MenuItem
-                  className={classes.reportText}
-                  onClick={() => { popupState.close(); onReportIssue(); }}
-                >
-                  Report Issue
-                </MenuItem>
+                {/*<MenuItem*/}
+                {/*  className={classes.reportText}*/}
+                {/*  onClick={() => { popupState.close(); onReportIssue(); }}*/}
+                {/*>*/}
+                {/*  Report Issue*/}
+                {/*</MenuItem>*/}
               </Menu>
             </>
           )

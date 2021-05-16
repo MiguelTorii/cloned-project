@@ -16,9 +16,11 @@ import { userActions } from '../../constants/action-types';
 import Dialog from '../../components/Dialog';
 import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
 import SlideUp from '../../components/Transition/SlideUp';
+import { useLocation } from 'react-router';
+import { push } from 'connected-react-router';
 
 const Filters = {
-  all: {
+  mine: {
     text: 'My Decks'
   },
   bookmarked: {
@@ -33,9 +35,9 @@ const FlashcardsList = () => {
   const me = useSelector((state) => state.user.data);
   const decks = useSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
+  const location = useLocation();
 
   // Internal states
-  const [filter, setFilter] = useState('all');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Memos
@@ -46,34 +48,29 @@ const FlashcardsList = () => {
     }));
   }, []);
 
+  const currentFilter = useMemo(() => {
+    const query = new URLSearchParams(location.search);
+    return query.get('filter') || 'mine';
+  }, [location]);
+
   const decksToShow = useMemo(() => {
-    switch (filter) {
-      case 'all':
-        return decks.ids.map((id) => decks.byId[id]);
-      case 'bookmarked':
-        return decks
-          .ids
-          .filter((id) => decks.byId[id].bookmarked)
-          .map((id) => decks.byId[id]);
-      default:
-        return [];
-    }
-  }, [decks, filter]);
+    return decks.ids.map((id) => decks.byId[id]);
+  }, [decks]);
 
   // Callbacks
   const renderEmptyState = useCallback(() => (
     <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
       <img src={ImgEmptyState} alt="No flashcards" />
       <Box mt={3} fontSize={24}>
-        { filter === 'all' && 'No flashcard decks yet.' }
-        { filter === 'bookmarked' && 'No bookmarked decks yet.' }
+        { currentFilter === 'mine' && 'No flashcard decks yet.' }
+        { currentFilter === 'bookmarked' && 'No bookmarked decks yet.' }
       </Box>
       <Box mt={1} fontSize={16}>
-        { filter === 'all' && 'Level up your studying by creating your first flashcard deck!' }
-        { filter === 'bookmarked' && 'Start creating your own deck or check out your class feed to start bookmarking!' }
+        { currentFilter === 'mine' && 'Level up your studying by creating your first flashcard deck!' }
+        { currentFilter === 'bookmarked' && 'Start creating your own deck or check out your class feed to start bookmarking!' }
       </Box>
     </Box>
-  ), [filter]);
+  ), [currentFilter]);
 
   const handleCreate = useCallback(() => {
     // history.push('/flashcards/new');
@@ -84,10 +81,23 @@ const FlashcardsList = () => {
     setIsCreateModalOpen(false);
   }, [setIsCreateModalOpen]);
 
+  const handleSelectFilter = useCallback((filter) => {
+    dispatch(push(`/flashcards?filter=${filter}`));
+  }, [dispatch]);
+
   // Effects
   useEffect(() => {
-    dispatch(getFlashcards(me.userId));
-  }, [dispatch, me.userId]);
+    switch (currentFilter) {
+      case 'mine':
+        dispatch(getFlashcards(me.userId));
+        break;
+      case 'bookmarked':
+        dispatch(getFlashcards(undefined, true));
+        break;
+      default:
+        throw new Error('Undefined filter');
+    }
+  }, [dispatch, me.userId, currentFilter]);
 
   // Helpers for rendering
   const renderContent = () => {
@@ -145,8 +155,8 @@ const FlashcardsList = () => {
       <Box mt={4}>
         <FiltersBar
           data={arrFilters}
-          activeValue={filter}
-          onSelectItem={setFilter}
+          activeValue={currentFilter}
+          onSelectItem={handleSelectFilter}
         />
       </Box>
 
