@@ -3,15 +3,10 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux';
 
 import Popover from "@material-ui/core/Popover"
-import {makeStyles} from "@material-ui/core/styles"
 
-import { TextValidator } from 'react-material-ui-form-validator'
-import FormControl from '@material-ui/core/FormControl'
 import Box from '@material-ui/core/Box'
 import Avatar from '@material-ui/core/Avatar'
-import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
-import { Message, Videocam, Create } from '@material-ui/icons'
+import { Message, Videocam } from '@material-ui/icons'
 
 import OnlineBadge from 'components/OnlineBadge'
 import GradientButton from 'components/Basic/Buttons/GradientButton'
@@ -19,7 +14,6 @@ import TransparentButton from 'components/Basic/Buttons/TransparentButton'
 
 import * as chatActions from '../../actions/chat'
 
-import styles from '../_styles/HoverPopup'
 import { getInitials } from 'utils/chat'
 import { Typography } from '@material-ui/core'
 
@@ -29,7 +23,6 @@ import cx from 'classnames'
 import _ from 'lodash'
 
 import useStyles from '../_styles/HoverPopup'
-import { useDispatch } from "react-redux";
 
 const HoverPopup = ({
   userId = null,
@@ -48,12 +41,9 @@ const HoverPopup = ({
   const [isLoading, setIsLoading] = useState(false)
   const [outOfScreen, setOutOfScreen] = useState(false)
   const [bio, setBio] = useState('')
-  const [userProfile, setUserProfile] = useState(null)
   const [chatLoading, setChatLoading] = useState(false)
   const popoverContainer = useRef(null)
   const postFeedItemContainer = useRef(null)
-
-  const dispatch = useDispatch()
 
   const handlePopoverOpen = (event) => {
     fetchUserInfo()
@@ -109,11 +99,10 @@ const HoverPopup = ({
 
     try {
       if (member.userId) {
-        const { userProfile, about } = await getUserProfile({ userId: member.userId })
+        const { about } = await getUserProfile({ userId: member.userId })
         const idx = _.findIndex(about, (item) => item.id === 6)
         const userbio = idx < 0 ? null : about[idx].answer
         setBio(userbio)
-        setUserProfile(userProfile)
       }
       setIsLoading(false)
     } catch (e) {
@@ -205,7 +194,7 @@ const HoverPopup = ({
                   {getInitials({ name: fullName })}
                 </Avatar>
               </OnlineBadge>
-              <div className={classes.userInfo, classes.hasBio}>
+              <div className={cx(classes.userInfo, classes.hasBio)}>
                 <Typography variant="subtitle1" className={classes.name}>{fullName}</Typography>
 
                 {bio && (

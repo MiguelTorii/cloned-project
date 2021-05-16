@@ -25,7 +25,6 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(2),
     maxWidth: 360,
     width: '100%',
-    padding: theme.spacing(2),
     overflow: 'hidden',
     pointerEvents: "auto",
     "&.flip": {
