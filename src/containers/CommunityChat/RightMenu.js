@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -13,6 +13,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import { getInitials } from 'utils/chat'
 import OnlineBadge from 'components/OnlineBadge'
 import TutorBadge from 'components/TutorBadge'
+import HoverPopup from 'components/HoverPopup'
 import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu'
 
@@ -79,28 +80,29 @@ const RightMenu = ({
             {localChannel?.members.map(m => {
               const fullName = `${m.firstname} ${m.lastname}`
               return (
-                <ListItem
-                  key={m.userId}
-                  component={MyLink}
-                  disableGutters
-                  link={`/profile/${m.userId}`}
-                  button
-                  classes={{
-                    secondaryAction: classes.secondaryAction
-                  }}
-                >
-                  <ListItemAvatar>
-                    <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.feedBackground">
-                      <Avatar
-                        alt={fullName}
-                        src={m.image}
-                      >
-                        {getInitials({ name: fullName })}
-                      </Avatar>
-                    </OnlineBadge>
-                  </ListItemAvatar>
-                  {fullName} {m.role && <TutorBadge text={m.role} />}
-                </ListItem>
+                <HoverPopup member={m} key={m.userId}>
+                  <ListItem
+                    component={MyLink}
+                    disableGutters
+                    link={`/profile/${m.userId}`}
+                    button
+                    classes={{
+                      secondaryAction: classes.secondaryAction
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.feedBackground">
+                        <Avatar
+                          alt={fullName}
+                          src={m.image}
+                        >
+                          {getInitials({ name: fullName })}
+                        </Avatar>
+                      </OnlineBadge>
+                    </ListItemAvatar>
+                    {fullName} {m.role && <TutorBadge text={m.role} />}
+                  </ListItem>
+                </HoverPopup>
               )
             })}
           </List>

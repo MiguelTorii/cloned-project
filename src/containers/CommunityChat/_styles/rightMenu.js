@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     overflow: 'auto',
   },
+  secondaryAction: {
+    position: 'relative',
+  },
   header: {
     display: 'flex',
     justifyContent: 'center',

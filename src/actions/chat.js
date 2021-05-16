@@ -275,7 +275,11 @@ export const openChannelWithEntity = ({
           mainMessage: "Hey! Let's connect and study together!"
         }))
       }
-      dispatch(push('/chat'))
+      if (entityVideo) {
+        dispatch(push(`/video-call/${chatId}`))
+      } else {
+        dispatch(push('/chat'))
+      }
     }
 
   }
