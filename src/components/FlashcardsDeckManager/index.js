@@ -4,7 +4,6 @@ import Box from '@material-ui/core/Box';
 import Grid from "@material-ui/core/Grid";
 import TextField from '../Basic/TextField';
 import Typography from "@material-ui/core/Typography";
-import IosSwitch from '../IosSwitch';
 import update from 'immutability-helper';
 import { useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -141,12 +140,12 @@ const FlashcardsDeckManager = (
             onChange={(event) => handleUpdateField('summary', event.target.value)}
           />
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <Box display="flex" justifyContent="flex-end" alignItems="center">
-            <Typography>Visible to class</Typography>
-            <IosSwitch />
-          </Box>
-        </Grid>
+        {/*<Grid item xs={12} lg={6}>*/}
+        {/*  <Box display="flex" justifyContent="flex-end" alignItems="center">*/}
+        {/*    <Typography>Visible to class</Typography>*/}
+        {/*    <IosSwitch />*/}
+        {/*  </Box>*/}
+        {/*</Grid>*/}
       </Grid>
     </Box>
   );

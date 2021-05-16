@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import ReactCardFlip from 'react-card-flip';
 import CardBoardContent from './CardBoardContent';
 
-const QUESTION_TOOLBAR_ID = 'cardboard_toolbar_question';
-const ANSWER_TOOLBAR_ID = 'cardboard_toolbar_answer';
-
-const CardBoard = ({ data }) => {
+const CardBoard = ({ data, onAction }) => {
   const [isQuestion, setIsQuestion] = useState(true);
   const [cardKey, setCardKey] = useState(null);
 
@@ -15,7 +12,7 @@ const CardBoard = ({ data }) => {
   useEffect(() => {
     setIsQuestion(true);
     setCardKey(data.id);
-  }, [data]);
+  }, [data, setIsQuestion, setCardKey]);
 
   // Event Handlers
   const handleFlip = useCallback(() => {
@@ -27,17 +24,18 @@ const CardBoard = ({ data }) => {
       <div key="front">
         <CardBoardContent
           content={data.question}
-          image={data.question_image_url}
-          toolbarId={QUESTION_TOOLBAR_ID}
+          image={data.questionImage}
           onFlip={handleFlip}
+          isQuestion={true}
         />
       </div>
       <div key="back">
         <CardBoardContent
           content={data.answer}
-          image={data.answer_image_url}
-          toolbarId={ANSWER_TOOLBAR_ID}
+          image={data.answerImage}
           onFlip={handleFlip}
+          isQuestion={false}
+          onAction={onAction}
         />
       </div>
     </ReactCardFlip>
@@ -46,11 +44,17 @@ const CardBoard = ({ data }) => {
 
 CardBoard.propTypes = {
   data: PropTypes.shape({
+    id: PropTypes.number,
     question: PropTypes.string,
-    question_image_url: PropTypes.string,
+    questionImage: PropTypes.string,
     answer: PropTypes.string,
-    answer_image_url: PropTypes.string
-  }).isRequired
+    answerImage: PropTypes.string
+  }).isRequired,
+  onAction: PropTypes.func
+};
+
+CardBoard.defaultProps = {
+  onAction: () => {}
 };
 
 export default withRoot(CardBoard);

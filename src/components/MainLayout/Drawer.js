@@ -300,7 +300,7 @@ const Drawer = ({
           link={`/flashcards${search}`}
           OffIcon={<FlashcardsIconOff />}
           listItemClass={classNames(
-            ['/flashcards', '/flashcards/new'].includes(pathname) ? classes.currentPath : classes.otherPath
+            pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath
           )}
         />
         {!expertMode && <HomeItem

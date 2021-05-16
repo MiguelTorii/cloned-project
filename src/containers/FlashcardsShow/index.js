@@ -15,15 +15,13 @@ import IconPen from '@material-ui/icons/EditOutlined';
 import IconActionButton from '../../components/IconActionButton';
 import IconBookmark from '@material-ui/icons/BookmarkOutlined';
 import IconShare from '@material-ui/icons/ShareOutlined';
-import IconMore from '@material-ui/icons/MoreHorizOutlined';
-import IconBook from '@material-ui/icons/Book';
 import IconSchool from '@material-ui/icons/School';
 import Link from '@material-ui/core/Link';
 import ActionButton from './ActionButton';
 import CardBoard from './CardBoard';
 import LinearProgressBar from '../../components/LinearProgressBar';
-import IconPrevious from '@material-ui/icons/SkipPrevious';
-import IconNext from '@material-ui/icons/SkipNext';
+import IconPrevious from '@material-ui/icons/ArrowBack';
+import IconNext from '@material-ui/icons/ArrowForward';
 import TransparentIconButton from '../../components/Basic/Buttons/TransparentIconButton';
 import FlashcardsListEditor from '../../components/FlashcardsListEditor';
 import { bookmarkFlashcards } from '../../actions/user';
@@ -36,6 +34,7 @@ import { APP_ROOT_PATH } from '../../constants/app';
 import Dialog from '../../components/Dialog';
 import FlashcardsDeckEditor from '../../components/FlashcardsDeckManager/FlashcardsDeckEditor';
 import SlideUp from '../../components/Transition/SlideUp';
+import FlashcardsReview from '../../components/FlashcardsReview';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
 
@@ -52,6 +51,7 @@ const FlashcardsShow = () => {
   const [isLoadingFlashcards, setIsLoadingFlashcards] = useState(false);
   const [isShortSummary, setIsShortSummary] = useState(true);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isReviewing, setIsReviewing] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [boardDeckIndex, setBoardDeckIndex] = useState(0);
 
@@ -113,9 +113,9 @@ const FlashcardsShow = () => {
     setIsShareModalOpen(true);
   }, [setIsShareModalOpen]);
 
-  const handleActionMore = useCallback(() => {
-
-  }, []);
+  // const handleActionMore = useCallback(() => {
+  //
+  // }, []);
 
   const handleSummaryMoreOrLess = useCallback(() => {
     setIsShortSummary(!isShortSummary);
@@ -141,6 +141,14 @@ const FlashcardsShow = () => {
     handleCloseEditModal();
     reloadData();
   }, [reloadData, handleCloseEditModal]);
+
+  const handleReview = useCallback(() => {
+    setIsReviewing(true);
+  }, [setIsReviewing]);
+
+  const handleCloseReviewModal = useCallback(() => {
+    setIsReviewing(false);
+  }, [setIsReviewing]);
 
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
@@ -187,6 +195,9 @@ const FlashcardsShow = () => {
               <Chip
                 color="primary"
                 label={data.courseDisplayName}
+                style={{
+                  color: 'white'
+                }}
               />
             </Grid>
           </Grid>
@@ -215,11 +226,11 @@ const FlashcardsShow = () => {
                 <IconShare />
               </IconActionButton>
             </Grid>
-            <Grid item>
-              <IconActionButton onClick={handleActionMore}>
-                <IconMore />
-              </IconActionButton>
-            </Grid>
+            {/*<Grid item>*/}
+            {/*  <IconActionButton onClick={handleActionMore}>*/}
+            {/*    <IconMore />*/}
+            {/*  </IconActionButton>*/}
+            {/*</Grid>*/}
           </Grid>
         </Grid>
       </Grid>
@@ -228,22 +239,26 @@ const FlashcardsShow = () => {
         <Grid item xs={12} lg={8}>
           <CardBoard data={data.deck[boardDeckIndex]} />
           <Box mt={2} display="flex" justifyContent="center" alignItems="center">
-            <TransparentIconButton
-              disabled={boardDeckIndex === 0}
-              onClick={handlePrevDeck}
-            >
-              <IconPrevious />
-            </TransparentIconButton>
+            <Box mr={2}>
+              <TransparentIconButton
+                disabled={boardDeckIndex === 0}
+                onClick={handlePrevDeck}
+              >
+                <IconPrevious />
+              </TransparentIconButton>
+            </Box>
             <LinearProgressBar
               value={boardDeckIndex + 1}
               totalValue={data.deck.length}
             />
-            <TransparentIconButton
-              disabled={boardDeckIndex === data.deck.length - 1}
-              onClick={handleNextDeck}
-            >
-              <IconNext />
-            </TransparentIconButton>
+            <Box ml={2}>
+              <TransparentIconButton
+                disabled={boardDeckIndex === data.deck.length - 1}
+                onClick={handleNextDeck}
+              >
+                <IconNext />
+              </TransparentIconButton>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={12} lg={4}>
@@ -251,15 +266,15 @@ const FlashcardsShow = () => {
             Practice Mode
           </Box>
           <Box mt={3}>
-            <ActionButton startIcon={<IconSchool />}>
+            <ActionButton startIcon={<IconSchool />} onClick={handleReview}>
               Review Time
             </ActionButton>
           </Box>
-          <Box mt={3}>
-            <ActionButton startIcon={<IconBook />}>
-              Quiz Yourself
-            </ActionButton>
-          </Box>
+          {/*<Box mt={3}>*/}
+          {/*  <ActionButton startIcon={<IconBook />}>*/}
+          {/*    Quiz Yourself*/}
+          {/*  </ActionButton>*/}
+          {/*</Box>*/}
         </Grid>
       </Grid>
       <Box mt={3} mb={3}>
@@ -271,6 +286,9 @@ const FlashcardsShow = () => {
         data={cardList}
         readOnly={true}
       />
+
+      { /* Modals for the page */ }
+
       <ShareLinkModal
         open={isShareModalOpen}
         link={`${APP_ROOT_PATH}/flashcards/${data.postId}`}
@@ -282,6 +300,7 @@ const FlashcardsShow = () => {
         )}
         onClose={handleCloseShareLinkModal}
       />
+
       <Dialog
         fullScreen
         open={isEditing}
@@ -292,6 +311,21 @@ const FlashcardsShow = () => {
           flashcardId={data.postId}
           data={deckData}
           onAfterUpdate={handleEditFinish}
+        />
+      </Dialog>
+
+      <Dialog
+        fullScreen
+        contentClassName={classes.reviewModal}
+        open={isReviewing}
+        onCancel={handleCloseReviewModal}
+        showHeader={false}
+        TransitionComponent={SlideUp}
+      >
+        <FlashcardsReview
+          flashcardId={data.postId}
+          cards={cardList}
+          onClose={handleCloseReviewModal}
         />
       </Dialog>
     </div>
