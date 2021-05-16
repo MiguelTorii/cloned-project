@@ -172,7 +172,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
       <Hidden implementation="css">
         <Dropzone
           ref={setDropzoneRef}
-          accept=".png,.jpg"
+          accept="image/*"
           onDropAccepted={handleDropzoneAccepted}
           onFileDialogCancel={handleFileDialogCancel}
         >
