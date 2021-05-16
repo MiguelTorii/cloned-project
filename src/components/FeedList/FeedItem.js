@@ -109,32 +109,10 @@ const FeedItem = ({
   const [thanked, setThanked] = useState(false)
   const isMenuOpen = Boolean(moreAnchorEl)
 
-  const loadData = useCallback(async(typeId) => {
-    if (typeId === 3) {
-      const currentFlashCard = await api.getFlashcards({ userId: currentUserId, flashcardId: data.postId })
-      setThanked(currentFlashCard.thanked)
-    }
-    if (typeId === 4) {
-      const currentNote = await api.getNotes({ userId: currentUserId, noteId: data.postId })
-      setThanked(currentNote.thanked)
-    }
-    if (typeId === 5) {
-      const currentSharelink = await api.getShareLink({ userId: currentUserId, sharelinkId: data.postId })
-      setThanked(currentSharelink.thanked)
-    }
-    if (typeId === 6) {
-      const currentQuestion = await api.getQuestion({ userId: currentUserId, questionId: data.postId })
-      setThanked(currentQuestion.thanked)
-    }
-  }, [currentUserId, data.postId])
-
   useEffect(() => {
-    setThanksCount(data.postInfo.thanksCount)
-  }, [data.postInfo.thanksCount])
-
-  useEffect(() => {
-    loadData(data.typeId)
-  }, [data.typeId, loadData])
+    setThanked(data.thanked);
+    setThanksCount(data.postInfo.thanksCount);
+  }, [data, setThanked]);
 
   const handleMenuOpen = useCallback(event => {
     setAnchorEl(event.currentTarget)
@@ -152,13 +130,14 @@ const FeedItem = ({
   const handleThanks = useCallback(async () => {
     const { postId, typeId } = data
     await api.updateThanks({ userId: currentUserId, postId, typeId })
-    await loadData(typeId)
     if (thanked) {
       setThanksCount(thanksCount - 1)
     } else {
       setThanksCount(thanksCount + 1)
     }
-  }, [currentUserId, data, loadData, thanked, thanksCount])
+
+    setThanked(!thanked);
+  }, [currentUserId, data, thanked, thanksCount])
 
   const handleBookmark = useCallback(() => {
     const { feedId, bookmarked } = data

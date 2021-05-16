@@ -227,6 +227,7 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     title: String((item.title: string) || ''),
     body: String((item.body: string) || ''),
     readOnly: Boolean((item.read_only: boolean) || false),
+    thanked: Boolean((item.thanked: boolean) || false),
     tags: (item.tags || []).map(tag => ({
       description: String((tag.description: string) || ''),
       id: Number((tag.id: number) || 0),
