@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     left: 0,
   },
   leftDrawerOpen: {
-    left: '15%',
+    left: '16%',
     [theme.breakpoints.down('xs')]: {
       left: '42%'
     }

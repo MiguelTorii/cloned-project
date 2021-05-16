@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-use-before-define */
 // @flow
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
@@ -60,6 +60,10 @@ const CollapseNavbar = ({
   const classes = useStyles();
   const [subListOpen, setSubListOpen] = useState('')
 
+  useEffect(() => {
+    setSubListOpen('')
+  }, [channels])
+
   const handleSubList = (parent, channel) => () => {
     if (subListOpen === parent) {
       setSubListOpen('')
@@ -77,7 +81,7 @@ const CollapseNavbar = ({
     channels.forEach(channel => {
       content.push(
         <ListItem
-          key={channel?.channels ? channel.created : channel.chat_id}
+          key={channel?.channels ? `${channel.id}-${channel.created}` : channel.chat_name}
           className={cx(
             classes.navLink,
             !channel?.channels && classes.childChannel,
