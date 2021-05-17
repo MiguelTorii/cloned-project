@@ -1,7 +1,11 @@
+/* eslint-disable valid-typeof */
+/* eslint-disable no-sequences */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-restricted-syntax */
 // @flow
 
-import React from 'react';
+import React , { useState, useEffect, useCallback } from 'react';
 import {
   ValidatorForm,
   TextValidator,
@@ -15,8 +19,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import OnboardingExpert from 'components/OnboardingExpert'
 import DarkModeDialog from 'components/DarkModeDialog'
+import useScript from 'hooks/useScript'
+import {
+  LOGGED_IN_WIDGET_ID,
+  LOGGED_OUT_WIDGET_ID,
+  LOGGED_IN_WIDGET_URL,
+  LOGGED_OUT_WIDGET_URL
+} from './constants'
 import withRoot from '../../withRoot';
-import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import OnboardingProgress from '../OnboardingProgress';
@@ -50,99 +60,117 @@ const styles = theme => ({
   }
 });
 
-type Props = {
+const Props = {
   classes: Object,
-  user: UserState,
+  user: Object,
+  campaign: Object,
   checkUserSession: Function,
   confirmTooltip: Function,
   updateOnboarding: Function
-};
+}
 
-type State = {
-  open: boolean,
-  loading: boolean,
-  firstName: string,
-  lastName: string,
-  grade: string | number,
-  email: string,
-  windowWidth: number
-};
+const UserInitializer = ({
+  classes,
+  user,
+  campaign,
+  checkUserSession,
+  confirmTooltip,
+  updateOnboarding }: Props) => {
 
-class UserInitializer extends React.PureComponent<Props, State> {
-  state = {
-    open: false,
-    loading: false,
-    firstName: '',
-    lastName: '',
-    grade: '',
-    email: '',
-    windowWidth: window.innerWidth
-  };
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [grade, setGrade] = useState('')
+  const [email, setEmail] = useState('')
+  const [widgetUrl, setWidgetUrl] = useState('')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
+  const { data: { userId } } = user
 
-  init = async () => {
-    const {
-      checkUserSession,
-      user: {
-        data: { userId }
+  useEffect(() => {
+    setWidgetUrl(userId ? LOGGED_IN_WIDGET_URL : LOGGED_OUT_WIDGET_URL)
+  }, [userId])
+
+  const status = useScript(widgetUrl);
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      window.fwSettings = {
+        widget_id: userId ? LOGGED_IN_WIDGET_ID : LOGGED_OUT_WIDGET_ID,
+        hideChatButton: true
       }
-    } = this.props;
-    const loggedIn = await checkUserSession()
-    if (loggedIn) {
-      if (userId !== '') this.handleCheckUpdate();
+
+      !(function() {
+        if (typeof window.FreshworksWidget !== "function") {
+          const n = function() {
+            n.q.push(arguments)
+          }; (n.q = []), (window.FreshworksWidget = n)
+        }
+      })()
     }
 
-    window.addEventListener("resize", this.updateDimensions);
-  }
+    if (!userId) window.FreshworksWidget('show', 'launcher')
+  }, [userId, status])
 
-  componentDidMount = () => {
-    this.init()
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (userId) window.FreshworksWidget('hide', 'launcher')
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [userId]);
 
-  componentDidUpdate = prevProps => {
-    const {
-      user: {
-        data: { userId }
+  const updateDimensions = useCallback(() => {
+    setWindowWidth(window.innerWidth)
+  }, [])
+
+  const handleCheckUpdate = useCallback(() => {
+    const { data: { updateProfile } } =  user
+    if (updateProfile.length > 0) setOpen(true)
+  }, [user]);
+
+  useEffect(() => {
+    const init = async () => {
+      const loggedIn = await checkUserSession()
+      if (loggedIn) {
+        if (userId !== '') handleCheckUpdate();
       }
-    } = this.props;
-    const {
-      user: {
-        data: { userId: prevUserId }
-      }
-    } = prevProps;
 
-    if (userId !== '' && prevUserId === '') this.handleCheckUpdate();
+      window.addEventListener("resize", updateDimensions);
+    }
+
+    init()
+    return () => window.removeEventListener("resize", updateDimensions);
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    if (userId !== '') handleCheckUpdate()
+  }, [handleCheckUpdate, userId])
+
+  const handleChange = name => event => {
+    switch(name) {
+    case 'firstName':
+      setFirstName(event.target.value)
+      break;
+    case 'lastName':
+      setLastName(event.target.value)
+      break;
+    case 'grade':
+      setGrade(event.target.value)
+      break;
+    case 'email':
+      setEmail(event.target.value)
+      break;
+    default:
+      break;
+    }
   };
 
-  updateDimensions = () => {
-    this.setState({ windowWidth: window.innerWidth });
-  }
-
-  handleCheckUpdate = () => {
-    const {
-      user: {
-        data: { updateProfile }
-      }
-    } = this.props;
-    if (updateProfile.length > 0) this.setState({ open: true });
-  };
-
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
-  handleSubmit = async () => {
-    this.setState({ loading: true });
+  const handleSubmit = async () => {
+    setLoading(true)
     try {
-      const {
-        user: {
-          data: { userId, updateProfile }
-        }
-      } = this.props;
-      const { firstName, lastName, grade, email } = this.state;
+      const { data: { updateProfile } } = user
       const fields = [];
       for (const profileItem of updateProfile) {
         const item = { field: profileItem.field, updated_value: '' };
@@ -167,44 +195,28 @@ class UserInitializer extends React.PureComponent<Props, State> {
         fields.push(item);
       }
       await updateUserProfile({ userId, fields });
-      const { checkUserSession } = this.props;
       await checkUserSession();
 
-      this.setState({ open: false, loading: false });
+      setOpen(false)
+      setLoading(false)
     } catch (err) {
-      this.setState({ loading: false });
+      setLoading(false)
     }
   };
 
-  render() {
-    const {
-      classes,
-      user: {
-        isExpert,
-        data: { userId, updateProfile, segment },
-        syncData: {
-          viewedTooltips,
-          viewedOnboarding,
-        }
-      },
-      campaign,
-      confirmTooltip,
-      updateOnboarding
-    } = this.props;
+  const {
+    isExpert,
+    data: { updateProfile, segment },
+    syncData: {
+      viewedTooltips,
+      viewedOnboarding,
+    }
+  } = user
 
-    if (userId === '' || campaign.landingPageCampaign === null) return null;
+  if (userId === '' || campaign.landingPageCampaign === null) return null;
 
-    const {
-      open,
-      loading,
-      firstName,
-      lastName,
-      grade,
-      email,
-      windowWidth
-    } = this.state;
-
-    const renderForm = (
+  const renderForm = () => {
+    return (
       <>
         {updateProfile.map(({ field }) => {
           switch (field) {
@@ -215,7 +227,7 @@ class UserInitializer extends React.PureComponent<Props, State> {
                 label="First Name"
                 margin="normal"
                 variant="outlined"
-                onChange={this.handleChange('firstName')}
+                onChange={handleChange('firstName')}
                 name="firstName"
                 autoComplete="firstName"
                 autoFocus
@@ -233,7 +245,7 @@ class UserInitializer extends React.PureComponent<Props, State> {
                 label="Last Name"
                 margin="normal"
                 variant="outlined"
-                onChange={this.handleChange('lastName')}
+                onChange={handleChange('lastName')}
                 name="lastName"
                 autoComplete="lastName"
                 autoFocus
@@ -252,7 +264,7 @@ class UserInitializer extends React.PureComponent<Props, State> {
                 fullWidth
                 name="grade"
                 label="Year"
-                onChange={this.handleChange('grade')}
+                onChange={handleChange('grade')}
                 variant="outlined"
                 margin="normal"
                 disabled={loading}
@@ -274,7 +286,7 @@ class UserInitializer extends React.PureComponent<Props, State> {
                 label="Email"
                 margin="normal"
                 variant="outlined"
-                onChange={this.handleChange('email')}
+                onChange={handleChange('email')}
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -290,53 +302,54 @@ class UserInitializer extends React.PureComponent<Props, State> {
           }
         })}
       </>
-    );
+    )
+  }
 
-    return (
-      <ErrorBoundary>
-        <Dialog
-          open={open}
-          disableBackdropClick
-          disableEscapeKeyDown
-          okTitle="Update"
-          onOk={this.handleSubmit}
-          showActions
-          title="Update Profile"
-        >
-          <div className={classes.dialog}>
-            {loading && (
-              <CircularProgress
-                size={24}
-                className={classes.buttonProgress}
-              />
-            )}
-            <ValidatorForm
-              instantValidate
-              onSubmit={this.handleSubmit}
-              className={classes.form}
-            >
-              {renderForm}
-            </ValidatorForm>
-          </div>
-        </Dialog>
-        {windowWidth > 700 && (
-          <OnboardingProgress
-            open={viewedOnboarding !== null && !viewedOnboarding}
-            updateOnboarding={updateOnboarding}
-            userId={userId}
-          />
-        )}
-        {windowWidth > 700 && (
-          <DarkModeDialog
-            open={Boolean(
-              viewedOnboarding &&
+  return (
+    <ErrorBoundary>
+      <Dialog
+        open={open}
+        disableBackdropClick
+        disableEscapeKeyDown
+        okTitle="Update"
+        onOk={handleSubmit}
+        showActions
+        title="Update Profile"
+      >
+        <div className={classes.dialog}>
+          {loading && (
+            <CircularProgress
+              size={24}
+              className={classes.buttonProgress}
+            />
+          )}
+          <ValidatorForm
+            instantValidate
+            onSubmit={handleSubmit}
+            className={classes.form}
+          >
+            {renderForm}
+          </ValidatorForm>
+        </div>
+      </Dialog>
+      {windowWidth > 700 && (
+        <OnboardingProgress
+          open={viewedOnboarding !== null && !viewedOnboarding}
+          updateOnboarding={updateOnboarding}
+          userId={userId}
+        />
+      )}
+      {windowWidth > 700 && (
+        <DarkModeDialog
+          open={Boolean(
+            viewedOnboarding &&
               viewedTooltips &&
               !viewedTooltips.includes(9058)
-            )}
-            finish={() => confirmTooltip(9058)}
-          />
-        )}
-        {windowWidth > 700 &&
+          )}
+          finish={() => confirmTooltip(9058)}
+        />
+      )}
+      {windowWidth > 700 &&
           <OnboardingExpert
             open={Boolean(
               isExpert &&
@@ -347,11 +360,12 @@ class UserInitializer extends React.PureComponent<Props, State> {
             updateOnboarding={() => confirmTooltip(9052)}
             userId={userId}
           />
-        }
-      </ErrorBoundary>
-    );
-  }
+      }
+    </ErrorBoundary>
+  )
+
 }
+
 
 const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
   user,

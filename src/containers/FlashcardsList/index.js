@@ -3,21 +3,21 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
+import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useLocation } from 'react-router';
+import { push } from 'connected-react-router';
 import withRoot from '../../withRoot';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import useStyles from './styles';
 import FiltersBar from '../../components/FiltersBar';
 import { getFlashcards } from '../../actions/user';
 import FlashcardsDeck from '../../components/FlashcardsDeck';
-import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { isApiCalling } from '../../utils/helpers';
 import { userActions } from '../../constants/action-types';
 import Dialog from '../../components/Dialog';
 import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
 import SlideUp from '../../components/Transition/SlideUp';
-import { useLocation } from 'react-router';
-import { push } from 'connected-react-router';
 
 const Filters = {
   mine: {
@@ -88,14 +88,14 @@ const FlashcardsList = () => {
   // Effects
   useEffect(() => {
     switch (currentFilter) {
-      case 'mine':
-        dispatch(getFlashcards(me.userId));
-        break;
-      case 'bookmarked':
-        dispatch(getFlashcards(undefined, true));
-        break;
-      default:
-        throw new Error('Undefined filter');
+    case 'mine':
+      dispatch(getFlashcards(me.userId));
+      break;
+    case 'bookmarked':
+      dispatch(getFlashcards(undefined, true));
+      break;
+    default:
+      throw new Error('Undefined filter');
     }
   }, [dispatch, me.userId, currentFilter]);
 
