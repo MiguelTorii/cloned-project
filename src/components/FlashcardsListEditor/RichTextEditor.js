@@ -56,11 +56,11 @@ const RichTextEditor = (
     if (!readOnly) setIsActive(false);
   }, [setIsActive, readOnly]);
 
-  const handleChangeValue = useCallback((newValue) => {
+  const handleChangeValue = (newValue) => {
     if (newValue !== value) {
       onChangeValue(newValue);
     }
-  }, [value, onChangeValue]);
+  };
 
   // Rendering Helpers
   const renderImage = () => {

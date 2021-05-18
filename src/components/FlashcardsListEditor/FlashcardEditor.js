@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 import RichTextEditor from './RichTextEditor';
 import QuillToolbar from '../QillToolbar';
 import Box from '@material-ui/core/Box';
-import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 
 const EDITOR_TYPES = {
@@ -43,10 +42,8 @@ const FlashcardEditor = (
 
   // Event Handlers
   const handleUpdateField = useCallback((field, value) => {
-    onUpdate(index, update(data, {
-      [field]: { $set: value }
-    }));
-  }, [index, data, onUpdate]);
+    onUpdate(index, field, value);
+  }, [index, onUpdate]);
 
   const handleDelete = useCallback(() => {
     onDelete(index);

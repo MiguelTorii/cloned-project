@@ -37,11 +37,9 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate }: Props) => {
     }));
   }, [data, onUpdate, activeCardIndex, setActiveCardIndex]);
 
-  const handleUpdateDeck = useCallback((index, deck) => {
-    onUpdate(update(data, {
-        [index]: { $set: { ...deck } }
-    }));
-  }, [data, onUpdate]);
+  const handleUpdateDeckField = useCallback((index, field, value) => {
+    onUpdate(index, field, value);
+  }, [onUpdate]);
 
   const handleOutsideClick = useCallback(() => {
     if (!readOnly) setActiveCardIndex(null);
@@ -96,7 +94,7 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate }: Props) => {
                                 readOnly={readOnly}
                                 dndProps={provided.dragHandleProps}
                                 onDelete={handleDeleteDeck}
-                                onUpdate={handleUpdateDeck}
+                                onUpdate={handleUpdateDeckField}
                               />
                             </div>
                           )

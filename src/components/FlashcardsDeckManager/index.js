@@ -36,7 +36,7 @@ const FlashcardsDeckManager = (
   // Effects
   useEffect(() => {
     if (data) setDeckData(data);
-  }, [data, setDeckData]);
+  }, [data]);
 
   // Memos
   const dropdownOptions = useMemo(() => {
@@ -67,7 +67,17 @@ const FlashcardsDeckManager = (
     setDeckData(update(deckData, {
       [field]: { $set: value }
     }));
-  }, [deckData, setDeckData]);
+  }, [deckData]);
+
+  const handleUpdateFlashcardField = useCallback((index, field, value) => {
+    setDeckData((data) => update(data, {
+      deck: {
+        [index]: (item) => update(item, {
+          [field]: { $set: value }
+        })
+      }
+    }))
+  }, []);
 
   const handleSubmit = useCallback(() => {
     if (!deckData.title || !deckData.classId) {
@@ -75,7 +85,7 @@ const FlashcardsDeckManager = (
       return ;
     }
     onSubmit(deckData);
-  }, [setIsValidated, deckData, onSubmit]);
+  }, [deckData, onSubmit]);
 
   const handleChangeClass = useCallback((event) => {
     const [classId, sectionId] = event.target.value.split('_');
@@ -83,7 +93,7 @@ const FlashcardsDeckManager = (
       classId: { $set: Number(classId) },
       sectionId: { $set: Number(sectionId) }
     }));
-  }, [deckData, setDeckData]);
+  }, [deckData]);
 
   // Rendering Helpers
   const renderForm = () => (
@@ -167,7 +177,7 @@ const FlashcardsDeckManager = (
       { renderForm() }
       <FlashcardsListEditor
         data={deckData.deck}
-        onUpdate={(data) => handleUpdateField('deck', data)}
+        onUpdate={handleUpdateFlashcardField}
       />
     </>
   );
