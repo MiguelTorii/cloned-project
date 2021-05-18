@@ -24,7 +24,9 @@ import {
   LOGGED_IN_WIDGET_ID,
   LOGGED_OUT_WIDGET_ID,
   LOGGED_IN_WIDGET_URL,
-  LOGGED_OUT_WIDGET_URL
+  LOGGED_OUT_WIDGET_URL,
+  CONFIRM_TOOLTIP_ID,
+  UPDATE_ONBOARDING_TOOLTIP_ID
 } from './constants'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
@@ -79,20 +81,36 @@ const UserInitializer = ({
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [grade, setGrade] = useState('')
-  const [email, setEmail] = useState('')
+  const [currentUser, setCurrentUser] = useState({
+    firstName: '',
+    lastName: '',
+    grade: '',
+    email: ''
+  })
   const [widgetUrl, setWidgetUrl] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   const { data: { userId } } = user
 
   useEffect(() => {
+    async function loadStyle() {
+      await import('./custom-widget.css');
+    }
+
+    if (userId) loadStyle();
+  }, [userId])
+  useEffect(() => {
     setWidgetUrl(userId ? LOGGED_IN_WIDGET_URL : LOGGED_OUT_WIDGET_URL)
   }, [userId])
 
   const status = useScript(widgetUrl);
+
+  useEffect(() => {
+    const oldScript = document.querySelector(
+      `script[src="${userId ? LOGGED_OUT_WIDGET_URL : LOGGED_IN_WIDGET_URL}"]`
+    )
+    if (oldScript) oldScript.remove()
+  }, [userId])
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -149,22 +167,10 @@ const UserInitializer = ({
   }, [handleCheckUpdate, userId])
 
   const handleChange = name => event => {
-    switch(name) {
-    case 'firstName':
-      setFirstName(event.target.value)
-      break;
-    case 'lastName':
-      setLastName(event.target.value)
-      break;
-    case 'grade':
-      setGrade(event.target.value)
-      break;
-    case 'email':
-      setEmail(event.target.value)
-      break;
-    default:
-      break;
-    }
+    setCurrentUser({
+      ...currentUser,
+      [name]: event.target.value
+    })
   };
 
   const handleSubmit = async () => {
@@ -177,16 +183,16 @@ const UserInitializer = ({
 
         switch (profileItem.field) {
         case 'first_name':
-          item.updated_value = firstName;
+          item.updated_value = currentUser.firstName;
           break;
         case 'last_name':
-          item.updated_value = lastName;
+          item.updated_value = currentUser.lastName;
           break;
         case 'grade':
-          item.updated_value = grade.toString();
+          item.updated_value = currentUser.grade.toString();
           break;
         case 'email':
-          item.updated_value = email;
+          item.updated_value = currentUser.email;
           break;
         default:
           item.updated_value = '';
@@ -232,7 +238,7 @@ const UserInitializer = ({
                 autoComplete="firstName"
                 autoFocus
                 fullWidth
-                value={firstName}
+                value={currentUser.firstName}
                 disabled={loading}
                 validators={['required']}
                 errorMessages={['first name is required']}
@@ -250,7 +256,7 @@ const UserInitializer = ({
                 autoComplete="lastName"
                 autoFocus
                 fullWidth
-                value={lastName}
+                value={currentUser.lastName}
                 disabled={loading}
                 validators={['required']}
                 errorMessages={['last name is required']}
@@ -260,7 +266,7 @@ const UserInitializer = ({
             return (
               <SelectValidator
                 key={field}
-                value={grade}
+                value={currentUser.grade}
                 fullWidth
                 name="grade"
                 label="Year"
@@ -291,7 +297,7 @@ const UserInitializer = ({
                 autoComplete="email"
                 autoFocus
                 fullWidth
-                value={email}
+                value={currentUser.email}
                 disabled={loading}
                 validators={['required', 'isEmail']}
                 errorMessages={['email is required', 'email is not valid']}
@@ -332,32 +338,32 @@ const UserInitializer = ({
           </ValidatorForm>
         </div>
       </Dialog>
-      {windowWidth > 700 && (
+      {windowWidth > 640 && (
         <OnboardingProgress
           open={viewedOnboarding !== null && !viewedOnboarding}
           updateOnboarding={updateOnboarding}
           userId={userId}
         />
       )}
-      {windowWidth > 700 && (
+      {windowWidth > 640 && (
         <DarkModeDialog
           open={Boolean(
             viewedOnboarding &&
               viewedTooltips &&
-              !viewedTooltips.includes(9058)
+              !viewedTooltips.includes(CONFIRM_TOOLTIP_ID)
           )}
-          finish={() => confirmTooltip(9058)}
+          finish={() => confirmTooltip(CONFIRM_TOOLTIP_ID)}
         />
       )}
-      {windowWidth > 700 &&
+      {windowWidth > 640 &&
           <OnboardingExpert
             open={Boolean(
               isExpert &&
               viewedOnboarding &&
               viewedTooltips &&
-              !viewedTooltips.includes(9052)
+              !viewedTooltips.includes(UPDATE_ONBOARDING_TOOLTIP_ID)
             )}
-            updateOnboarding={() => confirmTooltip(9052)}
+            updateOnboarding={() => confirmTooltip(UPDATE_ONBOARDING_TOOLTIP_ID)}
             userId={userId}
           />
       }
