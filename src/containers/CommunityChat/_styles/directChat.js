@@ -42,8 +42,11 @@ const useStyles = makeStyles(theme => ({
   },
   leftDrawerOpen: {
     left: '16%',
+    [theme.breakpoints.down('md')]: {
+      left: '31%'
+    },
     [theme.breakpoints.down('xs')]: {
-      left: '42%'
+      left: '92%'
     }
   },
   iconButton: {

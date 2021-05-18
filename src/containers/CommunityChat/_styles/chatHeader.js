@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
   headerTitle: {
     fontSize: 18,
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
     whiteSpace: 'nowrap',

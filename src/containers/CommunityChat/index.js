@@ -68,12 +68,14 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
           handleSelect={handleSelect}
         />}
       </Box>
-      {selectedCourse && selectedCourse.id === 'chat'
-        ? <DirectChat />
-        : <CommunityChat
-          isLoading={isLoading}
-          selectedCourse={selectedCourse}
-        />}
+      <Box className={classes.directChat}>
+        {selectedCourse && selectedCourse.id === 'chat'
+          ? <DirectChat />
+          : <CommunityChat
+            isLoading={isLoading}
+            selectedCourse={selectedCourse}
+          />}
+      </Box>
     </div>
   )
 }

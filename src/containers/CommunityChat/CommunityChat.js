@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import cx from 'classnames'
@@ -65,12 +66,18 @@ const CommunityChat = ({
     const currentSelectedChannel = selectedChannel ? local[selectedChannel.chat_id] : null
 
     if (currentSelectedChannel) {
+      if (['xs'].includes(width)) setLeftSpace(0)
       setCurrentChannel(currentSelectedChannel.twilioChannel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel, setCurrentChannel])
+  }, [selectedChannel, setCurrentChannel, width])
 
-  const curSize = useMemo(() => width === 'xs' ? 6 : 2, [width])
+  const curSize = useMemo(() => width === 'xs'
+    ? 12
+    : ['md', 'sm'].includes(width)
+      ? 4
+      : 2,
+  [width])
 
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
@@ -131,7 +138,7 @@ const CommunityChat = ({
       >
         {renderIcon(leftSpace !== 0)}
       </IconButton>
-      <Grid
+      {leftSpace !== 0 && <Grid
         item
         xs={leftSpace || 1}
         className={leftSpace !== 0 ? classes.left : classes.hidden}
@@ -152,8 +159,8 @@ const CommunityChat = ({
             local={local}
             course={selectedCourse}
           />}
-      </Grid>
-      <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
+      </Grid>}
+      {leftSpace !== 12 && <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
         <Main
           isCommunityChat
           selectedCourse={selectedCourse}
@@ -167,7 +174,7 @@ const CommunityChat = ({
           setRightPanel={handleOpenRightPanel}
           user={user}
         />
-      </Grid>
+      </Grid>}
       <Grid
         item xs={rightSpace || 1}
         className={rightSpace !== 0 ? classes.right : classes.hidden}

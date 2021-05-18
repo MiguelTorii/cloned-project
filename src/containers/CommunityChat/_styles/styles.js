@@ -19,6 +19,10 @@ const useStyles = makeStyles(theme => ({
     width: 70,
     height: '100%'
   },
+  directChat: {
+    width: 'calc(100% - 70px)',
+    height: '100%'
+  },
   main: {
     display: 'flex',
     position: 'relative',
@@ -56,8 +60,11 @@ const useStyles = makeStyles(theme => ({
   },
   leftDrawerOpen: {
     left: '16%',
+    [theme.breakpoints.down('md')]: {
+      left: '31%'
+    },
     [theme.breakpoints.down('xs')]: {
-      left: '42%'
+      left: '92%'
     }
   },
   iconButton: {

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 
 import React, { useMemo, useCallback, useEffect, useState } from 'react'
@@ -91,8 +92,9 @@ const DirectChat = ({
 
   const onOpenChannel = useCallback(async ({ channel }) => {
     setCurrentChannel(channel)
+    if (['xs'].includes(width)) setLeftSpace(0)
     await handleNewChannel(false)
-  }, [handleNewChannel, setCurrentChannel])
+  }, [handleNewChannel, setCurrentChannel, width])
 
   const handleRemove = useCallback(async sid => {
     clearCurrentChannel()
@@ -104,7 +106,12 @@ const DirectChat = ({
     await handleUpdateFriendlyName(channel)
   }, [handleUpdateFriendlyName, setCurrentChannel])
 
-  const curSize = useMemo(() => width === 'xs' ? 6 : 2, [width])
+  const curSize = useMemo(() => width === 'xs'
+    ? 12
+    : ['md', 'sm'].includes(width)
+      ? 4
+      : 2,
+  [width])
 
   useEffect(() => {
     const channelList = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
@@ -170,7 +177,7 @@ const DirectChat = ({
       >
         {renderIcon(leftSpace !== 0)}
       </IconButton>
-      <Grid
+      {leftSpace !== 0 && <Grid
         item xs={leftSpace || 1}
         className={leftSpace !== 0 ? classes.left : classes.hidden}
       >
@@ -191,27 +198,32 @@ const DirectChat = ({
           handleUpdateGroupName={updateGroupName}
           handleRemoveChannel={handleRemove}
         />
-      </Grid>
-      <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
-        <Main
-          newMessage={newMessage}
-          setMainMessage={setMainMessage}
-          mainMessage={mainMessage}
-          handleBlock={handleBlock}
-          onCollapseLeft={onCollapseLeft}
-          onCollapseRight={onCollapseRight}
-          local={local}
-          leftSpace={leftSpace}
-          rightSpace={rightSpace}
-          channel={currentChannel}
-          newChannel={newChannel}
-          user={user}
-          setRightPanel={handleOpenRightPanel}
-          onSend={() => {
-            if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)
-          }}
-        />
-      </Grid>
+      </Grid>}
+      {leftSpace !== 12 &&
+        <Grid
+          item
+          xs={12 - leftSpace - rightSpace}
+          className={classes.main}
+        >
+          <Main
+            newMessage={newMessage}
+            setMainMessage={setMainMessage}
+            mainMessage={mainMessage}
+            handleBlock={handleBlock}
+            onCollapseLeft={onCollapseLeft}
+            onCollapseRight={onCollapseRight}
+            local={local}
+            leftSpace={leftSpace}
+            rightSpace={rightSpace}
+            channel={currentChannel}
+            newChannel={newChannel}
+            user={user}
+            setRightPanel={handleOpenRightPanel}
+            onSend={() => {
+              if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)
+            }}
+          />
+        </Grid>}
       <Grid
         item xs={rightSpace || 1}
         className={rightSpace !== 0 ? classes.right : classes.hidden}

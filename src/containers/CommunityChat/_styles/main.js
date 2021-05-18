@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     flexDirection: 'column',
+    [theme.breakpoints.down('xs')]: {
+      borderRadius: 0,
+      margin: 0,
+    }
   },
   messageScroll: {
     flex: 1,
@@ -31,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     position: 'relative',
     marginBottom: 20,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
   },
   typing: {
     padding: theme.spacing(0, 2),
