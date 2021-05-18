@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import IconButton from '@material-ui/core/IconButton';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import LeaveClassPopover from 'containers/ClassesGrid/LeaveClassPopover'
 
 type Props = {
@@ -84,10 +84,10 @@ const ClassCard = ({
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null)
   
-  const handleClickIcon = event => {
-    event.stopPropagation()
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  }
+  // const handleClickIcon = event => {
+  //   event.stopPropagation()
+  //   setAnchorEl(anchorEl ? null : event.currentTarget);
+  // }
 
   const handleClose = event => {
     event.stopPropagation()
@@ -106,11 +106,11 @@ const ClassCard = ({
         leaveClass={handleLeaveClass}
       />
       <CardHeader
-        action={
-          canLeave && <IconButton onClick={handleClickIcon} aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        // action={
+        //   canLeave && <IconButton onClick={handleClickIcon} aria-label="settings">
+        //     <MoreVertIcon />
+        //   </IconButton>
+        // }
         title={
           <Typography
             className={classes.title}
