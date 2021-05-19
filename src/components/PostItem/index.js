@@ -68,7 +68,7 @@ const PostItem = ({
           event: 'Post- Send Time Log',
           props: {
             type: 'Viewed',
-            feedId: feedId,
+            feedId,
             elapsed: elapsed.current,
             total_idle_time: totalIdleTime.current,
             effective_time: elapsed.current - totalIdleTime.current,

@@ -1,9 +1,11 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable react/no-danger */
 // @flow
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory, withRouter } from 'react-router'
 import cx from 'classnames'
 import { Link as RouterLink } from 'react-router-dom'
+// import parse from 'html-react-parser'
 import ListItem from '@material-ui/core/ListItem'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -71,12 +73,39 @@ const ChatMessage = ({
 
   const history = useHistory()
 
-  const linkify = (text: string) => {
+  const linkify = text => {
     // eslint-disable-next-line
     const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/gi
     return text.replace(urlRegex, url => {
-      return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
+      const urlIndex = text.indexOf(url)
+      if(text.substr(urlIndex - 5, urlIndex - 1).indexOf("src") === -1)
+        return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
+      return url
     })
+  }
+  const clickImage = useCallback((e) => {
+    onImageClick(e.src)
+  }, [onImageClick])
+
+  useEffect(() => {
+    window.clickImage = clickImage
+    window.loadImage = onImageLoaded
+
+    return () => {
+      window.clickImage = null
+      window.loadImage = null
+    }
+  }, [clickImage, onImageLoaded])
+
+  const renderHtmlWithImage = text => {
+    const htmlString =  text.replaceAll(
+      '<img' ,
+      `<img
+        onClick=window.clickImage(this)
+        onLoad=window.loadImage()
+        class=${classes.image}`
+    )
+    return linkify(htmlString)
   }
 
   const handleViewProfile = userId => () => {
@@ -205,7 +234,7 @@ const ChatMessage = ({
       <div className={cx(classes.bodyWrapper)}>
         <Typography
           className={classes.body}
-          dangerouslySetInnerHTML={{ __html: linkify(message) }}
+          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
         />
       </div>
     )

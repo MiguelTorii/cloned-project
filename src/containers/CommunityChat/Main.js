@@ -1,6 +1,5 @@
 // @flow
 import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react'
-import axios from 'axios'
 import Lightbox from 'react-images'
 import InfiniteScroll from 'react-infinite-scroller'
 import Typography from '@material-ui/core/Typography'
@@ -8,27 +7,29 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import findIndex from 'lodash/findIndex'
 import uuidv4 from 'uuid/v4'
 
-import { getPresignedURL } from 'api/media'
 import { sendMessage } from 'api/chat'
 import { logEvent } from 'api/analytics'
 import { getCampaign } from 'api/campaign'
-import ChatTextField from 'containers/CommunityChat/ChatTextField'
+import MessageQuill from 'containers/CommunityChat/MessageQuill'
 import ChatHeader from 'containers/CommunityChat/ChatHeader'
 import EmptyMain from 'containers/CommunityChat/EmptyMain'
 import InitialAlert from 'containers/CommunityChat/InitialAlert'
-// import LoadImg from 'components/LoadImg'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
-// import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 import useStyles from './_styles/main'
+// import axios from 'axios'
+// import { getPresignedURL } from 'api/media'
+// import ChatTextField from 'containers/CommunityChat/ChatTextField'
+// import LoadImg from 'components/LoadImg'
+// import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 
 type Props = {
   isCommunityChat: boolean,
   selectedCourse: Object,
   channel: Object,
-  mainMessage: Array,
-  setMainMessage: Function,
+  // mainMessage: Array,
+  // setMainMessage: Function,
   newMessage: Object,
   rightSpace: number,
   local: Object,
@@ -43,8 +44,8 @@ const Main = ({
   isCommunityChat = false,
   selectedCourse,
   channel,
-  mainMessage,
-  setMainMessage,
+  // mainMessage,
+  // setMainMessage,
   newMessage,
   rightSpace,
   local,
@@ -55,18 +56,21 @@ const Main = ({
   handleBlock
 }: Props) => {
   const classes = useStyles()
+  const end = useRef(null)
   const [messages, setMessages] = useState([])
   const [paginator, setPaginator] = useState(null)
   const [hasMore, setHasMore] = useState(false)
   const [scroll, setScroll] = useState(true)
-  const end = useRef(null)
+  const [value, setValue] = useState('')
   const [avatars, setAvatars] = useState([])
   const [typing, setTyping] = useState(null)
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null)
+  const [showError, setShowError] = useState(false)
   const memberKeys = useMemo(() => Object.keys(members), [members])
+
   const otherUser = useMemo(() => {
     if (memberKeys.length !== 2) return null
     return members[memberKeys.find(key => key !== user.data.userId)]
@@ -293,54 +297,27 @@ const Main = ({
     }
   }, [channel])
 
-  const onSendInput = useCallback(async file => {
-    setLoading(true)
-    if (!channel) return
-
-    try {
-      const result = await getPresignedURL({
-        userId,
-        type: 4,
-        mediaType: file.type
-      })
-
-      const { readUrl, url } = result
-
-      await axios.put(url, file, {
-        headers: {
-          'Content-Type': file.type
-        }
-      })
-
-      const messageAttributes = {
-        firstName,
-        lastName,
-        imageKey: readUrl,
-        isVideoNotification: false
-      }
-
-      logEvent({
-        event: 'Chat- Send Message',
-        props: { Content: 'Image', 'Channel SID': channel.sid }
-      })
-
-      await sendMessage({
-        message: 'Uploaded a image',
-        ...messageAttributes,
-        chatId: channel.sid
-      })
-      logEvent({
-        event: 'Chat- Send Message',
-        props: { Content: 'Image' }
-      })
-      // this.setState(({ count }) => ({ count: count + 1 }))
-      // this.handleMessageCount()
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setLoading(false)
+  const handleRTEChange = useCallback(updatedValue => {
+    if (updatedValue.trim() === '<p><br></p>') {
+      setValue('')
     }
-  }, [channel, firstName, lastName, userId])
+    else {
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '')
+      setValue(currentValue)
+    }
+  }, [])
+
+  const handleClick = useCallback((quill) => async () => {
+    if (value.trim() === '' || !value) {
+      setShowError(true)
+    } else {
+      await onSendMessage(value.replaceAll('<p><br></p>', ''))
+      setValue('')
+      if (quill) {
+        quill.setText('')
+      }
+    }
+  }, [onSendMessage, value])
 
   const handleImageClose = useCallback(() => setImages([]), [])
 
@@ -438,12 +415,16 @@ const Main = ({
           isOpen={images.length > 0}
           onClose={handleImageClose}
         />
-        {channel && <ChatTextField
+
+        {channel && <MessageQuill
+          value={value}
+          userId={userId}
           onSendMessage={onSendMessage}
+          onChange={handleRTEChange}
+          setValue={setValue}
+          handleClick={handleClick}
           onTyping={onTyping}
-          message={mainMessage}
-          setMessage={setMainMessage}
-          onSendInput={onSendInput}
+          showError={showError}
         />}
 
         {channel && <div className={classes.typing}>

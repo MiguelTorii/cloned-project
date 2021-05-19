@@ -62,7 +62,10 @@ const useStyles = makeStyles(theme => ({
   image: {
     borderRadius: 5,
     marginBottom: theme.spacing(),
-    maxWidth: 120
+    maxWidth: 120,
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   createdAt: {
     paddingLeft: theme.spacing(2),
@@ -97,7 +100,10 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     wordWrap: 'break-word',
     width: '100%',
-    maxWidth: 900
+    maxWidth: 900,
+    '& > p': {
+      margin: 0
+    }
   },
   avatarLink: {
     textDecoration: 'none',
