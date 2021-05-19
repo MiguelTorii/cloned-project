@@ -125,7 +125,7 @@ export const styles = theme => ({
     backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground,
   },
   avatarImage: {
-    objectFit: 'fill'
+    objectFit: 'contain'
   },
   shareGalleryView: {
     flexBasis: 'auto',
