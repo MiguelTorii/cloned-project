@@ -20,6 +20,7 @@ import {
   commentsToCamelCase,
   postResponseToCamelCase
 } from './utils';
+import callApi from './api_base';
 
 export const createBatchFlashcards = async ({
   userId,
@@ -960,6 +961,14 @@ export const thankComment = async ({
     console.log(err);
     return {};
   }
+};
+
+export const updateComment = async(commentId, comment) => {
+  return callApi({
+    url: `${API_ROUTES.COMMENT}/${commentId}`,
+    method: 'PUT',
+    data: { comment }
+  });
 };
 
 export const report = async ({

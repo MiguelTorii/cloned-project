@@ -68,6 +68,17 @@ const CommentQuill = ({
     }
   }, [currentQuill, isNewLine])
 
+  useEffect(() => {
+    if (quill && value) {
+      quill.clipboard.dangerouslyPasteHTML(value);
+      quill.setSelection({
+        index: value.length,
+        length: 0
+      });
+    }
+    // eslint-disable-next-line
+  }, [quill]);
+
   const selectLocalImage = useCallback(() => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')

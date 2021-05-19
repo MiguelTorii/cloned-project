@@ -142,7 +142,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       ...cardsLevel,
       [card.id]: level
     });
-  }, [currentCardIndex, currentCardList, cardsLevel, currentLevel]);
+  }, [currentCardIndex, currentCardList, cardsLevel, currentLevel, sessionId]);
 
   const handleShuffleDeck = useCallback(() => {
     shuffleArray(currentCardList);

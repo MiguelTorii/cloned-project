@@ -12,6 +12,7 @@ import PostItemComment from 'components/PostItem/PostItemComment';
 import SkeletonLoad from 'components/PostItem//SkeletonLoad';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
+import update from 'immutability-helper';
 
 import Report from '../Report';
 import {
@@ -19,7 +20,7 @@ import {
   createComment,
   thankComment,
   bestAnswer,
-  deleteComment
+  deleteComment, updateComment
 } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
@@ -124,6 +125,32 @@ class ViewNotes extends React.PureComponent<Props, State> {
         event: 'Feed- Ask Question',
         props: {}
       });
+    }
+  };
+
+  handleUpdateComment = async (commentId, newValue) => {
+    const { comments } = this.state;
+    const { success } = await updateComment(commentId, newValue);
+
+    if (!success) return ;
+
+    const index = comments.comments.findIndex((item) => item.id === commentId);
+
+    if (index >= 0) {
+      const newComments = update(comments, {
+        comments: {
+          [index]: (item) => update(item, {
+            comment: {
+              $set: newValue
+            }
+          })
+        }
+      });
+
+      this.setState(update(this.state, {
+        comments: { $set: newComments },
+        items: { $set: processComments(newComments.comments) }
+      }));
     }
   };
 
@@ -287,6 +314,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   hasBestAnswer={hasBestAnswer}
                   isOwner={Boolean(isOwner)}
                   onPostComment={this.handlePostComment}
+                  onUpdateComment={this.handleUpdateComment}
                   onThanks={this.handleThanks}
                   onDelete={this.handleDelete}
                   onReport={this.handleReport}
@@ -318,6 +346,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     hasBestAnswer={hasBestAnswer}
                     isOwner={Boolean(isOwner)}
                     onPostComment={this.handlePostComment}
+                    onUpdateComment={this.handleUpdateComment}
                     onThanks={this.handleThanks}
                     onDelete={this.handleDelete}
                     onReport={this.handleReport}
@@ -351,6 +380,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 hasBestAnswer={hasBestAnswer}
                 isOwner={Boolean(isOwner)}
                 onPostComment={this.handlePostComment}
+                onUpdateComment={this.handleUpdateComment}
                 onThanks={this.handleThanks}
                 onDelete={this.handleDelete}
                 onReport={this.handleReport}

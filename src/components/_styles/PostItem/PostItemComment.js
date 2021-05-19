@@ -105,5 +105,12 @@ export const styles = theme => ({
     '&:hover': {
       textDecoration: 'none',
     }
+  },
+  editContainer: {
+    width: '100%',
+    margin: theme.spacing(-5, 0),
+    '& > div': {
+      marginLeft: 0
+    }
   }
 });

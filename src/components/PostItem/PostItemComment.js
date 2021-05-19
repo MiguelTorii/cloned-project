@@ -21,6 +21,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PenIcon from '@material-ui/icons/Create';
 
 import TutorBadge from 'components/TutorBadge'
 import CustomQuill from 'components/CustomQuill'
@@ -61,6 +62,7 @@ type Props = {
   hasBestAnswer: boolean,
   isOwner: boolean,
   onPostComment: Function,
+  onUpdateComment: Function,
   onThanks: Function,
   onReport: Function,
   onDelete: Function,
@@ -71,7 +73,8 @@ type Props = {
 
 type State = {
   showAddComment: boolean,
-  open: boolean
+  open: boolean,
+  isEditing: boolean
 };
 
 class PostItemComment extends React.PureComponent<Props, State> {
@@ -85,7 +88,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
   state = {
     showAddComment: false,
     moreAnchorEl: null,
-    open: false
+    open: false,
+    isEditing: false
   };
 
   handlePostComment = ({ comment, anonymous }) => {
@@ -136,6 +140,23 @@ class PostItemComment extends React.PureComponent<Props, State> {
     this.setState({ moreAnchorEl: null });
   };
 
+  handleEditComment = () => {
+    this.setState({ isEditing: true });
+    this.handleMenuClose();
+  };
+
+  handleUpdateComment = ({ comment }) => {
+    const { id, onUpdateComment } = this.props;
+    onUpdateComment(id, comment);
+    this.setState({ isEditing: false });
+  };
+
+  handleCancelEditComment = () => {
+    this.setState({
+      isEditing: false
+    });
+  };
+
   render() {
     const {
       id,
@@ -163,7 +184,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       userId,
       replyCommentId
     } = this.props;
-    const { showAddComment, open, moreAnchorEl } = this.state;
+    const { showAddComment, open, moreAnchorEl, isEditing } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
     const name = `${firstName} ${lastName}.`;
@@ -195,6 +216,14 @@ class PostItemComment extends React.PureComponent<Props, State> {
         ): (
           <span className={classes.grow} />
         )}
+        {isOwn &&
+          <MenuItem onClick={this.handleEditComment}>
+            <ListItemIcon color="inherit">
+              <PenIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Edit" />
+          </MenuItem>
+        }
         {!isOwn
           ? <MenuItem onClick={this.handleReport}>
             <ListItemIcon color="inherit">
@@ -211,6 +240,48 @@ class PostItemComment extends React.PureComponent<Props, State> {
       </Menu>
     );
 
+    const renderComment = () => (
+      <div className={classes.commentArea}>
+        <div>
+          <div className={classes.header}>
+            <Typography component="p" variant="subtitle2" noWrap>
+              <Link
+                component={MyLink}
+                href={`/profile/${ownerId}`}
+                className={classes.link}
+              >
+                {name} {role && <TutorBadge text={role} />}
+              </Link>
+            </Typography>
+            &nbsp; • &nbsp;
+            <Typography
+              component="p"
+              variant="caption"
+              noWrap
+              className={classes.created}
+            >
+              {fromNow}
+            </Typography>
+          </div>
+          {replyTo !== '' && (
+            <div className={classes.replyTo}>
+              <ReplyIcon />
+              <Typography component="p" variant="subtitle2" noWrap>
+                {`Replying to ${replyTo || ''}`}
+              </Typography>
+            </div>
+          )}
+          <div className={classes.markdown}>
+            <CustomQuill value={comment} readOnly />
+          </div>
+        </div>
+
+        <IconButton onClick={this.handleMenuOpen}>
+          <MoreVertIcon />
+        </IconButton>
+      </div>
+    );
+
     return replyCommentId && replyCommentId === id ? <SkeletonLoad /> : (
       <>
         <div className={cx(classes.container, isReply && classes.reply)}>
@@ -218,45 +289,23 @@ class PostItemComment extends React.PureComponent<Props, State> {
             <Avatar src={profileImageUrl}>{initials}</Avatar>
           </Link>
           <div className={classes.info}>
-            <div className={classes.commentArea}>
-              <div>
-                <div className={classes.header}>
-                  <Typography component="p" variant="subtitle2" noWrap>
-                    <Link
-                      component={MyLink}
-                      href={`/profile/${ownerId}`}
-                      className={classes.link}
-                    >
-                      {name} {role && <TutorBadge text={role} />}
-                    </Link>
-                  </Typography>
-                  &nbsp; • &nbsp;
-                  <Typography
-                    component="p"
-                    variant="caption"
-                    noWrap
-                    className={classes.created}
-                  >
-                    {fromNow}
-                  </Typography>
-                </div>
-                {replyTo !== '' && (
-                  <div className={classes.replyTo}>
-                    <ReplyIcon />
-                    <Typography component="p" variant="subtitle2" noWrap>
-                      {`Replying to ${replyTo || ''}`}
-                    </Typography>
-                  </div>
-                )}
-                <div className={classes.markdown}>
-                  <CustomQuill value={comment} readOnly />
-                </div>
+            { isEditing ? (
+              <div className={classes.editContainer}>
+                <PostItemAddComment
+                  profileImageUrl={ownProfileUrl}
+                  name={ownName}
+                  userId={userId}
+                  isReply
+                  rte
+                  readOnly={readOnly}
+                  isQuestion={isQuestion}
+                  onPostComment={this.handleUpdateComment}
+                  onEscape={this.handleCancelEditComment}
+                  defaultValue={comment}
+                />
               </div>
-
-              <IconButton onClick={this.handleMenuOpen}>
-                <MoreVertIcon />
-              </IconButton>
-            </div>
+              ) : renderComment()
+            }
             <div
               className={cx(
                 classes.actions,
@@ -294,6 +343,14 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   />
                 </IconButton>
               </Typography>
+
+              {isEditing && (
+                <Typography variant="subtitle2">
+                  Press Esc to&nbsp;
+                  <Link component="button" onClick={this.handleCancelEditComment}>Cancel</Link>
+                </Typography>
+              )}
+
             </div>
           </div>
         </div>

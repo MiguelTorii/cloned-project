@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -16,8 +16,10 @@ type Props = {
   rte: boolean,
   readOnly: boolean,
   isQuestion: boolean,
+  defaultValue: string,
   onPostComment: Function,
-  onCancelComment: Function
+  onCancelComment: Function,
+  onEscape: Function
 };
 
 const PostItemAddComment = ({
@@ -29,12 +31,18 @@ const PostItemAddComment = ({
   readOnly,
   isQuestion,
   onPostComment,
+  onEscape = () => {},
   feedId,
-  userId
+  userId,
+  defaultValue
 }: Props) => {
   const [value, setValue] = useState('')
   const [showError, setShowError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = useCallback(event => {
     setValue(event.target.value)
@@ -60,9 +68,15 @@ const PostItemAddComment = ({
     setIsLoading(false)
   }, [onCancelComment, onPostComment, value])
 
+  const handleKeyUp = useCallback((event) => {
+    if (event.key === 'Escape') {
+      onEscape();
+    }
+  }, [onEscape]);
+
   return (
     <div className={cx(classes.container, isReply && classes.reply)}>
-      <div className={classes.body}>
+      <div className={classes.body} onKeyUp={handleKeyUp}>
 
         {rte && !readOnly ? (
           <CommentQuill
