@@ -64,10 +64,10 @@ const FlashcardsDeckManager = (
 
   // Event Handlers
   const handleUpdateField = useCallback((field, value) => {
-    setDeckData(update(deckData, {
+    setDeckData((data) => update(data, {
       [field]: { $set: value }
     }));
-  }, [deckData]);
+  }, []);
 
   const handleUpdateFlashcardField = useCallback((index, field, value) => {
     setDeckData((data) => update(data, {
@@ -177,7 +177,8 @@ const FlashcardsDeckManager = (
       { renderForm() }
       <FlashcardsListEditor
         data={deckData.deck}
-        onUpdate={handleUpdateFlashcardField}
+        onUpdate={(data) => handleUpdateField('deck', data)}
+        onUpdateFlashcardField={handleUpdateFlashcardField}
       />
     </>
   );

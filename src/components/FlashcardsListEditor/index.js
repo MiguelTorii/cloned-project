@@ -11,7 +11,7 @@ import useStyles from './styles';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-const FlashcardsListEditor = ({ data, readOnly, onUpdate }: Props) => {
+const FlashcardsListEditor = ({ data, readOnly, onUpdate, onUpdateFlashcardField }: Props) => {
   // Hooks
   const classes = useStyles();
 
@@ -38,8 +38,8 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate }: Props) => {
   }, [data, onUpdate, activeCardIndex, setActiveCardIndex]);
 
   const handleUpdateDeckField = useCallback((index, field, value) => {
-    onUpdate(index, field, value);
-  }, [onUpdate]);
+    onUpdateFlashcardField(index, field, value);
+  }, [onUpdateFlashcardField]);
 
   const handleOutsideClick = useCallback(() => {
     if (!readOnly) setActiveCardIndex(null);
@@ -121,6 +121,7 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate }: Props) => {
 FlashcardsListEditor.propTypes = {
   data: PropTypes.array,
   onUpdate: PropTypes.func,
+  onUpdateFlashcardField: PropTypes.func,
   readOnly: PropTypes.bool
 };
 
