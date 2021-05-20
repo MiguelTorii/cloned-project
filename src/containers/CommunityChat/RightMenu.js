@@ -3,9 +3,9 @@ import { Link as RouterLink } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
-import Paper from '@material-ui/core/Paper'
-import InputBase from '@material-ui/core/InputBase'
-import IconButton from '@material-ui/core/IconButton'
+// import Paper from '@material-ui/core/Paper'
+// import InputBase from '@material-ui/core/InputBase'
+// import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -14,7 +14,7 @@ import { getInitials } from 'utils/chat'
 import OnlineBadge from 'components/OnlineBadge'
 import TutorBadge from 'components/TutorBadge'
 import HoverPopup from 'components/HoverPopup'
-import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
+// import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
@@ -53,7 +53,7 @@ const RightMenu = ({
           }}
           item
         >
-          <Paper component="form" className={classes.searchPaperRoot}>
+          {/* <Paper component="form" className={classes.searchPaperRoot}>
             <IconButton
               type="submit"
               className={classes.iconButton}
@@ -66,7 +66,7 @@ const RightMenu = ({
               placeholder="Search For Anything"
               inputProps={{ 'aria-label': 'search for anything' }}
             />
-          </Paper>
+          </Paper> */}
         </Grid>
         <Grid
           classes={{

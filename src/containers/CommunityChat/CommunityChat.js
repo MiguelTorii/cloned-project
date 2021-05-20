@@ -97,8 +97,6 @@ const CommunityChat = ({
       }
     }
 
-    if (currentChannel) setRightSpace(0)
-
     setPrevWidth(width)
   }, [prevWidth, width, curSize, currentChannel])
 
