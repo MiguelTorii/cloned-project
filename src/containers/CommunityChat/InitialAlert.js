@@ -38,9 +38,11 @@ const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedCourse 
     }
   }, [channel, local, userId])
 
-  const initials = useCallback(name !== ''
-    ? (name.match(/\b(\w)/g) || []).join('')
-    : '', [name]);
+  const initials = useCallback(() => {
+    return !name
+      ? (name.match(/\b(\w)/g) || []).join('')
+      : ''
+  }, [name]);
 
   return isCommunityChat
     ? <Box
