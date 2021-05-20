@@ -1,9 +1,9 @@
 // @flow
-import React, { useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { COURSE_GROUPS_CHANNLES } from 'containers/CommunityChat/constants'
+import { getCommunityChannels } from 'api/community'
 import LoadImg from 'components/LoadImg'
 import { ReactComponent as Chat } from 'assets/svg/community-chat.svg'
 import StyledBadge from './StyledBadge'
@@ -25,20 +25,25 @@ const CommunityMenu = ({
   handleSelect
 }: Props) => {
   const classes = useStyles()
-
-  const unreadMessages = useMemo(() => {
-    let count = 0;
-    if (local && !!Object.keys(local).length) {
-      COURSE_GROUPS_CHANNLES.forEach(category =>
-        category.channels.forEach(channel => {
-          if (local[channel.id]?.unread) {
-            count += local[channel.id].unread
-          }
+  const [unreadMessages, setUnreadMessages] = useState(0)
+  useEffect(() => {
+    async function fetchCommunityChannels() {
+      const { id } = item
+      if (id !== 'chat') {
+        const { community_channels: communityChannels } = await getCommunityChannels({ communityId: id })
+        communityChannels.forEach(communityChannel => {
+          let count = 0
+          communityChannel.channels.forEach(channel => {
+            if (local[channel.chat_id]?.unread) {
+              count += local[channel.chat_id].unread
+            }
+          })
+          setUnreadMessages(count)
         })
-      )
+      }
     }
-    return count
-  }, [local])
+    fetchCommunityChannels()
+  }, [item, local])
 
   return item.communityIconUrl ? (
     <ListItem
@@ -69,7 +74,10 @@ const CommunityMenu = ({
       </StyledBadge>
       : <StyledBadge
         max={99}
-        classes={{ badge: classes.emptyUnreadMessage }}
+        classes={{ badge: unreadMessages
+          ? classes.unreadMessageCount
+          : classes.emptyUnreadMessage
+        }}
         badgeContent={unreadMessages || '🎉' }
         color="secondary"
       >

@@ -68,6 +68,13 @@ export const useStyles = makeStyles((theme) => ({
       background: theme.circleIn.palette.hoverMenu
     },
   },
+  menuIcon: {
+    marginRight: theme.spacing(),
+    minHeight: 28,
+    minWidth: 28,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   separator: {
     marginTop: 'auto',
   },

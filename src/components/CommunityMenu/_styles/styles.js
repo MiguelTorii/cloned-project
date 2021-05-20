@@ -20,6 +20,12 @@ const useStyles = makeStyles(theme => ({
   selectedItem: {
     border: `3px solid ${theme.circleIn.palette.white}`
   },
+  unreadMessageCount: {
+    top: '95%',
+    right: 5,
+    padding: theme.spacing(0, 0.5),
+    minWidth: 25
+  },
   emptyUnreadMessage: {
     backgroundColor: 'white',
     right: 5,
