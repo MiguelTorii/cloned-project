@@ -46,6 +46,7 @@ const Main = ({
   channel,
   // mainMessage,
   // setMainMessage,
+  selectedChannel,
   newMessage,
   rightSpace,
   local,
@@ -356,7 +357,10 @@ const Main = ({
     <div className={classes.root}>
       {channel && <ChatHeader
         channel={channel}
-        title={local[channel.sid].title}
+        title={isCommunityChat
+          ? selectedChannel?.chat_name
+          : local[channel.sid].title
+        }
         rightSpace={rightSpace}
         otherUser={otherUser}
         memberKeys={memberKeys}

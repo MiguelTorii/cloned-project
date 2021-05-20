@@ -164,6 +164,7 @@ const CommunityChat = ({
         <Main
           isCommunityChat
           selectedCourse={selectedCourse}
+          selectedChannel={selectedChannel}
           newMessage={newMessage}
           setMainMessage={setMainMessage}
           mainMessage={mainMessage}
