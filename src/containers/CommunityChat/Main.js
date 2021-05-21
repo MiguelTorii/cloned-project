@@ -38,7 +38,7 @@ type Props = {
   onSend: Function,
   setRightPanel: Function,
   handleBlock: Function,
-  handleUpdateGroupName: Function,
+  handleUpdateGroupName: Function
 };
 
 const Main = ({

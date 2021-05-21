@@ -13,6 +13,22 @@ export const styles = (theme) => ({
     borderRadius: theme.spacing(3),
     backgroundColor: theme.circleIn.palette.appBar
   },
+  shareLinkContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: theme.spacing(1.5),
+    padding: theme.spacing(1.5),
+    borderRadius: theme.spacing(1),
+    boxShadow: 'inset 2px 2px 2px rgba(0, 0, 0, 0.18)',
+    backgroundColor: theme.circleIn.palette.gray3
+  },
+  copyLink: {
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+    borderRadius: theme.spacing(),
+    fontWeight: 'bold',
+    minWidth: 120
+  },
   img: {
     width: theme.spacing(3),
     height: theme.spacing(3),

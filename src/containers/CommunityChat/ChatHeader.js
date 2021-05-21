@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
+import ShareLinkDialog from 'components/ShareLinkDialog'
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
 
 import { searchUsers } from 'api/user'
@@ -35,7 +36,7 @@ type Props = {
   local: Object,
   user: Object,
   onOpenRightPanel: Function,
-  handleUpdateGroupName: Function,
+  handleUpdateGroupName: Function
 };
 
 const ChatHeader = ({
@@ -53,7 +54,8 @@ const ChatHeader = ({
 }: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [openShareLink, setOpenShareLink] = useState(false)
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -79,6 +81,15 @@ const ChatHeader = ({
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
   const handleCreateChannelClose = useCallback(() => setChannelType(null), [])
   const handleCreateChannelOpen = useCallback(() => setChannelType('group'), [])
+
+  const handleShareLink = useCallback(() => {
+    setOpenShareLink(true)
+    handleCloseGroupDetailMenu()
+  }, [])
+
+  const closeShareLinkDialog = useCallback(() => {
+    setOpenShareLink(false)
+  }, [])
 
   const handleLoadOptions = useCallback(async ({ query, from }) => {
     if (query.trim() === '' || query.trim().length < 3)
@@ -218,7 +229,7 @@ const ChatHeader = ({
                     Edit Group Details
                   </MenuItem>
                 )}
-                <MenuItem>Share Link</MenuItem>
+                <MenuItem onClick={handleShareLink}>Share Link</MenuItem>
                 <MenuItem className={classes.removeStudent}>
                   Remove Students
                 </MenuItem>
@@ -244,6 +255,13 @@ const ChatHeader = ({
         isLoading={loading}
         okLabel='Add Classmates'
       />
+      {channel && <ShareLinkDialog
+        open={openShareLink}
+        isGroupChannel={local[channel.sid].members.length === 2}
+        localChannel={local[channel.sid]}
+        channelName={title}
+        handleClose={closeShareLinkDialog}
+      />}
     </div>
   )
 }
