@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import SettingsIcon from '@material-ui/icons/Settings'
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
+import { PERMISSIONS } from 'constants/common'
 
 const useStyles = makeStyles((theme) => ({
   addLabel: {
@@ -72,8 +73,8 @@ const Settings = ({
     setAnchorEl(null)
   }, [editGroupDetailsOpen, setAnchorEl])
 
-  const isShow = permission.includes('edit_group_photo_access') &&
-    permission.includes('rename_group_chat_access')
+  const isShow = permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
+    permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS)
 
   return (
     <>

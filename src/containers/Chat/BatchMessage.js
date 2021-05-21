@@ -7,6 +7,7 @@ import { UserState } from 'reducers/user'
 import { withRouter } from 'react-router'
 import Tooltip from 'containers/Tooltip'
 import BatchMessageDialog from 'containers/BatchMessageDialog'
+import { PERMISSIONS } from 'constants/common'
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {
@@ -33,7 +34,7 @@ const BatchMessage = ({
   const [open, setOpen] = useState(false)
 
   const canBatchMessage = useMemo(() => (
-    permission.includes('expert_mode_access') && permission.includes('one_touch_send_chat')
+    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_CHAT)
   ), [permission])
 
   const openDialog = useCallback(() => setOpen(true), [])

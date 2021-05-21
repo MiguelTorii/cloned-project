@@ -1,21 +1,22 @@
 // @flow
-import React, { useCallback, useState, useMemo } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import GroupIcon from '@material-ui/icons/Group';
-import cx from 'classnames';
-import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React, { useCallback, useState, useMemo } from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import Avatar from '@material-ui/core/Avatar'
+import Typography from '@material-ui/core/Typography'
+import Badge from '@material-ui/core/Badge'
+import GroupIcon from '@material-ui/icons/Group'
+import cx from 'classnames'
+import NotificationsOffIcon from '@material-ui/icons/NotificationsOff'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
-import Dialog from 'components/Dialog';
-import OnlineBadge from 'components/OnlineBadge';
+import Dialog from 'components/Dialog'
+import OnlineBadge from 'components/OnlineBadge'
+import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/mainChatItem'
 
 type Props = {
@@ -70,8 +71,8 @@ const MainChatItem = ({
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
 
   const isShow = useMemo(() => permission &&
-    permission.includes('edit_group_photo_access') &&
-    permission.includes('rename_group_chat_access'), [permission])
+    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
+    permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
 
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])

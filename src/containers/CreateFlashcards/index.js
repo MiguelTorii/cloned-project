@@ -32,6 +32,7 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
+import { PERMISSIONS } from 'constants/common';
 
 const styles = theme => ({
   flashcards: {
@@ -96,7 +97,7 @@ const CreateFlashcards = ({
   const [classList, setClassList] = useState([])
   const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
   const canBatchPost = useMemo(() => (
-    expertMode && permission.includes('one_touch_send_posts')
+    expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
   ), [expertMode, permission])
   const [debounceState, setDebounceState] = useDebounce({}, 1000)
   // const [confirmClearDialog, setConfirmClear] = useState(false)

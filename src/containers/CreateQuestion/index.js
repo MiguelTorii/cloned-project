@@ -27,6 +27,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
+import { PERMISSIONS } from 'constants/common';
 
 const styles = theme => ({
   stackbar: {
@@ -86,7 +87,7 @@ const CreateQuestion = ({
 
   const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
   const canBatchPost = useMemo(() => (
-    expertMode && permission.includes('one_touch_send_posts')
+    expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
   ), [expertMode, permission])
 
   const handlePush = useCallback(path => {

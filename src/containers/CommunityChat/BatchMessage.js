@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import { UserState } from 'reducers/user'
 import Tooltip from 'containers/Tooltip'
 import BatchMessageDialog from 'containers/BatchMessageDialog'
+import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/batchMessage'
 
 const BatchMessage = ({
@@ -26,7 +27,7 @@ const BatchMessage = ({
   const [open, setOpen] = useState(false)
 
   const canBatchMessage = useMemo(() => (
-    permission.includes('expert_mode_access') && permission.includes('one_touch_send_chat')
+    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_CHAT)
   ), [permission])
 
   const openDialog = useCallback(() => {

@@ -21,12 +21,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails'
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 
-import OnlineBadge from 'components/OnlineBadge';
-import TutorBadge from 'components/TutorBadge';
-import ShareLinkWidget from 'components/ShareLinkWidget';
-import { useDispatch } from 'react-redux';
-import AvatarEditor from '../../components/AvatarEditor';
-import { handleUpdateGroupPhoto } from '../../actions/chat';
+import OnlineBadge from 'components/OnlineBadge'
+import TutorBadge from 'components/TutorBadge'
+import ShareLinkWidget from 'components/ShareLinkWidget'
+import { useDispatch } from 'react-redux'
+import AvatarEditor from '../../components/AvatarEditor'
+import { handleUpdateGroupPhoto } from '../../actions/chat'
+import { PERMISSIONS } from 'constants/common'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
@@ -238,7 +239,7 @@ const RightMenu = ({
               {initials || <GroupIcon />}
             </Avatar>
             {
-              permission.includes('edit_group_photo_access') &&
+              permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
                 <Button
                   onClick={handleEditAvatar}
                   classes={{

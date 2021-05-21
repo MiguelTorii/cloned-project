@@ -218,6 +218,7 @@ const DirectChat = ({
             channel={currentChannel}
             newChannel={newChannel}
             user={user}
+            handleUpdateGroupName={updateGroupName}
             setRightPanel={handleOpenRightPanel}
             onSend={() => {
               if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)

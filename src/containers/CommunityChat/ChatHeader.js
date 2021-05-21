@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
+import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
+
 import { searchUsers } from 'api/user'
 import { addGroupMembers, sendMessage } from 'api/chat'
 import { logEvent } from 'api/analytics'
@@ -19,7 +21,7 @@ import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg'
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg'
 import { ReactComponent as ChatStudyRoomMemberrs } from 'assets/svg/chat-studyroom-members.svg'
 import { ReactComponent as ChatActiveStudyRoomMemberrs } from 'assets/svg/chat-active-studyroom-members.svg'
-
+import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/chatHeader'
 
 type Props = {
@@ -32,7 +34,8 @@ type Props = {
   startVideo: Function,
   local: Object,
   user: Object,
-  onOpenRightPanel: Function
+  onOpenRightPanel: Function,
+  handleUpdateGroupName: Function,
 };
 
 const ChatHeader = ({
@@ -45,11 +48,13 @@ const ChatHeader = ({
   startVideo,
   local,
   user,
-  onOpenRightPanel
+  onOpenRightPanel,
+  handleUpdateGroupName,
 }: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleOpenGroupDetailMenu = (event) => {
@@ -63,9 +68,15 @@ const ChatHeader = ({
   const open = Boolean(anchorEl);
   const id = open ? 'group-details' : undefined;
 
-  const { data: { userId, schoolId } } = user
+  const { data: { userId, schoolId, permission } } = user
 
   const members = useMemo(() => channel && local[channel.sid].members, [channel, local])
+  const isShow = useMemo(() => permission &&
+    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
+    permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
+
+  const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
+  const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
   const handleCreateChannelClose = useCallback(() => setChannelType(null), [])
   const handleCreateChannelOpen = useCallback(() => setChannelType('group'), [])
 
@@ -139,6 +150,11 @@ const ChatHeader = ({
     }
   }, [channel, handleCreateChannelClose])
 
+  const handleEditGroup = useCallback(() => {
+    handleEditGroupDetailsOpen()
+    handleCloseGroupDetailMenu()
+  }, [handleCloseGroupDetailMenu, handleEditGroupDetailsOpen])
+
   return (
     <div className={classes.header}>
       {channel && <Grid container justify='space-between'>
@@ -197,7 +213,11 @@ const ChatHeader = ({
           >
             <Paper className={classes.paper}>
               <MenuList>
-                <MenuItem>Edit Group Details</MenuItem>
+                {Object.keys(members).length > 2 && isShow && (
+                  <MenuItem onClick={handleEditGroup}>
+                    Edit Group Details
+                  </MenuItem>
+                )}
                 <MenuItem>Share Link</MenuItem>
                 <MenuItem className={classes.removeStudent}>
                   Remove Students
@@ -207,6 +227,14 @@ const ChatHeader = ({
           </Popover>
         </div>
       </Grid>}
+      <EditGroupDetailsDialog
+        title='Edit Group Details'
+        channel={channel}
+        localChannel={local[channel.sid]}
+        open={editGroupDetailsOpen}
+        updateGroupName={handleUpdateGroupName}
+        onClose={handleEditGroupDetailsClose}
+      />
       <CreateChatChannelDialog
         title='ADD CLASSMATES'
         chatType={channelType}

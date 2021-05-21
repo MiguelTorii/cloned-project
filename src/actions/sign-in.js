@@ -13,6 +13,7 @@ import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
 import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
+import { PERMISSIONS } from 'constants/common'
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -69,11 +70,11 @@ export const updateUser = ({ user }: { user: User }) => async (
 
   dispatch(sync({ userId: user.userId }))
 
-  const isExpert = user.permission.includes('expert_mode_access') &&
-    user.permission.includes('main_application_access');
+  const isExpert = user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    user.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
 
-  const isTutor = user.permission.includes('expert_mode_access') &&
-    user.permission.indexOf('main_application_access') === -1;
+  const isTutor = user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    user.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
   let expertMode = false;
 

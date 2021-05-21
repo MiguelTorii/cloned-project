@@ -28,6 +28,7 @@ import { createBatchShareLink, createBatchPhotoNote, getNotes, updatePhotoNote, 
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEventLocally } from '../../api/analytics';
+import { PERMISSIONS } from 'constants/common';
 
 
 const styles = theme => ({
@@ -577,7 +578,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       }
     } = this.props
 
-    return expertMode && permission.includes('one_touch_send_posts')
+    return expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
   }
 
   render() {

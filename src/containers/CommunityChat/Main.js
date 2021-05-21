@@ -37,7 +37,8 @@ type Props = {
   user: Object,
   onSend: Function,
   setRightPanel: Function,
-  handleBlock: Function
+  handleBlock: Function,
+  handleUpdateGroupName: Function,
 };
 
 const Main = ({
@@ -54,7 +55,8 @@ const Main = ({
   user,
   onSend,
   setRightPanel,
-  handleBlock
+  handleBlock,
+  handleUpdateGroupName,
 }: Props) => {
   const classes = useStyles()
   const end = useRef(null)
@@ -368,6 +370,7 @@ const Main = ({
         videoEnabled={videoEnabled}
         local={local}
         onOpenRightPanel={setRightPanel}
+        handleUpdateGroupName={handleUpdateGroupName}
       />}
       <div className={classes.messageRoot}>
         <div className={classes.messageContainer}>
