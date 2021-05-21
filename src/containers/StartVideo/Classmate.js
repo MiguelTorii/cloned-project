@@ -93,7 +93,7 @@ const Classmate = ({
   const initials = useMemo(() => {
     const name = `${classmate?.firstName} ${classmate?.lastName}`
 
-    return !name ? (name.match(/\b(\w)/g) || []).join('') : ''
+    return name ? (name.match(/\b(\w)/g) || []).join('') : ''
   }, [classmate])
 
   return (
