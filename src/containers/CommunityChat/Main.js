@@ -90,7 +90,7 @@ const Main = ({
 
   const handleScrollToBottom = useCallback(() => {
     try {
-      if (scroll && end.current) {
+      if (end.current) {
         end.current.scrollIntoView({ behavior: 'instant' })
       }
     } catch (err) {
