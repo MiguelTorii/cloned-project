@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
   chatIcon: {
     paddingTop: 0,
     paddingBottom: 0
+  },
+  removeStudent: {
+    color: theme.circleIn.palette.danger
   }
 }))
 

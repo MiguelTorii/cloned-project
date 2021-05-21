@@ -2,13 +2,18 @@
 
 import React, { useState, useMemo, useCallback } from 'react'
 import { connect } from 'react-redux'
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import Popover from '@material-ui/core/Popover'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import MenuList from '@material-ui/core/MenuList'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import { searchUsers } from 'api/user'
 import { addGroupMembers, sendMessage } from 'api/chat'
-import { logEvent } from 'api/analytics';
+import { logEvent } from 'api/analytics'
 import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg'
 import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg'
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg'
@@ -44,7 +49,19 @@ const ChatHeader = ({
 }: Props) => {
   const classes = useStyles()
   const [channelType, setChannelType] = useState(null)
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(false)
+
+  const handleOpenGroupDetailMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseGroupDetailMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'group-details' : undefined;
 
   const { data: { userId, schoolId } } = user
 
@@ -156,6 +173,38 @@ const ChatHeader = ({
               : <ChatStudyRoomMemberrs />
             }
           </IconButton>}
+          <IconButton
+            aria-label="group-details"
+            className={classes.chatIcon}
+            onClick={handleOpenGroupDetailMenu}
+          >
+            <MoreVertIcon />
+          </IconButton>
+
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleCloseGroupDetailMenu}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <Paper className={classes.paper}>
+              <MenuList>
+                <MenuItem>Edit Group Details</MenuItem>
+                <MenuItem>Share Link</MenuItem>
+                <MenuItem className={classes.removeStudent}>
+                  Remove Students
+                </MenuItem>
+              </MenuList>
+            </Paper>
+          </Popover>
         </div>
       </Grid>}
       <CreateChatChannelDialog
