@@ -1,113 +1,28 @@
 // @flow
 import React, { useEffect, useMemo, useCallback, useState, useRef } from 'react'
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+import { bindActionCreators } from 'redux'
+import ReactQuill from 'react-quill'
+import { useDebounce } from '@react-hook/debounce'
+import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover'
 import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import EditorToolbar, { modules, formats } from "components/UserNotesEditor/Toolbar"
-import ReactQuill from 'react-quill'
 import Typography from '@material-ui/core/Typography'
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import { bindActionCreators } from 'redux';
-import * as notesActions from 'actions/notes'
-import { useDebounce } from '@react-hook/debounce'
-import { connect } from 'react-redux';
-import * as notificationsActions from 'actions/notifications';
-import Tooltip from 'containers/Tooltip';
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(3),
-    borderRadius: theme.spacing(2),
-    '& .MuiInputLabel-shrink': {
-      display: 'none'
-    },
-    '& .ql-editor.ql-blank::before': {
-      fontWeight: 400,
-      left: 0,
-      right: 0,
-      color: theme.circleIn.palette.textSubtitleBody,
-      opacity: 1,
-      fontSize: 16
-    },
-    '& > div': {
-      minWidth: 200,
-      maxHeight: 'inherit'
-    },
-    '& #quill-editor': {
-      maxWidth: 380,
-      width: 380,
-      maxHeight: 200,
-      padding: 0
-    },
-    '& .MuiPaper-elevation8': {
-      borderRadius: theme.spacing(2),
-      overflow: 'inherit',
-    },
-    '& .quill': {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    '& .ql-container.ql-snow': {
-      border: 'none',
-      maxHeight: 'inherit'
-    },
-    '& .ql-editor': {
-      padding: 0,
-      maxHeight: 200,
-      width: 380,
-      height: 200
-    }
-  },
-  lastSaved: {
-    marginLeft: theme.spacing(2),
-    color: theme.circleIn.palette.primaryText2
-  },
-  savedContainer: {
-    marginTop: theme.spacing(2),
-    alignItems: 'center',
-    display: 'flex'
-  },
-  select: {
-    marginBottom: theme.spacing(2)
-  },
-  menuItem: {
-    display: 'flex'
-  },
-  menuTypeInput: {
-    display: 'flex'
-  },
-  menuTypo: {
-    marginLeft: theme.spacing(),
-    fontWeight: 'bold'
-  },
-  button: {
-    background: 'linear-gradient(102.03deg, #94DAF9 0%, #1E88E5 100%)',
-    borderRadius: theme.spacing(),
-    color: theme.circleIn.palette.textOffwhite,
-    fontWeight: 'bold'
-  },
-  stackbar: {
-    color: theme.circleIn.palette.primaryText1
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: 700
-  },
-  classLabel: {
-    fontWeight: 800,
-    fontSize: 18,
-    color: theme.circleIn.palette.textOffwhite,
-  }
-}))
+import { ReactComponent as QuickNoteIcon } from 'assets/svg/quick-note.svg'
+import { ReactComponent as DropdownCheckIcon } from 'assets/svg/dropdown-check.svg'
+import * as notesActions from 'actions/notes'
+import * as notificationsActions from 'actions/notifications'
+import EditorToolbar, { modules, formats } from "containers/QuickNotes/QuickNoteToolbar"
+import Tooltip from 'containers/Tooltip'
+import useStyles from './_styles/style'
 
 const QuickNotes = ({
   enqueueSnackbar,
@@ -121,10 +36,12 @@ const QuickNotes = ({
   updateNote,
 }) => {
   const noteRef = useRef(null)
+  const quillRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState(null)
   const classes = useStyles()
   const [selectedClass, setSelectedClass] = useState(null)
   const [prevContent, setPrevContent] = useState('')
+  const [open, setOpen] = useState(false);
   const [savedState, setSavedState] = useState('hidden')
   const [debouncedContent, setDebouncedContent] = useDebounce('', 2000)
 
@@ -177,12 +94,23 @@ const QuickNotes = ({
     }
   }, [debouncedContent, prevContent, saveContent, selectedClass])
 
-  const handleUpdate = useCallback(text => {
+  const handleUpdate = useCallback((text) => {
     setTimeout(() => {
       if (selectedClass) setSavedState('saving')
     }, 100)
     updateQuickNoteContent({ content: text })
   }, [selectedClass, updateQuickNoteContent])
+
+  const insertEmoji = useCallback(emoji => {
+    if (quillRef.current?.editor) {
+      quillRef.current.focus()
+      const cursorPosition = quillRef.current.editor.getSelection(true).index
+
+      quillRef.current.editor.insertText(cursorPosition, `${emoji  }`)
+      quillRef.current.editor.setSelection(cursorPosition + 2)
+      handleUpdate(quillRef.current.editor.root.innerHTML)
+    }
+  }, [quillRef, handleUpdate])
 
   const renderSaved = useMemo(() => {
     if (savedState === 'hidden') return null
@@ -233,6 +161,10 @@ const QuickNotes = ({
     setSelectedClass(cl)
   }, [debouncedContent, quicknoteContent, saveContent])
 
+  const handleToolbar = useCallback(() => {
+    setOpen(!open)
+  }, [open])
+
   const saveAndClose = useCallback(async () => {
     handleClose()
     if (debouncedContent !== quicknoteContent) {
@@ -260,6 +192,7 @@ const QuickNotes = ({
         }
       });
     }
+    setSelectedClass(null)
   }, [classes.stackbar, debouncedContent, enqueueSnackbar, handleClose, quicknoteContent, resetQuickNote, saveContent, selectedClass])
 
   return (
@@ -272,7 +205,7 @@ const QuickNotes = ({
         text="Write a QuickNote by clicking here. These QuickNotes save to Notes"
       >
         <IconButton ref={noteRef} onClick={handleClick}>
-          <BookOutlinedIcon />
+          <QuickNoteIcon />
         </IconButton>
       </Tooltip>
       <Popover
@@ -289,41 +222,83 @@ const QuickNotes = ({
           horizontal: 'right',
         }}
       >
-        <Paper className={classes.container}>
+        <Paper
+          className={classes.container}
+          classes={{
+            root: classes.quickNoteRoot
+          }}
+        >
           <Typography className={classes.title}>
             QuickNotes
           </Typography>
-          <FormControl className={classes.formControl}>
-            <InputLabel
-              className={classes.classLabel}
-              id="select-label"
-            >
-              Which class is this for?
-            </InputLabel>
-            <Select
-              className={classes.select}
-              labelWidth={200}
-              labelId='select-label'
-              classes={{
-                selectMenu: classes.menuTypeInput
-              }}
-              value={selectedClass?.sectionId || ''}
-            >
-              {classList.map(cl => (
-                <MenuItem
-                  key={cl.sectionId}
-                  onClick={() => updateClass(cl)}
-                  value={cl.sectionId}
-                  className={classes.menuItem}
-                >
-                  <FolderOpenIcon style={{ color: cl?.color }} />
-                  <Typography className={classes.menuTypo}>{cl.name}</Typography>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <EditorToolbar hidden />
+          <IconButton className={classes.closeIcon} onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+          <div className={classes.noteOptions}>
+            <FormControl className={classes.formControl}>
+              <InputLabel
+                className={classes.classLabel}
+                id="select-label"
+              >
+                Which class is this for?
+              </InputLabel>
+              <Select
+                className={classes.select}
+                labelWidth={200}
+                labelId='select-label'
+                MenuProps={{
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left"
+                  },
+                  transformOrigin: {
+                    vertical: "top",
+                    horizontal: "left"
+                  },
+                  getContentAnchorEl: null
+                }}
+                classes={{
+                  selectMenu: classes.menuTypeInput
+                }}
+                value={selectedClass?.sectionId || ''}
+                renderValue={() => (
+                  <Typography
+                    className={classes.renderMenu}
+                    style={{
+                      backgroundColor: selectedClass?.color
+                    }}
+                  >
+                    {selectedClass.name}
+                  </Typography>
+                )}
+              >
+                {classList.map(cl => (
+                  <MenuItem
+                    key={cl.sectionId}
+                    onClick={() => updateClass(cl)}
+                    value={cl.sectionId}
+                    className={classes.menuItem}
+                    ListItemClasses={{
+                      root: classes.menuItemList,
+                      selected: classes.selectedMenuItem
+                    }}
+                  >
+                    <Typography className={classes.menuTypo}>
+                      {cl.name}
+                    </Typography>
+                    {cl.sectionId === selectedClass?.sectionId &&
+                      <DropdownCheckIcon />}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <IconButton onClick={handleToolbar}>
+              <MoreVertIcon />
+            </IconButton>
+          </div>
+          <EditorToolbar open={open} insertEmoji={insertEmoji}/>
           <ReactQuill
+            ref={quillRef}
             placeholder='Write all your brilliant ideas, a-ha moments, reminders and anything you need here 📝'
             theme="snow"
             value={quicknoteContent}
@@ -332,14 +307,18 @@ const QuickNotes = ({
             formats={formats}
           />
           <div className={classes.savedContainer}>
+            {renderSaved}
             <Button
               variant='contained'
+              disabled={!selectedClass}
               className={classes.button}
+              classes={{
+                disabled: classes.disableBtn
+              }}
               onClick={saveAndClose}
             >
-              Close
+              Save
             </Button>
-            {renderSaved}
           </div>
         </Paper>
       </Popover>
