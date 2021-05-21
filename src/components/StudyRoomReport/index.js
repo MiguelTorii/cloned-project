@@ -148,10 +148,10 @@ const ReportIssue = ({
               {nameList.map(item => (
                 <MenuItem
                   className={classes.menuItem}
-                  value={item.text}
+                  value={item.value}
                   key={`name-item-${item.value}`}
                 >
-                  {selectedNames.indexOf(item.text) > -1
+                  {selectedNames.indexOf(item.value) > -1
                     ? <CheckCircleIcon className={classes.mr1} />
                     : <RadioButtonUncheckedIcon className={classes.mr1} />
                   }
