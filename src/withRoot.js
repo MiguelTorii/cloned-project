@@ -59,7 +59,8 @@ const circleInTheme = {
   tooltipBackground: '#3C3D3F',
   chipBackground: '#5B5C5C',
   menuBackground: '#707070',
-  onlineBadgetColor: '#2FB67E'
+  onlineBadgetColor: '#2FB67E',
+  circleCheckColor: '#87B261',
 };
 
 let theme = createMuiTheme({
@@ -112,7 +113,8 @@ let theme = createMuiTheme({
       tooltipBackground: circleInTheme.tooltipBackground,
       chipBackground: circleInTheme.chipBackground,
       menuBackground: circleInTheme.menuBackground,
-      onlineBadgetColor: circleInTheme.onlineBadgetColor
+      onlineBadgetColor: circleInTheme.onlineBadgetColor,
+      circleCheck: circleInTheme.circleCheckColor,
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

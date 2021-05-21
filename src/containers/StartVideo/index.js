@@ -3,36 +3,29 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import Chat from 'twilio-chat';
-// import { SelectValidator } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
-// import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
-// import FormControl from '@material-ui/core/FormControl';
-// import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+
+import { decypherClass } from 'utils/crypto'
+
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import StartVideoForm from '../../components/StartVideoForm';
-import CreateChatChannel from '../CreateChatChannel';
-// import { getTitle } from '../FloatingChat/utils';
-import { renewTwilioToken } from '../../api/chat';
+
+import StudyRoomInvite from './StudyRoomInvite';
+import {
+  renewTwilioToken,
+  createChannel,
+  addGroupMembers,
+  getGroupMembers,
+} from '../../api/chat';
 import { logEvent } from '../../api/analytics';
+
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
-  actions: {
-    display: 'flex',
-    // flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  start: {
-    maxWidth: 200,
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
-  }
-});
+import StudyRoomImg from 'assets/svg/study-room-chat.svg';
+
+import styles from './_styles/index';
 
 type Props = {
   classes: Object,
@@ -40,11 +33,10 @@ type Props = {
 };
 
 type State = {
-  loading: boolean,
+  isLoading: boolean,
   channel: string,
   client: ?Object,
   channels: Array<Object>,
-  // channelList: Array<Object>,
   errorDialog: boolean,
   errorTitle: string,
   errorBody: string,
@@ -54,25 +46,34 @@ type State = {
 
 class StartVideo extends React.PureComponent<Props, State> {
   state = {
-    loading: false,
+    isLoading: false,
     channel: '',
     client: null,
     channels: [],
-    // channelList: [],
     errorDialog: false,
     errorTitle: '',
     errorBody: '',
     createChannel: 'single',
-    online: true
+    online: true,
+    inviteVisible: false,
+    classId: '',
+    sectionId: '',
+    classList: [],
+    groupUsers: [],
   };
 
   componentDidMount = () => {
     this.mounted = true;
     const {
       user: {
+        userClasses: { classList },
         data: { userId }
       }
     } = this.props;
+
+    this.setState({ classList: [...classList] })
+    const { classId, sectionId } = decypherClass()
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
 
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
@@ -128,7 +129,7 @@ class StartVideo extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    this.setState({ loading: true });
+    this.setState({ isLoading: true });
     try {
       const accessToken = await renewTwilioToken({
         userId
@@ -160,7 +161,7 @@ class StartVideo extends React.PureComponent<Props, State> {
         // channelList
       });
     } finally {
-      this.setState({ loading: false });
+      this.setState({ isLoading: false });
     }
   };
 
@@ -168,14 +169,69 @@ class StartVideo extends React.PureComponent<Props, State> {
     this.setState({ channel: event.target.value });
   };
 
-  handleSubmit = () => {
-    const { channel } = this.state;
+  handleStart = () => {
+    const { channel, groupUsers } = this.state;
+    if (groupUsers.length <= 1) return
+
     logEvent({
       event: 'Video- Start Video',
       props: { 'Initiated From': 'Video' }
     });
     const win = window.open(`/video-call/${channel}`, '_blank');
     win.focus();
+  };
+
+  handleInvite = async ({
+    chatType,
+    name,
+    type,
+    selectedUsers,
+    startVideo = false
+  }) => {
+    const {
+      client,
+      channel,
+    } = this.state
+    this.setState({ isLoading: true });
+    try {
+      const users = selectedUsers.map(item => Number(item.userId));
+
+      let chatId, isNew = false
+      // Create New study room
+      if (!channel) {
+        const { chatId: newChatId, isNewChat } = await createChannel({
+          users,
+          groupName: chatType === 'group' ? name : '',
+          type: chatType === 'group' ? type : '',
+          thumbnailUrl: chatType === 'group' ? '' : ''
+        });
+  
+        chatId = newChatId
+        isNew = isNewChat
+      } else {
+        // Invite the user to existing chat
+        await addGroupMembers({ chatId: channel, users })
+        chatId = channel
+      }
+
+      if (chatId !== '') {
+        const channel = await client.getChannelBySid(chatId);
+        const groupUsers = await getGroupMembers({ chatId })
+
+        this.setState({ groupUsers: [...groupUsers] })
+
+        this.handleChannelUpdated({
+          channel,
+          isNew: isNew,
+          startVideo
+        });
+      }
+
+    } catch (e) {
+      this.setState({ isLoading: false });
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   handleErrorDialogClose = () => {
@@ -190,142 +246,92 @@ class StartVideo extends React.PureComponent<Props, State> {
     this.setState({ createChannel: type });
   };
 
-  handleChannelCreated = ({
+  handleChannelUpdated = ({
     channel,
     isNew
   }: {
     channel: Object,
     isNew: boolean
   }) => {
-    if (isNew) {
-      // const {
-      //   user: {
-      //     data: { userId }
-      //   }
-      // } = this.props;
-      // const newChannel = {
-      //   value: channel.sid,
-      //   label: getTitle(channel, userId)
-      // };
-      this.setState(({ channels }) => ({
-        // channelList
-        channels: [channel, ...channels],
-        // channelList: [newChannel, ...channelList],
-        channel: channel.sid
-      }));
-      this.handleSubmit();
-    } else {
-      this.setState(() => ({ channel: channel.sid }));
-      this.handleSubmit();
-    }
+
+
+    this.setState(({ channels }) => ({
+      // channelList
+      channels: [channel, ...channels],
+      // channelList: [newChannel, ...channelList],
+      channel: channel.sid
+    }));
   };
+
+  handleSetInviteVisible = () => {
+    this.setState({ inviteVisible: true });
+  }
+
+  handleClose = () => {
+    this.setState({ inviteVisible: false })
+  }
 
   mounted: boolean;
 
   render() {
-    const { classes } = this.props;
     const {
-      loading,
-      createChannel,
-      client,
-      // channel,
-      channels,
-      // channelList,
-      errorDialog,
-      errorTitle,
-      errorBody
+      classes,
+      user: {
+        data: { userId }
+      }
+    } = this.props;
+    const {
+      inviteVisible,
+      classList,
+      groupUsers,
     } = this.state;
 
     return (
       <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
-            <StartVideoForm
-              title="Video Meet Up"
-              loading={loading}
-              handleSubmit={this.handleSubmit}
+            <div className={classes.row}>
+              <Typography variant="h4">Study Room</Typography>
+              <Button
+                className={classes.button1}
+                onClick={this.handleSetInviteVisible}
+              >
+                Start a Study Room
+              </Button>
+            </div>
+
+            <Typography
+              className={classes.subtitle}
+              variant="body1"
             >
-              <div className={classes.actions}>
-                <Button
-                  className={classes.start}
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  disabled={loading}
-                  onClick={this.handleCreateChannelOpen('single')}
-                >
-                  Start a Meet Up with your classmates
-                </Button>
-              </div>
-              {/* <Grid container alignItems="center">
-                <Grid item xs={2}>
-                  <Typography variant="subtitle1">Select People</Typography>
-                </Grid>
-                <Grid item xs={10}>
-                  <FormControl variant="outlined" fullWidth>
-                    <SelectValidator
-                      disabled={loading}
-                      value={channel}
-                      name="channel"
-                      label="Chat"
-                      onChange={this.handleChange}
-                      variant="outlined"
-                      validators={['required']}
-                      errorMessages={['You have to select a chat']}
-                    >
-                      <MenuItem value="" />
-                      {channelList.map(item => (
-                        <MenuItem key={item.value} value={item.value}>
-                          {item.label}
-                        </MenuItem>
-                      ))}
-                    </SelectValidator>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                  <Typography variant="subtitle1">Or Create a New</Typography>
-                </Grid>
-                <Grid item xs={10} className={classes.actions}>
-                  <Button
-                    className={classes.margin}
-                    variant="outlined"
-                    color="primary"
-                    disabled={loading}
-                    onClick={this.handleCreateChannelOpen('single')}
-                  >
-                    1-to-1 Chat
-                  </Button>
-                  <Button
-                    className={classes.margin}
-                    variant="outlined"
-                    color="primary"
-                    disabled={loading}
-                    onClick={this.handleCreateChannelOpen('group')}
-                  >
-                    Group Chat
-                  </Button>
-                </Grid>
-              </Grid> */}
-            </StartVideoForm>
-            <SimpleErrorDialog
-              open={errorDialog}
-              title={errorTitle}
-              body={errorBody}
-              handleClose={this.handleErrorDialogClose}
-            />
+              Connect & Collaborate
+            </Typography>
+
+            <div className={classes.wrapper}>
+              <img className={classes.img} src={StudyRoomImg} alt="study room chat" />
+
+              <Typography className={classes.note} variant="body1" align="center">
+                Studying is so much better and easier with friends and classmates!
+              </Typography>
+
+              <Button
+                className={classes.button2}
+                onClick={this.handleSetInviteVisible}
+              >
+                Choose Classmates
+              </Button>
+            </div>
           </div>
         </ErrorBoundary>
-        <ErrorBoundary>
-          <CreateChatChannel
-            type={loading ? null : createChannel}
-            client={client}
-            channels={channels}
-            isVideo
-            onClose={this.handleCreateChannelClose}
-            onChannelCreated={this.handleChannelCreated}
-            title="Setup a Video Study Session"
-          />
-        </ErrorBoundary>
+        <StudyRoomInvite
+          open={inviteVisible}
+          userId={userId}
+          groupUsers={groupUsers}
+          classList={classList}
+          handleClose={this.handleClose}
+          handleInvite={this.handleInvite}
+          handleStart={this.handleStart}
+        />
       </Fragment>
     );
   }
