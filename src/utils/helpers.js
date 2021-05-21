@@ -37,12 +37,48 @@ export const normalizeArray = (array: Array<any>, idField: string = 'id') => {
 };
 
 export const shuffleArray = (array) => {
-  for(let i = array.length - 1; i > 0; i --){
+  const result = [...array];
+
+  for(let i = result.length - 1; i > 0; i --){
     const j = Math.floor(Math.random() * i);
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+    const temp = result[i];
+    result[i] = result[j];
+    result[j] = temp;
   }
 
-  return array;
+  return result;
+};
+
+export const arrElemToId = (array) => {
+  const result = [];
+
+  array.forEach((elem, id) => result[elem] = id);
+
+  return result;
+};
+
+export const extractTextFromHtml = (html) => {
+  const tempDivElement = document.createElement('div');
+  tempDivElement.innerHTML = html;
+  return tempDivElement.textContent || tempDivElement.innerText || '';
+};
+
+export const englishIdFromNumber = (number) => {
+  if (number === 0) return 'A';
+
+  const rem = [];
+
+  while(number) {
+    rem.push(number % 26);
+    number = Math.floor(number / 26);
+  }
+
+  return rem.reverse().map((id) => String.fromCharCode(65 + id)).join('');
+};
+
+export const twoDigitsNumber = (number) => {
+  return number.toLocaleString('en-Us', {
+    minimumIntegerDigits: 2,
+    useGrouping: false
+  });
 };
