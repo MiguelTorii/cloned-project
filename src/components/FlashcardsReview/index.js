@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
 import PropTypes from 'prop-types';
@@ -27,6 +27,10 @@ import Dialog from '../Dialog';
 import _ from 'lodash';
 import { logEventLocally } from '../../api/analytics';
 import uuidv4 from "uuid/v4";
+import { TIMEOUT } from 'constants/common';
+import { useIdleTimer } from 'react-idle-timer';
+import { logEvent } from 'api/analytics';
+import { differenceInMilliseconds } from "date-fns";
 
 export const ANSWER_LEVELS = [
   {
@@ -51,6 +55,7 @@ export const ANSWER_LEVELS = [
     emoji: '😳'
   }
 ]
+const timeout = TIMEOUT.FLASHCARD_REVEIW
 
 const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   const classes = useStyles();
@@ -61,6 +66,50 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [currentCardList, setCurrentCardList] = useState([]);
   const [sessionId, setSessionId] = useState(null);
+
+    // Data Points
+    const elapsed = useRef(0);
+    const totalIdleTime = useRef(0);
+    const remaining = useRef(timeout);
+    const lastActive = useRef(+new Date());
+    const timer = useRef(null);
+  
+    const handleOnActive = () => {
+      const diff = differenceInMilliseconds(new Date(), lastActive.current);
+      totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
+    };
+  
+    const {
+      getRemainingTime,
+      getLastActiveTime,
+      getElapsedTime
+    } = useIdleTimer({
+      timeout,
+      onActive: handleOnActive,
+    });
+  
+    const initializeTimer = useCallback(() => {
+      elapsed.current = 0
+      totalIdleTime.current = 0
+      remaining.current = timeout
+      lastActive.current = new Date()
+    }, [elapsed, totalIdleTime, remaining, lastActive])
+  
+    useEffect(() => {
+      remaining.current = getRemainingTime();
+      lastActive.current = getLastActiveTime();
+      elapsed.current = getElapsedTime();
+  
+      timer.current = setInterval(() => {
+        remaining.current = getRemainingTime();
+        lastActive.current = getLastActiveTime();
+        elapsed.current = getElapsedTime();
+      }, 1000);
+  
+      return () => {
+        clearInterval(timer.current);
+      }
+    }, [flashcardId, getElapsedTime, getLastActiveTime, getRemainingTime]);
 
   // Effects
   useEffect(() => {
@@ -164,6 +213,26 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     setIsConfirmModalOpen(false);
   }, []);
 
+  const handleClose = useCallback(() => {
+    try {
+      clearInterval(timer.current);
+      logEvent({
+        event: 'FlashCard- Send Time Log',
+        props: {
+          type: 'Exit',
+          flashcardId,
+          elapsed: elapsed.current,
+          total_idle_time: totalIdleTime.current,
+          effective_time: elapsed.current - totalIdleTime.current,
+          platform: 'Web',
+        }
+      });
+      initializeTimer()
+    } catch (err) {}
+
+    onClose();
+  }, [onClose, elapsed, totalIdleTime, flashcardId, initializeTimer])
+
   const renderSidebar = () => (
     <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>
       <Box display="flex" alignItems="center">
@@ -210,7 +279,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
         <Button
           startIcon={<IconClose />}
           className={classes.actionButton}
-          onClick={onClose}
+          onClick={handleClose}
         >
           Exit Game
         </Button>

@@ -46,19 +46,31 @@ export const remiderTime = {
 }
 
 export const PERMISSIONS = {
-  'EXPERT_MODE_ACCESS': 'expert_mode_access',
-  'MAIN_APPLICATION_ACCESS': 'main_application_access',
-  'EDIT_GROUP_PHOTO_ACCESS': 'edit_group_photo_access',
-  'RENAME_GROUP_CHAT_ACCESS': 'rename_group_chat_access',
-  'ONE_TOUCH_SEND_CHAT': 'one_touch_send_chat',
-  'ONE_TOUCH_SEND_POSTS': 'one_touch_send_posts',
-  'DASHBOARD_ACCESS': 'dashboard_access',
-  'DASHBOARD_TUTOR_TAB_ACCESS': 'dashboard_tutor_tab_access',
-  'DASHBOARD_CAN_SEE_REAL_NAMES': 'dashboard_can_see_real_names',
-  'DASHBOARD_ONBOARDING_CHECKLIST': 'dashboard_onboarding_checklist',
-  'EARN_POINTS': 'earn_points',
-  'REWARD_STORE_ACCESS': 'reward_store_access',
-  'PROFILE_BADGE_APPEARS': 'profile_badge_appears',
-  'VIDEO_ACCESS': 'video_access',
-  'ALL_COURSE_ACCESS': 'all_course_access',
+  EXPERT_MODE_ACCESS: 'expert_mode_access',
+  MAIN_APPLICATION_ACCESS: 'main_application_access',
+  EDIT_GROUP_PHOTO_ACCESS: 'edit_group_photo_access',
+  RENAME_GROUP_CHAT_ACCESS: 'rename_group_chat_access',
+  ONE_TOUCH_SEND_CHAT: 'one_touch_send_chat',
+  ONE_TOUCH_SEND_POSTS: 'one_touch_send_posts',
+  DASHBOARD_ACCESS: 'dashboard_access',
+  DASHBOARD_TUTOR_TAB_ACCESS: 'dashboard_tutor_tab_access',
+  DASHBOARD_CAN_SEE_REAL_NAMES: 'dashboard_can_see_real_names',
+  DASHBOARD_ONBOARDING_CHECKLIST: 'dashboard_onboarding_checklist',
+  EARN_POINTS: 'earn_points',
+  REWARD_STORE_ACCESS: 'reward_store_access',
+  PROFILE_BADGE_APPEARS: 'profile_badge_appears',
+  VIDEO_ACCESS: 'video_access',
+  ALL_COURSE_ACCESS: 'all_course_access',
+}
+
+export const TIMEOUT = {
+  FLASHCARD_REVEIW: 1 * 60 * 1000,
+  POST_ITEM: 3 * 60 * 1000,
+}
+
+export const LOG_EVENT_CATEGORIES = {
+  CHAT: 'Chat',
+  VIDEO: 'Video',
+  POST: 'Post',
+  FLASHCARD: 'FlashCard',
 }

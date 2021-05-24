@@ -12,6 +12,9 @@ import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';
 import { logEvent } from '../../api/analytics';
 import { styles } from '../_styles/PostItem';
+import { TIMEOUT } from 'constants/common';
+
+const timeout = TIMEOUT.POST_ITEM;
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) =>
   // eslint-disable-next-line react/destructuring-assignment
@@ -28,7 +31,6 @@ const PostItem = ({
   children,
   feedId
 }: Props) => {
-  const timeout = 3 * 60 * 1000;
 
   const elapsed = useRef(0);
   const totalIdleTime = useRef(0);

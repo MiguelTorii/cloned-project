@@ -2,6 +2,7 @@
 
 import createEvent from './events';
 import { EventData } from '../types/models';
+import { LOG_EVENT_CATEGORIES } from 'constants/common';
 
 const CIRCLEIN_EVENT_NAMES = [
   'Chat- Send Message',
@@ -11,6 +12,7 @@ const CIRCLEIN_EVENT_NAMES = [
   'Video- End Video',
   'Video- Session Length',
   'Post- Send Time Log',
+  'FlashCard- Send Time Log'
 ];
 
 const toEventData = (eventName: string, props: object): EventData => {
@@ -21,19 +23,21 @@ const toEventData = (eventName: string, props: object): EventData => {
 
   if (props.Length) customProps.duration_ms = parseInt(props.Length, 10) * 1000;
 
-  if (category === 'Chat') {
+  if (category === LOG_EVENT_CATEGORIES.CHAT) {
     objectId = props['Channel SID'];
     customProps.type = 'Sent'
   }
-  if (category === 'Video') {
+  if (category === LOG_EVENT_CATEGORIES.VIDEO) {
     objectId = props.channelName;
     customProps.type = props.type
     customProps.start_time = props.start_time
     customProps.end_time = props.end_time
   }
-  if (category === 'Post') {
+  if (category === LOG_EVENT_CATEGORIES.POST
+    || category === LOG_EVENT_CATEGORIES.FLASHCARD) {
     customProps.type = props.type
     customProps.feedId = props.feedId
+    customProps.flashcardId = props.flashcardId
     customProps.elapsed = props.elapsed
     customProps.total_idle_time = props.total_idle_time
     customProps.effective_time = props.effective_time
