@@ -8,7 +8,7 @@ import { getCommunities } from 'api/community'
 import DirectChat from './DirectChat'
 import CollageList from './CollageList'
 import CommunityChat from './CommunityChat'
-import { DEFAULT_COMMUNITY_MENU_ITEMS } from './constants'
+import DEFAULT_COMMUNITY_MENU_ITEMS from './constants'
 import type { State as StoreState } from '../../types/state'
 import useStyles from './_styles/styles'
 

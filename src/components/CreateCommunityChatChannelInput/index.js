@@ -1,15 +1,17 @@
 // @flow
 
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
   ValidatorForm,
 } from 'react-material-ui-form-validator'
 import withStyles from '@material-ui/core/styles/withStyles'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
+import { PERMISSIONS } from 'constants/common'
 import { sendMessage } from 'api/chat'
 import * as chatActions from 'actions/chat'
 import SelectClassmates from './SelectClassmates'
@@ -62,9 +64,39 @@ const styles = theme => ({
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
     borderRadius: 20
   },
+  groupName: {
+    marginTop: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.feedBackground,
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme.circleIn.palette.gray3
+    },
+    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme.circleIn.palette.gray3
+    },
+  },
+  helperText: {
+    color: theme.circleIn.palette.darkTextColor,
+    backgroundColor: theme.circleIn.palette.appBar,
+    fontSize: 12,
+    lineHeight: '16px',
+    textAlign: 'right',
+    margin: 0
+  },
   input: {
     display: 'none'
-  }
+  },
+  labelText: {
+    color: `${theme.circleIn.palette.secondaryText} !important`,
+    fontSize: 16
+  },
+  notchedOutline: {
+    borderColor: 'white'
+  },
+  name: {
+    color: theme.circleIn.palette.darkTextColor,
+    fontSize: 14,
+    lineHeight: '19px',
+  },
 })
 
 type Props = {
@@ -74,7 +106,9 @@ type Props = {
   onOpenChannel: Function,
   createMessage: Object,
   handleClearCreateMessage: Function,
-  chat: ChatState
+  chat: ChatState,
+  permission: Array,
+  handleUpdateGroupName: Function
 };
 
 const CreateChatChannelInput = ({
@@ -85,6 +119,8 @@ const CreateChatChannelInput = ({
   onOpenChannel,
   handleClearCreateMessage,
   chat,
+  permission,
+  handleUpdateGroupName
 }: Props) => {
   const [chatType, setChatType] = useState('single')
   const [name, setName] = useState('')
@@ -94,6 +130,8 @@ const CreateChatChannelInput = ({
   const [error, setError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  const [channelName, setChannelName] = useState('')
+
   const { data: { userId, schoolId } } = user
   const { data: { client } } = chat
 
@@ -101,6 +139,9 @@ const CreateChatChannelInput = ({
     if (users.length > 1 && chatType === 'single') setChatType('group')
     else if (users.length <= 1 && chatType === 'group') setChatType('single')
   }, [users, chatType])
+
+  const isShow = useMemo(() => permission &&
+  permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
 
   const handleAutoComplete = useCallback(values => {
     setUsers(values)
@@ -159,6 +200,10 @@ const CreateChatChannelInput = ({
       if (chatId !== '') {
         try {
           const channel = await client.getChannelBySid(chatId)
+          if (channelName.length && isShow) {
+            const res = await channel.updateFriendlyName(channelName)
+            await handleUpdateGroupName(res);
+          }
           if (createMessage) {
             await sendMessage({
               message: createMessage.message,
@@ -176,7 +221,18 @@ const CreateChatChannelInput = ({
     } finally {
       setIsLoading(false)
     }
-  }, [users, chatType, client, name, onOpenChannel, type, createMessage])
+  }, [
+    users,
+    chatType,
+    client,
+    name,
+    onOpenChannel,
+    type,
+    channelName,
+    createMessage,
+    isShow,
+    handleUpdateGroupName
+  ])
 
   const handleSubmit = useCallback(async () => {
     if (users.length === 0) setError(true)
@@ -202,6 +258,13 @@ const CreateChatChannelInput = ({
       createChannel()
     }
   }, [createMessage, handleClearCreateMessage, handleSubmit, isLoading])
+
+  const handleGroupNameChange = useCallback((e) => {
+    if (e.target.value.length > 100) {
+      return;
+    }
+    setChannelName(e.target.value);
+  }, [setChannelName]);
 
   return (
     <ValidatorForm
@@ -234,6 +297,28 @@ const CreateChatChannelInput = ({
             onLoadOptions={handleLoadOptions}
           />
         </div>
+        {isShow && !!users.length && <TextField
+          placeholder='Give this group chat a name!'
+          label='Group Chat Name (optional)'
+          fullWidth
+          variant='outlined'
+          onChange={handleGroupNameChange}
+          value={channelName}
+          helperText={`${100 - (channelName?.length || 0)} characters remaining`}
+          FormHelperTextProps={{
+            className: classes.helperText
+          }}
+          InputLabelProps={{
+            className: classes.labelText
+          }}
+          inputProps={{
+            className: classes.name,
+          }}
+          classes={{
+            root: classes.groupName
+          }}
+          size='medium'
+        />}
 
         <Button
           className={classes.createDM}

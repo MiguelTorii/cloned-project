@@ -150,6 +150,8 @@ const LeftMenu = ({
             {newChannel && <CreateChatChannelInput
               onClosePopover={handleClose}
               onOpenChannel={onOpenChannel}
+              permission={permission}
+              handleUpdateGroupName={handleUpdateGroupName}
             />}
           </Dialog>
         </Grid>}

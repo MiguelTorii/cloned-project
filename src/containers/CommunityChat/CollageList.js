@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider'
 import CommunityMenu from 'components/CommunityMenu'
 import useStyles from './_styles/collageList'
 
-import { DEFAULT_COMMUNITY_MENU_ITEMS } from './constants'
+import DEFAULT_COMMUNITY_MENU_ITEMS from './constants'
 
 type Props = {
   unreadMessageCount: number,
