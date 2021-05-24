@@ -11,10 +11,18 @@ type Props = {
   channel: Object,
   userId: string,
   isCommunityChat: boolean,
-  selectedCourse: Object
+  selectedCourse: Object,
+  selectedChannel: Object
 };
 
-const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedCourse }: Props) => {
+const InitialAlert = ({
+  local,
+  channel,
+  userId,
+  isCommunityChat,
+  selectedCourse,
+  selectedChannel
+}: Props) => {
   const classes = useStyles()
   const [isOneToOne, setIsOneToOne] = useState(true)
   const [name, setName] = useState('')
@@ -53,7 +61,7 @@ const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedCourse 
       flexDirection="column"
     >
       <Typography className={classes.members} variant="h5">
-        Welcome To #{selectedCourse.name}
+        Welcome To #{selectedChannel.chat_name}
       </Typography>
       <Typography className={classes.initialAlert} variant="subtitle2">
         {selectedCourse.about}

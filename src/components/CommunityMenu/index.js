@@ -31,15 +31,15 @@ const CommunityMenu = ({
       const { id } = item
       if (id !== 'chat') {
         const { community_channels: communityChannels } = await getCommunityChannels({ communityId: id })
+        let count = 0
         communityChannels.forEach(communityChannel => {
-          let count = 0
           communityChannel.channels.forEach(channel => {
             if (local[channel.chat_id]?.unread) {
               count += local[channel.chat_id].unread
             }
           })
-          setUnreadMessages(count)
         })
+        setUnreadMessages(count)
       }
     }
     fetchCommunityChannels()

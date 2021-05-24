@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    minWidth: 50,
     padding: theme.spacing()
   },
   selectedItem: {

@@ -61,6 +61,7 @@ const circleInTheme = {
   menuBackground: '#707070',
   onlineBadgetColor: '#2FB67E',
   circleCheckColor: '#87B261',
+  hoverColor: '#303133'
 };
 
 let theme = createMuiTheme({
@@ -77,6 +78,7 @@ let theme = createMuiTheme({
       sendMessageButton: circleInTheme.sendMessageButton,
       textSubtitleBody: circleInTheme.textSubtitleBody,
       hoverMenu: circleInTheme.hoverMenu,
+      hoverColor: circleInTheme.hoverColor,
       primaryii222: circleInTheme.primaryii222,
       deepSeaOcean: circleInTheme.deepSeaOcean,
       flashcardBackground: circleInTheme.flashcardBackground,

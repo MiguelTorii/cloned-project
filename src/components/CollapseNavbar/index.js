@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(5)
   },
   selected: {
-    background: theme.circleIn.palette.modalBackground
+    backgroundColor: `${theme.circleIn.palette.modalBackground} !important`
   },
   channelName: {
     fontSize: 14
@@ -41,6 +41,11 @@ const useStyles = makeStyles(theme => ({
   },
   hide: {
     display: 'none'
+  },
+  listItem: {
+    '&:hover': {
+      backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
+    }
   }
 }))
 
@@ -81,14 +86,20 @@ const CollapseNavbar = ({
     channels.forEach(channel => {
       content.push(
         <ListItem
-          key={channel?.channels ? `${channel.id}-${channel.created}` : channel.chat_name}
+          key={channel?.channels
+            ? `${channel.id}-${channel.created}`
+            : channel.chat_name
+          }
           className={cx(
             classes.navLink,
             !channel?.channels && classes.childChannel,
             !channel?.channels && !local[channel.chat_id] && classes.hide
           )}
           selected={selectedChannel && selectedChannel.chat_id === channel.chat_id}
-          classes={{ selected: classes.selected }}
+          classes={{
+            selected: classes.selected,
+            button: classes.listItem
+          }}
           onClick={handleSubList(
             channel?.channels ? channel.created : channel.chat_name,
             channel

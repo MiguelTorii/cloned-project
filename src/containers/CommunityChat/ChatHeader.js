@@ -63,9 +63,9 @@ const ChatHeader = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleCloseGroupDetailMenu = () => {
+  const handleCloseGroupDetailMenu = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
   const open = Boolean(anchorEl);
   const id = open ? 'group-details' : undefined;
@@ -85,7 +85,7 @@ const ChatHeader = ({
   const handleShareLink = useCallback(() => {
     setOpenShareLink(true)
     handleCloseGroupDetailMenu()
-  }, [])
+  }, [handleCloseGroupDetailMenu])
 
   const closeShareLinkDialog = useCallback(() => {
     setOpenShareLink(false)

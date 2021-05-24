@@ -402,6 +402,7 @@ const Main = ({
             {!hasMore && <InitialAlert
               isCommunityChat={isCommunityChat}
               selectedCourse={selectedCourse}
+              selectedChannel={selectedChannel}
               local={local}
               userId={userId}
               channel={channel}
