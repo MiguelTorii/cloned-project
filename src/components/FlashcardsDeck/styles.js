@@ -22,13 +22,10 @@ export default makeStyles((theme) => ({
     background: 'linear-gradient(180deg, #3A3B3B 0%, #3A3B3B 49.48%, #222222 100%)'
   },
   actionItem: {
-    cursor: 'pointer',
-    '&:hover, &.active': {
-      color: theme.circleIn.palette.brand
-    },
-    '&:hover svg, &.active svg': {
-      color: theme.circleIn.palette.brand,
-    }
+    cursor: 'pointer'
+  },
+  title: {
+    lineHeight: '25px'
   },
   subtitle: {
     color: theme.circleIn.palette.primaryText2

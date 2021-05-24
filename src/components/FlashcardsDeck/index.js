@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import { animations } from 'react-animation';
-import { bookmarkFlashcards } from '../../actions/user';
+import { bookmarkFlashcards, deleteFlashcard } from '../../actions/user';
 import clsx from 'clsx';
 import ShareLinkModal from '../ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
@@ -64,9 +64,11 @@ const FlashcardsDeck = ({ data }: Props) => {
     setIsShareLinkModalOpen(true);
   }, []);
 
-  const handleReportIssue = useCallback(() => {
-
-  }, []);
+  const handleDelete = useCallback(() => {
+    dispatch(
+      deleteFlashcard(me.userId, data.feed_id)
+    );
+  }, [me, data, dispatch]);
 
   const handleCloseShareLinkModal = useCallback(() => {
     setIsShareLinkModalOpen(false);
@@ -93,7 +95,7 @@ const FlashcardsDeck = ({ data }: Props) => {
           onClick={handleView}
         >
           <div>
-            <Typography variant="h6">
+            <Typography variant="h6" className={classes.title}>
               { _.truncate(_.capitalize(data.title), { length: 50 }) }
             </Typography>
             <Typography variant="body2" className={classes.subtitle}>
@@ -122,11 +124,12 @@ const FlashcardsDeck = ({ data }: Props) => {
               onClick={handleClickActionBar}
             >
               <ActionBar
+                isOwn={me.userId.toString() === data.user_id.toString()}
                 bookmarked={data.bookmarked}
                 onViewEdit={handleView}
                 onBookmark={handleBookmark}
                 onShareLink={handleShareLink}
-                onReportIssue={handleReportIssue}
+                onDelete={handleDelete}
               />
             </div>
           </div>

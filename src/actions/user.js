@@ -14,7 +14,7 @@ import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models';
 import { apiGetPointsHistory } from '../api/user';
 import { checkUserSession } from './sign-in';
-import { apiFetchFeeds } from '../api/feed';
+import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
 import axios from "axios";
@@ -283,6 +283,16 @@ export const getFlashcards = (
     index,
     limit
   })
+});
+
+export const deleteFlashcard = (
+  userId: number,
+  feedId: number
+) => ({
+  isApiCall: true,
+  type: userActions.DELETE_FLASHCARDS,
+  meta: { feedId },
+  apiCall: () => apiDeleteFeed(userId, feedId)
 });
 
 export const bookmarkFlashcards = (

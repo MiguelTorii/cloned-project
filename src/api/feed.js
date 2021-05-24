@@ -252,3 +252,10 @@ export const apiFetchFeeds = async (params) => {
     params
   });
 };
+
+export const apiDeleteFeed = async (userId, feedId) => {
+  return callApi({
+    url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
+    method: 'DELETE'
+  });
+};

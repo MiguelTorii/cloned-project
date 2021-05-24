@@ -2,52 +2,37 @@ import React from 'react';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
 import Box from '@material-ui/core/Box';
-import IconEye from '@material-ui/icons/VisibilityOutlined';
-import IconBookmark from '@material-ui/icons/BookmarkBorder';
-import IconBookmarked from '@material-ui/icons/Bookmark';
-import ThreeDots from '@material-ui/icons/MoreHoriz';
-import clsx from 'clsx';
+import IconEye from 'assets/svg/icon-eye-gray.svg';
+import IconBookmark from 'assets/svg/icon-bookmark-gray.svg';
+import IconThreeDots from 'assets/svg/icon-dots-gray.svg';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import IconEyeGradient from 'assets/svg/icon-eye.svg';
+import IconBookmarkGradient from 'assets/svg/icon-bookmark.svg';
+import IconDotsGradient from 'assets/svg/icon-dots.svg';
+import ActionItem from 'components/FlashcardsDeck/ActionItem';
 
 type Props = {
+  isOwn: boolean,
   bookmarked: boolean,
   onViewEdit: Function,
   onBookmark: Function,
   onShareLink: Function,
-  onReportIssue: Function
+  onDelete: Function,
 };
 
 const ActionBar = (
   {
+    isOwn,
     bookmarked,
     onViewEdit,
     onBookmark,
     onShareLink,
-    onReportIssue
+    onDelete
   }: Props
 ) => {
   const classes = useStyles();
-
-  const ActionItem = ({ icon: Icon, active, text, onClick = () => {} }) => {
-    return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        onClick={onClick}
-        className={clsx(classes.actionItem, active && 'active')}
-      >
-        <div>
-          <Icon />
-        </div>
-        <Box fontSize={12}>
-          { text }
-        </Box>
-      </Box>
-    );
-  };
 
   return (
     <Box
@@ -57,11 +42,13 @@ const ActionBar = (
     >
       <ActionItem
         icon={IconEye}
+        activeIcon={IconEyeGradient}
         text="View/Edit"
         onClick={onViewEdit}
       />
       <ActionItem
-        icon={bookmarked ? IconBookmarked : IconBookmark}
+        icon={IconBookmark}
+        activeIcon={IconBookmarkGradient}
         text="Bookmark"
         active={bookmarked}
         onClick={onBookmark}
@@ -72,18 +59,21 @@ const ActionBar = (
             <>
               <div {...bindTrigger(popupState)}>
                 <ActionItem
-                  icon={ThreeDots}
+                  icon={IconThreeDots}
+                  activeIcon={IconDotsGradient}
                   text="More"
                 />
               </div>
               <Menu {...bindMenu(popupState)}>
                 <MenuItem onClick={() => { popupState.close(); onShareLink(); }}>Share Link</MenuItem>
-                {/*<MenuItem*/}
-                {/*  className={classes.reportText}*/}
-                {/*  onClick={() => { popupState.close(); onReportIssue(); }}*/}
-                {/*>*/}
-                {/*  Report Issue*/}
-                {/*</MenuItem>*/}
+                {isOwn && (
+                  <MenuItem
+                    className={classes.reportText}
+                    onClick={() => { popupState.close(); onDelete(); }}
+                  >
+                    Delete Flashcard Deck
+                  </MenuItem>
+                )}
               </Menu>
             </>
           )

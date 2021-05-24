@@ -128,6 +128,7 @@ FlashcardsListEditor.propTypes = {
 FlashcardsListEditor.defaultProps = {
   data: [],
   onUpdate: () => {},
+  onUpdateFlashcardField: () => {},
   readOnly: false
 };
 

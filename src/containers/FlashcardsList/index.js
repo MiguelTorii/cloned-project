@@ -54,8 +54,12 @@ const FlashcardsList = () => {
   }, [location]);
 
   const decksToShow = useMemo(() => {
-    return decks.ids.map((id) => decks.byId[id]);
-  }, [decks]);
+    const result = decks.ids.map((id) => decks.byId[id]);
+    if (currentFilter === 'bookmarked') {
+      return result.filter((item) => item.bookmarked);
+    }
+    return result;
+  }, [decks, currentFilter]);
 
   // Callbacks
   const renderEmptyState = useCallback(() => (

@@ -37,6 +37,7 @@ import SlideUp from 'components/Transition/SlideUp';
 import FlashcardsReview from 'components/FlashcardsReview';
 import FlashcardsQuiz from 'components/FlashcardsQuiz';
 import IconBook from '@material-ui/icons/Book';
+import { getUserClasses } from 'api/user';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
 
@@ -57,6 +58,7 @@ const FlashcardsShow = () => {
   const [isInQuiz, setIsInQuiz] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [boardDeckIndex, setBoardDeckIndex] = useState(0);
+  const [classColor, setClassColor] = useState('primary');
 
   // Memos
   const cardList = useMemo(() => {
@@ -87,7 +89,20 @@ const FlashcardsShow = () => {
       userId: me.userId
     }).then((rsp) => {
       setData(rsp);
-      setIsLoadingFlashcards(false);
+
+      getUserClasses({
+        userId: rsp.userId,
+        skipCache: false,
+        expertMode: false
+      }).then(({ classes }) => {
+        const currentClass = classes.find((item) => item.classId === rsp.classId);
+
+        if (currentClass) {
+          setClassColor(currentClass.bgColor);
+        }
+
+        setIsLoadingFlashcards(false);
+      });
     });
   }, [flashcardId, setData, setIsLoadingFlashcards, me.userId]);
 
@@ -199,9 +214,9 @@ const FlashcardsShow = () => {
             </Grid>
             <Grid item>
               <Chip
-                color="primary"
                 label={data.courseDisplayName}
                 style={{
+                  backgroundColor: classColor,
                   color: 'white'
                 }}
               />

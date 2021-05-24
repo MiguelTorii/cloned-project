@@ -57,10 +57,14 @@ const ShareLinkModal = (
           mt={3}
           className={classes.linkContainer}
         >
-          <LoadImg url={IconLink}/>
-          <Typography>
-            { link }
-          </Typography>
+          <Box display="flex">
+            <Box mr={2}>
+              <LoadImg url={IconLink}/>
+            </Box>
+            <Typography>
+              { link }
+            </Typography>
+          </Box>
           <CopyToClipboard text={link} onCopy={handleCopied}>
             <Tooltip
               placement="top-end"

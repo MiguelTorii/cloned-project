@@ -268,6 +268,13 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       }
     });
   }
+  case userActions.DELETE_FLASHCARDS: {
+    return update(state, {
+      flashcards: {
+        ids: (data) => data.filter((id) => id !== action.meta.feedId)
+      }
+    });
+  }
   default:
     return state;
   }
