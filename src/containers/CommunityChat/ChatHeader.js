@@ -26,6 +26,7 @@ import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/chatHeader'
 
 type Props = {
+  isCommunityChat: boolean,
   channel: Object,
   title: string,
   otherUser: Array,
@@ -40,6 +41,7 @@ type Props = {
 };
 
 const ChatHeader = ({
+  isCommunityChat,
   channel,
   title,
   otherUser,
@@ -76,6 +78,9 @@ const ChatHeader = ({
   const isShow = useMemo(() => permission &&
     permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
     permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
+
+  const temporaryAddMemberPermissionOfCommunityChat = useMemo(() => permission &&
+    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS), [permission])
 
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
@@ -182,13 +187,21 @@ const ChatHeader = ({
               >
                 <ChatStudyRoom />
               </IconButton>}
-          <IconButton
+          {!isCommunityChat && <IconButton
             aria-label="add-member"
             className={classes.chatIcon}
             onClick={handleCreateChannelOpen}
           >
             <ChatAddMember />
-          </IconButton>
+          </IconButton>}
+          {isCommunityChat && temporaryAddMemberPermissionOfCommunityChat &&
+            <IconButton
+              aria-label="add-member"
+              className={classes.chatIcon}
+              onClick={handleCreateChannelOpen}
+            >
+              <ChatAddMember />
+            </IconButton>}
           {Object.keys(members).length > 2 &&
           <IconButton
             aria-label="studyroom-members"

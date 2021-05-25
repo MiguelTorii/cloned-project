@@ -359,6 +359,7 @@ const Main = ({
   return (
     <div className={classes.root}>
       {channel && <ChatHeader
+        isCommunityChat={isCommunityChat}
         channel={channel}
         title={isCommunityChat
           ? selectedChannel?.chat_name
