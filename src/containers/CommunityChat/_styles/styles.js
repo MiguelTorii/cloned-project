@@ -55,11 +55,21 @@ const useStyles = makeStyles(theme => ({
   loading: {
     height: '100%'
   },
-  leftDrawerClose: {
-    left: 0,
+  expandButton: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    backgroundColor: theme.circleIn.palette.modalBackground,
+    border: '5px solid #28292C',
+    '&:hover, &:active': {
+      background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'
+    }
   },
-  leftDrawerOpen: {
-    left: '16%',
+  sidebarButton: {
+    top: 40,
+    left: '16.4%',
+    zIndex: 1002,
+    transform: 'translateX(-50%)',
     [theme.breakpoints.down('md')]: {
       left: '31%'
     },
@@ -67,16 +77,11 @@ const useStyles = makeStyles(theme => ({
       left: '92%'
     }
   },
-  iconButton: {
-    position: 'absolute',
-    top: 45,
-    padding: 0,
-    border: '1px solid white',
+  bodyButton: {
+    top: 40,
+    left: 0,
     zIndex: 1002
-  },
-  icon: {
-    fontSize: 16,
-  },
+  }
 }))
 
 export default useStyles

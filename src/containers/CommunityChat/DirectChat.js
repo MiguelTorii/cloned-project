@@ -9,9 +9,8 @@ import { bindActionCreators } from 'redux'
 import Grid from '@material-ui/core/Grid'
 import withWidth from '@material-ui/core/withWidth'
 import IconButton from '@material-ui/core/IconButton'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
-// import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { ReactComponent as CollapseIcon } from 'assets/svg/collapse.svg'
+import IconLeft from '@material-ui/icons/ArrowBack'
+import IconRight from '@material-ui/icons/ArrowForward'
 
 import * as OnboardingActions from 'actions/onboarding'
 import * as chatActions from 'actions/chat'
@@ -161,18 +160,21 @@ const DirectChat = ({
 
   const renderIcon = useCallback(d => {
     return (d
-      ? <CollapseIcon className={classes.icon} />
-      : <ArrowForwardIcon className={classes.icon} />
+      ? <IconLeft />
+      : <IconRight />
     )
-  }, [classes.icon])
+  }, [])
 
   return (
-    <Grid className={classes.container} direction='row' container>
+    <Grid className={cx(leftSpace !== 0
+      ? classes.container
+      : classes.directContainer
+    )} direction='row' container>
       <IconButton
-        className={cx(
-          leftSpace !== 0 ? classes.leftDrawerOpen : classes.leftDrawerClose,
-          classes.iconButton
-        )}
+        className={cx(classes.expandButton,
+          leftSpace !== 0
+            ? classes.sidebarButton
+            : classes.bodyButton )}
         onClick={onCollapseLeft}
       >
         {renderIcon(leftSpace !== 0)}

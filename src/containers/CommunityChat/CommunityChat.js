@@ -9,11 +9,11 @@ import Box from '@material-ui/core/Box'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import withWidth from '@material-ui/core/withWidth'
 import IconButton from '@material-ui/core/IconButton'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import IconLeft from '@material-ui/icons/ArrowBack'
+import IconRight from '@material-ui/icons/ArrowForward'
 import * as chatActions from 'actions/chat'
 import Main from 'containers/CommunityChat/Main'
 import RightMenu from 'containers/CommunityChat/RightMenu'
-import { ReactComponent as CollapseIcon } from 'assets/svg/collapse.svg'
 import { getCommunityChannels } from 'api/community'
 import type { State as StoreState } from '../../types/state'
 import CourseChannels from './CourseChannels'
@@ -116,10 +116,10 @@ const CommunityChat = ({
 
   const renderIcon = useCallback(d => {
     return (d
-      ? <CollapseIcon className={classes.icon} />
-      : <ArrowForwardIcon className={classes.icon} />
+      ? <IconLeft />
+      : <IconRight />
     )
-  }, [classes.icon])
+  }, [])
 
   return (
     <Grid
@@ -128,10 +128,10 @@ const CommunityChat = ({
       container
     >
       <IconButton
-        className={cx(
-          leftSpace !== 0 ? classes.leftDrawerOpen : classes.leftDrawerClose,
-          classes.iconButton
-        )}
+        className={cx(classes.expandButton,
+          leftSpace !== 0
+            ? classes.sidebarButton
+            : classes.bodyButton )}
         onClick={onCollapseLeft}
       >
         {renderIcon(leftSpace !== 0)}
