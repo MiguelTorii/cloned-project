@@ -38,6 +38,7 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.type = props.type
     customProps.feedId = props.feedId
     customProps.flashcardId = props.flashcardId
+    customProps.cardId = props.cardId
     customProps.elapsed = props.elapsed
     customProps.total_idle_time = props.total_idle_time
     customProps.effective_time = props.effective_time

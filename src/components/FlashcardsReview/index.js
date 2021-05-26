@@ -31,6 +31,7 @@ import { TIMEOUT } from 'constants/common';
 import { useIdleTimer } from 'react-idle-timer';
 import { logEvent } from 'api/analytics';
 import { differenceInMilliseconds } from "date-fns";
+import { INTERVAL } from 'constants/app';
 
 export const ANSWER_LEVELS = [
   {
@@ -67,49 +68,43 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   const [currentCardList, setCurrentCardList] = useState([]);
   const [sessionId, setSessionId] = useState(null);
 
-    // Data Points
-    const elapsed = useRef(0);
-    const totalIdleTime = useRef(0);
-    const remaining = useRef(timeout);
-    const lastActive = useRef(+new Date());
-    const timer = useRef(null);
-  
-    const handleOnActive = () => {
-      const diff = differenceInMilliseconds(new Date(), lastActive.current);
-      totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
-    };
-  
-    const {
-      getRemainingTime,
-      getLastActiveTime,
-      getElapsedTime
-    } = useIdleTimer({
-      timeout,
-      onActive: handleOnActive,
-    });
-  
-    const initializeTimer = useCallback(() => {
-      elapsed.current = 0
-      totalIdleTime.current = 0
-      remaining.current = timeout
-      lastActive.current = new Date()
-    }, [elapsed, totalIdleTime, remaining, lastActive])
-  
-    useEffect(() => {
+  // Data Points
+  const elapsed = useRef(0);
+  const totalIdleTime = useRef(0);
+  const remaining = useRef(timeout);
+  const lastActive = useRef(+new Date());
+  const timer = useRef(null);
+
+  const handleOnActive = () => {
+    const diff = differenceInMilliseconds(new Date(), lastActive.current);
+    totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
+  };
+
+  const {
+    getRemainingTime,
+    getLastActiveTime,
+    getElapsedTime,
+    reset,
+  } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive,
+  });
+
+  useEffect(() => {
+    remaining.current = getRemainingTime();
+    lastActive.current = getLastActiveTime();
+    elapsed.current = getElapsedTime();
+
+    timer.current = setInterval(() => {
       remaining.current = getRemainingTime();
       lastActive.current = getLastActiveTime();
       elapsed.current = getElapsedTime();
-  
-      timer.current = setInterval(() => {
-        remaining.current = getRemainingTime();
-        lastActive.current = getLastActiveTime();
-        elapsed.current = getElapsedTime();
-      }, 1000);
-  
-      return () => {
-        clearInterval(timer.current);
-      }
-    }, [flashcardId, getElapsedTime, getLastActiveTime, getRemainingTime]);
+    }, INTERVAL.SECOND);
+
+    return () => {
+      clearInterval(timer.current);
+    }
+  }, [flashcardId, getElapsedTime, getLastActiveTime, getRemainingTime]);
 
   // Effects
   useEffect(() => {
@@ -134,6 +129,13 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       store.set(`flashcards-${flashcardId}`, cardsLevel);
     }
   }, [cardsLevel, flashcardId]);
+
+  const initializeTimer = useCallback(() => {
+    elapsed.current = 0
+    totalIdleTime.current = 0
+    remaining.current = timeout
+    lastActive.current = new Date()
+  }, [elapsed, totalIdleTime, remaining, lastActive])
 
   // Memos
   const cardCountsByLevel = useMemo(() => {
@@ -183,6 +185,21 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       type: 'Rated',
     });
 
+    logEvent({
+      event: 'FlashCard- Send Time Log',
+      props: {
+        type: 'Individual',
+        flashcardId,
+        cardId: card.id,
+        elapsed: elapsed.current,
+        total_idle_time: totalIdleTime.current,
+        effective_time: elapsed.current - totalIdleTime.current,
+        platform: 'Web',
+      }
+    });
+    reset()
+    initializeTimer()
+
     if (currentCardIndex >= currentCardList.length - 1) {
       setCurrentCardIndex(0);
     }
@@ -191,7 +208,15 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       ...cardsLevel,
       [card.id]: level
     });
-  }, [currentCardIndex, currentCardList, cardsLevel, currentLevel, sessionId]);
+  }, [
+    currentCardIndex,
+    currentCardList,
+    cardsLevel,
+    currentLevel,
+    sessionId,
+    flashcardId,
+    reset,
+    initializeTimer]);
 
   const handleShuffleDeck = useCallback(() => {
     shuffleArray(currentCardList);
@@ -204,10 +229,12 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   }, []);
 
   const handleResetProgress = useCallback(() => {
+    reset();
+    initializeTimer()
     setIsConfirmModalOpen(false);
     setCardsLevel({});
     store.remove(`flashcards-${flashcardId}`);
-  }, [flashcardId]);
+  }, [flashcardId, reset, initializeTimer]);
 
   const handleCloseConfirmModal = useCallback(() => {
     setIsConfirmModalOpen(false);
@@ -227,11 +254,11 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
           platform: 'Web',
         }
       });
-      initializeTimer()
+      reset()
     } catch (err) {}
 
     onClose();
-  }, [onClose, elapsed, totalIdleTime, flashcardId, initializeTimer])
+  }, [onClose, elapsed, totalIdleTime, flashcardId, reset])
 
   const renderSidebar = () => (
     <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>
