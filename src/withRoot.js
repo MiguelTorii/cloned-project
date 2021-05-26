@@ -61,7 +61,8 @@ const circleInTheme = {
   menuBackground: '#707070',
   onlineBadgetColor: '#2FB67E',
   circleCheckColor: '#87B261',
-  hoverColor: '#303133'
+  hoverColor: '#303133',
+  removeColor: '#F15744'
 };
 
 let theme = createMuiTheme({
@@ -117,6 +118,7 @@ let theme = createMuiTheme({
       menuBackground: circleInTheme.menuBackground,
       onlineBadgetColor: circleInTheme.onlineBadgetColor,
       circleCheck: circleInTheme.circleCheckColor,
+      removeColor: circleInTheme.removeColor
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

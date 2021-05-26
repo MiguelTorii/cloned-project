@@ -361,6 +361,7 @@ const Main = ({
       {channel && <ChatHeader
         isCommunityChat={isCommunityChat}
         channel={channel}
+        currentUserName={`${firstName} ${lastName}`}
         title={isCommunityChat
           ? selectedChannel?.chat_name
           : local[channel.sid].title

@@ -12,6 +12,7 @@ import MenuList from '@material-ui/core/MenuList'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import ShareLinkDialog from 'components/ShareLinkDialog'
+import RemoveStudentDialog from 'components/RemoveStudentDialog'
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
 
 import { searchUsers } from 'api/user'
@@ -28,6 +29,7 @@ import useStyles from './_styles/chatHeader'
 type Props = {
   isCommunityChat: boolean,
   channel: Object,
+  currentUserName: string,
   title: string,
   otherUser: Array,
   rightSpace: number,
@@ -44,6 +46,7 @@ const ChatHeader = ({
   isCommunityChat,
   channel,
   title,
+  currentUserName,
   otherUser,
   rightSpace,
   memberKeys,
@@ -59,6 +62,7 @@ const ChatHeader = ({
   const [anchorEl, setAnchorEl] = useState(null)
   const [openShareLink, setOpenShareLink] = useState(false)
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
+  const [openRemoveStudent, setOpenRemoveStudent] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleOpenGroupDetailMenu = (event) => {
@@ -81,6 +85,9 @@ const ChatHeader = ({
 
   const temporaryAddMemberPermissionOfCommunityChat = useMemo(() => permission &&
     permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS), [permission])
+
+  const deletePermission = useMemo(() => permission &&
+    permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS), [permission])
 
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
@@ -171,6 +178,15 @@ const ChatHeader = ({
     handleCloseGroupDetailMenu()
   }, [handleCloseGroupDetailMenu, handleEditGroupDetailsOpen])
 
+  const handleRemoveStudent = useCallback(() => {
+    setOpenRemoveStudent(true)
+    handleCloseGroupDetailMenu()
+  }, [handleCloseGroupDetailMenu])
+
+  const handleCloseRemoveStudent = useCallback(() => {
+    setOpenRemoveStudent(false)
+  }, [])
+
   return (
     <div className={classes.header}>
       {channel && <Grid container justify='space-between'>
@@ -243,9 +259,12 @@ const ChatHeader = ({
                   </MenuItem>
                 )}
                 <MenuItem onClick={handleShareLink}>Share Link</MenuItem>
-                <MenuItem className={classes.removeStudent}>
+                {deletePermission && <MenuItem
+                  onClick={handleRemoveStudent}
+                  className={classes.removeStudent}
+                >
                   Remove Students
-                </MenuItem>
+                </MenuItem>}
               </MenuList>
             </Paper>
           </Popover>
@@ -267,6 +286,14 @@ const ChatHeader = ({
         onSubmit={onSubmit}
         isLoading={loading}
         okLabel='Add Classmates'
+      />
+      <RemoveStudentDialog
+        open={openRemoveStudent}
+        onClose={handleCloseRemoveStudent}
+        currentUserName={currentUserName}
+        members={members}
+        channel={channel}
+        isCommunityChat
       />
       {channel && <ShareLinkDialog
         open={openShareLink}

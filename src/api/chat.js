@@ -5,6 +5,7 @@ import moment from 'moment'
 import get from 'lodash/get';
 import { API_ROUTES } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
+import { callApi } from './api_base';
 import { getToken } from './utils';
 
 export const sendMessage = async ({
@@ -43,6 +44,13 @@ export const sendMessage = async ({
   } catch (err) {
     return null;
   }
+}
+
+export const removeUser = async(userId, chatId) => {
+  return callApi({
+    url: `${API_ROUTES.CHAT}/${chatId}/class/members?chat_id=${userId}`,
+    method: 'DELETE'
+  });
 }
 
 export const sendBatchMessage = async ({

@@ -181,7 +181,7 @@ const ChatMessage = ({
   }) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />')
 
-    if (imageKey === 'add_new_member') {
+    if (['add_new_member', 'remove_user'].includes(imageKey)) {
       return <div className={cx(classes.alertWrapper)}>
         <Typography
           className={classes.alert}

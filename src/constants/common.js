@@ -61,6 +61,7 @@ export const PERMISSIONS = {
   PROFILE_BADGE_APPEARS: 'profile_badge_appears',
   VIDEO_ACCESS: 'video_access',
   ALL_COURSE_ACCESS: 'all_course_access',
+  REMOVE_USER_GROUP_CHAT_ACCESS: 'remove_user_group_chat_access'
 }
 
 export const TIMEOUT = {
