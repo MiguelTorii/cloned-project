@@ -67,7 +67,7 @@ const PostItem = ({
 
       try {
         logEvent({
-          event: 'Post- Send Time Log',
+          event: 'Post- Time Spent',
           props: {
             type: 'Viewed',
             feedId,

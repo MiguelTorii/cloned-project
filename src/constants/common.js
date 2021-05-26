@@ -67,10 +67,3 @@ export const TIMEOUT = {
   FLASHCARD_REVEIW: 1 * 60 * 1000,
   POST_ITEM: 3 * 60 * 1000,
 }
-
-export const LOG_EVENT_CATEGORIES = {
-  CHAT: 'Chat',
-  VIDEO: 'Video',
-  POST: 'Post',
-  FLASHCARD: 'FlashCard',
-}

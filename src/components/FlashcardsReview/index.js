@@ -186,9 +186,8 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     });
 
     logEvent({
-      event: 'FlashCard- Send Time Log',
+      event: 'Flashcard Review- Viewed',
       props: {
-        type: 'Individual',
         flashcardId,
         cardId: card.id,
         elapsed: elapsed.current,
@@ -244,9 +243,8 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     try {
       clearInterval(timer.current);
       logEvent({
-        event: 'FlashCard- Send Time Log',
+        event: 'Flashcard- Time Spent',
         props: {
-          type: 'Exit',
           flashcardId,
           elapsed: elapsed.current,
           total_idle_time: totalIdleTime.current,

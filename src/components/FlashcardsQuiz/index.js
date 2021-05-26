@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
 import PropTypes from 'prop-types';
@@ -29,11 +29,17 @@ import Link from '@material-ui/core/Link';
 import IconBack from '@material-ui/icons/ChevronLeft';
 import IconImage from '@material-ui/icons/CropOriginal';
 import ImageDialog from 'components/ImageDialog';
+import { TIMEOUT } from 'constants/common';
+import { useIdleTimer } from 'react-idle-timer';
+import { logEvent } from 'api/analytics';
+import { differenceInMilliseconds } from "date-fns";
+import { INTERVAL } from 'constants/app';
 
 const MULTIPLE_CHOICE_PROBLEM_COUNT = 3;
 const MULTIPLE_CHOICE_OPTIONS_COUNT = 4;
+const timeout = TIMEOUT.FLASHCARD_REVEIW
 
-const FlashcardsQuiz = ({ cards, onClose }) => {
+const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   const classes = useStyles();
   const [isExpanded, setIsExpanded] = useState(true);
   const [quizData, setQuizData] = useState({
@@ -50,6 +56,51 @@ const FlashcardsQuiz = ({ cards, onClose }) => {
   const [isValidated, setIsValidated] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+
+  // Data Points
+  const elapsed = useRef(0);
+  const totalIdleTime = useRef(0);
+  const remaining = useRef(timeout);
+  const lastActive = useRef(+new Date());
+  const timer = useRef(null);
+
+  const handleOnActive = () => {
+    const diff = differenceInMilliseconds(new Date(), lastActive.current);
+    totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
+  };
+
+  const {
+    getRemainingTime,
+    getLastActiveTime,
+    getElapsedTime,
+    reset,
+  } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive,
+  });
+
+  useEffect(() => {
+    remaining.current = getRemainingTime();
+    lastActive.current = getLastActiveTime();
+    elapsed.current = getElapsedTime();
+
+    timer.current = setInterval(() => {
+      remaining.current = getRemainingTime();
+      lastActive.current = getLastActiveTime();
+      elapsed.current = getElapsedTime();
+    }, INTERVAL.SECOND);
+
+    return () => {
+      clearInterval(timer.current);
+    }
+  }, [flashcardId, getElapsedTime, getLastActiveTime, getRemainingTime]);
+
+  const initializeTimer = useCallback(() => {
+    elapsed.current = 0
+    totalIdleTime.current = 0
+    remaining.current = timeout
+    lastActive.current = new Date()
+  }, [elapsed, totalIdleTime, remaining, lastActive])
 
   // Memos
   const dropdownOptions = useMemo(() => {
@@ -147,8 +198,24 @@ const FlashcardsQuiz = ({ cards, onClose }) => {
   }, [initQuizData, cards]);
 
   const handleBack = useCallback(() => {
+    try {
+      clearInterval(timer.current);
+      logEvent({
+        event: 'Flashcard Quiz- Exited',
+        props: {
+          flashcardId,
+          elapsed: elapsed.current,
+          total_idle_time: totalIdleTime.current,
+          effective_time: elapsed.current - totalIdleTime.current,
+          platform: 'Web',
+        }
+      });
+      reset()
+      initializeTimer()
+    } catch (err) {}
+
     onClose();
-  }, [onClose]);
+  }, [onClose, elapsed, totalIdleTime, flashcardId, reset, initializeTimer]);
 
   const handleViewImage = useCallback((event, imageUrl) => {
     event.preventDefault();

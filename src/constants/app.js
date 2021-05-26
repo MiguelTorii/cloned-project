@@ -75,3 +75,52 @@ export const APP_ROOT_PATH = window.location.origin;
 export const UPLOAD_MEDIA_TYPES = {
   FLASHCARDS: 6
 };
+
+export const LOG_EVENT_CATEGORIES = {
+  CHAT: 'Chat',
+  VIDEO: 'Video',
+  POST: 'Post',
+  FLASHCARD: 'FlashCard',
+  FLASHCARD_REVIEW: 'Flashcard Review',
+  FLASHCARD_QUIZ: 'Flashcard Quiz',
+  IN_APP_NOTES: 'In-App Notes',
+  WORKFLOW: 'Workflow',
+  MY_CLASSES: 'My Classes',
+  PROFILE: 'Profile',
+  LEADERBOARD: 'Leaderboard',
+  REWARDS_STORE: 'Rewards Store',
+  CLASS_FEED: 'Class Feed',
+  CREATE_NEW_POST: 'Create New Post',
+  NOTIFICATION: 'Notification',
+}
+
+export const EVENT_TYPES = {
+  SEND_MESSAGE: 'Send Message',
+  START_VIDEO: 'Start Video',
+  END_VIDEO: 'End Video',
+  SESSION_LENGTH: 'Session Length',
+  VIEWED: 'Viewed',
+  EXITED: 'Exited',
+  TIME_SPENT: 'Time Spent',
+}
+
+export const CIRCLEIN_EVENT_NAMES = [
+  'Chat- Send Message',
+  'Video- Start Video',
+  'Video- End Video',
+  'Video- Session Length',
+  'Post- Time Spent',
+  'Flashcard Review- Viewed',
+  'Flashcard Quiz- Exited',
+  'Flashcard- Time Spent',
+  'In-App Notes- Time Spent',
+  'Workflow- Time Spent',
+  'My Classes- Time Spent',
+  'Profile- Time Spent',
+  'Leaderboard- Time Spent',
+  'Rewards Store- Time Spent',
+  'Class Feed- Time Spent',
+  'Create New Post- Time Spent',
+  'Notification- Time Spent',
+  'Chat- Time Spent',
+];

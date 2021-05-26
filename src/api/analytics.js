@@ -2,21 +2,14 @@
 
 import createEvent from './events';
 import { EventData } from '../types/models';
-import { LOG_EVENT_CATEGORIES } from 'constants/common';
-
-const CIRCLEIN_EVENT_NAMES = [
-  'Chat- Send Message',
-  'Chat- Send Message',
-  'Video- Start Video',
-  'Video- Start Video',
-  'Video- End Video',
-  'Video- Session Length',
-  'Post- Send Time Log',
-  'FlashCard- Send Time Log'
-];
+import {
+  LOG_EVENT_CATEGORIES,
+  CIRCLEIN_EVENT_NAMES,
+  EVENT_TYPES
+} from 'constants/app';
 
 const toEventData = (eventName: string, props: object): EventData => {
-  const [category] = eventName.split('- ');
+  const [category, eventType] = eventName.split('- ');
 
   let objectId = '';
   const customProps = {};
@@ -33,16 +26,38 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.start_time = props.start_time
     customProps.end_time = props.end_time
   }
-  if (category === LOG_EVENT_CATEGORIES.POST
-    || category === LOG_EVENT_CATEGORIES.FLASHCARD) {
-    customProps.type = props.type
-    customProps.feedId = props.feedId
-    customProps.flashcardId = props.flashcardId
-    customProps.cardId = props.cardId
+
+  // Data Metrics
+  if (eventType === EVENT_TYPES.VIEWED
+    || eventType === EVENT_TYPES.EXITED
+    || eventType === EVENT_TYPES.TIME_SPENT
+  ) {
+    customProps.type = eventType
     customProps.elapsed = props.elapsed
     customProps.total_idle_time = props.total_idle_time
     customProps.effective_time = props.effective_time
     customProps.platform = props.platform
+  }
+
+  // Post item data metrics
+  if (category === LOG_EVENT_CATEGORIES.POST) {
+    customProps.feedId = props.feedId
+  }
+
+  // Flashcard data metrics
+  if (category === LOG_EVENT_CATEGORIES.FLASHCARD) {
+    customProps.flashcardId = props.flashcardId
+  }
+
+  // Flashcard individual item time spent
+  if (category === LOG_EVENT_CATEGORIES.FLASHCARD_REVIEW) {
+    customProps.flashcardId = props.flashcardId
+    customProps.cardId = props.cardId
+  }
+
+  // Flashcard Quiz time spent
+  if (category === LOG_EVENT_CATEGORIES.FLASHCARD_QUIZ) {
+    customProps.flashcardId = props.flashcardId
   }
 
   return {
