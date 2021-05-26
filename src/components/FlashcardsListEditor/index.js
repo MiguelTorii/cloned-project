@@ -11,7 +11,7 @@ import useStyles from './styles';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-const FlashcardsListEditor = ({ data, readOnly, onUpdate, onUpdateFlashcardField }: Props) => {
+const FlashcardsListEditor = ({ data, readOnly, toolbarPrefix, onUpdate, onUpdateFlashcardField }: Props) => {
   // Hooks
   const classes = useStyles();
 
@@ -22,7 +22,11 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate, onUpdateFlashcardField
   const handleAddNewDeck = useCallback(() => {
     const maxId = _.max(data.map((item) => item.id));
     onUpdate(update(data, {
-      $push: [{ id: maxId ? (maxId + 1) : 1 }]
+      $push: [{
+        id: maxId ? (maxId + 1) : 1,
+        question: '',
+        answer: ''
+      }]
     }));
   }, [data, onUpdate]);
 
@@ -91,6 +95,7 @@ const FlashcardsListEditor = ({ data, readOnly, onUpdate, onUpdateFlashcardField
                                 data={item}
                                 active={activeCardIndex === index}
                                 index={index}
+                                toolbarPrefix={`${toolbarPrefix}-${index}`}
                                 readOnly={readOnly}
                                 dndProps={provided.dragHandleProps}
                                 onDelete={handleDeleteDeck}
@@ -122,14 +127,16 @@ FlashcardsListEditor.propTypes = {
   data: PropTypes.array,
   onUpdate: PropTypes.func,
   onUpdateFlashcardField: PropTypes.func,
-  readOnly: PropTypes.bool
+  readOnly: PropTypes.bool,
+  toolbarPrefix: PropTypes.string
 };
 
 FlashcardsListEditor.defaultProps = {
   data: [],
   onUpdate: () => {},
   onUpdateFlashcardField: () => {},
-  readOnly: false
+  readOnly: false,
+  toolbarPrefix: ''
 };
 
 

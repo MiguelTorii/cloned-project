@@ -23,6 +23,7 @@ const FlashcardEditor = (
     active,
     dndProps,
     readOnly,
+    toolbarPrefix,
     onDelete,
     onUpdate
   }
@@ -33,12 +34,12 @@ const FlashcardEditor = (
 
   // Memos
   const questionToolbarId = useMemo(() => {
-    return `flashcard-toolbar-${index}-question`;
-  }, [index]);
+    return `flashcard-toolbar-${toolbarPrefix}-question`;
+  }, [toolbarPrefix]);
 
   const answerToolbarId = useMemo(() => {
-    return `flashcard-toolbar-${index}-answer`;
-  }, [index]);
+    return `flashcard-toolbar-${toolbarPrefix}-answer`;
+  }, [toolbarPrefix]);
 
   // Event Handlers
   const handleUpdateField = useCallback((field, value) => {
@@ -93,7 +94,7 @@ const FlashcardEditor = (
           <Grid item xs={12} lg={6}>
             <RichTextEditor
               label="Question"
-              placeholder="e.g. Chapter 1: Basic Anatomy"
+              placeholder="Enter a question, term, or image"
               containerId={questionToolbarId}
               readOnly={readOnly}
               value={data.question}
@@ -106,7 +107,7 @@ const FlashcardEditor = (
           <Grid item xs={12} lg={6}>
             <RichTextEditor
               label="Answer"
-              placeholder="e.g. Chapter 1: Basic Anatomy"
+              placeholder="Enter the answer or a definition"
               containerId={answerToolbarId}
               readOnly={readOnly}
               value={data.answer}
@@ -128,6 +129,7 @@ FlashcardEditor.propTypes = {
   active: PropTypes.bool,
   dndProps: PropTypes.object,
   readOnly: PropTypes.bool,
+  toolbarPrefix: PropTypes.string,
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func
 };
@@ -137,6 +139,7 @@ FlashcardEditor.defaultProps = {
   active: false,
   dndProps: {},
   readOnly: false,
+  toolbarPrefix: PropTypes.string,
   onDelete: () => {},
   onUpdate: () => {}
 };

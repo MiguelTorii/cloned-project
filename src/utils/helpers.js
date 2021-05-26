@@ -58,6 +58,7 @@ export const arrElemToId = (array) => {
 };
 
 export const extractTextFromHtml = (html) => {
+  if (!html) return '';
   const tempDivElement = document.createElement('div');
   tempDivElement.innerHTML = html;
   return tempDivElement.textContent || tempDivElement.innerText || '';

@@ -5,11 +5,14 @@ import Grid from "@material-ui/core/Grid";
 import TextField from '../Basic/TextField';
 import Typography from "@material-ui/core/Typography";
 import update from 'immutability-helper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import FlashcardsListEditor from '../FlashcardsListEditor';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import PropTypes from 'prop-types';
+import Container from '@material-ui/core/Container';
+import { extractTextFromHtml } from 'utils/helpers';
+import { showNotification } from 'actions/notifications';
 
 const FlashcardsDeckManager = (
   {
@@ -17,11 +20,13 @@ const FlashcardsDeckManager = (
     title,
     submitText,
     isSubmitting,
+    disableClass,
     onSubmit
   }
 ) => {
   // Hooks
   const myClasses = useSelector((state) => state.user.userClasses.classList);
+  const dispatch = useDispatch();
 
   // States
   const [isValidated, setIsValidated] = useState(false);
@@ -30,7 +35,11 @@ const FlashcardsDeckManager = (
     summary: null,
     classId: null,
     sectionId: null,
-    deck: [{ id: 1 }]
+    deck: [{
+      id: 1,
+      question: '',
+      answer: ''
+    }]
   });
 
   // Effects
@@ -84,8 +93,24 @@ const FlashcardsDeckManager = (
       setIsValidated(true);
       return ;
     }
-    onSubmit(deckData);
-  }, [deckData, onSubmit]);
+
+    const data = update(deckData, {
+      deck: (arr) => arr.filter((card) => card.questionImage ||
+        card.answerImage ||
+        !!extractTextFromHtml(card.question) ||
+        !!extractTextFromHtml(card.answer))
+    });
+
+    if (data.deck.length === 0) {
+      dispatch(showNotification({
+        message: 'You must have at least one flashcard to save the deck.',
+        variant: 'error'
+      }));
+      return ;
+    }
+
+    onSubmit(data);
+  }, [deckData, onSubmit, dispatch]);
 
   const handleChangeClass = useCallback((event) => {
     const [classId, sectionId] = event.target.value.split('_');
@@ -126,6 +151,7 @@ const FlashcardsDeckManager = (
             label="Class"
             helperText={isValidated && !deckData.classId && "Please select your class"}
             placeholder="Select your class"
+            disabled={disableClass}
             value={selectedDropdownValue}
             onChange={handleChangeClass}
           >
@@ -161,7 +187,7 @@ const FlashcardsDeckManager = (
   );
 
   return (
-    <>
+    <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">
           {title}
@@ -180,7 +206,7 @@ const FlashcardsDeckManager = (
         onUpdate={(data) => handleUpdateField('deck', data)}
         onUpdateFlashcardField={handleUpdateFlashcardField}
       />
-    </>
+    </Container>
   );
 };
 
@@ -189,6 +215,7 @@ FlashcardsDeckManager.propTypes = {
   submitText: PropTypes.string,
   data: PropTypes.object,
   isSubmitting: PropTypes.bool,
+  disableClass: PropTypes.bool,
   onSubmit: PropTypes.func
 };
 
@@ -196,6 +223,7 @@ FlashcardsDeckManager.defaultProps = {
   submitText: 'Save',
   data: null,
   isSubmitting: false,
+  disableClass: false,
   onSubmit: () => {}
 };
 

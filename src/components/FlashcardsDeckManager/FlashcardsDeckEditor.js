@@ -37,6 +37,7 @@ const FlashcardsDeckEditor = (
       title="Edit flashcard deck"
       submitText="Save"
       isSubmitting={isSaving}
+      disableClass={true}
       onSubmit={handleUpdate}
     />
   );

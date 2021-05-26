@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialog from '@material-ui/core/Dialog';
 import { CircularProgress } from '@material-ui/core'
@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import cx from 'classnames'
 
 import { styles } from '../_styles/Dialog';
+import ScrollToTop from 'components/ScrollToTop';
 
 export const dialogStyle = {
   borderRadius: 20,
@@ -82,6 +83,7 @@ const Dialog = ({
   // useEffect(() => {
   // updateVisibility(open);
   // }, [open, updateVisibility]);
+  const [dialogRef, setDialogRef] = useState(null);
 
   return (
     <MuiDialog
@@ -114,7 +116,9 @@ const Dialog = ({
       }
       <DialogContent
         aria-labelledby='circle-in-dialog-content'
-        classes={{ root: contentClassName || classes.contentRoot }}>
+        classes={{ root: contentClassName || classes.contentRoot }}
+        ref={setDialogRef}
+      >
         {
           !showHeader && title &&
             (typeof title === 'string' ?
@@ -184,6 +188,7 @@ const Dialog = ({
           </Button>
         </DialogActions>
       }
+      <ScrollToTop scrollElement={dialogRef}/>
     </MuiDialog>
   )
 }

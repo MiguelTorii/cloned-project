@@ -52,6 +52,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(2, 3/2),
     border: 'solid 1px #959595',
     borderRadius: 8,
+    backgroundColor: '#35363B',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'stretch',

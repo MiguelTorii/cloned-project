@@ -44,6 +44,16 @@ const RichTextEditor = (
   const [isActive, setIsActive] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
+  // Callbacks
+  const removeStyleMatcher = useCallback((node, delta) => {
+    delta.ops = delta.ops.map(op => {
+      return {
+        insert: op.insert
+      };
+    });
+    return delta;
+  }, []);
+
   // Event Handlers
   const handleFocus = useCallback(() => {
     if (!readOnly) {
@@ -93,6 +103,11 @@ const RichTextEditor = (
           modules={{
             toolbar: {
               container: `#${containerId}`
+            },
+            clipboard: {
+              matchers: [
+                [Node.ELEMENT_NODE, removeStyleMatcher]
+              ]
             }
           }}
           value={value}

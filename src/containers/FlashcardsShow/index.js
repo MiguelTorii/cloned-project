@@ -38,6 +38,7 @@ import FlashcardsReview from 'components/FlashcardsReview';
 import FlashcardsQuiz from 'components/FlashcardsQuiz';
 import IconBook from '@material-ui/icons/Book';
 import { getUserClasses } from 'api/user';
+import ScrollToTop from 'components/ScrollToTop';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
 
@@ -305,6 +306,7 @@ const FlashcardsShow = () => {
       </Box>
       <FlashcardsListEditor
         data={cardList}
+        toolbarPrefix="show"
         readOnly={true}
       />
 
@@ -366,6 +368,7 @@ const FlashcardsShow = () => {
           onClose={handleCloseQuiz}
         />
       </Dialog>
+      <ScrollToTop />
     </div>
   );
 };

@@ -141,6 +141,7 @@ let theme = createMuiTheme({
     },
     text: {
       primary: circleInTheme.primaryText1,
+      disabled: circleInTheme.gray3
     },
     danger: {
       main: circleInTheme.danger
@@ -210,23 +211,30 @@ let theme = createMuiTheme({
       }
     },
     MuiInputBase: {
+      root: {
+        borderRadius: 8
+      },
       input: {
         height: 'fit-content',
         '&:-webkit-autofill': {
           transitionDelay: '9999s',
           transitionProperty: 'background-color, color',
         },
-      },
+      }
     },
     MuiInputLabel: {
       root: {
-        color: circleInTheme.primaryText2
+        color: circleInTheme.secondaryText
       }
     },
     MuiOutlinedInput: {
       root: {
+        borderRadius: 8,
         '& $notchedOutline': {
           borderColor: circleInTheme.inputBorderColor
+        },
+        '&$disabled $notchedOutline': {
+          borderColor: circleInTheme.gray3
         }
       }
     },
