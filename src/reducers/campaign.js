@@ -8,11 +8,13 @@ import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 
 export type CampaignState = {
-  newClassExperience: boolean
+  newClassExperience: boolean,
+  newFlashcardsExperience: boolean
 };
 
 const defaultState = {
   newClassExperience: null,
+  newFlashcardsExperience: true,
   newNotesScreen: null,
   landingPageCampaign: null
 };
@@ -23,6 +25,11 @@ export default (state: CampaignState = defaultState, action: Action): CampaignSt
     return update(state, {
       [action.payload.campaign]: { $set: action.payload.active }
     });
+  case campaignActions.GET_FLASHCARDS_CAMPAIGN: {
+    return update(state, {
+      newFlashcardsExperience: { $set: action.payload.variation_key === 'visible' }
+    });
+  }
   default:
     return state;
   }

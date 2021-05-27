@@ -11,7 +11,8 @@ export const notesActions = {
 }
 
 export const campaignActions = {
-  GET_CAMPAIGN: 'GET_CAMPAIGN'
+  GET_CAMPAIGN: 'GET_CAMPAIGN',
+  GET_FLASHCARDS_CAMPAIGN: 'GET_FLASHCARDS_CAMPAIGN'
 }
 
 export const dialogActions = {

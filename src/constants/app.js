@@ -124,3 +124,7 @@ export const CIRCLEIN_EVENT_NAMES = [
   'Notification- Time Spent',
   'Chat- Time Spent',
 ];
+
+export const CAMPAIGN_IDS = {
+  FLASHCARD_VERSION: 14
+};

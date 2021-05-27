@@ -6,6 +6,7 @@ import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign'
 import type { Dispatch } from '../types/store';
+import { CAMPAIGN_IDS } from 'constants/app';
 
 const requestGetCampaign = ({ campaign, active }: {
   campaign: string,
@@ -48,3 +49,8 @@ export const requestCampaign = ({ campaignId, reset }: {reset: boolean, campaign
   return null
 };
 
+export const getFlashcardsCampaign = () => ({
+  isApiCall: true,
+  type: campaignActions.GET_FLASHCARDS_CAMPAIGN,
+  apiCall: () => getCampaign({ campaignId: CAMPAIGN_IDS.FLASHCARD_VERSION })
+});

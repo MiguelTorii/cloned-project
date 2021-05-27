@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import ViewFlashcards from '../../containers/ViewFlashcards';
+import { useParams } from 'react-router';
 
 const styles = () => ({
   item: {
@@ -15,20 +16,11 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object,
-  match: {
-    params: {
-      flashcardId: string
-    }
-  }
+  classes: Object
 };
 
-const FlashcardsPage = ({ classes, match }: Props) => {
-  const {
-    params: {
-      flashcardId
-    }
-  } = match
+const FlashcardsPage = ({ classes }: Props) => {
+  const { flashcardId } = useParams();
 
   return (
     <main>

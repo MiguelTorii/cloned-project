@@ -7,17 +7,10 @@ import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import CreateFlashcards from '../../containers/CreateFlashcards';
 import PostTips from '../../components/PostTips';
+import { useParams } from 'react-router';
 
-type Props = {
-  match: {
-    params: {
-      flashcardId: string
-    }
-  }
-};
-
-const CreateShareLinkPage = (props: Props) => {
-  const { match: { params: { flashcardId } } } = props
+const CreateShareLinkPage = () => {
+  const { flashcardId } = useParams();
   return (
     <main>
       <CssBaseline />
