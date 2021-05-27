@@ -35,6 +35,7 @@ import thanksSvg from '../../assets/svg/thanks.svg'
 import commentSvg from '../../assets/svg/comment.svg'
 
 import { styles } from '../_styles/PostItem/PostItemComment';
+import OnlineBadge from '../OnlineBadge';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -172,6 +173,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       comment,
       thanksCount,
       thanked,
+      isOnline,
       isOwn,
       isReply,
       isLoading,
@@ -286,7 +288,9 @@ class PostItemComment extends React.PureComponent<Props, State> {
       <>
         <div className={cx(classes.container, isReply && classes.reply)}>
           <Link component={MyLink} href={`/profile/${ownerId}`}>
-            <Avatar src={profileImageUrl}>{initials}</Avatar>
+            <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={true}>
+              <Avatar src={profileImageUrl}>{initials}</Avatar>
+            </OnlineBadge>
           </Link>
           <div className={classes.info}>
             { isEditing ? (

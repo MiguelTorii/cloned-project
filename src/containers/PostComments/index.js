@@ -305,6 +305,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   comment={item.comment}
                   thanksCount={item.thanksCount}
                   thanked={item.thanked}
+                  isOnline={item.user.isOnline}
                   rootCommentId={item.id}
                   accepted={item.accepted}
                   isLoading={isLoading}
@@ -338,6 +339,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     comment={reply.comment}
                     thanksCount={reply.thanksCount}
                     thanked={reply.thanked}
+                    isOnline={item.user.isOnline}
                     rootCommentId={item.id}
                     isLoading={isLoading}
                     isOwn={reply.user.userId === userId}
@@ -371,6 +373,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 comment={items[0].comment}
                 thanksCount={items[0].thanksCount}
                 thanked={items[0].thanked}
+                isOnline={items[0].user.isOnline}
                 rootCommentId={items[0].id}
                 accepted={items[0].accepted}
                 isLoading={isLoading}

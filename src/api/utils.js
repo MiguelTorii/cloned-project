@@ -54,7 +54,7 @@ export const getToken = async (): Promise<string> => {
 export const onboardingToCamelCase = (onboarding: Object) => {
   return {
     checklist: onboarding.checklist || [],
-    visible: Boolean((onboarding.visible: boolean) || false)
+    visible: Boolean(onboarding.visible)
   };
 };
 
@@ -63,7 +63,7 @@ export const postToCamelCase = (post: Object): Post => {
   return {
     body: String((post.body: string) || ''),
     summary: String((post.summary: string) || ''),
-    bookmarked: Boolean((post.bookmarked: boolean) || false),
+    bookmarked: Boolean(post.bookmarked),
     classId: Number((post.class_id: number) || 0),
     sectionId: Number(post.section_id || 0),
     courseDisplayName: String((post.course_display_name: string) || ''),
@@ -71,7 +71,7 @@ export const postToCamelCase = (post: Object): Post => {
     created: String((post.created: string) || ''),
     feedId: Number((post.feed_id: number) || 0),
     grade: Number((post.grade: number) || 0),
-    inStudyCircle: Boolean((post.in_study_circle: boolean) || false),
+    inStudyCircle: Boolean(post.in_study_circle),
     name: String((post.name: string) || ''),
     postId: Number((post.post_id: number) || 0),
     postInfo: {
@@ -92,13 +92,13 @@ export const postToCamelCase = (post: Object): Post => {
     role: String((post.role: string) || ''),
     school: String((post.school: string) || ''),
     subject: String((post.subject: string) || ''),
-    thanked: Boolean((post.thanked: boolean) || false),
-    bestAnswer: Boolean((post.best_answer: boolean) || false),
+    thanked: Boolean(post.thanked),
+    bestAnswer: Boolean(post.best_answer),
     title: String((post.title: string) || ''),
     typeId: Number((post.type_id: number) || 0),
     userId: String((post.user_id: string) || ''),
     userProfileUrl: String((post.user_profile_url: string) || ''),
-    readOnly: Boolean((post.read_only: boolean) || false)
+    readOnly: Boolean(post.read_only)
   };
 };
 
@@ -113,7 +113,7 @@ export const postResponseToCamelCase = (response: Object): PostResponse => {
     points: Number((response.points: number) || 0),
     questionId: Number((response.question_id: number) || 0),
     questionsLeft: Number((response.questions_left: number) || 0),
-    isFirstNote: Boolean((response.is_first_note: boolean) || false),
+    isFirstNote: Boolean(response.is_first_note),
     notesLeft: Number((response.notes_left: number) || 0),
     photoNoteId: Number((response.photo_note_id: number) || 0),
     decksLeft: Number((response.decks_left: number) || 0),
@@ -141,14 +141,14 @@ export const commentsToCamelCase = (comments: Object): Comments => {
   return {
     parentCommentsCount: Number((comments.parent_comments_count: number) || 0),
     comments: (comments.comments || []).map(item => ({
-      accepted: Boolean((item.accepted: boolean) || false),
+      accepted: Boolean(item.accepted),
       comment: String((item.comment: string) || ''),
       created: String((item.created: string) || ''),
       id: Number((item.id: number) || 0),
       parentCommentId: Number((item.parent_comment_id: number) || 0),
       reportsCount: Number((item.reports_count: number) || 0),
       rootCommentId: Number((item.root_comment_id: number) || 0),
-      thanked: Boolean((item.thanked: boolean) || false),
+      thanked: Boolean(item.thanked),
       thanksCount: Number((item.thanks_count: number) || 0),
       user: {
         userId: String((item.user.user_id: string) || ''),
@@ -162,7 +162,8 @@ export const commentsToCamelCase = (comments: Object): Comments => {
         roleId: Number((item.user.role_id: number) || 0),
         scholarshipPoints: Number((item.user.scholarship_points: number) || 0),
         schoolId: Number((item.user.school_id: number) || 0),
-        state: String((item.user.state: string) || '')
+        state: String((item.user.state: string) || ''),
+        isOnline: Boolean(item.user.is_online)
       }
     }))
   };
@@ -180,7 +181,7 @@ export const userToCamelCase = (user: Object): User => {
     schoolId: (user.school_id: number) || 0,
     segment: (user.segment: string) || '',
     twilioToken: (user.twilio_token: string) || '',
-    canvasUser: (user.canvas_user: boolean) || false,
+    canvasUser: Boolean(user.canvas_user),
     grade: (user.grade_id: number) || 0,
     jwtToken: (user.jwt_token: string) || '',
     refreshToken: (user.refresh_token: string) || '',
@@ -189,7 +190,7 @@ export const userToCamelCase = (user: Object): User => {
     referralCode: (user.referral_code: string) || '',
     updateProfile: (user.update_profile: Array<UpdateProfile>) || [],
     lmsTypeId: (user.lms_type_id: number) || -1,
-    lmsUser: (user.lms_user: boolean) || false
+    lmsUser: Boolean(user.lms_user)
   };
 };
 
@@ -203,7 +204,7 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     roleId: Number((item.role_id: number) || 1),
     role: String((item.role: string) || ''),
     courseDisplayName: String((item.course_display_name: string) || ''),
-    bookmarked: Boolean((item.bookmarked: boolean) || false),
+    bookmarked: Boolean(item.bookmarked),
     deck: (item.deck || []).map(d => ({
       answer: String((d.answer: string) || ''),
       answerImageUrl: String((d.answer_image_url: string) || ''),
@@ -226,8 +227,9 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     subject: String((item.subject: string) || ''),
     title: String((item.title: string) || ''),
     body: String((item.body: string) || ''),
-    readOnly: Boolean((item.read_only: boolean) || false),
-    thanked: Boolean((item.thanked: boolean) || false),
+    readOnly: Boolean(item.read_only),
+    thanked: Boolean(item.thanked),
+    isOnline: Boolean(item.is_online),
     tags: (item.tags || []).map(tag => ({
       description: String((tag.description: string) || ''),
       id: Number((tag.id: number) || 0),

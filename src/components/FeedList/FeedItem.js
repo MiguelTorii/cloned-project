@@ -55,6 +55,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 import { styles } from '../_styles/FeedList/FeedItem';
+import OnlineBadge from '../OnlineBadge';
 
 const FeedTypes = {
   flashcards: {
@@ -429,9 +430,11 @@ const FeedItem = ({
                 className={classes.avatar}
                 onClick={handleUserClick}
               >
-                <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                  {initials}
-                </Avatar>
+                <OnlineBadge isOnline={data.isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={true}>
+                  <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                    {initials}
+                  </Avatar>
+                </OnlineBadge>
               </ButtonBase>
             </Grid>
             <Grid item>
