@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useEffect, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Popover from '@material-ui/core/Popover'
@@ -5,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import SettingsIcon from '@material-ui/icons/Settings'
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
+import RemoveStudentDialog from 'components/RemoveStudentDialog'
 import { PERMISSIONS } from 'constants/common'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +44,8 @@ type Props = {
   channel: Object,
   localChannel: Object,
   permission: Object,
-  updateGroupName: Function
+  updateGroupName: Function,
+  currentUserName: string
 };
 
 const Settings = ({
@@ -50,15 +53,19 @@ const Settings = ({
   groupName,
   permission,
   updateGroupName,
-  localChannel
+  localChannel,
+  currentUserName
 }: Props) => {
 
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState(null)
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
+  const [removeStudentsModalOpen, setRemoveStudentsModalOpen] = useState(false)
 
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
+  const handleRemoveStudents = useCallback(() => setRemoveStudentsModalOpen(true), [])
+  const handleRemoveStudentModalClose = useCallback(() => setRemoveStudentsModalOpen(false), [])
 
   const handleSettingsOpen = useCallback(event => {
     const { currentTarget } = event;
@@ -75,6 +82,8 @@ const Settings = ({
 
   const isShow = permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
     permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS)
+
+  const deletePermission = permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS)
 
   return (
     <>
@@ -98,16 +107,22 @@ const Settings = ({
       >
         {(isShow && channel.members._c.size !== 2) && (
           <>
-            <ListItem className={classes.selectOption} onClick={handleEditGroupDetailsOpen}>
+            <ListItem
+              className={classes.selectOption}
+              onClick={handleEditGroupDetailsOpen}
+            >
               <ListItemText>
                 Event Group Details
               </ListItemText>
             </ListItem>
-            <ListItem className={classes.selectOption}>
+            {deletePermission && <ListItem
+              className={classes.selectOption}
+              onClick={handleRemoveStudents}
+            >
               <ListItemText>
                 Remove Students
               </ListItemText>
-            </ListItem>
+            </ListItem>}
           </>
         )}
         {/* <ListItem className={cx(classes.selectOption, classes.reportIssue)}>
@@ -116,6 +131,13 @@ const Settings = ({
           </ListItemText>
         </ListItem> */}
       </Popover>
+      <RemoveStudentDialog
+        open={removeStudentsModalOpen}
+        channel={channel}
+        onClose={handleRemoveStudentModalClose}
+        currentUserName={currentUserName}
+        members={localChannel?.members}
+      />
       <EditGroupDetailsDialog
         title='Event Group Details'
         channel={channel}

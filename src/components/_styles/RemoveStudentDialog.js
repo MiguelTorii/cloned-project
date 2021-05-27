@@ -38,6 +38,19 @@ const useStyles = makeStyles(theme => ({
   closeButtonClass: {
     color: 'white',
     backgroundColor: theme.circleIn.palette.appBar
+  },
+  removedUser: {
+    backgroundColor: 'rgba(95, 97, 101, 0.75)',
+    color: 'white',
+    borderRadius: 20,
+    padding: theme.spacing(0, 2),
+    fontWeight: 700
+  },
+  undo: {
+    marginRight: theme.spacing()
+  },
+  spacing: {
+    marginRight: theme.spacing(0.5)
   }
 }))
 

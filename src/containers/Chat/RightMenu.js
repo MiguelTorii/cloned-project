@@ -1,3 +1,4 @@
+/* eslint-disable flowtype/no-types-missing-file-annotation */
 import React, { useMemo, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { getInitials } from 'utils/chat'
@@ -25,9 +26,9 @@ import OnlineBadge from 'components/OnlineBadge'
 import TutorBadge from 'components/TutorBadge'
 import ShareLinkWidget from 'components/ShareLinkWidget'
 import { useDispatch } from 'react-redux'
+import { PERMISSIONS } from 'constants/common'
 import AvatarEditor from '../../components/AvatarEditor'
 import { handleUpdateGroupPhoto } from '../../actions/chat'
-import { PERMISSIONS } from 'constants/common'
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   return <RouterLink to={link} {...props} ref={ref} />
@@ -148,7 +149,8 @@ const RightMenu = ({
   userId,
   permission,
   channel,
-  handleBlock
+  handleBlock,
+  currentUserName
 }) => {
   const classes = useStyles()
   const dispatch = useDispatch();
@@ -218,6 +220,7 @@ const RightMenu = ({
             localChannel={localChannel}
             permission={permission}
             updateGroupName={updateGroupName}
+            currentUserName={currentUserName}
           />
         </Grid>
         <Grid

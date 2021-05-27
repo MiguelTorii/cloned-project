@@ -119,7 +119,7 @@ const Chat = ({
       currentChannel
     }
   } = chat
-  const { data: { userId, schoolId, permission } } = user
+  const { data: { userId, schoolId, permission, firstName, lastName } } = user
   const classes = useStyles()
   const [leftSpace, setLeftSpace] = useState(3)
   const [rightSpace, setRightSpace] = useState(0)
@@ -273,6 +273,7 @@ const Chat = ({
           permission={permission}
           channel={currentChannel}
           local={local}
+          currentUserName={`${firstName} ${lastName}`}
         />
       </Grid>
     </Grid>

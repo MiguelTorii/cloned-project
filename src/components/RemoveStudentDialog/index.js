@@ -1,4 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import React, { useCallback, useState } from 'react'
+import cx from 'classnames'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
@@ -10,12 +12,13 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg'
+import { ReactComponent as UndoIcon } from 'assets/svg/undo.svg'
 import { getInitials } from 'utils/chat'
 import TutorBadge from 'components/TutorBadge'
 import Dialog from 'components/Dialog'
 import OnlineBadge from 'components/OnlineBadge'
 import useStyles from 'components/_styles/RemoveStudentDialog'
-import { removeUser, sendMessage } from 'api/chat'
+import { removeUser, sendMessage, addGroupMembers } from 'api/chat'
 import { logEvent } from 'api/analytics'
 
 const RemoveStudentDialog = ({
@@ -30,6 +33,7 @@ const RemoveStudentDialog = ({
   const [search, searchMember] = useState('')
   const [confirmDialog, setConfirmDialog] = useState(false)
   const [user, setUser] = useState(null)
+  const [removedUserIds, setRemovedUserIds] = useState([])
 
   const handleCloseConfirmModal = useCallback(() => {
     setConfirmDialog(false)
@@ -66,8 +70,23 @@ const RemoveStudentDialog = ({
       setConfirmDialog(true)
       return;
     }
-    await removeUser(member.userId, channel.sid)
-  }, [channel, isCommunityChat])
+    const response = await removeUser(member.userId, channel.sid)
+    if (response) {
+      const removedUserIdArr = [Number(member.userId), ...removedUserIds]
+      setRemovedUserIds(removedUserIdArr)
+    }
+  }, [channel, isCommunityChat, removedUserIds])
+
+  const handleUndo = useCallback(async memberId => {
+    const response = await addGroupMembers({
+      chatId: channel.sid,
+      users: [memberId]
+    });
+    if (response) {
+      const removedUserIdArr = [...removedUserIds].filter(removeUserId => removeUserId !== Number(memberId))
+      setRemovedUserIds(removedUserIdArr)
+    }
+  }, [removedUserIds, channel])
 
   const searchStudentName = useCallback((e) => {
     searchMember(e.target.value)
@@ -119,11 +138,29 @@ const RemoveStudentDialog = ({
                 </ListItemAvatar>
                 {fullName} {m.role && <TutorBadge text={m.role} />}
                 <ListItemSecondaryAction>
+                  {!isCommunityChat &&
+                    removedUserIds.includes(Number(m.userId)) &&
+                  <Button
+                    onClick={() => handleUndo(m.userId)}
+                    className={classes.undo}
+                  >
+                    <UndoIcon className={classes.spacing} /> Undo
+                  </Button>}
                   <Button
                     onClick={() => removeMember(m)}
-                    className={classes.removeUser}
+                    className={cx(
+                      isCommunityChat
+                        ? classes.removeUser
+                        : removedUserIds.includes(Number(m.userId))
+                          ? classes.removedUser
+                          : classes.removeUser
+                    )}
                   >
-                  Remove
+                    {isCommunityChat
+                      ? 'Remove'
+                      : removedUserIds.includes(Number(m.userId))
+                        ? 'Removed'
+                        : 'Remove'}
                   </Button>
                 </ListItemSecondaryAction>
               </ListItem>
