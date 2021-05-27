@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { connect } from 'react-redux'
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 
 import Popover from "@material-ui/core/Popover"
 
@@ -12,15 +12,14 @@ import OnlineBadge from 'components/OnlineBadge'
 import GradientButton from 'components/Basic/Buttons/GradientButton'
 import TransparentButton from 'components/Basic/Buttons/TransparentButton'
 
-import * as chatActions from '../../actions/chat'
-
 import { getInitials } from 'utils/chat'
 import { Typography } from '@material-ui/core'
 
-import { getUserProfile } from '../../api/user'
-
 import cx from 'classnames'
 import _ from 'lodash'
+import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants'
+import { getUserProfile } from '../../api/user'
+import * as chatActions from '../../actions/chat'
 
 import useStyles from '../_styles/HoverPopup'
 
@@ -32,6 +31,7 @@ const HoverPopup = ({
   leftAligned = false,
   children = null,
   member,
+  setSelectedCourse,
   ...props
 }) => {
   const classes = useStyles()
@@ -60,7 +60,7 @@ const HoverPopup = ({
 
   const mouseEnter = (event) => {
     setHover(true)
-    let rect = postFeedItemContainer.current?.getBoundingClientRect()
+    const rect = postFeedItemContainer.current?.getBoundingClientRect()
     if (rect) {
       if (
         rect.top < 0 ||
@@ -105,15 +105,15 @@ const HoverPopup = ({
         setBio(userbio)
       }
       setIsLoading(false)
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   const onStartChat = () => {
     const { openChannelWithEntity } = props
-    const { userId, firstname, lastname} = member
+    const { userId, firstname, lastname } = member
 
     setChatLoading(true)
+    setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS)
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: firstname,
@@ -128,7 +128,7 @@ const HoverPopup = ({
 
   const onStartVideo = () => {
     const { openChannelWithEntity } = props
-    const { userId, firstname, lastname} = member
+    const { userId, firstname, lastname } = member
 
     setChatLoading(true)
     openChannelWithEntity({
@@ -184,59 +184,59 @@ const HoverPopup = ({
           disableRestoreFocus
         >
           {/* <div className={classes.overviewContainer}> */}
-            <div className={classes.hasBio}>
-              <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.primaryBackground" fromChat={false}>
-                <Avatar
-                  alt={fullName}
-                  src={member.image}
-                  className={classes.overviewAvatar}
-                >
-                  {getInitials({ name: fullName })}
-                </Avatar>
-              </OnlineBadge>
-              <div className={cx(classes.userInfo, classes.hasBio)}>
-                <Typography variant="subtitle1" className={classes.name}>{fullName}</Typography>
+          <div className={classes.hasBio}>
+            <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.primaryBackground" fromChat={false}>
+              <Avatar
+                alt={fullName}
+                src={member.image}
+                className={classes.overviewAvatar}
+              >
+                {getInitials({ name: fullName })}
+              </Avatar>
+            </OnlineBadge>
+            <div className={cx(classes.userInfo, classes.hasBio)}>
+              <Typography variant="subtitle1" className={classes.name}>{fullName}</Typography>
 
-                {bio && (
-                  <Typography variant="subtitle1" className={classes.bio}>{bio}</Typography>
-                )}
-              </div>
+              {bio && (
+                <Typography variant="subtitle1" className={classes.bio}>{bio}</Typography>
+              )}
             </div>
-            {/* 
+          </div>
+          {/*
             <Typography
               variant="subtitle1"
               className={classes.subTitle}
             >{"Classes you have together"}
             </Typography> */}
 
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              className={classes.buttonBox}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            className={classes.buttonBox}
+          >
+            <GradientButton
+              startIcon={<Message/>}
+              disabled={chatLoading}
+              onClick={onStartChat}
             >
-              <GradientButton
-                startIcon={<Message/>}
-                disabled={chatLoading}
-                onClick={onStartChat}
-              >
                 Message
-              </GradientButton>
-              <TransparentButton
-                startIcon={<Videocam/>}
-                disabled={chatLoading}
-                onClick={onStartVideo}
-              >
+            </GradientButton>
+            <TransparentButton
+              startIcon={<Videocam/>}
+              disabled={chatLoading}
+              onClick={onStartVideo}
+            >
                 Study Room
-              </TransparentButton>
-            </Box>
+            </TransparentButton>
+          </Box>
         </Popover>
       </div>
     </>
   )
 }
 
-const mapStateToProps = ({user}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 })
 

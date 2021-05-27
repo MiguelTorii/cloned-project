@@ -24,6 +24,7 @@ type Props = {
   user: Object,
   setCurrentChannel: Function,
   setMainMessage: Function,
+  setSelectedCourse: Function,
   width: string
 };
 
@@ -31,6 +32,7 @@ const CommunityChat = ({
   selectedCourse,
   setMainMessage,
   setCurrentChannel,
+  setSelectedCourse,
   user,
   chat,
   width
@@ -182,6 +184,7 @@ const CommunityChat = ({
           userId={userId}
           schoolId={schoolId}
           channel={currentChannel}
+          setSelectedCourse={setSelectedCourse}
           local={local}
         />
       </Grid>

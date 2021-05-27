@@ -24,6 +24,7 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => {
 const RightMenu = ({
   local,
   channel,
+  setSelectedCourse,
 }) => {
   const classes = useStyles()
   const localChannel = useMemo(() => channel && local[channel.sid], [channel, local])
@@ -80,7 +81,11 @@ const RightMenu = ({
             {localChannel?.members.map(m => {
               const fullName = `${m.firstname} ${m.lastname}`
               return (
-                <HoverPopup member={m} key={m.userId}>
+                <HoverPopup
+                  key={m.userId}
+                  member={m}
+                  setSelectedCourse={setSelectedCourse}
+                >
                   <ListItem
                     component={MyLink}
                     disableGutters

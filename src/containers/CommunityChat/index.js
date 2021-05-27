@@ -74,6 +74,7 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
           : <CommunityChat
             isLoading={isLoading}
             selectedCourse={selectedCourse}
+            setSelectedCourse={setSelectedCourse}
           />}
       </Box>
     </div>

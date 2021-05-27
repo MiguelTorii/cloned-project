@@ -8,7 +8,7 @@
 }
  
 *::-webkit-scrollbar-thumb {
-  background-color: #547686;
+  background-color: rgba(196, 196, 196, 0.38);
   border-radius: 16px;
   outline: 1px solid slategrey;
 }
