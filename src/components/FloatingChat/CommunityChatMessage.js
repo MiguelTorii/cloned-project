@@ -69,6 +69,7 @@ const ChatMessage = ({
   const [blockUserId, setBlockuserId] = useState('')
   const [blockUserName, setBlockUserName] = useState('')
   const [openBlockModal, setOpenBlockModal] = useState(false)
+  const [hoverMessageId, setHoverMessageId] = useState('')
   const [anchorEl, setAnchorEl] = useState(null)
 
   const history = useHistory()
@@ -128,7 +129,8 @@ const ChatMessage = ({
   const initials =
     name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
 
-  const handleClick = (event) => {
+  const handleClick = (msgId) => (event) => {
+    setHoverMessageId(msgId)
     setAnchorEl(event.currentTarget)
   }
 
@@ -140,6 +142,7 @@ const ChatMessage = ({
   const handleCloseReport = () => setOpenReport(false)
 
   const handleClose = () => {
+    setHoverMessageId('')
     setAnchorEl(null)
   }
 
@@ -162,7 +165,6 @@ const ChatMessage = ({
   }
 
   const open = Boolean(anchorEl)
-  const id = open ? 'simple-popover' : undefined
 
   const renderItem = ({
     imageKey,
@@ -286,13 +288,13 @@ const ChatMessage = ({
             {showOpetions === message.sid && currentUserId !== userId && <Button
               className={classes.threeDots}
               variant="contained"
-              onClick={handleClick}
+              onClick={handleClick(message.sid)}
             >
               <MoreHorizIcon />
             </Button>}
             <Popover
-              id={id}
-              open={open}
+              id={message.sid}
+              open={open && hoverMessageId === message.sid}
               anchorEl={anchorEl}
               onClose={handleClose}
               anchorOrigin={{

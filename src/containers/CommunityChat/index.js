@@ -1,6 +1,7 @@
 // @flow
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import Box from '@material-ui/core/Box'
 import * as chatActions from 'actions/chat'
@@ -39,7 +40,10 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
     if (selectedCourse.id === 'chat') {
       if (!isLoading && !!Object.keys(local).length) {
         let count = 0;
-        Object.keys(local).forEach(key => {
+        Object.keys(local).filter(l => local[l].side).sort((a, b) => {
+          if (local[a].lastMessage.message === '') return 0
+          return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
+        }).forEach(key => {
           if (local[key]?.unread) {
             count += local[key].unread
           }
