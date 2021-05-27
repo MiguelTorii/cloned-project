@@ -18,8 +18,16 @@ import Tooltip from 'containers/Tooltip';
 import setFormulasColor from 'utils/quill'
 import EditorToolbar, { modules, formats } from "./Toolbar"
 
+import { TIMEOUT } from 'constants/common';
+import { useIdleTimer } from 'react-idle-timer';
+import { logEvent } from 'api/analytics';
+import { differenceInMilliseconds } from "date-fns";
+import { INTERVAL } from 'constants/app';
+
 import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
 import { useStyles } from '../_styles/UserNotesEditor/index';
+
+const timeout = TIMEOUT.FLASHCARD_REVEIW
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -92,7 +100,67 @@ const UserNotesEditor = ({
     }
   }, [debouncedNote, prevSaved, updateNote])
 
+  // Data Points
+  const elapsed = useRef(0);
+  const totalIdleTime = useRef(0);
+  const remaining = useRef(timeout);
+  const lastActive = useRef(+new Date());
+  const timer = useRef(null);
+
+  const handleOnActive = () => {
+    const diff = differenceInMilliseconds(new Date(), lastActive.current);
+    totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
+  };
+
+  const {
+    getRemainingTime,
+    getLastActiveTime,
+    getElapsedTime,
+    reset,
+  } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive,
+  });
+
+  useEffect(() => {
+    remaining.current = getRemainingTime();
+    lastActive.current = getLastActiveTime();
+    elapsed.current = getElapsedTime();
+
+    timer.current = setInterval(() => {
+      remaining.current = getRemainingTime();
+      lastActive.current = getLastActiveTime();
+      elapsed.current = getElapsedTime();
+    }, INTERVAL.SECOND);
+
+    return () => {
+      clearInterval(timer.current);
+    }
+  }, [getElapsedTime, getLastActiveTime, getRemainingTime]);
+
+  const initializeTimer = useCallback(() => {
+    elapsed.current = 0
+    totalIdleTime.current = 0
+    remaining.current = timeout
+    lastActive.current = new Date()
+  }, [elapsed, totalIdleTime, remaining, lastActive])
+
   const onExit = useCallback(() => {
+    logEvent({
+      event: 'In-App Notes- Time Spent',
+      props: {
+        noteId: note.id,
+        classId: note.classId,
+        sectionId: note.sectionId,
+        elapsed: elapsed.current,
+        total_idle_time: totalIdleTime.current,
+        effective_time: elapsed.current - totalIdleTime.current,
+        platform: 'Web',
+      }
+    });
+    reset()
+    initializeTimer()
+
     setFormulasColor('White')
     if (note && prevSaved && (note.title !== prevSaved.title || note.content !== prevSaved.content)) {
       updateNote({ note })
@@ -105,7 +173,7 @@ const UserNotesEditor = ({
       type: 'Closed',
       sectionId: note.sectionId
     })
-  }, [exitNoteTaker, handleClose, note, prevSaved, updateNote])
+  }, [exitNoteTaker, handleClose, note, prevSaved, updateNote, reset, initializeTimer])
 
   useEffect(() => {
     if (currentNote !== null) {

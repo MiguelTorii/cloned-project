@@ -60,6 +60,13 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.flashcardId = props.flashcardId
   }
 
+  // In-App notes time spent
+  if (category === LOG_EVENT_CATEGORIES.IN_APP_NOTES) {
+    customProps.noteId = props.noteId
+    customProps.classId = props.classId
+    customProps.sectionId = props.sectionId
+  }
+
   return {
     ...customProps,
     category,
