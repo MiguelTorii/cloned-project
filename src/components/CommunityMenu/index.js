@@ -30,7 +30,9 @@ const CommunityMenu = ({
     async function fetchCommunityChannels() {
       const { id } = item
       if (id !== 'chat') {
-        const { community_channels: communityChannels } = await getCommunityChannels({ communityId: id })
+        const {
+          community_channels: communityChannels
+        } = await getCommunityChannels({ communityId: id })
         let count = 0
         communityChannels.forEach(communityChannel => {
           communityChannel.channels.forEach(channel => {

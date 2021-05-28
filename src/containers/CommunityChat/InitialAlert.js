@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
@@ -46,8 +46,8 @@ const InitialAlert = ({
     }
   }, [channel, local, userId])
 
-  const initials = useCallback(() => {
-    return !name
+  const initials = useMemo(() => {
+    return name
       ? (name.match(/\b(\w)/g) || []).join('')
       : ''
   }, [name]);

@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1002,
     transform: 'translateX(-50%)',
     [theme.breakpoints.down('md')]: {
-      left: '31%'
+      left: '33%'
     },
     [theme.breakpoints.down('xs')]: {
       left: '92%'
