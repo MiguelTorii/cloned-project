@@ -11,6 +11,7 @@ import {
   renewTwilioToken,
   leaveChat,
   blockChatUser,
+  sendMessage,
   createChannel
 } from 'api/chat';
 import Chat from 'twilio-chat';
@@ -274,6 +275,18 @@ export const openChannelWithEntity = ({
         dispatch(setMainMessageAction({
           mainMessage: "Hey! Let's connect and study together!"
         }))
+      } else {
+        const messageAttributes = {
+          entityFirstName,
+          entityLastName,
+          imageKey: '',
+          isVideoNotification: false
+        }
+        await sendMessage({
+          message: "Hi! Let's chat and study together here!",
+          ...messageAttributes,
+          chatId
+        })
       }
       if (entityVideo) {
         dispatch(push(`/video-call/${chatId}`))
@@ -281,7 +294,6 @@ export const openChannelWithEntity = ({
         dispatch(push('/chat'))
       }
     }
-
   }
 };
 

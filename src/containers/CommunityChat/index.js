@@ -40,10 +40,12 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
     if (selectedCourse.id === 'chat') {
       if (!isLoading && !!Object.keys(local).length) {
         let count = 0;
-        Object.keys(local).filter(l => local[l].side).sort((a, b) => {
+        const channelList = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
           if (local[a].lastMessage.message === '') return 0
           return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
-        }).forEach(key => {
+        })
+
+        channelList.forEach(key => {
           if (local[key]?.unread) {
             count += local[key].unread
           }

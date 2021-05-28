@@ -121,6 +121,12 @@ const DirectChat = ({
   }, [local])
 
   useEffect(() => {
+    if (!newChannel && !currentChannel && channelList && !!channelList.length) {
+      onOpenChannel({ channel: local[channelList[0]].twilioChannel })
+    }
+  }, [newChannel, currentChannel, channelList, local, onOpenChannel])
+
+  useEffect(() => {
     if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0)

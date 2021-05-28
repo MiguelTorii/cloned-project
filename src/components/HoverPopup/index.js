@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useEffect, useRef } from "react"
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -24,13 +25,14 @@ import * as chatActions from '../../actions/chat'
 import useStyles from '../_styles/HoverPopup'
 
 const HoverPopup = ({
-  userId = null,
-  api = null,
-  userInfoTemp = null,
-  getUserStatus = null,
+  // userId = null,
+  // api = null,
+  // userInfoTemp = null,
+  // getUserStatus = null,
   leftAligned = false,
   children = null,
   member,
+  selectedCourse = null,
   setSelectedCourse,
   ...props
 }) => {
@@ -44,6 +46,21 @@ const HoverPopup = ({
   const [chatLoading, setChatLoading] = useState(false)
   const popoverContainer = useRef(null)
   const postFeedItemContainer = useRef(null)
+
+  const fetchUserInfo = async () => {
+    if (isLoading) return
+    setIsLoading(true)
+
+    try {
+      if (member.userId) {
+        const { about } = await getUserProfile({ userId: member.userId })
+        const idx = _.findIndex(about, (item) => item.id === 6)
+        const userbio = idx < 0 ? null : about[idx].answer
+        setBio(userbio)
+      }
+      setIsLoading(false)
+    } catch (e) {}
+  }
 
   const handlePopoverOpen = (event) => {
     fetchUserInfo()
@@ -93,27 +110,14 @@ const HoverPopup = ({
     }
   }, [hover])
 
-  const fetchUserInfo = async () => {
-    if (isLoading) return
-    setIsLoading(true)
-
-    try {
-      if (member.userId) {
-        const { about } = await getUserProfile({ userId: member.userId })
-        const idx = _.findIndex(about, (item) => item.id === 6)
-        const userbio = idx < 0 ? null : about[idx].answer
-        setBio(userbio)
-      }
-      setIsLoading(false)
-    } catch (e) {}
-  }
-
   const onStartChat = () => {
     const { openChannelWithEntity } = props
     const { userId, firstname, lastname } = member
 
     setChatLoading(true)
-    setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS)
+    if (selectedCourse && selectedCourse.id !== 'chat') {
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS)
+    }
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: firstname,

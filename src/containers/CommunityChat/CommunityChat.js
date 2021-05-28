@@ -60,6 +60,7 @@ const CommunityChat = ({
     async function fetchCommunityChannels(communityId) {
       const { community_channels: channels } = await getCommunityChannels({ communityId })
       setCommunityChannels(channels)
+      setSelctedChannel(channels[0].channels[0])
     }
     fetchCommunityChannels(selectedCourse.id)
   }, [selectedCourse])
@@ -184,6 +185,7 @@ const CommunityChat = ({
           userId={userId}
           schoolId={schoolId}
           channel={currentChannel}
+          selectedCourse={selectedCourse}
           setSelectedCourse={setSelectedCourse}
           local={local}
         />
