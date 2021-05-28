@@ -1,13 +1,22 @@
 export default theme => ({
   root: {
-    marginLeft: theme.spacing()
+    marginLeft: theme.spacing(),
+    color: theme.circleIn.palette.white,
+    borderRadius: theme.spacing(),
+    fontWeight: 700,
+    padding: 0
+  },
+  tutorBackground: {
+    backgroundColor: '#FFE89B'
+  },
+  expertBackground: {
+    backgroundColor: '#15A63D'
+  },
+  leaderBackground: {
+    backgroundColor: '#1E88E5'
   },
   colorPrimary: {
-    backgroundColor: '#15A63D',
-    color: theme.circleIn.palette.white,
-    fontWeight: 900,
-    padding: 0,
-    borderRadius: 20
+    backgroundColor: theme.circleIn.palette.brand
   },
   labelSmall: {
     padding: 0,
@@ -15,7 +24,11 @@ export default theme => ({
     paddingRight: theme.spacing(),
   },
   sizeSmall: {
-    height: 16,
-    fontSize: 14
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 20,
+    fontSize: 14,
+    padding: theme.spacing(0.5)
   }
 })

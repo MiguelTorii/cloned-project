@@ -128,3 +128,9 @@ export const CIRCLEIN_EVENT_NAMES = [
 export const CAMPAIGN_IDS = {
   FLASHCARD_VERSION: 14
 };
+
+export const MEMBER_ROLES = {
+  TUTOR: 'Tutor',
+  ORIENTATION_LEADER: 'Orientation Leader',
+  EXPERT: 'Expert'
+}
