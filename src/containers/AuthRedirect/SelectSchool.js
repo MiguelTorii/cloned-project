@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useState, useCallback } from 'react'
+import React, { memo, useState, useCallback, useEffect } from 'react'
 import AutoComplete from 'components/AutoComplete';
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -38,7 +38,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const SelectSchool = ({ updateError, school, setScreen, updateSchool, setLoginAsExternalUser }) => {
+const SelectSchool = ({
+  updateError,
+  school,
+  setScreen,
+  isDeepLink,
+  updateSchool,
+  setLoginAsExternalUser
+}) => {
   const classes = useStyles()
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -150,6 +157,11 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool, setLoginAs
     return false
   }, [school, setScreen, updateError])
 
+  // Deep link to specific school
+  useEffect(() => {
+    if (isDeepLink && school?.id) onClick()
+  }, [school, isDeepLink, onClick])
+
   const loginAsExternal = useCallback(() => {
     setLoginAsExternalUser(true)
     setScreen('login')
@@ -181,7 +193,7 @@ const SelectSchool = ({ updateError, school, setScreen, updateSchool, setLoginAs
       <Button
         variant='contained'
         onClick={onClick}
-        disabled={!school || loading}
+        disabled={!school?.id || loading}
         color='primary'
       >
         {loading

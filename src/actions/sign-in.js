@@ -13,6 +13,7 @@ import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
 import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
+import { deepLinkCheck } from 'utils/helpers';
 import { PERMISSIONS } from 'constants/common'
 
 const requestSignIn = (): Action => ({
@@ -195,7 +196,8 @@ export const checkUserSession = () => async (
       '/redirect',
       '/saml'
     ].includes(pathname) &&
-    !pathname.includes('/canvas')
+    !pathname.includes('/canvas') &&
+    !deepLinkCheck(pathname)
   ) {
     dispatch(push('/'));
   }

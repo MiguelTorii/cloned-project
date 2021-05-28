@@ -20,7 +20,7 @@ import Paper from '@material-ui/core/Paper';
 import LoadImg from 'components/LoadImg';
 import cx from 'classnames'
 import TextField from '@material-ui/core/TextField'
-import { emailRequest } from 'api/sign-in'
+import { emailRequest, getSchool } from 'api/sign-in'
 import type { State as StoreState } from '../../types/state';
 import loginBackground from '../../assets/svg/new-auth-bg.svg';
 import CircleInPhone from '../../assets/img/CircleInPhone.png';
@@ -29,6 +29,7 @@ import * as authActions from '../../actions/auth';
 import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 import Dialog from '../../components/Dialog';
 import * as signUpActions from '../../actions/sign-up';
+import { deepLinkCheck } from 'utils/helpers';
 
 const styles = theme => ({
   main: {
@@ -134,14 +135,31 @@ const Auth = ({
       ? 'newPassword'
       : 'school'
   )
-
+  const [school, setSchool] = useState(auth.data?.school)
   const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false)
-
-  const {
-    data: { school, role }
-  } = auth
-  const { error, errorMessage } = user;
   const [email, setEmail] = useState('')
+
+  const isDeepLink = useMemo(() => deepLinkCheck(pathname), [pathname])
+
+  const { data: { role } } = auth
+  const { error, errorMessage } = user;
+
+  useEffect(() => {
+    setSchool(auth.data?.school)
+  }, [auth])
+
+  useEffect(() => {
+    const schoolId = pathname.split('/')[2]
+
+    const loadSchoolById = async () => {
+      try {
+        const school = await getSchool({ schoolId: pathname.split('/')[2] })
+        setSchool(school)
+      } catch (err) {}
+    }
+
+    schoolId && loadSchoolById()
+  }, [setSchool, pathname])
 
   useEffect(() => {
     if (state?.error) {
@@ -190,12 +208,24 @@ const Auth = ({
       return <SelectSchool
         school={school}
         setScreen={setScreen}
+        isDeepLink={isDeepLink}
         updateSchool={updateSchool}
         updateError={updateError}
         setLoginAsExternalUser={setLoginAsExternalUser}
       />
     }
-  } , [isLoginAsExternalUser, role, school, screen, search, signIn, signUp, updateError, updateSchool])
+  } , [
+    isLoginAsExternalUser,
+    role,
+    school,
+    screen,
+    isDeepLink,
+    search,
+    signIn,
+    signUp,
+    updateError,
+    updateSchool
+  ])
 
   const goBack = useCallback(() => {
     if (screen === 'login') {

@@ -83,3 +83,8 @@ export const twoDigitsNumber = (number) => {
     useGrouping: false
   });
 };
+
+export const deepLinkCheck = (pathname) => {
+  const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/)
+  return deepLinkRegExp.test(pathname)
+}

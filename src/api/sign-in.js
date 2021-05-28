@@ -153,6 +153,37 @@ export const searchSchools = async ({
   }
 };
 
+export const getSchool = async ({
+  schoolId
+}: {
+  query: string
+}): Promise<Schools> => {
+  try {
+    const result = await axios.get(
+      `${API_ROUTES.GET_SCHOOL}/${schoolId}`
+    );
+    const { data: school = {} } = result;
+
+    return {
+      studentLive: Number((school.student_live: number) || 0),
+      id: Number((school.id: number) || 0),
+      clientId: String((school.client_id: string) || ''),
+      school: String((school.school: string) || ''),
+      uri: String((school.uri: string) || ''),
+      authUri: String((school.auth_uri: string) || ''),
+      lmsTypeId: Number((school.lms_type_id: number) || 0),
+      emailRestriction: Boolean((school.email_restriction: boolean) || false),
+      emailDomain: school.email_domain || [],
+      scope: String((school.scope: string) || ''),
+      launchType: String((school.launch_type: string) || ''),
+      connection: String((school.auth0_connection_name: string) || ''),
+      redirect_message: String((school.redirect_message: string) || '')
+    };
+  } catch (err) {
+    return {};
+  }
+};
+
 export const verifyEmail = async ({
   email
 }: {

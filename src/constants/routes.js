@@ -103,6 +103,7 @@ export const API_ROUTES = {
   VIDEO_SESSION_CHECK: `${API_URL}/video/session_check`,
   SEARCH: `${API_URL}/search`,
   SEARCH_SCHOOLS: `${API_URL}/search/school`,
+  GET_SCHOOL: `${API_URL}/school`,
   SEARCH_CLASS: `${API_URL}/search/class`,
   QUESTS: `${API_URL}/quests`,
   INVITE: `${API_URL}/invite`,

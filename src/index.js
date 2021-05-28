@@ -219,6 +219,7 @@ ReactDOM.render(
               <Route exact path="/reset_password" component={withTracker(AuthRedirect)} />
               <Route exact path="/old" component={withTracker(Auth)} />
               <Route exact path="/login" component={withTracker(SignIn)} />
+              <Route exact path="/login/:schoolId" component={withTracker(AuthRedirect)} />
               <Route exact path="/signup" component={withTracker(SignUp)} />
               <Route exact path="/saml" component={withTracker(Saml)} />
               <Route exact path="/referral/:code" component={withTracker(Referral)} />
