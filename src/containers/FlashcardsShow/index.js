@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import useStyles from './styles';
 import { useParams } from 'react-router';
 import withRoot from '../../withRoot';
@@ -40,7 +40,14 @@ import IconBook from '@material-ui/icons/Book';
 import { getUserClasses } from 'api/user';
 import ScrollToTop from 'components/ScrollToTop';
 
+import { TIMEOUT } from 'constants/common';
+import { useIdleTimer } from 'react-idle-timer';
+import { logEvent } from 'api/analytics';
+import { differenceInMilliseconds } from "date-fns";
+import { INTERVAL } from 'constants/app';
+
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
+const timeout = TIMEOUT.FLASHCARD_REVEIW;
 
 const FlashcardsShow = () => {
   // Hooks
@@ -109,6 +116,75 @@ const FlashcardsShow = () => {
 
   // Effects
   useEffect(() => reloadData(), [reloadData]);
+
+  // Data Points
+  const elapsed = useRef(0);
+  const totalIdleTime = useRef(0);
+  const remaining = useRef(timeout);
+  const lastActive = useRef(+new Date());
+  const timer = useRef(null);
+
+  const handleOnActive = () => {
+    const diff = differenceInMilliseconds(new Date(), lastActive.current);
+    totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
+  };
+
+  const {
+    getRemainingTime,
+    getLastActiveTime,
+    getElapsedTime,
+    reset,
+  } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive,
+  });
+
+  const initializeTimer = useCallback(() => {
+    elapsed.current = 0
+    totalIdleTime.current = 0
+    remaining.current = timeout
+    lastActive.current = new Date()
+  }, [elapsed, totalIdleTime, remaining, lastActive])
+
+  useEffect(() => {
+    remaining.current = getRemainingTime();
+    lastActive.current = getLastActiveTime();
+    elapsed.current = getElapsedTime();
+
+    timer.current = setInterval(() => {
+      remaining.current = getRemainingTime();
+      lastActive.current = getLastActiveTime();
+      elapsed.current = getElapsedTime();
+    }, INTERVAL.SECOND);
+
+    return () => {
+      try {
+        clearInterval(timer.current);
+        !isLoadingFlashcards &&
+        data.feedId &&
+        logEvent({
+          event: 'Post- Time Spent',
+          props: {
+            feedId: data.feedId,
+            elapsed: elapsed.current,
+            total_idle_time: totalIdleTime.current,
+            effective_time: elapsed.current - totalIdleTime.current,
+            platform: 'Web',
+          }
+        });
+        reset();
+        initializeTimer();
+      } catch (err) {}
+    }
+  }, [
+    getElapsedTime,
+    getLastActiveTime,
+    getRemainingTime,
+    reset,
+    initializeTimer,
+    isLoadingFlashcards,
+    data.feedId,
+  ]);
 
   // Event Handlers
   const handleActionEdit = useCallback(() => {
