@@ -228,6 +228,7 @@ const Auth = ({
   ])
 
   const goBack = useCallback(() => {
+    if (isDeepLink) setSchool({})
     if (screen === 'login') {
       setLoginAsExternalUser(false)
       setScreen('school')
@@ -235,7 +236,7 @@ const Auth = ({
     if (screen === 'signup') setScreen('role')
     if (screen === 'forgotPassword') setScreen('login')
     if (screen === 'firstTime') setScreen('login')
-  }, [screen])
+  }, [screen, isDeepLink])
 
   const isPhone = useMemo(() => (
     [
