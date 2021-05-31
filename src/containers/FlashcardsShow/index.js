@@ -37,6 +37,8 @@ import SlideUp from 'components/Transition/SlideUp';
 import FlashcardsReview from 'components/FlashcardsReview';
 import FlashcardsQuiz from 'components/FlashcardsQuiz';
 import IconBook from '@material-ui/icons/Book';
+import IconNote from '@material-ui/icons/LibraryBooks';
+import FlashcardsMatchGame from 'components/FlashcardsMatchGame';
 import { getUserClasses } from 'api/user';
 import ScrollToTop from 'components/ScrollToTop';
 
@@ -64,6 +66,7 @@ const FlashcardsShow = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isReviewing, setIsReviewing] = useState(false);
   const [isInQuiz, setIsInQuiz] = useState(false);
+  const [isInMatchGame, setIsInMatchGame] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [boardDeckIndex, setBoardDeckIndex] = useState(0);
   const [classColor, setClassColor] = useState('primary');
@@ -249,6 +252,10 @@ const FlashcardsShow = () => {
 
   const handleCloseQuiz = useCallback(() => setIsInQuiz(false), []);
 
+  const handleStartMatchGame = useCallback(() => setIsInMatchGame(true), []);
+
+  const handleCloseMatchGame = useCallback(() => setIsInMatchGame(false), []);
+
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
 
@@ -373,6 +380,14 @@ const FlashcardsShow = () => {
               Quiz Yourself
             </ActionButton>
           </Box>
+          <Box fontSize={18} fontWeight={800} mt={5}>
+            Game Mode
+          </Box>
+          <Box mt={3}>
+            <ActionButton startIcon={<IconNote />} onClick={handleStartMatchGame}>
+              Match Magic
+            </ActionButton>
+          </Box>
         </Grid>
       </Grid>
       <Box mt={3} mb={3}>
@@ -442,6 +457,23 @@ const FlashcardsShow = () => {
           flashcardId={data.postId}
           cards={cardList}
           onClose={handleCloseQuiz}
+        />
+      </Dialog>
+
+      <Dialog
+        fullScreen
+        className={classes.reviewModal}
+        contentClassName={classes.reviewModalContent}
+        open={isInMatchGame}
+        onCancel={handleCloseMatchGame}
+        showHeader={false}
+        TransitionComponent={SlideUp}
+      >
+        <FlashcardsMatchGame
+          cards={cardList}
+          flashcardId={flashcardId}
+          flashcardTitle={data.title}
+          onClose={handleCloseMatchGame}
         />
       </Dialog>
       <ScrollToTop />

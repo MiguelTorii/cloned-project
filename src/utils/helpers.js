@@ -84,6 +84,10 @@ export const twoDigitsNumber = (number) => {
   });
 };
 
+export const formatSeconds = (seconds) => {
+  return `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(seconds % 60)}`;
+}
+
 export const deepLinkCheck = (pathname) => {
   const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/)
   return deepLinkRegExp.test(pathname)

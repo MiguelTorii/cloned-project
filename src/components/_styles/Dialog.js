@@ -1,5 +1,5 @@
 export const dialogStyle = {
-  borderRadius: 20,
+  borderRadius: 8,
   overflow: 'auto',
 }
 
@@ -12,7 +12,7 @@ export const styles = theme => ({
     paddingTop: 8
   },
   container: {
-    borderRadius: 20
+    borderRadius: 8
   },
   title: {
     color: theme.circleIn.palette.primaryText1,
@@ -31,9 +31,8 @@ export const styles = theme => ({
     top: 20
   },
   hr: {
-    background: theme.circleIn.palette.appBar,
+    background: 'rgba(233, 236, 239, 0.25)',
     border: 'none',
-    color: theme.circleIn.palette.appBar,
     height: 1,
   },
   button: {
