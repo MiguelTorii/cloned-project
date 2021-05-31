@@ -14,7 +14,7 @@ export default makeStyles((theme) => ({
   },
   image: {
     maxWidth: '100%',
-    maxHeight: '100%'
+    maxHeight: 'calc(100vh - 30px)'
   },
   closeIcon: {
     position: 'absolute',
