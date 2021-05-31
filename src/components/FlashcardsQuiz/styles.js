@@ -40,14 +40,15 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(3, 3, 5, 3)
   },
   checkIconContainer: {
-    width: 25,
+    minWidth: 25,
   },
   matchQuestionText: {
     marginLeft: theme.spacing(3)
   },
   matchQuestionSelect: {
     height: 24,
-    width: 60,
+    maxWidth: 60,
+    minWidth: 60,
     textAlign: 'center',
     '&:before': {
       borderColor: '#5F6165'
