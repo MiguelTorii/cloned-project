@@ -22,6 +22,8 @@ import AvatarEditor from '../../components/AvatarEditor'
 import type { UserState } from '../../reducers/user'
 import type { State as StoreState } from '../../types/state'
 import { getPresignedURL } from '../../api/media'
+import { uploadMedia } from '../../actions/user'
+import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import ErrorBoundary from '../ErrorBoundary'
 
 const styles = theme => ({
@@ -240,13 +242,21 @@ const RichTextEditor = ({
       fileInput.current.files.length > 0 &&
       fileInput.current.files[0].size < 8000000
     ) {
+      setLoading(true)
       if (setLoadingImage) setLoadingImage(true)
       const file = fileInput.current.files[0]
       const imageDataUrl = await readFile(file)
       setImageSrc(imageDataUrl)
-      setOpenImageModal(true)
+
+      const range = rte.current.editor.getEditor().getSelection()
+      const result = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.POST_FEED, file)
+
+      const { readUrl } = result
+
+      rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl)
+      setLoading(false)
     }
-  }, [readFile, setLoadingImage])
+  }, [readFile, setLoadingImage, userId])
 
   if (isLoading) return <CircularProgress size={12} />
   if (userId === '' || error)

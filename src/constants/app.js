@@ -73,7 +73,8 @@ export const DURATION_REPLACE_TEXT = '{{ time_left }}';
 export const APP_ROOT_PATH = window.location.origin;
 
 export const UPLOAD_MEDIA_TYPES = {
-  FLASHCARDS: 6
+  FLASHCARDS: 6,
+  POST_FEED: 1,
 };
 
 export const LOG_EVENT_CATEGORIES = {
