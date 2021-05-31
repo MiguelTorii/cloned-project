@@ -155,7 +155,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
     if (logs.length > 0) {
       await apiSaveMatchGameRecords(flashcardId, matchGameId, logs);
     }
-    await apiEndMatchGame(flashcardId, matchGameId, matchStartTime.unix(), lastRecordTime.unix(), elapsedSeconds);
+    await apiEndMatchGame(flashcardId, matchGameId, matchStartTime.utc().valueOf(), lastRecordTime.utc().valueOf(), elapsedSeconds);
   }, [logs, flashcardId, matchGameId, matchStartTime, lastRecordTime, elapsedSeconds]);
 
   // Effects

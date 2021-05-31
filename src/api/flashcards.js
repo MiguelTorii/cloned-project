@@ -47,8 +47,8 @@ export const apiSaveMatchGameRecords = async (
 /***
  * @param flashcardId: number
  * @param matchGameId: number
- * @param startTime: UTC epoch timestamp
- * @param endTime: UTC epoch timestamp
+ * @param startTime: UTC timestamp in milliseconds
+ * @param endTime: UTC timestamp in milliseconds
  * @param duration: number of seconds
  * @response
  * {
