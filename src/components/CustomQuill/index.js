@@ -22,6 +22,7 @@ const modules = {
     ],
     ['formula'],
     ['image'],
+    ['link'],
     ['clean']
   ]
 };

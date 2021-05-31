@@ -22,9 +22,11 @@ const circleInTheme = {
   primaryText2: '#adbbc4',
   gray3: '#5F6165',
   secondaryText: '#E4E6EA',
+  whiteText: '#ffffff',
   helperText: '#979797',
   normalButtonText1: '#090909',
   textOffwhite: '#f9f9f9',
+  formBackground: '#242526',
   appBar: '#3A3B3B', // validate
   navIcons: '#ffffff', // validate
   tabColor: '#ffffff', // validate
@@ -32,6 +34,7 @@ const circleInTheme = {
   inputBorderColor: '#959595',
   buttonBackground: '#598498',
   darkActionBlue: '#3177E7',
+  inactiveColor: '#626365',
   // v2
   success: '#60b515',
   snackbar: '#114255',
@@ -91,10 +94,13 @@ let theme = createMuiTheme({
       rowSelection: circleInTheme.rowSelection,
       buttonBackground: circleInTheme.buttonBackground,
       action: circleInTheme.action,
+      formBackground: circleInTheme.formBackground,
       primaryBackground: circleInTheme.primaryBackground,
       modalBackground: circleInTheme.modalBackground,
       primaryText1: circleInTheme.primaryText1,
       primaryText2: circleInTheme.primaryText2,
+      whiteText: circleInTheme.whiteText,
+      inactiveColor: circleInTheme.inactiveColor,
       secondaryText: circleInTheme.secondaryText,
       dangerBackground: circleInTheme.dangerBackground,
       videoThumbDefaultBackground: circleInTheme.videoThumbDefaultBackground,

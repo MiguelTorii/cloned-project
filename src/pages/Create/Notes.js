@@ -5,8 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
-import CreateNotes from '../../containers/CreateNotes';
-import PostTips from '../../components/PostTips';
+import CreateNotes from '../../containers/CreatePostLayout';
+// import PostTips from '../../components/PostTips';
 
 type Props = {
   match: {
@@ -24,12 +24,12 @@ const CreateNotesPage = (props: Props) => {
       <CssBaseline />
       <Layout>
         <Grid container>
-          <Grid item sm={12} md={9}>
+          <Grid item sm={12} md={12}>
             <CreateNotes noteId={noteId} />
           </Grid>
-          <Grid item sm={12} md={3}>
+          {/* <Grid item sm={12} md={3}>
             <PostTips type="notes" />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Layout>
     </main>

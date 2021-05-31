@@ -75,6 +75,8 @@ export const API_ROUTES = {
   SUBJECTS: `${API_URL_V1_2}/school/subjects`,
   SECTIONS: `${API_URL_V1_2}/school/classes/sections`,
   MEDIA_URL: `${API_URL}/media/url`,
+  POST: `${API_URL}/post`,
+  BATCH_POST: `${API_URL}/batch/post`,
   PHOTO_NOTE: `${API_URL_V1_1}/photo_note`,
   BATCH_PHOTO_NOTE: `${API_URL_V1_1}/batch/photo_note`,
   BATCH_DECK: `${API_URL}/batch/deck`,

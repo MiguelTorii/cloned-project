@@ -15,11 +15,12 @@ import { useStyles } from '../_styles/AvatarEditor/index';
 type Props = {
   originalImage: string,
   open: boolean,
+  title?: string,
   onCancel: Function,
   onSave: Function
 };
 
-const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
+const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null); // image can be URL or File.
   const [scale, setScale] = useState(1.0);
@@ -114,7 +115,7 @@ const AvatarEditor = ({ originalImage, open, onCancel, onSave }: Props) => {
 
   return (
     <Dialog
-      title="Edit Profile Picture"
+      title={title ?? "Edit Profile Picture"}
       className={clsx(
         classes.root,
         !image && classes.hidden

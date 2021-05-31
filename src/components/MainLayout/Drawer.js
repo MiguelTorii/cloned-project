@@ -60,7 +60,7 @@ import { useStyles } from '../_styles/MainLayout/Drawer';
 const Drawer = ({
   newClassExperience,
   newNotesScreen,
-  createPostOpen,
+  // createPostOpen,
   handleOpenGetApp,
   handleOpenFeedback,
   MyLink,
@@ -68,7 +68,7 @@ const Drawer = ({
   pathname,
   handleManageClasses,
   appBarHeight,
-  handleCreatePostMenuOpen,
+  // handleCreatePostMenuOpen,
   handleOpenUseCases,
   handleOpenHowEarnPoints,
   landingPageCampaign,
@@ -213,31 +213,37 @@ const Drawer = ({
   ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, handleCloseOneTouchSend, openOneTouchSend, pathname, qs])
 
   const createNewPost = useMemo(() => (
-    <Tooltip
-      hidden={createPostOpen}
-      id={5792}
-      placement="right"
-      text="Now that you’re in your class, click here to post on the feed and start earning points!"
+    // <Tooltip
+    //   hidden={createPostOpen}
+    //   id={5792}
+    //   placement="right"
+    //   text="Now that you’re in your class, click here to post on the feed and start earning points!"
+    // >
+    <ListItem
+      button
+      component={MyLink}
+      className={`${classes.newItem} tour-onboarding-new`}
+      // onClick={handleCreatePostMenuOpen}
+      link="/create_post"
     >
-      <ListItem button className={`${classes.newItem} tour-onboarding-new`} onClick={handleCreatePostMenuOpen}>
-        <ListItemIcon className={classes.newIconContainer}>
-          <AddIcon
-            className={classes.newIcon}
-          />
-        </ListItemIcon>
-        <ListItemText
-          primary="Create New Post"
-          classes={{
-            root: classes.newRoot,
-            primary: classes.newLabel
-          }}
-          primaryTypographyProps={{
-            color: pathname.includes('/create') ? 'primary' : 'textPrimary'
-          }}
+      <ListItemIcon className={classes.newIconContainer}>
+        <AddIcon
+          className={classes.newIcon}
         />
-      </ListItem>
-    </Tooltip>
-  ), [classes.newIcon, classes.newIconContainer, classes.newItem, classes.newLabel, classes.newRoot, createPostOpen, handleCreatePostMenuOpen, pathname])
+      </ListItemIcon>
+      <ListItemText
+        primary="Create New Post"
+        classes={{
+          root: classes.newRoot,
+          primary: classes.newLabel
+        }}
+        primaryTypographyProps={{
+          color: pathname.includes('/create') ? 'primary' : 'textPrimary'
+        }}
+      />
+    </ListItem>
+    // </Tooltip>
+  ), [MyLink, classes.newIcon, classes.newIconContainer, classes.newItem, classes.newLabel, classes.newRoot, pathname])
 
   return (
     <Fragment>

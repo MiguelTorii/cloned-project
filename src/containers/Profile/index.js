@@ -392,6 +392,9 @@ class Profile extends React.PureComponent<Props, State> {
       case 6:
         push(`/question/${postId}`);
         break;
+      case 8:
+        push(`/post/${postId}`);
+        break;
       default:
         break;
     }

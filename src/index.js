@@ -24,6 +24,7 @@ import Workflow from './pages/Workflow';
 import LeaderBoard from './pages/LeaderBoard';
 import Notifications from './pages/Notifications';
 import Share from './pages/Share';
+import Post from './pages/View/Post';
 import PhotoNote from './pages/View/Notes';
 import ShareLink from './pages/View/ShareLink';
 import Question from './pages/View/Question';
@@ -31,6 +32,7 @@ import CreateFlashcards from './pages/Create/Flashcards';
 import CreateQuestion from './pages/Create/Question';
 import CreateNotes from './pages/Create/Notes';
 import CreateShareLink from './pages/Create/ShareLink';
+import CreatePost from './pages/Create/Post';
 import Profile from './pages/Profile';
 import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
@@ -104,6 +106,7 @@ ReactDOM.render(
             <FloatingChat />
             <Switch>
               <Route exact path="/" component={withTracker(Home)} />
+              <Route exact path="/create_post" component={withTracker(CreatePost)} />
               <Route exact path="/notes" component={withTracker(UserNotes)} />
               <Route exact path="/classes" component={withTracker(Classes)} />
               <Route exact path="/feed" component={withTracker(Feed)} />
@@ -125,6 +128,26 @@ ReactDOM.render(
                 exact
                 path='/flashcards'
                 component={withTracker(FlashcardsListPage)}
+              />
+              <Route
+                exact
+                path="/flashcards/old/:flashcardId"
+                component={withTracker(Flashcards)}
+              />
+              <Route
+                exact
+                path="/flashcards/:flashcardId"
+                component={withTracker(FlashcardsShowPage)}
+              />
+              <Route
+                exact
+                path="/post/:postId"
+                component={withTracker(Post)}
+              />
+              <Route
+                exact
+                path="/edit/post/:postId"
+                component={withTracker(CreatePost)}
               />
               <Route
                 exact

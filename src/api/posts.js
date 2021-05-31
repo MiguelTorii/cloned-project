@@ -187,6 +187,147 @@ export const updateFlashcards = async ({
   }
 };
 
+export const createBatchPostSt = async ({
+  userId,
+  title,
+  content,
+  sectionIds,
+  anonymous,
+  tags
+}: {
+  userId: string,
+  title: string,
+  sectionIds: Array<number>,
+  content: string,
+  anonymous: boolean,
+  tags: Array<number>
+}): Promise<PostResponse> => {
+  try {
+    const body = {
+      user_id: Number(userId),
+      title,
+      content,
+      anonymous,
+      section_id: sectionIds,
+      tags
+    }
+
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.BATCH_POST}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    try {
+      logEvent({ event: 'Feed- Create Batch Post Anything', props: { Title: title } });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
+export const createPostSt = async ({
+  userId,
+  title,
+  sectionId,
+  content,
+  anonymous,
+  tags
+}: {
+  userId: string,
+  title: string,
+  sectionId: ?number,
+  content: string,
+  anonymous: Boolean,
+  tags: Array<number>
+}): Promise<PostResponse> => {
+  try {
+    const body = {
+      user_id: Number(userId),
+      title,
+      section_id: sectionId,
+      content,
+      private: anonymous,
+      tags
+    }
+
+    const token = await getToken();
+    const result = await axios.post(
+      `${API_ROUTES.POST}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = postResponseToCamelCase(data);
+    try {
+      logEvent({ event: 'Feed- Create Post Anything', props: { Title: title } });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  } catch (err) {
+    console.log(err);
+    // return postResponseToCamelCase({});
+    throw err
+  }
+};
+
+export const updatePostSt = async ({
+  title,
+  content,
+  postId,
+  classId,
+}: {
+  title: string,
+  content: string,
+  classId: number,
+}): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+    const result = await axios.put(
+      `${API_ROUTES.POST}/${postId}`,
+      {
+        title,
+        content,
+        // class_id: classId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result;
+    const response = data
+    try {
+      logEvent({ event: 'Feed- Update Post Anything', props: { Title: title } });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  } catch (err) {
+    console.log(err);
+    return postResponseToCamelCase({});
+  }
+};
+
 export const createBatchPhotoNote = async ({
   userId,
   title,
@@ -286,7 +427,8 @@ export const createPhotoNote = async ({
     return response;
   } catch (err) {
     console.log(err);
-    return postResponseToCamelCase({});
+    // return postResponseToCamelCase({});
+    throw err
   }
 };
 
@@ -422,7 +564,8 @@ export const createQuestion = async ({
     return response;
   } catch (err) {
     console.log(err);
-    return postResponseToCamelCase({});
+    // return postResponseToCamelCase({});
+    throw err
   }
 };
 
@@ -588,6 +731,38 @@ export const getNotes = async ({
   } catch (err) {
     console.log(err);
     return { ...postToCamelCase({}), notes: [] };
+  }
+};
+
+export const getPost = async ({
+  userId,
+  postId
+}: {
+  userId: string,
+  postId: number
+}): Promise<Question> => {
+  try {
+    const token = await getToken();
+    const result = await axios.get(
+      `${API_ROUTES.POST}/${postId}?user_id=${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const { data } = result
+    const { feedPostV2UserInfo, generalPostSpecificInfo, postCharacteristics } = data;
+    const post = postToCamelCase({
+      ...feedPostV2UserInfo,
+      ...generalPostSpecificInfo,
+      ...postCharacteristics
+    });
+    return post;
+  } catch (err) {
+    console.log(err);
+    return postToCamelCase({});
   }
 };
 

@@ -5,19 +5,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
-import CreateQuestion from '../../containers/CreatePostLayout';
-// import PostTips from '../../components/PostTips';
+import CreatePost from '../../containers/CreatePostLayout';
 
 type Props = {
   match: {
     params: {
-      questionId: string
+      postId: string
     }
   }
 };
 
-const CreateQuestionPage = (props: Props) => {
-  const { match: { params: { questionId } } } = props
+const CreatePostPage = (props: Props) => {
+  const { match: { params: { postId } } } = props
 
   return (
     <main>
@@ -25,15 +24,12 @@ const CreateQuestionPage = (props: Props) => {
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={12} md={12}>
-            <CreateQuestion questionId={questionId} />
+            <CreatePost postId={postId} />
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={3}>
-            <PostTips type="question" />
-          </Grid> */}
         </Grid>
       </Layout>
     </main>
   );
 };
 
-export default withRoot(CreateQuestionPage);
+export default withRoot(CreatePostPage);

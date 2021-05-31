@@ -301,6 +301,9 @@ class Feed extends React.PureComponent<Props, State> {
     case 6:
       push(`/question/${postId}${search}`);
       break;
+    case 8:
+      push(`/post/${postId}${search}`);
+      break;
     default:
       break;
     }

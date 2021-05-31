@@ -18,7 +18,6 @@ export default theme => ({
     textAlign: 'center'
   },
   selectForm: {
-    margin: theme.spacing(1),
     marginTop: 50,
   },
   select: {

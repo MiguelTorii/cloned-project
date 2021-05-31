@@ -18,7 +18,38 @@ export const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5
+    borderRadius: 5,
+    border: 'none !important',
+  },
+  uploadFileForm: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: `${theme.circleIn.palette.appBar} !important`
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#F5C264'
+    },
+    '& .MuiFormLabel-root.Mui-focused': {
+      color: '#F5C264'
+    }
+  },
+  uploadFileLabel: {
+    color: '#F5C264',
+    fontWeight: 'bold',
+    fontSize: 18
+  },
+  rootUploadFile: {
+    borderRadius: theme.spacing(1),
+  },
+  uploadFileInput: {
+    padding: '12px 14px',
+    '&::placeholder': {
+      color: theme.circleIn.palette.textOffwhite,
+      fontSize: 16
+    },
+    fontSize: 12
+  },
+  notchedOutline: {
+    borderColor: '#F5C264'
   },
   uploadIconSize: {
     width: 51,

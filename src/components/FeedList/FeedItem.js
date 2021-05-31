@@ -36,6 +36,7 @@ import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
 import FeedFlashcards from 'components/FeedList/FeedFlashcards'
+import CustomQuill from 'components/CustomQuill'
 
 import * as api from '../../api/posts'
 
@@ -83,7 +84,7 @@ const FeedTypes = {
     text_by: 'Asked by'
   },
   post: {
-    id: 0,
+    id: 8,
     url: FeedIconPost,
     title: 'Post',
     text_by: 'Posted by'
@@ -166,6 +167,7 @@ const FeedItem = ({
     if (typeId === 4) pushTo(`/edit/notes/${postId}`)
     if (typeId === 5) pushTo(`/edit/sharelink/${postId}`)
     if (typeId === 6) pushTo(`/edit/question/${postId}`)
+    if (typeId === 8) pushTo(`/edit/post/${postId}`)
   }, [data, handleMenuClose, pushTo])
 
   const handleUserClick = useCallback(() => {
@@ -399,9 +401,9 @@ const FeedItem = ({
             </Typography>
           </CardContent>
           <CardContent className={classes.content}>
-            <Typography className={classes.description} component="p" variant="body2">
-              {description}
-            </Typography>
+            <div className={classes.markdown}>
+              <CustomQuill value={description} readOnly />
+            </div>
             <span />
             {renderImage()}
           </CardContent>

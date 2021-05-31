@@ -224,5 +224,9 @@ export const styles = theme => ({
   },
   titleText: {
     fontSize: 18
+  },
+  markdown: {
+    color: theme.palette.text.primary,
+    fontFamily: theme.typography.fontFamily
   }
 })

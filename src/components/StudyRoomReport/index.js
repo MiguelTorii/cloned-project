@@ -128,6 +128,17 @@ const ReportIssue = ({
               fullWidth
               multiple
               onChange={handleSelectNames}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left"
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left"
+                },
+                getContentAnchorEl: null
+              }}
               renderValue={(selected) => (
                 <div className={classes.chipWrapper}>
                   {selected.map((value) => (

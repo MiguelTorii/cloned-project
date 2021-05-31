@@ -5,8 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
-import CreateShareLink from '../../containers/CreateShareLink';
-import PostTips from '../../components/PostTips';
+import CreateShareLink from '../../containers/CreatePostLayout';
+// import PostTips from '../../components/PostTips';
 
 type Props = {
   match: {
@@ -24,12 +24,12 @@ const CreateShareLinkPage = (props: Props) => {
       <CssBaseline />
       <Layout>
         <Grid container>
-          <Grid item xs={12} sm={12} md={9}>
+          <Grid item xs={12} sm={12} md={12}>
             <CreateShareLink sharelinkId={sharelinkId} />
           </Grid>
-          <Grid item xs={12} sm={12} md={3}>
+          {/* <Grid item xs={12} sm={12} md={3}>
             <PostTips type="shareLink" />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Layout>
     </main>

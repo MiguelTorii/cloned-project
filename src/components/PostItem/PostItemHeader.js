@@ -108,6 +108,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`)
     if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`)
     if (typeId === 6) pushTo(`/edit/question/${String(postId)}`)
+    if (typeId === 8) pushTo(`/edit/post/${String(postId)}`)
   };
 
   render() {

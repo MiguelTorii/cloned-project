@@ -31,14 +31,14 @@ type Image = {
   id: string,
   image: string,
   file: Object,
-  type: string,
+  type: string
 };
 
 type ImageUrl = {
   fullNoteUrl: string,
   note: string,
-  noteUrl: string,
-}
+  noteUrl: string
+};
 
 type Props = {
   classes: Object,
@@ -64,8 +64,17 @@ class UploadImages extends React.PureComponent<Props, State> {
     isDropzoneDisabled: false
   };
 
+  // componentDidMount() {
+  //   if (localStorage.getItem('note')) {
+  //     const note = JSON.parse(localStorage.getItem('note'))
+  //     if ('images' in note) {
+  //       this.setState({ images: note.images })
+  //     }
+  //   }
+  // }
+
   componentWillReceiveProps = async nextProps => {
-    const { firstLoad } = this.state 
+    const { firstLoad } = this.state
     if (!firstLoad) return
     const { notes } = nextProps
     notes.forEach(n => {
@@ -144,9 +153,9 @@ class UploadImages extends React.PureComponent<Props, State> {
   }
 
   handleDrop = acceptedFiles => {
-    this.setState({loading: true})
+    this.setState({ loading: true })
     acceptedFiles.forEach(async file => {
-      const compressedFile = 
+      const compressedFile =
         file.type === 'application/pdf' ? file : await this.compressImage(file)
       const url = URL.createObjectURL(compressedFile);
       const { path, type } = file;
@@ -171,11 +180,23 @@ class UploadImages extends React.PureComponent<Props, State> {
               }
             ]
           }), imageChange);
+
+          // const { images } = this.state
+          // if (localStorage.getItem('note')) {
+          //   const currentNote = JSON.parse(localStorage.getItem('note'))
+          //   currentNote.images = images
+          //   localStorage.setItem('note', JSON.stringify(currentNote))
+          // } else {
+          //   const note = {
+          //     images
+          //   }
+          //   localStorage.setItem('note', JSON.stringify(note));
+          // }
         });
     });
   };
 
-  handleDropRejected = (a) => {
+  handleDropRejected = () => {
     this.setState({ loading: false })
     const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar({

@@ -3,12 +3,12 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { TextValidator } from 'react-material-ui-form-validator';
 import FormControl from '@material-ui/core/FormControl';
-
 import { styles } from '../_styles/OutlinedTextValidator';
 
 type Props = {
   classes: Object,
   label: string,
+  placeholder: string,
   name: string,
   value: string,
   multiline?: boolean,
@@ -18,7 +18,9 @@ type Props = {
   errorMessages: Array<string>,
   disabled?: boolean,
   variant: string,
-  onChange: Function
+  onChange: Function,
+  labelClass: string,
+  inputClass: string
 };
 
 class OutlinedTextValidator extends React.PureComponent<Props> {
@@ -33,6 +35,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
     const {
       classes,
       label,
+      placeholder,
       name,
       value,
       multiline,
@@ -42,14 +45,24 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
       autoFocus,
       disabled,
       variant,
-      onChange
+      onChange,
+      labelClass,
+      inputClass
     } = this.props;
 
     return (
       <div className={classes.root}>
-        <FormControl variant="outlined" fullWidth>
+        <div className={labelClass}>{label}</div>
+        <FormControl
+          variant="outlined"
+          classes={{
+            root: classes.outlineInput
+          }}
+          fullWidth
+        >
           <TextValidator
-            label={label}
+            className={inputClass}
+            placeholder={placeholder}
             multiline={multiline}
             rows={rows}
             autoFocus={autoFocus}
