@@ -60,7 +60,8 @@ const ChatMessage = ({
   onImageLoaded,
   onStartVideoCall,
   onImageClick,
-  handleBlock
+  handleBlock,
+  isCommunityChat
 }: Props) => {
   const classes = useStyles()
 
@@ -277,7 +278,7 @@ const ChatMessage = ({
               >
                 {name}
               </Link>
-              {role && <TutorBadge text={role} />}
+              {isCommunityChat && role && <TutorBadge text={role} />}
               <Typography
                 className={cx(classes.createdAt)}
                 variant="caption"
