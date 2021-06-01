@@ -89,6 +89,7 @@ export const API_ROUTES = {
   STUDY_CIRCLE: `${API_URL}/study_circle`,
   COMMENT: `${API_URL}/comment`,
   REPORT: `${API_URL}/log/report`,
+  REPORT_REASONS: `${API_URL}/log/report/reasons`,
   FETCH_SCHOOLS: `${API_URL}/schools`,
   TWILIO_TOKEN: `${API_URL}/twilio/access_token`,
   SEARCH_USERS: `${API_URL}/search`,

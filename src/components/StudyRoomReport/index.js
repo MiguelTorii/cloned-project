@@ -1,5 +1,4 @@
-// @flow
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,19 +14,13 @@ import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
+import type { UserState } from '../../reducers/user';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 import Dialog from 'components/Dialog';
+import { report, getReasons } from '../../api/posts';
 import LoadImg from 'components/LoadImg';
 import ReportImage from 'assets/svg/report-done.svg';
-import type { UserState } from '../../reducers/user';
 import styles from '../_styles/StudyRoomReport';
-import { report } from '../../api/posts';
-import { reasonList, nameList } from './constants';
-
-const getValue = (value) => {
-  return nameList.filter(item => item.value === value)[0].text
-}
 
 type Props = {
   user: UserState,
@@ -39,6 +32,8 @@ const ReportIssue = ({
   user: {
     data: { userId }
   },
+  router,
+  profiles,
   classes,
   handleClose,
   open,
@@ -47,14 +42,30 @@ const ReportIssue = ({
   const [reported, setReported] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [selectedNames, setSelectedNames] = useState([])
-  // const [reasonList, setReasonList] = useState([]) // Load data from BE
 
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     const reasonList = await getReasons()
-  //     setReasonList(reasonList)
-  //   }
-  // }, [])
+  const names = useMemo(() => {
+    const filteredIds = Object.keys(profiles || []).filter(id => id !== userId)
+    return filteredIds.map(id => `${profiles[id].firstName} ${profiles[id].lastName}`)
+  }, [profiles, userId])
+
+  const nameList = useMemo(() => names.map(name => ({
+    value: name,
+    text: name,
+  })), [names])
+
+  const getValue = (value) => {
+    return nameList.filter(item => item.value === value)[0].text
+  }
+
+  const [reasonList, setReasonList] = useState([]) // Load data from BE
+
+  useEffect(() => {
+    const loadData = async () => {
+      const { report_reasons = [] } = await getReasons(2);
+      setReasonList(report_reasons);
+    }
+    loadData();
+  }, [])
 
   const handleSubmit = useCallback(async () => {
     setLoading(true)
@@ -63,7 +74,6 @@ const ReportIssue = ({
         reportCreatorId: userId,
         objectCreatorId: userId,
         reasonId: selectedReason,
-        objectId: Number(userId),
         reportTypeId: 2,
         description: '',
       });
@@ -190,17 +200,17 @@ const ReportIssue = ({
               onChange={handleSelectReason}
             >
               <MenuItem value='' className={classes.emptyOption} disabled />
-              {reasonList.map(item => (
+              {reasonList.map((item) => (
                 <MenuItem
                   className={classes.menuItem}
-                  value={item.value}
-                  key={`reason-item-${item.value}`}
+                  value={item.id}
+                  key={`reason-item-${item.id}`}
                 >
-                  {selectedReason === item.value
+                  {selectedReason === item.id
                     ? <CheckCircleIcon className={classes.mr1} />
                     : <RadioButtonUncheckedIcon className={classes.mr1} />
                   }
-                  {item.text}
+                  {item.reason}
                 </MenuItem>
               ))}
             </Select>

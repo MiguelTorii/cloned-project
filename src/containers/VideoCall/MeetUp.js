@@ -1334,6 +1334,7 @@ class MeetUp extends React.Component<Props, State> {
             selectedvideoinput={selectedvideoinput}
             selectedaudioinput={selectedaudioinput}
             openSettings={openSettings}
+            profiles={profiles}
           />
         </ErrorBoundary>
       </Fragment>

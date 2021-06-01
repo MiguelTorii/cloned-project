@@ -23,7 +23,8 @@ const DeviceSettings = ({
   selectedvideoinput,
   selectedaudioinput,
   audioinput,
-  videoinput
+  videoinput,
+  profiles,
 }) => {
   const [openReport, setOpenReport] = useState(false)
 
@@ -123,6 +124,7 @@ const DeviceSettings = ({
         </Button>
       </Box>
       <StudyRoomReport
+        profiles={profiles}
         open={openReport}
         handleClose={handleClose}
       />

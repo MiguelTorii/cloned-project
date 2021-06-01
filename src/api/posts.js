@@ -1138,6 +1138,13 @@ export const thankComment = async ({
   }
 };
 
+export const getReasons = async (reportTypeId: number) => {
+  return callApi({
+    url: `${API_ROUTES.REPORT_REASONS}/${reportTypeId}`,
+    method: 'GET'
+  });
+};
+
 export const updateComment = async(commentId, comment) => {
   return callApi({
     url: `${API_ROUTES.COMMENT}/${commentId}`,
