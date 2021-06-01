@@ -276,7 +276,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   }, [onClose, elapsed, totalIdleTime, flashcardId, reset])
 
   const renderSidebar = () => (
-    <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box display="flex" alignItems="center">
         <Box mr={2}>
           <IconSchool />
@@ -303,7 +303,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        <IconLeft />
+        {isExpanded ? <IconLeft /> : <IconRight /> }
       </IconButton>
     </Box>
   );
@@ -389,18 +389,9 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       <Slide in={isExpanded} direction="right">
         { renderSidebar() }
       </Slide>
-      <Box className={classes.mainContent}>
+      <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
         { renderContent() }
       </Box>
-      { !isExpanded && (
-        <IconButton
-          className={clsx(classes.expandButton, classes.bodyButton)}
-          onClick={handleExpand}
-        >
-          <IconRight />
-        </IconButton>
-      )}
-
       <Dialog
         okTitle="Yes"
         onCancel={handleCloseConfirmModal}

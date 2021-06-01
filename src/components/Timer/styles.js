@@ -20,5 +20,8 @@ export default makeStyles((theme) => ({
     '&:disabled': {
       color: 'white'
     }
+  },
+  timerSelect: {
+    fontSize: 32
   }
 }));

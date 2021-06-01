@@ -8,6 +8,10 @@ export default makeStyles((theme) => ({
     width: 330,
     position: 'fixed'
   },
+  unExpandedSidebar: {
+    transform: 'translateX(-300px) !important',
+    visibility: 'visible !important'
+  },
   mainContent: {
     padding: theme.spacing(5, 6),
     backgroundColor: '#28292C',
@@ -15,6 +19,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     minHeight: '100vh',
     userSelect: 'none',
+    marginLeft: 30,
     '&.expanded': {
       marginLeft: 330,
       width: 'calc(100% - 330px)'
@@ -46,6 +51,7 @@ export default makeStyles((theme) => ({
     marginLeft: theme.spacing(3)
   },
   matchQuestionSelect: {
+    borderRadius: 0,
     height: 24,
     maxWidth: 60,
     minWidth: 60,
@@ -97,6 +103,9 @@ export default makeStyles((theme) => ({
   iconImage: {
     cursor: 'pointer',
     verticalAlign: 'middle',
-    marginLeft: theme.spacing(1)
+    maxWidth: 80,
+    maxHeight: 60,
+    borderRadius: 8,
+    marginRight: theme.spacing(1)
   }
 }));

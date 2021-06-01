@@ -24,7 +24,7 @@ import IconCheck from '@material-ui/icons/Check';
 import ImageCorrect from 'assets/svg/answer-correct.svg';
 import ImageWrong from 'assets/svg/answer-wrong.svg';
 import IconRetry from '@material-ui/icons/Replay';
-import Timer from 'components/Timer';
+import Timer, { TIMER_STATUS } from 'components/Timer';
 import Link from '@material-ui/core/Link';
 import IconBack from '@material-ui/icons/ChevronLeft';
 import IconImage from '@material-ui/icons/CropOriginal';
@@ -56,6 +56,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   const [isValidated, setIsValidated] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [timerStatus, setTimerStatus] = useState(TIMER_STATUS.INITIALIZED);
 
   // Data Points
   const elapsed = useRef(0);
@@ -190,11 +191,13 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   const handleCheckAnswers = useCallback(() => {
     setIsValidated(true);
+    setTimerStatus(TIMER_STATUS.PAUSED);
   }, []);
 
   const handleRetryQuiz = useCallback(() => {
     setIsValidated(false);
     initQuizData(cards.length);
+    setTimerStatus(TIMER_STATUS.STARTED);
   }, [initQuizData, cards]);
 
   const handleBack = useCallback(() => {
@@ -231,7 +234,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   // Rendering Helpers
   const renderSidebar = () => (
-    <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
         <Link
           component="button"
@@ -252,13 +255,13 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
         </Typography>
       </Box>
       <Box mt={4}>
-        <Timer />
+        <Timer status={timerStatus} onSetStatus={setTimerStatus} />
       </Box>
       <IconButton
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        <IconLeft />
+        {isExpanded ? <IconLeft /> : <IconRight />}
       </IconButton>
     </Box>
   );
@@ -267,8 +270,10 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
     if (!imageUrl) return null;
 
     return (
-      <IconImage
+      <img
+        src={imageUrl}
         className={classes.iconImage}
+        alt="Flashcard Thumbnail"
         onClick={(event) => handleViewImage(event, imageUrl)}
       />
     );
@@ -313,8 +318,8 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
             </Select>
             <Typography className={classes.matchQuestionText}>
               <b>{ index + 1 }.&nbsp;</b>
-              {extractTextFromHtml(cards[id].question)}
               {renderImageIcon(cards[id].questionImage)}
+              {extractTextFromHtml(cards[id].question)}
             </Typography>
           </Box>
         ))}
@@ -324,8 +329,8 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
           <Box key={id} mb={2}>
             <Typography>
               <b>{ englishIdFromNumber(index) }.&nbsp;</b>
-              {extractTextFromHtml(cards[id].answer)}
               {renderImageIcon(cards[id].answerImage)}
+              {extractTextFromHtml(cards[id].answer)}
             </Typography>
           </Box>
         ))}
@@ -338,8 +343,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
       {quizData.choice.map((item, index) => (
         <Grid item key={item.qId}>
           <Typography paragraph>
-            <b>{ index + 1 }. {extractTextFromHtml(cards[item.qId].question)}</b>
-            {renderImageIcon(cards[item.qId].questionImage)}
+            <b>{ index + 1 }. {renderImageIcon(cards[item.qId].questionImage)} {extractTextFromHtml(cards[item.qId].question)}</b>
           </Typography>
           <RadioGroup
             onChange={(event) => handleChoiceSelectAnswer(item.qId, parseInt(event.target.value))}
@@ -368,8 +372,8 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
                     control={<ChoiceRadio />}
                     label={
                       <>
-                        {extractTextFromHtml(cards[id - 1].answer)}
                         {renderImageIcon(cards[id - 1].answerImage)}
+                        {extractTextFromHtml(cards[id - 1].answer)}
                       </>
                     }
                     disabled={isValidated}
@@ -422,8 +426,8 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
             </GradientButton>
             {unansweredCount > 0 && (
               <Box ml={3}>
-                <Typography>
-                  { unansweredCount } unanswered questions.
+                <Typography color="error">
+                  { unansweredCount } unanswered questions. Answer all questions to submit.
                 </Typography>
               </Box>
             )}
@@ -449,14 +453,6 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
       <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
         { renderContent() }
       </Box>
-      { !isExpanded && (
-        <IconButton
-          className={clsx(classes.expandButton, classes.bodyButton)}
-          onClick={handleExpand}
-        >
-          <IconRight />
-        </IconButton>
-      )}
       <ImageDialog
         open={isImageModalOpen}
         imageUrl={previewImage}

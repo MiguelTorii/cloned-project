@@ -6,14 +6,24 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(10, 5),
     minHeight: '100vh',
     width: 330,
-    position: 'relative'
+    position: 'fixed'
+  },
+  unExpandedSidebar: {
+    transform: 'translateX(-300px) !important',
+    visibility: 'visible !important'
   },
   mainContent: {
     padding: theme.spacing(5, 6),
     backgroundColor: '#28292C',
     flexGrow: 1,
     width: '100%',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    userSelect: 'none',
+    marginLeft: 30,
+    '&.expanded': {
+      marginLeft: 330,
+      width: 'calc(100% - 330px)'
+    }
   },
   expandButton: {
     position: 'absolute',

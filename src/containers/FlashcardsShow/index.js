@@ -451,7 +451,7 @@ const FlashcardsShow = () => {
       <Dialog
         fullScreen
         className={classes.reviewModal}
-        contentClassName={classes.reviewModalContent}
+        contentClassName={clsx(classes.reviewModalContent, classes.matchModalContent)}
         open={isInMatchGame}
         onCancel={handleCloseMatchGame}
         showHeader={false}

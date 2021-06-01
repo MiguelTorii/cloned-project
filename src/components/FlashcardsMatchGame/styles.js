@@ -9,6 +9,10 @@ export default makeStyles((theme) => ({
     position: 'fixed',
     userSelect: 'none'
   },
+  unExpandedSidebar: {
+    transform: 'translateX(-300px) !important',
+    visibility: 'visible !important'
+  },
   mainContent: {
     padding: theme.spacing(6, 4, 3, 4),
     backgroundColor: '#28292C',
@@ -16,6 +20,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: '100vh',
     userSelect: 'none',
+    marginLeft: 30,
     '&.expanded': {
       marginLeft: 330,
       width: 'calc(100% - 330px)'

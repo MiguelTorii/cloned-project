@@ -264,7 +264,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
 
   // Rendering Helpers
   const renderSidebar = () => (
-    <Box className={clsx(classes.sidebar, !isExpanded && classes.hidden)}>
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
         <Link
           component="button"
@@ -327,7 +327,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        <IconLeft />
+        {isExpanded ? <IconLeft /> : <IconRight /> }
       </IconButton>
     </Box>
   );
@@ -519,14 +519,6 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
         )}
         onClose={handleCloseShareModal}
       />
-      { !isExpanded && (
-        <IconButton
-          className={clsx(classes.expandButton, classes.bodyButton)}
-          onClick={handleExpand}
-        >
-          <IconRight />
-        </IconButton>
-      )}
     </Box>
   );
 };

@@ -79,6 +79,9 @@ export default makeStyles((theme) => ({
   reviewModalContent: {
     padding: '0 !important'
   },
+  matchModalContent: {
+    overflow: 'hidden'
+  },
   reviewModal: {
     borderRadius: 0
   }
