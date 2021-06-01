@@ -55,9 +55,11 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
     }
   }, [local, isLoading, selectedCourse])
 
-  const handleSelect = id => () => {
-    setCurrentChannel(null)
-    setSelectedCourse(id)
+  const handleSelect = course => () => {
+    if (course.id !== selectedCourse?.id) {
+      setCurrentChannel(null)
+      setSelectedCourse(course)
+    }
   }
 
   return (
