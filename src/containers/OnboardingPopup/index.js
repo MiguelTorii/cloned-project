@@ -1,8 +1,9 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core';
+import { getCampaign } from 'api/campaign';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
@@ -30,6 +31,16 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
+  const [campaign, setCampaign] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      const aCampaign = await getCampaign({ campaignId: 9 });
+      setCampaign(aCampaign);
+    }
+
+    init()
+  }, [])
 
   useEffect(() => {
     if (
@@ -39,6 +50,10 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
       setOpen(true)
     }
   }, [viewedTooltips])
+
+  const visiabled = useMemo(() => {
+    return campaign?.variation_key && campaign?.variation_key !== 'hidden'
+  }, [campaign])
 
   const closePopup = () => {
     setOpen(false);
@@ -57,7 +72,7 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
     <Dialog
       className={classes.dialog}
       contentClassName={classes.dialogContent}
-      open={open}
+      open={open && visiabled}
       showHeader={false}
       onCancel={closePopup}
     >

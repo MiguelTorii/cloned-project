@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState, useCallback } from 'react';
-import { getClassmates } from 'api/chat'
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { getClassmates } from 'api/chat';
+import { getCampaign } from 'api/campaign';
 import List from '@material-ui/core/List';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -25,6 +26,7 @@ const StudyRoomInvite = ({
   const classes = useStyles()
 
   const [searchKey, setSearchKey] = useState('')
+  const [campaign, setCampaign] = useState(null)
   const [classmates, setClassmates] = useState([])
 
   useEffect(() => {
@@ -54,6 +56,19 @@ const StudyRoomInvite = ({
     }
   }, [classList.length, classList, userId])
 
+  useEffect(() => {
+    const init = async () => {
+      const aCampaign = await getCampaign({ campaignId: 9 })
+      setCampaign(aCampaign);
+    }
+
+    init()
+  }, [])
+
+  const visiabled = useMemo(() => {
+    return campaign?.variation_key && campaign?.variation_key !== 'hidden'
+  }, [campaign])
+
   const handleChange = useCallback((e) => {
     setSearchKey(e.target.value)
   }, [setSearchKey])
@@ -77,7 +92,7 @@ const StudyRoomInvite = ({
         onCancel={handleClose}
         maxWidth='sm'
         fullWidth
-        open={open}
+        open={open && visiabled}
         title='Invite to Study Room'
       >
         <div className={classes.searchWrapper}>
@@ -105,7 +120,7 @@ const StudyRoomInvite = ({
 
             return (
               <Classmate
-                videoEnabled={true}
+                videoEnabled
                 isInvited={isInvited}
                 key={classmate.userId}
                 classmate={classmate}
