@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, memo, useCallback, useMemo, Fragment } from 'react'
+import React, { useState, useEffect, memo, useCallback, useMemo, Fragment } from 'react'
 import classNames from 'classnames';
 import queryString from 'query-string'
 
@@ -19,6 +19,7 @@ import HomeItem from 'components/MainLayout/HomeItem'
 import ClassList from 'components/ClassList'
 import CustomSwitch from 'components/MainLayout/Switch';
 import Tooltip from 'containers/Tooltip';
+import { getCampaign } from 'api/campaign';
 
 import Avatar from '@material-ui/core/Avatar';
 import { ReactComponent as ClassFeedIconOff } from 'assets/svg/class-feed-icon-off.svg';
@@ -85,6 +86,7 @@ const Drawer = ({
   const classes = useStyles()
   // const [openClassmates, setOpenClassmates] = useState(null)
   const [openOneTouchSend, setOpenOneTouchSend] = useState(false)
+  const [campaign, setCampaign] = useState(null)
 
   const handleOpenOneTouchSend = useCallback(() => setOpenOneTouchSend(true),[])
   const handleCloseOneTouchSend = useCallback(() => setOpenOneTouchSend(false),[])
@@ -107,6 +109,19 @@ const Drawer = ({
   // }
   // return ''
   // }, [search, userClasses.classList])
+
+  useEffect(() => {
+    const init = async () => {
+      const aCampaign = await getCampaign({ campaignId: 9 })
+      setCampaign(aCampaign);
+    }
+
+    init()
+  }, [])
+
+  const visiabled = useMemo(() => {
+    return campaign?.variation_key && campaign?.variation_key !== 'hidden'
+  }, [campaign])
 
 
   const handleOpenBlog = useCallback(() => {
@@ -370,7 +385,7 @@ const Drawer = ({
           OffIcon={<CommunityOff />}
           listItemClass={classes.otherPath}
         /> */}
-        <Tooltip
+        {visiabled && <Tooltip
           id={9059}
           placement="right"
           variant="secondary"
@@ -386,7 +401,7 @@ const Drawer = ({
             primaryText='Study Room'
             OffIcon={<OffStudyRoom />}
           />
-        </Tooltip>
+        </Tooltip>}
         {expertMode && <DrawerItem
           OnIcon={<OneTouchSendIconOn />}
           primaryText='One-Touch Send'
