@@ -104,7 +104,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     return () => {
       clearInterval(timer.current);
     }
-  }, [flashcardId, getElapsedTime, getLastActiveTime, getRemainingTime]);
+  });
 
   // Effects
   useEffect(() => {
@@ -129,6 +129,22 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       store.set(`flashcards-${flashcardId}`, cardsLevel);
     }
   }, [cardsLevel, flashcardId]);
+
+  useEffect(() => {
+    currentCardList.length > 0 && elapsed.current && logEvent({
+      event: 'Flashcard Review- Viewed',
+      props: {
+        flashcardId,
+        cardId: currentCardList[currentCardIndex].id,
+        elapsed: elapsed.current,
+        total_idle_time: totalIdleTime.current,
+        effective_time: elapsed.current - totalIdleTime.current,
+        platform: 'Web',
+      }
+    });
+    reset()
+    // eslint-disable-next-line
+  }, [flashcardId, currentCardList, currentCardIndex])
 
   const initializeTimer = useCallback(() => {
     elapsed.current = 0
@@ -215,7 +231,8 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     sessionId,
     flashcardId,
     reset,
-    initializeTimer]);
+    initializeTimer
+  ]);
 
   const handleShuffleDeck = useCallback(() => {
     shuffleArray(currentCardList);

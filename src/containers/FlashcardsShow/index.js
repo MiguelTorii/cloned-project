@@ -161,33 +161,21 @@ const FlashcardsShow = () => {
     }, INTERVAL.SECOND);
 
     return () => {
-      try {
-        clearInterval(timer.current);
-        !isLoadingFlashcards &&
-        data.feedId &&
-        logEvent({
-          event: 'Post- Time Spent',
-          props: {
-            feedId: data.feedId,
-            elapsed: elapsed.current,
-            total_idle_time: totalIdleTime.current,
-            effective_time: elapsed.current - totalIdleTime.current,
-            platform: 'Web',
-          }
-        });
-        reset();
-        initializeTimer();
-      } catch (err) {}
+      clearInterval(timer.current);
+      logEvent({
+        event: 'Post- Time Spent',
+        props: {
+          feedId: data.feedId,
+          elapsed: elapsed.current,
+          total_idle_time: totalIdleTime.current,
+          effective_time: elapsed.current - totalIdleTime.current,
+          platform: 'Web',
+        }
+      });
+      reset();
+      initializeTimer();
     }
-  }, [
-    getElapsedTime,
-    getLastActiveTime,
-    getRemainingTime,
-    reset,
-    initializeTimer,
-    isLoadingFlashcards,
-    data.feedId,
-  ]);
+  });
 
   // Event Handlers
   const handleActionEdit = useCallback(() => {
