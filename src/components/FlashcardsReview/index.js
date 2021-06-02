@@ -235,8 +235,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   ]);
 
   const handleShuffleDeck = useCallback(() => {
-    shuffleArray(currentCardList);
-    setCurrentCardList([...currentCardList]);
+    setCurrentCardList(shuffleArray(currentCardList));
     setCurrentCardIndex(0);
   }, [currentCardList]);
 

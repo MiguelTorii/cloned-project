@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import useStyles from './styles';
 import parse from 'html-react-parser';
 import { ANSWER_LEVELS } from './index';
+import ClickableImage from 'components/ClickableImage';
 
 const CardBoardContent = (
   {
@@ -29,29 +30,32 @@ const CardBoardContent = (
       )}
       <div className={classes.cardBoardContent}>
         <Box display="flex" width="100%" height="100%" alignItems="center">
-          { image && (
+          {image && (
             <Box
-              width={250}
-              height={250}
+              width={content ? 250 : '100%'}
+              height={content ? 250 : '100%'}
               display="flex"
+              justifyContent="center"
               alignItems="center"
               mr={3}
             >
-              <img src={image} className={classes.cardBoardImage} alt="Flashcard" />
+              <ClickableImage src={image} className={classes.cardBoardImage} alt="Flashcard" />
             </Box>
           )}
-          <Box
-            className={
-              clsx(
-                classes.cardBoardTextContainer,
-                content.length < 200 && 'large-font'
-              )
-            }
-          >
-            <div>
-              { parse(content) }
-            </div>
-          </Box>
+          {content && (
+            <Box
+              className={
+                clsx(
+                  classes.cardBoardTextContainer,
+                  content.length < 200 && 'large-font'
+                )
+              }
+            >
+              <div>
+                { parse(content) }
+              </div>
+            </Box>
+          )}
         </Box>
       </div>
       { !isQuestion && (

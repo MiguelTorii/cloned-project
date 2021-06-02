@@ -27,7 +27,6 @@ import IconRetry from '@material-ui/icons/Replay';
 import Timer, { TIMER_STATUS } from 'components/Timer';
 import Link from '@material-ui/core/Link';
 import IconBack from '@material-ui/icons/ChevronLeft';
-import IconImage from '@material-ui/icons/CropOriginal';
 import ImageDialog from 'components/ImageDialog';
 import { TIMEOUT } from 'constants/common';
 import { useIdleTimer } from 'react-idle-timer';
