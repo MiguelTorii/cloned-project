@@ -109,8 +109,7 @@ const CreatePostSt = ({
   const [errorDialog, setErrorDialog] = useState(false)
   const [anonymousActive, setAnonymousActive] = useState(false)
   const [changed, setChanged] = useState(false)
-  const [errorBody, setErrorBody] = useState('')
-  const [errorTitle, setErrorTitle] = useState('')
+  const [error, setError] = useState({ title: '', body: '' })
   const [postToolbar, setPostToolbar] = useState(null)
   const [editor, setEditor] = useState(null)
 
@@ -222,8 +221,10 @@ const CreatePostSt = ({
     } catch (err) {
       console.log('err', err)
       setLoading(false)
-      setErrorBody('Please try again')
-      setErrorTitle('Unknown Error')
+      setError({
+        title: 'Unknown Error',
+        body: 'Please try again',
+      })
       setErrorDialog(true)
     }
   }, [body, classes.stackbar, enqueueSnackbar, handlePush, postId, classId, title])
@@ -231,6 +232,25 @@ const CreatePostSt = ({
   const createPostSt = useCallback(async () => {
     setLoading(true)
     try {
+      if (canBatchPost && !classList.length) {
+        setLoading(false)
+        setError({
+          title: 'Select one more classes',
+          body: 'Please try again',
+        })
+        setErrorDialog(true)
+        return
+      }
+      if (!canBatchPost && !classId && !sectionId) {
+        setLoading(false)
+        setError({
+          title: 'Choose a class',
+          body: 'Please try again',
+        })
+        setErrorDialog(true)
+        return
+      }
+
       const {
         points,
         user: { firstName },
@@ -259,8 +279,10 @@ const CreatePostSt = ({
         })
         if (hasError || resClasses.length === 0) {
           setLoading(false)
-          setErrorBody('Please try again')
-          setErrorTitle('Error creating posts')
+          setError({
+            title: 'Error creating posts',
+            body: 'Please try again',
+          })
           setErrorDialog(true)
           return
         }
@@ -305,9 +327,6 @@ const CreatePostSt = ({
       setLoading(false)
       setTitle('')
       setBody('')
-      // setErrorBody('Please try again')
-      // setErrorTitle('Unknown Error')
-      // setErrorDialog(true)
     }
   }, [anonymousActive, body, canBatchPost, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
 
@@ -354,8 +373,7 @@ const CreatePostSt = ({
 
   const handleErrorDialogClose = useCallback(() => {
     setErrorDialog(false)
-    setErrorTitle('')
-    setErrorBody('')
+    setError({ title: '', body: '' })
   }, [])
 
   const toggleAnonymousActive = useCallback(() => {
@@ -403,8 +421,8 @@ const CreatePostSt = ({
       <ErrorBoundary>
         <SimpleErrorDialog
           open={errorDialog}
-          title={errorTitle}
-          body={errorBody}
+          title={error['title']}
+          body={error['body']}
           handleClose={handleErrorDialogClose}
         />
       </ErrorBoundary>

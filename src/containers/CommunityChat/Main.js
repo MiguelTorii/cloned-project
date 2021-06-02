@@ -90,7 +90,7 @@ const Main = ({
 
   const handleScrollToBottom = useCallback(() => {
     try {
-      if (end.current) {
+      if (scroll && end.current) {
         end.current.scrollIntoView({ behavior: 'instant' })
       }
     } catch (err) {
@@ -141,7 +141,9 @@ const Main = ({
         setMessages(p.items)
         setPaginator(p)
         setHasMore(!(p.items.length < 10))
-        handleScrollToBottom()
+        if (end.current) {
+          end.current.scrollIntoView({ behavior: 'instant' })
+        }
 
         if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', member => {
