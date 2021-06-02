@@ -337,6 +337,19 @@ export const handleInitChat = () =>
 
       const unreadCount = channel => {
         try{
+          if (channel.lastMessage?.index === 0 && channel.lastConsumedMessageIndex === 0) {
+            return 0
+          }
+
+          if (channel.lastMessage?.index > -1) {
+            if (channel.lastConsumedMessageIndex === 0) {
+              return channel.lastMessage.index - channel.lastConsumedMessageIndex
+            }
+            if (!channel.lastConsumedMessageIndex) {
+              return channel.lastMessage.index + 1
+            }
+          }
+
           if (!channel.lastConsumedMessageIndex || !channel.lastMessage) return 0
           return channel.lastMessage.index - channel.lastConsumedMessageIndex
         } finally {}
