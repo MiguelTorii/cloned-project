@@ -147,7 +147,8 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
 
   const loadStats = useCallback(async () => {
     setIsLoadingStat(true);
-    setMatchStat(await apiGetMatchStats(flashcardId));
+    const rsp = await apiGetMatchStats(flashcardId);
+    setMatchStat(rsp?.stats);
     setIsLoadingStat(false);
   }, [flashcardId]);
 

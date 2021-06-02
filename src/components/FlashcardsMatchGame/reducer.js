@@ -243,7 +243,8 @@ const reducer = (state, action) => {
         logs: {
           $push: [{
             flashcard_id: matchCards[index1].cardId,
-            matched_flashcard_id: matchCards[index2].cardId
+            matched_flashcard_id: matchCards[index2].cardId,
+            match_time: moment().utc().valueOf()
           }]
         }
       })

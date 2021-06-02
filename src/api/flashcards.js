@@ -78,13 +78,19 @@ export const apiEndMatchGame = async (
  * @param flashcardId: number
  * @response
  * {
- *   high_score: number
+ *   stats: {
+ *     high_score: number
+ *   }
  * }
  */
 export const apiGetMatchStats = async (
   flashcardId
 ) => {
-  return { high_score: null };
+  return {
+    stats: {
+      high_score: null
+    }
+  };
   // return callApi({
   //   url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
   //   method: 'GET'
