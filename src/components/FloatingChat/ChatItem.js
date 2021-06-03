@@ -1,28 +1,27 @@
 // @flow
-import React, { Fragment } from 'react';
-import type { Node } from 'react';
-import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Divider from '@material-ui/core/Divider';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Badge from '@material-ui/core/Badge';
-import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
-import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-import VideoCamIcon from '@material-ui/icons/Videocam';
-import SettingsIcon from '@material-ui/icons/Settings';
-import RemoveIcon from '@material-ui/icons/Remove';
-import ClearIcon from '@material-ui/icons/Clear';
-import GroupIcon from '@material-ui/icons/Group';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import Dialog from '../Dialog';
+import React, { Fragment } from 'react'
+import type { Node } from 'react'
+import { withRouter } from 'react-router-dom';
+import cx from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import Divider from '@material-ui/core/Divider'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Badge from '@material-ui/core/Badge'
+import SettingsIcon from '@material-ui/icons/Settings'
+import RemoveIcon from '@material-ui/icons/Remove'
+import ClearIcon from '@material-ui/icons/Clear'
+import EditIcon from '@material-ui/icons/Edit'
+import { ReactComponent as VideoCameraIcon } from 'assets/svg/float_chat_camera.svg'
+import { ReactComponent as ExpandChatIcon } from 'assets/svg/float_chat_collapse.svg'
+import { ReactComponent as CollapseChatIcon } from 'assets/svg/float_chat_expand.svg'
+import Dialog from '../Dialog'
 
-import { styles } from '../_styles/FloatingChat/ChatItem';
+import styles from '../_styles/FloatingChat/ChatItem'
 
 type Props = {
   classes: Object,
@@ -51,40 +50,52 @@ class ChatItem extends React.PureComponent<Props, State> {
   state = {
     anchorEl: null,
     openRemove: false
-  };
+  }
 
 
   handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+    this.setState({ anchorEl: event.currentTarget })
+  }
 
   handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+    this.setState({ anchorEl: null })
+  }
 
   handleRemoveClick = () => {
-    this.handleClose();
-    this.setState({ openRemove: true });
-  };
+    this.handleClose()
+    this.setState({ openRemove: true })
+  }
 
   handleRemoveClose = () => {
-    this.setState({ openRemove: false });
-  };
+    this.setState({ openRemove: false })
+  }
 
   handleRemoveSubmit = () => {
-    this.setState({ openRemove: false });
-    const { onDelete } = this.props;
-    onDelete();
-  };
+    this.setState({ openRemove: false })
+    const { onDelete } = this.props
+    onDelete()
+  }
 
   handleViewMembers = () => {
-    const { onViewMembers } = this.props;
-    this.handleClose();
-    onViewMembers();
-  };
+    const { onViewMembers } = this.props
+    this.handleClose()
+    onViewMembers()
+  }
+
+  handleExpandChat = () => {
+    const { onExpand } = this.props
+    onExpand()
+    this.handleClose()
+  }
+
+  handleGotoChat = () => {
+    const { channel, setCurrentChannel, history } = this.props
+    setCurrentChannel(channel)
+    history.push('/chat')
+  }
 
   // eslint-disable-next-line no-undef
-  // el: HTMLDivElement;
+  // el: HTMLDivElement
 
   render() {
     const {
@@ -100,13 +111,13 @@ class ChatItem extends React.PureComponent<Props, State> {
       onClose,
       onStartVideoCall,
       onExpand
-    } = this.props;
-    const { anchorEl, openRemove } = this.state;
+    } = this.props
+    const { anchorEl, openRemove } = this.state
     return (
       <Fragment>
         <div
         // ref={node => {
-        //   this.el = node;
+        //   this.el = node
         // }}
         >
           <Paper
@@ -120,7 +131,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             <Badge color="secondary" badgeContent={unread}>
               <span />
             </Badge>
-            <div className={classes.header}>
+            <div className={cx(classes.header, unread && classes.notificationHeader)}>
               <ButtonBase className={classes.headerTitle} onClick={onOpen}>
                 <Typography
                   variant="h6"
@@ -130,23 +141,23 @@ class ChatItem extends React.PureComponent<Props, State> {
                   )}
                   noWrap
                 >
-                  {title}
+                  {!newChannel ? title : 'New Chat'}
                 </Typography>
               </ButtonBase>
               {open ? (
                 <Fragment>
                   <ButtonBase className={classes.iconButton} onClick={onExpand}>
                     {expanded ? (
-                      <UnfoldLessIcon className={classes.expandIcon}  />
+                      <ExpandChatIcon className={classes.expandIcon}  />
                     ) : (
-                      <UnfoldMoreIcon className={classes.expandIcon} />
+                      <CollapseChatIcon className={classes.expandIcon} />
                     )}
                   </ButtonBase>
                   {!newChannel && videoEnabled && <ButtonBase
                     className={classes.iconButton}
                     onClick={onStartVideoCall}
                   >
-                    <VideoCamIcon className={classes.icon} />
+                    <VideoCameraIcon className={classes.icon} />
                   </ButtonBase>}
                   {!newChannel && <ButtonBase
                     className={classes.iconButton}
@@ -154,11 +165,15 @@ class ChatItem extends React.PureComponent<Props, State> {
                     aria-haspopup="true"
                     onClick={this.handleClick}
                   >
-                    <SettingsIcon className={classes.icon} />
+                    <SettingsIcon className={cx(classes.icon, classes.settingIcon)} />
                   </ButtonBase>}
-                  <ButtonBase className={classes.iconButton} onClick={onOpen}>
-                    <RemoveIcon className={classes.icon} />
-                  </ButtonBase>
+                  { !newChannel
+                    ? <ButtonBase className={classes.iconButton} onClick={onOpen}>
+                      <RemoveIcon className={classes.icon} />
+                    </ButtonBase>
+                    : <ButtonBase className={classes.iconButton} onClick={onClose}>
+                      <ClearIcon className={classes.icon} />
+                    </ButtonBase>}
                 </Fragment>
               ) : (
                 <ButtonBase className={classes.iconButton} onClick={onClose}>
@@ -185,10 +200,13 @@ class ChatItem extends React.PureComponent<Props, State> {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
+          <MenuItem onClick={this.handleGotoChat}>
+            Go to Chat
+          </MenuItem>
+          <MenuItem onClick={this.handleExpandChat}>
+            {expanded ? 'Expand Chat' : 'Collapse Chat'}
+          </MenuItem>
           <MenuItem onClick={this.handleViewMembers}>
-            <ListItemIcon>
-              <GroupIcon />
-            </ListItemIcon>
             Members
           </MenuItem>
           {false && (
@@ -199,11 +217,11 @@ class ChatItem extends React.PureComponent<Props, State> {
               Edit
             </MenuItem>
           )}
-          <MenuItem onClick={this.handleRemoveClick}>
-            <ListItemIcon>
-              <DeleteForeverIcon />
-            </ListItemIcon>
-            Remove
+          <MenuItem
+            className={classes.delete}
+            onClick={this.handleRemoveClick}
+          >
+            Delete
           </MenuItem>
         </Menu>
         <Dialog
@@ -228,8 +246,8 @@ class ChatItem extends React.PureComponent<Props, State> {
           </Typography>
         </Dialog>
       </Fragment>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(ChatItem);
+export default withStyles(styles)(withRouter(ChatItem))

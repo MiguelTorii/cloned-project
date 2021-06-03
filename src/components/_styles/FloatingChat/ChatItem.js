@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export default theme => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,
@@ -16,29 +16,38 @@ export const styles = theme => ({
   },
   paperOpen: {
     height: 400,
-    width: 300
+    width: 300,
+    backgroundColor: theme.circleIn.palette.floatChatBackground
   },
   paperExpanded: {
     height: 500,
     width: 500
   },
   header: {
-    background: '#C7D3DA',
+    background: theme.circleIn.palette.floatChatHeader,
     color: theme.circleIn.palette.normalButtonText1,
     display: 'flex',
     height: 40,
   },
+  notificationHeader: {
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'
+  },
   icon: {
     color: theme.circleIn.palette.normalButtonText1,
+  },
+  delete: {
+    color: theme.circleIn.palette.danger
   },
   headerTitle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1.5),
     height: 40
   },
   title: {
-    maxWidth: 120
+    maxWidth: 120,
+    fontWeight: 700,
+    fontSize: 18
   },
   titleExpanded: {
     maxWidth: 320
@@ -70,7 +79,9 @@ export const styles = theme => ({
     zIndex: 2100
   },
   expandIcon: {
-    transform: 'rotate(45deg)',
     color: theme.circleIn.palette.normalButtonText1,
+  },
+  settingIcon: {
+    width: 20
   }
 });

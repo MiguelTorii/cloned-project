@@ -13,9 +13,11 @@ import usePrevious from 'hooks/usePrevious'
 import ChatListItem from 'components/ChatListItem';
 import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
-import moment from 'moment'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import moment from 'moment';
 import * as OnboardingActions from 'actions/onboarding';
+import LoadImg from 'components/LoadImg';
+import FloatEmptyChat from 'assets/svg/float_empty_chat.svg';
+import FloatLoadingChat from 'assets/svg/float_chat_loading.svg';
 import withRoot from '../../withRoot';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -72,7 +74,8 @@ type Props = {
   handleNewChannel: Function,
   push: Function,
   onboardingListVisible: boolean,
-  getOnboardingList: Function
+  getOnboardingList: Function,
+  setCurrentChannel: Function
   // markAsCompleted: Function
 };
 
@@ -92,6 +95,7 @@ const FloatingChat = ({
   enqueueSnackbarAction,
   updateTitleAction,
   onboardingListVisible,
+  setCurrentChannel,
   // markAsCompleted,
   getOnboardingList
 }: Props) => {
@@ -255,6 +259,7 @@ const FloatingChat = ({
 
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel)
+    setCurrentChannel(channel)
   }
 
   const handleChannelCreated = ({
@@ -295,6 +300,7 @@ const FloatingChat = ({
               getMembers={getMembers}
               user={user}
               channel={item}
+              setCurrentChannel={setCurrentChannel}
               localChannel={local[item.sid]}
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
@@ -327,10 +333,20 @@ const FloatingChat = ({
           >
             {channelList.length === 0 ? (
               <div className={classes.noMessages}>
-                <Typography variant="subtitle1" align="center">Setup a group chat for the class to hold conversations and share important info</Typography>
-                {isLoading && <div className={classes.loading}>
-                  <CircularProgress />
-                </div>}
+                {!isLoading
+                  ? <>
+                    <LoadImg url={FloatEmptyChat} />
+                    <Typography variant="subtitle1" align="center">
+                      You have no chats yet. Start a conversation with a classmate!
+                    </Typography>
+                  </>
+                  : <div className={classes.loading}>
+                    <LoadImg url={FloatLoadingChat} />
+                    <Typography variant="subtitle1" align="center">
+                      Loading chats...
+                    </Typography>
+                  </div>
+                }
               </div>
             ) : (
               channelList.map(c => (
@@ -378,6 +394,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,
       handleNewChannel: chatActions.handleNewChannel,
+      setCurrentChannel: chatActions.setCurrentChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
       // markAsCompleted: OnboardingActions.markAsCompleted,

@@ -37,6 +37,11 @@ export const styles = theme => ({
     minWidth: 0,
     textAlign: 'left'
   },
+  lastMessage: {
+    '& > p': {
+      margin: 0
+    }
+  },
   margin: {
     margin: theme.spacing(2)
   }

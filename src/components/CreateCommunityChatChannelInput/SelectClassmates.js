@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 
 import React from 'react';
@@ -67,13 +68,16 @@ function Control({ selectProps, innerProps, innerRef, children }) {
       ...otherTextFieldProps
     },
     classes,
+    isFloatChat,
     searchClassmate
   } = selectProps
 
   return (
     <TextField
       classes={{
-        root: searchClassmate && classes.searchInput
+        root: searchClassmate && !isFloatChat
+          ? classes.searchInput
+          : classes.floatChatSearchInput
       }}
       fullWidth
       variant="outlined"
@@ -87,7 +91,12 @@ function Control({ selectProps, innerProps, innerRef, children }) {
             positionStart: searchClassmate && classes.startIcon
           }}
         >
-          {searchClassmate ? <ChatSearchIcon />  :<div />}
+          {searchClassmate
+            ? !isFloatChat
+              ? <ChatSearchIcon />
+              : <span className={classes.startInputText}>To:</span>
+            : <div />
+          }
         </InputAdornment>,
         inputProps: {
           autoFocus,
@@ -166,13 +175,15 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
-  const { isDisabled, searchClassmate, classes } = selectProps
+  const { isDisabled, searchClassmate, classes, isFloatChat } = selectProps
 
   return (
     <Typography
       color={isDisabled ? "textSecondary" : "textPrimary"}
       className={searchClassmate
-        ? classes.addClassmatePlaceholder
+        ? !isFloatChat
+          ? classes.addClassmatePlaceholder
+          : classes.floatChatInputPlaceholder
         : classes.placeholder
       }
       {...innerProps}
@@ -310,7 +321,8 @@ type Props = {
   autoFocus: boolean,
   relative: boolean,
   id: string,
-  onLoadOptions: Function
+  onLoadOptions: Function,
+  isFloatChat: boolean
 };
 
 const SelectClassmates = ({
@@ -332,7 +344,8 @@ const SelectClassmates = ({
   autoFocus,
   relative,
   id,
-  onLoadOptions
+  onLoadOptions,
+  isFloatChat
 }: Props) => {
 
   const selectStyles = {
@@ -362,6 +375,7 @@ const SelectClassmates = ({
           onChange={onChange}
           loadOptions={onLoadOptions}
           searchClassmate
+          isFloatChat={isFloatChat}
           additional={{
             page
           }}

@@ -26,6 +26,15 @@ export default theme => ({
     borderRadius: theme.spacing(1),
     backgroundColor: 'rgba(34, 34, 34, 0.6)',
   },
+  floatChatSearchInput: {
+    borderBottom: '1px solid #323536',
+    backgroundColor: 'rgba(34, 34, 34, 0.6)',
+    padding: theme.spacing()
+  },
+  startInputText: {
+    color: '#828282',
+    fontWeight: 700
+  },
   valueContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -34,7 +43,7 @@ export default theme => ({
     overflow: 'hidden'
   },
   addClassmateChip: {
-    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
+    margin: `${theme.spacing(1/4)}px ${theme.spacing(1/4)}px`,
     borderRadius: 0,
     maxWidth: 160,
     backgroundColor: theme.circleIn.palette.appBar,
@@ -57,6 +66,13 @@ export default theme => ({
     padding: `${theme.spacing()}px ${theme.spacing(2)}px`
   },
   addClassmatePlaceholder: {
+    position: 'absolute',
+    left: 4,
+    fontSize: 16,
+    opacity: 0.7
+  },
+  floatChatInputPlaceholder: {
+    color: '#5F6165',
     position: 'absolute',
     left: 4,
     fontSize: 16,

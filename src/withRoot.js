@@ -65,7 +65,10 @@ const circleInTheme = {
   onlineBadgetColor: '#2FB67E',
   circleCheckColor: '#87B261',
   hoverColor: '#303133',
-  removeColor: '#F15744'
+  removeColor: '#F15744',
+  floatChatBackground: '#1E1F22',
+  floatChatTextAreaBackground: '#3E4143',
+  floatChatHeader: '#A2A4A8'
 };
 
 let theme = createMuiTheme({
@@ -124,7 +127,10 @@ let theme = createMuiTheme({
       menuBackground: circleInTheme.menuBackground,
       onlineBadgetColor: circleInTheme.onlineBadgetColor,
       circleCheck: circleInTheme.circleCheckColor,
-      removeColor: circleInTheme.removeColor
+      removeColor: circleInTheme.removeColor,
+      floatChatBackground: circleInTheme.floatChatBackground,
+      floatChatTextAreaBackground: circleInTheme.floatChatTextAreaBackground,
+      floatChatHeader: circleInTheme.floatChatHeader
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

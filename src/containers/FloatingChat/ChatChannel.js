@@ -11,12 +11,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
+// import FormControl from '@material-ui/core/FormControl';
+// import Input from '@material-ui/core/Input';
 import CreateChatChannelInput from 'components/CreateChatChannelInput'
 import { getCampaign } from 'api/campaign';
 import { sendMessage } from 'api/chat'
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
-import ChatMessage from '../../components/FloatingChat/ChatMessage';
+import ChatMessage from '../../components/FloatingChat/FloatChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
 import ChatChannelViewMembers from './ChatChannelViewMembers';
@@ -64,7 +66,10 @@ const styles = theme => ({
     fontWeight: 'bold',
     fontSize: 12,
     marginBottom: theme.spacing()
-  }
+  },
+  searchInput: {
+    padding: theme.spacing(1)
+  },
 });
 
 type Props = {
@@ -457,6 +462,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       case 'date':
         return <ChatMessageDate key={id} body={item.body} />;
       case 'message':
+      case 'own':
         return (
           <ChatMessage
             key={id}
@@ -465,17 +471,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
             name={item.name}
             messageList={item.messageList}
             avatar={getAvatar({ id: item.author, profileURLs })}
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'own':
-        return (
-          <ChatMessage
-            key={id}
-            messageList={item.messageList}
-            isOwn
             onImageLoaded={this.handleImageLoaded}
             onStartVideoCall={this.handleStartVideoCall}
             onImageClick={this.handleImageClick}
@@ -543,6 +538,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         data: { userId }
       },
       newChannel,
+      channel,
       channel: {
         sid,
         channelState: {
@@ -550,7 +546,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
         }
       },
       onBlock,
-      handleChannelCreated
+      handleChannelCreated,
+      setCurrentChannel
     } = this.props;
 
     const {
@@ -588,6 +585,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onClose={this.handleClose}
             onDelete={this.handleDelete}
             newChannel={newChannel}
+            channel={channel}
+            setCurrentChannel={setCurrentChannel}
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
@@ -606,6 +605,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             >
               {newChannel &&
                 <CreateChatChannelInput
+                  isFloatChat
                   createMessage={createMessage}
                   onOpenChannel={handleChannelCreated}
                   handleClearCreateMessage={this.handleClearCreateMessage}
@@ -641,7 +641,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
             )}
             {this.unregisteredUserMessage()}
             <ChatTextField
-              hideImage={newChannel}
               expanded={expanded}
               onSendMessage={this.handleSendMessage}
               onSendInput={this.handleSendInput}

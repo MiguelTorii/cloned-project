@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export default theme => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,
@@ -19,31 +19,39 @@ export const styles = theme => ({
     width: 300
   },
   header: {
-    background: '#C7D3DA',
+    backgroundColor: theme.circleIn.palette.floatChatHeader,
     color: theme.circleIn.palette.normalButtonText1,
     borderRadius: theme.spacing(1/2, 1/2, 0, 0),
     display: 'flex',
     minHeight: 40
   },
+  notificationHeader: {
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'
+  },
   headerTitle: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1.5),
     height: 40
   },
+  title: {
+    fontWeight: 700,
+    fontSize: 18
+  },
   iconButton: {
-    paddingRight: theme.spacing()
+    marginRight: theme.spacing(1.5)
   },
   icon: {
     color: theme.circleIn.palette.normalButtonText1,
   },
   img: {
     color: theme.circleIn.palette.normalButtonText1,
-    width: 32,
+    width: 18,
   },
   content: {
     overflow: 'none',
-    height: 'inherit'
+    height: 'inherit',
+    backgroundColor: theme.circleIn.palette.floatChatBackground
   },
   hide: {
     display: 'none'

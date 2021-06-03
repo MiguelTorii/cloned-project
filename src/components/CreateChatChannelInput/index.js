@@ -4,14 +4,15 @@ import React, { useCallback, useState, useEffect } from 'react'
 import {
   ValidatorForm,
 } from 'react-material-ui-form-validator'
+import { bindActionCreators } from 'redux'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
-import * as chatActions from 'actions/chat'
-import { bindActionCreators } from 'redux'
-import { sendMessage } from 'api/chat'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import * as chatActions from 'actions/chat'
+import { sendMessage } from 'api/chat'
+import SelectClassmates from 'components/CreateCommunityChatChannelInput/SelectClassmates'
 import AutoComplete from '../AutoComplete'
 import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
@@ -27,7 +28,8 @@ type Props = {
   onOpenChannel: Function,
   createMessage: Object,
   handleClearCreateMessage: Function,
-  chat: ChatState
+  chat: ChatState,
+  isFloatChat: boolean
 };
 
 const CreateChatChannelInput = ({
@@ -38,6 +40,7 @@ const CreateChatChannelInput = ({
   handleClearCreateMessage,
   closeNewChannel,
   chat,
+  isFloatChat = false
 }: Props) => {
   const [chatType, setChatType] = useState('single')
   const [name, setName] = useState('')
@@ -160,31 +163,52 @@ const CreateChatChannelInput = ({
       onSubmit={handleSubmit}
     >
       <div className={classes.form}>
-        <div className={classes.inputContainer}>
-          <AutoComplete
-            values={users}
-            relative
-            inputValue={inputValue}
-            placeholder="Search for classmates"
-            error={error}
-            errorText="You must select at least 1 classmate"
-            cacheUniq={from}
-            autoFocus
-            isMulti
-            isDisabled={isLoading}
-            onChange={handleAutoComplete}
-            onLoadOptions={handleLoadOptions}
-          />
-        </div>
-        <IconButton
-          className={classes.button}
-          onClick={handleSubmit}
-          variant="contained"
-          disabled={isLoading}
-          color="primary"
-        >
-          {isLoading ? <CircularProgress /> : <CheckCircleOutlineRoundedIcon/>}
-        </IconButton>
+        {isFloatChat
+          ? <div className={classes.inputContainer}>
+            <SelectClassmates
+              isFloatChat
+              values={users}
+              relative
+              inputValue={inputValue}
+              placeholder="Type a name or multiple names"
+              error={error}
+              errorText="You must select at least 1 classmate"
+              cacheUniq={from}
+              autoFocus
+              isMulti
+              isDisabled={isLoading}
+              onChange={handleAutoComplete}
+              onLoadOptions={handleLoadOptions}
+            />
+          </div>
+          : <>
+            <div className={classes.inputContainer}>
+              <AutoComplete
+                values={users}
+                relative
+                inputValue={inputValue}
+                placeholder="Search for classmates"
+                error={error}
+                errorText="You must select at least 1 classmate"
+                cacheUniq={from}
+                autoFocus
+                isMulti
+                isDisabled={isLoading}
+                onChange={handleAutoComplete}
+                onLoadOptions={handleLoadOptions}
+              />
+            </div>
+            <IconButton
+              className={classes.button}
+              onClick={handleSubmit}
+              variant="contained"
+              disabled={isLoading}
+              color="primary"
+            >
+              {isLoading ? <CircularProgress /> : <CheckCircleOutlineRoundedIcon/>}
+            </IconButton>
+          </>
+        }
         <BatchMessage
           closeNewChannel={closeNewChannel}
           user={user}

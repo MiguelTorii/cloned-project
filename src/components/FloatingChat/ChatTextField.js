@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/no-danger */
 // @flow
 import React from 'react';
@@ -8,13 +9,13 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
+import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
 import EmojiSelector from '../EmojiSelector';
 
-import { styles } from '../_styles/FloatingChat/ChatTextField';
+import styles from '../_styles/FloatingChat/ChatTextField';
 
 type Props = {
   classes: Object,
@@ -157,7 +158,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
             className={classes.iconButton}
             aria-label="Insert Photo"
           >
-            <InsertPhotoIcon />
+            <FloatChatInsertPhotoIcon />
           </IconButton>}
           <input
             accept="image/*"
@@ -209,7 +210,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
               }
             />
           </div>
-          <EmojiSelector onSelect={this.handleSelect} />
+          <EmojiSelector onSelect={this.handleSelect} isFloatChat />
           {(message || image) && <Divider light className={classes.divider} />}
           {(message || image) &&
           <Tooltip
@@ -226,7 +227,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
               className={classes.iconButton}
               aria-label="Send"
             >
-              <SendIcon />
+              <SendIcon className={classes.sendMessageIcon} />
             </IconButton>
           </Tooltip>
           }

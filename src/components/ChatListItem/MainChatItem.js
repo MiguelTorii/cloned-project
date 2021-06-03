@@ -1,6 +1,7 @@
 // @flow
 import React, { useCallback, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import parse from 'html-react-parser';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
@@ -124,8 +125,8 @@ const MainChatItem = ({
           <Typography variant="subtitle1" noWrap>
             {roomName}
           </Typography>
-          <Typography variant="body2" noWrap>
-            {lastMessage}
+          <Typography className={classes.lastMessage} variant="body2" noWrap>
+            {lastMessage && parse(lastMessage)}
           </Typography>
         </div>
         {muted && <NotificationsOffIcon />}

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export default theme => ({
   tooltip: {
     fontSize: 14,
   },
@@ -8,14 +8,11 @@ export const styles = theme => ({
     margin: '0 auto',
     marginTop: theme.spacing(),
     marginBottom: theme.spacing(),
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: theme.circleIn.palette.borderColor,
-    backgroundColor: theme.circleIn.palette.appBar
+    backgroundColor: theme.circleIn.palette.floatChatTextAreaBackground
   },
   form: {
     display: 'flex',
-    alignItems: 'flex-end'
+    alignItems: 'center'
   },
   textfield: {
     marginLeft: 8,
@@ -46,6 +43,9 @@ export const styles = theme => ({
     width: 24,
     height: 24,
     borderRadius: 4
+  },
+  sendMessageIcon: {
+    color: theme.circleIn.palette.brand
   },
   clearIcon: {
     position: 'absolute',

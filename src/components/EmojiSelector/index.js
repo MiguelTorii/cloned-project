@@ -1,5 +1,6 @@
 // @flow
 import React, { Fragment } from 'react';
+import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Picker } from 'emoji-mart';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,6 +12,7 @@ import { styles } from '../_styles/EmojiSelector';
 
 type Props = {
   classes: Object,
+  isFloatChat: boolean,
   onSelect: Function
 };
 
@@ -44,7 +46,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, emoIconStyle } = this.props;
+    const { classes, emoIconStyle, isFloatChat } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -58,7 +60,9 @@ class EmojiSelector extends React.PureComponent<Props, State> {
           aria-owns={open ? 'simple-popper' : undefined}
           aria-haspopup="true"
         >
-          <SentimentSatisfiedOutlinedIcon className={emoIconStyle}/>
+          <SentimentSatisfiedOutlinedIcon
+            className={cx(emoIconStyle, isFloatChat && classes.floatChatEmoji)}
+          />
         </IconButton>
         <Popover
           id="simple-popper"

@@ -172,7 +172,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
               Are you sure you want to delete this chat?
               <br />
               <br />
-              {"Deleting this chat can't be undone"}
+              Deleting this chat can't be undone
             </DialogContentText>
           </DialogContent>
           <DialogActions>
