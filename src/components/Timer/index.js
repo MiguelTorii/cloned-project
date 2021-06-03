@@ -61,7 +61,7 @@ const Timer = ({ defaultStatus }) => {
       setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
     }
     setStatus(defaultStatus);
-  }, [defaultStatus, initialHours, initialMinutes]);
+  }, [defaultStatus, initialHours, initialMinutes, currentSeconds]);
 
   // Rendering Helpers
   const renderTimeBox = () => {
