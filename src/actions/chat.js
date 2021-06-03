@@ -311,7 +311,6 @@ export const handleInitChat = () =>
     } = getState()
 
     try {
-      initLocalChannels(dispatch)
       if (curClient && curClient.connectionState === "connected") return
       const accessToken = await renewTwilioToken({
         userId
@@ -364,6 +363,7 @@ export const handleInitChat = () =>
 
       dispatch(initClient({ client }));
       dispatch(initChannels({ channels, local }))
+      await initLocalChannels(dispatch)
 
       if (
         channels.length > 0 &&

@@ -302,7 +302,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       newChannel: false
     } }
   case chatActions.UPDATE_FRIENDLY_NAME:
-    const sid = action.payload.channel.sid;
+    const { sid } = action.payload.channel;
     return {
       ...state,
       data: {

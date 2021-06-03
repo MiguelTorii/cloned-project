@@ -61,7 +61,7 @@ const InitialAlert = ({
       flexDirection="column"
     >
       <Typography className={classes.members} variant="h5">
-        Welcome To #{selectedChannel.chat_name}
+        Welcome To #{selectedChannel?.chat_name}
       </Typography>
       <Typography className={classes.initialAlert} variant="subtitle2">
         {selectedCourse.about}
