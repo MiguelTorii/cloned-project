@@ -22,6 +22,7 @@ import Tooltip from 'containers/Tooltip'
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 import { styles } from '../_styles/FeedFilter';
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 
 const types = [
   {
@@ -298,17 +299,17 @@ class FeedFilter extends React.PureComponent<Props, State> {
               placement="right"
               text="You can sort posts by date and filter posts by type!"
             >
-              <Button
+              <TransparentButton
                 aria-haspopup="true"
                 aria-label="Filter"
                 aria-owns={open ? 'filter-popper' : undefined}
                 className={classes.filterButton}
-                color="primary"
                 onClick={this.handleClick}
                 variant={filterCount > 0 ? "contained" : "outlined"}
+                compact
               >
                 Filters
-              </Button>
+              </TransparentButton>
             </Tooltip>
             {/* {expertMode && <Button */}
             {/* aria-haspopup="true" */}
