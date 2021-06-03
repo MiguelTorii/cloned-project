@@ -19,8 +19,9 @@ export const TIMER_STATUS = {
   PAUSED: 'paused'
 }
 
-const Timer = ({ status, onSetStatus }) => {
+const Timer = ({ defaultStatus }) => {
   const classes = useStyles();
+  const [status, setStatus] = useState(TIMER_STATUS.INITIALIZED);
   const [currentSeconds, setCurrentSeconds] = useState(null);
   const [initialHours, setInitialHours] = useState(1);
   const [initialMinutes, setInitialMinutes] = useState(0);
@@ -28,34 +29,39 @@ const Timer = ({ status, onSetStatus }) => {
   // Event Handlers
 
   const handleStartTimer = useCallback(() => {
-    onSetStatus(TIMER_STATUS.STARTED);
-  }, [onSetStatus]);
+    setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
+    setStatus(TIMER_STATUS.STARTED);
+  }, [initialHours, initialMinutes]);
 
   const handleResetTimer = useCallback(() => {
-    onSetStatus(TIMER_STATUS.INITIALIZED);
-  }, [onSetStatus]);
+    setStatus(TIMER_STATUS.INITIALIZED);
+  }, []);
 
   const handlePauseTimer = useCallback(() => {
-    onSetStatus(TIMER_STATUS.PAUSED);
-  }, [onSetStatus]);
+    setStatus(TIMER_STATUS.PAUSED);
+  }, []);
 
   const handleResumeTimer = useCallback(() => {
-    onSetStatus(TIMER_STATUS.STARTED);
-  }, [onSetStatus]);
+    setStatus(TIMER_STATUS.STARTED);
+  }, []);
 
   // Effects
   useEffect(() => {
-    if (status === TIMER_STATUS.STARTED) {
-      setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
-    }
-
     const intervalId = setInterval(() => {
       if (status === TIMER_STATUS.STARTED) {
         setCurrentSeconds((seconds) => seconds > 0 ? (seconds - 1) : seconds);
       }
     }, INTERVAL.SECOND);
     return () => clearInterval(intervalId);
-  }, [status, initialHours, initialMinutes]);
+  }, [status]);
+
+  useEffect(() => {
+    if (defaultStatus === TIMER_STATUS.PAUSED && currentSeconds === 0) return ;
+    if (defaultStatus === TIMER_STATUS.STARTED) {
+      setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
+    }
+    setStatus(defaultStatus);
+  }, [defaultStatus, initialHours, initialMinutes]);
 
   // Rendering Helpers
   const renderTimeBox = () => {
@@ -146,13 +152,11 @@ const Timer = ({ status, onSetStatus }) => {
 };
 
 Timer.propTypes = {
-  status: PropTypes.string,
-  onSetStatus: PropTypes.func
+  defaultStatus: PropTypes.string
 };
 
 Timer.defaultProps = {
-  status: TIMER_STATUS.INITIALIZED,
-  onSetStatus: () => {}
+  defaultStatus: TIMER_STATUS.INITIALIZED
 };
 
 export default withRoot(Timer);

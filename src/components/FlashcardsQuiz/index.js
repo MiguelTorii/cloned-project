@@ -254,7 +254,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
         </Typography>
       </Box>
       <Box mt={4}>
-        <Timer status={timerStatus} onSetStatus={setTimerStatus} />
+        <Timer defaultStatus={timerStatus} />
       </Box>
       <IconButton
         className={clsx(classes.sidebarButton, classes.expandButton)}

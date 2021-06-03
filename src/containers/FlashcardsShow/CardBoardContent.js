@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, { useMemo } from 'react';
 import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import IconRepeat from "@material-ui/icons/Replay";
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import ClickableImage from 'components/ClickableImage';
+import { extractTextFromHtml } from 'utils/helpers';
 
 const CardBoardContent = (
   {
@@ -24,6 +25,8 @@ const CardBoardContent = (
 
   const isEditing = false;
 
+  const contentText = useMemo(() => extractTextFromHtml(content), [content]);
+
   return (
     <div className={classes.cardBoardContainer}>
       { isEditing && (
@@ -33,8 +36,8 @@ const CardBoardContent = (
         <Box display="flex" width="100%" height="100%" alignItems="center">
           { image && (
             <Box
-              width={content ? 250 : '100%'}
-              height={content ? 250 : '100%'}
+              width={contentText.length > 0 ? 250 : '100%'}
+              height={contentText.length > 0 ? 250 : '100%'}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -43,7 +46,7 @@ const CardBoardContent = (
               <ClickableImage src={image} className={classes.cardBoardImage} alt="Flashcard" />
             </Box>
           )}
-          { content && (
+          { contentText.length > 0 && (
             <Box
               className={
                 clsx(
