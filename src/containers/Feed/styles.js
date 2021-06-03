@@ -10,8 +10,6 @@ export default makeStyles((theme) => ({
   postAnyButton: {
     background: theme.circleIn.palette.appBar,
     borderRadius: 100,
-    fontWeight: 600,
-    width: '100%',
     padding: theme.spacing(1, 4)
   },
   divider: {
