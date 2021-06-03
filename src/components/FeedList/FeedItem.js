@@ -397,6 +397,11 @@ const FeedItem = ({
               </Typography>
             </div>
           }
+          subheader={
+            <Typography className={classes.feedSubheader}>
+              {data.classroomName}
+            </Typography>
+          }
         />
         <CardActionArea
           classes={{

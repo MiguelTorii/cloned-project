@@ -20,6 +20,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     '& > :first-child': {
+      fontWeight: 800,
       marginRight: theme.spacing(1/2)
     },
     '& > :last-child': {
@@ -98,6 +99,10 @@ export const styles = theme => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     borderRadius: '0 0 8px 8px'
+  },
+  feedSubheader: {
+    padding: theme.spacing(0, 0.5),
+    color: theme.circleIn.palette.profilebgColor
   },
   imageContainer: {
     position: 'relative',

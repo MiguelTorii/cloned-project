@@ -17,7 +17,7 @@ import Hidden from '@material-ui/core/Hidden';
 const POST_BUTTONS = [
   {
     value: 0,
-    text: 'Share your thoughts',
+    text: 'Write Post',
     icon: IconPencil
   },
   {
