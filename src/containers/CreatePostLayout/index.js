@@ -35,6 +35,7 @@ import CreatePostSt from './PostSt'
 import CreateShareLink from './ShareLink'
 import ErrorBoundary from '../ErrorBoundary'
 import type { State as StoreState } from '../../types/state'
+import { useLocation } from 'react-router';
 
 const styles = theme => ({
   item: {
@@ -142,6 +143,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [value, setValue] = useState(0)
   const [classId, setClassId] = useState(0)
   const [sectionId, setSectionId] = useState(0)
+  const location = useLocation()
 
   useEffect(() => {
     return () => {
@@ -151,6 +153,14 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
       localStorage.removeItem('shareLink');
     }
   }, [])
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const tab = query.get('tab');
+    if (tab !== null) {
+      setValue(Number(tab));
+    }
+  }, [location]);
 
   useEffect(() => {
     if (postId) {

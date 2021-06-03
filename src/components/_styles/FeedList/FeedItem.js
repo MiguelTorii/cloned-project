@@ -82,8 +82,22 @@ export const styles = theme => ({
   notePost: {
     objectFit: 'cover',
     borderRadius: 10,
-    width: 120,
-    height: 120
+    width: 295,
+    height: 169
+  },
+  noteTitleBox: {
+    position: 'absolute',
+    backgroundColor: theme.circleIn.palette.appBar,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: theme.spacing(2),
+    fontSize: 16,
+    fontWeight: 600,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    borderRadius: '0 0 8px 8px'
   },
   imageContainer: {
     position: 'relative',
@@ -158,12 +172,29 @@ export const styles = theme => ({
     position: 'relative',
   },
   photoNotePreview: {
+    position: 'relative',
     marginRight: 30,
   },
   flashCards: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: 24,
+    width: 270,
+    height: 130,
+    backgroundColor: theme.circleIn.palette.appBar,
+    borderRadius: 10
+  },
+  gradientBar: {
+    width: '100%',
+    height: 12,
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    borderRadius: '10px 10px 0 0'
+  },
+  flashcardTitle: {
+    fontWeight: 700,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
+  },
+  flashcardCount: {
+    color: theme.circleIn.palette.primaryText2
   },
   editor: {
     display: 'flex',

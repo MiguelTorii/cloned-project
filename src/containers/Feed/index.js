@@ -24,6 +24,7 @@ import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 import type { CampaignState } from '../../reducers/campaign';
+import PostCreationHeader from 'containers/Feed/PostCreationHeader';
 // const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({
@@ -412,6 +413,7 @@ class Feed extends React.PureComponent<Props, State> {
               updateFeed={this.updateFeed}
               push={push}
             />
+            <PostCreationHeader />
             <FeedFilter
               query={query}
               from={from}

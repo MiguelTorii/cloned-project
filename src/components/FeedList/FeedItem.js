@@ -35,8 +35,8 @@ import PostComments from 'containers/PostComments'
 import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
-import FeedFlashcards from 'components/FeedList/FeedFlashcards'
 import CustomQuill from 'components/CustomQuill'
+import pluralize from 'pluralize';
 
 import * as api from '../../api/posts'
 
@@ -221,9 +221,19 @@ const FeedItem = ({
         )
       }
       return (
-        <div className={classes.flashCards}>
-          <FeedFlashcards deck={data.deck} />
-        </div>
+        <Box mt={3}>
+          <Box className={classes.flashCards}>
+            <Box className={classes.gradientBar} />
+            <Box mt={3} pl={1} pr={1}>
+              <Typography variant="h6" className={classes.flashcardTitle}>
+                {data.title}
+              </Typography>
+              <Typography className={classes.flashcardCount}>
+                {pluralize('flashcard', data.deck.length, true)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
       )
     case FeedTypes.note.id:
       if (!newClassExperience) {
@@ -253,15 +263,15 @@ const FeedItem = ({
       return (
         <div className={classes.photoNotes}>
           {
-            data.notes.slice(0, 5).map((note, i) => {
+            data.notes.slice(0, 1).map((note, i) => {
               return (
                 <div key={note.noteUrl} className={classes.photoNotePreview}>
                   {
                     isPdf ?
                       <PdfComponent
                         url={note.noteUrl}
-                        height={100}
-                        width={100}
+                        height={130}
+                        width={270}
                         radius={10}
                       /> :
                       <Image
@@ -270,10 +280,13 @@ const FeedItem = ({
                         src={note.noteUrl}
                       />
                   }
+                  <div className={classes.noteTitleBox}>
+                    { data.title }
+                  </div>
                   {
-                    numberOfNotes > 5 && i === 4 &&
+                    numberOfNotes > 2 && i === 1 &&
                     <div className={classes.numberOfCardsStyle}>
-                      +{numberOfNotes - 5}
+                      +{numberOfNotes - 2}
                     </div>
                   }
                 </div>
@@ -298,7 +311,7 @@ const FeedItem = ({
     default:
       return null
     }
-  }, [classes.deckCount, classes.flashCards, classes.flashCardsImage, classes.flashcardImage, classes.imageContainer, classes.imagePost, classes.notePost, classes.numberOfCardsStyle, classes.photoNotePreview, classes.photoNotes, data, newClassExperience])
+  }, [classes, data, newClassExperience])
 
   const renderMenu = useMemo(() => (
     <Menu
