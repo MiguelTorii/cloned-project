@@ -80,7 +80,7 @@ const CommunityMenu = ({
           ? classes.unreadMessageCount
           : classes.emptyUnreadMessage
         }}
-        badgeContent={unreadMessages || '🎉' }
+        badgeContent={unreadMessages}
         color="secondary"
       >
         <ListItemText
