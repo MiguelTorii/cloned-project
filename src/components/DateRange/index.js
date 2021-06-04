@@ -7,7 +7,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { styles } from '../_styles/DateRange';
