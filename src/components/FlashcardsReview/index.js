@@ -31,7 +31,16 @@ import { TIMEOUT } from 'constants/common';
 import { useIdleTimer } from 'react-idle-timer';
 import { logEvent } from 'api/analytics';
 import { differenceInMilliseconds } from "date-fns";
-import { INTERVAL } from 'constants/app';
+import { APP_ROOT_PATH, INTERVAL } from 'constants/app';
+import Link from '@material-ui/core/Link';
+import IconBack from "@material-ui/icons/ChevronLeft";
+import { useSelector } from 'react-redux';
+import GifCongrats from 'assets/gif/match-game-congrats.gif';
+import ShareLinkModal from 'components/ShareLinkModal';
+import IconShare from "@material-ui/icons/ShareOutlined";
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
+import ImgNoCards from 'assets/svg/no-cards.svg';
+import IconReturn from '@material-ui/icons/Reply';
 
 export const ANSWER_LEVELS = [
   {
@@ -56,17 +65,22 @@ export const ANSWER_LEVELS = [
     emoji: '😳'
   }
 ]
+const CARDS_TO_REVIEW = 'to_review';
 const timeout = TIMEOUT.FLASHCARD_REVEIW
 
-const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
+const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
   const classes = useStyles();
+  const me = useSelector((state) => state.user.data);
   const [isExpanded, setIsExpanded] = useState(true);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [cardsLevel, setCardsLevel] = useState({});
-  const [currentLevel, setCurrentLevel] = useState('to_review');
+  const [currentLevel, setCurrentLevel] = useState(CARDS_TO_REVIEW);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [currentCardList, setCurrentCardList] = useState([]);
   const [sessionId, setSessionId] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isShuffleOn, setIsShuffleOn] = useState(false);
+  const [keptCards, setKeptCards] = useState([]);
 
   // Data Points
   const elapsed = useRef(0);
@@ -109,7 +123,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   // Effects
   useEffect(() => {
     setCardsLevel(store.get(`flashcards-${flashcardId}`) || {});
-    setCurrentLevel('to_review');
+    setCurrentLevel(CARDS_TO_REVIEW);
     setSessionId(uuidv4());
   }, [flashcardId]);
 
@@ -118,10 +132,12 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   }, [currentLevel]);
 
   useEffect(() => {
-    setCurrentCardList(cards.filter((card) => {
-      if (currentLevel === 'to_review') return !cardsLevel[card.id];
-      return cardsLevel[card.id] === currentLevel;
-    }));
+    if (currentLevel === CARDS_TO_REVIEW) {
+      setCurrentCardList(cards);
+      setIsShuffleOn(false);
+      return ;
+    }
+    setCurrentCardList(cards.filter((card) => cardsLevel[card.id] === currentLevel));
   }, [cards, currentLevel, cardsLevel]);
 
   useEffect(() => {
@@ -131,7 +147,9 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   }, [cardsLevel, flashcardId]);
 
   useEffect(() => {
-    currentCardList.length > 0 && elapsed.current && logEvent({
+    currentCardList.length > 0 &&
+    currentCardIndex < currentCardList.length &&
+    elapsed.current && logEvent({
       event: 'Flashcard Review- Viewed',
       props: {
         flashcardId,
@@ -160,7 +178,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     ANSWER_LEVELS.forEach((item) => count[item.level] = 0);
 
     (cards || []).forEach((item) => {
-      count[cardsLevel[item.id] || 'to_review'] += 1;
+      count[cardsLevel[item.id] || CARDS_TO_REVIEW] += 1;
     });
 
     return count;
@@ -173,7 +191,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
 
   const handleMarkCardClick = useCallback((level) => {
     if (currentLevel === level) {
-      setCurrentLevel('to_review');
+      setCurrentLevel(CARDS_TO_REVIEW);
     } else {
       setCurrentLevel(level);
     }
@@ -215,8 +233,8 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     reset()
     initializeTimer()
 
-    if (currentCardIndex >= currentCardList.length - 1) {
-      setCurrentCardIndex(0);
+    if (currentLevel === CARDS_TO_REVIEW) {
+      setCurrentCardIndex(currentCardIndex + 1);
     }
 
     setCardsLevel({
@@ -235,9 +253,15 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
   ]);
 
   const handleShuffleDeck = useCallback(() => {
-    setCurrentCardList(shuffleArray(currentCardList));
+    if (!isShuffleOn) {
+      setKeptCards(currentCardList);
+      setCurrentCardList(shuffleArray(currentCardList));
+    } else {
+      setCurrentCardList(keptCards);
+    }
     setCurrentCardIndex(0);
-  }, [currentCardList]);
+    setIsShuffleOn(!isShuffleOn);
+  }, [currentCardList, isShuffleOn, keptCards]);
 
   const handleStartOver = useCallback(() => {
     setIsConfirmModalOpen(true);
@@ -248,6 +272,7 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     initializeTimer()
     setIsConfirmModalOpen(false);
     setCardsLevel({});
+    setCurrentCardIndex(0);
     store.remove(`flashcards-${flashcardId}`);
   }, [flashcardId, reset, initializeTimer]);
 
@@ -272,10 +297,27 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     } catch (err) {}
 
     onClose();
-  }, [onClose, elapsed, totalIdleTime, flashcardId, reset])
+  }, [onClose, elapsed, totalIdleTime, flashcardId, reset]);
+
+  const handleOpenShareModal = useCallback(() => {
+    setIsShareModalOpen(true);
+  }, []);
+
+  const handleCloseShareModal = useCallback(() => setIsShareModalOpen(false), []);
 
   const renderSidebar = () => (
     <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
+      <Box mb={3}>
+        <Link
+          component="button"
+          onClick={handleClose}
+          color="inherit"
+          variant="h5"
+          underline="none"
+        >
+          <IconBack className={classes.iconMiddle} /> Back
+        </Link>
+      </Box>
       <Box display="flex" alignItems="center">
         <Box mr={2}>
           <IconSchool />
@@ -307,6 +349,158 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
     </Box>
   );
 
+  const renderHelperText = (percent) => {
+    if (percent <= 25) {
+      return (
+        <>
+          That’s okay! Keep practicing and you’ll do even better next time! 📖 <br/>
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    } else if (percent <= 50) {
+      return (
+        <>
+          Keep practicing, you can do this! 👏 <br/>
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    } else if (percent <= 75) {
+      return (
+        <>
+          You’re getting there! Keep going! 🙌 <br />
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    } else if (percent <= 89) {
+      return (
+        <>
+          Woo! Show your test who’s boss! 🔥 <br />
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    } else if (percent <= 99) {
+      return (
+        <>
+          High five! You’re a rockstar! 🎉 <br />
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    } else {
+      return (
+        <>
+          PERFECT SCORE! Your hard work is paying off! 🚀 <br />
+          Click any stack to review your flashcards or start over.
+        </>
+      );
+    }
+  };
+
+  const renderData = () => {
+    if (currentCardIndex >= currentCardList.length) {
+      if (currentLevel === CARDS_TO_REVIEW) {
+        if (currentCardList.length === 0) {
+          return null;
+        }
+
+        const correctCount = cardCountsByLevel[ANSWER_LEVELS[0].level];
+        const percentage = (correctCount * 100.0 / currentCardList.length).toFixed(0);
+        return (
+          <Box mt={8}>
+            <Typography variant="h4" align="center">
+              Congrats on Completing Review Time, {me.firstName}! 👏
+            </Typography>
+            <Box mt={3} display="flex" justifyContent="center">
+              <img src={GifCongrats} alt="Congratulations!"/>
+            </Box>
+            <Box mt={3}>
+              <Typography className={classes.secondaryText} variant="h6" align="center" paragraph>
+                You got <b className={classes.successText}>{correctCount}</b> out of <b>{currentCardList.length}</b> correct and score a <b>{percentage}</b>%.
+              </Typography>
+              <Typography className={classes.secondaryText} align="center">
+                { renderHelperText(percentage) }
+              </Typography>
+            </Box>
+            <Box mt={2} display="flex" justifyContent="center">
+              <TransparentButton
+                startIcon={<IconShare />}
+                onClick={handleOpenShareModal}
+              >
+                Share this Flashcard Deck with Classmates
+              </TransparentButton>
+            </Box>
+          </Box>
+        );
+      } else {
+        return (
+          <>
+            <Box mt={8} display="flex" justifyContent="center">
+              <img src={ImgNoCards} alt="No cards" />
+            </Box>
+            <Typography variant="h6" gutterBottom align="center" className={classes.secondaryText}>
+              You don't have any cards in this stack yet.
+            </Typography>
+            <Typography align="center" className={classes.secondaryText}>
+              You can return to the main deck to review all your cards.
+            </Typography>
+            <Box mt={2} display="flex" justifyContent="center">
+              <TransparentButton startIcon={<IconReturn />} onClick={() => setCurrentLevel(CARDS_TO_REVIEW)}>
+                Return to the Main Deck
+              </TransparentButton>
+            </Box>
+          </>
+        );
+      }
+    }
+
+    return (
+      <>
+        <Box mt={2} mb={2}>
+          <CardBoard
+            data={currentCardList[currentCardIndex]}
+            onAction={handleSetCurrentCardLevel}
+          />
+        </Box>
+        <Grid container justify="space-between" alignItems="center">
+          <Grid item>
+            {currentLevel === CARDS_TO_REVIEW && (
+              <Button
+                startIcon={<IconShuffle />}
+                className={clsx(classes.shuffleButton, isShuffleOn && 'active')}
+                onClick={handleShuffleDeck}
+              >
+                {isShuffleOn ? 'Shuffle Deck On' : 'Shuffle Deck'}
+              </Button>
+            )}
+          </Grid>
+          <Grid item>
+            <Box display="flex">
+              <LinearProgressBar
+                value={currentCardIndex + 1}
+                totalValue={currentCardList.length}
+              />
+              <Box ml={3}>
+                <TransparentIconButton
+                  disabled={currentCardIndex === 0}
+                  onClick={handlePrevCard}
+                >
+                  <IconPrevious />
+                </TransparentIconButton>
+              </Box>
+              <Box ml={3}>
+                <TransparentIconButton
+                  disabled={currentCardIndex >= currentCardList.length - 1}
+                  onClick={handleNextCard}
+                >
+                  <IconNext />
+                </TransparentIconButton>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
+
   const renderContent = () => (
     <>
       <Box display="flex" justifyContent="flex-end">
@@ -322,64 +516,10 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
           className={classes.actionButton}
           onClick={handleClose}
         >
-          Exit Game
+          Exit Mode
         </Button>
       </Box>
-      { currentCardList.length === 0 ? (
-        <Box mt={8}>
-          <Typography variant="h6" align="center">
-            You don't have any cards in this stack!
-          </Typography>
-          <Typography variant="h6" align="center">
-            Click a different stack on the left side to view more cards
-          </Typography>
-        </Box>
-      ) : (
-        <>
-          <Box mt={2} mb={2}>
-            <CardBoard
-              data={currentCardList[currentCardIndex]}
-              onAction={handleSetCurrentCardLevel}
-            />
-          </Box>
-          <Grid container justify="space-between" alignItems="center">
-            <Grid item>
-              <Button
-                startIcon={<IconShuffle />}
-                className={classes.shuffleButton}
-                onClick={handleShuffleDeck}
-              >
-                Shuffle Deck
-              </Button>
-            </Grid>
-            <Grid item>
-              <Box display="flex">
-                <LinearProgressBar
-                  value={currentCardIndex + 1}
-                  totalValue={currentCardList.length}
-                />
-                <Box ml={3}>
-                  <TransparentIconButton
-                    disabled={currentCardIndex === 0}
-                    onClick={handlePrevCard}
-                  >
-                    <IconPrevious />
-                  </TransparentIconButton>
-                </Box>
-                <Box ml={3}>
-                  <TransparentIconButton
-                    disabled={currentCardIndex >= currentCardList.length - 1}
-                    onClick={handleNextCard}
-                  >
-                    <IconNext />
-                  </TransparentIconButton>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-        </>
-      )}
-
+      { renderData() }
     </>
   );
 
@@ -402,17 +542,30 @@ const FlashcardsReview = ({ flashcardId, cards, onClose }) => {
       >
         If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </Dialog>
+      <ShareLinkModal
+        open={isShareModalOpen}
+        link={`${APP_ROOT_PATH}/flashcards/${flashcardId}`}
+        title={(
+          <Typography variant="h6">
+            <span role="img" aria-label="Two hands">🙌</span>
+            &nbsp; You’re awesome for helping your peers! Ready to share a link to your <b>{ flashcardTitle }</b> deck?
+          </Typography>
+        )}
+        onClose={handleCloseShareModal}
+      />
     </Box>
   );
 };
 
 FlashcardsReview.propTypes = {
   flashcardId: PropTypes.number.isRequired,
+  flashcardTitle: PropTypes.string,
   cards: PropTypes.array.isRequired,
   onClose: PropTypes.func
 };
 
 FlashcardsReview.defaultProps = {
+  flashcardTitle: '',
   onClose: () => {}
 };
 

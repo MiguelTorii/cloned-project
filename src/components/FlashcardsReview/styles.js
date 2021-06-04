@@ -77,6 +77,12 @@ export default makeStyles((theme) => ({
       color: '#5F6165',
       width: 25,
       height: 25
+    },
+    '&.active': {
+      color: 'white'
+    },
+    '&.active svg': {
+      color: 'white'
     }
   },
   gradientBar: {
@@ -141,5 +147,14 @@ export default makeStyles((theme) => ({
   },
   hidden: {
     display: 'none'
+  },
+  iconMiddle: {
+    verticalAlign: 'middle'
+  },
+  secondaryText: {
+    color: theme.circleIn.palette.darkTextColor
+  },
+  successText: {
+    color: theme.circleIn.palette.success
   }
 }));

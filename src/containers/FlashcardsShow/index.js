@@ -427,6 +427,7 @@ const FlashcardsShow = () => {
       >
         <FlashcardsReview
           flashcardId={data.postId}
+          flashcardTitle={data.title}
           cards={cardList}
           onClose={handleCloseReviewModal}
         />
