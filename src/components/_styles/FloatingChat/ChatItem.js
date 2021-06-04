@@ -26,6 +26,7 @@ export default theme => ({
   header: {
     background: theme.circleIn.palette.floatChatHeader,
     color: theme.circleIn.palette.normalButtonText1,
+    borderRadius: theme.spacing(1, 1, 0, 0),
     display: 'flex',
     height: 40,
   },

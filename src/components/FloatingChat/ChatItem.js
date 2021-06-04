@@ -204,7 +204,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             Go to Chat
           </MenuItem>
           <MenuItem onClick={this.handleExpandChat}>
-            {expanded ? 'Expand Chat' : 'Collapse Chat'}
+            {expanded ? 'Collapse Chat' : 'Expand Chat'}
           </MenuItem>
           <MenuItem onClick={this.handleViewMembers}>
             Members
