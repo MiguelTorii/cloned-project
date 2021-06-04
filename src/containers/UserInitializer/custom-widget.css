@@ -4,3 +4,12 @@
 #launcher-frame {
   display: none !important
 }
+#freshworks-frame-wrapper.frame-right {
+  animation: fadein 0.3s !important;
+  -webkit-filter: invert(90%) hue-rotate(185deg) !important;
+}
+
+@keyframes fadein {
+  from { opacity: 0}
+  to   { opacity: 1}
+}
