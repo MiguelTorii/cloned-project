@@ -107,5 +107,11 @@ export default makeStyles((theme) => ({
     maxHeight: 60,
     borderRadius: 8,
     marginRight: theme.spacing(1)
+  },
+  actionButton: {
+    backgroundColor: '#1E1F22',
+    height: 32,
+    borderRadius: 40,
+    marginLeft: theme.spacing(1),
   }
 }));

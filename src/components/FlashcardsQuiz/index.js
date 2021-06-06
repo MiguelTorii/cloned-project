@@ -33,6 +33,8 @@ import { useIdleTimer } from 'react-idle-timer';
 import { logEvent } from 'api/analytics';
 import { differenceInMilliseconds } from "date-fns";
 import { INTERVAL } from 'constants/app';
+import Button from "@material-ui/core/Button";
+import IconClose from "@material-ui/icons/Close";
 
 const MULTIPLE_CHOICE_PROBLEM_COUNT = 3;
 const MULTIPLE_CHOICE_OPTIONS_COUNT = 4;
@@ -450,6 +452,15 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
         { renderSidebar() }
       </Slide>
       <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
+        <Box display="flex" justifyContent="flex-end" mb={2}>
+          <Button
+            startIcon={<IconClose />}
+            className={classes.actionButton}
+            onClick={onClose}
+          >
+            Exit Mode
+          </Button>
+        </Box>
         { renderContent() }
       </Box>
       <ImageDialog
