@@ -10,7 +10,6 @@ import Box from '@material-ui/core/Box';
 import LoadingSpin from 'components/LoadingSpin';
 import Avatar from 'components/Avatar';
 import _ from 'lodash';
-import Chip from '@material-ui/core/Chip';
 import IconPen from '@material-ui/icons/EditOutlined';
 import IconActionButton from 'components/IconActionButton';
 import IconBookmark from '@material-ui/icons/BookmarkOutlined';
@@ -39,7 +38,6 @@ import FlashcardsQuiz from 'components/FlashcardsQuiz';
 import IconBook from '@material-ui/icons/Book';
 import IconNote from '@material-ui/icons/LibraryBooks';
 import FlashcardsMatchGame from 'components/FlashcardsMatchGame';
-import { getUserClasses } from 'api/user';
 import ScrollToTop from 'components/ScrollToTop';
 
 import { TIMEOUT } from 'constants/common';
@@ -47,6 +45,11 @@ import { useIdleTimer } from 'react-idle-timer';
 import { logEvent } from 'api/analytics';
 import { differenceInMilliseconds } from "date-fns";
 import { INTERVAL } from 'constants/app';
+import { getInitials } from 'utils/chat';
+import moment from 'moment';
+import { push } from 'connected-react-router';
+import PostComments from 'containers/PostComments';
+import PostItemActions from 'containers/PostItemActions';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
@@ -69,7 +72,6 @@ const FlashcardsShow = () => {
   const [isInMatchGame, setIsInMatchGame] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [boardDeckIndex, setBoardDeckIndex] = useState(0);
-  const [classColor, setClassColor] = useState('primary');
 
   // Memos
   const cardList = useMemo(() => {
@@ -93,32 +95,19 @@ const FlashcardsShow = () => {
   }, [data, cardList]);
 
   // Callbacks
-  const reloadData = useCallback(() => {
-    setIsLoadingFlashcards(true);
+  const reloadData = useCallback((showLoading = false) => {
+    if (showLoading) setIsLoadingFlashcards(true);
     getFlashcards({
       flashcardId,
       userId: me.userId
     }).then((rsp) => {
       setData(rsp);
-
-      getUserClasses({
-        userId: rsp.userId,
-        skipCache: false,
-        expertMode: false
-      }).then(({ classes }) => {
-        const currentClass = classes.find((item) => item.classId === rsp.classId);
-
-        if (currentClass) {
-          setClassColor(currentClass.bgColor);
-        }
-
-        setIsLoadingFlashcards(false);
-      });
+      if (showLoading) setIsLoadingFlashcards(false);
     });
   }, [flashcardId, setData, setIsLoadingFlashcards, me.userId]);
 
   // Effects
-  useEffect(() => reloadData(), [reloadData]);
+  useEffect(() => reloadData(true), [reloadData]);
 
   // Data Points
   const elapsed = useRef(0);
@@ -225,7 +214,7 @@ const FlashcardsShow = () => {
 
   const handleEditFinish = useCallback(() => {
     handleCloseEditModal();
-    reloadData();
+    reloadData(true);
   }, [reloadData, handleCloseEditModal]);
 
   const handleReview = useCallback(() => {
@@ -244,6 +233,10 @@ const FlashcardsShow = () => {
 
   const handleCloseMatchGame = useCallback(() => setIsInMatchGame(false), []);
 
+  const handleClickUser = useCallback(() => {
+    dispatch(push(`/profile/${data.userId}`));
+  }, [dispatch, data]);
+
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
 
@@ -251,47 +244,29 @@ const FlashcardsShow = () => {
     <div className={classes.container}>
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} lg={8}>
-          <Typography variant="h4" gutterBottom>
-            { data.title }
-          </Typography>
-          <Typography variant="body2" gutterBottom paragraph>
-            { isShortSummary ?
-              _.truncate(data.summary, { length: 50 })
-              :
-              data.summary
-            }
-            { data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
-              <Link
-                className={classes.moreLessLink}
-                onClick={handleSummaryMoreOrLess}
-                color="inherit"
-                underline="always">
-                { isShortSummary ? 'see more' : 'show less' }
-              </Link>
-            )}
-          </Typography>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <Avatar
-                initialText={data.name}
-                src={data.userProfileUrl}
-                desktopSize={45}
-                mobileSize={45}
-              />
+              <Link component="button" onClick={handleClickUser}>
+                <Avatar
+                  initialText={getInitials(data.name)}
+                  src={data.userProfileUrl}
+                  desktopSize={45}
+                  mobileSize={45}
+                />
+              </Link>
             </Grid>
             <Grid item>
-              <Box fontSize={18} fontWeight={800}>
-                { data.name }
-              </Box>
-            </Grid>
-            <Grid item>
-              <Chip
-                label={data.courseDisplayName}
-                style={{
-                  backgroundColor: classColor,
-                  color: 'white'
-                }}
-              />
+              <Link
+                underline="none"
+                component="button"
+                onClick={handleClickUser}
+                variant="h6"
+              >
+                {data.name}
+              </Link>
+              <Typography variant="body2">
+                { data.courseDisplayName } &nbsp; • &nbsp; { moment(data.created).fromNow() }
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -325,6 +300,27 @@ const FlashcardsShow = () => {
             {/*  </IconActionButton>*/}
             {/*</Grid>*/}
           </Grid>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="h5" gutterBottom>
+            { data.title }
+          </Typography>
+          <Typography variant="body2">
+            { isShortSummary ?
+              _.truncate(data.summary, { length: 50 })
+              :
+              data.summary
+            }
+            { data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
+              <Link
+                className={classes.moreLessLink}
+                onClick={handleSummaryMoreOrLess}
+                color="inherit"
+                underline="always">
+                { isShortSummary ? 'see more' : 'show less' }
+              </Link>
+            )}
+          </Typography>
         </Grid>
       </Grid>
       <Box mt={3} />
@@ -388,6 +384,32 @@ const FlashcardsShow = () => {
         toolbarPrefix="show"
         readOnly={true}
       />
+      <Box mt={3}>
+        <PostItemActions
+          userId={me.userId}
+          ownerId={data.userId}
+          feedId={data.feedId}
+          postId={data.postId}
+          typeId={data.typeId}
+          name={data.name}
+          userProfileUrl={data.profileImage}
+          thanked={data.thanked}
+          inStudyCircle={data.inStudyCircle}
+          questionsCount={data.postInfo.questionsCount}
+          thanksCount={data.postInfo.thanksCount}
+          viewCount={data.postInfo.viewCount}
+          ownName={`${me.firstName} ${me.lastName}`}
+          onReload={reloadData}
+        />
+      </Box>
+      <Box>
+        <PostComments
+          feedId={data.feedId}
+          postId={data.postId}
+          typeId={data.typeId}
+          readOnly={data.readOnly}
+        />
+      </Box>
 
       { /* Modals for the page */ }
 

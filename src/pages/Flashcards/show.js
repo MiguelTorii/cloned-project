@@ -19,19 +19,23 @@ const FlashcardsShowPage = () => {
     dispatch(getFlashcardsCampaign());
   }, [dispatch]);
 
-  if (isLoading) {
-    return <LoadingSpin />;
-  }
+  const renderBody = () => {
+    if (isLoading) {
+      return <LoadingSpin />;
+    }
 
-  if (!isNewVersion) {
-    return <Flashcards />;
-  }
+    if (!isNewVersion) {
+      return <Flashcards />;
+    }
+
+    return <FlashcardsShow />;
+  };
 
   return (
     <main>
       <CssBaseline />
       <Layout>
-        <FlashcardsShow />
+        { renderBody() }
       </Layout>
     </main>
   );
