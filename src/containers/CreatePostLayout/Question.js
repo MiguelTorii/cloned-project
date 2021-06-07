@@ -37,7 +37,6 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.appBar
   },
   labelClass: {
-    color: '#60B515',
     fontWeight: 'bold',
     position: 'absolute',
     top: 6,
@@ -61,7 +60,11 @@ const styles = theme => ({
         borderColor: theme.circleIn.palette.appBar
       },
       '& .ql-container': {
-        borderColor: theme.circleIn.palette.appBar
+        borderColor: theme.circleIn.palette.appBar,
+
+        '& .ql-editor.ql-blank::before': {
+          opacity: 1,
+        }
       }
     }
   }
@@ -78,6 +81,7 @@ type Props = {
     pathname: string
   },
   enqueueSnackbar: Function,
+  setIsPosting: Function,
   classList: Array
 };
 
@@ -100,6 +104,7 @@ const CreateQuestion = ({
   classList,
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
+  setIsPosting,
 }: Props) => {
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
@@ -245,6 +250,7 @@ const CreateQuestion = ({
         return
       }
 
+      setIsPosting()
       const {
         points,
         user: { firstName },
@@ -321,7 +327,7 @@ const CreateQuestion = ({
       setErrorTitle('Unknown Error')
       setErrorDialog(true)
     }
-  }, [anonymousActive, body, canBatchPost, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
+  }, [anonymousActive, body, setIsPosting, canBatchPost, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
 
   const handleSubmit = useCallback(event => {
     event.preventDefault();
@@ -389,10 +395,10 @@ const CreateQuestion = ({
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12}>
               <OutlinedTextValidator
-                label="Ask a Questions"
+                label="Ask a Question*"
                 labelClass={classes.labelClass}
                 inputClass={classes.textValidator}
-                placeholder="Ask your main question(s)!"
+                placeholder="Ask your main question(s) here..."
                 onChange={handleTextChange}
                 name="title"
                 value={title}

@@ -83,7 +83,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                       label={anonymousActive ? "This post is anonymous!" : "Make this post anonymous! 👀"}
                     />
                     <Typography className={classes.anonymouslyExplanation}>
-                      If you toggle this on, classmates cannot see who asked the question,
+                      Your classmates cannot see who asked the question,
                       but this post can still be flagged for academic dishonesty.
                     </Typography>
                   </>
@@ -100,7 +100,10 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                       color="primary"
                       fullWidth
                       disabled={Boolean(loading || !changed)}
-                      className={classes.submit}
+                      classes={{
+                        root: classes.submit,
+                        disabled: classes.disabled,
+                      }}
                     >
                       {loading ? (
                         <div className={classes.divProgress}>
@@ -109,8 +112,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                             className={classes.buttonProgress}
                           />
                         </div>
-                      ) :
-                        buttonLabel || 'Create'}
+                      ) : Boolean(loading || !changed) ? "Post"
+                        : buttonLabel || 'Create'}
                     </Button>
                   </div>
                 </div>

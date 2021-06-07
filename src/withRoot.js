@@ -234,6 +234,10 @@ let theme = createMuiTheme({
           transitionDelay: '9999s',
           transitionProperty: 'background-color, color',
         },
+        '&::placeholder': {
+          color: circleInTheme.secondaryText,
+          opacity: 1,
+        }
       }
     },
     MuiInputLabel: {

@@ -13,7 +13,7 @@ export const useStyles = makeStyles(theme => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#60b514',
+        background: 'linear-gradient(180deg, #3177E7 16.53%, rgba(255, 255, 255, 0) 100%), #03A9F4',
         opacity: 1,
         border: 'none',
       },

@@ -79,6 +79,11 @@ const initialState = {
     el: null,
     open: false
   },
+  emoji: {
+    text: 'Emoji',
+    el: null,
+    open: false
+  }
 }
 
 function reducer(state, action) {

@@ -16,6 +16,8 @@ import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import RichTextEditor from '../RichTextEditor';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
@@ -32,7 +34,6 @@ const styles = theme => ({
     color: theme.circleIn.palette.primaryText1
   },
   labelClass: {
-    color: '#6515CF',
     fontWeight: 'bold',
     position: 'absolute',
     top: 6,
@@ -48,6 +49,24 @@ const styles = theme => ({
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
       borderColor: '#6515CF'
     }
+  },
+  quillGrid: {
+    '& .quill': {
+      '& .ql-toolbar': {
+        backgroundColor: theme.circleIn.palette.appBar,
+        borderColor: theme.circleIn.palette.appBar
+      },
+      '& .ql-container': {
+        borderColor: theme.circleIn.palette.appBar,
+
+        '& .ql-editor.ql-blank::before': {
+          opacity: 1,
+        }
+      }
+    }
+  },
+  toolbarClass: {
+    backgroundColor: theme.circleIn.palette.appBar
   },
 });
 
@@ -100,7 +119,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       changed: false,
       errorDialog: false,
       errorTitle: '',
-      errorBody: ''
+      errorBody: '',
+      editor: null,
     }
   }
 
@@ -138,6 +158,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     const { sharelinkId } = this.props
+    const { editor } = this.state
+
     if (sharelinkId) this.loadData()
 
     // const { classId, sectionId } = decypherClass()
@@ -155,6 +177,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       event: 'Home- Start Share Link',
       props: {}
     });
+
+    if (editor) {
+      this.setState({ resourceToolbar: editor.getEditor().theme.modules.toolbar })
+    }
   };
 
   loadData = async () => {
@@ -294,7 +320,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         return
       }
 
-      const { title, summary, url } = this.state;
+      const { title, summary, url, setIsPosting } = this.state;
+      setIsPosting()
 
       const tagValues = tags.map(item => Number(item.value));
 
@@ -423,6 +450,23 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     }
   };
 
+  handleRTEChange = value => {
+    this.setState({ summary: value, changed: true });
+
+    if (localStorage.getItem('shareLink')) {
+      const currentShareLink = JSON.parse(localStorage.getItem('shareLink'))
+      currentShareLink.summary = value
+      currentShareLink.changed = true
+      localStorage.setItem('shareLink', JSON.stringify(currentShareLink))
+    } else {
+      const shareLink = {
+        summary: value,
+        changed: true,
+      }
+      localStorage.setItem('shareLink', JSON.stringify(shareLink));
+    }
+  }
+
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
@@ -431,10 +475,15 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     this.setState({ preview: value });
   };
 
+  setEditor = editor => {
+    this.setState(editor)
+  }
+
   render() {
     const { sharelinkId, classes } = this.props;
     const {
       loading,
+      resourceToolbar,
       title,
       summary,
       url,
@@ -458,15 +507,25 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               <Grid item xs={12} sm={12} md={12}>
                 <OutlinedTextValidator
                   required
-                  label="Title of your Resource"
+                  label="Title of Post"
                   labelClass={classes.labelClass}
                   inputClass={classes.textValidator}
-                  placeholder="e.g.  A colorful Periodic Table"
+                  placeholder="e.g. A colorful Periodic Table"
                   onChange={this.handleTextChange}
                   name="title"
                   value={title}
                   validators={['required']}
                   errorMessages={['Title is required']}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={12} className={classes.quillGrid}>
+                <ToolbarTooltip toolbar={resourceToolbar} toolbarClass={classes.toolbarClass} />
+                <RichTextEditor
+                  setEditor={this.setEditor}
+                  placeholder="(Optional) Write a description to help your classmates understand what resource(s) you’re sharing."
+                  value={summary}
+                  onChange={this.handleRTEChange}
                 />
               </Grid>
 
@@ -476,7 +535,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   label="Type/Paste URL here"
                   labelClass={classes.labelClass}
                   inputClass={classes.textValidator}
-                  placeholder="Share academic links to PDFs, PowerPoints, YouTube, Google Drive or DropBox documents or a URL here. "
+                  placeholder="Share links to PDFs, PowerPoints, YouTube, Google Drive or DropBox documents or a URL here."
                   onChange={this.handleTextChange}
                   name="url"
                   value={url}
@@ -484,7 +543,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['URL is required']}
                 />
               </Grid>
-
+{/* 
               <Grid item xs={12} sm={12} md={12}>
                 <OutlinedTextValidator
                   required
@@ -500,7 +559,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   validators={['required']}
                   errorMessages={['Description is required']}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} sm={12} md={12} className={classes.preview}>
                 <LinkPreview uri={preview} />

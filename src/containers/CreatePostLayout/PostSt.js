@@ -37,7 +37,6 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.appBar
   },
   labelClass: {
-    color: '#03A9F4',
     fontWeight: 'bold',
     position: 'absolute',
     top: 6,
@@ -61,7 +60,11 @@ const styles = theme => ({
         borderColor: theme.circleIn.palette.appBar
       },
       '& .ql-container': {
-        borderColor: theme.circleIn.palette.appBar
+        borderColor: theme.circleIn.palette.appBar,
+
+        '& .ql-editor.ql-blank::before': {
+          opacity: 1,
+        }
       }
     }
   }
@@ -78,6 +81,7 @@ type Props = {
     pathname: string
   },
   enqueueSnackbar: Function,
+  setIsPosting: Function,
   classList: Array,
 };
 
@@ -100,6 +104,7 @@ const CreatePostSt = ({
   classList,
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
+  setIsPosting,
 }: Props) => {
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
@@ -185,7 +190,19 @@ const CreatePostSt = ({
 
   const updatePostSt = useCallback(async () => {
     setLoading(true)
+
     try {
+      if (!body) {
+        setLoading(false)
+  
+        setError({
+          title: 'Please write something',
+          body: 'Please input any description',
+        })
+        setErrorDialog(true)
+        return
+      }
+
       const res = await api.updatePostSt({
         postId,
         classId,
@@ -250,7 +267,17 @@ const CreatePostSt = ({
         setErrorDialog(true)
         return
       }
+      if (!body) {
+        setLoading(false)
+        setError({
+          title: 'Please write something',
+          body: 'Please input any description',
+        })
+        setErrorDialog(true)
+        return
+      }
 
+      setIsPosting()
       const {
         points,
         user: { firstName },
@@ -328,7 +355,7 @@ const CreatePostSt = ({
       setTitle('')
       setBody('')
     }
-  }, [anonymousActive, body, canBatchPost, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
+  }, [anonymousActive, body, canBatchPost, setIsPosting, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId])
 
   const handleSubmit = useCallback(event => {
     event.preventDefault();
@@ -395,15 +422,13 @@ const CreatePostSt = ({
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12}>
               <OutlinedTextValidator
-                label="Post Something"
+                label="Title of Post"
                 labelClass={classes.labelClass}
                 inputClass={classes.textValidator}
-                placeholder="Title of post (optional)"
+                placeholder="This is optional, but it might help grab attention!"
                 onChange={handleTextChange}
                 name="title"
                 value={title}
-                validators={['required']}
-                errorMessages={['Title is required']}
               />
             </Grid>
             <Grid item xs={12} sm={12} className={classes.quillGrid}>

@@ -69,6 +69,12 @@ export const styles = theme => ({
       width: 160,
     },
   },
+  disabled: {
+    '&.Mui-disabled': {
+      background: theme.circleIn.palette.inactiveColor,
+      color: theme.circleIn.palette.whiteText
+    }
+  },
   mt3: {
     marginTop: theme.spacing(3)
   },

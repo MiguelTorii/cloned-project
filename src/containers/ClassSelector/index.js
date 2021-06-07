@@ -33,6 +33,18 @@ const styles = theme => ({
   classDropdown: {
     paddingTop: `${theme.spacing(1)}px !important`,
     paddingBottom: `${theme.spacing(1)}px !important`,
+
+    '& input::placeholder': {
+      color: theme.circleIn.palette.brand
+    },
+    '& svg': {
+      color: theme.circleIn.palette.brand
+    }
+  },
+  option: {
+    '&.MuiAutocomplete-option:hover': {
+      background: theme.circleIn.palette.brand,
+    }
   },
   classList: {
     backgroundColor: theme.circleIn.palette.formBackground,
@@ -43,7 +55,7 @@ const styles = theme => ({
   },
   optionItem: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   mr1: {
@@ -157,7 +169,8 @@ const ClassesSelector = ({
               size="small"
               disabled={isEdit}
               classes={{
-                inputRoot: classes.classDropdown
+                inputRoot: classes.classDropdown,
+                option: classes.option
               }}
               options={userClasses}
               getOptionLabel={(option) => option.label}

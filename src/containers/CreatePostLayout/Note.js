@@ -62,7 +62,6 @@ const styles = theme => ({
     textAlign: 'center',
   },
   labelClass: {
-    color: '#F5C264',
     fontWeight: 'bold',
     position: 'absolute',
     top: 6,
@@ -86,7 +85,11 @@ const styles = theme => ({
         borderColor: theme.circleIn.palette.appBar
       },
       '& .ql-container': {
-        borderColor: theme.circleIn.palette.appBar
+        borderColor: theme.circleIn.palette.appBar,
+
+        '& .ql-editor.ql-blank::before': {
+          opacity: 1,
+        }
       }
     }
   },
@@ -307,7 +310,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
         const { classList, title, classId, sectionId, body } = this.state
         const sectionIds = classList.map(c => c.sectionId)
         const images = await this.uploadImages.handleUploadImages()
-        console.log('images', images)
         const fileNames = images.map(item => item.id)
         const tagValues = tags.map(item => Number(item.value))
 
@@ -330,7 +332,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
           return
         }
 
-        console.log('step=====================> 1')
+        const { setIsPosting } = this.props
+        setIsPosting()
         const {
           points,
           user: { firstName },
@@ -630,7 +633,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   name="title"
                   placeholder="e.g., Fundamental of Chemistry Notes - Unit #1 Matter and Measurements"
                   onChange={this.handleTextChange}
-                  label="Title of note"
+                  label="Title of Notes*"
                   variant={notSm ? null : 'standard'}
                   value={title}
                   validators={['required']}

@@ -8,14 +8,15 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import ShareIcon from '@material-ui/icons/Share'
 import Box from '@material-ui/core/Box'
 import AppBar from '@material-ui/core/AppBar'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider'
-
+import Dialog from '@material-ui/core/Dialog'
+import { animations } from 'react-animation';
+import clsx from 'clsx';
 import LoadImg from 'components/LoadImg'
 
 import ClassMultiSelect from 'containers/ClassMultiSelect'
@@ -24,10 +25,14 @@ import { ReactComponent as DeactiveCreatePost } from 'assets/svg/inactive_create
 import { ReactComponent as DeactiveCreateQuestion } from 'assets/svg/inactive_create_question.svg'
 import { ReactComponent as DeactiveCreateNote } from 'assets/svg/inactive_create_note.svg'
 import { ReactComponent as DeactiveCreateShare } from 'assets/svg/inactive_create_share.svg'
+
 import { ReactComponent as ActiveCreatePost } from 'assets/svg/active_create_post.svg'
-import { ReactComponent as ActiveCreateQuestion } from 'assets/svg/active_create_question.svg'
+import { ReactComponent as ActiveCreateQuestion } from 'assets/svg/smile-green.svg'
 import { ReactComponent as ActiveCreateNote } from 'assets/svg/active_create_note.svg'
+import { ReactComponent as ActiveCreateShare } from 'assets/svg/active_create_share.svg'
+
 import circleinLogo from 'assets/svg/circlein_logo_minimal.svg'
+import postingImage from 'assets/svg/posting.svg'
 
 import CreateQuestion from './Question'
 import CreateNotes from './Note'
@@ -44,7 +49,6 @@ const styles = theme => ({
   },
   title: {
     width: '100%',
-    borderBottom: '1px solid #37393E'
   },
   button: {
     marginTop: theme.spacing(3),
@@ -70,8 +74,24 @@ const styles = theme => ({
     padding: theme.spacing(2, 0),
     maxWidth: 400
   },
+  hoverPost: {
+    borderRadius: '10px 0 0 0',
+  },
+  hoverQuestion: {
+    borderRadius: '0 0 0 0',
+  },
+  hoverNotes: {
+    borderRadius: '0 0 0 0',
+  },
+  hoverResource: {
+    borderRadius: '0 10px 0 0',
+  },
+  hover: {
+    background: 'linear-gradient(180deg, #383838 0%, #383838 49.48%, #222222 100%), #3A3B3B'
+  },
   tabsContainer: {
-    borderBottom: '1px solid #37393E'
+    borderBottom: '1px solid #37393E',
+    height: 92,
   },
   tabLabel: {
     borderRight: '1px solid #37393E',
@@ -83,11 +103,13 @@ const styles = theme => ({
   tabWapper: {
     display: 'contents',
     color: theme.circleIn.palette.inactiveColor,
+    fontSize: 16,
     fontWeight: 'bold',
     "&>:first-child": {
       marginBottom: '0px !important',
       marginRight: theme.spacing(0.5)
-    }
+    },
+    textTransform: 'none',
   },
   selectedPost: {
     "&>:first-child": {
@@ -134,6 +156,19 @@ const styles = theme => ({
   },
   link: {
     color: theme.circleIn.palette.brand
+  },
+  dialogPaper: {
+    '&.MuiDialog-paper': {
+      background: 'transparent',
+      boxShadow: 'none',
+    },
+  },
+  label: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    lineHeight: '65px',
+    textAlign: 'center',
+    marginTop: '-60px',
   }
 })
 
@@ -143,6 +178,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [value, setValue] = useState(0)
   const [classId, setClassId] = useState(0)
   const [sectionId, setSectionId] = useState(0)
+  const [isHoverOnPost, setIsHoverOnPost] = useState(false)
+  const [isHoverOnQuestion, setIsHoverOnQuestion] = useState(false)
+  const [isHoverOnNotes, setIsHoverOnNotes] = useState(false)
+  const [isHoverOnResource, setIsHoverOnResource] = useState(false)
+  const [isPosting, setIsPosting] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -255,6 +295,15 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
 
   return (
     <ErrorBoundary>
+      <Dialog
+        open={isPosting}
+        classes={{
+          paper: classes.dialogPaper
+        }}
+      >
+        <img src={postingImage} className={classes.postingImage} alt="Posting.." />
+        <div className={classes.label}>Posting...</div>
+      </Dialog>
       <Grid
         justify="flex-start"
         className={classes.container}
@@ -263,7 +312,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
       >
         <Grid item xs={12} md={9} display="flex">
           <div className={classes.title}>
-            <Typography variant="h4" color="textPrimary">Create New Post</Typography>
+            <Typography component="h1" variant="h4" color="textPrimary">Create New Post</Typography>
           </div>
         </Grid>
         <Grid item xs={12} md={9} display="flex">
@@ -305,11 +354,17 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                     selected: classes.selectedPost
                   }}
                   icon={
-                    value === 0
+                    value === 0 || isHoverOnPost
                       ? <ActiveCreatePost />
                       : <DeactiveCreatePost className={classes.mr1} />
                   }
-                  label="Post something"
+                  label="Write a Post"
+                  style={{ animation: animations.fadeIn }}
+                  className={clsx(
+                    isHoverOnPost && [classes.hoverPost, classes.hover, classes.selectedPost]
+                  )}
+                  onMouseEnter={() => setIsHoverOnPost(true)}
+                  onMouseLeave={() => setIsHoverOnPost(false)}
                 />
                 <Tab
                   classes={{
@@ -318,11 +373,17 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                     selected: classes.selectedQuestion
                   }}
                   icon={
-                    value === 1
+                    value === 1 || isHoverOnQuestion
                       ? <ActiveCreateQuestion className={classes.mr1} />
                       : <DeactiveCreateQuestion className={classes.mr1} />
                   }
                   label="Ask a question"
+                  style={{ animation: animations.fadeIn }}
+                  className={clsx(
+                    isHoverOnQuestion && [classes.hoverQuestion, classes.hover, classes.selectedQuestion]
+                  )}
+                  onMouseEnter={() => setIsHoverOnQuestion(true)}
+                  onMouseLeave={() => setIsHoverOnQuestion(false)}
                 />
                 <Tab
                   classes={{
@@ -331,11 +392,17 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                     labelIcon: classes.tabLabelRight
                   }}
                   icon={
-                    value === 2
+                    value === 2 || isHoverOnNotes
                       ? <ActiveCreateNote className={classes.mr1} />
                       : <DeactiveCreateNote className={classes.mr1} />
                   }
                   label="Share Notes"
+                  style={{ animation: animations.fadeIn }}
+                  className={clsx(
+                    isHoverOnNotes && [classes.hoverNotes, classes.hover, classes.selectedNote]
+                  )}
+                  onMouseEnter={() => setIsHoverOnNotes(true)}
+                  onMouseLeave={() => setIsHoverOnNotes(false)}
                 />
                 <Tab
                   classes={{
@@ -343,11 +410,17 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                     selected: classes.selectedResource
                   }}
                   icon={
-                    value === 3
-                      ? <ShareIcon className={classes.mr1} />
+                    value === 3 || isHoverOnResource
+                      ? <ActiveCreateShare className={classes.mr1} />
                       : <DeactiveCreateShare className={classes.mr1} />
                   }
                   label="Share a resource"
+                  style={{ animation: animations.fadeIn }}
+                  className={clsx(
+                    isHoverOnResource && [classes.hoverResource, classes.hover, classes.selectedResource]
+                  )}
+                  onMouseEnter={() => setIsHoverOnResource(true)}
+                  onMouseLeave={() => setIsHoverOnResource(false)}
                 />
               </Tabs>
             </AppBar>
@@ -358,6 +431,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 sectionId={sectionId}
                 currentTag={value}
                 postId={postId}
+                setIsPosting={() => setIsPosting(true)}
               />
             </TabPanel>
             <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)} >
@@ -392,7 +466,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         <Grid item xs={12} md={3} display="flex">
           <div className={classes.paperRoot}>
             <div className={classes.circleinPostListTitle}>
-              <LoadImg url={circleinLogo} className={classes.circleinLogo} />
+              <LoadImg url={circleinLogo} className={classes.circleinLogo} alt="Posting..." />
               <Typography variant="subtitle1" color="textPrimary">
                 <b>Etiquette for CircleIn Posts</b>
               </Typography>
