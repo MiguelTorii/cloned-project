@@ -55,7 +55,8 @@ type Props = {
   pushTo: Function,
   expertMode: boolean,
   router: Object,
-  onDelete: Function
+  onDelete: Function,
+  onEdit: Function
 };
 
 type State = {
@@ -99,12 +100,15 @@ class PostItemHeader extends React.PureComponent<Props, State> {
 
   handleEdit = () => {
     const {
+      onEdit,
       postId,
       typeId,
       pushTo
     } = this.props;
     this.handleMenuClose();
-    if (typeId === 3) pushTo(`/edit/flashcards/${String(postId)}`)
+    if (typeId === 3) {
+      onEdit();
+    }
     if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`)
     if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`)
     if (typeId === 6) pushTo(`/edit/question/${String(postId)}`)
