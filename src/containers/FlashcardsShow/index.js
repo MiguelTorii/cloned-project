@@ -50,6 +50,8 @@ import moment from 'moment';
 import { push } from 'connected-react-router';
 import PostComments from 'containers/PostComments';
 import PostItemActions from 'containers/PostItemActions';
+import PostItem from '../../components/PostItem';
+import IconBack from '@material-ui/icons/ArrowBackIos';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 50;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
@@ -237,13 +239,30 @@ const FlashcardsShow = () => {
     dispatch(push(`/profile/${data.userId}`));
   }, [dispatch, data]);
 
+  const handleBack = useCallback(() => {
+    dispatch(push('/feed'));
+  }, [dispatch]);
+
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
 
   return (
-    <div className={classes.container}>
+    <PostItem feedId={data.feedId}>
+      <Box pt={2} mb={2}>
+        <Link
+          component="button"
+          color="inherit"
+          underline="none"
+          onClick={handleBack}
+        >
+          <Typography variant="h6">
+            <IconBack className={classes.iconMiddle} />
+            Feed
+          </Typography>
+        </Link>
+      </Box>
       <Grid container spacing={3} alignItems="center">
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={8} xl={9}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
               <Link component="button" onClick={handleClickUser}>
@@ -270,7 +289,7 @@ const FlashcardsShow = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} lg={4} xl={3}>
           <Grid container spacing={2}>
             { me.userId === data.userId && (
               <Grid item>
@@ -301,7 +320,7 @@ const FlashcardsShow = () => {
             {/*</Grid>*/}
           </Grid>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12}>
           <Typography variant="h5" gutterBottom>
             { data.title }
           </Typography>
@@ -325,7 +344,7 @@ const FlashcardsShow = () => {
       </Grid>
       <Box mt={3} />
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={8} xl={9}>
           <CardBoard data={data.deck[boardDeckIndex]} />
           <Box mt={2} display="flex" justifyContent="center" alignItems="center">
             <Box mr={2}>
@@ -350,7 +369,7 @@ const FlashcardsShow = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} lg={4} xl={3}>
           <Box fontSize={18} fontWeight={800}>
             Practice Mode
           </Box>
@@ -382,7 +401,7 @@ const FlashcardsShow = () => {
       <FlashcardsListEditor
         data={cardList}
         toolbarPrefix="show"
-        readOnly={true}
+        readOnly
       />
       <Box mt={3}>
         <PostItemActions
@@ -488,7 +507,7 @@ const FlashcardsShow = () => {
         />
       </Dialog>
       <ScrollToTop />
-    </div>
+    </PostItem>
   );
 };
 

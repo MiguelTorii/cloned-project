@@ -84,5 +84,8 @@ export default makeStyles((theme) => ({
   },
   reviewModal: {
     borderRadius: 0
+  },
+  iconMiddle: {
+    verticalAlign: 'middle'
   }
 }));
