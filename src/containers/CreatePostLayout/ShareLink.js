@@ -17,7 +17,7 @@ import CreatePostForm from '../../components/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from '../RichTextEditor';
+import RichTextEditor from 'containers/RichTextEditor';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
@@ -167,9 +167,19 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
     if (localStorage.getItem('shareLink')) {
       const shareLink = JSON.parse(localStorage.getItem('shareLink'))
-      const { title, summary, url, changed } = shareLink
 
-      this.setState({ title, summary, url, changed })
+      if ('title' in shareLink) {
+        this.setState({ title: shareLink.title })
+      }
+      if ('summary' in shareLink) {
+        this.setState({ summary: shareLink.summary })
+      }
+      if ('url' in shareLink) {
+        this.setState({ url: shareLink.url })
+      }
+      if ('changed' in shareLink) {
+        this.setState({ changed: shareLink.changed })
+      }
     }
 
     this.updatePreview = debounce(this.updatePreview, 1000);
@@ -320,7 +330,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         return
       }
 
-      const { title, summary, url, setIsPosting } = this.state;
+      const { title, summary, url } = this.state;
+      const { setIsPosting } = this.props;
+
       setIsPosting()
 
       const tagValues = tags.map(item => Number(item.value));

@@ -1,6 +1,17 @@
 export const styles = theme => ({
+  dropzoneWrapper: {
+    position: 'relative',
+    // height: 96,
+    padding: theme.spacing(2),
+    border: `1px solid ${theme.circleIn.palette.appBar}`
+  },
   dropLabel: {
-    width: '100%'
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing(2.5),
+    width: '100%',
+    height: 64,
   },
   addIcon: {
     fontSize: theme.spacing(4)
@@ -57,18 +68,19 @@ export const styles = theme => ({
     color: '#909090'
   },
   thumbnails: {
+    // position: 'absolute',
+    top: theme.spacing(0.5),
     display: 'flex',
     flexWrap: 'wrap'
   },
   dragContainer: {
     position: 'relative',
-    margin: theme.spacing(2)
+    margin: theme.spacing(1)
   },
   drag: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    padding: theme.spacing()
   },
   button: {
     padding: 4,

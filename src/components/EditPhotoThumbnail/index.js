@@ -8,13 +8,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CloseIcon from '@material-ui/icons/Close';
 import CreateIcon from '@material-ui/icons/Create';
 import ClearIcon from '@material-ui/icons/Clear';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
@@ -23,12 +18,13 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import DoneIcon from '@material-ui/icons/Done';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import clsx from 'clsx';
+
+import Dialog from 'components/Dialog';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
 
 import { styles } from '../_styles/EditPhotoThumbnail';
 
-const Transition = React.forwardRef((props, ref) => {
-  return <Slide direction="up" {...props} ref={ref} />;
-})
 
 type Props = {
   classes: Object,
@@ -196,32 +192,14 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
           )}
         </Paper>
         <Dialog
-          fullScreen
+          title="Edit Image"
+          className={clsx(
+            classes.modalRoot,
+            !image && classes.hidden
+          )}
           open={open}
-          onClose={this.handleClose}
-          TransitionComponent={Transition}
+          onCancel={this.handleClose}
         >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                onClick={this.handleClose}
-                aria-label="Close"
-              >
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="h6" className={classes.flex}>
-                Edit Image
-              </Typography>
-              <Button
-                color="inherit"
-                variant="contained"
-                onClick={this.handleSave}
-              >
-                save
-              </Button>
-            </Toolbar>
-          </AppBar>
           <div className={classes.editor}>
             <AvatarEditor
               ref={this.setEditorRef}
@@ -264,6 +242,13 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
                 <RotateRightIcon />
               </IconButton>
             </div>
+            <GradientButton
+              compact
+              onClick={this.handleSave}
+              style={{ width: '100%' }}
+            >
+              Save changes <span role='img' aria-label='tada'>🎉</span>
+            </GradientButton>
           </div>
         </Dialog>
       </Fragment>

@@ -68,7 +68,9 @@ const circleInTheme = {
   removeColor: '#F15744',
   floatChatBackground: '#1E1F22',
   floatChatTextAreaBackground: '#3E4143',
-  floatChatHeader: '#A2A4A8'
+  floatChatHeader: '#A2A4A8',
+  notesTabBorder: '#F5C264',
+  resourceTabBorder: '#6515CF',
 };
 
 let theme = createMuiTheme({
@@ -130,7 +132,9 @@ let theme = createMuiTheme({
       removeColor: circleInTheme.removeColor,
       floatChatBackground: circleInTheme.floatChatBackground,
       floatChatTextAreaBackground: circleInTheme.floatChatTextAreaBackground,
-      floatChatHeader: circleInTheme.floatChatHeader
+      floatChatHeader: circleInTheme.floatChatHeader,
+      notesTabBorder: circleInTheme.notesTabBorder,
+      resourceTabBorder: circleInTheme.resourceTabBorder,
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

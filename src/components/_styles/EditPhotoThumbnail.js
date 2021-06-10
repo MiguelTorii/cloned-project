@@ -7,8 +7,8 @@ export const styles = theme => ({
     backgroundColor: 'white',
     color: 'black',
     position: 'relative',
-    width: 100,
-    height: 130
+    width: 75,
+    height: 71
   },
   reverse: {
     backgroundColor: 'black'
@@ -27,7 +27,7 @@ export const styles = theme => ({
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
-    padding: theme.spacing()
+    padding: theme.spacing(0)
   },
   uploaded: {
     position: 'absolute',
@@ -73,12 +73,22 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing()
+    padding: theme.spacing(0.5, 0),
+    border: '1px solid rgba(255, 255, 255, .25)',
+    borderRadius: 20,
+    margin: theme.spacing(5, 0, 5, 0)
   },
   green: {
     color: green[500]
   },
   uploadedIcon: {
     opacity: 0.5
+  },
+  modalRoot: {
+    width: 480,
+    zIndex: 2000,
+  },
+  hidden: {
+    display: 'none'
   }
 });

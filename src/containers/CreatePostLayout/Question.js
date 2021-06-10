@@ -13,8 +13,8 @@ import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
 import CreatePostForm from 'components/CreatePostForm';
 import OutlinedTextValidator from 'components/OutlinedTextValidator';
 import SimpleErrorDialog from 'components/SimpleErrorDialog';
-import { cypher } from 'utils/crypto'
-import RichTextEditor from '../RichTextEditor';
+import { cypher } from 'utils/crypto';
+import RichTextEditor from 'containers/RichTextEditor';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as api from '../../api/posts';

@@ -125,6 +125,11 @@ const styles = theme => ({
     marginRight: theme.spacing(2),
     paddingTop: theme.spacing(1),
     color: theme.circleIn.palette.brand
+  },
+  counter: {
+    textAlign: 'right',
+    color: theme.circleIn.palette.brand,
+    paddingRight: theme.spacing(2)
   }
 })
 
@@ -197,6 +202,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       editor: null,
       body: null,
       notes: [],
+      // count: 50,
     }
   }
 
@@ -243,8 +249,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 
   handleRTEChange = value => {
-    this.setState({ changed: true })
-    this.setState({ body: value })
+    this.setState({
+      body: value,
+      changed: true,
+      // count: Math.max(50 - value.length, 0)
+    })
 
     if (localStorage.getItem('note')) {
       const currentNote = JSON.parse(localStorage.getItem('note'))
@@ -610,7 +619,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody,
       questionToolbar,
       body,
-      notes
+      notes,
+      // count,
     } = this.state
 
     const notSm = !['xs', 'sm'].includes(width)
@@ -657,6 +667,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   value={body}
                   onChange={this.handleRTEChange}
                 />
+                {/* <div className={classes.counter}>
+                  {count === 50 && 'Type 50 characters to earn points!'}
+                  {count === 0 && '🎉 Yay! Points!'}
+                  {count > 0 && count < 50 && `${count} characters left...`}
+                </div> */}
               </Grid>
             </Grid>
           </CreatePostForm>
