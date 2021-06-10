@@ -280,7 +280,8 @@ export const openChannelWithEntity = ({
           entityFirstName,
           entityLastName,
           imageKey: '',
-          isVideoNotification: false
+          isVideoNotification: false,
+          source: 'big_chat'
         }
         await sendMessage({
           message: "Hi! Let's chat and study together here!",

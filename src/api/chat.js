@@ -13,6 +13,7 @@ export const sendMessage = async ({
   chatId,
   imageKey,
   isVideoNotification,
+  source = 'big_chat'
 }: {
   message: string,
   chatId: array,
@@ -27,7 +28,8 @@ export const sendMessage = async ({
         message,
         chat_id: chatId,
         image_url: imageKey,
-        is_video_notification: isVideoNotification
+        is_video_notification: isVideoNotification,
+        source
       },
       {
         headers: {

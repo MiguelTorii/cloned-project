@@ -264,7 +264,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       firstName,
       lastName,
       imageKey: '',
-      isVideoNotification: false
+      isVideoNotification: false,
+      source: "little_chat"
     };
     this.setState({ loading: true });
     const { newChannel } = this.props
@@ -324,7 +325,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
         firstName,
         lastName,
         imageKey: readUrl,
-        isVideoNotification: false
+        isVideoNotification: false,
+        source: "little_chat"
       };
 
       await sendMessage({

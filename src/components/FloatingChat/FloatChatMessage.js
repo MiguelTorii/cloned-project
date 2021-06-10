@@ -26,7 +26,7 @@ type Props = {
   name: string,
   avatar: string,
   isOwn: boolean,
-  isOnline: boolean,
+  isUserOnline: boolean,
   date: string,
   messageList: Array<Object>,
   onImageLoaded: Function,
@@ -40,7 +40,7 @@ const ChatMessage = ({
   date,
   avatar,
   isOwn,
-  isOnline,
+  isUserOnline,
   messageList,
   onImageLoaded,
   onStartVideoCall,
@@ -180,7 +180,7 @@ const ChatMessage = ({
             href={`/profile/${userId || ''}`}
           >
             <OnlineBadge
-              isOnline={isOnline}
+              isOnline={isUserOnline}
               bgColorPath="circleIn.palette.feedBackground"
             >
               <Avatar alt={name} src={avatar}>
