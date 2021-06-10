@@ -27,6 +27,8 @@ const RichTextEditor = (
   // Hooks
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
+  const [isActive, setIsActive] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     disabled: readOnly,
@@ -39,10 +41,6 @@ const RichTextEditor = (
         })
     }
   });
-
-  // States
-  const [isActive, setIsActive] = useState(false);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Callbacks
   const removeStyleMatcher = useCallback((node, delta) => {
@@ -88,14 +86,26 @@ const RichTextEditor = (
       )
     }
 
+    if (readOnly) return null;
+
     return <IconImage className={classes.imageIcon} />;
   };
 
   return (
-    <div className={clsx(classes.textEditorContainer, isActive && 'active')}>
-      <div className={clsx(classes.editorLabel, isActive && 'active')}>
-        { label }
-      </div>
+    <div
+      className={
+        clsx(
+          classes.textEditorContainer,
+          isActive && 'active',
+          readOnly && 'read-only'
+        )
+      }
+    >
+      {!readOnly && (
+        <div className={clsx(classes.editorLabel, isActive && 'active')}>
+          { label }
+        </div>
+      )}
       <div className={classes.textEditor}>
         <ReactQuill
           theme="snow"
@@ -118,7 +128,7 @@ const RichTextEditor = (
         />
       </div>
       <div className="container">
-        <div {...getRootProps({ className: classes.imageDnd })}>
+        <div {...getRootProps({ className: clsx(classes.imageDnd, readOnly && 'read-only') })}>
           <input {...getInputProps()} />
           { renderImage() }
         </div>

@@ -7,9 +7,9 @@ const ActionButton = withStyles((theme) => ({
     minWidth: 230,
     fontSize: 24,
     '&:hover': {
-      backgroundColor: theme.circleIn.palette.hoverColor,
+      background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
       '& svg': {
-        color: theme.circleIn.palette.darkTextColor
+        color: 'white'
       }
     }
   },

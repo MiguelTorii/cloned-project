@@ -11,6 +11,11 @@ import IconSchool from '@material-ui/icons/School';
 import LinearProgressBar from 'components/LinearProgressBar';
 import IconPrevious from '@material-ui/icons/ArrowBack';
 import IconNext from '@material-ui/icons/ArrowForward';
+import IconPen from '@material-ui/icons/EditOutlined';
+import IconActionButton from 'components/IconActionButton';
+import IconBookmark from '@material-ui/icons/BookmarkOutlined';
+import IconBookmarkBorder from '@material-ui/icons/BookmarkBorder';
+import IconShare from '@material-ui/icons/ShareOutlined';
 import TransparentIconButton from 'components/Basic/Buttons/TransparentIconButton';
 import FlashcardsListEditor from 'components/FlashcardsListEditor';
 import { bookmarkFlashcards } from 'actions/user';
@@ -18,6 +23,10 @@ import update from 'immutability-helper';
 import clsx from 'clsx';
 import IconBook from '@material-ui/icons/Book';
 import IconNote from '@material-ui/icons/LibraryBooks';
+import IconBack from '@material-ui/icons/ArrowBackIos';
+import Link from '@material-ui/core/Link';
+import moment from 'moment';
+import { useLastLocation } from 'react-router-last-location';
 import FlashcardsMatchGame from 'components/FlashcardsMatchGame';
 import ScrollToTop from 'components/ScrollToTop';
 import ShareLinkModal from 'components/ShareLinkModal';
@@ -43,7 +52,12 @@ import useStyles from './styles';
 import withRoot from '../../withRoot';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
+import { isApiCalling } from '../../utils/helpers';
+import { userActions } from '../../constants/action-types';
+import Avatar from '../../components/Avatar';
+import { getInitials } from '../../utils/chat';
 
+const DESCRIPTION_LENGTH_THRESHOLD = 50;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
 
 const FlashcardsShow = () => {
@@ -54,6 +68,7 @@ const FlashcardsShow = () => {
   const me = useSelector((state) => state.user.data);
   const expertMode = useSelector((state) => state.user.expertMode);
   const router = useSelector((state) => state.router);
+  const lastLocation = useLastLocation();
 
   // States
   const [data, setData] = useState({});
@@ -66,6 +81,8 @@ const FlashcardsShow = () => {
   const [boardDeckIndex, setBoardDeckIndex] = useState(0);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isShortSummary, setIsShortSummary] = useState(true);
+  const isBookmarking = useSelector(isApiCalling(userActions.BOOKMARK_FLASHCARDS));
 
   // Memos
   const cardList = useMemo(() => {
@@ -87,6 +104,11 @@ const FlashcardsShow = () => {
       deck: cardList
     };
   }, [data, cardList]);
+
+  const shouldRenderFeed = useMemo(() => {
+    if (!lastLocation) return true;
+    return lastLocation.pathname.includes('/feed');
+  }, [lastLocation]);
 
   // Callbacks
   const reloadData = useCallback((showLoading = false) => {
@@ -178,6 +200,22 @@ const FlashcardsShow = () => {
     )
   }, [dispatch, data, me.userId]);
 
+  const handleActionShare = useCallback(() => {
+    setIsShareModalOpen(true);
+  }, []);
+
+  // const handleActionMore = useCallback(() => {
+  //
+  // }, []);
+
+  const handleSummaryMoreOrLess = useCallback(() => {
+    setIsShortSummary(!isShortSummary);
+  }, [isShortSummary]);
+
+  const handleBack = useCallback(() => {
+    dispatch(goBack());
+  }, [dispatch]);
+
   const handlePrevDeck = useCallback(() => {
     setBoardDeckIndex(boardDeckIndex - 1);
   }, [boardDeckIndex]);
@@ -215,6 +253,10 @@ const FlashcardsShow = () => {
 
   const handleCloseMatchGame = useCallback(() => setIsInMatchGame(false), []);
 
+  const handleClickUser = useCallback(() => {
+    dispatch(push(`/profile/${data.userId}`));
+  }, [dispatch, data]);
+
   const handleReport = useCallback(() => {
     setIsReportModalOpen(true);
   }, []);
@@ -245,34 +287,8 @@ const FlashcardsShow = () => {
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
 
-  return (
-    <PostItem feedId={data.feedId}>
-      <PostItemHeader
-        hideShare
-        feedId={data.feedId}
-        expertMode={expertMode}
-        pushTo={handlePush}
-        router={router}
-        pop={handleGoBack}
-        postId={data.postId}
-        typeId={data.typeId}
-        currentUserId={me.userId}
-        userId={data.userId}
-        name={data.name}
-        userProfileUrl={data.userProfileUrl}
-        classroomName={data.courseDisplayName}
-        created={data.created}
-        body={data.summary}
-        title={data.title}
-        bookmarked={data.bookmarked}
-        roleId={data.roleId}
-        role={data.role}
-        onBookmark={handleActionBookmark}
-        onReport={handleReport}
-        onDelete={handleDelete}
-        onEdit={handleActionEdit}
-      />
-      <Box mt={3} />
+  const renderBody = () => (
+    <>
       <Grid container spacing={3}>
         <Grid item xs={12} lg={8} xl={9}>
           <CardBoard data={data.deck[boardDeckIndex]} />
@@ -333,6 +349,38 @@ const FlashcardsShow = () => {
         toolbarPrefix="show"
         readOnly
       />
+    </>
+  );
+
+  const renderAsFeed = () => (
+    <PostItem feedId={data.feedId}>
+      <PostItemHeader
+        hideShare
+        feedId={data.feedId}
+        expertMode={expertMode}
+        pushTo={handlePush}
+        router={router}
+        pop={handleGoBack}
+        postId={data.postId}
+        typeId={data.typeId}
+        currentUserId={me.userId}
+        userId={data.userId}
+        name={data.name}
+        userProfileUrl={data.userProfileUrl}
+        classroomName={data.courseDisplayName}
+        created={data.created}
+        body={data.summary}
+        title={data.title}
+        bookmarked={data.bookmarked}
+        roleId={data.roleId}
+        role={data.role}
+        onBookmark={handleActionBookmark}
+        onReport={handleReport}
+        onDelete={handleDelete}
+        onEdit={handleActionEdit}
+      />
+      <Box mt={3} />
+      {renderBody()}
       <Box>
         <PostTags userId={me.userId} feedId={data.feedId} />
       </Box>
@@ -362,6 +410,112 @@ const FlashcardsShow = () => {
           readOnly={data.readOnly}
         />
       </Box>
+    </PostItem>
+  );
+
+  const renderAsNonFeed = () => (
+    <>
+      <Box pt={2} mb={2}>
+        <Link
+          component="button"
+          color="inherit"
+          underline="none"
+          onClick={handleBack}
+        >
+          <Typography variant="h6">
+            <IconBack className={classes.iconMiddle} />
+            Back
+          </Typography>
+        </Link>
+      </Box>
+      <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12} lg={8} xl={9}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <Link component="button" onClick={handleClickUser}>
+                <Avatar
+                  initialText={getInitials(data.name)}
+                  src={data.userProfileUrl}
+                  desktopSize={45}
+                  mobileSize={45}
+                />
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                underline="none"
+                component="button"
+                onClick={handleClickUser}
+                variant="h6"
+              >
+                {data.name}
+              </Link>
+              <Typography variant="body2">
+                { data.courseDisplayName } &nbsp; • &nbsp; { moment(data.created).fromNow() }
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} lg={4} xl={3}>
+          <Grid container spacing={2}>
+            { me.userId === data.userId && (
+              <Grid item>
+                <IconActionButton onClick={handleActionEdit}>
+                  <IconPen />
+                </IconActionButton>
+              </Grid>
+            )}
+            <Grid item>
+              <IconActionButton
+                onClick={handleActionBookmark}
+                disabled={isBookmarking}
+                loading={isBookmarking}
+              >
+                {data.bookmarked
+                  ? <IconBookmark />
+                  : <IconBookmarkBorder />
+                }
+              </IconActionButton>
+            </Grid>
+            <Grid item>
+              <IconActionButton onClick={handleActionShare}>
+                <IconShare />
+              </IconActionButton>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom>
+            { data.title }
+          </Typography>
+          <Typography>
+            { isShortSummary ?
+              _.truncate(data.summary, { length: 50 })
+              :
+              data.summary
+            }
+            { data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
+              <Link
+                className={classes.moreLessLink}
+                onClick={handleSummaryMoreOrLess}
+                color="inherit"
+                underline="always">
+                { isShortSummary ? 'see more' : 'show less' }
+              </Link>
+            )}
+          </Typography>
+        </Grid>
+      </Grid>
+      { renderBody() }
+    </>
+  );
+
+  return (
+    <Box>
+      { shouldRenderFeed
+        ? renderAsFeed()
+        : renderAsNonFeed()
+      }
 
       { /* Modals for the page */ }
 
@@ -453,7 +607,7 @@ const FlashcardsShow = () => {
         />
       </Dialog>
       <ScrollToTop />
-    </PostItem>
+    </Box>
   );
 };
 

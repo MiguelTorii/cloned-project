@@ -58,6 +58,11 @@ export default makeStyles((theme) => ({
     alignItems: 'stretch',
     '&.active': {
       borderColor: theme.circleIn.palette.brand
+    },
+    '&.read-only': {
+      border: 'none',
+      background: 'rgba(95, 97, 101, 0.2)',
+      boxShadow: 'inset 2px 2px 2px rgba(0, 0, 0, 0.18)'
     }
   },
   textEditor: {
@@ -85,7 +90,10 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: theme.spacing(1/2)
+    padding: theme.spacing(1/2),
+    '&.read-only': {
+      border: 'none'
+    }
   },
   imageIcon: {
     color: '#5F6165'

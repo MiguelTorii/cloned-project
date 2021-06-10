@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { push } from 'connected-react-router';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
 import type { FeedItem } from '../../types/models';
@@ -15,7 +16,6 @@ import clsx from 'clsx';
 import ShareLinkModal from '../ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
 import moment from 'moment';
-import { useHistory } from 'react-router';
 
 type Props = {
   data: FeedItem
@@ -25,7 +25,6 @@ const FlashcardsDeck = ({ data }: Props) => {
   // Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const classList = useSelector((state) => state.user.userClasses.classList);
   const me = useSelector((state) => state.user.data);
 
@@ -57,8 +56,8 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, [data, me, dispatch]);
 
   const handleView = useCallback(() => {
-    history.push(`/flashcards/${data.post_id}`);
-  }, [history, data]);
+    dispatch(push(`/flashcards/${data.post_id}`));
+  }, [dispatch, data]);
 
   const handleShareLink = useCallback(() => {
     setIsShareLinkModalOpen(true);
@@ -82,9 +81,9 @@ const FlashcardsDeck = ({ data }: Props) => {
   // Rendering
   return (
     <div
-     className={classes.root}
-     onMouseEnter={() => setIsHover(true)}
-     onMouseLeave={() => setIsHover(false)}
+      className={classes.root}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <div className={classes.contentContainer}>
         <Box
