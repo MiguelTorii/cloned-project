@@ -36,6 +36,23 @@ const modules = {
     ['clean'],
     ['emoji'],
   ],
+  keyboard: {
+    bindings: {
+      'tabToPost': {
+        key: 13,
+        shortKey: true,
+        handler: function(range, context) {
+          const postButtonEl = document.getElementById('post-submit-btn')
+
+          if (postButtonEl) {
+            postButtonEl.focus()
+          }
+
+          return false
+        }
+      }
+    }
+  },
   'emoji-toolbar': true,
   // 'emoji-textarea': true,
   'emoji-shortname': true,

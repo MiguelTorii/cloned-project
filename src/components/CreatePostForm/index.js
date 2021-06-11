@@ -104,6 +104,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                         root: classes.submit,
                         disabled: classes.disabled,
                       }}
+                      id="post-submit-btn"
                     >
                       {loading ? (
                         <div className={classes.divProgress}>
