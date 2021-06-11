@@ -1,35 +1,36 @@
 // @flow
 
 import React, { useEffect, memo, useCallback, useMemo, useState } from 'react';
+import cx from 'classnames'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import TextField from '@material-ui/core/TextField'
 import SelectSchool from 'containers/AuthRedirect/SelectSchool'
-import * as signInActions from 'actions/sign-in';
 import Login from 'containers/AuthRedirect/Login'
 import SignUp from 'containers/AuthRedirect/SignUp'
 import WalkThrough from 'containers/AuthRedirect/WalkThrough'
 import ForgotPassword from 'containers/AuthRedirect/ForgotPassword'
 import FirstTime from 'containers/AuthRedirect/FirstTime'
 import NewPassword from 'containers/AuthRedirect/NewPassword'
-import Paper from '@material-ui/core/Paper';
 import LoadImg from 'components/LoadImg';
-import cx from 'classnames'
-import TextField from '@material-ui/core/TextField'
+import Dialog from 'components/Dialog';
 import { emailRequest, getSchool } from 'api/sign-in'
-import type { State as StoreState } from '../../types/state';
-import loginBackground from '../../assets/svg/new-auth-bg.svg';
-import CircleInPhone from '../../assets/img/CircleInPhone.png';
-import authImage from '../../assets/img/new-auth.png';
-import * as authActions from '../../actions/auth';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
-import Dialog from '../../components/Dialog';
-import * as signUpActions from '../../actions/sign-up';
+import * as signInActions from 'actions/sign-in';
+import * as authActions from 'actions/auth';
+import * as signUpActions from 'actions/sign-up';
 import { deepLinkCheck } from 'utils/helpers';
+import loginBackground from 'assets/svg/new-auth-bg.svg';
+import CircleInPhone from 'assets/img/CircleInPhone.png';
+import authImage from 'assets/img/new-auth.png';
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+import type { State as StoreState } from 'types/state';
 
 const styles = theme => ({
   main: {
@@ -44,6 +45,18 @@ const styles = theme => ({
     '-moz-background-size': 'cover',
     '-webkit-background-size': 'cover',
     backgroundSize: 'cover'
+  },
+  deeplinkBlankPage: {
+    position: 'absolute',
+    minHeight: '100vh',
+    width: '100%',
+    backgroundColor: 'white',
+    color: 'black',
+    zIndex: 2147483647,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
   },
   grid: {
     display: 'flex',
@@ -311,6 +324,12 @@ const Auth = ({
 
   return (
     <main className={classes.main}>
+      {isDeepLink && <div className={classes.deeplinkBlankPage}>
+        <CircularProgress />
+        <Typography variant="body1">
+          Taking you to login...
+        </Typography>
+      </div>}
       <Grid
         container
         item
