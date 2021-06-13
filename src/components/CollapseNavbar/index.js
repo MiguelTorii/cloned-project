@@ -87,7 +87,7 @@ const CollapseNavbar = ({
       content.push(
         <ListItem
           key={channel?.channels
-            ? `${channel.id}-${channel.created}`
+            ? `${channel.id}-${channel.name}`
             : channel.chat_name
           }
           className={cx(
@@ -101,14 +101,14 @@ const CollapseNavbar = ({
             button: classes.listItem
           }}
           onClick={handleSubList(
-            channel?.channels ? channel.created : channel.chat_name,
+            channel?.channels ? channel.name : channel.chat_name,
             channel
           )}
           button
         >
           {channel?.channels
             ? <ListItemIcon classes={{ root: classes.channelIcon }}>
-              {subListOpen === channel?.created
+              {subListOpen === channel?.name
                 ? <ExpandLess />
                 : <ExpandMore />
               }
@@ -122,7 +122,7 @@ const CollapseNavbar = ({
           {channel?.channels
             ? <ListItemText
               classes={{ primary: classes.channelName }}
-              primary={channel.created}
+              primary={channel.name}
             />
             : local[channel.chat_id]
               ? <ListItemText
@@ -134,7 +134,7 @@ const CollapseNavbar = ({
               />
               : null}
         </ListItem>,
-        channel?.channels && renderSubList(channel.channels, channel.created)
+        channel?.channels && renderSubList(channel.channels, channel.name)
       )
     })
 
