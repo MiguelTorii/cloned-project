@@ -151,6 +151,7 @@ const Auth = ({
   const [school, setSchool] = useState(auth.data?.school)
   const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false)
   const [email, setEmail] = useState('')
+  const [deeplinkLoading, setDeeplinkLoading] = useState(false)
 
   const isDeepLink = useMemo(() => deepLinkCheck(pathname), [pathname])
 
@@ -160,6 +161,12 @@ const Auth = ({
   useEffect(() => {
     setSchool(auth.data?.school)
   }, [auth])
+
+  useEffect(() => {
+    if (isDeepLink) {
+      setDeeplinkLoading(true)
+    }
+  }, [isDeepLink])
 
   useEffect(() => {
     const schoolId = pathname.split('/')[2]
@@ -222,6 +229,7 @@ const Auth = ({
         school={school}
         setScreen={setScreen}
         isDeepLink={isDeepLink}
+        setDeeplinkLoading={setDeeplinkLoading}
         updateSchool={updateSchool}
         updateError={updateError}
         setLoginAsExternalUser={setLoginAsExternalUser}
@@ -324,7 +332,7 @@ const Auth = ({
 
   return (
     <main className={classes.main}>
-      {isDeepLink && <div className={classes.deeplinkBlankPage}>
+      {isDeepLink && deeplinkLoading && <div className={classes.deeplinkBlankPage}>
         <CircularProgress />
         <Typography variant="body1">
           Taking you to login...

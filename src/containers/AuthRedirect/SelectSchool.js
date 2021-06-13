@@ -44,7 +44,8 @@ const SelectSchool = ({
   setScreen,
   isDeepLink,
   updateSchool,
-  setLoginAsExternalUser
+  setLoginAsExternalUser,
+  setDeeplinkLoading
 }) => {
   const classes = useStyles()
   const [error, setError] = useState(false)
@@ -86,6 +87,7 @@ const SelectSchool = ({
     }
 
     const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
+
     if (
       school.studentLive === 0
     ) {
@@ -109,6 +111,7 @@ const SelectSchool = ({
     } if (lmsTypeId === 0) {
       /* NONE */
       setLoading(false)
+      setDeeplinkLoading(false)
     } else if (lmsTypeId === -1) {
       setLoading(false)
       window.location.replace('https://circleinapp.com/whitelist');
@@ -153,9 +156,10 @@ const SelectSchool = ({
       return true
     }
     setLoading(false)
+    setDeeplinkLoading(false)
     setScreen('login')
     return false
-  }, [school, setScreen, updateError])
+  }, [school, setScreen, updateError, setDeeplinkLoading])
 
   // Deep link to specific school
   useEffect(() => {
