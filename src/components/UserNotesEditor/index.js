@@ -147,7 +147,7 @@ const UserNotesEditor = ({
 
   const onExit = useCallback(() => {
     logEvent({
-      event: 'In-App Notes- Time Spent',
+      event: 'In-App Notes- Viewed',
       props: {
         noteId: note.id,
         classId: note.classId,

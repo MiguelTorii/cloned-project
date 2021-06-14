@@ -102,7 +102,6 @@ export const EVENT_TYPES = {
   SESSION_LENGTH: 'Session Length',
   VIEWED: 'Viewed',
   EXITED: 'Exited',
-  TIME_SPENT: 'Time Spent',
 }
 
 export const CIRCLEIN_EVENT_NAMES = [
@@ -110,20 +109,20 @@ export const CIRCLEIN_EVENT_NAMES = [
   'Video- Start Video',
   'Video- End Video',
   'Video- Session Length',
-  'Post- Time Spent',
+  'Post- Viewed',
   'Flashcard Review- Viewed',
   'Flashcard Quiz- Exited',
-  'Flashcard- Time Spent',
-  'In-App Notes- Time Spent',
-  'Workflow- Time Spent',
-  'My Classes- Time Spent',
-  'Profile- Time Spent',
-  'Leaderboard- Time Spent',
-  'Rewards Store- Time Spent',
-  'Class Feed- Time Spent',
-  'Create New Post- Time Spent',
-  'Notification- Time Spent',
-  'Chat- Time Spent',
+  'Flashcard- Viewed',
+  'In-App Notes- Viewed',
+  'Workflow- Viewed',
+  'My Classes- Viewed',
+  'Profile- Viewed',
+  'Leaderboard- Viewed',
+  'Rewards Store- Viewed',
+  'Class Feed- Viewed',
+  'Create New Post- Viewed',
+  'Notification- Viewed',
+  'Chat- Viewed',
 ];
 
 export const CAMPAIGN_IDS = {

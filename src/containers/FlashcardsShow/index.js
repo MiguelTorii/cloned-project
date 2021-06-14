@@ -168,7 +168,7 @@ const FlashcardsShow = () => {
     return () => {
       clearInterval(timer.current);
       logEvent({
-        event: 'Post- Time Spent',
+        event: 'Post- Viewed',
         props: {
           feedId: data.feedId,
           elapsed: elapsed.current,

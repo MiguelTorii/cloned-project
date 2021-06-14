@@ -30,7 +30,6 @@ const toEventData = (eventName: string, props: object): EventData => {
   // Data Metrics
   if (eventType === EVENT_TYPES.VIEWED
     || eventType === EVENT_TYPES.EXITED
-    || eventType === EVENT_TYPES.TIME_SPENT
   ) {
     customProps.type = eventType
     customProps.elapsed = props.elapsed

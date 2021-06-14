@@ -284,7 +284,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     try {
       clearInterval(timer.current);
       logEvent({
-        event: 'Flashcard- Time Spent',
+        event: 'Flashcard- Viewed',
         props: {
           flashcardId,
           elapsed: elapsed.current,
