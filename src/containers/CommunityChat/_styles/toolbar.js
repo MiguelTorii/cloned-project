@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-export default makeStyles(() => ({
+export default makeStyles(theme => ({
   toolbar: {
     textAlign: 'center',
     bottom: 0,
@@ -49,9 +49,10 @@ export default makeStyles(() => ({
   subToolbar: {
     position: 'absolute',
     top: -35,
-    right: 70,
+    right: 0,
     border: '1px solid',
-    borderRadius: 5
+    borderRadius: 5,
+    backgroundColor: theme.circleIn.palette.appBar
   },
   show: {
     display: 'inline-flex'
