@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
 import IconButton from '@material-ui/core/IconButton';
 import IconMove from '@material-ui/icons/OpenWith';
 import IconDelete from '@material-ui/icons/DeleteOutlined';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
-import RichTextEditor from './RichTextEditor';
-import QuillToolbar from '../QillToolbar';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
+import RichTextEditor from './RichTextEditor';
+import QuillToolbar from '../QillToolbar';
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
 const EDITOR_TYPES = {
   QUESTION: 'question',
@@ -62,7 +62,7 @@ const FlashcardEditor = (
           <Box hidden={readOnly}>
             <div onMouseDown={handleMouseDown}>
               <IconButton
-                classes={{root: clsx(classes.iconButton, active && 'active')}}
+                classes={{ root: clsx(classes.iconButton, active && 'active') }}
                 {...dndProps}
               >
                 <IconMove />
@@ -79,7 +79,7 @@ const FlashcardEditor = (
             { !readOnly && (
               <div onMouseDown={handleMouseDown}>
                 <IconButton
-                  classes={{root: clsx(classes.iconButton, active && 'active')}}
+                  classes={{ root: clsx(classes.iconButton, active && 'active') }}
                   onClick={handleDelete}
                 >
                   <IconDelete />

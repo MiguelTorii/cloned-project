@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
 import ReactQuill from 'react-quill';
 import { useDropzone } from 'react-dropzone';
 import IconImage from '@material-ui/icons/ImageOutlined';
 import clsx from 'clsx';
-import { uploadMedia } from '../../actions/user';
 import { useSelector } from 'react-redux';
-import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
+import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
+import { uploadMedia } from '../../actions/user';
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
 const RichTextEditor = (
   {
@@ -100,6 +100,7 @@ const RichTextEditor = (
           readOnly && 'read-only'
         )
       }
+      onMouseDown={handleFocus}
     >
       {!readOnly && (
         <div className={clsx(classes.editorLabel, isActive && 'active')}>
@@ -123,7 +124,6 @@ const RichTextEditor = (
           value={value}
           readOnly={readOnly}
           onChange={handleChangeValue}
-          onFocus={handleFocus}
           onBlur={handleBlur}
         />
       </div>
