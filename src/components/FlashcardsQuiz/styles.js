@@ -18,7 +18,6 @@ export default makeStyles((theme) => ({
     flexGrow: 1,
     width: '100%',
     minHeight: '100vh',
-    userSelect: 'none',
     marginLeft: 30,
     '&.expanded': {
       marginLeft: 330,

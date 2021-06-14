@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import IconSchool from '@material-ui/icons/School';
@@ -35,8 +33,10 @@ import { differenceInMilliseconds } from "date-fns";
 import { INTERVAL } from 'constants/app';
 import Button from "@material-ui/core/Button";
 import IconClose from "@material-ui/icons/Close";
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
-const MULTIPLE_CHOICE_PROBLEM_COUNT = 3;
+const PROBLEM_COUNT_THRESHOLD = 3;
 const MULTIPLE_CHOICE_OPTIONS_COUNT = 4;
 const timeout = TIMEOUT.FLASHCARD_REVEIW
 
@@ -106,43 +106,51 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   // Memos
   const dropdownOptions = useMemo(() => {
-    return [...new Array(cards.length).keys()].map((id) => ({
+    return [...new Array(quizData.match.qIds.length).keys()].map((id) => ({
       value: id + 1,
       text: String.fromCharCode('A'.charCodeAt(0) + id)
     }))
-  }, [cards]);
+  }, [quizData]);
 
   const unansweredCount = useMemo(() => {
     let result = 0;
 
-    for (let i = cards.length - 1; i >= 0 ; -- i) {
+    for (let i = quizData.match.qIds.length - 1; i >= 0 ; i -= 1) {
       if (matchSelections[i] === undefined) result += 1;
     }
 
-    for (let i = quizData.choice.length - 1; i >= 0; -- i) {
+    for (let i = quizData.choice.length - 1; i >= 0; i -= 1) {
       if (choiceSelections[quizData.choice[i].qId] === undefined) result += 1;
     }
 
     return result;
-  }, [choiceSelections, matchSelections, cards, quizData]);
+  }, [choiceSelections, matchSelections, quizData]);
 
   // Callbacks
   const initQuizData = useCallback((count) => {
     if (count < 1) throw new Error('Number of cards should be greater than zero');
 
-    const arrIdx = [...new Array(count).keys()];
+    const matchCount = _.min([
+      _.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]),
+      count
+    ]);
+
+    const arrIdx = [...new Array(matchCount).keys()];
     const arr1 = shuffleArray(arrIdx);
     const arr2 = shuffleArray(arrIdx);
-    const arr3 = shuffleArray(arrIdx);
 
-    const choiceCount = _.min([count, MULTIPLE_CHOICE_PROBLEM_COUNT]);
-    const optionCount = _.min([count, MULTIPLE_CHOICE_OPTIONS_COUNT]);
-
+    const choiceCount = _.min([
+      _.max([PROBLEM_COUNT_THRESHOLD, Math.floor(count / 2)]),
+      count
+    ]);
+    const optionCount = _.min([choiceCount, MULTIPLE_CHOICE_OPTIONS_COUNT]);
     const choiceData = [];
+    const arrChoiceIdx = [...new Array(choiceCount).keys()].map((i) => i + count - choiceCount);
+    const arr3 = shuffleArray(arrChoiceIdx);
 
-    for (let i = 0; i < choiceCount; ++ i) {
-      const arrExceptQid = [...arrIdx];
-      arrExceptQid.splice(arr3[i], 1);
+    for (let i = 0; i < choiceCount; i += 1) {
+      const arrExceptQid = [...arr3];
+      arrExceptQid.splice(i, 1);
 
       const arr = shuffleArray(arrExceptQid);
       const optionsArr = arr.slice(0, optionCount - 1);
@@ -192,7 +200,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   const handleCheckAnswers = useCallback(() => {
     setIsValidated(true);
-    setTimerStatus(TIMER_STATUS.PAUSED);
+    setTimerStatus(TIMER_STATUS.INITIALIZED);
   }, []);
 
   const handleRetryQuiz = useCallback(() => {

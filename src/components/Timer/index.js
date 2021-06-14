@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import withRoot from 'withRoot';
-import useStyles from './styles';
 import Typography from '@material-ui/core/Typography';
 import IconTimer from '@material-ui/icons/Timer';
 import Box from '@material-ui/core/Box';
@@ -12,11 +11,13 @@ import { twoDigitsNumber } from 'utils/helpers';
 import Button from '@material-ui/core/Button';
 import NumberSelector from 'components/Timer/NumberSelector';
 import PropTypes from 'prop-types';
+import useStyles from './styles';
 
 export const TIMER_STATUS = {
   INITIALIZED: 'initialized',
   STARTED: 'started',
-  PAUSED: 'paused'
+  PAUSED: 'paused',
+  TIME_UP: 'time_up'
 }
 
 const Timer = ({ defaultStatus }) => {
@@ -29,7 +30,10 @@ const Timer = ({ defaultStatus }) => {
   // Event Handlers
 
   const handleStartTimer = useCallback(() => {
-    setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
+    if (initialHours === 0 && initialMinutes === 0) {
+      alert('Please set a valid timer');
+      return ;
+    }
     setStatus(TIMER_STATUS.STARTED);
   }, [initialHours, initialMinutes]);
 
@@ -47,21 +51,31 @@ const Timer = ({ defaultStatus }) => {
 
   // Effects
   useEffect(() => {
+    setStatus((st) => {
+      if (defaultStatus === TIMER_STATUS.PAUSED &&
+        (st === TIMER_STATUS.INITIALIZED ||
+        st === TIMER_STATUS.TIME_UP)
+      ) return st;
+      return defaultStatus;
+    });
+  }, [defaultStatus]);
+  useEffect(() => {
+    if (status === TIMER_STATUS.INITIALIZED || status === TIMER_STATUS.TIME_UP) {
+      setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
+    }
+  }, [status, initialHours, initialMinutes]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       if (status === TIMER_STATUS.STARTED) {
-        setCurrentSeconds((seconds) => seconds > 0 ? (seconds - 1) : seconds);
+        setCurrentSeconds((seconds) => {
+          if (seconds === 1) setStatus(TIMER_STATUS.TIME_UP);
+          return seconds > 0 ? (seconds - 1) : seconds;
+        });
       }
     }, INTERVAL.SECOND);
     return () => clearInterval(intervalId);
   }, [status]);
-
-  useEffect(() => {
-    if (defaultStatus === TIMER_STATUS.PAUSED && currentSeconds === 0) return ;
-    if (defaultStatus === TIMER_STATUS.STARTED) {
-      setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
-    }
-    setStatus(defaultStatus);
-  }, [defaultStatus, initialHours, initialMinutes, currentSeconds]);
 
   // Rendering Helpers
   const renderTimeBox = () => {
@@ -128,12 +142,12 @@ const Timer = ({ defaultStatus }) => {
             Start
           </GradientButton>
         )}
-        {TIMER_STATUS.STARTED === status && currentSeconds > 0 && (
+        {TIMER_STATUS.STARTED === status && (
           <TransparentButton compact onClick={handlePauseTimer}>
             Pause
           </TransparentButton>
         )}
-        {TIMER_STATUS.STARTED === status && currentSeconds === 0 && (
+        {TIMER_STATUS.TIME_UP === status && (
           <Button className={classes.timeupButton} disabled>
             Time's Up
           </Button>
