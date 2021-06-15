@@ -140,21 +140,21 @@ const LeftMenu = ({
           >
             +
           </Button>
-          <Dialog
-            className={classes.selectClassmates}
-            open={isOpen}
-            onCancel={handleClose}
-            showHeader={false}
-            showActions={false}
-          >
-            {newChannel && <CreateChatChannelInput
-              onClosePopover={handleClose}
-              onOpenChannel={onOpenChannel}
-              permission={permission}
-              handleUpdateGroupName={handleUpdateGroupName}
-            />}
-          </Dialog>
         </Grid>}
+        <Dialog
+          className={classes.selectClassmates}
+          open={isOpen}
+          onCancel={handleClose}
+          showHeader={false}
+          showActions={false}
+        >
+          {newChannel && <CreateChatChannelInput
+            onClosePopover={handleClose}
+            onOpenChannel={onOpenChannel}
+            permission={permission}
+            handleUpdateGroupName={handleUpdateGroupName}
+          />}
+        </Dialog>
         <Grid item className={classes.gridChatList}>
           <EmptyLeftMenu
             emptyChannels={channelList.length === 0}

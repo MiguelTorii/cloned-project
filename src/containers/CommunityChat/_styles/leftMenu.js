@@ -8,7 +8,10 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    margin: theme.spacing(1.5, 3, 0, 3)
+    margin: theme.spacing(1.5, 3, 0, 3),
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(1.5, 1, 0, 1),
+    }
   },
   root: {
     display: 'flex',

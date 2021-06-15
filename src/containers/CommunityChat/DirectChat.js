@@ -121,7 +121,7 @@ const DirectChat = ({
   }, [local])
 
   useEffect(() => {
-    if (!newChannel && !currentChannel && channelList && !!channelList.length) {
+    if (!newChannel && !currentChannel && !!channelList.length) {
       onOpenChannel({ channel: local[channelList[0]].twilioChannel })
     }
   }, [newChannel, currentChannel, channelList, local, onOpenChannel])
