@@ -4,6 +4,7 @@
 import React, { useCallback, Fragment, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
+import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
@@ -185,7 +186,7 @@ const FloatingChat = ({
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {
-            message: `${msg} ${body}`,
+            message: `${msg} ${typeof parse(body) === 'string' ? body : parse(body)?.props?.children}`,
             options: {
               variant: 'info',
               anchorOrigin: {
@@ -204,7 +205,7 @@ const FloatingChat = ({
         });
         updateTitleAction({
           title: `${firstName} ${lastName} sent you a message:`,
-          body
+          body: typeof parse(body) === 'string' ? body : parse(body)?.props?.children
         });
       }
     }
