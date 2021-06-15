@@ -126,6 +126,12 @@ const Main = ({
     // eslint-disable-next-line
   }, [newMessage])
 
+  const getTypingMemberName = useCallback(id => {
+    const { members } = local[channel.sid]
+    const currentMember = members.filter(member => member.userId === id)
+    return `${currentMember[0].firstname} ${currentMember[0].lastname}`
+  }, [local, channel])
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -147,11 +153,11 @@ const Main = ({
 
         if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', member => {
-            member.getUser().then(user => {
-              const { state } = user
-              const { friendlyName } = state
-              setTyping({ channel: channel.sid, friendlyName })
-            })
+            const memberId = member?.state?.identity
+            if (memberId) {
+              const typingUserName = getTypingMemberName(memberId)
+              setTyping({ channel: channel.sid, friendlyName: typingUserName })
+            }
           })
 
           channel.on('typingEnded', () => {
