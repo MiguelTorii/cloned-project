@@ -35,5 +35,22 @@ export default makeStyles((theme) => ({
   },
   reportText: {
     color: theme.circleIn.palette.danger
+  },
+  deleteModal: {
+    width: 600,
+    background: theme.circleIn.palette.appBar
+  },
+  deleteButton: {
+    backgroundColor: theme.circleIn.palette.danger,
+    borderRadius: 50,
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
+    width: 160,
+    marginLeft: theme.spacing(3),
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.danger
+    },
+    '& span': {
+      textTransform: 'uppercase'
+    }
   }
 }));

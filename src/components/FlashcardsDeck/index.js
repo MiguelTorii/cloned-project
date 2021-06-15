@@ -1,21 +1,23 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { push } from 'connected-react-router';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
-import type { FeedItem } from '../../types/models';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import pluralize from 'pluralize';
-import ActionBar from './ActionBar';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import { animations } from 'react-animation';
-import { bookmarkFlashcards, deleteFlashcard } from '../../actions/user';
 import clsx from 'clsx';
+import moment from 'moment';
+import Button from "@material-ui/core/Button";
+import { bookmarkFlashcards, deleteFlashcard } from '../../actions/user';
 import ShareLinkModal from '../ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
-import moment from 'moment';
+import Dialog from "../Dialog";
+import ActionBar from './ActionBar';
+import type { FeedItem } from '../../types/models';
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
 type Props = {
   data: FeedItem
@@ -31,6 +33,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   // States
   const [isHover, setIsHover] = useState(false);
   const [isShareLinkModalOpen, setIsShareLinkModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Memos
   const deckClass = useMemo(() => {
@@ -64,10 +67,14 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, []);
 
   const handleDelete = useCallback(() => {
+    setIsDeleteModalOpen(false);
     dispatch(
       deleteFlashcard(me.userId, data.feed_id)
     );
   }, [me, data, dispatch]);
+
+  const handleOpenDeleteModal = useCallback(() => setIsDeleteModalOpen(true), []);
+  const handleCloseDeleteModal = useCallback(() => setIsDeleteModalOpen(false), []);
 
   const handleCloseShareLinkModal = useCallback(() => {
     setIsShareLinkModalOpen(false);
@@ -128,7 +135,7 @@ const FlashcardsDeck = ({ data }: Props) => {
                 onViewEdit={handleView}
                 onBookmark={handleBookmark}
                 onShareLink={handleShareLink}
-                onDelete={handleDelete}
+                onDelete={handleOpenDeleteModal}
               />
             </div>
           </div>
@@ -139,6 +146,25 @@ const FlashcardsDeck = ({ data }: Props) => {
           title={shareLinkModalTitle}
           onClose={handleCloseShareLinkModal}
         />
+        <Dialog
+          className={classes.deleteModal}
+          open={isDeleteModalOpen}
+          title="Delete Flashcard Deck"
+          onCancel={handleCloseDeleteModal}
+        >
+          <Typography variant="h6">
+            Are you sure you want to delete this flashcard deck?
+            If you delete this deck, it will deleted from your created decks.
+          </Typography>
+          <Box mt={3} display="flex" justifyContent="flex-end">
+            <Button onClick={handleCloseDeleteModal}>
+              Cancel
+            </Button>
+            <Button className={classes.deleteButton} onClick={handleDelete}>
+              Delete
+            </Button>
+          </Box>
+        </Dialog>
       </div>
     </div>
   );
