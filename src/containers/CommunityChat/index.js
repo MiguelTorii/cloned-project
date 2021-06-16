@@ -2,9 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { bindActionCreators } from 'redux'
 import Box from '@material-ui/core/Box'
-import * as chatActions from 'actions/chat'
 import { getCommunities } from 'api/community'
 import DirectChat from './DirectChat'
 import CollageList from './CollageList'
@@ -14,11 +12,10 @@ import type { State as StoreState } from '../../types/state'
 import useStyles from './_styles/styles'
 
 type Props = {
-  chat: Object,
-  setCurrentChannel: Function
+  chat: Object
 };
 
-const ChatPage = ({ chat, setCurrentChannel }: Props) => {
+const ChatPage = ({ chat }: Props) => {
   const { data: { local }, isLoading } = chat
 
   const classes = useStyles()
@@ -57,7 +54,6 @@ const ChatPage = ({ chat, setCurrentChannel }: Props) => {
 
   const handleSelect = course => () => {
     if (course.id !== selectedCourse?.id) {
-      setCurrentChannel(null)
       setSelectedCourse(course)
     }
   }
@@ -93,14 +89,7 @@ const mapStateToProps = ({ chat }: StoreState): {} => ({
   chat,
 })
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      setCurrentChannel: chatActions.setCurrentChannel,
-    },
-    dispatch
-  )
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(ChatPage)

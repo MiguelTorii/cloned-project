@@ -75,6 +75,8 @@ const DirectChat = ({
   const [prevWidth, setPrevWidth] = useState(null)
   const [channelList, setChannelList] = useState([])
 
+  const lastChannelSid = useMemo(() => localStorage.getItem('currentDMChannel'), [])
+
   const onNewChannel = useCallback(async () => {
     await handleNewChannel(true)
     setCurrentChannel(null)
@@ -87,18 +89,27 @@ const DirectChat = ({
     else setRightSpace(0)
   }, [rightSpace, width])
 
-  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [setCurrentChannel])
+  const clearCurrentChannel = useCallback(() =>
+    setCurrentChannel(null), [setCurrentChannel])
 
   const onOpenChannel = useCallback(async ({ channel }) => {
     setCurrentChannel(channel)
     if (['xs'].includes(width)) setLeftSpace(0)
-    await handleNewChannel(false)
-  }, [handleNewChannel, setCurrentChannel, width])
+    if (newChannel) {
+      await handleNewChannel(false)
+    }
+  }, [handleNewChannel, setCurrentChannel, width, newChannel])
 
   const handleRemove = useCallback(async sid => {
     clearCurrentChannel()
     await handleRemoveChannel(sid)
-  }, [handleRemoveChannel, clearCurrentChannel])
+    const restChannels = channelList.filter(channel => channel !== sid.sid)
+    if (currentChannel.sid === sid.sid) {
+      setCurrentChannel(local[restChannels[0]].twilioChannel)
+    } else {
+      setCurrentChannel(currentChannel)
+    }
+  }, [handleRemoveChannel, currentChannel, setCurrentChannel, clearCurrentChannel, channelList, local])
 
   const updateGroupName = useCallback(async channel => {
     setCurrentChannel(channel)
@@ -117,14 +128,20 @@ const DirectChat = ({
       if (local[a].lastMessage.message === '') return 0
       return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
     })
+    if (!lastChannelSid) {
+      onOpenChannel({ channel: local[channelList[0]]?.twilioChannel })
+    }
     setChannelList(channelList)
-  }, [local])
+  }, [local, onOpenChannel, lastChannelSid])
 
   useEffect(() => {
-    if (!newChannel && !currentChannel && !!channelList.length) {
-      onOpenChannel({ channel: local[channelList[0]].twilioChannel })
+    const lastChannelSid = localStorage.getItem('currentDMChannel')
+    if (lastChannelSid && !isLoading) {
+      const lastChannel = local[lastChannelSid]
+      setCurrentChannel(lastChannel?.twilioChannel)
     }
-  }, [newChannel, currentChannel, channelList, local, onOpenChannel])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setCurrentChannel, onOpenChannel, lastChannelSid, isLoading])
 
   useEffect(() => {
     if (width !== prevWidth) {
@@ -193,6 +210,9 @@ const DirectChat = ({
           channels={channels}
           channelList={channelList}
           local={local}
+          handleNewChannel={handleNewChannel}
+          setCurrentChannel={setCurrentChannel}
+          lastChannelSid={lastChannelSid}
           userId={userId}
           isLoading={isLoading}
           client={client}

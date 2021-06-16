@@ -145,6 +145,11 @@ const setCurrentChannelAction = ({ currentChannel }: { currentChannel: Object })
   payload: { currentChannel }
 })
 
+const setCurrentCommunityChannelAction = ({ currentChannel }: { currentChannel: Object }) => ({
+  type: chatActions.SET_CURRENT_COMMUNITY_CHANNEL,
+  payload: { currentChannel }
+})
+
 const createNewChannel = ({ newChannel, openChannels }: { newChannel: boolean, openChannels: array }) => ({
   type: chatActions.CREATE_NEW_CHANNEL,
   payload: { newChannel, openChannels }
@@ -192,10 +197,22 @@ export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) 
   if (currentChannel) {
     const members = await fetchMembers(currentChannel.sid)
     const shareLink = await getShareLink(currentChannel.sid)
+    localStorage.setItem('currentDMChannel', currentChannel.sid)
     dispatch(updateMembers({ members, channelId: currentChannel.sid }))
     dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }))
   }
   dispatch(setCurrentChannelAction({ currentChannel }))
+}
+
+export const setCurrentCommunityChannel = currentChannel => async (dispatch: Dispatch) => {
+  if (currentChannel) {
+    const members = await fetchMembers(currentChannel.sid)
+    const shareLink = await getShareLink(currentChannel.sid)
+    dispatch(updateMembers({ members, channelId: currentChannel.sid }))
+    dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }))
+  }
+
+  dispatch(setCurrentCommunityChannelAction({ currentChannel }))
 }
 
 export const closeNewChannel = () => (dispatch: Dispatch) => {

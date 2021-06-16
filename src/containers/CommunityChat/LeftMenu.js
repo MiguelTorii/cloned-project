@@ -28,6 +28,8 @@ type Props = {
   isLoading: boolean,
   onOpenChannel: Function,
   handleRemoveChannel: Function,
+  setCurrentChannel: Function,
+  lastChannelSid: string,
   currentChannel: ?Object,
   permission: array,
   onNewChannel: Function,
@@ -42,6 +44,9 @@ const LeftMenu = ({
   channelList,
   handleMuteChannel,
   userId,
+  lastChannelSid,
+  handleNewChannel,
+  setCurrentChannel,
   channels,
   onOpenChannel,
   currentChannel,
@@ -62,8 +67,10 @@ const LeftMenu = ({
     onNewChannel()
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setIsOpen(false)
+    await handleNewChannel(false)
+    setCurrentChannel(local[lastChannelSid]?.twilioChannel)
   };
 
   const onChangeSearch = e => setSearch(e.target.value)

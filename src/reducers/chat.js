@@ -25,6 +25,7 @@ export type ChatState = {
     local: Object,
     online: boolean,
     currentChannel: ?Object,
+    currentCommunityChannel: ?Object,
     newChannel: boolean,
     mainMessage: string,
     newMessage: ?Object
@@ -51,6 +52,7 @@ const defaultState = {
     unread: 0,
     local: {},
     currentChannel: null,
+    currentCommunityChannel: null,
     online: false,
     newChannel: false,
     newMessage: null,
@@ -95,6 +97,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       data: {
         ...state.data,
         currentChannel: action.payload.currentChannel,
+      }
+    }
+  case chatActions.SET_CURRENT_COMMUNITY_CHANNEL:
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        currentCommunityChannel: action.payload.currentChannel,
       }
     }
   case chatActions.CREATE_NEW_CHANNEL:
@@ -302,15 +312,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       newChannel: false
     } }
   case chatActions.UPDATE_FRIENDLY_NAME:
-    const { sid } = action.payload.channel;
     return {
       ...state,
       data: {
         ...state.data,
         local: {
           ...state.data.local,
-          [sid]: {
-            ...state.data.local[sid],
+          [action.payload.channel.sid]: {
+            ...state.data.local[action.payload.channel.sid],
             twilioChannel: action.payload.channel,
             title: action.payload.channel.friendlyName,
           }

@@ -22,7 +22,7 @@ import useStyles from './_styles/styles'
 type Props = {
   chat: Object,
   user: Object,
-  setCurrentChannel: Function,
+  setCurrentCommunityChannel: Function,
   setMainMessage: Function,
   setSelectedCourse: Function,
   width: string
@@ -31,7 +31,7 @@ type Props = {
 const CommunityChat = ({
   selectedCourse,
   setMainMessage,
-  setCurrentChannel,
+  setCurrentCommunityChannel,
   setSelectedCourse,
   user,
   chat,
@@ -52,7 +52,7 @@ const CommunityChat = ({
       newMessage,
       local,
       mainMessage,
-      currentChannel
+      currentCommunityChannel
     }
   } = chat
 
@@ -70,10 +70,10 @@ const CommunityChat = ({
 
     if (currentSelectedChannel) {
       if (['xs'].includes(width)) setLeftSpace(0)
-      setCurrentChannel(currentSelectedChannel.twilioChannel)
+      setCurrentCommunityChannel(currentSelectedChannel.twilioChannel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel, setCurrentChannel, width])
+  }, [selectedChannel, setCurrentCommunityChannel, width])
 
   const curSize = useMemo(() => width === 'xs'
     ? 12
@@ -93,7 +93,7 @@ const CommunityChat = ({
     if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0)
-        if (currentChannel) setLeftSpace(0)
+        if (currentCommunityChannel) setLeftSpace(0)
         else setLeftSpace(curSize)
       } else {
         setLeftSpace(curSize)
@@ -101,7 +101,7 @@ const CommunityChat = ({
     }
 
     setPrevWidth(width)
-  }, [prevWidth, width, curSize, currentChannel])
+  }, [prevWidth, width, curSize, currentCommunityChannel])
 
   const onCollapseLeft = useCallback(() => {
     if (width === 'xs') {
@@ -170,7 +170,7 @@ const CommunityChat = ({
           setMainMessage={setMainMessage}
           mainMessage={mainMessage}
           local={local}
-          channel={currentChannel}
+          channel={currentCommunityChannel}
           onCollapseLeft={onCollapseLeft}
           onCollapseRight={onCollapseRight}
           setRightPanel={handleOpenRightPanel}
@@ -184,7 +184,7 @@ const CommunityChat = ({
         <RightMenu
           userId={userId}
           schoolId={schoolId}
-          channel={currentChannel}
+          channel={currentCommunityChannel}
           selectedCourse={selectedCourse}
           setSelectedCourse={setSelectedCourse}
           local={local}
@@ -203,7 +203,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       setMainMessage: chatActions.setMainMessage,
-      setCurrentChannel: chatActions.setCurrentChannel,
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
     },
     dispatch
   )
