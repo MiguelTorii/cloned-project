@@ -126,7 +126,7 @@ const MainChatItem = ({
             {roomName}
           </Typography>
           <Typography className={classes.lastMessage} variant="body2" noWrap>
-            {containsImage(lastMessage)}
+            {lastMessage && containsImage(lastMessage)}
           </Typography>
         </div>
         {muted && <NotificationsOffIcon />}
