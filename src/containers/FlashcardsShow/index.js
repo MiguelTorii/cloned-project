@@ -164,22 +164,6 @@ const FlashcardsShow = () => {
       lastActive.current = getLastActiveTime();
       elapsed.current = getElapsedTime();
     }, INTERVAL.SECOND);
-
-    return () => {
-      clearInterval(timer.current);
-      logEvent({
-        event: 'Post- Viewed',
-        props: {
-          feedId: data.feedId,
-          elapsed: elapsed.current,
-          total_idle_time: totalIdleTime.current,
-          effective_time: elapsed.current - totalIdleTime.current,
-          platform: 'Web',
-        }
-      });
-      reset();
-      initializeTimer();
-    }
   });
 
   // Event Handlers
@@ -238,12 +222,24 @@ const FlashcardsShow = () => {
   }, [reloadData, handleCloseEditModal]);
 
   const handleReview = useCallback(() => {
+    reset();
+    initializeTimer();
     setIsReviewing(true);
-  }, []);
+  }, [reset, initializeTimer]);
 
   const handleCloseReviewModal = useCallback(() => {
+    logEvent({
+      event: 'Flashcard Review- Viewed',
+      props: {
+        flashcard_id: data.postId,
+        elapsed: elapsed.current,
+        total_idle_time: totalIdleTime.current,
+        effective_time: elapsed.current - totalIdleTime.current,
+        platform: 'Web',
+      }
+    })
     setIsReviewing(false);
-  }, []);
+  }, [data.postId]);
 
   const handleStartQuiz = useCallback(() => setIsInQuiz(true), []);
 
@@ -353,7 +349,7 @@ const FlashcardsShow = () => {
   );
 
   const renderAsFeed = () => (
-    <PostItem feedId={data.feedId}>
+    <PostItem feedId={data.feedId} isFlashcard>
       <PostItemHeader
         hideShare
         feedId={data.feedId}

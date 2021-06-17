@@ -29,7 +29,8 @@ type Props = {
 const PostItem = ({
   classes,
   children,
-  feedId
+  feedId,
+  isFlashcard,
 }: Props) => {
 
   const elapsed = useRef(0);
@@ -66,11 +67,11 @@ const PostItem = ({
       clearInterval(timer);
 
       try {
-        logEvent({
+        !isFlashcard && logEvent({
           event: 'Post- Viewed',
           props: {
             type: 'Viewed',
-            feedId,
+            feed_id: feedId,
             elapsed: elapsed.current,
             total_idle_time: totalIdleTime.current,
             effective_time: elapsed.current - totalIdleTime.current,
@@ -79,7 +80,7 @@ const PostItem = ({
         });
       } catch (err) {}
     }
-  }, [feedId, getElapsedTime, getLastActiveTime, getRemainingTime]);
+  }, [feedId, getElapsedTime, getLastActiveTime, getRemainingTime, isFlashcard]);
 
   return (
     <div className={classes.container}>

@@ -153,16 +153,6 @@ ReactDOM.render(
                 />
                 <Route
                   exact
-                  path="/flashcards/old/:flashcardId"
-                  component={withTracker(Flashcards)}
-                />
-                <Route
-                  exact
-                  path="/flashcards/:flashcardId"
-                  component={withTracker(FlashcardsShowPage)}
-                />
-                <Route
-                  exact
                   path="/notes/:noteId"
                   component={withTracker(PhotoNote)}
                 />

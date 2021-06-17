@@ -146,14 +146,12 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     }
   }, [cardsLevel, flashcardId]);
 
-  useEffect(() => {
-    currentCardList.length > 0 &&
-    currentCardIndex < currentCardList.length &&
-    elapsed.current && logEvent({
-      event: 'Flashcard Review- Viewed',
+  const sendLogEvent = useCallback(() => {
+    logEvent({
+      event: 'Flashcard- Viewed',
       props: {
-        flashcardId,
-        cardId: currentCardList[currentCardIndex].id,
+        flashcard_id: flashcardId,
+        card_id: currentCardList[currentCardIndex].id,
         elapsed: elapsed.current,
         total_idle_time: totalIdleTime.current,
         effective_time: elapsed.current - totalIdleTime.current,
@@ -161,8 +159,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
       }
     });
     reset()
-    // eslint-disable-next-line
-  }, [flashcardId, currentCardList, currentCardIndex])
+  }, [flashcardId, currentCardIndex, currentCardList, reset])
 
   const initializeTimer = useCallback(() => {
     elapsed.current = 0
@@ -198,12 +195,14 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
   }, [currentLevel]);
 
   const handlePrevCard = useCallback(() => {
+    sendLogEvent();
     setCurrentCardIndex(currentCardIndex - 1);
-  }, [currentCardIndex]);
+  }, [sendLogEvent, currentCardIndex]);
 
   const handleNextCard = useCallback(() => {
+    sendLogEvent();
     setCurrentCardIndex(currentCardIndex + 1);
-  }, [currentCardIndex]);
+  }, [sendLogEvent, currentCardIndex]);
 
   const handleSetCurrentCardLevel = useCallback((level) => {
     if (level === currentLevel) return ;
@@ -220,10 +219,10 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     });
 
     logEvent({
-      event: 'Flashcard Review- Viewed',
+      event: 'Flashcard- Viewed',
       props: {
-        flashcardId,
-        cardId: card.id,
+        flashcard_id: flashcardId,
+        card_id: card.id,
         elapsed: elapsed.current,
         total_idle_time: totalIdleTime.current,
         effective_time: elapsed.current - totalIdleTime.current,
@@ -280,25 +279,6 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     setIsConfirmModalOpen(false);
   }, []);
 
-  const handleClose = useCallback(() => {
-    try {
-      clearInterval(timer.current);
-      logEvent({
-        event: 'Flashcard- Viewed',
-        props: {
-          flashcardId,
-          elapsed: elapsed.current,
-          total_idle_time: totalIdleTime.current,
-          effective_time: elapsed.current - totalIdleTime.current,
-          platform: 'Web',
-        }
-      });
-      reset()
-    } catch (err) {}
-
-    onClose();
-  }, [onClose, elapsed, totalIdleTime, flashcardId, reset]);
-
   const handleOpenShareModal = useCallback(() => {
     setIsShareModalOpen(true);
   }, []);
@@ -310,7 +290,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
       <Box mb={3}>
         <Link
           component="button"
-          onClick={handleClose}
+          onClick={onClose}
           color="inherit"
           variant="h5"
           underline="none"
@@ -514,7 +494,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         <Button
           startIcon={<IconClose />}
           className={classes.actionButton}
-          onClick={handleClose}
+          onClick={onClose}
         >
           Exit Mode
         </Button>

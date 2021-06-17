@@ -40,28 +40,28 @@ const toEventData = (eventName: string, props: object): EventData => {
 
   // Post item data metrics
   if (category === LOG_EVENT_CATEGORIES.POST) {
-    customProps.feedId = props.feedId
+    customProps.feed_id = props.feed_id
   }
 
   // Flashcard data metrics
   if (category === LOG_EVENT_CATEGORIES.FLASHCARD) {
-    customProps.flashcardId = props.flashcardId
+    customProps.flashcard_id = props.flashcard_id
+    customProps.card_id = props.card_id
   }
 
   // Flashcard individual item time spent
   if (category === LOG_EVENT_CATEGORIES.FLASHCARD_REVIEW) {
-    customProps.flashcardId = props.flashcardId
-    customProps.cardId = props.cardId
+    customProps.flashcard_id = props.flashcard_id
   }
 
   // Flashcard Quiz time spent
   if (category === LOG_EVENT_CATEGORIES.FLASHCARD_QUIZ) {
-    customProps.flashcardId = props.flashcardId
+    customProps.flashcard_id = props.flashcard_id
   }
 
   // In-App notes time spent
   if (category === LOG_EVENT_CATEGORIES.IN_APP_NOTES) {
-    customProps.noteId = props.noteId
+    customProps.note_id = props.note_id
     customProps.classId = props.classId
     customProps.sectionId = props.sectionId
   }

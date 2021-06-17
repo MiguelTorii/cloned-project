@@ -81,7 +81,7 @@ export const LOG_EVENT_CATEGORIES = {
   CHAT: 'Chat',
   VIDEO: 'Video',
   POST: 'Post',
-  FLASHCARD: 'FlashCard',
+  FLASHCARD: 'Flashcard',
   FLASHCARD_REVIEW: 'Flashcard Review',
   FLASHCARD_QUIZ: 'Flashcard Quiz',
   IN_APP_NOTES: 'In-App Notes',

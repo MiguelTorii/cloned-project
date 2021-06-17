@@ -149,7 +149,7 @@ const UserNotesEditor = ({
     logEvent({
       event: 'In-App Notes- Viewed',
       props: {
-        noteId: note.id,
+        note_id: note.id,
         classId: note.classId,
         sectionId: note.sectionId,
         elapsed: elapsed.current,
