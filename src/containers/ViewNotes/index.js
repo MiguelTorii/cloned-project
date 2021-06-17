@@ -168,6 +168,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
               created={created}
               body={body}
               title={title}
+              isMarkdown
               bookmarked={bookmarked}
               roleId={roleId}
               role={role}

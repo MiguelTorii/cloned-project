@@ -149,6 +149,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
               created={created}
               body={summary}
               title={title}
+              isMarkdown
               bookmarked={bookmarked}
               roleId={roleId}
               role={role}
