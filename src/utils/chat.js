@@ -4,6 +4,7 @@
 
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
+import parse from 'html-react-parser';
 import type { ChatMessages } from '../../types/models';
 
 export const getTitle = (channel: Object, userId: string, members: array) => {
@@ -208,3 +209,7 @@ export const processMessages = ({
 export const getInitials = ({ name = '' }: {name: string}) => {
   return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 };
+
+export const containsImage = (message: string) => {
+  return message.includes('<img') ? 'Uploaded a image' : parse(message)
+}

@@ -1,7 +1,6 @@
 // @flow
 import React, { useCallback, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import parse from 'html-react-parser';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
@@ -17,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from 'components/Dialog';
 import OnlineBadge from 'components/OnlineBadge';
+import { containsImage } from 'utils/chat'
 import { styles } from '../_styles/ChatListItem/MainChatItem';
 
 type Props = {
@@ -126,7 +126,7 @@ const MainChatItem = ({
             {roomName}
           </Typography>
           <Typography className={classes.lastMessage} variant="body2" noWrap>
-            {lastMessage && parse(lastMessage)}
+            {containsImage(lastMessage)}
           </Typography>
         </div>
         {muted && <NotificationsOffIcon />}
