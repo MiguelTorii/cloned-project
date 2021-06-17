@@ -60,8 +60,14 @@ const FlashcardsListEditor = ({ data, readOnly, toolbarPrefix, onUpdate, onUpdat
     newData.splice(indexDst, 0, removed);
 
     onUpdate(newData);
-    setActiveCardIndex(indexDst);
-  }, [data, onUpdate, setActiveCardIndex]);
+    if (activeCardIndex === indexSrc) {
+      setActiveCardIndex(indexDst);
+    } else if (activeCardIndex > indexSrc && activeCardIndex <= indexDst) {
+      setActiveCardIndex(activeCardIndex - 1);
+    } else if (activeCardIndex >= indexDst && activeCardIndex < indexSrc) {
+      setActiveCardIndex(activeCardIndex + 1);
+    }
+  }, [data, onUpdate, activeCardIndex]);
 
   const handleFlashcardMouseDown = useCallback((index) => {
     if (!readOnly) setActiveCardIndex(index);
@@ -95,7 +101,7 @@ const FlashcardsListEditor = ({ data, readOnly, toolbarPrefix, onUpdate, onUpdat
                                 data={item}
                                 active={activeCardIndex === index}
                                 index={index}
-                                toolbarPrefix={`${toolbarPrefix}-${index}`}
+                                toolbarPrefix={`${toolbarPrefix}-${item.id}`}
                                 readOnly={readOnly}
                                 dndProps={provided.dragHandleProps}
                                 onDelete={handleDeleteDeck}
