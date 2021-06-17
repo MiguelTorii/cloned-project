@@ -320,6 +320,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         });
         return
       }
+      console.log('df',this.canBatchPost(), classId, sectionId)
       if (!this.canBatchPost() && !classId && !sectionId) {
         this.setState({
           loading: false,

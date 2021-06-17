@@ -96,7 +96,7 @@ const RightMenu = ({
                     }}
                   >
                     <ListItemAvatar>
-                      <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.feedBackground">
+                      <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.primaryBackground">
                         <Avatar
                           alt={fullName}
                           src={m.image}
