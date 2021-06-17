@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { getCampaign } from 'api/campaign'
 import Chat from 'containers/Chat'
 import CommunityChat from 'containers/CommunityChat'
+import { SWITCH_CHAT_CAMPAIGN } from 'constants/campaigns'
 
 const MainChat = () => {
   const [campaign, setCampaign] = useState(null);
@@ -11,7 +12,7 @@ const MainChat = () => {
   useEffect(() => {
     const init = async () => {
       setLoading(true)
-      const aCampaign = await getCampaign({ campaignId: 13 });
+      const aCampaign = await getCampaign({ campaignId: SWITCH_CHAT_CAMPAIGN });
       setCampaign(aCampaign);
       setLoading(false)
     }

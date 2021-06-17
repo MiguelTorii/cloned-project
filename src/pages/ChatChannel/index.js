@@ -1,9 +1,11 @@
 // @flow
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { getCampaign } from 'api/campaign';
 import { withRouter } from 'react-router';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
@@ -12,17 +14,19 @@ import get from 'lodash/get';
 import withRoot from 'withRoot';
 import Layout from 'containers/Layout';
 import Chat from 'containers/Chat';
+import CommunityChat from 'containers/CommunityChat'
 import * as notificationActions from 'actions/notifications'
 import * as chatActions from 'actions/chat';
 import { getChatIdFromHash } from 'api/chat';
 import type { State as StoreState } from 'types/state';
+import { SWITCH_CHAT_CAMPAIGN } from 'constants/campaigns'
 
 const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex'
   },
   container: {
-    height: 'calc(100vh - 64px)',
+    height: 'calc(100vh - 68px)',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100vh - 116px)',
       marginBottom: -64
@@ -33,7 +37,9 @@ const useStyles = makeStyles((theme) => ({
 const ChatChannelPage = (props) => {
   const classes = useStyles();
   const [chatId, setChatId] = useState('');
+  const [campaign, setCampaign] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const validateChatId = async () => {
@@ -66,6 +72,17 @@ const ChatChannelPage = (props) => {
   }, []);
 
   useEffect(() => {
+    const init = async () => {
+      setLoading(true)
+      const aCampaign = await getCampaign({ campaignId: SWITCH_CHAT_CAMPAIGN });
+      setCampaign(aCampaign);
+      setLoading(false)
+    }
+
+    init()
+  }, [])
+
+  useEffect(() => {
     const channels = get(props, 'chat.data.channels', []);
     const channel = channels.find(e => e.sid === chatId);
     if (!loaded && channel) {
@@ -74,12 +91,18 @@ const ChatChannelPage = (props) => {
     }
   }, [chatId, props, loaded]);
 
+  const renderChat = useCallback(() => {
+    return campaign && !campaign.is_disabled
+      ? <CommunityChat />
+      : <Chat />
+  }, [campaign])
+
   return (
     <main>
       <CssBaseline />
       <Layout>
         <Grid container justify="center" className={classes.container}>
-          <Chat />
+          {loading ? <CircularProgress size={20} /> : renderChat()}
         </Grid>
       </Layout>
     </main>

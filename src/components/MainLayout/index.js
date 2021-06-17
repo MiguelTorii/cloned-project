@@ -335,7 +335,7 @@ const MainLayout = ({
     <>
       <div className={clsx(
         classes.root,
-        ['/chat', '/communities'].indexOf(pathname) === -1
+        pathname.indexOf('/chat') === -1
           && classes.marginChat
       )}>
         <UserDialog />
