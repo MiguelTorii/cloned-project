@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import { getFlashcards } from 'api/posts';
 import { useDispatch, useSelector } from 'react-redux';
@@ -68,6 +68,7 @@ const FlashcardsShow = () => {
   const me = useSelector((state) => state.user.data);
   const expertMode = useSelector((state) => state.user.expertMode);
   const router = useSelector((state) => state.router);
+  const location = useLocation();
   const lastLocation = useLastLocation();
 
   // States
@@ -106,9 +107,13 @@ const FlashcardsShow = () => {
   }, [data, cardList]);
 
   const shouldRenderFeed = useMemo(() => {
-    if (!lastLocation) return true;
+    if (!lastLocation) {
+      const query = new URLSearchParams(location.search);
+      if (query.get('source') === 'deck') return false;
+      return true;
+    }
     return lastLocation.pathname.includes('/feed');
-  }, [lastLocation]);
+  }, [lastLocation, location]);
 
   // Callbacks
   const reloadData = useCallback((showLoading = false) => {

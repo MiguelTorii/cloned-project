@@ -59,7 +59,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, [data, me, dispatch]);
 
   const handleView = useCallback(() => {
-    dispatch(push(`/flashcards/${data.post_id}`));
+    dispatch(push(`/flashcards/${data.post_id}?source=deck`));
   }, [dispatch, data]);
 
   const handleShareLink = useCallback(() => {
