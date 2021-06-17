@@ -88,6 +88,8 @@ const Main = ({
     data: { userId, firstName, lastName }
   } = user
 
+  const channelMembers = useMemo(() => channel && local[channel.sid].members, [channel, local])
+
   const handleScrollToBottom = useCallback(() => {
     try {
       if (scroll && end.current) {
@@ -239,6 +241,7 @@ const Main = ({
             isOwn={type === 'own'}
             currentUserId={userId}
             userId={item.author}
+            members={channelMembers}
             isGroupChannl={members.length === 2}
             name={item.name}
             messageList={item.messageList}
@@ -276,6 +279,7 @@ const Main = ({
     handleStartVideoCall,
     handleBlock,
     members,
+    channelMembers,
     userId
   ])
 

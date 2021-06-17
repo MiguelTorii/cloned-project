@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable react/no-danger */
 // @flow
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useHistory, withRouter } from 'react-router'
 import cx from 'classnames'
 import { Link as RouterLink } from 'react-router-dom'
@@ -39,6 +39,7 @@ type Props = {
   date: string,
   currentUserId: string,
   isGroupChannl: boolean,
+  members: Array,
   messageList: Array<Object>,
   onImageLoaded: Function,
   onStartVideoCall: Function,
@@ -55,6 +56,7 @@ const ChatMessage = ({
   isOwn,
   isOnline,
   currentUserId,
+  members,
   isGroupChannl,
   messageList,
   onImageLoaded,
@@ -74,6 +76,22 @@ const ChatMessage = ({
   const [anchorEl, setAnchorEl] = useState(null)
 
   const history = useHistory()
+
+  const profiles = useMemo(() => {
+    const data = {};
+    if (members) {
+      members.forEach(member => {
+        data[member.userId] = {
+          userId: member.userId,
+          firstName: member.firstname,
+          lastName: member.lastname,
+          userProfileUrl: member.image
+        }
+      })
+    }
+
+    return data
+  }, [members])
 
   const linkify = text => {
     // eslint-disable-next-line
@@ -344,6 +362,7 @@ const ChatMessage = ({
     ))}
 
     <StudyRoomReport
+      profiles={profiles}
       open={openReport}
       handleClose={handleCloseReport}
     />

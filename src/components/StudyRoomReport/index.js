@@ -14,12 +14,12 @@ import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import type { UserState } from '../../reducers/user';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 import Dialog from 'components/Dialog';
-import { report, getReasons } from '../../api/posts';
 import LoadImg from 'components/LoadImg';
 import ReportImage from 'assets/svg/report-done.svg';
+import { report, getReasons } from '../../api/posts';
+import type { UserState } from '../../reducers/user';
 import styles from '../_styles/StudyRoomReport';
 
 type Props = {
@@ -45,12 +45,17 @@ const ReportIssue = ({
 
   const names = useMemo(() => {
     const filteredIds = Object.keys(profiles || []).filter(id => id !== userId)
-    return filteredIds.map(id => `${profiles[id].firstName} ${profiles[id].lastName}`)
+    return filteredIds.map(id => {
+      return {
+        id,
+        name: `${profiles[id].firstName} ${profiles[id].lastName}`
+      }
+    });
   }, [profiles, userId])
 
-  const nameList = useMemo(() => names.map(name => ({
-    value: name,
-    text: name,
+  const nameList = useMemo(() => names.map(user => ({
+    value: user.id,
+    text: user.name,
   })), [names])
 
   const getValue = (value) => {
