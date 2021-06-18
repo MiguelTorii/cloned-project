@@ -83,7 +83,8 @@ type Props = {
   onRemove: Function,
   newChannel: boolean,
   handleChannelCreated: Function,
-  onSend: Function
+  onSend: Function,
+  push: Function
 };
 
 type State = {
@@ -549,7 +550,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onBlock,
       handleChannelCreated,
-      setCurrentChannel
+      setCurrentChannel,
+      push
     } = this.props;
 
     const {
@@ -593,6 +595,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
             videoEnabled={videoEnabled}
+            push={push}
           >
             <div
               className={cx(

@@ -298,6 +298,7 @@ const FloatingChat = ({
           {openChannels.map(item => (
             <ChatChannel
               key={`op${item.sid}`}
+              push={push}
               getMembers={getMembers}
               user={user}
               channel={item}
@@ -313,6 +314,7 @@ const FloatingChat = ({
           ))}
           <ErrorBoundary>
             {newChannel && <ChatChannel
+              push={push}
               user={user}
               onClose={handleNewChannelClose}
               newChannel

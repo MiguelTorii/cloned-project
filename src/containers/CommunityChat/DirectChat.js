@@ -132,16 +132,16 @@ const DirectChat = ({
       onOpenChannel({ channel: local[channelList[0]]?.twilioChannel })
     }
     setChannelList(channelList)
-  }, [local, onOpenChannel, lastChannelSid])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [local, onOpenChannel])
 
   useEffect(() => {
-    const lastChannelSid = localStorage.getItem('currentDMChannel')
     if (lastChannelSid && !isLoading) {
       const lastChannel = local[lastChannelSid]
       setCurrentChannel(lastChannel?.twilioChannel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setCurrentChannel, onOpenChannel, lastChannelSid, isLoading])
+  }, [setCurrentChannel, onOpenChannel, isLoading])
 
   useEffect(() => {
     if (width !== prevWidth) {
