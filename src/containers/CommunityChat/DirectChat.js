@@ -135,7 +135,6 @@ const DirectChat = ({
   }, [local, onOpenChannel, lastChannelSid])
 
   useEffect(() => {
-    const lastChannelSid = localStorage.getItem('currentDMChannel')
     if (lastChannelSid && !isLoading) {
       const lastChannel = local[lastChannelSid]
       setCurrentChannel(lastChannel?.twilioChannel)

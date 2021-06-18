@@ -1,7 +1,6 @@
 // @flow
 import React, { Fragment } from 'react'
 import type { Node } from 'react'
-import { withRouter } from 'react-router-dom';
 import cx from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -38,7 +37,8 @@ type Props = {
   onStartVideoCall: Function,
   onViewMembers: Function,
   newChannel: boolean,
-  onExpand: Function
+  onExpand: Function,
+  push: Function
 };
 
 type State = {
@@ -51,7 +51,6 @@ class ChatItem extends React.PureComponent<Props, State> {
     anchorEl: null,
     openRemove: false
   }
-
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget })
@@ -88,10 +87,11 @@ class ChatItem extends React.PureComponent<Props, State> {
     this.handleClose()
   }
 
-  handleGotoChat = () => {
-    const { channel, setCurrentChannel, history } = this.props
-    setCurrentChannel(channel)
-    history.push('/chat')
+  handleGotoChat = async () => {
+    const { channel, setCurrentChannel, push } = this.props
+    await setCurrentChannel(channel)
+    await localStorage.setItem('currentDMChannel', channel.sid)
+    push('/chat')
   }
 
   // eslint-disable-next-line no-undef
@@ -250,4 +250,4 @@ class ChatItem extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(withRouter(ChatItem))
+export default withStyles(styles)(ChatItem)
