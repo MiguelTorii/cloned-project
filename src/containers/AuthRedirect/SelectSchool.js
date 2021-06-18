@@ -91,6 +91,7 @@ const SelectSchool = ({
     if (
       school.studentLive === 0
     ) {
+      setDeeplinkLoading(false)
       updateError({
         title: "You're early and we love it!",
         body: "Type in your email and we will notify you when CircleIn goes live at your school!",
@@ -101,6 +102,8 @@ const SelectSchool = ({
     }
 
     if (launchType === 'lti') {
+      setDeeplinkLoading(false)
+
       updateError({
         title: '',
         body: redirectMessage
@@ -126,6 +129,7 @@ const SelectSchool = ({
         connection,
         responseType: 'token'
       })
+      setDeeplinkLoading(false)
       setLoading(false)
       return true
     } else {

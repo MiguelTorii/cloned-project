@@ -46,9 +46,9 @@ const BatchMessageDialog =  ({
 
     const chatIds = {}
     Object.keys(local).forEach(sid => {
-      const { title } = local[sid]
+      const { sectionId } = local[sid]
       if (selectedClasses.find(sc => (
-        `${sc.className} Class Chat` === title
+        sc.sectionId === sectionId
       ))) {
         chatIds[sid] = true
       }
