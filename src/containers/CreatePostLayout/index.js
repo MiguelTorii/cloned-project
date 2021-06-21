@@ -96,6 +96,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [classId, setClassId] = useState(0)
   const [sectionId, setSectionId] = useState(0)
   const [isPosting, setIsPosting] = useState(false)
+  const [images, setImages] = useState([])
   const location = useLocation()
 
   useEffect(() => {
@@ -277,6 +278,8 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 classId={classId}
                 sectionId={sectionId}
                 noteId={noteId}
+                images={images}
+                handleUpdateImages={setImages}
                 setIsPosting={() => setIsPosting(true)}
               />
             </TabPanel>
