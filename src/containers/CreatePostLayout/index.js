@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Dialog from '@material-ui/core/Dialog'
 import LoadImg from 'components/LoadImg'
@@ -17,7 +17,7 @@ import LoadImg from 'components/LoadImg'
 import ClassMultiSelect from 'containers/ClassMultiSelect'
 import ClassSelector from 'containers/ClassSelector'
 import circleinLogo from 'assets/svg/circlein_logo_minimal.svg'
-import postingImage from 'assets/svg/posting.svg'
+import postingImage from 'assets/gif/loading-rocket.gif'
 
 import CreateQuestion from './Question'
 import CreateNotes from './Note'
@@ -25,7 +25,7 @@ import CreatePostSt from './PostSt'
 import CreateShareLink from './ShareLink'
 import ErrorBoundary from '../ErrorBoundary'
 import type { State as StoreState } from '../../types/state'
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router'
 import Appbar from './Appbar'
 
 const styles = theme => ({
@@ -215,7 +215,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
           paper: classes.dialogPaper
         }}
       >
-        <img src={postingImage} className={classes.postingImage} alt="Posting.." />
+        <img src={postingImage} alt="Posting" className={classes.postingImage}/>
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid
