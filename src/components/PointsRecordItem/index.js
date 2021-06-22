@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import { Box } from '@material-ui/core';
 import LoadImg from '../LoadImg';
 import Typography from '@material-ui/core/Typography';
-import { momentWithTimezone } from '../../utils/helpers';
 import moment from 'moment';
 
 import { useStyles } from '../_styles/PointsRecordItem';
