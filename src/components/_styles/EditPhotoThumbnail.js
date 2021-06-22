@@ -51,6 +51,9 @@ export const styles = theme => ({
     padding: 4,
     backgroundColor: theme.circleIn.customBackground.iconButton
   },
+  hide: {
+    visibility: 'hidden',
+  },
   icon: {
     color: theme.circleIn.palette.normalButtonText1
   },

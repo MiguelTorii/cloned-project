@@ -79,6 +79,7 @@ const UploadImagesForm = ({
                   image={item.image}
                   loaded={item.loaded}
                   loading={item.loading}
+                  type={item.type}
                   error={item.error}
                   onSave={onImageSave}
                   onDelete={onImageDelete}
