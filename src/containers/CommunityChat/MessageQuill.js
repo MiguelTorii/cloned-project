@@ -19,6 +19,7 @@ const MessageQuill = ({
   value,
   setValue,
   onSendMessage,
+  enableMessageBox,
   showError,
   onTyping,
   userId
@@ -52,6 +53,15 @@ const MessageQuill = ({
     placeholder: 'Send a message to channel',
     preserveWhitespace: true
   });
+
+  useEffect(() => {
+    if (quill && !enableMessageBox) {
+      quill.enable(false)
+    }
+    if (quill && enableMessageBox) {
+      quill.enable()
+    }
+  }, [enableMessageBox, quill])
 
   useEffect(() => {
     if (quill) {

@@ -18,7 +18,22 @@ const useStyles = makeStyles(theme => ({
   },
   initialAlert: {
     fontSize: 16,
-    marginTop: theme.spacing()
+    marginTop: theme.spacing(),
+    textAlign: 'center'
+  },
+  initialAlertDescription: {
+    fontSize: 16
+  },
+  initialAlertButton: {
+    border: `1px solid white`,
+    borderRadius: 20,
+    padding: theme.spacing(1, 2),
+    margin: theme.spacing(2, 0.5)
+  },
+  communityChannelProfile: {
+    fontWeight: 400,
+    fontSize: 32,
+    backgroundColor: theme.circleIn.palette.communityChannelProfileBg
   }
 }))
 

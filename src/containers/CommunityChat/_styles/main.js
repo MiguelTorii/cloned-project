@@ -23,6 +23,32 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
     }
   },
+  messageLoadingRoot: {
+    height: '100%',
+    flexGrow: 1,
+    display: 'flex',
+    margin: theme.spacing(3, 3, 0, 3),
+    backgroundColor: theme.circleIn.palette.feedBackground,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    flexDirection: 'column',
+    [theme.breakpoints.down('xs')]: {
+      borderRadius: 0,
+      margin: 0,
+    }
+  },
+  messageLoadingContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '100%'
+  },
+  expertTitle: {
+    fontSize: 16,
+    fontWeight: 400,
+    textAlign: 'center'
+  },
   messageScroll: {
     flex: 1,
     display: 'flex',

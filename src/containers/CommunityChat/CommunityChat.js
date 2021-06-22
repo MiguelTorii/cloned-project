@@ -45,7 +45,7 @@ const CommunityChat = ({
 
   const [selectedChannel, setSelctedChannel] = useState(null)
 
-  const { data: { userId, schoolId } } = user
+  const { data: { userId, schoolId, permission } } = user
   const {
     isLoading,
     data: {
@@ -169,6 +169,7 @@ const CommunityChat = ({
           newMessage={newMessage}
           setMainMessage={setMainMessage}
           mainMessage={mainMessage}
+          permission={permission}
           local={local}
           channel={currentCommunityChannel}
           onCollapseLeft={onCollapseLeft}

@@ -103,6 +103,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 900,
     overflowY: 'visible',
     maxHeight: '100%',
+    padding: 0,
     '& > p': {
       margin: 0
     }

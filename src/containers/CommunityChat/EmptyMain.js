@@ -4,7 +4,8 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import LoadImg from 'components/LoadImg'
-import ExpertEmptyChat from 'assets/svg/expertCommunityEmptyChat.svg'
+// import ExpertEmptyChat from 'assets/svg/expertCommunityEmptyChat.svg'
+import ExpertEmptyChat from 'assets/svg/empty_chat.svg'
 import EmptyUnregistered from 'assets/svg/emptyCommunityChatUnregistered.svg'
 import useStyles from './_styles/emptyMain'
 
@@ -75,7 +76,7 @@ const EmptyMain = ({ newChannel, otherUser, expertMode }) => {
   return (
     <div className={classes.container}>
       <div className={classes.messageContainer}>
-        <LoadImg url={ExpertEmptyChat} />
+        <LoadImg url={ExpertEmptyChat} className={classes.emptyChatImg} />
         <Box
           justifyContent='center'
           alignItems='center'
@@ -83,14 +84,14 @@ const EmptyMain = ({ newChannel, otherUser, expertMode }) => {
           flexDirection='column'
         >
           <Typography className={classes.expertTitle}>
-            You don’t have any chats yet, but when you do,
+            You don’t have any conversations started yet,
           </Typography>
           <Typography className={classes.expertTitle}>
-            your conversations will show up here!
+            but when you do, they will show up here!
           </Typography>
+          <br />
           <Typography className={classes.expertTitle}>
-            The arrow on the left will guide you! &nbsp;
-            <span role='img' aria-label='wave'>😊</span>
+            Click Create New Message to start chatting!
           </Typography>
         </Box>
       </div>
