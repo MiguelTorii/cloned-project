@@ -1,10 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable react/no-danger */
 // @flow
+import 'react-quill/dist/quill.snow.css'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useHistory, withRouter } from 'react-router'
 import cx from 'classnames'
 import { Link as RouterLink } from 'react-router-dom'
+import clsx from 'clsx'
 // import parse from 'html-react-parser'
 import ListItem from '@material-ui/core/ListItem'
 import Card from '@material-ui/core/Card'
@@ -254,7 +256,7 @@ const ChatMessage = ({
     return (
       <div className={cx(classes.bodyWrapper)}>
         <Typography
-          className={classes.body}
+          className={clsx(classes.body, 'ql-editor')}
           dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
         />
       </div>

@@ -101,6 +101,7 @@ const useStyles = makeStyles(theme => ({
     wordWrap: 'break-word',
     width: '100%',
     maxWidth: 900,
+    overflowY: 'visible',
     '& > p': {
       margin: 0
     }
