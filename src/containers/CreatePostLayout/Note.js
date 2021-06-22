@@ -427,12 +427,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush('/feed')
         }, 3000)
       } catch (err) {
-        this.setState({
-          loading: false,
-          errorDialog: true,
-          errorTitle: 'Unknown Error',
-          errorBody: 'Please try again'
-        })
+        if (err.message === 'no images') {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Error',
+            errorBody: 'You must add at least 1 image'
+          })
+        } else {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Unknown Error',
+            errorBody: 'Please try again'
+          })
+        }
       }
     }
   }
@@ -489,12 +498,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
         }, 3000)
 
       } catch (err) {
-        this.setState({
-          loading: false,
-          errorDialog: true,
-          errorTitle: 'Unknown Error',
-          errorBody: 'Please try again'
-        })
+        if (err.message === 'no images') {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Error',
+            errorBody: 'You must add at least 1 image'
+          })
+        } else {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Unknown Error',
+            errorBody: 'Please try again'
+          })
+        }
       }
     }
   }

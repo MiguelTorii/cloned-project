@@ -211,6 +211,7 @@ class UploadImages extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { images } = this.props;
+    if (images.length === 0) throw new Error('no images');
     if (images.length === 0) return [];
     this.setImagesUploading();
     const fileNames = images.map(image => image.id);
