@@ -2,7 +2,6 @@
 // @flow
 
 import React, {Fragment} from 'react';
-import axios from 'axios';
 import {connect} from 'react-redux';
 import {push as routePush} from 'connected-react-router';
 import {Redirect} from 'react-router-dom';
@@ -27,7 +26,6 @@ import {
   getStudyCircle
 } from '../../api/user';
 import {addToStudyCircle, removeFromStudyCircle} from '../../api/posts';
-import {getPresignedURL} from '../../api/media';
 import {fetchFeedv2} from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
@@ -48,6 +46,8 @@ import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
 import Hidden from '@material-ui/core/Hidden';
+import { updateProfileImage, uploadMedia } from "../../actions/user";
+import { UPLOAD_MEDIA_TYPES } from "../../constants/app";
 
 const styles = theme => ({
   root: {
@@ -80,7 +80,8 @@ type Props = {
     search: string,
     pathname: string
   },
-  updateBookmark: Function
+  updateBookmark: Function,
+  updateProfileImage: Function
 };
 
 type State = {
@@ -439,24 +440,13 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       user: {
         data: {userId}
-      }
+      },
+      updateProfileImage
     } = this.props;
 
-    const result = await getPresignedURL({
-      userId,
-      type: 2,
-      mediaType: imageData.type
-    });
-
-    const {mediaId, url} = result;
-
-    await axios.put(url, imageData, {
-      headers: {
-        'Content-Type': imageData.type
-      }
-    });
-
+    const { mediaId, readUrl } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
     await updateUserProfileUrl({userId, mediaId});
+    updateProfileImage(readUrl);
   };
 
   handleSaveProfile = async (avatar, fields) => {
@@ -757,7 +747,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       push: routePush,
       checkUserSession: signInActions.checkUserSession,
       openChannelWithEntity: chatActions.openChannelWithEntity,
-      updateBookmark: feedActions.updateBookmark
+      updateBookmark: feedActions.updateBookmark,
+      updateProfileImage,
     },
     dispatch
   );

@@ -275,6 +275,13 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       }
     });
   }
+  case userActions.UPDATE_PROFILE_IMAGE: {
+    return update(state, {
+      data: {
+        profileImage: { $set: action.payload.imageUrl }
+      }
+    });
+  }
   default:
     return state;
   }
