@@ -19,7 +19,7 @@ const PointsRecordItem = ({ data }: Props) => {
   const classes = useStyles();
   const durationText = useMemo(() => {
     const minutes = moment.duration(
-      momentWithTimezone().diff(momentWithTimezone(data.date))
+      moment().diff(moment.utc(data.date))
     ).asMinutes();
 
     if (minutes < 60) return moment.duration(-minutes, 'minutes').humanize(true);
