@@ -285,7 +285,7 @@ class Profile extends React.PureComponent<Props, State> {
     bookmarked
   }: {
     feedId: number,
-    bookmarked: boolean
+    bookmarked: boolean // `bookmarked` means if the post is currently bookmarked or not. can confuse the meaning.
   }) => {
     const {
       user: {
@@ -295,6 +295,33 @@ class Profile extends React.PureComponent<Props, State> {
     } = this.props;
 
     updateBookmark({feedId, userId, bookmarked});
+
+    // Update Local State
+    const { bookmarks, feed } = this.state;
+    const postIndex = feed.findIndex((item) => item.feedId === feedId);
+
+    let newBookmarks = bookmarks;
+    let newFeeds = feed;
+
+    if (bookmarked) {
+      // If a bookmark is removed, the post is removed from the bookmarks
+      newBookmarks = newBookmarks.filter((item) => item.feedId !== feedId);
+    } else {
+      // If a bookmark is added, the post is added to the bookmarks. In this case, postIndex must exist.
+      if (postIndex < 0) throw new Error('Post must exist');
+      newBookmarks = [feed[postIndex], ...bookmarks];
+    }
+
+    // Update bookmark from the post
+    if (postIndex >= 0) {
+      feed[postIndex].bookmarked = !bookmarked;
+      newFeeds = [...feed];
+    }
+
+    this.setState({
+      bookmarks: newBookmarks,
+      feed: newFeeds
+    });
   };
 
   handleReport = ({feedId, ownerId}) => {
@@ -311,7 +338,15 @@ class Profile extends React.PureComponent<Props, State> {
 
   handleDeleteClose = ({deleted}: {deleted?: boolean}) => {
     if (deleted && deleted === true) {
-      this.handleFetchFeed();
+      // Reloading all feed again is time waste, we are doing it in other way.
+      // this.handleFetchFeed();
+
+      // Update Local State
+      const { deletePost, bookmarks, feed } = this.state;
+      this.setState({
+        bookmarks: bookmarks.filter((item) => item.feedId !== deletePost.feedId),
+        feed: feed.filter((item) => item.feedId !== deletePost.feedId)
+      });
     }
     this.setState({deletePost: null});
   };

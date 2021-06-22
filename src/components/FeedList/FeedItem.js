@@ -104,6 +104,7 @@ const FeedItem = ({
   onUserClick,
   onPostClick,
   user,
+  toolbarPrefix
 }) => {
   const currentUserId = useMemo(() => user.data.userId, [user.data.userId])
   const [moreAnchorEl, setAnchorEl] = useState(null)
@@ -535,6 +536,7 @@ const FeedItem = ({
             feedId={data.feedId}
             postId={data.postId}
             typeId={data.typeId}
+            toolbarPrefix={toolbarPrefix}
           />
         </Box>
       </Card>

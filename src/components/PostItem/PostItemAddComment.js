@@ -17,6 +17,7 @@ type Props = {
   readOnly: boolean,
   isQuestion: boolean,
   defaultValue: string,
+  toolbarPrefix: string,
   onPostComment: Function,
   onCancelComment: Function,
   onEscape: Function
@@ -34,6 +35,7 @@ const PostItemAddComment = ({
   onEscape = () => {},
   feedId,
   userId,
+  toolbarPrefix,
   defaultValue
 }: Props) => {
   const [value, setValue] = useState('')
@@ -84,6 +86,7 @@ const PostItemAddComment = ({
             userId={userId}
             onChange={handleRTEChange}
             feedId={isReply ? commentId : feedId}
+            toolbarPrefix={toolbarPrefix}
             setValue={setValue}
             handleClick={handleClick}
             showError={showError}

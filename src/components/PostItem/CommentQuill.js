@@ -22,14 +22,15 @@ const CommentQuill = ({
   feedId,
   handleClick,
   showError,
-  userId
+  userId,
+  toolbarPrefix
 }) => {
   const [loading, setLoading] = useState(false)
   const [isNewLine, setIsNewLine] = useState(false)
   const [currentQuill, setCurrentQuill] = useState(null)
   const { quill, quillRef } = useQuill({
     modules: {
-      toolbar: `#comment-toolbar-${feedId}`
+      toolbar: `#comment-toolbar-${feedId}-${toolbarPrefix}`
     },
     scrollingContainer: `editor-${feedId}`,
     formats,
@@ -43,8 +44,8 @@ const CommentQuill = ({
           onChange(quill.container.firstChild.innerHTML)
           const currentFocusPosition = quill.getSelection(true).index
           const leftPosition = quill.getBounds(currentFocusPosition).left
-          const currentTooltipWidth = document.getElementById(`comment-toolbar-${feedId}`)
-            ? document.getElementById(`comment-toolbar-${feedId}`).clientWidth
+          const currentTooltipWidth = document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`)
+            ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
             : 0
           const currentEditorWidth = quill.container.firstChild.clientWidth
 
@@ -60,7 +61,7 @@ const CommentQuill = ({
         }
       });
     }
-  }, [feedId, isNewLine, onChange, quill]);
+  }, [feedId, toolbarPrefix, isNewLine, onChange, quill]);
 
   useEffect(() => {
     if (currentQuill && isNewLine) {
@@ -138,7 +139,7 @@ const CommentQuill = ({
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id={`editor-${feedId}`} className={classes.editorable} ref={quillRef} />
-            <EditorToolbar id={`comment-toolbar-${feedId}`} handleSelect={insertEmoji} />
+            <EditorToolbar id={`comment-toolbar-${feedId}-${toolbarPrefix}`} handleSelect={insertEmoji} />
           </div>
           {loading && (
             <div className={classes.loader}>
