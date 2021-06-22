@@ -14,6 +14,6 @@ export const useStyles = makeStyles((theme) => ({
       width: (props) => props.desktopSize || DEFAULT_AVATAR_SIZE.desktop,
       height: (props) => props.desktopSize || DEFAULT_AVATAR_SIZE.desktop
     },
-    fontSize: theme.typography.h2.fontSize
+    fontSize: theme.typography.h4.fontSize
   }
 }))
