@@ -30,12 +30,9 @@ const Banner = ({
 
   useEffect(() => {
     const intervalID = setIntervalWithFirstCall(() => {
-      const minute = new Date().getMinutes();
-
-      if (announcement === undefined || minute === 1) {
+      if (announcement === undefined) {
         getAnnouncement();
       }
-
     }, 1 * INTERVAL.MINUTE);
 
     return () => clearInterval(intervalID);
