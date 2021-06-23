@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import cx from 'classnames'
 import axios from 'axios'
 import { useQuill } from 'react-quilljs'
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 
 import { withStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -28,6 +29,7 @@ const MessageQuill = ({
   const [isNewLine, setIsNewLine] = useState(false)
   const [currentQuill, setCurrentQuill] = useState(null)
   const [isPressEnter, setPressEnter] = useState(false)
+  const [pasteImageUrl, setPasteImageUrl] = useState('')
 
   const bindings = useMemo(() => {
     return {
@@ -41,18 +43,49 @@ const MessageQuill = ({
     }
   }, [])
 
-  const { quill, quillRef } = useQuill({
+  const imageHandler = useCallback(async (imageDataUrl, type, imageData) => {
+    setLoading(true)
+    try {
+      const file = imageData.toFile('')
+
+      const result = await getPresignedURL({
+        userId,
+        type: 1,
+        mediaType: file.type
+      });
+
+      const { readUrl, url } = result;
+
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': type
+        }
+      });
+      setPasteImageUrl(readUrl)
+    } catch (e) {
+      setLoading(false)
+    }
+  }, [userId])
+
+  const { quill, quillRef, Quill } = useQuill({
     modules: {
       toolbar: '#message-toolbar',
       keyboard: {
         bindings
       },
+      imageDropAndPaste: {
+        handler: imageHandler
+      }
     },
     scrollingContainer: 'editor',
     formats,
     placeholder: 'Send a message to channel',
     preserveWhitespace: true
   });
+
+  if (Quill && !quill) {
+    Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste)
+  }
 
   useEffect(() => {
     if (quill && !enableMessageBox) {
@@ -88,13 +121,23 @@ const MessageQuill = ({
         onTyping()
       });
     }
-  }, [isNewLine, onChange, quill, onTyping]);
+  }, [isNewLine, onChange, quill, Quill, onTyping]);
 
   useEffect(() => {
     if (currentQuill && isNewLine) {
       currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n')
     }
   }, [currentQuill, isNewLine])
+
+  useEffect(() => {
+    if (pasteImageUrl) {
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'image', pasteImageUrl)
+      quill.insertText(range.index + 1, '\n')
+      setLoading(false)
+      setPasteImageUrl('')
+    }
+  }, [quill, pasteImageUrl])
 
   useEffect(() => {
     async function sendMessage() {

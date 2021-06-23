@@ -52,6 +52,7 @@
     "prop-types": "^15.6.2",
     "query-string": "^6.5.0",
     "quill-emoji": "^0.2.0",
+    "quill-image-drop-and-paste": "^1.2.1",
     "react": "^16.14.0",
     "react-animation": "^1.2.2",
     "react-avatar-editor": "11.0.7",
