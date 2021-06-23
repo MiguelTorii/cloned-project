@@ -42,7 +42,6 @@ import * as api from '../../api/posts'
 
 import linkPost from '../../assets/svg/ic_link_post.svg'
 import flashcardPost from '../../assets/svg/ic_flashcard_post.svg'
-import questionPost from '../../assets/svg/ic_question_post.svg'
 import thanksSvg from '../../assets/svg/thanks.svg'
 import thankedSvg from '../../assets/svg/thanked.svg'
 import commentSvg from '../../assets/svg/comment.svg'
@@ -301,14 +300,6 @@ const FeedItem = ({
         return <img src={linkPost} className={classes.imagePost} alt="Link" />
       }
       return <LinkPreview uri={data.uri} />
-    case FeedTypes.question.id:
-      return (
-        <img
-          src={questionPost}
-          className={classes.imagePost}
-          alt="Question"
-        />
-      )
     default:
       return null
     }
@@ -419,25 +410,29 @@ const FeedItem = ({
               {!newClassExperience ? data.title : getTitle(data)}
             </Typography>
           </CardContent>
-          <CardContent className={classes.content}>
-            <div className={classes.markdown}>
-              <CustomQuill value={description} readOnly />
-            </div>
-            <span />
-            {renderImage()}
-          </CardContent>
-          <CardContent className={classes.tags}>
-            {data.tags.map(tag => (
-              !newClassExperience ?
-                <Chip
-                  key={tag.id}
-                  label={`#${tag.name}`}
-                  className={classes.chip}
-                  classes={{ label: classes.label }}
-                /> :
-                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
-            ))}
-          </CardContent>
+          {description && (
+            <>
+              <CardContent className={classes.content}>
+                <div className={classes.markdown}>
+                  <CustomQuill value={description} readOnly />
+                </div>
+                <span />
+                {renderImage()}
+              </CardContent>
+              <CardContent className={classes.tags}>
+                {data.tags.map(tag => (
+                  !newClassExperience ?
+                    <Chip
+                      key={tag.id}
+                      label={`#${tag.name}`}
+                      className={classes.chip}
+                      classes={{ label: classes.label }}
+                    /> :
+                    <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+                ))}
+              </CardContent>
+            </>
+          )}
         </CardActionArea>
         <CardActions>
           <Grid container spacing={1} alignItems="center">
