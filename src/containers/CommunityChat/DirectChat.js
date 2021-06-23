@@ -79,8 +79,7 @@ const DirectChat = ({
 
   const onNewChannel = useCallback(async () => {
     await handleNewChannel(true)
-    setCurrentChannel(null)
-  }, [handleNewChannel, setCurrentChannel])
+  }, [handleNewChannel])
 
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
@@ -93,11 +92,11 @@ const DirectChat = ({
     setCurrentChannel(null), [setCurrentChannel])
 
   const onOpenChannel = useCallback(async ({ channel }) => {
-    setCurrentChannel(channel)
     if (['xs'].includes(width)) setLeftSpace(0)
     if (newChannel) {
       await handleNewChannel(false)
     }
+    setCurrentChannel(channel)
   }, [handleNewChannel, setCurrentChannel, width, newChannel])
 
   const handleRemove = useCallback(async sid => {
@@ -105,7 +104,7 @@ const DirectChat = ({
     await handleRemoveChannel(sid)
     const restChannels = channelList.filter(channel => channel !== sid.sid)
     if (currentChannel.sid === sid.sid) {
-      setCurrentChannel(local[restChannels[0]].twilioChannel)
+      setCurrentChannel(local[restChannels[0]] ? local[restChannels[0]].twilioChannel : null)
     } else {
       setCurrentChannel(currentChannel)
     }
@@ -128,12 +127,8 @@ const DirectChat = ({
       if (local[a].lastMessage.message === '') return 0
       return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
     })
-    if (!lastChannelSid) {
-      onOpenChannel({ channel: local[channelList[0]]?.twilioChannel })
-    }
     setChannelList(channelList)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [local, onOpenChannel])
+  }, [local])
 
   useEffect(() => {
     if (lastChannelSid && !isLoading) {

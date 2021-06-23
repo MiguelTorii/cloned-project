@@ -54,7 +54,8 @@ type Props = {
   isQuestion?: boolean,
   readOnly: boolean,
   hasBestAnswer?: boolean,
-  isOwner?: boolean
+  isOwner?: boolean,
+  toolbarPrefix?: string
 };
 
 type State = {
@@ -252,7 +253,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       hasBestAnswer,
       isOwner,
-      feedId
+      feedId,
+      toolbarPrefix
     } = this.props;
     const {
       comments,
@@ -284,6 +286,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
             isQuestion={isQuestion}
             feedId={feedId}
             onPostComment={this.handlePostComment}
+            toolbarPrefix={toolbarPrefix}
           />
         </ErrorBoundary>
         <ErrorBoundary>

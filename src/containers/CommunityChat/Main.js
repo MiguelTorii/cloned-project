@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react'
 import Lightbox from 'react-images'
@@ -16,13 +17,12 @@ import EmptyMain from 'containers/CommunityChat/EmptyMain'
 import InitialAlert from 'containers/CommunityChat/InitialAlert'
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
+import LoadImg from 'components/LoadImg'
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
+import LoadingMessageSvg from 'assets/svg/loading-messages.svg'
+import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg'
+import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/main'
-// import axios from 'axios'
-// import { getPresignedURL } from 'api/media'
-// import ChatTextField from 'containers/CommunityChat/ChatTextField'
-// import LoadImg from 'components/LoadImg'
-// import CoverImg from 'assets/svg/community-chat-default-cover.svg'
 
 type Props = {
   isCommunityChat: boolean,
@@ -34,6 +34,7 @@ type Props = {
   rightSpace: number,
   local: Object,
   newChannel: boolean,
+  permission: Array,
   user: Object,
   onSend: Function,
   setRightPanel: Function,
@@ -52,6 +53,7 @@ const Main = ({
   rightSpace,
   local,
   newChannel,
+  permission,
   user,
   onSend,
   setRightPanel,
@@ -60,6 +62,8 @@ const Main = ({
 }: Props) => {
   const classes = useStyles()
   const end = useRef(null)
+  const [loadingMessage, setLoadingMessage] = useState(false)
+  const [errorLoadingMessage, setErrorLoadingMessage] = useState(false)
   const [messages, setMessages] = useState([])
   const [paginator, setPaginator] = useState(null)
   const [hasMore, setHasMore] = useState(false)
@@ -72,6 +76,7 @@ const Main = ({
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null)
   const [showError, setShowError] = useState(false)
+  const [enableMessageBox, setEnableMessageBox] = useState(false)
   const memberKeys = useMemo(() => Object.keys(members), [members])
 
   const otherUser = useMemo(() => {
@@ -113,6 +118,14 @@ const Main = ({
   }, [local, channel])
 
   useEffect(() => {
+    if (local[channel?.sid]?.twilioChannel.channelState.lastConsumedMessageIndex !== null || !isCommunityChat) {
+      setEnableMessageBox(true)
+    } else {
+      setEnableMessageBox(false)
+    }
+  }, [local, channel, isCommunityChat])
+
+  useEffect(() => {
     if (channel && newMessage && channel.sid === newMessage.channel.sid) {
       try {
         channel.setAllMessagesConsumed()
@@ -136,6 +149,7 @@ const Main = ({
 
   useEffect(() => {
     const init = async () => {
+      setLoadingMessage(true)
       try {
         channel.setAllMessagesConsumed()
 
@@ -146,6 +160,7 @@ const Main = ({
         setCampaign(aCampaign)
 
         const p = await channel.getMessages(10)
+        if (!p.hasNextPage) setLoadingMessage(false)
         setMessages(p.items)
         setPaginator(p)
         setHasMore(!(p.items.length < 10))
@@ -168,6 +183,7 @@ const Main = ({
         }
       } catch (e) {
         console.log(e)
+        setErrorLoadingMessage(true)
       }
     }
 
@@ -179,6 +195,9 @@ const Main = ({
     items: messages,
     userId
   }), [messages, userId])
+
+  const hasPermission = useMemo(() => permission &&
+    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS), [permission])
 
   const handleLoadMore = useCallback(() => {
     setScroll(false)
@@ -379,99 +398,134 @@ const Main = ({
     return null
   }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser])
 
-  return (
-    <div className={classes.root}>
-      {channel && <ChatHeader
-        isCommunityChat={isCommunityChat}
-        channel={channel}
-        currentUserName={`${firstName} ${lastName}`}
-        title={isCommunityChat
-          ? selectedChannel?.chat_name
-          : local[channel.sid].title
-        }
-        rightSpace={rightSpace}
-        otherUser={otherUser}
-        memberKeys={memberKeys}
-        startVideo={startVideo}
-        videoEnabled={videoEnabled}
-        local={local}
-        onOpenRightPanel={setRightPanel}
-        handleUpdateGroupName={handleUpdateGroupName}
-      />}
-      <div className={classes.messageRoot}>
-        <div className={classes.messageContainer}>
-          {!channel && (
-            <EmptyMain
-              otherUser={otherUser}
-              noChannel={!channel}
-              newChannel={newChannel}
-              expertMode={expertMode}
-            />
-          )}
-          {channel && <InfiniteScroll
-            className={classes.messageScroll}
-            threshold={50}
-            pageStart={0}
-            loadMore={handleLoadMore}
-            hasMore={hasMore}
-            useWindow={false}
-            initialLoad={false}
-            isReverse
-          >
-            {!hasMore
+  const loadingConversation = useCallback(() => {
+    return (
+      <div className={classes.messageLoadingRoot}>
+        <div className={classes.messageLoadingContainer}>
+          <LoadImg url={LoadingMessageSvg} className={classes.emptyChatImg} />
+          <Typography className={classes.expertTitle}>
+            Loading your converstation...
+          </Typography>
+        </div>
+      </div>
+    )
+  }, [classes])
+
+  const loadingErrorMessage = useCallback(() => {
+    return (
+      <div className={classes.messageLoadingRoot}>
+        <div className={classes.messageLoadingContainer}>
+          <LoadImg url={LoadingErrorMessageSvg} className={classes.emptyChatImg} />
+          <Typography className={classes.expertTitle}>
+            Uh oh! There was an error trying to load your<br/>
+            conversation. Try refreshing your browser or <br/>
+            submit a support ticket.
+          </Typography>
+        </div>
+      </div>
+    )
+  }, [classes])
+
+  return loadingMessage
+    ? loadingConversation()
+    : errorLoadingMessage
+      ? loadingErrorMessage()
+      : (<div className={classes.root}>
+        {channel && <ChatHeader
+          isCommunityChat={isCommunityChat}
+          channel={channel}
+          currentUserName={`${firstName} ${lastName}`}
+          title={isCommunityChat
+            ? selectedChannel?.chat_name
+            : local[channel.sid].title
+          }
+          rightSpace={rightSpace}
+          otherUser={otherUser}
+          memberKeys={memberKeys}
+          startVideo={startVideo}
+          videoEnabled={videoEnabled}
+          local={local}
+          onOpenRightPanel={setRightPanel}
+          handleUpdateGroupName={handleUpdateGroupName}
+        />}
+        <div className={classes.messageRoot}>
+          <div className={classes.messageContainer}>
+            {!channel && (
+              <EmptyMain
+                otherUser={otherUser}
+                noChannel={!channel}
+                newChannel={newChannel}
+                expertMode={expertMode}
+              />
+            )}
+            {channel && <InfiniteScroll
+              className={classes.messageScroll}
+              threshold={50}
+              pageStart={0}
+              loadMore={handleLoadMore}
+              hasMore={hasMore}
+              useWindow={false}
+              initialLoad={false}
+              isReverse
+            >
+              {!hasMore
               && isCommunityChat
               && <div className={classes.bannerImage}>
                 {/* <LoadImg className={classes.banner} url={CoverImg}/> */}
               </div>
-            }
-            {!hasMore && <InitialAlert
-              isCommunityChat={isCommunityChat}
-              selectedCourse={selectedCourse}
-              selectedChannel={selectedChannel}
-              local={local}
-              userId={userId}
-              channel={channel}
-            />}
-            {messageItems.map(item =>
-              renderMessage(item, avatars)
-            )}
-            {loading && (
-              <div className={classes.progress}>
-                <CircularProgress size={20} />
-              </div>
-            )}
-          </InfiniteScroll>}
+              }
+              {!hasMore && <InitialAlert
+                hasPermission={hasPermission}
+                setEnableMessageBox={setEnableMessageBox}
+                handleUpdateGroupName={handleUpdateGroupName}
+                isCommunityChat={isCommunityChat}
+                selectedCourse={selectedCourse}
+                selectedChannel={selectedChannel}
+                local={local}
+                userId={userId}
+                channel={channel}
+              />}
+              {messageItems.map(item =>
+                renderMessage(item, avatars)
+              )}
+              {loading && (
+                <div className={classes.progress}>
+                  <CircularProgress size={20} />
+                </div>
+              )}
+            </InfiniteScroll>}
+          </div>
+          {unregisteredUserMessage}
+          <Lightbox
+            images={images}
+            currentImage={0}
+            isOpen={images.length > 0}
+            onClose={handleImageClose}
+          />
+
+          {channel && <MessageQuill
+            enableMessageBox={enableMessageBox}
+            value={value}
+            userId={userId}
+            onSendMessage={onSendMessage}
+            onChange={handleRTEChange}
+            setValue={setValue}
+            handleClick={handleClick}
+            onTyping={onTyping}
+            showError={showError}
+          />}
+
+          {channel && <div className={classes.typing}>
+            <Typography
+              className={classes.typingText}
+              variant="subtitle1"
+            >
+              {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
+            </Typography>
+          </div>}
         </div>
-        {unregisteredUserMessage}
-        <Lightbox
-          images={images}
-          currentImage={0}
-          isOpen={images.length > 0}
-          onClose={handleImageClose}
-        />
-
-        {channel && <MessageQuill
-          value={value}
-          userId={userId}
-          onSendMessage={onSendMessage}
-          onChange={handleRTEChange}
-          setValue={setValue}
-          handleClick={handleClick}
-          onTyping={onTyping}
-          showError={showError}
-        />}
-
-        {channel && <div className={classes.typing}>
-          <Typography
-            className={classes.typingText}
-            variant="subtitle1"
-          >
-            {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
-          </Typography>
-        </div>}
       </div>
-    </div>
-  )
+      )
 }
 
 export default memo(Main)

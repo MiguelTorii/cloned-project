@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import { Box } from '@material-ui/core';
 import LoadImg from '../LoadImg';
 import Typography from '@material-ui/core/Typography';
-import { momentWithTimezone } from '../../utils/helpers';
 import moment from 'moment';
 
 import { useStyles } from '../_styles/PointsRecordItem';
@@ -19,7 +18,7 @@ const PointsRecordItem = ({ data }: Props) => {
   const classes = useStyles();
   const durationText = useMemo(() => {
     const minutes = moment.duration(
-      momentWithTimezone().diff(momentWithTimezone(data.date))
+      moment().diff(moment.utc(data.date))
     ).asMinutes();
 
     if (minutes < 60) return moment.duration(-minutes, 'minutes').humanize(true);

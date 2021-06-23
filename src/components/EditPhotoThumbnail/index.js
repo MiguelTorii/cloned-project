@@ -124,7 +124,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
   editor: ?HTMLDivElement;
 
   render() {
-    const { classes, image, loaded, loading, error } = this.props;
+    const { classes, image, loaded, loading, type, error } = this.props;
     const { open, zoom, rotate } = this.state;
 
     return (
@@ -156,7 +156,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
             <IconButton
               aria-label="Edit"
               disabled={loaded || loading}
-              className={classes.button}
+              className={cx(classes.button, type === 'application/pdf' && classes.hide)}
               onClick={this.handleOpen}
             >
               {this.renderCreateIcon()}

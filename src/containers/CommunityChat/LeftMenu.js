@@ -155,12 +155,13 @@ const LeftMenu = ({
           showHeader={false}
           showActions={false}
         >
-          {newChannel && <CreateChatChannelInput
+          <CreateChatChannelInput
+            setIsOpen={setIsOpen}
             onClosePopover={handleClose}
             onOpenChannel={onOpenChannel}
             permission={permission}
             handleUpdateGroupName={handleUpdateGroupName}
-          />}
+          />
         </Dialog>
         <Grid item className={classes.gridChatList}>
           <EmptyLeftMenu

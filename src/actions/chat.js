@@ -18,6 +18,7 @@ import Chat from 'twilio-chat';
 import update from 'immutability-helper';
 import { push } from 'connected-react-router';
 import axios from "axios";
+import moment from 'moment'
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -235,10 +236,27 @@ export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
 };
 
-const initLocalChannels = async dispatch => {
+const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
     dispatch(startLoading())
     const local = await getChannels()
+
+    if (
+      Object.keys(local).length > 0 &&
+      Object.keys(currentLocal).length > 0 &&
+      !localStorage.getItem('currentDMChannel')
+    ) {
+      let channelList = [];
+      channelList = Object.keys(local).filter(l => !local[l].lastMessage.message)
+      const recentMessageChannels = Object.keys(local).filter(l => local[l].lastMessage.message)
+      if (recentMessageChannels.length) {
+        channelList = recentMessageChannels.sort((a, b) => {
+          return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
+        })
+      }
+
+      dispatch(setCurrentChannel(currentLocal[channelList[0]].twilioChannel))
+    }
     dispatch(initLocal({ local }))
   } catch (e) {
     console.log(e)
@@ -381,14 +399,7 @@ export const handleInitChat = () =>
 
       dispatch(initClient({ client }));
       dispatch(initChannels({ channels, local }))
-      await initLocalChannels(dispatch)
-
-      if (
-        channels.length > 0 &&
-        local[channels[0]]
-      ) {
-        setCurrentChannel(local[channels[0]].twilioChannel)
-      }
+      await initLocalChannels(dispatch, local)
 
       if (client._eventsCount === 0) {
         client.on('channelJoined', async channel => {

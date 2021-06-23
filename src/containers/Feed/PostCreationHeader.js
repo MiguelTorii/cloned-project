@@ -53,13 +53,13 @@ const PostCreationHeader = () => {
           <Box mr={3}>
             <Avatar
               src={me.profileImage}
-              initialText={getInitials({ name:me.name })}
+              initialText={getInitials({ name: `${me.firstName} ${me.lastName}` })}
               mobileSize={50}
               desktopSize={50}
             />
           </Box>
           <Box flexGrow={1}>
-            <Button className={classes.postAnyButton} onClick={() => handleGotoPostCreate()}>
+            <Button fullWidth className={classes.postAnyButton} onClick={() => handleGotoPostCreate()}>
               <Hidden smDown>
                 Create a new post, offer support or share useful links with your classmates!
               </Hidden>

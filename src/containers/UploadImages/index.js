@@ -58,7 +58,7 @@ type State = {
 
 class UploadImages extends React.PureComponent<Props, State> {
   state = {
-    images: [],
+    // images: [],
     firstLoad: true,
     loading: false,
     isDropzoneDisabled: false
@@ -74,6 +74,7 @@ class UploadImages extends React.PureComponent<Props, State> {
   // }
 
   componentWillReceiveProps = async nextProps => {
+    const { handleUpdateImages, images } = this.props
     const { firstLoad } = this.state
     if (!firstLoad) return
     const { notes } = nextProps
@@ -86,61 +87,46 @@ class UploadImages extends React.PureComponent<Props, State> {
           const { note } = n
           const { type } = blob
           const extension = this.getFileExtension(note);
-          this.setState(prevState => ({
-            firstLoad: false,
-            images: [
-              ...prevState.images,
-              {
-                image: newImage,
-                file: blob,
-                id: `${uuidv4()}.${extension}`,
-                loaded: true,
-                loading: false,
-                error: false,
-                type
-              }
-            ]
-          }));
+          this.setState({ firstLoad: false })
+          handleUpdateImages([
+            images,
+            {
+              image: newImage,
+              file: blob,
+              id: `${uuidv4()}.${extension}`,
+              loaded: true,
+              loading: false,
+              error: false,
+              type
+            }
+          ])
         });
     })
 
   }
 
   handleImageDelete = (id: string) => {
-    const { imageChange } = this.props
-    const newState = update(this.state, {
-      images: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
-          if (index > -1) {
-            return update(b, {
-              $splice: [[index, 1]]
-            });
-          }
-          return b;
-        }
-      }
-    });
-    this.setState(newState, imageChange);
+    const { handleUpdateImages, images } = this.props
+
+    const index = images.findIndex(item => item.id === id);
+    if (index > -1) {
+      handleUpdateImages(update(images, {
+        $splice: [[index, 1]]
+      }))
+    }
   };
 
   handleImageSave = (id, newImage) => {
-    const newState = update(this.state, {
-      images: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
-          if (index > -1) {
-            return update(b, {
-              [index]: {
-                image: { $set: newImage }
-              }
-            });
-          }
-          return b;
+    const { handleUpdateImages, images } = this.props
+
+    const index = images.findIndex(item => item.id === id);
+    if (index > -1) {
+      handleUpdateImages(update(images, {
+        [index]: {
+          image: { $set: newImage }
         }
-      }
-    });
-    this.setState(newState);
+      }))
+    }
   };
 
   compressImage = async file => {
@@ -153,8 +139,10 @@ class UploadImages extends React.PureComponent<Props, State> {
   }
 
   handleDrop = acceptedFiles => {
-    this.setState({ loading: true })
+    const { handleUpdateImages, images } = this.props;
+    const updatedImages = [...images]
     acceptedFiles.forEach(async file => {
+      this.setState({ loading: true })
       const compressedFile =
         file.type === 'application/pdf' ? file : await this.compressImage(file)
       const url = URL.createObjectURL(compressedFile);
@@ -164,22 +152,19 @@ class UploadImages extends React.PureComponent<Props, State> {
         .then(res => res.blob())
         .then(blob => {
           const newImage = window.URL.createObjectURL(blob);
-          const { imageChange } = this.props
-          this.setState(prevState => ({
+
+          updatedImages.push({
+            image: newImage,
+            file,
+            id: `${uuidv4()}.${extension}`,
+            loaded: false,
             loading: false,
-            images: [
-              ...prevState.images,
-              {
-                image: newImage,
-                file,
-                id: `${uuidv4()}.${extension}`,
-                loaded: false,
-                loading: false,
-                error: false,
-                type
-              }
-            ]
-          }), imageChange);
+            error: false,
+            type
+          })
+          
+          handleUpdateImages([...updatedImages])
+          this.setState({ loading: false });
 
           // const { images } = this.state
           // if (localStorage.getItem('note')) {
@@ -225,7 +210,8 @@ class UploadImages extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    const { images } = this.state;
+    const { images } = this.props;
+    if (images.length === 0) throw new Error('no images');
     if (images.length === 0) return [];
     this.setImagesUploading();
     const fileNames = images.map(image => image.id);
@@ -258,43 +244,36 @@ class UploadImages extends React.PureComponent<Props, State> {
   };
 
   handleSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState(({ images }) => ({
-      images: arrayMove(images, oldIndex, newIndex)
-    }));
+    const { handleUpdateImages, images } = this.props
+    handleUpdateImages(arrayMove(images, oldIndex, newIndex))
   };
 
   setImagesUploading = () => {
-    const newState = update(this.state, {
-      images: {
-        $apply: b => {
-          return b.map(item => ({
-            ...item,
-            loading: true,
-            loaded: false,
-            error: false
-          }));
-        }
-      },
-      isDropzoneDisabled: { $set: true }
-    });
-    this.setState(newState);
+    const { handleUpdateImages, images } = this.props
+    const updatedImages = images.map(item => ({
+      ...item,
+      loading: true,
+      loaded: false,
+      error: false
+    }));
+
+    this.setState({ isDropzoneDisabled: true })
+    handleUpdateImages(updatedImages)
   };
 
   setImagesUploaded = () => {
-    const newState = update(this.state, {
-      images: {
-        $apply: b => {
-          return b.map(item => ({
-            ...item,
-            loading: false,
-            loaded: true,
-            error: false
-          }));
-        }
-      },
-      isDropzoneDisabled: { $set: false }
-    });
-    setTimeout(() => this.setState(newState), 4000);
+    const { handleUpdateImages, images } = this.props
+    const updatedImages = images.map(item => ({
+      ...item,
+      loading: false,
+      loaded: true,
+      error: false
+    }));
+
+    setTimeout(() => {
+      handleUpdateImages(updatedImages)
+      this.setState({ isDropzoneDisabled: false })
+    }, 4000);
   };
 
   getFileExtension = filename => filename.split('.').pop();
@@ -309,7 +288,8 @@ class UploadImages extends React.PureComponent<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const { images, loading, isDropzoneDisabled } = this.state;
+    const { loading, isDropzoneDisabled } = this.state;
+    const { images } = this.props
 
     return (
       <ErrorBoundary>

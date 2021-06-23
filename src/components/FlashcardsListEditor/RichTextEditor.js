@@ -110,7 +110,7 @@ const RichTextEditor = (
       <div className={classes.textEditor}>
         <ReactQuill
           theme="snow"
-          placeholder={placeholder}
+          placeholder={readOnly ? '' : placeholder}
           modules={{
             toolbar: {
               container: `#${containerId}`

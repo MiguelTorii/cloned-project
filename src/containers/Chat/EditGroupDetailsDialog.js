@@ -137,7 +137,8 @@ const EditGroupDetailsDialog = ({
   const handleClose = useCallback(() => {
     setIsSaving(false);
     onClose()
-  }, [onClose]);
+    setName(localChannel.title);
+  }, [localChannel.title, onClose]);
 
   const updateChannelName = async () => {
     if (name === channel.channelState.friendlyName)

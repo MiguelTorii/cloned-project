@@ -75,6 +75,7 @@ export const APP_ROOT_PATH = window.location.origin;
 export const UPLOAD_MEDIA_TYPES = {
   FLASHCARDS: 6,
   POST_FEED: 1,
+  PROFILE_IMAGE: 2
 };
 
 export const LOG_EVENT_CATEGORIES = {

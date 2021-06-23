@@ -49,7 +49,7 @@ const FlashcardsDeckCreator = () => {
         objectId: fcId,
         type: 'Created'
       });
-      history.push(`/flashcards/${fcId}`);
+      history.push(`/flashcards/${fcId}?source=deck`);
     }
   }, [dispatch, history, me]);
 

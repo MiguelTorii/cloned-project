@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center'
   },
   titleMessage: {
     marginBottom: theme.spacing(2),
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   expertContainer: {
     width: '100%',
     height: '100%'
+  },
+  emptyChatImg: {
+    marginBottom: theme.spacing(5)
   }
 }))
 

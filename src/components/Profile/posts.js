@@ -96,6 +96,7 @@ class ProfilePosts extends React.PureComponent<Props> {
               quillRefs={this.quillRefs}
               setNewComments={this.setNewComments}
               newComments={this.newComments}
+              toolbarPrefix={isBookmarks ? 'bookmark' : ''}
             />
           ))}
         </Paper>

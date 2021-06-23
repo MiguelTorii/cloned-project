@@ -345,27 +345,17 @@ const UserInitializer = ({
           userId={userId}
         />
       )}
-      {windowWidth > 640 && (
-        <DarkModeDialog
-          open={Boolean(
-            viewedOnboarding &&
-              viewedTooltips &&
-              !viewedTooltips.includes(CONFIRM_TOOLTIP_ID)
-          )}
-          finish={() => confirmTooltip(CONFIRM_TOOLTIP_ID)}
-        />
-      )}
       {windowWidth > 640 &&
-          <OnboardingExpert
-            open={Boolean(
-              isExpert &&
-              viewedOnboarding &&
-              viewedTooltips &&
-              !viewedTooltips.includes(UPDATE_ONBOARDING_TOOLTIP_ID)
-            )}
-            updateOnboarding={() => confirmTooltip(UPDATE_ONBOARDING_TOOLTIP_ID)}
-            userId={userId}
-          />
+        <OnboardingExpert
+          open={Boolean(
+            isExpert &&
+            viewedOnboarding &&
+            viewedTooltips &&
+            !viewedTooltips.includes(UPDATE_ONBOARDING_TOOLTIP_ID)
+          )}
+          updateOnboarding={() => confirmTooltip(UPDATE_ONBOARDING_TOOLTIP_ID)}
+          userId={userId}
+        />
       }
     </ErrorBoundary>
   )

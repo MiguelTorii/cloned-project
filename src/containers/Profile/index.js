@@ -2,7 +2,6 @@
 // @flow
 
 import React, {Fragment} from 'react';
-import axios from 'axios';
 import {connect} from 'react-redux';
 import {push as routePush} from 'connected-react-router';
 import {Redirect} from 'react-router-dom';
@@ -27,7 +26,6 @@ import {
   getStudyCircle
 } from '../../api/user';
 import {addToStudyCircle, removeFromStudyCircle} from '../../api/posts';
-import {getPresignedURL} from '../../api/media';
 import {fetchFeedv2} from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
@@ -48,6 +46,8 @@ import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
 import Hidden from '@material-ui/core/Hidden';
+import { updateProfileImage, uploadMedia } from "../../actions/user";
+import { UPLOAD_MEDIA_TYPES } from "../../constants/app";
 
 const styles = theme => ({
   root: {
@@ -80,7 +80,8 @@ type Props = {
     search: string,
     pathname: string
   },
-  updateBookmark: Function
+  updateBookmark: Function,
+  updateProfileImage: Function
 };
 
 type State = {
@@ -285,7 +286,7 @@ class Profile extends React.PureComponent<Props, State> {
     bookmarked
   }: {
     feedId: number,
-    bookmarked: boolean
+    bookmarked: boolean // `bookmarked` means if the post is currently bookmarked or not. can confuse the meaning.
   }) => {
     const {
       user: {
@@ -295,6 +296,33 @@ class Profile extends React.PureComponent<Props, State> {
     } = this.props;
 
     updateBookmark({feedId, userId, bookmarked});
+
+    // Update Local State
+    const { bookmarks, feed } = this.state;
+    const postIndex = feed.findIndex((item) => item.feedId === feedId);
+
+    let newBookmarks = bookmarks;
+    let newFeeds = feed;
+
+    if (bookmarked) {
+      // If a bookmark is removed, the post is removed from the bookmarks
+      newBookmarks = newBookmarks.filter((item) => item.feedId !== feedId);
+    } else {
+      // If a bookmark is added, the post is added to the bookmarks. In this case, postIndex must exist.
+      if (postIndex < 0) throw new Error('Post must exist');
+      newBookmarks = [feed[postIndex], ...bookmarks];
+    }
+
+    // Update bookmark from the post
+    if (postIndex >= 0) {
+      feed[postIndex].bookmarked = !bookmarked;
+      newFeeds = [...feed];
+    }
+
+    this.setState({
+      bookmarks: newBookmarks,
+      feed: newFeeds
+    });
   };
 
   handleReport = ({feedId, ownerId}) => {
@@ -311,7 +339,15 @@ class Profile extends React.PureComponent<Props, State> {
 
   handleDeleteClose = ({deleted}: {deleted?: boolean}) => {
     if (deleted && deleted === true) {
-      this.handleFetchFeed();
+      // Reloading all feed again is time waste, we are doing it in other way.
+      // this.handleFetchFeed();
+
+      // Update Local State
+      const { deletePost, bookmarks, feed } = this.state;
+      this.setState({
+        bookmarks: bookmarks.filter((item) => item.feedId !== deletePost.feedId),
+        feed: feed.filter((item) => item.feedId !== deletePost.feedId)
+      });
     }
     this.setState({deletePost: null});
   };
@@ -404,24 +440,13 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       user: {
         data: {userId}
-      }
+      },
+      updateProfileImage
     } = this.props;
 
-    const result = await getPresignedURL({
-      userId,
-      type: 2,
-      mediaType: imageData.type
-    });
-
-    const {mediaId, url} = result;
-
-    await axios.put(url, imageData, {
-      headers: {
-        'Content-Type': imageData.type
-      }
-    });
-
+    const { mediaId, readUrl } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
     await updateUserProfileUrl({userId, mediaId});
+    updateProfileImage(readUrl);
   };
 
   handleSaveProfile = async (avatar, fields) => {
@@ -722,7 +747,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       push: routePush,
       checkUserSession: signInActions.checkUserSession,
       openChannelWithEntity: chatActions.openChannelWithEntity,
-      updateBookmark: feedActions.updateBookmark
+      updateBookmark: feedActions.updateBookmark,
+      updateProfileImage,
     },
     dispatch
   );

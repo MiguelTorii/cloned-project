@@ -95,15 +95,22 @@ const FlashcardsDeckManager = (
     }
 
     const data = update(deckData, {
-      deck: (arr) => arr.filter((card) => card.questionImage ||
-        card.answerImage ||
-        !!extractTextFromHtml(card.question) ||
-        !!extractTextFromHtml(card.answer))
+      deck: (arr) => arr.filter((card) => (
+        (card.questionImage || !!extractTextFromHtml(card.question)) &&
+        (card.answerImage || !!extractTextFromHtml(card.answer))))
     });
 
-    if (data.deck.length === 0) {
+    if (deckData.deck.length === 0) {
       dispatch(showNotification({
         message: 'You must have at least one flashcard to save the deck.',
+        variant: 'error'
+      }));
+      return ;
+    }
+
+    if (data.deck.length < deckData.deck.length) {
+      dispatch(showNotification({
+        message: 'Flashcards should not be empty.',
         variant: 'error'
       }));
       return ;

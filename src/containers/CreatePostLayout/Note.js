@@ -147,6 +147,7 @@ type Props = {
   campaign: CampaignState,
   width: string,
   enqueueSnackbar: Function,
+  handleUpdateImages: Function,
   location: {
     search: string,
     pathname: string
@@ -317,10 +318,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
           },
         } = this.props
         const { classList, title, classId, sectionId, body } = this.state
-        const sectionIds = classList.map(c => c.sectionId)
-        const images = await this.uploadImages.handleUploadImages()
-        const fileNames = images.map(item => item.id)
-        const tagValues = tags.map(item => Number(item.value))
 
         if (this.canBatchPost() && !classList.length) {
           this.setState({
@@ -340,6 +337,20 @@ class CreateNotes extends React.PureComponent<Props, State> {
           });
           return
         }
+        if (!body) {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Add any description',
+            errorBody: 'Please try again'
+          });
+          return
+        }
+
+        const sectionIds = classList.map(c => c.sectionId)
+        const images = await this.uploadImages.handleUploadImages()
+        const fileNames = images.map(item => item.id)
+        const tagValues = tags.map(item => Number(item.value))
 
         const { setIsPosting } = this.props
         setIsPosting()
@@ -416,12 +427,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush('/feed')
         }, 3000)
       } catch (err) {
-        this.setState({
-          loading: false,
-          errorDialog: true,
-          errorTitle: 'Unknown Error',
-          errorBody: 'Please try again'
-        })
+        if (err.message === 'no images') {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Error',
+            errorBody: 'You must add at least 1 image'
+          })
+        } else {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Unknown Error',
+            errorBody: 'Please try again'
+          })
+        }
       }
     }
   }
@@ -478,12 +498,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
         }, 3000)
 
       } catch (err) {
-        this.setState({
-          loading: false,
-          errorDialog: true,
-          errorTitle: 'Unknown Error',
-          errorBody: 'Please try again'
-        })
+        if (err.message === 'no images') {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Error',
+            errorBody: 'You must add at least 1 image'
+          })
+        } else {
+          this.setState({
+            loading: false,
+            errorDialog: true,
+            errorTitle: 'Unknown Error',
+            errorBody: 'Please try again'
+          })
+        }
       }
     }
   }
@@ -589,7 +618,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      width
+      width,
+      images,
+      handleUpdateImages
     } = this.props
 
     const {
@@ -637,6 +668,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <UploadImages
                   notes={notes}
                   imageChange={this.imageChange}
+                  images={images}
+                  handleUpdateImages={handleUpdateImages}
                   innerRef={node => {
                     this.uploadImages = node;
                   }}

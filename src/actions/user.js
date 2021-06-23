@@ -217,6 +217,11 @@ const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
   payload: { announcement }
 });
 
+export const updateProfileImage = (imageUrl) => ({
+  type: userActions.UPDATE_PROFILE_IMAGE,
+  payload: { imageUrl }
+});
+
 export const getAnnouncement = () => async (dispatch: Dispatch) => {
   const { is_disabled, variation_key, data } = await getAnnouncementCampaign();
 

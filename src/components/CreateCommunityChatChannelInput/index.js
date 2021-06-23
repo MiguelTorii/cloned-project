@@ -104,6 +104,7 @@ type Props = {
   user: UserState,
   onClosePopover: Function,
   onOpenChannel: Function,
+  setIsOpen: Function,
   createMessage: Object,
   handleClearCreateMessage: Function,
   chat: ChatState,
@@ -116,6 +117,7 @@ const CreateChatChannelInput = ({
   user,
   onClosePopover,
   createMessage,
+  setIsOpen,
   onOpenChannel,
   handleClearCreateMessage,
   chat,
@@ -244,9 +246,9 @@ const CreateChatChannelInput = ({
       setUsers([])
       setInputValue('')
       setFrom('school')
-      onClosePopover()
+      setIsOpen(false)
     }
-  }, [users, onSubmit, chatType, name, type, onClosePopover])
+  }, [users, onSubmit, chatType, name, type, setIsOpen])
 
   useEffect(() => {
     const createChannel = async () => {
