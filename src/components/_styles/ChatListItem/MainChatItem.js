@@ -38,6 +38,7 @@ export const styles = theme => ({
     textAlign: 'left'
   },
   lastMessage: {
+    maxHeight: 20,
     '& > p': {
       margin: 0
     }

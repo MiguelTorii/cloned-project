@@ -77,6 +77,9 @@ const Main = ({
   const [campaign, setCampaign] = useState(null)
   const [showError, setShowError] = useState(false)
   const [enableMessageBox, setEnableMessageBox] = useState(false)
+  const [showHasUnregistered, setShowHasUnregistered] = useState(true)
+
+  const hasUnregisteredRef = useRef();
   const memberKeys = useMemo(() => Object.keys(members), [members])
 
   const otherUser = useMemo(() => {
@@ -105,6 +108,21 @@ const Main = ({
     }
     // eslint-disable-next-line
   }, [scroll])
+
+  const handleClickOutSide = useCallback(e => {
+    if (!hasUnregisteredRef.current?.contains(e.target)) {
+      setShowHasUnregistered(false)
+    }
+  }, []);
+
+  useEffect(() => {
+    // add when mounted
+    document.addEventListener("mousedown", handleClickOutSide);
+    // return function to be called when unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutSide);
+    };
+  }, [handleClickOutSide]);
 
   useEffect(() => {
     if (channel && local && local[channel.sid]) {
@@ -375,28 +393,32 @@ const Main = ({
 
   const unregisteredUserMessage = useMemo(() => {
     if (newChannel) return null
-    if (otherUser && hasUnregistered && messageItems.length !== 1) {
-      return (
-        <Typography
-          className={classes.unregisteredMessage}
-        >
-          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
-        </Typography>
-      )
-    }
+    if (showHasUnregistered) {
+      if (otherUser && hasUnregistered && messageItems.length !== 1) {
+        return (
+          <Typography
+            ref={hasUnregisteredRef}
+            className={classes.unregisteredMessage}
+          >
+            {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
+          </Typography>
+        )
+      }
 
-    if (hasUnregistered && messageItems.length !== 1) {
-      return (
-        <Typography
-          className={classes.unregisteredMessage}
-        >
-        There are some users who hasn't logged into CircleIn yet. We've sent them a notification...
-        </Typography>
-      )
+      if (hasUnregistered && messageItems.length !== 1) {
+        return (
+          <Typography
+            ref={hasUnregisteredRef}
+            className={classes.unregisteredMessage}
+          >
+            Some of your classmates on this chat have not logged into CircleIn yet. We've sent them an email to let them know to join this chat.
+          </Typography>
+        )
+      }
     }
 
     return null
-  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser])
+  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser, showHasUnregistered])
 
   const loadingConversation = useCallback(() => {
     return (

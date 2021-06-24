@@ -526,7 +526,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         <Typography
           className={classes.unregisteredMessage}
         >
-        There are some users who hasn't logged into CircleIn yet. We've sent them a notification...
+          Some of your classmates on this chat have not logged into CircleIn yet. We've sent them an email to let them know to join this chat.
         </Typography>
       )
     }

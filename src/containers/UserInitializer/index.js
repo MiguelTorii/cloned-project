@@ -18,14 +18,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import OnboardingExpert from 'components/OnboardingExpert'
-import DarkModeDialog from 'components/DarkModeDialog'
 import useScript from 'hooks/useScript'
 import {
   LOGGED_IN_WIDGET_ID,
   LOGGED_OUT_WIDGET_ID,
   LOGGED_IN_WIDGET_URL,
   LOGGED_OUT_WIDGET_URL,
-  CONFIRM_TOOLTIP_ID,
   UPDATE_ONBOARDING_TOOLTIP_ID
 } from './constants'
 import withRoot from '../../withRoot';
