@@ -9,6 +9,10 @@ import Popover from '@material-ui/core/Popover'
 import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import ShareLinkDialog from 'components/ShareLinkDialog'
@@ -64,6 +68,15 @@ const ChatHeader = ({
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
   const [openRemoveStudent, setOpenRemoveStudent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [membersEl, setMembersEl] = useState(null);
+
+  const handleClick = (event) => {
+    setMembersEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setMembersEl(null);
+  };
 
   const handleOpenGroupDetailMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,6 +92,27 @@ const ChatHeader = ({
   const { data: { userId, schoolId, permission } } = user
 
   const members = useMemo(() => channel && local[channel.sid].members, [channel, local])
+
+  const currentChannelTitle = useMemo(() => {
+    if (!channel.channelState.friendlyName) {
+      let customTitle = ''
+      let currentIndex = 0
+      if (members.length > 3) {
+        members.forEach((member, index) => {
+          if (index < 3) {
+            customTitle += `${member.firstname} ${member.lastname}, `
+            currentIndex = index
+          }
+        })
+
+        customTitle += `${members.length - currentIndex -1} others`
+        return customTitle
+      }
+      return title
+    }
+    return title
+  }, [title, channel, members])
+
   const isShow = useMemo(() => permission &&
     permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
     permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
@@ -121,7 +155,7 @@ const ChatHeader = ({
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`
       const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+        name !== '' ? (name.match(/\b(\w)/g) || []).join('')   : ''
       return {
         value: user.userId,
         label: name,
@@ -187,12 +221,49 @@ const ChatHeader = ({
     setOpenRemoveStudent(false)
   }, [])
 
+  const renderOtherMembers = useCallback(() => {
+    return (
+      <List component="nav" aria-label="secondary mailbox folders">
+        {members.map((member, index) => {
+          if (index > 2 ) return (
+            <ListItem button>
+              <ListItemText primary={`${member.firstname} ${member.lastname}`} />
+            </ListItem>
+          )
+          return null
+        })}
+      </List>
+    )
+  }, [members])
+
+  const openMembers = Boolean(membersEl);
+  const openMemberId = openMembers ? 'simple-popover' : undefined;
+
   return (
     <div className={classes.header}>
       {channel && <Grid container justify='space-between'>
         <Typography className={classes.headerTitle}>
-          <ChatIcon className={classes.headerIcon} /> {title}
+          <ChatIcon className={classes.headerIcon} /> {currentChannelTitle}
+          {members.length > 3 &&
+            <ArrowDropDownIcon onClick={handleClick} />}
         </Typography>
+
+        <Popover
+          id={openMemberId}
+          open={openMembers}
+          anchorEl={membersEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          {renderOtherMembers()}
+        </Popover>
         <div className={classes.chatIcons}>
           {(otherUser?.registered || memberKeys.length > 2) &&
               videoEnabled &&

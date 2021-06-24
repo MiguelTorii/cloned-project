@@ -136,7 +136,7 @@ const Main = ({
   }, [local, channel])
 
   useEffect(() => {
-    if (local[channel?.sid]?.twilioChannel.channelState.lastConsumedMessageIndex !== null || !isCommunityChat) {
+    if (local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex !== null || !isCommunityChat) {
       setEnableMessageBox(true)
     } else {
       setEnableMessageBox(false)
