@@ -230,6 +230,7 @@ const DirectChat = ({
         >
           <Main
             newMessage={newMessage}
+            channelList={channelList}
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             handleBlock={handleBlock}

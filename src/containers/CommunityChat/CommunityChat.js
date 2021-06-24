@@ -164,6 +164,7 @@ const CommunityChat = ({
       {leftSpace !== 12 && <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
         <Main
           isCommunityChat
+          channelList={communityChannels}
           selectedCourse={selectedCourse}
           selectedChannel={selectedChannel}
           newMessage={newMessage}

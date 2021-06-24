@@ -28,6 +28,7 @@ type Props = {
   isCommunityChat: boolean,
   selectedCourse: Object,
   channel: Object,
+  channelList: Array,
   // mainMessage: Array,
   // setMainMessage: Function,
   newMessage: Object,
@@ -46,6 +47,7 @@ const Main = ({
   isCommunityChat = false,
   selectedCourse,
   channel,
+  channelList,
   // mainMessage,
   // setMainMessage,
   selectedChannel,
@@ -164,6 +166,12 @@ const Main = ({
     const currentMember = members.filter(member => member.userId === id)
     return `${currentMember[0].firstname} ${currentMember[0].lastname}`
   }, [local, channel])
+
+  useEffect(() => {
+    if (channelList.length && !channel) {
+      setLoadingMessage(true)
+    }
+  }, [channelList, channel])
 
   useEffect(() => {
     const init = async () => {
@@ -472,7 +480,7 @@ const Main = ({
         />}
         <div className={classes.messageRoot}>
           <div className={classes.messageContainer}>
-            {!channel && (
+            {!channelList.length && (
               <EmptyMain
                 otherUser={otherUser}
                 noChannel={!channel}
@@ -546,8 +554,7 @@ const Main = ({
             </Typography>
           </div>}
         </div>
-      </div>
-      )
+      </div>)
 }
 
 export default memo(Main)
