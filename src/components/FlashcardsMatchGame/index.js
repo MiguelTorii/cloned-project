@@ -372,7 +372,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
       return <LoadingSpin />;
     }
 
-    const { high_score } = matchStat;
+    const { highScore: high_score } = matchStat;
 
     return (
       <Box padding={4} mt={4} className={clsx(!isFinished && classes.hidden)}>
