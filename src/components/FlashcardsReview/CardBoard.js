@@ -6,13 +6,13 @@ import CardBoardContent from './CardBoardContent';
 
 const CardBoard = ({ data, onAction }) => {
   const [isQuestion, setIsQuestion] = useState(true);
-  const [cardKey, setCardKey] = useState(null);
+  const [currentData, setCurrentData] = useState({});
 
   // Effects
   useEffect(() => {
     setIsQuestion(true);
-    setCardKey(data.id);
-  }, [data, setIsQuestion, setCardKey]);
+    setCurrentData(data);
+  }, [data]);
 
   // Event Handlers
   const handleFlip = useCallback(() => {
@@ -20,19 +20,19 @@ const CardBoard = ({ data, onAction }) => {
   }, [isQuestion, setIsQuestion]);
 
   return (
-    <ReactCardFlip isFlipped={!isQuestion} key={cardKey}>
+    <ReactCardFlip isFlipped={!isQuestion} key={currentData.id}>
       <div key="front">
         <CardBoardContent
-          content={data.question}
-          image={data.questionImage}
+          content={currentData.question}
+          image={currentData.questionImage}
           onFlip={handleFlip}
           isQuestion={true}
         />
       </div>
       <div key="back">
         <CardBoardContent
-          content={data.answer}
-          image={data.answerImage}
+          content={currentData.answer}
+          image={currentData.answerImage}
           onFlip={handleFlip}
           isQuestion={false}
           onAction={onAction}

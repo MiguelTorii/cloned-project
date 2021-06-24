@@ -9,12 +9,12 @@ const ANSWER_TOOLBAR_ID = 'cardboard_toolbar_answer';
 
 const CardBoard = ({ data }) => {
   const [isQuestion, setIsQuestion] = useState(true);
-  const [cardKey, setCardKey] = useState(null);
+  const [currentData, setCurrentData] = useState({});
 
   // Effects
   useEffect(() => {
     setIsQuestion(true);
-    setCardKey(data.id);
+    setCurrentData(data);
   }, [data]);
 
   // Event Handlers
@@ -23,19 +23,19 @@ const CardBoard = ({ data }) => {
   }, [isQuestion, setIsQuestion]);
 
   return (
-    <ReactCardFlip isFlipped={!isQuestion} key={cardKey}>
+    <ReactCardFlip isFlipped={!isQuestion} key={currentData.id}>
       <div key="front">
         <CardBoardContent
-          content={data.question}
-          image={data.question_image_url}
+          content={currentData.question}
+          image={currentData.question_image_url}
           toolbarId={QUESTION_TOOLBAR_ID}
           onFlip={handleFlip}
         />
       </div>
       <div key="back">
         <CardBoardContent
-          content={data.answer}
-          image={data.answer_image_url}
+          content={currentData.answer}
+          image={currentData.answer_image_url}
           toolbarId={ANSWER_TOOLBAR_ID}
           onFlip={handleFlip}
         />
