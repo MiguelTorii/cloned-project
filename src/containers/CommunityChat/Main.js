@@ -19,7 +19,7 @@ import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
 import LoadImg from 'components/LoadImg'
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
-import LoadingMessageSvg from 'assets/svg/loading-messages.svg'
+import LoadingMessageGif from 'assets/gif/loading-chat.gif'
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg'
 import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/main'
@@ -432,9 +432,9 @@ const Main = ({
     return (
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
-          <LoadImg url={LoadingMessageSvg} className={classes.emptyChatImg} />
+          <LoadImg url={LoadingMessageGif} className={classes.emptyChatImg} />
           <Typography className={classes.expertTitle}>
-            Loading your converstation...
+            Loading your conversation...
           </Typography>
         </div>
       </div>

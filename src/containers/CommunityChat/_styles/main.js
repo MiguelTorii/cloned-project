@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   messageLoadingRoot: {
-    height: '100%',
+    height: 'calc(100% - 24px)',
     flexGrow: 1,
     display: 'flex',
     margin: theme.spacing(3, 3, 0, 3),
@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    height: '100%'
+    height: '100%',
+    paddingBottom: theme.spacing(10)
   },
   expertTitle: {
     fontSize: 16,

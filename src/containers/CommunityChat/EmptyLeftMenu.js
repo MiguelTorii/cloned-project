@@ -45,7 +45,9 @@ const EmptyLeftMenu = ({
         </Button>
 
         {isLoading && <div className={classes.loading}>
-          <CircularProgress />
+          <CircularProgress classes={{
+            colorPrimary: classes.loadingChannels
+          }} />
         </div>}
       </div>}
     </div>
