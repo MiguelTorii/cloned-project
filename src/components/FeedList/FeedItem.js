@@ -411,28 +411,26 @@ const FeedItem = ({
             </Typography>
           </CardContent>
           {description && (
-            <>
-              <CardContent className={classes.content}>
-                <div className={classes.markdown}>
-                  <CustomQuill value={description} readOnly />
-                </div>
-                <span />
-                {renderImage()}
-              </CardContent>
-              <CardContent className={classes.tags}>
-                {data.tags.map(tag => (
-                  !newClassExperience ?
-                    <Chip
-                      key={tag.id}
-                      label={`#${tag.name}`}
-                      className={classes.chip}
-                      classes={{ label: classes.label }}
-                    /> :
-                    <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
-                ))}
-              </CardContent>
-            </>
+            <CardContent className={classes.content}>
+              <div className={classes.markdown}>
+                <CustomQuill value={description} readOnly />
+              </div>
+              <span />
+              {renderImage()}
+            </CardContent>
           )}
+          <CardContent className={classes.tags}>
+            {data.tags.map(tag => (
+              !newClassExperience ?
+                <Chip
+                  key={tag.id}
+                  label={`#${tag.name}`}
+                  className={classes.chip}
+                  classes={{ label: classes.label }}
+                /> :
+                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+            ))}
+          </CardContent>
         </CardActionArea>
         <CardActions>
           <Grid container spacing={1} alignItems="center">
