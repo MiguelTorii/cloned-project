@@ -226,7 +226,7 @@ const ChatHeader = ({
       <List component="nav" aria-label="secondary mailbox folders">
         {members.map((member, index) => {
           if (index > 2 ) return (
-            <ListItem button>
+            <ListItem button key={member.userId}>
               <ListItemText primary={`${member.firstname} ${member.lastname}`} />
             </ListItem>
           )
@@ -244,7 +244,7 @@ const ChatHeader = ({
       {channel && <Grid container justify='space-between'>
         <Typography className={classes.headerTitle}>
           <ChatIcon className={classes.headerIcon} /> {currentChannelTitle}
-          {members.length > 3 &&
+          {members.length > 3 && !channel.channelState.friendlyName &&
             <ArrowDropDownIcon onClick={handleClick} />}
         </Typography>
 
