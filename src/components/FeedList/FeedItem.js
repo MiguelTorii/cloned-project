@@ -409,7 +409,7 @@ const FeedItem = ({
             {!newClassExperience ? data.title : getTitle(data)}
           </Typography>
         </CardContent>
-        {description && (
+        {(data.typeId !== FeedTypes.question.id) && (
           <CardContent className={classes.content}>
             <div className={classes.markdown}>
               <CustomQuill value={description} readOnly />
