@@ -257,8 +257,15 @@ export default theme => ({
   titleText: {
     fontSize: 18
   },
+  boldTitle: {
+    fontWeight: 800,
+  },
+  titleFormat: {
+    fontSize: 24,
+  },
   markdown: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.fontFamily
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 20,
   }
 })

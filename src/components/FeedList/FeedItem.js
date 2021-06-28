@@ -178,9 +178,11 @@ const FeedItem = ({
   const handleDescription = useCallback((typeId, body) => {
     if (typeId === 6) return ''
 
-    if (body.length < 100) return body
+    const cleanBody = body.replace(/<[^>]*>/g, '')
 
-    return `${body.substring(0, 99)}...`
+    if (cleanBody.length < 100) return cleanBody
+
+    return `${cleanBody.substring(0, 600)}...`
   }, [])
 
   const getTitle = useCallback((data: Object): string => {
@@ -405,14 +407,18 @@ const FeedItem = ({
         })}
       >
         <CardContent className={classes.postTitle}>
-          <Typography component="p" variant="h5">
+          <Typography component="p" variant="h5" className={classes.boldTitle}>
             {!newClassExperience ? data.title : getTitle(data)}
           </Typography>
         </CardContent>
         {(data.typeId !== FeedTypes.question.id) && (
           <CardContent className={classes.content}>
-            <div className={classes.markdown}>
-              <CustomQuill value={description} readOnly />
+            <div className={
+              data.title === 0
+                ? classes.titleFormat
+                : classes.markdown
+            }>
+              {description}
             </div>
             <span />
             {renderImage()}
