@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import withRoot from '../../withRoot';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Layout from '../../containers/Layout';
 import FlashcardsList from '../../containers/FlashcardsList';
 import LoadingSpin from 'components/LoadingSpin';
-import { useDispatch, useSelector } from 'react-redux';
-import { getFlashcardsCampaign } from 'actions/campaign';
+import { useSelector } from 'react-redux';
 import { isApiCalling } from 'utils/helpers';
 import { campaignActions } from 'constants/action-types';
 import Grid from "@material-ui/core/Grid";
@@ -16,12 +15,7 @@ import { useParams } from "react-router";
 const FlashcardsListPage = () => {
   const isNewVersion = useSelector((state) => state.campaign.newFlashcardsExperience);
   const isLoading = useSelector(isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN));
-  const dispatch = useDispatch();
   const { flashcardId } = useParams();
-
-  useEffect(() => {
-    dispatch(getFlashcardsCampaign());
-  }, [dispatch]);
 
   const renderBody = () => {
     if (isLoading) {

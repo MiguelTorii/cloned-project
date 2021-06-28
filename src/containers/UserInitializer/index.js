@@ -11,7 +11,7 @@ import {
   TextValidator,
   SelectValidator
 } from 'react-material-ui-form-validator';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -36,6 +36,7 @@ import { updateProfile as updateUserProfile } from '../../api/user';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
 import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
+import { getFlashcardsCampaign } from "../../actions/campaign";
 
 const styles = theme => ({
   root: {
@@ -87,6 +88,7 @@ const UserInitializer = ({
   })
   const [widgetUrl, setWidgetUrl] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const dispatch = useDispatch();
 
   const { data: { userId } } = user
 
@@ -163,6 +165,12 @@ const UserInitializer = ({
   useEffect(() => {
     if (userId !== '') handleCheckUpdate()
   }, [handleCheckUpdate, userId])
+
+  useEffect(() => {
+    if (userId !== '') {
+      dispatch(getFlashcardsCampaign());
+    }
+  }, [dispatch, userId]);
 
   const handleChange = name => event => {
     setCurrentUser({

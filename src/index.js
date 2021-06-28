@@ -73,7 +73,7 @@ import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
-import { FlashcardsListPage, FlashcardsShowPage } from './pages/Flashcards';
+import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage} from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
 
 defaultKatexRender('White')
@@ -179,7 +179,7 @@ ReactDOM.render(
                 <Route
                   exact
                   path="/edit/flashcards/:flashcardId"
-                  component={withTracker(CreateFlashcards)}
+                  component={withTracker(FlashcardsEditPage)}
                 />
                 <Route
                   exact

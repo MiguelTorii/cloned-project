@@ -27,7 +27,6 @@ const Banner = ({
   location: { pathname },
   height
 }: Props) => {
-
   useEffect(() => {
     const intervalID = setIntervalWithFirstCall(() => {
       if (announcement === undefined) {
