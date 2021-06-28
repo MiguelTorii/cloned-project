@@ -39,11 +39,11 @@ const types = [
   },
   {
     value: '5',
-    label: 'Link'
+    label: 'Resources'
   },
   {
     value: '8',
-    label: 'Post'
+    label: 'Posts'
   }
 ];
 
