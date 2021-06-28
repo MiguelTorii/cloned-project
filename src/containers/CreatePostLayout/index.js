@@ -258,7 +258,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 sectionId={sectionId}
                 currentTag={value}
                 postId={postId}
-                setIsPosting={() => setIsPosting(true)}
+                setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
             <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)} >
@@ -268,7 +268,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 sectionId={sectionId}
                 currentTag={value}
                 questionId={questionId}
-                setIsPosting={() => setIsPosting(true)}
+                setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
             <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)} >
@@ -280,7 +280,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 noteId={noteId}
                 images={images}
                 handleUpdateImages={setImages}
-                setIsPosting={() => setIsPosting(true)}
+                setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
             <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)} >
@@ -290,7 +290,6 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 classId={classId}
                 sectionId={sectionId}
                 sharelinkId={sharelinkId}
-                setIsPosting={() => setIsPosting(true)}
               />
             </TabPanel>
           </div>

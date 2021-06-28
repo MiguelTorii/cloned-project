@@ -277,7 +277,7 @@ const CreatePostSt = ({
         return
       }
 
-      setIsPosting()
+      setIsPosting(true)
       const {
         points,
         user: { firstName },
@@ -305,6 +305,8 @@ const CreatePostSt = ({
           if (r.status !== 'Success') hasError = true
         })
         if (hasError || resClasses.length === 0) {
+          setIsPosting(false)
+
           setLoading(false)
           setError({
             title: 'Error creating posts',
@@ -351,6 +353,7 @@ const CreatePostSt = ({
       localStorage.removeItem('postSt');
       handlePush('/feed');
     } catch (err) {
+      setIsPosting(false)
       setLoading(false)
       setTitle('')
       setBody('')

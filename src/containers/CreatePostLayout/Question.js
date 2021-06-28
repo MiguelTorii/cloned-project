@@ -250,7 +250,7 @@ const CreateQuestion = ({
         return
       }
 
-      setIsPosting()
+      setIsPosting(true)
       const {
         points,
         user: { firstName },
@@ -278,6 +278,7 @@ const CreateQuestion = ({
           if (r.status !== 'Success') hasError = true
         })
         if (hasError || resClasses.length === 0) {
+          setIsPosting(false)
           setLoading(false)
           setErrorBody('Please try again')
           setErrorTitle('Error creating questions')
@@ -322,6 +323,7 @@ const CreateQuestion = ({
 
       handlePush('/feed');
     } catch (err) {
+      setIsPosting(false)
       setLoading(false)
       setErrorBody('Please try again')
       setErrorTitle('Unknown Error')

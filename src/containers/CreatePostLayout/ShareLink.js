@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { cypher } from 'utils/crypto'
@@ -24,6 +25,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
+import postingImage from 'assets/gif/loading-rocket.gif';
 
 const styles = theme => ({
   preview: {
@@ -68,6 +70,22 @@ const styles = theme => ({
   toolbarClass: {
     backgroundColor: theme.circleIn.palette.appBar
   },
+  dialogPaper: {
+    '&.MuiDialog-paper': {
+      background: 'transparent',
+      boxShadow: 'none',
+    },
+  },
+  label: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    lineHeight: '65px',
+    textAlign: 'center',
+    marginTop: '-60px',
+  },
+  link: {
+    color: theme.circleIn.palette.brand
+  },
 });
 
 type Props = {
@@ -96,7 +114,8 @@ type State = {
   errorTitle: string,
   changed: ?boolean,
   classList: array,
-  errorBody: string
+  errorBody: string,
+  isPosting: boolean,
 };
 
 class CreateShareLink extends React.PureComponent<Props, State> {
@@ -121,6 +140,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       errorTitle: '',
       errorBody: '',
       editor: null,
+      isPosting: false,
     }
   }
 
@@ -331,9 +351,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       }
 
       const { title, summary, url } = this.state;
-      const { setIsPosting } = this.props;
 
-      setIsPosting()
+      this.setState({ isPosting: true });
 
       const tagValues = tags.map(item => Number(item.value));
 
@@ -375,7 +394,17 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             loading: false,
             errorDialog: true,
             errorTitle: 'Website not allowed',
-            errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+            errorBody: (
+              <div>
+                It’s not you, it’s us! We maintain a whitelist of allowable URLs.
+                The website you entered is not currently on our list. Please contact us at&nbsp;
+                <a href="mailto:support@circleinapp.com" className={classes.link}>support@circleinapp.com</a>&nbsp;
+                and send us your link, we will review it and most likely allow it
+                so you can share it with your classmates! Sorry for the inconvenience,
+                we want to make sure we keep CircleIn a welcoming space for all.
+              </div>
+            ),
+            isPosting: false,
           });
           return
         }
@@ -386,7 +415,17 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           loading: false,
           errorDialog: true,
           errorTitle: 'Website not allowed',
-          errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+          errorBody: (
+            <div>
+              It’s not you, it’s us! We maintain a whitelist of allowable URLs.
+              The website you entered is not currently on our list. Please contact us at&nbsp;
+              <a href="mailto:support@circleinapp.com" className={classes.link}>support@circleinapp.com</a>&nbsp;
+              and send us your link, we will review it and most likely allow it
+              so you can share it with your classmates! Sorry for the inconvenience,
+              we want to make sure we keep CircleIn a welcoming space for all.
+            </div>
+          ),
+          isPosting: false,
         });
         return
       }
@@ -503,7 +542,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       errorDialog,
       changed,
       errorTitle,
-      errorBody
+      errorBody,
+      isPosting,
     } = this.state;
 
     return (
@@ -578,6 +618,17 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               </Grid>
             </Grid>
           </CreatePostForm>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Dialog
+            open={isPosting}
+            classes={{
+              paper: classes.dialogPaper
+            }}
+          >
+            <img src={postingImage} alt="Posting" className={classes.postingImage}/>
+            <div className={classes.label}>Posting...</div>
+          </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
           <SimpleErrorDialog

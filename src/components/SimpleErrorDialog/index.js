@@ -3,10 +3,11 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '../Dialog';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import GradientButton from '../Basic/Buttons/GradientButton';
 import { styles } from '../_styles/SimpleErrorDialog';
 
 type Props = {
@@ -48,23 +49,19 @@ class SimpleErrorDialog extends React.PureComponent<
         </Typography>
         <div className={classes.buttons}>
           {showSignup && (
-            <Button
+            <TransparentButton
               className={classes.button}
-              color="primary"
               onClick={this.handleSignUp}
-              variant="outlined"
             >
               Sign up
-            </Button>
+            </TransparentButton>
           )}
-          <Button
+          <GradientButton
             className={classes.button}
-            color="primary"
             onClick={handleClose}
-            variant="contained"
           >
             {showSignup ? 'Try Again' : 'Ok'}
-          </Button>
+          </GradientButton>
         </div>
       </Dialog>
     );

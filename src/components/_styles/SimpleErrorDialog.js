@@ -1,20 +1,14 @@
 import { dialogStyle } from './Dialog';
 
-export const styles = () => ({
-  button: {
-    borderRadius: 8,
-    fontSize: 14,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    lineHeight: '14px',
-    margin: 10,
-    padding: '9px 18px',
-    width: 120,
-  },
+export const styles = theme => ({
   buttons: {
     display: 'flex',
-    marginTop: 10,
+    marginTop: theme.spacing(1.25),
     justifyContent: 'flex-end',
+    gap: theme.spacing(1.25),
+  },
+  button: {
+    width: 160,
   },
   dialog: {
     ...dialogStyle,

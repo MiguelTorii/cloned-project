@@ -237,7 +237,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
             loading: false,
             errorDialog: true,
             errorTitle: 'Website not allowed',
-            errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+            errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if you'd like for us to allow this website to be shared with your classmates`
           });
           return
         }
@@ -248,7 +248,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           loading: false,
           errorDialog: true,
           errorTitle: 'Website not allowed',
-          errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if. you'd like for us to allow this website to be shared with your classmates`
+          errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if you'd like for us to allow this website to be shared with your classmates`
         });
         return;
       }

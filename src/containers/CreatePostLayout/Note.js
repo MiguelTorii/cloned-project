@@ -306,6 +306,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   createNotes = async () => {
     const { tags } = this.state
+    const { setIsPosting } = this.props
+
     if (tags.length < 0) {
       return
     }
@@ -352,8 +354,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         const fileNames = images.map(item => item.id)
         const tagValues = tags.map(item => Number(item.value))
 
-        const { setIsPosting } = this.props
-        setIsPosting()
+        setIsPosting(true)
         const {
           points,
           user: { firstName },
@@ -388,6 +389,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
             if (r.status !== 'Success') hasError = true
           })
           if (hasError || resClasses.length === 0) {
+            setIsPosting(false)
+
             this.setState({
               loading: false,
               errorDialog: true,
@@ -427,6 +430,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush('/feed')
         }, 3000)
       } catch (err) {
+        setIsPosting(false)
+
         if (err.message === 'no images') {
           this.setState({
             loading: false,
