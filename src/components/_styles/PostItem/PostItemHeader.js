@@ -38,5 +38,9 @@ export const styles = theme => ({
   markdown: {
     color: theme.palette.text.primary,
     fontFamily: theme.typography.fontFamily
+  },
+  moreLessLink: {
+    marginLeft: theme.spacing(1),
+    cursor: 'pointer'
   }
 });

@@ -57,7 +57,7 @@ import { userActions } from '../../constants/action-types';
 import Avatar from '../../components/Avatar';
 import { getInitials } from '../../utils/chat';
 
-const DESCRIPTION_LENGTH_THRESHOLD = 50;
+const DESCRIPTION_LENGTH_THRESHOLD = 80;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
 
 const FlashcardsShow = () => {

@@ -30,7 +30,9 @@ import Tooltip from 'containers/Tooltip';
 import SharePost from 'containers/SharePost';
 
 import { styles } from '../_styles/PostItem/PostItemHeader';
+import _ from "lodash";
 
+const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
 
@@ -70,7 +72,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
 
   state = {
     moreAnchorEl: null,
-    open: false
+    open: false,
+    showShortSummary: true
   };
 
   handleMenuOpen = event => {
@@ -115,6 +118,13 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     if (typeId === 8) pushTo(`/edit/post/${String(postId)}`)
   };
 
+  handleSummaryMoreOrLess = () => {
+    const { showShortSummary } = this.state;
+    this.setState({
+      showShortSummary: !showShortSummary
+    });
+  };
+
   render() {
     const {
       hideShare,
@@ -137,7 +147,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       newClassExperience,
       onBookmark
     } = this.props;
-    const { moreAnchorEl, open } = this.state;
+    const { moreAnchorEl, open, showShortSummary } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
     const date = moment(created);
@@ -254,7 +264,20 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         </Typography>
         {!isMarkdown ? (
           <Typography className={classes.body} component="p" variant="h6">
-            {body}
+            { showShortSummary ?
+              _.truncate(body, { length: BODY_LENGTH_THRESHOLD })
+              :
+              body
+            }
+            { body.length > BODY_LENGTH_THRESHOLD && (
+              <Link
+                className={classes.moreLessLink}
+                onClick={this.handleSummaryMoreOrLess}
+                color="inherit"
+                underline="always">
+                { showShortSummary ? 'see more' : 'show less' }
+              </Link>
+            )}
           </Typography>
         ) : (
           <div className={classes.markdown}>
