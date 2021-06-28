@@ -56,12 +56,12 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
   }, [campaign])
 
   const closePopup = () => {
+    confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID)
     setOpen(false);
   };
 
   const onStepAction = () => {
     if (step >= ONBOARDING_STEPS.length - 1) {
-      confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID)
       closePopup();
     } else {
       setStep(step + 1);

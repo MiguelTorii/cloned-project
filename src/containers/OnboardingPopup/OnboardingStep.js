@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import ActionButton from './ActionButton';
-import Ellipses from './Ellipses';
 // import LoadImg from '../../components/LoadImg';
 
 const useStyles = makeStyles(theme => ({
@@ -155,9 +154,6 @@ const OnboardingStep = ({ data, step, totalSteps, onAction, onClose }: Props) =>
           <ActionButton onClick={() => onAction()}>
             { data.actionText }
           </ActionButton>
-        </div>
-        <div className={classes.ellipseContainer}>
-          <Ellipses step={step} totalSteps={totalSteps} />
         </div>
       </div>
     </div>
