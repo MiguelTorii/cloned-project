@@ -15,7 +15,7 @@ import LoadImg from 'components/LoadImg'
 import Box from '@material-ui/core/Box'
 import FeedItem from './FeedItem';
 
-import { styles } from '../_styles/FeedList/index';
+import styles from '../_styles/FeedList';
 
 type Props = {
   classes: Object,
@@ -175,23 +175,23 @@ class FeedList extends React.PureComponent<Props, State> {
             </div>
           </div>
         )}
-        <Paper className={classes.root} elevation={0}>
-          <div
-            className={classes.items}
-            ref={node => {
-              this.scrollParentRef = node;
-            }}
+        <div
+          className={classes.items}
+          ref={node => {
+            this.scrollParentRef = node;
+          }}
+        >
+          <InfiniteScroll
+            threshold={50}
+            pageStart={0}
+            loadMore={onLoadMore}
+            hasMore={hasMore}
+            useWindow
+            initialLoad
+            getScrollParent={() => this.scrollParentRef}
           >
-            <InfiniteScroll
-              threshold={50}
-              pageStart={0}
-              loadMore={onLoadMore}
-              hasMore={hasMore}
-              useWindow
-              initialLoad
-              getScrollParent={() => this.scrollParentRef}
-            >
-              {items.map(item => (
+            {items.map(item => (
+              <Paper className={classes.root} elevation={0}>
                 <FeedItem
                   key={item.feedId}
                   schoolId={schoolId}
@@ -214,10 +214,12 @@ class FeedList extends React.PureComponent<Props, State> {
                   setNewComments={this.setNewComments}
                   newComments={this.newComments}
                 />
-              ))
-              }
-            </InfiniteScroll>
-          </div>
+              </Paper>
+            ))
+            }
+          </InfiniteScroll>
+        </div>
+        <Paper className={classes.root} elevation={0}>
           {items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
         {

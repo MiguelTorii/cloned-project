@@ -38,6 +38,8 @@ import LinkPreview from 'components/LinkPreview'
 import CustomQuill from 'components/CustomQuill'
 import pluralize from 'pluralize';
 
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import * as api from '../../api/posts'
 
 import linkPost from '../../assets/svg/ic_link_post.svg'
@@ -51,10 +53,7 @@ import FeedIconQuestion from '../../assets/svg/questions.svg';
 import FeedIconNote from '../../assets/svg/notes_new.svg';
 import FeedIconPost from '../../assets/svg/posts.svg';
 
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-
-import { styles } from '../_styles/FeedList/FeedItem';
+import styles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
 
 const FeedTypes = {
@@ -351,24 +350,23 @@ const FeedItem = ({
   ), [classes.bookmarked, currentUserId, data.bookmarked, data.userId, handleBookmark, handleDelete, handleEdit, handleMenuClose, handleReport, isMenuOpen, moreAnchorEl])
 
   return (
-    <div>
-      <Card
-        className={classes.card}
-        elevation={0}
-        classes={{ root: classes.root }}
-      >
-        <CardHeader
-          className={classes.header}
-          avatar={
-            <Avatar src={feedTypeData.url} />
-          }
-          action={
-            <>
-              <IconButton aria-label="Share" onClick={handleShareLinkClick}>
-                <ShareIcon />
-              </IconButton>
-              {
-                newClassExperience &&
+    <Card
+      className={classes.card}
+      elevation={0}
+      classes={{ root: classes.root }}
+    >
+      <CardHeader
+        className={classes.header}
+        avatar={
+          <Avatar src={feedTypeData.url} />
+        }
+        action={
+          <>
+            <IconButton aria-label="Share" onClick={handleShareLinkClick}>
+              <ShareIcon />
+            </IconButton>
+            {
+              newClassExperience &&
                   <IconButton aria-label="Bookmark" onClick={handleBookmark}>
                     {data.bookmarked ? (
                       <BookmarkIcon className={classes.bookmarked} />
@@ -376,164 +374,163 @@ const FeedItem = ({
                       <BookmarkBorderIcon />
                     )}
                   </IconButton>
-              }
-              <IconButton onClick={handleMenuOpen}>
-                <MoreVertIcon />
-              </IconButton>
-            </>
-          }
-          title={
-            <div className={classes.title}>
-              <Typography component="div" variant="h6" noWrap>
-                {feedTypeData.title}
-              </Typography>
-            </div>
-          }
-          subheader={
-            <Typography className={classes.feedSubheader}>
-              {data.classroomName}
-            </Typography>
-          }
-        />
-        <CardActionArea
-          classes={{
-            focusHighlight: classes.cardHighlight
-          }}
-          onClick={onPostClick({
-            typeId: data.typeId,
-            postId: data.postId,
-            feedId: data.feedId
-          })}
-        >
-          <CardContent className={classes.postTitle}>
-            <Typography component="p" variant="h5">
-              {!newClassExperience ? data.title : getTitle(data)}
-            </Typography>
-          </CardContent>
-          {description && (
-            <CardContent className={classes.content}>
-              <div className={classes.markdown}>
-                <CustomQuill value={description} readOnly />
-              </div>
-              <span />
-              {renderImage()}
-            </CardContent>
-          )}
-          <CardContent className={classes.tags}>
-            {data.tags.map(tag => (
-              !newClassExperience ?
-                <Chip
-                  key={tag.id}
-                  label={`#${tag.name}`}
-                  className={classes.chip}
-                  classes={{ label: classes.label }}
-                /> :
-                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
-            ))}
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item>
-              <Typography variant="h6" className={classes.titleText}>
-                {feedTypeData.text_by}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <ButtonBase
-                className={classes.avatar}
-                onClick={handleUserClick}
-              >
-                <OnlineBadge isOnline={data.isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={true}>
-                  <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                    {initials}
-                  </Avatar>
-                </OnlineBadge>
-              </ButtonBase>
-            </Grid>
-            <Grid item>
-              <CardActionArea
-                classes={{
-                  focusHighlight: classes.cardHighlight
-                }}
-                onClick={handleUserClick}
-              >
-                <Typography className={classes.titleText} component="div" variant="h6" noWrap>
-                  {data.name}
-                  {data.role && (
-                    <TutorBadge text={data.role} />
-                  )}
-                </Typography>
-              </CardActionArea>
-            </Grid>
-            <Grid item>
-              <Box ml={2}>
-                <Typography component="p" noWrap>
-                  {fromNow}
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardActions>
-        <CardActions className={classes.actions} disableactionspacing='true'>
-          <div className={classes.stats}>
-            <Typography
-              component="p"
-              variant="subtitle1"
-              className={cx(classes.actionIcons, thanked && classes.thankedMark)}
-            >
-              <IconButton
-                aria-label="Share"
-                disabled={currentUserId === ownerId}
-                onClick={handleThanks}
-              >
-                {thanked
-                  ? <img
-                    src={thankedSvg}
-                    className={classes.actionIcon}
-                    alt="thanked"
-                  />
-                  :<img
-                    src={thanksSvg}
-                    className={classes.actionIcon}
-                    alt="thanks"
-                  />}
-              </IconButton>
-              <strong>{thanksCount}</strong>
-            </Typography>
-            <Typography
-              component="p"
-              variant="subtitle1"
-              className={classes.actionIcons}
-            >
-              <img
-                src={commentSvg}
-                className={classes.actionIcon}
-                alt="comment"
-              />
-              <strong>{data.postInfo.questionsCount}</strong>
+            }
+            <IconButton onClick={handleMenuOpen}>
+              <MoreVertIcon />
+            </IconButton>
+          </>
+        }
+        title={
+          <div className={classes.title}>
+            <Typography component="div" variant="h6" noWrap>
+              {feedTypeData.title}
             </Typography>
           </div>
+        }
+        subheader={
+          <Typography className={classes.feedSubheader}>
+            {data.classroomName}
+          </Typography>
+        }
+      />
+      <CardActionArea
+        classes={{
+          focusHighlight: classes.cardHighlight
+        }}
+        onClick={onPostClick({
+          typeId: data.typeId,
+          postId: data.postId,
+          feedId: data.feedId
+        })}
+      >
+        <CardContent className={classes.postTitle}>
+          <Typography component="p" variant="h5">
+            {!newClassExperience ? data.title : getTitle(data)}
+          </Typography>
+        </CardContent>
+        {description && (
+          <CardContent className={classes.content}>
+            <div className={classes.markdown}>
+              <CustomQuill value={description} readOnly />
+            </div>
+            <span />
+            {renderImage()}
+          </CardContent>
+        )}
+        <CardContent className={classes.tags}>
+          {data.tags.map(tag => (
+            !newClassExperience ?
+              <Chip
+                key={tag.id}
+                label={`#${tag.name}`}
+                className={classes.chip}
+                classes={{ label: classes.label }}
+              /> :
+              <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+          ))}
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Grid container spacing={1} alignItems="center">
+          <Grid item>
+            <Typography variant="h6" className={classes.titleText}>
+              {feedTypeData.text_by}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <ButtonBase
+              className={classes.avatar}
+              onClick={handleUserClick}
+            >
+              <OnlineBadge isOnline={data.isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat>
+                <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                  {initials}
+                </Avatar>
+              </OnlineBadge>
+            </ButtonBase>
+          </Grid>
+          <Grid item>
+            <CardActionArea
+              classes={{
+                focusHighlight: classes.cardHighlight
+              }}
+              onClick={handleUserClick}
+            >
+              <Typography className={classes.titleText} component="div" variant="h6" noWrap>
+                {data.name}
+                {data.role && (
+                  <TutorBadge text={data.role} />
+                )}
+              </Typography>
+            </CardActionArea>
+          </Grid>
+          <Grid item>
+            <Box ml={2}>
+              <Typography component="p" noWrap>
+                {fromNow}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </CardActions>
+      <CardActions className={classes.actions} disableactionspacing='true'>
+        <div className={classes.stats}>
           <Typography
             component="p"
             variant="subtitle1"
-            className={!newClassExperience ? classes.stat : classes.stat2}
+            className={cx(classes.actionIcons, thanked && classes.thankedMark)}
           >
-            <strong>{data.postInfo.viewCount}</strong> &nbsp; views
+            <IconButton
+              aria-label="Share"
+              disabled={currentUserId === ownerId}
+              onClick={handleThanks}
+            >
+              {thanked
+                ? <img
+                  src={thankedSvg}
+                  className={classes.actionIcon}
+                  alt="thanked"
+                />
+                :<img
+                  src={thanksSvg}
+                  className={classes.actionIcon}
+                  alt="thanks"
+                />}
+            </IconButton>
+            <strong>{thanksCount}</strong>
           </Typography>
-        </CardActions>
-        {renderMenu}
+          <Typography
+            component="p"
+            variant="subtitle1"
+            className={classes.actionIcons}
+          >
+            <img
+              src={commentSvg}
+              className={classes.actionIcon}
+              alt="comment"
+            />
+            <strong>{data.postInfo.questionsCount}</strong>
+          </Typography>
+        </div>
+        <Typography
+          component="p"
+          variant="subtitle1"
+          className={!newClassExperience ? classes.stat : classes.stat2}
+        >
+          <strong>{data.postInfo.viewCount}</strong> &nbsp; views
+        </Typography>
+      </CardActions>
+      {renderMenu}
 
-        <Box mt={-5}>
-          <PostComments
-            feedId={data.feedId}
-            postId={data.postId}
-            typeId={data.typeId}
-            toolbarPrefix={toolbarPrefix}
-          />
-        </Box>
-      </Card>
-    </div>
+      <Box mt={-5}>
+        <PostComments
+          feedId={data.feedId}
+          postId={data.postId}
+          typeId={data.typeId}
+          toolbarPrefix={toolbarPrefix}
+        />
+      </Box>
+    </Card>
   )
 }
 

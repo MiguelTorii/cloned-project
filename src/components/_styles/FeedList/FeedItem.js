@@ -1,12 +1,8 @@
 import green from '@material-ui/core/colors/green';
-import grey from '@material-ui/core/colors/grey';
 
-export const styles = theme => ({
+export default theme => ({
   root: {
     borderRadius: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: grey[600],
-    borderBottomStyle: 'solid',
     backgroundColor: theme.circleIn.palette.feedBackground,
     marginTop: theme.spacing(3)
   },

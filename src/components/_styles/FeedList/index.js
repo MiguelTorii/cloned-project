@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export default theme => ({
   container: {
     maxHeight: 'inherit',
     // display: 'flex',
@@ -9,8 +9,7 @@ export const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     backgroundColor: theme.circleIn.palette.feedBackground,
-    paddingTop: theme.spacing(),
-    paddingBottom: theme.spacing(),
+    marginBottom: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
