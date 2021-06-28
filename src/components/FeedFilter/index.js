@@ -19,10 +19,10 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from 'containers/Tooltip'
 // import ClassMultiSelect from 'containers/ClassMultiSelect'
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
 import { styles } from '../_styles/FeedFilter';
-import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 
 const types = [
   {
@@ -40,6 +40,10 @@ const types = [
   {
     value: '5',
     label: 'Link'
+  },
+  {
+    value: '8',
+    label: 'Post'
   }
 ];
 
