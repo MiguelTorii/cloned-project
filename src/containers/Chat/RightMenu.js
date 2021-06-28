@@ -195,6 +195,10 @@ const RightMenu = ({
     );
   };
 
+  const isStudent = useMemo(() => {
+    return !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS)
+  }, [permission])
+
   if (!channel || !localChannel) return null
 
   return (
@@ -215,13 +219,13 @@ const RightMenu = ({
           item
         >
           <Typography className={classes.headerTitle}>Chat Details</Typography>
-          <Settings
+          {!isStudent && <Settings
             channel={channel}
             localChannel={localChannel}
             permission={permission}
             updateGroupName={updateGroupName}
             currentUserName={currentUserName}
-          />
+          />}
         </Grid>
         <Grid
           container
