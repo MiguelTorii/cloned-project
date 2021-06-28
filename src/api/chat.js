@@ -264,7 +264,16 @@ export const getChannels = async (): Promise<Object> => {
             image: c.last_received_message.user.profile_image_url,
           },
         },
-        thumbnail: c.thumbnail
+        thumbnail: c.thumbnail,
+        members: c.users.map(u => ({
+          firstname: u.first_name,
+          lastname: u.last_name,
+          userId: u.user_id,
+          image: u.profile_image_url,
+          role: u.role,
+          roleId: u.role_id,
+          isOnline: u.is_online,
+        }))
       }
     });
     return local
