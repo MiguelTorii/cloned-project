@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from 'components/Dialog';
 import OnlineBadge from 'components/OnlineBadge';
-import { containsImage } from 'utils/chat'
+import { containsImage, getInitials } from 'utils/chat'
 import { styles } from '../_styles/ChatListItem/MainChatItem';
 
 type Props = {
@@ -72,7 +72,7 @@ const MainChatItem = ({
     handleClose()
   }, [roomId, handleMuteChannel, handleClose])
 
-  const initials = useCallback(name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '', [name]);
+  const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
     if(handleRemoveChannel && handleMuteChannel) setShowMenu(true)

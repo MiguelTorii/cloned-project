@@ -18,6 +18,7 @@ import Link from '@material-ui/core/Link'
 import OnlineBadge from 'components/OnlineBadge'
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg'
 import useStyles from '../_styles/FloatingChat/FloatChatMessage'
+import { getInitials } from 'utils/chat'
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />)
 
@@ -87,8 +88,7 @@ const ChatMessage = ({
     onImageClick(url)
   }
 
-  const initials =
-    name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+  const initials = getInitials(name)
 
   const renderItem = ({
     imageKey,

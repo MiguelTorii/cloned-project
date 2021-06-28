@@ -28,6 +28,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import Notifier from '../Notifier';
 import * as notificationsActions from '../../actions/notifications';
 import * as feedActions from '../../actions/feed';
+import { getInitials } from 'utils/chat';
 
 const styles = theme => ({
   loader: {
@@ -193,7 +194,7 @@ const Layout = ({
 
 
   const name = useMemo(() => `${firstName} ${lastName}`, [firstName, lastName])
-  const initials = useMemo(() => name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '', [name])
+  const initials = useMemo(() => getInitials(name), [name])
 
   const updateFeed = useCallback(async (sectionId, classId) => {
     await updateFilter({

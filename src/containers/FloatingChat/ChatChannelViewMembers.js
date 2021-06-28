@@ -127,9 +127,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                         alt={`${member.firstName} ${member.lastName}`}
                         src={member.profileImageUrl}
                       >
-                        {getInitials({
-                          name: `${member.firstName} ${member.lastName}`
-                        })}
+                        {getInitials(`${member.firstName} ${member.lastName}`)}
                       </Avatar>
                     </OnlineBadge>
                   </ListItemAvatar>

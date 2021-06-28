@@ -195,7 +195,7 @@ const HoverPopup = ({
                 src={member.image}
                 className={classes.overviewAvatar}
               >
-                {getInitials({ name: fullName })}
+                {getInitials(fullName)}
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>

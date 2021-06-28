@@ -14,6 +14,7 @@ import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
 import TutorBadge from 'components/TutorBadge'
 import { styles } from '../_styles/FloatingChat/ChatMessage';
+import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -143,8 +144,7 @@ class ChatMessage extends React.PureComponent<Props> {
   render() {
     const { role, classes, userId, isUserOnline, name, avatar, isOwn, messageList } = this.props;
 
-    const initials =
-      name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name);
 
     return (
       <ListItem

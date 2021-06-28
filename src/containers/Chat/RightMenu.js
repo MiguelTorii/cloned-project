@@ -307,7 +307,7 @@ const RightMenu = ({
                             alt={fullName}
                             src={m.image}
                           >
-                            {getInitials({ name: fullName })}
+                            {getInitials(fullName)}
                           </Avatar>
                         </OnlineBadge>
                       </ListItemAvatar>

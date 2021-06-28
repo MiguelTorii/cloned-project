@@ -10,6 +10,7 @@ import GroupIcon from '@material-ui/icons/Group'
 import LoadImg from 'components/LoadImg'
 import InitialCommunityImage from 'assets/svg/community_first_time.svg'
 import useStyles from './_styles/initialAlert'
+import { getInitials } from 'utils/chat'
 
 
 type Props = {
@@ -57,9 +58,7 @@ const InitialAlert = ({
   }, [channel, local, userId])
 
   const initials = useMemo(() => {
-    return name
-      ? (name.match(/\b(\w)/g) || []).join('')
-      : ''
+    return getInitials(name)
   }, [name]);
 
   const initialCourseAvatarName = useMemo(() => {

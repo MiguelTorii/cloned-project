@@ -13,6 +13,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { getInitials } from 'utils/chat';
 import type { StudyCircle } from '../../types/models';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
@@ -37,9 +38,6 @@ class MyStudyCircle extends React.PureComponent<Props> {
     const { onStartChat } = this.props;
     onStartChat({ userId, firstName, lastName });
   };
-
-  getInitials = name =>
-    name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
   renderContent = () => {
     const { classes, isLoading, circle } = this.props;
@@ -74,7 +72,7 @@ class MyStudyCircle extends React.PureComponent<Props> {
               href={`/profile/${item.userId}`}
             >
               <Avatar alt={item.firstName} src={item.profileImageUrl}>
-                {this.getInitials(`${item.firstName} ${item.lastName}`)}
+                {getInitials(`${item.firstName} ${item.lastName}`)}
               </Avatar>
             </ListItemAvatar>
             <ListItemText

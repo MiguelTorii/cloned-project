@@ -206,10 +206,16 @@ export const processMessages = ({
   }
 };
 
-export const getInitials = ({ name = '' }: {name: string}) => {
-  return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+export const getInitials = (name: string = '') => {
+  const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+  if (initials.length < 3) {
+    return initials;
+  } else {
+    const length = initials.length;
+    return initials[0] + initials[length - 1];
+  }
 };
 
 export const containsImage = (message: string) => {
-  return message.includes('<img') ? 'Uploaded a image' : parse(message)
-}
+  return message.includes('<img') ? 'Uploaded a image' : parse(message);
+};

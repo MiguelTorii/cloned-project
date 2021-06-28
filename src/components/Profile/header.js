@@ -29,6 +29,7 @@ import _ from 'lodash';
 import PointsHistoryCard from './PointsHistoryCard';
 import Box from '@material-ui/core/Box';
 import { styles } from '../_styles/Profile/header';
+import { getInitials } from 'utils/chat';
 
 type Props = {
   classes: Object,
@@ -140,7 +141,7 @@ class Header extends React.PureComponent<Props, State> {
 
     const { videoEnabled } = this.state;
     const name = `${firstName} ${lastName}`;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name);
 
     const bio = this.findAboutField(6);
     const major = this.findAboutField(4);

@@ -55,6 +55,7 @@ import FeedIconPost from '../../assets/svg/posts.svg';
 
 import styles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
+import { getInitials } from 'utils/chat'
 
 const FeedTypes = {
   flashcards: {
@@ -186,7 +187,7 @@ const FeedItem = ({
     return data.title
   }, [])
 
-  const initials = useMemo(() => data.name !== '' ? (data.name.match(/\b(\w)/g) || []).join('') : '', [data.name])
+  const initials = useMemo(() => getInitials(data.name), [data.name])
   const date = useMemo(() => moment(data.created), [data.created])
   const fromNow = useMemo(() => date ? date.fromNow() : '', [date])
   const ownerId = useMemo(() => data.userId, [data.userId])

@@ -36,6 +36,7 @@ import commentSvg from '../../assets/svg/comment.svg'
 
 import { styles } from '../_styles/PostItem/PostItemComment';
 import OnlineBadge from '../OnlineBadge';
+import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -190,7 +191,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
     const name = `${firstName} ${lastName}.`;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name)
     const fromNow = date ? date.fromNow() : '';
 
     const renderMenu  = (

@@ -21,6 +21,7 @@ import type { ChatState } from '../../reducers/chat'
 import BatchMessage from '../../containers/Chat/BatchMessage'
 
 import { styles } from '../_styles/CreateChatChannelInput';
+import { getInitials } from 'utils/chat'
 
 type Props = {
   classes: Object,
@@ -78,8 +79,7 @@ const CreateChatChannelInput = ({
 
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`
-      const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+      const initials = getInitials(name)
       return {
         ...user,
         value: user.userId,

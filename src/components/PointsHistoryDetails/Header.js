@@ -3,11 +3,12 @@ import type { UserProfile } from '../../types/models';
 import withRoot from '../../withRoot';
 import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
 import Avatar from '../Avatar';
-import { avatarTextFromName, getPointsText } from '../../utils/helpers';
+import { getPointsText } from '../../utils/helpers';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
 
 import { useStyles } from '../_styles/PointsHistoryDetails/Header';
+import { getInitials } from 'utils/chat';
 
 type Props = {
   profile: UserProfile
@@ -25,7 +26,7 @@ const Header = ({ profile }: Props) => {
           <Grid item>
             <Avatar
               src={profile.userProfileUrl}
-              defaultText={avatarTextFromName(`${profile.firstName} ${profile.lastName}`)}
+              defaultText={getInitials(`${profile.firstName} ${profile.lastName}`)}
             />
           </Grid>
           <Grid item container direction="column" spacing={isMobile ? 0 : 1}>

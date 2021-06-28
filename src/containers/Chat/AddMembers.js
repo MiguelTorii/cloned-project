@@ -6,6 +6,7 @@ import CreateChatChannelDialog from 'components/CreateChatChannelDialog'
 import { searchUsers } from 'api/user'
 import { addGroupMembers } from 'api/chat'
 import AddUserIcon from 'assets/svg/add-user.svg'
+import { getInitials } from 'utils/chat'
 
 const useStyles = makeStyles((theme) => ({
   addLabel: {
@@ -50,8 +51,7 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
 
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`
-      const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+      const initials = getInitials(name);
       return {
         value: user.userId,
         label: name,

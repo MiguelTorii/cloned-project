@@ -14,6 +14,7 @@ import flashcardImage from '../../assets/svg/ic_flashcard_post.svg';
 import linkImage from '../../assets/svg/ic_link_post.svg';
 
 import { styles } from '../_styles/Notifications/notification-item';
+import { getInitials } from 'utils/chat';
 
 type Props = {
   classes: Object,
@@ -108,7 +109,7 @@ class FeedItem extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const name = `${actorFirstName} ${actorLastName}`;
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name);
     const date = moment(createdOn);
     const fromNow = date ? date.fromNow() : '';
 

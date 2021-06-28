@@ -53,7 +53,7 @@ const PostCreationHeader = () => {
           <Box mr={3}>
             <Avatar
               src={me.profileImage}
-              initialText={getInitials({ name: `${me.firstName} ${me.lastName}` })}
+              initialText={getInitials(`${me.firstName} ${me.lastName}`)}
               mobileSize={50}
               desktopSize={50}
             />

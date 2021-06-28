@@ -12,10 +12,6 @@ export const momentWithTimezone = (date: string = undefined) => {
   return moment(date).tz(TIME_ZONE);
 };
 
-export const avatarTextFromName = (name: string) => {
-  return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
-};
-
 export const isApiCalling = type => state => _.get(state.api[type], 'inProgress', false);
 
 export const setIntervalWithFirstCall = (func: Function, delay: number) => {

@@ -30,6 +30,7 @@ import Tooltip from 'containers/Tooltip';
 import SharePost from 'containers/SharePost';
 
 import { styles } from '../_styles/PostItem/PostItemHeader';
+import { getInitials } from 'utils/chat';
 import _ from "lodash";
 
 const BODY_LENGTH_THRESHOLD = 80;
@@ -149,7 +150,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     } = this.props;
     const { moreAnchorEl, open, showShortSummary } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name);
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
 

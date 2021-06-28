@@ -29,6 +29,7 @@ import { ReactComponent as ChatStudyRoomMemberrs } from 'assets/svg/chat-studyro
 import { ReactComponent as ChatActiveStudyRoomMemberrs } from 'assets/svg/chat-active-studyroom-members.svg'
 import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/chatHeader'
+import { getInitials } from 'utils/chat'
 
 type Props = {
   isCommunityChat: boolean,
@@ -154,8 +155,7 @@ const ChatHeader = ({
 
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`
-      const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('')   : ''
+      const initials = getInitials(name)
       return {
         value: user.userId,
         label: name,

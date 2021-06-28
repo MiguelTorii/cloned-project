@@ -8,10 +8,10 @@ import GradientButton from '../Basic/Buttons/GradientButton';
 import AvatarEditor from '../AvatarEditor';
 import Avatar, { DEFAULT_AVATAR_SIZE } from '../Avatar';
 import { Create } from '@material-ui/icons';
-import { avatarTextFromName } from '../../utils/helpers';
 import type { About, UserProfile } from '../../types/models';
 import _ from 'lodash';
 import { useStyles } from '../_styles/Profile/EditProfileModal';
+import { getInitials } from 'utils/chat';
 
 type Props = {
   profile: UserProfile,
@@ -77,7 +77,7 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
             <Avatar
               mobileSize={DEFAULT_AVATAR_SIZE.desktop}
               src={image}
-              initialText={ avatarTextFromName(`${profile.firstName} ${profile.lastName}`)}
+              initialText={ getInitials(`${profile.firstName} ${profile.lastName}`)}
             />
             <Button
               onClick={() => setIsEditingAvatar(true)}

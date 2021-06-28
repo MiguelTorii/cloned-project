@@ -18,6 +18,7 @@ import type { BlockedUsers } from '../../types/models';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { getBlockedUsers, unblockUser } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary';
+import { getInitials } from 'utils/chat';
 
 const styles = () => ({
   dialog: {
@@ -130,9 +131,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
                 <ListItem key={user.userId} dense>
                   <ListItemAvatar>
                     <Avatar alt={user.name} src={user.profileImageUrl}>
-                      {user.name !== ''
-                        ? (user.name.match(/\b(\w)/g) || []).join('')
-                        : ''}
+                      {getInitials(user.name)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={user.name} />

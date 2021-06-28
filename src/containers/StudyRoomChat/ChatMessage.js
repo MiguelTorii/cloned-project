@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 import TutorBadge from 'components/TutorBadge'
+import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -247,8 +248,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
 
   render() {
     const { role, classes, userId, name, avatar, isOwn, messageList } = this.props;
-    const initials =
-      name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = getInitials(name);
 
     return (
       <ListItem

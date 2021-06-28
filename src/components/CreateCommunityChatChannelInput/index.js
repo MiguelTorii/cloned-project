@@ -19,6 +19,7 @@ import { searchUsers } from '../../api/user'
 import { createChannel } from '../../api/chat'
 import type { UserState } from '../../reducers/user'
 import type { ChatState } from '../../reducers/chat'
+import { getInitials } from 'utils/chat'
 
 const styles = theme => ({
   validatorForm: {
@@ -166,8 +167,7 @@ const CreateChatChannelInput = ({
 
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`
-      const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+      const initials = getInitials(name)
       return {
         ...user,
         value: user.userId,

@@ -18,6 +18,7 @@ import Dialog from 'components/Dialog'
 import OnlineBadge from 'components/OnlineBadge'
 import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/mainChatItem'
+import { getInitials } from 'utils/chat'
 
 type Props = {
   isLoading: boolean,
@@ -90,7 +91,7 @@ const MainChatItem = ({
     handleClose()
   }, [roomId, handleMuteChannel, handleClose])
 
-  const initials = useCallback(name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '', [name]);
+  const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
     if(handleRemoveChannel && handleMuteChannel) setShowMenu(true)

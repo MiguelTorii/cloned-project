@@ -28,6 +28,7 @@ import OnlineBadge from 'components/OnlineBadge'
 import StudyRoomReport from 'components/StudyRoomReport'
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg'
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage'
+import { getInitials } from 'utils/chat'
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />)
 
@@ -147,8 +148,7 @@ const ChatMessage = ({
     setShowOptions(0)
   }
 
-  const initials =
-    name && name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+  const initials = getInitials(name)
 
   const handleClick = (msgId) => (event) => {
     setHoverMessageId(msgId)

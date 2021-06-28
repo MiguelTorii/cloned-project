@@ -9,6 +9,7 @@ import AddMembers from '../../components/FloatingChat/AddMembers';
 import { searchUsers } from '../../api/user';
 import { addGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
+import { getInitials } from 'utils/chat';
 
 type Props = {
   user: UserState,
@@ -46,8 +47,7 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
 
     const options = users.map(user => {
       const name = `${user.firstName} ${user.lastName}`;
-      const initials =
-        name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+      const initials = getInitials(name);
       return {
         value: user.userId,
         label: name,

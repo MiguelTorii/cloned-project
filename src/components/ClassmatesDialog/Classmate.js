@@ -22,6 +22,7 @@ import OnlineBadge from 'components/OnlineBadge';
 import InviteIcon from 'assets/svg/invite-icon.svg'
 
 import useStyles from '../_styles/ClassmatesDialog/Classmate';
+import { getInitials } from 'utils/chat';
 
 type ClassmateType = {
   userId: string,
@@ -94,7 +95,7 @@ const Classmate = ({
   const initials = useMemo(() => {
     const name = `${classmate?.firstName} ${classmate?.lastName}`
 
-    return name !== '' ? (name.match(/\b(\w)/g) || []).join('') : ''
+    return getInitials(name)
   }, [classmate])
 
   return (
