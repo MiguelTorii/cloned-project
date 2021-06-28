@@ -192,14 +192,12 @@ const ChatMessage = ({
     body,
     isVideoNotification,
     firstName,
-    createdAt,
     isOwn
   }: {
     imageKey: string,
     body: string,
     isVideoNotification: boolean,
     firstName: string,
-    createdAt: string,
     isOwn: boolean
   }) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />')
@@ -224,9 +222,6 @@ const ChatMessage = ({
               onLoad={onImageLoaded}
             />
           </ButtonBase>
-          <Typography className={classes.createdAt}>
-            {date} at {createdAt}
-          </Typography>
         </div>
       )
     }
