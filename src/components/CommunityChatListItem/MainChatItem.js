@@ -160,7 +160,7 @@ const MainChatItem = ({
           <Typography className={classes.roomName} variant="subtitle1" noWrap>
             {roomName}
           </Typography>
-          {members && members.length > 2 &&
+          {members.length > 2 &&
             <Typography
               className={classes.groupMemberCount}
               variant="subtitle1"
@@ -201,7 +201,7 @@ const MainChatItem = ({
         onClose={handleClose}
       >
         <MenuItem onClick={handleRead}>Mark as Read</MenuItem>
-        {members && members.length > 2 && isShow &&
+        {members.length > 2 && isShow &&
           <MenuItem onClick={handleEditGroup}>
           Edit Group
           </MenuItem>}

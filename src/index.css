@@ -10,11 +10,14 @@
 *::-webkit-scrollbar-thumb {
   background-color: rgba(196, 196, 196, 0.38);
   border-radius: 16px;
-  outline: 1px solid slategrey;
 }
 
 * {
   scrollbar-color: #547686 rgba(0,0,0,0.00);
+}
+
+p > a:-webkit-any-link {
+  color: #809fff
 }
 
 .ql-formula img {
