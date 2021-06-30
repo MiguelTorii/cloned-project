@@ -1,12 +1,7 @@
-export const styles = theme => ({
+export default theme => ({
   buttonWrapper: {
     position: 'relative',
     marginTop: theme.spacing()
-  },
-  deleteIcon: {
-    position: 'absolute',
-    top: -10,
-    right: -10
   },
   picker: {
     display: 'none'

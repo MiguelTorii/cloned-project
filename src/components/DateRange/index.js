@@ -6,11 +6,9 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import DeleteIcon from '@material-ui/icons/Delete';
 
-import { styles } from '../_styles/DateRange';
 import TransparentButton from 'components/Basic/Buttons/TransparentButton';
+import styles from '../_styles/DateRange';
 
 type Props = {
   classes: Object,
@@ -138,15 +136,6 @@ class DateRange extends React.PureComponent<Props, State> {
             >
               {this.renderButtonText()}
             </TransparentButton>
-            {(from || to) && (
-              <ButtonBase
-                aria-label="Delete"
-                className={classes.deleteIcon}
-                onClick={this.handleReset}
-              >
-                <DeleteIcon fontSize="small" />
-              </ButtonBase>
-            )}
           </div>
           <DatePicker
             disableFuture
