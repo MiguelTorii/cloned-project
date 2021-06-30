@@ -216,7 +216,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
         {isQuestion && !isOwn && isOwner && !hasBestAnswer && !accepted && (
           <MenuItem onClick={this.handleOpenBestAnswer}>
             <ListItemIcon color="inherit">
-              <img src={IconBadge} className={classes.badgeIcon} alt="badge" />
+              <img src={IconBadge} className={classes.badgeIcon} alt="best answer badge" />
             </ListItemIcon>
             <ListItemText inset primary="Mark as Best Answer" />
           </MenuItem>
@@ -272,7 +272,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
               <Chip
                 className={classes.bestAnswerChip}
                 label="BEST ANSWER"
-                icon={<img src={IconBadge} alt="badge" />}
+                icon={<img src={IconBadge} alt="best answer badge" />}
                 size="small"
               />
             )}
