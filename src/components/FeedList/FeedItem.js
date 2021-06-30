@@ -35,7 +35,6 @@ import PostComments from 'containers/PostComments'
 import TutorBadge from 'components/TutorBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
-import CustomQuill from 'components/CustomQuill'
 import pluralize from 'pluralize';
 
 import Grid from '@material-ui/core/Grid';

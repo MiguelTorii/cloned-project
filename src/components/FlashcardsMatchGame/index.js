@@ -115,7 +115,13 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
     };
 
     if (containerRef) {
-      containerRef.className = containerRef.className.replace('hidden', '');
+      // Remove hidden attribute
+      const classList = containerRef.className.split(' ');
+      if (classList.length > 1) {
+        classList.splice(classList.length - 1, 1);
+      }
+      containerRef.className = classList.join(' ');
+
       const cardsData = cards.map((card) => {
         const questionSize = getCardSize(card.questionImage, card.question);
         const answerSize = getCardSize(card.answerImage, card.answer);
@@ -372,7 +378,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
       return <LoadingSpin />;
     }
 
-    const { highScore: high_score } = matchStat;
+    let highScore = matchStat?.highScore || null;
 
     return (
       <Box padding={4} mt={4} className={clsx(!isFinished && classes.hidden)}>
@@ -386,9 +392,9 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
               Last High Score
             </Typography>
             <Typography variant="h2" align="center">
-              {!high_score && '--'}
-              {high_score && formatSeconds(high_score)}
-              {high_score && (
+              {!highScore && '--'}
+              {highScore && formatSeconds(highScore)}
+              {highScore && (
                 <Typography className={classes.cardSubText}>
                   min
                 </Typography>
@@ -400,13 +406,13 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
           </Box>
           <Box>
             <Typography align="center" paragraph>
-              {!high_score && 'New High Score'}
-              {high_score && 'Today\'s Score'}
+              {!highScore && 'New High Score'}
+              {highScore && 'Today\'s Score'}
 
-              {high_score && high_score > elapsedSeconds &&
+              {highScore && highScore > elapsedSeconds &&
                 <img src={IconDown} alt="Icon Down" className={classes.scoreImage} />
               }
-              {high_score && high_score < elapsedSeconds &&
+              {highScore && highScore < elapsedSeconds &&
                 <img src={IconUp} alt="Icon Up" className={classes.scoreImage} />
               }
             </Typography>
@@ -415,7 +421,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
               align="center"
               className={
                 clsx(
-                  (!high_score || high_score > elapsedSeconds) && classes.highScoreText
+                  (!highScore || highScore > elapsedSeconds) && classes.highScoreText
                 )
               }
             >
@@ -427,32 +433,32 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
           </Box>
         </Box>
         <Typography variant="h6" align="center" paragraph>
-          {!high_score &&
+          {!highScore &&
             'Hooray for your first time playing with this deck! New high score!'
           }
-          {high_score && high_score <= elapsedSeconds &&
+          {highScore && highScore <= elapsedSeconds &&
             'Almost there! Beat your time by playing again!'
           }
-          {high_score && high_score > elapsedSeconds &&
-            `You beat your personal record by ${formatSeconds(high_score - elapsedSeconds)} min!`
+          {highScore && highScore > elapsedSeconds &&
+            `You beat your personal record by ${formatSeconds(highScore - elapsedSeconds)} min!`
           }
         </Typography>
         <Typography align="center">
-          {!high_score && 'Play again and beat your personal record!'}
+          {!highScore && 'Play again and beat your personal record!'}
           {
-            high_score && high_score <= elapsedSeconds &&
+            highScore && highScore <= elapsedSeconds &&
             'Practice, practice, practice, and you’ll do even better next time!'
           }
-          {high_score && high_score > elapsedSeconds &&
+          {highScore && highScore > elapsedSeconds &&
             'High five! Your hard work is paying off! 🙌'
           }
         </Typography>
         <Typography align="center" paragraph>
-          {!high_score && 'Get faster and keep playing or share it with classmates too!'}
-          {high_score && high_score <= elapsedSeconds &&
+          {!highScore && 'Get faster and keep playing or share it with classmates too!'}
+          {highScore && highScore <= elapsedSeconds &&
             'Get faster and keep playing or share it with classmates too!'
           }
-          {high_score && high_score > elapsedSeconds &&
+          {highScore && highScore > elapsedSeconds &&
             'Get even faster and keep playing or share it with classmates too!'
           }
         </Typography>
