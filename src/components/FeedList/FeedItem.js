@@ -535,6 +535,9 @@ const FeedItem = ({
           postId={data.postId}
           typeId={data.typeId}
           toolbarPrefix={toolbarPrefix}
+          isQuestion={data.typeId === FeedTypes.question.id}
+          isOwner={data.userId === currentUserId}
+          hasBestAnswer={data.bestAnswer}
         />
       </Box>
     </Card>

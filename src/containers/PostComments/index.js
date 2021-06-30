@@ -26,6 +26,8 @@ import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
 import { processComments } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
+import { bindActionCreators } from "redux";
+import { showNotification } from "../../actions/notifications";
 
 const styles = theme => ({
   readOnly: {
@@ -55,7 +57,8 @@ type Props = {
   readOnly: boolean,
   hasBestAnswer?: boolean,
   isOwner?: boolean,
-  toolbarPrefix?: string
+  toolbarPrefix?: string,
+  showNotification: Function
 };
 
 type State = {
@@ -99,10 +102,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
     if (comment.trim() === '') return;
     const {
       user: {
-        data: { userId }
+        data: { userId, firstName }
       },
       postId,
-      typeId
+      typeId,
+      showNotification
     } = this.props;
     if (rootCommentId) {
       this.setState({ replyCommentId: parentCommentId });
@@ -110,7 +114,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       this.setState({ isLoading: true });
     }
     try {
-      await createComment({
+      const { points } = await createComment({
         userId,
         postId,
         typeId,
@@ -119,6 +123,12 @@ class ViewNotes extends React.PureComponent<Props, State> {
         rootCommentId,
         parentCommentId
       });
+      if (points) {
+        showNotification({
+          message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
+          variant: 'success'
+        });
+      }
       await this.loadData();
     } finally {
       this.setState({ isLoading: false, replyCommentId: 0 });
@@ -423,7 +433,11 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
+const mapDispatchToProps =  (dispatch) => bindActionCreators({
+  showNotification
+}, dispatch);
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(ViewNotes));

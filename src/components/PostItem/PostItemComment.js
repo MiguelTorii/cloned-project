@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
+import Chip from '@material-ui/core/Chip';
 import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -17,7 +18,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,6 +33,7 @@ import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.s
 import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
 import thanksSvg from '../../assets/svg/thanks.svg'
 import commentSvg from '../../assets/svg/comment.svg'
+import IconBadge from 'assets/svg/badge.svg';
 
 import { styles } from '../_styles/PostItem/PostItemComment';
 import OnlineBadge from '../OnlineBadge';
@@ -118,6 +119,9 @@ class PostItemComment extends React.PureComponent<Props, State> {
   handleConfirmBestAnswer = () => {
     const { id, onBestAnswer } = this.props;
     this.handleCloseBestAnswer();
+    this.setState({
+      moreAnchorEl: null
+    });
     onBestAnswer({ commentId: id });
   };
 
@@ -209,15 +213,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
           </ListItemIcon>
           <ListItemText inset primary="Reply" />
         </MenuItem>
-        {isQuestion && !isOwn && isOwner && (!hasBestAnswer || accepted) ? (
+        {isQuestion && !isOwn && isOwner && !hasBestAnswer && !accepted && (
           <MenuItem onClick={this.handleOpenBestAnswer}>
             <ListItemIcon color="inherit">
-              <ThumbUpIcon />
+              <img src={IconBadge} className={classes.badgeIcon} alt="badge" />
             </ListItemIcon>
-            <ListItemText inset primary="Reply" />
+            <ListItemText inset primary="Mark as Best Answer" />
           </MenuItem>
-        ): (
-          <span className={classes.grow} />
         )}
         {isOwn &&
           <MenuItem onClick={this.handleEditComment}>
@@ -265,6 +267,15 @@ class PostItemComment extends React.PureComponent<Props, State> {
             >
               {fromNow}
             </Typography>
+            {/* It shows a badge if the answer is set as the best answer. */}
+            {accepted && (
+              <Chip
+                className={classes.bestAnswerChip}
+                label="BEST ANSWER"
+                icon={<img src={IconBadge} alt="badge" />}
+                size="small"
+              />
+            )}
           </div>
           {replyTo !== '' && (
             <div className={classes.replyTo}>

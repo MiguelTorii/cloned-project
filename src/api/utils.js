@@ -201,6 +201,7 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
   return posts.map(item => ({
     userId: item.user_id === 0 ? '0' : String((item.user_id: string) || ''),
     numberOfNotes: Number((item.pages_notes: number) || 0),
+    bestAnswer: Boolean(item.best_answer),
     typeId: Number((item.type_id: number) || 0),
     feedId: Number((item.feed_id: number) || 0),
     postId: Number((item.post_id: number) || 0),

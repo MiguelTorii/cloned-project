@@ -22,7 +22,7 @@ export const styles = theme => ({
   },
   header: {
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'flex-start',
     marginLeft: theme.spacing(1.5),
     marginTop: theme.spacing(1)
@@ -82,6 +82,9 @@ export const styles = theme => ({
     fontSize: 16,
     color: theme.circleIn.palette.brand,
   },
+  badgeIcon: {
+    marginLeft: theme.spacing(0.5)
+  },
   actionIcon: {
     display: 'flex',
     justifyContent: 'center',
@@ -112,5 +115,11 @@ export const styles = theme => ({
     '& > div': {
       marginLeft: 0
     }
+  },
+  bestAnswerChip: {
+    backgroundColor: '#15A63D',
+    color: 'white',
+    marginLeft: theme.spacing(1),
+    padding: theme.spacing(0.5, 1)
   }
 });
