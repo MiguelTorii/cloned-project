@@ -16,7 +16,7 @@ const StartupModal = ({open, onClose, onStart}) => {
       className={classes.startupModal}
       open={open}
       onCancel={onClose}
-      title="Welcome to Our New Match Magic Game!"
+      title="Welcome to Match Magic Game!"
     >
       <Box>
         <Box display="flex" justifyContent="center" pt={3} mb={3}>
