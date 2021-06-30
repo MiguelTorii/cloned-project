@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   container: {
   },
+  loadingContainer: {
+    height: '100%'
+  },
   header: {
     zIndex: 1000,
     left: 0,
@@ -49,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
   gridChatList: {
     width: 'inherit',
+    height: 0,
+    marginBottom: theme.spacing(6)
+  },
+  gridChatListLoading: {
+    width: 'inherit',
+    minHeight: 500,
     marginBottom: theme.spacing(6)
   },
   imgIcon: {

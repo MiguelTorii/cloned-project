@@ -17,8 +17,8 @@ import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
 import Dialog from 'components/Dialog'
 import OnlineBadge from 'components/OnlineBadge'
 import { PERMISSIONS } from 'constants/common'
-import useStyles from './_styles/mainChatItem'
 import { getInitials } from 'utils/chat'
+import useStyles from './_styles/mainChatItem'
 
 type Props = {
   isLoading: boolean,
@@ -160,13 +160,13 @@ const MainChatItem = ({
           <Typography className={classes.roomName} variant="subtitle1" noWrap>
             {roomName}
           </Typography>
-          {members.length > 2 &&
+          {members?.length > 2 &&
             <Typography
               className={classes.groupMemberCount}
               variant="subtitle1"
               noWrap
             >
-              {members.length} members
+              {members?.length} members
             </Typography>}
         </div>
         {muted && <NotificationsOffIcon />}
@@ -201,7 +201,7 @@ const MainChatItem = ({
         onClose={handleClose}
       >
         <MenuItem onClick={handleRead}>Mark as Read</MenuItem>
-        {members.length > 2 && isShow &&
+        {members?.length > 2 && isShow &&
           <MenuItem onClick={handleEditGroup}>
           Edit Group
           </MenuItem>}

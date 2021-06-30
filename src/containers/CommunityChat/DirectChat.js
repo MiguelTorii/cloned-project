@@ -229,6 +229,7 @@ const DirectChat = ({
           className={classes.main}
         >
           <Main
+            isLoading={isLoading}
             newMessage={newMessage}
             channelList={channelList}
             setMainMessage={setMainMessage}

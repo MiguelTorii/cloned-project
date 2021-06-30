@@ -120,9 +120,11 @@ const LeftMenu = ({
       </Grid>
       <Grid
         container
-        classes={{ root: classes.container }}
+        classes={{
+          root: isLoading ? classes.loadingContainer  : classes.container
+        }}
       >
-        {!!channelList.length && <Grid
+        {(!!channelList.length || isLoading) && <Grid
           container
           classes={{ root: classes.header }}
           justify='center'
@@ -163,7 +165,14 @@ const LeftMenu = ({
             handleUpdateGroupName={handleUpdateGroupName}
           />
         </Dialog>
-        <Grid item className={classes.gridChatList}>
+        <Grid
+          item
+          className={
+            isLoading
+              ? classes.gridChatListLoading
+              : classes.gridChatList
+          }
+        >
           <EmptyLeftMenu
             emptyChannels={channelList.length === 0}
             handleCreateNewChannel={handleCreateNewChannel}

@@ -22,7 +22,7 @@ const EmptyLeftMenu = ({
 
   return (
     <div className={classes.container}>
-      {emptyChannels && <div className={classes.messageContainer}>
+      {emptyChannels && !isLoading && <div className={classes.messageContainer}>
         <Typography
           role="img"
           classes={{
@@ -43,12 +43,12 @@ const EmptyLeftMenu = ({
         >
           Create new DM
         </Button>
+      </div>}
 
-        {isLoading && <div className={classes.loading}>
-          <CircularProgress classes={{
-            colorPrimary: classes.loadingChannels
-          }} />
-        </div>}
+      {isLoading && <div className={classes.loading}>
+        <CircularProgress classes={{
+          colorPrimary: classes.loadingChannels
+        }} />
       </div>}
     </div>
   )

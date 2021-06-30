@@ -25,6 +25,7 @@ import { PERMISSIONS } from 'constants/common'
 import useStyles from './_styles/main'
 
 type Props = {
+  isLoading: boolean,
   isCommunityChat: boolean,
   selectedCourse: Object,
   channel: Object,
@@ -44,6 +45,7 @@ type Props = {
 };
 
 const Main = ({
+  isLoading,
   isCommunityChat = false,
   selectedCourse,
   channel,
@@ -170,8 +172,10 @@ const Main = ({
   useEffect(() => {
     if (channelList.length && !channel) {
       setLoadingMessage(true)
+    } else if (!channelList.length && !isLoading) {
+      setLoadingMessage(false)
     }
-  }, [channelList, channel])
+  }, [channelList, channel, isLoading])
 
   useEffect(() => {
     const init = async () => {
@@ -456,7 +460,7 @@ const Main = ({
     )
   }, [classes])
 
-  return loadingMessage
+  return loadingMessage || isLoading
     ? loadingConversation()
     : errorLoadingMessage
       ? loadingErrorMessage()
@@ -480,7 +484,7 @@ const Main = ({
         />}
         <div className={classes.messageRoot}>
           <div className={classes.messageContainer}>
-            {!channelList.length && (
+            {!channelList.length && !isLoading && (
               <EmptyMain
                 otherUser={otherUser}
                 noChannel={!channel}
