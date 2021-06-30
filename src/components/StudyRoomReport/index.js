@@ -74,19 +74,20 @@ const ReportIssue = ({
 
   const handleSubmit = useCallback(async () => {
     setLoading(true)
+    const objectCreatorIds = selectedNames.map((id) => Number(id))
     try {
       await report({
         reportCreatorId: userId,
-        objectCreatorId: userId,
+        objectCreatorIds: objectCreatorIds,
         reasonId: selectedReason,
         reportTypeId: 2,
         description: '',
       });
+      setReported(true);
     } finally {
       setLoading(false)
     }
-    setReported(true);
-  }, [setReported, selectedReason, userId])
+  }, [setReported, selectedReason, selectedNames, userId])
 
   const handleSelectReason = useCallback((e) => {
     setSelectedReason(e.target.value)

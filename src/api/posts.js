@@ -1155,7 +1155,7 @@ export const updateComment = async(commentId, comment) => {
 
 export const report = async ({
   reportCreatorId,
-  objectCreatorId,
+  objectCreatorIds,
   reasonId,
   objectId,
   reportTypeId,
@@ -1175,7 +1175,7 @@ export const report = async ({
       API_ROUTES.REPORT,
       {
         report_creator_id: Number(reportCreatorId),
-        object_creator_id: Number(objectCreatorId),
+        object_creator_ids: objectCreatorIds,
         reason_id: Number(reasonId),
         object_id: objectId,
         report_type_id: reportTypeId,
