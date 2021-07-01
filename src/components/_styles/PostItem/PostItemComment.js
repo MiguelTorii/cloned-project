@@ -6,7 +6,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(0, 0, 2, 0)
   },
   reply: {
     marginLeft: theme.spacing(6),

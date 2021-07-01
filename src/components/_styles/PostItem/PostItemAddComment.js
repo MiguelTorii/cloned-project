@@ -1,10 +1,9 @@
-export const styles = theme => ({
+export default theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginTop: theme.spacing(2)
+    justifyContent: 'flex-start'
   },
   reply: {
     marginTop: theme.spacing(),
@@ -12,10 +11,10 @@ export const styles = theme => ({
   },
   body: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
     width: '100%',
-    minHeight: 120
+    minHeight: 80
   },
   textField: {
     marginLeft: theme.spacing(2)

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -10,9 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import PostItemAddComment from 'components/PostItem/PostItemAddComment';
 import PostItemComment from 'components/PostItem/PostItemComment';
 import SkeletonLoad from 'components/PostItem//SkeletonLoad';
+import update from 'immutability-helper';
+import { bindActionCreators } from "redux";
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import update from 'immutability-helper';
 
 import Report from '../Report';
 import {
@@ -26,7 +27,6 @@ import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
 import { processComments } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
-import { bindActionCreators } from "redux";
 import { showNotification } from "../../actions/notifications";
 
 const styles = theme => ({
@@ -253,7 +253,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     this.setState({ loadViewMoreComment: !loadViewMoreComment })
   }
 
-  render() {
+  renderComments = () => {
     const {
       classes,
       user: {
@@ -263,8 +263,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       hasBestAnswer,
       isOwner,
-      feedId,
-      toolbarPrefix
     } = this.props;
     const {
       comments,
@@ -274,35 +272,17 @@ class ViewNotes extends React.PureComponent<Props, State> {
       loadViewMoreComment,
       replyCommentId
     } = this.state;
-    if (!comments) return null;
 
     const name = `${firstName} ${lastName}`;
+
+    if (!comments) return null;
+
     return (
-      <Fragment>
-        {readOnly && (
-          <Paper className={classes.readOnly} elevation={8}>
-            <Typography variant="h6">
-              Commenting and replying have been disabled for CircleIn101 post
-            </Typography>
-          </Paper>
-        )}
-        <ErrorBoundary>
-          <PostItemAddComment
-            userId={userId}
-            name={name}
-            profileImageUrl={profileImage}
-            rte
-            readOnly={readOnly}
-            isQuestion={isQuestion}
-            feedId={feedId}
-            onPostComment={this.handlePostComment}
-            toolbarPrefix={toolbarPrefix}
-          />
-        </ErrorBoundary>
+      <>
         <ErrorBoundary>
           {loadViewMoreComment
             ? items.map((item) => (
-              <Fragment key={item.id}>
+              <div key={item.id}>
                 <PostItemComment
                   id={item.id}
                   replyCommentId={replyCommentId}
@@ -369,7 +349,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     userId={userId}
                   />
                 ))}
-              </Fragment>
+              </div>
             ))
             : (!!items.length && <div key={items[0].id}>
               <PostItemComment
@@ -424,7 +404,47 @@ class ViewNotes extends React.PureComponent<Props, State> {
             </Button> : null}
           </div>
         </ErrorBoundary>
-      </Fragment>
+      </>
+    )
+  }
+
+  render() {
+    const {
+      classes,
+      user: {
+        data: { userId, profileImage, firstName, lastName }
+      },
+      isQuestion,
+      readOnly,
+      feedId,
+      toolbarPrefix
+    } = this.props;
+
+    const name = `${firstName} ${lastName}`;
+    return (
+      <>
+        {readOnly && (
+          <Paper className={classes.readOnly} elevation={8}>
+            <Typography variant="h6">
+              Commenting and replying have been disabled for this post
+            </Typography>
+          </Paper>
+        )}
+        <ErrorBoundary>
+          <PostItemAddComment
+            userId={userId}
+            name={name}
+            profileImageUrl={profileImage}
+            rte
+            readOnly={readOnly}
+            isQuestion={isQuestion}
+            feedId={feedId}
+            onPostComment={this.handlePostComment}
+            toolbarPrefix={toolbarPrefix}
+          />
+        </ErrorBoundary>
+        {this.renderComments()}
+      </>
     );
   }
 }

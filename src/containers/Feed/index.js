@@ -12,6 +12,7 @@ import HeaderNavigation from 'containers/Feed/HeaderNavigation'
 import { decypherClass } from 'utils/crypto'
 import ClassmatesDialog from 'components/ClassmatesDialog'
 import Tooltip from 'containers/Tooltip'
+import PostCreationHeader from 'containers/Feed/PostCreationHeader';
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
 import type { State as StoreState } from '../../types/state';
@@ -24,7 +25,6 @@ import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 import type { CampaignState } from '../../reducers/campaign';
-import PostCreationHeader from 'containers/Feed/PostCreationHeader';
 // const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
 
 const styles = () => ({

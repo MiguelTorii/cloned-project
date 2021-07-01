@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import CommentQuill from './CommentQuill'
 import SkeletonLoad from './SkeletonLoad';
 
-import { styles } from '../_styles/PostItem/PostItemAddComment';
+import styles from '../_styles/PostItem/PostItemAddComment';
 
 type Props = {
   classes: Object,

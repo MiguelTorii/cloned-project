@@ -39,6 +39,7 @@ import pluralize from 'pluralize';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import { getInitials } from 'utils/chat'
 import * as api from '../../api/posts'
 
 import linkPost from '../../assets/svg/ic_link_post.svg'
@@ -54,7 +55,6 @@ import FeedIconPost from '../../assets/svg/posts.svg';
 
 import styles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
-import { getInitials } from 'utils/chat'
 
 const FeedTypes = {
   flashcards: {
@@ -528,17 +528,15 @@ const FeedItem = ({
       </CardActions>
       {renderMenu}
 
-      <Box mt={-5}>
-        <PostComments
-          feedId={data.feedId}
-          postId={data.postId}
-          typeId={data.typeId}
-          toolbarPrefix={toolbarPrefix}
-          isQuestion={data.typeId === FeedTypes.question.id}
-          isOwner={data.userId === currentUserId}
-          hasBestAnswer={data.bestAnswer}
-        />
-      </Box>
+      <PostComments
+        feedId={data.feedId}
+        postId={data.postId}
+        typeId={data.typeId}
+        toolbarPrefix={toolbarPrefix}
+        isQuestion={data.typeId === FeedTypes.question.id}
+        isOwner={data.userId === currentUserId}
+        hasBestAnswer={data.bestAnswer}
+      />
     </Card>
   )
 }
