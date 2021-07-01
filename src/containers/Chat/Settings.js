@@ -87,10 +87,12 @@ const Settings = ({
 
   return (
     <>
-      <SettingsIcon
-        onClick={handleSettingsOpen}
-        className={classes.settingsIcon}
-      />
+      {isShow && (
+        <SettingsIcon
+          onClick={handleSettingsOpen}
+          className={classes.settingsIcon}
+        />
+      )}
       <Popover
         id="settings-option-popper"
         open={isShow && Boolean(anchorEl)}
@@ -112,7 +114,7 @@ const Settings = ({
               onClick={handleEditGroupDetailsOpen}
             >
               <ListItemText>
-                Event Group Details
+                Edit Group Details
               </ListItemText>
             </ListItem>
             {deletePermission && <ListItem
@@ -139,7 +141,7 @@ const Settings = ({
         members={localChannel?.members}
       />
       <EditGroupDetailsDialog
-        title='Event Group Details'
+        title='Edit Group Details'
         channel={channel}
         localChannel={localChannel}
         open={editGroupDetailsOpen}
