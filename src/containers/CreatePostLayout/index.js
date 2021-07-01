@@ -19,13 +19,13 @@ import ClassSelector from 'containers/ClassSelector'
 import circleinLogo from 'assets/svg/circlein_logo_minimal.svg'
 import postingImage from 'assets/gif/loading-rocket.gif'
 
+import { useLocation } from 'react-router'
 import CreateQuestion from './Question'
 import CreateNotes from './Note'
 import CreatePostSt from './PostSt'
 import CreateShareLink from './ShareLink'
 import ErrorBoundary from '../ErrorBoundary'
 import type { State as StoreState } from '../../types/state'
-import { useLocation } from 'react-router'
 import Appbar from './Appbar'
 
 const styles = theme => ({
@@ -334,7 +334,13 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
               <Divider classes={{ root: classes.divider }} />
               <ListItem button>
                 <span style={{ fontSize: '1rem' }}>
-                8. Read our <a className={classes.link} href="#">community rules</a>
+                8. Read our <a
+                    className={classes.link}
+                    href="http://community.circleinapp.com/"
+                    rel="noopener noreferrer"
+                    target="_blank">
+                    community rules
+                  </a>
                 </span>
               </ListItem>
             </List>
