@@ -42,5 +42,9 @@ export const styles = theme => ({
   moreLessLink: {
     marginLeft: theme.spacing(1),
     cursor: 'pointer'
+  },
+  link: {
+    color: 'white !important',
+    marginRight: theme.spacing()
   }
 });

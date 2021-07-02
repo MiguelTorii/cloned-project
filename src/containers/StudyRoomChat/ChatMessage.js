@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
@@ -276,7 +276,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               >
                 {name}
               </Link>
-              {role && <TutorBadge text={role} />}
+              {role && <RoleBadge text={role} />}
             </Typography>
           )}
           {messageList.map(message => (

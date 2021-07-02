@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   headerTitle: {
     fontSize: 18,
   },
+  memberName: {
+    width: '100%'
+  },
   title: {
     width: 'inherit',
     textAlign: 'center',

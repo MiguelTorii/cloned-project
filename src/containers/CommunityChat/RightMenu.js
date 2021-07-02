@@ -6,13 +6,14 @@ import Avatar from '@material-ui/core/Avatar'
 // import Paper from '@material-ui/core/Paper'
 // import InputBase from '@material-ui/core/InputBase'
 // import IconButton from '@material-ui/core/IconButton'
+import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 import { getInitials } from 'utils/chat'
 import OnlineBadge from 'components/OnlineBadge'
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import HoverPopup from 'components/HoverPopup'
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu'
@@ -27,7 +28,9 @@ const RightMenu = ({
   setSelectedCourse,
 }) => {
   const classes = useStyles()
-  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local])
+  const localChannel = useMemo(() =>
+    channel && local[channel.sid],
+  [channel, local])
 
   if (!channel || !localChannel) return null
 
@@ -96,7 +99,10 @@ const RightMenu = ({
                     }}
                   >
                     <ListItemAvatar>
-                      <OnlineBadge isOnline={m.isOnline} bgColorPath="circleIn.palette.primaryBackground">
+                      <OnlineBadge
+                        isOnline={m.isOnline}
+                        bgColorPath="circleIn.palette.primaryBackground"
+                      >
                         <Avatar
                           alt={fullName}
                           src={m.image}
@@ -105,7 +111,15 @@ const RightMenu = ({
                         </Avatar>
                       </OnlineBadge>
                     </ListItemAvatar>
-                    {fullName} {m.role && <TutorBadge text={m.role} />}
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      className={classes.memberName}
+                    >
+                      {fullName}
+                      {m.roleId !== 1 && <RoleBadge />}
+                    </Box>
                   </ListItem>
                 </HoverPopup>
               )

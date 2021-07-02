@@ -12,24 +12,24 @@ import Tab from '@material-ui/core/Tab';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { getCampaign } from 'api/campaign';
 import OnlineBadge from 'components/OnlineBadge';
-import TutorBadge from 'components/TutorBadge'
-import schoolIcon from '../../assets/svg/ic_school.svg';
-// $FlowIgnore
-import LoadImg from '../LoadImg';
+import RoleBadge from 'components/RoleBadge'
 import ImgEmptyCover from 'assets/img/empty_cover.png';
 import ImgLogo from 'assets/svg/app-logo.svg';
 import { Hidden } from '@material-ui/core';
+import { Message, Videocam, Create } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import _ from 'lodash';
+import Box from '@material-ui/core/Box';
+import { getInitials } from 'utils/chat';
+import schoolIcon from '../../assets/svg/ic_school.svg';
+// $FlowIgnore
+import LoadImg from '../LoadImg';
 import { getPointsText } from '../../utils/helpers';
 import GradientButton from '../Basic/Buttons/GradientButton';
-import { Message, Videocam, Create } from '@material-ui/icons';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import IconButton from '@material-ui/core/IconButton';
 import type { About, UserProfile } from '../../types/models';
-import _ from 'lodash';
 import PointsHistoryCard from './PointsHistoryCard';
-import Box from '@material-ui/core/Box';
 import { styles } from '../_styles/Profile/header';
-import { getInitials } from 'utils/chat';
 
 type Props = {
   classes: Object,
@@ -156,7 +156,7 @@ class Header extends React.PureComponent<Props, State> {
             {
               isMyProfile ?
                 <IconButton
-                  classes={{root: classes.penIcon}}
+                  classes={{ root: classes.penIcon }}
                   onClick={onEditProfile}
                 >
                   <Create />
@@ -211,11 +211,12 @@ class Header extends React.PureComponent<Props, State> {
                 container
                 direction="column"
               >
-                <Grid item xs={12}>
-                  <Typography variant="h5" gutterBottom>
-                    {name} {role && <TutorBadge text={role} />}
+                <Box display="flex" alignItems="center" mb={1}>
+                  <Typography variant="h5" gutterBottom className={classes.name}>
+                    {name}
                   </Typography>
-                </Grid>
+                  {role && <RoleBadge text={role} />}
+                </Box>
                 <Hidden mdUp>
                   <Grid item xs={12}>
                     {this.renderNumbers()}
@@ -306,7 +307,7 @@ class Header extends React.PureComponent<Props, State> {
           variant="fullWidth"
           classes={{ root: classes.tabs }}
         >
-          {/*<Tab label="Profile" />*/}
+          {/* <Tab label="Profile" /> */}
           <Tab label={isMyProfile ? 'My Posts' : 'Posts'} value={1} />
           {isMyProfile && <Tab label="Bookmarks" value={2}/>}
         </Tabs>

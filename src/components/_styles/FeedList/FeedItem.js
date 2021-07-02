@@ -255,7 +255,8 @@ export default theme => ({
     color: theme.circleIn.palette.danger
   },
   titleText: {
-    fontSize: 18
+    fontSize: 18,
+    marginRight: theme.spacing()
   },
   boldTitle: {
     fontWeight: 800,

@@ -47,6 +47,10 @@ export const styles = theme => ({
     top: 0,
     right: 0
   },
+  name: {
+    marginBottom: 0,
+    marginRight: theme.spacing()
+  },
   helpIcon: {
     width: 20,
     height: 20,

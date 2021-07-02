@@ -104,7 +104,8 @@ export const styles = theme => ({
     }
   },
   link: {
-    color: theme.circleIn.palette.primaryText1,
+    color: `${theme.circleIn.palette.primaryText1} !important`,
+    marginRight: theme.spacing(),
     '&:hover': {
       textDecoration: 'none',
     }

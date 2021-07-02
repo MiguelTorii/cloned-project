@@ -10,18 +10,17 @@ import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import * as chatActions from 'actions/chat'
-import { sendMessage } from 'api/chat'
+import BatchMessage from 'containers/Chat/BatchMessage'
 import SelectClassmates from 'components/CreateCommunityChatChannelInput/SelectClassmates'
+import * as chatActions from 'actions/chat'
+import { sendMessage, createChannel } from 'api/chat'
+import { searchUsers } from 'api/user'
+import type { UserState } from 'reducers/user'
+import type { ChatState } from 'reducers/chat'
+import { getInitials } from 'utils/chat'
 import AutoComplete from '../AutoComplete'
-import { searchUsers } from '../../api/user'
-import { createChannel } from '../../api/chat'
-import type { UserState } from '../../reducers/user'
-import type { ChatState } from '../../reducers/chat'
-import BatchMessage from '../../containers/Chat/BatchMessage'
 
 import { styles } from '../_styles/CreateChatChannelInput';
-import { getInitials } from 'utils/chat'
 
 type Props = {
   classes: Object,
@@ -86,6 +85,7 @@ const CreateChatChannelInput = ({
         label: name,
         userId: Number(user.userId),
         avatar: user.profileImageUrl,
+        role: user?.role,
         initials,
       }
     })

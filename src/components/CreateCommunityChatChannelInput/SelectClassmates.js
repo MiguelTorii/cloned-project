@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Box from '@material-ui/core/Box';
 import InputAdornment from '@material-ui/core/InputAdornment'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
@@ -22,6 +23,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import OnlineBadge from 'components/OnlineBadge';
+import RoleBadge from 'components/RoleBadge'
 import type { SelectType } from '../../types/models';
 import styles from '../_styles/AutoComplete';
 
@@ -118,6 +120,7 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
     initials = '',
     school = '',
     relationship = '',
+    role = '',
     userId = 0,
     noAvatar = false,
     isOnline = false
@@ -153,7 +156,14 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
         </ListItemAvatar>
         <ListItemText
           id={`id-${userId}`}
-          primary={children}
+          primary={
+            <Box display="flex" alignItems="center">
+              <Box mr={1}>
+                {children}
+              </Box>
+              {role && <RoleBadge />}
+            </Box>
+          }
           secondary={relationship}
           secondaryTypographyProps={{ color: 'textPrimary' }}
         />

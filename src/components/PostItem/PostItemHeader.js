@@ -11,6 +11,7 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -24,14 +25,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import CustomQuill from 'components/CustomQuill'
 import Tooltip from 'containers/Tooltip';
 import SharePost from 'containers/SharePost';
 
-import { styles } from '../_styles/PostItem/PostItemHeader';
 import { getInitials } from 'utils/chat';
 import _ from "lodash";
+import { styles } from '../_styles/PostItem/PostItemHeader';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
@@ -148,6 +149,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       newClassExperience,
       onBookmark
     } = this.props;
+
     const { moreAnchorEl, open, showShortSummary } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials = getInitials(name);
@@ -226,16 +228,18 @@ class PostItemHeader extends React.PureComponent<Props, State> {
             </Avatar>
           </Link>
           <div className={classes.userInfo}>
-            <Typography component="p" variant="h6" noWrap>
-              <Link
-                component={MyLink}
-                href={`/profile/${userId}`}
-                className={classes.link}
-              >
-                {name}
-              </Link>{' '}
-              {role && <TutorBadge text={role} />}
-            </Typography>
+            <Box display="flex" alignItems="center">
+              <Typography component="p" variant="h6" noWrap>
+                <Link
+                  component={MyLink}
+                  href={`/profile/${userId}`}
+                  className={classes.link}
+                >
+                  {name}
+                </Link>
+              </Typography>
+              {role && <RoleBadge text={role} />}
+            </Box>
             {(!newClassExperience || expertMode) ? (
               <Typography component="p" variant="subtitle1" noWrap>
                 {classroomName} • {fromNow}

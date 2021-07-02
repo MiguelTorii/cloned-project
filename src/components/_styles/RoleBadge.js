@@ -1,34 +1,39 @@
 export default theme => ({
   root: {
-    marginLeft: theme.spacing(),
     color: theme.circleIn.palette.white,
-    borderRadius: theme.spacing(),
+    borderRadius: theme.spacing(5),
     fontWeight: 700,
     padding: 0
   },
-  tutorBackground: {
-    backgroundColor: '#FFE89B'
+  vectorBadgeRoot: {
+    display: 'flex !important',
+    justifyContent: 'center !important',
+    alignItems: 'center !important',
+    width: 30
   },
-  expertBackground: {
-    backgroundColor: '#15A63D'
-  },
-  leaderBackground: {
-    backgroundColor: '#1E88E5'
+  userRoleColor: {
+    backgroundColor: theme.circleIn.palette.profileBadgeColor
   },
   colorPrimary: {
     backgroundColor: theme.circleIn.palette.brand
+  },
+  label: {
+    display: 'none'
   },
   labelSmall: {
     padding: 0,
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
   },
+  iconSmall: {
+    margin: 0
+  },
   sizeSmall: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 20,
     fontSize: 14,
+    height: 20,
     padding: theme.spacing(0.5)
   }
 })

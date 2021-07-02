@@ -12,14 +12,13 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 import { PERMISSIONS } from 'constants/common'
-import { sendMessage } from 'api/chat'
 import * as chatActions from 'actions/chat'
-import SelectClassmates from './SelectClassmates'
-import { searchUsers } from '../../api/user'
-import { createChannel } from '../../api/chat'
-import type { UserState } from '../../reducers/user'
-import type { ChatState } from '../../reducers/chat'
+import { sendMessage, createChannel } from 'api/chat'
+import { searchUsers } from 'api/user'
+import type { UserState } from 'reducers/user'
+import type { ChatState } from 'reducers/chat'
 import { getInitials } from 'utils/chat'
+import SelectClassmates from './SelectClassmates'
 
 const styles = theme => ({
   validatorForm: {
@@ -174,6 +173,7 @@ const CreateChatChannelInput = ({
         label: name,
         userId: Number(user.userId),
         avatar: user.profileImageUrl,
+        role: user?.role,
         initials,
       }
     })

@@ -13,6 +13,7 @@ import Chip from '@material-ui/core/Chip';
 import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Box from '@material-ui/core/Box';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -23,9 +24,11 @@ import ReportIcon from '@material-ui/icons/Report';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PenIcon from '@material-ui/icons/Create';
 
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import CustomQuill from 'components/CustomQuill'
 import SkeletonLoad from 'components/PostItem/SkeletonLoad';
+import { getInitials } from 'utils/chat';
+import IconBadge from 'assets/svg/badge.svg';
 import PostItemAddComment from './PostItemAddComment';
 import Dialog from '../Dialog';
 // $FlowIgnore
@@ -33,11 +36,9 @@ import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.s
 import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
 import thanksSvg from '../../assets/svg/thanks.svg'
 import commentSvg from '../../assets/svg/comment.svg'
-import IconBadge from 'assets/svg/badge.svg';
 
 import { styles } from '../_styles/PostItem/PostItemComment';
 import OnlineBadge from '../OnlineBadge';
-import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -70,6 +71,7 @@ type Props = {
   onReport: Function,
   onDelete: Function,
   role: string,
+  roleId: number,
   replyCommentId: number,
   onBestAnswer: Function
 };
@@ -186,7 +188,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       readOnly,
       accepted,
       hasBestAnswer,
-      role,
+      roleId,
       isOwner,
       userId,
       replyCommentId
@@ -194,7 +196,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
     const { showAddComment, open, moreAnchorEl, isEditing } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
-    const name = `${firstName} ${lastName}.`;
+    const name = `${firstName} ${lastName}`;
     const initials = getInitials(name)
     const fromNow = date ? date.fromNow() : '';
 
@@ -249,15 +251,18 @@ class PostItemComment extends React.PureComponent<Props, State> {
       <div className={classes.commentArea}>
         <div>
           <div className={classes.header}>
-            <Typography component="p" variant="subtitle2" noWrap>
-              <Link
-                component={MyLink}
-                href={`/profile/${ownerId}`}
-                className={classes.link}
-              >
-                {name} {role && <TutorBadge text={role} />}
-              </Link>
-            </Typography>
+            <Box display="flex" alignItems="center">
+              <Typography component="p" variant="subtitle2" noWrap>
+                <Link
+                  component={MyLink}
+                  href={`/profile/${ownerId}`}
+                  className={classes.link}
+                >
+                  {name}
+                </Link>
+              </Typography>
+              {roleId !== 1 && <RoleBadge />}
+            </Box>
             &nbsp; • &nbsp;
             <Typography
               component="p"
@@ -300,7 +305,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       <>
         <div className={cx(classes.container, isReply && classes.reply)}>
           <Link component={MyLink} href={`/profile/${ownerId}`}>
-            <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={true}>
+            <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat>
               <Avatar src={profileImageUrl}>{initials}</Avatar>
             </OnlineBadge>
           </Link>
@@ -320,7 +325,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   defaultValue={comment}
                 />
               </div>
-              ) : renderComment()
+            ) : renderComment()
             }
             <div
               className={cx(

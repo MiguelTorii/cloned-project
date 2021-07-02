@@ -14,7 +14,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg'
 import { ReactComponent as UndoIcon } from 'assets/svg/undo.svg'
 import { getInitials } from 'utils/chat'
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import Dialog from 'components/Dialog'
 import OnlineBadge from 'components/OnlineBadge'
 import useStyles from 'components/_styles/RemoveStudentDialog'
@@ -136,7 +136,7 @@ const RemoveStudentDialog = ({
                     </Avatar>
                   </OnlineBadge>
                 </ListItemAvatar>
-                {fullName} {m.role && <TutorBadge text={m.role} />}
+                {fullName} {m.role && <RoleBadge text={m.role} />}
                 <ListItemSecondaryAction>
                   {!isCommunityChat &&
                     removedUserIds.includes(Number(m.userId)) &&

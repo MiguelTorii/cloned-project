@@ -23,7 +23,7 @@ import { Box, Button, CircularProgress } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 
 import OnlineBadge from 'components/OnlineBadge'
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import ShareLinkWidget from 'components/ShareLinkWidget'
 import { useDispatch } from 'react-redux'
 import { PERMISSIONS } from 'constants/common'
@@ -311,7 +311,7 @@ const RightMenu = ({
                           </Avatar>
                         </OnlineBadge>
                       </ListItemAvatar>
-                      {fullName} {m.role && <TutorBadge text={m.role} />}
+                      {fullName} {m.role && <RoleBadge text={m.role} />}
                       <ListItemSecondaryAction>
                         <RouterLink to={`/profile/${m.userId}`}>
                           <ArrowForwardIosIcon className={classes.icon} />

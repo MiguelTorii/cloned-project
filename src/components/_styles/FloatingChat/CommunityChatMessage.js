@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   createdAt: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
     color: theme.circleIn.palette.primaryText1
   },
   videoSpace: {
@@ -116,7 +116,8 @@ const useStyles = makeStyles(theme => ({
   link: {
     color: 'white',
     fontSize: '1rem',
-    fontWeight: 700
+    fontWeight: 700,
+    marginRight: theme.spacing()
   },
   videoAlertRoot: {
     minWidth: 275,

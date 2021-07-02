@@ -12,9 +12,9 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 
 import OnlineBadge from 'components/OnlineBadge';
-import TutorBadge from 'components/TutorBadge'
-import { styles } from '../_styles/FloatingChat/ChatMessage';
+import RoleBadge from 'components/RoleBadge'
 import { getInitials } from 'utils/chat';
+import { styles } from '../_styles/FloatingChat/ChatMessage';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
 
@@ -174,7 +174,7 @@ class ChatMessage extends React.PureComponent<Props> {
               >
                 {name}
               </Link>
-              {role && <TutorBadge text={role} />}
+              {role && <RoleBadge text={role} />}
             </Typography>
           )}
           {messageList.map(message => (

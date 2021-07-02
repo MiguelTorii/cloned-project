@@ -11,10 +11,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
 
 import OnlineBadge from 'components/OnlineBadge';
+import RoleBadge from 'components/RoleBadge'
+import Dialog, { dialogStyle } from 'components/Dialog';
 import { getInitials } from 'utils/chat';
-import Dialog, { dialogStyle } from '../../components/Dialog';
 import type { ChatUser } from '../../types/models';
 import { blockUser } from '../../api/user';
 import { getGroupMembers } from '../../api/chat';
@@ -119,51 +121,56 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             title="Members"
           >
             <List className={classes.list}>
-              {members.map(member => (
-                <ListItem key={member.userId} role={undefined} dense>
-                  <ListItemAvatar>
-                    <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.feedBackground">
-                      <Avatar
-                        alt={`${member.firstName} ${member.lastName}`}
-                        src={member.profileImageUrl}
-                      >
-                        {getInitials(`${member.firstName} ${member.lastName}`)}
-                      </Avatar>
-                    </OnlineBadge>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      Number(userId) === Number(member.userId)
-                        ? 'me'
-                        : `${member.firstName} ${member.lastName}`
-                    }
-                  />
-                  {Number(userId) !== Number(member.userId) && (
-                    <ListItemSecondaryAction>
-                      <div className={classes.wrapper}>
-                        <Button
-                          onClick={this.handleOpenConfirm({
-                            blockedUserId: member.userId,
-                            name: `${member.firstName} ${member.lastName}`
-                          })}
-                          disabled={loading}
-                          color="secondary"
-                          aria-label="Block"
-                          variant="contained"
+              {members.map(member => {
+                return (
+                  <ListItem key={member.userId} role={undefined} dense>
+                    <ListItemAvatar>
+                      <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.feedBackground">
+                        <Avatar
+                          alt={`${member.firstName} ${member.lastName}`}
+                          src={member.profileImageUrl}
                         >
+                          {getInitials(`${member.firstName} ${member.lastName}`)}
+                        </Avatar>
+                      </OnlineBadge>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        Number(userId) === Number(member.userId)
+                          ? <Box display="flex">
+                          me &nbsp; {member.role && <RoleBadge />}
+                          </Box>
+                          : <Box display="flex">
+                            {`${member.firstName} ${member.lastName}`} &nbsp; {member.roleId !== 1 && <RoleBadge />}
+                          </Box>
+                      }
+                    />
+                    {Number(userId) !== Number(member.userId) && (
+                      <ListItemSecondaryAction>
+                        <div className={classes.wrapper}>
+                          <Button
+                            onClick={this.handleOpenConfirm({
+                              blockedUserId: member.userId,
+                              name: `${member.firstName} ${member.lastName}`
+                            })}
+                            disabled={loading}
+                            color="secondary"
+                            aria-label="Block"
+                            variant="contained"
+                          >
                           Block
-                        </Button>
-                        {loading && (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
-                    </ListItemSecondaryAction>
-                  )}
-                </ListItem>
-              ))}
+                          </Button>
+                          {loading && (
+                            <CircularProgress
+                              size={24}
+                              className={classes.buttonProgress}
+                            />
+                          )}
+                        </div>
+                      </ListItemSecondaryAction>
+                    )}
+                  </ListItem>
+                )})}
             </List>
           </Dialog>
         </ErrorBoundary>

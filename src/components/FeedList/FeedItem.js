@@ -32,7 +32,7 @@ import CreateIcon from '@material-ui/icons/Create'
 
 import PostComments from 'containers/PostComments'
 
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
 import pluralize from 'pluralize';
@@ -462,12 +462,19 @@ const FeedItem = ({
               }}
               onClick={handleUserClick}
             >
-              <Typography className={classes.titleText} component="div" variant="h6" noWrap>
-                {data.name}
+              <Box display="flex" alignItems="center">
+                <Typography
+                  className={classes.titleText}
+                  component="div"
+                  variant="h6"
+                  noWrap
+                >
+                  {data.name}
+                </Typography>
                 {data.role && (
-                  <TutorBadge text={data.role} />
+                  <RoleBadge text={data.role} />
                 )}
-              </Typography>
+              </Box>
             </CardActionArea>
           </Grid>
           <Grid item>

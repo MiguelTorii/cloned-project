@@ -13,6 +13,7 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
@@ -22,13 +23,13 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Popover from '@material-ui/core/Popover'
 import MenuList from '@material-ui/core/MenuList'
 import MenuItem from '@material-ui/core/MenuItem'
-import TutorBadge from 'components/TutorBadge'
+import RoleBadge from 'components/RoleBadge'
 import BlockMemberModal from 'components/BlockMemberModal'
 import OnlineBadge from 'components/OnlineBadge'
 import StudyRoomReport from 'components/StudyRoomReport'
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg'
-import useStyles from '../_styles/FloatingChat/CommunityChatMessage'
 import { getInitials } from 'utils/chat'
+import useStyles from '../_styles/FloatingChat/CommunityChatMessage'
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />)
 
@@ -66,7 +67,7 @@ const ChatMessage = ({
   onStartVideoCall,
   onImageClick,
   handleBlock,
-  isCommunityChat
+  // isCommunityChat
 }: Props) => {
   const classes = useStyles()
 
@@ -285,22 +286,24 @@ const ChatMessage = ({
         </div>
         <div className={classes.message}>
           {message.imageKey !== 'add_new_member' && <div className={classes.messageHeader}>
-            <Typography variant="subtitle2" className={classes.name}>
-              <Link
-                className={classes.link}
-                component={MyLink}
-                href={`/profile/${userId || ''}`}
-              >
-                {name}
-              </Link>
-              {isCommunityChat && role && <TutorBadge text={role} />}
+            <Box display="flex" alignItems="center">
+              <Typography variant="subtitle2" className={classes.name}>
+                <Link
+                  className={classes.link}
+                  component={MyLink}
+                  href={`/profile/${userId || ''}`}
+                >
+                  {name}
+                </Link>
+              </Typography>
+              {role && <RoleBadge text={role} />}
               <Typography
                 className={cx(classes.createdAt)}
                 variant="caption"
               >
                 {date} at {message.createdAt}
               </Typography>
-            </Typography>
+            </Box>
             {showOpetions === message.sid && currentUserId !== userId && <Button
               className={classes.threeDots}
               variant="contained"
