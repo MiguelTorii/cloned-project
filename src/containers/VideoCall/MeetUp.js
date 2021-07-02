@@ -312,7 +312,7 @@ class MeetUp extends React.Component<Props, State> {
         props: {
           channelName: videoRoom.name,
           start_time: this.startTime,
-          end_time: new Date(),
+          end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Ended',
           'Channel SID': videoRoom.sid,
         }
@@ -383,7 +383,7 @@ class MeetUp extends React.Component<Props, State> {
         event: 'Video- Start Video',
         props: {
           channelName: videoRoom.name,
-          timestamp: moment().valueOf(),
+          start_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Started',
           'Channel SID': videoRoom.sid,
         }
@@ -516,7 +516,7 @@ class MeetUp extends React.Component<Props, State> {
 
   handleAddParticipant = (participant, track, local = false) => {
     if (this.state.participants.length === 1 && !this.startTime) {
-      this.startTime = new Date()
+      this.startTime = moment().format('YYYY-MM-DD hh:mm:ss')
     }
     const newState = utils.addParticipant(
       this.state,
@@ -537,7 +537,7 @@ class MeetUp extends React.Component<Props, State> {
           props: {
             channelName: videoRoom.name,
             start_time: this.startTime,
-            end_time: new Date(),
+            end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
             type: 'Ended',
             'Channel SID': videoRoom.sid,
           }
