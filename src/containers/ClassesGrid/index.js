@@ -20,6 +20,7 @@ import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user'
+import * as feedActions from '../../actions/feed'
 
 const styles = theme => ({
   item: {
@@ -42,10 +43,11 @@ type Props = {
   fetchClasses: Function,
   // campaign: CampaignState,
   user: UserState,
-  pushTo: Function
+  pushTo: Function,
+  clearFeeds: Function
 };
 
-const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
+const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => {
   const [classList, setClassList] = useState(null)
   const [canAddClasses, setCanAddClasses] = useState(false)
   const [openAddClasses, setOpenAddClasses] = useState(false)
@@ -120,8 +122,9 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
   const navigate = useCallback(({ courseDisplayName, sectionId, classId }) => {
     document.title = courseDisplayName
+    clearFeeds();
     pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}`)
-  }, [pushTo])
+  }, [pushTo, clearFeeds])
 
   const hasClasses = useMemo(() => classList && classList.length > 0, [classList])
 
@@ -184,6 +187,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       fetchClasses: userActions.fetchClasses,
+      clearFeeds: feedActions.clearFeeds,
       pushTo: push
     },
     dispatch

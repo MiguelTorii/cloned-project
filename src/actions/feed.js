@@ -105,6 +105,10 @@ const resetScrollDataRequest = () => ({
   type: feedActions.RESET_SCROLL_DATA
 });
 
+const clearFeedsAction = () => ({
+  type: feedActions.CLEAR_FEEDS
+});
+
 export const fetchFeed = () => async (
   dispatch: Dispatch,
   getState: Function
@@ -159,6 +163,9 @@ export const fetchFeed = () => async (
 
 export const clearFeedError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());
+
+export const clearFeeds = () => async (dispatch) =>
+  dispatch(clearFeedsAction());
 
 export const updateScrollData =
   (scrollData: { position: number, clasId: number }) => async (dispatch: Dispatch) =>

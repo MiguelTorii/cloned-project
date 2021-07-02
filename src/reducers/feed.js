@@ -139,6 +139,17 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
         }
       }
     });
+  case feedActions.CLEAR_FEEDS:
+    return update(state, {
+      data: {
+        filters: {
+          index: { $set: 0 },
+          limit: { $set: 10 }
+        },
+        items: { $set: [] },
+        hasMore: { $set: false }
+      }
+    });
   case feedActions.UPDATE_FEED_LIMIT_REQUEST:
     return update(state, {
       data: {

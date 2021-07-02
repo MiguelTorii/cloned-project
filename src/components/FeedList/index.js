@@ -14,6 +14,7 @@ import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg'
 import LoadImg from 'components/LoadImg'
 import Box from '@material-ui/core/Box'
 import FeedItem from './FeedItem';
+import ImgLoading from 'assets/gif/class-feed-loading.gif';
 
 import styles from '../_styles/FeedList';
 
@@ -165,7 +166,20 @@ class FeedList extends React.PureComponent<Props, State> {
 
     return (
       <div className={`${classes.container} tour-onboarding-feed`}>
-        {isLoading && (
+        {isLoading && items.length === 0 && (
+          <>
+            <Box display="flex" justifyContent="center">
+              <img src={ImgLoading} alt="load feeds" className={classes.loadingGif}/>
+            </Box>
+            <Typography variant="h6" align="center" gutterBottom>
+              Hang tight!
+            </Typography>
+            <Typography align="center">
+              Pulling up your Class Feed content...
+            </Typography>
+          </>
+        )}
+        {isLoading && items.length !== 0 && (
           <div className={classes.loader}>
             <div className={classes.progress}>
               <Typography align="center" variant="subtitle1" paragraph>
@@ -220,7 +234,7 @@ class FeedList extends React.PureComponent<Props, State> {
           </InfiniteScroll>
         </div>
         <Paper className={classes.root} elevation={0}>
-          {items.length === 0 && this.getEmptyState(pathname)}
+          {!isLoading && items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
         {
           items.length !== 0 && !hasMore &&

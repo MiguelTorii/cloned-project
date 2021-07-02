@@ -92,5 +92,8 @@ export default theme => ({
   },
   expertContainerText: {
     margin: theme.spacing(2, 0)
+  },
+  loadingGif: {
+    width: 250
   }
 });

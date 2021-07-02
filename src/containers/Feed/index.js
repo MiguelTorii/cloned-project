@@ -69,7 +69,8 @@ class Feed extends React.PureComponent<Props, State> {
     feedId: null,
     report: null,
     deletePost: null,
-    selectedClasses: []
+    selectedClasses: [],
+    isBeforeFirstLoad: true // This is used to display loading state from the beginning.
   };
 
   mounted: boolean;
@@ -155,6 +156,9 @@ class Feed extends React.PureComponent<Props, State> {
     const { fetchFeed } = this.props;
     try {
       fetchFeed();
+      this.setState({
+        isBeforeFirstLoad: false
+      });
     } catch (err) {
       console.log(err);
     }
@@ -375,7 +379,8 @@ class Feed extends React.PureComponent<Props, State> {
       report,
       deletePost,
       openClassmates,
-      selectedClasses
+      selectedClasses,
+      isBeforeFirstLoad
     } = this.state;
 
 
@@ -441,7 +446,7 @@ class Feed extends React.PureComponent<Props, State> {
               text="When you're in Expert Mode, you see posts from all your classes at once."
             >
               <FeedList
-                isLoading={isLoading}
+                isLoading={isBeforeFirstLoad || isLoading}
                 userId={userId}
                 schoolId={schoolId}
                 items={items}
