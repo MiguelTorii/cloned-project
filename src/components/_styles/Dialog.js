@@ -14,6 +14,10 @@ export const styles = theme => ({
   container: {
     borderRadius: 8
   },
+  btnDisabled: {
+    background: `${theme.circleIn.palette.disableButtonColor} !important`,
+    color: 'white !important'
+  },
   title: {
     color: theme.circleIn.palette.primaryText1,
     fontSize: 28,
@@ -23,12 +27,19 @@ export const styles = theme => ({
     margin: theme.spacing(2, 7),
     textAlign: 'center'
   },
+  backIcon: {
+    position: 'absolute',
+    color: theme.circleIn.palette.primaryText1,
+    cursor: 'pointer',
+    left: 24,
+    top: 24
+  },
   closeIcon: {
     position: 'absolute',
     color: theme.circleIn.palette.primaryText1,
     cursor: 'pointer',
-    right: 20,
-    top: 20
+    right: 24,
+    top: 24
   },
   hr: {
     background: 'rgba(233, 236, 239, 0.25)',

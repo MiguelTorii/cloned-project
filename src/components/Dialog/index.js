@@ -8,10 +8,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import cx from 'classnames'
 
-import { styles } from '../_styles/Dialog';
 import ScrollToTop from 'components/ScrollToTop';
+import { styles } from '../_styles/Dialog';
 
 export const dialogStyle = {
   borderRadius: 20,
@@ -25,17 +26,18 @@ const Dialog = ({
   classes,
   className,
   contentClassName,
+  showBackIcon = false,
   disableBackdropClick = false,
   disableActions = false,
   disableOk = false,
   disableEscapeKeyDown = false,
   loading = false,
-  okTitle = "Got it!",
+  okTitle = 'Got it!',
   okButtonClass,
   secondaryOkTitle = "",
-  maxWidth="lg",
+  maxWidth = 'lg',
   cancelTitle = 'Cancel',
-  secondaryRemoveTitle = "",
+  secondaryRemoveTitle = '',
   secondaryVariant = 'contained',
   onCancel,
   onOk = () => {},
@@ -60,6 +62,7 @@ const Dialog = ({
   className: ?string,
   okButtonClass: ?string,
   disableBackdropClick: ?boolean,
+  showBackIcon: ?boolean,
   disableActions: ?boolean,
   disableEscapeKeyDown: ?boolean,
   loading: ?boolean,
@@ -80,9 +83,6 @@ const Dialog = ({
   rightButton: ?ReactNode,
   props: Object
 }) => {
-  // useEffect(() => {
-  // updateVisibility(open);
-  // }, [open, updateVisibility]);
   const [dialogRef, setDialogRef] = useState(null);
 
   return (
@@ -101,6 +101,7 @@ const Dialog = ({
       {
         showHeader &&
           <div className={classes.headerContainer}>
+            { showBackIcon && <ArrowBackIosIcon className={classes.backIcon} onClick={onCancel} /> }
             {
               title &&
                 (typeof title === 'string' ?
@@ -178,6 +179,9 @@ const Dialog = ({
           }
           <Button
             className={cx(okButtonClass, classes.button)}
+            classes={{
+              disabled: classes.btnDisabled
+            }}
             color="primary"
             ref={setOkRef}
             disabled={disableActions || disableOk}

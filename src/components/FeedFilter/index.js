@@ -1,6 +1,7 @@
 // @flow
 import React, { Fragment } from 'react';
 import update from 'immutability-helper';
+import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,33 +18,37 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
-import Tooltip from 'containers/Tooltip'
-// import ClassMultiSelect from 'containers/ClassMultiSelect'
+import Tooltip from 'containers/Tooltip';
 import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 import Dialog from '../Dialog';
 import DateRange from '../DateRange';
-import { styles } from '../_styles/FeedFilter';
+import styles from '../_styles/FeedFilter';
 
 const types = [
   {
     value: '4',
-    label: 'Notes'
+    label: 'Notes',
+    description: 'View all notes from you and your classmates'
   },
   {
     value: '6',
-    label: 'Questions'
+    label: 'Questions',
+    description: 'View all questions asked by your classmates, and yours'
   },
   {
     value: '3',
-    label: 'Flashcards'
+    label: 'Flashcards',
+    description: 'View all flashcards shared by you and your classmates'
   },
   {
     value: '5',
-    label: 'Resources'
+    label: 'Resources',
+    description: 'View all links and resources shared by you and your classmates'
   },
   {
     value: '8',
-    label: 'Posts'
+    label: 'Posts',
+    description: 'View all general posts shared by classmates'
   }
 ];
 
@@ -216,7 +221,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
   getFilterCount = () => {
     const { newClassExperience, userClasses, postTypes } = this.props;
     let count = 0;
-    // if (from !== 'everyone') count += 1;
     if (!newClassExperience && userClasses.length > 0) count += 1;
     if (postTypes.length > 0) count += 1;
     return count;
@@ -238,12 +242,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       userClasses,
       onClearSearch,
     } = this.props;
-    const {
-      // openClassFilter,
-      // selectedUserClasses,
-      open,
-      postTypes
-    } = this.state;
+    const { open, postTypes } = this.state;
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
     const isPostTypesSelected = postTypes.length > 0;
@@ -255,7 +254,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
           <div className={classes.filtersHeader}>
             <InputBase
               className={classes.input}
-              // type="search"
               startAdornment={<SearchIcon
                 classes={{
                   root: classes.searchIcon
@@ -315,17 +313,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 Filters
               </TransparentButton>
             </Tooltip>
-            {/* {expertMode && <Button */}
-            {/* aria-haspopup="true" */}
-            {/* aria-label="Filter" */}
-            {/* aria-owns={open ? 'filter-popper' : undefined} */}
-            {/* className={classes.filterButton} */}
-            {/* color="primary" */}
-            {/* onClick={this.handleClickClasses} */}
-            {/* variant={userClasses.length > 0 ? "contained" : "outlined"} */}
-            {/* > */}
-            {/* Classes */}
-            {/* </Button>} */}
           </div>
         </Paper>
         <Dialog
@@ -334,9 +321,13 @@ class FeedFilter extends React.PureComponent<Props, State> {
           onCancel={this.handleClose}
           onOk={this.handleApplyFilters}
           open={open}
+          showBackIcon
           showActions
           showCancel
-          title="Filter Posts by:"
+          okButtonClass={classes.searchButton}
+          disableOk={!isPostTypesSelected}
+          closeButtonClass={classes.closeSearchModalButton}
+          title="Filter Class Feed"
         >
           <Grid container>
             {(!newClassExperience) && <Grid item xs={12} sm={6} className={classes.option}>
@@ -375,83 +366,59 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   className={classes.formButton}
                   onClick={this.handleSelectAll('userClasses')}
                 >
-                    Select All
+                  Select All
                 </Button>
               )}
             </Grid>}
-            <Grid item xs={12} sm={6} className={classes.option}>
+            <Grid item xs={12} className={classes.option}>
               <FormControl className={classes.formControl}>
-                <FormLabel component="legend">Post Type</FormLabel>
+                <FormLabel
+                  className={classes.filterDescription}
+                  component="legend"
+                >
+                  Select posts you’d like to see below:
+                </FormLabel>
                 <FormGroup>
                   {types.map(type => (
-                    <FormControlLabel
-                      key={type.label}
-                      control={
-                        <Checkbox
-                          checked={
-                            postTypes.findIndex(o => o === type.value) > -1
-                          }
-                          onChange={this.handleChange('postTypes')}
-                          value={type.value}
-                        />
-                      }
-                      label={type.label}
-                    />
+                    <>
+                      <FormControlLabel
+                        key={type.label}
+                        control={
+                          <Checkbox
+                            checked={
+                              postTypes.findIndex(o => o === type.value) > -1
+                            }
+                            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                            icon={<span className={classes.icon} />}
+                            onChange={this.handleChange('postTypes')}
+                            value={type.value}
+                          />
+                        }
+                        label={type.label}
+                      />
+                      <span className={classes.description}>{type.description}</span>
+                    </>
                   ))}
                 </FormGroup>
+                <FormControlLabel
+                  key='deselect'
+                  control={
+                    <Checkbox
+                      checked={isPostTypesSelected}
+                      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                      icon={<span className={classes.icon} />}
+                      onChange={isPostTypesSelected
+                        ? this.handleDeselectAll('postTypes')
+                        : this.handleSelectAll('postTypes')}
+                      value={isPostTypesSelected}
+                    />
+                  }
+                  label={isPostTypesSelected ? 'Deselect All' : 'Select All'}
+                />
               </FormControl>
-              {isPostTypesSelected ? (
-                <Button
-                  color='primary'
-                  className={classes.formButton}
-                  onClick={this.handleDeselectAll('postTypes')}
-                >
-                  Deselect All
-                </Button>
-              ) : (
-                <Button
-                  color='primary'
-                  className={classes.formButton}
-                  onClick={this.handleSelectAll('postTypes')}
-                >
-                    Select All
-                </Button>
-              )}
             </Grid>
           </Grid>
-          <div className={classes.actions}>
-            <Button
-              color="primary"
-              className={classes.button}
-              disabled={filterCount === 0}
-              onClick={this.handleClearFilters}
-            >
-              Reset Filters
-            </Button>
-            <span className={classes.grow} />
-          </div>
         </Dialog>
-        {/* <Dialog */}
-        {/* open={openClassFilter} */}
-        {/* fullWidth */}
-        {/* maxWidth='sm' */}
-        {/* title='Filter feed by class' */}
-        {/* onCancel={this.handleClose} */}
-        {/* secondaryVariant='text' */}
-        {/* onSecondaryOk={this.handleClearFilters} */}
-        {/* onOk={this.handleApplyFilters} */}
-        {/* secondaryOkTitle='Reset' */}
-        {/* showActions */}
-        {/* okTitle='Search' */}
-        {/* > */}
-        {/* <ClassMultiSelect */}
-        {/* noEmpty */}
-        {/* variant='standard' */}
-        {/* placeholder='Select Classes...' */}
-        {/* selected={selectedUserClasses} */}
-        {/* onSelect={this.handleChangeClasses} */}
-        {/* /> */}
-        {/* </Dialog> */}
       </Fragment>
     );
   }
