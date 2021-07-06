@@ -264,9 +264,29 @@ export default theme => ({
   titleFormat: {
     fontSize: 24,
   },
+  boldTitle: {
+    fontSize: 18,
+    fontWeight: 600,
+  },
+  titleFormat: {
+    fontSize: 18,
+    lineHeight: '25px',
+    fontWeight: 600,
+  },
   markdown: {
     color: theme.palette.text.primary,
     fontFamily: theme.typography.fontFamily,
-    fontSize: 20,
+    fontSize: 16,
+    lineHeight: '22px',
+    fontWeight: 400,
+
+    position: 'relative',
+    maxHeight: 'calc(22px * 6)',
+    overflow: 'hidden',
+    marginBottom: theme.spacing(1.5),
+
+    display: '-webkit-box',
+    WebkitLineClamp: 6,
+    WebkitBoxOrient: 'vertical',
   }
 })

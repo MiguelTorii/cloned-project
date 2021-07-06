@@ -177,11 +177,10 @@ const FeedItem = ({
   const handleDescription = useCallback((typeId, body) => {
     if (typeId === 6) return ''
 
-    const cleanBody = body.replace(/<[^>]*>/g, '')
+    // eslint-disable-next-line
+    const cleanBody = body.replace(/<[^>]*>/g, '').replace(/\&nbsp;/g, ' ')
 
-    if (cleanBody.length < 100) return cleanBody
-
-    return `${cleanBody.substring(0, 600)}...`
+    return cleanBody
   }, [])
 
   const getTitle = useCallback((data: Object): string => {
@@ -412,8 +411,9 @@ const FeedItem = ({
         </CardContent>
         {(data.typeId !== FeedTypes.question.id) && (
           <CardContent className={classes.content}>
-            <div className={
-              data.title === 0
+            <div
+              className={
+              (!data.title && description.length < 220)
                 ? classes.titleFormat
                 : classes.markdown
             }>
@@ -423,18 +423,20 @@ const FeedItem = ({
             {renderImage()}
           </CardContent>
         )}
-        <CardContent className={classes.tags}>
-          {data.tags.map(tag => (
-            !newClassExperience ?
-              <Chip
-                key={tag.id}
-                label={`#${tag.name}`}
-                className={classes.chip}
-                classes={{ label: classes.label }}
-              /> :
-              <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
-          ))}
-        </CardContent>
+        {data.tags.length > 0 && (
+          <CardContent className={classes.tags}>
+            {data.tags.map(tag => (
+              !newClassExperience ?
+                <Chip
+                  key={tag.id}
+                  label={`#${tag.name}`}
+                  className={classes.chip}
+                  classes={{ label: classes.label }}
+                /> :
+                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+            ))}
+          </CardContent>
+        )}
       </CardActionArea>
       <CardActions>
         <Grid container spacing={1} alignItems="center">

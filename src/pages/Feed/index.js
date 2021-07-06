@@ -15,7 +15,11 @@ import Feed from '../../containers/Feed';
 
 const styles = () => ({
   item: {
-    display: 'flex'
+    display: 'flex',
+    maxWidth: '62%'
+  },
+  resources: {
+    maxWidth: '38%'
   }
 });
 
@@ -38,7 +42,7 @@ const FeedPage = ({ classes, location }: Props) => {
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container justify="center">
+        <Grid container justify="space-between">
           <Grid item xs={12} md={9} className={classes.item}>
             <Feed
               feedId={feedId}
@@ -47,7 +51,7 @@ const FeedPage = ({ classes, location }: Props) => {
               from={from}
             />
           </Grid>
-          <Grid item xs={12} md={3} ref={gridRef}>
+          <Grid item xs={12} md={3} className={classes.resources} ref={gridRef}>
             <FeedResources gridRef={gridRef} />
           </Grid>
         </Grid>
