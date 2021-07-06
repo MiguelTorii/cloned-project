@@ -132,7 +132,6 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
           borderRadius={250}
           scale={scale}
           rotate={angle}
-          crossOrigin="anonymous"
         />
       </Box>
       <Box px={5} mb={4}>

@@ -259,12 +259,6 @@ export default theme => ({
     marginRight: theme.spacing()
   },
   boldTitle: {
-    fontWeight: 800,
-  },
-  titleFormat: {
-    fontSize: 24,
-  },
-  boldTitle: {
     fontSize: 18,
     fontWeight: 600,
   },
