@@ -20,13 +20,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReplyIcon from '@material-ui/icons/Reply';
-import ReportIcon from '@material-ui/icons/Report';
+import FlagIcon from '@material-ui/icons/Flag';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PenIcon from '@material-ui/icons/Create';
 
 import RoleBadge from 'components/RoleBadge'
 import CustomQuill from 'components/CustomQuill'
 import SkeletonLoad from 'components/PostItem/SkeletonLoad';
+import Report from 'components/Report';
+
 import { getInitials } from 'utils/chat';
 import IconBadge from 'assets/svg/badge.svg';
 import PostItemAddComment from './PostItemAddComment';
@@ -68,7 +70,6 @@ type Props = {
   onPostComment: Function,
   onUpdateComment: Function,
   onThanks: Function,
-  onReport: Function,
   onDelete: Function,
   role: string,
   roleId: number,
@@ -79,7 +80,8 @@ type Props = {
 type State = {
   showAddComment: boolean,
   open: boolean,
-  isEditing: boolean
+  isEditing: boolean,
+  report: ?Object
 };
 
 class PostItemComment extends React.PureComponent<Props, State> {
@@ -93,6 +95,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
   state = {
     showAddComment: false,
     moreAnchorEl: null,
+    report: null,
     open: false,
     isEditing: false
   };
@@ -114,8 +117,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
   };
 
   handleReport = () => {
-    const { id, ownerId, onReport } = this.props;
-    onReport({ commentId: id, ownerId });
+    const { id, ownerId } = this.props;
+    this.setState({
+      report: { commentId: id, ownerId },
+      moreAnchorEl: null
+    });
   };
 
   handleConfirmBestAnswer = () => {
@@ -165,6 +171,10 @@ class PostItemComment extends React.PureComponent<Props, State> {
     });
   };
 
+  handleReportClose = () => {
+    this.setState({ report: null });
+  };
+
   render() {
     const {
       id,
@@ -193,7 +203,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       userId,
       replyCommentId
     } = this.props;
-    const { showAddComment, open, moreAnchorEl, isEditing } = this.state;
+    const { showAddComment, open, report, moreAnchorEl, isEditing } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
     const name = `${firstName} ${lastName}`;
@@ -234,9 +244,9 @@ class PostItemComment extends React.PureComponent<Props, State> {
         {!isOwn
           ? <MenuItem onClick={this.handleReport}>
             <ListItemIcon color="inherit">
-              <ReportIcon />
+              <FlagIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Report" />
+            <ListItemText inset primary="Report an Issue" />
           </MenuItem>
           : <MenuItem onClick={this.handleDelete}>
             <ListItemIcon color="inherit">
@@ -410,6 +420,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
           </Typography>
         </Dialog>
         {renderMenu}
+        <Report
+          open={Boolean(report)}
+          ownerId={ownerId}
+          ownerName={name}
+          objectId={id || -1}
+          onClose={this.handleReportClose}
+        />
       </>
     );
   }

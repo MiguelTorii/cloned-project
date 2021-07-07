@@ -20,6 +20,15 @@ export default theme => ({
   selectForm: {
     marginTop: 50,
   },
+  nameSelect: {
+    '& .MuiSelect-root': {
+      padding: theme.spacing(1.25, 1.75),
+    },
+
+    '& > svg': {
+      display: 'none',
+    }
+  },
   select: {
     color: theme.circleIn.palette.helperText,
 

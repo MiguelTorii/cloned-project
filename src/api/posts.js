@@ -1192,7 +1192,7 @@ export const report = async ({
     return data;
   } catch (err) {
     console.log(err);
-    return {};
+    throw err;
   }
 };
 

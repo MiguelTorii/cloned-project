@@ -1,77 +1,58 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
-import { withStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
-import Dialog from 'components/Dialog';
-import SimpleErrorDialog from 'components/SimpleErrorDialog';
-import { report, getReasons } from '../../api/posts';
-import type { UserState } from '../../reducers/user';
-import styles from '../_styles/StudyRoomReport';
+import React, { useCallback, useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { withSnackbar } from 'notistack'
+import { withStyles } from '@material-ui/core/styles'
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import InputLabel from '@material-ui/core/InputLabel'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import Chip from '@material-ui/core/Chip'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg'
+import Dialog from 'components/Dialog'
+import SimpleErrorDialog from 'components/SimpleErrorDialog'
+import { report, getReasons } from '../../api/posts'
+import type { UserState } from '../../reducers/user'
+import cx from 'classnames'
+import styles from '../_styles/Report'
 
 type Props = {
   user: UserState,
   open: boolean,
-  handleClose: Function
-};
+  onClose: Function
+}
 
 const ReportIssue = ({
   user: {
     data: { userId }
   },
-  router,
+  ownerId,
+  ownerName,
   profiles,
   classes,
-  handleClose,
+  onClose,
   open,
 }: Props) => {
+  const [selectedReason, setSelectedReason] = useState('')
+  const [reasonList, setReasonList] = useState([])
   const [loading, setLoading] = useState(false)
   const [reported, setReported] = useState(false)
-  const [selectedReason, setSelectedReason] = useState('')
-  const [selectedNames, setSelectedNames] = useState([])
   const [openError, setOpenError] = useState(false)
   const [errorTitle, setErrorTitle] = useState('')
   const [errorBody, setErrorBody] = useState('')
 
-  const names = useMemo(() => {
-    const filteredIds = Object.keys(profiles || []).filter(id => id !== userId)
-    return filteredIds.map(id => {
-      return {
-        id,
-        name: `${profiles[id].firstName} ${profiles[id].lastName}`
-      }
-    });
-  }, [profiles, userId])
-
-  const nameList = useMemo(() => names.map(user => ({
-    value: user.id,
-    text: user.name,
-  })), [names])
-
-  const getValue = (value) => {
-    return nameList.filter(item => item.value === value)[0]?.text
-  }
-
-  const [reasonList, setReasonList] = useState([]) // Load data from BE
-
   useEffect(() => {
     const loadData = async () => {
-      const { report_reasons = [] } = await getReasons(2);
-      setReasonList(report_reasons);
+      const { report_reasons = [] } = await getReasons(2)
+      setReasonList(report_reasons)
     }
-    loadData();
+    loadData()
   }, [])
 
   const handleSubmit = useCallback(async () => {
@@ -81,41 +62,35 @@ const ReportIssue = ({
       setErrorBody('Please select an issue from the drop-down menu so we can understand what’s going on.')
       return
     }
-    setLoading(true)
-    const objectCreatorIds = selectedNames.map((id) => Number(id))
     try {
+      setLoading(true)
       await report({
         reportCreatorId: userId,
-        objectCreatorIds: objectCreatorIds,
+        objectCreatorIds: [Number(ownerId)],
         reasonId: selectedReason,
         reportTypeId: 2,
         description: '',
-      });
-      setReported(true);
-    } catch (error) {
+      })
+      setReported(true)
+    } catch (err) {
       setOpenError(true)
       setErrorTitle('Something went wrong')
       setErrorBody('Please try again!')
     } finally {
       setLoading(false)
     }
-  }, [setReported, selectedReason, selectedNames, userId])
+  }, [setReported, selectedReason, userId, ownerId])
 
   const handleSelectReason = useCallback((e) => {
     setSelectedReason(e.target.value)
   }, [setSelectedReason])
 
-  const handleSelectNames = useCallback((e) => {
-    setSelectedNames(e.target.value)
-  }, [setSelectedNames])
-
-  const handleRemoveName = (value) => {
-    const filteredList = selectedNames.filter(item => item !== value)
-    setSelectedNames(filteredList)
-  }
+  const handleClose = useCallback(() => {
+    onClose()
+    setSelectedReason('')
+  }, [onClose])
 
   const handleDoneClick = useCallback(() => {
-    setSelectedNames([])
     setSelectedReason('')
     setReported(false)
     handleClose()
@@ -156,11 +131,10 @@ const ReportIssue = ({
             </InputLabel>
             <Select
               labelId="reporter-select-label"
-              className={classes.select}
-              value={selectedNames}
+              className={cx(classes.select, classes.nameSelect)}
+              value={[ownerId]}
               fullWidth
-              multiple
-              onChange={handleSelectNames}
+              disabled
               MenuProps={{
                 anchorOrigin: {
                   vertical: "bottom",
@@ -178,30 +152,12 @@ const ReportIssue = ({
                     <Chip
                       className={classes.chip}
                       key={value}
-                      label={getValue(value)}
-                      onMouseDown={(e) => {
-                        e.stopPropagation()
-                      }}
-                      onDelete={() => handleRemoveName(value)}
+                      label={ownerName}
                     />
                   ))}
                 </div>
               )}
-            >
-              {nameList.map(item => (
-                <MenuItem
-                  className={classes.menuItem}
-                  value={item.value}
-                  key={`name-item-${item.value}`}
-                >
-                  {selectedNames.indexOf(item.value) > -1
-                    ? <CheckCircleIcon className={classes.mr1} />
-                    : <RadioButtonUncheckedIcon className={classes.mr1} />
-                  }
-                  {item.text}
-                </MenuItem>
-              ))}
-            </Select>
+            />
             <FormHelperText className={classes.helperText}>
               User may be temporarily or permenantly removed from CircleIn.
             </FormHelperText>
@@ -301,12 +257,11 @@ const ReportIssue = ({
   )
 }
 
-const mapStateToProps = ({ user, router }: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user,
-  router,
-});
+})
 
 export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(withSnackbar(ReportIssue)));
+)(withStyles(styles)(withSnackbar(ReportIssue)))

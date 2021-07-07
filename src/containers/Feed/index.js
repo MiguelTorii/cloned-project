@@ -15,12 +15,12 @@ import Tooltip from 'containers/Tooltip'
 import PostCreationHeader from 'containers/Feed/PostCreationHeader';
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
+import Report from '../../components/Report';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { FeedState } from '../../reducers/feed';
 import { logEvent } from '../../api/analytics';
 import SharePost from '../SharePost';
-import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
@@ -189,8 +189,8 @@ class Feed extends React.PureComponent<Props, State> {
     updateBookmark({ feedId, userId, bookmarked });
   };
 
-  handleReport = ({ feedId, ownerId }) => {
-    this.setState({ report: { feedId, ownerId } });
+  handleReport = ({ feedId, ownerId, ownerName }) => {
+    this.setState({ report: { feedId, ownerId, ownerName } });
   };
 
   handleReportClose = () => {
@@ -477,6 +477,7 @@ class Feed extends React.PureComponent<Props, State> {
           <Report
             open={Boolean(report)}
             ownerId={(report || {}).ownerId || ''}
+            ownerName={(report || {}).ownerName || ''}
             objectId={(report || {}).feedId || -1}
             onClose={this.handleReportClose}
           />

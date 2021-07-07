@@ -24,7 +24,7 @@ import ButtonBase from '@material-ui/core/ButtonBase'
 import Chip from '@material-ui/core/Chip'
 import ShareIcon from '@material-ui/icons/Share'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import ReportIcon from '@material-ui/icons/Report'
+import FlagIcon from '@material-ui/icons/Flag'
 import DeleteIcon from '@material-ui/icons/Delete'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
@@ -147,9 +147,9 @@ const FeedItem = ({
   }, [data, handleMenuClose, onBookmark])
 
   const handleReport = useCallback(() => {
-    const { feedId, userId } = data
+    const { feedId, userId, name } = data
     handleMenuClose()
-    onReport({ feedId, ownerId: userId })
+    onReport({ feedId, ownerId: userId, ownerName: name })
   }, [data, handleMenuClose, onReport])
 
   const handleDelete = useCallback(() => {
@@ -327,9 +327,9 @@ const FeedItem = ({
       {data.userId !== currentUserId ? (
         <MenuItem onClick={handleReport}>
           <ListItemIcon color="inherit">
-            <ReportIcon />
+            <FlagIcon />
           </ListItemIcon>
-          <ListItemText inset primary="Report" />
+          <ListItemText inset primary="Report an Issue" />
         </MenuItem>
       ) : (
         <div>

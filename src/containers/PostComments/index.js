@@ -15,7 +15,6 @@ import { bindActionCreators } from "redux";
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 
-import Report from '../Report';
 import {
   getPostComments,
   createComment,
@@ -64,8 +63,7 @@ type Props = {
 type State = {
   comments: ?Comments,
   items: Array<Object>,
-  isLoading: boolean,
-  report: ?Object
+  isLoading: boolean
 };
 
 class ViewNotes extends React.PureComponent<Props, State> {
@@ -79,7 +77,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
     comments: null,
     items: [],
     isLoading: false,
-    report: null,
     loadViewMoreComment: false,
     replyCommentId: 0
   };
@@ -185,20 +182,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleReport = async ({
-    commentId,
-    ownerId
-  }: {
-    commentId: number,
-    ownerId: number
-  }) => {
-    this.setState({ report: { commentId, ownerId } });
-  };
-
-  handleReportClose = () => {
-    this.setState({ report: null });
-  };
-
   handleDelete = async id => {
     try {
       this.setState({ isLoading: true });
@@ -268,7 +251,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
       comments,
       items,
       isLoading,
-      report,
       loadViewMoreComment,
       replyCommentId
     } = this.state;
@@ -384,14 +366,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
               />
               {!!replyCommentId && <SkeletonLoad />}
             </div>)}
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Report
-            open={Boolean(report)}
-            ownerId={(report || {}).ownerId || ''}
-            objectId={(report || {}).commentId || -1}
-            onClose={this.handleReportClose}
-          />
         </ErrorBoundary>
         <ErrorBoundary>
           <div>
