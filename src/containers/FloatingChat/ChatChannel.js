@@ -133,6 +133,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
   // eslint-disable-next-line no-undef
   scrollParentRef: ?HTMLDivElement;
 
+  getTypingMemberName = id => {
+    const { localChannel: { members } } = this.props
+    const currentMember = members.filter(member => member.userId === id)
+    return `${currentMember[0].firstname} ${currentMember[0].lastname}`
+  }
+
   componentDidMount = async () => {
     this.mounted = true;
     try {
@@ -195,13 +201,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
       channel.on('typingStarted', member => {
         if (!this.mounted) return;
-        try {
-          member.getUser().then(user => {
-            const { state } = user;
-            const { friendlyName } = state;
-            this.setState({ typing: friendlyName });
-          });
-        } catch (e) {}
+
+        const memberId = member?.state?.identity
+        if (memberId) {
+          const typingUserName = this.getTypingMemberName(memberId)
+          this.setState({ typing: typingUserName });
+        }
       });
 
       channel.on('typingEnded', () => {
