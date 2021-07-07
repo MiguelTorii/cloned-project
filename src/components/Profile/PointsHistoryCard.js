@@ -43,7 +43,7 @@ const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
         }
       )
     );
-  }, [profile, dispatch]);
+  }, [profile.userId, dispatch]);
 
   return (
     <Paper className={classes.root}>

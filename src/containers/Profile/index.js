@@ -164,11 +164,23 @@ class Profile extends React.PureComponent<Props, State> {
 
   handleGetProfile = async () => {
     try {
-      const {userId} = this.props;
+      const {
+        userId,
+        user: {
+          data: {
+            userId: myId
+          }
+        },
+        updateProfileImage
+      } = this.props;
       if (userId !== '') {
         const {userProfile, about, userStatistics} = await getUserProfile({
           userId
         });
+
+        if (userId === myId) {
+          updateProfileImage(userProfile.userProfileUrl);
+        }
 
         this.setState({
           userProfile,
@@ -440,13 +452,11 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       user: {
         data: {userId}
-      },
-      updateProfileImage
+      }
     } = this.props;
 
-    const { mediaId, readUrl } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
+    const { mediaId } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
     await updateUserProfileUrl({userId, mediaId});
-    updateProfileImage(readUrl);
   };
 
   handleSaveProfile = async (avatar, fields) => {
