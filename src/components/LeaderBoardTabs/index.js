@@ -268,6 +268,10 @@ const LeaderBoardTabs = ({
         scoreLabel={scoreLabel}
         pushTo={pushTo}
         students={students}
+        sectionId={sectionId}
+        selectedTab={selectedTab}
+        updateTuesdayLeaderboard={updateTuesdayLeaderboard}
+        updateGrandLeaderboards={updateGrandLeaderboards}
       />
     </div>
   )

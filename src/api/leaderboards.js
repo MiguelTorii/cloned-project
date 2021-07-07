@@ -36,11 +36,13 @@ export const getGrandPrizeInfo = async () => {
   }
 };
 
-export const getGrandPrizeScores = async (sectionId) => {
+export const getGrandPrizeScores = async (sectionId, limit) => {
   try {
     const token = await getToken();
     const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const result = await axios.get(`${API_ROUTES.LEADERBOARD_V2_BOARD_TWO}${sectionQuery}`, {
+    const limitQuery = limit ? `&limit=${limit}` : ''
+
+    const result = await axios.get(`${API_ROUTES.LEADERBOARD_V2_BOARD_TWO}${sectionQuery}${limitQuery}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -53,11 +55,13 @@ export const getGrandPrizeScores = async (sectionId) => {
   }
 };
 
-export const getTuesdayPrizeScores = async (sectionId) => {
+export const getTuesdayPrizeScores = async (sectionId, limit) => {
   try {
     const token = await getToken();
     const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const result = await axios.get(`${API_ROUTES.LEADERBOARD_V2_BOARD_ONE}${sectionQuery}`, {
+    const limitQuery = limit ? `&limit=${limit}` : ''
+
+    const result = await axios.get(`${API_ROUTES.LEADERBOARD_V2_BOARD_ONE}${sectionQuery}${limitQuery}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

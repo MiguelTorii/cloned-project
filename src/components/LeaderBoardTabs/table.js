@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 import Table from '@material-ui/core/Table';
@@ -6,7 +6,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Student from './student'
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Student from './student';
 
 import { styles } from '../_styles/LeaderBoardTabs/table';
 
@@ -24,32 +25,59 @@ const StudentTable = ({
   scoreLabel,
   pushTo,
   userId,
+  sectionId,
+  selectedTab,
+  updateTuesdayLeaderboard,
+  updateGrandLeaderboards,
 }) => {
+  const [hasMore, setHasMore] = useState(true)
+  const [limit, setLimit] = useState(100)
+
+  useEffect(() => {
+    if (students && students.length % 100 > 0) {
+      setHasMore(false)
+    }
+  }, [students, students.length])
+
+  const handleLoadMore = useCallback(() => {
+    const updatedLimit = limit + 100
+    selectedTab === 'tuesday' && updateTuesdayLeaderboard(sectionId, updatedLimit)
+    selectedTab === 'grand' && updateGrandLeaderboards(sectionId, updatedLimit)
+
+    setLimit(updatedLimit)
+  }, [limit, selectedTab, sectionId, updateTuesdayLeaderboard, updateGrandLeaderboards])
+
   return (
     <div className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <StyledTableRow>
-            <TableCell className={classes.tdHeader} padding='none' align="center"></TableCell>
-            <TableCell className={classes.tdHeader} align="left">Student</TableCell>
-            <TableCell className={classes.tdHeader} align="center">{scoreLabel}</TableCell>
-          </StyledTableRow>
-        </TableHead>
-        <TableBody className={classes.body}>
-          {students.map(s => (
-            <TableRow
-              hover 
-              key={s.userId}
-              onClick={() => pushTo(`/profile/${s.userId}`)}
-              className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
-            >
-              <TableCell padding='none' className={classes.tdnp} align="center">{s.position}</TableCell>
-              <TableCell className={classes.td} align="left"><Student student={s} you={userId === s.userId} /></TableCell>
-              <TableCell className={classes.td} align="center">{s.score}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <InfiniteScroll
+        dataLength={students.length}
+        next={handleLoadMore}
+        hasMore={hasMore}
+      >
+        <Table className={classes.table}>
+          <TableHead>
+            <StyledTableRow>
+              <TableCell className={classes.tdHeader} padding='none' align="center"></TableCell>
+              <TableCell className={classes.tdHeader} align="left">Student</TableCell>
+              <TableCell className={classes.tdHeader} align="center">{scoreLabel}</TableCell>
+            </StyledTableRow>
+          </TableHead>
+          <TableBody className={classes.body}>
+            {students.map(s => (
+              <TableRow
+                hover 
+                key={s.userId}
+                onClick={() => pushTo(`/profile/${s.userId}`)}
+                className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
+              >
+                <TableCell padding='none' className={classes.tdnp} align="center">{s.position}</TableCell>
+                <TableCell className={classes.td} align="left"><Student student={s} you={userId === s.userId} /></TableCell>
+                <TableCell className={classes.td} align="center">{s.score}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </InfiniteScroll>
     </div>
   );
 }
