@@ -56,6 +56,7 @@ type Props = {
   onReport: Function,
   postId: number,
   typeId: number,
+  pop: Function,
   pushTo: Function,
   expertMode: boolean,
   router: Object,
@@ -127,12 +128,30 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     });
   };
 
+  handleGoBack = () => {
+    const { router, pushTo, pop } = this.props;
+    const {
+      location: {
+        query
+      }
+    } = router;
+    const from = new URLSearchParams(query).get('from');
+
+    switch(from) {
+    case 'profile':
+      pop();
+      break;
+    default:
+      pushTo(`/feed?${queryString.stringify(query)}`);
+      break;
+    }
+  };
+
   render() {
     const {
       hideShare,
       feedId,
       classes,
-      router,
       expertMode,
       currentUserId,
       userId,
@@ -145,9 +164,9 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       isMarkdown,
       bookmarked,
       role,
-      pushTo,
       newClassExperience,
-      onBookmark
+      onBookmark,
+      router
     } = this.props;
 
     const { moreAnchorEl, open, showShortSummary } = this.state;
@@ -155,6 +174,18 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     const initials = getInitials(name);
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
+    const from = new URLSearchParams(router.location.query).get('from'); // This indicates where the feed came from.
+    let navigationTitle = '';
+
+    if (from === 'profile') {
+      if (userId === currentUserId) {
+        navigationTitle = 'Back to Profile';
+      } else {
+        navigationTitle = `${name}'s Profile`;
+      }
+    } else {
+      navigationTitle = 'Feed';
+    }
 
     const renderMenu = (
       <Menu
@@ -197,14 +228,6 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       </Menu>
     );
 
-    const {
-      location: {
-        query
-      }
-    } = router
-
-    const goToFeed = () => pushTo(`/feed?${queryString.stringify(query)}`)
-
     return (
       <Fragment>
         <Grid
@@ -212,10 +235,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           container
           justify='flex-start'
           alignItems='center'
-          onClick={goToFeed}
+          onClick={this.handleGoBack}
         >
           <ArrowBackIosRoundedIcon />
-          <Typography className={classes.feedTypo}>Feed</Typography>
+          <Typography className={classes.feedTypo}>
+            { navigationTitle }
+          </Typography>
         </Grid>
         <div className={classes.root}>
           <Link

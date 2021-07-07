@@ -1,15 +1,16 @@
 /* eslint-disable func-names */
 // @flow
 
-import React, {Fragment} from 'react';
-import {connect} from 'react-redux';
-import {push as routePush} from 'connected-react-router';
-import {Redirect} from 'react-router-dom';
-import {bindActionCreators} from 'redux';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
+import { Redirect } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import {withRouter} from 'react-router';
+import { withRouter } from 'react-router';
+import Hidden from '@material-ui/core/Hidden';
 import type {
   UserProfile,
   About,
@@ -17,16 +18,16 @@ import type {
   FeedItem,
   StudyCircle
 } from '../../types/models';
-import type {UserState} from '../../reducers/user';
-import type {State as StoreState} from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 import {
   getUserProfile,
   updateProfile,
   updateUserProfileUrl,
   getStudyCircle
 } from '../../api/user';
-import {addToStudyCircle, removeFromStudyCircle} from '../../api/posts';
-import {fetchFeedv2} from '../../api/feed';
+import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
+import { fetchFeedv2 } from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import * as feedActions from '../../actions/feed';
@@ -40,12 +41,11 @@ import ProfilePosts from '../../components/Profile/posts';
 import ProfileEdit from '../../components/ProfileEdit';
 import StudyCircleDialog from '../../components/StudyCircleDialog';
 import ErrorBoundary from '../ErrorBoundary';
-import {processSeasons} from './utils';
-import {logEvent} from '../../api/analytics';
+import { processSeasons } from './utils';
+import { logEvent } from '../../api/analytics';
 import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
-import Hidden from '@material-ui/core/Hidden';
 import { updateProfileImage, uploadMedia } from "../../actions/user";
 import { UPLOAD_MEDIA_TYPES } from "../../constants/app";
 
@@ -153,13 +153,13 @@ class Profile extends React.PureComponent<Props, State> {
     this.handleGetProfile();
     this.handleFetchFeed();
     this.handleFetchBookmarks();
-    const {edit, match: {params}} = this.props;
+    const { edit, match: { params } } = this.props;
 
     if (params.tab) {
-      this.setState({tab: Number(params.tab)});
+      this.setState({ tab: Number(params.tab) });
     }
 
-    this.setState({edit});
+    this.setState({ edit });
   };
 
   handleGetProfile = async () => {
@@ -174,7 +174,7 @@ class Profile extends React.PureComponent<Props, State> {
         updateProfileImage
       } = this.props;
       if (userId !== '') {
-        const {userProfile, about, userStatistics} = await getUserProfile({
+        const { userProfile, about, userStatistics } = await getUserProfile({
           userId
         });
 
@@ -190,17 +190,17 @@ class Profile extends React.PureComponent<Props, State> {
         });
       }
     } catch (err) {
-      this.setState({error: true, isLoading: false});
+      this.setState({ error: true, isLoading: false });
     }
   };
 
   handleFetchFeed = () => {
-    const {userId} = this.props;
+    const { userId } = this.props;
     if (userId !== '') {
       fetchFeedv2({
         userId,
       }).then(feed => {
-        this.setState({feed});
+        this.setState({ feed });
       });
     }
   };
@@ -208,7 +208,7 @@ class Profile extends React.PureComponent<Props, State> {
   handleFetchBookmarks = () => {
     const {
       user: {
-        data: {userId: ownId}
+        data: { userId: ownId }
       },
       userId,
     } = this.props;
@@ -219,40 +219,40 @@ class Profile extends React.PureComponent<Props, State> {
         sectionId: '',
         bookmarked: true
       }).then(bookmarks => {
-        this.setState({bookmarks});
+        this.setState({ bookmarks });
       });
     }
   };
 
   handleOpenEdit = () => {
-    this.setState({edit: true});
+    this.setState({ edit: true });
   };
 
   handleCloseEdit = () => {
-    this.setState({edit: false});
+    this.setState({ edit: false });
   };
 
   handleSubmit = async fields => {
     const {
       user: {
-        data: {userId}
+        data: { userId }
       }
     } = this.props;
     this.handleCloseEdit();
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     try {
-      await updateProfile({userId, fields});
+      await updateProfile({ userId, fields });
     } finally {
       this.handleGetProfile();
     }
   };
 
   handleStartChat = () => {
-    const {openChannelWithEntity} = this.props;
+    const { openChannelWithEntity } = this.props;
     const {
-      userProfile: {userId, firstName, lastName}
+      userProfile: { userId, firstName, lastName }
     } = this.state;
-    this.setState({chatLoading: true});
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
@@ -260,16 +260,16 @@ class Profile extends React.PureComponent<Props, State> {
       entityVideo: false
     });
     setTimeout(() => {
-      this.setState({chatLoading: false});
+      this.setState({ chatLoading: false });
     }, 2000);
   };
 
   handleStartVideo = () => {
-    const {openChannelWithEntity} = this.props;
+    const { openChannelWithEntity } = this.props;
     const {
-      userProfile: {userId, firstName, lastName}
+      userProfile: { userId, firstName, lastName }
     } = this.state;
-    this.setState({chatLoading: true});
+    this.setState({ chatLoading: true });
     openChannelWithEntity({
       entityId: userId,
       entityFirstName: firstName,
@@ -277,20 +277,20 @@ class Profile extends React.PureComponent<Props, State> {
       entityVideo: true
     });
     setTimeout(() => {
-      this.setState({chatLoading: false});
+      this.setState({ chatLoading: false });
     }, 2000);
   };
 
   handleTabChange = (event, value) => {
-    this.setState({tab: value});
+    this.setState({ tab: value });
   };
 
-  handleShare = ({feedId}: {feedId: number}) => {
-    this.setState({feedId});
+  handleShare = ({ feedId }: {feedId: number}) => {
+    this.setState({ feedId });
   };
 
   handleShareClose = () => {
-    this.setState({feedId: null});
+    this.setState({ feedId: null });
   };
 
   handleBookmark = ({
@@ -302,12 +302,12 @@ class Profile extends React.PureComponent<Props, State> {
   }) => {
     const {
       user: {
-        data: {userId}
+        data: { userId }
       },
       updateBookmark
     } = this.props;
 
-    updateBookmark({feedId, userId, bookmarked});
+    updateBookmark({ feedId, userId, bookmarked });
 
     // Update Local State
     const { bookmarks, feed } = this.state;
@@ -337,19 +337,19 @@ class Profile extends React.PureComponent<Props, State> {
     });
   };
 
-  handleReport = ({feedId, ownerId}) => {
-    this.setState({report: {feedId, ownerId}});
+  handleReport = ({ feedId, ownerId }) => {
+    this.setState({ report: { feedId, ownerId } });
   };
 
   handleReportClose = () => {
-    this.setState({report: null});
+    this.setState({ report: null });
   };
 
-  handleDelete = ({feedId}) => {
-    this.setState({deletePost: {feedId}});
+  handleDelete = ({ feedId }) => {
+    this.setState({ deletePost: { feedId } });
   };
 
-  handleDeleteClose = ({deleted}: {deleted?: boolean}) => {
+  handleDeleteClose = ({ deleted }: {deleted?: boolean}) => {
     if (deleted && deleted === true) {
       // Reloading all feed again is time waste, we are doing it in other way.
       // this.handleFetchFeed();
@@ -361,29 +361,29 @@ class Profile extends React.PureComponent<Props, State> {
         feed: feed.filter((item) => item.feedId !== deletePost.feedId)
       });
     }
-    this.setState({deletePost: null});
+    this.setState({ deletePost: null });
   };
 
   handleStudyCircle = async () => {
     const {
       user: {
-        data: {userId}
+        data: { userId }
       }
     } = this.props;
     const {
-      userProfile: {userId: ownerId, inStudyCircle}
+      userProfile: { userId: ownerId, inStudyCircle }
     } = this.state;
     try {
-      this.setState({isStudyCircleLoading: true});
+      this.setState({ isStudyCircleLoading: true });
       if (!inStudyCircle) {
-        await addToStudyCircle({userId, classmateId: ownerId, feedId: null});
+        await addToStudyCircle({ userId, classmateId: ownerId, feedId: null });
         logEvent({
           event: 'Feed- Added to Study Circle',
-          props: {Source: 'Profile'}
+          props: { Source: 'Profile' }
         });
-        this.setState({studyCircle: true, loading: true});
-        const circle = await getStudyCircle({userId});
-        this.setState({circle});
+        this.setState({ studyCircle: true, loading: true });
+        const circle = await getStudyCircle({ userId });
+        this.setState({ circle });
       } else {
         await removeFromStudyCircle({
           userId,
@@ -392,12 +392,12 @@ class Profile extends React.PureComponent<Props, State> {
         });
         logEvent({
           event: 'Feed- Removed from Study Circle',
-          props: {Source: 'Profile'}
+          props: { Source: 'Profile' }
         });
       }
     } finally {
       await this.handleGetProfile();
-      this.setState({isStudyCircleLoading: false, loading: false});
+      this.setState({ isStudyCircleLoading: false, loading: false });
     }
   };
 
@@ -408,50 +408,50 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStudyCircleClose = () => {
-    this.setState({studyCircle: false});
+    this.setState({ studyCircle: false });
   };
 
-  handleUserClick = ({userId}: {userId: string}) => {
-    const {push} = this.props;
+  handleUserClick = ({ userId }: {userId: string}) => {
+    const { push } = this.props;
     push(`/profile/${userId}`);
   };
 
   handlePostClick = ({
     typeId,
-    postId,
-    feedId
+    postId
   }: {
     typeId: number,
     postId: number,
     feedId: number
   }) => () => {
-    const {push} = this.props;
-    push(`/feed?id=${feedId}`);
+    const { push } = this.props;
+    let url = '';
     switch (typeId) {
-      case 3:
-        push(`/flashcards/${postId}`);
-        break;
-      case 4:
-        push(`/notes/${postId}`);
-        break;
-      case 5:
-        push(`/sharelink/${postId}`);
-        break;
-      case 6:
-        push(`/question/${postId}`);
-        break;
-      case 8:
-        push(`/post/${postId}`);
-        break;
-      default:
-        break;
+    case 3:
+      url = `/flashcards/${postId}`;
+      break;
+    case 4:
+      url = `/notes/${postId}`;
+      break;
+    case 5:
+      url = `/sharelink/${postId}`;
+      break;
+    case 6:
+      url = `/question/${postId}`;
+      break;
+    case 8:
+      url = `/post/${postId}`;
+      break;
+    default:
+      throw new Error('unknown post type');
     }
+    push(`${url}?from=profile`);
   };
 
   updateAvatar = async imageData => {
     const {
       user: {
-        data: {userId}
+        data: { userId }
       }
     } = this.props;
 
@@ -500,9 +500,9 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
-      user: {data: userData},
+      user: { data: userData },
     } = this.props;
-    const {segment = '', profileImage} = userData;
+    const { segment = '', profileImage } = userData;
     const {
       userProfile,
       about,
@@ -594,15 +594,15 @@ class Profile extends React.PureComponent<Props, State> {
                     />
                   </ErrorBoundary>
                 </Grid>
-                {/*<Grid item xs={12} md={12} hidden={tab !== 0}>*/}
-                {/*  <ErrorBoundary>*/}
-                {/*    <ProfileAbout*/}
-                {/*      isMyProfile={userId === userData.userId}*/}
-                {/*      about={about}*/}
-                {/*      onOpenEdit={this.handleOpenEdit}*/}
-                {/*    />*/}
-                {/*  </ErrorBoundary>*/}
-                {/*</Grid>*/}
+                {/* <Grid item xs={12} md={12} hidden={tab !== 0}> */}
+                {/*  <ErrorBoundary> */}
+                {/*    <ProfileAbout */}
+                {/*      isMyProfile={userId === userData.userId} */}
+                {/*      about={about} */}
+                {/*      onOpenEdit={this.handleOpenEdit} */}
+                {/*    /> */}
+                {/*  </ErrorBoundary> */}
+                {/* </Grid> */}
                 {/* <Grid item xs={12} md={12} hidden={tab !== 0}> */}
                 {/* <ErrorBoundary> */}
                 {/* <ProfileSeasons seasons={seasons} /> */}
@@ -737,17 +737,17 @@ class Profile extends React.PureComponent<Props, State> {
     const { page } = this.state;
 
     switch (page) {
-      case PROFILE_PAGES.index:
-        return this.renderIndex();
-      case PROFILE_PAGES.points_history:
-        return this.renderPointsHistory();
-      default:
-        throw new Error('Unknown page type');
+    case PROFILE_PAGES.index:
+      return this.renderIndex();
+    case PROFILE_PAGES.points_history:
+      return this.renderPointsHistory();
+    default:
+      throw new Error('Unknown page type');
     }
   }
 }
 
-const mapStateToProps = ({user}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
