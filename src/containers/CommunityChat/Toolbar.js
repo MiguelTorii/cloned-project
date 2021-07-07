@@ -240,30 +240,6 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <button type='button' className="ql-list" value="bullet" />
         </Tooltip>
         <Tooltip
-          title="Decrease indent"
-          aria-label="decrease-indent"
-          arrow
-          placement='top'
-          classes={{
-            tooltip: classes.tooltip,
-            popper: classes.popper
-          }}
-        >
-          <button type='button' className="ql-indent" value="-1" />
-        </Tooltip>
-        <Tooltip
-          title="Increase indent"
-          aria-label="increase-indent"
-          arrow
-          placement='top'
-          classes={{
-            tooltip: classes.tooltip,
-            popper: classes.popper
-          }}
-        >
-          <button type='button' className="ql-indent" value="+1" />
-        </Tooltip>
-        <Tooltip
           title="Clean"
           aria-label="clean"
           arrow

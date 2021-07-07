@@ -16,9 +16,14 @@
   scrollbar-color: #547686 rgba(0,0,0,0.00);
 }
 
-p > a:-webkit-any-link {
-  color: #809fff
+p > a {
+  color: #03A9F4;
 }
+
+p > a:visited {
+  color: #1E88E5;
+}
+
 
 .ql-formula img {
   max-height: 35px
