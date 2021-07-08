@@ -248,7 +248,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
               onChange={handleClassChange}
             />}
         </Grid>
-        <Grid item xs={12} md={9} display="flex">
+        <Grid item xs={12} lg={9} display="flex">
           <div className={classes.paperRoot}>
             <Appbar value={value} handleChange={handleChange} />
             <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)} >
@@ -294,7 +294,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
             </TabPanel>
           </div>
         </Grid>
-        <Grid item xs={12} md={3} display="flex">
+        <Grid item xs={12} lg={3} display="flex">
           <div className={classes.paperRoot}>
             <div className={classes.circleinPostListTitle}>
               <LoadImg url={circleinLogo} className={classes.circleinLogo} alt="Posting..." />
