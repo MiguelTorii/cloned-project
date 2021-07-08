@@ -333,6 +333,19 @@ const Drawer = ({
           // landingPageCampaign={landingPageCampaign}
           // openClassmatesDialog={openClassmatesDialog('classmate')}
         />}
+        {!expertMode && (
+          <DrawerItem
+            OnIcon={<MyClassOn />}
+            primaryText='My Classes'
+            pathname={pathname}
+            component={MyLink}
+            link="/classes"
+            OffIcon={<MyClassOff />}
+            listItemClass={classNames(
+              ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
+            )}
+          />
+        )}
         {!landingPageCampaign && (
           <DrawerItem
             OnIcon={<WorkflowIconOn />}
