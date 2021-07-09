@@ -6,6 +6,7 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 import styles from '../_styles/DateRange';
@@ -67,7 +68,7 @@ class DateRange extends React.PureComponent<Props, State> {
     } else if (date.isAfter(from, 'day')) {
       if (date.isSame(moment(), 'day')) {
         this.setState({ to: moment().utc() })
-      }else this.setState({ to: date });
+      } else this.setState({ to: date });
     }
   };
 
@@ -86,7 +87,8 @@ class DateRange extends React.PureComponent<Props, State> {
       [classes.highlight]: dayIsBetween || isFirstDay || isLastDay,
       [classes.firstHighlight]: isFirstDay,
       [classes.endHighlight]: isLastDay,
-      [classes.nonCurrentMonthDay]: !dayInCurrentMonth
+      [classes.nonCurrentMonthDay]: !dayInCurrentMonth,
+      [classes.currentMonthDay]: dayInCurrentMonth
     });
 
     const dayClassName = cx(classes.day, {
@@ -129,12 +131,18 @@ class DateRange extends React.PureComponent<Props, State> {
         <Fragment>
           <div className={classes.buttonWrapper}>
             <TransparentButton
-              variant={from && to ? "contained" : "outlined"}
+              variant="outlined"
               className={classes.root}
-              onClick={this.handleClick}
+              onClick={(from || to) ? this.handleReset : this.handleClick}
               compact
             >
               {this.renderButtonText()}
+              {(from || to) && (
+                <DeleteOutlineIcon
+                  className={classes.deleteIcon}
+                  fontSize="small"
+                />
+              )}
             </TransparentButton>
           </div>
           <DatePicker

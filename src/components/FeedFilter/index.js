@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import Chip from '@material-ui/core/Chip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -28,27 +29,32 @@ const types = [
   {
     value: '4',
     label: 'Notes',
-    description: 'View all notes from you and your classmates'
+    description: 'View all notes from you and your classmates',
+    color: '#F5C264'
   },
   {
     value: '6',
     label: 'Questions',
-    description: 'View all questions asked by your classmates, and yours'
+    description: 'View all questions asked by your classmates, and yours',
+    color: '#15A63D'
   },
   {
     value: '3',
     label: 'Flashcards',
-    description: 'View all flashcards shared by you and your classmates'
+    description: 'View all flashcards shared by you and your classmates',
+    color: '#F54F47'
   },
   {
     value: '5',
     label: 'Resources',
-    description: 'View all links and resources shared by you and your classmates'
+    description: 'View all links and resources shared by you and your classmates',
+    color: '#6F08D7'
   },
   {
     value: '8',
     label: 'Posts',
-    description: 'View all general posts shared by classmates'
+    description: 'View all general posts shared by classmates',
+    color: '#1E88E5'
   }
 ];
 
@@ -182,6 +188,32 @@ class FeedFilter extends React.PureComponent<Props, State> {
     }
   };
 
+  handleRemoveFilter = id => () => {
+    let currentPropTypes = [];
+    const { onApplyFilters } = this.props;
+    const { postTypes, userClasses } = this.state;
+
+    if (id !== 'all'){
+      currentPropTypes = postTypes.filter(postType => postType !== id);
+    }
+    this.setState({ postTypes: currentPropTypes });
+    const userClassesValues = userClasses
+      ? userClasses.map(uc => uc.value)
+      : []
+
+    const filters = [
+      {
+        name: 'postTypes',
+        value: currentPropTypes
+      },
+      {
+        name: 'userClasses',
+        value: userClassesValues
+      }
+    ];
+    onApplyFilters(filters);
+  }
+
   handleDeselectAll = name => () => {
     const newState = update(this.state, {
       [name]: { $set: [] }
@@ -208,7 +240,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       }
     ];
     onApplyFilters(filters);
-    this.handleClose();
+    this.setState({ open: false, openClassFilter: false })
   };
 
   handleClearFilters = () => {
@@ -242,7 +274,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
       userClasses,
       onClearSearch,
     } = this.props;
+
     const { open, postTypes } = this.state;
+
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
     const isPostTypesSelected = postTypes.length > 0;
@@ -259,11 +293,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   root: classes.searchIcon
                 }}
               />}
-              placeholder={
-                courseDisplayName ?
-                  `Search for posts` :
-                  'To search add some posts first'
-              }
+              placeholder={ courseDisplayName
+                ? 'Search posts'
+                : 'To search add some posts first' }
               value={query}
               onChange={onChange('query')}
               endAdornment={
@@ -306,13 +338,31 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 aria-label="Filter"
                 aria-owns={open ? 'filter-popper' : undefined}
                 className={classes.filterButton}
-                onClick={this.handleClick}
-                variant={filterCount > 0 ? "contained" : "outlined"}
+                onClick={filterCount ? this.handleRemoveFilter('all') : this.handleClick}
+                variant='outlined'
                 compact
               >
-                Filters
+                {filterCount ? 'Reset Filters' : 'Filters'}
               </TransparentButton>
             </Tooltip>
+            <div className={classes.filterButton}>
+              {!!filterCount && !!postTypes.length && postTypes.map(postType => {
+                const targetPostType = types.filter(type => type.value === postType)
+                return <Chip
+                  key={targetPostType[0].label}
+                  label={targetPostType[0].label}
+                  classes={{
+                    root: classes.filterTypeBadge
+                  }}
+                  style={{
+                    backgroundColor: targetPostType[0].color
+                  }}
+                  clickable
+                  onDelete={this.handleRemoveFilter(targetPostType[0].value)}
+                  deleteIcon={<ClearIcon className={classes.deleteFilterIcon} fontSize="small" />}
+                />}
+              )}
+            </div>
           </div>
         </Paper>
         <Dialog

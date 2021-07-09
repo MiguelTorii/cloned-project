@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react'
 import Proptypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -25,8 +26,6 @@ const RoleBadge = ({ text, classes }) => {
 }
 
 RoleBadge.propTypes = {
-  text: Proptypes.string.isRequired,
-  // eslint-disable-next-line
   classes: Proptypes.object.isRequired
 }
 

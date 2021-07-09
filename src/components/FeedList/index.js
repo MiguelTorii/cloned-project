@@ -13,8 +13,8 @@ import EmptyMyPosts from 'assets/svg/empty-my-posts.svg'
 import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg'
 import LoadImg from 'components/LoadImg'
 import Box from '@material-ui/core/Box'
+import ImgLoading from 'assets/gif/feed-loading.gif';
 import FeedItem from './FeedItem';
-import ImgLoading from 'assets/gif/class-feed-loading.gif';
 
 import styles from '../_styles/FeedList';
 
@@ -169,13 +169,23 @@ class FeedList extends React.PureComponent<Props, State> {
         {isLoading && items.length === 0 && (
           <>
             <Box display="flex" justifyContent="center">
-              <img src={ImgLoading} alt="load feeds" className={classes.loadingGif}/>
+              <img
+                src={ImgLoading}
+                alt="load feeds"
+                className={classes.loadingGif}
+              />
             </Box>
-            <Typography variant="h6" align="center" gutterBottom>
-              Hang tight!
+            <Typography
+              className={classes.loadingText}
+              variant="h4"
+              align="center"
+              gutterBottom
+            >
+              Loading...
             </Typography>
-            <Typography align="center">
-              Pulling up your Class Feed content...
+            <Typography className={classes.loadingSmallText} align="center">
+              Take a delightfully slow and relaxing <br />
+              deep breath while we apply your filters!
             </Typography>
           </>
         )}

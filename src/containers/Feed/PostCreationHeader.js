@@ -5,7 +5,6 @@ import Avatar from 'components/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInitials } from 'utils/chat';
 import Button from '@material-ui/core/Button';
-import useStyles from './styles';
 import IconPencil from 'assets/svg/pencil.svg';
 import IconQuestion from 'assets/svg/smile-green.svg';
 import IconNote from 'assets/svg/notes-1.svg';
@@ -13,6 +12,7 @@ import IconResource from 'assets/svg/links.svg';
 import { push } from 'connected-react-router';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
+import useStyles from './styles';
 
 const POST_BUTTONS = [
   {
@@ -61,7 +61,7 @@ const PostCreationHeader = () => {
           <Box flexGrow={1}>
             <Button fullWidth className={classes.postAnyButton} onClick={() => handleGotoPostCreate()}>
               <Hidden smDown>
-                Create a new post, offer support or share useful links with your classmates!
+                Create a new post, offer support or share useful links!
               </Hidden>
               <Hidden mdUp>
                 Create a new post

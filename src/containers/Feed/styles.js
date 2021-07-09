@@ -8,9 +8,11 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(2, 3),
   },
   postAnyButton: {
+    display: 'flex',
+    justifyContent: 'start',
     background: theme.circleIn.palette.appBar,
     borderRadius: 100,
-    padding: theme.spacing(1, 4)
+    padding: theme.spacing(1, 2)
   },
   divider: {
     borderColor: 'rgba(255, 255, 255, .25)'

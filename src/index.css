@@ -28,3 +28,24 @@ p > a:visited {
 .ql-formula img {
   max-height: 35px
 }
+
+.MuiPickersCalendarHeader-daysHeader > span {
+  color: #E4E6EA;
+}
+
+.MuiPickersModal-dialogRoot {
+  background-color: #3A3B3B !important;
+}
+
+.MuiPickersModal-dialogRoot .MuiDialogActions-root button:first-child {
+  color: #F54F47
+}
+
+.MuiPickersModal-dialogRoot .MuiDialogActions-root button:nth-child(2) {
+  color: white
+}
+
+.MuiPickersModal-dialogRoot .MuiDialogActions-root button:nth-child(3) {
+  background: linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%);
+  color: white
+}

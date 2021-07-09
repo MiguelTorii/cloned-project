@@ -123,5 +123,15 @@ export default theme => ({
   },
   searchIcon: {
     opacity: 0.3
+  },
+  filterTypeBadge: {
+    minWidth: 100,
+    color: 'white',
+    fontWeight: 500,
+    borderRadius: theme.spacing(),
+    marginRight: theme.spacing()
+  },
+  deleteFilterIcon: {
+    color: 'white'
   }
 });

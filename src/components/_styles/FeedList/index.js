@@ -18,6 +18,13 @@ export default theme => ({
   marginBottom: {
     marginBottom: theme.spacing()
   },
+  loadingText: {
+    margin: theme.spacing(2, 0),
+    fontSize: 30
+  },
+  loadingSmallText: {
+    fontSize: 20
+  },
   title: {
     flex: 1
   },
@@ -94,6 +101,6 @@ export default theme => ({
     margin: theme.spacing(2, 0)
   },
   loadingGif: {
-    width: 250
+    width: 400
   }
 });
