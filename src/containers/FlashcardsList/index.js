@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -12,13 +14,14 @@ import withRoot from '../../withRoot';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import useStyles from './styles';
 import FiltersBar from '../../components/FiltersBar';
-import { getFlashcards } from '../../actions/user';
+import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import FlashcardsDeck from '../../components/FlashcardsDeck';
 import { isApiCalling } from '../../utils/helpers';
 import { userActions } from '../../constants/action-types';
 import Dialog from '../../components/Dialog';
 import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
 import SlideUp from '../../components/Transition/SlideUp';
+import OnboardingFlashcards from 'containers/OnboardingFlashcards';
 
 const Filters = {
   mine: {
@@ -29,7 +32,10 @@ const Filters = {
   }
 };
 
-const FlashcardsList = () => {
+const FlashcardsList = ({
+  viewedTooltips,
+  confirmTooltip,
+}) => {
   // Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -99,6 +105,14 @@ const FlashcardsList = () => {
     dispatch(push(`/flashcards?filter=${filter}`));
   }, [dispatch]);
 
+  const updateOnboarding = useCallback(async () => {
+    await confirmTooltip(8453)
+  }, [confirmTooltip])
+
+  const onboardingOpen = useMemo(() => (
+    Boolean(viewedTooltips && !viewedTooltips.includes(8453))
+  ), [viewedTooltips])
+
   // Effects
   useEffect(() => {
     switch (currentFilter) {
@@ -145,6 +159,11 @@ const FlashcardsList = () => {
   // Rendering
   return (
     <div className={classes.container}>
+      <OnboardingFlashcards
+        userId={me.userId}
+        updateOnboarding={updateOnboarding}
+        open={onboardingOpen}
+      />
 
       { /* Title Section */ }
       <Grid
@@ -207,4 +226,20 @@ const FlashcardsList = () => {
   );
 };
 
-export default withRoot(FlashcardsList);
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  viewedTooltips: user.syncData.viewedTooltips,
+});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      confirmTooltip: confirmTooltipAction,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRoot(FlashcardsList));
+
