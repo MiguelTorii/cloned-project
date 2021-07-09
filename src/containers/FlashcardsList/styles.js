@@ -6,5 +6,8 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       padding: theme.spacing(3, 2)
     }
+  },
+  feedback: {
+    cursor: 'pointer'
   }
 }));

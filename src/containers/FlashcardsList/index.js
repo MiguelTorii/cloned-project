@@ -7,6 +7,7 @@ import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useLocation } from 'react-router';
 import { push } from 'connected-react-router';
+import GiveFeedback from 'containers/GiveFeedback'
 import withRoot from '../../withRoot';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import useStyles from './styles';
@@ -39,6 +40,7 @@ const FlashcardsList = () => {
 
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [openFeedback, setOpenFeedback] = useState(false)
 
   // Memos
   const arrFilters = useMemo(() => {
@@ -75,6 +77,14 @@ const FlashcardsList = () => {
       </Box>
     </Box>
   ), [currentFilter]);
+
+  const handleOpenFeedback = useCallback(() => {
+    setOpenFeedback(true)
+  }, [])
+
+  const handleCloseFeedback = useCallback(() => {
+    setOpenFeedback(false)
+  }, [])
 
   const handleCreate = useCallback(() => {
     // history.push('/flashcards/new');
@@ -152,8 +162,23 @@ const FlashcardsList = () => {
           <GradientButton onClick={handleCreate}>
             Create
           </GradientButton>
+
+          <Typography
+            variant='caption'
+            color='primary'
+            className={classes.feedback}
+            onClick={handleOpenFeedback}
+          >
+            Give Feedback
+          </Typography>
         </Grid>
       </Grid>
+
+      <GiveFeedback
+        origin='Flashcard'
+        open={openFeedback}
+        onClose={handleCloseFeedback}
+      />
 
       { /* Deck Filter */ }
       <Box mt={4}>
