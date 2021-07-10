@@ -26,17 +26,26 @@ const useStyles = makeStyles(theme => ({
     top: 20,
     cursor: 'pointer'
   },
+  firstStepImage: {
+    width: '100%',
+    height: 357,
+    opacity: 0.5,
+    [theme.breakpoints.down('sm')]: {
+      height: 303,
+      paddingTop: theme.spacing(4)
+    },
+  },
   imageContainer: {
-    height: 365,
+    height: 357,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: theme.spacing(-1),
+    alignItems: 'flex-end',
     padding: theme.spacing(4, 4, 0, 4),
     '& > img': {
       zIndex: 10,
       maxWidth: '100%',
-      maxHeight: '100%'
+      maxHeight: '100%',
+      marginBottom: theme.spacing(-1)
     }
   },
   mainContainer: {
@@ -53,28 +62,24 @@ const useStyles = makeStyles(theme => ({
   textContainer: {
     display: 'grid',
     color: theme.circleIn.palette.secondaryText,
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateRows: '60px auto',
-      height: 230
-    },
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '280px auto',
       height: 140
     }
   },
   mediaContainer: {
-    height: 365,
+    position: 'relative',
+    height: 357,
   },
   mediaPlayer: {
-    position: 'relative',
-    width: 750,
-    height: 365,
+    width: '100%',
+    height: '100%',
   },
   startPlay: {
     position: 'absolute',
-    top: 150,
+    top: '50%',
     left: '50%',
-    transform: 'translate(-40px, 0)',
+    transform: 'translate(-40px, -40px)',
     cursor: 'pointer'
   },
   title: {
@@ -202,7 +207,15 @@ const OnboardingStep = ({
             image='https://media.circleinapp.com/img/onboarding/CircleIn_Flashcard_Onboarding.webm'
             controls={isPlaying}
             ref={player}
+            style={{ display: isPlaying ? 'block' : 'none'}}
           />
+          { !isPlaying && (
+            <img
+              src={data.imageUrl}
+              alt="Step One"
+              className={classes.firstStepImage}
+            />
+          )}
           { !isPlaying && (
             <img
               src={StartPlay}

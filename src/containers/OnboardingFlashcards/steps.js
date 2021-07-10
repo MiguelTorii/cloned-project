@@ -1,7 +1,7 @@
 import Step1 from '../../assets/img/FlashcardsOnboarding/step1.png';
-import Step2 from '../../assets/img/FlashcardsOnboarding/step2.png';
-import Step3 from '../../assets/img/FlashcardsOnboarding/step3.png';
-import Step4 from '../../assets/img/FlashcardsOnboarding/step4.png';
+import Step2 from '../../assets/gif/FlashcardsOnboarding/step2.gif';
+import Step3 from '../../assets/gif/FlashcardsOnboarding/step3.gif';
+import Step4 from '../../assets/gif/FlashcardsOnboarding/step4.gif';
 
 export const ONBOARDING_STEPS = [
   {

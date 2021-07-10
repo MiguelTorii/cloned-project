@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   dialogContent: {
-    overflow: 'hidden',
     padding: '0 !important'
   }
 }));

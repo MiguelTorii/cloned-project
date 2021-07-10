@@ -4,9 +4,9 @@ import withRoot from '../../withRoot';
 const ActionButton = withStyles(theme => ({
   root: {
     borderRadius: 200,
-    padding: theme.spacing(3/4, 3),
+    padding: theme.spacing(3/4, 1),
     background: 'transparent',
-    minWidth: props => props.compact ? undefined : 160,
+    width: 120,
     minHeight: 36,
     '&:disabled': {
       color: 'white'
