@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import { searchSchools } from 'api/sign-in';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app'
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from 'constants/app'
 import auth0 from 'auth0-js'
 import Link from '@material-ui/core/Link';
 
@@ -111,7 +111,15 @@ const SelectSchool = ({
 
       setLoading(false)
       return false
-    } if (lmsTypeId === 0) {
+    }
+
+    if (launchType === 'gondor') {
+      const redirectUrl = `${window.location.origin}/gondor`;
+      window.location.href = `${GONDOR_URL}/sso/startauth/school/${school.id}?redirect_to=${redirectUrl}`;
+      return true;
+    }
+
+    if (lmsTypeId === 0) {
       /* NONE */
       setLoading(false)
       setDeeplinkLoading(false)

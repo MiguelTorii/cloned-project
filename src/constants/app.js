@@ -135,3 +135,5 @@ export const MEMBER_ROLES = {
   ORIENTATION_LEADER: 'Orientation Leader',
   EXPERT: 'Expert'
 }
+
+export const GONDOR_URL = 'https://siteadmin.circleinapp.com';

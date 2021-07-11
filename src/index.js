@@ -75,6 +75,7 @@ import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
 import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage} from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
+import Gondor from "./containers/Auth/Gondor";
 
 defaultKatexRender('White')
 
@@ -237,6 +238,7 @@ ReactDOM.render(
                 <Route exact path="/login/:schoolId" component={withTracker(AuthRedirect)} />
                 <Route exact path="/signup" component={withTracker(SignUp)} />
                 <Route exact path="/saml" component={withTracker(Saml)} />
+                <Route exact path="/gondor" component={withTracker(Gondor)} />
                 <Route exact path="/referral/:code" component={withTracker(Referral)} />
                 <Route
                   exact

@@ -124,10 +124,9 @@ export const signIn = ({
   }
 };
 
-export const samlLogin = (token: string) => async (dispatch: Dispatch) => {
+export const samlLogin = (token: string, isGondor = false) => async (dispatch: Dispatch) => {
   try {
-    const user = await samlSignin(token);
-
+    const user = await samlSignin(token, isGondor);
     if (user.jwtToken)
       dispatch(updateUser({ user }))
     return dispatch(push('/', { error: !user.jwtToken }));
@@ -194,7 +193,8 @@ export const checkUserSession = () => async (
       '/reset_password',
       '/terms-of-use',
       '/redirect',
-      '/saml'
+      '/saml',
+      '/gondor'
     ].includes(pathname) &&
     !pathname.includes('/canvas') &&
     !deepLinkCheck(pathname)

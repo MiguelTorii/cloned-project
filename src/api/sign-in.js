@@ -43,11 +43,14 @@ export const signInUser = async (
   }
 };
 
-export const samlLogin = async (token): User | {} => {
+export const samlLogin = async (token, isGondor): User | {} => {
   try {
-    const result = await axios.post(API_ROUTES.SAML_LOGIN, {
-      token
-    });
+    const result = await axios.post(
+      isGondor
+        ? API_ROUTES.SAML_LOGIN_V1_1
+        : API_ROUTES.SAML_LOGIN,
+      { token }
+    );
     const { data = {} } = result;
     return userToCamelCase(data);
   } catch (err) {
