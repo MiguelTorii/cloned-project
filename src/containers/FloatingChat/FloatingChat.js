@@ -186,7 +186,7 @@ const FloatingChat = ({
         const msg = `${firstName} ${lastName} sent you a message:`;
         enqueueSnackbarAction({
           notification: {
-            message: `${msg} ${typeof parse(body) === 'string' ? body : parse(body)?.props?.children}`,
+            message: `${msg} ${typeof parse(body) === 'string' ? body : body.replace( /(<([^>]+)>)/ig, '')}`,
             options: {
               variant: 'info',
               anchorOrigin: {
@@ -205,7 +205,7 @@ const FloatingChat = ({
         });
         updateTitleAction({
           title: `${firstName} ${lastName} sent you a message:`,
-          body: typeof parse(body) === 'string' ? body : parse(body)?.props?.children
+          body: typeof parse(body) === 'string' ? body : body.replace( /(<([^>]+)>)/ig, '')
         });
       }
     }

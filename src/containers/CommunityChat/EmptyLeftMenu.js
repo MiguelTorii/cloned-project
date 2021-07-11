@@ -41,7 +41,7 @@ const EmptyLeftMenu = ({
           onClick={handleCreateNewChannel}
           color='primary'
         >
-          Create new DM
+          Create New Message
         </Button>
       </div>}
 
