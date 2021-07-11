@@ -72,6 +72,7 @@ const circleInTheme = {
   floatChatHeader: '#A2A4A8',
   notesTabBorder: '#F5C264',
   resourceTabBorder: '#6515CF',
+  betaTag: '#F6CD3A'
 };
 
 let theme = createMuiTheme({
@@ -137,6 +138,7 @@ let theme = createMuiTheme({
       floatChatHeader: circleInTheme.floatChatHeader,
       notesTabBorder: circleInTheme.notesTabBorder,
       resourceTabBorder: circleInTheme.resourceTabBorder,
+      betaTag: circleInTheme.betaTag
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

@@ -1,9 +1,10 @@
 // @flow
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useCallback, useEffect, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 import Button from '@material-ui/core/Button';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import CardMedia from '@material-ui/core/CardMedia';
 
 import { logEventLocally } from 'api/analytics';
 import ErrorBoundary from 'containers/ErrorBoundary';
@@ -11,10 +12,11 @@ import Dialog from 'components/Dialog';
 import LoadImg from 'components/LoadImg'
 
 import classesImg from 'assets/img/circleIn-fem-mascot.png';
-import studentWin from 'assets/gif/student-winning.gif';
+import studentWin from 'assets/video/student-winning.mp4';
 import notes from 'assets/gif/notes.gif';
 import workflowDemo from 'assets/gif/wf.gif';
 import chatDemo from 'assets/gif/chats.gif';
+import StartPlay from 'assets/svg/video_play.svg';
 import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
 import styles from "./_styles/boardingStyles";
 
@@ -27,6 +29,8 @@ type Props = {
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const player = useRef(null);
 
   useEffect(() => {
     if (open) {
@@ -38,6 +42,17 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     }
   }, [open, userId]);
 
+  const handleClick = useCallback(() => {
+    setIsPlaying(!isPlaying);
+    if (!player.current) return
+    if (!isPlaying) {
+      player.current.play();
+    } else {
+      player.current.pause()
+    }
+  }, [isPlaying])
+
+
   const Intro = () => (
     <div className={classes.demoClass}>
       <div className={classes.femGirl}>
@@ -47,12 +62,23 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   );
 
   const StudentWin = () => (
-    <div className={classes.domGifArea}>
-      <img
-        alt='student win'
+    <div className={classes.videoPlayer}>
+      <CardMedia
+        component='video'
         className={classes.demoGif}
-        src={studentWin}
+        image={studentWin}
+        controls={isPlaying}
+        ref={player}
       />
+      {!isPlaying && (
+        <img
+          aria-hidden="true"
+          src={StartPlay}
+          className={classes.startPlay}
+          alt="Video Play Icon"
+          onClick={handleClick}
+        />
+      )}
     </div>
   )
 

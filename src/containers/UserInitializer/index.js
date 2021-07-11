@@ -6,6 +6,7 @@
 // @flow
 
 import React , { useState, useEffect, useCallback } from 'react';
+import amplitude from 'amplitude-js';
 import {
   ValidatorForm,
   TextValidator,
@@ -19,6 +20,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import OnboardingExpert from 'components/OnboardingExpert'
 import useScript from 'hooks/useScript'
+import { AMPLITUDE_IDS } from 'constants/app'
 import {
   LOGGED_IN_WIDGET_ID,
   LOGGED_OUT_WIDGET_ID,
@@ -110,6 +112,17 @@ const UserInitializer = ({
       `script[src="${userId ? LOGGED_OUT_WIDGET_URL : LOGGED_IN_WIDGET_URL}"]`
     )
     if (oldScript) oldScript.remove()
+  }, [userId])
+
+  useEffect(() => {
+    if (userId) {
+      AMPLITUDE_IDS.forEach(id => {
+        amplitude.getInstance().init(id, null, { batchEvents: true });
+        amplitude.getInstance('student-application').init(id, null, { includeReferrer: true });
+        amplitude.getInstance('student-application').setUserId(userId);
+        amplitude.getInstance('student-application').logEvent('Init');
+      })
+    }
   }, [userId])
 
   useEffect(() => {

@@ -29,6 +29,12 @@ const styles = theme => ({
   actionPanelComponent: {
     paddingBottom: theme.spacing(),
   },
+  startPlay: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translate(-40px, 0)',
+    cursor: 'pointer'
+  },
   logo: {
     maxWidth: 250,
     maxHeight: 60,
@@ -85,6 +91,12 @@ const styles = theme => ({
     ...centered,
     width: '100%',
     height: '100%',
+  },
+  videoPlayer: {
+    ...centered,
+    width: '100%',
+    height: '100%',
+    position: 'relative'
   },
   demoGif: {
     ...gifStyles,

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
 import { useDispatch, useSelector } from 'react-redux';
 import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -192,7 +193,10 @@ const FlashcardsList = ({
           </Typography>
         </Grid>
       </Grid>
-
+      <Chip
+        className={classes.betaTag}
+        label="BETA"
+      />
       <GiveFeedback
         origin='Flashcard'
         open={openFeedback}

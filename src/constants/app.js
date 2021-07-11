@@ -10,6 +10,11 @@ export const AUTH0_CLIENT_ID =
     ? 'Fm9qMmK1krorvq9yRz1KAsI3O24V6KV5'
     : 'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
 
+export const AMPLITUDE_IDS =
+  process.env.REACT_APP_STAGE === 'production'
+    ? ['4fa052782766cac0dd349d2ba4ff6aae', 'ce9b8375920be83a09140c26bec6384f']
+    : ['06c93d893f3b14995223804062799b99']
+
 export const ALGOLIA_APP_ID =
   process.env.REACT_APP_STAGE === 'production' ? 'GBPN91RQFL' : 'GBPN91RQFL';
 
