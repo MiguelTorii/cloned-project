@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const FLASHCARDS_ONBOARDING_ID = 9066
 
-const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
+const OnboardingFlashcards = ({ viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
@@ -107,4 +107,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRoot(OnboardingPopup));
+)(withRoot(OnboardingFlashcards));

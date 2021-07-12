@@ -120,16 +120,28 @@ export default theme => ({
   filterButton: {
     marginLeft: theme.spacing(2),
     marginTop: theme.spacing(1),
+
+    '& span': {
+      height: 24.5,
+      overflow: 'hidden',
+      WebkitLineClamp: 1,
+      WebkitBoxOrient: 'vertical',
+      display: 'block',
+    },
+  },
+  filterButtonContainer: {
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   searchIcon: {
     opacity: 0.3
   },
   filterTypeBadge: {
-    minWidth: 100,
+    width: 110,
     color: 'white',
     fontWeight: 500,
     borderRadius: theme.spacing(),
-    marginRight: theme.spacing()
+    margin: theme.spacing(4/8, 1, 4/8, 0)
   },
   deleteFilterIcon: {
     color: 'white'

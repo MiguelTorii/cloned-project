@@ -345,7 +345,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 {filterCount ? 'Reset Filters' : 'Filters'}
               </TransparentButton>
             </Tooltip>
-            <div className={classes.filterButton}>
+            <div className={classes.filterButtonContainer}>
               {!!filterCount && !!postTypes.length && postTypes.map(postType => {
                 const targetPostType = types.filter(type => type.value === postType)
                 return <Chip

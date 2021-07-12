@@ -61,7 +61,8 @@ type State = {
   feedId: ?number,
   report: ?Object,
   deletePost: ?Object,
-  selectedClasses: Array
+  selectedClasses: Array,
+  isFiltering: boolean,
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -70,6 +71,7 @@ class Feed extends React.PureComponent<Props, State> {
     report: null,
     deletePost: null,
     selectedClasses: [],
+    isFiltering: false,
     isBeforeFirstLoad: true // This is used to display loading state from the beginning.
   };
 
@@ -162,6 +164,8 @@ class Feed extends React.PureComponent<Props, State> {
     } catch (err) {
       console.log(err);
     }
+
+    this.setState({ isFiltering: false })
   };
 
   handleShare = ({ feedId }: { feedId: number }) => {
@@ -217,6 +221,7 @@ class Feed extends React.PureComponent<Props, State> {
   handleApplyFilters = filters => {
     const { updateFilter } = this.props;
     // eslint-disable-next-line no-restricted-syntax
+    this.setState({ isFiltering: true })
     for (const filter of filters) {
       updateFilter({ field: filter.name, value: filter.value });
     }
@@ -380,7 +385,8 @@ class Feed extends React.PureComponent<Props, State> {
       deletePost,
       openClassmates,
       selectedClasses,
-      isBeforeFirstLoad
+      isBeforeFirstLoad,
+      isFiltering,
     } = this.state;
 
 
@@ -462,6 +468,7 @@ class Feed extends React.PureComponent<Props, State> {
                 onDelete={this.handleDelete}
                 onLoadMore={this.handleLoadMore}
                 onUserClick={this.handleUserClick}
+                isFiltering={isFiltering}
               />
             </Tooltip>
           </div>

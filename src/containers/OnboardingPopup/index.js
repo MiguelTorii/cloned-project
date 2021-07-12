@@ -72,7 +72,7 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
     <Dialog
       className={classes.dialog}
       contentClassName={classes.dialogContent}
-      open={open && visiabled}
+      open={false}
       showHeader={false}
       onCancel={closePopup}
     >

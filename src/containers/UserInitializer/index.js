@@ -18,7 +18,6 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import OnboardingExpert from 'components/OnboardingExpert'
 import useScript from 'hooks/useScript'
 import { AMPLITUDE_IDS } from 'constants/app'
 import {
@@ -26,7 +25,6 @@ import {
   LOGGED_OUT_WIDGET_ID,
   LOGGED_IN_WIDGET_URL,
   LOGGED_OUT_WIDGET_URL,
-  UPDATE_ONBOARDING_TOOLTIP_ID
 } from './constants'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
@@ -230,10 +228,8 @@ const UserInitializer = ({
   };
 
   const {
-    isExpert,
     data: { updateProfile, segment },
     syncData: {
-      viewedTooltips,
       viewedOnboarding,
     }
   } = user
@@ -364,18 +360,6 @@ const UserInitializer = ({
           userId={userId}
         />
       )}
-      {windowWidth > 640 &&
-        <OnboardingExpert
-          open={Boolean(
-            isExpert &&
-            viewedOnboarding &&
-            viewedTooltips &&
-            !viewedTooltips.includes(UPDATE_ONBOARDING_TOOLTIP_ID)
-          )}
-          updateOnboarding={() => confirmTooltip(UPDATE_ONBOARDING_TOOLTIP_ID)}
-          userId={userId}
-        />
-      }
     </ErrorBoundary>
   )
 
