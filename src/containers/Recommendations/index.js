@@ -122,6 +122,8 @@ const Recommendations = () => {
     loadRecommendations();
   }, [loadRecommendations]);
 
+  if (posts.length === 0) return null;
+
   return (
     <>
       <Grid container direction="column" spacing={2}>
