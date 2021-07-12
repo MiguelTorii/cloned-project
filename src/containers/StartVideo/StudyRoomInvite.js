@@ -70,7 +70,7 @@ const StudyRoomInvite = ({
   }, [campaign])
 
   const handleChange = useCallback((e) => {
-    setSearchKey(e.target.value)
+    setSearchKey(e.target.value.toLowerCase())
   }, [setSearchKey])
 
   const filterClassmates = () => {
@@ -79,7 +79,8 @@ const StudyRoomInvite = ({
     }
 
     return classmates.filter(classmate => {
-      return `${classmate.firstName} ${classmate.lastName}`.includes(searchKey)
+      const name = `${classmate.firstName} ${classmate.lastName}`.toLowerCase()
+      return name.includes(searchKey)
     })
   }
 
