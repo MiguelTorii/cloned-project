@@ -10,6 +10,7 @@ const createEvent = async ({
   category,
   objectId,
   type,
+  recommendationType,
   ...rest
 }: {
   category: string,
@@ -28,6 +29,7 @@ const createEvent = async ({
       {
         category,
         object_id: objectId.toString(),
+        recommendation_type: recommendationType,
         type,
         ...rest
       },

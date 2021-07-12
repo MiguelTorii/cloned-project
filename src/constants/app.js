@@ -83,6 +83,14 @@ export const UPLOAD_MEDIA_TYPES = {
   PROFILE_IMAGE: 2
 };
 
+export const POST_TYPES  = {
+  FLASHCARDS: 3,
+  NOTE: 4,
+  LINK: 5,
+  QUESTION: 6,
+  POST: 8
+};
+
 export const LOG_EVENT_CATEGORIES = {
   CHAT: 'Chat',
   VIDEO: 'Video',
@@ -142,3 +150,9 @@ export const MEMBER_ROLES = {
 }
 
 export const GONDOR_URL = 'https://siteadmin.circleinapp.com';
+
+export const POST_SOURCE = {
+  PROFILE: 'profile',
+  FEED: 'feed',
+  RECOMMENDATION: 'recommendation'
+};

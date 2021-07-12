@@ -12,14 +12,15 @@ import { decypherClass } from 'utils/crypto'
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import Feed from '../../containers/Feed';
+import Recommendations from "../../containers/Recommendations";
+import { Hidden } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 
 const styles = () => ({
   item: {
-    display: 'flex',
-    maxWidth: '62%'
+    display: 'flex'
   },
   resources: {
-    maxWidth: '38%'
   }
 });
 
@@ -42,8 +43,15 @@ const FeedPage = ({ classes, location }: Props) => {
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container justify="space-between">
-          <Grid item xs={12} md={9} className={classes.item}>
+        <Grid container spacing={2}>
+          <Hidden lgUp>
+            <Grid item xs={12}>
+              <Box padding={1}>
+                <Recommendations />
+              </Box>
+            </Grid>
+          </Hidden>
+          <Grid item xs={12} lg={9} className={classes.item}>
             <Feed
               feedId={feedId}
               classId={classId}
@@ -51,8 +59,17 @@ const FeedPage = ({ classes, location }: Props) => {
               from={from}
             />
           </Grid>
-          <Grid item xs={12} md={3} className={classes.resources} ref={gridRef}>
-            <FeedResources gridRef={gridRef} />
+          <Grid item xs={12} lg={3} className={classes.resources} ref={gridRef}>
+            <Grid container direction="column" spacing={2}>
+              <Grid item xs={12}>
+                <FeedResources gridRef={gridRef} />
+              </Grid>
+              <Hidden mdDown>
+                <Grid item xs={12}>
+                  <Recommendations />
+                </Grid>
+              </Hidden>
+            </Grid>
           </Grid>
         </Grid>
       </Layout>

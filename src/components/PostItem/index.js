@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 // @flow
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import type { Node } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { differenceInMilliseconds } from "date-fns";
@@ -13,6 +13,12 @@ import Hidden from '@material-ui/core/Hidden';
 import { logEvent } from '../../api/analytics';
 import { styles } from '../_styles/PostItem';
 import { TIMEOUT } from 'constants/common';
+import Recommendations from "../../containers/Recommendations";
+import { Grid } from "@material-ui/core";
+import { useLocation } from "react-router";
+import RecommendationsFeedback from "../RecommendationsFeedback";
+import { POST_SOURCE } from "../../constants/app";
+import Box from "@material-ui/core/Box";
 
 const timeout = TIMEOUT.POST_ITEM;
 
@@ -37,6 +43,12 @@ const PostItem = ({
   const totalIdleTime = useRef(0);
   const remaining = useRef(timeout);
   const lastActive = useRef(+new Date());
+  const location = useLocation();
+
+  const from = useMemo(() => {
+    const query = new URLSearchParams(location.search);
+    return query.get('from');
+  }, [location]);
 
   const handleOnActive = () => {
     const diff = differenceInMilliseconds(new Date(), lastActive.current);
@@ -93,9 +105,23 @@ const PostItem = ({
           </Typography>
         </div>
       </Hidden>
-      <Paper className={classes.root} elevation={0}>
-        {children}
-      </Paper>
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={9}>
+          <Paper className={classes.root} elevation={0}>
+            {children}
+          </Paper>
+        </Grid>
+        <Hidden mdDown>
+          <Grid item xs={12} lg={3}>
+            <Box pt={2}>
+              {from === POST_SOURCE.RECOMMENDATION && (
+                <RecommendationsFeedback feedId={feedId} />
+              )}
+              <Recommendations />
+            </Box>
+          </Grid>
+        </Hidden>
+      </Grid>
     </div>
   );
 }

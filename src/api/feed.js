@@ -69,6 +69,15 @@ export const fetchFeed = async ({
   }
 };
 
+export const fetchRecommendations = async (limit) => {
+  const response = await callApi({
+    url: API_ROUTES.RECOMMENDATIONS,
+    params: { limit }
+  });
+  const posts = response || [];
+  return feedToCamelCase(posts);
+};
+
 export const saveQuizAnswers = async ({
   results
 }: {

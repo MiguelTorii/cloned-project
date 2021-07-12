@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import Image from "react-graceful-image"
 import moment from 'moment'
 
-import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -53,7 +52,7 @@ import FeedIconQuestion from '../../assets/svg/questions.svg';
 import FeedIconNote from '../../assets/svg/notes_new.svg';
 import FeedIconPost from '../../assets/svg/posts.svg';
 
-import styles from '../_styles/FeedList/FeedItem';
+import useStyles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
 
 const FeedTypes = {
@@ -90,7 +89,6 @@ const FeedTypes = {
 };
 
 const FeedItem = ({
-  classes,
   data,
   newClassExperience,
   handleShareClick,
@@ -102,8 +100,11 @@ const FeedItem = ({
   onUserClick,
   onPostClick,
   user,
-  toolbarPrefix
+  toolbarPrefix,
+  showComments,
+  showSimple, // This prop is to show a simple post or not. Simple post is like in recommendations
 }) => {
+  const classes = useStyles({ showSimple });
   const currentUserId = useMemo(() => user.data.userId, [user.data.userId])
   const [moreAnchorEl, setAnchorEl] = useState(null)
   const [thanksCount, setThanksCount] = useState(0)
@@ -224,12 +225,17 @@ const FeedItem = ({
         <Box mt={3}>
           <Box className={classes.flashCards}>
             <Box className={classes.gradientBar} />
-            <Box mt={3} pl={1} pr={1}>
-              <Typography variant="h6" className={classes.flashcardTitle}>
-                {data.title}
-              </Typography>
-              <Typography className={classes.flashcardCount}>
-                {pluralize('flashcard', data.deck.length, true)}
+            <Box mt={showSimple ? 2 : 3} pl={1} pr={1}>
+              {!showSimple && (
+                <Typography variant="h6" className={classes.flashcardTitle}>
+                  {data.title}
+                </Typography>
+              )}
+              <Typography
+                className={classes.flashcardCount}
+                align={showSimple ? 'left' : 'center'}
+              >
+                {pluralize(showSimple ? 'card' : 'flashcard', data.deck.length, true)}
               </Typography>
             </Box>
           </Box>
@@ -303,7 +309,7 @@ const FeedItem = ({
     default:
       return null
     }
-  }, [classes, data, newClassExperience])
+  }, [classes, data, newClassExperience, showSimple])
 
   const renderMenu = useMemo(() => (
     <Menu
@@ -383,13 +389,20 @@ const FeedItem = ({
         }
         title={
           <div className={classes.title}>
-            <Typography component="div" variant="h6" noWrap>
+            <Typography
+              component="div"
+              variant={showSimple ? 'body' : 'h6'}
+              noWrap
+            >
               {feedTypeData.title}
             </Typography>
           </div>
         }
         subheader={
-          <Typography className={classes.feedSubheader}>
+          <Typography
+            className={classes.feedSubheader}
+            variant={showSimple ? 'subtitle' : 'body'}
+          >
             {data.classroomName}
           </Typography>
         }
@@ -411,14 +424,16 @@ const FeedItem = ({
         </CardContent>
         {(data.typeId !== FeedTypes.question.id) && (
           <CardContent className={classes.content}>
-            <div
-              className={
-              (!data.title && description.length < 220)
-                ? classes.titleFormat
-                : classes.markdown
-            }>
-              {description}
-            </div>
+            {description && (
+              <div
+                className={
+                  (!data.title && description.length < 220)
+                    ? classes.titleFormat
+                    : classes.markdown
+                }>
+                {description}
+              </div>
+            )}
             <span />
             {renderImage()}
           </CardContent>
@@ -440,11 +455,13 @@ const FeedItem = ({
       </CardActionArea>
       <CardActions>
         <Grid container spacing={1} alignItems="center">
-          <Grid item>
-            <Typography variant="h6" className={classes.titleText}>
-              {feedTypeData.text_by}
-            </Typography>
-          </Grid>
+          {!showSimple && (
+            <Grid item>
+              <Typography variant="h6" className={classes.titleText}>
+                {feedTypeData.text_by}
+              </Typography>
+            </Grid>
+          )}
           <Grid item>
             <ButtonBase
               className={classes.avatar}
@@ -481,7 +498,11 @@ const FeedItem = ({
           </Grid>
           <Grid item>
             <Box ml={2}>
-              <Typography component="p" noWrap>
+              <Typography
+                component="p"
+                noWrap
+                variant={showSimple ? 'body2' : 'body'}
+              >
                 {fromNow}
               </Typography>
             </Box>
@@ -537,18 +558,25 @@ const FeedItem = ({
       </CardActions>
       {renderMenu}
 
-      <PostComments
-        feedId={data.feedId}
-        postId={data.postId}
-        typeId={data.typeId}
-        toolbarPrefix={toolbarPrefix}
-        isQuestion={data.typeId === FeedTypes.question.id}
-        isOwner={data.userId === currentUserId}
-        hasBestAnswer={data.bestAnswer}
-      />
+      {showComments && (
+        <PostComments
+          feedId={data.feedId}
+          postId={data.postId}
+          typeId={data.typeId}
+          toolbarPrefix={toolbarPrefix}
+          isQuestion={data.typeId === FeedTypes.question.id}
+          isOwner={data.userId === currentUserId}
+          hasBestAnswer={data.bestAnswer}
+        />
+      )}
     </Card>
   )
 }
+
+FeedItem.defaultProps = {
+  showComments: true,
+  showSimple: false
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
@@ -557,4 +585,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(FeedItem))
+)(FeedItem)
