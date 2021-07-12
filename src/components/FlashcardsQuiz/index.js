@@ -464,7 +464,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
           <Button
             startIcon={<IconClose />}
             className={classes.actionButton}
-            onClick={onClose}
+            onClick={handleBack}
           >
             Exit Mode
           </Button>
