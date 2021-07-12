@@ -79,7 +79,7 @@ const PostItem = ({
       clearInterval(timer);
 
       try {
-        !isFlashcard && logEvent({
+        logEvent({
           event: 'Post- Viewed',
           props: {
             type: 'Viewed',
