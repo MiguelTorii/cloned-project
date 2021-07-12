@@ -270,8 +270,6 @@ const LeaderBoardTabs = ({
         students={students}
         sectionId={sectionId}
         selectedTab={selectedTab}
-        updateTuesdayLeaderboard={updateTuesdayLeaderboard}
-        updateGrandLeaderboards={updateGrandLeaderboards}
       />
     </div>
   )

@@ -6,7 +6,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
+import { getMoreGrandStudents, getMoreTuesdayStudents } from 'api/leaderboards';
 import Student from './student';
 
 import { styles } from '../_styles/LeaderBoardTabs/table';
@@ -21,38 +22,57 @@ const StyledTableRow = withStyles(theme => ({
 
 const StudentTable = ({ 
   classes, 
-  students, 
+  students: initialStudents, 
   scoreLabel,
   pushTo,
   userId,
   sectionId,
   selectedTab,
-  updateTuesdayLeaderboard,
-  updateGrandLeaderboards,
 }) => {
   const [hasMore, setHasMore] = useState(true)
-  const [limit, setLimit] = useState(100)
+  const [tuesdayIndex, setTuesdayIndex] = useState(0)
+  const [grandIndex, setGrandIndex] = useState(0)
+  const [students, setStudents] = useState(initialStudents)
 
   useEffect(() => {
-    if (students && students.length % 100 > 0) {
+    setStudents(initialStudents)
+  }, [initialStudents, initialStudents.length])
+
+  const handleLoadMore = useCallback(async () => {
+    let list = []
+    if (selectedTab === 'tuesday') {
+      list = await getMoreTuesdayStudents(sectionId, tuesdayIndex + 100)
+      setTuesdayIndex(tuesdayIndex + 100)
+    }
+
+    if (selectedTab === 'grand') {
+      list = await getMoreGrandStudents(sectionId, grandIndex + 100)
+      setGrandIndex(grandIndex + 100)
+    }
+
+    setStudents(students => [...students, ...list])
+    if (list.length % 100 > 0) {
       setHasMore(false)
     }
-  }, [students, students.length])
+  }, [
+    selectedTab,
+    sectionId,
+    tuesdayIndex,
+    grandIndex,
+  ])
 
-  const handleLoadMore = useCallback(() => {
-    const updatedLimit = limit + 100
-    selectedTab === 'tuesday' && updateTuesdayLeaderboard(sectionId, updatedLimit)
-    selectedTab === 'grand' && updateGrandLeaderboards(sectionId, updatedLimit)
-
-    setLimit(updatedLimit)
-  }, [limit, selectedTab, sectionId, updateTuesdayLeaderboard, updateGrandLeaderboards])
+  useEffect(() => {
+    setTuesdayIndex(0)
+    setGrandIndex(0)
+    setStudents(initialStudents)
+  }, [selectedTab, initialStudents])
 
   return (
     <div className={classes.root}>
       <InfiniteScroll
-        dataLength={students.length}
-        next={handleLoadMore}
+        loadMore={handleLoadMore}
         hasMore={hasMore}
+        initialLoad={false}
       >
         <Table className={classes.table}>
           <TableHead>
