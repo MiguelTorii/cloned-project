@@ -28,15 +28,16 @@ const useStyles = makeStyles(theme => ({
   },
   firstStepImage: {
     width: '100%',
-    height: 357,
+    maxHeight: 357,
+    minHeight: 190,
     opacity: 0.5,
     [theme.breakpoints.down('sm')]: {
-      height: 303,
       paddingTop: theme.spacing(4)
     },
   },
   imageContainer: {
-    height: 357,
+    maxHeight: 357,
+    minHeight: 190,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
@@ -49,11 +50,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
   mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: theme.circleIn.palette.gray1,
     padding: theme.spacing(4, 5, 3, 5),
     [theme.breakpoints.down('sm')]: {
-      height: 353,
-      paddingTop: theme.spacing(4)
+      height: '100%',
+      padding: theme.spacing(4, 3, 3, 3),
     },
     [theme.breakpoints.up('md')]: {
       height: 268,
@@ -64,12 +68,14 @@ const useStyles = makeStyles(theme => ({
     color: theme.circleIn.palette.secondaryText,
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '280px auto',
-      height: 140
+      height: 140,
+      gap: 10,
     }
   },
   mediaContainer: {
     position: 'relative',
-    height: 357,
+    maxHeight: 357,
+    minHeight: 190,
   },
   mediaPlayer: {
     width: '100%',
@@ -111,7 +117,6 @@ const useStyles = makeStyles(theme => ({
       textAlign: 'center',
     },
     [theme.breakpoints.down('sm')]: {
-      alignItems: 'center',
       '& > h3': {
         fontSize: 30
       },
@@ -122,8 +127,6 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     '& > p': {
-      maxWidth: 380,
-      margin: 0,
       color: theme.circleIn.palette.secondaryText,
       fontSize: 16,
       lineHeight: '24px'
@@ -199,7 +202,7 @@ const OnboardingStep = ({
           onClick={onClose}
         />
       )}
-      { step === 1 && (
+      { step === 1 ? (
         <div className={classes.mediaContainer}>
           <CardMedia
             component='video'
@@ -225,32 +228,33 @@ const OnboardingStep = ({
             />
           )}
         </div>
-      )}
-      { step !== 1 && (
+      ) : (
         <div className={classes.imageContainer}>
           <img src={data.imageUrl} alt="Study Room Onboarding" />
         </div>
       )}
       <div className={classes.mainContainer}>
-        <div className={classes.ellipseContainer}>
-          <Ellipses step={step} totalSteps={totalSteps} />
-        </div>
-        <div className={classes.textContainer}>
-          <div className={classes.title}>
-            <Typography component="h4">
-              { data.title }
-            </Typography>
-            <Typography component="h3">
-              Flashcards
-            </Typography>
-            <span className="betaText">
-              BETA
-            </span>
+        <div>
+          <div className={classes.ellipseContainer}>
+            <Ellipses step={step} totalSteps={totalSteps} />
           </div>
-          <div className={classes.text}>
-            <Typography component="p">
-              { data.text }
-            </Typography>
+          <div className={classes.textContainer}>
+            <div className={classes.title}>
+              <Typography component="h4">
+                { data.title }
+              </Typography>
+              <Typography component="h3">
+                Flashcards
+              </Typography>
+              <span className="betaText">
+                BETA
+              </span>
+            </div>
+            <div className={classes.text}>
+              <Typography component="p">
+                { data.text }
+              </Typography>
+            </div>
           </div>
         </div>
         <div className={classes.actionContainer}>

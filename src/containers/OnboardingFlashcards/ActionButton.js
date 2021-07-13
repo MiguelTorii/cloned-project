@@ -6,12 +6,7 @@ const ActionButton = withStyles(theme => ({
     background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)',
     width: 163,
     height: 40,
-    borderRadius: 20,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      height: 40,
-      borderRadius: 15
-    }
+    borderRadius: 20
   },
   label: {
     fontSize: 16,
