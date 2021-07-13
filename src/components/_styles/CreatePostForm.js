@@ -107,6 +107,16 @@ export const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'flex-start'
   },
+  postItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(0.5),
+    minWidth: 100,
+    backgroundColor: '#03A9F4',
+    borderRadius: 100,
+    color: theme.circleIn.palette.whiteText
+  },
   noteItem: {
     display: 'flex',
     justifyContent: 'center',
@@ -123,7 +133,7 @@ export const styles = theme => ({
     alignItems: 'center',
     padding: theme.spacing(0.5),
     minWidth: 100,
-    backgroundColor: '#75B33A',
+    backgroundColor: '#15A63D',
     borderRadius: 100,
     color: theme.circleIn.palette.whiteText
   },
@@ -133,7 +143,7 @@ export const styles = theme => ({
     alignItems: 'center',
     padding: theme.spacing(0.5),
     minWidth: 100,
-    backgroundColor: '#6515CF',
+    backgroundColor: '#9E3CFF',
     borderRadius: 100,
     color: theme.circleIn.palette.whiteText
   },

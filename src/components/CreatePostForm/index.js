@@ -137,11 +137,11 @@ class CreatePostForm extends React.PureComponent<Props, State> {
           <div className={classes.childContent}>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
-                <div className={classes.noteItem}>
-                  Notes 📝
+                <div className={classes.postItem}>
+                  Post ✏️
                 </div>
               </div>
-              <div className={classes.itemText}>Earn 10K points for every page of notes.</div>
+              <div className={classes.itemText}>Earn 1k points for creating a post.</div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
@@ -153,11 +153,19 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
+                <div className={classes.noteItem}>
+                  Notes 📝
+                </div>
+              </div>
+              <div className={classes.itemText}>Earn 10K points for every page of notes.</div>
+            </div>
+            <div className={classes.pointItems}>
+              <div className={classes.itemMark}>
                 <div className={classes.resourceItem}>
                   Resource 🔗
                 </div>
               </div>
-              <div className={classes.itemText}>Earn 5K points foreach resource shared</div>
+              <div className={classes.itemText}>Earn 5K points for each resource shared.</div>
             </div>
             <div className={classes.gotIt}>
               <Button
