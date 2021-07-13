@@ -157,11 +157,6 @@ const UserNotesContainer = ({
 
   return (
     <div className={classes.container}>
-      <OnboardingNotes
-        userId={userId}
-        updateOnboarding={updateOnboarding}
-        open={onboardingOpen}
-      />
       <DeleteNote
         handleDeleteNote={handleDeleteNote}
         confirmDelete={confirmDelete}
