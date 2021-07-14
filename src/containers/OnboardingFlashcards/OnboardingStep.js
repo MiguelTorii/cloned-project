@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +10,7 @@ import ActionButton from './ActionButton';
 import Ellipses from './Ellipses';
 import TransparentButton from './TransparentButton';
 import StartPlay from '../../assets/svg/video_play.svg';
+import amplitude from 'amplitude-js';
 // import LoadImg from '../../components/LoadImg';
 
 const useStyles = makeStyles(theme => ({
@@ -28,16 +29,15 @@ const useStyles = makeStyles(theme => ({
   },
   firstStepImage: {
     width: '100%',
+    height: '100%',
     maxHeight: 357,
     minHeight: 190,
     opacity: 0.5,
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(4)
-    },
   },
   imageContainer: {
     maxHeight: 357,
     minHeight: 190,
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
@@ -52,11 +52,11 @@ const useStyles = makeStyles(theme => ({
   mainContainer: {
     display: 'flex',
     flexDirection: 'column',
+    height: '100%',
     justifyContent: 'space-between',
     backgroundColor: theme.circleIn.palette.gray1,
     padding: theme.spacing(4, 5, 3, 5),
     [theme.breakpoints.down('sm')]: {
-      height: '100%',
       padding: theme.spacing(4, 3, 3, 3),
     },
     [theme.breakpoints.up('md')]: {
@@ -76,6 +76,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     maxHeight: 357,
     minHeight: 190,
+    height: '100%'
   },
   mediaPlayer: {
     width: '100%',
@@ -171,6 +172,7 @@ const OnboardingStep = ({
   data,
   step,
   totalSteps,
+  userId,
   onAction,
   onBackAction,
   onClose
@@ -188,6 +190,9 @@ const OnboardingStep = ({
   }, [step, onClose, onBackAction])
 
   const handleClick = useCallback(() => {
+    const event = 'Flashcards Onboarding Modal Video Played'
+    amplitude.getInstance('student-application').logEvent(event);
+
     setIsPlaying(!isPlaying);
     if (!player.current) return;
     !isPlaying && player.current.play();

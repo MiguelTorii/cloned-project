@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const FLASHCARDS_ONBOARDING_ID = 9066
 
-const OnboardingFlashcards = ({ viewedTooltips, confirmTooltip }) => {
+const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
@@ -84,6 +84,7 @@ const OnboardingFlashcards = ({ viewedTooltips, confirmTooltip }) => {
         data={ONBOARDING_STEPS[step]}
         step={step + 1}
         totalSteps={ONBOARDING_STEPS.length}
+        userId={userId}
         onAction={onStepAction}
         onBackAction={onBackAction}
         onClose={closePopup}

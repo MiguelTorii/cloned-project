@@ -77,8 +77,8 @@ const ReportIssue = ({
   const handleSubmit = useCallback(async () => {
     if (selectedNames.length === 0) {
       setOpenError(true)
-      setErrorTitle('Select a student')
-      setErrorBody('Please select a student which you want to report from the drop-down menu.')
+      setErrorTitle('Select a Student')
+      setErrorBody('Please select the student that you are reporting from the drop-down menu.')
       return
     }
     if (selectedReason.length === 0) {
