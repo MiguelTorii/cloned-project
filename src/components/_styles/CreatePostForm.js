@@ -115,7 +115,7 @@ export const styles = theme => ({
     minWidth: 100,
     backgroundColor: '#03A9F4',
     borderRadius: 100,
-    color: theme.circleIn.palette.whiteText
+    color: theme.circleIn.palette.primaryBackground
   },
   noteItem: {
     display: 'flex',
@@ -125,7 +125,7 @@ export const styles = theme => ({
     minWidth: 100,
     backgroundColor: '#F5C264',
     borderRadius: 100,
-    color: theme.circleIn.palette.whiteText
+    color: theme.circleIn.palette.primaryBackground
   },
   questionItem: {
     display: 'flex',
@@ -135,7 +135,7 @@ export const styles = theme => ({
     minWidth: 100,
     backgroundColor: '#15A63D',
     borderRadius: 100,
-    color: theme.circleIn.palette.whiteText
+    color: theme.circleIn.palette.primaryBackground
   },
   resourceItem: {
     display: 'flex',
@@ -145,7 +145,7 @@ export const styles = theme => ({
     minWidth: 100,
     backgroundColor: '#9E3CFF',
     borderRadius: 100,
-    color: theme.circleIn.palette.whiteText
+    color: theme.circleIn.palette.primaryBackground
   },
   itemText: {
     maxWidth: 150
