@@ -182,25 +182,11 @@ const FlashcardsList = ({
           <GradientButton onClick={handleCreate}>
             Create
           </GradientButton>
-
-          <Typography
-            variant='caption'
-            color='primary'
-            className={classes.feedback}
-            onClick={handleOpenFeedback}
-          >
-            Give Feedback
-          </Typography>
         </Grid>
       </Grid>
       <Chip
         className={classes.betaTag}
         label="BETA"
-      />
-      <GiveFeedback
-        origin='Flashcard'
-        open={openFeedback}
-        onClose={handleCloseFeedback}
       />
 
       { /* Deck Filter */ }
