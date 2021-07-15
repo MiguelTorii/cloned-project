@@ -154,18 +154,18 @@ class Feed extends React.PureComponent<Props, State> {
       this.handleFetchFeed.cancel();
   };
 
-  handleFetchFeed = () => {
+  handleFetchFeed = async () => {
     const { fetchFeed } = this.props;
     try {
-      fetchFeed();
+      await fetchFeed();
       this.setState({
         isBeforeFirstLoad: false
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      this.setState({ isFiltering: false })
     }
-
-    this.setState({ isFiltering: false })
   };
 
   handleShare = ({ feedId }: { feedId: number }) => {

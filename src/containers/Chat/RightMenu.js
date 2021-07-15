@@ -171,7 +171,7 @@ const RightMenu = ({
           if (Number(u.userId) !== Number(userId)) {
             setOtherUser(u)
             setGroupImage(u.image)
-            setInitials(getInitials({ name: `${u.firstname} ${u.lastname}` }))
+            setInitials(getInitials(`${u.firstname} ${u.lastname}`))
           }
         })
       } else {
