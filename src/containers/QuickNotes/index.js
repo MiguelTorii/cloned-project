@@ -47,7 +47,7 @@ const QuickNotes = ({
 
   useEffect(() => setDebouncedContent(quicknoteContent), [quicknoteContent, setDebouncedContent])
 
-  const saveContent = useCallback(async content => {
+  const saveContent = useCallback(async (content, currentClass = null) => {
     const now = new Date()
     if (
       !content ||
@@ -57,18 +57,18 @@ const QuickNotes = ({
       !selectedClass.classId
     ) return
     setPrevContent(debouncedContent)
-    if (!quicknoteId) {
+    if (!quicknoteId || currentClass) {
       await saveNoteAction({
         note: {
           title: 'Untitled',
-          sectionId: selectedClass.sectionId,
-          classId: selectedClass.classId,
+          sectionId: currentClass ? currentClass.sectionId : selectedClass.sectionId,
+          classId: currentClass ? currentClass.classId : selectedClass.classId,
           lastModified: now,
           content
         },
         quicknote: true,
-        sectionId: selectedClass.sectionId,
-        classId: selectedClass.classId
+        sectionId: currentClass ? currentClass.sectionId : selectedClass.sectionId,
+        classId: currentClass ? currentClass.classId : selectedClass.classId
       })
     } else {
       await updateNote({
@@ -155,11 +155,11 @@ const QuickNotes = ({
   }, [])
 
   const updateClass = useCallback(async cl => {
-    if (debouncedContent !== quicknoteContent) {
-      await saveContent(quicknoteContent)
-    }
     setSelectedClass(cl)
-  }, [debouncedContent, quicknoteContent, saveContent])
+    if (quicknoteContent !== '<p><br></p>' || !quicknoteContent) {
+      await saveContent(quicknoteContent, cl)
+    }
+  }, [quicknoteContent, saveContent])
 
   const handleToolbar = useCallback(() => {
     setOpen(!open)
@@ -194,6 +194,13 @@ const QuickNotes = ({
     }
     setSelectedClass(null)
   }, [classes.stackbar, debouncedContent, enqueueSnackbar, handleClose, quicknoteContent, resetQuickNote, saveContent, selectedClass])
+
+  const disableSaveNote = useMemo(() => {
+    if (quicknoteContent === '<p><br></p>' || !quicknoteContent) {
+      return true
+    }
+    return false;
+  }, [quicknoteContent])
 
   return (
     <Grid container>
@@ -310,7 +317,7 @@ const QuickNotes = ({
             {renderSaved}
             <Button
               variant='contained'
-              disabled={!selectedClass}
+              disabled={!selectedClass || disableSaveNote}
               className={classes.button}
               classes={{
                 disabled: classes.disableBtn
