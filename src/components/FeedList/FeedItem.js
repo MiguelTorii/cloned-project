@@ -3,10 +3,13 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import cx from 'classnames'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import Image from "react-graceful-image"
 import moment from 'moment'
+import pluralize from 'pluralize';
 
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -34,23 +37,21 @@ import PostComments from 'containers/PostComments'
 import RoleBadge from 'components/RoleBadge'
 import PdfComponent from 'components/PdfGallery/PdfComponent'
 import LinkPreview from 'components/LinkPreview'
-import pluralize from 'pluralize';
 
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import * as api from 'api/posts'
+import linkPost from 'assets/svg/ic_link_post.svg'
+import flashcardPost from 'assets/svg/ic_flashcard_post.svg'
+import thanksSvg from 'assets/svg/thanks.svg'
+import thankedSvg from 'assets/svg/thanked.svg'
+import commentSvg from 'assets/svg/comment.svg'
+import FeedIconFlashcards from 'assets/svg/flashcards_new.svg';
+import FeedIconResource from 'assets/svg/links.svg';
+import FeedIconQuestion from 'assets/svg/questions.svg';
+import FeedIconNote from 'assets/svg/notes_new.svg';
+import FeedIconPost from 'assets/svg/posts.svg';
+
 import { getInitials } from 'utils/chat'
-import * as api from '../../api/posts'
-
-import linkPost from '../../assets/svg/ic_link_post.svg'
-import flashcardPost from '../../assets/svg/ic_flashcard_post.svg'
-import thanksSvg from '../../assets/svg/thanks.svg'
-import thankedSvg from '../../assets/svg/thanked.svg'
-import commentSvg from '../../assets/svg/comment.svg'
-import FeedIconFlashcards from '../../assets/svg/flashcards_new.svg';
-import FeedIconResource from '../../assets/svg/links.svg';
-import FeedIconQuestion from '../../assets/svg/questions.svg';
-import FeedIconNote from '../../assets/svg/notes_new.svg';
-import FeedIconPost from '../../assets/svg/posts.svg';
+import { getPastClassIds } from 'utils/helpers';
 
 import useStyles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
@@ -96,7 +97,6 @@ const FeedItem = ({
   onReport,
   onDelete,
   pushTo,
-  schoolId,
   onUserClick,
   onPostClick,
   user,
@@ -109,7 +109,13 @@ const FeedItem = ({
   const [moreAnchorEl, setAnchorEl] = useState(null)
   const [thanksCount, setThanksCount] = useState(0)
   const [thanked, setThanked] = useState(false)
+  const classList = useSelector((state) => state.user.userClasses.classList);
+
   const isMenuOpen = Boolean(moreAnchorEl)
+
+  const pastClassIds = useMemo(() => {
+    return getPastClassIds(classList)
+  }, [classList]);
 
   useEffect(() => {
     setThanked(data.thanked);
@@ -560,6 +566,7 @@ const FeedItem = ({
 
       {showComments && (
         <PostComments
+          isPastClassFlashcard={pastClassIds.includes(data.classId) && data.typeId === FeedTypes.flashcards.id}
           feedId={data.feedId}
           postId={data.postId}
           typeId={data.typeId}

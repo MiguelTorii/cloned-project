@@ -375,6 +375,7 @@ export type FeedItem = {
   rank: number,
   subject: string,
   classroomName: string,
+  classId: number,
   title: string,
   body: string,
   readOnly: boolean,
@@ -614,5 +615,5 @@ export type PointsHistoryItem = {
   points_title: string,
   points_icon_url: string,
   points: number,
-  date: string,
+  date: string
 };

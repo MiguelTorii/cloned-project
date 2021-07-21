@@ -1,23 +1,26 @@
+// @flow
 import React, { useCallback, useMemo, useState } from 'react';
-import { push } from 'connected-react-router';
-import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
-import pluralize from 'pluralize';
-import Box from '@material-ui/core/Box';
-import { useDispatch, useSelector } from 'react-redux';
-import Chip from '@material-ui/core/Chip';
-import { animations } from 'react-animation';
 import clsx from 'clsx';
 import moment from 'moment';
+import { push } from 'connected-react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { animations } from 'react-animation';
+import pluralize from 'pluralize';
+
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
 import Button from "@material-ui/core/Button";
+
 import { bookmarkFlashcards, deleteFlashcard } from '../../actions/user';
 import ShareLinkModal from '../ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
 import Dialog from "../Dialog";
 import ActionBar from './ActionBar';
 import type { FeedItem } from '../../types/models';
-import useStyles from './styles';
 import withRoot from '../../withRoot';
+import useStyles from './styles';
 
 type Props = {
   data: FeedItem
@@ -123,6 +126,7 @@ const FlashcardsDeck = ({ data }: Props) => {
                 />
             }
             <div
+              aria-hidden="true"
               className={clsx(
                 !isHover && classes.hidden
               )}

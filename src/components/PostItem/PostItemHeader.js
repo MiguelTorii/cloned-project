@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 // @flow
 import React, { Fragment } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -61,7 +62,8 @@ type Props = {
   expertMode: boolean,
   router: Object,
   onDelete: Function,
-  onEdit: Function
+  onEdit: Function,
+  isPastClassFlashcard?: boolean
 };
 
 type State = {
@@ -70,7 +72,8 @@ type State = {
 
 class PostItemHeader extends React.PureComponent<Props, State> {
   static defaultProps = {
-    isMarkdown: false
+    isMarkdown: false,
+    isPastClassFlashcard: false
   };
 
   state = {
@@ -166,7 +169,8 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       role,
       newClassExperience,
       onBookmark,
-      router
+      router,
+      isPastClassFlashcard
     } = this.props;
 
     const { moreAnchorEl, open, showShortSummary } = this.state;
@@ -211,12 +215,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </MenuItem>
         ) : (
           <div>
-            <MenuItem onClick={this.handleEdit}>
+            {!isPastClassFlashcard && <MenuItem onClick={this.handleEdit}>
               <ListItemIcon color="inherit">
                 <CreateIcon />
               </ListItemIcon>
               <ListItemText inset primary="Edit" />
-            </MenuItem>
+            </MenuItem>}
             <MenuItem onClick={this.handleDelete}>
               <ListItemIcon color="inherit">
                 <DeleteIcon />

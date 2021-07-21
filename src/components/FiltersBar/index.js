@@ -1,8 +1,8 @@
 import React from 'react';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
-import useStyles from './styles';
 import clsx from 'clsx';
+import useStyles from './styles';
 
 type Props = {
   data: Array<Object>,

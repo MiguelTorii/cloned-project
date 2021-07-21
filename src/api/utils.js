@@ -228,6 +228,7 @@ export const feedToCamelCase = (posts: Array<Object>): Feed => {
     userProfileUrl: String((item.user_profile_url: string) || ''),
     rank: Number((item.rank: number) || 0),
     classroomName: String((item.classroom_name: string) || ''),
+    classId: Number((item.class_id: number) || 0),
     subject: String((item.subject: string) || ''),
     title: String((item.title: string) || ''),
     body: String((item.body: string) || ''),

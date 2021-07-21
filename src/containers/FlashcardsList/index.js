@@ -1,28 +1,30 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect , useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
+import { useLocation } from 'react-router';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
-import { useDispatch, useSelector } from 'react-redux';
-import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useLocation } from 'react-router';
-import { push } from 'connected-react-router';
-import GiveFeedback from 'containers/GiveFeedback'
-import withRoot from '../../withRoot';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import useStyles from './styles';
-import FiltersBar from '../../components/FiltersBar';
-import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import FlashcardsDeck from '../../components/FlashcardsDeck';
-import { isApiCalling } from '../../utils/helpers';
-import { userActions } from '../../constants/action-types';
-import Dialog from '../../components/Dialog';
-import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
-import SlideUp from '../../components/Transition/SlideUp';
+
+import withRoot from 'withRoot';
+
 import OnboardingFlashcards from 'containers/OnboardingFlashcards';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import FiltersBar from 'components/FiltersBar';
+import FlashcardsDeck from 'components/FlashcardsDeck';
+import Dialog from 'components/Dialog';
+import FlashcardsDeckCreator from 'components/FlashcardsDeckManager/FlashcardsDeckCreator';
+import SlideUp from 'components/Transition/SlideUp';
+
+import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
+import { isApiCalling, getPastClassIds } from 'utils/helpers';
+import { userActions } from 'constants/action-types';
+import { getFlashcards, confirmTooltip as confirmTooltipAction } from 'actions/user';
+import useStyles from './styles';
 
 const Filters = {
   mine: {
@@ -30,6 +32,9 @@ const Filters = {
   },
   bookmarked: {
     text: 'My Bookmarked Decks'
+  },
+  past: {
+    text: 'Past Class Decks'
   }
 };
 
@@ -43,11 +48,14 @@ const FlashcardsList = ({
   const me = useSelector((state) => state.user.data);
   const decks = useSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
+  const classList = useSelector((state) => state.user.userClasses.classList);
   const location = useLocation();
-
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [openFeedback, setOpenFeedback] = useState(false)
+
+  const pastClassIds = useMemo(() => {
+    return getPastClassIds(classList)
+  }, [classList]);
 
   // Memos
   const arrFilters = useMemo(() => {
@@ -67,8 +75,11 @@ const FlashcardsList = ({
     if (currentFilter === 'bookmarked') {
       return result.filter((item) => item.bookmarked);
     }
+    if (currentFilter === 'past') {
+      return result.filter(item => pastClassIds.includes(item.class_id));
+    }
     return result;
-  }, [decks, currentFilter]);
+  }, [decks, currentFilter, pastClassIds]);
 
   // Callbacks
   const renderEmptyState = useCallback(() => (
@@ -84,14 +95,6 @@ const FlashcardsList = ({
       </Box>
     </Box>
   ), [currentFilter]);
-
-  const handleOpenFeedback = useCallback(() => {
-    setOpenFeedback(true)
-  }, [])
-
-  const handleCloseFeedback = useCallback(() => {
-    setOpenFeedback(false)
-  }, [])
 
   const handleCreate = useCallback(() => {
     // history.push('/flashcards/new');
@@ -122,6 +125,9 @@ const FlashcardsList = ({
       break;
     case 'bookmarked':
       dispatch(getFlashcards(undefined, true));
+      break;
+    case 'past':
+      dispatch(getFlashcards(me.userId));
       break;
     default:
       throw new Error('Undefined filter');
@@ -216,11 +222,11 @@ const FlashcardsList = ({
   );
 };
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({ user }) => ({
   viewedTooltips: user.syncData.viewedTooltips,
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       confirmTooltip: confirmTooltipAction,

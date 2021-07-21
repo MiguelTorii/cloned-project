@@ -3,6 +3,7 @@
  * @flow
  */
 import update from 'immutability-helper';
+import store from 'store';
 import {
   signInActions,
   signUpActions,
@@ -11,7 +12,6 @@ import {
 } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { User, Announcement, FeedItem } from '../types/models';
-import store from 'store';
 import { normalizeArray } from '../utils/helpers';
 
 export type UserState = {

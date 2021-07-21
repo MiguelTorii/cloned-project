@@ -56,6 +56,7 @@ type Props = {
   readOnly: boolean,
   hasBestAnswer?: boolean,
   isOwner?: boolean,
+  isPastClassFlashcard?: boolean,
   toolbarPrefix?: string,
   showNotification: Function
 };
@@ -69,6 +70,7 @@ type State = {
 class ViewNotes extends React.PureComponent<Props, State> {
   static defaultProps = {
     isQuestion: false,
+    isPastClassFlashcard: false,
     hasBestAnswer: false,
     isOwner: false
   };
@@ -388,6 +390,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       user: {
         data: { userId, profileImage, firstName, lastName }
       },
+      isPastClassFlashcard,
       isQuestion,
       readOnly,
       feedId,
@@ -406,6 +409,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         )}
         <ErrorBoundary>
           <PostItemAddComment
+            isPastClassFlashcard={isPastClassFlashcard}
             userId={userId}
             name={name}
             profileImageUrl={profileImage}

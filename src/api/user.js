@@ -210,6 +210,7 @@ export const getUserClasses = async ({
       courseDisplayName: String((userClass.course_display_name: string) || ''),
       class: String((userClass.class: string) || ''),
       bgColor: String((userClass.bg_color) || ''),
+      isCurrent: Boolean((userClass.is_current) || false),
       didInviteClassmates: Boolean((userClass.did_invite_classmates) || false),
       didHideFeedEmptyState: Boolean((userClass.did_hide_feed_empty_state) || false)
     }));

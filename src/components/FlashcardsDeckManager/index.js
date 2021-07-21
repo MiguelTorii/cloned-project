@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import Grid from "@material-ui/core/Grid";
-import TextField from '../Basic/TextField';
 import Typography from "@material-ui/core/Typography";
 import update from 'immutability-helper';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
-import FlashcardsListEditor from '../FlashcardsListEditor';
-import GradientButton from '../Basic/Buttons/GradientButton';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import { extractTextFromHtml } from 'utils/helpers';
 import { showNotification } from 'actions/notifications';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import FlashcardsListEditor from '../FlashcardsListEditor';
+import TextField from '../Basic/TextField';
+import withRoot from '../../withRoot';
 
 const FlashcardsDeckManager = (
   {
@@ -52,12 +52,14 @@ const FlashcardsDeckManager = (
     const result = [];
 
     myClasses.forEach((classData) => {
-      classData.section.forEach((section) => {
-        result.push({
-          value: `${classData.classId}_${section.sectionId}`,
-          text: `${section.subject} ${classData.className}: - ${section.section}`
+      if (classData.isCurrent) {
+        classData.section.forEach((section) => {
+          result.push({
+            value: `${classData.classId}_${section.sectionId}`,
+            text: `${section.subject} ${classData.className}: - ${section.section}`
+          });
         });
-      });
+      }
     });
 
     return result;
@@ -183,12 +185,12 @@ const FlashcardsDeckManager = (
             onChange={(event) => handleUpdateField('summary', event.target.value)}
           />
         </Grid>
-        {/*<Grid item xs={12} lg={6}>*/}
-        {/*  <Box display="flex" justifyContent="flex-end" alignItems="center">*/}
-        {/*    <Typography>Visible to class</Typography>*/}
-        {/*    <IosSwitch />*/}
-        {/*  </Box>*/}
-        {/*</Grid>*/}
+        {/* <Grid item xs={12} lg={6}> */}
+        {/*  <Box display="flex" justifyContent="flex-end" alignItems="center"> */}
+        {/*    <Typography>Visible to class</Typography> */}
+        {/*    <IosSwitch /> */}
+        {/*  </Box> */}
+        {/* </Grid> */}
       </Grid>
     </Box>
   );

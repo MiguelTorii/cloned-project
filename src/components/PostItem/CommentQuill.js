@@ -23,7 +23,8 @@ const CommentQuill = ({
   handleClick,
   showError,
   userId,
-  toolbarPrefix
+  toolbarPrefix,
+  isPastClassFlashcard
 }) => {
   const [loading, setLoading] = useState(false)
   const [isNewLine, setIsNewLine] = useState(false)
@@ -36,6 +37,15 @@ const CommentQuill = ({
     formats,
     placeholder: 'Type a comment...'
   });
+
+  useEffect(() => {
+    if (quill && isPastClassFlashcard) {
+      quill.enable(false)
+    }
+    if (quill && !isPastClassFlashcard) {
+      quill.enable()
+    }
+  }, [isPastClassFlashcard, quill])
 
   useEffect(() => {
     if (quill) {

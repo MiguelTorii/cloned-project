@@ -1,17 +1,20 @@
+// @flow
 import React from 'react';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
 import Box from '@material-ui/core/Box';
-import IconEye from 'assets/svg/icon-eye-gray.svg';
-import IconBookmark from 'assets/svg/icon-bookmark-gray.svg';
-import IconThreeDots from 'assets/svg/icon-dots-gray.svg';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+
+import IconEye from 'assets/svg/icon-eye-gray.svg';
+import IconBookmark from 'assets/svg/icon-bookmark-gray.svg';
+import IconThreeDots from 'assets/svg/icon-dots-gray.svg';
 import IconEyeGradient from 'assets/svg/icon-eye.svg';
 import IconBookmarkGradient from 'assets/svg/icon-bookmark.svg';
 import IconDotsGradient from 'assets/svg/icon-dots.svg';
 import ActionItem from 'components/FlashcardsDeck/ActionItem';
+
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
 type Props = {
   isOwn: boolean,
@@ -19,7 +22,7 @@ type Props = {
   onViewEdit: Function,
   onBookmark: Function,
   onShareLink: Function,
-  onDelete: Function,
+  onDelete: Function
 };
 
 const ActionBar = (

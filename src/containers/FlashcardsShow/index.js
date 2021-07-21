@@ -1,32 +1,48 @@
+// @flow
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import _ from 'lodash';
+import clsx from 'clsx';
+import moment from 'moment';
+import update from 'immutability-helper';
+import { push, goBack } from 'connected-react-router';
 import { useLocation, useParams } from 'react-router';
-import Grid from '@material-ui/core/Grid';
-import { getFlashcards } from 'api/posts';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLastLocation } from 'react-router-last-location';
+import { useIdleTimer } from 'react-idle-timer';
+import { differenceInMilliseconds } from "date-fns";
+
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import LoadingSpin from 'components/LoadingSpin';
-import _ from 'lodash';
 import IconSchool from '@material-ui/icons/School';
-import LinearProgressBar from 'components/LinearProgressBar';
 import IconPrevious from '@material-ui/icons/ArrowBack';
 import IconNext from '@material-ui/icons/ArrowForward';
 import IconPen from '@material-ui/icons/EditOutlined';
-import IconActionButton from 'components/IconActionButton';
 import IconBookmark from '@material-ui/icons/BookmarkOutlined';
 import IconBookmarkBorder from '@material-ui/icons/BookmarkBorder';
 import IconShare from '@material-ui/icons/ShareOutlined';
-import TransparentIconButton from 'components/Basic/Buttons/TransparentIconButton';
-import FlashcardsListEditor from 'components/FlashcardsListEditor';
-import { bookmarkFlashcards } from 'actions/user';
-import update from 'immutability-helper';
-import clsx from 'clsx';
 import IconBook from '@material-ui/icons/Book';
 import IconNote from '@material-ui/icons/LibraryBooks';
 import IconBack from '@material-ui/icons/ArrowBackIos';
 import Link from '@material-ui/core/Link';
-import moment from 'moment';
-import { useLastLocation } from 'react-router-last-location';
+
+import { getFlashcards } from 'api/posts';
+import { logEvent } from 'api/analytics';
+import { bookmarkFlashcards } from 'actions/user';
+import { TIMEOUT } from 'constants/common';
+import { INTERVAL, APP_ROOT_PATH } from 'constants/app';
+import { userActions } from 'constants/action-types';
+
+import withRoot from 'withRoot';
+import PostComments from 'containers/PostComments';
+import PostItemActions from 'containers/PostItemActions';
+
+import LoadingSpin from 'components/LoadingSpin';
+import LinearProgressBar from 'components/LinearProgressBar';
+import IconActionButton from 'components/IconActionButton';
+import TransparentIconButton from 'components/Basic/Buttons/TransparentIconButton';
+import FlashcardsListEditor from 'components/FlashcardsListEditor';
 import FlashcardsMatchGame from 'components/FlashcardsMatchGame';
 import ScrollToTop from 'components/ScrollToTop';
 import ShareLinkModal from 'components/ShareLinkModal';
@@ -35,27 +51,19 @@ import FlashcardsDeckEditor from 'components/FlashcardsDeckManager/FlashcardsDec
 import SlideUp from 'components/Transition/SlideUp';
 import FlashcardsReview from 'components/FlashcardsReview';
 import FlashcardsQuiz from 'components/FlashcardsQuiz';
-import { TIMEOUT } from 'constants/common';
-import { useIdleTimer } from 'react-idle-timer';
-import { logEvent } from 'api/analytics';
-import { differenceInMilliseconds } from "date-fns";
-import { INTERVAL, APP_ROOT_PATH } from 'constants/app';
-import { push, goBack } from 'connected-react-router';
-import PostComments from 'containers/PostComments';
-import PostItemActions from 'containers/PostItemActions';
-import PostItem from '../../components/PostItem';
+import PostItem from 'components/PostItem';
+import PostItemHeader from 'components/PostItem/PostItemHeader';
+import Avatar from 'components/Avatar';
+
+import { isApiCalling, getPastClassIds } from 'utils/helpers';
+import { getInitials } from 'utils/chat';
+
 import PostTags from '../PostTags';
-import PostItemHeader from '../../components/PostItem/PostItemHeader';
 import ActionButton from './ActionButton';
 import CardBoard from './CardBoard';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
-import { isApiCalling } from '../../utils/helpers';
-import { userActions } from '../../constants/action-types';
-import Avatar from '../../components/Avatar';
-import { getInitials } from '../../utils/chat';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 80;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
@@ -67,6 +75,7 @@ const FlashcardsShow = () => {
   const { flashcardId } = useParams();
   const me = useSelector((state) => state.user.data);
   const expertMode = useSelector((state) => state.user.expertMode);
+  const classList = useSelector((state) => state.user.userClasses.classList);
   const router = useSelector((state) => state.router);
   const location = useLocation();
   const lastLocation = useLastLocation();
@@ -105,6 +114,10 @@ const FlashcardsShow = () => {
       deck: cardList
     };
   }, [data, cardList]);
+
+  const pastClassIds = useMemo(() => {
+    return getPastClassIds(classList)
+  }, [classList]);
 
   const shouldRenderFeed = useMemo(() => {
     if (!lastLocation) {
@@ -358,6 +371,7 @@ const FlashcardsShow = () => {
       <PostItemHeader
         hideShare
         feedId={data.feedId}
+        isPastClassFlashcard={pastClassIds.includes(data.classId)}
         expertMode={expertMode}
         pushTo={handlePush}
         router={router}
@@ -405,6 +419,7 @@ const FlashcardsShow = () => {
       </Box>
       <Box>
         <PostComments
+          isPastClassFlashcard={pastClassIds.includes(data.classId)}
           feedId={data.feedId}
           postId={data.postId}
           typeId={data.typeId}
@@ -459,7 +474,7 @@ const FlashcardsShow = () => {
         </Grid>
         <Grid item xs={12} lg={4} xl={3}>
           <Grid container spacing={2}>
-            { me.userId === data.userId && (
+            { me.userId === data.userId && !pastClassIds.includes(data.classId) && (
               <Grid item>
                 <IconActionButton onClick={handleActionEdit}>
                   <IconPen />

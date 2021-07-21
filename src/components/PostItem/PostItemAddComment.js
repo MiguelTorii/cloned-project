@@ -12,6 +12,7 @@ type Props = {
   classes: Object,
   feedId: string,
   userId: string,
+  isPastClassFlashcard: boolean,
   isReply: boolean,
   rte: boolean,
   readOnly: boolean,
@@ -27,6 +28,7 @@ const PostItemAddComment = ({
   commentId,
   isReply = false,
   rte = false,
+  isPastClassFlashcard,
   onCancelComment = () => {},
   classes,
   readOnly,
@@ -78,11 +80,11 @@ const PostItemAddComment = ({
 
   return (
     <div className={cx(classes.container, isReply && classes.reply)}>
-      <div className={classes.body} onKeyUp={handleKeyUp}>
-
+      <div aria-hidden="true" className={classes.body} onKeyUp={handleKeyUp}>
         {rte && !readOnly ? (
           <CommentQuill
             value={value}
+            isPastClassFlashcard={isPastClassFlashcard}
             userId={userId}
             onChange={handleRTEChange}
             feedId={isReply ? commentId : feedId}
