@@ -88,13 +88,15 @@ const FlashcardsList = ({
       <Box mt={3} fontSize={24}>
         { currentFilter === 'mine' && 'No flashcard decks yet.' }
         { currentFilter === 'bookmarked' && 'No bookmarked decks yet.' }
+        { currentFilter === 'past' && 'No decks from any past classes yet.' }
       </Box>
-      <Box mt={1} fontSize={16}>
+      <Box mt={1} fontSize={16} className={classes.emptyContent}>
         { currentFilter === 'mine' && 'Level up your studying by creating your first flashcard deck!' }
         { currentFilter === 'bookmarked' && 'Start creating your own deck or check out your class feed to start bookmarking!' }
+        { currentFilter === 'past' && 'Flashcard decks that you created for past classes or classes that have ended will appear here.' }
       </Box>
     </Box>
-  ), [currentFilter]);
+  ), [currentFilter, classes]);
 
   const handleCreate = useCallback(() => {
     // history.push('/flashcards/new');

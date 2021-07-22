@@ -18,5 +18,9 @@ export default makeStyles((theme) => ({
     color: theme.circleIn.palette.primaryBackground,
     borderRadius: theme.spacing(1/2),
     fontWeight: 700
+  },
+  emptyContent: {
+    maxWidth: 570,
+    textAlign: 'center'
   }
 }));
