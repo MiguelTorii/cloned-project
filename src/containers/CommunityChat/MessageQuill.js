@@ -20,7 +20,6 @@ const MessageQuill = ({
   value,
   setValue,
   onSendMessage,
-  enableMessageBox,
   showError,
   onTyping,
   userId
@@ -86,15 +85,6 @@ const MessageQuill = ({
   if (Quill && !quill) {
     Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste)
   }
-
-  useEffect(() => {
-    if (quill && !enableMessageBox) {
-      quill.enable(false)
-    }
-    if (quill && enableMessageBox) {
-      quill.enable()
-    }
-  }, [enableMessageBox, quill])
 
   useEffect(() => {
     if (quill) {

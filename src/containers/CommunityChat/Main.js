@@ -80,7 +80,6 @@ const Main = ({
   const [members, setMembers] = useState({})
   const [campaign, setCampaign] = useState(null)
   const [showError, setShowError] = useState(false)
-  const [enableMessageBox, setEnableMessageBox] = useState(false)
   const [showHasUnregistered, setShowHasUnregistered] = useState(true)
 
   const hasUnregisteredRef = useRef();
@@ -138,14 +137,6 @@ const Main = ({
       setMembers(newMembers)
     }
   }, [local, channel])
-
-  useEffect(() => {
-    if (local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex !== null || !isCommunityChat) {
-      setEnableMessageBox(true)
-    } else {
-      setEnableMessageBox(false)
-    }
-  }, [local, channel, isCommunityChat])
 
   useEffect(() => {
     if (channel && newMessage && channel.sid === newMessage.channel.sid) {
@@ -510,7 +501,6 @@ const Main = ({
               }
               {!hasMore && <InitialAlert
                 hasPermission={hasPermission}
-                setEnableMessageBox={setEnableMessageBox}
                 handleUpdateGroupName={handleUpdateGroupName}
                 isCommunityChat={isCommunityChat}
                 selectedCourse={selectedCourse}
@@ -538,7 +528,6 @@ const Main = ({
           />
 
           {channel && <MessageQuill
-            enableMessageBox={enableMessageBox}
             value={value}
             userId={userId}
             onSendMessage={onSendMessage}

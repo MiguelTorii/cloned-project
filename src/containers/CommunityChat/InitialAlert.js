@@ -9,9 +9,8 @@ import Avatar from '@material-ui/core/Avatar'
 import GroupIcon from '@material-ui/icons/Group'
 import LoadImg from 'components/LoadImg'
 import InitialCommunityImage from 'assets/svg/community_first_time.svg'
-import useStyles from './_styles/initialAlert'
 import { getInitials } from 'utils/chat'
-
+import useStyles from './_styles/initialAlert'
 
 type Props = {
   local: Array,
@@ -20,8 +19,7 @@ type Props = {
   userId: string,
   isCommunityChat: boolean,
   selectedCourse: Object,
-  selectedChannel: Object,
-  setEnableMessageBox: Function
+  selectedChannel: Object
 };
 
 const InitialAlert = ({
@@ -32,7 +30,6 @@ const InitialAlert = ({
   isCommunityChat,
   selectedCourse,
   selectedChannel,
-  setEnableMessageBox
 }: Props) => {
   const classes = useStyles()
   const [isOneToOne, setIsOneToOne] = useState(true)
@@ -94,7 +91,6 @@ const InitialAlert = ({
         <Box display="flex" justifyContent="center" alignItems="center" marginTop={3}>
           <Button
             className={classes.initialAlertButton}
-            onClick={() => setEnableMessageBox(true)}
           >
             <span role="img" aria-label='message'>💬</span> &nbsp;
             Send Your First Message
