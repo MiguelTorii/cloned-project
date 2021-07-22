@@ -70,11 +70,12 @@ const ClassMultiSelect = ({
 
   const onChange = useCallback((_, value) => {
     if (noEmpty && value.length === 0) return
-    if (value.find(o => o.value === 'all')) {
+    const filteredList = value.filter((cl) => cl.isCurrent)
+    if (filteredList.find(o => o.value === 'all')) {
       onSelect(options)
     }
     else {
-      onSelect(value)
+      onSelect(filteredList)
     }
   }, [noEmpty, onSelect, options])
 

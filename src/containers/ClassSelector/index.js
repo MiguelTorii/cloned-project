@@ -107,7 +107,8 @@ const ClassesSelector = ({
 
   const handleLoadClasses = useCallback(async () => {
     try {
-      const userClasses = processClasses({ classes: classList, segment });
+      const currentClassList = classList.filter((cl) => cl.isCurrent)
+      const userClasses = processClasses({ classes: currentClassList, segment });
       setUserClasses(userClasses)
       if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }))
     } catch (err) {

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core';
-import { getCampaign } from 'api/campaign';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
@@ -31,16 +30,6 @@ const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
-  const [campaign, setCampaign] = useState(null);
-
-  useEffect(() => {
-    const init = async () => {
-      const aCampaign = await getCampaign({ campaignId: 9 });
-      setCampaign(aCampaign);
-    }
-
-    init()
-  }, [])
 
   useEffect(() => {
     if (

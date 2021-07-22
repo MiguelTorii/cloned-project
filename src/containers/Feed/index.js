@@ -460,6 +460,7 @@ class Feed extends React.PureComponent<Props, State> {
                 newClassExperience={campaign.newClassExperience}
                 hasMore={hasMore}
                 fromFeedId={fromFeedId}
+                classList={classList}
                 handleShare={this.handleShare}
                 onPostClick={this.handlePostClick}
                 onBookmark={this.handleBookmark}

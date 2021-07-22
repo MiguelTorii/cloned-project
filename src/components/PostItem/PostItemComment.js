@@ -201,7 +201,8 @@ class PostItemComment extends React.PureComponent<Props, State> {
       roleId,
       isOwner,
       userId,
-      replyCommentId
+      replyCommentId,
+      isCurrent
     } = this.props;
     const { showAddComment, open, report, moreAnchorEl, isEditing } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
@@ -305,9 +306,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
           </div>
         </div>
 
-        <IconButton onClick={this.handleMenuOpen}>
-          <MoreVertIcon />
-        </IconButton>
+        { isCurrent && (
+          <IconButton onClick={this.handleMenuOpen}>
+            <MoreVertIcon />
+          </IconButton>
+        )}
       </div>
     );
 
@@ -361,19 +364,21 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 </IconButton>
               }
 
-              <Typography
-                component="p"
-                variant="subtitle2"
-                className={classes.thanks}
-              >
-                <IconButton onClick={this.handleShowAddComment}>
-                  <img
-                    src={commentSvg}
-                    className={classes.actionIcon}
-                    alt="thanks"
-                  />
-                </IconButton>
-              </Typography>
+              { isCurrent && (
+                <Typography
+                  component="p"
+                  variant="subtitle2"
+                  className={classes.thanks}
+                >
+                  <IconButton onClick={this.handleShowAddComment}>
+                    <img
+                      src={commentSvg}
+                      className={classes.actionIcon}
+                      alt="thanks"
+                    />
+                  </IconButton>
+                </Typography>
+              )}
 
               {isEditing && (
                 <Typography variant="subtitle2">

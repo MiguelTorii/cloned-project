@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from '@material-ui/core/Typography';

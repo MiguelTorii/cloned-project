@@ -17,6 +17,7 @@ type Props = {
   canLeave: boolean,
   bgColor: string,
   navigate: Function,
+  isCurrent: boolean,
 }
 
 const ClassCard = ({
@@ -26,19 +27,21 @@ const ClassCard = ({
   handleLeaveClass,
   navigate,
   canLeave,
-  bgColor
+  bgColor,
+  isCurrent,
 }: Props) => {
   const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
       cursor: 'pointer',
-      minHeight: 180,
+      minHeight: 168,
       borderRadius: theme.spacing(),
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      background: bgColor || theme.circleIn.palette.action, 
+      background: theme.circleIn.palette.appBar,
+      borderTop: `${theme.spacing(2.5)}px solid ${isCurrent ? bgColor : theme.circleIn.palette.gray3}`,
     },
     media: {
       height: 0,
@@ -78,6 +81,7 @@ const ClassCard = ({
       fontSize: 16
     },
     content: {
+      color: theme.circleIn.palette.primaryText2,
       cursor: 'pointer'
     }
   }));
@@ -99,7 +103,6 @@ const ClassCard = ({
       className={classes.root}
       onClick={navigate}
     >
-      <div className={classes.circle} />
       <LeaveClassPopover 
         anchorEl={anchorEl}
         handleClose={handleClose}

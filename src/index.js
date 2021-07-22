@@ -71,7 +71,6 @@ import Chat from './pages/Chat'
 import ChatChannel from './pages/ChatChannel'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
-import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
 import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage} from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
@@ -101,7 +100,6 @@ ReactDOM.render(
       <SnackbarProvider>
         {/* <Tour /> */}
         <UserInitializer />
-        <OnboardingPopup />
         <MasqueradeFrame />
         <ConnectedRouter history={history}>
           <LastLocationProvider>

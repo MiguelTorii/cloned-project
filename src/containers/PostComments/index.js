@@ -4,7 +4,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PostItemAddComment from 'components/PostItem/PostItemAddComment';
@@ -30,10 +29,10 @@ import { showNotification } from "../../actions/notifications";
 
 const styles = theme => ({
   readOnly: {
-    ...theme.mixins.gutters(),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -248,6 +247,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       hasBestAnswer,
       isOwner,
+      isCurrent,
     } = this.props;
     const {
       comments,
@@ -298,6 +298,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                   onReport={this.handleReport}
                   onBestAnswer={this.handleBestAnswer}
                   userId={userId}
+                  isCurrent={isCurrent}
                 />
                 {item.children.reverse().map(reply => (
                   <PostItemComment
@@ -331,6 +332,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     onReport={this.handleReport}
                     onBestAnswer={this.handleBestAnswer}
                     userId={userId}
+                    isCurrent={isCurrent}
                   />
                 ))}
               </div>
@@ -365,6 +367,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                 onDelete={this.handleDelete}
                 onReport={this.handleReport}
                 onBestAnswer={this.handleBestAnswer}
+                isCurrent={isCurrent}
               />
               {!!replyCommentId && <SkeletonLoad />}
             </div>)}
@@ -394,33 +397,36 @@ class ViewNotes extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       feedId,
-      toolbarPrefix
+      toolbarPrefix,
+      isCurrent
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
     return (
       <>
-        {readOnly && (
-          <Paper className={classes.readOnly} elevation={8}>
+        {(readOnly || !isCurrent) && (
+          <div className={classes.readOnly} elevation={8}>
             <Typography variant="h6">
-              Commenting and replying have been disabled for this post
+              Commenting and replying are disabled for past classes
             </Typography>
-          </Paper>
+          </div>
         )}
-        <ErrorBoundary>
-          <PostItemAddComment
-            isPastClassFlashcard={isPastClassFlashcard}
-            userId={userId}
-            name={name}
-            profileImageUrl={profileImage}
-            rte
-            readOnly={readOnly}
-            isQuestion={isQuestion}
-            feedId={feedId}
-            onPostComment={this.handlePostComment}
-            toolbarPrefix={toolbarPrefix}
-          />
-        </ErrorBoundary>
+        {isCurrent && (
+          <ErrorBoundary>
+            <PostItemAddComment
+              isPastClassFlashcard={isPastClassFlashcard}
+              userId={userId}
+              name={name}
+              profileImageUrl={profileImage}
+              rte
+              readOnly={readOnly}
+              isQuestion={isQuestion}
+              feedId={feedId}
+              onPostComment={this.handlePostComment}
+              toolbarPrefix={toolbarPrefix}
+            />
+          </ErrorBoundary>
+        )}
         {this.renderComments()}
       </>
     );

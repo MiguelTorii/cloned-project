@@ -13,7 +13,6 @@ import Grid from '@material-ui/core/Grid';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import OnboardingNotes from 'containers/OnboardingNotes'
 import Tooltip from 'containers/Tooltip';
 import Button from '@material-ui/core/Button';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
@@ -101,10 +100,6 @@ const UserNotesContainer = ({
   }, [])
 
   const selectedClass = useMemo(() => classList.find(cl => cl.sectionId === sectionId), [classList, sectionId])
-
-  const updateOnboarding = useCallback(async () => {
-    await confirmTooltip(8453)
-  }, [confirmTooltip])
 
   useEffect(() => {
     if (userClasses?.classList) {

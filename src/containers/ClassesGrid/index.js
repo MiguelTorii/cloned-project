@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import ClassCard from 'containers/ClassesGrid/ClassCard'
 import { bindActionCreators } from 'redux'
 import { push } from 'connected-react-router';
@@ -13,6 +15,7 @@ import {
   leaveUserClass,
 } from 'api/user'
 import AddRemoveClasses from 'components/AddRemoveClasses';
+import FiltersBar from 'components/FiltersBar';
 import Empty from 'containers/ClassesGrid/Empty'
 import { cypher } from 'utils/crypto'
 import withRoot from '../../withRoot';
@@ -20,6 +23,15 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user'
 import * as feedActions from '../../actions/feed'
+
+const Filters = {
+  current: {
+    text: 'Current Classes'
+  },
+  past: {
+    text: 'Past Classes'
+  }
+};
 
 const styles = theme => ({
   item: {
@@ -33,7 +45,13 @@ const styles = theme => ({
   },
   container: {
     marginTop: theme.spacing(),
-    padding: theme.spacing(),
+  },
+  wrapper: {
+    padding: theme.spacing(5),
+  },
+  pastNote: {
+    maxWidth: 564,
+    marginTop: theme.spacing(2),
   }
 });
 
@@ -53,6 +71,14 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
   const [emptyLogo, setEmptyLogo] = useState('')
   const [emptyVisibility, setEmptyVisibility] = useState(false)
   const [emptyBody, setEmptyBody] = useState('')
+  const [currentFilter, setCurrentFilter] = useState('current')
+
+  const arrFilters = useMemo(() => {
+    return Object.keys(Filters).map((key) => ({
+      value: key,
+      text: Filters[key].text
+    }));
+  }, [])
 
   const handleLeaveClass = useCallback(async ({ sectionId, classId, userId }) => {
     await leaveUserClass({
@@ -99,6 +125,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
                 classId: cl.classId,
                 courseDisplayName: cl.courseDisplayName,
                 bgColor: cl.bgColor,
+                isCurrent: cl.isCurrent,
                 handleLeaveClass: () => handleLeaveClass({
                   sectionId: s.sectionId,
                   classId: cl.classId,
@@ -127,50 +154,100 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
 
   const hasClasses = useMemo(() => classList && classList.length > 0, [classList])
 
+  const getFilteredList = () => {
+    if (!classList) return []
+
+    if (currentFilter === 'current') {
+      return classList.filter((cl) => cl.isCurrent)
+    } else if (currentFilter === 'past') {
+      return classList.filter((cl) => !cl.isCurrent)
+    } else {
+      return []
+    }
+  }
+
+  const handleSelectFilter = useCallback((item) => {
+    setCurrentFilter(item)
+  }, [])
+
   return (
-    <Grid
-      justify={hasClasses ? "flex-start" : "center"}
-      className={classes.container}
-      container
-      spacing={2}
-    >
-      <AddRemoveClasses
-        open={openAddClasses}
-        onClose={() => setOpenAddClasses(false)}
-      />
-      {classList && classList.map(cl => cl && (
-        <Grid key={cl.sectionId} item xs={12} md={4} className={classes.item}>
-          <ClassCard
-            sectionDisplayName={cl.sectionDisplayName}
-            instructorDisplayName={cl.instructorDisplayName}
-            courseDisplayName={cl.courseDisplayName}
-            bgColor={cl.bgColor}
-            canLeave={cl.canLeave}
-            handleLeaveClass={cl.handleLeaveClass}
-            navigate={() => navigate({ ...cl })}
-          />
+    <div className={classes.wrapper}>
+      <Grid item>
+        <Typography variant="h5">
+          My Classes
+        </Typography>
+      </Grid>
+        <Grid item className={classes.pastNote}>
+          { currentFilter === 'current' ? (
+            <Typography variant="body1">
+              Hey!&nbsp;
+              <span role="img" aria-label="Clap">👋</span>
+              These are the current classes you are enrolled in on CircleIn.
+              Click on the classes below to see the Class Feed where you can connect
+              with your classmates, ask questions and share study materials!
+            </Typography>
+          ) : (
+            <Typography variant="body1">
+              You can access the materials from past classes, but keep in mind this is
+              read-only, you cannot post new comments, or share posts on this feed.
+            </Typography>
+          ) }
         </Grid>
-      ))}
-      {canAddClasses && <Grid item xs={12} className={classes.item}>
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={() => setOpenAddClasses(true)}
-          color="primary"
-        >
-          + Add More Classes
-        </Button>
-      </Grid>}
-      {emptyVisibility &&
-        <Grid container justify='center' item xs={12}>
-          <Grid item xs={12} md={9}>
-            <Empty
-              logo={emptyLogo}
-              body={emptyBody}
+      <Grid item>
+        <Box mt={4}>
+          <FiltersBar
+            data={arrFilters}
+            activeValue={currentFilter}
+            onSelectItem={handleSelectFilter}
+          />
+        </Box>
+      </Grid>
+
+      <Grid
+        justify={hasClasses ? "flex-start" : "center"}
+        className={classes.container}
+        container
+        spacing={2}
+      >
+        <AddRemoveClasses
+          open={openAddClasses}
+          onClose={() => setOpenAddClasses(false)}
+        />
+        {classList && getFilteredList().map(cl => cl && (
+          <Grid key={cl.sectionId} item  xs={12} md={6} lg={4} xl={3} className={classes.item}>
+            <ClassCard
+              sectionDisplayName={cl.sectionDisplayName}
+              instructorDisplayName={cl.instructorDisplayName}
+              courseDisplayName={cl.courseDisplayName}
+              bgColor={cl.bgColor}
+              canLeave={cl.canLeave}
+              handleLeaveClass={cl.handleLeaveClass}
+              isCurrent={cl.isCurrent}
+              navigate={() => navigate({ ...cl })}
             />
           </Grid>
+        ))}
+        {canAddClasses && <Grid item xs={12} className={classes.item}>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={() => setOpenAddClasses(true)}
+            color="primary"
+          >
+            + Add More Classes
+          </Button>
         </Grid>}
-    </Grid>
+        {emptyVisibility &&
+          <Grid container justify='center' item xs={12}>
+            <Grid item xs={12} md={9}>
+              <Empty
+                logo={emptyLogo}
+                body={emptyBody}
+              />
+            </Grid>
+          </Grid>}
+      </Grid>
+    </div>
   );
 }
 

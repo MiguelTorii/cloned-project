@@ -143,6 +143,14 @@ class FeedList extends React.PureComponent<Props, State> {
     this.newComments[feedId] = content
   }
 
+  isCurrent = (classId) => {
+    const { classList } = this.props
+    const filteredList = classList.filter((cl) => cl.classId === classId)
+    if (filteredList.length > 0) {
+      return filteredList[0].isCurrent
+    }
+  }
+
   render() {
     const {
       classes,
@@ -263,6 +271,7 @@ class FeedList extends React.PureComponent<Props, State> {
                     quillRefs={this.quillRefs}
                     setNewComments={this.setNewComments}
                     newComments={this.newComments}
+                    isCurrent={this.isCurrent(item.classId)}
                   />
                 </Paper>
               ))
