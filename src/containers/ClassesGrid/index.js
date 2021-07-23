@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import ClassCard from 'containers/ClassesGrid/ClassCard'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { bindActionCreators } from 'redux'
 import { push } from 'connected-react-router';
 import {
@@ -17,7 +18,9 @@ import {
 import AddRemoveClasses from 'components/AddRemoveClasses';
 import FiltersBar from 'components/FiltersBar';
 import Empty from 'containers/ClassesGrid/Empty'
+import EmptyState from 'components/FeedList/EmptyState';
 import { cypher } from 'utils/crypto'
+import EmptyClass from 'assets/svg/empty-class.svg'
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -52,6 +55,25 @@ const styles = theme => ({
   pastNote: {
     maxWidth: 564,
     marginTop: theme.spacing(2),
+  },
+  emptyTitle: {
+    color: theme.circleIn.palette.darkTextColor,
+    fontWeight: 600,
+    fontSize: 24,
+    lineHeight: '33px',
+    textAlign: 'center',
+  },
+  emptyBody: {
+    maxWidth: 370,
+    color: theme.circleIn.palette.darkTextColor,
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: '22px',
+    textAlign: 'center',
+  },
+  progress: {
+    margin: 'auto',
+    marginTop: theme.spacing(4)
   }
 });
 
@@ -72,6 +94,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
   const [emptyVisibility, setEmptyVisibility] = useState(false)
   const [emptyBody, setEmptyBody] = useState('')
   const [currentFilter, setCurrentFilter] = useState('current')
+  const [loading, setLoading] = useState(false)
 
   const arrFilters = useMemo(() => {
     return Object.keys(Filters).map((key) => ({
@@ -99,6 +122,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
 
   useEffect(() => {
     const init = async () => {
+      setLoading(true)
       try {
         const {
           userClasses: { classList, canAddClasses, emptyState }
@@ -140,7 +164,10 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
           setCanAddClasses(canAddClasses)
         }
         // eslint-disable-next-line no-empty
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        setLoading(false)
+      }
     }
 
     init()
@@ -151,8 +178,6 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
     clearFeeds();
     pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}`)
   }, [pushTo, clearFeeds])
-
-  const hasClasses = useMemo(() => classList && classList.length > 0, [classList])
 
   const getFilteredList = () => {
     if (!classList) return []
@@ -204,7 +229,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
       </Grid>
 
       <Grid
-        justify={hasClasses ? "flex-start" : "center"}
+        justify={classList && getFilteredList().length > 0 ? "flex-start" : "center"}
         className={classes.container}
         container
         spacing={2}
@@ -227,6 +252,23 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
             />
           </Grid>
         ))}
+        {classList && getFilteredList().length === 0 && (
+          <EmptyState imageUrl={EmptyClass}>
+            <div className={classes.emptyTitle}>
+              {currentFilter === 'current' ? 'No classes yet.' : 'No past classes yet.'}
+            </div>
+            <div className={classes.emptyBody}>
+              {currentFilter === 'current'
+                ? 'You haven’t been added to any classes yet. If you’re currently enrolled in classes, please contact us at support@circleinapp.com.'
+                : 'When you complete a class, they will show up here!'}
+            </div>
+          </EmptyState>
+        )}
+        {loading && (
+          <div className={classes.progress}>
+            <CircularProgress size={40} />
+          </div>
+        )}
         {canAddClasses && <Grid item xs={12} className={classes.item}>
           <Button
             variant="contained"

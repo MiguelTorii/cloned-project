@@ -9,6 +9,7 @@ import { cypher , decypherClass } from 'utils/crypto'
 import Tooltip from 'containers/Tooltip'
 import cx from 'clsx'
 import queryString from 'query-string'
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   allClasses: {
@@ -35,6 +36,14 @@ const useStyles = makeStyles(theme => ({
   currentPath: {
     color: theme.circleIn.palette.action,
     fontWeight: 900
+  },
+  pastClass: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(),
+    padding: theme.spacing(),
+  },
+  pastClassLabel: {
+    opacity: 0.4,
   }
 }))
 
@@ -93,6 +102,9 @@ const HeaderNavigation = ({
   }, [classList])
 
   const allSelected = useMemo(() => options.length === selectedClasses.length, [options.length, selectedClasses.length])
+  const isPastClassFeed = useMemo(() => {
+    return selectedClasses.length === 1 && !selectedClasses[0].isCurrent
+  }, [selectedClasses])
   const classes = useStyles()
 
   const handleFilters = useCallback(options => {
@@ -206,18 +218,30 @@ const HeaderNavigation = ({
 
   return (
     <Box>
-      <ClassMultiSelect
-        noEmpty
-        variant='standard'
-        allLabel={`${firstName}'s Classes`}
-        containerStyle={classes.classSelector}
-        textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
-        externalOptions={options}
-        placeholder='Select Classes...'
-        selected={selectedClasses}
-        schoolId={schoolId}
-        onSelect={onSelect}
-      />
+      {isPastClassFeed ? (
+        <div className={classes.pastClass}>
+          <Typography variant='h5' display='inline'>
+            EPD-Incognito
+          </Typography>
+          &nbsp;
+          <Typography variant='h5' display='inline' className={classes.pastClassLabel}>
+            (Past Class)
+          </Typography>
+        </div>
+      ) :  (
+        <ClassMultiSelect
+          noEmpty
+          variant='standard'
+          allLabel={`${firstName}'s Classes`}
+          containerStyle={classes.classSelector}
+          textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
+          externalOptions={options}
+          placeholder='Select Classes...'
+          selected={selectedClasses}
+          schoolId={schoolId}
+          onSelect={onSelect}
+        />
+      )}
       <Box className={classes.links}>
         <Button
           onClick={navigate('/feed', {})}

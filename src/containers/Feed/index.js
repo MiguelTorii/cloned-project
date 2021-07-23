@@ -424,7 +424,10 @@ class Feed extends React.PureComponent<Props, State> {
               updateFeed={this.updateFeed}
               push={push}
             />
-            <PostCreationHeader />
+            { selectedClasses.length === 1 && !selectedClasses[0].isCurrent
+              ? null
+              : <PostCreationHeader />
+            }
             <FeedFilter
               query={query}
               from={from}
