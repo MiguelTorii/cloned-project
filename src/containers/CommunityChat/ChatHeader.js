@@ -28,8 +28,8 @@ import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg'
 import { ReactComponent as ChatStudyRoomMemberrs } from 'assets/svg/chat-studyroom-members.svg'
 import { ReactComponent as ChatActiveStudyRoomMemberrs } from 'assets/svg/chat-active-studyroom-members.svg'
 import { PERMISSIONS } from 'constants/common'
-import useStyles from './_styles/chatHeader'
 import { getInitials } from 'utils/chat'
+import useStyles from './_styles/chatHeader'
 
 type Props = {
   isCommunityChat: boolean,
@@ -354,6 +354,7 @@ const ChatHeader = ({
         chatType={channelType}
         onClose={handleCreateChannelClose}
         onLoadOptions={handleLoadOptions}
+        members={members}
         onSubmit={onSubmit}
         isLoading={loading}
         okLabel='Add Classmates'

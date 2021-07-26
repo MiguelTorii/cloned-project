@@ -16,6 +16,7 @@ type Props = {
   onClose: Function,
   onSubmit: Function,
   onLoadOptions: Function,
+  members: Array,
   title: ?string
 };
 
@@ -26,6 +27,7 @@ const CreateChatChannelDialog = ({
   onClose,
   onSubmit,
   okLabel,
+  members,
   chatType: chatTypeProp,
   onLoadOptions,
 }: Props) => {
@@ -53,11 +55,14 @@ const CreateChatChannelDialog = ({
 
   const handleLoadOptions = async query => {
     const users = await onLoadOptions({ query, from });
-    const ordered = users.options.sort((a, b) => {
-      if(a.relationship && !b.relationship) return -1
-      if(!a.relationship && b.relationship) return 1
-      return 0
-    })
+    const currentGroupMemberIds = members.map(member => Number(member.userId))
+    const ordered = users.options
+      .filter(option => !currentGroupMemberIds.includes(option.userId))
+      .sort((a, b) => {
+        if(a.relationship && !b.relationship) return -1
+        if(!a.relationship && b.relationship) return 1
+        return 0
+      })
     return { options: ordered, hasMore: false }
   };
 
