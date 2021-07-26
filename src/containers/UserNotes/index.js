@@ -1,33 +1,27 @@
 // @flow
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { bindActionCreators } from 'redux';
-import Paper from '@material-ui/core/Paper'
 import * as notesActions from 'actions/notes'
 import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles'
 import UserNotesEditor from 'components/UserNotesEditor';
-import EmptyNotes from 'components/UserNotesEditor/EmptyNotes'
-import cx from 'classnames'
 import Grid from '@material-ui/core/Grid';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import Tooltip from 'containers/Tooltip';
-import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+// import Tooltip from 'containers/Tooltip';
+import FiltersBar from 'components/FiltersBar';
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
-import GiveFeedback from 'containers/GiveFeedback'
 import type { State as StoreState } from '../../types/state';
 import DeleteNote from './DeleteNote';
-import NotesList from './NotesList';
 import ClassesFolders from './ClassesFolders';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(5),
   },
   paper: {
-    padding: theme.spacing(2, 4, 4, 4)
+    padding: theme.spacing(2, 0, 4, 0),
+    background: 'inherit'
   },
   centralize: {
     display: 'flex',
@@ -40,17 +34,8 @@ const useStyles = makeStyles((theme) => ({
   classesTypo: {
     fontSize: 16
   },
-  loading: {
-    justifyContent: 'center',
-    padding: theme.spacing(),
-    flex: 1,
-    display: 'flex'
-  },
   folder: {
     margin: theme.spacing(0, 1)
-  },
-  createNote: {
-    margin: theme.spacing(2, 0)
   },
   header: {
     display: 'flex',
@@ -58,8 +43,21 @@ const useStyles = makeStyles((theme) => ({
   },
   feedback: {
     cursor: 'pointer'
+  },
+  pastNote: {
+    maxWidth: 408,
+    marginTop: theme.spacing(2),
   }
 }))
+
+const Filters = {
+  current: {
+    text: 'Current Classes'
+  },
+  past: {
+    text: 'Past Classes'
+  }
+};
 
 export const blankNote = {
   content: '',
@@ -86,20 +84,16 @@ const UserNotesContainer = ({
   exitNoteTaker
 }) => {
   const classes = useStyles()
-  const hasNotes = useMemo(() => notes.length !== 0, [notes])
   const [confirmDelete, setConfirmDelete] = useState(null)
   const [classList, setClassList] = useState([])
-  const [openFeedback, setOpenFeedback] = useState(false)
+  const [currentFilter, setCurrentFilter] = useState('current')
 
-  const handleOpenFeedback = useCallback(() => {
-    setOpenFeedback(true)
+  const arrFilters = useMemo(() => {
+    return Object.keys(Filters).map((key) => ({
+      value: key,
+      text: Filters[key].text
+    }));
   }, [])
-
-  const handleCloseFeedback = useCallback(() => {
-    setOpenFeedback(false)
-  }, [])
-
-  const selectedClass = useMemo(() => classList.find(cl => cl.sectionId === sectionId), [classList, sectionId])
 
   useEffect(() => {
     if (userClasses?.classList) {
@@ -110,7 +104,8 @@ const UserNotesContainer = ({
           name: c.className,
           color: c.bgColor,
           sectionId: c.section[0].sectionId,
-          classId: c.classId
+          classId: c.classId,
+          isCurrent: c.isCurrent,
         }))
       setClassList(classes)
     }
@@ -130,10 +125,6 @@ const UserNotesContainer = ({
     if (isFolder) init()
   }, [getNotes, isFolder])
 
-  const createNote = useCallback(async () => {
-    saveNoteAction({ note: blankNote, sectionId, classId })
-  }, [classId, saveNoteAction, sectionId])
-
   const handleClose = useCallback(() => setCurrentNote({ note: null }), [setCurrentNote])
 
   const handleDeleteNote = useCallback(async () => {
@@ -142,13 +133,21 @@ const UserNotesContainer = ({
     closeConfirmDelete()
   }, [closeConfirmDelete, confirmDelete, deleteNote, handleClose])
 
-  const goBack = useCallback(() => setSectionId({ sectionId: null, classId: null }), [setSectionId])
+  const getFilteredList = () => {
+    if (!classList) return []
 
-  const emptyFolder = useMemo(() => !hasNotes && isFolder, [hasNotes, isFolder])
+    if (currentFilter === 'current') {
+      return classList.filter((cl) => cl.isCurrent)
+    } else if (currentFilter === 'past') {
+      return classList.filter((cl) => !cl.isCurrent)
+    } else {
+      return []
+    }
+  }
 
-  const onboardingOpen = useMemo(() => (
-    Boolean(viewedTooltips && !viewedTooltips.includes(8453))
-  ), [viewedTooltips])
+  const handleSelectFilter = useCallback((item) => {
+    setCurrentFilter(item)
+  }, [])
 
   return (
     <div className={classes.container}>
@@ -157,56 +156,37 @@ const UserNotesContainer = ({
         confirmDelete={confirmDelete}
         closeConfirmDelete={closeConfirmDelete}
       />
-      <GiveFeedback
-        origin='Notes'
-        open={openFeedback}
-        onClose={handleCloseFeedback}
-      />
-      <div className={classes.header}>
-        <Typography variant='h6'>My Notes</Typography>
-        <Typography
-          variant='caption'
-          color='primary'
-          className={classes.feedback}
-          onClick={handleOpenFeedback}
-        >
-          Give Feedback
+      <Grid item>
+        <Typography variant="h5">
+          My Notes
         </Typography>
-      </div>
-      <Paper className={cx(
-        classes.paper,
-        emptyFolder && classes.centralize
-      )}>
-        {isFolder && <Grid
-          className={classes.backButton}
-          container
-          justify='flex-start'
-          alignItems='center'
-          onClick={goBack}
-        >
-          <ArrowBackIosRoundedIcon />
-          <FolderOpenIcon className={classes.folder} style={{ color: selectedClass?.color }} />
-          <Typography className={classes.classesTypo}>{selectedClass?.name}</Typography>
-        </Grid>}
-        {emptyFolder && !initialLoading && <EmptyNotes />}
-        {isFolder && !initialLoading && (
-          <Tooltip
-            id={5909}
-            delay={600}
-            placement="right"
-            hidden={onboardingOpen}
-            text="Your notes will appear on this screen. Tap here to create your first notes."
-          >
-            <Button
-              variant={hasNotes ? "text" : 'contained'}
-              className={cx(hasNotes && classes.createNote)}
-              color="primary"
-              onClick={createNote}
-            >
-              {hasNotes ? '+ Create New Notes' : 'Get Started'}
-            </Button>
-          </Tooltip>
-        )}
+      </Grid>
+      <Grid item className={classes.pastNote}>
+        { currentFilter === 'current' ? (
+          <Typography variant="body1">
+            Take notes. share your notes, review notes, and keep track of all your quick notes here!
+            <span role="img" aria-label="Clap">😉</span>
+            Yay notes!
+          </Typography>
+        ) : (
+          <Typography variant="body1">
+            These notes are saved from your past classes, just in case you need them!
+            <span role="img" aria-label="Clap">😉</span>
+            Yay notes!
+          </Typography>
+        ) }
+      </Grid>
+      <Grid item>
+        <Box mt={4} mb={2}>
+          <FiltersBar
+            data={arrFilters}
+            activeValue={currentFilter}
+            onSelectItem={handleSelectFilter}
+          />
+        </Box>
+      </Grid>
+
+      <div className={classes.paper}>
         {currentNote && <UserNotesEditor
           handleClose={handleClose}
           updateNote={updateNote}
@@ -214,21 +194,15 @@ const UserNotesContainer = ({
           openConfirmDelete={openConfirmDelete}
           exitNoteTaker={exitNoteTaker}
         />}
-        {isFolder && <NotesList
+        <ClassesFolders
+          openConfirmDelete={openConfirmDelete}
+          sectionId={sectionId}
           notes={notes}
-          hasNotes={hasNotes}
-          openConfirmDelete={openConfirmDelete}
-          editNote={editNote}
-        />}
-        {sectionId === null && <ClassesFolders
-          openConfirmDelete={openConfirmDelete}
           setSectionId={setSectionId}
-          classList={classList}
-        />}
-        {(loading || initialLoading) && <div className={classes.loading}>
-          <CircularProgress />
-        </div>}
-      </Paper>
+          editNote={editNote}
+          classList={getFilteredList()}
+        />
+      </div>
     </div>
   )
 }

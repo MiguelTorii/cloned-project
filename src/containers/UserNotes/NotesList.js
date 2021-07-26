@@ -1,57 +1,39 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import CustomQuill from 'components/CustomQuill'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
-import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import moment from 'moment'
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import AddIcon from '@material-ui/icons/Add';
+import * as notesActions from 'actions/notes'
 
 const useStyles = makeStyles((theme) => ({
   listPrimary: {
-    fontSize: 20,
+    fontSize: 14,
     maxWidth: '55vw',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    fontWeight: 'bold'
-  },
-  listSecondary: {
-    overflow: 'hidden',
-    cursor: 'pointer',
-    maxHeight: 24,
-    '& .ql-editor': {
-      padding: 0,
-      maxWidth: '55vw',
-    },
-    '& .ql-editor :first-child': {
-      color: theme.circleIn.palette.primaryText2,
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      maxWidth: '55vw',
-      fontSize: '16px !important',
-    },
-    fontSize: 12
+    lineHeight: '19px'
   },
   listItem: {
     display: 'flex',
     alignItems: 'flex-start',
     flexDirection: 'column',
+    padding: theme.spacing(1.25, 0, 1.5, 0)
   },
   listRoot: {
     padding: 0,
-    borderBottom: `1px solid #324F61`,
-  },
-  date: {
-    fontSize: 12,
-    marginTop: theme.spacing(1 / 2),
-    color: theme.circleIn.palette.primaryText2,
+    paddingLeft: theme.spacing(4)
   },
   itemContainer: {
-    borderTop: `1px solid #324F61`,
+    borderBottom: `1px solid #5F61654D`,
     alignItems: 'center',
     display: 'flex'
   },
@@ -61,27 +43,43 @@ const useStyles = makeStyles((theme) => ({
   },
   hidden: {
     display: 'none'
+  },
+  emptyFolder: {
+    color: '#84868A',
+    fontSize: 16,
+    lineHeight: '22px',
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2)
+  },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: theme.spacing(2),
+  },
+  createNote: {
+    color: theme.circleIn.palette.white,
+    fontSize: 18,
+    lineHeight: '25px',
+    margin: theme.spacing(1.5, 0, 3, -3)
+  },
+  addNote: {
+    color: theme.circleIn.palette.brand,
   }
 }))
 
-const timeFromNow = note => {
-  try {
-    const { lastModified } = note
-    if (typeof lastModified === 'string') {
-      const utc = `${lastModified.replace(' ', 'T')}Z`
-      return `Last edit was ${moment(utc).fromNow()}`
-    }
-    return `Last edit was ${moment(lastModified).fromNow()}`
-  } catch (e) {
-    return ''
-  }
+export const blankNote = {
+  content: '',
+  title: 'Untitled',
 }
 
 const NotesList = ({
+  classId,
+  sectionId,
   notes,
-  hasNotes,
   openConfirmDelete,
-  editNote
+  editNote,
+  loading,
+  saveNoteAction,
 }) => {
   const classes = useStyles()
   const [hovered, setHovered] = useState(null)
@@ -99,45 +97,80 @@ const NotesList = ({
     }
   }, []);
 
-  return (
-    <List className={cx(hasNotes && classes.listRoot)}>
-      {notes
-        .map((n, i) => (
-          <div
-            key={n.id}
-            onMouseEnter={() => onHover(i)}
-            onMouseLeave={onLeave}
-            className={classes.itemContainer}
-          >
-            <ListItem
-              button
-              className={classes.listItem}
-              onClick={() => editNote(n)}
-            >
-              <ListItemText
-                primary={n.title}
-                secondaryTypographyProps={{ component: 'div' }}
-                secondary={<CustomQuill value={n.content} readOnly />}
-                classes={{
-                  primary: classes.listPrimary,
-                  secondary: classes.listSecondary
-                }}
-              />
+  const createNote = useCallback(async () => {
+    saveNoteAction({ note: blankNote, sectionId, classId })
+  }, [classId, saveNoteAction, sectionId])
 
-              <div className={classes.date}>{timeFromNow(n)}</div>
-            </ListItem>
-            {i === hovered && <IconButton
-              aria-label="delete"
-              className={classes.delete}
-              onClick={() => openConfirmDelete(n)}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>}
-            <div className={classes.hidden}>{refresh}</div>
-          </div>
-        ))}
+  return loading ? (
+    <div className={classes.loading}>
+      <CircularProgress />
+    </div>
+  ) : (
+    <List className={classes.listRoot}>
+      {notes.length > 0 ? notes.map((n, i) => (
+        <div
+          key={n.id}
+          onMouseEnter={() => onHover(i)}
+          onMouseLeave={onLeave}
+          className={classes.itemContainer}
+        >
+          <ListItem
+            button
+            className={classes.listItem}
+            onClick={() => editNote(n)}
+          >
+            <ListItemText
+              primary={n.title}
+              // secondaryTypographyProps={{ component: 'div' }}
+              // secondary={<CustomQuill value={n.content} readOnly />}
+              classes={{
+                primary: classes.listPrimary,
+                // secondary: classes.listSecondary
+              }}
+            />
+
+            {/* <div className={classes.date}>{timeFromNow(n)}</div> */}
+          </ListItem>
+          {i === hovered && <IconButton
+            aria-label="delete"
+            className={classes.delete}
+            onClick={() => openConfirmDelete(n)}
+          >
+            <DeleteIcon fontSize="small" />
+          </IconButton>}
+          <div className={classes.hidden}>{refresh}</div>
+        </div>
+      )) : (
+        <div className={classes.emptyFolder}>
+          No notes yet! Click below to add some amazing notes to study. 
+        </div>
+      )}
+      <Button
+        variant='text'
+        className={classes.createNote}
+        color="primary"
+        onClick={createNote}
+      >
+        <AddIcon className={classes.addNote} />&nbsp;
+        Add notes
+      </Button>
     </List>
   )
 }
 
-export default NotesList
+NotesList.defaultProps = {
+  notes: [],
+}
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      saveNoteAction: notesActions.saveNoteAction,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(NotesList);

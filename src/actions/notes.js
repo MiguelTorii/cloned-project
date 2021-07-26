@@ -73,6 +73,7 @@ export const getNotes = () => async (dispatch: Dispatch, getState: Function) => 
 
     if (notes) dispatch(updateNotes({ notes: sortNotes(notes) }))
     else dispatch(loadingAction({ loading: false }))
+    return notes
   } catch (err) {
     dispatch(loadingAction({ loading: false }))
   }

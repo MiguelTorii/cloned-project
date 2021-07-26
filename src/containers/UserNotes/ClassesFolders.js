@@ -1,21 +1,42 @@
-import React from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import * as notesActions from 'actions/notes';
 import Tooltip from 'containers/Tooltip';
+import NotesList from './NotesList';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  listItemContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '&:hover': {
+      background: theme.circleIn.palette.gray1
+    }
+  },
   listItem: {
-    borderBottom: `1px solid #324F61`,
+    borderBottom: `1px solid #5F61654D`,
+    fontWeight: 800,
+    fontSize: 24,
+    color: theme.circleIn.palette.primaryText1,
+    lineHeight: '33px',
+    paddingLeft: 0,
+    marginLeft: theme.spacing(1),
   },
   listRoot: {
     padding: 0,
   },
   title: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginLeft: theme.spacing(1),
   },
 }))
 
@@ -37,32 +58,107 @@ const renderTitleAndTooltip = (name, idx, onboardingOpen) => (
 )
 
 const ClassesFolders = ({
+  sectionId,
   setSectionId,
   onboardingOpen,
-  classList
+  classList,
+  notes,
+  hasNotes,
+  openConfirmDelete,
+  editNote,
+  getNotes,
 }) => {
+  const [status, setStatus] = useState({})
+  const [noteList, setNoteList] = useState({})
+  const [loading, setLoading] = useState({})
   const classes = useStyles()
+  const isFolder = useMemo(() => sectionId !== null, [sectionId])
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        setLoading(loading => ({
+          ...loading,
+          [sectionId]: true,
+        }))
+        const notes = await getNotes()
+        setNoteList(noteList => ({
+          ...noteList,
+          [sectionId]: notes
+        }))
+      } catch (err) {
+        console.log(err)
+      } finally {
+        setLoading(loading => ({
+          ...loading,
+          [sectionId]: false,
+        }))
+      }
+    }
+
+    if (isFolder) init()
+  }, [getNotes, isFolder, sectionId])
+
+  useEffect(() => {
+    setNoteList(noteList => ({
+      ...noteList,
+      [sectionId]: notes
+    }))
+  }, [notes, sectionId])
+
+  const handleClick = (sectionId, classId) => {
+    setStatus(status => ({
+      ...status,
+      [sectionId]: !status[sectionId]
+    }))
+    setSectionId({ sectionId, classId })
+  }
 
   return (
     <List className={classes.listRoot}>
       {classList.map((cl, idx) => (
-        <ListItem
-          key={`notes-folder-${cl.sectionId}`}
-          button
-          onClick={() => setSectionId({ sectionId: cl.sectionId, classId: cl.classId })}
-          className={classes.listItem}
-        >
-          <ListItemIcon>
-            <FolderOpenIcon style={{ color: cl?.color }} />
-          </ListItemIcon>
-          <ListItemText
-            primary={renderTitleAndTooltip(cl.name, idx, onboardingOpen)}
-            className={classes.title}
-          />
-        </ListItem>
+        <>
+          <div
+            className={classes.listItemContainer}
+            onClick={() => handleClick(cl.sectionId, cl.classId)}
+          >
+            {status[cl.sectionId] ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
+            <ListItem
+              key={`notes-folder-${cl.sectionId}`}
+              className={classes.listItem}
+            >
+              <ListItemIcon>
+                <FolderOpenIcon style={{ color: cl.isCurrent ? cl?.color : '#5F6165' }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={renderTitleAndTooltip(cl.name, idx, onboardingOpen)}
+                className={classes.title}
+              />
+            </ListItem>
+          </div>
+          {status[cl.sectionId] && <NotesList
+            classId={cl.classId}
+            sectionId={cl.sectionId}
+            notes={noteList[cl.sectionId]}
+            loading={loading[cl.sectionId]}
+            openConfirmDelete={openConfirmDelete}
+            editNote={editNote}
+          />}
+        </>
       ))}
     </List>
   )
 }
 
-export default ClassesFolders
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      getNotes: notesActions.getNotes,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ClassesFolders);
