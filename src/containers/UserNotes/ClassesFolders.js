@@ -11,6 +11,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import * as notesActions from 'actions/notes';
 import Tooltip from 'containers/Tooltip';
+import EmptyState from 'components/FeedList/EmptyState';
+import EmptyPastClass from 'assets/img/empty-past-class.png'
 import NotesList from './NotesList';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +40,22 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     marginLeft: theme.spacing(1),
   },
+  emptyStateContainer: {
+    maxWidth: 514,
+    lineHeight: '33px',
+    textAlign: 'left',
+  },
+  emptyTitle: {
+    fontSize: 24,
+    fontWeight: 800,
+    color: theme.circleIn.palette.white,
+    marginBottom: theme.spacing(3),
+  },
+  emptyBody: {
+    fontSize: 24,
+    fontWeight: 400,
+    color: theme.circleIn.palette.white,
+  }
 }))
 
 const renderTitleAndTooltip = (name, idx, onboardingOpen) => (
@@ -146,6 +164,19 @@ const ClassesFolders = ({
           />}
         </>
       ))}
+      {classList.length === 0 && (
+        <EmptyState imageUrl={EmptyPastClass}>
+          <div className={classes.emptyStateContainer}>
+            <div className={classes.emptyTitle}>
+              This tab shows notes from “past classes”.
+            </div>
+            <div className={classes.emptyBody}>
+              You don’t have any past classes yet, but your notes will be saved here and ready for you once you finish your current classes.&nbsp;
+              <span role="img" aria-label="Wink emoji">😉</span>
+            </div>
+          </div>
+        </EmptyState>
+      )}
     </List>
   )
 }

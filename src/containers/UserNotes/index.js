@@ -164,13 +164,13 @@ const UserNotesContainer = ({
       <Grid item className={classes.pastNote}>
         { currentFilter === 'current' ? (
           <Typography variant="body1">
-            Take notes. share your notes, review notes, and keep track of all your quick notes here!
+            Take notes. share your notes, review notes, and keep track of all your quick notes here!&nbsp;
             <span role="img" aria-label="Clap">😉</span>
             Yay notes!
           </Typography>
         ) : (
           <Typography variant="body1">
-            These notes are saved from your past classes, just in case you need them!
+            These notes are saved from your past classes, just in case you need them!&nbsp;
             <span role="img" aria-label="Clap">😉</span>
             Yay notes!
           </Typography>
