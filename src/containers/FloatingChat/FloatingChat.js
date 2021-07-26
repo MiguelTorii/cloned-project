@@ -161,8 +161,8 @@ const FloatingChat = ({
         return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
       })
       setChannelList(cl)
-      Object.keys(local).forEach(l => {
-        if (local[l]?.unread) unread += local[l].unread
+      Object.keys(cl).forEach(l => {
+        if (cl[l]?.unread) unread += cl[l].unread
       })
       setUnread(unread)
     }
