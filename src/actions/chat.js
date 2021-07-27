@@ -196,9 +196,9 @@ const fetchMembers = async sid => {
 
 export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
   if (currentChannel) {
+    localStorage.setItem('currentDMChannel', currentChannel.sid)
     const members = await fetchMembers(currentChannel.sid)
     const shareLink = await getShareLink(currentChannel.sid)
-    localStorage.setItem('currentDMChannel', currentChannel.sid)
     dispatch(updateMembers({ members, channelId: currentChannel.sid }))
     dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }))
   }

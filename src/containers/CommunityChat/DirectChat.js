@@ -136,7 +136,7 @@ const DirectChat = ({
       setCurrentChannel(lastChannel?.twilioChannel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setCurrentChannel, onOpenChannel, isLoading])
+  }, [setCurrentChannel, isLoading, lastChannelSid])
 
   useEffect(() => {
     if (width !== prevWidth) {

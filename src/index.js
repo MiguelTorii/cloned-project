@@ -72,7 +72,7 @@ import ChatChannel from './pages/ChatChannel'
 import './index.css'
 import ErrorBoundary from './containers/ErrorBoundary';
 import MasqueradeFrame from './containers/MasqueradeFrame';
-import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage} from './pages/Flashcards';
+import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage } from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
 import Gondor from "./containers/Auth/Gondor";
 
