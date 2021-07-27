@@ -2,33 +2,38 @@
 // @flow
 
 import React, { useCallback, Fragment, useState, useEffect } from 'react';
+import moment from 'moment';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
+
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import usePrevious from 'hooks/usePrevious'
+
+import withRoot from 'withRoot';
 import ChatListItem from 'components/ChatListItem';
+import LoadImg from 'components/LoadImg';
+import MainChat from 'components/FloatingChat/MainChat';
+
+import * as OnboardingActions from 'actions/onboarding';
+import * as chatActions from 'actions/chat';
 import { updateTitle } from 'actions/web-notifications';
 import { enqueueSnackbar } from 'actions/notifications';
-import moment from 'moment';
-import * as OnboardingActions from 'actions/onboarding';
-import LoadImg from 'components/LoadImg';
+import type { UserState } from 'reducers/user';
+import type { ChatState } from 'reducers/chat';
 import FloatEmptyChat from 'assets/svg/float_empty_chat.svg';
 import FloatLoadingChat from 'assets/svg/float_chat_loading.svg';
-import withRoot from '../../withRoot';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import type { State as StoreState } from '../../types/state';
-import { logEvent } from '../../api/analytics';
-import MainChat from '../../components/FloatingChat/MainChat';
+import usePrevious from 'hooks/usePrevious'
+import type { State as StoreState } from 'types/state';
+import { logEvent } from 'api/analytics';
+import { truncate } from 'utils/helpers';
+
 import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
-import * as chatActions from '../../actions/chat';
 
 const styles = theme => ({
   root: {
@@ -184,9 +189,16 @@ const FloatingChat = ({
         !local[channel.sid].muted
       ) {
         const msg = `${firstName} ${lastName} sent you a message:`;
+        const messageContent = truncate(
+          typeof parse(body) === 'string'
+            ? body
+            : body.replace( /(<([^>]+)>)/ig, ''),
+          50
+        )
+
         enqueueSnackbarAction({
           notification: {
-            message: `${msg} ${typeof parse(body) === 'string' ? body : body.replace( /(<([^>]+)>)/ig, '')}`,
+            message: `${msg} ${messageContent}`,
             options: {
               variant: 'info',
               anchorOrigin: {
@@ -205,7 +217,7 @@ const FloatingChat = ({
         });
         updateTitleAction({
           title: `${firstName} ${lastName} sent you a message:`,
-          body: typeof parse(body) === 'string' ? body : body.replace( /(<([^>]+)>)/ig, '')
+          body: messageContent
         });
       }
     }
