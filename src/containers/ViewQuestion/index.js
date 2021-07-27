@@ -116,6 +116,7 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
     postId,
     typeId,
     roleId,
+    classId,
     role,
     name,
     userProfileUrl,
@@ -188,6 +189,7 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
               feedId={feedId}
               postId={postId}
               typeId={typeId}
+              classId={classId}
               isQuestion
               hasBestAnswer={bestAnswer}
               readOnly={readOnly}

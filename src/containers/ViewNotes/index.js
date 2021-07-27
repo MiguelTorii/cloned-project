@@ -122,6 +122,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
     postId,
     typeId,
     roleId,
+    classId,
     role,
     name,
     userProfileUrl,
@@ -209,6 +210,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
               feedId={feedId}
               postId={postId}
               typeId={typeId}
+              classId={classId}
               readOnly={readOnly}
             />
           </ErrorBoundary>

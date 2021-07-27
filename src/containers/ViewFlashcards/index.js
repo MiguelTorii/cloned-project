@@ -161,6 +161,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
     postId,
     typeId,
     roleId,
+    classId,
     role,
     name,
     userProfileUrl,
@@ -256,6 +257,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
               feedId={feedId}
               postId={postId}
               typeId={typeId}
+              classId={classId}
               readOnly={readOnly}
             />
           </ErrorBoundary>

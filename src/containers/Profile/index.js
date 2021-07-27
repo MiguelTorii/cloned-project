@@ -500,7 +500,10 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
-      user: { data: userData },
+      user: {
+        data: userData,
+        userClasses: { classList }
+      },
     } = this.props;
     const { segment = '', profileImage } = userData;
     const {
@@ -621,6 +624,7 @@ class Profile extends React.PureComponent<Props, State> {
                       pushTo={push}
                       onDelete={this.handleDelete}
                       onUserClick={this.handleUserClick}
+                      classList={classList}
                     />
                   </ErrorBoundary>
                 </Grid>
@@ -638,6 +642,7 @@ class Profile extends React.PureComponent<Props, State> {
                       onReport={this.handleReport}
                       onDelete={this.handleDelete}
                       onUserClick={this.handleUserClick}
+                      classList={classList}
                     />
                   </ErrorBoundary>
                 </Grid>

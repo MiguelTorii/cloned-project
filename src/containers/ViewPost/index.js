@@ -115,6 +115,7 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
     feedId,
     typeId,
     roleId,
+    classId,
     role,
     name,
     userProfileUrl,
@@ -187,6 +188,7 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
               feedId={feedId}
               postId={postId}
               typeId={typeId}
+              classId={classId}
               isPost
               hasBestAnswer={bestAnswer}
               readOnly={readOnly}

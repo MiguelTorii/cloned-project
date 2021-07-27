@@ -563,6 +563,7 @@ const FeedItem = ({
           feedId={data.feedId}
           postId={data.postId}
           typeId={data.typeId}
+          classId={data.classId}
           toolbarPrefix={toolbarPrefix}
           isQuestion={data.typeId === FeedTypes.question.id}
           isOwner={data.userId === currentUserId}

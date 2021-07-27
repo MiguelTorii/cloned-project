@@ -423,6 +423,7 @@ const FlashcardsShow = () => {
           feedId={data.feedId}
           postId={data.postId}
           typeId={data.typeId}
+          classId={data.classId}
           readOnly={data.readOnly}
         />
       </Box>

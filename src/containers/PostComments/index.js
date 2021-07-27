@@ -237,6 +237,19 @@ class ViewNotes extends React.PureComponent<Props, State> {
     this.setState({ loadViewMoreComment: !loadViewMoreComment })
   }
 
+  isCurrent = (classId) => {
+    const {
+      user: {
+        userClasses: { classList }
+      },
+    } = this.props;
+
+    const filteredList = classList.filter((cl) => cl.classId === classId)
+    if (filteredList.length > 0) {
+      return filteredList[0].isCurrent
+    }
+  }
+
   renderComments = () => {
     const {
       classes,
@@ -397,21 +410,21 @@ class ViewNotes extends React.PureComponent<Props, State> {
       isQuestion,
       readOnly,
       feedId,
+      classId,
       toolbarPrefix,
-      isCurrent
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
     return (
       <>
-        {(readOnly || !isCurrent) && (
+        {(readOnly || !this.isCurrent(classId)) && (
           <div className={classes.readOnly} elevation={8}>
             <Typography variant="h6">
               Commenting and replying are disabled for past classes
             </Typography>
           </div>
         )}
-        {isCurrent && (
+        {this.isCurrent(classId) && (
           <ErrorBoundary>
             <PostItemAddComment
               isPastClassFlashcard={isPastClassFlashcard}

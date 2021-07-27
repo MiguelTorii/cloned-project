@@ -116,6 +116,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
     postId,
     typeId,
     roleId,
+    classId,
     role,
     name,
     userProfileUrl,
@@ -190,6 +191,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
               feedId={feedId}
               postId={postId}
               typeId={typeId}
+              classId={classId}
               readOnly={readOnly}
             />
           </ErrorBoundary>
