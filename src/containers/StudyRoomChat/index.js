@@ -17,9 +17,9 @@ import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import OnlineBadge from 'components/OnlineBadge';
 import ErrorBoundary from '../ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
-import OnlineBadge from 'components/OnlineBadge';
 
 const styles = theme => ({
   root: {
@@ -129,7 +129,7 @@ type Props = {
   open: boolean,
   chat: Object,
   selectedTab: number,
-  participants: Object,
+  participants: Object
 };
 
 const StudyRoomChat = ({

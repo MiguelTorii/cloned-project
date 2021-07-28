@@ -175,6 +175,10 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
     setImages([{ src }])
   }, [])
 
+  const isMemberOnline = useCallback(userId => {
+    return members[userId]?.isOnline;
+  }, [members])
+
   const renderMessage = useCallback((item) => {
     const { id, type } = item
     const role = getRole(item.author)
@@ -187,6 +191,7 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
           <ChatMessage
             key={id}
             role={role}
+            isUserOnline={isMemberOnline(item.author)}
             userId={item.author}
             name={item.name}
             messageList={item.messageList}
@@ -225,7 +230,7 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
       console.log(err)
       return null
     }
-  }, [getRole, handleImageClick, handleScrollToBottom, members])
+  }, [getRole, handleImageClick, handleScrollToBottom, members, isMemberOnline])
 
   const handleLoadMore = useCallback(() => {
     setScroll(false)

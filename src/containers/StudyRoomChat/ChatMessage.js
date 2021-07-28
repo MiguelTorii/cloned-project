@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
+import OnlineBadge from 'components/OnlineBadge';
 import RoleBadge from 'components/RoleBadge'
 import { getInitials } from 'utils/chat';
 
@@ -247,7 +248,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { role, classes, userId, name, avatar, isOwn, messageList } = this.props;
+    const { role, classes, userId, name, avatar, isOwn, isUserOnline, messageList } = this.props;
     const initials = getInitials(name);
 
     return (
@@ -261,9 +262,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <Avatar alt={name} src={avatar}>
-              {initials}
-            </Avatar>
+            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
+              <Avatar alt={name} src={avatar}>
+                {initials}
+              </Avatar>
+            </OnlineBadge>
           </ListItemAvatar>
         )}
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>

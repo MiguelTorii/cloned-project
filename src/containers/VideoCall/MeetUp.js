@@ -515,7 +515,8 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleAddParticipant = (participant, track, local = false) => {
-    if (this.state.participants.length === 1 && !this.startTime) {
+    const { participants } = this.state
+    if (participants.length === 1 && !this.startTime) {
       this.startTime = moment().format('YYYY-MM-DD hh:mm:ss')
     }
     const newState = utils.addParticipant(
@@ -529,7 +530,8 @@ class MeetUp extends React.Component<Props, State> {
   }
 
   handleRemoveParticipant = participant => {
-    if (this.state.participants.length === 2) {
+    const { participants } = this.state
+    if (participants.length === 2) {
       const { videoRoom } = this.state
       if(videoRoom?.name) {
         logEvent({
