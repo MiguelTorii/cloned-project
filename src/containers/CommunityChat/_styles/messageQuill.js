@@ -8,7 +8,8 @@ export default theme => ({
     justifyContent: 'space-between',
     paddingBottom: theme.spacing(2),
     '& .ql-toolbar.ql-snow': {
-      border: 'none'
+      border: 'none',
+      padding: theme.spacing(1, 0)
     },
     '& .ql-editor': {
       maxHeight: 500,

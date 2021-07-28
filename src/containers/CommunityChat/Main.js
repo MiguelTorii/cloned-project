@@ -365,11 +365,11 @@ const Main = ({
   }, [channel])
 
   const handleRTEChange = useCallback(updatedValue => {
-    if (updatedValue.trim() === '<p><br></p>') {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('')
     }
     else {
-      const currentValue = updatedValue.replaceAll('<p><br></p>', '')
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '')
       setValue(currentValue)
     }
   }, [])

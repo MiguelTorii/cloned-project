@@ -25,8 +25,6 @@ const MessageQuill = ({
   userId
 }) => {
   const [loading, setLoading] = useState(false)
-  const [isNewLine, setIsNewLine] = useState(false)
-  const [currentQuill, setCurrentQuill] = useState(null)
   const [isPressEnter, setPressEnter] = useState(false)
   const [pasteImageUrl, setPasteImageUrl] = useState('')
 
@@ -91,33 +89,34 @@ const MessageQuill = ({
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
           onChange(quill.container.firstChild.innerHTML)
+          if (quill.container.firstChild.innerHTML.length > quill.getSelection(true).index) {
+            quill.setSelection(
+              quill.getSelection(true).index + quill.container.firstChild.innerHTML.length
+            )
+          }
           const currentFocusPosition = quill.getSelection(true).index
           const leftPosition = quill.getBounds(currentFocusPosition).left
           const currentTooltipWidth = document.getElementById('message-toolbar')
             ? document.getElementById('message-toolbar').clientWidth
             : 0
           const currentEditorWidth = quill.container.firstChild.clientWidth
-
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
-            setCurrentQuill(quill)
-            setIsNewLine(true)
+            if (!quill.container.firstChild.innerHTML.includes('<p>\n</p>')) {
+              quill.insertText(
+                quill.container.firstChild.innerHTML.length.index + 1,
+                '\n'
+              )
+            }
           }
 
           if (!quill.container.firstChild.innerText.trim()) {
             quill.focus()
-            setIsNewLine(false)
           }
         }
         onTyping()
       });
     }
-  }, [isNewLine, onChange, quill, Quill, onTyping]);
-
-  useEffect(() => {
-    if (currentQuill && isNewLine) {
-      currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n')
-    }
-  }, [currentQuill, isNewLine])
+  }, [onChange, quill, Quill, onTyping]);
 
   useEffect(() => {
     if (pasteImageUrl) {
