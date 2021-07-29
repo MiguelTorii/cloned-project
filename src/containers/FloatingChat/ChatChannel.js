@@ -75,6 +75,7 @@ const styles = theme => ({
 type Props = {
   classes: Object,
   user: UserState,
+  channels: Array,
   channel: Object,
   localChannel: Object,
   getMembers: Function,
@@ -545,6 +546,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
       user: {
         data: { userId }
       },
+      local,
+      channels,
       newChannel,
       channel,
       channel: {
@@ -590,6 +593,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
             unread={unread}
             isGroup={groupType !== ''}
             expanded={expanded}
+            channels={channels}
+            local={local}
             onOpen={this.handleChatOpen}
             onClose={this.handleClose}
             onDelete={this.handleDelete}

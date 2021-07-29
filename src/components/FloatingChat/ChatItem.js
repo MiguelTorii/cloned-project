@@ -24,6 +24,8 @@ import styles from '../_styles/FloatingChat/ChatItem'
 
 type Props = {
   classes: Object,
+  channels: Array,
+  local: Object,
   children: Node,
   title: string,
   open: boolean,
@@ -69,9 +71,18 @@ class ChatItem extends React.PureComponent<Props, State> {
     this.setState({ openRemove: false })
   }
 
-  handleRemoveSubmit = () => {
+  handleRemoveSubmit = async () => {
     this.setState({ openRemove: false })
-    const { onDelete } = this.props
+    const { channels, channel, setCurrentChannel, onDelete, local } = this.props;
+    const findAnotherDefaultChannel = channels.find(channelEntry => channelEntry !== channel.sid)
+
+    if (findAnotherDefaultChannel) {
+      await localStorage.setItem('currentDMChannel', findAnotherDefaultChannel)
+      await setCurrentChannel(local[findAnotherDefaultChannel].twilioChannel)
+    } else {
+      await localStorage.removeItem('currentDMChannel')
+      await setCurrentChannel(null)
+    }
     onDelete()
   }
 

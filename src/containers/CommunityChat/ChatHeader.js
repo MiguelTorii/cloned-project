@@ -95,7 +95,7 @@ const ChatHeader = ({
   const members = useMemo(() => channel && local[channel.sid].members, [channel, local])
 
   const currentChannelTitle = useMemo(() => {
-    if (!channel.channelState.friendlyName) {
+    if (!channel?.channelState?.friendlyName) {
       let customTitle = ''
       let currentIndex = 0
       if (members.length > 3) {
