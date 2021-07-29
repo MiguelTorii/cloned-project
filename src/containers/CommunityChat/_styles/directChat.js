@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   sidebarButton: {
     top: 40,
-    left: '16.4%',
+    left: '24.8%',
     zIndex: 1002,
     transform: 'translateX(-50%)',
     [theme.breakpoints.down('md')]: {

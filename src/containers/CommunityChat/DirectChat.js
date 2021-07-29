@@ -119,7 +119,7 @@ const DirectChat = ({
     ? 12
     : ['md', 'sm'].includes(width)
       ? 4
-      : 2,
+      : 3,
   [width])
 
   useEffect(() => {

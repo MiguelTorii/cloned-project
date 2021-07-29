@@ -227,7 +227,7 @@ const ChatMessage = ({
       )
     }
 
-    if (isVideoNotification && !isOwn) {
+    if (isVideoNotification) {
       return (
         <div className={classes.bodyWrapper}>
           <Card className={classes.videoAlertRoot}>
