@@ -13,6 +13,7 @@ type Props = {
   selectedCourse: any,
   communities: array,
   local: Object,
+  courseChannels: array,
   handleSelect: Function
 };
 
@@ -21,7 +22,8 @@ const CollageList = ({
   selectedCourse,
   communities,
   local,
-  handleSelect
+  courseChannels,
+  handleSelect,
 }: Props) => {
   const classes = useStyles();
 
@@ -41,6 +43,7 @@ const CollageList = ({
           key={course.id}
           local={local}
           item={course}
+          courseChannels={courseChannels}
           unreadMessageCount={unreadMessageCount}
           selectedCourse={selectedCourse}
           handleSelect={handleSelect}

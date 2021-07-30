@@ -25,6 +25,7 @@ type Props = {
   setCurrentCommunityChannel: Function,
   setMainMessage: Function,
   setSelectedCourse: Function,
+  courseChannels: array,
   width: string
 };
 
@@ -33,9 +34,10 @@ const CommunityChat = ({
   setMainMessage,
   setCurrentCommunityChannel,
   setSelectedCourse,
+  courseChannels,
   user,
   chat,
-  width
+  width,
 }: Props) => {
   const classes = useStyles();
   const [leftSpace, setLeftSpace] = useState(2);
@@ -46,23 +48,22 @@ const CommunityChat = ({
   const [selectedChannel, setSelctedChannel] = useState(null);
 
   const {
-    data: { userId, schoolId, permission }
+    data: { userId, schoolId, permission },
   } = user;
   const {
     isLoading,
-    data: { newMessage, local, mainMessage, currentCommunityChannel }
+    data: { newMessage, local, mainMessage, currentCommunityChannel },
   } = chat;
 
   useEffect(() => {
-    async function fetchCommunityChannels(communityId) {
-      const { community_channels: channels } = await getCommunityChannels({
-        communityId
-      });
-      setCommunityChannels(channels);
-      setSelctedChannel(channels[0].channels[0]);
-    }
-    fetchCommunityChannels(selectedCourse.id);
-  }, [selectedCourse]);
+    const currentCourseChannel = courseChannels.filter(
+      (courseChannel) => courseChannel.courseId === selectedCourse.id,
+    );
+
+    const communityChannels = currentCourseChannel[0].channels;
+    setCommunityChannels(communityChannels);
+    setSelctedChannel(communityChannels[0].channels[0]);
+  }, [selectedCourse, courseChannels]);
 
   useEffect(() => {
     const currentSelectedChannel = selectedChannel
@@ -78,7 +79,7 @@ const CommunityChat = ({
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
-    [width]
+    [width],
   );
 
   const handleOpenRightPanel = useCallback(() => {
@@ -116,16 +117,14 @@ const CommunityChat = ({
     setRightSpace(rightSpace ? 0 : curSize);
   }, [width, curSize, rightSpace]);
 
-  const renderIcon = useCallback((d) => {
-    return d ? <IconLeft /> : <IconRight />;
-  }, []);
+  const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
 
   return (
     <Grid className={classes.container} direction="row" container>
       <IconButton
         className={cx(
           classes.expandButton,
-          leftSpace !== 0 ? classes.sidebarButton : classes.bodyButton
+          leftSpace !== 0 ? classes.sidebarButton : classes.bodyButton,
         )}
         onClick={onCollapseLeft}
       >
@@ -197,19 +196,19 @@ const CommunityChat = ({
 
 const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   user,
-  chat
+  chat,
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       setMainMessage: chatActions.setMainMessage,
-      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
     },
-    dispatch
+    dispatch,
   );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withWidth()(CommunityChat));

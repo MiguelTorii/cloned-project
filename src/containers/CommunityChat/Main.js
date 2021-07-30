@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
   useState,
-  useEffect
+  useEffect,
 } from 'react';
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -48,7 +48,7 @@ type Props = {
   onSend: Function,
   setRightPanel: Function,
   handleBlock: Function,
-  handleUpdateGroupName: Function
+  handleUpdateGroupName: Function,
 };
 
 const Main = ({
@@ -69,7 +69,7 @@ const Main = ({
   onSend,
   setRightPanel,
   handleBlock,
-  handleUpdateGroupName
+  handleUpdateGroupName,
 }: Props) => {
   const classes = useStyles();
   const end = useRef(null);
@@ -97,18 +97,19 @@ const Main = ({
     return members[memberKeys.find((key) => key !== user.data.userId)];
   }, [memberKeys, members, user.data.userId]);
 
-  const hasUnregistered = useMemo(() => {
-    return Boolean(memberKeys.find((key) => !members[key].registered));
-  }, [memberKeys, members]);
+  const hasUnregistered = useMemo(
+    () => Boolean(memberKeys.find((key) => !members[key].registered)),
+    [memberKeys, members],
+  );
 
   const {
     expertMode,
-    data: { userId, firstName, lastName }
+    data: { userId, firstName, lastName },
   } = user;
 
   const channelMembers = useMemo(
     () => channel && local[channel.sid].members,
-    [channel, local]
+    [channel, local],
   );
 
   const handleScrollToBottom = useCallback(() => {
@@ -170,7 +171,7 @@ const Main = ({
       const currentMember = members.filter((member) => member.userId === id);
       return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
     },
-    [local, channel]
+    [local, channel],
   );
 
   useEffect(() => {
@@ -232,15 +233,15 @@ const Main = ({
     () =>
       processMessages({
         items: messages,
-        userId
+        userId,
       }),
-    [messages, userId]
+    [messages, userId],
   );
 
   const hasPermission = useMemo(
     () =>
       permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
-    [permission]
+    [permission],
   );
 
   const handleLoadMore = useCallback(() => {
@@ -265,7 +266,7 @@ const Main = ({
   const handleStartVideoCall = useCallback(() => {
     logEvent({
       event: 'Video- Start Video',
-      props: { 'Initiated From': 'Chat' }
+      props: { 'Initiated From': 'Chat' },
     });
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
@@ -277,7 +278,7 @@ const Main = ({
       const { role } = members[userId];
       return role;
     },
-    [members]
+    [members],
   );
 
   const getIsOnline = useCallback(
@@ -286,7 +287,7 @@ const Main = ({
       const { isOnline } = members[userId];
       return isOnline;
     },
-    [members]
+    [members],
   );
 
   const renderMessage = useCallback(
@@ -297,44 +298,44 @@ const Main = ({
 
       try {
         switch (type) {
-          case 'date':
-            return <ChatMessageDate key={id} body={item.body} />;
-          case 'message':
-          case 'own':
-            return (
-              <ChatMessage
-                key={id}
-                role={role}
-                isCommunityChat={isCommunityChat}
-                date={item.date}
-                isOnline={isOnline}
-                isOwn={type === 'own'}
-                currentUserId={userId}
-                userId={item.author}
-                members={channelMembers}
-                isGroupChannl={members.length === 2}
-                name={item.name}
-                messageList={item.messageList}
-                avatar={getAvatar({ id: item.author, profileURLs })}
-                onImageLoaded={handleScrollToBottom}
-                onStartVideoCall={handleStartVideoCall}
-                onImageClick={handleImageClick}
-                handleBlock={handleBlock}
-              />
-            );
-          case 'end':
-            return (
-              <div
-                key={uuidv4()}
-                style={{
-                  float: 'left',
-                  clear: 'both'
-                }}
-                ref={end}
-              />
-            );
-          default:
-            return null;
+        case 'date':
+          return <ChatMessageDate key={id} body={item.body} />;
+        case 'message':
+        case 'own':
+          return (
+            <ChatMessage
+              key={id}
+              role={role}
+              isCommunityChat={isCommunityChat}
+              date={item.date}
+              isOnline={isOnline}
+              isOwn={type === 'own'}
+              currentUserId={userId}
+              userId={item.author}
+              members={channelMembers}
+              isGroupChannl={members.length === 2}
+              name={item.name}
+              messageList={item.messageList}
+              avatar={getAvatar({ id: item.author, profileURLs })}
+              onImageLoaded={handleScrollToBottom}
+              onStartVideoCall={handleStartVideoCall}
+              onImageClick={handleImageClick}
+              handleBlock={handleBlock}
+            />
+          );
+        case 'end':
+          return (
+            <div
+              key={uuidv4()}
+              style={{
+                float: 'left',
+                clear: 'both',
+              }}
+              ref={end}
+            />
+          );
+        default:
+          return null;
         }
       } catch (err) {
         console.log(err);
@@ -351,8 +352,8 @@ const Main = ({
       handleBlock,
       members,
       channelMembers,
-      userId
-    ]
+      userId,
+    ],
   );
 
   const onSendMessage = useCallback(
@@ -362,26 +363,26 @@ const Main = ({
 
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Text', 'Channel SID': channel.sid }
+        props: { Content: 'Text', 'Channel SID': channel.sid },
       });
 
       const messageAttributes = {
         firstName,
         lastName,
         imageKey: '',
-        isVideoNotification: false
+        isVideoNotification: false,
       };
       setLoading(true);
       try {
         await sendMessage({
           message,
           ...messageAttributes,
-          chatId: channel.sid
+          chatId: channel.sid,
         });
 
         logEvent({
           event: 'Chat- Send Message',
-          props: { Content: 'Text' }
+          props: { Content: 'Text' },
         });
 
         onSend();
@@ -391,7 +392,7 @@ const Main = ({
         setLoading(false);
       }
     },
-    [channel, firstName, lastName, onSend]
+    [channel, firstName, lastName, onSend],
   );
 
   const onTyping = useCallback(() => {
@@ -429,7 +430,7 @@ const Main = ({
         }
       }
     },
-    [onSendMessage, value]
+    [onSendMessage, value],
   );
 
   const handleImageClose = useCallback(() => setImages([]), []);
@@ -441,7 +442,7 @@ const Main = ({
   const videoEnabled = useMemo(
     () =>
       campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
-    [campaign]
+    [campaign],
   );
 
   const unregisteredUserMessage = useMemo(() => {
@@ -479,11 +480,11 @@ const Main = ({
     messageItems.length,
     newChannel,
     otherUser,
-    showHasUnregistered
+    showHasUnregistered,
   ]);
 
-  const loadingConversation = useCallback(() => {
-    return (
+  const loadingConversation = useCallback(
+    () => (
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
           <LoadImg url={LoadingMessageGif} className={classes.emptyChatImg} />
@@ -492,11 +493,12 @@ const Main = ({
           </Typography>
         </div>
       </div>
-    );
-  }, [classes]);
+    ),
+    [classes],
+  );
 
-  const loadingErrorMessage = useCallback(() => {
-    return (
+  const loadingErrorMessage = useCallback(
+    () => (
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
           <LoadImg
@@ -511,8 +513,9 @@ const Main = ({
           </Typography>
         </div>
       </div>
-    );
-  }, [classes]);
+    ),
+    [classes],
+  );
 
   return loadingMessage || isLoading ? (
     loadingConversation()

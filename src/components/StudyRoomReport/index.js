@@ -24,18 +24,18 @@ import styles from '../_styles/StudyRoomReport';
 type Props = {
   user: UserState,
   open: boolean,
-  handleClose: Function
+  handleClose: Function,
 };
 
 const ReportIssue = ({
   user: {
-    data: { userId }
+    data: { userId },
   },
   router,
   profiles,
   classes,
   handleClose,
-  open
+  open,
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [reported, setReported] = useState(false);
@@ -47,45 +47,42 @@ const ReportIssue = ({
 
   const names = useMemo(() => {
     const filteredIds = Object.keys(profiles || []).filter(
-      (id) => id !== userId
+      (id) => id !== userId,
     );
-    return filteredIds.map((id) => {
-      return {
-        id,
-        name: `${profiles[id].firstName} ${profiles[id].lastName}`
-      };
-    });
+    return filteredIds.map((id) => ({
+      id,
+      name: `${profiles[id].firstName} ${profiles[id].lastName}`,
+    }));
   }, [profiles, userId]);
 
   const nameList = useMemo(
     () =>
       names.map((user) => ({
         value: user.id,
-        text: user.name
+        text: user.name,
       })),
-    [names]
+    [names],
   );
 
-  const getValue = (value) => {
-    return nameList.filter((item) => item.value === value)[0]?.text;
-  };
+  const getValue = (value) =>
+    nameList.filter((item) => item.value === value)[0]?.text;
 
   const [reasonList, setReasonList] = useState([]); // Load data from BE
 
   useEffect(() => {
     const loadData = async () => {
-      const { report_reasons = [] } = await getReasons(2);
-      setReasonList(report_reasons);
+      const { report_reasons: reportReason = [] } = await getReasons(2);
+      setReasonList(reportReason);
     };
-    loadData();
-  }, []);
+    if (open) loadData();
+  }, [open]);
 
   const handleSubmit = useCallback(async () => {
     if (selectedNames.length === 0) {
       setOpenError(true);
       setErrorTitle('Select a Student');
       setErrorBody(
-        'Please select the student that you are reporting from the drop-down menu.'
+        'Please select the student that you are reporting from the drop-down menu.',
       );
       return;
     }
@@ -93,7 +90,7 @@ const ReportIssue = ({
       setOpenError(true);
       setErrorTitle('Choose a report reason');
       setErrorBody(
-        'Please select an issue from the drop-down menu so we can understand what’s going on.'
+        'Please select an issue from the drop-down menu so we can understand what’s going on.',
       );
       return;
     }
@@ -102,10 +99,10 @@ const ReportIssue = ({
     try {
       await report({
         reportCreatorId: userId,
-        objectCreatorIds: objectCreatorIds,
+        objectCreatorIds,
         reasonId: selectedReason,
         reportTypeId: 2,
-        description: ''
+        description: '',
       });
       setReported(true);
     } catch (error) {
@@ -121,14 +118,14 @@ const ReportIssue = ({
     (e) => {
       setSelectedReason(e.target.value);
     },
-    [setSelectedReason]
+    [setSelectedReason],
   );
 
   const handleSelectNames = useCallback(
     (e) => {
       setSelectedNames(e.target.value);
     },
-    [setSelectedNames]
+    [setSelectedNames],
   );
 
   const handleRemoveName = (value) => {
@@ -165,7 +162,7 @@ const ReportIssue = ({
           style={{
             position: 'fixed',
             top: '50%',
-            left: '50%'
+            left: '50%',
           }}
         />
       )}
@@ -192,13 +189,13 @@ const ReportIssue = ({
               MenuProps={{
                 anchorOrigin: {
                   vertical: 'bottom',
-                  horizontal: 'left'
+                  horizontal: 'left',
                 },
                 transformOrigin: {
                   vertical: 'top',
-                  horizontal: 'left'
+                  horizontal: 'left',
                 },
-                getContentAnchorEl: null
+                getContentAnchorEl: null,
               }}
               renderValue={(selected) => (
                 <div className={classes.chipWrapper}>
@@ -339,10 +336,10 @@ const ReportIssue = ({
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
-  router
+  router,
 });
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(withStyles(styles)(withSnackbar(ReportIssue)));

@@ -11,15 +11,15 @@ import Chat from 'containers/MainChat';
 
 const useStyles = makeStyles((theme) => ({
   item: {
-    display: 'flex'
+    display: 'flex',
   },
   container: {
     height: 'calc(100vh - 68px)',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100vh - 116px)',
-      marginBottom: -64
-    }
-  }
+      marginBottom: -64,
+    },
+  },
 }));
 
 const ChatPage = () => {
