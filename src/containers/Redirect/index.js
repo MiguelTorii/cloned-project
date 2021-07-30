@@ -23,7 +23,7 @@ const MyLink = ({ to, ...props }) => (
   <RouterLink to={to} {...props} target="_top" />
 );
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: '100vw',
     height: '100vh',
@@ -54,7 +54,7 @@ class Redirect extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {};
 
-  handleAndroidClick = nonce => () => {
+  handleAndroidClick = (nonce) => () => {
     const scheme = ANDROID_REDIRECT_URI;
     const data = `?nonce=${nonce}`;
     const packagename = 'com.circlein.android';
@@ -102,7 +102,7 @@ class Redirect extends React.PureComponent<Props, State> {
           {isIOS && (
             <a
               className={classes.button}
-              style={{ textDecoration: 'none'}}
+              style={{ textDecoration: 'none' }}
               rel="noopener noreferrer"
               target="_blank"
               href={`${

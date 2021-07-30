@@ -58,7 +58,7 @@ class Seasons extends React.PureComponent<Props, State> {
     // open
     // } = this.state;
 
-    const seasonAll = seasons.filter(s => s.name === 'All')
+    const seasonAll = seasons.filter((s) => s.name === 'All');
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>

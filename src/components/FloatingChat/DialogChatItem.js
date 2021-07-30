@@ -46,7 +46,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
     openRemove: false
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -76,14 +76,8 @@ class DialogChatItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes,
-      children,
-      title,
-      open,
-      onClose,
-      onStartVideoCall
-    } = this.props;
+    const { classes, children, title, open, onClose, onStartVideoCall } =
+      this.props;
     const { anchorEl, openRemove } = this.state;
     return (
       <Fragment>

@@ -6,18 +6,16 @@ import createRootReducer from './reducers';
 import apiActionCreator from './middlewares/apiActionCreator';
 
 export const history = createBrowserHistory();
-const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
-
+const composeEnhancers =
+  (typeof window !== 'undefined' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
 
 const reduxStore = createStore(
   createRootReducer(history),
   {},
   composeEnhancers(
-    applyMiddleware(
-      routerMiddleware(history),
-      thunk,
-      apiActionCreator
-    )
+    applyMiddleware(routerMiddleware(history), thunk, apiActionCreator)
   )
 );
 

@@ -28,26 +28,24 @@ const removeSnackbarRequest = ({ key }): Action => ({
   }
 });
 
-export const enqueueSnackbar = ({
-  notification
-}: {
-  notification: Object
-}) => async (dispatch: Dispatch) => {
-  dispatch(
-    enqueueSnackbarRequest({ notification: { ...notification, key: uuidV4() } })
-  );
-};
+export const enqueueSnackbar =
+  ({ notification }: { notification: Object }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(
+      enqueueSnackbarRequest({
+        notification: { ...notification, key: uuidV4() }
+      })
+    );
+  };
 
-export const showNotification = (
-  {
-    message,
-    nextPath,
-    variant = 'info',
-    vertical = 'bottom',
-    horizontal = 'left',
-    autoHideDuration = 7000
-  }
-) => {
+export const showNotification = ({
+  message,
+  nextPath,
+  variant = 'info',
+  vertical = 'bottom',
+  horizontal = 'left',
+  autoHideDuration = 7000
+}) => {
   return enqueueSnackbar({
     notification: {
       message,
@@ -64,14 +62,14 @@ export const showNotification = (
   });
 };
 
-export const closeSnackbar = ({ key }: { key: string }) => async (
-  dispatch: Dispatch
-) => {
-  dispatch(closeSnackbarRequest({ key }));
-};
+export const closeSnackbar =
+  ({ key }: { key: string }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(closeSnackbarRequest({ key }));
+  };
 
-export const removeSnackbar = ({ key }: { key: string }) => async (
-  dispatch: Dispatch
-) => {
-  dispatch(removeSnackbarRequest({ key }));
-};
+export const removeSnackbar =
+  ({ key }: { key: string }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(removeSnackbarRequest({ key }));
+  };

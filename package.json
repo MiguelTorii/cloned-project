@@ -133,6 +133,7 @@
   "scripts": {
     "start": "ESLINT_NO_DEV_ERRORS='true' REACT_APP_STAGE=dev react-scripts start",
     "lint": "eslint --max-warnings=0 src || exit 0",
+    "format": "prettier --write 'src/**/*.js'",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build:production": "yarn install && ./build.sh production",
     "build:sourcemaps": "./build.sh",

@@ -51,7 +51,7 @@ export default makeStyles((theme) => ({
     cursor: 'pointer',
     border: 'solid 2px transparent',
     '&.active': {
-      borderColor: (props) => props.markColor || 'primary',
+      borderColor: (props) => props.markColor || 'primary'
     },
     userSelect: 'none'
   },
@@ -67,7 +67,7 @@ export default makeStyles((theme) => ({
     backgroundColor: '#1E1F22',
     height: 32,
     borderRadius: 40,
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   shuffleButton: {
     color: '#5F6165',

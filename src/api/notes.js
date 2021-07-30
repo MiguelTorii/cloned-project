@@ -1,7 +1,7 @@
 // @flow
 
 import axios from 'axios';
-import { NotesType } from 'reducers/notes'
+import { NotesType } from 'reducers/notes';
 import { API_ROUTES } from '../constants/routes';
 import { getToken } from './utils';
 
@@ -16,15 +16,15 @@ export const getNotes = async ({ sectionId }) => {
     const { data = {} } = result;
 
     return {
-      notes: data.notes.map(d => ({
+      notes: data.notes.map((d) => ({
         content: d.content,
         id: d.id,
         sectionId: d.section_id,
         lastModified: d.last_modified,
         title: d.title,
-        created: d.created,
+        created: d.created
       }))
-    }
+    };
   } catch (err) {
     return [];
   }
@@ -46,16 +46,16 @@ export const getNote = async ({ noteId }) => {
       sectionId: data.section_id,
       lastModified: data.last_modified,
       title: data.title,
-      created: data.created,
-    }
+      created: data.created
+    };
   } catch (err) {
     return null;
   }
 };
 
-export const deleteNote = async ({ note }: {note: NotesType}) => {
+export const deleteNote = async ({ note }: { note: NotesType }) => {
   try {
-    const { id } = note
+    const { id } = note;
     const token = await getToken();
     const dataStr = JSON.stringify({});
 
@@ -68,31 +68,34 @@ export const deleteNote = async ({ note }: {note: NotesType}) => {
       },
       data: dataStr
     };
-    const result = await axios(config)
+    const result = await axios(config);
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return [];
   }
 };
 
-export const updateNote = async ({ note }: {note: NotesType}) => {
+export const updateNote = async ({ note }: { note: NotesType }) => {
   try {
     const token = await getToken();
-    const result = await axios.put(API_ROUTES.NOTES, {
-      title: note.title,
-      content: note.content,
-      id: note.id
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.put(
+      API_ROUTES.NOTES,
+      {
+        title: note.title,
+        content: note.content,
+        id: note.id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return [];
   }
@@ -101,22 +104,24 @@ export const updateNote = async ({ note }: {note: NotesType}) => {
 export const postNote = async ({ note, sectionId, classId }) => {
   try {
     const token = await getToken();
-    const result = await axios.post(API_ROUTES.NOTES, {
-      section_id: sectionId,
-      class_id: classId,
-      title: note.title,
-      content: note.content
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      API_ROUTES.NOTES,
+      {
+        section_id: sectionId,
+        class_id: classId,
+        title: note.title,
+        content: note.content
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return [];
   }
 };
-

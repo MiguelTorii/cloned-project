@@ -16,14 +16,10 @@ const MarkCard = ({ title, mark, markColor, active, ...props }) => {
     >
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography className={classes.markTitle}>
-            { title }
-          </Typography>
+          <Typography className={classes.markTitle}>{title}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography className={classes.markText}>
-            { mark }
-          </Typography>
+          <Typography className={classes.markText}>{mark}</Typography>
         </Grid>
       </Grid>
     </div>

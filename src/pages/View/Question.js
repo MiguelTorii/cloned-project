@@ -26,7 +26,7 @@ type Props = {
 const QuestionPage = ({ classes, match }: Props) => {
   const {
     params: { questionId }
-  } = match
+  } = match;
 
   return (
     <main>
@@ -40,6 +40,6 @@ const QuestionPage = ({ classes, match }: Props) => {
       </Layout>
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(QuestionPage));

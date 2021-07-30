@@ -21,11 +21,7 @@ const GradientButton = ({ children, compact, loading, ...rest }: Props) => {
       }}
       {...rest}
     >
-      {
-        loading ?
-          <CircularProgress color="secondary" size={20}/> :
-          children
-      }
+      {loading ? <CircularProgress color="secondary" size={20} /> : children}
     </Button>
   );
 };

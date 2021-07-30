@@ -13,10 +13,10 @@ import { SnackbarProvider } from 'notistack';
 import { hotjar } from 'react-hotjar';
 import { LastLocationProvider } from 'react-router-last-location';
 // import Tour from 'components/Tour'
-import Home from 'containers/Home'
+import Home from 'containers/Home';
 import Classes from 'pages/Classes';
-import defaultKatexRender from 'utils/quill'
-import './wdyr'
+import defaultKatexRender from 'utils/quill';
+import './wdyr';
 import reduxStore, { history } from './configureStore';
 import * as serviceWorker from './serviceWorker';
 import Store from './pages/Store';
@@ -56,8 +56,8 @@ import Canvas from './pages/Canvas';
 import TermsOfUse from './pages/TermsOfUse';
 import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
-import Miss from './pages/Miss'
-import UserNotes from './pages/UserNotes'
+import Miss from './pages/Miss';
+import UserNotes from './pages/UserNotes';
 import {
   GOOGLE_ANALYTICS,
   SENTRY,
@@ -67,16 +67,20 @@ import {
   HOTJAR_SV
 } from './constants/app';
 import withTracker from './withTracker';
-import Chat from './pages/Chat'
-import ChatChannel from './pages/ChatChannel'
-import './index.css'
+import Chat from './pages/Chat';
+import ChatChannel from './pages/ChatChannel';
+import './index.css';
 import ErrorBoundary from './containers/ErrorBoundary';
 import MasqueradeFrame from './containers/MasqueradeFrame';
-import { FlashcardsListPage, FlashcardsShowPage, FlashcardsEditPage } from './pages/Flashcards';
+import {
+  FlashcardsListPage,
+  FlashcardsShowPage,
+  FlashcardsEditPage
+} from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
-import Gondor from "./containers/Auth/Gondor";
+import Gondor from './containers/Auth/Gondor';
 
-defaultKatexRender('White')
+defaultKatexRender('White');
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
 
@@ -107,27 +111,47 @@ ReactDOM.render(
               <FloatingChat />
               <Switch>
                 <Route exact path="/" component={withTracker(Home)} />
-                <Route exact path="/create_post" component={withTracker(CreatePost)} />
+                <Route
+                  exact
+                  path="/create_post"
+                  component={withTracker(CreatePost)}
+                />
                 <Route exact path="/notes" component={withTracker(UserNotes)} />
                 <Route exact path="/classes" component={withTracker(Classes)} />
                 <Route exact path="/feed" component={withTracker(Feed)} />
-                <Route exact path="/workflow" component={withTracker(Workflow)} />
-                <Route exact path="/chat/:hashId" component={withTracker(ChatChannel)} />
+                <Route
+                  exact
+                  path="/workflow"
+                  component={withTracker(Workflow)}
+                />
+                <Route
+                  exact
+                  path="/chat/:hashId"
+                  component={withTracker(ChatChannel)}
+                />
                 <Route exact path="/chat" component={withTracker(Chat)} />
                 {/* <Route exact path="/communities" component={withTracker(Communities)} /> */}
                 <Route exact path="/bookmarks" component={withTracker(Feed)} />
                 <Route exact path="/my_posts" component={withTracker(Feed)} />
                 <Route exact path="/store" component={withTracker(Store)} />
-                <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
+                <Route
+                  exact
+                  path="/leaderboard"
+                  component={withTracker(LeaderBoard)}
+                />
                 <Route
                   exact
                   path="/notifications"
                   component={withTracker(Notifications)}
                 />
-                <Route exact path="/share/:code" component={withTracker(Share)} />
                 <Route
                   exact
-                  path='/flashcards'
+                  path="/share/:code"
+                  component={withTracker(Share)}
+                />
+                <Route
+                  exact
+                  path="/flashcards"
                   component={withTracker(FlashcardsListPage)}
                 />
                 <Route
@@ -215,29 +239,61 @@ ReactDOM.render(
                   path="/profile/:userId/:tab?"
                   component={withTracker(Profile)}
                 />
-                <Route exact path="/reminders" component={withTracker(Reminders)} />
+                <Route
+                  exact
+                  path="/reminders"
+                  component={withTracker(Reminders)}
+                />
                 <Route
                   exact
                   path="/video-call/:roomId"
                   component={withTracker(VideoCall)}
                 />
-                <Route exact path="/video-call" component={withTracker(StartVideo)} />
+                <Route
+                  exact
+                  path="/video-call"
+                  component={withTracker(StartVideo)}
+                />
                 {/* <Route */}
                 {/* exact */}
                 {/* path="/study-circle" */}
                 {/* component={withTracker(StudyCircle)} */}
                 {/* /> */}
-                <Route exact path="/new" component={withTracker(AuthRedirect)} />
-                <Route exact path="/oauth" component={withTracker(OAuthRedirect)} />
-                <Route exact path="/auth" component={withTracker(AuthRedirect)} />
-                <Route exact path="/reset_password" component={withTracker(AuthRedirect)} />
+                <Route
+                  exact
+                  path="/new"
+                  component={withTracker(AuthRedirect)}
+                />
+                <Route
+                  exact
+                  path="/oauth"
+                  component={withTracker(OAuthRedirect)}
+                />
+                <Route
+                  exact
+                  path="/auth"
+                  component={withTracker(AuthRedirect)}
+                />
+                <Route
+                  exact
+                  path="/reset_password"
+                  component={withTracker(AuthRedirect)}
+                />
                 <Route exact path="/old" component={withTracker(Auth)} />
                 <Route exact path="/login" component={withTracker(SignIn)} />
-                <Route exact path="/login/:schoolId" component={withTracker(AuthRedirect)} />
+                <Route
+                  exact
+                  path="/login/:schoolId"
+                  component={withTracker(AuthRedirect)}
+                />
                 <Route exact path="/signup" component={withTracker(SignUp)} />
                 <Route exact path="/saml" component={withTracker(Saml)} />
                 <Route exact path="/gondor" component={withTracker(Gondor)} />
-                <Route exact path="/referral/:code" component={withTracker(Referral)} />
+                <Route
+                  exact
+                  path="/referral/:code"
+                  component={withTracker(Referral)}
+                />
                 <Route
                   exact
                   path="/forgot_password"
@@ -254,7 +310,11 @@ ReactDOM.render(
                   path="/terms-of-use"
                   component={withTracker(TermsOfUse)}
                 />
-                <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
+                <Route
+                  exact
+                  path="/canvas/:nonce"
+                  component={withTracker(Canvas)}
+                />
                 <Route exact path="/redirect" component={Redirect} />
                 <Route exact path="/sandbox" component={Sandbox} />
                 <Route component={Miss} />

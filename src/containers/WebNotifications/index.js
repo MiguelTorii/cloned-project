@@ -115,8 +115,5 @@ const mapDispatchToProps = (dispatch: *): {} =>
   );
 
 export default withRoot(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(WebNotification)
+  connect(mapStateToProps, mapDispatchToProps)(WebNotification)
 );

@@ -11,13 +11,16 @@ const defaultState = {
   visible: null
 };
 
-export default (state: DialogState = defaultState, action: Action): DialogState => {
+export default (
+  state: DialogState = defaultState,
+  action: Action
+): DialogState => {
   switch (action.type) {
-  case dialogActions.UPDATE_VISIBILITY:
-    return update(state, {
-      visible: { $set: action.payload.visible }
-    });
-  default:
-    return state;
+    case dialogActions.UPDATE_VISIBILITY:
+      return update(state, {
+        visible: { $set: action.payload.visible }
+      });
+    default:
+      return state;
   }
 };

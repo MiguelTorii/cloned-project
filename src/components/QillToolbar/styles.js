@@ -6,7 +6,7 @@ export default makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(0, 1),
       [theme.breakpoints.down('sm')]: {
-        margin: theme.spacing(0, 1/3),
+        margin: theme.spacing(0, 1 / 3)
       }
     }
   }

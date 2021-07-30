@@ -1,16 +1,16 @@
 /* eslint-disable react/forbid-prop-types */
-import React from 'react'
-import Proptypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import Chip from '@material-ui/core/Chip'
-import { ReactComponent as BadgeVector } from 'assets/svg/badge_vector.svg'
+import React from 'react';
+import Proptypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import { ReactComponent as BadgeVector } from 'assets/svg/badge_vector.svg';
 import styles from '../_styles/RoleBadge';
 
 const RoleBadge = ({ text, classes }) => {
   return (
     <Chip
-      size='small'
-      color='primary'
+      size="small"
+      color="primary"
       icon={<BadgeVector />}
       label={text}
       classes={{
@@ -22,12 +22,11 @@ const RoleBadge = ({ text, classes }) => {
         iconSmall: !text && classes.iconSmall
       }}
     />
-  )
-}
+  );
+};
 
 RoleBadge.propTypes = {
   classes: Proptypes.object.isRequired
-}
+};
 
-export default withStyles(styles)(RoleBadge)
-
+export default withStyles(styles)(RoleBadge);

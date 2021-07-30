@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from 'react'
+import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,7 +22,6 @@ const MobileMenu = ({
   initials,
   userProfileUrl
 }) => {
-
   return (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -45,14 +44,8 @@ const MobileMenu = ({
           <p>Notifications</p>
         </MenuItem>
       )}
-      <MenuItem
-        button
-        component={MyLink}
-        link='/chat'
-      >
-        <IconButton
-          color="inherit"
-        >
+      <MenuItem button component={MyLink} link="/chat">
+        <IconButton color="inherit">
           <Badge badgeContent={unreadMessages} color="secondary">
             <ChatIcon />
           </Badge>
@@ -66,7 +59,7 @@ const MobileMenu = ({
         <p>Account</p>
       </MenuItem>
     </Menu>
-  )
-}
+  );
+};
 
-export default memo(MobileMenu)
+export default memo(MobileMenu);

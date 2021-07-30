@@ -1,17 +1,17 @@
 // @flow
 
-import React, { useMemo, useState, useCallback } from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import { remiderTime } from 'constants/common'
-import CloseIcon from '@material-ui/icons/Close'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
+import React, { useMemo, useState, useCallback } from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import { remiderTime } from 'constants/common';
+import CloseIcon from '@material-ui/icons/Close';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
 // import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import moment from 'moment';
 // import cx from 'classnames'
-import { useStyles } from '../_styles/Workflow/Notification'
+import { useStyles } from '../_styles/Workflow/Notification';
 
 type Props = {
   dueDate: string,
@@ -28,28 +28,26 @@ const Notification = ({
   index,
   n
 }: Props) => {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
   // const [currentDate, setCurrentDate] = useState(n.value || '')
 
-  const openSelect = useCallback(() => setOpen(true), [])
-  const closeSelect = useCallback(() => setOpen(false), [])
+  const openSelect = useCallback(() => setOpen(true), []);
+  const closeSelect = useCallback(() => setOpen(false), []);
 
   const options = useMemo(() => {
-    const opts = {}
-    const dueMoment = moment(dueDate)
-    Object.keys(remiderTime).forEach(rt => {
-      const { value } = remiderTime[rt]
+    const opts = {};
+    const dueMoment = moment(dueDate);
+    Object.keys(remiderTime).forEach((rt) => {
+      const { value } = remiderTime[rt];
 
-      if (
-        value < dueMoment.valueOf() / 1000 - moment().valueOf() / 1000
-      ) {
-        opts[rt] = remiderTime[rt]
+      if (value < dueMoment.valueOf() / 1000 - moment().valueOf() / 1000) {
+        opts[rt] = remiderTime[rt];
       }
-    })
+    });
 
-    return opts
-  }, [dueDate])
+    return opts;
+  }, [dueDate]);
 
   // const menuComponent = useCallback((hidden) => {
   // const valid = moment(currentDate)._isValid
@@ -74,19 +72,20 @@ const Notification = ({
 
   return (
     <FormControl className={classes.selectForm}>
-      <Grid container alignItems='center'>
+      <Grid container alignItems="center">
         <Select
           className={classes.select}
           value={n.key}
           open={open}
           onOpen={openSelect}
           onClose={closeSelect}
-          onChange={value => editNotification(value, index)}
+          onChange={(value) => editNotification(value, index)}
         >
-          {Object.keys(options)
-            .map(w => (
-              <MenuItem key={`time-${w}`} value={w}>{remiderTime[w].label}</MenuItem>
-            ))}
+          {Object.keys(options).map((w) => (
+            <MenuItem key={`time-${w}`} value={w}>
+              {remiderTime[w].label}
+            </MenuItem>
+          ))}
           {/* {menuComponent(true)} */}
           {/* <DatePicker */}
           {/* selected={currentDate} */}
@@ -101,12 +100,17 @@ const Notification = ({
           {/* customInput={menuComponent(false)} */}
           {/* /> */}
         </Select>
-        <IconButton edge="start" color="inherit" aria-label="close" onClick={() => deleteNotification(index)}>
-          <CloseIcon fontSize='small' />
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="close"
+          onClick={() => deleteNotification(index)}
+        >
+          <CloseIcon fontSize="small" />
         </IconButton>
       </Grid>
     </FormControl>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;

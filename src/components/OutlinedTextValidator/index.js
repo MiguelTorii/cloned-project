@@ -66,7 +66,7 @@ class OutlinedTextValidator extends React.PureComponent<Props> {
             multiline={multiline}
             rows={rows}
             autoFocus={autoFocus}
-            variant={variant || "outlined"}
+            variant={variant || 'outlined'}
             onChange={onChange(name)}
             name={name}
             fullWidth

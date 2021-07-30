@@ -43,7 +43,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     isHover: false
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const { onSendMessage, onSendInput } = this.props;
     const { message, input } = this.state;
@@ -58,7 +58,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     }
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { onTyping } = this.props;
     this.setState({ message: event.target.value });
     onTyping();
@@ -68,7 +68,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     if (this.fileInput) this.fileInput.click();
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { addNextLine, input } = this.state;
     const { onSendInput } = this.props;
     if (event.keyCode === 13 && !addNextLine) {
@@ -89,7 +89,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     }
   };
 
-  handleKeyUp = event => {
+  handleKeyUp = (event) => {
     if (event.keyCode === 16) {
       this.setState({ addNextLine: false });
     }
@@ -103,7 +103,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
       this.fileInput.files.length > 0
     ) {
       const reader = new FileReader();
-      reader.onload = event => {
+      reader.onload = (event) => {
         if (
           this.fileInput &&
           this.fileInput.files &&
@@ -135,7 +135,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     this.setState({ isHover: false });
   };
 
-  handleSelect = emoji => {
+  handleSelect = (emoji) => {
     this.setState(({ message }) => ({ message: `${message}${emoji}` }));
   };
 
@@ -153,17 +153,19 @@ class ChatTextField extends React.PureComponent<Props, State> {
           className={classes.form}
           onSubmit={this.handleSubmit}
         >
-          {!hideImage && <IconButton
-            onClick={this.handleOpenInputFile}
-            className={classes.iconButton}
-            aria-label="Insert Photo"
-          >
-            <FloatChatInsertPhotoIcon />
-          </IconButton>}
+          {!hideImage && (
+            <IconButton
+              onClick={this.handleOpenInputFile}
+              className={classes.iconButton}
+              aria-label="Insert Photo"
+            >
+              <FloatChatInsertPhotoIcon />
+            </IconButton>
+          )}
           <input
             accept="image/*"
             className={classes.input}
-            ref={fileInput => {
+            ref={(fileInput) => {
               this.fileInput = fileInput;
             }}
             onChange={this.handleInputChange}
@@ -185,7 +187,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
               onKeyUp={this.handleKeyUp}
               className={classes.textfield}
               inputComponent={Textarea}
-              inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5 } }}
+              inputProps={{
+                style: { maxHeight: expanded ? 200 : 100, paddingTop: 5 }
+              }}
               multiline
               rowsMax={2}
               placeholder="Type a message"
@@ -212,25 +216,25 @@ class ChatTextField extends React.PureComponent<Props, State> {
           </div>
           <EmojiSelector onSelect={this.handleSelect} isFloatChat />
           {(message || image) && <Divider light className={classes.divider} />}
-          {(message || image) &&
-          <Tooltip
-            arrow
-            classes={{
-              tooltip: classes.tooltip
-            }}
-            placement='top'
-            title="Press enter to send"
-          >
-            <IconButton
-              color="primary"
-              type="submit"
-              className={classes.iconButton}
-              aria-label="Send"
+          {(message || image) && (
+            <Tooltip
+              arrow
+              classes={{
+                tooltip: classes.tooltip
+              }}
+              placement="top"
+              title="Press enter to send"
             >
-              <SendIcon className={classes.sendMessageIcon} />
-            </IconButton>
-          </Tooltip>
-          }
+              <IconButton
+                color="primary"
+                type="submit"
+                className={classes.iconButton}
+                aria-label="Send"
+              >
+                <SendIcon className={classes.sendMessageIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
         </form>
       </Paper>
     );

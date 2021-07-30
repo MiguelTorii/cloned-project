@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import ActionButton from './ActionButton';
 // import LoadImg from '../../components/LoadImg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
       paddingTop: theme.spacing(4)
     },
     [theme.breakpoints.up('md')]: {
-      height: 268,
+      height: 268
     }
   },
   textContainer: {
@@ -60,14 +60,16 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: 'flex',
     flexDirection: 'column',
-    '& > h3': { // Title
+    '& > h3': {
+      // Title
       margin: 0,
       color: 'black',
       fontSize: 40,
       fontWeight: 700,
       lineHeight: '50px'
     },
-    '& > h4': { // Alarm text
+    '& > h4': {
+      // Alarm text
       margin: 0,
       fontSize: 20,
       fontWeight: 700,
@@ -122,37 +124,34 @@ type Props = {
   onClose: Function
 };
 
-const OnboardingStep = ({ data, step, totalSteps, onAction, onClose }: Props) => {
+const OnboardingStep = ({
+  data,
+  step,
+  totalSteps,
+  onAction,
+  onClose
+}: Props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <CloseIcon
-        className={classes.closeIcon}
-        onClick={onClose}
-      />
+      <CloseIcon className={classes.closeIcon} onClick={onClose} />
       <div className={classes.imageContainer}>
         <img src={data.imageUrl} alt="Study Room Onboarding" />
       </div>
       <div className={classes.mainContainer}>
         <div className={classes.textContainer}>
           <div className={classes.title}>
-            <Typography component="h4">
-              NEW!
-            </Typography>
-            <Typography component="h3">
-              { data.title }
-            </Typography>
+            <Typography component="h4">NEW!</Typography>
+            <Typography component="h3">{data.title}</Typography>
           </div>
           <div className={classes.text}>
-            <Typography component="p">
-              { data.text }
-            </Typography>
+            <Typography component="p">{data.text}</Typography>
           </div>
         </div>
         <div className={classes.actionContainer}>
           <ActionButton onClick={() => onAction()}>
-            { data.actionText }
+            {data.actionText}
           </ActionButton>
         </div>
       </div>

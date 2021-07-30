@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,12 +24,12 @@ const DeviceSettings = ({
   selectedaudioinput,
   audioinput,
   videoinput,
-  profiles,
+  profiles
 }) => {
-  const [openReport, setOpenReport] = useState(false)
+  const [openReport, setOpenReport] = useState(false);
 
-  const handleClick = useCallback(() => setOpenReport(true), [])
-  const handleClose = useCallback(() => setOpenReport(false), [])
+  const handleClick = useCallback(() => setOpenReport(true), []);
+  const handleClose = useCallback(() => setOpenReport(false), []);
 
   return (
     <Dialog
@@ -60,14 +60,14 @@ const DeviceSettings = ({
             <Input
               classes={{
                 root: classes.controlOptionLabel,
-                focused: classes.optionFocused,
+                focused: classes.optionFocused
               }}
               name="videoinput"
               id="videoinput-native-helper"
             />
           }
         >
-          {videoinput.map(item => (
+          {videoinput.map((item) => (
             <option key={item.value} value={item.value}>
               {item.label}
             </option>
@@ -94,14 +94,14 @@ const DeviceSettings = ({
             <Input
               classes={{
                 root: classes.controlOptionLabel,
-                focused: classes.optionFocused,
+                focused: classes.optionFocused
               }}
               name="audioinput"
               id="audioinput-native-helper"
             />
           }
         >
-          {audioinput.map(item => (
+          {audioinput.map((item) => (
             <option key={item.value} value={item.value}>
               {item.label}
             </option>
@@ -129,7 +129,7 @@ const DeviceSettings = ({
         handleClose={handleClose}
       />
     </Dialog>
-  )
-}
+  );
+};
 
-export default withStyles(styles)(withSnackbar(DeviceSettings))
+export default withStyles(styles)(withSnackbar(DeviceSettings));

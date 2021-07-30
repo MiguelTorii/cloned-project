@@ -1,6 +1,6 @@
 // @flow
 import React, { useEffect, useState } from 'react';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import momentTz from 'moment-timezone';
 import moment from 'moment';
@@ -11,10 +11,14 @@ import minimizeSvg from '../../../assets/svg/minimize.svg';
 import Dialog from '../../../components/Dialog';
 import type { Announcement } from '../../../types/models';
 import { setIntervalWithFirstCall } from '../../../utils/helpers';
-import { DURATION_REPLACE_TEXT, INTERVAL, TIME_ZONE } from '../../../constants/app';
+import {
+  DURATION_REPLACE_TEXT,
+  INTERVAL,
+  TIME_ZONE
+} from '../../../constants/app';
 import DialogContent from './DialogContent';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   body: {
     alignItems: 'center',
     backgroundImage: 'linear-gradient(135deg, #94daf9, #1e88e5)',
@@ -41,12 +45,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     color: 'black',
     display: 'flex',
-    fontSize: 14,
+    fontSize: 14
   },
   title: {
     color: 'black',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   dialogContent: {
     padding: theme.spacing(0, 3)
@@ -71,17 +75,17 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       position: 'relative',
-      marginLeft: theme.spacing(1),
-    },
+      marginLeft: theme.spacing(1)
+    }
   },
   button: {
-    padding: 0,
+    padding: 0
   },
   buttonLabel: {
     color: theme.circleIn.palette.secondaryText,
     fontSize: 14,
     fontWeight: 'bold',
-    paddingLeft: 4,
+    paddingLeft: 4
   }
 }));
 
@@ -110,7 +114,9 @@ const CommonBanner = ({ announcement }: Props) => {
             [duration.days(), 'day'],
             [duration.hours(), 'hour'],
             [duration.minutes(), 'minute']
-          ].map((item) => pluralize(item[1], item[0], true)).join(', ')
+          ]
+            .map((item) => pluralize(item[1], item[0], true))
+            .join(', ')
         );
       }
     }, 30 * INTERVAL.SECOND);
@@ -127,51 +133,48 @@ const CommonBanner = ({ announcement }: Props) => {
   return (
     <div className={classes.body}>
       <div className={classes.image}>
-        {
-          isExpanded && announcement.imageUrl &&
-            <LoadImg url={announcement.imageUrl} style={{ maxHeight: 64 }}/>
-        }
+        {isExpanded && announcement.imageUrl && (
+          <LoadImg url={announcement.imageUrl} style={{ maxHeight: 64 }} />
+        )}
       </div>
       <div className={classes.content}>
-        {
-          isExpanded ?
-            <>
-              <div className={classes.title}>
-                { announcement.title }
-              </div>
-              <div className={classes.text}>
-                <span role="img" aria-label="timer">
-                  { replaceDuration(announcement.subtitle) }
-                </span>
-              </div>
-            </> :
+        {isExpanded ? (
+          <>
+            <div className={classes.title}>{announcement.title}</div>
             <div className={classes.text}>
-              <span role="img" aria-label="title" className={classes.title}>
-                { announcement.title }
+              <span role="img" aria-label="timer">
+                {replaceDuration(announcement.subtitle)}
               </span>
             </div>
-        }
+          </>
+        ) : (
+          <div className={classes.text}>
+            <span role="img" aria-label="title" className={classes.title}>
+              {announcement.title}
+            </span>
+          </div>
+        )}
       </div>
       <div className={classes.buttons}>
         <Button
           classes={{
             root: classes.button,
-            label: classes.buttonLabel,
+            label: classes.buttonLabel
           }}
-          color='primary'
+          color="primary"
           onClick={() => setDialogOpen(true)}
         >
           <u> Learn More </u>
         </Button>
-        {
-          isExpanded ?
-            <Button onClick={() => setIsExpanded(false)}>
-              <LoadImg url={minimizeSvg} style={{ maxHeight: 10 }} />
-            </Button> :
-            <Button onClick={() => setIsExpanded(true)}>
-              <LoadImg url={expandSvg} style={{ maxHeight: 10 }} />
-            </Button>
-        }
+        {isExpanded ? (
+          <Button onClick={() => setIsExpanded(false)}>
+            <LoadImg url={minimizeSvg} style={{ maxHeight: 10 }} />
+          </Button>
+        ) : (
+          <Button onClick={() => setIsExpanded(true)}>
+            <LoadImg url={expandSvg} style={{ maxHeight: 10 }} />
+          </Button>
+        )}
       </div>
       <Dialog
         onCancel={() => setDialogOpen(false)}
@@ -179,15 +182,17 @@ const CommonBanner = ({ announcement }: Props) => {
         contentClassName={classes.dialogContent}
         maxWidth="sm"
         className={classes.dialog}
-        title={(
+        title={
           <div className={classes.dialogTitle}>
-            {
-              announcement.popupTitleImage &&
-                <LoadImg url={announcement.popupTitleImage} style={{ marginRight: 10, maxHeight: 44, marginTop: 10 }} />
-            }
-            { announcement.popupTitle }
+            {announcement.popupTitleImage && (
+              <LoadImg
+                url={announcement.popupTitleImage}
+                style={{ marginRight: 10, maxHeight: 44, marginTop: 10 }}
+              />
+            )}
+            {announcement.popupTitle}
           </div>
-        )}
+        }
       >
         <DialogContent content={announcement.popupContent} />
       </Dialog>

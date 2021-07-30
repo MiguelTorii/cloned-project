@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useState, useEffect, useCallback } from 'react'
-import cx from 'classnames'
+import React, { useState, useEffect, useCallback } from 'react';
+import cx from 'classnames';
 import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-import EditorToolbar, { formats } from './Toolbar'
+import EditorToolbar, { formats } from './Toolbar';
 import { getPresignedURL } from '../../api/media';
 
 import { styles } from '../_styles/PostItem/CommentQuill';
@@ -26,9 +26,9 @@ const CommentQuill = ({
   toolbarPrefix,
   isPastClassFlashcard
 }) => {
-  const [loading, setLoading] = useState(false)
-  const [isNewLine, setIsNewLine] = useState(false)
-  const [currentQuill, setCurrentQuill] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [isNewLine, setIsNewLine] = useState(false);
+  const [currentQuill, setCurrentQuill] = useState(null);
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: `#comment-toolbar-${feedId}-${toolbarPrefix}`
@@ -40,33 +40,37 @@ const CommentQuill = ({
 
   useEffect(() => {
     if (quill && isPastClassFlashcard) {
-      quill.enable(false)
+      quill.enable(false);
     }
     if (quill && !isPastClassFlashcard) {
-      quill.enable()
+      quill.enable();
     }
-  }, [isPastClassFlashcard, quill])
+  }, [isPastClassFlashcard, quill]);
 
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
-          onChange(quill.container.firstChild.innerHTML)
-          const currentFocusPosition = quill.getSelection(true).index
-          const leftPosition = quill.getBounds(currentFocusPosition).left
-          const currentTooltipWidth = document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`)
-            ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
-            : 0
-          const currentEditorWidth = quill.container.firstChild.clientWidth
+          onChange(quill.container.firstChild.innerHTML);
+          const currentFocusPosition = quill.getSelection(true).index;
+          const leftPosition = quill.getBounds(currentFocusPosition).left;
+          const currentTooltipWidth = document.getElementById(
+            `comment-toolbar-${feedId}-${toolbarPrefix}`
+          )
+            ? document.getElementById(
+                `comment-toolbar-${feedId}-${toolbarPrefix}`
+              ).clientWidth
+            : 0;
+          const currentEditorWidth = quill.container.firstChild.clientWidth;
 
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
-            setCurrentQuill(quill)
-            setIsNewLine(true)
+            setCurrentQuill(quill);
+            setIsNewLine(true);
           }
 
           if (!quill.container.firstChild.innerText.trim()) {
-            quill.focus()
-            setIsNewLine(false)
+            quill.focus();
+            setIsNewLine(false);
           }
         }
       });
@@ -75,9 +79,12 @@ const CommentQuill = ({
 
   useEffect(() => {
     if (currentQuill && isNewLine) {
-      currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n')
+      currentQuill.insertText(
+        currentQuill.container.firstChild.innerHTML.length.index + 1,
+        '\n'
+      );
     }
-  }, [currentQuill, isNewLine])
+  }, [currentQuill, isNewLine]);
 
   useEffect(() => {
     if (quill && value) {
@@ -91,17 +98,17 @@ const CommentQuill = ({
   }, [quill]);
 
   const selectLocalImage = useCallback(() => {
-    const input = document.createElement('input')
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.click()
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
 
     input.onchange = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const file = input.files[0]
+        const file = input.files[0];
         const range = quill.getSelection(true);
-        const { type } = file
+        const { type } = file;
         const result = await getPresignedURL({
           userId,
           type: 1,
@@ -115,12 +122,12 @@ const CommentQuill = ({
           }
         });
 
-        quill.insertEmbed(range.index, 'image', readUrl)
-        quill.insertText(range.index + 1, '\n')
-        setLoading(false)
+        quill.insertEmbed(range.index, 'image', readUrl);
+        quill.insertText(range.index + 1, '\n');
+        setLoading(false);
       } catch (error) {
-        quill.enable(true)
-        setLoading(false)
+        quill.enable(true);
+        setLoading(false);
       }
     };
   }, [quill, userId]);
@@ -129,27 +136,37 @@ const CommentQuill = ({
     if (quill) {
       quill.getModule('toolbar').addHandler('image', selectLocalImage);
     }
-  }, [quill, selectLocalImage])
+  }, [quill, selectLocalImage]);
 
-  const insertEmoji = useCallback(emoji => {
-    if (quill) {
-      const cursorPosition = quill.getSelection(true).index
+  const insertEmoji = useCallback(
+    (emoji) => {
+      if (quill) {
+        const cursorPosition = quill.getSelection(true).index;
 
-      quill.insertText(cursorPosition, `${emoji  }`)
-      quill.setSelection(cursorPosition + 2)
+        quill.insertText(cursorPosition, `${emoji}`);
+        quill.setSelection(cursorPosition + 2);
 
-      const currentContent = quill.root.innerHTML
-      setValue(currentContent)
-    }
-  }, [quill, setValue])
+        const currentContent = quill.root.innerHTML;
+        setValue(currentContent);
+      }
+    },
+    [quill, setValue]
+  );
 
   return (
     <div className={classes.commentQuill}>
       <div className={classes.editor}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
-            <div id={`editor-${feedId}`} className={classes.editorable} ref={quillRef} />
-            <EditorToolbar id={`comment-toolbar-${feedId}-${toolbarPrefix}`} handleSelect={insertEmoji} />
+            <div
+              id={`editor-${feedId}`}
+              className={classes.editorable}
+              ref={quillRef}
+            />
+            <EditorToolbar
+              id={`comment-toolbar-${feedId}-${toolbarPrefix}`}
+              handleSelect={insertEmoji}
+            />
           </div>
           {loading && (
             <div className={classes.loader}>
@@ -158,13 +175,15 @@ const CommentQuill = ({
           )}
         </div>
         <div className={classes.postCommentAction}>
-          {value ? <Button
-            className={classes.postComment}
-            onClick={handleClick(quill)}
-          >
-            <b>Comment</b>
-          </Button>
-            : <Button
+          {value ? (
+            <Button
+              className={classes.postComment}
+              onClick={handleClick(quill)}
+            >
+              <b>Comment</b>
+            </Button>
+          ) : (
+            <Button
               classes={{
                 disabled: classes.disablePostComment
               }}
@@ -172,7 +191,8 @@ const CommentQuill = ({
               onClick={handleClick(quill)}
             >
               <b>Comment</b>
-            </Button> }
+            </Button>
+          )}
         </div>
       </div>
 
@@ -186,7 +206,7 @@ const CommentQuill = ({
         </Typography>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default withStyles(styles)(CommentQuill)
+export default withStyles(styles)(CommentQuill);

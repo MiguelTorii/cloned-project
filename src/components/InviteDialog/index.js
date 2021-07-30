@@ -4,7 +4,7 @@ import Dialog from 'components/Dialog';
 import { useStyles } from '../_styles/InviteDialog';
 
 const InviteDialog = ({ handleClose, open }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div>
@@ -18,11 +18,12 @@ const InviteDialog = ({ handleClose, open }) => {
         title="Invite Your Classmates"
       >
         <Typography>
-          Send a message on Class Announcements (Canvas, Blackboard, D2L, etc) to tell your classmates to also download CircleIn
+          Send a message on Class Announcements (Canvas, Blackboard, D2L, etc)
+          to tell your classmates to also download CircleIn
         </Typography>
       </Dialog>
     </div>
   );
-}
+};
 
-export default InviteDialog
+export default InviteDialog;

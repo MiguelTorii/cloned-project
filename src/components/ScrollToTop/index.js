@@ -26,7 +26,8 @@ const ScrollToTop = ({ scrollElement }) => {
 
   useEffect(() => {
     (scrollElement || window).addEventListener('scroll', monitorScroll);
-    return () => (scrollElement || window).removeEventListener('scroll', monitorScroll);
+    return () =>
+      (scrollElement || window).removeEventListener('scroll', monitorScroll);
   }, [monitorScroll, scrollElement]);
 
   return (

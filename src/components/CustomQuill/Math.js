@@ -1,9 +1,9 @@
-import { Quill } from 'react-quill'
+import { Quill } from 'react-quill';
 
 export default () => {
-  const {MathQuill} = window;
-  const {katex} = window;
-  const {localStorage} = window;
+  const { MathQuill } = window;
+  const { katex } = window;
+  const { localStorage } = window;
 
   function setCacheItem(key, value) {
     try {
@@ -17,7 +17,7 @@ export default () => {
     try {
       return localStorage.getItem(key);
     } catch (e) {
-      return "";
+      return '';
     }
   }
 
@@ -38,27 +38,27 @@ export default () => {
 
     function areAllDependenciesMet() {
       if (!Quill) {
-        console.log("Quill.js not loaded"); // eslint-disable-line no-console
+        console.log('Quill.js not loaded'); // eslint-disable-line no-console
         return false;
       }
 
       if (!MathQuill) {
-        console.log("MathQuill.js not loaded"); // eslint-disable-line no-console
+        console.log('MathQuill.js not loaded'); // eslint-disable-line no-console
         return false;
       }
 
       if (!katex) {
-        console.log("katex.js not loaded"); // eslint-disable-line no-console
+        console.log('katex.js not loaded'); // eslint-disable-line no-console
         return false;
       }
 
       if (!quill.options.modules.formula) {
-        console.log("Formula module not enabled"); // eslint-disable-line no-console
+        console.log('Formula module not enabled'); // eslint-disable-line no-console
         return false;
       }
 
       if (!MutationObserver) {
-        console.log("MutationObserver not defined"); // eslint-disable-line no-console
+        console.log('MutationObserver not defined'); // eslint-disable-line no-console
         return false;
       }
 
@@ -91,34 +91,34 @@ export default () => {
     }
 
     function getTooltip() {
-      return quill.container.getElementsByClassName("ql-tooltip")[0];
+      return quill.container.getElementsByClassName('ql-tooltip')[0];
     }
 
     function getSaveButton() {
       const tooltip = getTooltip();
-      return tooltip.getElementsByClassName("ql-action")[0];
+      return tooltip.getElementsByClassName('ql-action')[0];
     }
 
     function getLatexInput() {
       const tooltip = getTooltip();
-      return tooltip.getElementsByTagName("input")[0];
+      return tooltip.getElementsByTagName('input')[0];
     }
 
     function newMathquillInput() {
       const autofocus = options.autofocus == null ? true : options.autofocus;
       const mathQuillConfig =
         options.mathQuillConfig != null ? options.mathQuillConfig : {};
-      const cacheKey = options.cacheKey || "__mathquill4quill_cache__";
+      const cacheKey = options.cacheKey || '__mathquill4quill_cache__';
       let mqInput = null;
       let mqField = null;
       let latexInputStyle = null;
 
       function applyMathquillInputStyles(mqInput) {
-        mqInput.setAttribute("class", "mathquill4quill-mathquill-input");
+        mqInput.setAttribute('class', 'mathquill4quill-mathquill-input');
       }
 
       function applyLatexInputStyles(latexInput) {
-        latexInput.setAttribute("class", "mathquill4quill-latex-input");
+        latexInput.setAttribute('class', 'mathquill4quill-latex-input');
       }
 
       function syncMathquillToQuill(latexInput, saveButton) {
@@ -145,7 +145,7 @@ export default () => {
           mqField.latex(cachedLatex);
         }
 
-        saveButton.addEventListener("click", () => {
+        saveButton.addEventListener('click', () => {
           addItemToHistoryList(cacheKey);
           removeCacheItem(cacheKey);
         });
@@ -170,7 +170,7 @@ export default () => {
           const latexInput = getLatexInput();
           const saveButton = getSaveButton();
 
-          mqInput = document.createElement("span");
+          mqInput = document.createElement('span');
           applyMathquillInputStyles(mqInput);
 
           latexInputStyle = latexInput.className;
@@ -190,7 +190,7 @@ export default () => {
 
           const latexInput = getLatexInput();
 
-          latexInput.setAttribute("class", latexInputStyle);
+          latexInput.setAttribute('class', latexInputStyle);
 
           mqInput.remove();
           mqInput = null;
@@ -203,19 +203,19 @@ export default () => {
       let container = null;
 
       function applyOperatorButtonStyles(button) {
-        button.setAttribute("class", "mathquill4quill-operator-button");
+        button.setAttribute('class', 'mathquill4quill-operator-button');
       }
 
       function applyOperatorContainerStyles(container) {
-        container.setAttribute("class", "mathquill4quill-operator-container");
+        container.setAttribute('class', 'mathquill4quill-operator-container');
       }
 
       function createOperatorButton(element, mqField) {
         const displayOperator = element[0];
         const operator = element[1];
 
-        const button = document.createElement("button");
-        button.setAttribute("type", "button");
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
 
         katex.render(displayOperator, button, {
           color: 'Black',
@@ -237,12 +237,12 @@ export default () => {
           }
 
           const tooltip = getTooltip();
-          tooltip.style.height = 'auto'
+          tooltip.style.height = 'auto';
 
-          container = document.createElement("div");
+          container = document.createElement('div');
           applyOperatorContainerStyles(container);
 
-          operators.forEach(element => {
+          operators.forEach((element) => {
             const button = createOperatorButton(element, mqField);
             applyOperatorButtonStyles(button);
             container.appendChild(button);
@@ -266,16 +266,16 @@ export default () => {
       let historyDiv = null;
 
       function applyHistoryButtonStyles(button) {
-        button.setAttribute("class", "mathquill4quill-history-button");
+        button.setAttribute('class', 'mathquill4quill-history-button');
       }
 
       function applyHistoryContainerStyles(container) {
-        container.setAttribute("class", "mathquill4quill-history-container");
+        container.setAttribute('class', 'mathquill4quill-history-container');
       }
 
       function createHistoryButton(latex, mqField) {
-        const button = document.createElement("button");
-        button.setAttribute("type", "button");
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
 
         katex.render(latex, button, {
           color: 'Black',
@@ -300,14 +300,14 @@ export default () => {
 
           const tooltip = getTooltip();
 
-          historyDiv = document.createElement("div");
-          const container = document.createElement("div");
+          historyDiv = document.createElement('div');
+          const container = document.createElement('div');
           applyHistoryContainerStyles(container);
-          const header = document.createElement("p");
-          header.innerHTML = `Past formulas (max ${  historySize  })`;
+          const header = document.createElement('p');
+          header.innerHTML = `Past formulas (max ${historySize})`;
           historyDiv.appendChild(header);
 
-          history.forEach(element => {
+          history.forEach((element) => {
             const button = createHistoryButton(element, mqField);
             applyHistoryButtonStyles(button);
             container.appendChild(button);
@@ -336,7 +336,7 @@ export default () => {
           quill.container.getBoundingClientRect().top <
         0
       ) {
-        tooltip.style.top = "0px";
+        tooltip.style.top = '0px';
       }
     }
 
@@ -347,7 +347,7 @@ export default () => {
     const tooltip = getTooltip();
 
     const historyCacheKey =
-      options.historyCacheKey || "__mathquill4quill_historylist_cache__";
+      options.historyCacheKey || '__mathquill4quill_historylist_cache__';
     let historyList = fetchHistoryList(historyCacheKey);
     const historySize = options.historySize || 10;
     const displayHistory = options.displayHistory || false;
@@ -358,9 +358,9 @@ export default () => {
 
     const observer = new MutationObserver(() => {
       const isFormulaTooltipActive =
-        !tooltip.classList.contains("ql-hidden") &&
-        tooltip.attributes["data-mode"] &&
-        tooltip.attributes["data-mode"].value === "formula";
+        !tooltip.classList.contains('ql-hidden') &&
+        tooltip.attributes['data-mode'] &&
+        tooltip.attributes['data-mode'].value === 'formula';
 
       if (isFormulaTooltipActive) {
         const mqField = mqInput.render();
@@ -375,7 +375,7 @@ export default () => {
 
     observer.observe(tooltip, {
       attributes: true,
-      attributeFilter: ["class", "data-mode"]
+      attributeFilter: ['class', 'data-mode']
     });
   }
 

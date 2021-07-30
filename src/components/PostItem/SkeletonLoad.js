@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
 
 import { styles } from '../_styles/PostItem/SkeletonLoad';
 
@@ -17,7 +17,7 @@ const SkeletonLoad = ({ classes }) => {
         </div>
       </SkeletonTheme>
     </div>
-  )
-}
+  );
+};
 
-export default withStyles(styles)(SkeletonLoad)
+export default withStyles(styles)(SkeletonLoad);

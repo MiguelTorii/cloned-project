@@ -152,7 +152,7 @@ let theme = createMuiTheme({
   },
   palette: {
     secondary: {
-      main: circleInTheme.primaryText1,
+      main: circleInTheme.primaryText1
     },
     primary: {
       main: circleInTheme.action
@@ -214,7 +214,7 @@ let theme = createMuiTheme({
     MuiTab: {
       textColorPrimary: {
         color: circleInTheme.tabColor
-      },
+      }
     },
     MuiFab: {
       label: {
@@ -240,11 +240,11 @@ let theme = createMuiTheme({
         height: 'fit-content',
         '&:-webkit-autofill': {
           transitionDelay: '9999s',
-          transitionProperty: 'background-color, color',
+          transitionProperty: 'background-color, color'
         },
         '&::placeholder': {
           color: circleInTheme.secondaryText,
-          opacity: 1,
+          opacity: 1
         }
       }
     },

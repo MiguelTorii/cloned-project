@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
-import { cypher } from 'utils/crypto'
+import { cypher } from 'utils/crypto';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -20,14 +20,19 @@ import LinkPreview from '../../components/LinkPreview';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
 import RichTextEditor from 'containers/RichTextEditor';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from '../../api/posts';
+import {
+  updateShareURL,
+  createBatchShareLink,
+  createShareLink,
+  getShareLink
+} from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
 import postingImage from 'assets/gif/loading-rocket.gif';
 
-const styles = theme => ({
+const styles = (theme) => ({
   preview: {
     padding: theme.spacing(2)
   },
@@ -62,7 +67,7 @@ const styles = theme => ({
         borderColor: theme.circleIn.palette.appBar,
 
         '& .ql-editor.ql-blank::before': {
-          opacity: 1,
+          opacity: 1
         }
       }
     }
@@ -73,19 +78,19 @@ const styles = theme => ({
   dialogPaper: {
     '&.MuiDialog-paper': {
       background: 'transparent',
-      boxShadow: 'none',
-    },
+      boxShadow: 'none'
+    }
   },
   label: {
     fontSize: 48,
     fontWeight: 'bold',
     lineHeight: '65px',
     textAlign: 'center',
-    marginTop: '-60px',
+    marginTop: '-60px'
   },
   link: {
     color: theme.circleIn.palette.brand
-  },
+  }
 });
 
 type Props = {
@@ -115,12 +120,12 @@ type State = {
   changed: ?boolean,
   classList: array,
   errorBody: string,
-  isPosting: boolean,
+  isPosting: boolean
 };
 
 class CreateShareLink extends React.PureComponent<Props, State> {
   constructor(props) {
-    super(props)
+    super(props);
     const {
       classId: currentSelectedClassId,
       sectionId: curretnSelectedSectoinId
@@ -140,65 +145,59 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       errorTitle: '',
       errorBody: '',
       editor: null,
-      isPosting: false,
-    }
+      isPosting: false
+    };
   }
-
 
   canBatchPost = () => {
     const {
       user: {
         expertMode,
-        data: {
-          permission
-        }
+        data: { permission }
       }
-    } = this.props
+    } = this.props;
 
-    return expertMode && permission.includes('one_touch_send_posts')
-  }
+    return expertMode && permission.includes('one_touch_send_posts');
+  };
 
-  handlePush = path => {
-    const {
-      pushTo,
-      campaign,
-    } = this.props
+  handlePush = (path) => {
+    const { pushTo, campaign } = this.props;
 
-    const { sectionId, classId } = this.state
+    const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
       const search = !this.canBatchPost()
         ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : ''
-      pushTo(`${path}${search}`)
+        : '';
+      pushTo(`${path}${search}`);
     } else {
-      pushTo(path)
+      pushTo(path);
     }
-  }
+  };
 
   componentDidMount = () => {
-    const { sharelinkId } = this.props
-    const { editor } = this.state
+    const { sharelinkId } = this.props;
+    const { editor } = this.state;
 
-    if (sharelinkId) this.loadData()
+    if (sharelinkId) this.loadData();
 
     // const { classId, sectionId } = decypherClass()
     // this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
 
     if (localStorage.getItem('shareLink')) {
-      const shareLink = JSON.parse(localStorage.getItem('shareLink'))
+      const shareLink = JSON.parse(localStorage.getItem('shareLink'));
 
       if ('title' in shareLink) {
-        this.setState({ title: shareLink.title })
+        this.setState({ title: shareLink.title });
       }
       if ('summary' in shareLink) {
-        this.setState({ summary: shareLink.summary })
+        this.setState({ summary: shareLink.summary });
       }
       if ('url' in shareLink) {
-        this.setState({ url: shareLink.url })
+        this.setState({ url: shareLink.url });
       }
       if ('changed' in shareLink) {
-        this.setState({ changed: shareLink.changed })
+        this.setState({ changed: shareLink.changed });
       }
     }
 
@@ -209,7 +208,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     });
 
     if (editor) {
-      this.setState({ resourceToolbar: editor.getEditor().theme.modules.toolbar })
+      this.setState({
+        resourceToolbar: editor.getEditor().theme.modules.toolbar
+      });
     }
   };
 
@@ -225,14 +226,14 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       const shareLink = await getShareLink({ userId, sharelinkId });
       const userClasses = processClasses({ classes, segment });
       const { sectionId } = JSON.parse(userClasses[0].value);
-      const { classId, summary, title, uri } = shareLink
-      this.updatePreview(uri)
+      const { classId, summary, title, uri } = shareLink;
+      this.updatePreview(uri);
       this.setState({
         title,
         summary,
         url: uri,
         classId,
-        sectionId,
+        sectionId
       });
       const {
         postInfo: { feedId }
@@ -243,7 +244,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         props: { 'Internal ID': feedId }
       });
     } catch (e) {
-      this.handlePush('/feed')
+      this.handlePush('/feed');
     }
   };
 
@@ -262,7 +263,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sharelinkId,
         user: {
           data: { userId = '' }
-        },
+        }
       } = this.props;
       const { title, summary, url, classId, sectionId } = this.state;
 
@@ -273,10 +274,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         summary,
         uri: url,
         classId,
-        sectionId,
+        sectionId
       });
 
-      if (!res.success) throw new Error(`Couldn't update`)
+      if (!res.success) throw new Error(`Couldn't update`);
 
       logEvent({
         event: 'Feed- Update Share Link',
@@ -305,8 +306,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       });
 
       localStorage.removeItem('shareLink');
-      this.handlePush(`/sharelink/${sharelinkId}`)
-      this.setState({ loading: false })
+      this.handlePush(`/sharelink/${sharelinkId}`);
+      this.setState({ loading: false });
     } catch (err) {
       this.setState({
         loading: false,
@@ -326,7 +327,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     try {
       const {
         user: {
-          data: { userId = '' },
+          data: { userId = '' }
         },
         classList
       } = this.props;
@@ -338,7 +339,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           errorTitle: 'Select one more classes',
           errorBody: 'Please try again'
         });
-        return
+        return;
       }
       if (!this.canBatchPost() && !classId && !sectionId) {
         this.setState({
@@ -347,48 +348,48 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           errorTitle: 'Choose a class',
           errorBody: 'Please try again'
         });
-        return
+        return;
       }
 
       const { title, summary, url } = this.state;
 
       this.setState({ isPosting: true });
 
-      const tagValues = tags.map(item => Number(item.value));
+      const tagValues = tags.map((item) => Number(item.value));
 
       const res = this.canBatchPost()
         ? await createBatchShareLink({
-          userId,
-          title,
-          summary,
-          uri: url,
-          sectionIds: classList.map(c => c.sectionId),
-          tags: tagValues
-        })
-        :  await createShareLink({
-          userId,
-          title,
-          summary,
-          uri: url,
-          classId,
-          sectionId,
-          tags: tagValues
-        });
+            userId,
+            title,
+            summary,
+            uri: url,
+            sectionIds: classList.map((c) => c.sectionId),
+            tags: tagValues
+          })
+        : await createShareLink({
+            userId,
+            title,
+            summary,
+            uri: url,
+            classId,
+            sectionId,
+            tags: tagValues
+          });
 
       const {
         points,
         linkId,
         classes: resClasses,
         user: { firstName }
-      } = res
+      } = res;
 
       const { enqueueSnackbar, classes } = this.props;
 
-      let hasError = false
+      let hasError = false;
       if (this.canBatchPost()) {
-        resClasses.forEach(r => {
-          if (r.status !== 'Success') hasError = true
-        })
+        resClasses.forEach((r) => {
+          if (r.status !== 'Success') hasError = true;
+        });
         if (hasError || resClasses.length === 0) {
           this.setState({
             loading: false,
@@ -396,17 +397,24 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             errorTitle: 'Website not allowed',
             errorBody: (
               <div>
-                It’s not you, it’s us! We maintain a whitelist of allowable URLs.
-                The website you entered is not currently on our list. Please contact us at&nbsp;
-                <a href="mailto:support@circleinapp.com" className={classes.link}>support@circleinapp.com</a>&nbsp;
-                and send us your link, we will review it and most likely allow it
-                so you can share it with your classmates! Sorry for the inconvenience,
-                we want to make sure we keep CircleIn a welcoming space for all.
+                It’s not you, it’s us! We maintain a whitelist of allowable
+                URLs. The website you entered is not currently on our list.
+                Please contact us at&nbsp;
+                <a
+                  href="mailto:support@circleinapp.com"
+                  className={classes.link}
+                >
+                  support@circleinapp.com
+                </a>
+                &nbsp; and send us your link, we will review it and most likely
+                allow it so you can share it with your classmates! Sorry for the
+                inconvenience, we want to make sure we keep CircleIn a welcoming
+                space for all.
               </div>
             ),
-            isPosting: false,
+            isPosting: false
           });
-          return
+          return;
         }
       }
 
@@ -418,16 +426,20 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           errorBody: (
             <div>
               It’s not you, it’s us! We maintain a whitelist of allowable URLs.
-              The website you entered is not currently on our list. Please contact us at&nbsp;
-              <a href="mailto:support@circleinapp.com" className={classes.link}>support@circleinapp.com</a>&nbsp;
-              and send us your link, we will review it and most likely allow it
-              so you can share it with your classmates! Sorry for the inconvenience,
-              we want to make sure we keep CircleIn a welcoming space for all.
+              The website you entered is not currently on our list. Please
+              contact us at&nbsp;
+              <a href="mailto:support@circleinapp.com" className={classes.link}>
+                support@circleinapp.com
+              </a>
+              &nbsp; and send us your link, we will review it and most likely
+              allow it so you can share it with your classmates! Sorry for the
+              inconvenience, we want to make sure we keep CircleIn a welcoming
+              space for all.
             </div>
           ),
-          isPosting: false,
+          isPosting: false
         });
-        return
+        return;
       }
 
       logEvent({
@@ -438,7 +450,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       logEventLocally({
         category: 'Link',
         objectId: linkId,
-        type: 'Created',
+        type: 'Created'
       });
 
       if (points > 0 || this.canBatchPost()) {
@@ -476,59 +488,59 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     }
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const { sharelinkId } = this.props
-    if (sharelinkId) this.updateSharelink()
-    else this.createSharelink()
-  }
+    const { sharelinkId } = this.props;
+    if (sharelinkId) this.updateSharelink();
+    else this.createSharelink();
+  };
 
-  handleTextChange = name => event => {
+  handleTextChange = (name) => (event) => {
     this.setState({ [name]: event.target.value, changed: true });
     if (name === 'url') this.updatePreview(event.target.value);
 
     if (localStorage.getItem('shareLink')) {
-      const currentShareLink = JSON.parse(localStorage.getItem('shareLink'))
-      currentShareLink[name] = event.target.value
-      currentShareLink.changed = true
-      localStorage.setItem('shareLink', JSON.stringify(currentShareLink))
+      const currentShareLink = JSON.parse(localStorage.getItem('shareLink'));
+      currentShareLink[name] = event.target.value;
+      currentShareLink.changed = true;
+      localStorage.setItem('shareLink', JSON.stringify(currentShareLink));
     } else {
       const shareLink = {
         [name]: event.target.value,
-        changed: true,
-      }
-      localStorage.setItem('shareLink', JSON.stringify(shareLink))
+        changed: true
+      };
+      localStorage.setItem('shareLink', JSON.stringify(shareLink));
     }
   };
 
-  handleRTEChange = value => {
+  handleRTEChange = (value) => {
     this.setState({ summary: value, changed: true });
 
     if (localStorage.getItem('shareLink')) {
-      const currentShareLink = JSON.parse(localStorage.getItem('shareLink'))
-      currentShareLink.summary = value
-      currentShareLink.changed = true
-      localStorage.setItem('shareLink', JSON.stringify(currentShareLink))
+      const currentShareLink = JSON.parse(localStorage.getItem('shareLink'));
+      currentShareLink.summary = value;
+      currentShareLink.changed = true;
+      localStorage.setItem('shareLink', JSON.stringify(currentShareLink));
     } else {
       const shareLink = {
         summary: value,
-        changed: true,
-      }
+        changed: true
+      };
       localStorage.setItem('shareLink', JSON.stringify(shareLink));
     }
-  }
+  };
 
   handleErrorDialogClose = () => {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  updatePreview = value => {
+  updatePreview = (value) => {
     this.setState({ preview: value });
   };
 
-  setEditor = editor => {
-    this.setState(editor)
-  }
+  setEditor = (editor) => {
+    this.setState(editor);
+  };
 
   render() {
     const { sharelinkId, classes } = this.props;
@@ -543,7 +555,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       changed,
       errorTitle,
       errorBody,
-      isPosting,
+      isPosting
     } = this.state;
 
     return (
@@ -572,7 +584,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               </Grid>
 
               <Grid item xs={12} sm={12} md={12} className={classes.quillGrid}>
-                <ToolbarTooltip toolbar={resourceToolbar} toolbarClass={classes.toolbarClass} />
+                <ToolbarTooltip
+                  toolbar={resourceToolbar}
+                  toolbarClass={classes.toolbarClass}
+                />
                 <RichTextEditor
                   setEditor={this.setEditor}
                   placeholder="(Optional) Write a description to help your classmates understand what resource(s) you’re sharing."
@@ -595,7 +610,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['URL is required']}
                 />
               </Grid>
-{/* 
+              {/* 
               <Grid item xs={12} sm={12} md={12}>
                 <OutlinedTextValidator
                   required
@@ -626,7 +641,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               paper: classes.dialogPaper
             }}
           >
-            <img src={postingImage} alt="Posting" className={classes.postingImage}/>
+            <img
+              src={postingImage}
+              alt="Posting"
+              className={classes.postingImage}
+            />
             <div className={classes.label}>Posting...</div>
           </Dialog>
         </ErrorBoundary>

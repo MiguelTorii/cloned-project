@@ -11,19 +11,17 @@ import { uploadMedia } from '../../actions/user';
 import useStyles from './styles';
 import withRoot from '../../withRoot';
 
-const RichTextEditor = (
-  {
-    label,
-    placeholder,
-    value,
-    imageUrl,
-    containerId,
-    readOnly,
-    onChangeValue,
-    onChangeImageUrl,
-    onFocus
-  }: Props
-) => {
+const RichTextEditor = ({
+  label,
+  placeholder,
+  value,
+  imageUrl,
+  containerId,
+  readOnly,
+  onChangeValue,
+  onChangeImageUrl,
+  onFocus
+}: Props) => {
   // Hooks
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
@@ -34,17 +32,18 @@ const RichTextEditor = (
     disabled: readOnly,
     onDropAccepted: (files) => {
       setIsUploadingImage(true);
-      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0])
-        .then(({ readUrl }) => {
+      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(
+        ({ readUrl }) => {
           onChangeImageUrl(readUrl);
           setIsUploadingImage(false);
-        })
+        }
+      );
     }
   });
 
   // Callbacks
   const removeStyleMatcher = useCallback((node, delta) => {
-    delta.ops = delta.ops.map(op => {
+    delta.ops = delta.ops.map((op) => {
       return {
         insert: op.insert
       };
@@ -78,12 +77,8 @@ const RichTextEditor = (
 
     if (imageUrl) {
       return (
-        <img
-          src={imageUrl}
-          alt="Flashcards"
-          className={classes.thumbnail}
-        />
-      )
+        <img src={imageUrl} alt="Flashcards" className={classes.thumbnail} />
+      );
     }
 
     if (readOnly) return null;
@@ -93,18 +88,16 @@ const RichTextEditor = (
 
   return (
     <div
-      className={
-        clsx(
-          classes.textEditorContainer,
-          isActive && 'active',
-          readOnly && 'read-only'
-        )
-      }
+      className={clsx(
+        classes.textEditorContainer,
+        isActive && 'active',
+        readOnly && 'read-only'
+      )}
       onMouseDown={handleFocus}
     >
       {!readOnly && (
         <div className={clsx(classes.editorLabel, isActive && 'active')}>
-          { label }
+          {label}
         </div>
       )}
       <div className={classes.textEditor}>
@@ -116,9 +109,7 @@ const RichTextEditor = (
               container: `#${containerId}`
             },
             clipboard: {
-              matchers: [
-                [Node.ELEMENT_NODE, removeStyleMatcher]
-              ]
+              matchers: [[Node.ELEMENT_NODE, removeStyleMatcher]]
             }
           }}
           value={value}
@@ -128,9 +119,13 @@ const RichTextEditor = (
         />
       </div>
       <div className="container">
-        <div {...getRootProps({ className: clsx(classes.imageDnd, readOnly && 'read-only') })}>
+        <div
+          {...getRootProps({
+            className: clsx(classes.imageDnd, readOnly && 'read-only')
+          })}
+        >
           <input {...getInputProps()} />
-          { renderImage() }
+          {renderImage()}
         </div>
       </div>
     </div>

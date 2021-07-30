@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useMemo } from 'react'
+import React, { memo, useMemo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Tooltip from '../../containers/Tooltip';
@@ -18,17 +18,27 @@ const CreatePostMenu = ({
   search,
   handleCreatePostMenuClose
 }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const MenuItemContent = useMemo(() => ({ primaryText, secondaryText, icon }) => (
-    <div className={classes.menuItemContent}>
-      <img src={icon} alt="icon" className={classes.icon} />
-      <div>
-        <div className={classes.primaryItem}>{primaryText}</div>
-        <div className={classes.secondaryItem}>{secondaryText}</div>
-      </div>
-    </div>
-  ), [classes.icon, classes.menuItemContent, classes.primaryItem, classes.secondaryItem])
+  const MenuItemContent = useMemo(
+    () =>
+      ({ primaryText, secondaryText, icon }) =>
+        (
+          <div className={classes.menuItemContent}>
+            <img src={icon} alt="icon" className={classes.icon} />
+            <div>
+              <div className={classes.primaryItem}>{primaryText}</div>
+              <div className={classes.secondaryItem}>{secondaryText}</div>
+            </div>
+          </div>
+        ),
+    [
+      classes.icon,
+      classes.menuItemContent,
+      classes.primaryItem,
+      classes.secondaryItem
+    ]
+  );
 
   return (
     <Menu
@@ -107,8 +117,7 @@ const CreatePostMenu = ({
         />
       </MenuItem>
     </Menu>
-  )
+  );
+};
 
-}
-
-export default memo(CreatePostMenu)
+export default memo(CreatePostMenu);

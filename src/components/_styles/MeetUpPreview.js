@@ -1,6 +1,6 @@
 import { dialogStyle } from './Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     minHeight: '100vh',
     display: 'flex',
@@ -19,7 +19,7 @@ export const styles = theme => ({
     justifyContent: 'center',
     maxWidth: 654,
     height: 612,
-    minWidth: 240,
+    minWidth: 240
   },
   videoWrapper: {
     width: '100%',
@@ -49,7 +49,7 @@ export const styles = theme => ({
     zIndex: 1200
   },
   initials: {
-    fontWeight:700,
+    fontWeight: 700,
     fontSize: 150,
     color: '#000000'
   },
@@ -99,7 +99,7 @@ export const styles = theme => ({
     borderRadius: 20,
     height: '248px  !important',
     transform: 'rotateY(180deg)',
-    '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+    '-webkit-transform': 'rotateY(180deg)' /* Safari and Chrome */,
     '-moz-transform': 'rotateY(180deg)' /* Firefox */
   },
   letsGo: {
@@ -128,7 +128,7 @@ export const styles = theme => ({
   },
   dialog: {
     ...dialogStyle,
-    width: 600,
+    width: 600
   },
   rules: {
     fontSize: 16,

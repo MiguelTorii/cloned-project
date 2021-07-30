@@ -19,6 +19,6 @@ const AuthPage = ({ classes }: Props) => {
       <Auth />
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(AuthPage));

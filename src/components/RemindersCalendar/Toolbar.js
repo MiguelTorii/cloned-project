@@ -22,12 +22,12 @@ type Props = {
 type State = {};
 
 class Toolbar extends React.PureComponent<Props, State> {
-  handleClick = action => () => {
+  handleClick = (action) => () => {
     const { onNavigate } = this.props;
     onNavigate(action);
   };
 
-  handleView = view => () => {
+  handleView = (view) => () => {
     const { onView } = this.props;
     onView(view);
   };
@@ -46,7 +46,7 @@ class Toolbar extends React.PureComponent<Props, State> {
         <Typography variant="h5">{label}</Typography>
         <div>
           {false &&
-            views.map(name => (
+            views.map((name) => (
               <Fab
                 size="small"
                 key={name}

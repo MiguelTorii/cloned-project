@@ -1,23 +1,18 @@
-import React from 'react'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import React from 'react';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 type Props = {
   handleClose: Function,
   anchorEl: Object,
-  leaveClass: Function,
-}
+  leaveClass: Function
+};
 
-const LeaveClassPopover = ({
-  anchorEl,
-  leaveClass,
-  handleClose
-}: Props) => {
-
-  const handleLeave = event => {
-    leaveClass()
-    handleClose(event)
-  }
+const LeaveClassPopover = ({ anchorEl, leaveClass, handleClose }: Props) => {
+  const handleLeave = (event) => {
+    leaveClass();
+    handleClose(event);
+  };
 
   return (
     <Menu
@@ -29,7 +24,7 @@ const LeaveClassPopover = ({
     >
       <MenuItem onClick={handleLeave}>Leave the Class</MenuItem>
     </Menu>
-  )
-}
+  );
+};
 
-export default LeaveClassPopover
+export default LeaveClassPopover;

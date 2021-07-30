@@ -15,7 +15,7 @@ import { styles } from '../_styles/SignUpForm/index';
 type Props = {
   classes: Object,
   // type: string,
-  children: Node,
+  children: Node
   // onReset: Function
   // onChangeSchool: Function
 };
@@ -38,9 +38,9 @@ class SignUpForm extends React.PureComponent<Props, State> {
   // };
 
   render() {
-    const { 
-      classes, 
-      children, 
+    const {
+      classes,
+      children
       // onChangeSchool
     } = this.props;
 

@@ -69,11 +69,12 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
                   key={item.userId}
                   className={classes.circle}
                   style={{
-                    transform: `rotate(${270 +
-                      index * degreeAngle}deg) translate(120px) rotate(${-(
-                        270 +
-                        index * degreeAngle
-                      )}deg)`
+                    transform: `rotate(${
+                      270 + index * degreeAngle
+                    }deg) translate(120px) rotate(${-(
+                      270 +
+                      index * degreeAngle
+                    )}deg)`
                   }}
                 >
                   <Avatar

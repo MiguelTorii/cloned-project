@@ -6,17 +6,17 @@ import { makeStyles } from '@material-ui/core';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
-import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
+import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import { ONBOARDING_STEPS } from './steps';
 import OnboardingStep from './OnboardingStep';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     width: 750,
     height: 625,
     padding: 0,
     [theme.breakpoints.down('sm')]: {
-      height: 710,
+      height: 710
     }
   },
   dialogContent: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FLASHCARDS_ONBOARDING_ID = 9066
+const FLASHCARDS_ONBOARDING_ID = 9066;
 
 const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
@@ -36,12 +36,12 @@ const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
       !!viewedTooltips?.length &&
       viewedTooltips.indexOf(FLASHCARDS_ONBOARDING_ID) === -1
     ) {
-      setOpen(true)
+      setOpen(true);
     }
-  }, [viewedTooltips])
+  }, [viewedTooltips]);
 
   const closePopup = () => {
-    confirmTooltip(FLASHCARDS_ONBOARDING_ID)
+    confirmTooltip(FLASHCARDS_ONBOARDING_ID);
     setOpen(false);
   };
 
@@ -96,5 +96,5 @@ const mapDispatchToProps = (dispatch: *): {} =>
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(withRoot(OnboardingFlashcards));

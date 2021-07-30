@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   root: {
     display: 'flex',
@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     borderRadius: theme.spacing(4),
     backgroundColor: theme.circleIn.palette.searchInputColor,
-    marginLeft: 8,
+    marginLeft: 8
   },
   form: {
     display: 'flex',
-    flex: 1,
+    flex: 1
   },
   textfield: {
     width: '100%',
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   img: {
     objectFit: 'scale-down',
@@ -74,6 +74,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.circleIn.palette.brand,
     margin: theme.spacing(0, 0.5)
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

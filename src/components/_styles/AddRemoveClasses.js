@@ -1,11 +1,11 @@
 import { dialogStyle } from './Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   circleIn: {
     color: theme.circleIn.palette.action
   },
   list: {
-    overflowY: 'scroll',
+    overflowY: 'scroll'
   },
   stackbar: {
     color: theme.circleIn.palette.primaryText1
@@ -13,7 +13,7 @@ export const styles = theme => ({
   dialog: {
     ...dialogStyle,
     height: 700,
-    width: 700,
+    width: 700
   },
   optionItem: {
     alignItems: 'center',
@@ -23,14 +23,14 @@ export const styles = theme => ({
   },
   optionName: {
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   },
   optionButton: {
     borderRadius: 8,
     fontWeight: 'bold',
     marginLeft: 10,
     padding: '2px 16px',
-    width: 50,
+    width: 50
   },
   autocomplete: {
     marginBottom: 20,
@@ -39,4 +39,4 @@ export const styles = theme => ({
   paper: {
     background: theme.circleIn.palette.appBar
   }
-})
+});

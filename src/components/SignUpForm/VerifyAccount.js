@@ -28,7 +28,7 @@ class VerifyAccount extends React.PureComponent<Props, State> {
     code: ''
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 

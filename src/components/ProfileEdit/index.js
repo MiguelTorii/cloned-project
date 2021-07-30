@@ -48,23 +48,23 @@ class ProfileEdit extends React.PureComponent<Props, State> {
     const { about } = this.props;
     for (const field of about) {
       switch (field.id) {
-      case 1:
-        this.setState({ studyGroupPreference: field.answer });
-        break;
-      case 2:
-        this.setState({ studyLocationPreference: field.answer });
-        break;
-      case 3:
-        this.setState({ subjectsPreference: field.answer });
-        break;
-      case 4:
-        this.setState({ major: field.answer });
-        break;
-      case 5:
-        this.setState({ clubsOrOrganizations: field.answer });
-        break;
-      default:
-        break;
+        case 1:
+          this.setState({ studyGroupPreference: field.answer });
+          break;
+        case 2:
+          this.setState({ studyLocationPreference: field.answer });
+          break;
+        case 3:
+          this.setState({ subjectsPreference: field.answer });
+          break;
+        case 4:
+          this.setState({ major: field.answer });
+          break;
+        case 5:
+          this.setState({ clubsOrOrganizations: field.answer });
+          break;
+        default:
+          break;
       }
     }
   };
@@ -104,16 +104,12 @@ class ProfileEdit extends React.PureComponent<Props, State> {
     onSubmit(items);
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
   render() {
-    const {
-      classes,
-      open,
-      onClose
-    } = this.props;
+    const { classes, open, onClose } = this.props;
     const {
       studyGroupPreference,
       studyLocationPreference,

@@ -18,14 +18,13 @@ const ActionItem = ({ icon, activeIcon, active, text, onClick = () => {} }) => {
       onMouseLeave={() => setIsHover(false)}
     >
       <div>
-        {isHover || active
-          ? <img src={activeIcon} alt="Action Icon Gradient" />
-          : <img src={icon} alt="Action Icon Default" />
-        }
+        {isHover || active ? (
+          <img src={activeIcon} alt="Action Icon Gradient" />
+        ) : (
+          <img src={icon} alt="Action Icon Default" />
+        )}
       </div>
-      <Box fontSize={12}>
-        { text }
-      </Box>
+      <Box fontSize={12}>{text}</Box>
     </Box>
   );
 };

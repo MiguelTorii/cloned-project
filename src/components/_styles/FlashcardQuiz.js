@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   answer: {
-    paddingBottom: theme.spacing(),
+    paddingBottom: theme.spacing()
   },
   answerContent: {
     alignItems: 'center',
@@ -11,22 +11,22 @@ export const useStyles = makeStyles(theme => ({
     '& ul': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     },
     '& p': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     }
   },
   button: {
     borderRadius: 8,
     fontWeight: 'bold',
     letterSpacing: 0.6,
-    width: 150,
+    width: 150
   },
   buttons: {
-    margin: `${theme.spacing(4)}px 0px`,
+    margin: `${theme.spacing(4)}px 0px`
   },
   choice: {
     color: theme.circleIn.palette.disabled,
@@ -39,21 +39,21 @@ export const useStyles = makeStyles(theme => ({
     '& ol': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     },
     '& p': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     }
   },
   choices: {
-    paddingLeft: theme.spacing(3),
+    paddingLeft: theme.spacing(3)
   },
   content: {
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: theme.spacing(),
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
   dialogImage: {
     maxHeight: 600,
@@ -63,13 +63,13 @@ export const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(),
+    marginBottom: theme.spacing()
   },
   image: {
     borderRadius: theme.spacing(),
     height: '100%',
     objectFit: 'cover',
-    width: '100%',
+    width: '100%'
   },
   link: {
     border: 'none',
@@ -78,7 +78,7 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     outline: 0,
     outlineStyle: 'none',
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(2)
   },
   media: {
     alignItems: 'center',
@@ -88,15 +88,15 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginTop: theme.spacing(),
     marginBottom: theme.spacing(),
-    width: 250,
+    width: 250
   },
   multiQuestion: {
-    paddingBottom: theme.spacing(),
+    paddingBottom: theme.spacing()
   },
   question: {
     alignItems: 'flex-start',
     display: 'flex',
-    paddingBottom: theme.spacing(),
+    paddingBottom: theme.spacing()
   },
   questionContent: {
     paddingTop: 8,
@@ -104,13 +104,13 @@ export const useStyles = makeStyles(theme => ({
     '& p': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     }
   },
   questionSelect: {
     alignItems: 'center',
     display: 'flex',
-    position: 'relative',
+    position: 'relative'
   },
   questionTitle: {
     display: 'flex',
@@ -120,33 +120,33 @@ export const useStyles = makeStyles(theme => ({
     '& p': {
       wordBreak: 'break-word',
       padding: 0,
-      margin: 0,
+      margin: 0
     }
   },
   resultIcon: {
     position: 'absolute',
-    left: -20,
+    left: -20
   },
   resultIcon2: {
     left: -10,
     position: 'absolute',
-    top: 5,
+    top: 5
   },
   radioIcon: {
     cursor: 'pointer',
     height: 20,
-    marginRight: theme.spacing(),
+    marginRight: theme.spacing()
   },
   subtitle: {
     fontSize: 16,
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   success: {
-    color: theme.circleIn.palette.success,
+    color: theme.circleIn.palette.success
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    letterSpacing: 1,
+    letterSpacing: 1
   }
 }));

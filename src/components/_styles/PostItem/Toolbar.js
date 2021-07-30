@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   toolbar: {
@@ -13,7 +13,7 @@ export const useStyles = makeStyles(() => ({
     }
   },
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   popper: {
     zIndex: 1500

@@ -13,7 +13,7 @@ type Props = {
 };
 
 class TypeSelect extends React.PureComponent<Props> {
-  handleClick = type => () => {
+  handleClick = (type) => () => {
     const { onTypeChange } = this.props;
     onTypeChange(type);
   };

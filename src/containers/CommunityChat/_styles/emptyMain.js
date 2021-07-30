@@ -1,10 +1,10 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   messageContainer: {
     padding: theme.spacing(2),
@@ -44,6 +44,6 @@ const useStyles = makeStyles((theme) => ({
   emptyChatImg: {
     marginBottom: theme.spacing(5)
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

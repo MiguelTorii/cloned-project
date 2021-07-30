@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import usePreloadImage from './usePreloadImage'
-import { animations, easings } from './easings'
-import './keyframes.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import usePreloadImage from './usePreloadImage';
+import { animations, easings } from './easings';
+import './keyframes.css';
 
 /**
  * Animates in a component once an image has loaded.
@@ -22,43 +22,41 @@ const HideUntilLoaded = ({
   imageToLoad,
   style
 }) => {
-  const [errored, loaded] = usePreloadImage(imageToLoad)
+  const [errored, loaded] = usePreloadImage(imageToLoad);
 
   const styles = {
     display: 'inline-block',
     position: 'relative',
     ...style
-  }
+  };
 
   const contentStyles = {
     transition: 'none'
-  }
+  };
 
   if (!loaded && !errored && imageToLoad) {
-    contentStyles.opacity = 0
-    contentStyles.visibility = 'hidden'
+    contentStyles.opacity = 0;
+    contentStyles.visibility = 'hidden';
   } else if (animationIn) {
-    contentStyles.animation = animations[animationIn] || animationIn
+    contentStyles.animation = animations[animationIn] || animationIn;
   } else {
-    contentStyles.opacity = 1
-    contentStyles.transition = 'opacity 500ms ease-out'
+    contentStyles.opacity = 1;
+    contentStyles.transition = 'opacity 500ms ease-out';
   }
 
   const spinnerStyles = {
     position: 'absolute',
     left: '50%',
     top: '50%',
-    transition: `opacity 500ms ease-out, transform 0.5s ${
-      easings.easeInOutBack
-    }`
-  }
+    transition: `opacity 500ms ease-out, transform 0.5s ${easings.easeInOutBack}`
+  };
 
   if (!loaded && !errored) {
-    spinnerStyles.opacity = 1
-    spinnerStyles.transform = 'translate(-50%, -50%)'
+    spinnerStyles.opacity = 1;
+    spinnerStyles.transform = 'translate(-50%, -50%)';
   } else {
-    spinnerStyles.opacity = 0
-    spinnerStyles.transform = 'translate(-50%, -50%) scale(0.8)'
+    spinnerStyles.opacity = 0;
+    spinnerStyles.transform = 'translate(-50%, -50%) scale(0.8)';
   }
 
   return (
@@ -72,8 +70,8 @@ const HideUntilLoaded = ({
         </div>
       )}
     </span>
-  )
-}
+  );
+};
 
 HideUntilLoaded.propTypes = {
   animationIn: PropTypes.string,
@@ -81,6 +79,6 @@ HideUntilLoaded.propTypes = {
   imageToLoad: PropTypes.string.isRequired,
   Spinner: PropTypes.any,
   style: PropTypes.object
-}
+};
 
-export default HideUntilLoaded
+export default HideUntilLoaded;

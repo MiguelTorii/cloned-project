@@ -45,7 +45,7 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
       schoolId: from === 'school' ? Number(schoolId) : undefined
     });
 
-    const options = users.map(user => {
+    const options = users.map((user) => {
       const name = `${user.firstName} ${user.lastName}`;
       const initials = getInitials(name);
       return {
@@ -72,7 +72,7 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
     try {
       await addGroupMembers({
         chatId,
-        users: selectedUsers.map(user => Number(user.userId))
+        users: selectedUsers.map((user) => Number(user.userId))
       });
     } finally {
       this.handleClose();

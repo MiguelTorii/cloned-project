@@ -13,7 +13,7 @@ type Props = {
   children: Node
 };
 
-const OnlineBadge = ({ isVisible, classes, children }: Props) => (
+const OnlineBadge = ({ isVisible, classes, children }: Props) =>
   isVisible ? (
     <span className={classes.root}>
       {children}
@@ -21,14 +21,13 @@ const OnlineBadge = ({ isVisible, classes, children }: Props) => (
     </span>
   ) : (
     children
-  )
-)
+  );
 
 OnlineBadge.defaultProps = {
   isVisible: true,
   isOnline: false,
   fromChat: true,
-  bgColorPath: "circleIn.palette.modalBackground",
-}
+  bgColorPath: 'circleIn.palette.modalBackground'
+};
 
 export default withStyles(styles)(OnlineBadge);

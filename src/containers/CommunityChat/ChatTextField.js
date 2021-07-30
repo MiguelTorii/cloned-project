@@ -1,17 +1,17 @@
 /* eslint-disable react/no-danger */
 // @flow
-import React, { useRef, useCallback, useState } from 'react'
-import Textarea from 'react-textarea-autosize'
-import Paper from '@material-ui/core/Paper'
-import InputBase from '@material-ui/core/InputBase'
-import IconButton from '@material-ui/core/IconButton'
-import ButtonBase from '@material-ui/core/ButtonBase'
-import SendIcon from '@material-ui/icons/Send'
-import ClearIcon from '@material-ui/icons/Clear'
-import Tooltip from '@material-ui/core/Tooltip'
-import EmojiSelector from 'components/EmojiSelector'
-import { ReactComponent as AddFile } from 'assets/svg/add-file.svg'
-import useStyles from './_styles/chatTextField'
+import React, { useRef, useCallback, useState } from 'react';
+import Textarea from 'react-textarea-autosize';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import SendIcon from '@material-ui/icons/Send';
+import ClearIcon from '@material-ui/icons/Clear';
+import Tooltip from '@material-ui/core/Tooltip';
+import EmojiSelector from 'components/EmojiSelector';
+import { ReactComponent as AddFile } from 'assets/svg/add-file.svg';
+import useStyles from './_styles/chatTextField';
 
 type Props = {
   onSendMessage: Function,
@@ -30,62 +30,71 @@ const ChatTextField = ({
   expanded,
   onTyping
 }: Props) => {
-  const classes = useStyles()
-  const [addNextLine, setAddNextLine] = useState(false)
-  const [image, setImage] = useState(null)
-  const [input, setInput] = useState(null)
-  const [isHover, setIsHover] = useState(false)
-  const fileInput = useRef(null)
+  const classes = useStyles();
+  const [addNextLine, setAddNextLine] = useState(false);
+  const [image, setImage] = useState(null);
+  const [input, setInput] = useState(null);
+  const [isHover, setIsHover] = useState(false);
+  const fileInput = useRef(null);
 
-  const handleSubmit = useCallback(event => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (input) {
-      onSendInput(input);
-      setInput(null)
-      setImage(null)
-      setIsHover(false)
-    }
+      if (input) {
+        onSendInput(input);
+        setInput(null);
+        setImage(null);
+        setIsHover(false);
+      }
 
-    if (message.trim() !== '') {
-      onSendMessage(message);
-      setMessage('')
-    }
-  }, [input, message, onSendInput, onSendMessage, setMessage])
+      if (message.trim() !== '') {
+        onSendMessage(message);
+        setMessage('');
+      }
+    },
+    [input, message, onSendInput, onSendMessage, setMessage]
+  );
 
-  const handleChange = useCallback(event => {
-    setMessage(event.target.value)
-    onTyping();
-  }, [onTyping, setMessage])
+  const handleChange = useCallback(
+    (event) => {
+      setMessage(event.target.value);
+      onTyping();
+    },
+    [onTyping, setMessage]
+  );
 
   const handleOpenInputFile = useCallback(() => {
     if (fileInput.current) fileInput.current.click();
-  }, [])
+  }, []);
 
-  const handleKeyDown = useCallback(event => {
-    if (event.keyCode === 13 && !addNextLine) {
-      event.preventDefault();
-      if (message.trim() !== '') {
-        onSendMessage(message);
-        setMessage('')
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.keyCode === 13 && !addNextLine) {
+        event.preventDefault();
+        if (message.trim() !== '') {
+          onSendMessage(message);
+          setMessage('');
+        }
+        if (input) {
+          onSendInput(input);
+          setInput(null);
+          setImage(null);
+          setIsHover(false);
+        }
       }
-      if (input) {
-        onSendInput(input);
-        setInput(null)
-        setImage(null)
-        setIsHover(false)
+      if (event.keyCode === 16) {
+        setAddNextLine(true);
       }
-    }
-    if (event.keyCode === 16) {
-      setAddNextLine(true)
-    }
-  }, [addNextLine, input, message, onSendInput, onSendMessage, setMessage])
+    },
+    [addNextLine, input, message, onSendInput, onSendMessage, setMessage]
+  );
 
-  const handleKeyUp = useCallback(event => {
+  const handleKeyUp = useCallback((event) => {
     if (event.keyCode === 16) {
-      setAddNextLine(false)
+      setAddNextLine(false);
     }
-  }, [])
+  }, []);
 
   const handleInputChange = useCallback(() => {
     if (
@@ -94,14 +103,14 @@ const ChatTextField = ({
       fileInput.current.files.length > 0
     ) {
       const reader = new FileReader();
-      reader.onload = event => {
+      reader.onload = (event) => {
         if (
           fileInput.current &&
           fileInput.current.files &&
           fileInput.current.files.length > 0
         ) {
-          setImage(event.target.result)
-          setInput(fileInput.current.files[0])
+          setImage(event.target.result);
+          setInput(fileInput.current.files[0]);
         }
         if (fileInput.current) {
           fileInput.current.value = '';
@@ -110,26 +119,28 @@ const ChatTextField = ({
 
       reader.readAsDataURL(fileInput.current.files[0]);
     }
-  }, [])
+  }, []);
 
   const handleRemoveImg = useCallback(() => {
-    setInput(null)
-    setImage(null)
-    setIsHover(false)
-  }, [])
+    setInput(null);
+    setImage(null);
+    setIsHover(false);
+  }, []);
 
   const handleMouseEnter = useCallback(() => {
-    setIsHover(true)
-  }, [])
+    setIsHover(true);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setIsHover(false)
-  }, [])
+    setIsHover(false);
+  }, []);
 
-  const handleSelect = useCallback(emoji => {
-    setMessage(`${message}${emoji}`)
-  }, [message, setMessage])
-
+  const handleSelect = useCallback(
+    (emoji) => {
+      setMessage(`${message}${emoji}`);
+    },
+    [message, setMessage]
+  );
 
   return (
     <Paper className={classes.root} elevation={1}>
@@ -142,11 +153,7 @@ const ChatTextField = ({
           <AddFile />
         </IconButton>
       </div>
-      <form
-        autoComplete="off"
-        className={classes.form}
-        onSubmit={handleSubmit}
-      >
+      <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.inputContainer}>
           <input
             accept="image/*"
@@ -187,7 +194,13 @@ const ChatTextField = ({
               onKeyUp={handleKeyUp}
               className={classes.textfield}
               inputComponent={Textarea}
-              inputProps={{ style: { maxHeight: expanded ? 200 : 100, paddingTop: 5, width: '100%' } }}
+              inputProps={{
+                style: {
+                  maxHeight: expanded ? 200 : 100,
+                  paddingTop: 5,
+                  width: '100%'
+                }
+              }}
               multiline
               rowsMax={2}
               placeholder="Type a message"
@@ -200,13 +213,13 @@ const ChatTextField = ({
             onSelect={handleSelect}
           />
         </div>
-        {(message || image) &&
+        {(message || image) && (
           <Tooltip
             arrow
             classes={{
               tooltip: classes.tooltip
             }}
-            placement='top'
+            placement="top"
             title="Press enter to send"
           >
             <div className={classes.iconButton}>
@@ -224,10 +237,10 @@ const ChatTextField = ({
               </IconButton>
             </div>
           </Tooltip>
-        }
+        )}
       </form>
     </Paper>
   );
-}
+};
 
 export default ChatTextField;

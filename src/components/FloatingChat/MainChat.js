@@ -1,17 +1,17 @@
 // @flow
-import React from 'react'
-import type { Node } from 'react'
-import cx from 'classnames'
-import { withStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
-import ButtonBase from '@material-ui/core/ButtonBase'
-import Divider from '@material-ui/core/Divider'
-import Badge from '@material-ui/core/Badge'
-import RemoveIcon from '@material-ui/icons/Remove'
-import FloatChatNewIcon from 'assets/svg/float_chat_new.svg'
+import React from 'react';
+import type { Node } from 'react';
+import cx from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Divider from '@material-ui/core/Divider';
+import Badge from '@material-ui/core/Badge';
+import RemoveIcon from '@material-ui/icons/Remove';
+import FloatChatNewIcon from 'assets/svg/float_chat_new.svg';
 
-import styles from '../_styles/FloatingChat/MainChat'
+import styles from '../_styles/FloatingChat/MainChat';
 
 type Props = {
   classes: Object,
@@ -27,25 +27,27 @@ type State = {
 class MainChat extends React.PureComponent<Props, State> {
   state = {
     open: false
-  }
+  };
 
-  handleOpen = () => this.setState(prevState => ({ open: !prevState.open }))
+  handleOpen = () => this.setState((prevState) => ({ open: !prevState.open }));
 
-  handleCreateChannel = type => () => {
-    const { onCreateChannel } = this.props
-    onCreateChannel(type)
-  }
+  handleCreateChannel = (type) => () => {
+    const { onCreateChannel } = this.props;
+    onCreateChannel(type);
+  };
 
   render() {
-    const { classes, children, unread } = this.props
-    const { open } = this.state
+    const { classes, children, unread } = this.props;
+    const { open } = this.state;
 
     return (
       <Paper
         className={cx(classes.paper, open && classes.paperOpen)}
         elevation={24}
       >
-        <div className={cx(classes.header, unread && classes.notificationHeader)}>
+        <div
+          className={cx(classes.header, unread && classes.notificationHeader)}
+        >
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
             <Typography variant="h6" className={classes.title}>
               Chats
@@ -65,7 +67,7 @@ class MainChat extends React.PureComponent<Props, State> {
             <img
               id="circlein-newchat"
               src={FloatChatNewIcon}
-              alt='newChat'
+              alt="newChat"
               className={classes.img}
             />
           </ButtonBase>
@@ -83,8 +85,8 @@ class MainChat extends React.PureComponent<Props, State> {
           <div className={classes.items}>{children}</div>
         </div>
       </Paper>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(MainChat)
+export default withStyles(styles)(MainChat);

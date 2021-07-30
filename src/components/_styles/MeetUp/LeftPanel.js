@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     display: 'none',
     position: 'absolute',
@@ -46,7 +46,7 @@ export const styles = theme => ({
   section: {
     // position: 'fixed',
     overflowY: 'auto',
-    height: '100%',
+    height: '100%'
   },
   hide: {
     display: 'none'
@@ -56,7 +56,7 @@ export const styles = theme => ({
   },
   scroll: {
     maxHeight: '80vh',
-    overflow: 'scroll',
+    overflow: 'scroll'
   },
   iconActive: {
     color: theme.circleIn.palette.brand

@@ -1,6 +1,6 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   commentQuill: {
-    width: '100%',
+    width: '100%'
   },
   editor: {
     display: 'flex',
@@ -13,7 +13,7 @@ export const styles = theme => ({
       maxHeight: 500,
       background: theme.circleIn.palette.hoverMenu,
       color: theme.palette.common.white,
-      borderRadius: 20,
+      borderRadius: 20
     }
   },
   innerContainerEditor: {
@@ -68,7 +68,7 @@ export const styles = theme => ({
   error: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1, 2, 1),
+    padding: theme.spacing(0, 1, 2, 1)
   },
   errorMessage: {
     fontSize: 12,
@@ -86,4 +86,4 @@ export const styles = theme => ({
     justifyContent: 'center',
     borderRadius: 20
   }
-})
+});

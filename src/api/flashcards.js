@@ -83,9 +83,7 @@ export const apiEndMatchGame = async (
  *   }
  * }
  */
-export const apiGetMatchStats = async (
-  flashcardId
-) => {
+export const apiGetMatchStats = async (flashcardId) => {
   return callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
     method: 'GET'

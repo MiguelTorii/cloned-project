@@ -54,7 +54,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
     // error: false
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
@@ -128,7 +128,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
             errorMessages={['State is required']}
           >
             <MenuItem value="" />
-            {(states[type] || []).map(item => (
+            {(states[type] || []).map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
               </MenuItem>

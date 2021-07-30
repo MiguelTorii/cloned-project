@@ -20,7 +20,13 @@ type Props = {
   onSave: Function
 };
 
-const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) => {
+const AvatarEditor = ({
+  originalImage,
+  open,
+  title,
+  onCancel,
+  onSave
+}: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null); // image can be URL or File.
   const [scale, setScale] = useState(1.0);
@@ -73,7 +79,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
       default:
         throw new Error('Unknown action');
     }
-  }
+  };
 
   const handleSelectFile = () => {
     if (dropzoneRef) {
@@ -94,7 +100,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
   const handleSave = () => {
     if (!image) {
       onSave(null);
-      return ;
+      return;
     }
 
     setIsSaving(true);
@@ -102,8 +108,8 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
     const canvas = editorRef.current.getImage().toDataURL();
 
     fetch(canvas)
-      .then(res => res.blob())
-      .then(blob => {
+      .then((res) => res.blob())
+      .then((blob) => {
         onSave(blob);
         setIsSaving(false);
       });
@@ -115,11 +121,8 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
 
   return (
     <Dialog
-      title={title ?? "Edit Profile Picture"}
-      className={clsx(
-        classes.root,
-        !image && classes.hidden
-      )}
+      title={title ?? 'Edit Profile Picture'}
+      className={clsx(classes.root, !image && classes.hidden)}
       open={open}
       onCancel={onCancel}
     >
@@ -135,10 +138,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
         />
       </Box>
       <Box px={5} mb={4}>
-        <Toolbar
-          disabledActions={disabledActions}
-          onAction={onAction}
-        />
+        <Toolbar disabledActions={disabledActions} onAction={onAction} />
       </Box>
       <Grid container justify="space-between">
         <Grid item>
@@ -149,10 +149,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
-              <TransparentButton
-                compact
-                onClick={handleSelectFile}
-              >
+              <TransparentButton compact onClick={handleSelectFile}>
                 Change Photo
               </TransparentButton>
             </Grid>
@@ -176,13 +173,11 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
           onDropAccepted={handleDropzoneAccepted}
           onFileDialogCancel={handleFileDialogCancel}
         >
-          {
-            ({ getRootProps, getInputProps }) => (
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-              </div>
-            )
-          }
+          {({ getRootProps, getInputProps }) => (
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+            </div>
+          )}
         </Dropzone>
       </Hidden>
     </Dialog>

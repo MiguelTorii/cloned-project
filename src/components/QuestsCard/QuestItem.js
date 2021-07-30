@@ -31,7 +31,7 @@ class QuestItem extends React.PureComponent<Props, State> {
 
   state = {};
 
-  renderQuestLink = action => {
+  renderQuestLink = (action) => {
     const {
       name,
       value,

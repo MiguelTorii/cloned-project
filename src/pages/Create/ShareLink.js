@@ -17,7 +17,11 @@ type Props = {
 };
 
 const CreateShareLinkPage = (props: Props) => {
-  const { match: { params: { sharelinkId } } } = props
+  const {
+    match: {
+      params: { sharelinkId }
+    }
+  } = props;
 
   return (
     <main>

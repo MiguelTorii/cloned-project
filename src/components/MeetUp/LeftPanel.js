@@ -36,7 +36,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
     type: ''
   };
 
-  handleOpen = type => () => {
+  handleOpen = (type) => () => {
     this.setState({ type });
     const { onTabChange } = this.props;
     onTabChange(type);
@@ -48,7 +48,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
     onTabChange('');
   };
 
-  handleChange = () => { };
+  handleChange = () => {};
 
   render() {
     const {
@@ -56,7 +56,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
       thumbnails,
       // dominantToggle,
       // localParticipant,
-      chat,
+      chat
       // dominantView,
       // unread
     } = this.props;
@@ -66,7 +66,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
       <Fragment>
         <div className={classes.root}>
           <Paper
-            className={cx(classes.paper, (!thumbnails && classes.paperHide))}
+            className={cx(classes.paper, !thumbnails && classes.paperHide)}
             elevation={1}
           >
             {/* <div> */}
@@ -78,9 +78,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
             {/* </ButtonBase> */}
             {/* </div> */}
             {/* {localParticipant} */}
-            <div className={classes.scroll}>
-              {thumbnails}
-            </div>
+            <div className={classes.scroll}>{thumbnails}</div>
           </Paper>
         </div>
         <Drawer

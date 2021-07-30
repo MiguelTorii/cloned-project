@@ -37,17 +37,17 @@ class AddMembers extends React.PureComponent<Props, State> {
     inputValue: ''
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
-  handleAutoComplete = values => {
+  handleAutoComplete = (values) => {
     this.setState({ users: values });
     if (values.length === 0) this.setState({ error: true });
     else this.setState({ error: false });
   };
 
-  handleLoadOptions = query => {
+  handleLoadOptions = (query) => {
     const { onLoadOptions } = this.props;
     const { from } = this.state;
     return onLoadOptions({ query, from });
@@ -95,13 +95,15 @@ class AddMembers extends React.PureComponent<Props, State> {
         showCancel
         title="Add New Group Member"
       >
-        {isLoading && <CircularProgress
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%'
-          }}
-        />}
+        {isLoading && (
+          <CircularProgress
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%'
+            }}
+          />
+        )}
         <ValidatorForm
           onSubmit={this.handleSubmit}
           className={classes.validatorForm}

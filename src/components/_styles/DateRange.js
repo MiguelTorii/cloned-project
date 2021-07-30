@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   buttonWrapper: {
     position: 'relative',
     marginTop: theme.spacing()
@@ -19,7 +19,7 @@ export default theme => ({
   },
   nonCurrentMonthDay: {
     color: theme.circleIn.palette.secondaryText,
-    margin: theme.spacing(1/2, 0)
+    margin: theme.spacing(1 / 2, 0)
   },
   highlightNonCurrentMonthDay: {
     color: theme.circleIn.palette.secondaryText
@@ -27,11 +27,11 @@ export default theme => ({
   highlight: {
     background: theme.palette.primary.main,
     color: theme.palette.common.white,
-    margin: theme.spacing(1/2, 0),
+    margin: theme.spacing(1 / 2, 0),
     backgroundColor: theme.circleIn.palette.primaryii222
   },
   currentMonthDay: {
-    margin: theme.spacing(1/2, 0)
+    margin: theme.spacing(1 / 2, 0)
   },
   alone: {
     backgroundColor: theme.circleIn.palette.action
@@ -39,14 +39,14 @@ export default theme => ({
   firstHighlight: {
     extend: 'highlight',
     borderRadius: '50%',
-    margin: theme.spacing(1/2),
+    margin: theme.spacing(1 / 2),
     fontWeight: 700,
     backgroundColor: theme.circleIn.palette.brand
   },
   endHighlight: {
     extend: 'highlight',
     borderRadius: '50%',
-    margin: theme.spacing(1/2),
+    margin: theme.spacing(1 / 2),
     fontWeight: 700,
     backgroundColor: theme.circleIn.palette.brand
   },

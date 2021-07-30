@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react'
+import React, { useState, useCallback, memo } from 'react';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 
@@ -16,12 +16,15 @@ const DrawerItem = ({
   OnIcon,
   OffIcon
 }) => {
-  const [hover, setHover] = useState(false)
-  const classes = useStyles()
+  const [hover, setHover] = useState(false);
+  const classes = useStyles();
 
-  const onHover = useCallback(hover => () => {
-    setHover(hover)
-  }, [])
+  const onHover = useCallback(
+    (hover) => () => {
+      setHover(hover);
+    },
+    []
+  );
 
   return (
     <ListItem
@@ -34,14 +37,11 @@ const DrawerItem = ({
       className={listItemClass}
     >
       <ListItemIcon className={classes.menuIcon}>
-        {hover || pathname === link
-          ? OnIcon
-          : OffIcon
-        }
+        {hover || pathname === link ? OnIcon : OffIcon}
       </ListItemIcon>
       <ListItemText primary={primaryText} />
     </ListItem>
-  )
-}
+  );
+};
 
-export default memo(DrawerItem)
+export default memo(DrawerItem);

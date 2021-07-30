@@ -52,7 +52,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
     blockedUsers: []
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const { open } = this.props;
     if (open !== prevProps.open && open === true) {
       this.handleLoadBlockedUsers();
@@ -74,7 +74,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
     }
   };
 
-  handleUnBlock = blockedUserId => async () => {
+  handleUnBlock = (blockedUserId) => async () => {
     const {
       user: {
         data: { userId }
@@ -127,7 +127,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
           )}
           {!loading && (
             <List className={classes.list}>
-              {blockedUsers.map(user => (
+              {blockedUsers.map((user) => (
                 <ListItem key={user.userId} dense>
                   <ListItemAvatar>
                     <Avatar alt={user.name} src={user.profileImageUrl}>

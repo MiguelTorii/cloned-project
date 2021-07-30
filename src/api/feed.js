@@ -89,27 +89,28 @@ export const saveQuizAnswers = async ({
 }): Promise<Object> => {
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.FLASHCARDS}/save_quiz_answers`, {
-      answers: results
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.FLASHCARDS}/save_quiz_answers`,
+      {
+        answers: results
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
     const {
-      data: {
-        session_id: sessionId
-      }
-    } = result
+      data: { session_id: sessionId }
+    } = result;
     return {
       sessionId
-    }
+    };
   } catch (err) {
     return null;
   }
 };
-
 
 export const feedResources = async ({
   userId
@@ -134,14 +135,14 @@ export const feedResources = async ({
           feed_resources_body: resourcesBody
         }
       }
-    } = result
+    } = result;
     return {
       smallLogo,
       largeLogo,
       display,
       resourcesTitle,
       resourcesBody
-    }
+    };
   } catch (err) {
     return null;
   }
@@ -181,9 +182,9 @@ export const fetchFeedv2 = async ({
   bookmarked?: boolean
 }): Promise<Feed> => {
   try {
-    const filterSection = sectionId ? `&section_id=${sectionId}` : ''
+    const filterSection = sectionId ? `&section_id=${sectionId}` : '';
     const token = await getToken();
-    const myPosts = bookmarked ? '' : `user_id=${userId}`
+    const myPosts = bookmarked ? '' : `user_id=${userId}`;
     const result = await axios.get(
       `${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(
         bookmarked
@@ -215,25 +216,28 @@ export const postEvent = async ({
   category: string,
   type: string
 }): Promise<Array<Object>> => {
-
-  if (reduxStore.getState().user.isMasquerading)
-    return;
+  if (reduxStore.getState().user.isMasquerading) return;
 
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.EVENT}`, {
-      section_id: sectionId,
-      category,
-      type
-    }
-    , {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.EVENT}`,
+      {
+        section_id: sectionId,
+        category,
+        type
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
-    const { data: { success } } = result
-    return success
+    const {
+      data: { success }
+    } = result;
+    return success;
   } catch (err) {
     return null;
   }
@@ -247,17 +251,20 @@ export const generateQuiz = async ({
   try {
     const token = await getToken();
 
-    const result = await axios.get(`${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.get(
+      `${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
     return result.data;
   } catch (err) {
     return null;
   }
-}
+};
 
 export const apiFetchFeeds = async (params) => {
   return callApi({

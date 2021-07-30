@@ -23,31 +23,23 @@ const Chat = ({ user, width, location: { pathname } }: Props) => {
   } = user;
 
   useEffect(() => {
-    window.onunhandledrejection = e => {
+    window.onunhandledrejection = (e) => {
       if (
         e?.reason?.message &&
         ["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)
       ) {
-        e.preventDefault()
+        e.preventDefault();
       }
-    }
-  }, [])
+    };
+  }, []);
 
   if (!userId || userId === '') return null;
-  if (
-    pathname.includes('video-call') ||
-    pathname.includes('chat')
-  ) return null;
+  if (pathname.includes('video-call') || pathname.includes('chat')) return null;
   return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
-}
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    null
-  )(withWidth()(Chat))
-);
+export default withRouter(connect(mapStateToProps, null)(withWidth()(Chat)));

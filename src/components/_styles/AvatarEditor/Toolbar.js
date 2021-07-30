@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -6,4 +6,4 @@ export const useStyles = makeStyles((theme) => ({
     border: 'solid 1px rgba(255, 255, 255, .25)',
     borderRadius: 20
   }
-}))
+}));

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import withRoot from 'withRoot';
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatPage = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <main>
@@ -35,6 +35,6 @@ const ChatPage = () => {
       </Layout>
     </main>
   );
-}
+};
 
-export default withRoot(withRouter(ChatPage))
+export default withRoot(withRouter(ChatPage));

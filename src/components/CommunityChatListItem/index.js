@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import MainChatItem from 'components/CommunityChatListItem/MainChatItem';
 import ErrorBoundary from 'containers/ErrorBoundary';
-import clsx from 'clsx'
+import clsx from 'clsx';
 
 type Props = {
   channel: Object,
@@ -34,27 +34,27 @@ const ChatListItem = ({
   channel,
   userId
 }: Props) => {
-  const [name, setName] = useState('')
-  const [thumbnail, setThumbnail] = useState('')
-  const [isOnline, setIsOnline] = useState(false)
-  const [isDirectChat, setIsDirectChat] = useState(false)
+  const [name, setName] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
+  const [isOnline, setIsOnline] = useState(false);
+  const [isDirectChat, setIsDirectChat] = useState(false);
 
   useEffect(() => {
-    if(channel && channel.members) {
-      if(channel.members.length === 2) {
-        setIsDirectChat(true)
-        channel.members.forEach(member => {
+    if (channel && channel.members) {
+      if (channel.members.length === 2) {
+        setIsDirectChat(true);
+        channel.members.forEach((member) => {
           if (Number(member.userId) !== Number(userId)) {
-            setName(`${member.firstname} ${member.lastname}`)
-            setThumbnail(member.image)
-            setIsOnline(member.isOnline)
+            setName(`${member.firstname} ${member.lastname}`);
+            setThumbnail(member.image);
+            setIsOnline(member.isOnline);
           }
-        })
+        });
       } else {
-        setThumbnail(channel.thumbnail)
+        setThumbnail(channel.thumbnail);
       }
     }
-  }, [channel, userId])
+  }, [channel, userId]);
 
   const handleOpenChannel = () => {
     onOpenChannel({ channel: channel.twilioChannel });
@@ -87,6 +87,6 @@ const ChatListItem = ({
       />
     </ErrorBoundary>
   );
-}
+};
 
 export default ChatListItem;

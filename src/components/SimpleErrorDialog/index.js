@@ -56,10 +56,7 @@ class SimpleErrorDialog extends React.PureComponent<
               Sign up
             </TransparentButton>
           )}
-          <GradientButton
-            className={classes.button}
-            onClick={handleClose}
-          >
+          <GradientButton className={classes.button} onClick={handleClose}>
             {showSignup ? 'Try Again' : 'Ok'}
           </GradientButton>
         </div>

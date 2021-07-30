@@ -12,7 +12,7 @@ import { logEvent } from '../../api/analytics';
 import ShareDialog from '../../components/ShareDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -39,7 +39,7 @@ class SharePost extends React.PureComponent<Props, State> {
     loading: false
   };
 
-  componentDidUpdate = async prevProps => {
+  componentDidUpdate = async (prevProps) => {
     const {
       open,
       feedId,

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     height: 'calc(100vh - 150px)',
     overflow: 'hidden',
@@ -8,7 +8,7 @@ export const styles = theme => ({
     alignItems: 'center'
   },
   speakerViewRoot: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   sideBySideRoot: {
     alignItems: 'flex-end',
@@ -38,7 +38,7 @@ export const styles = theme => ({
     flexDirection: 'row-reverse',
     [theme.breakpoints.down('md')]: {
       maxWidth: '100%'
-    },
+    }
   },
   galleryViews: {
     display: 'flex',
@@ -58,7 +58,7 @@ export const styles = theme => ({
   },
   galleryView: {
     overflowY: 'scroll',
-    height: '100% !important',
+    height: '100% !important'
   },
   view: {
     padding: theme.spacing(1.5)
@@ -81,7 +81,7 @@ export const styles = theme => ({
     }
   },
   pr0: {
-    paddingRight: 0,
+    paddingRight: 0
   },
   viewGalleryMode: {
     display: 'flex',
@@ -133,6 +133,6 @@ export const styles = theme => ({
     '&::-webkit-scrollbar': {
       width: 0,
       background: 'transparent'
-    },
+    }
   }
-})
+});

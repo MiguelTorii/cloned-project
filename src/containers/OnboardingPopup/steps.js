@@ -8,7 +8,7 @@ export const ONBOARDING_STEPS = [
     imageUrl: Step1,
     title: 'Study Room',
     text: 'We redesigned our video chat experience. Rebranded as “Study Room”. Video chat and share files with your friends, share multiple screens and work as a team to succeed in your classes! Enjoy. 🚀',
-    actionText: 'See what\'s new!'
+    actionText: "See what's new!"
   },
   {
     id: 'step-2',

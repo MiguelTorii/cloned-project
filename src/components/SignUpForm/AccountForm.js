@@ -51,19 +51,22 @@ class AccountForm extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     const { email: propsEmail } = this.props;
     this.setState({ email: propsEmail });
-    ValidatorForm.addValidationRule('isPasswordMatch', value => {
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       const { password } = this.state;
       if (value !== password) {
         return false;
       }
       return true;
     });
-    ValidatorForm.addValidationRule('isEmailRestricted', value => {
+    ValidatorForm.addValidationRule('isEmailRestricted', (value) => {
       const { emailDomain, emailRestriction } = this.props;
       if (emailRestriction) {
         let match = false;
         for (const domain of emailDomain) {
-          if (value && (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`)))
+          if (
+            value &&
+            (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))
+          )
             match = true;
         }
         return match;
@@ -72,20 +75,14 @@ class AccountForm extends React.PureComponent<Props, State> {
     });
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const {
-      firstName,
-      lastName,
-      email,
-      confirmPassword,
-      password,
-      grade
-    } = this.state;
+    const { firstName, lastName, email, confirmPassword, password, grade } =
+      this.state;
     const data = {
       action: 'Account',
       data: {
@@ -102,14 +99,8 @@ class AccountForm extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, type, hide, loading, emailDomain } = this.props;
-    const {
-      firstName,
-      lastName,
-      email,
-      confirmPassword,
-      password,
-      grade
-    } = this.state;
+    const { firstName, lastName, email, confirmPassword, password, grade } =
+      this.state;
     return (
       <ValidatorForm
         onSubmit={this.handleSubmit}
@@ -186,10 +177,7 @@ class AccountForm extends React.PureComponent<Props, State> {
           value={confirmPassword}
           disabled={loading}
           validators={['required', 'isPasswordMatch']}
-          errorMessages={[
-            'Password is required',
-            "Passwords don't match"
-          ]}
+          errorMessages={['Password is required', "Passwords don't match"]}
         />
         <FormControl
           variant="outlined"
@@ -206,7 +194,7 @@ class AccountForm extends React.PureComponent<Props, State> {
             errorMessages={['Year is required']}
           >
             <MenuItem value="" />
-            {(grades[type] || []).map(item => (
+            {(grades[type] || []).map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
               </MenuItem>

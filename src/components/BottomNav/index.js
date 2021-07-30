@@ -18,7 +18,9 @@ import Dialog from '../Dialog';
 import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
 import { styles } from '../_styles/BottomNav';
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink ref={ref} to={href} {...props} />);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
+  <RouterLink ref={ref} to={href} {...props} />
+));
 
 type Props = {
   classes: Object

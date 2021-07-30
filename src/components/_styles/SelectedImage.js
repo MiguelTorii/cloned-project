@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   imgContainer: {
     position: 'absolute',
     zIndex: 1,
@@ -9,7 +9,7 @@ export const useStyles = makeStyles(theme => ({
     left: theme.spacing(),
     borderRadius: theme.spacing(),
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   buttonGroup: {
     position: 'absolute',
@@ -20,16 +20,16 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   button: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.8)',
+      backgroundColor: 'rgba(0,0,0,0.8)'
     },
-    minWidth: 0,
+    minWidth: 0
   },
   hidden: {
     display: 'none'
   }
-}))
+}));

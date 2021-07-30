@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   button: {
@@ -6,4 +6,4 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(),
     padding: 0
   }
-}))
+}));

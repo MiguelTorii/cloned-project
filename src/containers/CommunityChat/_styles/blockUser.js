@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 import { dialogStyle } from 'components/Dialog';
 
@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
   blockButton: {
     minWidth: 164,
     background: '#FFFFFF',
-    marginBottom: theme.spacing(1/2),
+    marginBottom: theme.spacing(1 / 2),
     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
     borderRadius: 100
-  },
-}))
+  }
+}));
 
-export default useStyles
+export default useStyles;

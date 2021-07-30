@@ -11,16 +11,16 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import ClearIcon from '@material-ui/icons/Clear';
 import EmojiSelector from 'components/EmojiSelector';
 
-const styles = theme => ({
+const styles = (theme) => ({
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   root: {
     display: 'flex',
     bottom: 0,
     width: '100%',
     backgroundColor: theme.circleIn.palette.modalBackground,
-    padding: theme.spacing(),
+    padding: theme.spacing()
   },
   inputContainer: {
     display: 'flex',
@@ -28,14 +28,14 @@ const styles = theme => ({
     alignItems: 'center',
     borderRadius: theme.spacing(4),
     // backgroundColor: theme.circleIn.palette.primaryBackground,
-    marginLeft: 8,
+    marginLeft: 8
   },
   form: {
     display: 'flex',
-    flex: 1,
+    flex: 1
   },
   textfield: {
-    width: '100%',
+    width: '100%'
     // paddingLeft: theme.spacing(2),
   },
   sendIcon: {
@@ -61,7 +61,7 @@ const styles = theme => ({
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   img: {
     objectFit: 'scale-down',
@@ -86,7 +86,7 @@ const styles = theme => ({
   },
   formContainer: {
     flex: 1,
-    padding: theme.spacing(1, 1/2, 0, 1/2),
+    padding: theme.spacing(1, 1 / 2, 0, 1 / 2),
     borderRadius: theme.spacing(),
     border: 'solid 1px rgba(255, 255, 255, 0.2)'
   }
@@ -100,7 +100,6 @@ type Props = {
   setInput: Function
 };
 
-
 const MultipleChatTextField = ({
   classes,
   setMessage,
@@ -108,13 +107,16 @@ const MultipleChatTextField = ({
   input,
   setInput
 }: Props) => {
-  const [image, setImage] = useState(null)
-  const [isHover, setIsHover] = useState(false)
-  const fileInput = useRef(null)
+  const [image, setImage] = useState(null);
+  const [isHover, setIsHover] = useState(false);
+  const fileInput = useRef(null);
 
-  const handleChange = useCallback(event => {
-    setMessage(event.target.value)
-  },[setMessage])
+  const handleChange = useCallback(
+    (event) => {
+      setMessage(event.target.value);
+    },
+    [setMessage]
+  );
 
   // const handleOpenInputFile = useCallback(() => {
   // if (fileInput.current) fileInput.current.click();
@@ -127,14 +129,14 @@ const MultipleChatTextField = ({
       fileInput.current.files.length > 0
     ) {
       const reader = new FileReader();
-      reader.onload = event => {
+      reader.onload = (event) => {
         if (
           fileInput.current &&
           fileInput.current.files &&
           fileInput.current.files.length > 0
         ) {
-          setImage(event.target.result)
-          setInput(fileInput.current.files[0])
+          setImage(event.target.result);
+          setInput(fileInput.current.files[0]);
         }
         if (fileInput.current) {
           fileInput.current.value = '';
@@ -143,32 +145,31 @@ const MultipleChatTextField = ({
 
       reader.readAsDataURL(fileInput.current.files[0]);
     }
-  }, [setInput])
+  }, [setInput]);
 
   const handleRemoveImg = useCallback(() => {
-    setImage(null)
-    setIsHover(false)
-  }, [])
+    setImage(null);
+    setIsHover(false);
+  }, []);
 
   const handleMouseEnter = useCallback(() => {
-    setIsHover(true)
-  }, [])
+    setIsHover(true);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setIsHover(false)
-  }, [])
+    setIsHover(false);
+  }, []);
 
-  const handleSelect = useCallback(emoji => {
-    setMessage(m => `${m}${emoji}`)
-  }, [setMessage])
-
+  const handleSelect = useCallback(
+    (emoji) => {
+      setMessage((m) => `${m}${emoji}`);
+    },
+    [setMessage]
+  );
 
   return (
     <Paper className={classes.root} elevation={0}>
-      <form
-        autoComplete="off"
-        className={classes.form}
-      >
+      <form autoComplete="off" className={classes.form}>
         <div className={classes.formContainer}>
           <div className={classes.inputContainer}>
             <input
@@ -209,7 +210,9 @@ const MultipleChatTextField = ({
                 onChange={handleChange}
                 className={classes.textfield}
                 inputComponent={Textarea}
-                inputProps={{ style: { maxHeight: 100, paddingTop: 5, width: '100%' } }}
+                inputProps={{
+                  style: { maxHeight: 100, paddingTop: 5, width: '100%' }
+                }}
                 multiline
                 rows={4}
                 // placeholder="Type a message"
@@ -235,6 +238,6 @@ const MultipleChatTextField = ({
       </form>
     </Paper>
   );
-}
+};
 
 export default withStyles(styles)(MultipleChatTextField);

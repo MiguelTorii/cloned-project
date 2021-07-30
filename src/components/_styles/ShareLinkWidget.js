@@ -31,7 +31,7 @@ export const styles = (theme) => ({
   },
   img: {
     width: theme.spacing(3),
-    height: theme.spacing(3),
+    height: theme.spacing(3)
   },
   imgCopy: {
     cursor: 'pointer'
@@ -46,17 +46,17 @@ export const styles = (theme) => ({
   },
   // @TODO: upcoming design system can reuse these styles
   popper: {
-    filter: 'drop-shadow(4px 4px 20px rgba(0, 0, 0, 0.25));',
+    filter: 'drop-shadow(4px 4px 20px rgba(0, 0, 0, 0.25));'
   },
   tooltip: {
     fontSize: 14,
     fontWeight: 700,
     padding: '8px 12px',
-    background: theme.circleIn.palette.tooltipBackground,
+    background: theme.circleIn.palette.tooltipBackground
   },
   arrow: {
     left: 'auto !important',
     right: 4,
-    color: theme.circleIn.palette.tooltipBackground,
+    color: theme.circleIn.palette.tooltipBackground
   }
 });

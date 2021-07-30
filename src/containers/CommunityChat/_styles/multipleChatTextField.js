@@ -1,15 +1,15 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   root: {
     display: 'flex',
     bottom: 0,
     width: '100%',
     backgroundColor: theme.circleIn.palette.modalBackground,
-    padding: theme.spacing(),
+    padding: theme.spacing()
   },
   inputContainer: {
     display: 'flex',
@@ -17,14 +17,14 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     borderRadius: theme.spacing(4),
     // backgroundColor: theme.circleIn.palette.primaryBackground,
-    marginLeft: 8,
+    marginLeft: 8
   },
   form: {
     display: 'flex',
-    flex: 1,
+    flex: 1
   },
   textfield: {
-    width: '100%',
+    width: '100%'
     // paddingLeft: theme.spacing(2),
   },
   sendIcon: {
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   img: {
     objectFit: 'scale-down',
@@ -75,10 +75,10 @@ const useStyles = makeStyles(theme => ({
   },
   formContainer: {
     flex: 1,
-    padding: theme.spacing(1, 1/2, 0, 1/2),
+    padding: theme.spacing(1, 1 / 2, 0, 1 / 2),
     borderRadius: theme.spacing(),
     border: 'solid 1px rgba(255, 255, 255, 0.2)'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

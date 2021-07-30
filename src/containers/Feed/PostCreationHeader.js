@@ -42,9 +42,12 @@ const PostCreationHeader = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const handleGotoPostCreate = useCallback((value = 0) => {
-    dispatch(push(`/create_post?tab=${value}`));
-  }, [dispatch]);
+  const handleGotoPostCreate = useCallback(
+    (value = 0) => {
+      dispatch(push(`/create_post?tab=${value}`));
+    },
+    [dispatch]
+  );
 
   return (
     <Box className={classes.postHeaderRoot}>
@@ -59,13 +62,15 @@ const PostCreationHeader = () => {
             />
           </Box>
           <Box flexGrow={1}>
-            <Button fullWidth className={classes.postAnyButton} onClick={() => handleGotoPostCreate()}>
+            <Button
+              fullWidth
+              className={classes.postAnyButton}
+              onClick={() => handleGotoPostCreate()}
+            >
               <Hidden smDown>
                 Create a new post, offer support or share useful links!
               </Hidden>
-              <Hidden mdUp>
-                Create a new post
-              </Hidden>
+              <Hidden mdUp>Create a new post</Hidden>
             </Button>
           </Box>
         </Box>
@@ -85,11 +90,9 @@ const PostCreationHeader = () => {
         </Grid>
       </Paper>
     </Box>
-  )
+  );
 };
 
-PostCreationHeader.postTypes = {
-
-};
+PostCreationHeader.postTypes = {};
 
 export default PostCreationHeader;

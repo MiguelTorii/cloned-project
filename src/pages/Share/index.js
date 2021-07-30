@@ -10,7 +10,7 @@ import Layout from '../../containers/Layout';
 import { getPostInfo } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 
-const styles = theme => ({
+const styles = (theme) => ({
   progress: {
     display: 'flex',
     alignItems: 'center',

@@ -36,27 +36,27 @@ const defaultState = {
 
 export default (state: AuthState = defaultState, action: Action): AuthState => {
   switch (action.type) {
-  case authActions.UPDATE_AUTH_ROLE:
-    return update(state, {
-      data: {
-        role: { $set: action.payload.role }
-      }
-    });
-  case authActions.UPDATE_AUTH_SCHOOL_REQUEST:
-    return update(state, {
-      data: {
+    case authActions.UPDATE_AUTH_ROLE:
+      return update(state, {
+        data: {
+          role: { $set: action.payload.role }
+        }
+      });
+    case authActions.UPDATE_AUTH_SCHOOL_REQUEST:
+      return update(state, {
+        data: {
+          // $FlowIgnore
+          school: { $set: action.payload.school }
+        }
+      });
+    case authActions.UPDATE_REFERRAL_DATA:
+      return update(state, {
         // $FlowIgnore
-        school: { $set: action.payload.school }
-      }
-    });
-  case authActions.UPDATE_REFERRAL_DATA:
-    return update(state, {
-      // $FlowIgnore
-      referralData: { $set: action.payload.referralData }
-    });
-  case rootActions.CLEAR_STATE:
-    return defaultState;
-  default:
-    return state;
+        referralData: { $set: action.payload.referralData }
+      });
+    case rootActions.CLEAR_STATE:
+      return defaultState;
+    default:
+      return state;
   }
 };

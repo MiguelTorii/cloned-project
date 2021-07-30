@@ -2,13 +2,13 @@ import Video from 'twilio-video';
 import update from 'immutability-helper';
 
 const getDevicesOfKind = (deviceInfos, kind) => {
-  return deviceInfos.filter(deviceInfo => {
+  return deviceInfos.filter((deviceInfo) => {
     return deviceInfo.kind === kind;
   });
 };
 
 const switchLocalTracks = (room, track) => {
-  room.localParticipant.tracks.forEach(trackPublication => {
+  room.localParticipant.tracks.forEach((trackPublication) => {
     if (trackPublication.kind === track.kind) {
       trackPublication.track.stop();
       room.localParticipant.unpublishTrack(trackPublication.track);
@@ -18,7 +18,7 @@ const switchLocalTracks = (room, track) => {
 };
 
 export const getDeviceSelectionOptions = () => {
-  return navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
+  return navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
     const kinds = ['audioinput', 'audiooutput', 'videoinput'];
     return kinds.reduce((deviceSelectionOptions, kind) => {
       // eslint-disable-next-line no-param-reassign
@@ -34,14 +34,14 @@ export const applyVideoInputDeviceSelection = (deviceId, video, room) => {
       exact: deviceId
     }
   })
-    .then(localTrack => {
+    .then((localTrack) => {
       localTrack.attach(video);
       if (room) {
         switchLocalTracks(room, localTrack);
       }
       return localTrack;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('applyVideoInputDeviceSelection failed:', err);
       throw err;
     });
@@ -53,14 +53,14 @@ export const applyAudioInputDeviceSelection = (deviceId, audio, room) => {
       exact: deviceId // NOTE: on ios safari - it respects the deviceId only if its exact.
     }
   })
-    .then(localTrack => {
+    .then((localTrack) => {
       localTrack.attach(audio);
       if (room) {
         switchLocalTracks(room, localTrack);
       }
       return localTrack;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('applyAudioInputDeviceSelection failed:', err);
       throw err;
     });
@@ -76,7 +76,7 @@ export const applyAudioOutputDeviceSelection = (deviceId, audio) => {
       );
 };
 
-export const detachTrack = track => {
+export const detachTrack = (track) => {
   //   track.detach().forEach(detachedElement => {
   //     detachedElement.remove();
   //   });
@@ -87,9 +87,9 @@ export const detachTrack = track => {
 export const addParticipant = (state, participant, track, local = false) => {
   return update(state, {
     participants: {
-      $apply: b => {
+      $apply: (b) => {
         const index = b.findIndex(
-          item => item.participant.sid === participant.sid
+          (item) => item.participant.sid === participant.sid
         );
         if (index === -1) {
           return [
@@ -107,8 +107,8 @@ export const addParticipant = (state, participant, track, local = false) => {
           return update(b, {
             [index]: {
               [track.kind]: {
-                $apply: t => {
-                  const trackIndex = t.findIndex(item =>
+                $apply: (t) => {
+                  const trackIndex = t.findIndex((item) =>
                     local ? item.id === track.id : item.sid === track.sid
                   );
                   if (trackIndex === -1) {
@@ -129,9 +129,9 @@ export const addParticipant = (state, participant, track, local = false) => {
 export const removeParticipant = (state, participant) => {
   return update(state, {
     participants: {
-      $apply: b => {
+      $apply: (b) => {
         const index = b.findIndex(
-          item => item.participant.sid === participant.sid
+          (item) => item.participant.sid === participant.sid
         );
         if (index > -1) {
           return update(b, { $splice: [[index, 1]] });
@@ -140,7 +140,7 @@ export const removeParticipant = (state, participant) => {
       }
     },
     lockedParticipant: {
-      $apply: b => {
+      $apply: (b) => {
         if (b === participant.sid) return '';
         return b;
       }
@@ -151,16 +151,16 @@ export const removeParticipant = (state, participant) => {
 export const removeTrack = (state, participant, track, local = false) => {
   return update(state, {
     participants: {
-      $apply: b => {
+      $apply: (b) => {
         const index = b.findIndex(
-          item => item.participant.sid === participant.sid
+          (item) => item.participant.sid === participant.sid
         );
         if (index > -1) {
           return update(b, {
             [index]: {
               [track.kind]: {
-                $apply: t => {
-                  const trackIndex = t.findIndex(item =>
+                $apply: (t) => {
+                  const trackIndex = t.findIndex((item) =>
                     local ? item.id === track.id : item.sid === track.sid
                   );
                   if (trackIndex > -1) {
@@ -176,7 +176,7 @@ export const removeTrack = (state, participant, track, local = false) => {
       }
     },
     lockedParticipant: {
-      $apply: b => {
+      $apply: (b) => {
         const id = local ? track.id : track.sid;
         if (b === id || b === participant.sid) return '';
         return b;
@@ -191,7 +191,7 @@ export const addProfile = (
 ) => {
   return update(state, {
     profiles: {
-      $apply: b => {
+      $apply: (b) => {
         return { ...b, [userId]: { firstName, lastName, userProfileUrl } };
       }
     }

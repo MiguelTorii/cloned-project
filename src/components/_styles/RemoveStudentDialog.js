@@ -1,12 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles'
-import { dialogStyle } from 'components/Dialog'
+import { makeStyles } from '@material-ui/core/styles';
+import { dialogStyle } from 'components/Dialog';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     ...dialogStyle,
     width: 500,
     borderRadius: theme.spacing(),
-    backgroundColor: theme.circleIn.palette.appBar,
+    backgroundColor: theme.circleIn.palette.appBar
   },
   hrClass: {
     background: 'rgba(255, 255, 255, 0.3)'
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   listRoot: {
     width: '100%',
-    maxHeight: 400,
+    maxHeight: 400
   },
   input: {
     width: '100%'
@@ -52,6 +52,6 @@ const useStyles = makeStyles(theme => ({
   spacing: {
     marginRight: theme.spacing(0.5)
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

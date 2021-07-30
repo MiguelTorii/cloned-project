@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { goBack, push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FlashcardDetail from 'components/FlashcardDetail'
-import Divider from '@material-ui/core/Divider'
+import FlashcardDetail from 'components/FlashcardDetail';
+import Divider from '@material-ui/core/Divider';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { getFlashcards, bookmark } from '../../api/posts';
@@ -22,7 +22,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -56,19 +56,21 @@ type Props = {
   push: Function
 };
 
-const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props) => {
-  const [flashcards, setFlashcards] = useState(null)
-  const [report, setReport] = useState(false)
-  const [deletePost, setDeletePost] = useState(false)
+const ViewFlashcards = ({
+  classes,
+  user,
+  flashcardId,
+  push,
+  router,
+  pop
+}: Props) => {
+  const [flashcards, setFlashcards] = useState(null);
+  const [report, setReport] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
   const {
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
-  } = user
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
+  } = user;
 
   const loadData = async () => {
     // eslint-disable-next-line
@@ -79,7 +81,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
 
     setFlashcards({
       ...flashcards,
-      deck: deck.map(item => ({
+      deck: deck.map((item) => ({
         question: item.question,
         answer: item.answer,
         hardCount: item.marked_hard_count,
@@ -87,7 +89,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
         answerImage: item.answer_image_url,
         id: item.id
       }))
-    })
+    });
 
     const {
       postInfo: { feedId }
@@ -100,39 +102,41 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
   };
 
   useEffect(() => {
-    loadData()
+    loadData();
     // eslint-disable-next-line
-  }, [flashcardId])
+  }, [flashcardId]);
 
   const handleBookmark = async () => {
     if (!flashcards) return;
     const { feedId, bookmarked } = flashcards;
     try {
-      setFlashcards({ ...flashcards, bookmarked: !bookmarked })
+      setFlashcards({ ...flashcards, bookmarked: !bookmarked });
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setFlashcards({ ...flashcards, bookmarked })
+      setFlashcards({ ...flashcards, bookmarked });
     }
   };
 
-  const handleReport = () => setReport(true)
+  const handleReport = () => setReport(true);
 
-  const handleReportClose = () => setReport(false)
+  const handleReportClose = () => setReport(false);
 
-  const handleDelete = () => setDeletePost(true)
+  const handleDelete = () => setDeletePost(true);
 
   const handleDeleteClose = ({ deleted }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
-    setDeletePost(false)
+    setDeletePost(false);
   };
 
   const flashcardView = useMemo(() => {
-    const sorted = flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount)
+    const sorted =
+      flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount);
     if (sorted)
       return sorted.map((d, k) => {
-        const renderDivisor = k>0 && sorted[k-1].hardCount >0 && d.hardCount === 0
+        const renderDivisor =
+          k > 0 && sorted[k - 1].hardCount > 0 && d.hardCount === 0;
         return (
           <div key={d.id}>
             {renderDivisor && <Divider light className={classes.divider} />}
@@ -145,9 +149,10 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
               answerImage={d.answerImage}
             />
           </div>
-        )})
-    return null
-  }, [flashcards, classes])
+        );
+      });
+    return null;
+  }, [flashcards, classes]);
 
   if (!flashcards)
     return (
@@ -228,9 +233,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
           {/* ))} */}
           {/* </div> */}
           {/* </ErrorBoundary> */}
-          <ErrorBoundary>
-            {flashcardView}
-          </ErrorBoundary>
+          <ErrorBoundary>{flashcardView}</ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />
           </ErrorBoundary>
@@ -280,7 +283,7 @@ const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,

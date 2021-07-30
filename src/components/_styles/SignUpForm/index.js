@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
@@ -18,7 +18,7 @@ export const styles = theme => ({
     alignItems: 'center',
     position: 'relative',
     padding: theme.spacing(4),
-    paddingTop: theme.spacing(5),
+    paddingTop: theme.spacing(5)
   },
   avatar: {
     margin: theme.spacing(1),

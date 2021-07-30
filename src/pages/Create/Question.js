@@ -17,7 +17,11 @@ type Props = {
 };
 
 const CreateQuestionPage = (props: Props) => {
-  const { match: { params: { questionId } } } = props
+  const {
+    match: {
+      params: { questionId }
+    }
+  } = props;
 
   return (
     <main>

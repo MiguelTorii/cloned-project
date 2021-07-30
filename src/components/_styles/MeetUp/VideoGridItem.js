@@ -1,9 +1,9 @@
 export const centerStyles = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-}
-export const styles = theme => ({
+  justifyContent: 'center'
+};
+export const styles = (theme) => ({
   root: {
     ...centerStyles,
     height: '100%',
@@ -15,7 +15,7 @@ export const styles = theme => ({
     height: '100%',
     width: '100%',
     backgroundColor: theme.circleIn.palette.black,
-    position: 'relative',
+    position: 'relative'
   },
   video: {
     height: '100% !important',
@@ -25,20 +25,20 @@ export const styles = theme => ({
       height: '100%   !important',
       objectFit: 'container',
       boxSizing: 'border-box',
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
     }
   },
   cameraVideo: {
     '& video': {
       transform: 'rotateY(180deg)',
-      '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+      '-webkit-transform': 'rotateY(180deg)' /* Safari and Chrome */,
       '-moz-transform': 'rotateY(180deg)' /* Firefox */
     }
   },
   shareScreen: {
     '& video': {
       transform: 'rotateY(360deg)',
-      '-webkit-transform': 'rotateY(360deg)', /* Safari and Chrome */
+      '-webkit-transform': 'rotateY(360deg)' /* Safari and Chrome */,
       '-moz-transform': 'rotateY(360deg)' /* Firefox */
     }
   },
@@ -76,8 +76,8 @@ export const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
       minWidth: 130,
-      minHeight: 35,
-    },
+      minHeight: 35
+    }
   },
   hidden: {
     display: 'none'
@@ -102,7 +102,7 @@ export const styles = theme => ({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
   initials: {
     fontWeight: 700,
@@ -114,7 +114,7 @@ export const styles = theme => ({
     backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground,
     width: '100%',
     height: '100%',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   singleProfile: {
     ...centerStyles,
@@ -122,7 +122,7 @@ export const styles = theme => ({
     maxHeight: 250,
     width: '100%',
     height: '100%',
-    backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground,
+    backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground
   },
   avatarImage: {
     objectFit: 'contain'
@@ -159,4 +159,4 @@ export const styles = theme => ({
   activeColor: {
     color: theme.circleIn.palette.brand
   }
-})
+});

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     marginTop: theme.spacing(2),
     display: 'flex',
@@ -12,10 +12,10 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     color: theme.palette.primary.primaryColor,
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(3)
   },
   actionIcon: {
     fontSize: 16,
     marginRight: theme.spacing(1)
-  },
+  }
 });

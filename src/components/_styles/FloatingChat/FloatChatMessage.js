@@ -1,10 +1,10 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1),
+      padding: theme.spacing(1)
     },
     [theme.breakpoints.down('xs')]: {
       paddingLeft: 0,
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   name: {
     color: 'white',
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   message: {
     maxWidth: 200,
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   image: {
     borderRadius: 5,
@@ -85,7 +85,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   videoTitle: {
     color: 'white'
@@ -123,11 +123,11 @@ const useStyles = makeStyles(theme => ({
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
-    transform: 'scale(0.8)',
+    transform: 'scale(0.8)'
   },
   title: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 14
   },
   cardContent: {
     display: 'flex',
@@ -162,4 +162,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default useStyles
+export default useStyles;

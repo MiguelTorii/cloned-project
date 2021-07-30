@@ -1,31 +1,29 @@
 // @flow
 
-import React, { useCallback, useState, useEffect, useMemo } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import {
-  ValidatorForm,
-} from 'react-material-ui-form-validator'
-import withStyles from '@material-ui/core/styles/withStyles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import CloseIcon from '@material-ui/icons/Close'
-import { PERMISSIONS } from 'constants/common'
-import * as chatActions from 'actions/chat'
-import { sendMessage, createChannel } from 'api/chat'
-import { searchUsers } from 'api/user'
-import type { UserState } from 'reducers/user'
-import type { ChatState } from 'reducers/chat'
-import { getInitials } from 'utils/chat'
-import SelectClassmates from './SelectClassmates'
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import withStyles from '@material-ui/core/styles/withStyles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Close';
+import { PERMISSIONS } from 'constants/common';
+import * as chatActions from 'actions/chat';
+import { sendMessage, createChannel } from 'api/chat';
+import { searchUsers } from 'api/user';
+import type { UserState } from 'reducers/user';
+import type { ChatState } from 'reducers/chat';
+import { getInitials } from 'utils/chat';
+import SelectClassmates from './SelectClassmates';
 
-const styles = theme => ({
+const styles = (theme) => ({
   validatorForm: {
     flex: 1,
     minWidth: 350,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   header: {
     display: 'flex',
@@ -67,12 +65,12 @@ const styles = theme => ({
   groupName: {
     marginTop: theme.spacing(),
     backgroundColor: theme.circleIn.palette.feedBackground,
-    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.circleIn.palette.gray3
     },
-    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.circleIn.palette.gray3
-    },
+    }
   },
   helperText: {
     color: theme.circleIn.palette.darkTextColor,
@@ -95,9 +93,9 @@ const styles = theme => ({
   name: {
     color: theme.circleIn.palette.darkTextColor,
     fontSize: 14,
-    lineHeight: '19px',
-  },
-})
+    lineHeight: '19px'
+  }
+});
 
 type Props = {
   classes: Object,
@@ -124,86 +122,96 @@ const CreateChatChannelInput = ({
   permission,
   handleUpdateGroupName
 }: Props) => {
-  const [chatType, setChatType] = useState('single')
-  const [name, setName] = useState('')
-  const [type, setType] = useState('Class')
-  const [from, setFrom] = useState('school')
-  const [users, setUsers] = useState([])
-  const [error, setError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-  const [channelName, setChannelName] = useState('')
+  const [chatType, setChatType] = useState('single');
+  const [name, setName] = useState('');
+  const [type, setType] = useState('Class');
+  const [from, setFrom] = useState('school');
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [channelName, setChannelName] = useState('');
 
-  const { data: { userId, schoolId } } = user
-  const { data: { client } } = chat
+  const {
+    data: { userId, schoolId }
+  } = user;
+  const {
+    data: { client }
+  } = chat;
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group')
-    else if (users.length <= 1 && chatType === 'group') setChatType('single')
-  }, [users, chatType])
+    if (users.length > 1 && chatType === 'single') setChatType('group');
+    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+  }, [users, chatType]);
 
-  const isShow = useMemo(() => permission &&
-  permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS), [permission])
+  const isShow = useMemo(
+    () =>
+      permission && permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS),
+    [permission]
+  );
 
-  const handleAutoComplete = useCallback(values => {
-    setUsers(values)
-    setError(false)
-  }, [])
+  const handleAutoComplete = useCallback((values) => {
+    setUsers(values);
+    setError(false);
+  }, []);
 
-  const handleLoadOptions = useCallback(async query => {
-    if (query.trim() === '' || query.trim().length < 3) {
+  const handleLoadOptions = useCallback(
+    async (query) => {
+      if (query.trim() === '' || query.trim().length < 3) {
+        return {
+          options: [],
+          hasMore: false
+        };
+      }
+
+      const users = await searchUsers({
+        userId,
+        query,
+        schoolId: from === 'school' ? Number(schoolId) : undefined
+      });
+
+      const options = users.map((user) => {
+        const name = `${user.firstName} ${user.lastName}`;
+        const initials = getInitials(name);
+        return {
+          ...user,
+          value: user.userId,
+          label: name,
+          userId: Number(user.userId),
+          avatar: user.profileImageUrl,
+          role: user?.role,
+          initials
+        };
+      });
+      const ordered = options.sort((a, b) => {
+        if (a.relationship && !b.relationship) return -1;
+        if (!a.relationship && b.relationship) return 1;
+        return 0;
+      });
       return {
-        options: [],
+        options: ordered,
         hasMore: false
-      }
-    }
-
-    const users = await searchUsers({
-      userId,
-      query,
-      schoolId: from === 'school' ? Number(schoolId) : undefined
-    })
-
-    const options = users.map(user => {
-      const name = `${user.firstName} ${user.lastName}`
-      const initials = getInitials(name)
-      return {
-        ...user,
-        value: user.userId,
-        label: name,
-        userId: Number(user.userId),
-        avatar: user.profileImageUrl,
-        role: user?.role,
-        initials,
-      }
-    })
-    const ordered = options.sort((a, b) => {
-      if(a.relationship && !b.relationship) return -1
-      if(!a.relationship && b.relationship) return 1
-      return 0
-    })
-    return {
-      options: ordered,
-      hasMore: false
-    }
-  }, [from, schoolId, userId])
+      };
+    },
+    [from, schoolId, userId]
+  );
 
   const onSubmit = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const userIds = users.map(item => Number(item.userId))
+      const userIds = users.map((item) => Number(item.userId));
       const { chatId } = await createChannel({
         users: userIds,
         groupName: chatType === 'group' ? name : '',
         type: chatType === 'group' ? type : '',
         thumbnailUrl: ''
-      })
+      });
 
       if (chatId !== '') {
         try {
-          const channel = await client.getChannelBySid(chatId)
+          const channel = await client.getChannelBySid(chatId);
           if (channelName.length && isShow) {
-            const res = await channel.updateFriendlyName(channelName)
+            const res = await channel.updateFriendlyName(channelName);
             await handleUpdateGroupName(res);
           }
           if (createMessage) {
@@ -211,17 +219,17 @@ const CreateChatChannelInput = ({
               message: createMessage.message,
               ...createMessage.messageAttributes,
               chatId: channel.sid
-            })
+            });
           }
-          onOpenChannel({ channel })
+          onOpenChannel({ channel });
         } catch (e) {
-          setIsLoading(false)
+          setIsLoading(false);
         }
       } else {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [
     users,
@@ -234,45 +242,45 @@ const CreateChatChannelInput = ({
     createMessage,
     isShow,
     handleUpdateGroupName
-  ])
+  ]);
 
   const handleSubmit = useCallback(async () => {
-    if (users.length === 0) setError(true)
+    if (users.length === 0) setError(true);
     else {
-      setError(false)
-      await onSubmit({ chatType, name, type, selectedUsers: users })
-      setName('')
-      setType('')
-      setUsers([])
-      setInputValue('')
-      setFrom('school')
-      setIsOpen(false)
+      setError(false);
+      await onSubmit({ chatType, name, type, selectedUsers: users });
+      setName('');
+      setType('');
+      setUsers([]);
+      setInputValue('');
+      setFrom('school');
+      setIsOpen(false);
     }
-  }, [users, onSubmit, chatType, name, type, setIsOpen])
+  }, [users, onSubmit, chatType, name, type, setIsOpen]);
 
   useEffect(() => {
     const createChannel = async () => {
-      await handleSubmit()
-      handleClearCreateMessage()
-    }
+      await handleSubmit();
+      handleClearCreateMessage();
+    };
 
     if (createMessage && !isLoading) {
-      createChannel()
+      createChannel();
     }
-  }, [createMessage, handleClearCreateMessage, handleSubmit, isLoading])
+  }, [createMessage, handleClearCreateMessage, handleSubmit, isLoading]);
 
-  const handleGroupNameChange = useCallback((e) => {
-    if (e.target.value.length > 100) {
-      return;
-    }
-    setChannelName(e.target.value);
-  }, [setChannelName]);
+  const handleGroupNameChange = useCallback(
+    (e) => {
+      if (e.target.value.length > 100) {
+        return;
+      }
+      setChannelName(e.target.value);
+    },
+    [setChannelName]
+  );
 
   return (
-    <ValidatorForm
-      className={classes.validatorForm}
-      onSubmit={handleSubmit}
-    >
+    <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
       <div className={classes.header}>
         <Typography className={classes.typography} variant="h6">
           SELECT CLASSMATES
@@ -299,51 +307,55 @@ const CreateChatChannelInput = ({
             onLoadOptions={handleLoadOptions}
           />
         </div>
-        {isShow && !!users.length && <TextField
-          placeholder='Give this group chat a name!'
-          label='Group Chat Name (optional)'
-          fullWidth
-          variant='outlined'
-          onChange={handleGroupNameChange}
-          value={channelName}
-          helperText={`${100 - (channelName?.length || 0)} characters remaining`}
-          FormHelperTextProps={{
-            className: classes.helperText
-          }}
-          InputLabelProps={{
-            className: classes.labelText
-          }}
-          inputProps={{
-            className: classes.name,
-          }}
-          classes={{
-            root: classes.groupName
-          }}
-          size='medium'
-        />}
+        {isShow && !!users.length && (
+          <TextField
+            placeholder="Give this group chat a name!"
+            label="Group Chat Name (optional)"
+            fullWidth
+            variant="outlined"
+            onChange={handleGroupNameChange}
+            value={channelName}
+            helperText={`${
+              100 - (channelName?.length || 0)
+            } characters remaining`}
+            FormHelperTextProps={{
+              className: classes.helperText
+            }}
+            InputLabelProps={{
+              className: classes.labelText
+            }}
+            inputProps={{
+              className: classes.name
+            }}
+            classes={{
+              root: classes.groupName
+            }}
+            size="medium"
+          />
+        )}
 
         <Button
           className={classes.createDM}
-          variant='contained'
+          variant="contained"
           onClick={handleSubmit}
-          color='primary'
+          color="primary"
         >
           Create New Message
         </Button>
       </div>
     </ValidatorForm>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   user,
   chat
-})
+});
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      closeNewChannel: chatActions.closeNewChannel,
+      closeNewChannel: chatActions.closeNewChannel
     },
     dispatch
   );
@@ -351,5 +363,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreateChatChannelInput))
-
+)(withStyles(styles)(CreateChatChannelInput));

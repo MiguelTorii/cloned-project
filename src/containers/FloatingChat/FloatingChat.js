@@ -26,7 +26,7 @@ import type { UserState } from 'reducers/user';
 import type { ChatState } from 'reducers/chat';
 import FloatEmptyChat from 'assets/svg/float_empty_chat.svg';
 import FloatLoadingChat from 'assets/svg/float_chat_loading.svg';
-import usePrevious from 'hooks/usePrevious'
+import usePrevious from 'hooks/usePrevious';
 import type { State as StoreState } from 'types/state';
 import { logEvent } from 'api/analytics';
 import { truncate } from 'utils/helpers';
@@ -35,7 +35,7 @@ import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     position: 'fixed',
     bottom: 0,
@@ -105,9 +105,9 @@ const FloatingChat = ({
   // markAsCompleted,
   getOnboardingList
 }: Props) => {
-  const [createChannel, setCreateChat] = useState(null)
-  const [unread, setUnread] = useState(0)
-  const [channelList, setChannelList] = useState([])
+  const [createChannel, setCreateChat] = useState(null);
+  const [unread, setUnread] = useState(0);
+  const [channelList, setChannelList] = useState([]);
 
   const {
     isLoading,
@@ -121,67 +121,75 @@ const FloatingChat = ({
       newChannel,
       openChannels
     }
-  } = chat
+  } = chat;
 
-  const getMembers = useCallback(channel => {
-    if (channel && local && local[channel.sid]) {
-      const { members } = local[channel.sid]
-      const newMembers = {}
-      members.forEach(m => {
-        newMembers[m.userId] = m
-      })
-      return newMembers
-    }
-    return []
-  }, [local])
+  const getMembers = useCallback(
+    (channel) => {
+      if (channel && local && local[channel.sid]) {
+        const { members } = local[channel.sid];
+        const newMembers = {};
+        members.forEach((m) => {
+          newMembers[m.userId] = m;
+        });
+        return newMembers;
+      }
+      return [];
+    },
+    [local]
+  );
 
   const {
     data: { userId, profileImage }
-  } = user
-
+  } = user;
 
   const handleNewChannelOpen = useCallback(() => {
-    handleNewChannel(true)
-  }, [handleNewChannel])
+    handleNewChannel(true);
+  }, [handleNewChannel]);
 
   const handleNewChannelClose = useCallback(() => {
-    handleNewChannel(false)
-  }, [handleNewChannel])
+    handleNewChannel(false);
+  }, [handleNewChannel]);
 
-  const handleMessageReceived = channel => () => (
-    <Button
-      onClick={() => {
-        handleRoomClick(channel);
-      }}
-    >
-      Open
-    </Button>
-  );
+  const handleMessageReceived = (channel) => () =>
+    (
+      <Button
+        onClick={() => {
+          handleRoomClick(channel);
+        }}
+      >
+        Open
+      </Button>
+    );
 
   useEffect(() => {
     if (local) {
-      let unread = 0
-      const cl = Object.keys(local).filter(l => local[l].sid).sort((a, b) => {
-        if (!local[a].lastMessage.message) return 0
-        return moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
-      })
-      setChannelList(cl)
-      cl.forEach(l => {
-        if (local[l]?.unread) unread += local[l].unread
-      })
-      setUnread(unread)
+      let unread = 0;
+      const cl = Object.keys(local)
+        .filter((l) => local[l].sid)
+        .sort((a, b) => {
+          if (!local[a].lastMessage.message) return 0;
+          return (
+            moment(local[b].lastMessage.date).valueOf() -
+            moment(local[a].lastMessage.date).valueOf()
+          );
+        });
+      setChannelList(cl);
+      cl.forEach((l) => {
+        if (local[l]?.unread) unread += local[l].unread;
+      });
+      setUnread(unread);
     }
-  }, [local])
+  }, [local]);
 
-  const [prevMessageId, setPrevMessageId] = useState('')
+  const [prevMessageId, setPrevMessageId] = useState('');
 
   useEffect(() => {
     const handleMessage = () => {
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
       const { firstName, lastName } = attributes;
-      const sids = openChannels.map(oc => oc.sid)
-      setPrevMessageId(newMessage.sid)
+      const sids = openChannels.map((oc) => oc.sid);
+      setPrevMessageId(newMessage.sid);
       if (
         Number(author) !== Number(userId) &&
         window.location.pathname !== '/chat' &&
@@ -192,9 +200,9 @@ const FloatingChat = ({
         const messageContent = truncate(
           typeof parse(body) === 'string'
             ? body
-            : body.replace( /(<([^>]+)>)/ig, ''),
+            : body.replace(/(<([^>]+)>)/gi, ''),
           50
-        )
+        );
 
         enqueueSnackbarAction({
           notification: {
@@ -220,42 +228,43 @@ const FloatingChat = ({
           body: messageContent
         });
       }
-    }
-    if (newMessage && prevMessageId !== newMessage.sid) handleMessage()
+    };
+    if (newMessage && prevMessageId !== newMessage.sid) handleMessage();
 
     // eslint-disable-next-line
-  }, [newMessage, local, prevMessageId])
+  }, [newMessage, local, prevMessageId]);
 
-  const { location: { pathname } } = router
+  const {
+    location: { pathname }
+  } = router;
   useEffect(() => {
-    handleNewChannelClose()
+    handleNewChannelClose();
     const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
     window.addEventListener('resize', updateOpenChannelsDebounce);
 
     return () => {
-      window.removeEventListener('resize', updateOpenChannelsDebounce)
+      window.removeEventListener('resize', updateOpenChannelsDebounce);
       if (
         updateOpenChannelsDebounce.cancel &&
-          typeof updateOpenChannelsDebounce.cancel === 'function'
+        typeof updateOpenChannelsDebounce.cancel === 'function'
       )
         updateOpenChannelsDebounce.cancel();
     };
-  }, [handleNewChannelClose, updateOpenChannels])
+  }, [handleNewChannelClose, updateOpenChannels]);
 
-  const prevChat = usePrevious(chat)
+  const prevChat = usePrevious(chat);
 
-  const handleCreateChannelOpen = type => {
-    setCreateChat(type)
+  const handleCreateChannelOpen = (type) => {
+    setCreateChat(type);
   };
 
   useEffect(() => {
     if (prevChat && pathname !== '/chat') {
       const {
         data: { uuid: prevUuid }
-      } = prevChat
+      } = prevChat;
 
-      if (uuid !== prevUuid && uuid !== '')
-        handleCreateChannelOpen('group');
+      if (uuid !== prevUuid && uuid !== '') handleCreateChannelOpen('group');
 
       if (client && profileImage !== '') {
         try {
@@ -268,12 +277,12 @@ const FloatingChat = ({
       }
     }
     // eslint-disable-next-line
-  }, [user, chat, online])
+  }, [user, chat, online]);
 
   const onChannelOpen = ({ channel }) => {
-    handleRoomClick(channel)
-    setCurrentChannel(channel)
-  }
+    handleRoomClick(channel);
+    setCurrentChannel(channel);
+  };
 
   const handleChannelCreated = ({
     channel,
@@ -282,7 +291,7 @@ const FloatingChat = ({
     channel: Object,
     startVideo: boolean
   }) => {
-    handleNewChannelClose()
+    handleNewChannelClose();
     handleRoomClick(channel);
     if (startVideo) {
       logEvent({
@@ -298,7 +307,7 @@ const FloatingChat = ({
   };
 
   const handleCreateChannelClose = () => {
-    setCreateChat(null)
+    setCreateChat(null);
   };
 
   if (pathname === '/chat' || userId === '' || !client) return null;
@@ -307,7 +316,7 @@ const FloatingChat = ({
     <Fragment>
       <ErrorBoundary>
         <div className={classes.root}>
-          {openChannels.map(item => (
+          {openChannels.map((item) => (
             <ChatChannel
               key={`op${item.sid}`}
               push={push}
@@ -322,60 +331,65 @@ const FloatingChat = ({
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
               onSend={() => {
-                if (onboardingListVisible) setTimeout(() => getOnboardingList(), 1000)
+                if (onboardingListVisible)
+                  setTimeout(() => getOnboardingList(), 1000);
               }}
             />
           ))}
           <ErrorBoundary>
-            {newChannel && <ChatChannel
-              push={push}
-              user={user}
-              onClose={handleNewChannelClose}
-              newChannel
-              handleChannelCreated={handleChannelCreated}
-              channel={{
-                sid: '',
-                setAllMessagesConsumed: () => {},
-                getMessages: () => {},
-                on: () => {},
-                typing: () => {},
-                sendMessage: () => {},
-                channelState: { attributes: { friendlyName: 'New Chat' } }
-              }}
-            />}
+            {newChannel && (
+              <ChatChannel
+                push={push}
+                user={user}
+                onClose={handleNewChannelClose}
+                newChannel
+                handleChannelCreated={handleChannelCreated}
+                channel={{
+                  sid: '',
+                  setAllMessagesConsumed: () => {},
+                  getMessages: () => {},
+                  on: () => {},
+                  typing: () => {},
+                  sendMessage: () => {},
+                  channelState: { attributes: { friendlyName: 'New Chat' } }
+                }}
+              />
+            )}
           </ErrorBoundary>
-          <MainChat
-            unread={unread}
-            onCreateChannel={handleNewChannelOpen}
-          >
+          <MainChat unread={unread} onCreateChannel={handleNewChannelOpen}>
             {channelList.length === 0 ? (
               <div className={classes.noMessages}>
-                {!isLoading
-                  ? <>
+                {!isLoading ? (
+                  <>
                     <LoadImg url={FloatEmptyChat} />
                     <Typography variant="subtitle1" align="center">
-                      You have no chats yet. Start a conversation with a classmate!
+                      You have no chats yet. Start a conversation with a
+                      classmate!
                     </Typography>
                   </>
-                  : <div className={classes.loading}>
+                ) : (
+                  <div className={classes.loading}>
                     <LoadImg url={FloatLoadingChat} />
                     <Typography variant="subtitle1" align="center">
                       Loading chats...
                     </Typography>
                   </div>
-                }
+                )}
               </div>
             ) : (
-              channelList.map(c => (
-                local[c] && <ChatListItem
-                  key={local[c].sid}
-                  channel={local[c]}
-                  userId={userId}
-                  handleMuteChannel={handleMuteChannel}
-                  handleRemoveChannel={handleRemoveChannel}
-                  onOpenChannel={onChannelOpen}
-                />
-              ))
+              channelList.map(
+                (c) =>
+                  local[c] && (
+                    <ChatListItem
+                      key={local[c].sid}
+                      channel={local[c]}
+                      userId={userId}
+                      handleMuteChannel={handleMuteChannel}
+                      handleRemoveChannel={handleRemoveChannel}
+                      onOpenChannel={onChannelOpen}
+                    />
+                  )
+              )
             )}
           </MainChat>
         </div>
@@ -391,9 +405,14 @@ const FloatingChat = ({
       </ErrorBoundary>
     </Fragment>
   );
-}
+};
 
-const mapStateToProps = ({ router, user, chat, onboarding }: StoreState): {} => ({
+const mapStateToProps = ({
+  router,
+  user,
+  chat,
+  onboarding
+}: StoreState): {} => ({
   user,
   router,
   chat,

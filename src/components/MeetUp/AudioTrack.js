@@ -35,7 +35,7 @@ class AudioTrack extends React.PureComponent<Props, State> {
     const { audio } = this.props;
     if (audio) {
       const attachedElements = audio.detach();
-      attachedElements.forEach(element => element.remove());
+      attachedElements.forEach((element) => element.remove());
     }
   };
 
@@ -44,9 +44,11 @@ class AudioTrack extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        {type !== 'local'
-          ? <div className={classes.audio} ref={this.audioinput} />
-          : <audio ref={this.audioinput} id="localaudioinput" autoPlay />}
+        {type !== 'local' ? (
+          <div className={classes.audio} ref={this.audioinput} />
+        ) : (
+          <audio ref={this.audioinput} id="localaudioinput" autoPlay />
+        )}
       </div>
     );
   }

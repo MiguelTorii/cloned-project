@@ -8,7 +8,7 @@ import Dialog, { dialogStyle } from '../../components/Dialog';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEvent } from '../../api/analytics';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap'
@@ -53,7 +53,7 @@ class RequestClass extends React.PureComponent<Props, State> {
     const { state } = this;
     const classes = ['class1', 'class2', 'class3', 'class4', 'class5'];
     const results = [];
-    classes.forEach(item => {
+    classes.forEach((item) => {
       if (state[item].trim() !== '') results.push(state[item]);
     });
     if (results.length > 0) {
@@ -65,7 +65,7 @@ class RequestClass extends React.PureComponent<Props, State> {
     }
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 

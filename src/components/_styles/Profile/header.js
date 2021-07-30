@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   container: {
     height: '100%',
     maxHeight: 'inherit',
@@ -131,7 +131,7 @@ export const styles = theme => ({
     marginBottom: theme.spacing(2)
   },
   statusLabel: {
-    marginLeft: theme.spacing(1/2),
+    marginLeft: theme.spacing(1 / 2),
     marginRight: theme.spacing(2)
   },
   icon: {
@@ -169,7 +169,7 @@ export const styles = theme => ({
       textTransform: 'none',
       fontSize: 20,
       color: theme.circleIn.palette.primaryText1,
-      opacity: 0.6,
+      opacity: 0.6
     },
     '& .Mui-selected': {
       borderBottom: `4px solid ${theme.circleIn.palette.darkActionBlue}`,

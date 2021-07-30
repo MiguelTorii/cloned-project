@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import withRoot from '../../withRoot';
 import Dialog from '../Dialog';
-import LoadImg from '../LoadImg'
+import LoadImg from '../LoadImg';
 import shareNotes from '../../assets/svg/share_notes.svg';
 import answerQuestions from '../../assets/svg/answer_questions.svg';
 import studyVirtually from '../../assets/svg/study-virtually.svg';
@@ -26,7 +26,7 @@ const mvpActions = [
     imageUrl: studyVirtually,
     title: 'Study virtually.',
     text: 'Connect over video with classmates or project groups.'
-  },
+  }
   // {
   //   imageUrl: powerHour,
   //   title: 'Utilize Power Hour!',
@@ -47,8 +47,8 @@ const LeaderBoardTabs = ({
   const imgStyle = {
     width: 75,
     height: 75,
-    marginRight: 5,
-  }
+    marginRight: 5
+  };
 
   return (
     <Dialog
@@ -58,7 +58,8 @@ const LeaderBoardTabs = ({
       title={dialogTitle}
     >
       <div className={classes.subtitle}>
-        For students who positively impact their classmates’ academic success through collaboration on CircleIn.
+        For students who positively impact their classmates’ academic success
+        through collaboration on CircleIn.
       </div>
       <hr className={classes.hr} />
       <div style={{ padding: 20 }}>
@@ -73,30 +74,31 @@ const LeaderBoardTabs = ({
           </div>
           <div style={{ maxWidth: 250 }}>
             <div className={classes.highlight}>Eligibility Requirements</div>
-            <div className={classes.label}>
-              {eligibilityDialog}
-            </div>
+            <div className={classes.label}>{eligibilityDialog}</div>
           </div>
         </div>
-        <div className={classes.dialogFootnote}>{eligibilitySubtitleDialog}</div>
-        <div
-          className={classes.title}>
-            Best Practices to Earn MVPs:
+        <div className={classes.dialogFootnote}>
+          {eligibilitySubtitleDialog}
         </div>
+        <div className={classes.title}>Best Practices to Earn MVPs:</div>
         <div className={classes.mvpActions}>
-          {
-            mvpActions.map(action => (
-              <div key={action.title} className={classes.mvpAction}>
-                <LoadImg key={action.imageUlrl} url={action.imageUrl} style={imgStyle} />
-                <div style={{ marginTop: 8 }}><b>{action.title}</b></div>
-                <div style={{ marginTop: 8 }}>{action.text}</div>
+          {mvpActions.map((action) => (
+            <div key={action.title} className={classes.mvpAction}>
+              <LoadImg
+                key={action.imageUlrl}
+                url={action.imageUrl}
+                style={imgStyle}
+              />
+              <div style={{ marginTop: 8 }}>
+                <b>{action.title}</b>
               </div>
-            ))
-          }
+              <div style={{ marginTop: 8 }}>{action.text}</div>
+            </div>
+          ))}
         </div>
       </div>
     </Dialog>
-  )
-}
+  );
+};
 
-export default withRoot(withStyles(styles)(withWidth()(LeaderBoardTabs)))
+export default withRoot(withStyles(styles)(withWidth()(LeaderBoardTabs)));

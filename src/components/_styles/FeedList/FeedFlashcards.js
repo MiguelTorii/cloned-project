@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   flashCardPreview: {
     position: 'relative',
     backgroundColor: theme.circleIn.palette.flashcardBackground,
@@ -13,7 +13,7 @@ export const useStyles = makeStyles(theme => ({
     marginRight: 15,
     minWidth: 199,
     padding: '10px 20px 10px 20px',
-    width: 199,
+    width: 199
   },
   markdownContainer: {
     maxHeight: 35,
@@ -22,7 +22,7 @@ export const useStyles = makeStyles(theme => ({
     overflow: 'hidden'
   },
   image: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   count: {
     position: 'absolute',
@@ -39,6 +39,6 @@ export const useStyles = makeStyles(theme => ({
   },
   countLabel: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
-}))
+}));

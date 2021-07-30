@@ -24,7 +24,14 @@ type Props = {
 
 const MAX_BIO_LENGTH = 160;
 
-const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: Props) => {
+const EditProfileModal = ({
+  profile,
+  about,
+  open,
+  isSaving,
+  onClose,
+  onSave
+}: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null); // image can be URL or BLOB data from the editor.
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
@@ -56,12 +63,9 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
   };
 
   const handleSave = () => {
-    onSave(
-      image === profile.userProfileUrl ? undefined : image,
-      {
-        bio: bioText
-      }
-    );
+    onSave(image === profile.userProfileUrl ? undefined : image, {
+      bio: bioText
+    });
   };
 
   return (
@@ -77,7 +81,9 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
             <Avatar
               mobileSize={DEFAULT_AVATAR_SIZE.desktop}
               src={image}
-              initialText={ getInitials(`${profile.firstName} ${profile.lastName}`)}
+              initialText={getInitials(
+                `${profile.firstName} ${profile.lastName}`
+              )}
             />
             <Button
               onClick={() => setIsEditingAvatar(true)}
@@ -98,9 +104,14 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
               shrink: true
             }}
             value={bioText}
-            onChange={(event) => event.target.value.length <= MAX_BIO_LENGTH && setBioText(event.target.value)}
+            onChange={(event) =>
+              event.target.value.length <= MAX_BIO_LENGTH &&
+              setBioText(event.target.value)
+            }
             maxLength={MAX_BIO_LENGTH}
-            label={`Bio(${MAX_BIO_LENGTH - bioText.length} characters remaining)`}
+            label={`Bio(${
+              MAX_BIO_LENGTH - bioText.length
+            } characters remaining)`}
             placeholder="Add a quick description about you here! Your classmates will view your profile to learn more about you!"
           />
         </Grid>

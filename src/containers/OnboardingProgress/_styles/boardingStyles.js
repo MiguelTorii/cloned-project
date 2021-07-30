@@ -6,16 +6,16 @@ const browser = detect();
 const centered = {
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'center'
 };
 
 const gifStyles = {
   borderRadius: 8,
-  width: "calc(100% - 20px)",
-  border: '15px solid rgba(255, 255, 255, .3)',
+  width: 'calc(100% - 20px)',
+  border: '15px solid rgba(255, 255, 255, .3)'
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   actionPanel: {
     flexGrow: 1,
     flex: 1,
@@ -24,10 +24,10 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    color: 'black',
+    color: 'black'
   },
   actionPanelComponent: {
-    paddingBottom: theme.spacing(),
+    paddingBottom: theme.spacing()
   },
   startPlay: {
     position: 'absolute',
@@ -41,8 +41,8 @@ const styles = theme => ({
     marginTop: theme.spacing(6),
     marginBottom: theme.spacing(6),
     [theme.breakpoints.down('md')]: {
-      maxWidth: 200,
-    },
+      maxWidth: 200
+    }
   },
   button: {
     backgroundImage: 'linear-gradient(135deg, #94daf9, #1e88e5)',
@@ -53,32 +53,32 @@ const styles = theme => ({
     fontSize: 22,
     letterSpacing: 0.5,
     marginBottom: theme.spacing(2),
-    padding: theme.spacing(1, 5),
+    padding: theme.spacing(1, 5)
   },
   buttonLabel: {
-    textTransform: 'none',
+    textTransform: 'none'
   },
   sildeButtons: {
     ...centered,
-    width: '100%',
+    width: '100%'
   },
   backButton: {
     position: 'absolute',
     left: 85,
     color: theme.circleIn.palette.primary,
     [theme.breakpoints.down('md')]: {
-      left: 5,
+      left: 5
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      left: 70,
+      left: 70
     }
   },
   backIcon: {
-    color: theme.circleIn.palette.primaryBackground,
+    color: theme.circleIn.palette.primaryBackground
   },
   shape: {
     backgroundImage: 'linear-gradient(135deg, #94daf9, #1e88e5)',
-    border: '0px !important',
+    border: '0px !important'
   },
   shapeCircle: {
     borderRadius: '50%',
@@ -90,7 +90,7 @@ const styles = theme => ({
   domGifArea: {
     ...centered,
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   videoPlayer: {
     ...centered,
@@ -104,30 +104,30 @@ const styles = theme => ({
     objectPosition: '100% 44%',
     height: 485,
     [theme.breakpoints.down('md')]: {
-      height: 300,
+      height: 300
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      height: 400,
-    },
+      height: 400
+    }
   },
   notesGif: {
     ...gifStyles,
-    height: 400,
+    height: 400
   },
   wfGifArea: {
     backgroundColor: 'rgba(255, 255, 255, .3)',
     borderRadius: 8,
-    width: "calc(100% - 20px)",
-    ...centered,
+    width: 'calc(100% - 20px)',
+    ...centered
   },
   wfGif: {
-    width: "calc(100% - 20px)",
+    width: 'calc(100% - 20px)',
     height: 'auto',
     objectFit: 'cover',
-    objectPosition: '100% 50%',
+    objectPosition: '100% 50%'
   },
   chatGif: {
-    ...gifStyles,
+    ...gifStyles
   },
   demoPanel: {
     backgroundImage: 'linear-gradient(135deg,#94daf9, #1e88e5)',
@@ -136,7 +136,7 @@ const styles = theme => ({
     height: '100%',
     display: 'flex',
     alignItems: 'flex-end',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   demoClass: {
     width: '100%',
@@ -152,17 +152,15 @@ const styles = theme => ({
     borderRadius: 5,
     backgroundColor: 'white',
     height: 700,
-    width: 1100,
+    width: 1100
   },
   contentDialog: {
-    padding: '0px !important',
+    padding: '0px !important'
   },
   step: {
     display: 'flex',
     alignItems: 'flex-start',
-    height: browser.name === 'safari'
-      ? '-webkit-fill-available'
-      : '100%',
+    height: browser.name === 'safari' ? '-webkit-fill-available' : '100%'
   },
   stepper: {
     alignItems: 'center',
@@ -171,7 +169,7 @@ const styles = theme => ({
     justifyContent: 'center',
     maxWidth: 400,
     position: 'absolute',
-    bottom: 20,
+    bottom: 20
   },
   textRow: {
     fontSize: 18,
@@ -181,7 +179,7 @@ const styles = theme => ({
       fontSize: 16
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      fontSize: 18,
+      fontSize: 18
     }
   },
   textRows: {
@@ -192,7 +190,7 @@ const styles = theme => ({
       maxWidth: 300
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      maxWidth: 340,
+      maxWidth: 340
     }
   },
   title: {
@@ -206,9 +204,9 @@ const styles = theme => ({
       maxWidth: 295
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      maxWidth: 340,
+      maxWidth: 340
     }
-  },
+  }
 });
 
 export default styles;

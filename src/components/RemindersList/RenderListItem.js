@@ -41,17 +41,17 @@ class RemindersListItem extends React.PureComponent<Props, State> {
     this.setState(({ open }) => ({ open: !open }));
   };
 
-  renderClass = label => {
+  renderClass = (label) => {
     const { classes } = this.props;
     switch (label) {
-    case 1:
-      return classes.green;
-    case 2:
-      return classes.blue;
-    case 3:
-      return classes.grey;
-    default:
-      return classes.red;
+      case 1:
+        return classes.green;
+      case 2:
+        return classes.blue;
+      case 3:
+        return classes.grey;
+      default:
+        return classes.red;
     }
   };
 
@@ -75,7 +75,7 @@ class RemindersListItem extends React.PureComponent<Props, State> {
         {items.length > 0 && (
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {items.map(item => (
+              {items.map((item) => (
                 <ListItem
                   button
                   dense

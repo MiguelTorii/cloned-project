@@ -18,15 +18,11 @@ const styles = () => ({
     fontSize: 16,
     letterSpacing: 1,
     marginBottom: 20,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
-const Status = ({
-  classes,
-}: {
-  classes: Object
-}) => {
+const Status = ({ classes }: { classes: Object }) => {
   const [referralStatus, setReferralStatus] = useState(null);
 
   useEffect(() => {
@@ -36,7 +32,7 @@ const Status = ({
       if (result) {
         setReferralStatus(result);
       }
-    }
+    };
 
     init();
   }, []);
@@ -48,22 +44,25 @@ const Status = ({
   return (
     <div className={classes.body}>
       <Typography className={classes.subtitle}>
-        {subtitle.split("\n").map((item) => {
-          return (<span key={Math.random()}>{item}<br /></span>)
+        {subtitle.split('\n').map((item) => {
+          return (
+            <span key={Math.random()}>
+              {item}
+              <br />
+            </span>
+          );
         })}
       </Typography>
-      {
-        users.map((user, index) => (
-          <div className={classes.row}>
-            <div>{`${index + 1}. ${user.name}`}</div>
-            <div>
-              <DoneIcon style={{ fill: '#60b515' }} />
-            </div>
+      {users.map((user, index) => (
+        <div className={classes.row}>
+          <div>{`${index + 1}. ${user.name}`}</div>
+          <div>
+            <DoneIcon style={{ fill: '#60b515' }} />
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default withStyles(styles)(Status);

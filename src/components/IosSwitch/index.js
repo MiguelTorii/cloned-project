@@ -14,7 +14,7 @@ const IosSwitch = (props) => {
         switchBase: classes.switchBase,
         thumb: classes.thumb,
         track: classes.track,
-        checked: classes.checked,
+        checked: classes.checked
       }}
       {...props}
     />

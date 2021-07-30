@@ -29,61 +29,63 @@ const CreateChatChannelDialog = ({
   okLabel,
   members,
   chatType: chatTypeProp,
-  onLoadOptions,
+  onLoadOptions
 }: Props) => {
-  const [chatType, setChatType] = useState(chatTypeProp)
-  const [name, setName] = useState('')
-  const [type, setType] = useState('Class')
-  const [from, setFrom] = useState('school')
-  const [users, setUsers] = useState([])
-  const [error, setError] = useState(false)
-  const [inputValue, setInputValue] = useState('')
+  const [chatType, setChatType] = useState(chatTypeProp);
+  const [name, setName] = useState('');
+  const [type, setType] = useState('Class');
+  const [from, setFrom] = useState('school');
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group')
-    else if (users.length <= 1 && chatType === 'group') setChatType('single')
-  }, [users, chatType])
+    if (users.length > 1 && chatType === 'single') setChatType('group');
+    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+  }, [users, chatType]);
 
   useEffect(() => {
-    setChatType(chatTypeProp)
-  }, [chatTypeProp])
+    setChatType(chatTypeProp);
+  }, [chatTypeProp]);
 
-  const handleAutoComplete = values => {
+  const handleAutoComplete = (values) => {
     setUsers(values);
     setError(false);
   };
 
-  const handleLoadOptions = async query => {
+  const handleLoadOptions = async (query) => {
     const users = await onLoadOptions({ query, from });
-    const currentGroupMemberIds = members.map(member => Number(member.userId))
+    const currentGroupMemberIds = members.map((member) =>
+      Number(member.userId)
+    );
     const ordered = users.options
-      .filter(option => !currentGroupMemberIds.includes(option.userId))
+      .filter((option) => !currentGroupMemberIds.includes(option.userId))
       .sort((a, b) => {
-        if(a.relationship && !b.relationship) return -1
-        if(!a.relationship && b.relationship) return 1
-        return 0
-      })
-    return { options: ordered, hasMore: false }
+        if (a.relationship && !b.relationship) return -1;
+        if (!a.relationship && b.relationship) return 1;
+        return 0;
+      });
+    return { options: ordered, hasMore: false };
   };
 
   const handleSubmit = () => {
-    if (users.length === 0) setError(true)
+    if (users.length === 0) setError(true);
     else {
-      setError(false)
+      setError(false);
       onSubmit({ chatType, name, type, selectedUsers: users });
-      setName('')
-      setType('')
-      setUsers([])
-      setInputValue('')
-      setFrom('school')
+      setName('');
+      setType('');
+      setUsers([]);
+      setInputValue('');
+      setFrom('school');
     }
   };
 
   const handleClose = () => {
-    setName('')
-    setType('')
-    setUsers([])
-    setFrom('school')
+    setName('');
+    setType('');
+    setUsers([]);
+    setFrom('school');
     onClose();
   };
 
@@ -96,32 +98,31 @@ const CreateChatChannelDialog = ({
       open={Boolean(chatType)}
       onCancel={handleClose}
       onOk={handleSubmit}
-      okTitle={okLabel || "Create"}
+      okTitle={okLabel || 'Create'}
       showHeader={false}
       contentClassName={classes.contentClassName}
       okButtonClass={classes.okButtonClass}
       showActions
     >
-      {isLoading && <CircularProgress
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%'
-        }}
-      />}
+      {isLoading && (
+        <CircularProgress
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%'
+          }}
+        />
+      )}
       <div className={classes.header}>
         <Typography className={classes.label} variant="h6">
-          {title || "Setup a Class Group Chat or Send a Direct Message"}
+          {title || 'Setup a Class Group Chat or Send a Direct Message'}
         </Typography>
         <CloseIcon className={classes.closeIcon} onClick={handleClose} />
       </div>
       <Typography variant="subtitle1">
         Add up to one or more classmates to chat.
       </Typography>
-      <ValidatorForm
-        className={classes.validatorForm}
-        onSubmit={handleSubmit}
-      >
+      <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
         <div className={classes.form}>
           <div>
             <AutoComplete
@@ -145,7 +146,6 @@ const CreateChatChannelDialog = ({
       </ValidatorForm>
     </Dialog>
   );
-}
+};
 
 export default withStyles(styles)(CreateChatChannelDialog);
-

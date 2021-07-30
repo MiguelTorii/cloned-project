@@ -27,35 +27,37 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
-  },
+    minHeight: '100vh'
+  }
 });
 
 const Referral = ({
   classes,
   push,
-  match: { params: { code }},
+  match: {
+    params: { code }
+  },
   updateReferralData,
-  updateSchool,
+  updateSchool
 }: {
   classes: Object,
   push: Function,
-    match: {
-      params: {
-        code: string
-      }
-    },
+  match: {
+    params: {
+      code: string
+    }
+  },
   updateReferralData: Function,
   updateSchool: Function
 }) => {
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const init = async () => {
       logEventLocally({
         category: 'Referral',
         objectId: code,
-        type: 'Opened',
+        type: 'Opened'
       });
 
       const referralData = await getReferralCodeInfo(code);
@@ -71,33 +73,31 @@ const Referral = ({
               code,
               name: referralData.name,
               school: referralData.school,
-              schoolId: referralData.schoolId,
+              schoolId: referralData.schoolId
             }
           });
 
           push('/signup');
         } else {
-          setMessage('Invalid schoool name.')
+          setMessage('Invalid schoool name.');
         }
       } else {
         setMessage('Invalid referral code.');
       }
-    }
+    };
 
     init();
   });
 
   return (
     <div className={classes.main}>
-      <Typography variant="h5">
-        {message}
-      </Typography>
+      <Typography variant="h5">{message}</Typography>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ auth }: StoreState): {} => ({
-  auth,
+  auth
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>
@@ -114,4 +114,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(withStyles(styles)(Referral)));
-

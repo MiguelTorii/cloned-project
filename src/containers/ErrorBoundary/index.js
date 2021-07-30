@@ -19,22 +19,25 @@ class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false };
 
   skip = (error: Error) => {
-    if (JSON.stringify(error).includes('transition is invalid while previous transition is still in progress')) return true
-    return false
-  }
+    if (
+      JSON.stringify(error).includes(
+        'transition is invalid while previous transition is still in progress'
+      )
+    )
+      return true;
+    return false;
+  };
 
   componentDidCatch(error: Error, info: Object) {
     this.setState({ hasError: true });
-    if (
-      process.env.NODE_ENV !== 'development'
-    ) {
+    if (process.env.NODE_ENV !== 'development') {
       if (!this.skip(error)) {
-        console.log('Debug:', error, JSON.stringify(error))
+        console.log('Debug:', error, JSON.stringify(error));
         Sentry.captureException(error, { extra: info });
       }
     }
     // eslint-disable-next-line
-    else console.log('Boundary: ', error)
+    else console.log('Boundary: ', error);
   }
 
   render() {

@@ -8,10 +8,10 @@ import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
-import AddRemoveClasses from 'components/AddRemoveClasses'
+import AddRemoveClasses from 'components/AddRemoveClasses';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralStatus } from 'containers/Referrals';
-import * as userActions from '../../actions/user'
+import * as userActions from '../../actions/user';
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -20,8 +20,8 @@ import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications';
 import BlockedUsersManager from '../BlockedUsersManager';
-import WebNotifications from '../WebNotifications'
-import RequestClass from '../RequestClass'
+import WebNotifications from '../WebNotifications';
+import RequestClass from '../RequestClass';
 import Announcements from '../../components/Announcements';
 import BottomNav from '../../components/BottomNav';
 import ErrorBoundary from '../ErrorBoundary';
@@ -30,7 +30,7 @@ import * as notificationsActions from '../../actions/notifications';
 import * as feedActions from '../../actions/feed';
 import { getInitials } from 'utils/chat';
 
-const styles = theme => ({
+const styles = (theme) => ({
   loader: {
     width: '100%',
     display: 'flex',
@@ -50,7 +50,7 @@ type Props = {
   user: UserState,
   campaign: CampaignState,
   isNaked: boolean,
-  location: {pathname: string},
+  location: { pathname: string },
   signOut: Function,
   fetchFeed: Function,
   updateFilter: Function,
@@ -65,9 +65,7 @@ const Layout = ({
   chat,
   campaign,
   isNaked = false,
-  location: {
-    pathname
-  },
+  location: { pathname },
   signOut,
   fetchFeed,
   toggleExpertMode,
@@ -75,96 +73,91 @@ const Layout = ({
   push,
   setBannerHeight
 }: Props) => {
-  const [manageClasses, setManageClasses] = useState(false)
-  const [manageBlockedUsers, setManageBlockedUsers] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [unreadCount, setUnreadCount] = useState(0)
-  const [openRequestClass, setOpenRequestClass] = useState(false)
-  const [referralStatus, setRefererralStatus] = useState(false)
+  const [manageClasses, setManageClasses] = useState(false);
+  const [manageBlockedUsers, setManageBlockedUsers] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [openRequestClass, setOpenRequestClass] = useState(false);
+  const [referralStatus, setRefererralStatus] = useState(false);
 
-  const handleNotificationOpen = useCallback(event => {
+  const handleNotificationOpen = useCallback((event) => {
     const { currentTarget } = event;
-    setAnchorEl(currentTarget)
-  }, [])
+    setAnchorEl(currentTarget);
+  }, []);
 
   const handleNotificationClose = useCallback(() => {
-    setAnchorEl(null)
-  }, [])
+    setAnchorEl(null);
+  }, []);
 
   const handleOpenManageClasses = useCallback(() => {
-    setManageClasses(true)
-  }, [])
+    setManageClasses(true);
+  }, []);
 
   const handleOpenBlockedUsers = useCallback(() => {
-    setManageBlockedUsers(true)
-  }, [])
+    setManageBlockedUsers(true);
+  }, []);
 
   const handleCloseManageClasses = useCallback(() => {
-    fetchFeed()
-    setManageClasses(false)
-  }, [fetchFeed])
+    fetchFeed();
+    setManageClasses(false);
+  }, [fetchFeed]);
 
   const handleCloseManageBlockedUsers = useCallback(() => {
-    setManageBlockedUsers(false)
-  }, [])
+    setManageBlockedUsers(false);
+  }, []);
 
   const handleOpenReferralStatus = useCallback(() => {
-    setRefererralStatus(true)
-  }, [])
+    setRefererralStatus(true);
+  }, []);
 
   const handleCloseReferralStatus = useCallback(() => {
-    setRefererralStatus(false)
-  }, [])
+    setRefererralStatus(false);
+  }, []);
 
-  const handleUpdateUnreadCount = useCallback(unreadCount => {
-    setUnreadCount(unreadCount)
-  }, [])
+  const handleUpdateUnreadCount = useCallback((unreadCount) => {
+    setUnreadCount(unreadCount);
+  }, []);
 
   const handleOpenRequestClass = useCallback(() => {
     handleCloseManageClasses();
-    setOpenRequestClass(true)
-  }, [handleCloseManageClasses])
+    setOpenRequestClass(true);
+  }, [handleCloseManageClasses]);
 
   const handleCloseRequestClass = useCallback(() => {
-    setOpenRequestClass(false)
-  }, [])
+    setOpenRequestClass(false);
+  }, []);
 
-  const handleNotificationClick = useCallback(({
-    typeId,
-    postId
-  }: {
-    typeId: number,
-    postId: number
-  }) => {
-    switch (typeId) {
-    case 3:
-      push(`/flashcards/${postId}`);
-      break;
-    case 4:
-      push(`/notes/${postId}`);
-      break;
-    case 5:
-      push(`/sharelink/${postId}`);
-      break;
-    case 6:
-      push(`/question/${postId}`);
-      break;
-    default:
-      break;
-    }
-  }, [push])
+  const handleNotificationClick = useCallback(
+    ({ typeId, postId }: { typeId: number, postId: number }) => {
+      switch (typeId) {
+        case 3:
+          push(`/flashcards/${postId}`);
+          break;
+        case 4:
+          push(`/notes/${postId}`);
+          break;
+        case 5:
+          push(`/sharelink/${postId}`);
+          break;
+        case 6:
+          push(`/question/${postId}`);
+          break;
+        default:
+          break;
+      }
+    },
+    [push]
+  );
 
   const renderChildren = useCallback(() => {
-    const {
-      data, isLoading
-    } = user;
+    const { data, isLoading } = user;
     if (data.userId && !isLoading) return children;
     return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
-  }, [children, classes.loader, user])
+  }, [children, classes.loader, user]);
 
   const {
     data: { userId, firstName, lastName, profileImage, email },
@@ -174,37 +167,40 @@ const Layout = ({
     userClasses,
     expertMode,
     isExpert,
-    syncData: {
-      viewedOnboarding,
-      helpLink
-    }
+    syncData: { viewedOnboarding, helpLink }
   } = user;
 
   const {
     data: { local }
-  } = chat
+  } = chat;
 
   const unreadMessages = useMemo(() => {
-    let unreadMessages = 0
-    Object.keys(local).forEach(l => {
-      if (local[l]?.unread) unreadMessages += Number(local[l].unread)
-    })
-    return unreadMessages
-  }, [local])
-
-
-  const name = useMemo(() => `${firstName} ${lastName}`, [firstName, lastName])
-  const initials = useMemo(() => getInitials(name), [name])
-
-  const updateFeed = useCallback(async (sectionId, classId) => {
-    await updateFilter({
-      field: 'userClasses',
-      value: [JSON.stringify({ classId, sectionId })]
+    let unreadMessages = 0;
+    Object.keys(local).forEach((l) => {
+      if (local[l]?.unread) unreadMessages += Number(local[l].unread);
     });
-    await fetchFeed()
-  }, [fetchFeed, updateFilter])
+    return unreadMessages;
+  }, [local]);
 
-  if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) return null
+  const name = useMemo(() => `${firstName} ${lastName}`, [firstName, lastName]);
+  const initials = useMemo(() => getInitials(name), [name]);
+
+  const updateFeed = useCallback(
+    async (sectionId, classId) => {
+      await updateFilter({
+        field: 'userClasses',
+        value: [JSON.stringify({ classId, sectionId })]
+      });
+      await fetchFeed();
+    },
+    [fetchFeed, updateFilter]
+  );
+
+  if (
+    campaign.newClassExperience === null ||
+    campaign.landingPageCampaign === null
+  )
+    return null;
 
   if (isNaked) return renderChildren();
 
@@ -286,14 +282,17 @@ const Layout = ({
         <WebNotifications />
       </ErrorBoundary>
       <ErrorBoundary>
-        <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
+        <RequestClass
+          open={openRequestClass}
+          onClose={handleCloseRequestClass}
+        />
       </ErrorBoundary>
       <ErrorBoundary>
         <Notifier />
       </ErrorBoundary>
     </>
   );
-}
+};
 
 const mapStateToProps = ({ chat, user, campaign }: StoreState): {} => ({
   user,
@@ -312,7 +311,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       toggleExpertMode: userActions.toggleExpertMode,
       setBannerHeight: userActions.setBannerHeight,
       // getVaiation: userActions.getVaiation,
-      push: routePush,
+      push: routePush
     },
     dispatch
   );

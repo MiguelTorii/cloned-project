@@ -9,11 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
-import { cypher, decypherClass } from 'utils/crypto'
+import { cypher, decypherClass } from 'utils/crypto';
 import AnonymousButton from 'components/AnonymousButton';
-import ClassMultiSelect from 'containers/ClassMultiSelect'
-import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip'
-import Tooltip from 'containers/Tooltip'
+import ClassMultiSelect from 'containers/ClassMultiSelect';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import Tooltip from 'containers/Tooltip';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreatePostForm from '../../components/CreatePostForm';
@@ -29,7 +29,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
 import { PERMISSIONS } from 'constants/common';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -56,60 +56,58 @@ const CreateQuestion = ({
   classes,
   user: {
     expertMode,
-    data: {
-      permission,
-      segment,
-      userId
-    },
-    userClasses,
+    data: { permission, segment, userId },
+    userClasses
   },
   campaign,
   pushTo,
   questionId,
-  location: {
-    pathname
-  },
+  location: { pathname },
   enqueueSnackbar
 }: Props) => {
-  const [loading, setLoading] = useState(false)
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
-  const [classId, setClassId] = useState(0)
-  const [sectionId, setSectionId] = useState(null)
-  const [errorDialog, setErrorDialog] = useState(false)
-  const [anonymousActive, setAnonymousActive] = useState(false)
-  const [changed, setChanged] = useState(null)
-  const [errorBody, setErrorBody] = useState('')
-  const [errorTitle, setErrorTitle] = useState('')
-  const [classList, setClassList] = useState([])
-  const [questionToolbar, setQuestionToolbar] = useState(null)
-  const [editor, setEditor] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [classId, setClassId] = useState(0);
+  const [sectionId, setSectionId] = useState(null);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [anonymousActive, setAnonymousActive] = useState(false);
+  const [changed, setChanged] = useState(null);
+  const [errorBody, setErrorBody] = useState('');
+  const [errorTitle, setErrorTitle] = useState('');
+  const [classList, setClassList] = useState([]);
+  const [questionToolbar, setQuestionToolbar] = useState(null);
+  const [editor, setEditor] = useState(null);
 
-  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
-  const canBatchPost = useMemo(() => (
-    expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
-  ), [expertMode, permission])
+  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname]);
+  const canBatchPost = useMemo(
+    () => expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS),
+    [expertMode, permission]
+  );
 
-  const handlePush = useCallback(path => {
-    if (campaign.newClassExperience) {
-      const search = !canBatchPost
-        ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : ''
-      pushTo(`${path}${search}`)
-    } else {
-      pushTo(path)
-    }
-  }, [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId])
+  const handlePush = useCallback(
+    (path) => {
+      if (campaign.newClassExperience) {
+        const search = !canBatchPost
+          ? `?class=${cypher(`${classId}:${sectionId}`)}`
+          : '';
+        pushTo(`${path}${search}`);
+      } else {
+        pushTo(path);
+      }
+    },
+    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
+  );
 
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({ userId, questionId });
     const uc = processClasses({ classes: userClasses.classList, segment });
     const { sectionId } = JSON.parse(uc[0].value);
-    const { body, title, classId } = question
-    setBody(body)
-    setTitle(title)
-    setClassId(classId)
-    setSectionId(sectionId)
+    const { body, title, classId } = question;
+    setBody(body);
+    setTitle(title);
+    setClassId(classId);
+    setSectionId(sectionId);
     const {
       postInfo: { feedId }
     } = question;
@@ -118,29 +116,28 @@ const CreateQuestion = ({
       event: 'Feed- Edit Question',
       props: { 'Internal ID': feedId }
     });
-  }, [questionId, segment, userClasses.classList, userId])
+  }, [questionId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (questionId && userId) loadData()
-    const { classId, sectionId } = decypherClass()
+    if (questionId && userId) loadData();
+    const { classId, sectionId } = decypherClass();
 
-    setClassId(Number(classId))
-    setSectionId(Number(sectionId))
+    setClassId(Number(classId));
+    setSectionId(Number(sectionId));
     logEvent({
       event: 'Home- Start Ask Question',
       props: {}
     });
-
-  }, [loadData, questionId, userId])
+  }, [loadData, questionId, userId]);
 
   useEffect(() => {
     if (editor) {
-      setQuestionToolbar(editor.getEditor().theme.modules.toolbar)
+      setQuestionToolbar(editor.getEditor().theme.modules.toolbar);
     }
-  }, [editor])
+  }, [editor]);
 
   const updateQuestion = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await api.updateQuestion({
         userId,
@@ -148,10 +145,10 @@ const CreateQuestion = ({
         title,
         body,
         classId,
-        sectionId,
+        sectionId
       });
 
-      if (!res.success) throw new Error('Couldnt update')
+      if (!res.success) throw new Error('Couldnt update');
 
       enqueueSnackbar({
         notification: {
@@ -174,63 +171,70 @@ const CreateQuestion = ({
       });
 
       handlePush(`/question/${questionId}`);
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
-      setErrorBody('Please try again')
-      setErrorTitle('Unknown Error')
-      setErrorDialog(true)
+      setLoading(false);
+      setErrorBody('Please try again');
+      setErrorTitle('Unknown Error');
+      setErrorDialog(true);
     }
-  }, [body, classId, classes.stackbar, enqueueSnackbar, handlePush, questionId, sectionId, title, userId])
+  }, [
+    body,
+    classId,
+    classes.stackbar,
+    enqueueSnackbar,
+    handlePush,
+    questionId,
+    sectionId,
+    title,
+    userId
+  ]);
 
   const createQuestion = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const {
         points,
         user: { firstName },
         classes: resClasses,
-        questionId,
+        questionId
       } = canBatchPost
         ? await api.createBatchQuestion({
-          userId,
-          title,
-          sectionIds: classList.map(c => c.sectionId),
-          body,
-        })
+            userId,
+            title,
+            sectionIds: classList.map((c) => c.sectionId),
+            body
+          })
         : await api.createQuestion({
-          userId,
-          title,
-          body,
-          anonymous: anonymousActive,
-          classId,
-          sectionId,
-        });
+            userId,
+            title,
+            body,
+            anonymous: anonymousActive,
+            classId,
+            sectionId
+          });
 
-      let hasError = false
+      let hasError = false;
       if (canBatchPost && resClasses) {
-        resClasses.forEach(r => {
-          if (r.status !== 'Success') hasError = true
-        })
+        resClasses.forEach((r) => {
+          if (r.status !== 'Success') hasError = true;
+        });
         if (hasError || resClasses.length === 0) {
-          setLoading(false)
-          setErrorBody('Please try again')
-          setErrorTitle('Error creating questions')
-          setErrorDialog(true)
-          return
+          setLoading(false);
+          setErrorBody('Please try again');
+          setErrorTitle('Error creating questions');
+          setErrorDialog(true);
+          return;
         }
       }
 
       logEventLocally({
         category: 'Question',
         objectId: questionId,
-        type: 'Created',
+        type: 'Created'
       });
 
-      if (
-        points > 0 ||
-        canBatchPost
-      ){
+      if (points > 0 || canBatchPost) {
         enqueueSnackbar({
           notification: {
             message: !canBatchPost
@@ -256,63 +260,84 @@ const CreateQuestion = ({
 
       handlePush('/feed');
     } catch (err) {
-      setLoading(false)
-      setErrorBody('Please try again')
-      setErrorTitle('Unknown Error')
-      setErrorDialog(true)
+      setLoading(false);
+      setErrorBody('Please try again');
+      setErrorTitle('Unknown Error');
+      setErrorDialog(true);
     }
-  }, [anonymousActive, body, classId, classList, classes.stackbar, enqueueSnackbar, canBatchPost, handlePush, sectionId, title, userId])
-
-  const handleSubmit = useCallback(event => {
-    event.preventDefault();
-    if (questionId) updateQuestion()
-    else createQuestion()
-  }, [createQuestion, questionId, updateQuestion])
-
-  const handleTextChange = useCallback(() => event => {
-    setChanged(true)
-    setTitle(event.target.value)
-  }, [])
-
-  const handleRTEChange = useCallback(value => {
-    if (changed === null) setChanged(false)
-    else setChanged(true)
-    setBody(value)
-  }, [changed])
-
-  const handleClassChange = useCallback(({
+  }, [
+    anonymousActive,
+    body,
     classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
-    const selected = userClasses.classList.find(c => c.classId === classId)
-    if (selected) setClassList([{
-      ...selected,
-      sectionId
-    }])
-    setSectionId(sectionId)
-    setClassId(classId)
-  }, [userClasses.classList])
+    classList,
+    classes.stackbar,
+    enqueueSnackbar,
+    canBatchPost,
+    handlePush,
+    sectionId,
+    title,
+    userId
+  ]);
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (questionId) updateQuestion();
+      else createQuestion();
+    },
+    [createQuestion, questionId, updateQuestion]
+  );
+
+  const handleTextChange = useCallback(
+    () => (event) => {
+      setChanged(true);
+      setTitle(event.target.value);
+    },
+    []
+  );
+
+  const handleRTEChange = useCallback(
+    (value) => {
+      if (changed === null) setChanged(false);
+      else setChanged(true);
+      setBody(value);
+    },
+    [changed]
+  );
+
+  const handleClassChange = useCallback(
+    ({ classId, sectionId }: { classId: number, sectionId: number }) => {
+      const selected = userClasses.classList.find((c) => c.classId === classId);
+      if (selected)
+        setClassList([
+          {
+            ...selected,
+            sectionId
+          }
+        ]);
+      setSectionId(sectionId);
+      setClassId(classId);
+    },
+    [userClasses.classList]
+  );
 
   const handleErrorDialogClose = useCallback(() => {
-    setErrorDialog(false)
-    setErrorTitle('')
-    setErrorBody('')
-  }, [])
+    setErrorDialog(false);
+    setErrorTitle('');
+    setErrorBody('');
+  }, []);
 
   const toggleAnonymousActive = useCallback(() => {
-    setAnonymousActive(a => !a)
-  }, [])
+    setAnonymousActive((a) => !a);
+  }, []);
 
-  const handleClasses = useCallback(classList => {
-    setClassList(classList)
+  const handleClasses = useCallback((classList) => {
+    setClassList(classList);
     if (classList.length > 0) {
-      setSectionId(classList[0].sectionId)
-      setClassId(classList[0].classId)
+      setSectionId(classList[0].sectionId);
+      setClassId(classList[0].classId);
     }
-  }, [])
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -327,9 +352,7 @@ const CreateQuestion = ({
         >
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12} md={2}>
-              <Typography variant="subtitle1">
-                What's your question?
-              </Typography>
+              <Typography variant="subtitle1">What's your question?</Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={10}>
               <OutlinedTextValidator
@@ -345,7 +368,7 @@ const CreateQuestion = ({
               <Typography variant="subtitle1">Description</Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={10}>
-              <ToolbarTooltip toolbar={questionToolbar}/>
+              <ToolbarTooltip toolbar={questionToolbar} />
               <RichTextEditor
                 setEditor={setEditor}
                 placeholder="Add more details to your question to increase the chances of getting an answer"
@@ -394,7 +417,9 @@ const CreateQuestion = ({
             )}
             <Grid item xs={12}>
               <Typography className={classes.anonymouslyExplanation}>
-                When you post a question anonymously, classmates cannot see who asked the question. However, your post can still be flagged for academic dishonesty.
+                When you post a question anonymously, classmates cannot see who
+                asked the question. However, your post can still be flagged for
+                academic dishonesty.
               </Typography>
             </Grid>
           </Grid>
@@ -408,9 +433,9 @@ const CreateQuestion = ({
           handleClose={handleErrorDialogClose}
         />
       </ErrorBoundary>
-    </div >
+    </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
   user,

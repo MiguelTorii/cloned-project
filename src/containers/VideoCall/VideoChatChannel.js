@@ -12,12 +12,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  processMessages,
-  getAvatar,
-  fetchAvatars
-} from 'utils/chat';
-import { sendMessage } from 'api/chat'
+import { processMessages, getAvatar, fetchAvatars } from 'utils/chat';
+import { sendMessage } from 'api/chat';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
@@ -26,7 +22,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import { logEvent } from '../../api/analytics';
 import { getPresignedURL } from '../../api/media';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     height: '100%',
     display: 'flex',
@@ -35,7 +31,7 @@ const styles = theme => ({
     backgroundColor: theme.circleIn.palette.appBar
   },
   list: {
-    overflowY: 'auto',
+    overflowY: 'auto'
   },
   listTyping: {
     // maxHeight: 270
@@ -58,7 +54,7 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
-  },
+  }
 });
 
 type Props = {
@@ -77,7 +73,7 @@ type State = {
   typing: string,
   scroll: boolean,
   loading: boolean,
-  images: Array<{src: string}>
+  images: Array<{ src: string }>
 };
 
 class VideoChatChannel extends React.Component<Props, State> {
@@ -89,7 +85,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     typing: '',
     scroll: true,
     loading: false,
-    images: [],
+    images: []
   };
 
   mounted: boolean;
@@ -111,7 +107,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       //   }
 
       try {
-        channel.getMessages(30).then(paginator => {
+        channel.getMessages(30).then((paginator) => {
           this.setState({
             messages: paginator.items,
             paginator,
@@ -129,9 +125,9 @@ class VideoChatChannel extends React.Component<Props, State> {
         console.log(err);
       }
 
-      channel.on('messageAdded', message => {
+      channel.on('messageAdded', (message) => {
         if (!this.mounted) return;
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
         const { open, onUnreadUpdate } = this.props;
@@ -141,16 +137,16 @@ class VideoChatChannel extends React.Component<Props, State> {
           //     unread: prevState.unread + 1
           //   }));
         } else {
-          console.log('update')
+          console.log('update');
           channel.setAllMessagesConsumed();
           onUnreadUpdate();
         }
         this.handleScrollToBottom();
       });
 
-      channel.on('typingStarted', member => {
+      channel.on('typingStarted', (member) => {
         if (!this.mounted) return;
-        member.getUser().then(user => {
+        member.getUser().then((user) => {
           const { state } = user;
           const { friendlyName } = state;
           this.setState({ typing: friendlyName });
@@ -171,14 +167,14 @@ class VideoChatChannel extends React.Component<Props, State> {
     }
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     if (this.mounted && this.end) this.handleScrollToBottom();
     const { channel, open, onUnreadUpdate } = this.props;
     if (prevProps.open !== open && open === true) {
-      console.log('update')
+      console.log('update');
       try {
         channel.setAllMessagesConsumed();
-        onUnreadUpdate()
+        onUnreadUpdate();
       } catch (err) {
         console.log(err);
       }
@@ -189,7 +185,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     this.mounted = false;
   };
 
-  handleSendMessage = async message => {
+  handleSendMessage = async (message) => {
     const {
       channel,
       user: { firstName, lastName }
@@ -219,7 +215,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     }
   };
 
-  handleSendInput = async file => {
+  handleSendInput = async (file) => {
     const {
       channel,
       user: { userId, firstName, lastName }
@@ -273,8 +269,8 @@ class VideoChatChannel extends React.Component<Props, State> {
     const { paginator } = this.state;
     try {
       if (paginator.hasPrevPage) {
-        paginator.prevPage().then(result => {
-          this.setState(prevState => {
+        paginator.prevPage().then((result) => {
+          this.setState((prevState) => {
             return {
               messages: [...result.items, ...prevState.messages],
               paginator: result,
@@ -309,7 +305,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     }
   };
 
-  handleImageClick = src => {
+  handleImageClick = (src) => {
     this.setState({ images: [{ src }] });
   };
 
@@ -323,46 +319,46 @@ class VideoChatChannel extends React.Component<Props, State> {
     const { id, type } = item;
     try {
       switch (type) {
-      case 'date':
-        return <ChatMessageDate key={id} body={item.body} />;
-      case 'message':
-        return (
-          <ChatMessage
-            key={id}
-            name={item.name}
-            messageList={item.messageList}
-            avatar={getAvatar({ id: item.author, profileURLs })}
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'own':
-        return (
-          <ChatMessage
-            key={id}
-            messageList={item.messageList}
-            isOwn
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'end':
-        return (
-          <div
-            key={uuidv4()}
-            style={{
-              float: 'left',
-              clear: 'both'
-            }}
-            ref={el => {
-              this.end = el;
-            }}
-          />
-        );
-      default:
-        return null;
+        case 'date':
+          return <ChatMessageDate key={id} body={item.body} />;
+        case 'message':
+          return (
+            <ChatMessage
+              key={id}
+              name={item.name}
+              messageList={item.messageList}
+              avatar={getAvatar({ id: item.author, profileURLs })}
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
+        case 'own':
+          return (
+            <ChatMessage
+              key={id}
+              messageList={item.messageList}
+              isOwn
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
+        case 'end':
+          return (
+            <div
+              key={uuidv4()}
+              style={{
+                float: 'left',
+                clear: 'both'
+              }}
+              ref={(el) => {
+                this.end = el;
+              }}
+            />
+          );
+        default:
+          return null;
       }
     } catch (err) {
       return null;
@@ -374,14 +370,8 @@ class VideoChatChannel extends React.Component<Props, State> {
       classes,
       user: { userId }
     } = this.props;
-    const {
-      typing,
-      hasMore,
-      loading,
-      messages,
-      profileURLs,
-      images
-    } = this.state;
+    const { typing, hasMore, loading, messages, profileURLs, images } =
+      this.state;
 
     const messageItems = processMessages({
       items: messages,
@@ -394,7 +384,7 @@ class VideoChatChannel extends React.Component<Props, State> {
           <div className={classes.root}>
             <div
               className={cx(classes.list, typing !== '' && classes.listTyping)}
-              ref={node => {
+              ref={(node) => {
                 this.scrollParentRef = node;
               }}
             >
@@ -408,9 +398,9 @@ class VideoChatChannel extends React.Component<Props, State> {
                 isReverse
                 getScrollParent={() => this.scrollParentRef}
               >
-                {messageItems.slice(0, 2).map(item =>
-                  this.renderMessage(item, profileURLs)
-                )}
+                {messageItems
+                  .slice(0, 2)
+                  .map((item) => this.renderMessage(item, profileURLs))}
                 {loading && (
                   <div className={classes.progress}>
                     <CircularProgress size={20} />

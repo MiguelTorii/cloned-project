@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   container: {
     height: '100%',
     maxHeight: 'inherit',

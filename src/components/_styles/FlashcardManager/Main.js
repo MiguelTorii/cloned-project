@@ -1,18 +1,18 @@
 import { dialogStyle } from '../Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   buttonReset: {
     marginRight: theme.spacing(),
     borderRadius: 8,
     fontWeight: 'bold',
     letterSpacing: 0.6,
-    width: 150,
+    width: 150
   },
   button: {
     borderRadius: 8,
     fontWeight: 'bold',
     letterSpacing: 0.6,
-    width: 150,
+    width: 150
   },
   content: {
     alignSelf: 'center',
@@ -21,11 +21,11 @@ export const styles = theme => ({
     width: 800,
     justifyContent: 'space-between',
     marginTop: 50,
-    position: 'relative',
+    position: 'relative'
   },
   dialogPaper: {
     ...dialogStyle,
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.primaryBackground
   },
   emptyState: {
     alignItems: 'center',
@@ -40,7 +40,7 @@ export const styles = theme => ({
   },
   root: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   score: {
     alignItems: 'center',
@@ -53,28 +53,28 @@ export const styles = theme => ({
     height: 75,
     justifyContent: 'center',
     marginBottom: theme.spacing(1),
-    width: 75,
+    width: 75
   },
   scoreBox: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     margin: `${theme.spacing(2)}px 0px`,
-    marginTop: 0,
+    marginTop: 0
   },
   scoreLabel: {
-    color: theme.circleIn.palette.action,
+    color: theme.circleIn.palette.action
   },
   scores: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   selected: {
     border: '5px solid #7572f7'
   },
   toolbar: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   studyButton: {
     fontSize: 18,

@@ -1,12 +1,12 @@
-import React, {useMemo, useCallback, useEffect, useState} from 'react'
-import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import Typography from '@material-ui/core/Typography'
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Typography from '@material-ui/core/Typography';
 // import CalendarEmptyDateTasks from 'components/Workflow/CalendarEmptyDateTasks'
-import { useStyles } from '../_styles/Workflow/CalendarControls'
+import { useStyles } from '../_styles/Workflow/CalendarControls';
 
 const CalendarControls = ({
   // currentCalendarView,
@@ -15,32 +15,32 @@ const CalendarControls = ({
   calendar,
   addTask
 }) => {
-  const [api, setApi] = useState(null)
-  const [title, setTitle] = useState('')
+  const [api, setApi] = useState(null);
+  const [title, setTitle] = useState('');
   // const [currentView, setCurrentView] = useState(currentCalendarView)
-  const classes = useStyles()
+  const classes = useStyles();
 
   useEffect(() => {
     if (calendar) {
-      const api = calendar.getApi()
-      setApi(api)
-      setTitle(api?.view?.title)
+      const api = calendar.getApi();
+      setApi(api);
+      setTitle(api?.view?.title);
     }
-  }, [calendar])
+  }, [calendar]);
 
   const next = useCallback(() => {
     if (api) {
-      api.next()
-      setTitle(api?.view?.title)
+      api.next();
+      setTitle(api?.view?.title);
     }
-  }, [api])
+  }, [api]);
 
   const previous = useCallback(() => {
     if (api) {
-      api.prev()
-      setTitle(api?.view?.title)
+      api.prev();
+      setTitle(api?.view?.title);
     }
-  }, [api])
+  }, [api]);
 
   // const changeView = useCallback(view => () => {
   // if (api) {
@@ -52,41 +52,41 @@ const CalendarControls = ({
 
   const today = useCallback(() => {
     if (api) {
-      api.today()
-      setTitle(api?.view?.title)
+      api.today();
+      setTitle(api?.view?.title);
     }
-  }, [api])
+  }, [api]);
 
   const todayDisabled = useMemo(() => {
     if (api && title) {
-      const now = new Date()
-      return api.view.activeStart < now && now < api.view.activeEnd
+      const now = new Date();
+      return api.view.activeStart < now && now < api.view.activeEnd;
     }
-    return true
-  }, [api, title])
+    return true;
+  }, [api, title]);
 
   return (
-    <Grid className={classes.container} container justify='space-between'>
+    <Grid className={classes.container} container justify="space-between">
       <Grid item xs={4}>
         <IconButton
-          aria-label='previous'
+          aria-label="previous"
           className={classes.iconButton}
           onClick={previous}
         >
           <ArrowBackIosIcon />
         </IconButton>
         <IconButton
-          aria-label='next'
+          aria-label="next"
           className={classes.iconButton}
           onClick={next}
         >
           <ArrowForwardIosIcon />
         </IconButton>
         <Button
-          aria-label='today'
+          aria-label="today"
           onClick={today}
           className={classes.today}
-          color='primary'
+          color="primary"
           disabled={todayDisabled}
         >
           Today
@@ -133,16 +133,12 @@ const CalendarControls = ({
         <Typography className={classes.title}>{title}</Typography>
       </Grid>
       <Grid item xs={4} className={classes.addTask}>
-        <Button
-          aria-label='new-task'
-          onClick={addTask}
-          color='primary'
-        >
-         Add Task
+        <Button aria-label="new-task" onClick={addTask} color="primary">
+          Add Task
         </Button>
       </Grid>
-    </Grid >
-  )
-}
+    </Grid>
+  );
+};
 
-export default CalendarControls
+export default CalendarControls;

@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   root: {
     color: theme.circleIn.palette.white,
     borderRadius: theme.spacing(5),
@@ -23,7 +23,7 @@ export default theme => ({
   labelSmall: {
     padding: 0,
     paddingLeft: theme.spacing(),
-    paddingRight: theme.spacing(),
+    paddingRight: theme.spacing()
   },
   iconSmall: {
     margin: 0
@@ -36,4 +36,4 @@ export default theme => ({
     height: 20,
     padding: theme.spacing(0.5)
   }
-})
+});

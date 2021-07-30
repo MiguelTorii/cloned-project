@@ -21,7 +21,13 @@ type Props = {
 };
 
 const ShareLinkWidget = (props: Props) => {
-  const { className, classes, shareLink, headerText = 'Share a link', isLoading = false } = props;
+  const {
+    className,
+    classes,
+    shareLink,
+    headerText = 'Share a link',
+    isLoading = false
+  } = props;
   const [isTooltipShown, setIsTooltipShown] = useState(false);
 
   const handleCopied = () => {

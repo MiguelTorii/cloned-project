@@ -1,17 +1,17 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   usersContainer: {
     width: '100%',
     padding: theme.spacing(2),
-    borderTop: `1px solid ${theme.circleIn.palette.modalBackground}`,
+    borderTop: `1px solid ${theme.circleIn.palette.modalBackground}`
   },
   listRoot: {
     width: '100%',
-    overflow: 'auto',
+    overflow: 'auto'
   },
   secondaryAction: {
-    position: 'relative',
+    position: 'relative'
   },
   header: {
     display: 'flex',
@@ -19,10 +19,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     backgroundColor: theme.circleIn.palette.modalBackground,
     minHeight: 59,
-    padding: theme.spacing(),
+    padding: theme.spacing()
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 18
   },
   memberName: {
     width: '100%'
@@ -33,19 +33,19 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   },
   container: {
     flexGrow: 1,
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.primaryBackground
   },
   infoContainer: {
     backgroundColor: theme.circleIn.palette.primaryBackground,
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   usersTitle: {
     padding: 0,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   usersCount: {
     marginLeft: 'auto',
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 30
   },
   membersExpansion: {
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.primaryBackground
   },
   membersSummary: {
     margin: 0,
@@ -74,14 +74,14 @@ const useStyles = makeStyles((theme) => ({
   },
   membersExpanded: {
     margin: '0 !important',
-    minHeight: '0 !important',
+    minHeight: '0 !important'
   },
   expandIcon: {
     padding: 0,
     marginRight: 0,
     '& .MuiSvgIcon-root': {
       fontSize: 18
-    },
+    }
   },
   expandedRotate: {
     margin: '0 !important',
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     marginLeft: theme.spacing(),
     flex: 1
-  },
-}))
+  }
+}));
 
-export default useStyles
+export default useStyles;

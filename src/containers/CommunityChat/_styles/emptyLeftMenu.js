@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
+    position: 'relative'
   },
   inviteButton: {
     zIndex: 1000,
@@ -65,6 +65,6 @@ const useStyles = makeStyles((theme) => ({
   loadingChannels: {
     color: 'white'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

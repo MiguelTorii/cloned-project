@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react'
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
-import queryString from 'query-string'
+import queryString from 'query-string';
 import Tooltip from '../../containers/Tooltip';
 import { useStyles } from '../_styles/MainLayout/SubMenu';
 
@@ -13,15 +13,11 @@ type Props = {
   openClassmatesDialog: Function
 };
 
-const SubItems = ({
-  MyLink,
-  openClassmatesDialog,
-  createPostOpen
-}: Props) => {
-  const classes = useStyles()
+const SubItems = ({ MyLink, openClassmatesDialog, createPostOpen }: Props) => {
+  const classes = useStyles();
 
-  const { pathname, search } = window.location
-  const qs = queryString.parse(search)
+  const { pathname, search } = window.location;
+  const qs = queryString.parse(search);
 
   return (
     <div>
@@ -31,7 +27,9 @@ const SubItems = ({
         link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
         className={classNames(
           classes.item,
-          ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
+          ['/my_posts'].includes(pathname) && qs.from === 'me'
+            ? classes.currentPath
+            : classes.otherPath
         )}
       >
         <ListItemText
@@ -44,10 +42,15 @@ const SubItems = ({
       <ListItem
         button
         component={MyLink}
-        link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
+        link={`/bookmarks?${queryString.stringify({
+          ...qs,
+          from: 'bookmarks'
+        })}`}
         className={classNames(
           classes.item,
-          ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
+          ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks'
+            ? classes.currentPath
+            : classes.otherPath
         )}
       >
         <ListItemText
@@ -66,7 +69,9 @@ const SubItems = ({
         }}
         className={classNames(
           classes.item,
-          ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
+          ['/leaderboard'].includes(pathname)
+            ? classes.currentPath
+            : classes.otherPath
         )}
       >
         <Tooltip
@@ -86,9 +91,7 @@ const SubItems = ({
       <ListItem
         button
         onClick={openClassmatesDialog}
-        className={classNames(
-          classes.item,
-        )}
+        className={classNames(classes.item)}
       >
         <ListItemText
           primary="Classmates"
@@ -98,7 +101,7 @@ const SubItems = ({
         />
       </ListItem>
     </div>
-  )
-}
+  );
+};
 
-export default SubItems
+export default SubItems;

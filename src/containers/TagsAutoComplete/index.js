@@ -15,7 +15,7 @@ import ErrorBoundary from '../ErrorBoundary';
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = searchClient.initIndex(ALGOLIA_INDEX);
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing(2)
   }
@@ -30,18 +30,18 @@ type Props = {
 };
 
 type State = {
-  inputValue: string,
+  inputValue: string
 };
 
 class TagsAutoComplete extends React.PureComponent<Props, State> {
   state = {
-    inputValue: '',
+    inputValue: ''
   };
 
   handleLoadOptions = async (search, loadedOptions, { page }) => {
     const content = await index.search({ query: search, page });
     const { hits, nbPages } = content;
-    const options = hits.map(suggestion => ({
+    const options = hits.map((suggestion) => ({
       value: suggestion.id,
       label: suggestion.tag,
       description: suggestion.description
@@ -56,8 +56,10 @@ class TagsAutoComplete extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { location: {pathname}} = window
-    const isEdit = pathname.includes('/edit')
+    const {
+      location: { pathname }
+    } = window;
+    const isEdit = pathname.includes('/edit');
     const { classes, error, tags, onChange, variant } = this.props;
     const { inputValue } = this.state;
     return (

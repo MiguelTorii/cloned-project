@@ -12,19 +12,20 @@ export const processClasses = ({
 }): Array<SelectType> => {
   if (segment === 'K12')
     return classes
-      .filter(item => item.permissions.canCreate)
-      .map(item => ({
+      .filter((item) => item.permissions.canCreate)
+      .map((item) => ({
         label: item.className,
         value: JSON.stringify({ classId: item.classId })
       }));
   const items = classes
-    .filter(item => item.permissions.canCreate)
-    .map(item =>
-      item.section.map(o => ({
-        label: `${o.subject} ${item.className}: ${o.firstName} ${
-          o.lastName
-        } - ${o.section}`,
-        value: JSON.stringify({ classId: item.classId, sectionId: o.sectionId })
+    .filter((item) => item.permissions.canCreate)
+    .map((item) =>
+      item.section.map((o) => ({
+        label: `${o.subject} ${item.className}: ${o.firstName} ${o.lastName} - ${o.section}`,
+        value: JSON.stringify({
+          classId: item.classId,
+          sectionId: o.sectionId
+        })
       }))
     );
   const result = [];

@@ -20,7 +20,7 @@ export const getRewards = async ({
     });
     const { data } = result;
 
-    const availableRewards = (data.available_rewards || []).map(item => ({
+    const availableRewards = (data.available_rewards || []).map((item) => ({
       bgColor: String((item.bg_color: string) || ''),
       displayName: String((item.display_name: string) || ''),
       imageUrl: String((item.image_url: string) || ''),
@@ -28,7 +28,7 @@ export const getRewards = async ({
       rewardId: Number((item.reward_id: number) || 0),
       rewardValue: Number((item.reward_value: number) || 0)
     }));
-    const slots = (data.slots || []).map(item => ({
+    const slots = (data.slots || []).map((item) => ({
       bgColor: String((item.bg_color: string) || ''),
       displayName: String((item.display_name: string) || ''),
       imageUrl: String((item.image_url: string) || ''),

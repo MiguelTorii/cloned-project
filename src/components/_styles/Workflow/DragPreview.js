@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   card: {
@@ -7,7 +7,7 @@ export const useStyles = makeStyles(() => ({
     zIndex: 1004,
     left: 0,
     top: 0,
-    maxWidth: 31 * 8,
+    maxWidth: 31 * 8
   },
   list: {
     position: 'fixed',
@@ -15,6 +15,6 @@ export const useStyles = makeStyles(() => ({
     zIndex: 1004,
     left: 50,
     top: 0,
-    width: '50vw',
+    width: '50vw'
   }
-}))
+}));

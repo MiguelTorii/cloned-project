@@ -94,7 +94,7 @@ class PostTips extends React.PureComponent<Props, State> {
               Tips and Tricks
             </Typography>
           </div>
-          {texts[type].tips.map(item => (
+          {texts[type].tips.map((item) => (
             <Typography key={item} variant="body2" paragraph>
               {item}
             </Typography>

@@ -17,7 +17,6 @@ type Props = {
 };
 
 const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
-
   return (
     <div>
       <Link
@@ -28,11 +27,9 @@ const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
       >
         <Box display="flex" alignItems="center" mb={3}>
           <ChevronLeft />
-          {
-            isMyProfile ?
-              'Back to Profile' :
-              `${profile.firstName} ${profile.lastName}'s Profile`
-          }
+          {isMyProfile
+            ? 'Back to Profile'
+            : `${profile.firstName} ${profile.lastName}'s Profile`}
         </Box>
       </Link>
       <Grid container spacing={3}>

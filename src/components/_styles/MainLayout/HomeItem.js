@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   item: {
     width: 'auto',
     borderRadius: theme.spacing(6),
@@ -9,18 +9,18 @@ export const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 2, 1, 2),
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   currentPath: {
     '& span': {
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
-    background: theme.circleIn.palette.hoverMenu,
+    background: theme.circleIn.palette.hoverMenu
   },
   otherPath: {
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   classes: {
     fontSize: 14,
@@ -37,11 +37,11 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     whiteSpace: 'pre-wrap',
     overflow: 'hidden',
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(2)
   },
   menuIcon: {
     marginRight: theme.spacing(),
     alignItems: 'center',
     justifyContent: 'center'
   }
-}))
+}));

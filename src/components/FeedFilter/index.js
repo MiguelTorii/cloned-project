@@ -47,7 +47,8 @@ const types = [
   {
     value: '5',
     label: 'Resources',
-    description: 'View all links and resources shared by you and your classmates',
+    description:
+      'View all links and resources shared by you and your classmates',
     color: '#6F08D7'
   },
   {
@@ -98,19 +99,19 @@ class FeedFilter extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     this.mounted = true;
 
-    const { classList, userClasses } = this.props
+    const { classList, userClasses } = this.props;
 
     if (classList) {
-      const selectedUserClasses = userClasses.map(uc => {
-        const { classId } = JSON.parse(uc)
-        const sc = classList.find(c => classId === c.classId)
-        if (!sc) return null
+      const selectedUserClasses = userClasses.map((uc) => {
+        const { classId } = JSON.parse(uc);
+        const sc = classList.find((c) => classId === c.classId);
+        if (!sc) return null;
         return {
           ...sc,
           sectionId: sc.section[0].sectionId
-        }
-      })
-      this.setState({ selectedUserClasses })
+        };
+      });
+      this.setState({ selectedUserClasses });
     }
   };
 
@@ -138,12 +139,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
     this.setState({ open: false, openClassFilter: false });
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     const { value } = event.target;
     const newState = update(this.state, {
       [name]: {
-        $apply: b => {
-          const index = b.findIndex(o => o === value);
+        $apply: (b) => {
+          const index = b.findIndex((o) => o === value);
           if (event.target.checked && index === -1) {
             return [...b, value];
           }
@@ -157,28 +158,28 @@ class FeedFilter extends React.PureComponent<Props, State> {
     this.setState(newState);
   };
 
-  handleChangeClasses = selected => {
-    const userClasses = selected.map(s => ({
+  handleChangeClasses = (selected) => {
+    const userClasses = selected.map((s) => ({
       ...s,
       label: s.className,
       value: `{"classId": ${s.classId}, "sectionId": ${s.sectionId}}`
-    }))
+    }));
 
-    this.setState({ userClasses, selectedUserClasses: selected })
-  }
+    this.setState({ userClasses, selectedUserClasses: selected });
+  };
 
-  handleSelectAll = name => () => {
+  handleSelectAll = (name) => () => {
     const { classesList } = this.props;
     const values = [];
     switch (name) {
-    case 'postTypes':
-      values.push(...types.map(item => item.value));
-      break;
-    case 'userClasses':
-      values.push(...classesList.map(item => item.value));
-      break;
-    default:
-      break;
+      case 'postTypes':
+        values.push(...types.map((item) => item.value));
+        break;
+      case 'userClasses':
+        values.push(...classesList.map((item) => item.value));
+        break;
+      default:
+        break;
     }
     if (values.length > 0) {
       const newState = update(this.state, {
@@ -188,18 +189,18 @@ class FeedFilter extends React.PureComponent<Props, State> {
     }
   };
 
-  handleRemoveFilter = id => () => {
+  handleRemoveFilter = (id) => () => {
     let currentPropTypes = [];
     const { onApplyFilters } = this.props;
     const { postTypes, userClasses } = this.state;
 
-    if (id !== 'all'){
-      currentPropTypes = postTypes.filter(postType => postType !== id);
+    if (id !== 'all') {
+      currentPropTypes = postTypes.filter((postType) => postType !== id);
     }
     this.setState({ postTypes: currentPropTypes });
     const userClassesValues = userClasses
-      ? userClasses.map(uc => uc.value)
-      : []
+      ? userClasses.map((uc) => uc.value)
+      : [];
 
     const filters = [
       {
@@ -212,9 +213,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
       }
     ];
     onApplyFilters(filters);
-  }
+  };
 
-  handleDeselectAll = name => () => {
+  handleDeselectAll = (name) => () => {
     const newState = update(this.state, {
       [name]: { $set: [] }
     });
@@ -226,8 +227,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { postTypes, userClasses } = this.state;
 
     const userClassesValues = userClasses
-      ? userClasses.map(uc => uc.value)
-      : []
+      ? userClasses.map((uc) => uc.value)
+      : [];
 
     const filters = [
       {
@@ -240,13 +241,13 @@ class FeedFilter extends React.PureComponent<Props, State> {
       }
     ];
     onApplyFilters(filters);
-    this.setState({ open: false, openClassFilter: false })
+    this.setState({ open: false, openClassFilter: false });
   };
 
   handleClearFilters = () => {
     const { onClearFilters } = this.props;
     onClearFilters();
-    this.setState({ postTypes: [], userClasses: [] })
+    this.setState({ postTypes: [], userClasses: [] });
     this.handleClose();
   };
 
@@ -272,7 +273,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       onChangeDateRange,
       newClassExperience,
       userClasses,
-      onClearSearch,
+      onClearSearch
     } = this.props;
 
     const { open, postTypes } = this.state;
@@ -288,14 +289,18 @@ class FeedFilter extends React.PureComponent<Props, State> {
           <div className={classes.filtersHeader}>
             <InputBase
               className={classes.input}
-              startAdornment={<SearchIcon
-                classes={{
-                  root: classes.searchIcon
-                }}
-              />}
-              placeholder={ courseDisplayName
-                ? 'Search posts'
-                : 'To search add some posts first' }
+              startAdornment={
+                <SearchIcon
+                  classes={{
+                    root: classes.searchIcon
+                  }}
+                />
+              }
+              placeholder={
+                courseDisplayName
+                  ? 'Search posts'
+                  : 'To search add some posts first'
+              }
               value={query}
               onChange={onChange('query')}
               endAdornment={
@@ -338,30 +343,47 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 aria-label="Filter"
                 aria-owns={open ? 'filter-popper' : undefined}
                 className={classes.filterButton}
-                onClick={filterCount ? this.handleRemoveFilter('all') : this.handleClick}
-                variant='outlined'
+                onClick={
+                  filterCount
+                    ? this.handleRemoveFilter('all')
+                    : this.handleClick
+                }
+                variant="outlined"
                 compact
               >
                 {filterCount ? 'Reset Filters' : 'Filters'}
               </TransparentButton>
             </Tooltip>
             <div className={classes.filterButtonContainer}>
-              {!!filterCount && !!postTypes.length && postTypes.map(postType => {
-                const targetPostType = types.filter(type => type.value === postType)
-                return <Chip
-                  key={targetPostType[0].label}
-                  label={targetPostType[0].label}
-                  classes={{
-                    root: classes.filterTypeBadge
-                  }}
-                  style={{
-                    backgroundColor: targetPostType[0].color
-                  }}
-                  clickable
-                  onDelete={this.handleRemoveFilter(targetPostType[0].value)}
-                  deleteIcon={<ClearIcon className={classes.deleteFilterIcon} fontSize="small" />}
-                />}
-              )}
+              {!!filterCount &&
+                !!postTypes.length &&
+                postTypes.map((postType) => {
+                  const targetPostType = types.filter(
+                    (type) => type.value === postType
+                  );
+                  return (
+                    <Chip
+                      key={targetPostType[0].label}
+                      label={targetPostType[0].label}
+                      classes={{
+                        root: classes.filterTypeBadge
+                      }}
+                      style={{
+                        backgroundColor: targetPostType[0].color
+                      }}
+                      clickable
+                      onDelete={this.handleRemoveFilter(
+                        targetPostType[0].value
+                      )}
+                      deleteIcon={
+                        <ClearIcon
+                          className={classes.deleteFilterIcon}
+                          fontSize="small"
+                        />
+                      }
+                    />
+                  );
+                })}
             </div>
           </div>
         </Paper>
@@ -380,46 +402,49 @@ class FeedFilter extends React.PureComponent<Props, State> {
           title="Filter Class Feed"
         >
           <Grid container>
-            {(!newClassExperience) && <Grid item xs={12} sm={6} className={classes.option}>
-              <FormControl className={classes.formControl}>
-                <FormLabel component="legend">Courses</FormLabel>
-                <FormGroup>
-                  {classesList.map(item => (
-                    <FormControlLabel
-                      key={item.label}
-                      control={
-                        <Checkbox
-                          checked={
-                            userClasses.findIndex(o => o === item.value) > -1
-                          }
-                          onChange={this.handleChange('userClasses')}
-                          value={item.value}
-                        />
-                      }
-                      label={item.label}
-                    />
-                  ))}
-                </FormGroup>
-              </FormControl>
+            {!newClassExperience && (
+              <Grid item xs={12} sm={6} className={classes.option}>
+                <FormControl className={classes.formControl}>
+                  <FormLabel component="legend">Courses</FormLabel>
+                  <FormGroup>
+                    {classesList.map((item) => (
+                      <FormControlLabel
+                        key={item.label}
+                        control={
+                          <Checkbox
+                            checked={
+                              userClasses.findIndex((o) => o === item.value) >
+                              -1
+                            }
+                            onChange={this.handleChange('userClasses')}
+                            value={item.value}
+                          />
+                        }
+                        label={item.label}
+                      />
+                    ))}
+                  </FormGroup>
+                </FormControl>
 
-              {isUserClassesSelected ? (
-                <Button
-                  color='primary'
-                  className={classes.formButton}
-                  onClick={this.handleDeselectAll('userClasses')}
-                >
-                  Deselect All
-                </Button>
-              ) : (
-                <Button
-                  color='primary'
-                  className={classes.formButton}
-                  onClick={this.handleSelectAll('userClasses')}
-                >
-                  Select All
-                </Button>
-              )}
-            </Grid>}
+                {isUserClassesSelected ? (
+                  <Button
+                    color="primary"
+                    className={classes.formButton}
+                    onClick={this.handleDeselectAll('userClasses')}
+                  >
+                    Deselect All
+                  </Button>
+                ) : (
+                  <Button
+                    color="primary"
+                    className={classes.formButton}
+                    onClick={this.handleSelectAll('userClasses')}
+                  >
+                    Select All
+                  </Button>
+                )}
+              </Grid>
+            )}
             <Grid item xs={12} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel
@@ -429,16 +454,23 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   Select posts you’d like to see below:
                 </FormLabel>
                 <FormGroup>
-                  {types.map(type => (
+                  {types.map((type) => (
                     <>
                       <FormControlLabel
                         key={type.label}
                         control={
                           <Checkbox
                             checked={
-                              postTypes.findIndex(o => o === type.value) > -1
+                              postTypes.findIndex((o) => o === type.value) > -1
                             }
-                            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                            checkedIcon={
+                              <span
+                                className={clsx(
+                                  classes.icon,
+                                  classes.checkedIcon
+                                )}
+                              />
+                            }
                             icon={<span className={classes.icon} />}
                             onChange={this.handleChange('postTypes')}
                             value={type.value}
@@ -446,20 +478,28 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         }
                         label={type.label}
                       />
-                      <span className={classes.description}>{type.description}</span>
+                      <span className={classes.description}>
+                        {type.description}
+                      </span>
                     </>
                   ))}
                 </FormGroup>
                 <FormControlLabel
-                  key='deselect'
+                  key="deselect"
                   control={
                     <Checkbox
                       checked={isPostTypesSelected}
-                      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                      checkedIcon={
+                        <span
+                          className={clsx(classes.icon, classes.checkedIcon)}
+                        />
+                      }
                       icon={<span className={classes.icon} />}
-                      onChange={isPostTypesSelected
-                        ? this.handleDeselectAll('postTypes')
-                        : this.handleSelectAll('postTypes')}
+                      onChange={
+                        isPostTypesSelected
+                          ? this.handleDeselectAll('postTypes')
+                          : this.handleSelectAll('postTypes')
+                      }
                       value={isPostTypesSelected}
                     />
                   }

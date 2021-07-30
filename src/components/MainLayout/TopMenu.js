@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from 'react'
+import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
@@ -16,7 +16,6 @@ const TopMenu = ({
   handleSignOut,
   search
 }) => {
-
   return (
     <Menu
       anchorEl={anchorEl}
@@ -28,14 +27,16 @@ const TopMenu = ({
       <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
         My Profile
       </MenuItem>
-      {userClasses.canAddClasses && <MenuItem onClick={handleManageClasses}>
-        Add/Remove Classes
-      </MenuItem>}
+      {userClasses.canAddClasses && (
+        <MenuItem onClick={handleManageClasses}>Add/Remove Classes</MenuItem>
+      )}
       <MenuItem onClick={handleBlockedUsers}>Unblock Users</MenuItem>
-      <MenuItem onClick={handleOpenReferralStatus}>Referred Classmates</MenuItem>
+      <MenuItem onClick={handleOpenReferralStatus}>
+        Referred Classmates
+      </MenuItem>
       <MenuItem onClick={handleSignOut}>Logout</MenuItem>
     </Menu>
-  )
-}
+  );
+};
 
-export default memo(TopMenu)
+export default memo(TopMenu);

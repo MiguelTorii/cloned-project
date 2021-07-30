@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   dialog: {
     width: 600,
     '& > :first-child': {
@@ -39,14 +39,14 @@ export const styles = theme => ({
     boxSizing: 'border-box',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
+    color: theme.circleIn.palette.appBar
   },
   controlOptionLabel: {
     '&::before': {
-      border: 'none',
+      border: 'none'
     },
     '&:hover:not(.Mui-disabled):before': {
-      border: 'none',
+      border: 'none'
     }
   },
   report: {
@@ -54,7 +54,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     textDecoration: 'underline',
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   letsGo: {
     margin: theme.spacing(4, 0),
@@ -64,5 +64,5 @@ export const styles = theme => ({
     fontWeight: 700,
     fontSize: 20,
     background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)'
-  },
-})
+  }
+});

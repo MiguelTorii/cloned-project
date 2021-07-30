@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { dialogStyle } from 'components/Dialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +20,6 @@ const useStyles = makeStyles((theme) => ({
   removeChannel: {
     marginTop: theme.spacing()
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

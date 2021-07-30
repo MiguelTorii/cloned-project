@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useEffect, memo, useCallback, useMemo, useState } from 'react';
-import cx from 'classnames'
+import cx from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -11,17 +11,17 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import TextField from '@material-ui/core/TextField'
-import SelectSchool from 'containers/AuthRedirect/SelectSchool'
-import Login from 'containers/AuthRedirect/Login'
-import SignUp from 'containers/AuthRedirect/SignUp'
-import WalkThrough from 'containers/AuthRedirect/WalkThrough'
-import ForgotPassword from 'containers/AuthRedirect/ForgotPassword'
-import FirstTime from 'containers/AuthRedirect/FirstTime'
-import NewPassword from 'containers/AuthRedirect/NewPassword'
+import TextField from '@material-ui/core/TextField';
+import SelectSchool from 'containers/AuthRedirect/SelectSchool';
+import Login from 'containers/AuthRedirect/Login';
+import SignUp from 'containers/AuthRedirect/SignUp';
+import WalkThrough from 'containers/AuthRedirect/WalkThrough';
+import ForgotPassword from 'containers/AuthRedirect/ForgotPassword';
+import FirstTime from 'containers/AuthRedirect/FirstTime';
+import NewPassword from 'containers/AuthRedirect/NewPassword';
 import LoadImg from 'components/LoadImg';
 import Dialog from 'components/Dialog';
-import { emailRequest, getSchool } from 'api/sign-in'
+import { emailRequest, getSchool } from 'api/sign-in';
 import * as signInActions from 'actions/sign-in';
 import * as authActions from 'actions/auth';
 import * as signUpActions from 'actions/sign-up';
@@ -32,7 +32,7 @@ import authImage from 'assets/img/new-auth.png';
 import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
 import type { State as StoreState } from 'types/state';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     minHeight: '100vh',
     justifyContent: 'center',
@@ -73,17 +73,17 @@ const styles = theme => ({
     padding: theme.spacing(2, 4, 4, 4)
   },
   container: {
-    height: '100vh',
+    height: '100vh'
   },
   img: {
     width: '100%',
-    objectFit: 'scale-down',
+    objectFit: 'scale-down'
   },
   imgText: {
     maxWidth: 500,
     textAlign: 'center',
     fontWeight: 800,
-    fontSize: 20,
+    fontSize: 20
   },
   imgPhone: {
     position: 'relative',
@@ -93,7 +93,7 @@ const styles = theme => ({
     position: 'absolute',
     minWidth: 0,
     left: 0,
-    top: 0,
+    top: 0
   },
   imgContainer: {
     flexDirection: 'column',
@@ -102,13 +102,13 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   walkthrough: {
     maxWidth: '100%',
     maxHeight: '100%',
     width: '100%',
-    margin: 0,
+    margin: 0
   },
   contentClass: {
     padding: '0px !important'
@@ -144,42 +144,42 @@ const Auth = ({
   pathname
 }: Props) => {
   const [screen, setScreen] = useState(
-    pathname === '/reset_password'
-      ? 'newPassword'
-      : 'school'
-  )
-  const [school, setSchool] = useState(auth.data?.school)
-  const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false)
-  const [email, setEmail] = useState('')
-  const [deeplinkLoading, setDeeplinkLoading] = useState(false)
+    pathname === '/reset_password' ? 'newPassword' : 'school'
+  );
+  const [school, setSchool] = useState(auth.data?.school);
+  const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false);
+  const [email, setEmail] = useState('');
+  const [deeplinkLoading, setDeeplinkLoading] = useState(false);
 
-  const isDeepLink = useMemo(() => deepLinkCheck(pathname), [pathname])
+  const isDeepLink = useMemo(() => deepLinkCheck(pathname), [pathname]);
 
-  const { data: { role } } = auth
+  const {
+    data: { role }
+  } = auth;
   const { error, errorMessage } = user;
 
   useEffect(() => {
-    setSchool(auth.data?.school)
-  }, [auth])
+    setSchool(auth.data?.school);
+  }, [auth]);
 
   useEffect(() => {
     if (isDeepLink) {
-      setDeeplinkLoading(true)
+      setDeeplinkLoading(true);
     }
-  }, [isDeepLink])
+  }, [isDeepLink]);
 
   useEffect(() => {
-    const schoolId = pathname.split('/')[2]
+    const schoolId = pathname.split('/')[2];
 
     const loadSchoolById = async () => {
       try {
-        const school = await getSchool({ schoolId: pathname.split('/')[2] })
-        setSchool(school)
+        const school = await getSchool({ schoolId: pathname.split('/')[2] });
+        setSchool(school);
       } catch (err) {}
-    }
+    };
 
-    schoolId && loadSchoolById()
-  }, [setSchool, pathname])
+    schoolId && loadSchoolById();
+  }, [setSchool, pathname]);
 
   useEffect(() => {
     if (state?.error) {
@@ -187,55 +187,59 @@ const Auth = ({
         title: 'Oops! 🙊',
         body: 'This is the login page for the main application where students collaborate. We have a separate login page for the Insights Dashboard!',
         action: 'loginFail'
-      })
+      });
     }
-  }, [state, updateError])
+  }, [state, updateError]);
 
   const renderScreen = useMemo(() => {
-    switch(screen) {
-    case 'login':
-      return <Login
-        school={school}
-        signIn={signIn}
-        role={role}
-        setScreen={setScreen}
-        isLoginAsExternalUser={isLoginAsExternalUser}
-      />
-    case 'signup':
-      return <SignUp
-        school={school}
-        updateError={updateError}
-        setScreen={setScreen}
-        signUp={signUp}
-      />
-    case 'firstTime':
-      return <FirstTime
-        setScreen={setScreen}
-        updateError={updateError}
-      />
-    case 'forgotPassword':
-      return <ForgotPassword
-        setScreen={setScreen}
-        updateError={updateError}
-      />
-    case 'newPassword':
-      return <NewPassword
-        updateError={updateError}
-        signIn={signIn}
-        search={search}
-      />
-    default:
-      return <SelectSchool
-        school={school}
-        setScreen={setScreen}
-        isDeepLink={isDeepLink}
-        setDeeplinkLoading={setDeeplinkLoading}
-        updateSchool={updateSchool}
-        updateError={updateError}
-        setLoginAsExternalUser={setLoginAsExternalUser}
-      />
+    switch (screen) {
+      case 'login':
+        return (
+          <Login
+            school={school}
+            signIn={signIn}
+            role={role}
+            setScreen={setScreen}
+            isLoginAsExternalUser={isLoginAsExternalUser}
+          />
+        );
+      case 'signup':
+        return (
+          <SignUp
+            school={school}
+            updateError={updateError}
+            setScreen={setScreen}
+            signUp={signUp}
+          />
+        );
+      case 'firstTime':
+        return <FirstTime setScreen={setScreen} updateError={updateError} />;
+      case 'forgotPassword':
+        return (
+          <ForgotPassword setScreen={setScreen} updateError={updateError} />
+        );
+      case 'newPassword':
+        return (
+          <NewPassword
+            updateError={updateError}
+            signIn={signIn}
+            search={search}
+          />
+        );
+      default:
+        return (
+          <SelectSchool
+            school={school}
+            setScreen={setScreen}
+            isDeepLink={isDeepLink}
+            setDeeplinkLoading={setDeeplinkLoading}
+            updateSchool={updateSchool}
+            updateError={updateError}
+            setLoginAsExternalUser={setLoginAsExternalUser}
+          />
+        );
     }
-  } , [
+  }, [
     isLoginAsExternalUser,
     role,
     school,
@@ -246,117 +250,110 @@ const Auth = ({
     signUp,
     updateError,
     updateSchool
-  ])
+  ]);
 
   const goBack = useCallback(() => {
-    if (isDeepLink) setSchool({})
+    if (isDeepLink) setSchool({});
     if (screen === 'login') {
-      setLoginAsExternalUser(false)
-      setScreen('school')
+      setLoginAsExternalUser(false);
+      setScreen('school');
     }
-    if (screen === 'signup') setScreen('role')
-    if (screen === 'forgotPassword') setScreen('login')
-    if (screen === 'firstTime') setScreen('login')
-  }, [screen, isDeepLink])
+    if (screen === 'signup') setScreen('role');
+    if (screen === 'forgotPassword') setScreen('login');
+    if (screen === 'firstTime') setScreen('login');
+  }, [screen, isDeepLink]);
 
-  const isPhone = useMemo(() => (
-    [
-      'login',
-      'signup',
-      'forgotPassword',
-      'firstTime',
-      'newPassword'
-    ].includes(screen)
-  ), [screen])
+  const isPhone = useMemo(
+    () =>
+      [
+        'login',
+        'signup',
+        'forgotPassword',
+        'firstTime',
+        'newPassword'
+      ].includes(screen),
+    [screen]
+  );
 
   const renderBack = useMemo(() => {
-    if(![
-      'login',
-      'signup',
-      'forgotPassword',
-      'firstTime',
-    ].includes(screen)) {
-      return null
+    if (!['login', 'signup', 'forgotPassword', 'firstTime'].includes(screen)) {
+      return null;
     }
 
     return (
-      <Button
-        onClick={goBack}
-        className={classes.backButton}
-      >
+      <Button onClick={goBack} className={classes.backButton}>
         <ArrowBackIosRoundedIcon />
       </Button>
-    )}, [classes.backButton, goBack, screen])
+    );
+  }, [classes.backButton, goBack, screen]);
 
   const handleClose = useCallback(() => {
-    clearError()
-  }, [clearError])
+    clearError();
+  }, [clearError]);
 
   const onSend = useCallback(async () => {
     if (email) {
       await emailRequest({
         email,
         reason: 'Students Access'
-      })
+      });
       updateError({
         title: '',
-        body: (
-          <Typography>
-              Email successfully sent!
-          </Typography>
-        )
-      })
+        body: <Typography>Email successfully sent!</Typography>
+      });
     }
-  }, [email, updateError])
+  }, [email, updateError]);
 
   const redirectDashboard = useCallback(() => {
     const origin = window.location.origin.includes('dev')
       ? 'https://insights-dev.circleinapp.com/'
-      : 'https://insights.circleinapp.com/'
+      : 'https://insights.circleinapp.com/';
 
-    window.location.href = origin
-  }, [])
+    window.location.href = origin;
+  }, []);
 
   const onOk = useCallback(() => {
-    switch(errorMessage.action) {
-    case 'email':
-      onSend()
-      break
-    case 'loginFail':
-      redirectDashboard()
-      break
-    default:
-      handleClose()
+    switch (errorMessage.action) {
+      case 'email':
+        onSend();
+        break;
+      case 'loginFail':
+        redirectDashboard();
+        break;
+      default:
+        handleClose();
     }
-  }, [errorMessage.action, handleClose, onSend, redirectDashboard])
+  }, [errorMessage.action, handleClose, onSend, redirectDashboard]);
 
   return (
     <main className={classes.main}>
-      {isDeepLink && deeplinkLoading && <div className={classes.deeplinkBlankPage}>
-        <CircularProgress />
-        <Typography variant="body1">
-          Taking you to login...
-        </Typography>
-      </div>}
+      {isDeepLink && deeplinkLoading && (
+        <div className={classes.deeplinkBlankPage}>
+          <CircularProgress />
+          <Typography variant="body1">Taking you to login...</Typography>
+        </div>
+      )}
       <Grid
         container
         item
         xs={12}
         md={10}
         spacing={2}
-        alignItems='center'
+        alignItems="center"
         className={classes.container}
       >
         <Grid item xs={12} md={6} className={classes.imgContainer}>
           <LoadImg
-            url={isPhone ? CircleInPhone: authImage}
+            url={isPhone ? CircleInPhone : authImage}
             className={classes.img}
           />
           <Typography
             color="textPrimary"
             className={cx(isPhone && classes.imgPhone, classes.imgText)}
           >
-            CircleIn is an all-in-one studying app to connect with classmates instantly, take notes, make flashcards and organize all your schoolwork and win gift cards for studying!
+            CircleIn is an all-in-one studying app to connect with classmates
+            instantly, take notes, make flashcards and organize all your
+            schoolwork and win gift cards for studying!
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -381,36 +378,30 @@ const Auth = ({
         onCancel={handleClose}
         title={errorMessage.title}
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
         showActions
         showCancel={errorMessage.action === 'loginFail'}
-        cancelTitle='Got it'
-        okTitle={
-          errorMessage.action === 'loginFail'
-            ? 'Take me there!'
-            :'Ok'
-        }
+        cancelTitle="Got it"
+        okTitle={errorMessage.action === 'loginFail' ? 'Take me there!' : 'Ok'}
         onOk={onOk}
         open={error}
       >
         <div>
-          <Typography className={classes.body}>
-            {errorMessage.body}
-          </Typography>
+          <Typography className={classes.body}>{errorMessage.body}</Typography>
           {errorMessage.action === 'email' && (
             <TextField
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              autoComplete='on'
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="on"
               fullWidth
-              placeholder='Email'
+              placeholder="Email"
             />
           )}
         </div>
       </Dialog>
     </main>
   );
-}
+};
 
 const mapStateToProps = ({ user, auth }: StoreState): {} => ({
   user,
@@ -424,12 +415,11 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateSchool: authActions.updateSchool,
       signUp: signUpActions.signUp,
       updateError: signUpActions.updateError,
-      clearError: signUpActions.clearSignUpError,
+      clearError: signUpActions.clearSignUpError
     },
     dispatch
   );
 
-export default memo(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Auth)));
+export default memo(
+  connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Auth))
+);

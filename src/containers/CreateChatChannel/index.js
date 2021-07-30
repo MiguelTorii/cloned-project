@@ -45,7 +45,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     isLoading: false
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const {
       chat: {
         data: {
@@ -99,7 +99,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       schoolId: from === 'school' ? Number(schoolId) : undefined
     });
 
-    const options = users.map(user => {
+    const options = users.map((user) => {
       const name = `${user.firstName} ${user.lastName}`;
       const initials = getInitials(name);
       return {
@@ -121,7 +121,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     };
   };
 
-  handleUploadThumbnail = async file => {
+  handleUploadThumbnail = async (file) => {
     const {
       user: {
         data: { userId }
@@ -164,7 +164,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     const { thumbnail } = this.state;
     this.setState({ isLoading: true });
     try {
-      const users = selectedUsers.map(item => Number(item.userId));
+      const users = selectedUsers.map((item) => Number(item.userId));
       const { chatId, isNewChat } = await createChannel({
         users,
         groupName: chatType === 'group' ? name : '',

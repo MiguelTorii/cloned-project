@@ -36,19 +36,21 @@ class SignIn extends React.Component<Props, State> {
     loading: false
   };
 
-  handleChange = (field: string) => (
-    // eslint-disable-next-line no-undef
-    event: SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { target } = event;
-    // eslint-disable-next-line no-undef
-    if (!(target instanceof HTMLInputElement)) {
-      return;
-    }
-    this.setState({
-      [field]: target.value
-    });
-  };
+  handleChange =
+    (field: string) =>
+    (
+      // eslint-disable-next-line no-undef
+      event: SyntheticEvent<HTMLInputElement>
+    ) => {
+      const { target } = event;
+      // eslint-disable-next-line no-undef
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+      this.setState({
+        [field]: target.value
+      });
+    };
 
   handleSubmit = async () => {
     const { email, resetToken, updateError } = this.props;

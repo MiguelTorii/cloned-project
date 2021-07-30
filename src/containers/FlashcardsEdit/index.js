@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import withRoot from "../../withRoot";
-import FlashcardsDeckEditor from "../../components/FlashcardsDeckManager/FlashcardsDeckEditor";
-import Box from "@material-ui/core/Box";
-import { getFlashcards } from "../../api/posts";
-import { useDispatch, useSelector } from "react-redux";
-import LoadingSpin from "../../components/LoadingSpin";
+import withRoot from '../../withRoot';
+import FlashcardsDeckEditor from '../../components/FlashcardsDeckManager/FlashcardsDeckEditor';
+import Box from '@material-ui/core/Box';
+import { getFlashcards } from '../../api/posts';
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingSpin from '../../components/LoadingSpin';
 import { push } from 'connected-react-router';
 
 const FlashcardsEdit = ({ flashcardId }) => {

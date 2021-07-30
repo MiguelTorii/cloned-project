@@ -60,13 +60,11 @@ const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 const items = [{ key: 1 }, { key: 2 }, { key: 3 }];
 
-
-
 type Props = {
   classes: Object,
   data: HomeCard,
   rank: number,
-  isLoading: boolean,
+  isLoading: boolean
 };
 
 type State = {
@@ -102,7 +100,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
         </Paper>
       );
     const newItems = items.map((item, index) => {
-      const slot = data.slots.find(o => o.slot === index);
+      const slot = data.slots.find((o) => o.slot === index);
       if (slot) return { ...item, ...slot };
       return item;
     });
@@ -136,7 +134,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             Your Top Picks
           </Typography>
           <div className={classes.slots}>
-            {newItems.map(item => (
+            {newItems.map((item) => (
               <div key={item.key} className={classes.item}>
                 <Avatar className={classes.avatar}>{item.key}</Avatar>
                 {!item.displayName ? (

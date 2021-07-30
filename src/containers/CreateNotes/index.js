@@ -8,12 +8,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
-import Divider from '@material-ui/core/Divider'
-import Tooltip from 'containers/Tooltip'
-import withWidth from '@material-ui/core/withWidth'
+import Divider from '@material-ui/core/Divider';
+import Tooltip from 'containers/Tooltip';
+import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
-import { decypherClass , cypher } from 'utils/crypto'
-import ClassMultiSelect from 'containers/ClassMultiSelect'
+import { decypherClass, cypher } from 'utils/crypto';
+import ClassMultiSelect from 'containers/ClassMultiSelect';
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -24,14 +24,20 @@ import ClassesSelector from '../ClassesSelector';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator';
 // import TagsAutoComplete from '../TagsAutoComplete';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
-import { createBatchShareLink, createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote, createShareLink } from '../../api/posts';
+import {
+  createBatchShareLink,
+  createBatchPhotoNote,
+  getNotes,
+  updatePhotoNote,
+  createPhotoNote,
+  createShareLink
+} from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { logEventLocally } from '../../api/analytics';
 import { PERMISSIONS } from 'constants/common';
 
-
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -41,23 +47,23 @@ const styles = theme => ({
   },
   leftCharactersRed: {
     marginRight: theme.spacing(2),
-    color: theme.circleIn.palette.brand,
+    color: theme.circleIn.palette.brand
   },
   errorMessage: {
     color: theme.circleIn.palette.brand,
     fontWeight: 'bold',
-    marginLeft: theme.spacing(),
+    marginLeft: theme.spacing()
   },
   divisorOr: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
-    textAlign: 'center',
+    textAlign: 'center'
   },
   divisorTitle: {
     fontWeight: 'bold',
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
-    textAlign: 'center',
+    textAlign: 'center'
   }
 });
 
@@ -123,28 +129,25 @@ class CreateNotes extends React.PureComponent<Props, State> {
     handleUploadImages: Function
   };
 
-  handlePush = path => {
-    const {
-      pushTo,
-      campaign,
-    } = this.props
+  handlePush = (path) => {
+    const { pushTo, campaign } = this.props;
 
-    const { sectionId, classId } = this.state
+    const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
       const search = !this.canBatchPost()
         ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : ''
-      pushTo(`${path}${search}`)
+        : '';
+      pushTo(`${path}${search}`);
     } else {
-      pushTo(path)
+      pushTo(path);
     }
-  }
+  };
 
   componentDidMount = async () => {
     this.loadData();
-    const { classId, sectionId } = decypherClass()
-    this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
+    const { classId, sectionId } = decypherClass();
+    this.setState({ classId: Number(classId), sectionId: Number(sectionId) });
   };
 
   loadData = async () => {
@@ -153,22 +156,19 @@ class CreateNotes extends React.PureComponent<Props, State> {
         data: { userId, segment },
         userClasses: { classList: classes }
       },
-      noteId,
+      noteId
     } = this.props;
     try {
-      if (!noteId) return
-      this.setState({ isEdit: true })
-      const photoNote = await getNotes({ userId, noteId: parseInt(noteId, 10) });
+      if (!noteId) return;
+      this.setState({ isEdit: true });
+      const photoNote = await getNotes({
+        userId,
+        noteId: parseInt(noteId, 10)
+      });
       const userClasses = processClasses({ classes, segment });
       const { sectionId } = JSON.parse(userClasses[0].value);
 
-      const {
-        title,
-        classId,
-        body,
-        tags,
-        notes
-      } = photoNote
+      const { title, classId, body, tags, notes } = photoNote;
 
       this.setState({
         title,
@@ -177,7 +177,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         summary: body,
         tags,
         notes
-      })
+      });
     } catch (e) {
       this.handlePush('/feed');
     }
@@ -194,44 +194,44 @@ class CreateNotes extends React.PureComponent<Props, State> {
     try {
       const {
         user: {
-          data: { userId = '' },
-        },
+          data: { userId = '' }
+        }
       } = this.props;
       const { classList, title, summary, url, classId, sectionId } = this.state;
 
-      const tagValues = tags.map(item => Number(item.value));
+      const tagValues = tags.map((item) => Number(item.value));
 
       const res = this.canBatchPost()
         ? await createBatchShareLink({
-          userId,
-          title,
-          summary,
-          uri: url,
-          sectionIds: classList.map(c => c.sectionId),
-          tags: tagValues
-        })
-        :  await createShareLink({
-          userId,
-          title,
-          summary,
-          uri: url,
-          classId,
-          sectionId,
-          tags: tagValues
-        });
+            userId,
+            title,
+            summary,
+            uri: url,
+            sectionIds: classList.map((c) => c.sectionId),
+            tags: tagValues
+          })
+        : await createShareLink({
+            userId,
+            title,
+            summary,
+            uri: url,
+            classId,
+            sectionId,
+            tags: tagValues
+          });
 
       const {
         points,
         linkId,
         classes: resClasses,
         user: { firstName }
-      } = res
+      } = res;
 
-      let hasError = false
+      let hasError = false;
       if (this.canBatchPost() && resClasses) {
-        resClasses.forEach(r => {
-          if (r.status !== 'Success') hasError = true
-        })
+        resClasses.forEach((r) => {
+          if (r.status !== 'Success') hasError = true;
+        });
         if (hasError || resClasses.length === 0) {
           this.setState({
             loading: false,
@@ -239,7 +239,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
             errorTitle: 'Website not allowed',
             errorBody: `We're sorry, the website you entered is not allowed on CircleIn at this time, please contact support@circleinapp.com if you'd like for us to allow this website to be shared with your classmates`
           });
-          return
+          return;
         }
       }
 
@@ -256,7 +256,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       logEventLocally({
         category: 'Link',
         objectId: linkId,
-        type: 'Created',
+        type: 'Created'
       });
 
       if (
@@ -310,48 +310,50 @@ class CreateNotes extends React.PureComponent<Props, State> {
       try {
         const {
           user: {
-            data: { userId = '' },
-          },
+            data: { userId = '' }
+          }
         } = this.props;
         const { classList, title, classId, sectionId, summary } = this.state;
-        const sectionIds = classList.map(c => c.sectionId)
+        const sectionIds = classList.map((c) => c.sectionId);
         const images = await this.uploadImages.handleUploadImages();
-        const fileNames = images.map(item => item.id);
-        const tagValues = tags.map(item => Number(item.value));
+        const fileNames = images.map((item) => item.id);
+        const tagValues = tags.map((item) => Number(item.value));
 
         const {
           points,
           user: { firstName },
           classes: resClasses,
           photoNoteId
-        } = this.canBatchPost() ? await createBatchPhotoNote({
-          userId,
-          title,
-          sectionIds,
-          fileNames,
-          comment: summary,
-          tags: tagValues
-        }) :  await createPhotoNote({
-          userId,
-          title,
-          classId,
-          sectionId,
-          fileNames,
-          comment: summary,
-          tags: tagValues
-        });
+        } = this.canBatchPost()
+          ? await createBatchPhotoNote({
+              userId,
+              title,
+              sectionIds,
+              fileNames,
+              comment: summary,
+              tags: tagValues
+            })
+          : await createPhotoNote({
+              userId,
+              title,
+              classId,
+              sectionId,
+              fileNames,
+              comment: summary,
+              tags: tagValues
+            });
 
         logEventLocally({
           category: 'PhotoNote',
           objectId: photoNoteId,
-          type: 'Created',
+          type: 'Created'
         });
 
-        let hasError = false
+        let hasError = false;
         if (this.canBatchPost() && resClasses) {
-          resClasses.forEach(r => {
-            if (r.status !== 'Success') hasError = true
-          })
+          resClasses.forEach((r) => {
+            if (r.status !== 'Success') hasError = true;
+          });
           if (hasError || resClasses.length === 0) {
             this.setState({
               loading: false,
@@ -359,7 +361,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               errorTitle: 'Error creating posts',
               errorBody: 'Please try again'
             });
-            return
+            return;
           }
         }
 
@@ -388,7 +390,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
               }
             });
           }
-          this.handlePush('/feed')
+          this.handlePush('/feed');
         }, 3000);
       } catch (err) {
         if (err.message === 'no images')
@@ -421,7 +423,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         } = this.props;
         const { title, classId, sectionId, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
-        const fileNames = images.map(item => item.id);
+        const fileNames = images.map((item) => item.id);
 
         await updatePhotoNote({
           noteId,
@@ -430,12 +432,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
           classId,
           sectionId,
           fileNames,
-          comment: summary,
+          comment: summary
         });
 
-
         setTimeout(() => {
-          this.setState({ loading: false })
+          this.setState({ loading: false });
           const { enqueueSnackbar, classes } = this.props;
           enqueueSnackbar({
             notification: {
@@ -456,9 +457,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
               }
             }
           });
-          this.handlePush(`/notes/${noteId}`)
-        }, 3000)
-
+          this.handlePush(`/notes/${noteId}`);
+        }, 3000);
       } catch (err) {
         if (err.message === 'no images')
           this.setState({
@@ -476,36 +476,35 @@ class CreateNotes extends React.PureComponent<Props, State> {
           });
       }
     }
-  }
+  };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const { noteId } = this.props
-    const { url } = this.state
-    if (url) this.createSharelink()
-    if (noteId) this.updateNotes()
-    else this.createNotes()
-  }
+    const { noteId } = this.props;
+    const { url } = this.state;
+    if (url) this.createSharelink();
+    if (noteId) this.updateNotes();
+    else this.createNotes();
+  };
 
-  handleTextChange = name => event => {
+  handleTextChange = (name) => (event) => {
     this.setState({ [name]: event.target.value, changed: true });
   };
 
-  handleClasses = classList => {
-    this.setState({ classList })
+  handleClasses = (classList) => {
+    this.setState({ classList });
     if (classList.length > 0) {
       this.setState({
         sectionId: classList[0].sectionId,
         classId: classList[0].classId
-      })
+      });
     } else {
       this.setState({
         sectionId: null,
         classId: 0
-      })
+      });
     }
-  }
-
+  };
 
   handleClassChange = ({
     classId,
@@ -514,10 +513,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
     classId: number,
     sectionId: number
   }) => {
-    const { user } = this.props
-    const selected = user.userClasses.classList.find(c => c.classId === classId)
+    const { user } = this.props;
+    const selected = user.userClasses.classList.find(
+      (c) => c.classId === classId
+    );
     if (selected) this.setState({ classList: [selected] });
-    this.setState({ classId, sectionId })
+    this.setState({ classId, sectionId });
   };
 
   // handleTagsChange = values => {
@@ -530,31 +531,29 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  getLeftCharts = field => {
+  getLeftCharts = (field) => {
     // help ? 50 - help.length : 50;
     return 50 - field.length >= 0 ? 50 - field.length : 0;
   };
 
   imageChange = () => {
-    this.setState({ changed: true })
+    this.setState({ changed: true });
 
     if (
       this.uploadImages &&
       this.uploadImages.state &&
       this.uploadImages.state.images
     ) {
-      this.setState({ hasImages: this.uploadImages.state.images.length > 0 })
+      this.setState({ hasImages: this.uploadImages.state.images.length > 0 });
     }
-  }
+  };
 
   errorMessage = () => {
-    const {
-      classes,
-    } = this.props
-    const { summary } = this.state
+    const { classes } = this.props;
+    const { summary } = this.state;
 
-    if (Number(this.getLeftCharts(summary)) <= 0) return null
-    if (this.canBatchPost()) return <div />
+    if (Number(this.getLeftCharts(summary)) <= 0) return null;
+    if (this.canBatchPost()) return <div />;
 
     return (
       <Typography
@@ -564,28 +563,22 @@ class CreateNotes extends React.PureComponent<Props, State> {
       >
         You must type 50 characters or more in the summary to post these notes.
       </Typography>
-    )
-
-  }
+    );
+  };
 
   canBatchPost = () => {
     const {
       user: {
         expertMode,
-        data: {
-          permission
-        }
+        data: { permission }
       }
-    } = this.props
+    } = this.props;
 
-    return expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
-  }
+    return expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS);
+  };
 
   render() {
-    const {
-      classes,
-      width,
-    } = this.props;
+    const { classes, width } = this.props;
 
     const {
       // tags,
@@ -606,7 +599,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody
     } = this.state;
 
-    const notSm = !['xs', 'sm'].includes(width)
+    const notSm = !['xs', 'sm'].includes(width);
 
     return (
       <div className={classes.root}>
@@ -621,9 +614,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
             handleSubmit={this.handleSubmit}
           >
             <Grid container alignItems="center">
-              {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Title of note</Typography>
-              </Grid>}
+              {notSm && (
+                <Grid item md={2}>
+                  <Typography variant="subtitle1">Title of note</Typography>
+                </Grid>
+              )}
               <Grid item xs={12} md={10}>
                 <OutlinedTextValidator
                   onChange={this.handleTextChange}
@@ -636,9 +631,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 />
               </Grid>
 
-              {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Description of notes</Typography>
-              </Grid>}
+              {notSm && (
+                <Grid item md={2}>
+                  <Typography variant="subtitle1">
+                    Description of notes
+                  </Typography>
+                </Grid>
+              )}
               <Grid item xs={12} md={10}>
                 <OutlinedTextValidator
                   onChange={this.handleTextChange}
@@ -654,12 +653,16 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <Typography
                   variant="subtitle1"
                   align="right"
-                  className={Number(this.getLeftCharts(summary)) > 0 ? classes.leftCharactersRed : classes.leftCharacters}
-                >{`${this.getLeftCharts(
-                  summary
-                )} ${this.canBatchPost()
-                  ? 'more characters required'
-                  : 'more characters to earn points'}`}</Typography>
+                  className={
+                    Number(this.getLeftCharts(summary)) > 0
+                      ? classes.leftCharactersRed
+                      : classes.leftCharacters
+                  }
+                >{`${this.getLeftCharts(summary)} ${
+                  this.canBatchPost()
+                    ? 'more characters required'
+                    : 'more characters to earn points'
+                }`}</Typography>
               </Grid>
 
               {/* {notSm && <Grid item md={2}> */}
@@ -675,9 +678,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
               {/* /> */}
               {/* </Grid> */}
 
-              {notSm && <Grid item md={2}>
-                <Typography variant="subtitle1">Class</Typography>
-              </Grid>}
+              {notSm && (
+                <Grid item md={2}>
+                  <Typography variant="subtitle1">Class</Typography>
+                </Grid>
+              )}
               <Grid item xs={12} md={10}>
                 {this.canBatchPost() && !isEdit ? (
                   <Tooltip
@@ -707,46 +712,67 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 item
                 xs={12}
                 md={10}
-                justify='center'
-                alignItems='center'
+                justify="center"
+                alignItems="center"
               >
                 <Grid item xs={2} md={2}>
                   <Divider light />
                 </Grid>
                 <Grid item xs={7} md={7}>
-                  <Typography className={classes.divisorTitle} variant="subtitle1">Choose how to share notes</Typography>
+                  <Typography
+                    className={classes.divisorTitle}
+                    variant="subtitle1"
+                  >
+                    Choose how to share notes
+                  </Typography>
                 </Grid>
                 <Grid item xs={2} md={2}>
                   <Divider light />
                 </Grid>
               </Grid>
 
-              {notSm && !hasImages && <Grid item xs={12} md={2}>
-                <Typography variant="subtitle1">Link to Google Docs</Typography>
-              </Grid>}
-              {!hasImages && <Grid item xs={12} md={10}>
-                <OutlinedTextValidator
-                  onChange={this.handleTextChange}
-                  label={!notSm ? 'Link to Google Docs (public link)' : 'Public link'}
-                  name="url"
-                  variant={notSm ? null : 'standard'}
-                  value={url}
-                />
-              </Grid>}
+              {notSm && !hasImages && (
+                <Grid item xs={12} md={2}>
+                  <Typography variant="subtitle1">
+                    Link to Google Docs
+                  </Typography>
+                </Grid>
+              )}
+              {!hasImages && (
+                <Grid item xs={12} md={10}>
+                  <OutlinedTextValidator
+                    onChange={this.handleTextChange}
+                    label={
+                      !notSm
+                        ? 'Link to Google Docs (public link)'
+                        : 'Public link'
+                    }
+                    name="url"
+                    variant={notSm ? null : 'standard'}
+                    value={url}
+                  />
+                </Grid>
+              )}
               {notSm && !url && !hasImages && <Grid item md={2} />}
-              {!url && !hasImages && <Grid item xs={12} md={10}>
-                <Typography variant="subtitle1" className={classes.divisorOr}>OR</Typography>
-              </Grid>}
+              {!url && !hasImages && (
+                <Grid item xs={12} md={10}>
+                  <Typography variant="subtitle1" className={classes.divisorOr}>
+                    OR
+                  </Typography>
+                </Grid>
+              )}
               {notSm && !url && <Grid item md={2} />}
-              {!url && <Grid item xs={12} md={10}>
-                <UploadImages
-                  notes={notes}
-                  imageChange={this.imageChange}
-                  innerRef={node => {
-                    this.uploadImages = node;
-                  }}
-                />
-              </Grid>}
+              {!url && (
+                <Grid item xs={12} md={10}>
+                  <UploadImages
+                    notes={notes}
+                    imageChange={this.imageChange}
+                    innerRef={(node) => {
+                      this.uploadImages = node;
+                    }}
+                  />
+                </Grid>
+              )}
             </Grid>
           </CreatePostForm>
         </ErrorBoundary>

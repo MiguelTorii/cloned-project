@@ -14,7 +14,7 @@ import SelectedRewards from '../../components/SelectedRewards';
 import AvailableRewards from '../../components/AvailableRewards';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   divider: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
@@ -135,7 +135,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(Store));
+export default connect(mapStateToProps, null)(withStyles(styles)(Store));

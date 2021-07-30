@@ -1,17 +1,17 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import moment from 'moment'
+import moment from 'moment';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
-import * as notesActions from 'actions/notes'
+import * as notesActions from 'actions/notes';
 
 const useStyles = makeStyles((theme) => ({
   listPrimary: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   loading: {
     display: 'flex',
     justifyContent: 'center',
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   createNote: {
     color: theme.circleIn.palette.white,
@@ -63,14 +63,14 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1.5, 0, 3, -3)
   },
   addNote: {
-    color: theme.circleIn.palette.brand,
+    color: theme.circleIn.palette.brand
   }
-}))
+}));
 
 export const blankNote = {
   content: '',
-  title: 'Untitled',
-}
+  title: 'Untitled'
+};
 
 const NotesList = ({
   classId,
@@ -79,27 +79,27 @@ const NotesList = ({
   openConfirmDelete,
   editNote,
   loading,
-  saveNoteAction,
+  saveNoteAction
 }) => {
-  const classes = useStyles()
-  const [hovered, setHovered] = useState(null)
-  const [refresh, setRefresh] = useState(null)
+  const classes = useStyles();
+  const [hovered, setHovered] = useState(null);
+  const [refresh, setRefresh] = useState(null);
 
-  const onHover = useCallback(i => setHovered(i), [])
-  const onLeave = useCallback(() => setHovered(null), [])
+  const onHover = useCallback((i) => setHovered(i), []);
+  const onLeave = useCallback(() => setHovered(null), []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRefresh(moment().format())
+      setRefresh(moment().format());
     }, 60000);
     return () => {
       clearInterval(interval);
-    }
+    };
   }, []);
 
   const createNote = useCallback(async () => {
-    saveNoteAction({ note: blankNote, sectionId, classId })
-  }, [classId, saveNoteAction, sectionId])
+    saveNoteAction({ note: blankNote, sectionId, classId });
+  }, [classId, saveNoteAction, sectionId]);
 
   return loading ? (
     <div className={classes.loading}>
@@ -107,70 +107,71 @@ const NotesList = ({
     </div>
   ) : (
     <List className={classes.listRoot}>
-      {notes.length > 0 ? notes.map((n, i) => (
-        <div
-          key={n.id}
-          onMouseEnter={() => onHover(i)}
-          onMouseLeave={onLeave}
-          className={classes.itemContainer}
-        >
-          <ListItem
-            button
-            className={classes.listItem}
-            onClick={() => editNote(n)}
+      {notes.length > 0 ? (
+        notes.map((n, i) => (
+          <div
+            key={n.id}
+            onMouseEnter={() => onHover(i)}
+            onMouseLeave={onLeave}
+            className={classes.itemContainer}
           >
-            <ListItemText
-              primary={n.title}
-              // secondaryTypographyProps={{ component: 'div' }}
-              // secondary={<CustomQuill value={n.content} readOnly />}
-              classes={{
-                primary: classes.listPrimary,
-                // secondary: classes.listSecondary
-              }}
-            />
+            <ListItem
+              button
+              className={classes.listItem}
+              onClick={() => editNote(n)}
+            >
+              <ListItemText
+                primary={n.title}
+                // secondaryTypographyProps={{ component: 'div' }}
+                // secondary={<CustomQuill value={n.content} readOnly />}
+                classes={{
+                  primary: classes.listPrimary
+                  // secondary: classes.listSecondary
+                }}
+              />
 
-            {/* <div className={classes.date}>{timeFromNow(n)}</div> */}
-          </ListItem>
-          {i === hovered && <IconButton
-            aria-label="delete"
-            className={classes.delete}
-            onClick={() => openConfirmDelete(n)}
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>}
-          <div className={classes.hidden}>{refresh}</div>
-        </div>
-      )) : (
+              {/* <div className={classes.date}>{timeFromNow(n)}</div> */}
+            </ListItem>
+            {i === hovered && (
+              <IconButton
+                aria-label="delete"
+                className={classes.delete}
+                onClick={() => openConfirmDelete(n)}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            )}
+            <div className={classes.hidden}>{refresh}</div>
+          </div>
+        ))
+      ) : (
         <div className={classes.emptyFolder}>
-          No notes yet! Click below to add some amazing notes to study. 
+          No notes yet! Click below to add some amazing notes to study.
         </div>
       )}
       <Button
-        variant='text'
+        variant="text"
         className={classes.createNote}
         color="primary"
         onClick={createNote}
       >
-        <AddIcon className={classes.addNote} />&nbsp;
-        Add notes
+        <AddIcon className={classes.addNote} />
+        &nbsp; Add notes
       </Button>
     </List>
-  )
-}
+  );
+};
 
 NotesList.defaultProps = {
-  notes: [],
-}
+  notes: []
+};
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      saveNoteAction: notesActions.saveNoteAction,
+      saveNoteAction: notesActions.saveNoteAction
     },
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(NotesList);
+export default connect(null, mapDispatchToProps)(NotesList);

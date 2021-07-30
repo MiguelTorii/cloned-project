@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CustomSwitch from 'components/MainLayout/Switch';
-import Grid from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid';
 import Dialog from '../Dialog';
 import { styles } from '../_styles/CreatePostForm';
 
@@ -30,15 +30,15 @@ type State = {};
 class CreatePostForm extends React.PureComponent<Props, State> {
   state = {
     open: false
-  }
+  };
 
   showBreakDownDialog = () => {
-    this.setState({ open: true })
-  }
+    this.setState({ open: true });
+  };
 
   onClose = () => {
-    this.setState({ open: false })
-  }
+    this.setState({ open: false });
+  };
 
   render() {
     const {
@@ -63,14 +63,11 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       <>
         <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
           <main className={classes.main}>
-            <Paper className={classes.paper}>
-              {children}
-            </Paper>
+            <Paper className={classes.paper}>{children}</Paper>
             <Grid container alignItems="center">
-
               <Grid className={classes.mt3} item xs={12} sm={6}>
-                {currentTag === 1
-                  ? <>
+                {currentTag === 1 ? (
+                  <>
                     <FormControlLabel
                       className={classes.anonymousActive}
                       control={
@@ -80,16 +77,26 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                           name="anonymous"
                         />
                       }
-                      label={anonymousActive ? "This post is anonymous!" : "Make this post anonymous! 👀"}
+                      label={
+                        anonymousActive
+                          ? 'This post is anonymous!'
+                          : 'Make this post anonymous! 👀'
+                      }
                     />
                     <Typography className={classes.anonymouslyExplanation}>
-                      Your classmates cannot see who asked the question,
-                      but this post can still be flagged for academic dishonesty.
+                      Your classmates cannot see who asked the question, but
+                      this post can still be flagged for academic dishonesty.
                     </Typography>
                   </>
-                  : <Button onClick={this.showBreakDownDialog} color="primary" className={classes.breakdown}>
-                  🏆 &nbsp;<u>Points Breakdown</u>
-                  </Button> }
+                ) : (
+                  <Button
+                    onClick={this.showBreakDownDialog}
+                    color="primary"
+                    className={classes.breakdown}
+                  >
+                    🏆 &nbsp;<u>Points Breakdown</u>
+                  </Button>
+                )}
               </Grid>
               <Grid className={classes.mt3} item xs={12} sm={6}>
                 <div className={classes.actions}>
@@ -102,7 +109,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                       disabled={Boolean(loading || !changed)}
                       classes={{
                         root: classes.submit,
-                        disabled: classes.disabled,
+                        disabled: classes.disabled
                       }}
                       id="post-submit-btn"
                     >
@@ -113,8 +120,11 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                             className={classes.buttonProgress}
                           />
                         </div>
-                      ) : Boolean(loading || !changed) ? "Post"
-                        : buttonLabel || 'Create'}
+                      ) : Boolean(loading || !changed) ? (
+                        'Post'
+                      ) : (
+                        buttonLabel || 'Create'
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -137,35 +147,35 @@ class CreatePostForm extends React.PureComponent<Props, State> {
           <div className={classes.childContent}>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
-                <div className={classes.postItem}>
-                  Post ✏️
-                </div>
+                <div className={classes.postItem}>Post ✏️</div>
               </div>
-              <div className={classes.itemText}>Earn 1k points for creating a post.</div>
+              <div className={classes.itemText}>
+                Earn 1k points for creating a post.
+              </div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
-                <div className={classes.questionItem}>
-                  Question 🤔
-                </div>
+                <div className={classes.questionItem}>Question 🤔</div>
               </div>
-              <div className={classes.itemText}>Earn 2K points for answering a question & 40K for Best Answer.</div>
+              <div className={classes.itemText}>
+                Earn 2K points for answering a question & 40K for Best Answer.
+              </div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
-                <div className={classes.noteItem}>
-                  Notes 📝
-                </div>
+                <div className={classes.noteItem}>Notes 📝</div>
               </div>
-              <div className={classes.itemText}>Earn 10K points for every page of notes.</div>
+              <div className={classes.itemText}>
+                Earn 10K points for every page of notes.
+              </div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
-                <div className={classes.resourceItem}>
-                  Resource 🔗
-                </div>
+                <div className={classes.resourceItem}>Resource 🔗</div>
               </div>
-              <div className={classes.itemText}>Earn 5K points for each resource shared.</div>
+              <div className={classes.itemText}>
+                Earn 5K points for each resource shared.
+              </div>
             </div>
             <div className={classes.gotIt}>
               <Button

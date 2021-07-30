@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     margin: theme.spacing(),
     width: 200,
@@ -45,16 +45,16 @@ export const styles = theme => ({
   smallRichEditor: {
     '& div': {
       height: 'calc(100% - 62px)'
-    },
+    }
   },
   bigRichEditor: {
     '& div': {
       height: 'calc(100% - 42px)'
-    },
+    }
   },
   noFocus: {
     '& div': {
-      height: '100%',
+      height: '100%'
     },
     '& .ql-toolbar.ql-snow': {
       display: 'none'
@@ -70,7 +70,7 @@ export const styles = theme => ({
     '& .ql-snow .ql-picker.ql-expanded .ql-picker-options': {
       top: 'inherit',
       zIndex: 1,
-      bottom: '100%',
+      bottom: '100%'
     },
     '& div div': {
       height: '100%',
@@ -86,7 +86,7 @@ export const styles = theme => ({
     '& .ql-editor': {
       position: 'absolute',
       width: '100%',
-      padding: theme.spacing(),
+      padding: theme.spacing()
     },
     '& .ql-toolbar.ql-snow': {
       height: 42,
@@ -114,12 +114,12 @@ export const styles = theme => ({
     left: theme.spacing(),
     maxHeight: 100,
     maxWidth: 100,
-    objectFit: 'scale-down',
+    objectFit: 'scale-down'
   },
   imageEditor: {
     '& .ql-editor': {
       width: 'calc(100% - 116px)',
-      left: 116,
+      left: 116
     }
   },
   dialog: {
@@ -127,7 +127,7 @@ export const styles = theme => ({
     '& #dialog-cancel-button': {
       position: 'absolute',
       bottom: theme.spacing() + 10,
-      left: theme.spacing(3),
+      left: theme.spacing(3)
     }
   }
 });

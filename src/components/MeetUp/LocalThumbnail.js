@@ -43,7 +43,7 @@ class LocalThumbnail extends React.PureComponent<Props, State> {
     if (video) {
       if (video.stop) video.stop();
       const attachedElements = video.detach();
-      attachedElements.forEach(element => element.remove());
+      attachedElements.forEach((element) => element.remove());
     }
   };
 

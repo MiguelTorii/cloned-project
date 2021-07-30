@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
     right: 40,
     backgroundColor: theme.circleIn.palette.betaTag,
     color: theme.circleIn.palette.primaryBackground,
-    borderRadius: theme.spacing(1/2),
+    borderRadius: theme.spacing(1 / 2),
     fontWeight: 700
   },
   emptyContent: {

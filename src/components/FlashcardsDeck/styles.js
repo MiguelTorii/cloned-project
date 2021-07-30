@@ -19,7 +19,8 @@ export default makeStyles((theme) => ({
     margin: theme.spacing(0, -3, -3, -3),
     padding: theme.spacing(2, 3, 3, 3),
     borderRadius: '0 0 10px 10px',
-    background: 'linear-gradient(180deg, #3A3B3B 0%, #3A3B3B 49.48%, #222222 100%)'
+    background:
+      'linear-gradient(180deg, #3A3B3B 0%, #3A3B3B 49.48%, #222222 100%)'
   },
   actionItem: {
     cursor: 'pointer'

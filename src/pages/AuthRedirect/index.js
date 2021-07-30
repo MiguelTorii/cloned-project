@@ -23,11 +23,7 @@ type Props = {
 
 const AuthPage = ({
   classes,
-  location : {
-    search,
-    state,
-    pathname
-  }
+  location: { search, state, pathname }
 }: Props) => {
   /** *
    * Logic for masquerading starts
@@ -41,21 +37,22 @@ const AuthPage = ({
     return {
       userId: query.get('user_id'),
       refreshToken: query.get('refresh_token'),
-      email: query.get('acting_user_email'),
+      email: query.get('acting_user_email')
     };
   }, [search]);
-  const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
+  const isMasquerading = !!(
+    pathname === '/auth' &&
+    userId &&
+    refreshToken &&
+    email
+  );
 
   // Check if there are parameters for masquerading
   useEffect(() => {
-    if (!isMasquerading) return ;
+    if (!isMasquerading) return;
 
     dispatch(
-      masquerade(
-        userId,
-        refreshToken,
-        (isAuth) => !isAuth && history.push('/')
-      )
+      masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/'))
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -83,15 +80,9 @@ const AuthPage = ({
   return (
     <main className={classes.main}>
       <CssBaseline />
-      <Auth
-        state={state}
-        search={search}
-        pathname={pathname}
-      />
+      <Auth state={state} search={search} pathname={pathname} />
     </main>
   );
-}
+};
 
-export default withRouter(
-  withRoot(withStyles(styles)(AuthPage))
-);
+export default withRouter(withRoot(withStyles(styles)(AuthPage)));

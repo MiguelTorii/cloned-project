@@ -10,11 +10,8 @@ const QuillToolbar = ({ elementId }: Props) => {
   const classes = useStyles();
 
   return (
-    <div
-      id={elementId}
-      className={classes.root}
-    >
-      <button className="ql-bold"/>
+    <div id={elementId} className={classes.root}>
+      <button className="ql-bold" />
       <button className="ql-italic" />
       <button className="ql-underline" />
       <button className="ql-strike" />

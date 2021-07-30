@@ -5,4 +5,4 @@ export const useStyles = makeStyles(() => ({
     ...dialogStyle,
     width: 600
   }
-}))
+}));

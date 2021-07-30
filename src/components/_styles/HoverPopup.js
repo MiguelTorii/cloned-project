@@ -1,17 +1,17 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    paddingRight: "0 !important",
-    overflow: "hidden",
-    display: "flex",
-    "& .MuiPopover-paper": {
-      transform: "translate(-50%, 10px) !important",
-    },
+    paddingRight: '0 !important',
+    overflow: 'hidden',
+    display: 'flex',
+    '& .MuiPopover-paper': {
+      transform: 'translate(-50%, 10px) !important'
+    }
   },
   popover: {
     padding: 0,
-    pointerEvents: "none",
+    pointerEvents: 'none'
   },
   paper: {
     display: 'flex',
@@ -26,31 +26,31 @@ export default makeStyles((theme) => ({
     maxWidth: 360,
     width: '100%',
     overflow: 'hidden',
-    pointerEvents: "auto",
-    "&.flip": {
-      marginTop: theme.spacing(-1.5),
-    },
+    pointerEvents: 'auto',
+    '&.flip': {
+      marginTop: theme.spacing(-1.5)
+    }
   },
   overviewAvatar: {
     width: 90,
     height: 90,
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   userInfo: {
-    textAlign: 'left',
+    textAlign: 'left'
   },
   hasBio: {
     margin: 'auto',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   name: {
-    fontSize: 16,
+    fontSize: 16
   },
   subTitle: {
-    fontSize: 14,
+    fontSize: 14
   },
   buttonBox: {
-    width: '100%',
+    width: '100%'
   },
   message: {
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
@@ -62,7 +62,7 @@ export default makeStyles((theme) => ({
     color: theme.circleIn.palette.white,
     borderRadius: 20,
     width: 114,
-    height: 33,
+    height: 33
   },
   chatRoom: {
     backgroundColor: theme.circleIn.palette.primaryBackground,
@@ -75,6 +75,6 @@ export default makeStyles((theme) => ({
     color: theme.circleIn.palette.white,
     borderRadius: 20,
     width: 140,
-    height: 33,
-  },
+    height: 33
+  }
 }));

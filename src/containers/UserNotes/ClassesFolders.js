@@ -1,18 +1,18 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import * as notesActions from 'actions/notes';
 import Tooltip from 'containers/Tooltip';
 import EmptyState from 'components/FeedList/EmptyState';
-import EmptyPastClass from 'assets/img/empty-past-class.png'
+import EmptyPastClass from 'assets/img/empty-past-class.png';
 import NotesList from './NotesList';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,32 +31,32 @@ const useStyles = makeStyles((theme) => ({
     color: theme.circleIn.palette.primaryText1,
     lineHeight: '33px',
     paddingLeft: 0,
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   listRoot: {
-    padding: 0,
+    padding: 0
   },
   title: {
     fontWeight: 'bold',
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   emptyStateContainer: {
     maxWidth: 514,
     lineHeight: '33px',
-    textAlign: 'left',
+    textAlign: 'left'
   },
   emptyTitle: {
     fontSize: 24,
     fontWeight: 800,
     color: theme.circleIn.palette.white,
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   emptyBody: {
     fontSize: 24,
     fontWeight: 400,
-    color: theme.circleIn.palette.white,
+    color: theme.circleIn.palette.white
   }
-}))
+}));
 
 const renderTitleAndTooltip = (name, idx, onboardingOpen) => (
   <div style={{ display: 'flex' }}>
@@ -73,7 +73,7 @@ const renderTitleAndTooltip = (name, idx, onboardingOpen) => (
       </Tooltip>
     )}
   </div>
-)
+);
 
 const ClassesFolders = ({
   sectionId,
@@ -84,53 +84,53 @@ const ClassesFolders = ({
   hasNotes,
   openConfirmDelete,
   editNote,
-  getNotes,
+  getNotes
 }) => {
-  const [status, setStatus] = useState({})
-  const [noteList, setNoteList] = useState({})
-  const [loading, setLoading] = useState({})
-  const classes = useStyles()
-  const isFolder = useMemo(() => sectionId !== null, [sectionId])
+  const [status, setStatus] = useState({});
+  const [noteList, setNoteList] = useState({});
+  const [loading, setLoading] = useState({});
+  const classes = useStyles();
+  const isFolder = useMemo(() => sectionId !== null, [sectionId]);
 
   useEffect(() => {
     const init = async () => {
       try {
-        setLoading(loading => ({
+        setLoading((loading) => ({
           ...loading,
-          [sectionId]: true,
-        }))
-        const notes = await getNotes()
-        setNoteList(noteList => ({
+          [sectionId]: true
+        }));
+        const notes = await getNotes();
+        setNoteList((noteList) => ({
           ...noteList,
           [sectionId]: notes
-        }))
+        }));
       } catch (err) {
-        console.log(err)
+        console.log(err);
       } finally {
-        setLoading(loading => ({
+        setLoading((loading) => ({
           ...loading,
-          [sectionId]: false,
-        }))
+          [sectionId]: false
+        }));
       }
-    }
+    };
 
-    if (isFolder) init()
-  }, [getNotes, isFolder, sectionId])
+    if (isFolder) init();
+  }, [getNotes, isFolder, sectionId]);
 
   useEffect(() => {
-    setNoteList(noteList => ({
+    setNoteList((noteList) => ({
       ...noteList,
       [sectionId]: notes
-    }))
-  }, [notes, sectionId])
+    }));
+  }, [notes, sectionId]);
 
   const handleClick = (sectionId, classId) => {
-    setStatus(status => ({
+    setStatus((status) => ({
       ...status,
       [sectionId]: !status[sectionId]
-    }))
-    setSectionId({ sectionId, classId })
-  }
+    }));
+    setSectionId({ sectionId, classId });
+  };
 
   return (
     <List className={classes.listRoot}>
@@ -140,13 +140,19 @@ const ClassesFolders = ({
             className={classes.listItemContainer}
             onClick={() => handleClick(cl.sectionId, cl.classId)}
           >
-            {status[cl.sectionId] ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
+            {status[cl.sectionId] ? (
+              <KeyboardArrowDownIcon />
+            ) : (
+              <KeyboardArrowRightIcon />
+            )}
             <ListItem
               key={`notes-folder-${cl.sectionId}`}
               className={classes.listItem}
             >
               <ListItemIcon>
-                <FolderOpenIcon style={{ color: cl.isCurrent ? cl?.color : '#5F6165' }} />
+                <FolderOpenIcon
+                  style={{ color: cl.isCurrent ? cl?.color : '#5F6165' }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary={renderTitleAndTooltip(cl.name, idx, onboardingOpen)}
@@ -154,14 +160,16 @@ const ClassesFolders = ({
               />
             </ListItem>
           </div>
-          {status[cl.sectionId] && <NotesList
-            classId={cl.classId}
-            sectionId={cl.sectionId}
-            notes={noteList[cl.sectionId]}
-            loading={loading[cl.sectionId]}
-            openConfirmDelete={openConfirmDelete}
-            editNote={editNote}
-          />}
+          {status[cl.sectionId] && (
+            <NotesList
+              classId={cl.classId}
+              sectionId={cl.sectionId}
+              notes={noteList[cl.sectionId]}
+              loading={loading[cl.sectionId]}
+              openConfirmDelete={openConfirmDelete}
+              editNote={editNote}
+            />
+          )}
         </>
       ))}
       {classList.length === 0 && (
@@ -171,25 +179,25 @@ const ClassesFolders = ({
               This tab shows notes from “past classes”.
             </div>
             <div className={classes.emptyBody}>
-              You don’t have any past classes yet, but your notes will be saved here and ready for you once you finish your current classes.&nbsp;
-              <span role="img" aria-label="Wink emoji">😉</span>
+              You don’t have any past classes yet, but your notes will be saved
+              here and ready for you once you finish your current classes.&nbsp;
+              <span role="img" aria-label="Wink emoji">
+                😉
+              </span>
             </div>
           </div>
         </EmptyState>
       )}
     </List>
-  )
-}
+  );
+};
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      getNotes: notesActions.getNotes,
+      getNotes: notesActions.getNotes
     },
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ClassesFolders);
+export default connect(null, mapDispatchToProps)(ClassesFolders);

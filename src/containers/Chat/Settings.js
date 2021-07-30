@@ -1,13 +1,13 @@
 // @flow
-import React, { useState, useEffect, useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Popover from '@material-ui/core/Popover'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import SettingsIcon from '@material-ui/icons/Settings'
-import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog'
-import RemoveStudentDialog from 'components/RemoveStudentDialog'
-import { PERMISSIONS } from 'constants/common'
+import React, { useState, useEffect, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import SettingsIcon from '@material-ui/icons/Settings';
+import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
+import RemoveStudentDialog from 'components/RemoveStudentDialog';
+import { PERMISSIONS } from 'constants/common';
 
 const useStyles = makeStyles((theme) => ({
   addLabel: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.circleIn.palette.brand}`
   },
   settingsIcon: {
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   selectOption: {
     width: 250,
@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
 
     '&:hover': {
-      background: theme.circleIn.palette.modalBackground,
+      background: theme.circleIn.palette.modalBackground
     }
   },
   reportIssue: {
-    color: theme.circleIn.palette.danger,
+    color: theme.circleIn.palette.danger
   }
-}))
+}));
 
 type Props = {
   channel: Object,
@@ -56,34 +56,51 @@ const Settings = ({
   localChannel,
   currentUserName
 }: Props) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
+  const [removeStudentsModalOpen, setRemoveStudentsModalOpen] = useState(false);
 
-  const classes = useStyles()
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false)
-  const [removeStudentsModalOpen, setRemoveStudentsModalOpen] = useState(false)
+  const handleEditGroupDetailsClose = useCallback(
+    () => setEditGroupDetailsOpen(false),
+    []
+  );
+  const handleEditGroupDetailsOpen = useCallback(
+    () => setEditGroupDetailsOpen(true),
+    []
+  );
+  const handleRemoveStudents = useCallback(
+    () => setRemoveStudentsModalOpen(true),
+    []
+  );
+  const handleRemoveStudentModalClose = useCallback(
+    () => setRemoveStudentsModalOpen(false),
+    []
+  );
 
-  const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), [])
-  const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), [])
-  const handleRemoveStudents = useCallback(() => setRemoveStudentsModalOpen(true), [])
-  const handleRemoveStudentModalClose = useCallback(() => setRemoveStudentsModalOpen(false), [])
-
-  const handleSettingsOpen = useCallback(event => {
-    const { currentTarget } = event;
-    setAnchorEl(currentTarget)
-  }, [setAnchorEl])
+  const handleSettingsOpen = useCallback(
+    (event) => {
+      const { currentTarget } = event;
+      setAnchorEl(currentTarget);
+    },
+    [setAnchorEl]
+  );
 
   const handleSettingsClose = useCallback(() => {
-    setAnchorEl(null)
-  }, [setAnchorEl])
+    setAnchorEl(null);
+  }, [setAnchorEl]);
 
   useEffect(() => {
-    setAnchorEl(null)
-  }, [editGroupDetailsOpen, setAnchorEl])
+    setAnchorEl(null);
+  }, [editGroupDetailsOpen, setAnchorEl]);
 
-  const isShow = permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
-    permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS)
+  const isShow =
+    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
+    permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS);
 
-  const deletePermission = permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS)
+  const deletePermission = permission.includes(
+    PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS
+  );
 
   return (
     <>
@@ -100,31 +117,29 @@ const Settings = ({
         onClose={handleSettingsClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
       >
-        {(isShow && channel.members._c.size !== 2) && (
+        {isShow && channel.members._c.size !== 2 && (
           <>
             <ListItem
               className={classes.selectOption}
               onClick={handleEditGroupDetailsOpen}
             >
-              <ListItemText>
-                Edit Group Details
-              </ListItemText>
+              <ListItemText>Edit Group Details</ListItemText>
             </ListItem>
-            {deletePermission && <ListItem
-              className={classes.selectOption}
-              onClick={handleRemoveStudents}
-            >
-              <ListItemText>
-                Remove Students
-              </ListItemText>
-            </ListItem>}
+            {deletePermission && (
+              <ListItem
+                className={classes.selectOption}
+                onClick={handleRemoveStudents}
+              >
+                <ListItemText>Remove Students</ListItemText>
+              </ListItem>
+            )}
           </>
         )}
         {/* <ListItem className={cx(classes.selectOption, classes.reportIssue)}>
@@ -141,7 +156,7 @@ const Settings = ({
         members={localChannel?.members}
       />
       <EditGroupDetailsDialog
-        title='Edit Group Details'
+        title="Edit Group Details"
         channel={channel}
         localChannel={localChannel}
         open={editGroupDetailsOpen}
@@ -149,7 +164,7 @@ const Settings = ({
         onClose={handleEditGroupDetailsClose}
       />
     </>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

@@ -1,26 +1,26 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   markdownContainer: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   root: {
     position: 'relative',
     borderRadius: theme.spacing(),
     backgroundColor: theme.circleIn.palette.flashcardBackground,
-    padding: theme.spacing(1/2),
+    padding: theme.spacing(1 / 2),
     width: '99%',
     margin: theme.spacing(1, 0, 1, 0)
   },
   rootItem: {
-    padding: theme.spacing(1/2),
+    padding: theme.spacing(1 / 2),
     width: '99%',
     margin: theme.spacing(1, 0, 1, 0)
   },
   question: {
     position: 'relative',
     wordBreak: 'break-word',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   answer: {
     position: 'relative',
@@ -29,14 +29,14 @@ export const useStyles = makeStyles((theme) => ({
     borderLeft: '1px solid rgba(255,255,255,0.25)'
   },
   hasImage: {
-    marginLeft: 60,
+    marginLeft: 60
   },
   button: {
     backgroundColor: 'rgba(0,0,0,0.1)',
     '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.3)',
+      backgroundColor: 'rgba(0,0,0,0.3)'
     },
-    minWidth: 0,
+    minWidth: 0
   },
   hidden: {
     display: 'none'
@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: 0,
     right: 0,
-    zIndex: 2,
+    zIndex: 2
   },
   hardCount: {
     margin: theme.spacing(),
@@ -53,4 +53,4 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 11,
     fontWeight: 'bold'
   }
-}))
+}));

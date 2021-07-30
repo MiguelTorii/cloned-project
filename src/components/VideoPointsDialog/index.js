@@ -46,7 +46,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
     help: ''
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
@@ -54,24 +54,18 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
     this.setState({ classId, sectionId });
   };
 
-  handleSwitchChange = name => event => {
+  handleSwitchChange = (name) => (event) => {
     this.setState({ [name]: event.target.checked });
   };
 
-  handleDateChange = selectedDate => {
+  handleDateChange = (selectedDate) => {
     this.setState({ selectedDate });
   };
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const {
-      purpose,
-      classId,
-      sectionId,
-      meeting,
-      selectedDate,
-      help
-    } = this.state;
+    const { purpose, classId, sectionId, meeting, selectedDate, help } =
+      this.state;
     onSubmit({ purpose, classId, sectionId, meeting, selectedDate, help });
   };
 
@@ -101,13 +95,11 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
       >
         <div className={classes.content}>
           {loading && (
-            <CircularProgress
-              size={24}
-              className={classes.buttonProgress}
-            />
+            <CircularProgress size={24} className={classes.buttonProgress} />
           )}
           <Typography id="video-points-description" color="textPrimary">
-            Nice Job! You've unlocked points for today's video study session. Fill out the fields below to receive your points
+            Nice Job! You've unlocked points for today's video study session.
+            Fill out the fields below to receive your points
           </Typography>
           <ValidatorForm onSubmit={this.handleSubmit} className={classes.form}>
             <FormControl
@@ -177,8 +169,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
               validators={['required']}
               errorMessages={['This field is required']}
             />
-            <Typography
-              color="textPrimary">
+            <Typography color="textPrimary">
               {`${this.getLeftCharts()} characters left to earn points`}
             </Typography>
           </ValidatorForm>

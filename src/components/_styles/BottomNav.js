@@ -5,4 +5,4 @@ export const styles = () => ({
     position: 'fixed',
     bottom: 0
   }
-})
+});

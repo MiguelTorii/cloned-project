@@ -16,7 +16,7 @@ const PointsReport = ({ userId, isMyProfile, displayName }: Props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h6">
-        { isMyProfile ? 'Your' : `${displayName}'s` } Points Report
+        {isMyProfile ? 'Your' : `${displayName}'s`} Points Report
       </Typography>
     </Paper>
   );

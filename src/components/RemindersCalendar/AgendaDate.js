@@ -17,7 +17,7 @@ class AgendaDate extends React.PureComponent<Props, State> {
     return date;
   };
 
-  static title = date => {
+  static title = (date) => {
     return `${date.toLocaleDateString()}`;
   };
 

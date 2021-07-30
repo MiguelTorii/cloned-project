@@ -26,7 +26,7 @@ class AvailableRewards extends React.PureComponent<Props> {
 
     return (
       <div className={classes.root}>
-        {rewards.map(item => (
+        {rewards.map((item) => (
           <Item
             key={item.rewardId}
             rewardId={item.rewardId}

@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   container: {
     maxHeight: 'inherit',
     // display: 'flex',
@@ -13,7 +13,7 @@ export default theme => ({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   marginBottom: {
     marginBottom: theme.spacing()
@@ -34,7 +34,7 @@ export default theme => ({
     paddingTop: 26,
     maxWidth: 740,
     fontSize: 26,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   textField: {
     marginLeft: theme.spacing(),
@@ -77,7 +77,7 @@ export default theme => ({
   feedEnd: {
     backgroundColor: theme.circleIn.palette.appBar,
     padding: 10,
-    width: '100%',
+    width: '100%'
   },
   endLabel: {
     textAlign: 'center'
@@ -91,7 +91,7 @@ export default theme => ({
     fontWeight: 'bold',
     margin: '0px 3px',
     padding: '0px 16px',
-    width: 100,
+    width: 100
   },
   expertTitle: {
     fontSize: 24,

@@ -13,9 +13,7 @@ const StudyStats = ({ userId }: Props) => {
 
   return (
     <Paper className={classes.root}>
-      <Typography variant="h6">
-        Total Study Stats
-      </Typography>
+      <Typography variant="h6">Total Study Stats</Typography>
     </Paper>
   );
 };

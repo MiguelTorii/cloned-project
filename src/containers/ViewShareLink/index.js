@@ -20,7 +20,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -47,23 +47,25 @@ type Props = {
   push: Function
 };
 
-const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props) => {
-  const [shareLink, setShareLink] = useState(null)
-  const [report, setReport] = useState(false)
-  const [deletePost, setDeletePost] = useState(false)
+const ViewShareLink = ({
+  router,
+  pop,
+  classes,
+  user,
+  sharelinkId,
+  push
+}: Props) => {
+  const [shareLink, setShareLink] = useState(null);
+  const [report, setReport] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
   const {
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
-  } = user
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
+  } = user;
 
   const loadData = async () => {
     const sl = await getShareLink({ userId, sharelinkId });
-    setShareLink(sl)
+    setShareLink(sl);
     const {
       postInfo: { feedId }
     } = sl;
@@ -75,34 +77,33 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
   };
 
   useEffect(() => {
-    loadData()
+    loadData();
     // eslint-disable-next-line
-  }, [sharelinkId])
+  }, [sharelinkId]);
 
   const handleBookmark = async () => {
     if (!shareLink) return;
     const { feedId, bookmarked } = shareLink;
     try {
-      setShareLink({ ...shareLink, bookmarked: !bookmarked })
+      setShareLink({ ...shareLink, bookmarked: !bookmarked });
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setShareLink({ ...shareLink, bookmarked })
+      setShareLink({ ...shareLink, bookmarked });
     }
   };
 
-  const handleReport = () => setReport(true)
+  const handleReport = () => setReport(true);
 
-  const handleReportClose = () => setReport(false)
+  const handleReportClose = () => setReport(false);
 
-  const handleDelete = () => setDeletePost(true)
+  const handleDelete = () => setDeletePost(true);
 
   const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
-    setDeletePost(false)
+    setDeletePost(false);
   };
-
 
   if (!shareLink)
     return (
@@ -215,7 +216,7 @@ const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props)
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ router, user }: StoreState): {} => ({
   user,

@@ -61,7 +61,7 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
           Recommended Posts
         </Typography>
         <div className={classes.cards}>
-          {posts.map(item => (
+          {posts.map((item) => (
             <div key={item.label} className={classes.card}>
               <ButtonBase>
                 <Paper className={classes.button} elevation={12}>

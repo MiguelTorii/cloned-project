@@ -15,7 +15,7 @@ export const getLeaderboards = async () => {
     });
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return [];
   }
@@ -31,7 +31,7 @@ export const getGrandPrizeInfo = async () => {
     });
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return [];
   }
@@ -39,15 +39,15 @@ export const getGrandPrizeInfo = async () => {
 
 export const getGrandPrizeScores = async (sectionId, index) => {
   try {
-    const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const indexQuery = index ? `&index=${index}&limit=100` : ''
+    const sectionQuery = sectionId ? `&section_id=${sectionId}` : '';
+    const indexQuery = index ? `&index=${index}&limit=100` : '';
 
     const result = await callApi({
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_TWO}${sectionQuery}${indexQuery}`,
       method: 'GET'
     });
 
-    return result
+    return result;
   } catch (err) {
     return [];
   }
@@ -55,8 +55,8 @@ export const getGrandPrizeScores = async (sectionId, index) => {
 
 export const getMoreGrandStudents = async (sectionId, index) => {
   try {
-    const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const indexQuery = index ? `&index=${index}&limit=100` : ''
+    const sectionQuery = sectionId ? `&section_id=${sectionId}` : '';
+    const indexQuery = index ? `&index=${index}&limit=100` : '';
 
     const result = await callApi({
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_TWO}${sectionQuery}${indexQuery}`,
@@ -64,15 +64,14 @@ export const getMoreGrandStudents = async (sectionId, index) => {
     });
 
     const { students = [] } = result;
-    const studentsCamel = students.map(s => ({
+    const studentsCamel = students.map((s) => ({
       position: s.position,
       score: s.score,
       firstName: s.first_name,
       lastName: s.last_name,
       userId: s.user_id,
       profileImg: s.profile_image_url
-  
-    }))
+    }));
     return studentsCamel;
   } catch (err) {
     return [];
@@ -81,15 +80,15 @@ export const getMoreGrandStudents = async (sectionId, index) => {
 
 export const getTuesdayPrizeScores = async (sectionId, index) => {
   try {
-    const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const indexQuery = index ? `&index=${index}&limit=100` : ''
+    const sectionQuery = sectionId ? `&section_id=${sectionId}` : '';
+    const indexQuery = index ? `&index=${index}&limit=100` : '';
 
     const result = await callApi({
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_ONE}${sectionQuery}${indexQuery}`,
       method: 'GET'
     });
 
-    return result
+    return result;
   } catch (err) {
     return [];
   }
@@ -97,8 +96,8 @@ export const getTuesdayPrizeScores = async (sectionId, index) => {
 
 export const getMoreTuesdayStudents = async (sectionId, index) => {
   try {
-    const sectionQuery = sectionId ? `&section_id=${sectionId}` : ''
-    const indexQuery = index ? `&index=${index}&limit=100` : ''
+    const sectionQuery = sectionId ? `&section_id=${sectionId}` : '';
+    const indexQuery = index ? `&index=${index}&limit=100` : '';
 
     const result = await callApi({
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_ONE}${sectionQuery}${indexQuery}`,
@@ -106,16 +105,15 @@ export const getMoreTuesdayStudents = async (sectionId, index) => {
     });
 
     const { students = [] } = result;
-    const studentsCamel = students.map(s => ({
+    const studentsCamel = students.map((s) => ({
       position: s.position,
       score: s.score,
       firstName: s.first_name,
       lastName: s.last_name,
       userId: s.user_id,
       profileImg: s.profile_image_url
-  
-    }))
-    return studentsCamel
+    }));
+    return studentsCamel;
   } catch (err) {
     return [];
   }

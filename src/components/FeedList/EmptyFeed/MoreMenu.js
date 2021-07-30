@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import ListItemText from '@material-ui/core/ListItemText'
+import React from 'react';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 type Props = {
   anchor: Object,
@@ -14,7 +14,14 @@ type Props = {
   handleMenuClose: Function
 };
 
-const MoreMenu = ({ anchor, handleRemove, handleMenuClose, completed, hide, toggleHide }: Props) => {
+const MoreMenu = ({
+  anchor,
+  handleRemove,
+  handleMenuClose,
+  completed,
+  hide,
+  toggleHide
+}: Props) => {
   return (
     <Menu
       disableAutoFocusItem
@@ -27,11 +34,13 @@ const MoreMenu = ({ anchor, handleRemove, handleMenuClose, completed, hide, togg
       <MenuItem onClick={toggleHide}>
         <ListItemText inset primary={hide ? 'Expand' : 'Minimise'} />
       </MenuItem>
-      {completed && <MenuItem onClick={handleRemove}>
-        <ListItemText inset primary="Remove from feed" />
-      </MenuItem>}
+      {completed && (
+        <MenuItem onClick={handleRemove}>
+          <ListItemText inset primary="Remove from feed" />
+        </MenuItem>
+      )}
     </Menu>
   );
-}
+};
 
-export default MoreMenu
+export default MoreMenu;

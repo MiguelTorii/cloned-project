@@ -9,7 +9,7 @@ import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary';
 import { recoverPassword } from '../../api/sign-in';
 
-const styles = theme => ({
+const styles = (theme) => ({
   success: {
     display: 'flex',
     alignItems: 'center',
@@ -41,19 +41,21 @@ class ForgotPassword extends React.Component<Props, State> {
     body: ''
   };
 
-  handleChange = (field: string) => (
-    // eslint-disable-next-line no-undef
-    event: SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { target } = event;
-    // eslint-disable-next-line no-undef
-    if (!(target instanceof HTMLInputElement)) {
-      return;
-    }
-    this.setState({
-      [field]: target.value
-    });
-  };
+  handleChange =
+    (field: string) =>
+    (
+      // eslint-disable-next-line no-undef
+      event: SyntheticEvent<HTMLInputElement>
+    ) => {
+      const { target } = event;
+      // eslint-disable-next-line no-undef
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+      this.setState({
+        [field]: target.value
+      });
+    };
 
   handleSubmit = async () => {
     const { email } = this.state;

@@ -11,12 +11,14 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge'
+import RoleBadge from 'components/RoleBadge';
 import { getInitials } from 'utils/chat';
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
+  <RouterLink to={href} {...props} ref={ref} />
+));
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(2),
@@ -38,7 +40,7 @@ const styles = theme => ({
   },
   name: {
     color: 'white',
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   message: {
     maxWidth: '100%',
@@ -50,11 +52,11 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   reverse: {
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   image: {
     borderRadius: 5,
@@ -84,7 +86,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column'
     // marginLeft: -55
     // cursor: 'pointer'
   },
@@ -147,13 +149,14 @@ class ChatMessageDate extends React.PureComponent<Props> {
 
   linkify = (text: string) => {
     // eslint-disable-next-line
-    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    return text.replace(urlRegex, url => {
+    const urlRegex =
+      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    return text.replace(urlRegex, (url) => {
       return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
     });
   };
 
-  handleImageClick = url => () => {
+  handleImageClick = (url) => () => {
     const { onImageClick } = this.props;
     onImageClick(url);
   };
@@ -222,7 +225,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                   className={classes.link}
                   onClick={onStartVideoCall}
                 >
-                Join now!
+                  Join now!
                 </Link>
               </Typography>
             </div>
@@ -237,10 +240,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           className={cx(classes.body, isOwn && classes.right)}
           dangerouslySetInnerHTML={{ __html: this.linkify(message) }}
         />
-        <Typography
-          className={cx(classes.createdAt)}
-          variant="caption"
-        >
+        <Typography className={cx(classes.createdAt)} variant="caption">
           {createdAt}
         </Typography>
       </div>
@@ -248,7 +248,16 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { role, classes, userId, name, avatar, isOwn, isUserOnline, messageList } = this.props;
+    const {
+      role,
+      classes,
+      userId,
+      name,
+      avatar,
+      isOwn,
+      isUserOnline,
+      messageList
+    } = this.props;
     const initials = getInitials(name);
 
     return (
@@ -262,7 +271,10 @@ class ChatMessageDate extends React.PureComponent<Props> {
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
+            <OnlineBadge
+              isOnline={isUserOnline}
+              bgColorPath="circleIn.palette.feedBackground"
+            >
               <Avatar alt={name} src={avatar}>
                 {initials}
               </Avatar>
@@ -282,7 +294,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               {role && <RoleBadge text={role} />}
             </Typography>
           )}
-          {messageList.map(message => (
+          {messageList.map((message) => (
             <div className={classes.message} key={message.sid}>
               {this.renderItem({
                 imageKey: message.imageKey,

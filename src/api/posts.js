@@ -1,6 +1,6 @@
 // @flow
 import axios from 'axios';
-import clsx from 'clsx'
+import clsx from 'clsx';
 import type {
   Post,
   PhotoNote,
@@ -40,12 +40,12 @@ export const createBatchFlashcards = async ({
   grade: number
 }): Promise<PostResponse> => {
   try {
-    const newDeck = deck.map(d => ({
+    const newDeck = deck.map((d) => ({
       question: d.question,
       answer: d.answer,
       answer_image_url: clsx(d.answerImage),
       question_image_url: clsx(d.questionImage)
-    }))
+    }));
 
     const token = await getToken();
     const result = await axios.post(
@@ -96,12 +96,12 @@ export const createFlashcards = async ({
   grade: number
 }): Promise<PostResponse> => {
   try {
-    const newDeck = deck.map(d => ({
+    const newDeck = deck.map((d) => ({
       question: d.question,
       answer: d.answer,
       answer_image_url: clsx(d.answerImage),
       question_image_url: clsx(d.questionImage)
-    }))
+    }));
 
     const token = await getToken();
     const result = await axios.post(
@@ -133,7 +133,6 @@ export const createFlashcards = async ({
   }
 };
 
-
 export const updateFlashcards = async ({
   flashcardId,
   classId,
@@ -141,7 +140,7 @@ export const updateFlashcards = async ({
   title,
   sectionId,
   summary,
-  deck,
+  deck
 }: {
   flashcardId: string,
   title: string,
@@ -152,12 +151,12 @@ export const updateFlashcards = async ({
   deck: Array<Flashcard>
 }): Promise<PostResponse> => {
   try {
-    const newDeck = deck.map(d => ({
+    const newDeck = deck.map((d) => ({
       question: d.question,
       answer: d.answer,
       answer_image_url: clsx(d.answerImage),
       question_image_url: clsx(d.questionImage)
-    }))
+    }));
 
     const token = await getToken();
     const result = await axios.put(
@@ -168,11 +167,11 @@ export const updateFlashcards = async ({
         title,
         summary,
         deck: newDeck,
-        class_id: classId,
+        class_id: classId
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -210,23 +209,22 @@ export const createBatchPostSt = async ({
       anonymous,
       section_id: sectionIds,
       tags
-    }
+    };
 
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.BATCH_POST}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.BATCH_POST}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const response = postResponseToCamelCase(data);
     try {
-      logEvent({ event: 'Feed- Create Batch Post Anything', props: { Title: title } });
+      logEvent({
+        event: 'Feed- Create Batch Post Anything',
+        props: { Title: title }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -260,23 +258,22 @@ export const createPostSt = async ({
       content,
       private: anonymous,
       tags
-    }
+    };
 
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.POST}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.POST}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const response = postResponseToCamelCase(data);
     try {
-      logEvent({ event: 'Feed- Create Post Anything', props: { Title: title } });
+      logEvent({
+        event: 'Feed- Create Post Anything',
+        props: { Title: title }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -284,7 +281,7 @@ export const createPostSt = async ({
   } catch (err) {
     console.log(err);
     // return postResponseToCamelCase({});
-    throw err
+    throw err;
   }
 };
 
@@ -292,11 +289,11 @@ export const updatePostSt = async ({
   title,
   content,
   postId,
-  classId,
+  classId
 }: {
   title: string,
   content: string,
-  classId: number,
+  classId: number
 }): Promise<PostResponse> => {
   try {
     const token = await getToken();
@@ -304,7 +301,7 @@ export const updatePostSt = async ({
       `${API_ROUTES.POST}/${postId}`,
       {
         title,
-        content,
+        content
         // class_id: classId,
       },
       {
@@ -315,9 +312,12 @@ export const updatePostSt = async ({
     );
 
     const { data } = result;
-    const response = data
+    const response = data;
     try {
-      logEvent({ event: 'Feed- Update Post Anything', props: { Title: title } });
+      logEvent({
+        event: 'Feed- Update Post Anything',
+        props: { Title: title }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -351,18 +351,14 @@ export const createBatchPhotoNote = async ({
       comment,
       section_ids: sectionIds,
       tags
-    }
+    };
 
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.BATCH_PHOTO_NOTE}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.BATCH_PHOTO_NOTE}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const response = postResponseToCamelCase(data);
@@ -404,18 +400,14 @@ export const createPhotoNote = async ({
       file_names: fileNames,
       comment,
       tags
-    }
+    };
 
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.PHOTO_NOTE}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.PHOTO_NOTE}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const response = postResponseToCamelCase(data);
@@ -428,7 +420,7 @@ export const createPhotoNote = async ({
   } catch (err) {
     console.log(err);
     // return postResponseToCamelCase({});
-    throw err
+    throw err;
   }
 };
 
@@ -439,7 +431,7 @@ export const updatePhotoNote = async ({
   sectionId,
   fileNames,
   comment,
-  noteId,
+  noteId
 }: {
   noteId: string,
   userId: string,
@@ -459,7 +451,7 @@ export const updatePhotoNote = async ({
         class_id: classId,
         section_id: sectionId,
         file_names: fileNames,
-        comment,
+        comment
       },
       {
         headers: {
@@ -488,7 +480,7 @@ export const updateQuestion = async ({
   title,
   body,
   classId,
-  sectionId,
+  sectionId
 }: {
   userId: string,
   questionId: number,
@@ -506,7 +498,7 @@ export const updateQuestion = async ({
         question_title: title,
         question_body: body,
         class_id: classId,
-        section_id: sectionId,
+        section_id: sectionId
       },
       {
         headers: {
@@ -518,7 +510,7 @@ export const updateQuestion = async ({
     const { data = {} } = result;
     return data;
   } catch (err) {
-    return {}
+    return {};
   }
 };
 
@@ -565,7 +557,7 @@ export const createQuestion = async ({
   } catch (err) {
     console.log(err);
     // return postResponseToCamelCase({});
-    throw err
+    throw err;
   }
 };
 
@@ -720,7 +712,7 @@ export const getNotes = async ({
 
     const { data } = result;
     const post = postToCamelCase(data);
-    const notes = (data.notes || []).map(item => ({
+    const notes = (data.notes || []).map((item) => ({
       fullNoteUrl: String((item.full_note_url: string) || ''),
       note: String((item.note: string) || ''),
       noteUrl: String((item.note_url: string) || '')
@@ -752,8 +744,9 @@ export const getPost = async ({
       }
     );
 
-    const { data } = result
-    const { feedPostV2UserInfo, generalPostSpecificInfo, postCharacteristics } = data;
+    const { data } = result;
+    const { feedPostV2UserInfo, generalPostSpecificInfo, postCharacteristics } =
+      data;
     const post = postToCamelCase({
       ...feedPostV2UserInfo,
       ...generalPostSpecificInfo,
@@ -865,8 +858,7 @@ export const getPostComments = async ({
   try {
     const token = await getToken();
     const result = await axios.get(
-      `${API_ROUTES.FEED
-      }/${postId}/comments?user_id=${userId}&type_id=${typeId}`,
+      `${API_ROUTES.FEED}/${postId}/comments?user_id=${userId}&type_id=${typeId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -988,7 +980,7 @@ export const updateShareURL = async ({
         title,
         summary,
         uri,
-        class_id: classId,
+        class_id: classId
       },
       {
         headers: {
@@ -1088,8 +1080,7 @@ export const removeFromStudyCircle = async ({
     const token = await getToken();
 
     const result = await axios.delete(
-      `${API_ROUTES.STUDY_CIRCLE
-      }/${userId}?study_circle_id=${classmateId}&study_circle_type_id=${studyCircleTypeId}`,
+      `${API_ROUTES.STUDY_CIRCLE}/${userId}?study_circle_id=${classmateId}&study_circle_type_id=${studyCircleTypeId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -1145,7 +1136,7 @@ export const getReasons = async (reportTypeId: number) => {
   });
 };
 
-export const updateComment = async(commentId, comment) => {
+export const updateComment = async (commentId, comment) => {
   return callApi({
     url: `${API_ROUTES.COMMENT}/${commentId}`,
     method: 'PUT',
@@ -1289,7 +1280,7 @@ export const getPostMetadata = async ({
     );
 
     const { data = {} } = result;
-    const recommendedPosts = (data.recommended_posts || []).map(item => ({
+    const recommendedPosts = (data.recommended_posts || []).map((item) => ({
       id: Number((item.id: number) || 0),
       numberOfNotes: Number((item.page_notes: number) || 0),
       postId: Number((item.post_id: number) || 0),
@@ -1304,7 +1295,7 @@ export const getPostMetadata = async ({
       viewCount: Number((item.view_count: number) || 0)
     }));
 
-    const tags = (data.tags || []).map(item => ({
+    const tags = (data.tags || []).map((item) => ({
       description: String((item.description: string) || ''),
       id: Number((item.id: number) || 0),
       name: String((item.name: string) || '')
@@ -1386,7 +1377,7 @@ export const updatePostView = async ({
   }
 };
 
-export const getPostInfo = async ({ hid }: {hid: string}): Promise<Post> => {
+export const getPostInfo = async ({ hid }: { hid: string }): Promise<Post> => {
   try {
     const token = await getToken();
 

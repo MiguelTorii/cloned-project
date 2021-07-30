@@ -1,28 +1,28 @@
 // @flow
-import React, { useState, useEffect, useRef } from "react"
-import { connect } from 'react-redux'
+import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Popover from "@material-ui/core/Popover"
+import Popover from '@material-ui/core/Popover';
 
-import Box from '@material-ui/core/Box'
-import Avatar from '@material-ui/core/Avatar'
-import { Message, Videocam } from '@material-ui/icons'
+import Box from '@material-ui/core/Box';
+import Avatar from '@material-ui/core/Avatar';
+import { Message, Videocam } from '@material-ui/icons';
 
-import OnlineBadge from 'components/OnlineBadge'
-import GradientButton from 'components/Basic/Buttons/GradientButton'
-import TransparentButton from 'components/Basic/Buttons/TransparentButton'
+import OnlineBadge from 'components/OnlineBadge';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 
-import { getInitials } from 'utils/chat'
-import { Typography } from '@material-ui/core'
+import { getInitials } from 'utils/chat';
+import { Typography } from '@material-ui/core';
 
-import cx from 'classnames'
-import _ from 'lodash'
-import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants'
-import { getUserProfile } from '../../api/user'
-import * as chatActions from '../../actions/chat'
+import cx from 'classnames';
+import _ from 'lodash';
+import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
+import { getUserProfile } from '../../api/user';
+import * as chatActions from '../../actions/chat';
 
-import useStyles from '../_styles/HoverPopup'
+import useStyles from '../_styles/HoverPopup';
 
 const HoverPopup = ({
   // userId = null,
@@ -36,48 +36,48 @@ const HoverPopup = ({
   setSelectedCourse,
   ...props
 }) => {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
-  const [hover, setHover] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [outOfScreen, setOutOfScreen] = useState(false)
-  const [bio, setBio] = useState('')
-  const [chatLoading, setChatLoading] = useState(false)
-  const popoverContainer = useRef(null)
-  const postFeedItemContainer = useRef(null)
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [outOfScreen, setOutOfScreen] = useState(false);
+  const [bio, setBio] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
+  const popoverContainer = useRef(null);
+  const postFeedItemContainer = useRef(null);
 
   const fetchUserInfo = async () => {
-    if (isLoading) return
-    setIsLoading(true)
+    if (isLoading) return;
+    setIsLoading(true);
 
     try {
       if (member.userId) {
-        const { about } = await getUserProfile({ userId: member.userId })
-        const idx = _.findIndex(about, (item) => item.id === 6)
-        const userbio = idx < 0 ? null : about[idx].answer
-        setBio(userbio)
+        const { about } = await getUserProfile({ userId: member.userId });
+        const idx = _.findIndex(about, (item) => item.id === 6);
+        const userbio = idx < 0 ? null : about[idx].answer;
+        setBio(userbio);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (e) {}
-  }
+  };
 
   const handlePopoverOpen = (event) => {
-    fetchUserInfo()
-    setAnchorEl(event.currentTarget)
-  }
+    fetchUserInfo();
+    setAnchorEl(event.currentTarget);
+  };
 
   const handlePopoverClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const keepPopoverOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const mouseEnter = (event) => {
-    setHover(true)
-    const rect = postFeedItemContainer.current?.getBoundingClientRect()
+    setHover(true);
+    const rect = postFeedItemContainer.current?.getBoundingClientRect();
     if (rect) {
       if (
         rect.top < 0 ||
@@ -86,73 +86,73 @@ const HoverPopup = ({
           (window.innerHeight || document.documentElement.clientHeight) ||
         rect.right < 0
       ) {
-        setOutOfScreen(true)
+        setOutOfScreen(true);
       } else {
-        setOutOfScreen(false)
+        setOutOfScreen(false);
       }
     }
-    handlePopoverOpen(event)
-  }
+    handlePopoverOpen(event);
+  };
 
   const mouseLeave = () => {
-    setHover(false)
-    handlePopoverClose()
-  }
+    setHover(false);
+    handlePopoverClose();
+  };
 
   const onTimeout = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   useEffect(() => {
-    const timer = hover && setTimeout(onTimeout, 500)
+    const timer = hover && setTimeout(onTimeout, 500);
     return () => {
-      clearTimeout(timer)
-    }
-  }, [hover])
+      clearTimeout(timer);
+    };
+  }, [hover]);
 
   const onStartChat = () => {
-    const { openChannelWithEntity } = props
-    const { userId, firstname, lastname } = member
+    const { openChannelWithEntity } = props;
+    const { userId, firstname, lastname } = member;
 
-    setChatLoading(true)
+    setChatLoading(true);
     if (selectedCourse && selectedCourse.id !== 'chat') {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS)
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     }
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: firstname,
       entityLastName: lastname,
       entityVideo: false,
-      fullscreen: true,
-    })
+      fullscreen: true
+    });
     setTimeout(() => {
-      setChatLoading(false)
-    }, 2000)
-  }
+      setChatLoading(false);
+    }, 2000);
+  };
 
   const onStartVideo = () => {
-    const { openChannelWithEntity } = props
-    const { userId, firstname, lastname } = member
+    const { openChannelWithEntity } = props;
+    const { userId, firstname, lastname } = member;
 
-    setChatLoading(true)
+    setChatLoading(true);
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: firstname,
       entityLastName: lastname,
       entityVideo: true,
       fullscreen: true
-    })
+    });
     setTimeout(() => {
-      setChatLoading(false)
-    }, 2000)
-  }
+      setChatLoading(false);
+    }, 2000);
+  };
 
-  const fullName = `${member.firstname} ${member.lastname}`
+  const fullName = `${member.firstname} ${member.lastname}`;
 
   return (
     <>
       <div
-        aria-owns={open ? "mouse-over-popover" : ""}
+        aria-owns={open ? 'mouse-over-popover' : ''}
         id="hoverPopup"
         onMouseEnter={mouseEnter}
         onMouseLeave={mouseLeave}
@@ -166,22 +166,22 @@ const HoverPopup = ({
           id="mouse-over-popover"
           className={classes.popover}
           classes={{
-            paper: cx(classes.paper, outOfScreen && "flip"),
+            paper: cx(classes.paper, outOfScreen && 'flip')
           }}
           open={open && !isLoading}
           anchorEl={anchorEl}
           // container={anchorEl}
           anchorOrigin={{
-            vertical: outOfScreen ? "bottom" : "top",
-            horizontal: leftAligned ? "left" : "left",
+            vertical: outOfScreen ? 'bottom' : 'top',
+            horizontal: leftAligned ? 'left' : 'left'
           }}
           transformOrigin={{
-            vertical: outOfScreen ? "bottom" : "top",
-            horizontal: leftAligned ? "left" : "right",
+            vertical: outOfScreen ? 'bottom' : 'top',
+            horizontal: leftAligned ? 'left' : 'right'
           }}
           PaperProps={{
             onMouseEnter: keepPopoverOpen,
-            onMouseLeave: handlePopoverClose,
+            onMouseLeave: handlePopoverClose
           }}
           onClose={handlePopoverClose}
           getContentAnchorEl={null}
@@ -189,7 +189,11 @@ const HoverPopup = ({
         >
           {/* <div className={classes.overviewContainer}> */}
           <div className={classes.hasBio}>
-            <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.primaryBackground" fromChat={false}>
+            <OnlineBadge
+              isOnline={member.isOnline}
+              bgColorPath="circleIn.palette.primaryBackground"
+              fromChat={false}
+            >
               <Avatar
                 alt={fullName}
                 src={member.image}
@@ -199,10 +203,14 @@ const HoverPopup = ({
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>
-              <Typography variant="subtitle1" className={classes.name}>{fullName}</Typography>
+              <Typography variant="subtitle1" className={classes.name}>
+                {fullName}
+              </Typography>
 
               {bio && (
-                <Typography variant="subtitle1" className={classes.bio}>{bio}</Typography>
+                <Typography variant="subtitle1" className={classes.bio}>
+                  {bio}
+                </Typography>
               )}
             </div>
           </div>
@@ -220,39 +228,36 @@ const HoverPopup = ({
             className={classes.buttonBox}
           >
             <GradientButton
-              startIcon={<Message/>}
+              startIcon={<Message />}
               disabled={chatLoading}
               onClick={onStartChat}
             >
-                Message
+              Message
             </GradientButton>
             <TransparentButton
-              startIcon={<Videocam/>}
+              startIcon={<Videocam />}
               disabled={chatLoading}
               onClick={onStartVideo}
             >
-                Study Room
+              Study Room
             </TransparentButton>
           </Box>
         </Popover>
       </div>
     </>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
-})
+});
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      openChannelWithEntity: chatActions.openChannelWithEntity,
+      openChannelWithEntity: chatActions.openChannelWithEntity
     },
     dispatch
-  )
+  );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HoverPopup)
+export default connect(mapStateToProps, mapDispatchToProps)(HoverPopup);

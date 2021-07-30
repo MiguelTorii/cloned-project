@@ -2,8 +2,12 @@
 
 import { combineReducers } from 'redux';
 import {
-  connectRouter, go, goBack, goForward,
-  push, replace
+  connectRouter,
+  go,
+  goBack,
+  goForward,
+  push,
+  replace
 } from 'connected-react-router';
 
 import type { BrowserHistory } from 'history';
@@ -17,7 +21,7 @@ import webNotifications from './web-notifications';
 import notifications from './notifications';
 import dialog from './dialog';
 import onboarding from './onboarding';
-import notes from './notes'
+import notes from './notes';
 import api from './api';
 
 const routerActions = {
@@ -25,7 +29,7 @@ const routerActions = {
   replace: typeof replace,
   go: typeof go,
   goBack: typeof goBack,
-  goForward: typeof goForward,
+  goForward: typeof goForward
 };
 
 const reducers = {
@@ -49,5 +53,5 @@ export type Reducers = typeof reducers;
 export default (history: BrowserHistory) =>
   combineReducers({
     ...reducers,
-    router: connectRouter(history),
+    router: connectRouter(history)
   });

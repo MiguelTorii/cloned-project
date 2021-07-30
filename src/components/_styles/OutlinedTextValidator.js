@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     padding: theme.spacing(2),
     position: 'relative'
@@ -8,7 +8,7 @@ export const styles = theme => ({
       padding: theme.spacing(1.5, 1.75)
     },
     '& fieldset': {
-      borderRadius: theme.spacing(1),
+      borderRadius: theme.spacing(1)
     }
-  },
+  }
 });

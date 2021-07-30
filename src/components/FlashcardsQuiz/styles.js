@@ -44,7 +44,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(3, 3, 5, 3)
   },
   checkIconContainer: {
-    minWidth: 25,
+    minWidth: 25
   },
   matchQuestionText: {
     marginLeft: theme.spacing(3)
@@ -111,6 +111,6 @@ export default makeStyles((theme) => ({
     backgroundColor: '#1E1F22',
     height: 32,
     borderRadius: 40,
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   }
 }));

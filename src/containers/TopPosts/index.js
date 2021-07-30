@@ -55,7 +55,4 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
 //     dispatch
 //   );
 
-export default connect(
-  null,
-  null
-)(withStyles(styles)(Feed));
+export default connect(null, null)(withStyles(styles)(Feed));

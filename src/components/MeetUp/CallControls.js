@@ -3,7 +3,7 @@ import React from 'react';
 import cx from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -46,30 +46,30 @@ type Props = {
 type State = {};
 
 class Controls extends React.PureComponent<Props, State> {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
       windowWidth: window.innerWidth
-    }
+    };
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   updateDimensions = () => {
-    this.setState({ windowWidth: window.innerWidth })
-  }
+    this.setState({ windowWidth: window.innerWidth });
+  };
 
-  handleOpen = value => {
-    const { toggleChat } = this.props
-    toggleChat(value)
-  }
+  handleOpen = (value) => {
+    const { toggleChat } = this.props;
+    toggleChat(value);
+  };
 
   renderControls = () => {
     const {
@@ -86,79 +86,105 @@ class Controls extends React.PureComponent<Props, State> {
       disableAudio,
       localSharing,
       unreadMessageCount,
-      shareScreen,
-    } = this.props
-    const { windowWidth } = this.state
+      shareScreen
+    } = this.props;
+    const { windowWidth } = this.state;
 
     return (
       <div className={classes.mainControls}>
         <Button
-          size='small'
-          color='default'
-          aria-label='disable-audio'
+          size="small"
+          color="default"
+          aria-label="disable-audio"
           className={classes.fab}
           onClick={disableAudio}
           disabled={!isConnected || isAudioSwitching}
         >
-          {!isAudioEnabled
-            ? <div className={classes.controlButtons}>
-              <MicOffIcon className={cx(classes.controlIcons, classes.nonEffect)} />
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                Turn on Mic
-              </span>}
+          {!isAudioEnabled ? (
+            <div className={classes.controlButtons}>
+              <MicOffIcon
+                className={cx(classes.controlIcons, classes.nonEffect)}
+              />
+              {windowWidth > 720 && (
+                <span className={classes.controlLabel}>Turn on Mic</span>
+              )}
             </div>
-            : <div className={classes.controlButtons}>
+          ) : (
+            <div className={classes.controlButtons}>
               <MicIcon className={classes.controlIcons} />
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                Turn off Mic
-              </span>}
-            </div>}
+              {windowWidth > 720 && (
+                <span className={classes.controlLabel}>Turn off Mic</span>
+              )}
+            </div>
+          )}
         </Button>
 
         <Button
-          size='small'
-          color='default'
-          aria-label='disable-video'
+          size="small"
+          color="default"
+          aria-label="disable-video"
           onClick={disableVideo}
           className={classes.fab}
           disabled={!isConnected || isVideoSwitching}
         >
-          {!isVideoEnabled
-            ? <div className={classes.controlButtons}>
-              <VideocamOffIcon className={cx(classes.controlIcons, classes.nonEffect)}/>
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                Start Camera
-              </span>}
+          {!isVideoEnabled ? (
+            <div className={classes.controlButtons}>
+              <VideocamOffIcon
+                className={cx(classes.controlIcons, classes.nonEffect)}
+              />
+              {windowWidth > 720 && (
+                <span className={classes.controlLabel}>Start Camera</span>
+              )}
             </div>
-            : <div className={classes.controlButtons}>
-              <VideocamIcon className={classes.controlIcons}/>
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                Stop Camera
-              </span>}
-            </div>}
+          ) : (
+            <div className={classes.controlButtons}>
+              <VideocamIcon className={classes.controlIcons} />
+              {windowWidth > 720 && (
+                <span className={classes.controlLabel}>Stop Camera</span>
+              )}
+            </div>
+          )}
         </Button>
-        {windowWidth > 720 && <Button
-          size='small'
-          color='default'
-          aria-label='share-screen'
-          className={classes.fab}
-          disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-          onClick={shareScreen}
-        >
-          {!localSharing
-            ? <div className={classes.controlButtons}>
-              <ShareScreenIcon className={classes.controlIcons}/>
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-                Sharing Screen
-              </span>}
-            </div>
-            : <div className={cx(classes.controlButtons, isSharing && classes.sharingBtn)}>
-              <SharedScreenIcon className={classes.controlIcons}/>
-              {windowWidth > 720 && <span className={cx(classes.controlLabel, localSharing === 2 && classes.sharingBtn)}>
-                Sharing
-              </span>}
-            </div>}
-        </Button>}
+        {windowWidth > 720 && (
+          <Button
+            size="small"
+            color="default"
+            aria-label="share-screen"
+            className={classes.fab}
+            disabled={
+              !isScreenSharingSupported || isSharingData || !isConnected
+            }
+            onClick={shareScreen}
+          >
+            {!localSharing ? (
+              <div className={classes.controlButtons}>
+                <ShareScreenIcon className={classes.controlIcons} />
+                {windowWidth > 720 && (
+                  <span className={classes.controlLabel}>Sharing Screen</span>
+                )}
+              </div>
+            ) : (
+              <div
+                className={cx(
+                  classes.controlButtons,
+                  isSharing && classes.sharingBtn
+                )}
+              >
+                <SharedScreenIcon className={classes.controlIcons} />
+                {windowWidth > 720 && (
+                  <span
+                    className={cx(
+                      classes.controlLabel,
+                      localSharing === 2 && classes.sharingBtn
+                    )}
+                  >
+                    Sharing
+                  </span>
+                )}
+              </div>
+            )}
+          </Button>
+        )}
 
         <Tooltip
           id={9062}
@@ -169,21 +195,25 @@ class Controls extends React.PureComponent<Props, State> {
           okButton="Nice!"
           completedSteps={2}
         >
-          {windowWidth > 720 && <Button
-            size='small'
-            color='default'
-            aria-label='participant'
-            className={classes.fab}
-            disabled={!isScreenSharingSupported || isSharingData || !isConnected}
-            onClick={() => this.handleOpen(0)}
-          >
-            <div className={classes.controlButtons}>
-              <ParticipantIcon className={classes.controlIcons}/>
-              {windowWidth > 720 && <span className={classes.controlLabel}>
-              Participant
-              </span>}
-            </div>
-          </Button>}
+          {windowWidth > 720 && (
+            <Button
+              size="small"
+              color="default"
+              aria-label="participant"
+              className={classes.fab}
+              disabled={
+                !isScreenSharingSupported || isSharingData || !isConnected
+              }
+              onClick={() => this.handleOpen(0)}
+            >
+              <div className={classes.controlButtons}>
+                <ParticipantIcon className={classes.controlIcons} />
+                {windowWidth > 720 && (
+                  <span className={classes.controlLabel}>Participant</span>
+                )}
+              </div>
+            </Button>
+          )}
           <Badge
             badgeContent={unreadMessageCount}
             color="error"
@@ -192,32 +222,34 @@ class Controls extends React.PureComponent<Props, State> {
             }}
           >
             <Button
-              size='small'
+              size="small"
               color="default"
-              aria-label='chat'
+              aria-label="chat"
               className={classes.fab}
               disabled={!isConnected}
               onClick={() => this.handleOpen(1)}
             >
-              {!isSharing
-                ? <div className={classes.controlButtons}>
-                  <ChatIcon className={classes.controlIcons}/>
-                  {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Chat
-                  </span>}
+              {!isSharing ? (
+                <div className={classes.controlButtons}>
+                  <ChatIcon className={classes.controlIcons} />
+                  {windowWidth > 720 && (
+                    <span className={classes.controlLabel}>Chat</span>
+                  )}
                 </div>
-                : <div className={classes.controlButtons}>
-                  <ChatIcon className={classes.controlIcons}/>
-                  {windowWidth > 720 && <span className={classes.controlLabel}>
-                  Chat
-                  </span>}
-                </div>}
+              ) : (
+                <div className={classes.controlButtons}>
+                  <ChatIcon className={classes.controlIcons} />
+                  {windowWidth > 720 && (
+                    <span className={classes.controlLabel}>Chat</span>
+                  )}
+                </div>
+              )}
             </Button>
           </Badge>
         </Tooltip>
       </div>
-    )
-  }
+    );
+  };
 
   render() {
     const {
@@ -226,9 +258,9 @@ class Controls extends React.PureComponent<Props, State> {
       isOpenMeetingDetails,
       endCall,
       openMeetingDetails
-    } = this.props
+    } = this.props;
 
-    const { windowWidth } = this.state
+    const { windowWidth } = this.state;
 
     return (
       <div className={!isConnected ? classes.disalbedRoot : classes.root}>
@@ -236,15 +268,18 @@ class Controls extends React.PureComponent<Props, State> {
           <Button
             variant="contained"
             color="secondary"
-            aria-label='meeting-details'
+            aria-label="meeting-details"
             className={classes.meetingDetail}
             onClick={openMeetingDetails}
-            endIcon={isOpenMeetingDetails
-              ? <ArrowDropDownIcon className={classes.meetingDetailShow} />
-              : <ArrowDropUpIcon className={classes.meetingDetailShow} />
+            endIcon={
+              isOpenMeetingDetails ? (
+                <ArrowDropDownIcon className={classes.meetingDetailShow} />
+              ) : (
+                <ArrowDropUpIcon className={classes.meetingDetailShow} />
+              )
             }
           >
-            {windowWidth > 720 ?  'Study Room Details' : <AddCircleIcon />}
+            {windowWidth > 720 ? 'Study Room Details' : <AddCircleIcon />}
           </Button>
         </div>
         {this.renderControls()}
@@ -252,7 +287,7 @@ class Controls extends React.PureComponent<Props, State> {
           <Button
             variant="contained"
             color="secondary"
-            aria-label='call-end'
+            aria-label="call-end"
             className={classes.hangup}
             classes={{
               disabled: classes.disableControl

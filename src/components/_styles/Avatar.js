@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
 export const DEFAULT_AVATAR_SIZE = {
   desktop: 124,
   mobile: 60
-}
+};
 
 export const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -16,4 +16,4 @@ export const useStyles = makeStyles((theme) => ({
     },
     fontSize: theme.typography.h4.fontSize
   }
-}))
+}));

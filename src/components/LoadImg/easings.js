@@ -21,7 +21,7 @@ export const easings = {
   easeInBack: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)',
   easeOutBack: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
   easeInOutBack: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
-}
+};
 
 export const animations = {
   fadeIn: `fade-in 500ms ease-out forwards`,
@@ -33,4 +33,4 @@ export const animations = {
   bounceOut: `pop-out 300ms ${easings.easeInBack} forwards`,
   slideIn: `slide-in 500ms ${easings.easeInOutBack} forwards`,
   slideOut: `slide-out 350ms ${easings.easeOutBack} forwards`
-}
+};

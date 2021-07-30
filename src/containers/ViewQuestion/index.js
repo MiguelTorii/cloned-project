@@ -19,7 +19,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -46,27 +46,27 @@ type Props = {
   router: Object
 };
 
-const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) => {
-  const [question, setQuestion] = useState(null)
-  const [report, setReport] = useState(false)
-  const [deletePost, setDeletePost] = useState(false)
+const ViewQuestion = ({
+  classes,
+  user,
+  questionId,
+  push,
+  router,
+  pop
+}: Props) => {
+  const [question, setQuestion] = useState(null);
+  const [report, setReport] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
   const {
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
-  } = user
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
+  } = user;
 
   const loadData = async () => {
     const question = await getQuestion({ userId, questionId });
-    setQuestion(question)
+    setQuestion(question);
     const {
-      postInfo: {
-        feedId
-      }
+      postInfo: { feedId }
     } = question;
 
     logEvent({
@@ -76,32 +76,32 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
   };
 
   useEffect(() => {
-    loadData()
+    loadData();
     // eslint-disable-next-line
-  }, [questionId])
+  }, [questionId]);
 
   const handleBookmark = async () => {
     if (!question) return;
     const { feedId, bookmarked } = question;
     try {
-      setQuestion({ ...question, bookmarked: !bookmarked })
+      setQuestion({ ...question, bookmarked: !bookmarked });
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setQuestion({ ...question, bookmarked })
+      setQuestion({ ...question, bookmarked });
     }
   };
 
-  const handleReport = () => setReport(true)
+  const handleReport = () => setReport(true);
 
-  const handleReportClose = () => setReport(false)
+  const handleReportClose = () => setReport(false);
 
-  const handleDelete = () => setDeletePost(true)
+  const handleDelete = () => setDeletePost(true);
 
   const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
-    setDeletePost(false)
+    setDeletePost(false);
   };
 
   if (!question)
@@ -215,7 +215,7 @@ const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) =
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,

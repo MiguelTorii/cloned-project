@@ -20,7 +20,7 @@ class SelectedRewards extends React.PureComponent<Props> {
   render() {
     const { classes, slots, loading } = this.props;
     const newItems = items.map((item, index) => {
-      const slot = slots.find(o => o.slot === index);
+      const slot = slots.find((o) => o.slot === index);
       if (slot) return { ...item, ...slot };
       return item;
     });
@@ -34,7 +34,7 @@ class SelectedRewards extends React.PureComponent<Props> {
 
     return (
       <div className={classes.root}>
-        {newItems.map(item => (
+        {newItems.map((item) => (
           <div key={item.key} className={classes.item}>
             <Avatar className={classes.avatar}>{item.key}</Avatar>
             {!item.displayName ? (

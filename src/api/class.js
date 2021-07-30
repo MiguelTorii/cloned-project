@@ -10,11 +10,14 @@ const searchClasses = async (query: stirng): Promise<Class> => {
 
     const token = await getToken();
 
-    const result = await axios.get(`${API_ROUTES.SEARCH_CLASS}?query=${query}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.get(
+      `${API_ROUTES.SEARCH_CLASS}?query=${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
     const classes = result.data.classes.map((c) => {
       return {
@@ -22,7 +25,7 @@ const searchClasses = async (query: stirng): Promise<Class> => {
         hasJoined: c.has_joined,
         name: c.course_display_name,
         sectionId: c.section_id
-      }
+      };
     });
 
     return classes;
@@ -31,4 +34,4 @@ const searchClasses = async (query: stirng): Promise<Class> => {
   }
 };
 
-export default searchClasses
+export default searchClasses;

@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
-import { dialogStyle } from '../Dialog'
+import { makeStyles } from '@material-ui/core/styles';
+import { dialogStyle } from '../Dialog';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   dialog: {
     ...dialogStyle,
     height: 700,
@@ -30,6 +30,6 @@ export const useStyles = makeStyles(theme => ({
   courseDisplayName: {
     fontSize: 24,
     textDecoration: 'italic',
-    padding: '16px 8px',
+    padding: '16px 8px'
   }
-}))
+}));

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     width: '100%'
   },
@@ -12,4 +12,4 @@ export const styles = theme => ({
     marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(2)
   }
-})
+});

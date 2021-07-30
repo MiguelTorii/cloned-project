@@ -1,6 +1,6 @@
 import { dialogStyle } from './Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     display: 'flex',

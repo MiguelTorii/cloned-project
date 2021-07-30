@@ -20,19 +20,20 @@ const FiltersBar = ({ data, activeValue, onSelectItem }: Props) => {
         separator: classes.separator
       }}
     >
-      {
-        data.map((item) => (
-          <Chip
-            clickable
-            key={item.value}
-            label={item.text}
-            classes={{
-              root: clsx(classes.item, item.value === activeValue && classes.itemActive)
-            }}
-            onClick={() => onSelectItem(item.value)}
-          />
-        ))
-      }
+      {data.map((item) => (
+        <Chip
+          clickable
+          key={item.value}
+          label={item.text}
+          classes={{
+            root: clsx(
+              classes.item,
+              item.value === activeValue && classes.itemActive
+            )
+          }}
+          onClick={() => onSelectItem(item.value)}
+        />
+      ))}
     </Breadcrumbs>
   );
 };

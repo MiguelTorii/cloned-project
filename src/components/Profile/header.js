@@ -12,7 +12,7 @@ import Tab from '@material-ui/core/Tab';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { getCampaign } from 'api/campaign';
 import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge'
+import RoleBadge from 'components/RoleBadge';
 import ImgEmptyCover from 'assets/img/empty_cover.png';
 import ImgLogo from 'assets/svg/app-logo.svg';
 import { Hidden } from '@material-ui/core';
@@ -77,9 +77,10 @@ class Header extends React.PureComponent<Props, State> {
   componentWillMount = async () => {
     const campaign = await getCampaign({ campaignId: 9 });
     this.setState({
-      videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
+      videoEnabled:
+        campaign.variation_key && campaign.variation_key !== 'hidden'
     });
-  }
+  };
 
   renderNumbers = () => {
     const { points, bestAnswers, thanks } = this.props;
@@ -88,7 +89,7 @@ class Header extends React.PureComponent<Props, State> {
       <Grid container spacing={3}>
         <Grid item>
           <Typography variant="body1">
-            { getPointsText(points) } Points
+            {getPointsText(points)} Points
           </Typography>
         </Grid>
         <Grid item>
@@ -154,22 +155,28 @@ class Header extends React.PureComponent<Props, State> {
           </div>
           <div className={classes.actionContainer}>
             {
-              isMyProfile ?
+              isMyProfile ? (
                 <IconButton
                   classes={{ root: classes.penIcon }}
                   onClick={onEditProfile}
                 >
                   <Create />
-                </IconButton> :
+                </IconButton>
+              ) : (
                 <div />
-                // <IconButton>
-                //   <MoreVert />
-                // </IconButton>
+              )
+              // <IconButton>
+              //   <MoreVert />
+              // </IconButton>
             }
           </div>
           <div className={classes.avatarContainer}>
             <div className={classes.avatar}>
-              <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground" fromChat={false}>
+              <OnlineBadge
+                isOnline={isOnline}
+                bgColorPath="circleIn.palette.feedBackground"
+                fromChat={false}
+              >
                 <Avatar
                   alt={initials}
                   src={userProfileUrl}
@@ -195,11 +202,7 @@ class Header extends React.PureComponent<Props, State> {
               </Hidden>
               <Grid item xs={12} md={4}>
                 <Typography variant="body2" align="right">
-                  <img
-                    src={ImgLogo}
-                    className={classes.logoIcon}
-                    alt="Logo"
-                  />
+                  <img src={ImgLogo} className={classes.logoIcon} alt="Logo" />
                   {`Joined ${moment(joined).format('MMMM YYYY')}`}
                 </Typography>
               </Grid>
@@ -207,12 +210,13 @@ class Header extends React.PureComponent<Props, State> {
           </div>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
-              <Grid
-                container
-                direction="column"
-              >
+              <Grid container direction="column">
                 <Box display="flex" alignItems="center" mb={1}>
-                  <Typography variant="h5" gutterBottom className={classes.name}>
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    className={classes.name}
+                  >
                     {name}
                   </Typography>
                   {role && <RoleBadge text={role} />}
@@ -222,22 +226,15 @@ class Header extends React.PureComponent<Props, State> {
                     {this.renderNumbers()}
                   </Grid>
                 </Hidden>
-                {
-                  bio &&
-                    <Grid item xs={12}>
-                      <Typography>
-                        { bio }
-                      </Typography>
-                    </Grid>
-                }
+                {bio && (
+                  <Grid item xs={12}>
+                    <Typography>{bio}</Typography>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Grid
-                container
-                direction="column"
-                className={classes.schoolGrid}
-              >
+              <Grid container direction="column" className={classes.schoolGrid}>
                 <Grid item xs={12}>
                   <Typography
                     variant="h6"
@@ -262,9 +259,7 @@ class Header extends React.PureComponent<Props, State> {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography>
-                    { major }
-                  </Typography>
+                  <Typography>{major}</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -272,7 +267,7 @@ class Header extends React.PureComponent<Props, State> {
               <Grid container spacing={2}>
                 <Grid item hidden={isMyProfile || isCirclein}>
                   <GradientButton
-                    startIcon={<Message/>}
+                    startIcon={<Message />}
                     disabled={chatLoading}
                     onClick={onStartChat}
                   >
@@ -281,7 +276,7 @@ class Header extends React.PureComponent<Props, State> {
                 </Grid>
                 <Grid item hidden={isMyProfile || isCirclein || !videoEnabled}>
                   <TransparentButton
-                    startIcon={<Videocam/>}
+                    startIcon={<Videocam />}
                     disabled={chatLoading}
                     onClick={onStartVideo}
                   >
@@ -309,7 +304,7 @@ class Header extends React.PureComponent<Props, State> {
         >
           {/* <Tab label="Profile" /> */}
           <Tab label={isMyProfile ? 'My Posts' : 'Posts'} value={1} />
-          {isMyProfile && <Tab label="Bookmarks" value={2}/>}
+          {isMyProfile && <Tab label="Bookmarks" value={2} />}
         </Tabs>
       </div>
     );

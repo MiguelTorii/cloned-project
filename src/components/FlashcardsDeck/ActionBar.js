@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import Box from '@material-ui/core/Box';
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import IconEye from 'assets/svg/icon-eye-gray.svg';
@@ -25,16 +25,14 @@ type Props = {
   onDelete: Function
 };
 
-const ActionBar = (
-  {
-    isOwn,
-    bookmarked,
-    onViewEdit,
-    onBookmark,
-    onShareLink,
-    onDelete
-  }: Props
-) => {
+const ActionBar = ({
+  isOwn,
+  bookmarked,
+  onViewEdit,
+  onBookmark,
+  onShareLink,
+  onDelete
+}: Props) => {
   const classes = useStyles();
 
   return (
@@ -57,30 +55,38 @@ const ActionBar = (
         onClick={onBookmark}
       />
       <PopupState variant="popover">
-        {
-          (popupState) => (
-            <>
-              <div {...bindTrigger(popupState)}>
-                <ActionItem
-                  icon={IconThreeDots}
-                  activeIcon={IconDotsGradient}
-                  text="More"
-                />
-              </div>
-              <Menu {...bindMenu(popupState)}>
-                <MenuItem onClick={() => { popupState.close(); onShareLink(); }}>Share Link</MenuItem>
-                {isOwn && (
-                  <MenuItem
-                    className={classes.reportText}
-                    onClick={() => { popupState.close(); onDelete(); }}
-                  >
-                    Delete Flashcard Deck
-                  </MenuItem>
-                )}
-              </Menu>
-            </>
-          )
-        }
+        {(popupState) => (
+          <>
+            <div {...bindTrigger(popupState)}>
+              <ActionItem
+                icon={IconThreeDots}
+                activeIcon={IconDotsGradient}
+                text="More"
+              />
+            </div>
+            <Menu {...bindMenu(popupState)}>
+              <MenuItem
+                onClick={() => {
+                  popupState.close();
+                  onShareLink();
+                }}
+              >
+                Share Link
+              </MenuItem>
+              {isOwn && (
+                <MenuItem
+                  className={classes.reportText}
+                  onClick={() => {
+                    popupState.close();
+                    onDelete();
+                  }}
+                >
+                  Delete Flashcard Deck
+                </MenuItem>
+              )}
+            </Menu>
+          </>
+        )}
       </PopupState>
     </Box>
   );

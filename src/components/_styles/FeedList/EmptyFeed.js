@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     ...theme.mixins.gutters(),
     padding: theme.spacing(),
@@ -22,7 +22,7 @@ export const useStyles = makeStyles(theme => ({
   imgFirst: {
     height: 92,
     objectFir: 'scale-down',
-    margin: theme.spacing(0,1,0,1)
+    margin: theme.spacing(0, 1, 0, 1)
   },
   imgSecond: {
     height: 135,
@@ -37,7 +37,7 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 'bold'
   },
   buttonSuccess: {
-    backgroundColor: theme.circleIn.palette.success,
+    backgroundColor: theme.circleIn.palette.success
   },
   hidden: {
     display: 'none'
@@ -46,6 +46,6 @@ export const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-}))
+    color: theme.palette.grey[500]
+  }
+}));

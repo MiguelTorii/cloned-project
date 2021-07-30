@@ -2,34 +2,38 @@
 
 export const API_URL =
   // eslint-disable-next-line no-nested-ternary
-  process.env.REACT_APP_API_BASE_URL ? `${process.env.REACT_APP_API_BASE_URL}/v1` :
-    process.env.REACT_APP_STAGE === 'production'
-      ? 'https://api.circleinapp.com/v1'
-      : 'https://dev-api.circleinapp.com/v1';
+  process.env.REACT_APP_API_BASE_URL
+    ? `${process.env.REACT_APP_API_BASE_URL}/v1`
+    : process.env.REACT_APP_STAGE === 'production'
+    ? 'https://api.circleinapp.com/v1'
+    : 'https://dev-api.circleinapp.com/v1';
 
 export const API_URL_V1_1 =
   // eslint-disable-next-line no-nested-ternary
-  process.env.REACT_APP_API_BASE_URL ? `${process.env.REACT_APP_API_BASE_URL}/v1.1` :
-    process.env.REACT_APP_STAGE === 'production'
-      ? 'https://api.circleinapp.com/v1.1'
-      : 'https://dev-api.circleinapp.com/v1.1';
+  process.env.REACT_APP_API_BASE_URL
+    ? `${process.env.REACT_APP_API_BASE_URL}/v1.1`
+    : process.env.REACT_APP_STAGE === 'production'
+    ? 'https://api.circleinapp.com/v1.1'
+    : 'https://dev-api.circleinapp.com/v1.1';
 
 export const API_URL_V1_2 =
   // eslint-disable-next-line no-nested-ternary
-  process.env.REACT_APP_API_BASE_URL ? `${process.env.REACT_APP_API_BASE_URL}/v1.2` :
-    process.env.REACT_APP_STAGE === 'production'
-      ? 'https://api.circleinapp.com/v1.2'
-      : 'https://dev-api.circleinapp.com/v1.2';
+  process.env.REACT_APP_API_BASE_URL
+    ? `${process.env.REACT_APP_API_BASE_URL}/v1.2`
+    : process.env.REACT_APP_STAGE === 'production'
+    ? 'https://api.circleinapp.com/v1.2'
+    : 'https://dev-api.circleinapp.com/v1.2';
 
 export const VIDEO_SHARE_URL =
   // eslint-disable-next-line no-nested-ternary
-  process.env.REACT_APP_SELF_URL ? `${process.env.REACT_APP_SELF_URL}/video-call` :
-    // eslint-disable-next-line no-nested-ternary
+  process.env.REACT_APP_SELF_URL
+    ? `${process.env.REACT_APP_SELF_URL}/video-call`
+    : // eslint-disable-next-line no-nested-ternary
     process.env.REACT_APP_STAGE === 'production'
-      ? 'https://app.circleinapp.com/video-call'
-      : process.env.REACT_APP_STAGE === 'demo'
-        ? 'https://demo.circleinapp.com/video-call'
-        : 'https://dev-app2.circleinapp.com/video-call';
+    ? 'https://app.circleinapp.com/video-call'
+    : process.env.REACT_APP_STAGE === 'demo'
+    ? 'https://demo.circleinapp.com/video-call'
+    : 'https://dev-app2.circleinapp.com/video-call';
 
 export const API_ROUTES = {
   SEND_MESSAGE: `${API_URL}/chat/messages`,

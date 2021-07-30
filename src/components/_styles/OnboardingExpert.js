@@ -4,16 +4,16 @@ import backgroundImg from 'assets/img/onboarding-background.png';
 const centered = {
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'center'
 };
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   actionPanel: {
     flex: 2,
     flexDirection: 'column',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(4),
-    ...centered,
+    ...centered
   },
   button: {
     backgroundColor: theme.circleIn.palette.darkActionBlue,
@@ -24,19 +24,19 @@ export const styles = theme => ({
     letterSpacing: 0.5,
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1 / 2, 2),
-    width: 200,
+    width: 200
   },
   demoPanel: {
     borderRadius: 8,
     background: `url(${backgroundImg})`,
     flex: 3,
-    ...centered,
+    ...centered
   },
   dialog: {
     ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     zIndex: 1300,
-    height: 700,
+    height: 700
   },
   step: {
     display: 'flex',
@@ -51,7 +51,7 @@ export const styles = theme => ({
     justifyContent: 'center',
     maxWidth: 400,
     position: 'absolute',
-    bottom: 20,
+    bottom: 20
   },
   stepDisabled: {
     width: 8,
@@ -68,6 +68,6 @@ export const styles = theme => ({
   stepsContainer: {
     width: theme.spacing(3),
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   }
 });

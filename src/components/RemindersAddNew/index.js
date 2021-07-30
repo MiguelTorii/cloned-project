@@ -39,23 +39,23 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
     selectedDate: moment()
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
   };
 
-  handleDateChange = selectedDate => {
+  handleDateChange = (selectedDate) => {
     this.setState({ selectedDate });
   };
 
-  handleMouseEnter = name => () => {
+  handleMouseEnter = (name) => () => {
     this.setState({ [name]: true });
   };
 
-  handleMouseLeave = name => () => {
+  handleMouseLeave = (name) => () => {
     this.setState({ [name]: false });
   };
 
-  handleClick = label => () => {
+  handleClick = (label) => () => {
     this.setState(({ selected }) => ({
       selected: selected === label ? -1 : label
     }));
@@ -76,14 +76,8 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, loading } = this.props;
-    const {
-      value,
-      selectedDate,
-      school,
-      personal,
-      other,
-      selected
-    } = this.state;
+    const { value, selectedDate, school, personal, other, selected } =
+      this.state;
     return (
       <Paper className={classes.header} elevation={1}>
         <TextField

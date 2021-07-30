@@ -9,8 +9,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import CustomQuill from 'components/CustomQuill'
-import SelectedImage from 'components/SelectedImage'
+import CustomQuill from 'components/CustomQuill';
+import SelectedImage from 'components/SelectedImage';
 
 import { styles } from '../_styles/FlashcardManager/Flashcard';
 
@@ -42,7 +42,7 @@ const Flashcard = ({
   onShowAnswer,
   onShowQuestion,
   question,
-  questionImage,
+  questionImage
 }: Props) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -64,7 +64,7 @@ const Flashcard = ({
     } else {
       setAnimationEnded(false);
     }
-  }, [prevIsAnimating, isAnimating])
+  }, [prevIsAnimating, isAnimating]);
 
   const animatedBoxKeyframes = ({ x, y }) => {
     return keyframes`
@@ -74,7 +74,7 @@ const Flashcard = ({
       100% {
         transform: translate(${x}px, ${y}px) scale(0);
       }
-    `
+    `;
   };
 
   const AnimatedBox = styled.div`
@@ -94,18 +94,20 @@ const Flashcard = ({
 
   const getRectangleCenter = (rectangle) => {
     return {
-      x: rectangle.left + ((rectangle.right - rectangle.left) / 2),
-      y: rectangle.top + ((rectangle.bottom - rectangle.top) / 2),
-    }
+      x: rectangle.left + (rectangle.right - rectangle.left) / 2,
+      y: rectangle.top + (rectangle.bottom - rectangle.top) / 2
+    };
   };
 
   const calculateOffset = () => {
-    const sourceCenter = getRectangleCenter(refCard.current.getBoundingClientRect());
+    const sourceCenter = getRectangleCenter(
+      refCard.current.getBoundingClientRect()
+    );
 
     return {
       x: Math.ceil(destinationCenter.x - sourceCenter.x),
       y: Math.ceil(destinationCenter.y - sourceCenter.y)
-    }
+    };
   };
 
   const handleAnimationEnd = () => {
@@ -122,45 +124,55 @@ const Flashcard = ({
 
     const { x, y } = calculateOffset();
 
-    return (<AnimatedBox onAnimationEnd={handleAnimationEnd} x={x} y={y}>{children}</AnimatedBox>);
+    return (
+      <AnimatedBox onAnimationEnd={handleAnimationEnd} x={x} y={y}>
+        {children}
+      </AnimatedBox>
+    );
   };
 
   const renderAnswer = () => (
-    <Card ref={refCard} className={classes.body} key='back'>
+    <Card ref={refCard} className={classes.body} key="back">
       <Animation>
         <CardContent className={classes.content}>
-          {
-            answerImage &&
+          {answerImage && (
             <div className={classes.media}>
-              <SelectedImage image={answerImage} className={classes.image} alt='flashcard answer' disableContainerStyles />
+              <SelectedImage
+                image={answerImage}
+                className={classes.image}
+                alt="flashcard answer"
+                disableContainerStyles
+              />
             </div>
-          }
-          {
-            answer &&
-              <div className={classes.text}>
-                <CustomQuill value={answer} readOnly />
-              </div>
-          }
+          )}
+          {answer && (
+            <div className={classes.text}>
+              <CustomQuill value={answer} readOnly />
+            </div>
+          )}
         </CardContent>
       </Animation>
     </Card>
   );
 
   const renderQuestion = () => (
-    <Card className={classes.body} key='front'>
+    <Card className={classes.body} key="front">
       <CardContent className={classes.content}>
-        {
-          questionImage &&
+        {questionImage && (
           <div className={classes.media}>
-            <SelectedImage image={questionImage} className={classes.image} alt='flashcard question' disableContainerStyles />
+            <SelectedImage
+              image={questionImage}
+              className={classes.image}
+              alt="flashcard question"
+              disableContainerStyles
+            />
           </div>
-        }
-        {
-          question &&
-              <div className={classes.text}>
-                <CustomQuill value={question} readOnly />
-              </div>
-        }
+        )}
+        {question && (
+          <div className={classes.text}>
+            <CustomQuill value={question} readOnly />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -169,115 +181,118 @@ const Flashcard = ({
     <div>
       {
         // When the animation ends re-initialize the flipper instead of showing the flipping effect.
-        animationEnded ? null :
+        animationEnded ? null : (
           <ReactCardFlip isFlipped={isFlipped}>
             {renderQuestion()}
             {renderAnswer()}
           </ReactCardFlip>
+        )
       }
-      {
-        !isFlipped ?
-          <CardActions className={classes.actions}>
-            <div className={classes.buttons}>
+      {!isFlipped ? (
+        <CardActions className={classes.actions}>
+          <div className={classes.buttons}>
+            <Button
+              className={classes.button}
+              color="primary"
+              onClick={() => onShowAnswer(true)}
+              variant="outlined"
+            >
+              Show Answer
+            </Button>
+          </div>
+        </CardActions>
+      ) : (
+        <CardActions className={classes.actions}>
+          <div className={classes.label}>
+            Select the difficulty level to view the next card
+          </div>
+          <div className={classes.buttons}>
+            <Tooltip
+              arrow
+              classes={{
+                arrow: classes.tooltipArrow,
+                tooltip: classes.tooltip
+              }}
+              enterDelay={700}
+              placement="top"
+              title={
+                <p className={classes.tooltipLabel}>
+                  Select <b>Didn't Remember</b> if you weren't able to remember
+                  the answer
+                </p>
+              }
+            >
               <Button
                 className={classes.button}
                 color="primary"
-                onClick={() => onShowAnswer(true)}
-                variant="outlined"
+                onClick={() => handleAnswer('difficult')}
+                variant="contained"
               >
-                Show Answer
+                Didn't Remember
               </Button>
-            </div>
-          </CardActions> :
-          <CardActions className={classes.actions}>
-            <div className={classes.label}>
-              Select the difficulty level to view the next card
-            </div>
-            <div className={classes.buttons}>
-              <Tooltip
-                arrow
-                classes={{
-                  arrow: classes.tooltipArrow,
-                  tooltip: classes.tooltip,
-                }}
-                enterDelay={700}
-                placement='top'
-                title={
-                  <p className={classes.tooltipLabel}>
-                    Select <b>Didn't Remember</b> if you weren't able to remember the answer
-                  </p>
-                }
-              >
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  onClick={() => handleAnswer('difficult')}
-                  variant="contained"
-                >
-                  Didn't Remember
-                </Button>
-              </Tooltip>
-              <Tooltip
-                arrow
-                classes={{
-                  arrow: classes.tooltipArrow,
-                  tooltip: classes.tooltip,
-                }}
-                enterDelay={700}
-                placement='top'
-                title={
-                  <p className={classes.tooltipLabel}>
-                    Select <b>Almost Had It</b> if you were close to answering the correct answer or had difficulty answering it
-                  </p>
-                }
-              >
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  onClick={() => handleAnswer('medium')}
-                  variant="contained"
-                >
-                  Almost Had It
-                </Button>
-              </Tooltip>
-              <Tooltip
-                arrow
-                classes={{
-                  arrow: classes.tooltipArrow,
-                  tooltip: classes.tooltip,
-                }}
-                enterDelay={700}
-                placement='top'
-                title={
-                  <p className={classes.tooltipLabel}>
-                    Select <b>Correct!</b> if you answered the question correctly
-                  </p>
-                }
-              >
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  onClick={() => handleAnswer('easy')}
-                  variant="contained"
-                >
-                  Correct!
-                </Button>
-              </Tooltip>
-            </div>
-            <div className={classes.buttons}>
+            </Tooltip>
+            <Tooltip
+              arrow
+              classes={{
+                arrow: classes.tooltipArrow,
+                tooltip: classes.tooltip
+              }}
+              enterDelay={700}
+              placement="top"
+              title={
+                <p className={classes.tooltipLabel}>
+                  Select <b>Almost Had It</b> if you were close to answering the
+                  correct answer or had difficulty answering it
+                </p>
+              }
+            >
               <Button
                 className={classes.button}
                 color="primary"
-                onClick={() => onShowQuestion()}
-                variant="outlined"
+                onClick={() => handleAnswer('medium')}
+                variant="contained"
               >
-                Show Question
+                Almost Had It
               </Button>
-            </div>
-          </CardActions>
-      }
+            </Tooltip>
+            <Tooltip
+              arrow
+              classes={{
+                arrow: classes.tooltipArrow,
+                tooltip: classes.tooltip
+              }}
+              enterDelay={700}
+              placement="top"
+              title={
+                <p className={classes.tooltipLabel}>
+                  Select <b>Correct!</b> if you answered the question correctly
+                </p>
+              }
+            >
+              <Button
+                className={classes.button}
+                color="primary"
+                onClick={() => handleAnswer('easy')}
+                variant="contained"
+              >
+                Correct!
+              </Button>
+            </Tooltip>
+          </div>
+          <div className={classes.buttons}>
+            <Button
+              className={classes.button}
+              color="primary"
+              onClick={() => onShowQuestion()}
+              variant="outlined"
+            >
+              Show Question
+            </Button>
+          </div>
+        </CardActions>
+      )}
     </div>
   );
-}
+};
 
 export default withStyles(styles)(Flashcard);

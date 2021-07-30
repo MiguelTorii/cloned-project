@@ -57,7 +57,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
     status: -1
   };
 
-  handleSelectEvent = event => {
+  handleSelectEvent = (event) => {
     const { id = -1, title = '', due = '', label = -2, status = -1 } = event;
     this.setState({ id, title, due, label, status });
   };
@@ -66,29 +66,31 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
     this.setState({ id: -1, title: '', due: '', label: -2, status: -1 });
   };
 
-  handleUpdate = ({ id, status }) => () => {
-    const { onUpdate } = this.props;
-    this.handleClose();
-    onUpdate({ id, status })();
-  };
+  handleUpdate =
+    ({ id, status }) =>
+    () => {
+      const { onUpdate } = this.props;
+      this.handleClose();
+      onUpdate({ id, status })();
+    };
 
-  handleDelete = id => () => {
+  handleDelete = (id) => () => {
     const { onDelete } = this.props;
     this.handleClose();
     onDelete(id)();
   };
 
-  renderClass = label => {
+  renderClass = (label) => {
     const { classes } = this.props;
     switch (label) {
-    case 1:
-      return classes.green;
-    case 2:
-      return classes.blue;
-    case 3:
-      return classes.grey;
-    default:
-      return classes.red;
+      case 1:
+        return classes.green;
+      case 2:
+        return classes.blue;
+      case 3:
+        return classes.grey;
+      default:
+        return classes.red;
     }
   };
 
@@ -167,11 +169,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
               })}
             >
               <ListItemIcon>
-                <Checkbox
-                  checked={status === 2}
-                  tabIndex={-1}
-                  disableRipple
-                />
+                <Checkbox checked={status === 2} tabIndex={-1} disableRipple />
               </ListItemIcon>
               <ListItemIcon>
                 <LabelIcon className={cx(this.renderClass(label))} />
@@ -183,10 +181,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
                 secondaryTypographyProps={{ color: 'textPrimary' }}
               />
               <ListItemSecondaryAction>
-                <IconButton
-                  aria-label="Delete"
-                  onClick={this.handleDelete(id)}
-                >
+                <IconButton aria-label="Delete" onClick={this.handleDelete(id)}>
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>

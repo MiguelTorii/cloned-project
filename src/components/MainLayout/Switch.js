@@ -1,9 +1,9 @@
-import React, { memo } from 'react'
-import Switch from '@material-ui/core/Switch'
-import { useStyles } from '../_styles/MainLayout/Switch'
+import React, { memo } from 'react';
+import Switch from '@material-ui/core/Switch';
+import { useStyles } from '../_styles/MainLayout/Switch';
 
-const CustomSwitch = (({ ...props }) => {
-  const classes = useStyles()
+const CustomSwitch = ({ ...props }) => {
+  const classes = useStyles();
 
   return (
     <Switch
@@ -14,11 +14,11 @@ const CustomSwitch = (({ ...props }) => {
         switchBase: classes.switchBase,
         thumb: classes.thumb,
         track: classes.track,
-        checked: classes.checked,
+        checked: classes.checked
       }}
       {...props}
     />
   );
-});
+};
 
-export default memo(CustomSwitch)
+export default memo(CustomSwitch);

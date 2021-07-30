@@ -25,11 +25,8 @@ const Avatar = ({ src, initialText, mobileSize, desktopSize }: Props) => {
   }, [src]);
 
   return (
-    <MuiAvatar
-      src={avatarUrl}
-      className={classes.avatar}
-    >
-      { initialText }
+    <MuiAvatar src={avatarUrl} className={classes.avatar}>
+      {initialText}
     </MuiAvatar>
   );
 };

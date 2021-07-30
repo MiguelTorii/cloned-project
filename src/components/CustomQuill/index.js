@@ -7,17 +7,20 @@ import 'quill-emoji/dist/quill-emoji.css';
 import withStyles from '@material-ui/core/styles/withStyles';
 import cx from 'classnames';
 import './quill.custom.css';
-import MathQuill from './Math'
+import MathQuill from './Math';
 
 import { styles } from '../_styles/CustomQuill';
 
 const { EmojiBlot, ShortNameEmoji, ToolbarEmoji, TextAreaEmoji } = quillEmoji;
-Quill.register({
-  'formats/emoji': EmojiBlot,
-  'modules/emoji-shortname': ShortNameEmoji,
-  'modules/emoji-toolbar': ToolbarEmoji,
-  'modules/emoji-textarea': TextAreaEmoji
-}, true);
+Quill.register(
+  {
+    'formats/emoji': EmojiBlot,
+    'modules/emoji-shortname': ShortNameEmoji,
+    'modules/emoji-toolbar': ToolbarEmoji,
+    'modules/emoji-textarea': TextAreaEmoji
+  },
+  true
+);
 
 const modules = {
   formula: true,
@@ -34,28 +37,28 @@ const modules = {
     ['image'],
     ['link'],
     ['clean'],
-    ['emoji'],
+    ['emoji']
   ],
   keyboard: {
     bindings: {
-      'tabToPost': {
+      tabToPost: {
         key: 13,
         shortKey: true,
-        handler: function(range, context) {
-          const postButtonEl = document.getElementById('post-submit-btn')
+        handler: function (range, context) {
+          const postButtonEl = document.getElementById('post-submit-btn');
 
           if (postButtonEl) {
-            postButtonEl.focus()
+            postButtonEl.focus();
           }
 
-          return false
+          return false;
         }
       }
     }
   },
   'emoji-toolbar': true,
   // 'emoji-textarea': true,
-  'emoji-shortname': true,
+  'emoji-shortname': true
 };
 
 type Props = {
@@ -70,15 +73,15 @@ class CustomQuill extends React.PureComponent<Props> {
 
   componentDidMount() {
     const enableMathQuillFormulaAuthoring = MathQuill();
-    enableMathQuillFormulaAuthoring(this.editor.editor,{
+    enableMathQuillFormulaAuthoring(this.editor.editor, {
       displayHistory: true,
       operators: [
-        ["\\sqrt[n]{x}", "\\nthroot"],
-        ["\\frac{x}{y}","\\frac"],
-        ["{a}^{b}", "^"],
+        ['\\sqrt[n]{x}', '\\nthroot'],
+        ['\\frac{x}{y}', '\\frac'],
+        ['{a}^{b}', '^'],
         // eslint-disable-next-line
-     ["\\int", "\int"],
-        ["n \\choose k","\\choose"]
+        ['\\int', 'int'],
+        ['n \\choose k', '\\choose']
       ]
     });
   }
@@ -95,7 +98,7 @@ class CustomQuill extends React.PureComponent<Props> {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        ref={element => {
+        ref={(element) => {
           this.editor = element;
         }}
       />

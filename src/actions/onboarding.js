@@ -1,5 +1,5 @@
 // @flow
-import { onboardingActions } from 'constants/action-types'
+import { onboardingActions } from 'constants/action-types';
 import { fetchOnboardingList, completeOnboardingList } from 'api/onboarding';
 import type { Dispatch } from 'types/store';
 import type { OnboardingList } from 'types/models';

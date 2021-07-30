@@ -1,13 +1,13 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   courseLogo: {
     position: 'relative'
   },
   courseBanner: {
     width: '100%',
     minHeight: 100,
-    maxHeight: 120,
+    maxHeight: 120
   },
   courseNameWithLogo: {
     width: '100%',
@@ -25,6 +25,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: 20,
     textAlign: 'center'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

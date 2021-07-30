@@ -23,14 +23,8 @@ type State = {};
 
 class ShareDialog extends React.PureComponent<Props, State> {
   render() {
-    const {
-      classes,
-      open,
-      link,
-      isLoading,
-      onLinkCopied,
-      onClose
-    } = this.props;
+    const { classes, open, link, isLoading, onLinkCopied, onClose } =
+      this.props;
     return (
       <Dialog
         ariaDescribedBy="share-dialog-description"

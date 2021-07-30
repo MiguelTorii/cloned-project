@@ -19,18 +19,23 @@ const defaultState = {
   landingPageCampaign: null
 };
 
-export default (state: CampaignState = defaultState, action: Action): CampaignState => {
+export default (
+  state: CampaignState = defaultState,
+  action: Action
+): CampaignState => {
   switch (action.type) {
-  case campaignActions.GET_CAMPAIGN:
-    return update(state, {
-      [action.payload.campaign]: { $set: action.payload.active }
-    });
-  case campaignActions.GET_FLASHCARDS_CAMPAIGN: {
-    return update(state, {
-      newFlashcardsExperience: { $set: action.payload.variation_key === 'visible' }
-    });
-  }
-  default:
-    return state;
+    case campaignActions.GET_CAMPAIGN:
+      return update(state, {
+        [action.payload.campaign]: { $set: action.payload.active }
+      });
+    case campaignActions.GET_FLASHCARDS_CAMPAIGN: {
+      return update(state, {
+        newFlashcardsExperience: {
+          $set: action.payload.variation_key === 'visible'
+        }
+      });
+    }
+    default:
+      return state;
   }
 };

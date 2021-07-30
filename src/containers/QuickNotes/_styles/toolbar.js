@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   appBar: {
-    position: 'relative',
+    position: 'relative'
   },
   show: {
     display: 'inline-flex'
@@ -46,7 +46,7 @@ export default makeStyles((theme) => ({
       maxHeight: 'calc(100vh - 210px)',
       [theme.breakpoints.down('xs')]: {
         height: 'calc(100vh - 240px)',
-        maxHeight: 'calc(100vh - 240px)',
+        maxHeight: 'calc(100vh - 240px)'
       },
       background: theme.palette.common.white,
       color: theme.palette.common.black
@@ -85,7 +85,7 @@ export default makeStyles((theme) => ({
     color: theme.circleIn.palette.primaryText2
   },
   saveButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   savedContainer: {
     position: 'relative',
@@ -106,10 +106,10 @@ export default makeStyles((theme) => ({
   },
   title: {
     marginLeft: theme.spacing(2),
-    flex: 1,
+    flex: 1
   },
   visible: {
     fontWeight: 'bold',
     color: theme.circleIn.palette.primaryText1
-  },
+  }
 }));

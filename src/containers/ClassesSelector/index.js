@@ -14,7 +14,7 @@ import { processClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import RequestClass from '../RequestClass';
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControl: {
     width: '100%'
   },
@@ -45,80 +45,78 @@ const ClassesSelector = ({
     isLoading,
     error,
     data: { segment, userId },
-    userClasses: {
-      classList,
-      canAddClasses
-    }
+    userClasses: { classList, canAddClasses }
   },
   onChange,
   classId,
   label,
   router: {
-    location: {
-      pathname
-    }
+    location: { pathname }
   },
   variant,
   sectionId
 }: Props) => {
-  const [userClasses, setUserClasses] = useState([])
-  const [isEdit, setIsEdit] = useState(false)
-  const [value, setValue] = useState('')
-  const [open, setOpen] = useState(false)
-  const [openRequestClass, setOpenRequestClass] = useState(false)
+  const [userClasses, setUserClasses] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [value, setValue] = useState('');
+  const [open, setOpen] = useState(false);
+  const [openRequestClass, setOpenRequestClass] = useState(false);
 
   useEffect(() => {
-    if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }))
-  }, [classId, sectionId])
+    if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }));
+  }, [classId, sectionId]);
 
   const handleLoadClasses = useCallback(async () => {
     try {
       const userClasses = processClasses({ classes: classList, segment });
-      setUserClasses(userClasses)
-      if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }))
+      setUserClasses(userClasses);
+      if (classId && sectionId)
+        setValue(JSON.stringify({ classId, sectionId }));
     } catch (err) {
       console.log(err);
     }
-  }, [classId, classList, sectionId, segment])
+  }, [classId, classList, sectionId, segment]);
 
   useEffect(() => {
     const init = async () => {
-      if (pathname.includes('/edit')) setIsEdit(true)
-      await handleLoadClasses()
-    }
+      if (pathname.includes('/edit')) setIsEdit(true);
+      await handleLoadClasses();
+    };
 
-    init()
-  }, [handleLoadClasses, pathname])
+    init();
+  }, [handleLoadClasses, pathname]);
 
-  const handleChange = useCallback(event => {
-    const { value } = event.target;
-    if (value === 'new') {
-      setOpen(true)
-      return;
-    }
-    try {
-      setValue(value)
-      const { classId, sectionId } = JSON.parse(value);
-      onChange({ classId, sectionId });
-    } catch (err) {
-      onChange({ classId: 0, sectionId: null });
-    }
-  }, [onChange])
+  const handleChange = useCallback(
+    (event) => {
+      const { value } = event.target;
+      if (value === 'new') {
+        setOpen(true);
+        return;
+      }
+      try {
+        setValue(value);
+        const { classId, sectionId } = JSON.parse(value);
+        onChange({ classId, sectionId });
+      } catch (err) {
+        onChange({ classId: 0, sectionId: null });
+      }
+    },
+    [onChange]
+  );
 
   const handleCloseManageClasses = useCallback(async () => {
-    setOpen(false)
+    setOpen(false);
     await handleLoadClasses();
-  }, [handleLoadClasses])
+  }, [handleLoadClasses]);
 
   const handleOpenRequestClass = useCallback(() => {
     handleCloseManageClasses();
-    setOpenRequestClass(true)
-  }, [handleCloseManageClasses])
+    setOpenRequestClass(true);
+  }, [handleCloseManageClasses]);
 
   const handleCloseRequestClass = useCallback(() => {
-    setOpenRequestClass(false)
-  }, [])
-
+    setOpenRequestClass(false);
+  }, []);
 
   if (isLoading) return <CircularProgress size={12} />;
   if (userId === '' || error)
@@ -135,21 +133,23 @@ const ClassesSelector = ({
               name="userClasses"
               disabled={isEdit}
               onChange={handleChange}
-              variant={variant || "outlined"}
+              variant={variant || 'outlined'}
               multiple
               label={label}
               validators={['required']}
               errorMessages={['User Classes is required']}
             >
               <MenuItem value="" />
-              {userClasses.map(userClass => (
+              {userClasses.map((userClass) => (
                 <MenuItem key={userClass.value} value={userClass.value}>
                   {userClass.label}
                 </MenuItem>
               ))}
-              {canAddClasses && <MenuItem value="new" className={classes.newClass}>
+              {canAddClasses && (
+                <MenuItem value="new" className={classes.newClass}>
                   Add Classes
-              </MenuItem>}
+                </MenuItem>
+              )}
             </SelectValidator>
           </FormControl>
         </div>
@@ -169,7 +169,7 @@ const ClassesSelector = ({
       </ErrorBoundary>
     </>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,

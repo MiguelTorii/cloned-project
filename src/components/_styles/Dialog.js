@@ -1,9 +1,9 @@
 export const dialogStyle = {
   borderRadius: 8,
-  overflow: 'auto',
-}
+  overflow: 'auto'
+};
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   dialogPaper: dialogStyle,
   contentRoot: {
     display: 'flex',
@@ -44,7 +44,7 @@ export const styles = theme => ({
   hr: {
     background: 'rgba(233, 236, 239, 0.25)',
     border: 'none',
-    height: 1,
+    height: 1
   },
   button: {
     borderRadius: 8,
@@ -64,4 +64,4 @@ export const styles = theme => ({
   headerContainer: {
     height: 80
   }
-})
+});

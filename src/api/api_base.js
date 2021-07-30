@@ -14,10 +14,9 @@ export const callApi = async (apiConfig) => {
       ...apiConfig
     });
     return response.data;
-
   } catch (error) {
     // Deal with errors here
-    return {}
+    return {};
   }
 };
 

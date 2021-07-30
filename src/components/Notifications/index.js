@@ -11,8 +11,8 @@ import List from '@material-ui/core/List';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import LoadImg from 'components/LoadImg';
-import emptyNotification from 'assets/svg/no-notification.svg'
-import readNotificationAll from 'assets/svg/read_all.svg'
+import emptyNotification from 'assets/svg/no-notification.svg';
+import readNotificationAll from 'assets/svg/read_all.svg';
 import NotificationItem from './notification-item';
 import type { Notification as NotificationState } from '../../types/models';
 
@@ -46,10 +46,10 @@ class Notifications extends React.PureComponent<Props, State> {
       onClick
     } = this.props;
 
-    const handleClick = e => {
-      onClick(e)
-      if(onNotificationClose) onNotificationClose()
-    }
+    const handleClick = (e) => {
+      onClick(e);
+      if (onNotificationClose) onNotificationClose();
+    };
 
     const open = Boolean(anchorEl);
     const notificationPaper = (
@@ -62,30 +62,41 @@ class Notifications extends React.PureComponent<Props, State> {
         >
           <Tab
             className={classes.notificationTab}
-            classes={{ wrapper: tab === 0 ? classes.wrapper : classes.currentWrapper }}
+            classes={{
+              wrapper: tab === 0 ? classes.wrapper : classes.currentWrapper
+            }}
             label="Posts"
           />
           <Tab
             className={classes.notificationTab}
-            classes={{ wrapper: tab === 1 ? classes.wrapper : classes.currentWrapper }}
+            classes={{
+              wrapper: tab === 1 ? classes.wrapper : classes.currentWrapper
+            }}
             label="Recommended"
           />
           <Tab
             className={classes.notificationTab}
-            classes={{ wrapper: tab === 2 ? classes.wrapper : classes.currentWrapper }}
+            classes={{
+              wrapper: tab === 2 ? classes.wrapper : classes.currentWrapper
+            }}
             label="Announcements"
           />
           <Tab
             className={cx(classes.notificationTab, classes.readAllTab)}
             label="Read all"
-            classes={{ wrapper: tab === 3 ? classes.wrapper : classes.currentWrapper }}
+            classes={{
+              wrapper: tab === 3 ? classes.wrapper : classes.currentWrapper
+            }}
             icon={
-              <LoadImg url={readNotificationAll} className={tab === 3 ? classes.selectedReadAll : ''} />
+              <LoadImg
+                url={readNotificationAll}
+                className={tab === 3 ? classes.selectedReadAll : ''}
+              />
             }
           />
         </Tabs>
         <List className={classes.root}>
-          {notifications.map(item => (
+          {notifications.map((item) => (
             <NotificationItem
               key={item.id}
               notification={item}

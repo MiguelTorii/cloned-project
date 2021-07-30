@@ -23,11 +23,11 @@ import {
 } from '../../api/reminders';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
-  },
+  }
 });
 
 type Props = {
@@ -70,14 +70,12 @@ class Reminders extends React.PureComponent<Props, State> {
       this.handleUpdateDB.cancel();
   };
 
-  handlePoints = res => {
+  handlePoints = (res) => {
     try {
       const {
         points,
-        user: {
-          first_name: firstName
-        }
-      } = res
+        user: { first_name: firstName }
+      } = res;
       const { enqueueSnackbar, classes } = this.props;
       if (points) {
         enqueueSnackbar({
@@ -99,9 +97,9 @@ class Reminders extends React.PureComponent<Props, State> {
           }
         });
       }
-    // eslint-disable-next-line no-empty
-    } catch(e) {}
-  }
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  };
 
   handleFetchReminders = async () => {
     const {
@@ -117,26 +115,28 @@ class Reminders extends React.PureComponent<Props, State> {
     }
   };
 
-  handleUpdate = ({ id, status }) => () => {
-    const newState = update(this.state, {
-      reminders: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
-          if (index > -1) {
-            return update(b, {
-              [index]: {
-                status: { $set: status }
-              }
-            });
+  handleUpdate =
+    ({ id, status }) =>
+    () => {
+      const newState = update(this.state, {
+        reminders: {
+          $apply: (b) => {
+            const index = b.findIndex((item) => item.id === id);
+            if (index > -1) {
+              return update(b, {
+                [index]: {
+                  status: { $set: status }
+                }
+              });
+            }
+            return b;
           }
-          return b;
         }
-      }
-    });
+      });
 
-    this.setState(newState);
-    this.handleUpdateDB({ id, status });
-  };
+      this.setState(newState);
+      this.handleUpdateDB({ id, status });
+    };
 
   handleUpdateDB = async ({ id, status }) => {
     const {
@@ -145,14 +145,14 @@ class Reminders extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const res = await updateReminder({ userId, id, status });
-    this.handlePoints(res)
+    this.handlePoints(res);
   };
 
-  handleDelete = id => () => {
+  handleDelete = (id) => () => {
     const newState = update(this.state, {
       reminders: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
+        $apply: (b) => {
+          const index = b.findIndex((item) => item.id === id);
           if (index > -1) {
             return update(b, { $splice: [[index, 1]] });
           }
@@ -194,7 +194,7 @@ class Reminders extends React.PureComponent<Props, State> {
     try {
       const res = await createReminder({ userId, title, label, dueDate });
       if (onboardingListVisible) getOnboardingList();
-      this.handlePoints(res)
+      this.handlePoints(res);
       await this.handleFetchReminders();
     } finally {
       this.setState({ loading: false });

@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(0, 6)
   },
@@ -35,6 +35,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: 32,
     backgroundColor: theme.circleIn.palette.communityChannelProfileBg
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

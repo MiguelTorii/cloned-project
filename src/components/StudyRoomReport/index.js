@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
@@ -35,101 +35,117 @@ const ReportIssue = ({
   profiles,
   classes,
   handleClose,
-  open,
+  open
 }: Props) => {
-  const [loading, setLoading] = useState(false)
-  const [reported, setReported] = useState(false)
-  const [selectedReason, setSelectedReason] = useState('')
-  const [selectedNames, setSelectedNames] = useState([])
-  const [openError, setOpenError] = useState(false)
-  const [errorTitle, setErrorTitle] = useState('')
-  const [errorBody, setErrorBody] = useState('')
+  const [loading, setLoading] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [selectedReason, setSelectedReason] = useState('');
+  const [selectedNames, setSelectedNames] = useState([]);
+  const [openError, setOpenError] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorBody, setErrorBody] = useState('');
 
   const names = useMemo(() => {
-    const filteredIds = Object.keys(profiles || []).filter(id => id !== userId)
-    return filteredIds.map(id => {
+    const filteredIds = Object.keys(profiles || []).filter(
+      (id) => id !== userId
+    );
+    return filteredIds.map((id) => {
       return {
         id,
         name: `${profiles[id].firstName} ${profiles[id].lastName}`
-      }
+      };
     });
-  }, [profiles, userId])
+  }, [profiles, userId]);
 
-  const nameList = useMemo(() => names.map(user => ({
-    value: user.id,
-    text: user.name,
-  })), [names])
+  const nameList = useMemo(
+    () =>
+      names.map((user) => ({
+        value: user.id,
+        text: user.name
+      })),
+    [names]
+  );
 
   const getValue = (value) => {
-    return nameList.filter(item => item.value === value)[0]?.text
-  }
+    return nameList.filter((item) => item.value === value)[0]?.text;
+  };
 
-  const [reasonList, setReasonList] = useState([]) // Load data from BE
+  const [reasonList, setReasonList] = useState([]); // Load data from BE
 
   useEffect(() => {
     const loadData = async () => {
       const { report_reasons = [] } = await getReasons(2);
       setReasonList(report_reasons);
-    }
+    };
     loadData();
-  }, [])
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     if (selectedNames.length === 0) {
-      setOpenError(true)
-      setErrorTitle('Select a Student')
-      setErrorBody('Please select the student that you are reporting from the drop-down menu.')
-      return
+      setOpenError(true);
+      setErrorTitle('Select a Student');
+      setErrorBody(
+        'Please select the student that you are reporting from the drop-down menu.'
+      );
+      return;
     }
     if (selectedReason.length === 0) {
-      setOpenError(true)
-      setErrorTitle('Choose a report reason')
-      setErrorBody('Please select an issue from the drop-down menu so we can understand what’s going on.')
-      return
+      setOpenError(true);
+      setErrorTitle('Choose a report reason');
+      setErrorBody(
+        'Please select an issue from the drop-down menu so we can understand what’s going on.'
+      );
+      return;
     }
-    setLoading(true)
-    const objectCreatorIds = selectedNames.map((id) => Number(id))
+    setLoading(true);
+    const objectCreatorIds = selectedNames.map((id) => Number(id));
     try {
       await report({
         reportCreatorId: userId,
         objectCreatorIds: objectCreatorIds,
         reasonId: selectedReason,
         reportTypeId: 2,
-        description: '',
+        description: ''
       });
       setReported(true);
     } catch (error) {
-      setOpenError(true)
-      setErrorTitle('Something went wrong')
-      setErrorBody('Please try again!')
+      setOpenError(true);
+      setErrorTitle('Something went wrong');
+      setErrorBody('Please try again!');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [setReported, selectedReason, selectedNames, userId])
+  }, [setReported, selectedReason, selectedNames, userId]);
 
-  const handleSelectReason = useCallback((e) => {
-    setSelectedReason(e.target.value)
-  }, [setSelectedReason])
+  const handleSelectReason = useCallback(
+    (e) => {
+      setSelectedReason(e.target.value);
+    },
+    [setSelectedReason]
+  );
 
-  const handleSelectNames = useCallback((e) => {
-    setSelectedNames(e.target.value)
-  }, [setSelectedNames])
+  const handleSelectNames = useCallback(
+    (e) => {
+      setSelectedNames(e.target.value);
+    },
+    [setSelectedNames]
+  );
 
   const handleRemoveName = (value) => {
-    const filteredList = selectedNames.filter(item => item !== value)
-    setSelectedNames(filteredList)
-  }
+    const filteredList = selectedNames.filter((item) => item !== value);
+    setSelectedNames(filteredList);
+  };
 
   const handleDoneClick = useCallback(() => {
-    setSelectedNames([])
-    setSelectedReason('')
-    setReported(false)
-    handleClose()
-  }, [setReported, handleClose])
+    setSelectedNames([]);
+    setSelectedReason('');
+    setReported(false);
+    handleClose();
+  }, [setReported, handleClose]);
 
   const handleErrorDialogClose = useCallback(() => {
-    setOpenError(false)
-  }, [])
+    setOpenError(false);
+  }, []);
 
   return (
     <Dialog
@@ -144,16 +160,22 @@ const ReportIssue = ({
         </div>
       }
     >
-      {loading && <CircularProgress
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%'
-        }}
-      />}
+      {loading && (
+        <CircularProgress
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%'
+          }}
+        />
+      )}
       {!reported && (
         <>
-          <FormControl fullWidth variant="outlined" className={classes.selectForm}>
+          <FormControl
+            fullWidth
+            variant="outlined"
+            className={classes.selectForm}
+          >
             <InputLabel
               className={classes.InputLabel}
               id="reporter-select-label"
@@ -169,12 +191,12 @@ const ReportIssue = ({
               onChange={handleSelectNames}
               MenuProps={{
                 anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "left"
+                  vertical: 'bottom',
+                  horizontal: 'left'
                 },
                 transformOrigin: {
-                  vertical: "top",
-                  horizontal: "left"
+                  vertical: 'top',
+                  horizontal: 'left'
                 },
                 getContentAnchorEl: null
               }}
@@ -186,7 +208,7 @@ const ReportIssue = ({
                       key={value}
                       label={getValue(value)}
                       onMouseDown={(e) => {
-                        e.stopPropagation()
+                        e.stopPropagation();
                       }}
                       onDelete={() => handleRemoveName(value)}
                     />
@@ -194,16 +216,17 @@ const ReportIssue = ({
                 </div>
               )}
             >
-              {nameList.map(item => (
+              {nameList.map((item) => (
                 <MenuItem
                   className={classes.menuItem}
                   value={item.value}
                   key={`name-item-${item.value}`}
                 >
-                  {selectedNames.indexOf(item.value) > -1
-                    ? <CheckCircleIcon className={classes.mr1} />
-                    : <RadioButtonUncheckedIcon className={classes.mr1} />
-                  }
+                  {selectedNames.indexOf(item.value) > -1 ? (
+                    <CheckCircleIcon className={classes.mr1} />
+                  ) : (
+                    <RadioButtonUncheckedIcon className={classes.mr1} />
+                  )}
                   {item.text}
                 </MenuItem>
               ))}
@@ -213,11 +236,12 @@ const ReportIssue = ({
             </FormHelperText>
           </FormControl>
 
-          <FormControl fullWidth variant="outlined" className={classes.selectForm}>
-            <InputLabel
-              className={classes.InputLabel}
-              id="reason-select-label"
-            >
+          <FormControl
+            fullWidth
+            variant="outlined"
+            className={classes.selectForm}
+          >
+            <InputLabel className={classes.InputLabel} id="reason-select-label">
               What happened?
             </InputLabel>
             <Select
@@ -227,17 +251,18 @@ const ReportIssue = ({
               fullWidth
               onChange={handleSelectReason}
             >
-              <MenuItem value='' className={classes.emptyOption} disabled />
+              <MenuItem value="" className={classes.emptyOption} disabled />
               {reasonList.map((item) => (
                 <MenuItem
                   className={classes.menuItem}
                   value={item.id}
                   key={`reason-item-${item.id}`}
                 >
-                  {selectedReason === item.id
-                    ? <CheckCircleIcon className={classes.mr1} />
-                    : <RadioButtonUncheckedIcon className={classes.mr1} />
-                  }
+                  {selectedReason === item.id ? (
+                    <CheckCircleIcon className={classes.mr1} />
+                  ) : (
+                    <RadioButtonUncheckedIcon className={classes.mr1} />
+                  )}
                   {item.reason}
                 </MenuItem>
               ))}
@@ -245,13 +270,17 @@ const ReportIssue = ({
           </FormControl>
 
           <Typography variant="body1" className={classes.noteText}>
-            The safety and well-being of all of our CircleIn users is
-            important to us. By pressing "Submit" on this report, you
-            authorize CircleIn to access the data to investigate
-            the situation. You may be contacted for further information.
+            The safety and well-being of all of our CircleIn users is important
+            to us. By pressing "Submit" on this report, you authorize CircleIn
+            to access the data to investigate the situation. You may be
+            contacted for further information.
           </Typography>
 
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Button
               variant="contained"
               color="primary"
@@ -275,10 +304,11 @@ const ReportIssue = ({
       {reported && (
         <>
           <Typography variant="body1" className={classes.finalNote}>
-            Thank you for submitting your report. We take reports very seriously.
-            We want you to have a sefe experience and we're sorry you're experiencing
-            some issues. We many contact you soon if we have furthur questions about
-            this incident. For additional support please email us at &nbsp;
+            Thank you for submitting your report. We take reports very
+            seriously. We want you to have a sefe experience and we're sorry
+            you're experiencing some issues. We many contact you soon if we have
+            furthur questions about this incident. For additional support please
+            email us at &nbsp;
             <a className={classes.email} href="mailto:support@circleinapp.com">
               support@circleinapp.com
             </a>
@@ -304,12 +334,12 @@ const ReportIssue = ({
         handleClose={handleErrorDialogClose}
       />
     </Dialog>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
-  router,
+  router
 });
 
 export default connect(

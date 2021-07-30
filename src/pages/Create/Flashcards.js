@@ -17,7 +17,7 @@ const CreateShareLinkPage = () => {
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={12} md={9}>
-            <CreateFlashcards flashcardId={flashcardId}/>
+            <CreateFlashcards flashcardId={flashcardId} />
           </Grid>
           <Grid item xs={12} sm={0} md={3}>
             <PostTips type="flashcards" />

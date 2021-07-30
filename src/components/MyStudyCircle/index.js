@@ -29,15 +29,17 @@ type Props = {
 };
 
 class MyStudyCircle extends React.PureComponent<Props> {
-  handleRemove = userId => () => {
+  handleRemove = (userId) => () => {
     const { onRemove } = this.props;
     onRemove(userId);
   };
 
-  handleStartChat = ({ userId, firstName, lastName }) => () => {
-    const { onStartChat } = this.props;
-    onStartChat({ userId, firstName, lastName });
-  };
+  handleStartChat =
+    ({ userId, firstName, lastName }) =>
+    () => {
+      const { onStartChat } = this.props;
+      onStartChat({ userId, firstName, lastName });
+    };
 
   renderContent = () => {
     const { classes, isLoading, circle } = this.props;
@@ -64,7 +66,7 @@ class MyStudyCircle extends React.PureComponent<Props> {
 
     return (
       <List dense className={classes.list}>
-        {circle.map(item => (
+        {circle.map((item) => (
           <ListItem key={item.userId}>
             <ListItemAvatar
               className={classes.avatarLink}
@@ -79,9 +81,10 @@ class MyStudyCircle extends React.PureComponent<Props> {
               disableTypography
               primary={
                 <Typography>
-                  <Link component={MyLink} href={`/profile/${item.userId}`}>{`${
-                    item.firstName
-                  } ${item.lastName}`}</Link>
+                  <Link
+                    component={MyLink}
+                    href={`/profile/${item.userId}`}
+                  >{`${item.firstName} ${item.lastName}`}</Link>
                 </Typography>
               }
             />

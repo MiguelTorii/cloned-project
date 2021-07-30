@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     width: 245,
     marginTop: theme.spacing(),
@@ -10,10 +10,9 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: '#FFF',
     '-webkit-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
     '-moz-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
-    'box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
+    'box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)'
   },
-  container: {
-  },
+  container: {},
   chip: {
     color: theme.circleIn.palette.primaryText1,
     fontWeight: 'bold'
@@ -22,10 +21,10 @@ export const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   },
   icon: {
-    color: theme.circleIn.palette.normalButtonText1,
+    color: theme.circleIn.palette.normalButtonText1
   },
   title: {
     fontWeight: 'bold',
@@ -35,7 +34,7 @@ export const useStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis',
     maxHeight: '4.5em',
     marginBottom: theme.spacing(),
-    lineHeight: '1.5em',
+    lineHeight: '1.5em'
   },
   date: {
     color: theme.circleIn.palette.normalButtonText1,
@@ -70,7 +69,7 @@ export const useStyles = makeStyles(theme => ({
     height: '4.5rem',
     display: '-webkit-box',
     '-webkit-line-clamp': '3',
-    '-webkit-box-orient': 'vertical',
+    '-webkit-box-orient': 'vertical'
   },
   buttons: {
     height: theme.spacing(5)
@@ -80,6 +79,6 @@ export const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: theme.spacing(),
     right: theme.spacing(),
-    opacity: 0.5,
+    opacity: 0.5
   }
-}))
+}));

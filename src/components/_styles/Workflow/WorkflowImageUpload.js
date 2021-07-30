@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   dropLabel: {
     width: '100%'
   },
@@ -33,13 +33,13 @@ export const useStyles = makeStyles(theme => ({
   image: {
     maxHeight: 150,
     position: 'absolute',
-    left: '-50%',
+    left: '-50%'
   },
   imagesContainer: {
     overflow: 'auto'
   },
   buttonImage: {
-    height: 150,
+    height: 150
   },
   imageContainer: {
     position: 'relative',
@@ -59,4 +59,4 @@ export const useStyles = makeStyles(theme => ({
   icon: {
     color: theme.circleIn.palette.normalButtonText1
   }
-}))
+}));

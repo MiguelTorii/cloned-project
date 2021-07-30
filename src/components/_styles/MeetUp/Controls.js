@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     position: 'absolute',
     bottom: 0,
@@ -14,9 +14,9 @@ export const styles = theme => ({
   },
   hangup: {
     background: 'red',
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   }
 });

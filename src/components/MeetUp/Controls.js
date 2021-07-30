@@ -54,7 +54,7 @@ class Controls extends React.PureComponent<Props, State> {
       disableVideo,
       disableAudio,
       endCall,
-      shareScreen,
+      shareScreen
     } = this.props;
 
     return (
@@ -64,14 +64,14 @@ class Controls extends React.PureComponent<Props, State> {
           classes={{
             tooltip: classes.tooltip
           }}
-          placement='bottom'
+          placement="bottom"
           title={isVideoEnabled ? 'Turn off camera' : 'Turn on camera'}
         >
           <div>
             <Fab
-              size='small'
+              size="small"
               color={isVideoEnabled ? 'primary' : 'default'}
-              aria-label='disable-video'
+              aria-label="disable-video"
               onClick={disableVideo}
               className={classes.fab}
               disabled={!isConnected || isVideoSwitching}
@@ -85,14 +85,14 @@ class Controls extends React.PureComponent<Props, State> {
           classes={{
             tooltip: classes.tooltip
           }}
-          placement='bottom'
+          placement="bottom"
           title={isAudioEnabled ? 'Turn off microphone' : 'Turn on microphone'}
         >
           <div>
             <Fab
-              size='small'
+              size="small"
               color={isAudioEnabled ? 'primary' : 'default'}
-              aria-label='disable-audio'
+              aria-label="disable-audio"
               className={classes.fab}
               onClick={disableAudio}
               disabled={!isConnected || isAudioSwitching}
@@ -106,13 +106,13 @@ class Controls extends React.PureComponent<Props, State> {
           classes={{
             tooltip: classes.tooltip
           }}
-          placement='bottom'
-          title='Leave call'
+          placement="bottom"
+          title="Leave call"
         >
           <div>
             <Fab
-              color='secondary'
-              aria-label='call-end'
+              color="secondary"
+              aria-label="call-end"
               className={classes.hangup}
               onClick={endCall}
               disabled={!isConnected}
@@ -126,16 +126,18 @@ class Controls extends React.PureComponent<Props, State> {
           classes={{
             tooltip: classes.tooltip
           }}
-          placement='bottom'
+          placement="bottom"
           title={isSharing ? 'Stop presenting' : 'Present your screen'}
         >
           <div>
             <Fab
-              size='small'
+              size="small"
               color={!isSharing ? 'primary' : 'default'}
-              aria-label='share-screen'
+              aria-label="share-screen"
               className={classes.fab}
-              disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+              disabled={
+                !isScreenSharingSupported || isSharingData || !isConnected
+              }
               onClick={shareScreen}
             >
               {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}
@@ -147,14 +149,14 @@ class Controls extends React.PureComponent<Props, State> {
           classes={{
             tooltip: classes.tooltip
           }}
-          placement='bottom'
+          placement="bottom"
           title={!dominantView ? 'Speaker View' : 'Gallery View'}
         >
           <div>
             <Fab
-              size='small'
+              size="small"
               color="primary"
-              aria-label='share-screen'
+              aria-label="share-screen"
               className={classes.fab}
               disabled={!isConnected}
               onClick={dominantToggle}

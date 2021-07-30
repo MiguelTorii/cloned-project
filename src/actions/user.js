@@ -1,15 +1,19 @@
 // @flow
-import { userActions } from 'constants/action-types'
-import { getAnnouncement as fetchAnnouncement, getAnnouncementCampaign } from 'api/announcement';
+import { userActions } from 'constants/action-types';
+import {
+  getAnnouncement as fetchAnnouncement,
+  getAnnouncementCampaign
+} from 'api/announcement';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
-  getSync, apiSetExpertMode
+  getSync,
+  apiSetExpertMode
 } from 'api/user';
-import store from 'store'
-import isEqual from 'lodash/isEqual'
+import store from 'store';
+import isEqual from 'lodash/isEqual';
 import * as feedActions from 'actions/feed';
-import type { Action } from '../types/action'
+import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models';
 import { apiGetPointsHistory } from '../api/user';
@@ -17,116 +21,127 @@ import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
-import axios from "axios";
+import axios from 'axios';
 
-const setBannerHeightAction = ({ bannerHeight }: {bannerHeight: number}): Action => ({
+const setBannerHeightAction = ({
+  bannerHeight
+}: {
+  bannerHeight: number
+}): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
   payload: {
     bannerHeight
   }
-})
+});
 
-export const setBannerHeight = ({ bannerHeight }: {bannerHeight: number}) => (dispatch: Dispatch) => {
-  dispatch(setBannerHeightAction({ bannerHeight }))
-}
+export const setBannerHeight =
+  ({ bannerHeight }: { bannerHeight: number }) =>
+  (dispatch: Dispatch) => {
+    dispatch(setBannerHeightAction({ bannerHeight }));
+  };
 
 const clearDialogMessageAction = (): Action => ({
   type: userActions.CLEAR_DIALOG_MESSAGE
-})
+});
 
 export const clearDialogMessage = () => (dispatch: Dispatch) => {
-  dispatch(clearDialogMessageAction())
-}
+  dispatch(clearDialogMessageAction());
+};
 
 const setClassesAction = ({
-  userClasses,
+  userClasses
 }: {
   userClasses: Array<string>,
   emptyState: Object
 }): Action => ({
   type: userActions.UPDATE_CLASSES,
   payload: {
-    userClasses,
+    userClasses
   }
-})
+});
 
-export const fetchClasses = (skipCache) => async (
-  dispatch: Dispatch,
-  getState: Function
-) => {
-  try {
-    const {
-      user: {
-        userClasses,
-        data: { userId },
-        expertMode
-      }
-    } = getState()
-
-    const res = await getUserClasses({ userId, skipCache, expertMode })
-    const { classes: classList, emptyState, permissions: { canAddClasses } } = res
-
-    if (expertMode) {
-      store.remove('CLASSES_CACHE')
-
-      const value = classList.map(cl => (
-        JSON.stringify({
-          classId: cl.classId,
-          sectionId: cl.section[0].sectionId
-        })
-      ))
-
-      dispatch(feedActions.updateFilter({
-        value,
-        field: 'userClasses',
-      }))
-    }
-
-    if (
-      !isEqual(userClasses.classList, classList) ||
-      userClasses.canAddClasses !== canAddClasses
-    ) {
-      dispatch(setClassesAction({
-        userClasses: {
-          classList,
-          canAddClasses,
-          emptyState,
+export const fetchClasses =
+  (skipCache) => async (dispatch: Dispatch, getState: Function) => {
+    try {
+      const {
+        user: {
+          userClasses,
+          data: { userId },
+          expertMode
         }
+      } = getState();
+
+      const res = await getUserClasses({ userId, skipCache, expertMode });
+      const {
+        classes: classList,
+        emptyState,
+        permissions: { canAddClasses }
+      } = res;
+
+      if (expertMode) {
+        store.remove('CLASSES_CACHE');
+
+        const value = classList.map((cl) =>
+          JSON.stringify({
+            classId: cl.classId,
+            sectionId: cl.section[0].sectionId
+          })
+        );
+
+        dispatch(
+          feedActions.updateFilter({
+            value,
+            field: 'userClasses'
+          })
+        );
       }
-      ))
+
+      if (
+        !isEqual(userClasses.classList, classList) ||
+        userClasses.canAddClasses !== canAddClasses
+      ) {
+        dispatch(
+          setClassesAction({
+            userClasses: {
+              classList,
+              canAddClasses,
+              emptyState
+            }
+          })
+        );
+      }
+    } catch (e) {
+      /* NONE */
     }
-  } catch (e) {/* NONE */}
-}
+  };
 
 export const setExpertModeAction = (expertMode) => ({
   type: userActions.SET_EXPERT_MODE,
   payload: { expertMode }
 });
 
-export const toggleExpertMode = () => async (
-  dispatch: Dispatch,
-  getState: Function
-) => {
-  const {
-    user: {
-      data: { userId },
-      expertMode
-    },
-  } = getState();
+export const toggleExpertMode =
+  () => async (dispatch: Dispatch, getState: Function) => {
+    const {
+      user: {
+        data: { userId },
+        expertMode
+      }
+    } = getState();
 
-  const newExpertMode = !expertMode;
-  dispatch(setExpertModeAction(newExpertMode));
+    const newExpertMode = !expertMode;
+    dispatch(setExpertModeAction(newExpertMode));
 
-  const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
+    const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
 
-  if (apiSuccess) {
-    dispatch(fetchClasses(true));
-  } else {
-    dispatch(setExpertModeAction(expertMode));
-  }
+    if (apiSuccess) {
+      dispatch(fetchClasses(true));
+    } else {
+      dispatch(setExpertModeAction(expertMode));
+    }
 
-  setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
-}
+    setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
+  };
 
 const updateTourAction = ({
   runningTour
@@ -137,13 +152,11 @@ const updateTourAction = ({
   payload: {
     runningTour
   }
-})
+});
 
-export const updateTour = runningTour => (
-  dispatch: Dispatch
-) => {
-  dispatch(updateTourAction(runningTour))
-}
+export const updateTour = (runningTour) => (dispatch: Dispatch) => {
+  dispatch(updateTourAction(runningTour));
+};
 
 const syncSuccessAction = ({
   display,
@@ -175,42 +188,38 @@ const syncSuccessAction = ({
     viewedOnboarding,
     viewedTooltips
   }
-})
+});
 
-export const sync = userId => async (
-  dispatch: Dispatch
-) => {
-  const result = await getSync(userId)
-  if (result)
-    dispatch(syncSuccessAction(result))
-}
+export const sync = (userId) => async (dispatch: Dispatch) => {
+  const result = await getSync(userId);
+  if (result) dispatch(syncSuccessAction(result));
+};
 
 const confirmTooltipSuccessAction = (tooltipId: number): Action => ({
   type: userActions.CONFIRM_TOOLITP_SUCCESS,
   payload: {
-    tooltipId,
+    tooltipId
   }
-})
+});
 
-export const confirmTooltip = (tooltipId: number) => async (
-  dispatch: Dispatch
-) => {
-  await postConfirmTooltip(tooltipId)
-  dispatch(confirmTooltipSuccessAction(tooltipId))
-}
+export const confirmTooltip =
+  (tooltipId: number) => async (dispatch: Dispatch) => {
+    await postConfirmTooltip(tooltipId);
+    dispatch(confirmTooltipSuccessAction(tooltipId));
+  };
 
 const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
   type: userActions.UPDATE_ONBOARDING,
   payload: {
     viewedOnboarding
   }
-})
+});
 
-export const updateOnboarding = ({ viewedOnboarding }: {viewedOnboarding: boolean}) => (
-  dispatch: Dispatch
-) => {
-  dispatch(updateOnboardingAction(viewedOnboarding))
-}
+export const updateOnboarding =
+  ({ viewedOnboarding }: { viewedOnboarding: boolean }) =>
+  (dispatch: Dispatch) => {
+    dispatch(updateOnboardingAction(viewedOnboarding));
+  };
 
 const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
   type: userActions.GET_ANNOUNCEMENT_SUCCESS,
@@ -229,11 +238,13 @@ export const getAnnouncement = () => async (dispatch: Dispatch) => {
     const { end_date, announcement_id } = data;
     const announcement = await fetchAnnouncement(announcement_id);
 
-    dispatch(getAnnouncementSuccessAction({
-      ...announcement,
-      endDate: end_date,
-      id: announcement_id
-    }));
+    dispatch(
+      getAnnouncementSuccessAction({
+        ...announcement,
+        endDate: end_date,
+        id: announcement_id
+      })
+    );
   }
 };
 
@@ -249,24 +260,22 @@ export const getPointsHistory = (
   successCallback: successCb
 });
 
-export const masquerade = (
-  userId: string,
-  refreshToken: string,
-  callback: Function
-) => async (dispatch: Dispatch) => {
-  store.set('REFRESH_TOKEN', refreshToken);
-  store.set('USER_ID', userId);
+export const masquerade =
+  (userId: string, refreshToken: string, callback: Function) =>
+  async (dispatch: Dispatch) => {
+    store.set('REFRESH_TOKEN', refreshToken);
+    store.set('USER_ID', userId);
 
-  const isAuthenticated = await dispatch(checkUserSession());
+    const isAuthenticated = await dispatch(checkUserSession());
 
-  if (isAuthenticated) {
-    dispatch(setIsMasquerading(true));
-  }
+    if (isAuthenticated) {
+      dispatch(setIsMasquerading(true));
+    }
 
-  if (callback) {
-    callback(isAuthenticated);
-  }
-};
+    if (callback) {
+      callback(isAuthenticated);
+    }
+  };
 
 export const setIsMasquerading = (isMasquerading: boolean) => ({
   type: userActions.SET_IS_MASQUERADING,
@@ -281,19 +290,17 @@ export const getFlashcards = (
 ) => ({
   isApiCall: true,
   type: userActions.GET_FLASHCARDS,
-  apiCall: () => apiFetchFeeds({
-    user_id: userId,
-    bookmarked,
-    tool_type_id: 3,
-    index,
-    limit
-  })
+  apiCall: () =>
+    apiFetchFeeds({
+      user_id: userId,
+      bookmarked,
+      tool_type_id: 3,
+      index,
+      limit
+    })
 });
 
-export const deleteFlashcard = (
-  userId: number,
-  feedId: number
-) => ({
+export const deleteFlashcard = (userId: number, feedId: number) => ({
   isApiCall: true,
   type: userActions.DELETE_FLASHCARDS,
   meta: { feedId },
@@ -313,11 +320,7 @@ export const bookmarkFlashcards = (
   successCallback: cb
 });
 
-export const uploadMedia = async (
-  userId: string,
-  type: number,
-  file: Blob
-) => {
+export const uploadMedia = async (userId: string, type: number, file: Blob) => {
   const { type: mediaType } = file;
 
   try {

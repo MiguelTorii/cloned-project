@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useCallback, useRef } from 'react';
 import { makeStyles } from '@material-ui/core';
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { StudyRoomOnboardingStepData } from '../../types/models';
@@ -13,7 +13,7 @@ import StartPlay from '../../assets/svg/video_play.svg';
 import amplitude from 'amplitude-js';
 // import LoadImg from '../../components/LoadImg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     maxHeight: 357,
     minHeight: 190,
-    opacity: 0.5,
+    opacity: 0.5
   },
   imageContainer: {
     maxHeight: 357,
@@ -57,10 +57,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.circleIn.palette.gray1,
     padding: theme.spacing(4, 5, 3, 5),
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(4, 3, 3, 3),
+      padding: theme.spacing(4, 3, 3, 3)
     },
     [theme.breakpoints.up('md')]: {
-      height: 268,
+      height: 268
     }
   },
   textContainer: {
@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '280px auto',
       height: 140,
-      gap: 10,
+      gap: 10
     }
   },
   mediaContainer: {
@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
   },
   mediaPlayer: {
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   startPlay: {
     position: 'absolute',
@@ -92,14 +92,16 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: 'flex',
     flexDirection: 'column',
-    '& > h3': { // Title
+    '& > h3': {
+      // Title
       margin: 0,
       color: theme.circleIn.palette.secondaryText,
       fontSize: 40,
       fontWeight: 700,
       lineHeight: '50px'
     },
-    '& > h4': { // Alarm text
+    '& > h4': {
+      // Alarm text
       margin: 0,
       fontSize: 20,
       fontWeight: 700,
@@ -109,13 +111,13 @@ const useStyles = makeStyles(theme => ({
     },
     '& > span': {
       fontSize: 14,
-      padding: theme.spacing(2/8, 7/8),
+      padding: theme.spacing(2 / 8, 7 / 8),
       background: '#F7CD3A',
       color: theme.circleIn.palette.primaryBackground,
       borderRadius: 4,
       marginTop: theme.spacing(0.5),
       width: 54,
-      textAlign: 'center',
+      textAlign: 'center'
     },
     [theme.breakpoints.down('sm')]: {
       '& > h3': {
@@ -150,7 +152,7 @@ const useStyles = makeStyles(theme => ({
   ellipseContainer: {
     display: 'flex',
     justifyContent: 'center',
-    margin: theme.spacing(0, 0, 2, 0),
+    margin: theme.spacing(0, 0, 2, 0)
   },
   backButton: {
     marginRight: theme.spacing(3),
@@ -183,48 +185,45 @@ const OnboardingStep = ({
 
   const handleBack = useCallback(() => {
     if (step === 1) {
-      onClose()
+      onClose();
     }
 
-    onBackAction()
-  }, [step, onClose, onBackAction])
+    onBackAction();
+  }, [step, onClose, onBackAction]);
 
   const handleClick = useCallback(() => {
-    const event = 'Flashcards Onboarding Modal Video Played'
+    const event = 'Flashcards Onboarding Modal Video Played';
     amplitude.getInstance('student-application').logEvent(event);
 
     setIsPlaying(!isPlaying);
     if (!player.current) return;
     !isPlaying && player.current.play();
     isPlaying && player.current.pause();
-  }, [isPlaying])
+  }, [isPlaying]);
 
   return (
     <div className={classes.root} style={{ background: step === 1 && 'black' }}>
-      { step !== 1 && (
-        <CloseIcon
-          className={classes.closeIcon}
-          onClick={onClose}
-        />
+      {step !== 1 && (
+        <CloseIcon className={classes.closeIcon} onClick={onClose} />
       )}
-      { step === 1 ? (
+      {step === 1 ? (
         <div className={classes.mediaContainer}>
           <CardMedia
-            component='video'
+            component="video"
             className={classes.mediaPlayer}
-            image='https://media.circleinapp.com/img/onboarding/CircleIn_Flashcard_Onboarding.webm'
+            image="https://media.circleinapp.com/img/onboarding/CircleIn_Flashcard_Onboarding.webm"
             controls={isPlaying}
             ref={player}
-            style={{ display: isPlaying ? 'block' : 'none'}}
+            style={{ display: isPlaying ? 'block' : 'none' }}
           />
-          { !isPlaying && (
+          {!isPlaying && (
             <img
               src={data.imageUrl}
               alt="Step One"
               className={classes.firstStepImage}
             />
           )}
-          { !isPlaying && (
+          {!isPlaying && (
             <img
               src={StartPlay}
               className={classes.startPlay}
@@ -245,29 +244,21 @@ const OnboardingStep = ({
           </div>
           <div className={classes.textContainer}>
             <div className={classes.title}>
-              <Typography component="h4">
-                { data.title }
-              </Typography>
-              <Typography component="h3">
-                Flashcards
-              </Typography>
-              <span className="betaText">
-                BETA
-              </span>
+              <Typography component="h4">{data.title}</Typography>
+              <Typography component="h3">Flashcards</Typography>
+              <span className="betaText">BETA</span>
             </div>
             <div className={classes.text}>
-              <Typography component="p">
-                { data.text }
-              </Typography>
+              <Typography component="p">{data.text}</Typography>
             </div>
           </div>
         </div>
         <div className={classes.actionContainer}>
           <TransparentButton onClick={() => handleBack()}>
-            { data.backText }
+            {data.backText}
           </TransparentButton>
           <ActionButton onClick={() => onAction()}>
-            { data.actionText }
+            {data.actionText}
           </ActionButton>
         </div>
       </div>

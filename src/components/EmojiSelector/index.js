@@ -26,7 +26,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
     anchorEl: null
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({
       anchorEl: event.currentTarget
     });
@@ -38,7 +38,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
     });
   };
 
-  handleSelect = emoji => {
+  handleSelect = (emoji) => {
     const { onSelect } = this.props;
     const { native } = emoji;
     onSelect(native);

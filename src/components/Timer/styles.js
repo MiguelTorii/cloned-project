@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
   timeupButton: {
     borderRadius: 100,
     backgroundColor: '#C45960',
-    padding: theme.spacing(3/4, 3),
+    padding: theme.spacing(3 / 4, 3),
     '&:disabled': {
       color: 'white'
     }

@@ -1,6 +1,6 @@
 import green from '@material-ui/core/colors/green';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   main: {
     width: 'auto',
     display: 'block'
@@ -30,12 +30,12 @@ export const styles = theme => ({
     top: '50%',
     left: '50%',
     marginTop: -12,
-    marginLeft: -12,
+    marginLeft: -12
   },
   visible: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
     // justifyContent: 'flex-end'
   },
   icon: {
@@ -49,14 +49,14 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   wrapper: {
     margin: theme.spacing(),
     display: 'flex',
     justifyContent: 'flex-end',
     position: 'relative',
-    width: '100%',
+    width: '100%'
   },
   submit: {
     fontWeight: 'bold',
@@ -66,8 +66,8 @@ export const styles = theme => ({
     borderRadius: 100,
     fontSize: 20,
     [theme.breakpoints.up('sm')]: {
-      width: 160,
-    },
+      width: 160
+    }
   },
   disabled: {
     '&.Mui-disabled': {
@@ -90,7 +90,7 @@ export const styles = theme => ({
     color: theme.circleIn.palette.brand
   },
   divider: {
-    backgroundColor: theme.circleIn.palette.dividerColor,
+    backgroundColor: theme.circleIn.palette.dividerColor
   },
   childContent: {
     paddingLeft: theme.spacing(3),
@@ -167,6 +167,6 @@ export const styles = theme => ({
     fontWeight: 'bold',
     background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)',
     color: theme.circleIn.palette.primaryText1,
-    borderRadius: 100,
+    borderRadius: 100
   }
 });

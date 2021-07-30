@@ -5,22 +5,26 @@ import { API_ROUTES } from '../constants/routes';
 import { getToken } from './utils';
 
 // eslint-disable-next-line
-export const getCampaign = async ({ campaignId }: {
+export const getCampaign = async ({
+  campaignId
+}: {
   campaignId: string
 }): Promise<Object> => {
   try {
     const token = await getToken();
     // if (!token) return
-    const result = await axios.get(`${API_ROUTES.CAMPAIGN}/${campaignId}/variations/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.get(
+      `${API_ROUTES.CAMPAIGN}/${campaignId}/variations/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const { data = {} } = result;
 
-    return data
+    return data;
   } catch (err) {
     return null;
   }
 };
-

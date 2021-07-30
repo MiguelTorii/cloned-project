@@ -25,26 +25,26 @@ type Props = {
 
 class ProfilePosts extends React.PureComponent<Props> {
   constructor(props) {
-    super(props)
-    this.quillRefs = {}
-    this.newComments = {}
+    super(props);
+    this.quillRefs = {};
+    this.newComments = {};
   }
 
   setQuillRefs = (feedId, ref) => {
-    this.quillRefs[feedId] = ref
-  }
+    this.quillRefs[feedId] = ref;
+  };
 
   setNewComments = (feedId, content) => {
-    this.newComments[feedId] = content
-  }
+    this.newComments[feedId] = content;
+  };
 
   isCurrent = (classId) => {
-    const { classList } = this.props
-    const filteredList = classList.filter((cl) => cl.classId === classId)
+    const { classList } = this.props;
+    const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
-      return filteredList[0].isCurrent
+      return filteredList[0].isCurrent;
     }
-  }
+  };
 
   render() {
     const {
@@ -67,7 +67,9 @@ class ProfilePosts extends React.PureComponent<Props> {
         return (
           <div className={cx(classes.container, classes.nothing)}>
             <Typography variant="h6" color="textPrimary" align="center">
-               It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here
+              It looks like you don't have any bookmarks yet. Once you find a
+              post that you want to save to view later, bookmark it and it'll
+              appear here
             </Typography>
           </div>
         );
@@ -86,7 +88,7 @@ class ProfilePosts extends React.PureComponent<Props> {
     return (
       <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
-          {posts.map(item => (
+          {posts.map((item) => (
             <FeedItem
               key={item.feedId}
               postId={item.postId}

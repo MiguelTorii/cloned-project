@@ -7,12 +7,12 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EmptyState from 'components/FeedList/EmptyState';
-import EmptyFeed from 'assets/svg/empty-feed.svg'
-import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg'
-import EmptyMyPosts from 'assets/svg/empty-my-posts.svg'
-import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg'
-import LoadImg from 'components/LoadImg'
-import Box from '@material-ui/core/Box'
+import EmptyFeed from 'assets/svg/empty-feed.svg';
+import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg';
+import EmptyMyPosts from 'assets/svg/empty-my-posts.svg';
+import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg';
+import LoadImg from 'components/LoadImg';
+import Box from '@material-ui/core/Box';
 import ImgLoading from 'assets/gif/class-feed-loading.gif';
 import FilterLoading from 'assets/gif/feed-loading.gif';
 import FeedItem from './FeedItem';
@@ -51,9 +51,9 @@ class FeedList extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   constructor(props) {
-    super(props)
-    this.quillRefs = {}
-    this.newComments = {}
+    super(props);
+    this.quillRefs = {};
+    this.newComments = {};
   }
 
   // eslint-disable-next-line react/sort-comp
@@ -69,65 +69,69 @@ class FeedList extends React.PureComponent<Props, State> {
     this.mounted = false;
   };
 
-  getEmptyState = pathname => {
+  getEmptyState = (pathname) => {
     const { classes, expertMode } = this.props;
 
-    if (expertMode) return (
-      <Box
-        justifyContent='center'
-        alignItems='center'
-        display='flex'
-        flexDirection='column'
-      >
-        <Box className={classes.expertContainerText}>
-          <Box
-            justifyContent='center'
-            alignItems='center'
-            display='flex'
-            flexDirection='column'
-          >
-            <Typography className={classes.expertTitle}>
-              Welcome! <span role='img' aria-label='wave'>👋</span> We’ve been waiting for you!
-            </Typography>
-            <Typography className={classes.expertTitle}>
-              Start supporting your students by posting a
-            </Typography>
-            <Typography className={classes.expertTitle}>
-              “hello” and your “office hours”. :)
-            </Typography>
+    if (expertMode)
+      return (
+        <Box
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
+          flexDirection="column"
+        >
+          <Box className={classes.expertContainerText}>
+            <Box
+              justifyContent="center"
+              alignItems="center"
+              display="flex"
+              flexDirection="column"
+            >
+              <Typography className={classes.expertTitle}>
+                Welcome!{' '}
+                <span role="img" aria-label="wave">
+                  👋
+                </span>{' '}
+                We’ve been waiting for you!
+              </Typography>
+              <Typography className={classes.expertTitle}>
+                Start supporting your students by posting a
+              </Typography>
+              <Typography className={classes.expertTitle}>
+                “hello” and your “office hours”. :)
+              </Typography>
+            </Box>
           </Box>
+          <LoadImg url={ExpertFeedEmpty} />
         </Box>
-        <LoadImg url={ExpertFeedEmpty} />
-      </Box>
-    )
+      );
 
+    if (pathname === '/bookmarks')
+      return (
+        <EmptyState
+          imageUrl={EmptyBookmarks}
+          title="When you bookmark posts you can search for them!"
+        />
+      );
 
-    if (pathname === '/bookmarks') return (
-      <EmptyState
-        imageUrl={EmptyBookmarks}
-        title="When you bookmark posts you can search for them!"
-      />
-    )
-
-    if (pathname === '/my_posts') return (
-      <EmptyState
-        imageUrl={EmptyMyPosts}
-        title="Your posts will appear here"
-      >
-        After posting, your study material will be here for you to view later for an exam
-      </EmptyState>
-    )
+    if (pathname === '/my_posts')
+      return (
+        <EmptyState imageUrl={EmptyMyPosts} title="Your posts will appear here">
+          After posting, your study material will be here for you to view later
+          for an exam
+        </EmptyState>
+      );
 
     return (
-      <EmptyState imageUrl={EmptyFeed} title=""
-      >
+      <EmptyState imageUrl={EmptyFeed} title="">
         <div className={classes.title2}>
-          Click <p className={classes.newPost}>+ Create New Post</p> to post and earn points,
-          and get yourself closer to winning a gift card or scholarship!
+          Click <p className={classes.newPost}>+ Create New Post</p> to post and
+          earn points, and get yourself closer to winning a gift card or
+          scholarship!
         </div>
       </EmptyState>
-    )
-  }
+    );
+  };
 
   handleScrollToRef = () => {
     if (this.selectedRef && this.selectedRef.el) {
@@ -136,20 +140,20 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   setQuillRefs = (feedId, ref) => {
-    this.quillRefs[feedId] = ref
-  }
+    this.quillRefs[feedId] = ref;
+  };
 
   setNewComments = (feedId, content) => {
-    this.newComments[feedId] = content
-  }
+    this.newComments[feedId] = content;
+  };
 
   isCurrent = (classId) => {
-    const { classList } = this.props
-    const filteredList = classList.filter((cl) => cl.classId === classId)
+    const { classList } = this.props;
+    const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
-      return filteredList[0].isCurrent
+      return filteredList[0].isCurrent;
     }
-  }
+  };
 
   render() {
     const {
@@ -171,7 +175,7 @@ class FeedList extends React.PureComponent<Props, State> {
       onUserClick,
       schoolId,
       location: { pathname },
-      isFiltering,
+      isFiltering
     } = this.props;
 
     return (
@@ -235,7 +239,7 @@ class FeedList extends React.PureComponent<Props, State> {
         {!isFiltering && (
           <div
             className={classes.items}
-            ref={node => {
+            ref={(node) => {
               this.scrollParentRef = node;
             }}
           >
@@ -248,7 +252,7 @@ class FeedList extends React.PureComponent<Props, State> {
               initialLoad
               getScrollParent={() => this.scrollParentRef}
             >
-              {items.map(item => (
+              {items.map((item) => (
                 <Paper className={classes.root} elevation={0}>
                   <FeedItem
                     key={item.feedId}
@@ -257,7 +261,7 @@ class FeedList extends React.PureComponent<Props, State> {
                     userId={userId}
                     data={item}
                     handleShareClick={handleShare}
-                    innerRef={node => {
+                    innerRef={(node) => {
                       if (fromFeedId === item.feedId) this.selectedRef = node;
                     }}
                     onPostClick={onPostClick}
@@ -274,22 +278,20 @@ class FeedList extends React.PureComponent<Props, State> {
                     isCurrent={this.isCurrent(item.classId)}
                   />
                 </Paper>
-              ))
-              }
+              ))}
             </InfiniteScroll>
           </div>
         )}
         <Paper className={classes.root} elevation={0}>
           {!isLoading && items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
-        {
-          items.length !== 0 && !hasMore &&
+        {items.length !== 0 && !hasMore && (
           <div className={classes.feedEnd}>
             <Typography variant="h6" align="center">
               All posts have been loaded
             </Typography>
           </div>
-        }
+        )}
       </div>
     );
   }

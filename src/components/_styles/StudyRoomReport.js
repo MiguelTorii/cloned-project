@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   dialog: {
     width: 600,
     '& > :first-child': {
@@ -18,37 +18,37 @@ export default theme => ({
     textAlign: 'center'
   },
   selectForm: {
-    marginTop: 50,
+    marginTop: 50
   },
   select: {
     color: theme.circleIn.palette.helperText,
 
     '& label': {
-      color: theme.circleIn.palette.helperText,
+      color: theme.circleIn.palette.helperText
     }
   },
   InputLabel: {
-    backgroundColor: theme.circleIn.palette.gray1,
+    backgroundColor: theme.circleIn.palette.gray1
   },
   emptyOption: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   helperText: {
     fontWeight: 'letsGonormal',
     fontSize: 14,
     hineHeight: 19,
-    color: theme.circleIn.palette.helperText,
+    color: theme.circleIn.palette.helperText
   },
   noteText: {
     fontWeight: 'normal',
     fontSize: 14,
     hineHeight: 19,
     color: theme.circleIn.palette.helperText,
-    marginTop: 20,
+    marginTop: 20
   },
   chipWrapper: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   chip: {
     boxShadow: 'none',
@@ -56,38 +56,38 @@ export default theme => ({
       backgroundColor: theme.circleIn.palette.chipBackground,
       color: theme.circleIn.palette.secondaryText,
       borderRadius: 4,
-      margin: theme.spacing(0.25, 0.25),
+      margin: theme.spacing(0.25, 0.25)
     }
   },
   menuItem: {
     color: theme.circleIn.palette.white,
 
     '&:hover': {
-      backgroundColor: theme.circleIn.palette.brand,
+      backgroundColor: theme.circleIn.palette.brand
     }
   },
   mr1: {
     marginRight: `${theme.spacing(1)}px !important`,
-    verticalAlign: 'middle',
+    verticalAlign: 'middle'
   },
   report: {
     color: theme.circleIn.palette.danger,
     display: 'flex',
     alignItems: 'center',
-    textDecoration: 'underline',
+    textDecoration: 'underline'
   },
   flag: {
     width: 20,
-    height: 25,
+    height: 25
   },
   finalNote: {
     color: theme.circleIn.palette.secondaryText,
     fontSize: 14,
-    margin: theme.spacing(4, 3, 3, 3),
+    margin: theme.spacing(4, 3, 3, 3)
   },
   email: {
     color: theme.circleIn.palette.brand,
-    textDecoration: 'underline',
+    textDecoration: 'underline'
   },
   submit: {
     margin: theme.spacing(4, 0),
@@ -106,6 +106,6 @@ export default theme => ({
     fontWeight: 700,
     fontSize: 20,
     backgroundColor: theme.circleIn.palette.gray1,
-    border: `1px solid ${theme.circleIn.palette.white}`,
-  },
-})
+    border: `1px solid ${theme.circleIn.palette.white}`
+  }
+});

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing(2),
@@ -20,7 +20,7 @@ export const styles = theme => ({
   },
   name: {
     color: 'white',
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   message: {
     maxWidth: '100%',
@@ -32,11 +32,11 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   reverse: {
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   image: {
     borderRadius: 5,
@@ -66,7 +66,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column'
     // marginLeft: -55
     // cursor: 'pointer'
   },

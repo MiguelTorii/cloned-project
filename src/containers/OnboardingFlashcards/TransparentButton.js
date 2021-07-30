@@ -1,10 +1,10 @@
 import { Button, withStyles } from '@material-ui/core';
 import withRoot from '../../withRoot';
 
-const ActionButton = withStyles(theme => ({
+const ActionButton = withStyles((theme) => ({
   root: {
     borderRadius: 200,
-    padding: theme.spacing(3/4, 1),
+    padding: theme.spacing(3 / 4, 1),
     background: 'transparent',
     width: 120,
     minHeight: 36,

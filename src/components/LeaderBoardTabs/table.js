@@ -12,60 +12,54 @@ import Student from './student';
 
 import { styles } from '../_styles/LeaderBoardTabs/table';
 
-const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    color: theme.circleIn.palette.primaryText1,
-  },
+    color: theme.circleIn.palette.primaryText1
+  }
 }))(TableRow);
 
-
-const StudentTable = ({ 
-  classes, 
-  students: initialStudents, 
+const StudentTable = ({
+  classes,
+  students: initialStudents,
   scoreLabel,
   pushTo,
   userId,
   sectionId,
-  selectedTab,
+  selectedTab
 }) => {
-  const [hasMore, setHasMore] = useState(true)
-  const [tuesdayIndex, setTuesdayIndex] = useState(0)
-  const [grandIndex, setGrandIndex] = useState(0)
-  const [students, setStudents] = useState(initialStudents)
+  const [hasMore, setHasMore] = useState(true);
+  const [tuesdayIndex, setTuesdayIndex] = useState(0);
+  const [grandIndex, setGrandIndex] = useState(0);
+  const [students, setStudents] = useState(initialStudents);
 
   useEffect(() => {
-    setStudents(initialStudents)
-  }, [initialStudents, initialStudents.length])
+    setStudents(initialStudents);
+  }, [initialStudents, initialStudents.length]);
 
   const handleLoadMore = useCallback(async () => {
-    let list = []
+    let list = [];
     if (selectedTab === 'tuesday') {
-      list = await getMoreTuesdayStudents(sectionId, tuesdayIndex + 100)
-      setTuesdayIndex(tuesdayIndex + 100)
+      list = await getMoreTuesdayStudents(sectionId, tuesdayIndex + 100);
+      setTuesdayIndex(tuesdayIndex + 100);
     }
 
     if (selectedTab === 'grand') {
-      list = await getMoreGrandStudents(sectionId, grandIndex + 100)
-      setGrandIndex(grandIndex + 100)
+      list = await getMoreGrandStudents(sectionId, grandIndex + 100);
+      setGrandIndex(grandIndex + 100);
     }
 
-    setStudents(students => [...students, ...list])
+    setStudents((students) => [...students, ...list]);
     if (list.length % 100 > 0) {
-      setHasMore(false)
+      setHasMore(false);
     }
-  }, [
-    selectedTab,
-    sectionId,
-    tuesdayIndex,
-    grandIndex,
-  ])
+  }, [selectedTab, sectionId, tuesdayIndex, grandIndex]);
 
   useEffect(() => {
-    setTuesdayIndex(0)
-    setGrandIndex(0)
-    setStudents(initialStudents)
-  }, [selectedTab, initialStudents])
+    setTuesdayIndex(0);
+    setGrandIndex(0);
+    setStudents(initialStudents);
+  }, [selectedTab, initialStudents]);
 
   return (
     <div className={classes.root}>
@@ -77,22 +71,43 @@ const StudentTable = ({
         <Table className={classes.table}>
           <TableHead>
             <StyledTableRow>
-              <TableCell className={classes.tdHeader} padding='none' align="center"></TableCell>
-              <TableCell className={classes.tdHeader} align="left">Student</TableCell>
-              <TableCell className={classes.tdHeader} align="center">{scoreLabel}</TableCell>
+              <TableCell
+                className={classes.tdHeader}
+                padding="none"
+                align="center"
+              ></TableCell>
+              <TableCell className={classes.tdHeader} align="left">
+                Student
+              </TableCell>
+              <TableCell className={classes.tdHeader} align="center">
+                {scoreLabel}
+              </TableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody className={classes.body}>
-            {students.map(s => (
+            {students.map((s) => (
               <TableRow
-                hover 
+                hover
                 key={s.userId}
                 onClick={() => pushTo(`/profile/${s.userId}`)}
-                className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
+                className={cx(
+                  classes.tr,
+                  userId === s.userId ? classes.trHighlight : ''
+                )}
               >
-                <TableCell padding='none' className={classes.tdnp} align="center">{s.position}</TableCell>
-                <TableCell className={classes.td} align="left"><Student student={s} you={userId === s.userId} /></TableCell>
-                <TableCell className={classes.td} align="center">{s.score}</TableCell>
+                <TableCell
+                  padding="none"
+                  className={classes.tdnp}
+                  align="center"
+                >
+                  {s.position}
+                </TableCell>
+                <TableCell className={classes.td} align="left">
+                  <Student student={s} you={userId === s.userId} />
+                </TableCell>
+                <TableCell className={classes.td} align="center">
+                  {s.score}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -100,6 +115,6 @@ const StudentTable = ({
       </InfiniteScroll>
     </div>
   );
-}
+};
 
 export default withStyles(styles)(StudentTable);

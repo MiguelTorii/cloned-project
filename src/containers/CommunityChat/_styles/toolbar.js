@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   toolbar: {
     textAlign: 'center',
     bottom: 0,
@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     }
   },
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   popper: {
     zIndex: 1500

@@ -16,14 +16,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Box from '@material-ui/core/Box';
-import InputAdornment from '@material-ui/core/InputAdornment'
+import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge'
+import RoleBadge from 'components/RoleBadge';
 import type { SelectType } from '../../types/models';
 import styles from '../_styles/AutoComplete';
 
@@ -31,7 +31,7 @@ const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
     Can't find your school? Click Here
   </a>
-)
+);
 
 function NoOptionsMessage({ selectProps, innerProps, children }) {
   return (
@@ -65,21 +65,19 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   const {
     isDisabled,
     autoFocus,
-    textFieldProps: {
-      relative,
-      ...otherTextFieldProps
-    },
+    textFieldProps: { relative, ...otherTextFieldProps },
     classes,
     isFloatChat,
     searchClassmate
-  } = selectProps
+  } = selectProps;
 
   return (
     <TextField
       classes={{
-        root: searchClassmate && !isFloatChat
-          ? classes.searchInput
-          : classes.floatChatSearchInput
+        root:
+          searchClassmate && !isFloatChat
+            ? classes.searchInput
+            : classes.floatChatSearchInput
       }}
       fullWidth
       variant="outlined"
@@ -87,22 +85,29 @@ function Control({ selectProps, innerProps, innerRef, children }) {
       InputProps={{
         inputComponent,
         disableUnderline: searchClassmate,
-        startAdornment: <InputAdornment
-          position='start'
-          classes={{
-            positionStart: searchClassmate && classes.startIcon
-          }}
-        >
-          {searchClassmate
-            ? !isFloatChat
-              ? <ChatSearchIcon />
-              : <span className={classes.startInputText}>To:</span>
-            : <div />
-          }
-        </InputAdornment>,
+        startAdornment: (
+          <InputAdornment
+            position="start"
+            classes={{
+              positionStart: searchClassmate && classes.startIcon
+            }}
+          >
+            {searchClassmate ? (
+              !isFloatChat ? (
+                <ChatSearchIcon />
+              ) : (
+                <span className={classes.startInputText}>To:</span>
+              )
+            ) : (
+              <div />
+            )}
+          </InputAdornment>
+        ),
         inputProps: {
           autoFocus,
-          className: searchClassmate ? classes.addClassmateInput : classes.input,
+          className: searchClassmate
+            ? classes.addClassmateInput
+            : classes.input,
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -114,7 +119,15 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   );
 }
 
-function Option({ innerRef, innerProps, isFocused, isSelected, children, data, selectProps }) {
+function Option({
+  innerRef,
+  innerProps,
+  isFocused,
+  isSelected,
+  children,
+  data,
+  selectProps
+}) {
   const {
     avatar = '',
     initials = '',
@@ -158,9 +171,7 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
           id={`id-${userId}`}
           primary={
             <Box display="flex" alignItems="center">
-              <Box mr={1}>
-                {children}
-              </Box>
+              <Box mr={1}>{children}</Box>
               {role && <RoleBadge />}
             </Box>
           }
@@ -185,16 +196,17 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
-  const { isDisabled, searchClassmate, classes, isFloatChat } = selectProps
+  const { isDisabled, searchClassmate, classes, isFloatChat } = selectProps;
 
   return (
     <Typography
-      color={isDisabled ? "textSecondary" : "textPrimary"}
-      className={searchClassmate
-        ? !isFloatChat
-          ? classes.addClassmatePlaceholder
-          : classes.floatChatInputPlaceholder
-        : classes.placeholder
+      color={isDisabled ? 'textSecondary' : 'textPrimary'}
+      className={
+        searchClassmate
+          ? !isFloatChat
+            ? classes.addClassmatePlaceholder
+            : classes.floatChatInputPlaceholder
+          : classes.placeholder
       }
       {...innerProps}
     >
@@ -221,26 +233,32 @@ function SingleValue({ selectProps, innerProps, children }) {
 
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
-  const { classes, searchClassmate } = selectProps
+  const { classes, searchClassmate } = selectProps;
   if (avatar !== '' || initials !== '')
     return (
       <Chip
         avatar={
-          !searchClassmate ? <Avatar alt={initials} src={avatar}>
-            {initials}
-          </Avatar> : null
+          !searchClassmate ? (
+            <Avatar alt={initials} src={avatar}>
+              {initials}
+            </Avatar>
+          ) : null
         }
         tabIndex={-1}
         label={children}
-        className={cx(searchClassmate
-          ? classes.addClassmateChip
-          : classes.chip, {
-          [classes.chipFocused]: isFocused
-        })}
+        className={cx(
+          searchClassmate ? classes.addClassmateChip : classes.chip,
+          {
+            [classes.chipFocused]: isFocused
+          }
+        )}
         onDelete={removeProps.onClick}
-        deleteIcon={searchClassmate
-          ? <ClearIcon {...removeProps} />
-          : <CancelIcon {...removeProps} />
+        deleteIcon={
+          searchClassmate ? (
+            <ClearIcon {...removeProps} />
+          ) : (
+            <CancelIcon {...removeProps} />
+          )
         }
       />
     );
@@ -248,15 +266,16 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
     <Chip
       tabIndex={-1}
       label={children}
-      className={cx(searchClassmate
-        ? classes.addClassmateChip
-        : classes.chip, {
+      className={cx(searchClassmate ? classes.addClassmateChip : classes.chip, {
         [classes.chipFocused]: isFocused
       })}
       onDelete={removeProps.onClick}
-      deleteIcon={searchClassmate
-        ? <ClearIcon {...removeProps} />
-        : <CancelIcon {...removeProps} />
+      deleteIcon={
+        searchClassmate ? (
+          <ClearIcon {...removeProps} />
+        ) : (
+          <CancelIcon {...removeProps} />
+        )
       }
     />
   );
@@ -273,15 +292,13 @@ function Menu({ selectProps, children, innerProps }) {
   } = selectProps;
   if (options.length === 0 && inputValue === '') return null;
   return (
-    <Paper square className={cx(
-      searchClassmate
-        ? classes.addClassmatePaper
-        : classes.paper ,
-      textFieldProps.relative
-        ? classes.paperRelative
-        : classes.paperAbsolute
-    )}
-    {...innerProps}
+    <Paper
+      square
+      className={cx(
+        searchClassmate ? classes.addClassmatePaper : classes.paper,
+        textFieldProps.relative ? classes.paperRelative : classes.paperAbsolute
+      )}
+      {...innerProps}
     >
       {children}
       {isSchoolSearch && (
@@ -357,9 +374,8 @@ const SelectClassmates = ({
   onLoadOptions,
   isFloatChat
 }: Props) => {
-
   const selectStyles = {
-    input: base => ({
+    input: (base) => ({
       ...base,
       color: theme.palette.text.primary,
       '& input': {
@@ -377,7 +393,7 @@ const SelectClassmates = ({
           textFieldProps={{
             relative,
             label,
-            variant,
+            variant
           }}
           inputValue={inputValue}
           components={components}
@@ -409,6 +425,6 @@ const SelectClassmates = ({
       </NoSsr>
     </div>
   );
-}
+};
 
 export default withStyles(styles, { withTheme: true })(SelectClassmates);

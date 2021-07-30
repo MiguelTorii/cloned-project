@@ -22,7 +22,7 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
         popup_title_image: popupTitleImage,
         subtitle,
         title,
-        variation_id: variationId,
+        variation_id: variationId
       } = result.data;
 
       return {
@@ -33,9 +33,9 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
         popupContent,
         subtitle,
         title,
-        variationId,
+        variationId
       };
-    };
+    }
 
     return null;
   } catch (err) {
@@ -56,4 +56,4 @@ export const getAnnouncementCampaign = async (): Promise<Object> => {
   } catch (err) {
     return null;
   }
-}
+};

@@ -8,17 +8,14 @@ export const getTodos = async () => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.TODO}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.TODO}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
 
-    return data.map(d => ({
+    return data.map((d) => ({
       categoryId: d.category_id,
       description: d.description,
       sectionId: d.section_id || '',
@@ -30,7 +27,7 @@ export const getTodos = async () => {
       title: d.title,
       date: d.due_date || '',
       notifications: []
-    }))
+    }));
   } catch (err) {
     return null;
   }
@@ -59,7 +56,7 @@ export const createTodo = async ({
         category: categoryId,
         due_date: date,
         section_id: sectionId,
-        description,
+        description
       },
       {
         headers: {
@@ -84,7 +81,7 @@ export const updateTodo = async ({
   reminder,
   description,
   date,
-  status,
+  status
 }: {
   id: number,
   title: string,
@@ -124,7 +121,7 @@ export const updateTodo = async ({
 };
 
 export const updateTodosOrdering = async ({
-  ordering,
+  ordering
 }: {
   ordering: array
 }) => {
@@ -134,7 +131,7 @@ export const updateTodosOrdering = async ({
     const result = await axios.put(
       `${API_ROUTES.TODO}/bulk_edit`,
       {
-        ordering,
+        ordering
       },
       {
         headers: {
@@ -151,11 +148,7 @@ export const updateTodosOrdering = async ({
   }
 };
 
-export const archiveTodo = async ({
-  id,
-}: {
-  id: string
-}) => {
+export const archiveTodo = async ({ id }: { id: string }) => {
   try {
     const token = await getToken();
 

@@ -38,16 +38,16 @@ class Canvas extends React.Component<Props> {
         nonce
       });
       updateUser({ user });
-      pushTo('/')
+      pushTo('/');
     } catch (err) {
-      console.log(err)
-      pushTo('/', { error: true })
+      console.log(err);
+      pushTo('/', { error: true });
     }
   };
 
   render() {
     const {
-      classes,
+      classes
       // user: {
       // data: { userId }
       // }

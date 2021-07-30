@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import GradientButton from 'components/Basic/Buttons/GradientButton';
 import ImgBook from 'assets/gif/magic-book.gif';
 
-const StartupModal = ({open, onClose, onStart}) => {
+const StartupModal = ({ open, onClose, onStart }) => {
   const classes = useStyles();
 
   return (
@@ -20,18 +20,21 @@ const StartupModal = ({open, onClose, onStart}) => {
     >
       <Box>
         <Box display="flex" justifyContent="center" pt={3} mb={3}>
-          <img src={ImgBook} alt="Magic Book" className={classes.modalGif}/>
+          <img src={ImgBook} alt="Magic Book" className={classes.modalGif} />
         </Box>
         <Typography variant="h5" align="center" paragraph>
           Make all the cards disappear like magic!
         </Typography>
         <Typography align="center" paragraph>
-          Click and drag the corresponding cards onto each other to make them disappear.
+          Click and drag the corresponding cards onto each other to make them
+          disappear.
         </Typography>
         <Box display="flex" justifyContent="center">
           <GradientButton onClick={onStart}>
             Start Game&nbsp;
-            <span role="img" aria-label="Rocket">🚀</span>
+            <span role="img" aria-label="Rocket">
+              🚀
+            </span>
           </GradientButton>
         </Box>
       </Box>
@@ -49,6 +52,6 @@ StartupModal.defaultProps = {
   open: false,
   onClose: () => {},
   onStart: () => {}
-}
+};
 
 export default withRoot(StartupModal);

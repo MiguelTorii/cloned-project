@@ -1,4 +1,4 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles((theme) => ({
   root: {
@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
   image: {
     maxWidth: '100%',
     '&.disabled': {
-      opacity: .2
+      opacity: 0.2
     }
   }
 }));

@@ -14,10 +14,7 @@ const StyledIconButton = withStyles((theme) => ({
 
 const IconActionButton = ({ loading, children, ...rest }) => (
   <StyledIconButton {...rest}>
-    { loading ? (
-      <CircularProgress size={20} />
-      ) : children
-    }
+    {loading ? <CircularProgress size={20} /> : children}
   </StyledIconButton>
 );
 

@@ -9,21 +9,23 @@ import { styles } from '../_styles/Markdown';
 const options = {
   overrides: {
     h1: {
-      component: props => <Typography gutterBottom variant="h1" {...props} />
+      component: (props) => <Typography gutterBottom variant="h1" {...props} />
     },
     h2: {
-      component: props => <Typography gutterBottom variant="h2" {...props} />
+      component: (props) => <Typography gutterBottom variant="h2" {...props} />
     },
     h3: {
-      component: props => <Typography gutterBottom variant="h3" {...props} />
+      component: (props) => <Typography gutterBottom variant="h3" {...props} />
     },
     h4: {
-      component: props => (
+      component: (props) => (
         <Typography gutterBottom variant="h4" paragraph {...props} />
       )
     },
     p: {
-      component: props => <Typography component='div' variant="h6" paragraph {...props} />
+      component: (props) => (
+        <Typography component="div" variant="h6" paragraph {...props} />
+      )
     },
     li: {
       component: withStyles(styles)(({ classes, ...props }) => (
@@ -32,7 +34,7 @@ const options = {
         </li>
       ))
     },
-    a: { component: props => <Link target="_blank" {...props} /> }
+    a: { component: (props) => <Link target="_blank" {...props} /> }
   }
 };
 

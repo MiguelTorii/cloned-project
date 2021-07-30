@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,24 +26,24 @@ export const useStyles = makeStyles((theme) => ({
   },
   description: {
     fontSize: 16,
-    maxWidth: 398,
+    maxWidth: 398
   },
   bold: {
     fontSize: 18,
     margin: theme.spacing(2, 0),
-    fontWeight: 800,
+    fontWeight: 800
   },
   image: {
-    margin: theme.spacing(0, 2),
+    margin: theme.spacing(0, 2)
   },
   qr: {
     objectFit: 'scale-down',
-    width: 133,
+    width: 133
   },
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
-    position: 'relative',
+    position: 'relative'
   },
   imageMessage: {
     position: 'absolute',
@@ -63,7 +63,7 @@ export const useStyles = makeStyles((theme) => ({
     objectFit: 'scale-down',
     width: 419,
     [theme.breakpoints.down('sm')]: {
-      width: '40vw',
+      width: '40vw'
     }
   }
-}))
+}));

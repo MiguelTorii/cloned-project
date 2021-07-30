@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -8,7 +8,7 @@ import cx from 'classnames';
 import { useStyles } from '../_styles/Workflow/WorkflowListBox';
 
 const WorkflowListBox = ({ drop, name, tasks, list, isExpanded, onExpand }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Accordion
@@ -18,15 +18,17 @@ const WorkflowListBox = ({ drop, name, tasks, list, isExpanded, onExpand }) => {
       expanded={isExpanded}
       onChange={onExpand}
     >
-      <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
-        <Typography className={classes.header}>{name} ({tasks.length})</Typography>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        className={classes.summary}
+      >
+        <Typography className={classes.header}>
+          {name} ({tasks.length})
+        </Typography>
       </AccordionSummary>
-      <AccordionDetails className={classes.details}>
-        {list}
-      </AccordionDetails>
+      <AccordionDetails className={classes.details}>{list}</AccordionDetails>
     </Accordion>
+  );
+};
 
-  )
-}
-
-export default WorkflowListBox
+export default WorkflowListBox;

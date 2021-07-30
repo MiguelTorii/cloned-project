@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   messageQuill: {
     width: '100%',
     padding: theme.spacing(0, 5)
@@ -57,9 +57,10 @@ export default theme => ({
     padding: theme.spacing(0.5, 1.5),
     borderRadius: 50,
     marginLeft: theme.spacing(),
-    background: 'linear-gradient(107.98deg, rgba(93, 203, 253, 0.6) -9.19%, rgba(0, 116, 181, 0.6) 122.45%)',
+    background:
+      'linear-gradient(107.98deg, rgba(93, 203, 253, 0.6) -9.19%, rgba(0, 116, 181, 0.6) 122.45%)',
     color: `${theme.circleIn.palette.primaryText1} !important`,
-    opacity: .6
+    opacity: 0.6
   },
   postMessageAction: {
     display: 'flex',
@@ -72,7 +73,7 @@ export default theme => ({
   error: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1, 2, 1),
+    padding: theme.spacing(0, 1, 2, 1)
   },
   errorMessage: {
     fontSize: 12,
@@ -93,5 +94,5 @@ export default theme => ({
   sendMessageIcon: {
     fontSize: 16,
     marginLeft: theme.spacing(0.5)
-  },
-})
+  }
+});

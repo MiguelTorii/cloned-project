@@ -7,7 +7,9 @@ export const getReferralCodeInfo = async (code: string): Promise<Object> => {
   try {
     const result = await axios.get(`${API_ROUTES.REFERRAL}/${code}`);
 
-    const { data: { name, school, school_id: schoolId } } = result;
+    const {
+      data: { name, school, school_id: schoolId }
+    } = result;
     return { name, school, schoolId };
   } catch (err) {
     return null;

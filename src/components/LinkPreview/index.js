@@ -15,7 +15,7 @@ type Props = {
 type State = {};
 
 class LinkPreview extends React.PureComponent<Props, State> {
-  parseURL = uri => {
+  parseURL = (uri) => {
     try {
       return normalizeUrl(uri);
     } catch (err) {

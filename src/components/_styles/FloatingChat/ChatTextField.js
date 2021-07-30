@@ -1,6 +1,6 @@
-export default theme => ({
+export default (theme) => ({
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   root: {
     padding: '2px 4px',

@@ -19,7 +19,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -47,26 +47,19 @@ type Props = {
 };
 
 const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
-  const [post, setPost] = useState(null)
-  const [report, setReport] = useState(false)
-  const [deletePost, setDeletePost] = useState(false)
+  const [post, setPost] = useState(null);
+  const [report, setReport] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
   const {
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
-  } = user
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
+  } = user;
 
   const loadData = async () => {
     const post = await getPost({ userId, postId });
-    setPost(post)
+    setPost(post);
     const {
-      postInfo: {
-        feedId
-      }
+      postInfo: { feedId }
     } = post;
 
     logEvent({
@@ -76,32 +69,32 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
   };
 
   useEffect(() => {
-    loadData()
+    loadData();
     // eslint-disable-next-line
-  }, [postId])
+  }, [postId]);
 
   const handleBookmark = async () => {
     if (!post) return;
     const { feedId, bookmarked } = post;
     try {
-      setPost({ ...post, bookmarked: !bookmarked })
+      setPost({ ...post, bookmarked: !bookmarked });
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setPost({ ...post, bookmarked })
+      setPost({ ...post, bookmarked });
     }
   };
 
-  const handleReport = () => setReport(true)
+  const handleReport = () => setReport(true);
 
-  const handleReportClose = () => setReport(false)
+  const handleReportClose = () => setReport(false);
 
-  const handleDelete = () => setDeletePost(true)
+  const handleDelete = () => setDeletePost(true);
 
   const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
-    setDeletePost(false)
+    setDeletePost(false);
   };
 
   if (!post)
@@ -214,7 +207,7 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,

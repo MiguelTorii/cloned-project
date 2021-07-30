@@ -23,18 +23,14 @@ const setTitle = ({
   }
 });
 
-export const updateTitle = ({
-  title,
-  body
-}: {
-  title: string,
-  body: string
-}) => async (dispatch: Dispatch) => {
-  dispatch(requestUpdateTitle());
-  dispatch(
-    setTitle({
-      title,
-      body
-    })
-  );
-};
+export const updateTitle =
+  ({ title, body }: { title: string, body: string }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(requestUpdateTitle());
+    dispatch(
+      setTitle({
+        title,
+        body
+      })
+    );
+  };

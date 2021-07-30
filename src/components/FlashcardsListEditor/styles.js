@@ -26,7 +26,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(3, 5)
   },
   iconButton: {
-    padding: theme.spacing(1/4),
+    padding: theme.spacing(1 / 4),
     '& svg': {
       color: theme.circleIn.palette.gray3
     },
@@ -42,14 +42,14 @@ export default makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(0, 1),
       [theme.breakpoints.down('sm')]: {
-        margin: theme.spacing(0, 1/3),
+        margin: theme.spacing(0, 1 / 3)
       }
     }
   },
   textEditorContainer: {
     position: 'relative',
     height: 104,
-    padding: theme.spacing(2, 3/2),
+    padding: theme.spacing(2, 3 / 2),
     border: 'solid 1px #959595',
     borderRadius: 8,
     backgroundColor: '#35363B',
@@ -67,12 +67,12 @@ export default makeStyles((theme) => ({
   },
   textEditor: {
     flexGrow: 1,
-    marginRight: theme.spacing(3/2),
+    marginRight: theme.spacing(3 / 2),
     maxWidth: 'calc(100% - 84px)',
     '& .ql-editor': {
       padding: '0 !important'
     },
-    '& .quill' : {
+    '& .quill': {
       height: '100%',
       padding: 0
     },
@@ -90,7 +90,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: theme.spacing(1/2),
+    padding: theme.spacing(1 / 2),
     '&.read-only': {
       border: 'none'
     }

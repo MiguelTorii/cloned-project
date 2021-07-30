@@ -46,10 +46,10 @@ import { logEvent } from '../../api/analytics';
 import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
-import { updateProfileImage, uploadMedia } from "../../actions/user";
-import { UPLOAD_MEDIA_TYPES } from "../../constants/app";
+import { updateProfileImage, uploadMedia } from '../../actions/user';
+import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -153,7 +153,10 @@ class Profile extends React.PureComponent<Props, State> {
     this.handleGetProfile();
     this.handleFetchFeed();
     this.handleFetchBookmarks();
-    const { edit, match: { params } } = this.props;
+    const {
+      edit,
+      match: { params }
+    } = this.props;
 
     if (params.tab) {
       this.setState({ tab: Number(params.tab) });
@@ -167,9 +170,7 @@ class Profile extends React.PureComponent<Props, State> {
       const {
         userId,
         user: {
-          data: {
-            userId: myId
-          }
+          data: { userId: myId }
         },
         updateProfileImage
       } = this.props;
@@ -198,8 +199,8 @@ class Profile extends React.PureComponent<Props, State> {
     const { userId } = this.props;
     if (userId !== '') {
       fetchFeedv2({
-        userId,
-      }).then(feed => {
+        userId
+      }).then((feed) => {
         this.setState({ feed });
       });
     }
@@ -210,7 +211,7 @@ class Profile extends React.PureComponent<Props, State> {
       user: {
         data: { userId: ownId }
       },
-      userId,
+      userId
     } = this.props;
 
     if (ownId === userId && userId !== '') {
@@ -218,7 +219,7 @@ class Profile extends React.PureComponent<Props, State> {
         userId,
         sectionId: '',
         bookmarked: true
-      }).then(bookmarks => {
+      }).then((bookmarks) => {
         this.setState({ bookmarks });
       });
     }
@@ -232,7 +233,7 @@ class Profile extends React.PureComponent<Props, State> {
     this.setState({ edit: false });
   };
 
-  handleSubmit = async fields => {
+  handleSubmit = async (fields) => {
     const {
       user: {
         data: { userId }
@@ -285,7 +286,7 @@ class Profile extends React.PureComponent<Props, State> {
     this.setState({ tab: value });
   };
 
-  handleShare = ({ feedId }: {feedId: number}) => {
+  handleShare = ({ feedId }: { feedId: number }) => {
     this.setState({ feedId });
   };
 
@@ -349,7 +350,7 @@ class Profile extends React.PureComponent<Props, State> {
     this.setState({ deletePost: { feedId } });
   };
 
-  handleDeleteClose = ({ deleted }: {deleted?: boolean}) => {
+  handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     if (deleted && deleted === true) {
       // Reloading all feed again is time waste, we are doing it in other way.
       // this.handleFetchFeed();
@@ -357,7 +358,9 @@ class Profile extends React.PureComponent<Props, State> {
       // Update Local State
       const { deletePost, bookmarks, feed } = this.state;
       this.setState({
-        bookmarks: bookmarks.filter((item) => item.feedId !== deletePost.feedId),
+        bookmarks: bookmarks.filter(
+          (item) => item.feedId !== deletePost.feedId
+        ),
         feed: feed.filter((item) => item.feedId !== deletePost.feedId)
       });
     }
@@ -411,52 +414,51 @@ class Profile extends React.PureComponent<Props, State> {
     this.setState({ studyCircle: false });
   };
 
-  handleUserClick = ({ userId }: {userId: string}) => {
+  handleUserClick = ({ userId }: { userId: string }) => {
     const { push } = this.props;
     push(`/profile/${userId}`);
   };
 
-  handlePostClick = ({
-    typeId,
-    postId
-  }: {
-    typeId: number,
-    postId: number,
-    feedId: number
-  }) => () => {
-    const { push } = this.props;
-    let url = '';
-    switch (typeId) {
-    case 3:
-      url = `/flashcards/${postId}`;
-      break;
-    case 4:
-      url = `/notes/${postId}`;
-      break;
-    case 5:
-      url = `/sharelink/${postId}`;
-      break;
-    case 6:
-      url = `/question/${postId}`;
-      break;
-    case 8:
-      url = `/post/${postId}`;
-      break;
-    default:
-      throw new Error('unknown post type');
-    }
-    push(`${url}?from=profile`);
-  };
+  handlePostClick =
+    ({ typeId, postId }: { typeId: number, postId: number, feedId: number }) =>
+    () => {
+      const { push } = this.props;
+      let url = '';
+      switch (typeId) {
+        case 3:
+          url = `/flashcards/${postId}`;
+          break;
+        case 4:
+          url = `/notes/${postId}`;
+          break;
+        case 5:
+          url = `/sharelink/${postId}`;
+          break;
+        case 6:
+          url = `/question/${postId}`;
+          break;
+        case 8:
+          url = `/post/${postId}`;
+          break;
+        default:
+          throw new Error('unknown post type');
+      }
+      push(`${url}?from=profile`);
+    };
 
-  updateAvatar = async imageData => {
+  updateAvatar = async (imageData) => {
     const {
       user: {
         data: { userId }
       }
     } = this.props;
 
-    const { mediaId } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
-    await updateUserProfileUrl({userId, mediaId});
+    const { mediaId } = await uploadMedia(
+      userId,
+      UPLOAD_MEDIA_TYPES.PROFILE_IMAGE,
+      imageData
+    );
+    await updateUserProfileUrl({ userId, mediaId });
   };
 
   handleSaveProfile = async (avatar, fields) => {
@@ -503,7 +505,7 @@ class Profile extends React.PureComponent<Props, State> {
       user: {
         data: userData,
         userClasses: { classList }
-      },
+      }
     } = this.props;
     const { segment = '', profileImage } = userData;
     const {
@@ -567,7 +569,9 @@ class Profile extends React.PureComponent<Props, State> {
                       userProfileUrl={userProfileUrl}
                       points={points}
                       thanks={
-                        seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0
+                        seasons.length > 0
+                          ? seasons[seasons.length - 1].thanks
+                          : 0
                       }
                       bestAnswers={
                         seasons.length > 0
@@ -593,7 +597,9 @@ class Profile extends React.PureComponent<Props, State> {
                       onChange={this.handleTabChange}
                       onStudyCircle={this.handleStudyCircle}
                       onEditProfile={this.handleEditProfileOpen}
-                      onSeePointsHistoryDetails={() => this.switchPage(PROFILE_PAGES.points_history)}
+                      onSeePointsHistoryDetails={() =>
+                        this.switchPage(PROFILE_PAGES.points_history)
+                      }
                     />
                   </ErrorBoundary>
                 </Grid>
@@ -654,7 +660,9 @@ class Profile extends React.PureComponent<Props, State> {
                   <Grid item xs={12}>
                     <PointsHistoryCard
                       profile={userProfile}
-                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
+                      onSeeMore={() =>
+                        this.switchPage(PROFILE_PAGES.points_history)
+                      }
                     />
                   </Grid>
                 </Hidden>
@@ -724,7 +732,10 @@ class Profile extends React.PureComponent<Props, State> {
   }
 
   renderPointsHistory() {
-    const { classes, user: { data: userData } } = this.props;
+    const {
+      classes,
+      user: { data: userData }
+    } = this.props;
     const { userProfile } = this.state;
 
     return (
@@ -742,12 +753,12 @@ class Profile extends React.PureComponent<Props, State> {
     const { page } = this.state;
 
     switch (page) {
-    case PROFILE_PAGES.index:
-      return this.renderIndex();
-    case PROFILE_PAGES.points_history:
-      return this.renderPointsHistory();
-    default:
-      throw new Error('Unknown page type');
+      case PROFILE_PAGES.index:
+        return this.renderIndex();
+      case PROFILE_PAGES.points_history:
+        return this.renderPointsHistory();
+      default:
+        throw new Error('Unknown page type');
     }
   }
 }
@@ -763,7 +774,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       checkUserSession: signInActions.checkUserSession,
       openChannelWithEntity: chatActions.openChannelWithEntity,
       updateBookmark: feedActions.updateBookmark,
-      updateProfileImage,
+      updateProfileImage
     },
     dispatch
   );

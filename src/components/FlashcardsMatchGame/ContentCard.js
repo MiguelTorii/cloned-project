@@ -1,25 +1,23 @@
 import React, { useMemo } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import useStyles from 'components/FlashcardsMatchGame/styles';
 import { extractTextFromHtml } from 'utils/helpers';
 import withRoot from 'withRoot';
 
-const ContentCard = (
-  {
-    dragRef,
-    image,
-    text,
-    x,
-    y,
-    hasCorrectAnimation,
-    hasIncorrectAnimation,
-    isDragging,
-    isOver
-  }
-) => {
+const ContentCard = ({
+  dragRef,
+  image,
+  text,
+  x,
+  y,
+  hasCorrectAnimation,
+  hasIncorrectAnimation,
+  isDragging,
+  isOver
+}) => {
   const classes = useStyles();
 
   // Memo
@@ -30,29 +28,30 @@ const ContentCard = (
       ref={dragRef}
       display="flex"
       alignItems="center"
-      className={
-        clsx(
-          classes.contentCard,
-          (isDragging || isOver) && 'hover',
-          isDragging && 'dragging',
-          hasCorrectAnimation && 'correct',
-          hasIncorrectAnimation && 'incorrect'
-        )
-      }
+      className={clsx(
+        classes.contentCard,
+        (isDragging || isOver) && 'hover',
+        isDragging && 'dragging',
+        hasCorrectAnimation && 'correct',
+        hasIncorrectAnimation && 'incorrect'
+      )}
       style={{
         left: x,
         top: y
       }}
     >
       {image && (
-        <Box display="flex" justifyContent="center" alignItems="center" className={classes.imageContainer}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          className={classes.imageContainer}
+        >
           <img src={image} alt="Flashcard" className={classes.contentImage} />
         </Box>
       )}
       {extractText && (
-        <Typography className={classes.contentText}>
-          { extractText }
-        </Typography>
+        <Typography className={classes.contentText}>{extractText}</Typography>
       )}
     </Box>
   );

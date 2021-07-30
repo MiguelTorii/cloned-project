@@ -11,8 +11,8 @@ import Tooltip from '../../containers/Tooltip';
 // import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
-import thanksSvg from '../../assets/svg/thanks.svg'
-import commentSvg from '../../assets/svg/comment.svg'
+import thanksSvg from '../../assets/svg/thanks.svg';
+import commentSvg from '../../assets/svg/comment.svg';
 // $FlowIgnore
 // import { ReactComponent as StudyCircleIcon } from '../../assets/svg/ic_studycircle.svg';
 
@@ -58,7 +58,7 @@ class PostItemActions extends React.PureComponent<Props> {
       thanksCount,
       viewCount,
       noThanks,
-      onThanks,
+      onThanks
       // onStudyCircle
     } = this.props;
 

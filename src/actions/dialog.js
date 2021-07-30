@@ -8,13 +8,11 @@ import type { Dispatch } from 'types/store';
 const updateVisibilityAction = (visible: boolean): Action => ({
   type: dialogActions.UPDATE_VISIBILITY,
   payload: {
-    visible,
+    visible
   }
-})
+});
 
-export const updateVisibility = (visible: boolean) => async (
-  dispatch: Dispatch
-) => {
-  dispatch(updateVisibilityAction(visible))
-}
-
+export const updateVisibility =
+  (visible: boolean) => async (dispatch: Dispatch) => {
+    dispatch(updateVisibilityAction(visible));
+  };

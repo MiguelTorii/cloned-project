@@ -22,7 +22,7 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const createMarkup = (html) => {
   return { __html: sanitizeHtml(html) };
-}
+};
 
 type Props = {
   flashcardId: number,
@@ -44,13 +44,21 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
 
   const generateNewQuiz = useCallback(async () => {
     const result = await generateQuiz({ deckId: flashcardId });
-    const initialQuestions = result.matching.questions.map(q => ({ ...q, answerId: '', uuid: uuidv4() }));
-    const initialAnswers = result.matching.answers.map(a => ({ ...a, available: true, uuid: uuidv4() }));
-    const initialMultiQuestions = result.multiple_choice.question.map(q => ({
+    const initialQuestions = result.matching.questions.map((q) => ({
+      ...q,
+      answerId: '',
+      uuid: uuidv4()
+    }));
+    const initialAnswers = result.matching.answers.map((a) => ({
+      ...a,
+      available: true,
+      uuid: uuidv4()
+    }));
+    const initialMultiQuestions = result.multiple_choice.question.map((q) => ({
       ...q,
       answerId: '',
       uuid: uuidv4(),
-      answers: q.answers.map(an => ({ ...an, uuid: uuidv4() }))
+      answers: q.answers.map((an) => ({ ...an, uuid: uuidv4() }))
     }));
 
     setQuestions(initialQuestions);
@@ -62,7 +70,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   useEffect(() => {
     const init = async () => {
       await generateNewQuiz();
-    }
+    };
 
     init();
   }, [generateNewQuiz, isOpen]);
@@ -72,7 +80,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   const onAnswerChange = ({ currentAnswerId, newAnswerId, questionId }) => {
     if (isQuizCompleted) return;
 
-    const updatedAnswers = answers.map(a => {
+    const updatedAnswers = answers.map((a) => {
       if (a.id === currentAnswerId) {
         return { ...a, available: true };
       }
@@ -80,9 +88,9 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         return { ...a, available: false };
       }
       return a;
-    })
+    });
 
-    const updatedQuestions = questions.map(q => {
+    const updatedQuestions = questions.map((q) => {
       if (q.id === questionId) {
         return { ...q, answerId: newAnswerId };
       }
@@ -91,9 +99,11 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
 
     setAnswers(updatedAnswers);
     setQuestions(updatedQuestions);
-  }
+  };
 
-  const Question = ({ question: { answerId, id, question, question_image_url, uuid } }) => {
+  const Question = ({
+    question: { answerId, id, question, question_image_url, uuid }
+  }) => {
     const isAnswerCorrect = answerId === id;
     let color = 'white';
 
@@ -106,24 +116,23 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     return (
       <div className={classes.question}>
         <div className={classes.questionSelect}>
-          {
-            isEvaluationMode && (
-              isAnswerCorrect
-                ? <CheckIcon
-                  classes={{ root: classes.resultIcon2 }}
-                  style={{ fill: '#60b515', fontSize: 20 }}
-                />
-                : <CloseIcon
-                  classes={{ root: classes.resultIcon2 }}
-                  style={{ fill: '#f54f47', fontSize: 20 }}
-                />
-            )
-          }
+          {isEvaluationMode &&
+            (isAnswerCorrect ? (
+              <CheckIcon
+                classes={{ root: classes.resultIcon2 }}
+                style={{ fill: '#60b515', fontSize: 20 }}
+              />
+            ) : (
+              <CloseIcon
+                classes={{ root: classes.resultIcon2 }}
+                style={{ fill: '#f54f47', fontSize: 20 }}
+              />
+            ))}
           <Select
-            id='select-question'
-            labelId='select-question-label'
-            onChange={
-              (event) => onAnswerChange({
+            id="select-question"
+            labelId="select-question-label"
+            onChange={(event) =>
+              onAnswerChange({
                 currentAnswerId: answerId,
                 newAnswerId: event.target.value,
                 questionId: id
@@ -132,12 +141,14 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             style={{ color, paddingLeft: 8, marginLeft: 8, width: 50 }}
             value={answerId}
           >
-            {
-              answers.map((answer, i) => (
-                (answer.available !== false || answer.id === answerId) &&
-                <MenuItem key={answer.id} value={answer.id}>{alphabet.split('')[i]}</MenuItem>
-              ))
-            }
+            {answers.map(
+              (answer, i) =>
+                (answer.available !== false || answer.id === answerId) && (
+                  <MenuItem key={answer.id} value={answer.id}>
+                    {alphabet.split('')[i]}
+                  </MenuItem>
+                )
+            )}
           </Select>
         </div>
         <div className={classes.questionContent}>
@@ -146,8 +157,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               className={classes.questionText}
               dangerouslySetInnerHTML={createMarkup(question)}
             />
-            {
-              question && question_image_url &&
+            {question && question_image_url && (
               <>
                 <div
                   className={classes.link}
@@ -156,31 +166,34 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                     setIsPhotoExpanded({
                       ...isPhotoExpanded,
                       [uuid]: !photoExpanded
-                    })
+                    });
                   }}
-                  role='button'
+                  role="button"
                   tabIndex={0}
                 >
                   {photoExpanded ? 'Hide Photo' : 'View Photo'}
                 </div>
               </>
-            }
+            )}
           </div>
-          {
-            question_image_url && (photoExpanded || !question) &&
+          {question_image_url && (photoExpanded || !question) && (
             <div
               className={classes.media}
               onKeyUp={() => {}}
               tabIndex={0}
-              role='button'
+              role="button"
               onClick={() => {
                 setDialogImageUrl(question_image_url);
                 setIsImageDialogOpen(true);
               }}
             >
-              <img className={classes.image} src={question_image_url} alt={question} />
+              <img
+                className={classes.image}
+                src={question_image_url}
+                alt={question}
+              />
             </div>
-          }
+          )}
         </div>
       </div>
     );
@@ -197,8 +210,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             dangerouslySetInnerHTML={createMarkup(answer)}
             style={{ paddingLeft: 8, lineHeight: '32px' }}
           />
-          {
-            answer && answer_image_url &&
+          {answer && answer_image_url && (
             <>
               <div
                 className={classes.link}
@@ -207,39 +219,53 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                   setIsPhotoExpanded({
                     ...isPhotoExpanded,
                     [uuid]: !photoExpanded
-                  })
+                  });
                 }}
-                role='button'
+                role="button"
                 tabIndex={0}
               >
                 {photoExpanded ? 'Hide Photo' : 'View Photo'}
               </div>
             </>
-          }
+          )}
         </div>
-        {
-          answer_image_url && (!answer || photoExpanded) &&
+        {answer_image_url && (!answer || photoExpanded) && (
           <div className={classes.media}>
             <div
               className={classes.media}
               onKeyUp={() => {}}
               tabIndex={0}
-              role='button'
+              role="button"
               onClick={() => {
                 setDialogImageUrl(answer_image_url);
                 setIsImageDialogOpen(true);
               }}
             >
-              <img className={classes.image} src={answer_image_url} alt={answer} />
+              <img
+                className={classes.image}
+                src={answer_image_url}
+                alt={answer}
+              />
             </div>
           </div>
-        }
+        )}
       </div>
-    )
+    );
   };
 
-  const MultiQuestion = ({ index, multiQuestion: { answerId, answers, id, question, question_image_url, uuid } }) => {
-    const Choice = ({ answer: { answer_image_url: option_image_url, answer: optionText, id: optionId, uuid }, index }) => {
+  const MultiQuestion = ({
+    index,
+    multiQuestion: { answerId, answers, id, question, question_image_url, uuid }
+  }) => {
+    const Choice = ({
+      answer: {
+        answer_image_url: option_image_url,
+        answer: optionText,
+        id: optionId,
+        uuid
+      },
+      index
+    }) => {
       const isAnswerCorrect = optionId === id;
       const isSelected = optionId === answerId;
       const photoExpanded = isPhotoExpanded[uuid];
@@ -256,7 +282,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       const onAnswerClicked = (answerId) => {
         if (isQuizCompleted) return;
 
-        const updatedMultiQuestions = multiQuestions.map(mq => {
+        const updatedMultiQuestions = multiQuestions.map((mq) => {
           if (mq.id === id) {
             return { ...mq, answerId };
           }
@@ -273,39 +299,42 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             className={classes.choice}
             onClick={() => onAnswerClicked(optionId)}
             onKeyUp={() => onAnswerClicked(optionId)}
-            role='button'
+            role="button"
             tabIndex={0}
             style={{ color }}
           >
-            {
-              isEvaluationMode && isSelected && (
-                isAnswerCorrect
-                  ? <CheckIcon
-                    classes={{ root: classes.resultIcon }}
-                    style={{ fill: '#60b515', fontSize: 20 }}
-                  />
-                  : <CloseIcon
-                    classes={{ root: classes.resultIcon }}
-                    style={{ fill: '#f54f47', fontSize: 20 }}
-                  />
-              )
-            }
+            {isEvaluationMode &&
+              isSelected &&
+              (isAnswerCorrect ? (
+                <CheckIcon
+                  classes={{ root: classes.resultIcon }}
+                  style={{ fill: '#60b515', fontSize: 20 }}
+                />
+              ) : (
+                <CloseIcon
+                  classes={{ root: classes.resultIcon }}
+                  style={{ fill: '#f54f47', fontSize: 20 }}
+                />
+              ))}
             <div>
-              {
-                isSelected
-                  ? <RadioButtonCheckedIcon classes={{ root: classes.radioIcon }} style={{ fill: color }} />
-                  : <RadioButtonUncheckedIcon classes={{ root: classes.radioIcon }} style={{ fill: color }} />
-              }
+              {isSelected ? (
+                <RadioButtonCheckedIcon
+                  classes={{ root: classes.radioIcon }}
+                  style={{ fill: color }}
+                />
+              ) : (
+                <RadioButtonUncheckedIcon
+                  classes={{ root: classes.radioIcon }}
+                  style={{ fill: color }}
+                />
+              )}
             </div>
-            <div>
-              {`${alphabet.split('')[index]}.`}
-            </div>
+            <div>{`${alphabet.split('')[index]}.`}</div>
             <div
               dangerouslySetInnerHTML={createMarkup(optionText)}
               style={{ padding: 0, paddingLeft: 8 }}
             />
-            {
-              optionText && option_image_url &&
+            {optionText && option_image_url && (
               <>
                 <div
                   className={classes.link}
@@ -315,33 +344,36 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                     setIsPhotoExpanded({
                       ...isPhotoExpanded,
                       [uuid]: !photoExpanded
-                    })
+                    });
                   }}
-                  role='button'
+                  role="button"
                   tabIndex={0}
                 >
                   {photoExpanded ? 'Hide Photo' : 'View Photo'}
                 </div>
               </>
-            }
+            )}
           </div>
-          {
-            option_image_url && (photoExpanded || !optionText) &&
+          {option_image_url && (photoExpanded || !optionText) && (
             <div
               className={classes.media}
               onKeyUp={() => {}}
               tabIndex={0}
-              role='button'
+              role="button"
               onClick={() => {
                 setDialogImageUrl(option_image_url);
                 setIsImageDialogOpen(true);
               }}
             >
-              <img className={classes.image} src={option_image_url} alt={question} />
+              <img
+                className={classes.image}
+                src={option_image_url}
+                alt={question}
+              />
             </div>
-          }
+          )}
         </div>
-      )
+      );
     };
 
     const photoExpanded = isPhotoExpanded[uuid];
@@ -354,8 +386,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
             dangerouslySetInnerHTML={createMarkup(question)}
             style={{ paddingLeft: 8 }}
           />
-          {
-            question && question_image_url &&
+          {question && question_image_url && (
             <>
               <div
                 className={classes.link}
@@ -364,79 +395,82 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                   setIsPhotoExpanded({
                     ...isPhotoExpanded,
                     [uuid]: !photoExpanded
-                  })
+                  });
                 }}
-                role='button'
+                role="button"
                 tabIndex={0}
               >
                 {photoExpanded ? 'Hide Photo' : 'View Photo'}
               </div>
             </>
-          }
+          )}
         </div>
-        {
-          question_image_url && (!question || photoExpanded) &&
+        {question_image_url && (!question || photoExpanded) && (
           <div
             className={classes.media}
             onKeyUp={() => {}}
             tabIndex={0}
-            role='button'
+            role="button"
             onClick={() => {
               setDialogImageUrl(question_image_url);
               setIsImageDialogOpen(true);
             }}
           >
-            <img className={classes.image} src={question_image_url} alt={question} />
+            <img
+              className={classes.image}
+              src={question_image_url}
+              alt={question}
+            />
           </div>
-        }
+        )}
         <div className={classes.choices}>
-          {
-            answers.map((answer, i) => (
-              <Choice key={`${answer.id}-choice`} answer={answer} index={i} />
-            ))
-          }
+          {answers.map((answer, i) => (
+            <Choice key={`${answer.id}-choice`} answer={answer} index={i} />
+          ))}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const numberOfQuestions = questions.length + multiQuestions.length;
-  const numberOfAnsweredMatchingQuestions = questions.filter(q => q.answerId !== '').length;
-  const numberOfAnsweredMultiQuestions = multiQuestions.filter(q => q.answerId !== '').length;
+  const numberOfAnsweredMatchingQuestions = questions.filter(
+    (q) => q.answerId !== ''
+  ).length;
+  const numberOfAnsweredMultiQuestions = multiQuestions.filter(
+    (q) => q.answerId !== ''
+  ).length;
 
-  const canEvaluate = numberOfQuestions === (numberOfAnsweredMatchingQuestions +
-    numberOfAnsweredMultiQuestions);
+  const canEvaluate =
+    numberOfQuestions ===
+    numberOfAnsweredMatchingQuestions + numberOfAnsweredMultiQuestions;
 
   return (
     <Grid item xs={12} md={12}>
       <div className={classes.content}>
         <div className={classes.header}>
           <div className={classes.title}>Matching</div>
-          {
-            isEvaluationMode &&
+          {isEvaluationMode && (
             <div className={classes.title}>{`Score ${score}`}</div>
-          }
+          )}
         </div>
         <Grid container spacing={2} item xs={12} md={12}>
           <Grid item xs={12} md={6}>
             <div className={classes.subtitle}>
               Match the question with the correct answer
             </div>
-            {
-              questions.map(question => (
-                <Question key={`${question.id}-question`} question={question} />
-              ))
-            }
+            {questions.map((question) => (
+              <Question key={`${question.id}-question`} question={question} />
+            ))}
           </Grid>
           <Grid item xs={12} md={6}>
-            <div className={classes.subtitle}>
-              Answer Bank
-            </div>
-            {
-              answers.map((answer, i) => (
-                <Answer key={`${answer.id}-answer`} answer={answer} char={alphabet.split('')[i]} />
-              ))
-            }
+            <div className={classes.subtitle}>Answer Bank</div>
+            {answers.map((answer, i) => (
+              <Answer
+                key={`${answer.id}-answer`}
+                answer={answer}
+                char={alphabet.split('')[i]}
+              />
+            ))}
           </Grid>
           {multiQuestions.length > 0 && (
             <Grid item xs={12} md={12}>
@@ -447,57 +481,67 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 Multiple Choice
               </div>
               <div className={classes.subtitle}>
-                Answer these next questions by clicking on the answer you believe is correct.
+                Answer these next questions by clicking on the answer you
+                believe is correct.
               </div>
-              {
-                multiQuestions.map((multiQuestion, i) => (
-                  <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
-                ))
-              }
+              {multiQuestions.map((multiQuestion, i) => (
+                <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
+              ))}
             </Grid>
           )}
         </Grid>
       </div>
       <div className={classes.buttons}>
-        {
-          !isQuizCompleted ?
-            <Button
-              className={classes.button}
-              color='primary'
-              disabled={!canEvaluate}
-              onClick={async () => {
-                setIsEvaluationMode(true);
-                const numberOfCorrectMatchingQuestions = questions.filter(q => q.answerId === q.id).length;
-                const numberOfCorrectMultiQuestions = multiQuestions.filter(q => q.answerId === q.id).length;
-                setIsQuizCompleted(true);
-                document.querySelector('[aria-labelledby="circle-in-dialog-content"]').scroll(0, 0);
-                setScore(`${numberOfCorrectMatchingQuestions + numberOfCorrectMultiQuestions} / ${numberOfQuestions}`);
-                const results = [...questions, ...multiQuestions].map(q => ({
-                  question_id: q.id,
-                  answer_id: q.answerId
-                }))
-                await saveQuizAnswers({ results })
-              }}
-              variant='contained'
-            >
-              Get Results
-            </Button>
-            : (<Button
-              className={classes.button}
-              color='primary'
-              disabled={!canEvaluate}
-              onClick={() => {
-                setIsEvaluationMode(false);
-                setIsQuizCompleted(false);
-                setQuiz(null);
-                generateNewQuiz();
-                setIsPhotoExpanded({});
-              }}
-              variant='contained'
-            >
-              Try Again
-            </Button>)
-        }
+        {!isQuizCompleted ? (
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled={!canEvaluate}
+            onClick={async () => {
+              setIsEvaluationMode(true);
+              const numberOfCorrectMatchingQuestions = questions.filter(
+                (q) => q.answerId === q.id
+              ).length;
+              const numberOfCorrectMultiQuestions = multiQuestions.filter(
+                (q) => q.answerId === q.id
+              ).length;
+              setIsQuizCompleted(true);
+              document
+                .querySelector('[aria-labelledby="circle-in-dialog-content"]')
+                .scroll(0, 0);
+              setScore(
+                `${
+                  numberOfCorrectMatchingQuestions +
+                  numberOfCorrectMultiQuestions
+                } / ${numberOfQuestions}`
+              );
+              const results = [...questions, ...multiQuestions].map((q) => ({
+                question_id: q.id,
+                answer_id: q.answerId
+              }));
+              await saveQuizAnswers({ results });
+            }}
+            variant="contained"
+          >
+            Get Results
+          </Button>
+        ) : (
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled={!canEvaluate}
+            onClick={() => {
+              setIsEvaluationMode(false);
+              setIsQuizCompleted(false);
+              setQuiz(null);
+              generateNewQuiz();
+              setIsPhotoExpanded({});
+            }}
+            variant="contained"
+          >
+            Try Again
+          </Button>
+        )}
       </div>
       <Dialog
         open={isImageDialogOpen}
@@ -508,10 +552,14 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         aria-labelledby="simple-dialog-title"
         aria-describedby="simple-dialog-description"
       >
-        <img className={classes.dialogImage} src={dialogImageUrl} alt="dialog" />
+        <img
+          className={classes.dialogImage}
+          src={dialogImageUrl}
+          alt="dialog"
+        />
       </Dialog>
     </Grid>
   );
-}
+};
 
 export default FlashcardQuiz;

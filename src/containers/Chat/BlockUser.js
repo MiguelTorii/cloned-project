@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react';
 import Dialog, { dialogStyle } from 'components/Dialog';
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import BlockUserIcon from 'assets/svg/block-user.svg'
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import BlockUserIcon from 'assets/svg/block-user.svg';
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -19,38 +19,35 @@ const useStyles = makeStyles((theme) => ({
   blockButton: {
     minWidth: 164,
     background: '#FFFFFF',
-    marginBottom: theme.spacing(1/2),
+    marginBottom: theme.spacing(1 / 2),
     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.35)',
     borderRadius: 100
-  },
-}))
+  }
+}));
 const BlockUser = ({ otherUser, userId, handleBlock }) => {
-  const classes = useStyles()
-  const [blockUser, setBlockUser] = useState(false)
+  const classes = useStyles();
+  const [blockUser, setBlockUser] = useState(false);
 
-  const handleOpenBlock = useCallback(v => () => setBlockUser(v), [])
+  const handleOpenBlock = useCallback((v) => () => setBlockUser(v), []);
 
   const onOk = async () => {
-    if (userId !== otherUser.userId) await handleBlock(otherUser.userId)
-    handleOpenBlock(false)()
-  }
+    if (userId !== otherUser.userId) await handleBlock(otherUser.userId);
+    handleOpenBlock(false)();
+  };
 
-  if (!otherUser) return null
+  if (!otherUser) return null;
   return (
-    <Grid
-      container
-      justify='center'
-    >
+    <Grid container justify="center">
       <Button
         onClick={handleOpenBlock(true)}
-        startIcon={<img src={BlockUserIcon} alt='block user' />}
-        variant='outlined'
+        startIcon={<img src={BlockUserIcon} alt="block user" />}
+        variant="outlined"
         classes={{
           label: classes.blockLabel,
           root: classes.blockButton
         }}
       >
-          Block {otherUser.firstname}
+        Block {otherUser.firstname}
       </Button>
       <Dialog
         ariaDescribedBy="confirm-dialog-description"
@@ -63,15 +60,13 @@ const BlockUser = ({ otherUser, userId, handleBlock }) => {
         showCancel
         title="Block User"
       >
-        <Typography
-          color="textPrimary"
-          id="confirm-dialog-description"
-        >
-              Are you sure you want to block {otherUser.firstName} {otherUser.lastName}
+        <Typography color="textPrimary" id="confirm-dialog-description">
+          Are you sure you want to block {otherUser.firstName}{' '}
+          {otherUser.lastName}
         </Typography>
       </Dialog>
     </Grid>
-  )
-}
+  );
+};
 
-export default BlockUser
+export default BlockUser;

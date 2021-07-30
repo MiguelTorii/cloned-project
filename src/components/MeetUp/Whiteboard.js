@@ -70,7 +70,7 @@ class Index extends React.Component<Props, State> {
     this.handleCursor = this.throttle(this.handleCursor, 500);
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const { drawData, isText } = this.props;
     if (isText) {
       this.input.focus();
@@ -115,7 +115,7 @@ class Index extends React.Component<Props, State> {
     window.removeEventListener('resize', this.handleResize, false);
   };
 
-  handleMouseDown = e => {
+  handleMouseDown = (e) => {
     const { isText } = this.props;
     if (isText) return;
     const current = {};
@@ -127,7 +127,7 @@ class Index extends React.Component<Props, State> {
     });
   };
 
-  handleMouseUp = e => {
+  handleMouseUp = (e) => {
     const { isText } = this.props;
     if (isText) return;
     const { lineWidth, color, eraser } = this.props;
@@ -148,7 +148,7 @@ class Index extends React.Component<Props, State> {
     );
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     this.handleCursor(
       // $FlowIgnore
       e.clientX || (e.touches ? e.touches[0].clientX : 0),
@@ -181,7 +181,7 @@ class Index extends React.Component<Props, State> {
     });
   };
 
-  handleClick = e => {
+  handleClick = (e) => {
     const { isText } = this.props;
     if (isText) {
       const { color } = this.props;
@@ -200,11 +200,11 @@ class Index extends React.Component<Props, State> {
     }
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { key = '' } = event;
     const { color } = this.props;
     const { inputValue, inputPos } = this.state;
@@ -314,7 +314,7 @@ class Index extends React.Component<Props, State> {
   throttle = (callback, delay) => {
     let previousCall = new Date().getTime();
     // eslint-disable-next-line func-names
-    return function() {
+    return function () {
       const time = new Date().getTime();
 
       if (time - previousCall >= delay) {
@@ -325,7 +325,7 @@ class Index extends React.Component<Props, State> {
     };
   };
 
-  handleDrawingEvent = data => {
+  handleDrawingEvent = (data) => {
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
     this.drawLine(
@@ -338,21 +338,21 @@ class Index extends React.Component<Props, State> {
     );
   };
 
-  handleTextingEvent = data => {
+  handleTextingEvent = (data) => {
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
     this.drawText(data.text, data.color, data.x * w, data.y * h);
   };
 
-  handleCursorEvent = data => {
+  handleCursorEvent = (data) => {
     const { userId, name, x, y } = data;
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
     const newState = update(this.state, {
       participants: {
-        $apply: b => {
+        $apply: (b) => {
           // console.log(b);
-          const index = b.findIndex(item => item.userId === userId);
+          const index = b.findIndex((item) => item.userId === userId);
           if (index > -1) {
             return update(b, {
               [index]: { $set: { userId, name, x: x * w, y: y * h } }
@@ -396,7 +396,7 @@ class Index extends React.Component<Props, State> {
           style={{ ...inputPos }}
         >
           <OutlinedInput
-            inputRef={input => {
+            inputRef={(input) => {
               this.input = input;
             }}
             className={classes.input}
@@ -417,7 +417,7 @@ class Index extends React.Component<Props, State> {
             </ButtonBase>
           </Paper>
         </div>
-        {participants.map(item => (
+        {participants.map((item) => (
           <Typography
             key={item.userId}
             className={classes.participant}

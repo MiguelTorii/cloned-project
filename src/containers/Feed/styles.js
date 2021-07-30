@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(1)
   },
   postHeaderPaper: {
-    padding: theme.spacing(2, 3),
+    padding: theme.spacing(2, 3)
   },
   postAnyButton: {
     display: 'flex',

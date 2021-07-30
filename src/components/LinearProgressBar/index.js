@@ -25,11 +25,11 @@ const LinearProgressBar = ({ value, totalValue }) => {
   return (
     <div className={classes.container}>
       <GradientProgress
-        value={value * 100 / totalValue}
+        value={(value * 100) / totalValue}
         variant="determinate"
       />
       <Typography className={classes.text}>
-        { `${value} / ${totalValue}` }
+        {`${value} / ${totalValue}`}
       </Typography>
     </div>
   );

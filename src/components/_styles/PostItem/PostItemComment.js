@@ -1,6 +1,6 @@
 import green from '@material-ui/core/colors/green';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   container: {
     width: '100%',
     display: 'flex',
@@ -72,7 +72,7 @@ export const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 16,
-    color: theme.circleIn.palette.primaryText1,
+    color: theme.circleIn.palette.primaryText1
   },
   thanked: {
     marginRight: theme.spacing(2),
@@ -80,7 +80,7 @@ export const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 16,
-    color: theme.circleIn.palette.brand,
+    color: theme.circleIn.palette.brand
   },
   badgeIcon: {
     marginLeft: theme.spacing(0.5)
@@ -95,7 +95,7 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginLeft: theme.spacing(3/2)
+    marginLeft: theme.spacing(3 / 2)
   },
   accepted: {
     '&:disabled': {
@@ -107,7 +107,7 @@ export const styles = theme => ({
     color: `${theme.circleIn.palette.primaryText1} !important`,
     marginRight: theme.spacing(),
     '&:hover': {
-      textDecoration: 'none',
+      textDecoration: 'none'
     }
   },
   editContainer: {

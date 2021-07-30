@@ -18,7 +18,7 @@ export const TIMER_STATUS = {
   STARTED: 'started',
   PAUSED: 'paused',
   TIME_UP: 'time_up'
-}
+};
 
 const Timer = ({ defaultStatus }) => {
   const classes = useStyles();
@@ -32,7 +32,7 @@ const Timer = ({ defaultStatus }) => {
   const handleStartTimer = useCallback(() => {
     if (initialHours === 0 && initialMinutes === 0) {
       alert('Please set a valid timer');
-      return ;
+      return;
     }
     setStatus(TIMER_STATUS.STARTED);
   }, [initialHours, initialMinutes]);
@@ -52,15 +52,19 @@ const Timer = ({ defaultStatus }) => {
   // Effects
   useEffect(() => {
     setStatus((st) => {
-      if (defaultStatus === TIMER_STATUS.PAUSED &&
-        (st === TIMER_STATUS.INITIALIZED ||
-        st === TIMER_STATUS.TIME_UP)
-      ) return st;
+      if (
+        defaultStatus === TIMER_STATUS.PAUSED &&
+        (st === TIMER_STATUS.INITIALIZED || st === TIMER_STATUS.TIME_UP)
+      )
+        return st;
       return defaultStatus;
     });
   }, [defaultStatus]);
   useEffect(() => {
-    if (status === TIMER_STATUS.INITIALIZED || status === TIMER_STATUS.TIME_UP) {
+    if (
+      status === TIMER_STATUS.INITIALIZED ||
+      status === TIMER_STATUS.TIME_UP
+    ) {
       setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
     }
   }, [status, initialHours, initialMinutes]);
@@ -70,7 +74,7 @@ const Timer = ({ defaultStatus }) => {
       if (status === TIMER_STATUS.STARTED) {
         setCurrentSeconds((seconds) => {
           if (seconds === 1) setStatus(TIMER_STATUS.TIME_UP);
-          return seconds > 0 ? (seconds - 1) : seconds;
+          return seconds > 0 ? seconds - 1 : seconds;
         });
       }
     }, INTERVAL.SECOND);
@@ -84,40 +88,50 @@ const Timer = ({ defaultStatus }) => {
         display="flex"
         justifyContent="center"
         alignItems="baseline"
-        className={clsx(classes.timerBox, status !== TIMER_STATUS.STARTED && 'hand' )}
+        className={clsx(
+          classes.timerBox,
+          status !== TIMER_STATUS.STARTED && 'hand'
+        )}
       >
-        <Box mr={1/2}>
+        <Box mr={1 / 2}>
           {status === TIMER_STATUS.INITIALIZED ? (
-            <NumberSelector value={initialHours} limit={9} onChange={setInitialHours} />
+            <NumberSelector
+              value={initialHours}
+              limit={9}
+              onChange={setInitialHours}
+            />
           ) : (
             <Typography variant="h4">
-              { twoDigitsNumber(Math.floor(currentSeconds / 3600)) }
+              {twoDigitsNumber(Math.floor(currentSeconds / 3600))}
             </Typography>
           )}
         </Box>
         <Box mr={2}>
           <Typography>h</Typography>
         </Box>
-        <Box mr={1/2}>
+        <Box mr={1 / 2}>
           {status === TIMER_STATUS.INITIALIZED ? (
-            <NumberSelector limit={59} onChange={setInitialMinutes} value={initialMinutes} />
+            <NumberSelector
+              limit={59}
+              onChange={setInitialMinutes}
+              value={initialMinutes}
+            />
           ) : (
             <Typography variant="h4">
-              { twoDigitsNumber(Math.floor(currentSeconds / 60) % 60) }
+              {twoDigitsNumber(Math.floor(currentSeconds / 60) % 60)}
             </Typography>
           )}
         </Box>
         <Box mr={2}>
           <Typography>m</Typography>
         </Box>
-        <Box mr={1/2}>
+        <Box mr={1 / 2}>
           <Typography variant="h4">
-            { twoDigitsNumber(
+            {twoDigitsNumber(
               status === TIMER_STATUS.INITIALIZED
                 ? 0
                 : Math.floor(currentSeconds % 60)
-              )
-            }
+            )}
           </Typography>
         </Box>
         <Typography>s</Typography>
@@ -131,11 +145,9 @@ const Timer = ({ defaultStatus }) => {
         <Box mr={1}>
           <IconTimer />
         </Box>
-        <Typography variant="h6">
-          Set a timer
-        </Typography>
+        <Typography variant="h6">Set a timer</Typography>
       </Box>
-      { renderTimeBox() }
+      {renderTimeBox()}
       <Box display="flex" justifyContent="space-between">
         {TIMER_STATUS.INITIALIZED === status && (
           <GradientButton compact onClick={handleStartTimer}>

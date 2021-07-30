@@ -3,11 +3,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 
-const withTracker = (
-  WrappedComponent: Object,
-  options: Object = {}
-) => {
-  const trackPage = page => {
+const withTracker = (WrappedComponent: Object, options: Object = {}) => {
+  const trackPage = (page) => {
     ReactGA.set({
       page,
       ...options
@@ -19,25 +16,20 @@ const withTracker = (
     location: Object
   };
 
-  const WithTracker = ({
-    location: {
-      pathname
-    },
-    ...rest
-  }: Props) => {
-    const [prevPathname, setPrevPathname] = useState('')
+  const WithTracker = ({ location: { pathname }, ...rest }: Props) => {
+    const [prevPathname, setPrevPathname] = useState('');
 
-    useEffect (() => {
+    useEffect(() => {
       if (prevPathname !== pathname) {
         trackPage(pathname);
-        setPrevPathname(pathname)
+        setPrevPathname(pathname);
       }
-    }, [pathname, prevPathname])
+    }, [pathname, prevPathname]);
 
     return <WrappedComponent {...rest} />;
-  }
+  };
 
-  return memo(WithTracker)
-}
+  return memo(WithTracker);
+};
 
-export default withTracker
+export default withTracker;

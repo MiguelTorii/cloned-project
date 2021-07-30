@@ -1,22 +1,22 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   addRm: {
     color: theme.circleIn.palette.action,
     width: '90%',
     wordBreak: 'break-word',
     cursor: 'pointer',
-    whiteSpace: 'initial',
+    whiteSpace: 'initial'
   },
   container: {
-    marginLeft: 60,
+    marginLeft: 60
   },
   list: {
     overflowY: 'scroll',
-    maxHeight: 100,
+    maxHeight: 100
   },
   item: {
     width: '80%',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   }
-})
+});

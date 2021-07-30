@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,
@@ -42,11 +42,11 @@ export default theme => ({
     marginRight: theme.spacing(1.5)
   },
   icon: {
-    color: theme.circleIn.palette.normalButtonText1,
+    color: theme.circleIn.palette.normalButtonText1
   },
   img: {
     color: theme.circleIn.palette.normalButtonText1,
-    width: 18,
+    width: 18
   },
   content: {
     overflow: 'none',

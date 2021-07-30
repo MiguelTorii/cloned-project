@@ -21,18 +21,33 @@ const Header = ({ profile }: Props) => {
 
   return (
     <Paper className={classes.root}>
-      <Grid container spacing={2} className={classes.mainContainer} alignItems="center">
-        <Grid item xs={12} md={6} wrap="nowrap" container spacing={2} alignItems="center">
+      <Grid
+        container
+        spacing={2}
+        className={classes.mainContainer}
+        alignItems="center"
+      >
+        <Grid
+          item
+          xs={12}
+          md={6}
+          wrap="nowrap"
+          container
+          spacing={2}
+          alignItems="center"
+        >
           <Grid item>
             <Avatar
               src={profile.userProfileUrl}
-              defaultText={getInitials(`${profile.firstName} ${profile.lastName}`)}
+              defaultText={getInitials(
+                `${profile.firstName} ${profile.lastName}`
+              )}
             />
           </Grid>
           <Grid item container direction="column" spacing={isMobile ? 0 : 1}>
             <Grid item>
               <Typography variant="h5">
-                { `${profile.firstName} ${profile.lastName}` }
+                {`${profile.firstName} ${profile.lastName}`}
               </Typography>
             </Grid>
             {/*<Grid item container spacing={2}>*/}
@@ -48,18 +63,19 @@ const Header = ({ profile }: Props) => {
             {/*  </Grid>*/}
             {/*</Grid>*/}
             <Grid item>
-              <Typography>
-                Rank: #{profile.rank}
-              </Typography>
+              <Typography>Rank: #{profile.rank}</Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={6} container spacing={2}>
           <Grid item xs={6} md={12}>
             <Typography variant="h5" className={classes.textAlign}>
-              { getPointsText(profile.points) } Points
+              {getPointsText(profile.points)} Points
             </Typography>
-            <Typography variant="body2" className={clsx(classes.subtext, classes.textAlign)}>
+            <Typography
+              variant="body2"
+              className={clsx(classes.subtext, classes.textAlign)}
+            >
               Total
             </Typography>
           </Grid>

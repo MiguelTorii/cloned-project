@@ -10,7 +10,9 @@ import AutoComplete from '../AutoComplete';
 import type { SelectType } from '../../types/models';
 import { styles } from '../_styles/AuthSearchSchool';
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to="/terms-of-use" target="_blank" {...props} ref={ref} />);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
+  <RouterLink to="/terms-of-use" target="_blank" {...props} ref={ref} />
+));
 
 type Props = {
   classes: Object,
@@ -32,7 +34,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
           </Typography>
           <div className={classes.schools}>
             <AutoComplete
-              id='search-school'
+              id="search-school"
               values={school}
               inputValue=""
               label=""

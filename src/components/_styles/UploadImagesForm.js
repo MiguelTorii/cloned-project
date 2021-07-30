@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   dropzoneWrapper: {
     position: 'relative',
     // height: 96,
@@ -11,7 +11,7 @@ export const styles = theme => ({
     justifyContent: 'center',
     gap: theme.spacing(2.5),
     width: '100%',
-    height: 64,
+    height: 64
   },
   addIcon: {
     fontSize: theme.spacing(4)
@@ -30,7 +30,7 @@ export const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-    border: 'none !important',
+    border: 'none !important'
   },
   uploadFileForm: {
     '& .MuiOutlinedInput-notchedOutline': {
@@ -49,7 +49,7 @@ export const styles = theme => ({
     fontSize: 18
   },
   rootUploadFile: {
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.spacing(1)
   },
   uploadFileInput: {
     padding: '12px 14px',
@@ -80,7 +80,7 @@ export const styles = theme => ({
   drag: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
+    right: 0
   },
   button: {
     padding: 4,

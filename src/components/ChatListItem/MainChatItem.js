@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from 'components/Dialog';
 import OnlineBadge from 'components/OnlineBadge';
-import { containsImage, getInitials } from 'utils/chat'
+import { containsImage, getInitials } from 'utils/chat';
 import { styles } from '../_styles/ChatListItem/MainChatItem';
 
 type Props = {
@@ -56,45 +56,45 @@ const MainChatItem = ({
   muted,
   onClick
 }: Props) => {
-  const [showMenu, setShowMenu] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [showMenu, setShowMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
   const handleClose = useCallback(() => {
     setAnchorEl(null);
-  }, [])
+  }, []);
 
   const handleMute = useCallback(() => {
-    handleMuteChannel({ sid: roomId })
-    handleClose()
-  }, [roomId, handleMuteChannel, handleClose])
+    handleMuteChannel({ sid: roomId });
+    handleClose();
+  }, [roomId, handleMuteChannel, handleClose]);
 
   const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
-    if(handleRemoveChannel && handleMuteChannel) setShowMenu(true)
-  }, [handleMuteChannel, handleRemoveChannel])
+    if (handleRemoveChannel && handleMuteChannel) setShowMenu(true);
+  }, [handleMuteChannel, handleRemoveChannel]);
 
   const onMouseLeave = useCallback(() => {
-    setShowMenu(false)
-    handleClose()
-  }, [handleClose])
+    setShowMenu(false);
+    handleClose();
+  }, [handleClose]);
 
-  const [removeChat, setRemoveChat] = useState(false)
+  const [removeChat, setRemoveChat] = useState(false);
 
-  const handleRemoveClose = useCallback(() => setRemoveChat(false), [])
+  const handleRemoveClose = useCallback(() => setRemoveChat(false), []);
   const handleRemoveOpen = useCallback(() => {
-    setRemoveChat(true)
-    handleClose()
-  }, [handleClose])
+    setRemoveChat(true);
+    handleClose();
+  }, [handleClose]);
 
   const handleRemoveSubmit = useCallback(async () => {
-    if (roomId) await handleRemoveChannel({ sid: roomId })
-    handleRemoveClose()
-  }, [handleRemoveChannel, roomId, handleRemoveClose])
+    if (roomId) await handleRemoveChannel({ sid: roomId });
+    handleRemoveClose();
+  }, [handleRemoveChannel, roomId, handleRemoveClose]);
 
   if (isLoading)
     return (
@@ -112,14 +112,18 @@ const MainChatItem = ({
       <ButtonBase
         className={cx(classes.root, {
           [classes.dark]: dark,
-          [classes.selected] : selected
+          [classes.selected]: selected
         })}
         onClick={onClick}
       >
-        <OnlineBadge isVisible={isDirectChat} isOnline={isOnline} bgColorPath={ dark ? "circleIn.palette.feedBackground" : "circleIn.palette.appBar" }>
-          <Avatar src={imageProfile}>
-            {initials || <GroupIcon />}
-          </Avatar>
+        <OnlineBadge
+          isVisible={isDirectChat}
+          isOnline={isOnline}
+          bgColorPath={
+            dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'
+          }
+        >
+          <Avatar src={imageProfile}>{initials || <GroupIcon />}</Avatar>
         </OnlineBadge>
         <div className={classes.grow}>
           <Typography variant="subtitle1" noWrap>
@@ -138,25 +142,31 @@ const MainChatItem = ({
           <span />
         </Badge>
       </ButtonBase>
-      {showMenu && <IconButton onClick={handleClick} className={classes.hoverMenu} size="small">
-        <MoreHorizIcon fontSize="inherit" />
-      </IconButton>}
+      {showMenu && (
+        <IconButton
+          onClick={handleClick}
+          className={classes.hoverMenu}
+          size="small"
+        >
+          <MoreHorizIcon fontSize="inherit" />
+        </IconButton>
+      )}
       <Menu
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         getContentAnchorEl={null}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleMute}>{muted? 'Unmute' : 'Mute'}</MenuItem>
+        <MenuItem onClick={handleMute}>{muted ? 'Unmute' : 'Mute'}</MenuItem>
         <MenuItem onClick={handleRemoveOpen}>Leave</MenuItem>
       </Menu>
       <Dialog
@@ -170,19 +180,15 @@ const MainChatItem = ({
         showCancel
         title="Delete Chat"
       >
-        <Typography
-          color="textPrimary"
-          id="remove-dialog-description"
-        >
-            Are you sure you want to delete this chat?
+        <Typography color="textPrimary" id="remove-dialog-description">
+          Are you sure you want to delete this chat?
           <br />
           <br />
-            Deleting this chat can't be undone
+          Deleting this chat can't be undone
         </Typography>
       </Dialog>
     </div>
   );
-}
-
+};
 
 export default withStyles(styles)(MainChatItem);

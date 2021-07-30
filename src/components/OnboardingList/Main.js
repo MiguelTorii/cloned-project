@@ -26,7 +26,7 @@ const ID_TO_URL = {
   2: '/chat',
   3: '/store',
   4: '/create/flashcards'
-}
+};
 
 type Props = {
   finishOnboardingList: Function,
@@ -61,7 +61,7 @@ const OnboardingList = ({
 
   const LinearProgressWithLabel = ({ value }: { value: number }) => (
     <Box className={classes.progress}>
-      <Box width='100%'>
+      <Box width="100%">
         <LinearProgress
           classes={{
             bar: classes.progressBar,
@@ -69,7 +69,7 @@ const OnboardingList = ({
             root: classes.progressRoot
           }}
           value={value}
-          variant='determinate'
+          variant="determinate"
         />
       </Box>
       <Box>
@@ -78,30 +78,41 @@ const OnboardingList = ({
         </Typography>
       </Box>
     </Box>
-  )
+  );
 
-  const ItemLink = React.forwardRef(({ completed, href, ...props }, ref) =>
+  const ItemLink = React.forwardRef(({ completed, href, ...props }, ref) => (
     <RouterLink
       style={{
         color: 'inherit',
         cursor: completed ? 'auto' : 'pointer',
         textDecoration: 'none'
       }}
-      to={completed ? '' : href} {...props} ref={ref}
-    />);
+      to={completed ? '' : href}
+      {...props}
+      ref={ref}
+    />
+  ));
 
   const OnboardingListItem = ({ item }: { item: OnboardingListItemType }) => (
-    <Link completed={item.completed} href={ID_TO_URL[item.id]} component={ItemLink}>
+    <Link
+      completed={item.completed}
+      href={ID_TO_URL[item.id]}
+      component={ItemLink}
+    >
       <div className={classes.listItem}>
         <div className={classes.listItemCheckBox}>
-          {
-            item.completed
-              ? <img src={checkmarkSvg} alt='checkmark' />
-              : <img src={checkmarkEmptySvg} alt='checkmark' />
-          }
+          {item.completed ? (
+            <img src={checkmarkSvg} alt="checkmark" />
+          ) : (
+            <img src={checkmarkEmptySvg} alt="checkmark" />
+          )}
         </div>
         <div
-          className={item.completed ? classes.listItemText: classes.listItemTextCompleted}
+          className={
+            item.completed
+              ? classes.listItemText
+              : classes.listItemTextCompleted
+          }
         >
           {item.text}
         </div>
@@ -109,17 +120,17 @@ const OnboardingList = ({
     </Link>
   );
 
-  const completedItems = onboardingList.checklist.filter(i => i.completed);
-  const completionPercentage = (completedItems.length / onboardingList.checklist.length) * 100;
+  const completedItems = onboardingList.checklist.filter((i) => i.completed);
+  const completionPercentage =
+    (completedItems.length / onboardingList.checklist.length) * 100;
   const isCompleted = completedItems.length === onboardingList.checklist.length;
 
   return (
     <div className={classes.container}>
       <div className={classes.titleContainer}>
-        {
-          isCompleted &&
+        {isCompleted && (
           <CloseIcon className={classes.icon} onClick={finishOnboardingList} />
-        }
+        )}
         <div className={classes.title}>
           {isCompleted
             ? `You're ready to use CircleIn to the fullest!`
@@ -127,18 +138,21 @@ const OnboardingList = ({
         </div>
       </div>
       <div className={classes.list}>
-        {
-          onboardingList.checklist.map(item => (
-            <OnboardingListItem item={item} />
-          ))
-        }
+        {onboardingList.checklist.map((item) => (
+          <OnboardingListItem item={item} />
+        ))}
       </div>
       <LinearProgressWithLabel value={completionPercentage} />
     </div>
-  )
-}
+  );
+};
 
-const mapStateToProps = ({ user: { syncData: { viewedOnboarding } }, onboarding }): {} => ({
+const mapStateToProps = ({
+  user: {
+    syncData: { viewedOnboarding }
+  },
+  onboarding
+}): {} => ({
   onboardingList: onboarding.onboardingList,
   viewedOnboarding
 });
@@ -147,7 +161,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       finishOnboardingList: onboardingActions.finishOnboardingList,
-      getOnboardingList: onboardingActions.getOnboardingList,
+      getOnboardingList: onboardingActions.getOnboardingList
     },
     dispatch
   );

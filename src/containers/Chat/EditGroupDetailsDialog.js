@@ -1,20 +1,18 @@
 // @flow
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  ValidatorForm,
-} from 'react-material-ui-form-validator'
-import withStyles from '@material-ui/core/styles/withStyles'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog, { dialogStyle } from 'components/Dialog'
-import Typography from '@material-ui/core/Typography'
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog, { dialogStyle } from 'components/Dialog';
+import Typography from '@material-ui/core/Typography';
 import TextField from '../../components/Basic/TextField';
 import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import Avatar from "@material-ui/core/Avatar";
-import GroupIcon from "@material-ui/icons/Group";
-import { Create } from "@material-ui/icons";
+import Avatar from '@material-ui/core/Avatar';
+import GroupIcon from '@material-ui/icons/Group';
+import { Create } from '@material-ui/icons';
 import AvatarEditor from '../../components/AvatarEditor';
 import { useDispatch } from 'react-redux';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
@@ -26,7 +24,7 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%' // Fix IE 11 issue.
   },
   input: {
     display: 'none'
@@ -38,7 +36,7 @@ const styles = (theme) => ({
   name: {
     color: theme.circleIn.palette.darkTextColor,
     fontSize: 14,
-    lineHeight: '19px',
+    lineHeight: '19px'
   },
   helperText: {
     color: theme.circleIn.palette.darkTextColor,
@@ -50,15 +48,15 @@ const styles = (theme) => ({
   labelText: {
     color: theme.circleIn.palette.secondaryText,
     fontSize: 18,
-    lineHeight: '25px',
+    lineHeight: '25px'
   },
   spacer: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   hr: {
     border: '1px solid rgba(233, 236, 239, 0.25)',
     width: 'calc(100% + 48px)',
-    height: 1,
+    height: 1
   },
   progress: {
     position: 'fixed',
@@ -67,7 +65,7 @@ const styles = (theme) => ({
   },
   editDialog: {
     maxWidth: 609,
-    width: '100%',
+    width: '100%'
   },
   penButton: {
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
@@ -84,7 +82,7 @@ const styles = (theme) => ({
     height: theme.spacing(14),
     width: theme.spacing(14),
     fontSize: 30
-  },
+  }
 });
 
 type Props = {
@@ -105,15 +103,15 @@ const EditGroupDetailsDialog = ({
   updateGroupName,
   localChannel
 }: Props) => {
-  const [name, setName] = useState(localChannel.title)
+  const [name, setName] = useState(localChannel.title);
   const dispatch = useDispatch();
   const [isEditingGroupPhoto, setIsEditingGroupPhoto] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [groupImage, setGroupImage] = useState(undefined); // Group Image can be URL or Blob
 
   useEffect(() => {
-    setName(localChannel.title)
-  }, [localChannel])
+    setName(localChannel.title);
+  }, [localChannel]);
 
   useEffect(() => {
     setGroupImage(localChannel.thumbnail);
@@ -127,25 +125,27 @@ const EditGroupDetailsDialog = ({
     return groupImage;
   }, [groupImage]);
 
-  const handleGroupNameChange = useCallback((e) => {
-    if (e.target.value.length > 100) {
-      return;
-    }
-    setName(e.target.value);
-  }, [setName]);
+  const handleGroupNameChange = useCallback(
+    (e) => {
+      if (e.target.value.length > 100) {
+        return;
+      }
+      setName(e.target.value);
+    },
+    [setName]
+  );
 
   const handleClose = useCallback(() => {
     setIsSaving(false);
-    onClose()
+    onClose();
     setName(localChannel.title);
   }, [localChannel.title, onClose]);
 
   const updateChannelName = async () => {
-    if (name === channel.channelState.friendlyName)
-      return ;
+    if (name === channel.channelState.friendlyName) return;
 
     try {
-      const res = await channel.updateFriendlyName(name)
+      const res = await channel.updateFriendlyName(name);
       await updateGroupName(res);
     } catch (err) {}
   };
@@ -156,17 +156,11 @@ const EditGroupDetailsDialog = ({
     await updateChannelName();
 
     if (groupImage instanceof Blob) {
-      dispatch(
-        handleUpdateGroupPhoto(
-          channel.sid,
-          groupImage,
-          handleClose
-        )
-      )
+      dispatch(handleUpdateGroupPhoto(channel.sid, groupImage, handleClose));
     } else {
       handleClose();
     }
-  }
+  };
 
   const handleStartEditPhoto = () => setIsEditingGroupPhoto(true);
   const handleCancelEditPhoto = () => setIsEditingGroupPhoto(false);
@@ -178,25 +172,22 @@ const EditGroupDetailsDialog = ({
   return (
     <Dialog
       open={open}
-      title={title || "Edit Group Details"}
+      title={title || 'Edit Group Details'}
       className={classes.editDialog}
       onCancel={handleClose}
     >
-      {isLoading && <CircularProgress className={classes.progress}/>}
-      <Typography variant='h6' gutterBottom>
+      {isLoading && <CircularProgress className={classes.progress} />}
+      <Typography variant="h6" gutterBottom>
         Are you sure you want to make changes to&nbsp;{name}?
       </Typography>
       <div className={classes.spacer}></div>
-      <ValidatorForm
-        className={classes.validatorForm}
-        onSubmit={handleSubmit}
-      >
+      <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
         <div className={classes.form}>
           <TextField
-            placeholder='Enter a New Friendly Name'
-            label='Edit Group Name'
+            placeholder="Enter a New Friendly Name"
+            label="Edit Group Name"
             fullWidth
-            variant='outlined'
+            variant="outlined"
             onChange={handleGroupNameChange}
             value={name}
             helperText={`${100 - (name?.length || 0)} characters remaining`}
@@ -209,7 +200,7 @@ const EditGroupDetailsDialog = ({
             inputProps={{
               className: classes.name
             }}
-            size='medium'
+            size="medium"
           />
         </div>
       </ValidatorForm>
@@ -222,7 +213,7 @@ const EditGroupDetailsDialog = ({
         <Box position="relative">
           <Avatar
             src={groupImageUrl}
-            alt='group-image'
+            alt="group-image"
             className={classes.avatar}
           >
             <GroupIcon />
@@ -238,9 +229,7 @@ const EditGroupDetailsDialog = ({
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt={2}>
-        <Button onClick={handleClose}>
-          Cancel
-        </Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <GradientButton
           onClick={handleSubmit}
           loading={isSaving}
@@ -257,6 +246,6 @@ const EditGroupDetailsDialog = ({
       />
     </Dialog>
   );
-}
+};
 
 export default withStyles(styles)(EditGroupDetailsDialog);

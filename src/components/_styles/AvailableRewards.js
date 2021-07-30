@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap'
@@ -64,7 +64,7 @@ export const styles = theme => ({
     justifyContent: 'center'
   },
   button: {
-    margin: theme.spacing(1/2)
+    margin: theme.spacing(1 / 2)
   }
   // elevation: {
   //   boxShadow:

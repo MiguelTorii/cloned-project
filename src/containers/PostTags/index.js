@@ -8,7 +8,7 @@ import type { Tag } from '../../types/models';
 import { getPostMetadata } from '../../api/posts';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -72,7 +72,7 @@ class PostTags extends React.PureComponent<Props, State> {
     return (
       <div className={classes.root}>
         <ErrorBoundary>
-          {tags.map(tag => (
+          {tags.map((tag) => (
             <Chip
               key={tag.id}
               label={`#${tag.name}`}

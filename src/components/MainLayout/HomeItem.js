@@ -1,11 +1,11 @@
 // @flow
 
-import React , {
+import React, {
   useCallback,
   // useEffect,
   useState,
   memo
-} from 'react'
+} from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -28,21 +28,24 @@ type Props = {
 };
 
 const HomeItem = ({
-  MyLink,
-  // newClassExperience,
-  // landingPageCampaign,
-  // createPostOpen,
-  // updateFeed,
-  // openClassmatesDialog,
-  // userClasses,
-}: Props) => {
-  const classes = useStyles()
+  MyLink
+}: // newClassExperience,
+// landingPageCampaign,
+// createPostOpen,
+// updateFeed,
+// openClassmatesDialog,
+// userClasses,
+Props) => {
+  const classes = useStyles();
   // const [classList, setClassList] = useState([])
-  const [hoverState, setHoverState] = useState(false)
+  const [hoverState, setHoverState] = useState(false);
 
-  const onHover = useCallback((hover) => () => {
-    setHoverState(hover)
-  }, [])
+  const onHover = useCallback(
+    (hover) => () => {
+      setHoverState(hover);
+    },
+    []
+  );
 
   // const { classId, sectionId } = decypherClass()
 
@@ -79,31 +82,37 @@ const HomeItem = ({
   // )
 
   return (
-    <div
-      className="tour-onboarding-study"
-    >
+    <div className="tour-onboarding-study">
       <ListItem
         button
         component={MyLink}
         onMouseOver={onHover(true)}
         onMouseLeave={onHover(false)}
-        link='/feed'
+        link="/feed"
         // link={classesPath}
         className={classNames(
           classes.item,
           // isHome ? classes.currentPath : null
-          ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname) ? classes.currentPath : classes.otherPath
+          ['/feed', '/my_posts', '/bookmarks'].includes(
+            window.location.pathname
+          )
+            ? classes.currentPath
+            : classes.otherPath
         )}
       >
         <ListItemIcon className={classes.menuIcon}>
-          {hoverState || ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname)
-            ? <ClassFeedIconOn />
-            : <ClassFeedIconOff />
-          }
+          {hoverState ||
+          ['/feed', '/my_posts', '/bookmarks'].includes(
+            window.location.pathname
+          ) ? (
+            <ClassFeedIconOn />
+          ) : (
+            <ClassFeedIconOff />
+          )}
         </ListItemIcon>
         <ListItemText
           // primary={!newClassExperience ? "Study" : "Classes"}
-          primary='Class Feeds'
+          primary="Class Feeds"
         />
       </ListItem>
       {/* {classList.map(cl => cl && ( */}
@@ -133,7 +142,7 @@ const HomeItem = ({
       {/* </div> */}
       {/* ))} */}
     </div>
-  )
-}
+  );
+};
 
-export default memo(HomeItem)
+export default memo(HomeItem);

@@ -10,9 +10,9 @@ import type { State as StoreState } from 'types/state';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Tooltip from 'containers/Tooltip'
-import Paper from '@material-ui/core/Paper'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import Tooltip from 'containers/Tooltip';
+import Paper from '@material-ui/core/Paper';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -45,49 +45,49 @@ const ClassMultiSelect = ({
   const classes = useStyles();
 
   const options = useMemo(() => {
-    if (externalOptions) return externalOptions
+    if (externalOptions) return externalOptions;
     try {
-      const classList = {}
-      user.userClasses.classList.forEach(cl => {
-        if (
-          cl.section &&
-          cl.section.length > 0 &&
-          cl.className &&
-          cl.bgColor
-        )
-          cl.section.forEach(s => {
-            classList[s.sectionId] = cl
-          })
-      })
-      return Object.keys(classList).map(sectionId => {
+      const classList = {};
+      user.userClasses.classList.forEach((cl) => {
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+          cl.section.forEach((s) => {
+            classList[s.sectionId] = cl;
+          });
+      });
+      return Object.keys(classList).map((sectionId) => {
         return {
           ...classList[sectionId],
-          sectionId: Number(sectionId),
-        }
-      })
-    } finally {/* NONE */}
-  }, [externalOptions, user.userClasses.classList])
-
-  const onChange = useCallback((_, value) => {
-    if (noEmpty && value.length === 0) return
-    const filteredList = value.filter((cl) => cl.isCurrent)
-    if (filteredList.find(o => o.value === 'all')) {
-      onSelect(options)
+          sectionId: Number(sectionId)
+        };
+      });
+    } finally {
+      /* NONE */
     }
-    else {
-      onSelect(filteredList)
-    }
-  }, [noEmpty, onSelect, options])
+  }, [externalOptions, user.userClasses.classList]);
 
-  const allSelected = useMemo(() => (
-    selected.length === options.length
-  ), [options.length, selected.length])
+  const onChange = useCallback(
+    (_, value) => {
+      if (noEmpty && value.length === 0) return;
+      const filteredList = value.filter((cl) => cl.isCurrent);
+      if (filteredList.find((o) => o.value === 'all')) {
+        onSelect(options);
+      } else {
+        onSelect(filteredList);
+      }
+    },
+    [noEmpty, onSelect, options]
+  );
+
+  const allSelected = useMemo(
+    () => selected.length === options.length,
+    [options.length, selected.length]
+  );
 
   return (
     <div className={containerStyle || classes.root}>
       <Autocomplete
         multiple
-        PaperComponent={props => (
+        PaperComponent={(props) => (
           <Tooltip
             id={9051}
             placement="right"
@@ -99,18 +99,20 @@ const ClassMultiSelect = ({
         disableClearable={noEmpty}
         openOnFocus
         getOptionSelected={(option, value) => {
-          return value.classId === option.classId && value.sectionId === option.sectionId
+          return (
+            value.classId === option.classId &&
+            value.sectionId === option.sectionId
+          );
         }}
         limitTags={2}
         id="tags-filled"
         onChange={onChange}
         value={selected}
-        options={[
-          { className: 'All Classes', value: 'all' },
-          ...options
-        ]}
+        options={[{ className: 'All Classes', value: 'all' }, ...options]}
         defaultValue={[]}
-        getOptionLabel={o => `${o.section ? `${o.section[0].section}-` : '' } ${o.className}`}
+        getOptionLabel={(o) =>
+          `${o.section ? `${o.section[0].section}-` : ''} ${o.className}`
+        }
         disableCloseOnSelect
         renderOption={(option, { selected }) => (
           <React.Fragment>
@@ -122,32 +124,35 @@ const ClassMultiSelect = ({
                 checked={selected}
               />
             )}
-            {`${schoolId === '119' && option.section
-              ? `${option.section[0].section}-`
-              : ''
+            {`${
+              schoolId === '119' && option.section
+                ? `${option.section[0].section}-`
+                : ''
             } ${option.className}`}
           </React.Fragment>
         )}
         renderTags={(value, getTagProps) => {
-          if (allSelected) return allLabel || 'All Classes Selected'
-          return value.map((option, index) => option && (
-            <Chip
-              variant="outlined"
-              classes={{
-                root: classes.chip
-              }}
-              label={option.className}
-              style={{ backgroundColor: option.bgColor }}
-              {...getTagProps({ index })}
-            />
-          ))
-        }
-        }
+          if (allSelected) return allLabel || 'All Classes Selected';
+          return value.map(
+            (option, index) =>
+              option && (
+                <Chip
+                  variant="outlined"
+                  classes={{
+                    root: classes.chip
+                  }}
+                  label={option.className}
+                  style={{ backgroundColor: option.bgColor }}
+                  {...getTagProps({ index })}
+                />
+              )
+          );
+        }}
         popupIcon={
           <Tooltip
             id={9056}
             placement="right"
-            okButton='Got it!'
+            okButton="Got it!"
             delay={500}
             totalSteps={2}
             completedSteps={1}
@@ -156,7 +161,7 @@ const ClassMultiSelect = ({
             <Tooltip
               id={9055}
               placement="right"
-              okButton='Got it!'
+              okButton="Got it!"
               totalSteps={2}
               delay={500}
               completedSteps={0}
@@ -172,21 +177,17 @@ const ClassMultiSelect = ({
             fullWidth={!textFieldStyle}
             className={textFieldStyle}
             placeholder={allSelected ? '' : placeholder}
-            variant={variant || "outlined"}
-            label=''
+            variant={variant || 'outlined'}
+            label=""
           />
         )}
       />
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default memo(connect(
-  mapStateToProps,
-  null
-)(ClassMultiSelect))
-
+export default memo(connect(mapStateToProps, null)(ClassMultiSelect));

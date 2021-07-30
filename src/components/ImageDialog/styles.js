@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles((theme) => ({
   modalContainer: {
     borderRadius: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   modalContent: {
     borderRadius: 0

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   useCase: {
     alignItems: 'center',
     display: 'flex',
@@ -33,7 +33,7 @@ export const styles = theme => ({
     color: theme.circleIn.palette.action,
     fontSize: 16,
     letterSpacing: 0.5,
-    marginLeft: 24,
+    marginLeft: 24
   },
   icon: {
     height: 36,
@@ -49,4 +49,4 @@ export const styles = theme => ({
     color: theme.circleIn.palette.action,
     textDecoration: 'none'
   }
-})
+});

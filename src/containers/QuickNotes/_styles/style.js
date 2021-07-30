@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiPaper-elevation8': {
       borderRadius: theme.spacing(2),
-      overflow: 'inherit',
+      overflow: 'inherit'
     },
     '& .quill': {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'column'
     },
     '& .ql-container.ql-snow': {
       border: 'none',
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex'
   },
   menuTypo: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   menuItemList: {
     '&:hover': {
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
   classLabel: {
     fontWeight: 800,
     fontSize: 18,
-    color: theme.circleIn.palette.textOffwhite,
+    color: theme.circleIn.palette.textOffwhite
   },
   menuList: {
     marginTop: 20
@@ -123,6 +123,6 @@ const useStyles = makeStyles((theme) => ({
     background: `${theme.circleIn.palette.gray3} !important`,
     color: 'white !important'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

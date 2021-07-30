@@ -12,7 +12,7 @@ export const processSeasons = (stats: Array<Object>) => {
     reach: 0,
     thanks: 0
   };
-  stats.forEach(item => {
+  stats.forEach((item) => {
     seasons.push(item);
     all.bestAnswers += item.bestAnswers;
     all.communityServiceHours += item.communityServiceHours;

@@ -11,7 +11,7 @@ export const getLMSSchools = async (): Promise<LMSSchools> => {
     const { data = {} } = result;
     const { schools = [] } = data;
 
-    return schools.map(school => ({
+    return schools.map((school) => ({
       id: Number((school.id: number) || 0),
       clientId: String((school.client_id: string) || ''),
       school: String((school.school: string) || ''),
@@ -51,7 +51,7 @@ export const signLMSUser = async ({
     });
     const { data = {} } = result;
 
-    if (data?.redirect_url) window.location = data.redirect_url
+    if (data?.redirect_url) window.location = data.redirect_url;
     return userToCamelCase(data);
   } catch (err) {
     console.log(err);

@@ -9,8 +9,7 @@ import {
   getGrandPrizeScores,
   getGrandPrizeInfo,
   getTuesdayPrizeScores
-} from '../api/leaderboards'
-
+} from '../api/leaderboards';
 
 const updateLeaderboardRequest = ({ leaderboards }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_REQUEST,
@@ -21,41 +20,35 @@ const updateLeaderboardRequest = ({ leaderboards }): Action => ({
 
 const updateLeaderboards = () => async (dispatch: Dispatch) => {
   try {
-    const res: Object = await getLeaderboards()
+    const res: Object = await getLeaderboards();
     const {
       first_tuesday_reward: {
-        time_left: {
-          time: timeTuesday,
-          label: labelTuesday,
-        },
+        time_left: { time: timeTuesday, label: labelTuesday },
         slots,
         current_month_points_display_name: currentMonthPointsDisplayName
       },
       grand_prize: {
-        time_left: {
-          time: timeGrand,
-          label: labelGrand
-        },
+        time_left: { time: timeGrand, label: labelGrand },
         logo_url: logo,
         grand_prize_text: text
       }
-    } = res
-    const camelSlots = slots.map(s => ({
+    } = res;
+    const camelSlots = slots.map((s) => ({
       slot: s.slot,
       company: s.company,
       name: s.displa_name,
       logo: s.image_url,
       thumbnail: s.thumbnail_url
-    }))
+    }));
 
     const leaderboards = {
       tuesday: {
         timeLeft: {
           time: timeTuesday,
-          label: labelTuesday,
+          label: labelTuesday
         },
         slots: camelSlots,
-        currentMonthPointsDisplayName,
+        currentMonthPointsDisplayName
       },
       grand: {
         timeLeft: {
@@ -65,13 +58,11 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
         logo,
         text
       }
-    }
+    };
 
-    dispatch(
-      updateLeaderboardRequest({ leaderboards })
-    );
-  } catch(e) {
-    console.log(e)
+    dispatch(updateLeaderboardRequest({ leaderboards }));
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -83,41 +74,35 @@ const updateTuesdayLeaderboardRequest = ({ leaderboards }): Action => ({
 });
 
 const camelCaseLeaderboard = (res: Object) => {
-  const {
-    board_name: boardName,
-    score_type_label: scoreLabel,
-    students
-  }=res
+  const { board_name: boardName, score_type_label: scoreLabel, students } = res;
 
-  const studentsCamel = students.map(s => ({
+  const studentsCamel = students.map((s) => ({
     position: s.position,
     score: s.score,
     firstName: s.first_name,
     lastName: s.last_name,
     userId: s.user_id,
     profileImg: s.profile_image_url
-
-  }))
+  }));
 
   return {
     boardName,
     scoreLabel,
     students: studentsCamel
-  }
-}
-
-const updateTuesdayLeaderboard = (sectionId, index) => async (dispatch: Dispatch) => {
-  try{
-    const res: Object = await getTuesdayPrizeScores(sectionId, index)
-    const leaderboards = camelCaseLeaderboard(res)
-
-    dispatch(
-      updateTuesdayLeaderboardRequest({ leaderboards })
-    );
-  } catch(e) {
-    console.log(e)
-  }
+  };
 };
+
+const updateTuesdayLeaderboard =
+  (sectionId, index) => async (dispatch: Dispatch) => {
+    try {
+      const res: Object = await getTuesdayPrizeScores(sectionId, index);
+      const leaderboards = camelCaseLeaderboard(res);
+
+      dispatch(updateTuesdayLeaderboardRequest({ leaderboards }));
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST,
@@ -126,18 +111,16 @@ const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
   }
 });
 
-const updateGrandLeaderboards = (sectionId, index) => async (dispatch: Dispatch) => {
-  try {
-    const res = await getGrandPrizeScores(sectionId, index)
-    const leaderboards = camelCaseLeaderboard(res)
-    dispatch(
-      updateGrandLeaderboardRequest({ leaderboards })
-    );
-  } catch(e) {
-    console.log(e)
-  }
-};
-
+const updateGrandLeaderboards =
+  (sectionId, index) => async (dispatch: Dispatch) => {
+    try {
+      const res = await getGrandPrizeScores(sectionId, index);
+      const leaderboards = camelCaseLeaderboard(res);
+      dispatch(updateGrandLeaderboardRequest({ leaderboards }));
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST,
@@ -148,7 +131,7 @@ const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
 
 const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
   try {
-    const res: Object = await getGrandPrizeInfo()
+    const res: Object = await getGrandPrizeInfo();
     const grandInfo = {
       logoUrl: res.logo_url,
       description: res.description,
@@ -158,13 +141,11 @@ const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
       eligibility: res.eligibility,
       eligibilitySubtitle: res.eligibility_subtitle,
       eligibilityDialog: res.eligibility_dialog,
-      eligibilitySubtitleDialog: res.eligibility_subtitle_dialog,
-    }
-    dispatch(
-      updateLeaderboardGrandInfoRequest({ grandInfo })
-    );
-  } catch(e) {
-    console.log(e)
+      eligibilitySubtitleDialog: res.eligibility_subtitle_dialog
+    };
+    dispatch(updateLeaderboardGrandInfoRequest({ grandInfo }));
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -173,4 +154,4 @@ export default {
   updateLeaderboardGrandInfo,
   updateTuesdayLeaderboard,
   updateGrandLeaderboards
-}
+};

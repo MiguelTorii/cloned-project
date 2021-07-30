@@ -26,7 +26,7 @@ type Props = {
 const PostPage = ({ classes, match }: Props) => {
   const {
     params: { postId }
-  } = match
+  } = match;
 
   return (
     <main>
@@ -40,6 +40,6 @@ const PostPage = ({ classes, match }: Props) => {
       </Layout>
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(PostPage));

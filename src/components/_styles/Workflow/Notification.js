@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   select: {
@@ -7,7 +7,7 @@ export const useStyles = makeStyles(() => ({
   selectForm: {
     width: '100%',
     '& .MuiInput-formControl': {
-      marginTop: 10,
+      marginTop: 10
     }
   },
   reminder: {
@@ -21,4 +21,4 @@ export const useStyles = makeStyles(() => ({
   hidden: {
     display: 'none'
   }
-}))
+}));

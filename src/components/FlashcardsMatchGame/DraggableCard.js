@@ -1,24 +1,22 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { useDrag, useDrop } from 'react-dnd';
 import { DRAG_TYPE_CARD } from 'components/FlashcardsMatchGame/reducer';
 import ContentCard from './ContentCard';
 
-const DraggableCard = (
-  {
-    image,
-    text,
-    x,
-    y,
-    cardId,
-    index,
-    hasCorrectAnimation,
-    hasIncorrectAnimation,
-    onCorrectDrop,
-    onIncorrectDrop
-  }
-) => {
+const DraggableCard = ({
+  image,
+  text,
+  x,
+  y,
+  cardId,
+  index,
+  hasCorrectAnimation,
+  hasIncorrectAnimation,
+  onCorrectDrop,
+  onIncorrectDrop
+}) => {
   const [{ isDragging }, dragRef] = useDrag({
     item: {
       cardId,

@@ -23,11 +23,10 @@ type Props = {
   }
 };
 
-
 const ShareLinkPage = ({ classes, match }: Props) => {
   const {
     params: { sharelinkId }
-  } = match
+  } = match;
 
   return (
     <main>
@@ -41,6 +40,6 @@ const ShareLinkPage = ({ classes, match }: Props) => {
       </Layout>
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(ShareLinkPage));

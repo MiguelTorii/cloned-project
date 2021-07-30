@@ -26,12 +26,12 @@ const Actions = [
   {
     id: 'rotate_left',
     icon: <RotateLeft />
-  },
+  }
   // {
   //   id: 'crop',
   //   icon: <Crop />
   // }
-]
+];
 
 const Toolbar = ({ onAction, disabledActions }: Props) => {
   const classes = useStyles();
@@ -39,18 +39,16 @@ const Toolbar = ({ onAction, disabledActions }: Props) => {
   return (
     <Paper className={classes.root}>
       <Grid container justify="space-around">
-        {
-          Actions.map((action) => (
-            <Grid key={action.id} item>
-              <IconButton
-                onClick={() => onAction(action.id)}
-                disabled={_.includes(disabledActions, action.id)}
-              >
-                { action.icon }
-              </IconButton>
-            </Grid>
-          ))
-        }
+        {Actions.map((action) => (
+          <Grid key={action.id} item>
+            <IconButton
+              onClick={() => onAction(action.id)}
+              disabled={_.includes(disabledActions, action.id)}
+            >
+              {action.icon}
+            </IconButton>
+          </Grid>
+        ))}
       </Grid>
     </Paper>
   );

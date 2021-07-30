@@ -25,7 +25,7 @@ export const getReminders = async ({
     const { data = {} } = result;
     const { todos = [] } = data;
 
-    return todos.map(item => ({
+    return todos.map((item) => ({
       due: Number((item.due: number) || 0),
       dueDate: Number((item.due_date: number) || 0),
       id: Number((item.id: number) || 0),

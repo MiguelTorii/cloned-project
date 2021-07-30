@@ -43,7 +43,7 @@ class StudyCircle extends React.PureComponent<Props, State> {
     this.setState({ circle, isLoading: false });
   };
 
-  handleRemove = async classmateId => {
+  handleRemove = async (classmateId) => {
     try {
       const {
         user: {

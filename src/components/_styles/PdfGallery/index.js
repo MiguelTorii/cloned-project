@@ -1,6 +1,6 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   appBar: {
-    position: 'relative',
+    position: 'relative'
   },
   root: {
     marginTop: theme.spacing(2),
@@ -27,6 +27,6 @@ export const styles = theme => ({
     width: '100%'
   },
   buttonBase: {
-    marginRight: theme.spacing(),
+    marginRight: theme.spacing()
   }
 });

@@ -8,16 +8,16 @@ import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
-import Tooltip from 'containers/Tooltip'
+import Tooltip from 'containers/Tooltip';
 // import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
 import { ReactComponent as SpeakerView } from 'assets/svg/speaker-view.svg';
 import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
 import { ReactComponent as SideBySideView } from 'assets/svg/side-by-side.svg';
 import { ReactComponent as ViewChecked } from 'assets/svg/view-checked.svg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   typography: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   viewList: {
     backgroundColor: theme.circleIn.palette.appBar,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 10
   },
   viewListMenu: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   view: {
     display: 'flex',
@@ -61,9 +61,9 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
 
   useEffect(() => {
     if (isSharing) {
-      onChange('speaker-view')
+      onChange('speaker-view');
     }
-  }, [onChange, isSharing])
+  }, [onChange, isSharing]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,70 +76,85 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const selctView = useCallback(value => () => {
-    onChange(value)
-    setAnchorEl(null);
-  }, [onChange])
+  const selctView = useCallback(
+    (value) => () => {
+      onChange(value);
+      setAnchorEl(null);
+    },
+    [onChange]
+  );
 
-  const renderMenu = useMemo(() => (
-    <MenuList>
-      {isSharing
-        ? <MenuItem
-          onClick={selctView('side-by-side')}
-          classes={{ root: classes.viewItem }}
-        >
-          <div className={classes.view}>
-            <div className={classes.center}>
-              <ListItemIcon>
-                <SideBySideView />
-              </ListItemIcon>
-              <Typography variant="inherit">Side By Side</Typography>
+  const renderMenu = useMemo(
+    () => (
+      <MenuList>
+        {isSharing ? (
+          <MenuItem
+            onClick={selctView('side-by-side')}
+            classes={{ root: classes.viewItem }}
+          >
+            <div className={classes.view}>
+              <div className={classes.center}>
+                <ListItemIcon>
+                  <SideBySideView />
+                </ListItemIcon>
+                <Typography variant="inherit">Side By Side</Typography>
+              </div>
+              {currentView === 'side-by-side' && (
+                <div className={classes.checked}>
+                  <ViewChecked />
+                </div>
+              )}
             </div>
-            {currentView === 'side-by-side' &&
-                <div className={classes.checked}><ViewChecked /></div>}
-          </div>
-        </MenuItem>
-        : <MenuItem
-          onClick={selctView('gallery-view')}
-          classes={{ root: classes.viewItem }}
-        >
-          <div className={classes.view}>
-            <div className={classes.center}>
-              <ListItemIcon>
-                <GalleryView />
-              </ListItemIcon>
-              <Typography variant="inherit">Gallery</Typography>
+          </MenuItem>
+        ) : (
+          <MenuItem
+            onClick={selctView('gallery-view')}
+            classes={{ root: classes.viewItem }}
+          >
+            <div className={classes.view}>
+              <div className={classes.center}>
+                <ListItemIcon>
+                  <GalleryView />
+                </ListItemIcon>
+                <Typography variant="inherit">Gallery</Typography>
+              </div>
+              {currentView === 'gallery-view' && (
+                <div className={classes.checked}>
+                  <ViewChecked />
+                </div>
+              )}
             </div>
-            {currentView === 'gallery-view' &&
-            <div className={classes.checked}><ViewChecked /></div>}
-          </div>
-        </MenuItem>}
-      <Tooltip
-        id={9063}
-        placement="right"
-        variant="secondary"
-        text="Change screen views here. You can also select different views when sharing screen."
-        totalSteps={4}
-        completedSteps={3}
-        okButton="Nice!"
-      >
-        <MenuItem
-          onClick={selctView('speaker-view')}
-          classes={{ root: classes.viewItem }}
+          </MenuItem>
+        )}
+        <Tooltip
+          id={9063}
+          placement="right"
+          variant="secondary"
+          text="Change screen views here. You can also select different views when sharing screen."
+          totalSteps={4}
+          completedSteps={3}
+          okButton="Nice!"
         >
-          <div className={classes.view}>
-            <div className={classes.center}>
-              <ListItemIcon>
-                <SpeakerView />
-              </ListItemIcon>
-              <Typography variant="inherit">Speaker</Typography>
+          <MenuItem
+            onClick={selctView('speaker-view')}
+            classes={{ root: classes.viewItem }}
+          >
+            <div className={classes.view}>
+              <div className={classes.center}>
+                <ListItemIcon>
+                  <SpeakerView />
+                </ListItemIcon>
+                <Typography variant="inherit">Speaker</Typography>
+              </div>
+              {currentView === 'speaker-view' && (
+                <div className={classes.checked}>
+                  <ViewChecked />
+                </div>
+              )}
             </div>
-            {currentView === 'speaker-view' &&
-                    <div className={classes.checked}><ViewChecked /></div>}
-          </div>
-        </MenuItem>
-      </Tooltip>
-      {/* <MenuItem
+          </MenuItem>
+        </Tooltip>
+        {/* <MenuItem
         onClick={selctView('fullscreen-view')}
         classes={{ root: classes.viewItem }}
       >
@@ -154,8 +169,18 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
                   <div className={classes.checked}><ViewChecked /></div>}
         </div>
       </MenuItem> */}
-    </MenuList>
-  ), [classes.center, classes.checked, classes.view, classes.viewItem, currentView, isSharing, selctView])
+      </MenuList>
+    ),
+    [
+      classes.center,
+      classes.checked,
+      classes.view,
+      classes.viewItem,
+      currentView,
+      isSharing,
+      selctView
+    ]
+  );
 
   return (
     <div>
@@ -179,19 +204,17 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
         }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
       >
-        <Paper>
-          {renderMenu}
-        </Paper>
+        <Paper>{renderMenu}</Paper>
       </Popover>
     </div>
   );
 }
 
-export default GalleryViewMode
+export default GalleryViewMode;

@@ -1,6 +1,12 @@
 // @flow
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useRef
+} from 'react';
 import _ from 'lodash';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -10,7 +16,7 @@ import { useLocation, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLastLocation } from 'react-router-last-location';
 import { useIdleTimer } from 'react-idle-timer';
-import { differenceInMilliseconds } from "date-fns";
+import { differenceInMilliseconds } from 'date-fns';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -92,7 +98,9 @@ const FlashcardsShow = () => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isShortSummary, setIsShortSummary] = useState(true);
-  const isBookmarking = useSelector(isApiCalling(userActions.BOOKMARK_FLASHCARDS));
+  const isBookmarking = useSelector(
+    isApiCalling(userActions.BOOKMARK_FLASHCARDS)
+  );
 
   // Memos
   const cardList = useMemo(() => {
@@ -116,7 +124,7 @@ const FlashcardsShow = () => {
   }, [data, cardList]);
 
   const pastClassIds = useMemo(() => {
-    return getPastClassIds(classList)
+    return getPastClassIds(classList);
   }, [classList]);
 
   const shouldRenderFeed = useMemo(() => {
@@ -129,16 +137,19 @@ const FlashcardsShow = () => {
   }, [lastLocation, location]);
 
   // Callbacks
-  const reloadData = useCallback((showLoading = false) => {
-    if (showLoading) setIsLoadingFlashcards(true);
-    getFlashcards({
-      flashcardId,
-      userId: me.userId
-    }).then((rsp) => {
-      setData(rsp);
-      if (showLoading) setIsLoadingFlashcards(false);
-    });
-  }, [flashcardId, setData, setIsLoadingFlashcards, me.userId]);
+  const reloadData = useCallback(
+    (showLoading = false) => {
+      if (showLoading) setIsLoadingFlashcards(true);
+      getFlashcards({
+        flashcardId,
+        userId: me.userId
+      }).then((rsp) => {
+        setData(rsp);
+        if (showLoading) setIsLoadingFlashcards(false);
+      });
+    },
+    [flashcardId, setData, setIsLoadingFlashcards, me.userId]
+  );
 
   // Effects
   useEffect(() => reloadData(true), [reloadData]);
@@ -155,22 +166,18 @@ const FlashcardsShow = () => {
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const {
-    getRemainingTime,
-    getLastActiveTime,
-    getElapsedTime,
-    reset,
-  } = useIdleTimer({
-    timeout,
-    onActive: handleOnActive,
-  });
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
+    useIdleTimer({
+      timeout,
+      onActive: handleOnActive
+    });
 
   const initializeTimer = useCallback(() => {
-    elapsed.current = 0
-    totalIdleTime.current = 0
-    remaining.current = timeout
-    lastActive.current = new Date()
-  }, [elapsed, totalIdleTime, remaining, lastActive])
+    elapsed.current = 0;
+    totalIdleTime.current = 0;
+    remaining.current = timeout;
+    lastActive.current = new Date();
+  }, [elapsed, totalIdleTime, remaining, lastActive]);
 
   useEffect(() => {
     remaining.current = getRemainingTime();
@@ -191,15 +198,14 @@ const FlashcardsShow = () => {
 
   const handleActionBookmark = useCallback(() => {
     dispatch(
-      bookmarkFlashcards(
-        me.userId,
-        data.feedId,
-        data.bookmarked,
-        () => setData(update(data, {
-          bookmarked: { $set: !data.bookmarked }
-        }))
+      bookmarkFlashcards(me.userId, data.feedId, data.bookmarked, () =>
+        setData(
+          update(data, {
+            bookmarked: { $set: !data.bookmarked }
+          })
+        )
       )
-    )
+    );
   }, [dispatch, data, me.userId]);
 
   const handleActionShare = useCallback(() => {
@@ -253,9 +259,9 @@ const FlashcardsShow = () => {
         elapsed: elapsed.current,
         total_idle_time: totalIdleTime.current,
         effective_time: elapsed.current - totalIdleTime.current,
-        platform: 'Web',
+        platform: 'Web'
       }
-    })
+    });
     setIsReviewing(false);
   }, [data.postId]);
 
@@ -283,16 +289,22 @@ const FlashcardsShow = () => {
     setIsDeleteModalOpen(true);
   }, []);
 
-  const handleDeleteClose = useCallback(( { deleted }: {deleted: ?boolean}) => {
-    setIsDeleteModalOpen(false);
-    if (deleted && deleted === true) {
-      dispatch(push('/feed'));
-    }
-  }, [dispatch]);
+  const handleDeleteClose = useCallback(
+    ({ deleted }: { deleted: ?boolean }) => {
+      setIsDeleteModalOpen(false);
+      if (deleted && deleted === true) {
+        dispatch(push('/feed'));
+      }
+    },
+    [dispatch]
+  );
 
-  const handlePush = useCallback((url) => {
-    dispatch(push(url));
-  }, [dispatch]);
+  const handlePush = useCallback(
+    (url) => {
+      dispatch(push(url));
+    },
+    [dispatch]
+  );
 
   const handleGoBack = useCallback(() => {
     dispatch(goBack());
@@ -306,7 +318,12 @@ const FlashcardsShow = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} lg={8} xl={9}>
           <CardBoard data={data.deck[boardDeckIndex]} />
-          <Box mt={2} display="flex" justifyContent="center" alignItems="center">
+          <Box
+            mt={2}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Box mr={2}>
               <TransparentIconButton
                 disabled={boardDeckIndex === 0}
@@ -347,7 +364,10 @@ const FlashcardsShow = () => {
             Game Mode
           </Box>
           <Box mt={3}>
-            <ActionButton startIcon={<IconNote />} onClick={handleStartMatchGame}>
+            <ActionButton
+              startIcon={<IconNote />}
+              onClick={handleStartMatchGame}
+            >
               Match Magic
             </ActionButton>
           </Box>
@@ -355,14 +375,12 @@ const FlashcardsShow = () => {
       </Grid>
       <Box mt={3} mb={3}>
         <Typography variant="h6">
-          { `List of Flashcards in ${me.userId === data.userId ? 'Your' : `${data.name}'s`} Deck (${data.deck.length})` }
+          {`List of Flashcards in ${
+            me.userId === data.userId ? 'Your' : `${data.name}'s`
+          } Deck (${data.deck.length})`}
         </Typography>
       </Box>
-      <FlashcardsListEditor
-        data={cardList}
-        toolbarPrefix="show"
-        readOnly
-      />
+      <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />
     </>
   );
 
@@ -468,14 +486,15 @@ const FlashcardsShow = () => {
                 {data.name}
               </Link>
               <Typography variant="body2">
-                { data.courseDisplayName } &nbsp; • &nbsp; { moment(data.created).fromNow() }
+                {data.courseDisplayName} &nbsp; • &nbsp;{' '}
+                {moment(data.created).fromNow()}
               </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} lg={4} xl={3}>
           <Grid container spacing={2}>
-            { me.userId === data.userId && !pastClassIds.includes(data.classId) && (
+            {me.userId === data.userId && !pastClassIds.includes(data.classId) && (
               <Grid item>
                 <IconActionButton onClick={handleActionEdit}>
                   <IconPen />
@@ -488,10 +507,7 @@ const FlashcardsShow = () => {
                 disabled={isBookmarking}
                 loading={isBookmarking}
               >
-                {data.bookmarked
-                  ? <IconBookmark />
-                  : <IconBookmarkBorder />
-                }
+                {data.bookmarked ? <IconBookmark /> : <IconBookmarkBorder />}
               </IconActionButton>
             </Grid>
             <Grid item>
@@ -503,38 +519,34 @@ const FlashcardsShow = () => {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom>
-            { data.title }
+            {data.title}
           </Typography>
           <Typography>
-            { isShortSummary ?
-              _.truncate(data.summary, { length: 50 })
-              :
-              data.summary
-            }
-            { data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
+            {isShortSummary
+              ? _.truncate(data.summary, { length: 50 })
+              : data.summary}
+            {data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
               <Link
                 className={classes.moreLessLink}
                 onClick={handleSummaryMoreOrLess}
                 color="inherit"
-                underline="always">
-                { isShortSummary ? 'see more' : 'show less' }
+                underline="always"
+              >
+                {isShortSummary ? 'see more' : 'show less'}
               </Link>
             )}
           </Typography>
         </Grid>
       </Grid>
-      { renderBody() }
+      {renderBody()}
     </>
   );
 
   return (
     <Box>
-      { shouldRenderFeed
-        ? renderAsFeed()
-        : renderAsNonFeed()
-      }
+      {shouldRenderFeed ? renderAsFeed() : renderAsNonFeed()}
 
-      { /* Modals for the page */ }
+      {/* Modals for the page */}
 
       <Report
         open={isReportModalOpen}
@@ -552,12 +564,15 @@ const FlashcardsShow = () => {
       <ShareLinkModal
         open={isShareModalOpen}
         link={`${APP_ROOT_PATH}/flashcards/${data.postId}`}
-        title={(
+        title={
           <Typography variant="h6">
-            <span role="img" aria-label="Two hands">🙌</span>
-            &nbsp; You’re awesome for helping your peers! Ready to share a link to your <b>{ data.title }</b> deck?
+            <span role="img" aria-label="Two hands">
+              🙌
+            </span>
+            &nbsp; You’re awesome for helping your peers! Ready to share a link
+            to your <b>{data.title}</b> deck?
           </Typography>
-        )}
+        }
         onClose={handleCloseShareLinkModal}
       />
 
@@ -610,7 +625,10 @@ const FlashcardsShow = () => {
       <Dialog
         fullScreen
         className={classes.reviewModal}
-        contentClassName={clsx(classes.reviewModalContent, classes.matchModalContent)}
+        contentClassName={clsx(
+          classes.reviewModalContent,
+          classes.matchModalContent
+        )}
         open={isInMatchGame}
         onCancel={handleCloseMatchGame}
         showHeader={false}

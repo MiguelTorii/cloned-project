@@ -11,7 +11,7 @@ import type { State as StoreState } from '../../types/state';
 import { deletePost } from '../../api/posts';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   wrapper: {
     margin: theme.spacing(),
     position: 'relative'
@@ -92,10 +92,7 @@ class DeletePost extends React.PureComponent<Props, State> {
           showCancel
           title="Delete Post"
         >
-          <Typography
-            color="textPrimary"
-            id="confirmation-dialog-description"
-          >
+          <Typography color="textPrimary" id="confirmation-dialog-description">
             Are you sure you want to delete this post?
           </Typography>
         </Dialog>
@@ -108,7 +105,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(DeletePost));
+export default connect(mapStateToProps, null)(withStyles(styles)(DeletePost));

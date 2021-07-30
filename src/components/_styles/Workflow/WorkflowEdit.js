@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   newClass: {
     color: theme.circleIn.palette.action
   },
@@ -40,4 +40,4 @@ export const useStyles = makeStyles(theme => ({
       marginTop: 10
     }
   }
-}))
+}));

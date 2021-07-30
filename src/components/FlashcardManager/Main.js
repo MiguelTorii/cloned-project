@@ -20,7 +20,7 @@ import FlashcardQuiz from 'components/FlashcardQuiz';
 import type { Flashcard } from 'types/models';
 import { logEventLocally } from 'api/analytics';
 import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
-import store from 'store'
+import store from 'store';
 import ShareIcon from '@material-ui/icons/Share';
 import SharePost from 'containers/SharePost';
 import FlashcardItem from './Flashcard';
@@ -29,11 +29,11 @@ import { styles } from '../_styles/FlashcardManager/Main';
 
 const Transition = React.forwardRef((props, ref) => {
   return <Slide ref={ref} direction="up" {...props} />;
-})
+});
 
 type Props = {
   classes: Object,
-  flashcards: Array<Flashcard & {id: string}>,
+  flashcards: Array<Flashcard & { id: string }>,
   match: {
     params: {
       flashcardId: string
@@ -49,12 +49,14 @@ const initialDecks = {
   main: [],
   difficult: [],
   medium: [],
-  easy: [],
-}
+  easy: []
+};
 
 const FlashcardManager = ({
   loadData,
-  match: { params: { flashcardId } },
+  match: {
+    params: { flashcardId }
+  },
   postId,
   feedId,
   classes,
@@ -64,40 +66,43 @@ const FlashcardManager = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
-  const [openShare, setOpenShare] = useState(false)
-  const [resetOpen, setResetOpen] = useState(false)
+  const [openShare, setOpenShare] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
   const [flipped, setFlipped] = useState(false);
-  const [sessionId, setSessionId] = useState(null)
-  const [showAnswerClicked, setShowAnswerClicked] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [destinationCenter, setDestinationCenter] = useState(null)
+  const [sessionId, setSessionId] = useState(null);
+  const [showAnswerClicked, setShowAnswerClicked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [destinationCenter, setDestinationCenter] = useState(null);
 
   const [decks, setDecks] = useState(initialDecks);
   const [currentDeckId, setCurrentDeckId] = useState('main');
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const stored = store.get(`flashcards${postId}`)
-    const previousDecks = stored && JSON.parse(stored)
+    const stored = store.get(`flashcards${postId}`);
+    const previousDecks = stored && JSON.parse(stored);
     const current = {
       main: [],
       difficult: [],
       medium: [],
-      easy: [],
-    }
+      easy: []
+    };
 
-    orgFlashcards.forEach(card => {
-      const deck = previousDecks ? previousDecks[String(card.id)] : 'main'
-      if (deck) current[deck] = [...current[deck], card]
-      else current.main = [...current.main, card]
-    })
+    orgFlashcards.forEach((card) => {
+      const deck = previousDecks ? previousDecks[String(card.id)] : 'main';
+      if (deck) current[deck] = [...current[deck], card];
+      else current.main = [...current.main, card];
+    });
 
-    setDecks(current)
+    setDecks(current);
   }, [orgFlashcards, postId]);
 
-  const keyboardControl = useCallback(({ keyCode }) => {
-    if (keyCode === 32) setFlipped(!flipped);
-  }, [flipped]);
+  const keyboardControl = useCallback(
+    ({ keyCode }) => {
+      if (keyCode === 32) setFlipped(!flipped);
+    },
+    [flipped]
+  );
 
   useEffect(() => {
     window.addEventListener('keydown', keyboardControl);
@@ -113,46 +118,54 @@ const FlashcardManager = ({
   const resetState = () => {
     setDecks({ ...initialDecks, main: shuffle(orgFlashcards) });
     setCurrentDeckId('main');
-    store.set(`flashcards${postId}`, '')
+    store.set(`flashcards${postId}`, '');
     setFlipped(false);
-  }
+  };
 
   const getRectangleCenter = (rectangle) => {
     return {
       x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
-      y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2),
-    }
-  }
+      y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2)
+    };
+  };
 
   useEffect(() => {
     const saveDeck = () => {
-      const current = {}
-      decks.main.forEach(d => {current[d.id] = 'main'})
-      decks.difficult.forEach(d => {current[d.id] = 'difficult'})
-      decks.medium.forEach(d => {current[d.id] = 'medium'})
-      decks.easy.forEach(d => {current[d.id] = 'easy'})
-      store.set(`flashcards${postId}`, JSON.stringify(current))
-    }
-    saveDeck()
-  }, [decks, postId])
+      const current = {};
+      decks.main.forEach((d) => {
+        current[d.id] = 'main';
+      });
+      decks.difficult.forEach((d) => {
+        current[d.id] = 'difficult';
+      });
+      decks.medium.forEach((d) => {
+        current[d.id] = 'medium';
+      });
+      decks.easy.forEach((d) => {
+        current[d.id] = 'easy';
+      });
+      store.set(`flashcards${postId}`, JSON.stringify(current));
+    };
+    saveDeck();
+  }, [decks, postId]);
 
   const handleOpen = () => {
     setOpen(true);
     setSessionId(uuidv4());
     updateVisibility(true);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
     loadData();
     updateVisibility(false);
-  }
+  };
 
   const handleDeckSwitch = (deckId) => {
     setCurrentDeckId(deckId);
     setCurrentIndex(0);
     setFlipped(false);
-  }
+  };
 
   const handleAnimationStart = (answer) => {
     let ref;
@@ -166,13 +179,15 @@ const FlashcardManager = ({
     }
 
     setIsAnimating(true);
-    setDestinationCenter(getRectangleCenter(ref.current.getBoundingClientRect()))
-  }
+    setDestinationCenter(
+      getRectangleCenter(ref.current.getBoundingClientRect())
+    );
+  };
 
   const DIFFICULTY = {
-    'easy': 1,
-    'medium': 5,
-    'difficult': 10,
+    easy: 1,
+    medium: 5,
+    difficult: 10
   };
 
   const handleAnimationEnd = ({ answer, id }) => {
@@ -181,26 +196,28 @@ const FlashcardManager = ({
       flashcard_study_session_id: sessionId,
       flashcard_user_selected_difficulty: DIFFICULTY[answer],
       objectId: id,
-      type: 'Rated',
+      type: 'Rated'
     });
 
     setTimeout(() => {
       setIsAnimating(false);
-      setFlipped(false)
+      setFlipped(false);
       if (currentDeckId === 'main') {
         setDecks({
           ...decks,
           [answer]: decks[answer].concat(decks.main.shift(0))
-        })
+        });
       } else if (currentDeckId !== answer) {
         setDecks({
           ...decks,
-          [answer]: decks[answer].concat(decks[currentDeckId].splice(currentIndex, 1)),
+          [answer]: decks[answer].concat(
+            decks[currentDeckId].splice(currentIndex, 1)
+          )
         });
       } else if (decks[currentDeckId][currentIndex + 1]) {
         setCurrentIndex(currentIndex + 1);
       }
-    }, 100)
+    }, 100);
   };
 
   const ScoreBox = React.forwardRef(({ deckId, title, value }, ref) => (
@@ -208,26 +225,35 @@ const FlashcardManager = ({
       className={classes.scoreBox}
       onClick={() => handleDeckSwitch(deckId)}
       onKeyUp={() => handleDeckSwitch(deckId)}
-      role='button'
+      role="button"
       ref={ref}
-      tabIndex='0'
+      tabIndex="0"
     >
-      <div className={cx(classes.score, deckId === currentDeckId ? classes.selected : '')}>
+      <div
+        className={cx(
+          classes.score,
+          deckId === currentDeckId ? classes.selected : ''
+        )}
+      >
         {value}
       </div>
       <div className={classes.scoreLabel}>{title}</div>
     </div>
-  ))
+  ));
 
   const currentDeck = decks[currentDeckId];
 
-  const onShare = () => setOpenShare(true)
-  const handleCloseShare = () => setOpenShare(false)
+  const onShare = () => setOpenShare(true);
+  const handleCloseShare = () => setOpenShare(false);
 
   return (
     <>
       <div className={classes.root}>
-        <SharePost feedId={feedId} open={openShare} onClose={handleCloseShare} />
+        <SharePost
+          feedId={feedId}
+          open={openShare}
+          onClose={handleCloseShare}
+        />
         <div style={{ display: 'flex' }}>
           <Tooltip
             id={2287}
@@ -275,10 +301,7 @@ const FlashcardManager = ({
               >
                 <CloseIcon />
               </IconButton>
-              <Typography
-                color="textPrimary"
-                variant="h6"
-              >
+              <Typography color="textPrimary" variant="h6">
                 {title}
               </Typography>
             </div>
@@ -343,36 +366,37 @@ const FlashcardManager = ({
               value={decks.easy.length}
             />
           </div>
-          {
-            currentDeck.length > 0 && currentIndex !== currentDeck.length ?
-              <FlashcardItem
-                answer={currentDeck[currentIndex].answer}
-                answerImage={currentDeck[currentIndex].answerImage}
-                destinationCenter={destinationCenter}
-                id={currentDeck[currentIndex].id}
-                isAnimating={isAnimating}
-                isFlipped={flipped}
-                onAnimationEnd={handleAnimationEnd}
-                onAnimationStart={handleAnimationStart}
-                onShowAnswer={() => {
-                  setFlipped(true);
-                  setShowAnswerClicked(true);
-                }}
-                onShowQuestion={() => setFlipped(false)}
-                question={currentDeck[currentIndex].question}
-                questionImage={currentDeck[currentIndex].questionImage}
-              />
-              : <div className={classes.emptyState}>
-                You don't have any cards in this stack! <br /><br />
-                  Click a different stack on the left side to view more cards.
-              </div>
-          }
+          {currentDeck.length > 0 && currentIndex !== currentDeck.length ? (
+            <FlashcardItem
+              answer={currentDeck[currentIndex].answer}
+              answerImage={currentDeck[currentIndex].answerImage}
+              destinationCenter={destinationCenter}
+              id={currentDeck[currentIndex].id}
+              isAnimating={isAnimating}
+              isFlipped={flipped}
+              onAnimationEnd={handleAnimationEnd}
+              onAnimationStart={handleAnimationStart}
+              onShowAnswer={() => {
+                setFlipped(true);
+                setShowAnswerClicked(true);
+              }}
+              onShowQuestion={() => setFlipped(false)}
+              question={currentDeck[currentIndex].question}
+              questionImage={currentDeck[currentIndex].questionImage}
+            />
+          ) : (
+            <div className={classes.emptyState}>
+              You don't have any cards in this stack! <br />
+              <br />
+              Click a different stack on the left side to view more cards.
+            </div>
+          )}
         </div>
       </Dialog>
       <Dialog
         className={classes.dialogPaper}
         fullScreen
-        ariaLabelledBy='quiz-dialog'
+        ariaLabelledBy="quiz-dialog"
         open={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}
         TransitionComponent={Transition}
@@ -387,10 +411,7 @@ const FlashcardManager = ({
               >
                 <CloseIcon />
               </IconButton>
-              <Typography
-                color="textPrimary"
-                variant="h6"
-              >
+              <Typography color="textPrimary" variant="h6">
                 {title}
               </Typography>
             </div>
@@ -412,7 +433,9 @@ const FlashcardManager = ({
       </Dialog>
       <Dialog
         okTitle="Yes"
-        onCancel={() => {setResetOpen(false)}}
+        onCancel={() => {
+          setResetOpen(false);
+        }}
         onOk={() => {
           setResetOpen(false);
           resetState();
@@ -422,11 +445,12 @@ const FlashcardManager = ({
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
+        If you Start Over, then you'll reset your progress. Are you sure you
+        want to restart?
       </Dialog>
     </>
   );
-}
+};
 
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(

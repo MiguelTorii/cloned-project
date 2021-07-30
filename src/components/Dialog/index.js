@@ -3,21 +3,21 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiDialog from '@material-ui/core/Dialog';
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import cx from 'classnames'
+import cx from 'classnames';
 
 import ScrollToTop from 'components/ScrollToTop';
 import { styles } from '../_styles/Dialog';
 
 export const dialogStyle = {
   borderRadius: 20,
-  overflow: 'auto',
-}
+  overflow: 'auto'
+};
 
 const Dialog = ({
   ariaDescribedBy,
@@ -34,7 +34,7 @@ const Dialog = ({
   loading = false,
   okTitle = 'Got it!',
   okButtonClass,
-  secondaryOkTitle = "",
+  secondaryOkTitle = '',
   maxWidth = 'lg',
   cancelTitle = 'Cancel',
   secondaryRemoveTitle = '',
@@ -89,7 +89,10 @@ const Dialog = ({
     <MuiDialog
       aria-describedby={ariaDescribedBy}
       aria-labelledby={ariaLabelledBy || 'circle-in-dialog-title'}
-      classes={{ paper: className || classes.dialogPaper, container: classes.container }}
+      classes={{
+        paper: className || classes.dialogPaper,
+        container: classes.container
+      }}
       disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown={disableEscapeKeyDown}
       maxWidth={maxWidth}
@@ -98,52 +101,56 @@ const Dialog = ({
       open={open}
       {...props}
     >
-      {
-        showHeader &&
-          <div className={classes.headerContainer}>
-            { showBackIcon && <ArrowBackIosIcon className={classes.backIcon} onClick={onCancel} /> }
-            {
-              title &&
-                (typeof title === 'string' ?
-                  <div className={cx(headerTitleClass, classes.title)} id='circle-in-dialog-title'>{title}</div> :
-                  title)
-            }
-            <CloseIcon className={classes.closeIcon} onClick={onCancel} />
-            {
-              title &&
-                <hr className={cx(hrClass, classes.hr)} />
-            }
-          </div>
-      }
+      {showHeader && (
+        <div className={classes.headerContainer}>
+          {showBackIcon && (
+            <ArrowBackIosIcon className={classes.backIcon} onClick={onCancel} />
+          )}
+          {title &&
+            (typeof title === 'string' ? (
+              <div
+                className={cx(headerTitleClass, classes.title)}
+                id="circle-in-dialog-title"
+              >
+                {title}
+              </div>
+            ) : (
+              title
+            ))}
+          <CloseIcon className={classes.closeIcon} onClick={onCancel} />
+          {title && <hr className={cx(hrClass, classes.hr)} />}
+        </div>
+      )}
       <DialogContent
-        aria-labelledby='circle-in-dialog-content'
+        aria-labelledby="circle-in-dialog-content"
         classes={{ root: contentClassName || classes.contentRoot }}
         ref={setDialogRef}
       >
-        {
-          !showHeader && title &&
-            (typeof title === 'string' ?
-              <div className={classes.title} id='circle-in-dialog-title'>{title}</div> :
-              title)
-        }
-        {
-          loading
-            ? <CircularProgress
-              style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%'
-              }}
-            />
-            : children
-        }
+        {!showHeader &&
+          title &&
+          (typeof title === 'string' ? (
+            <div className={classes.title} id="circle-in-dialog-title">
+              {title}
+            </div>
+          ) : (
+            title
+          ))}
+        {loading ? (
+          <CircularProgress
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%'
+            }}
+          />
+        ) : (
+          children
+        )}
       </DialogContent>
-      {
-        showActions &&
+      {showActions && (
         <DialogActions className={classes.buttons}>
           {rightButton}
-          {
-            secondaryRemoveTitle &&
+          {secondaryRemoveTitle && (
             <Button
               className={cx(classes.button, classes.removeButton)}
               color="secondary"
@@ -152,11 +159,10 @@ const Dialog = ({
             >
               {secondaryRemoveTitle}
             </Button>
-          }
-          {
-            showCancel &&
+          )}
+          {showCancel && (
             <Button
-              id='dialog-cancel-button'
+              id="dialog-cancel-button"
               className={cx(closeButtonClass, classes.button)}
               color="primary"
               disabled={disableActions}
@@ -164,9 +170,8 @@ const Dialog = ({
             >
               {cancelTitle}
             </Button>
-          }
-          {
-            secondaryOkTitle &&
+          )}
+          {secondaryOkTitle && (
             <Button
               className={classes.button}
               color="primary"
@@ -176,7 +181,7 @@ const Dialog = ({
             >
               {secondaryOkTitle}
             </Button>
-          }
+          )}
           <Button
             className={cx(okButtonClass, classes.button)}
             classes={{
@@ -191,11 +196,10 @@ const Dialog = ({
             {okTitle}
           </Button>
         </DialogActions>
-      }
-      <ScrollToTop scrollElement={dialogRef}/>
+      )}
+      <ScrollToTop scrollElement={dialogRef} />
     </MuiDialog>
-  )
-}
+  );
+};
 
 export default withStyles(styles)(Dialog);
-

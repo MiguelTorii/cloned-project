@@ -6,18 +6,18 @@ import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
-import { Prompt, withRouter } from 'react-router'
+import { Prompt, withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 // import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { processClasses } from 'containers/ClassesSelector/utils';
-import ClassMultiSelect from 'containers/ClassMultiSelect'
-import { cypher, decypherClass } from 'utils/crypto'
-import { useDebounce } from '@react-hook/debounce'
-import store from 'store'
+import ClassMultiSelect from 'containers/ClassMultiSelect';
+import { cypher, decypherClass } from 'utils/crypto';
+import { useDebounce } from '@react-hook/debounce';
+import store from 'store';
 // import Dialog, { dialogStyle } from 'components/Dialog';
-import Tooltip from 'containers/Tooltip'
+import Tooltip from 'containers/Tooltip';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -34,7 +34,7 @@ import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary';
 import { PERMISSIONS } from 'constants/common';
 
-const styles = theme => ({
+const styles = (theme) => ({
   flashcards: {
     display: 'flex',
     flexWrap: 'wrap'
@@ -42,7 +42,7 @@ const styles = theme => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
-  },
+  }
   // dialog: {
   //   ...dialogStyle,
   //   width: 600,
@@ -72,9 +72,7 @@ const CreateFlashcards = ({
   flashcardId,
   campaign,
   enqueueSnackbar,
-  location: {
-    pathname
-  }
+  location: { pathname }
 }: Props) => {
   const {
     data: { userId, segment, grade, permission },
@@ -94,12 +92,13 @@ const CreateFlashcards = ({
   const [errorTitle, setErrorTitle] = useState('');
   const [errorBody, setErrorBody] = useState('');
   const [changed, setChanged] = useState(false);
-  const [classList, setClassList] = useState([])
-  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname])
-  const canBatchPost = useMemo(() => (
-    expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS)
-  ), [expertMode, permission])
-  const [debounceState, setDebounceState] = useDebounce({}, 1000)
+  const [classList, setClassList] = useState([]);
+  const isEdit = useMemo(() => pathname.includes('/edit'), [pathname]);
+  const canBatchPost = useMemo(
+    () => expertMode && permission.includes(PERMISSIONS.ONE_TOUCH_SEND_POSTS),
+    [expertMode, permission]
+  );
+  const [debounceState, setDebounceState] = useDebounce({}, 1000);
   // const [confirmClearDialog, setConfirmClear] = useState(false)
 
   // const openConfirmDialog = useCallback(() => setConfirmClear(true), [])
@@ -109,50 +108,50 @@ const CreateFlashcards = ({
     setDebounceState({
       summary,
       title,
-      flashcards: flashcards.map(f => ({
+      flashcards: flashcards.map((f) => ({
         ...f,
         isNew: false
       }))
-    })
-  }, [flashcards, setDebounceState, summary, title])
+    });
+  }, [flashcards, setDebounceState, summary, title]);
 
   useEffect(() => {
-    if (
-      !isEdit && (
-        title || summary || flashcards.length > 0
-      )
-    ) store.set('FLASHCARDS_CACHE', debounceState)
-  }, [debounceState, flashcards.length, isEdit, summary, title])
+    if (!isEdit && (title || summary || flashcards.length > 0))
+      store.set('FLASHCARDS_CACHE', debounceState);
+  }, [debounceState, flashcards.length, isEdit, summary, title]);
 
   useEffect(() => {
     if (!isEdit) {
-      const savedState = store.get('FLASHCARDS_CACHE')
+      const savedState = store.get('FLASHCARDS_CACHE');
       if (savedState) {
-        setTitle(t => savedState?.title || t)
-        setSummary(s => savedState?.summary || s)
-        setFlashcards(f => savedState?.flashcards || f)
+        setTitle((t) => savedState?.title || t);
+        setSummary((s) => savedState?.summary || s);
+        setFlashcards((f) => savedState?.flashcards || f);
       }
     }
-  }, [isEdit])
+  }, [isEdit]);
 
   const clearFlashcards = useCallback(() => {
-    setTitle('')
-    setSummary('')
-    setFlashcards([])
-    store.remove('FLASHCARDS_CACHE')
+    setTitle('');
+    setSummary('');
+    setFlashcards([]);
+    store.remove('FLASHCARDS_CACHE');
     // closeConfirmDialog()
-  }, [])
+  }, []);
 
-  const handlePush = useCallback(path => {
-    if (campaign.newClassExperience) {
-      const search = !canBatchPost
-        ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : ''
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
-  }, [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]);
+  const handlePush = useCallback(
+    (path) => {
+      if (campaign.newClassExperience) {
+        const search = !canBatchPost
+          ? `?class=${cypher(`${classId}:${sectionId}`)}`
+          : '';
+        pushTo(`${path}${search}`);
+      } else {
+        pushTo(path);
+      }
+    },
+    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
+  );
 
   const loadData = useCallback(async () => {
     if (!flashcardId) return null;
@@ -161,14 +160,14 @@ const CreateFlashcards = ({
       flashcardId
     });
 
-    const { classList: classes } = userClasses
+    const { classList: classes } = userClasses;
     const uc = processClasses({ classes, segment });
     const { sectionId } = JSON.parse(uc[0].value);
     const { deck = [], title, classId, tags = [], summary } = res;
     setSectionId(sectionId);
     setClassId(classId);
     setFlashcards(
-      deck.map(item => ({
+      deck.map((item) => ({
         question: item.question,
         isNew: false,
         answer: item.answer,
@@ -204,7 +203,7 @@ const CreateFlashcards = ({
         sectionId,
         title,
         summary,
-        deck: flashcards.map(item => ({
+        deck: flashcards.map((item) => ({
           question: item.question,
           answer: item.answer,
           questionImage: item.questionImage,
@@ -243,7 +242,19 @@ const CreateFlashcards = ({
       setErrorTitle('Unknown Error');
       setErrorBody('Please try again');
     }
-  }, [classId, classes, flashcards, enqueueSnackbar, handlePush, sectionId, summary, userId, tags, title, flashcardId]);
+  }, [
+    classId,
+    classes,
+    flashcards,
+    enqueueSnackbar,
+    handlePush,
+    sectionId,
+    summary,
+    userId,
+    tags,
+    title,
+    flashcardId
+  ]);
 
   const createFlashcards = useCallback(async () => {
     if (tags.length < 0) {
@@ -259,7 +270,7 @@ const CreateFlashcards = ({
     setLoading(true);
 
     try {
-      const tagValues = tags.map(item => Number(item.value));
+      const tagValues = tags.map((item) => Number(item.value));
       const {
         points,
         user: { firstName },
@@ -267,46 +278,46 @@ const CreateFlashcards = ({
         fcId
       } = canBatchPost
         ? await api.createBatchFlashcards({
-          userId,
-          title,
-          summary,
-          deck: flashcards.map(item => ({
-            question: item.question,
-            answer: item.answer,
-            questionImage: item.questionImage,
-            answerImage: item.answerImage
-          })),
-          grade,
-          sectionIds: classList.map(c => c.sectionId),
-          tags: tagValues
-        })
+            userId,
+            title,
+            summary,
+            deck: flashcards.map((item) => ({
+              question: item.question,
+              answer: item.answer,
+              questionImage: item.questionImage,
+              answerImage: item.answerImage
+            })),
+            grade,
+            sectionIds: classList.map((c) => c.sectionId),
+            tags: tagValues
+          })
         : await api.createFlashcards({
-          userId,
-          title,
-          summary,
-          deck: flashcards.map(item => ({
-            question: item.question,
-            answer: item.answer,
-            questionImage: item.questionImage,
-            answerImage: item.answerImage
-          })),
-          grade,
-          classId,
-          sectionId,
-          tags: tagValues
-        });
+            userId,
+            title,
+            summary,
+            deck: flashcards.map((item) => ({
+              question: item.question,
+              answer: item.answer,
+              questionImage: item.questionImage,
+              answerImage: item.answerImage
+            })),
+            grade,
+            classId,
+            sectionId,
+            tags: tagValues
+          });
 
-      let hasError = false
+      let hasError = false;
       if (canBatchPost && resClasses) {
-        resClasses.forEach(r => {
-          if (r.status !== 'Success') hasError = true
-        })
+        resClasses.forEach((r) => {
+          if (r.status !== 'Success') hasError = true;
+        });
         if (hasError || resClasses.length === 0) {
-          setLoading(false)
-          setErrorBody('Please try again')
-          setErrorTitle('Error creating flashcards')
-          setErrorDialog(true)
-          return
+          setLoading(false);
+          setErrorBody('Please try again');
+          setErrorTitle('Error creating flashcards');
+          setErrorDialog(true);
+          return;
         }
       }
 
@@ -321,10 +332,7 @@ const CreateFlashcards = ({
         type: 'Created'
       });
 
-      if (
-        (points > 0 && !canBatchPost) ||
-        (canBatchPost)
-      ) {
+      if ((points > 0 && !canBatchPost) || canBatchPost) {
         await enqueueSnackbar({
           notification: {
             message: !canBatchPost
@@ -347,7 +355,7 @@ const CreateFlashcards = ({
           }
         });
       }
-      clearFlashcards()
+      clearFlashcards();
       handlePush('/feed');
     } catch (err) {
       setLoading(false);
@@ -355,48 +363,62 @@ const CreateFlashcards = ({
       setErrorTitle('Unknown Error');
       setErrorBody('Please try again');
     }
-  }, [tags, flashcards, canBatchPost, userId, title, summary, grade, classList, classId, sectionId, clearFlashcards, handlePush, enqueueSnackbar, classes.stackbar]);
+  }, [
+    tags,
+    flashcards,
+    canBatchPost,
+    userId,
+    title,
+    summary,
+    grade,
+    classList,
+    classId,
+    sectionId,
+    clearFlashcards,
+    handlePush,
+    enqueueSnackbar,
+    classes.stackbar
+  ]);
 
   const handleSubmit = useCallback(() => {
-    setChanged(false)
+    setChanged(false);
     if (flashcardId) updateFlashcards();
     else createFlashcards();
   }, [updateFlashcards, createFlashcards, flashcardId]);
 
   const handleTextChange = useCallback(
-    name => event => {
+    (name) => (event) => {
       setChanged(true);
-      const v = event.target.value
-      if (name === 'title') setTitle(v)
-      if (name === 'summary') setSummary(v)
+      const v = event.target.value;
+      if (name === 'title') setTitle(v);
+      if (name === 'summary') setSummary(v);
     },
     []
   );
 
-  const handleClassChange = useCallback(({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
-    const selected = userClasses.classList.find(c => c.classId === classId)
-    if (selected) setClassList([{
-      ...selected,
-      sectionId
-    }])
-    setSectionId(sectionId)
-    setClassId(classId)
-  }, [userClasses.classList])
+  const handleClassChange = useCallback(
+    ({ classId, sectionId }: { classId: number, sectionId: number }) => {
+      const selected = userClasses.classList.find((c) => c.classId === classId);
+      if (selected)
+        setClassList([
+          {
+            ...selected,
+            sectionId
+          }
+        ]);
+      setSectionId(sectionId);
+      setClassId(classId);
+    },
+    [userClasses.classList]
+  );
 
-  const handleClasses = useCallback(classList => {
-    setClassList(classList)
+  const handleClasses = useCallback((classList) => {
+    setClassList(classList);
     if (classList.length > 0) {
-      setSectionId(classList[0].sectionId)
-      setClassId(classList[0].classId)
+      setSectionId(classList[0].sectionId);
+      setClassId(classList[0].classId);
     }
-  }, [])
-
+  }, []);
 
   // const handleTagsChange = useCallback(values => {
   // setTags(values);
@@ -406,7 +428,7 @@ const CreateFlashcards = ({
 
   const handleAddNew = useCallback(() => {
     setChanged(true);
-    setFlashcards(f => ([
+    setFlashcards((f) => [
       ...f,
       {
         id: uuidv4(),
@@ -416,28 +438,30 @@ const CreateFlashcards = ({
         answerImage: null,
         isNew: true
       }
-    ]
-    ));
+    ]);
   }, []);
 
-  const handleDelete = useCallback(id => {
-    const { flashcards: f } = update(
-      { flashcards },
-      {
-        flashcards: {
-          $apply: b => {
-            const index = b.findIndex(item => item.id === id);
-            if (index > -1) {
-              return update(b, { $splice: [[index, 1]] });
+  const handleDelete = useCallback(
+    (id) => {
+      const { flashcards: f } = update(
+        { flashcards },
+        {
+          flashcards: {
+            $apply: (b) => {
+              const index = b.findIndex((item) => item.id === id);
+              if (index > -1) {
+                return update(b, { $splice: [[index, 1]] });
+              }
+              return b;
             }
-            return b;
           }
         }
-      }
-    );
-    setFlashcards(f);
-    setChanged(true);
-  }, [flashcards]);
+      );
+      setFlashcards(f);
+      setChanged(true);
+    },
+    [flashcards]
+  );
 
   const handleUpdate = useCallback(
     ({ id, question, answer, questionImage, answerImage, end }) => {
@@ -445,8 +469,8 @@ const CreateFlashcards = ({
         { flashcards },
         {
           flashcards: {
-            $apply: b => {
-              const index = b.findIndex(item => item.id === id);
+            $apply: (b) => {
+              const index = b.findIndex((item) => item.id === id);
               if (index > -1) {
                 return update(b, {
                   [index]: {
@@ -496,30 +520,27 @@ const CreateFlashcards = ({
 
   useEffect(() => {
     loadData();
-    const { classId, sectionId } = decypherClass()
+    const { classId, sectionId } = decypherClass();
     setClassId(Number(classId));
     setSectionId(Number(sectionId));
   }, [loadData]);
 
-  const onUnload = e => {
+  const onUnload = (e) => {
     e.preventDefault();
     e.returnValue = 'Are you sure you want to leave?';
-  }
+  };
 
   useEffect(() => {
-    if (changed) window.addEventListener("beforeunload", onUnload)
+    if (changed) window.addEventListener('beforeunload', onUnload);
     return () => {
-      window.removeEventListener("beforeunload", onUnload)
-    }
-  }, [changed])
+      window.removeEventListener('beforeunload', onUnload);
+    };
+  }, [changed]);
 
   return (
     <div className={classes.root}>
       <ErrorBoundary>
-        <Prompt
-          when={changed}
-          message="Are you sure you want to leave?"
-        />
+        <Prompt when={changed} message="Are you sure you want to leave?" />
         <CreatePostForm
           title={`${flashcardId ? 'Edit' : 'Create'} Flashcards`}
           buttonLabel={flashcardId ? 'Update' : 'Create'}
@@ -572,7 +593,6 @@ const CreateFlashcards = ({
               <Typography variant="subtitle1">Class</Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={10}>
-
               {canBatchPost && !isEdit ? (
                 <Tooltip
                   id={9050}

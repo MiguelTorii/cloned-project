@@ -1,19 +1,19 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { dialogStyle } from '../Dialog';
 
 export const useStyles = makeStyles(() => ({
   root: {
-    position: 'relative',
+    position: 'relative'
   },
   hidden: {
-    opacity: 0,
+    opacity: 0
   },
   iconButton: {
     padding: 0
   },
   dialog: {
     ...dialogStyle,
-    width: 600,
+    width: 600
   },
   archiveTitle: {
     wordBreak: 'break-word',
@@ -21,9 +21,9 @@ export const useStyles = makeStyles(() => ({
     textAlign: 'center'
   },
   cardItem: {
-    width: 245,
+    width: 245
   },
   listItem: {
     width: '100%'
   }
-}))
+}));

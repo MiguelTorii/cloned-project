@@ -1,25 +1,40 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from "react";
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 import ReactDOMServer from 'react-dom/server';
-import { Quill } from "react-quill";
+import { Quill } from 'react-quill';
 import Tooltip from '@material-ui/core/Tooltip';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import { useStyles } from '../_styles/UserNotesEditor';
 
 const icons = Quill.import('ui/icons');
 const fontSizeStyle = Quill.import('attributors/style/size');
-fontSizeStyle.whitelist = ['8px', '9px', '10px', '11px', '13px', '14px', '18px', '24px', '30px', '36px', '48px', '60px', '72px', '96px'];
+fontSizeStyle.whitelist = [
+  '8px',
+  '9px',
+  '10px',
+  '11px',
+  '13px',
+  '14px',
+  '18px',
+  '24px',
+  '30px',
+  '36px',
+  '48px',
+  '60px',
+  '72px',
+  '96px'
+];
 Quill.register(fontSizeStyle, true);
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
   if (!url.includes('http') || !url.includes('https')) {
-    return `https://${url}`
+    return `https://${url}`;
   }
-  return url
-}
+  return url;
+};
 
 const CustomUndo = () => (
   <svg viewBox="0 0 18 18">
@@ -48,24 +63,24 @@ function redoChange() {
   this.quill.history.redo();
 }
 
-const Font = Quill.import("formats/font");
+const Font = Quill.import('formats/font');
 Font.whitelist = [
-  "arial",
-  "comic-sans",
-  "courier-new",
-  "georgia",
-  "helvetica",
-  "lucida"
+  'arial',
+  'comic-sans',
+  'courier-new',
+  'georgia',
+  'helvetica',
+  'lucida'
 ];
 Quill.register(Font, true);
 
 export const modules = {
   formula: true,
   clipboard: {
-    matchVisual: false,
+    matchVisual: false
   },
   toolbar: {
-    container: "#toolbar",
+    container: '#toolbar',
     handlers: {
       undo: undoChange,
       redo: redoChange
@@ -75,29 +90,29 @@ export const modules = {
     delay: 500,
     maxStack: 100,
     userOnly: true
-  },
+  }
 };
 
 export const formats = [
-  "header",
-  "font",
-  "bold",
-  "italic",
-  "underline",
-  "align",
-  "strike",
-  "script",
-  "blockquote",
-  "background",
-  "list",
-  "bullet",
-  "indent",
-  "formula",
-  "link",
-  "image",
-  "color",
-  "size",
-  "code-block"
+  'header',
+  'font',
+  'bold',
+  'italic',
+  'underline',
+  'align',
+  'strike',
+  'script',
+  'blockquote',
+  'background',
+  'list',
+  'bullet',
+  'indent',
+  'formula',
+  'link',
+  'image',
+  'color',
+  'size',
+  'code-block'
 ];
 
 export const QuillToolbar = ({ hidden }) => {
@@ -115,13 +130,13 @@ export const QuillToolbar = ({ hidden }) => {
           title="Undo"
           aria-label="undo"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-undo">
+          <button type="button" className="ql-undo">
             <CustomUndo />
           </button>
         </Tooltip>
@@ -129,13 +144,13 @@ export const QuillToolbar = ({ hidden }) => {
           title="Redo"
           aria-label="redo"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-redo">
+          <button type="button" className="ql-redo">
             <CustomRedo />
           </button>
         </Tooltip>
@@ -146,17 +161,14 @@ export const QuillToolbar = ({ hidden }) => {
           title="Font Styles"
           aria-label="Font styles"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
           <div>
-            <select
-              className="ql-header"
-              defaultValue="3"
-            >
+            <select className="ql-header" defaultValue="3">
               <option value="1">Heading</option>
               <option value="2">Subheading</option>
               <option value="3">Normal</option>
@@ -167,7 +179,7 @@ export const QuillToolbar = ({ hidden }) => {
           title="Font size"
           aria-label="font-size"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
@@ -175,11 +187,13 @@ export const QuillToolbar = ({ hidden }) => {
         >
           <div>
             <select className="ql-size">
-              <option value='8px'>8</option>
+              <option value="8px">8</option>
               <option value="9px">9</option>
               <option value="10px">10</option>
               <option value="11px">11</option>
-              <option value="13px" defaultValue>13</option>
+              <option value="13px" defaultValue>
+                13
+              </option>
               <option value="14px">14</option>
               <option value="18px">18</option>
               <option value="24px">24</option>
@@ -198,49 +212,49 @@ export const QuillToolbar = ({ hidden }) => {
           title="Bold (⌘B)"
           aria-label="bold"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-bold" />
+          <button type="button" className="ql-bold" />
         </Tooltip>
         <Tooltip
           title="Italic (⌘I)"
           aria-label="italic"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-italic" />
+          <button type="button" className="ql-italic" />
         </Tooltip>
         <Tooltip
           title="Underline (⌘U)"
           aria-label="underline"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-underline" />
+          <button type="button" className="ql-underline" />
         </Tooltip>
         <Tooltip
           title="Strike"
           aria-label="strike"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-strike" />
+          <button type="button" className="ql-strike" />
         </Tooltip>
       </span>
       <span className="ql-formats">
@@ -248,49 +262,49 @@ export const QuillToolbar = ({ hidden }) => {
           title="Numbered list"
           aria-label="numbered-list"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-list" value="ordered" />
+          <button type="button" className="ql-list" value="ordered" />
         </Tooltip>
         <Tooltip
           title="Bulleted list"
           aria-label="bulleted-list"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-list" value="bullet" />
+          <button type="button" className="ql-list" value="bullet" />
         </Tooltip>
         <Tooltip
           title="Decrease indent"
           aria-label="decrease-indent"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-indent" value="-1" />
+          <button type="button" className="ql-indent" value="-1" />
         </Tooltip>
         <Tooltip
           title="Increase indent"
           aria-label="increase-indent"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-indent" value="+1" />
+          <button type="button" className="ql-indent" value="+1" />
         </Tooltip>
       </span>
       <span className="ql-formats">
@@ -298,7 +312,7 @@ export const QuillToolbar = ({ hidden }) => {
           title="Align"
           aria-label="align"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
@@ -312,7 +326,7 @@ export const QuillToolbar = ({ hidden }) => {
           title="Text color"
           aria-label="text-color"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
@@ -326,7 +340,7 @@ export const QuillToolbar = ({ hidden }) => {
           title="Highlight color"
           aria-label="highlight-color"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
@@ -342,49 +356,49 @@ export const QuillToolbar = ({ hidden }) => {
           title="Superscript"
           aria-label="superscript"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-script" value="super" />
+          <button type="button" className="ql-script" value="super" />
         </Tooltip>
         <Tooltip
           title="Subscript"
           aria-label="subscript"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-script" value="sub" />
+          <button type="button" className="ql-script" value="sub" />
         </Tooltip>
         <Tooltip
           title="Block quote"
           aria-label="block-quote"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-blockquote" />
+          <button type="button" className="ql-blockquote" />
         </Tooltip>
         <Tooltip
           title="Direction"
           aria-label="direction"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-direction" />
+          <button type="button" className="ql-direction" />
         </Tooltip>
       </span>
       <span className="ql-formats">
@@ -392,13 +406,13 @@ export const QuillToolbar = ({ hidden }) => {
           title="Link"
           aria-label="Link"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-link" />
+          <button type="button" className="ql-link" />
         </Tooltip>
       </span>
       <span className="ql-formats">
@@ -406,41 +420,41 @@ export const QuillToolbar = ({ hidden }) => {
           title="Formula"
           aria-label="formula"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-formula" />
+          <button type="button" className="ql-formula" />
         </Tooltip>
         <Tooltip
           title="Code Block"
           aria-label="code-block"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-code-block" />
+          <button type="button" className="ql-code-block" />
         </Tooltip>
         <Tooltip
           title="Clean"
           aria-label="clean"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-clean" />
+          <button type="button" className="ql-clean" />
         </Tooltip>
       </span>
     </div>
-  )
-}
+  );
+};
 
 export default QuillToolbar;

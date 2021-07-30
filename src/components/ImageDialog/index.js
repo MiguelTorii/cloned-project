@@ -38,7 +38,7 @@ const ImageDialog = ({ open, imageUrl, onClose }) => {
       >
         <Box position="relative" onClick={handleCloseImage}>
           <LoadImg url={imageUrl} className={classes.image} />
-          <IconClose className={classes.closeIcon} onClick={onClose}/>
+          <IconClose className={classes.closeIcon} onClick={onClose} />
         </Box>
       </Box>
     </Dialog>

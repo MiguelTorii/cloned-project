@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Paper, Typography } from "@material-ui/core";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
-import clsx from "clsx";
+import { Grid, Paper, Typography } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import clsx from 'clsx';
 
 import Image1 from 'assets/img/rating_1.png';
 import Image2 from 'assets/img/rating_2.png';
 import Image3 from 'assets/img/rating_3.png';
 import Image4 from 'assets/img/rating_4.png';
 import useStyles from './style';
-import { logEventLocally } from "../../api/analytics";
-import TransparentButton from "../Basic/Buttons/TransparentButton";
+import { logEventLocally } from '../../api/analytics';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
 
 const ratings = [
   {
@@ -27,7 +27,8 @@ const ratings = [
   {
     image: Image3,
     text: 'A Little Useful',
-    description: 'We’re going to work on sending you better post recommendations you’ll love.'
+    description:
+      'We’re going to work on sending you better post recommendations you’ll love.'
   },
   {
     image: Image4,
@@ -36,9 +37,7 @@ const ratings = [
   }
 ];
 
-const RecommendationsFeedback = ({
-  feedId
-}) => {
+const RecommendationsFeedback = ({ feedId }) => {
   const classes = useStyles();
   const [ratingIndex, setRatingIndex] = useState(null);
   const [hidden, setHidden] = useState(false);
@@ -75,26 +74,28 @@ const RecommendationsFeedback = ({
           <Typography align="center" variant="h6">
             Not Useful
           </Typography>
-          <Typography>
-            {ratings[2].description}
-          </Typography>
+          <Typography>{ratings[2].description}</Typography>
         </>
-      )
+      );
     }
     return (
       <>
         <Typography align="center" variant="h6">
           {ratings[ratingIndex].text}
         </Typography>
-        <Typography gutterBottom>
-          {ratings[ratingIndex].description}
-        </Typography>
+        <Typography gutterBottom>{ratings[ratingIndex].description}</Typography>
         {ratingIndex === 3 && !gaveMore && (
           <Box display="flex" justifyContent="space-between">
-            <TransparentButton compact onClick={() => handleNotUsefulFeedback('Irrelevant')}>
+            <TransparentButton
+              compact
+              onClick={() => handleNotUsefulFeedback('Irrelevant')}
+            >
               It's irrelevant
             </TransparentButton>
-            <TransparentButton compact onClick={() => handleNotUsefulFeedback('Spam')}>
+            <TransparentButton
+              compact
+              onClick={() => handleNotUsefulFeedback('Spam')}
+            >
               It's spam
             </TransparentButton>
           </Box>
@@ -120,11 +121,21 @@ const RecommendationsFeedback = ({
               <img
                 src={item.image}
                 alt={item.text}
-                className={clsx(classes.image, ratingIndex !== index && 'disabled')}
+                className={clsx(
+                  classes.image,
+                  ratingIndex !== index && 'disabled'
+                )}
               />
-            ): (
-              <Link component="button" onClick={() => handleGiveFeedback(index)}>
-                <img src={item.image} alt={item.text} className={classes.image} />
+            ) : (
+              <Link
+                component="button"
+                onClick={() => handleGiveFeedback(index)}
+              >
+                <img
+                  src={item.image}
+                  alt={item.text}
+                  className={classes.image}
+                />
               </Link>
             )}
           </Grid>
@@ -134,12 +145,8 @@ const RecommendationsFeedback = ({
         renderRatingText()
       ) : (
         <Box display="flex" justifyContent="space-between">
-          <Typography>
-            Very Useful
-          </Typography>
-          <Typography>
-            Not Useful
-          </Typography>
+          <Typography>Very Useful</Typography>
+          <Typography>Not Useful</Typography>
         </Box>
       )}
     </Paper>

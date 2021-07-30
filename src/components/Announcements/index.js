@@ -28,10 +28,10 @@ const Announcements = ({
 
   useEffect(() => {
     if (
-      ![16, 52, 57].includes(schoolId) // School not on this list
-      || !viewedOnboarding // Onboarding not completed
-      || viewedTooltips === null // Data still loading
-      || viewedTooltips.includes(ID) // Tooltip already dismissed by user
+      ![16, 52, 57].includes(schoolId) || // School not on this list
+      !viewedOnboarding || // Onboarding not completed
+      viewedTooltips === null || // Data still loading
+      viewedTooltips.includes(ID) // Tooltip already dismissed by user
     ) {
       setOpen(false);
     } else {
@@ -60,9 +60,10 @@ const Announcements = ({
     >
       <div>
         <p className={classes.row}>
-          CircleIn now automatically places you and all your classmates into a Class
-          Chat for each course. You can collaborate with the entire class here, ask
-          questions directly to tutors, and discuss classwork together.
+          CircleIn now automatically places you and all your classmates into a
+          Class Chat for each course. You can collaborate with the entire class
+          here, ask questions directly to tutors, and discuss classwork
+          together.
         </p>
         <div className={classes.imageContainer}>
           <img className={classes.image} src={chatImg} alt="chat" />
@@ -70,13 +71,17 @@ const Announcements = ({
       </div>
     </Dialog>
   );
-}
+};
 
-const mapStateToProps = (
-  { user: { syncData: { viewedOnboarding, viewedTooltips }, data: { schoolId } } }): {} => ({
+const mapStateToProps = ({
+  user: {
+    syncData: { viewedOnboarding, viewedTooltips },
+    data: { schoolId }
+  }
+}): {} => ({
   schoolId: Number(schoolId),
   viewedOnboarding,
-  viewedTooltips,
+  viewedTooltips
 });
 
 const mapDispatchToProps = (dispatch: *): {} =>

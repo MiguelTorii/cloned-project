@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     position: 'absolute',
     bottom: 0,
@@ -35,7 +35,7 @@ export const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   controlIcons: {
     height: 40,
@@ -43,7 +43,7 @@ export const styles = theme => ({
     color: theme.circleIn.palette.white,
     [theme.breakpoints.down('sm')]: {
       height: 30,
-      width: 30,
+      width: 30
     }
   },
   controlLabel: {
@@ -70,10 +70,10 @@ export const styles = theme => ({
     color: theme.circleIn.palette.white,
     '&:hover': {
       background: theme.circleIn.palette.dangerBackground,
-      color: theme.circleIn.palette.white,
+      color: theme.circleIn.palette.white
     },
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(0.5, 1),
+      margin: theme.spacing(0.5, 1)
     }
   },
   disableControl: {
@@ -93,14 +93,14 @@ export const styles = theme => ({
     color: theme.circleIn.palette.white,
     '&:hover': {
       background: theme.circleIn.palette.appBar,
-      color: theme.circleIn.palette.white,
+      color: theme.circleIn.palette.white
     },
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(0.5, 1),
+      margin: theme.spacing(0.5, 1)
     }
   },
   tooltip: {
-    fontSize: 14,
+    fontSize: 14
   },
   badge: {
     top: 10,

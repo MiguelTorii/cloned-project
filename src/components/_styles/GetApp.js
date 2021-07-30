@@ -1,12 +1,12 @@
 import { dialogStyle } from './Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   circleIn: {
     color: theme.circleIn.palette.action
   },
   downloadIosButton: {
     display: 'block',
-    color:'#000000',
+    color: '#000000',
     textDecoration: 'none',
     fontFamily: 'Helvetica, arial, sans-serif',
     fontSize: 16,
@@ -20,7 +20,7 @@ export const styles = theme => ({
     textDecoration: 'none',
     fontFamily: 'Helvetica, arial, sans-serif',
     fontSize: 16,
-    height: 45,
+    height: 45
   },
   downloadColumn: {
     display: 'flex',
@@ -30,10 +30,10 @@ export const styles = theme => ({
   },
   downloads: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   dialog: {
     ...dialogStyle,
-    width: 600,
+    width: 600
   }
 });

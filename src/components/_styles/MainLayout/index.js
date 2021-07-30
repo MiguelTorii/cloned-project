@@ -1,8 +1,8 @@
 const drawerWidth = 280;
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
-    display: 'flex',
+    display: 'flex'
   },
   marginChat: {
     margin: theme.spacing()
@@ -25,7 +25,7 @@ export const styles = theme => ({
   },
   menuButton: {
     [theme.breakpoints.up('sm')]: {
-      marginLeft: 12,
+      marginLeft: 12
     }
   },
   grow: {
@@ -63,7 +63,7 @@ export const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.primaryBackground
   },
   drawerOpen: {
     backgroundColor: theme.circleIn.palette.primaryBackground,
@@ -107,7 +107,7 @@ export const styles = theme => ({
     marginLeft: 16,
     alignItems: 'center',
     paddingRight: 16,
-    paddingLeft: 16,
+    paddingLeft: 16
   },
   backContainer: {
     cursor: 'pointer'

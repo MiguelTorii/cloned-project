@@ -60,14 +60,13 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     loading: true
   };
 
-
   componentDidMount = async () => {
     this.mounted = true;
     if (
       this.handleDebouncePing.cancel &&
       typeof this.handleDebouncePing.cancel === 'function'
     )
-      this.handleDebouncePing.cancel()
+      this.handleDebouncePing.cancel();
     window.addEventListener('offline', () => {
       if (
         this.handleDebounceFetchNotifications.cancel &&
@@ -77,7 +76,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     });
     window.addEventListener('online', () => {
       this.handleDebounceFetchNotifications();
-      this.handleDebouncePing()
+      this.handleDebouncePing();
     });
 
     this.handleDebounceFetchNotifications = debounce(
@@ -85,19 +84,16 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       30181
     );
 
-    this.handleDebouncePing = debounce(
-      this.handleDebouncePing,
-      300000
-    );
+    this.handleDebouncePing = debounce(this.handleDebouncePing, 300000);
 
     await this.handleFetchNotifications();
-    await this.handlePing()
+    await this.handlePing();
 
     this.handleDebounceFetchNotifications();
-    this.handleDebouncePing()
+    this.handleDebouncePing();
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const {
       user: {
         data: { userId }
@@ -125,7 +121,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       this.handleDebouncePing.cancel &&
       typeof this.handleDebouncePing.cancel === 'function'
     )
-      this.handleDebouncePing.cancel()
+      this.handleDebouncePing.cancel();
     if (
       this.handleDebounceFetchNotifications.cancel &&
       typeof this.handleDebounceFetchNotifications.cancel === 'function'
@@ -150,8 +146,8 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   handlePing = async () => {
-    await postPing()
-  }
+    await postPing();
+  };
 
   handleFetchNotifications = async () => {
     const {
@@ -199,7 +195,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       user: {
         data: { userId }
       },
-      onClick,
+      onClick
       // onClose
     } = this.props;
     if (entityType !== 8000) {
@@ -248,7 +244,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(Feed));
+export default connect(mapStateToProps, null)(withStyles(styles)(Feed));

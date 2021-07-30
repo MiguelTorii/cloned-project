@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     borderLeft: '1px solid rgba(255,255,255,0.15)',
     borderRight: '1px solid rgba(255,255,255,0.15)',
-    height: '100%',
+    height: '100%'
   },
   rightDrawerClose: {
-    right: 0,
+    right: 0
   },
   rightDrawerOpen: {
     right: '24%',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   right: {
     height: '100%',
-    overflow: 'auto',
+    overflow: 'auto'
   },
   hidden: {
     border: 'none',
@@ -82,6 +82,6 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     zIndex: 1002
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

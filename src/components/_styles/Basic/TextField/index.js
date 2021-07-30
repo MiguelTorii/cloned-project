@@ -17,4 +17,4 @@ export const StyledTextField = withStyles({
       fontSize: 18
     }
   }
-})(MuiTextField)
+})(MuiTextField);

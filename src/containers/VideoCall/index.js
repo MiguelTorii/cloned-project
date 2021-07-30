@@ -8,7 +8,7 @@ import { push } from 'connected-react-router';
 import adapter from 'webrtc-adapter';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { sendMessage } from 'api/chat'
+import { sendMessage } from 'api/chat';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import { renewTwilioToken } from '../../api/chat';
@@ -18,7 +18,7 @@ import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     position: 'relative',
     backgroundColor: theme.circleIn.palette.black
@@ -87,24 +87,25 @@ class VideoCall extends React.Component<Props, State> {
       adapter.browserShim.shimGetDisplayMedia(window, 'screen');
     }
 
-    await this.initialDevices()
+    await this.initialDevices();
   };
 
   componentWillUnmount = () => {
     this.mounted = false;
-    this.handleDetachtracks()
+    this.handleDetachtracks();
   };
 
   initialDevices = async () => {
     try {
       if (navigator && navigator.mediaDevices)
-        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
+        navigator.mediaDevices.ondevicechange =
+          this.handleUpdateDeviceSelectionOptions;
       const deviceSelectionOptions =
         (await this.handleUpdateDeviceSelectionOptions()) || {};
       for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
         const kindDeviceInfos = deviceSelectionOptions[kind] || [];
         const devices = [];
-        kindDeviceInfos.forEach(kindDeviceInfo => {
+        kindDeviceInfos.forEach((kindDeviceInfo) => {
           const { deviceId } = kindDeviceInfo;
           const label =
             kindDeviceInfo.label ||
@@ -125,7 +126,7 @@ class VideoCall extends React.Component<Props, State> {
     } finally {
       this.handleUpdateLoading(false);
     }
-  }
+  };
 
   handleDetachtracks = () => {
     for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
@@ -134,7 +135,7 @@ class VideoCall extends React.Component<Props, State> {
         utils.detachTrack(state[`${kind}track`]);
       }
     }
-  }
+  };
 
   handleUpdateDeviceSelectionOptions = () => {
     return (
@@ -143,7 +144,7 @@ class VideoCall extends React.Component<Props, State> {
       navigator.mediaDevices
         .getUserMedia({ audio: true, video: true })
         .then(utils.getDeviceSelectionOptions)
-        .catch(err => {
+        .catch((err) => {
           throw err;
         })
     );
@@ -153,27 +154,27 @@ class VideoCall extends React.Component<Props, State> {
     this.setState({ [`selected${kind}`]: deviceId });
     let track = null;
     switch (kind) {
-    case 'audioinput':
-      track = await utils.applyAudioInputDeviceSelection(
-        deviceId,
-        this.meetupRef.current.audioinput.current
-      );
-      this.setState({ [`${kind}track`]: track });
-      break;
-    case 'videoinput':
-      track = await utils.applyVideoInputDeviceSelection(
-        deviceId,
-        this.meetupRef.current.videoinput.current
-      );
-      this.setState({ [`${kind}track`]: track });
-      break;
-    case 'audiooutput':
-    default:
-      break;
+      case 'audioinput':
+        track = await utils.applyAudioInputDeviceSelection(
+          deviceId,
+          this.meetupRef.current.audioinput.current
+        );
+        this.setState({ [`${kind}track`]: track });
+        break;
+      case 'videoinput':
+        track = await utils.applyVideoInputDeviceSelection(
+          deviceId,
+          this.meetupRef.current.videoinput.current
+        );
+        this.setState({ [`${kind}track`]: track });
+        break;
+      case 'audiooutput':
+      default:
+        break;
     }
   };
 
-  handleDisableDevice = async kind => {
+  handleDisableDevice = async (kind) => {
     const { state } = this;
     if (state[`${kind}track`]) {
       await utils.detachTrack(state[`${kind}track`]);
@@ -241,7 +242,7 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleUpdateLoading = loading => {
+  handleUpdateLoading = (loading) => {
     this.setState({ loading });
   };
 

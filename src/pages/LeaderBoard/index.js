@@ -1,12 +1,12 @@
 // @flow
 
-import React from 'react'
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
-import LeaderBoards from '../../containers/LeaderBoards'
+import LeaderBoards from '../../containers/LeaderBoards';
 import Layout from '../../containers/Layout';
 import withRoot from '../../withRoot';
 
@@ -19,7 +19,6 @@ const styles = () => ({
 type Props = {
   classes: Object
 };
-
 
 const LeaderBoard = ({ classes }: Props) => {
   return (
@@ -34,6 +33,8 @@ const LeaderBoard = ({ classes }: Props) => {
       </Layout>
     </main>
   );
-}
+};
 
-export default withRoot(withStyles(styles)(withWidth()(withRouter(LeaderBoard))));
+export default withRoot(
+  withStyles(styles)(withWidth()(withRouter(LeaderBoard)))
+);

@@ -13,9 +13,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
 // import FormControl from '@material-ui/core/FormControl';
 // import Input from '@material-ui/core/Input';
-import CreateChatChannelInput from 'components/CreateChatChannelInput'
+import CreateChatChannelInput from 'components/CreateChatChannelInput';
 import { getCampaign } from 'api/campaign';
-import { sendMessage } from 'api/chat'
+import { sendMessage } from 'api/chat';
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
 import ChatMessage from '../../components/FloatingChat/FloatChatMessage';
@@ -27,7 +27,7 @@ import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   list: {
     overflowY: 'auto',
     flex: 1,
@@ -69,7 +69,7 @@ const styles = theme => ({
   },
   searchInput: {
     padding: theme.spacing(1)
-  },
+  }
 });
 
 type Props = {
@@ -100,7 +100,7 @@ type State = {
   scroll: boolean,
   viewMembers: boolean,
   loading: boolean,
-  images: Array<{src: string}>,
+  images: Array<{ src: string }>,
   expanded: boolean,
   count: number,
   addMembers: boolean
@@ -134,11 +134,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
   // eslint-disable-next-line no-undef
   scrollParentRef: ?HTMLDivElement;
 
-  getTypingMemberName = id => {
-    const { localChannel: { members } } = this.props
-    const currentMember = members.filter(member => member.userId === id)
-    return `${currentMember[0].firstname} ${currentMember[0].lastname}`
-  }
+  getTypingMemberName = (id) => {
+    const {
+      localChannel: { members }
+    } = this.props;
+    const currentMember = members.filter((member) => member.userId === id);
+    return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
+  };
 
   componentDidMount = async () => {
     this.mounted = true;
@@ -148,7 +150,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         localChannel,
         user: {
           data: { userId }
-        },
+        }
       } = this.props;
       try {
         channel.setAllMessagesConsumed();
@@ -160,7 +162,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       this.setState({ title });
 
       try {
-        const paginator = await channel.getMessages(10)
+        const paginator = await channel.getMessages(10);
         const campaign = await getCampaign({ campaignId: 9 });
 
         if (paginator)
@@ -168,7 +170,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
             messages: paginator.items,
             paginator,
             hasMore: !(paginator.items.length < 10),
-            videoEnabled: (campaign.variation_key && campaign.variation_key !== 'hidden')
+            videoEnabled:
+              campaign.variation_key && campaign.variation_key !== 'hidden'
           });
       } catch (err) {
         console.log(err);
@@ -181,15 +184,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
         console.log(err);
       }
 
-      channel.on('messageAdded', message => {
+      channel.on('messageAdded', (message) => {
         if (!this.mounted) return;
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
         const { open } = this.state;
-        const { channel } = message
+        const { channel } = message;
         if (!open) {
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             unread: prevState.unread + 1
           }));
         } else {
@@ -200,12 +203,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
         this.handleScrollToBottom();
       });
 
-      channel.on('typingStarted', member => {
+      channel.on('typingStarted', (member) => {
         if (!this.mounted) return;
 
-        const memberId = member?.state?.identity
+        const memberId = member?.state?.identity;
         if (memberId) {
-          const typingUserName = this.getTypingMemberName(memberId)
+          const typingUserName = this.getTypingMemberName(memberId);
           this.setState({ typing: typingUserName });
         }
       });
@@ -257,9 +260,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
     });
   };
 
-  handleClearCreateMessage = () => this.setState({ createMessage: null })
+  handleClearCreateMessage = () => this.setState({ createMessage: null });
 
-  handleSendMessage = async message => {
+  handleSendMessage = async (message) => {
     const {
       channel,
       user: {
@@ -272,10 +275,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
       lastName,
       imageKey: '',
       isVideoNotification: false,
-      source: "little_chat"
+      source: 'little_chat'
     };
     this.setState({ loading: true });
-    const { newChannel } = this.props
+    const { newChannel } = this.props;
     try {
       if (!newChannel) {
         await sendMessage({
@@ -291,7 +294,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         this.setState(({ count }) => ({ count: count + 1 }));
         onSend();
       } else {
-        this.setState({ createMessage: { message, messageAttributes } })
+        this.setState({ createMessage: { message, messageAttributes } });
       }
     } catch (err) {
       console.log(err);
@@ -300,7 +303,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
   };
 
-  handleSendInput = async file => {
+  handleSendInput = async (file) => {
     const {
       channel,
       newChannel,
@@ -309,7 +312,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onSend
     } = this.props;
-    if (newChannel) return
+    if (newChannel) return;
 
     this.setState({ loading: true });
 
@@ -333,14 +336,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
         lastName,
         imageKey: readUrl,
         isVideoNotification: false,
-        source: "little_chat"
+        source: 'little_chat'
       };
 
       await sendMessage({
         message: 'Uploaded a image',
         ...messageAttributes,
         chatId: channel.sid
-      })
+      });
       logEvent({
         event: 'Chat- Send Message',
         props: { Content: 'Image', 'Channel SID': channel.sid }
@@ -362,8 +365,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const { paginator } = this.state;
     try {
       if (paginator.hasPrevPage) {
-        paginator.prevPage().then(result => {
-          this.setState(prevState => {
+        paginator.prevPage().then((result) => {
+          this.setState((prevState) => {
             return {
               messages: [...result.items, ...prevState.messages],
               paginator: result,
@@ -446,7 +449,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState({ addMembers: false });
   };
 
-  handleImageClick = src => {
+  handleImageClick = (src) => {
     this.setState({ images: [{ src }] });
   };
 
@@ -460,46 +463,46 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   isMemberOnline = (userId) => {
     const { members = [] } = this.props.localChannel;
-    const found = members.find(member => member.userId === userId);
+    const found = members.find((member) => member.userId === userId);
     return found?.isOnline;
-  }
+  };
 
   renderMessage = (item, profileURLs) => {
     const { id, type } = item;
     try {
       switch (type) {
-      case 'date':
-        return <ChatMessageDate key={id} body={item.body} />;
-      case 'message':
-      case 'own':
-        return (
-          <ChatMessage
-            key={id}
-            userId={item.author}
-            isUserOnline={this.isMemberOnline(item.author)}
-            name={item.name}
-            messageList={item.messageList}
-            avatar={getAvatar({ id: item.author, profileURLs })}
-            onImageLoaded={this.handleImageLoaded}
-            onStartVideoCall={this.handleStartVideoCall}
-            onImageClick={this.handleImageClick}
-          />
-        );
-      case 'end':
-        return (
-          <div
-            key={uuidv4()}
-            style={{
-              float: 'left',
-              clear: 'both'
-            }}
-            ref={el => {
-              this.end = el;
-            }}
-          />
-        );
-      default:
-        return null;
+        case 'date':
+          return <ChatMessageDate key={id} body={item.body} />;
+        case 'message':
+        case 'own':
+          return (
+            <ChatMessage
+              key={id}
+              userId={item.author}
+              isUserOnline={this.isMemberOnline(item.author)}
+              name={item.name}
+              messageList={item.messageList}
+              avatar={getAvatar({ id: item.author, profileURLs })}
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
+        case 'end':
+          return (
+            <div
+              key={uuidv4()}
+              style={{
+                float: 'left',
+                clear: 'both'
+              }}
+              ref={(el) => {
+                this.end = el;
+              }}
+            />
+          );
+        default:
+          return null;
       }
     } catch (err) {
       console.log(err);
@@ -508,37 +511,38 @@ class ChatChannel extends React.PureComponent<Props, State> {
   };
 
   unregisteredUserMessage = () => {
-    const { user, channel, classes, getMembers } = this.props
-    const { messages } = this.state
-    if (!channel?.sid) return null
-    const members = getMembers(channel)
-    const keys = Object.keys(members)
-    const otherUser = keys.length !== 2
-      ? null
-      : members[keys.find(key => key !== user.data.userId)]
-    const hasUnregistered = Boolean(keys.find(key => !members[key].registered))
+    const { user, channel, classes, getMembers } = this.props;
+    const { messages } = this.state;
+    if (!channel?.sid) return null;
+    const members = getMembers(channel);
+    const keys = Object.keys(members);
+    const otherUser =
+      keys.length !== 2
+        ? null
+        : members[keys.find((key) => key !== user.data.userId)];
+    const hasUnregistered = Boolean(
+      keys.find((key) => !members[key].registered)
+    );
     if (otherUser && hasUnregistered && messages.length > 0) {
       return (
-        <Typography
-          className={classes.unregisteredMessage}
-        >
-          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
+        <Typography className={classes.unregisteredMessage}>
+          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a
+          notification to log on and respond to you.
         </Typography>
-      )
+      );
     }
 
     if (hasUnregistered && messages.length > 0) {
       return (
-        <Typography
-          className={classes.unregisteredMessage}
-        >
-          Some of your classmates on this chat have not logged into CircleIn yet. We've sent them an email to let them know to join this chat.
+        <Typography className={classes.unregisteredMessage}>
+          Some of your classmates on this chat have not logged into CircleIn
+          yet. We've sent them an email to let them know to join this chat.
         </Typography>
-      )
+      );
     }
 
-    return null
-  }
+    return null;
+  };
 
   render() {
     const {
@@ -614,18 +618,18 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 expanded && classes.listExpanded,
                 expanded && typing !== '' && classes.listTypingExpanded
               )}
-              ref={node => {
+              ref={(node) => {
                 this.scrollParentRef = node;
               }}
             >
-              {newChannel &&
+              {newChannel && (
                 <CreateChatChannelInput
                   isFloatChat
                   createMessage={createMessage}
                   onOpenChannel={handleChannelCreated}
                   handleClearCreateMessage={this.handleClearCreateMessage}
                 />
-              }
+              )}
               <InfiniteScroll
                 threshold={50}
                 pageStart={0}
@@ -636,7 +640,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 isReverse
                 getScrollParent={() => this.scrollParentRef}
               >
-                {messageItems.map(item =>
+                {messageItems.map((item) =>
                   this.renderMessage(item, profileURLs)
                 )}
                 {loading && (

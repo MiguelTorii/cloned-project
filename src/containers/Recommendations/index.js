@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { Grid, Paper, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import update from 'immutability-helper';
-import withRoot from "../../withRoot";
-import { fetchRecommendations } from "../../api/feed";
+import withRoot from '../../withRoot';
+import { fetchRecommendations } from '../../api/feed';
 
-import FeedItem from "../../components/FeedList/FeedItem";
+import FeedItem from '../../components/FeedList/FeedItem';
 import useStyles from './styles';
-import SharePost from "../SharePost";
-import { POST_TYPES } from "../../constants/app";
-import { updateBookmark } from "../../actions/feed";
-import DeletePost from "../DeletePost";
-import Report from "../../components/Report";
+import SharePost from '../SharePost';
+import { POST_TYPES } from '../../constants/app';
+import { updateBookmark } from '../../actions/feed';
+import DeletePost from '../DeletePost';
+import Report from '../../components/Report';
 
 const Recommendations = () => {
   const classes = useStyles();
@@ -20,7 +20,9 @@ const Recommendations = () => {
   const me = useSelector((state) => state.user.data);
   const currentUser = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
-  const newClassExperience  = useSelector((state) => state.campaign.newClassExperience);
+  const newClassExperience = useSelector(
+    (state) => state.campaign.newClassExperience
+  );
   const [shareFeedId, setShareFeedId] = useState(null);
   const [deleteFeedId, setDeleteFeedId] = useState(null);
   const [reportData, setReportData] = useState(null);
@@ -41,70 +43,90 @@ const Recommendations = () => {
     setShareFeedId(null);
   }, []);
 
-  const handlePostClick = useCallback(({ postId, typeId }) => () => {
-    let url = '';
+  const handlePostClick = useCallback(
+    ({ postId, typeId }) =>
+      () => {
+        let url = '';
 
-    switch (typeId) {
-    case POST_TYPES.FLASHCARDS:
-      url = `/flashcards/${postId}`;
-      break;
-    case POST_TYPES.NOTE:
-      url = `/notes/${postId}`;
-      break;
-    case POST_TYPES.LINK:
-      url = `/sharelink/${postId}`;
-      break;
-    case POST_TYPES.QUESTION:
-      url = `/question/${postId}`;
-      break;
-    case POST_TYPES.POST:
-      url = `/post/${postId}`;
-      break;
-    default:
-      throw new Error('unknown feed type');
-    }
-
-    url = `${url}?from=recommendation`;
-
-    dispatch(push(url));
-  }, [dispatch]);
-
-  const handleUserClick = useCallback(({ userId }) => {
-    dispatch(push(`/profile/${userId}`));
-  }, [dispatch]);
-
-  const handleBookmark = useCallback(({ feedId, bookmarked }) => {
-    dispatch(updateBookmark({
-      userId: me.userId,
-      feedId,
-      bookmarked
-    })).then(() => {
-      const feedIndex = posts.findIndex((feed) => feed.feedId === feedId);
-      if (feedIndex < 0) {
-        throw new Error('feed should exist');
-      }
-      setPosts(update(posts, {
-        [feedIndex]: {
-          bookmarked: { $set: !bookmarked }
+        switch (typeId) {
+          case POST_TYPES.FLASHCARDS:
+            url = `/flashcards/${postId}`;
+            break;
+          case POST_TYPES.NOTE:
+            url = `/notes/${postId}`;
+            break;
+          case POST_TYPES.LINK:
+            url = `/sharelink/${postId}`;
+            break;
+          case POST_TYPES.QUESTION:
+            url = `/question/${postId}`;
+            break;
+          case POST_TYPES.POST:
+            url = `/post/${postId}`;
+            break;
+          default:
+            throw new Error('unknown feed type');
         }
-      }));
-    });
-  }, [dispatch, me.userId, posts]);
 
-  const handlePushTo = useCallback((url) => {
-    return dispatch(push(url));
-  }, [dispatch]);
+        url = `${url}?from=recommendation`;
+
+        dispatch(push(url));
+      },
+    [dispatch]
+  );
+
+  const handleUserClick = useCallback(
+    ({ userId }) => {
+      dispatch(push(`/profile/${userId}`));
+    },
+    [dispatch]
+  );
+
+  const handleBookmark = useCallback(
+    ({ feedId, bookmarked }) => {
+      dispatch(
+        updateBookmark({
+          userId: me.userId,
+          feedId,
+          bookmarked
+        })
+      ).then(() => {
+        const feedIndex = posts.findIndex((feed) => feed.feedId === feedId);
+        if (feedIndex < 0) {
+          throw new Error('feed should exist');
+        }
+        setPosts(
+          update(posts, {
+            [feedIndex]: {
+              bookmarked: { $set: !bookmarked }
+            }
+          })
+        );
+      });
+    },
+    [dispatch, me.userId, posts]
+  );
+
+  const handlePushTo = useCallback(
+    (url) => {
+      return dispatch(push(url));
+    },
+    [dispatch]
+  );
 
   const handleDelete = useCallback(({ feedId }) => {
     setDeleteFeedId(feedId);
   }, []);
 
-  const handleDeleteClose = useCallback(({ deleted }) => {
-    if (deleted === true) {
-      loadRecommendations();
-    }
-    setDeleteFeedId(null);
-  }, [loadRecommendations]);
+  const handleDeleteClose = useCallback(
+    ({ deleted }) => {
+      if (deleted === true) {
+        loadRecommendations();
+      }
+      setDeleteFeedId(null);
+    },
+    [loadRecommendations]
+  );
 
   const handleReport = useCallback(({ feedId, ownerId, ownerName }) => {
     setReportData({
@@ -124,14 +146,15 @@ const Recommendations = () => {
   }, [loadRecommendations]);
 
   const isCurrent = (classId) => {
-    const { userClasses: { classList } } = currentUser
-    const filteredList = classList.filter((cl) => cl.classId === classId)
+    const {
+      userClasses: { classList }
+    } = currentUser;
+    const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
-      console.log('recommendation iscurrent', filteredList[0].isCurrent)
-      return filteredList[0].isCurrent
+      console.log('recommendation iscurrent', filteredList[0].isCurrent);
+      return filteredList[0].isCurrent;
     }
-
-  }
+  };
 
   if (posts.length === 0) return null;
 
@@ -139,9 +162,7 @@ const Recommendations = () => {
     <>
       <Grid container direction="column" spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h6">
-            Posts Recommended For You
-          </Typography>
+          <Typography variant="h6">Posts Recommended For You</Typography>
         </Grid>
         <Grid item xs={12}>
           <Grid container direction="column" spacing={3}>
@@ -186,7 +207,7 @@ const Recommendations = () => {
         onClose={handleReportClose}
       />
     </>
-  )
+  );
 };
 
 export default withRoot(Recommendations);

@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { dialogStyle } from 'components/Dialog';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     ...dialogStyle,
     width: 500,
@@ -32,6 +32,6 @@ const useStyles = makeStyles(theme => ({
   hrClass: {
     background: 'rgba(255, 255, 255, 0.3)'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

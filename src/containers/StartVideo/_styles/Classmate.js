@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   textRoot: {
     width: 0
   },
@@ -28,7 +28,7 @@ export default makeStyles(theme => ({
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.brand,
     minWidth: 163,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   },
   invite: {
     fontWeight: 'bold',
@@ -36,7 +36,7 @@ export default makeStyles(theme => ({
     minWidth: 163,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.brand,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   },
   invited: {
     fontWeight: 'bold',
@@ -44,13 +44,13 @@ export default makeStyles(theme => ({
     minWidth: 163,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.disabled,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   },
   avatarProfile: {
     backgroundColor: theme.circleIn.palette.brand,
-    color: 'white',
+    color: 'white'
   },
   circleCheck: {
-    color: theme.circleIn.palette.white,
+    color: theme.circleIn.palette.white
   }
 }));

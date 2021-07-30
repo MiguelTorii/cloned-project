@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   meetingDetails: {
     position: 'absolute',
     bottom: 120,
@@ -9,7 +9,7 @@ export const styles = theme => ({
   },
   detailContent: {
     width: '100%',
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   header: {
     color: theme.circleIn.palette.white
@@ -26,7 +26,7 @@ export const styles = theme => ({
     color: theme.circleIn.palette.white,
     '&:hover': {
       backgroundColor: theme.circleIn.palette.greenInvite,
-      color: theme.circleIn.palette.white,
+      color: theme.circleIn.palette.white
     }
   },
   meetingUri: {
@@ -41,4 +41,4 @@ export const styles = theme => ({
       color: theme.circleIn.palette.appBar
     }
   }
-})
+});

@@ -1,40 +1,40 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 // @flow
-import React, { useMemo, useState, useCallback, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-import withStyles from '@material-ui/core/styles/withStyles'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import Dialog from '@material-ui/core/Dialog'
-import LoadImg from 'components/LoadImg'
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import Dialog from '@material-ui/core/Dialog';
+import LoadImg from 'components/LoadImg';
 
-import ClassMultiSelect from 'containers/ClassMultiSelect'
-import ClassSelector from 'containers/ClassSelector'
-import circleinLogo from 'assets/svg/circlein_logo_minimal.svg'
-import postingImage from 'assets/gif/loading-rocket.gif'
+import ClassMultiSelect from 'containers/ClassMultiSelect';
+import ClassSelector from 'containers/ClassSelector';
+import circleinLogo from 'assets/svg/circlein_logo_minimal.svg';
+import postingImage from 'assets/gif/loading-rocket.gif';
 
-import { useLocation } from 'react-router'
-import CreateQuestion from './Question'
-import CreateNotes from './Note'
-import CreatePostSt from './PostSt'
-import CreateShareLink from './ShareLink'
-import ErrorBoundary from '../ErrorBoundary'
-import type { State as StoreState } from '../../types/state'
-import Appbar from './Appbar'
+import { useLocation } from 'react-router';
+import CreateQuestion from './Question';
+import CreateNotes from './Note';
+import CreatePostSt from './PostSt';
+import CreateShareLink from './ShareLink';
+import ErrorBoundary from '../ErrorBoundary';
+import type { State as StoreState } from '../../types/state';
+import Appbar from './Appbar';
 
-const styles = theme => ({
+const styles = (theme) => ({
   item: {
     display: 'flex',
     justifyContent: 'center'
   },
   title: {
-    width: '100%',
+    width: '100%'
   },
   button: {
     marginTop: theme.spacing(3),
@@ -43,7 +43,7 @@ const styles = theme => ({
   },
   container: {
     marginTop: theme.spacing(3),
-    padding: theme.spacing(),
+    padding: theme.spacing()
   },
   paperRoot: {
     flexGrow: 1,
@@ -59,7 +59,7 @@ const styles = theme => ({
     padding: theme.spacing(3, 1.5, 1.5, 1.5),
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   circleinLogo: {
     display: 'flex',
@@ -77,27 +77,33 @@ const styles = theme => ({
   dialogPaper: {
     '&.MuiDialog-paper': {
       background: 'transparent',
-      boxShadow: 'none',
-    },
+      boxShadow: 'none'
+    }
   },
   label: {
     fontSize: 48,
     fontWeight: 'bold',
     lineHeight: '65px',
     textAlign: 'center',
-    marginTop: '-60px',
+    marginTop: '-60px'
   }
-})
+});
 
-const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelinkId }) => {
-
-  const [selectedClasses, setSelectedClasses] = useState([])
-  const [value, setValue] = useState(0)
-  const [classId, setClassId] = useState(0)
-  const [sectionId, setSectionId] = useState(0)
-  const [isPosting, setIsPosting] = useState(false)
-  const [images, setImages] = useState([])
-  const location = useLocation()
+const CreatePostLayout = ({
+  classes,
+  user,
+  postId,
+  questionId,
+  noteId,
+  sharelinkId
+}) => {
+  const [selectedClasses, setSelectedClasses] = useState([]);
+  const [value, setValue] = useState(0);
+  const [classId, setClassId] = useState(0);
+  const [sectionId, setSectionId] = useState(0);
+  const [isPosting, setIsPosting] = useState(false);
+  const [images, setImages] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     return () => {
@@ -105,8 +111,8 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
       localStorage.removeItem('question');
       localStorage.removeItem('note');
       localStorage.removeItem('shareLink');
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -118,78 +124,76 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
 
   useEffect(() => {
     if (postId) {
-      setValue(0)
+      setValue(0);
     }
 
     if (questionId) {
-      setValue(1)
+      setValue(1);
     }
 
     if (noteId) {
-      setValue(2)
+      setValue(2);
     }
 
     if (sharelinkId) {
-      setValue(3)
+      setValue(3);
     }
-  }, [postId, noteId, questionId, sharelinkId])
+  }, [postId, noteId, questionId, sharelinkId]);
 
   const {
     expertMode,
     data: { firstName, permission },
     userClasses: { classList }
-  } = user
+  } = user;
 
   const handleChange = useCallback((event, newValue) => {
-    setValue(newValue)
-  }, [])
+    setValue(newValue);
+  }, []);
 
-  const canBatchPost = useMemo(() =>
-    expertMode && permission.includes('one_touch_send_posts'),
-  [expertMode, permission])
+  const canBatchPost = useMemo(
+    () => expertMode && permission.includes('one_touch_send_posts'),
+    [expertMode, permission]
+  );
 
   const handleClassChange = useCallback(({ classId, sectionId }) => {
-    setClassId(classId)
-    setSectionId(sectionId)
-  }, [])
+    setClassId(classId);
+    setSectionId(sectionId);
+  }, []);
 
   const options = useMemo(() => {
     try {
-      const newClassList = {}
-      const currentClassList = classList.filter((cl) => cl.isCurrent)
-      currentClassList.forEach(cl => {
-        if (
-          cl.section &&
-          cl.section.length > 0 &&
-          cl.className &&
-          cl.bgColor
-        )
-          cl.section.forEach(s => {
-            newClassList[s.sectionId] = cl
-          })
-      })
-      return Object.keys(newClassList).map(sectionId => {
+      const newClassList = {};
+      const currentClassList = classList.filter((cl) => cl.isCurrent);
+      currentClassList.forEach((cl) => {
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+          cl.section.forEach((s) => {
+            newClassList[s.sectionId] = cl;
+          });
+      });
+      return Object.keys(newClassList).map((sectionId) => {
         return {
           ...newClassList[sectionId],
-          sectionId: Number(sectionId),
-        }
-      })
-    } finally {/* NONE */}
-  }, [classList])
+          sectionId: Number(sectionId)
+        };
+      });
+    } finally {
+      /* NONE */
+    }
+  }, [classList]);
 
-  const onSelect = useCallback(opts => {
-    setSelectedClasses(opts)
-  }, [])
+  const onSelect = useCallback((opts) => {
+    setSelectedClasses(opts);
+  }, []);
 
   function a11yProps(index) {
     return {
       id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`,
-    }
+      'aria-controls': `scrollable-auto-tabpanel-${index}`
+    };
   }
 
   function TabPanel(props) {
-    const { children, value, index, ...other } = props
+    const { children, value, index, ...other } = props;
 
     return (
       <div
@@ -199,13 +203,9 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         aria-labelledby={`scrollable-auto-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box p={3}>
-            {children}
-          </Box>
-        )}
+        {value === index && <Box p={3}>{children}</Box>}
       </div>
-    )
+    );
   }
 
   return (
@@ -216,7 +216,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
           paper: classes.dialogPaper
         }}
       >
-        <img src={postingImage} alt="Posting" className={classes.postingImage}/>
+        <img
+          src={postingImage}
+          alt="Posting"
+          className={classes.postingImage}
+        />
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid
@@ -227,32 +231,41 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
       >
         <Grid item xs={12} md={9} display="flex">
           <div className={classes.title}>
-            <Typography component="h1" variant="h4" color="textPrimary">Create New Post</Typography>
+            <Typography component="h1" variant="h4" color="textPrimary">
+              Create New Post
+            </Typography>
           </div>
         </Grid>
         <Grid item xs={12} md={9} display="flex">
-          {canBatchPost
-            ? <ClassMultiSelect
+          {canBatchPost ? (
+            <ClassMultiSelect
               noEmpty
-              variant='standard'
+              variant="standard"
               allLabel={`${firstName}'s Classes`}
               containerStyle={classes.selectClassTxtContainer}
               externalOptions={options}
-              placeholder='Select Classes...'
+              placeholder="Select Classes..."
               selected={selectedClasses}
               onSelect={onSelect}
             />
-            : <ClassSelector
+          ) : (
+            <ClassSelector
               classId={classId}
               sectionId={sectionId}
-              variant='standard'
+              variant="standard"
               onChange={handleClassChange}
-            />}
+            />
+          )}
         </Grid>
         <Grid item xs={12} lg={9} display="flex">
           <div className={classes.paperRoot}>
             <Appbar value={value} handleChange={handleChange} />
-            <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)} >
+            <TabPanel
+              key="create-post"
+              value={value}
+              index={0}
+              {...a11yProps(0)}
+            >
               <CreatePostSt
                 classList={selectedClasses}
                 classId={classId}
@@ -262,7 +275,12 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)} >
+            <TabPanel
+              key="create-question"
+              value={value}
+              index={1}
+              {...a11yProps(1)}
+            >
               <CreateQuestion
                 classList={selectedClasses}
                 currentSelectedClassId={classId}
@@ -272,7 +290,12 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)} >
+            <TabPanel
+              key="share-note"
+              value={value}
+              index={2}
+              {...a11yProps(2)}
+            >
               <CreateNotes
                 classList={selectedClasses}
                 currentTag={value}
@@ -284,7 +307,12 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)} >
+            <TabPanel
+              key="share-resources"
+              value={value}
+              index={3}
+              {...a11yProps(3)}
+            >
               <CreateShareLink
                 classList={selectedClasses}
                 currentTag={value}
@@ -298,7 +326,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         <Grid item xs={12} lg={3} display="flex">
           <div className={classes.paperRoot}>
             <div className={classes.circleinPostListTitle}>
-              <LoadImg url={circleinLogo} className={classes.circleinLogo} alt="Posting..." />
+              <LoadImg
+                url={circleinLogo}
+                className={classes.circleinLogo}
+                alt="Posting..."
+              />
               <Typography variant="subtitle1" color="textPrimary">
                 <b>Etiquette for CircleIn Posts</b>
               </Typography>
@@ -335,11 +367,13 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
               <Divider classes={{ root: classes.divider }} />
               <ListItem button>
                 <span style={{ fontSize: '1rem' }}>
-                8. Read our <a
+                  8. Read our{' '}
+                  <a
                     className={classes.link}
                     href="http://community.circleinapp.com/"
                     rel="noopener noreferrer"
-                    target="_blank">
+                    target="_blank"
+                  >
                     community rules
                   </a>
                 </span>
@@ -349,16 +383,16 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         </Grid>
       </Grid>
     </ErrorBoundary>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
-})
+});
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CreatePostLayout))
+)(withStyles(styles)(CreatePostLayout));

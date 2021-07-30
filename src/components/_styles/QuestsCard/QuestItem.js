@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     // ...theme.mixins.gutters(),
     paddingLeft: theme.spacing(),
@@ -38,7 +38,7 @@ export const styles = theme => ({
     flex: 1
   },
   removeButton: {
-    padding: theme.spacing(1/2)
+    padding: theme.spacing(1 / 2)
   },
   body: {
     marginTop: theme.spacing(),

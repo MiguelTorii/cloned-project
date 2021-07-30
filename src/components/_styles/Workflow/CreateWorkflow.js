@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   root: {
@@ -6,6 +6,6 @@ export const useStyles = makeStyles(() => ({
   },
   button: {
     fontWeight: 'bold',
-    padding: 0,
-  },
-}))
+    padding: 0
+  }
+}));

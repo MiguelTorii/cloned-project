@@ -50,7 +50,7 @@ const ShareLinkWidget = ({ classes, shareLink }: Props) => {
         </Tooltip>
       </CopyToClipboard>
     </div>
-  )
+  );
 };
 
 export default withStyles(styles)(ShareLinkWidget);

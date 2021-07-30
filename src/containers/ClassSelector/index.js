@@ -19,7 +19,7 @@ import { processClasses } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
 import RequestClass from '../RequestClass';
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControl: {
     width: '100%'
   },
@@ -43,7 +43,7 @@ const styles = theme => ({
   },
   option: {
     '&.MuiAutocomplete-option:hover': {
-      background: theme.circleIn.palette.brand,
+      background: theme.circleIn.palette.brand
     }
   },
   classList: {
@@ -82,79 +82,81 @@ const ClassesSelector = ({
     isLoading,
     error,
     data: { segment, userId },
-    userClasses: {
-      classList,
-    }
+    userClasses: { classList }
   },
   onChange,
   classId,
   router: {
-    location: {
-      pathname
-    }
+    location: { pathname }
   },
   sectionId
 }: Props) => {
-  const [userClasses, setUserClasses] = useState([])
-  const [isEdit, setIsEdit] = useState(false)
-  const [value, setValue] = useState('')
-  const [open, setOpen] = useState(false)
-  const [openRequestClass, setOpenRequestClass] = useState(false)
+  const [userClasses, setUserClasses] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [value, setValue] = useState('');
+  const [open, setOpen] = useState(false);
+  const [openRequestClass, setOpenRequestClass] = useState(false);
 
   useEffect(() => {
-    if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }))
-  }, [classId, sectionId])
+    if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }));
+  }, [classId, sectionId]);
 
   const handleLoadClasses = useCallback(async () => {
     try {
-      const currentClassList = classList.filter((cl) => cl.isCurrent)
-      const userClasses = processClasses({ classes: currentClassList, segment });
-      setUserClasses(userClasses)
-      if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }))
+      const currentClassList = classList.filter((cl) => cl.isCurrent);
+      const userClasses = processClasses({
+        classes: currentClassList,
+        segment
+      });
+      setUserClasses(userClasses);
+      if (classId && sectionId)
+        setValue(JSON.stringify({ classId, sectionId }));
     } catch (err) {
       console.log(err);
     }
-  }, [classId, classList, sectionId, segment])
+  }, [classId, classList, sectionId, segment]);
 
   useEffect(() => {
     const init = async () => {
-      if (pathname.includes('/edit')) setIsEdit(true)
-      await handleLoadClasses()
-    }
+      if (pathname.includes('/edit')) setIsEdit(true);
+      await handleLoadClasses();
+    };
 
-    init()
-  }, [handleLoadClasses, pathname])
+    init();
+  }, [handleLoadClasses, pathname]);
 
-  const handleChange = useCallback((event, option) => {
-    if (!option) {
-      setValue(null)
-      onChange({ classId: 0, sectionId: 0 });
-    } else {
-      const { value: selectedClass } = option;
-      if (selectedClass === 'new') {
-        setOpen(true)
-        return;
+  const handleChange = useCallback(
+    (event, option) => {
+      if (!option) {
+        setValue(null);
+        onChange({ classId: 0, sectionId: 0 });
+      } else {
+        const { value: selectedClass } = option;
+        if (selectedClass === 'new') {
+          setOpen(true);
+          return;
+        }
+        setValue(selectedClass);
+        const { classId, sectionId } = JSON.parse(selectedClass);
+        onChange({ classId, sectionId });
       }
-      setValue(selectedClass)
-      const { classId, sectionId } = JSON.parse(selectedClass);
-      onChange({ classId, sectionId });
-    }
-  }, [onChange])
+    },
+    [onChange]
+  );
 
   const handleCloseManageClasses = useCallback(async () => {
-    setOpen(false)
+    setOpen(false);
     await handleLoadClasses();
-  }, [handleLoadClasses])
+  }, [handleLoadClasses]);
 
   const handleOpenRequestClass = useCallback(() => {
     handleCloseManageClasses();
-    setOpenRequestClass(true)
-  }, [handleCloseManageClasses])
+    setOpenRequestClass(true);
+  }, [handleCloseManageClasses]);
 
   const handleCloseRequestClass = useCallback(() => {
-    setOpenRequestClass(false)
-  }, [])
-
+    setOpenRequestClass(false);
+  }, []);
 
   if (isLoading) return <CircularProgress size={12} />;
   if (userId === '' || error)
@@ -164,7 +166,11 @@ const ClassesSelector = ({
     <>
       <ErrorBoundary>
         <div className={classes.root}>
-          <FormControl className={classes.classList} variant="outlined" fullWidth>
+          <FormControl
+            className={classes.classList}
+            variant="outlined"
+            fullWidth
+          >
             <Autocomplete
               id="select-class"
               size="small"
@@ -177,24 +183,32 @@ const ClassesSelector = ({
               getOptionLabel={(option) => option.label}
               onChange={handleChange}
               renderOption={(option) => {
-                return (<div className={classes.optionItem}>
-                  {value === option.value
-                    ? <CheckCircleIcon className={classes.mr1} />
-                    : <RadioButtonUncheckedIcon className={classes.mr1} />}
-                  <span>{option.label}</span>
-                </div>
-                )}
-              }
-              renderInput={params => (
+                return (
+                  <div className={classes.optionItem}>
+                    {value === option.value ? (
+                      <CheckCircleIcon className={classes.mr1} />
+                    ) : (
+                      <RadioButtonUncheckedIcon className={classes.mr1} />
+                    )}
+                    <span>{option.label}</span>
+                  </div>
+                );
+              }}
+              renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="filled"
                   placeholder="Choose a class"
                   InputProps={{
                     ...params.InputProps,
-                    startAdornment: <InputAdornment className={classes.classIcon} position="start">
-                      <ClassFeedIcon />
-                    </InputAdornment>
+                    startAdornment: (
+                      <InputAdornment
+                        className={classes.classIcon}
+                        position="start"
+                      >
+                        <ClassFeedIcon />
+                      </InputAdornment>
+                    )
                   }}
                 />
               )}
@@ -217,7 +231,7 @@ const ClassesSelector = ({
       </ErrorBoundary>
     </>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,

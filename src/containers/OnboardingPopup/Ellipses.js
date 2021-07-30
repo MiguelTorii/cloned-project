@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 type Props = {
   step: number,
-  totalSteps: number,
+  totalSteps: number
 };
 
 const Ellipses = ({ step, totalSteps }: Props) => {
@@ -31,16 +31,11 @@ const Ellipses = ({ step, totalSteps }: Props) => {
 
   return (
     <div className={classes.root}>
-      {
-        [...Array(totalSteps).keys()].map((index) => (
-          <div key={index} className={classes.ellipse}>
-            {
-              index >= step &&
-                <div className={classes.whiteEllipse} />
-            }
-          </div>
-        ))
-      }
+      {[...Array(totalSteps).keys()].map((index) => (
+        <div key={index} className={classes.ellipse}>
+          {index >= step && <div className={classes.whiteEllipse} />}
+        </div>
+      ))}
     </div>
   );
 };

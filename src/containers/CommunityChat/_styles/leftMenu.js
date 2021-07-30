@@ -1,8 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-  },
+  container: {},
   loadingContainer: {
     height: '100%'
   },
@@ -13,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     margin: theme.spacing(1.5, 3, 0, 3),
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(1.5, 1, 0, 1),
+      margin: theme.spacing(1.5, 1, 0, 1)
     }
   },
   root: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   search: {
     backgroundColor: 'rgba(34, 34, 34, 0.6)',
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 2)
   },
   inputRoot: {
-    color: 'inherit',
+    color: 'inherit'
   },
   placeholderInput: {
     color: 'white',
@@ -41,14 +40,14 @@ const useStyles = makeStyles((theme) => ({
   },
   headerTitle: {
     margin: theme.spacing(1, 1, 0, 1),
-    width: `calc(100% - ${theme.spacing(2)}px)`,
+    width: `calc(100% - ${theme.spacing(2)}px)`
   },
   createNewChate: {
     fontWeight: 'bold'
   },
   gridItem: {
     width: `calc(100% - ${theme.spacing(2)}px)`,
-    margin: theme.spacing(2, 1),
+    margin: theme.spacing(2, 1)
   },
   gridChatList: {
     width: 'inherit',
@@ -60,8 +59,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 500,
     marginBottom: theme.spacing(6)
   },
-  imgIcon: {
-  },
+  imgIcon: {},
   newButton: {
     padding: 0,
     minWidth: 0,
@@ -85,6 +83,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.circleIn.palette.appBar,
     marginTop: theme.spacing()
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

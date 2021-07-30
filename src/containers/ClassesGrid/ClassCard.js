@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 // import IconButton from '@material-ui/core/IconButton';
 // import MoreVertIcon from '@material-ui/icons/MoreVert';
-import LeaveClassPopover from 'containers/ClassesGrid/LeaveClassPopover'
+import LeaveClassPopover from 'containers/ClassesGrid/LeaveClassPopover';
 
 type Props = {
   sectionDisplayName: string,
@@ -17,8 +17,8 @@ type Props = {
   canLeave: boolean,
   bgColor: string,
   navigate: Function,
-  isCurrent: boolean,
-}
+  isCurrent: boolean
+};
 
 const ClassCard = ({
   sectionDisplayName,
@@ -28,9 +28,9 @@ const ClassCard = ({
   navigate,
   canLeave,
   bgColor,
-  isCurrent,
+  isCurrent
 }: Props) => {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
       cursor: 'pointer',
@@ -41,21 +41,23 @@ const ClassCard = ({
       flexDirection: 'column',
       justifyContent: 'space-between',
       background: theme.circleIn.palette.appBar,
-      borderTop: `${theme.spacing(2.5)}px solid ${isCurrent ? bgColor : theme.circleIn.palette.gray3}`,
+      borderTop: `${theme.spacing(2.5)}px solid ${
+        isCurrent ? bgColor : theme.circleIn.palette.gray3
+      }`
     },
     media: {
       height: 0,
-      paddingTop: '56.25%', // 16:9
+      paddingTop: '56.25%' // 16:9
     },
     expand: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
       transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
+        duration: theme.transitions.duration.shortest
+      })
     },
     expandOpen: {
-      transform: 'rotate(180deg)',
+      transform: 'rotate(180deg)'
     },
     circle: {
       width: 95,
@@ -65,15 +67,15 @@ const ClassCard = ({
       bottom: -25,
       right: -15,
       zIndex: 0,
-      fontSize:20,
-      color:'#fff',
-      lineHeight:100,
-      textAlign:'center',
+      fontSize: 20,
+      color: '#fff',
+      lineHeight: 100,
+      textAlign: 'center',
       opacity: 0.2,
       background: '#FFF'
     },
     avatar: {
-      backgroundColor: red[500],
+      backgroundColor: red[500]
     },
     title: {
       fontWeight: 'bold',
@@ -86,24 +88,21 @@ const ClassCard = ({
     }
   }));
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null)
-  
+  const [anchorEl, setAnchorEl] = useState(null);
+
   // const handleClickIcon = event => {
   //   event.stopPropagation()
   //   setAnchorEl(anchorEl ? null : event.currentTarget);
   // }
 
-  const handleClose = event => {
-    event.stopPropagation()
-    setAnchorEl(null)
-  }
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
 
   return (
-    <Card 
-      className={classes.root}
-      onClick={navigate}
-    >
-      <LeaveClassPopover 
+    <Card className={classes.root} onClick={navigate}>
+      <LeaveClassPopover
         anchorEl={anchorEl}
         handleClose={handleClose}
         leaveClass={handleLeaveClass}
@@ -115,25 +114,15 @@ const ClassCard = ({
         //   </IconButton>
         // }
         title={
-          <Typography
-            className={classes.title}
-          >
-            {courseDisplayName}
-          </Typography>
+          <Typography className={classes.title}>{courseDisplayName}</Typography>
         }
       />
-      <CardContent 
-        className={classes.content}
-      >
-        <Typography>
-          {sectionDisplayName}
-        </Typography>
-        <Typography>
-          {instructorDisplayName}
-        </Typography>
+      <CardContent className={classes.content}>
+        <Typography>{sectionDisplayName}</Typography>
+        <Typography>{instructorDisplayName}</Typography>
       </CardContent>
     </Card>
   );
-}
+};
 
-export default ClassCard
+export default ClassCard;

@@ -17,7 +17,11 @@ type Props = {
 };
 
 const CreateNotesPage = (props: Props) => {
-  const { match: { params: { noteId } } } = props
+  const {
+    match: {
+      params: { noteId }
+    }
+  } = props;
 
   return (
     <main>

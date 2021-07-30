@@ -3,8 +3,8 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import type { Node } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { differenceInMilliseconds } from "date-fns";
-import { useIdleTimer } from "react-idle-timer";
+import { differenceInMilliseconds } from 'date-fns';
+import { useIdleTimer } from 'react-idle-timer';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -13,18 +13,19 @@ import Hidden from '@material-ui/core/Hidden';
 import { logEvent } from '../../api/analytics';
 import { styles } from '../_styles/PostItem';
 import { TIMEOUT } from 'constants/common';
-import Recommendations from "../../containers/Recommendations";
-import { Grid } from "@material-ui/core";
-import { useLocation } from "react-router";
-import RecommendationsFeedback from "../RecommendationsFeedback";
-import { POST_SOURCE } from "../../constants/app";
-import Box from "@material-ui/core/Box";
+import Recommendations from '../../containers/Recommendations';
+import { Grid } from '@material-ui/core';
+import { useLocation } from 'react-router';
+import RecommendationsFeedback from '../RecommendationsFeedback';
+import { POST_SOURCE } from '../../constants/app';
+import Box from '@material-ui/core/Box';
 
 const timeout = TIMEOUT.POST_ITEM;
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) =>
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   // eslint-disable-next-line react/destructuring-assignment
-  <RouterLink to={`/feed?id=${props.feedid}`} {...props} ref={ref} />);
+  <RouterLink to={`/feed?id=${props.feedid}`} {...props} ref={ref} />
+));
 
 type Props = {
   classes: Object,
@@ -32,13 +33,7 @@ type Props = {
   feedId: number
 };
 
-const PostItem = ({
-  classes,
-  children,
-  feedId,
-  isFlashcard,
-}: Props) => {
-
+const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
   const elapsed = useRef(0);
   const totalIdleTime = useRef(0);
   const remaining = useRef(timeout);
@@ -55,13 +50,9 @@ const PostItem = ({
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const {
-    getRemainingTime,
-    getLastActiveTime,
-    getElapsedTime
-  } = useIdleTimer({
+  const { getRemainingTime, getLastActiveTime, getElapsedTime } = useIdleTimer({
     timeout,
-    onActive: handleOnActive,
+    onActive: handleOnActive
   });
 
   useEffect(() => {
@@ -87,12 +78,18 @@ const PostItem = ({
             elapsed: elapsed.current,
             total_idle_time: totalIdleTime.current,
             effective_time: elapsed.current - totalIdleTime.current,
-            platform: 'Web',
+            platform: 'Web'
           }
         });
       } catch (err) {}
-    }
-  }, [feedId, getElapsedTime, getLastActiveTime, getRemainingTime, isFlashcard]);
+    };
+  }, [
+    feedId,
+    getElapsedTime,
+    getLastActiveTime,
+    getRemainingTime,
+    isFlashcard
+  ]);
 
   return (
     <div className={classes.container}>
@@ -124,6 +121,6 @@ const PostItem = ({
       </Grid>
     </div>
   );
-}
+};
 
 export default withStyles(styles)(PostItem);

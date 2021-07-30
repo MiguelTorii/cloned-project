@@ -18,11 +18,11 @@ export default makeStyles((theme) => ({
     fontSize: 14,
     fontWeight: 700,
     padding: '8px 12px',
-    background: theme.circleIn.palette.tooltipBackground,
+    background: theme.circleIn.palette.tooltipBackground
   },
   arrow: {
     left: 'auto !important',
     right: 4,
-    color: theme.circleIn.palette.tooltipBackground,
+    color: theme.circleIn.palette.tooltipBackground
   }
 }));

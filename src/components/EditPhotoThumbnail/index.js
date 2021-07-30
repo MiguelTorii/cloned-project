@@ -25,7 +25,6 @@ import GradientButton from 'components/Basic/Buttons/GradientButton';
 
 import { styles } from '../_styles/EditPhotoThumbnail';
 
-
 type Props = {
   classes: Object,
   id: string,
@@ -51,7 +50,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
     rotate: 0
   };
 
-  setEditorRef = editor => {
+  setEditorRef = (editor) => {
     this.editor = editor;
   };
 
@@ -74,8 +73,8 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
       // $FlowIgnore
       const canvas = this.editor.getImage().toDataURL();
       fetch(canvas)
-        .then(res => res.blob())
-        .then(blob => {
+        .then((res) => res.blob())
+        .then((blob) => {
           const newImage = window.URL.createObjectURL(blob);
           onSave(id, newImage);
           this.handleClose();
@@ -89,23 +88,23 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
   };
 
   handleZoomIn = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       zoom: prevState.zoom + 0.1 > 3 ? 3 : prevState.zoom + 0.1
     }));
   };
 
   handleZoomOut = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       zoom: prevState.zoom - 0.1 < 0 ? 0 : prevState.zoom - 0.1
     }));
   };
 
   handleRotateRight = () => {
-    this.setState(prevState => ({ rotate: prevState.rotate + 45 }));
+    this.setState((prevState) => ({ rotate: prevState.rotate + 45 }));
   };
 
   handleRotateLeft = () => {
-    this.setState(prevState => ({ rotate: prevState.rotate - 45 }));
+    this.setState((prevState) => ({ rotate: prevState.rotate - 45 }));
   };
 
   renderCreateIcon = () => {
@@ -156,7 +155,10 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
             <IconButton
               aria-label="Edit"
               disabled={loaded || loading}
-              className={cx(classes.button, type === 'application/pdf' && classes.hide)}
+              className={cx(
+                classes.button,
+                type === 'application/pdf' && classes.hide
+              )}
               onClick={this.handleOpen}
             >
               {this.renderCreateIcon()}
@@ -193,10 +195,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
         </Paper>
         <Dialog
           title="Edit Image"
-          className={clsx(
-            classes.modalRoot,
-            !image && classes.hidden
-          )}
+          className={clsx(classes.modalRoot, !image && classes.hidden)}
           open={open}
           onCancel={this.handleClose}
         >
@@ -247,7 +246,10 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
               onClick={this.handleSave}
               style={{ width: '100%' }}
             >
-              Save changes <span role='img' aria-label='tada'>🎉</span>
+              Save changes{' '}
+              <span role="img" aria-label="tada">
+                🎉
+              </span>
             </GradientButton>
           </div>
         </Dialog>

@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import cx from 'classnames';
 import moment from 'moment';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from "@date-io/date-fns";
+import DateFnsUtils from '@date-io/date-fns';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -28,11 +28,11 @@ class DateRange extends React.PureComponent<Props, State> {
   state = {
     from: null,
     to: null,
-    open: false,
+    open: false
   };
 
   handleClick = () => {
-    this.setState({ open: true })
+    this.setState({ open: true });
   };
 
   handleReset = () => {
@@ -40,7 +40,7 @@ class DateRange extends React.PureComponent<Props, State> {
     this.setState({
       from: null,
       to: null
-    })
+    });
     onChange('fromDate', null);
     onChange('toDate', null);
   };
@@ -55,19 +55,19 @@ class DateRange extends React.PureComponent<Props, State> {
     const { from, to } = this.state;
     onChange('fromDate', from);
     onChange('toDate', to);
-    this.setState({ open: false })
+    this.setState({ open: false });
   };
 
-  handleChange = d => () => {
+  handleChange = (d) => () => {
     const { from } = this.state;
-    const date = moment(d).utc()
+    const date = moment(d).utc();
     if (!from) {
       this.setState({ from: date });
     } else if (date.isBefore(from, 'day')) {
       this.setState({ from: date });
     } else if (date.isAfter(from, 'day')) {
       if (date.isSame(moment(), 'day')) {
-        this.setState({ to: moment().utc() })
+        this.setState({ to: moment().utc() });
       } else this.setState({ to: date });
     }
   };
@@ -125,7 +125,7 @@ class DateRange extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, from, to } = this.props;
-    const { open } = this.state
+    const { open } = this.state;
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Fragment>
@@ -133,7 +133,7 @@ class DateRange extends React.PureComponent<Props, State> {
             <TransparentButton
               variant="outlined"
               className={classes.root}
-              onClick={(from || to) ? this.handleReset : this.handleClick}
+              onClick={from || to ? this.handleReset : this.handleClick}
               compact
             >
               {this.renderButtonText()}
@@ -157,7 +157,7 @@ class DateRange extends React.PureComponent<Props, State> {
             label=""
             className={classes.picker}
             open={open}
-            variant='dialog'
+            variant="dialog"
             renderDay={this.handleRenderDay}
           />
         </Fragment>

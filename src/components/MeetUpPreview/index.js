@@ -4,7 +4,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar'
+import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -12,7 +12,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import SettingsIcon from '@material-ui/icons/Settings';
-import Box from '@material-ui/core/Box'
+import Box from '@material-ui/core/Box';
 import ReplyIcon from '@material-ui/icons/Reply';
 import DeviceSettings from '../MeetUp/DeviceSettings';
 import Dialog from '../Dialog';
@@ -53,7 +53,7 @@ class Preview extends React.Component<Props, State> {
     this.videoinput = React.createRef();
   }
 
-  handleChange = kind => event => {
+  handleChange = (kind) => (event) => {
     const { onUpdateDeviceSelection } = this.props;
     onUpdateDeviceSelection(kind, event.target.value);
   };
@@ -77,9 +77,9 @@ class Preview extends React.Component<Props, State> {
   };
 
   goBack = () => {
-    const { pushTo } = this.props
-    pushTo('/')
-  }
+    const { pushTo } = this.props;
+    pushTo('/');
+  };
 
   render() {
     const {
@@ -105,7 +105,10 @@ class Preview extends React.Component<Props, State> {
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={1}>
           <Typography component="p" variant="h4" className={classes.ready}>
-            Ready to Join? <span role='img' aria-label='rocket'>🚀</span>
+            Ready to Join?{' '}
+            <span role="img" aria-label="rocket">
+              🚀
+            </span>
           </Typography>
           <div className={classes.videoWrapper}>
             <audio ref={this.audioinput} id="audioinputpreview" autoPlay />
@@ -115,35 +118,36 @@ class Preview extends React.Component<Props, State> {
               id="videoinputpreview"
               autoPlay
             />
-            {!isVideoEnabled && <div className={classes.profile}>
-              {profileImage
-                ? <Avatar
-                  alt={initials}
-                  variant="square"
-                  src={profileImage}
-                  classes={{
-                    img: classes.avatarImage
-                  }}
-                  className={classes.profileImage}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 20,
-                  }}
-                />
-                : <Typography
-                  className={classes.initials}
-                >
-                  {initials}
-                </Typography>
-              }
-            </div>}
+            {!isVideoEnabled && (
+              <div className={classes.profile}>
+                {profileImage ? (
+                  <Avatar
+                    alt={initials}
+                    variant="square"
+                    src={profileImage}
+                    classes={{
+                      img: classes.avatarImage
+                    }}
+                    className={classes.profileImage}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: 20
+                    }}
+                  />
+                ) : (
+                  <Typography className={classes.initials}>
+                    {initials}
+                  </Typography>
+                )}
+              </div>
+            )}
           </div>
           <Box
             className={classes.box}
-            display='flex'
-            alignItems='space-between'
-            justifyContent='space-between'
+            display="flex"
+            alignItems="space-between"
+            justifyContent="space-between"
           >
             <Button
               color="default"
@@ -154,8 +158,14 @@ class Preview extends React.Component<Props, State> {
               size="small"
             >
               <Box>
-                {!isVideoEnabled ? <VideocamOffIcon className={classes.icon} /> : <VideocamIcon className={classes.icon} />}
-                <Typography className={classes.controlLabel}>Turn {isVideoEnabled ? 'off' : 'on'} camera</Typography>
+                {!isVideoEnabled ? (
+                  <VideocamOffIcon className={classes.icon} />
+                ) : (
+                  <VideocamIcon className={classes.icon} />
+                )}
+                <Typography className={classes.controlLabel}>
+                  Turn {isVideoEnabled ? 'off' : 'on'} camera
+                </Typography>
               </Box>
             </Button>
             <Button
@@ -167,8 +177,14 @@ class Preview extends React.Component<Props, State> {
               size="small"
             >
               <Box>
-                {!isAudioEnabled ? <MicOffIcon className={classes.icon} /> : <MicIcon className={classes.icon} />}
-                <Typography className={classes.controlLabel}>{isAudioEnabled ? 'Mute your' : 'Turn on'} mic</Typography>
+                {!isAudioEnabled ? (
+                  <MicOffIcon className={classes.icon} />
+                ) : (
+                  <MicIcon className={classes.icon} />
+                )}
+                <Typography className={classes.controlLabel}>
+                  {isAudioEnabled ? 'Mute your' : 'Turn on'} mic
+                </Typography>
               </Box>
             </Button>
             <Button
@@ -180,7 +196,9 @@ class Preview extends React.Component<Props, State> {
             >
               <Box>
                 <SettingsIcon className={classes.icon} />
-                <Typography className={classes.controlLabel}>A/V Settings</Typography>
+                <Typography className={classes.controlLabel}>
+                  A/V Settings
+                </Typography>
               </Box>
             </Button>
             <Button
@@ -203,10 +221,15 @@ class Preview extends React.Component<Props, State> {
             onClick={onJoin}
             disabled={error}
           >
-            LET'S GO! <span className={classes.tada} role='img' aria-label='tada'> 🎉</span>
+            LET'S GO!{' '}
+            <span className={classes.tada} role="img" aria-label="tada">
+              {' '}
+              🎉
+            </span>
           </Button>
           <Typography component="p" className={classes.rules}>
-            By joining this call, you agree to abide by and respect CircleIn’s Community Rules
+            By joining this call, you agree to abide by and respect CircleIn’s
+            Community Rules
           </Typography>
         </Paper>
         <DeviceSettings

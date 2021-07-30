@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import CommentQuill from './CommentQuill'
+import CommentQuill from './CommentQuill';
 import SkeletonLoad from './SkeletonLoad';
 
 import styles from '../_styles/PostItem/PostItemAddComment';
@@ -40,43 +40,49 @@ const PostItemAddComment = ({
   toolbarPrefix,
   defaultValue
 }: Props) => {
-  const [value, setValue] = useState('')
-  const [showError, setShowError] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [value, setValue] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const handleChange = useCallback(event => {
-    setValue(event.target.value)
-  }, [])
+  const handleChange = useCallback((event) => {
+    setValue(event.target.value);
+  }, []);
 
-  const handleRTEChange = useCallback(updatedValue => {
-    if (updatedValue.trim() === '<p><br></p>') setValue('')
-    else setValue(updatedValue)
-  }, [])
+  const handleRTEChange = useCallback((updatedValue) => {
+    if (updatedValue.trim() === '<p><br></p>') setValue('');
+    else setValue(updatedValue);
+  }, []);
 
-  const handleClick = useCallback((quill) => async () => {
-    setIsLoading(true)
-    if (value.trim() === '' || !value) {
-      setShowError(true)
-    } else {
-      await onPostComment({ comment: value });
-      setValue('')
-      if (quill) {
-        quill.setText('')
+  const handleClick = useCallback(
+    (quill) => async () => {
+      setIsLoading(true);
+      if (value.trim() === '' || !value) {
+        setShowError(true);
+      } else {
+        await onPostComment({ comment: value });
+        setValue('');
+        if (quill) {
+          quill.setText('');
+        }
+        if (onCancelComment) onCancelComment();
       }
-      if (onCancelComment) onCancelComment()
-    }
-    setIsLoading(false)
-  }, [onCancelComment, onPostComment, value])
+      setIsLoading(false);
+    },
+    [onCancelComment, onPostComment, value]
+  );
 
-  const handleKeyUp = useCallback((event) => {
-    if (event.key === 'Escape') {
-      onEscape();
-    }
-  }, [onEscape]);
+  const handleKeyUp = useCallback(
+    (event) => {
+      if (event.key === 'Escape') {
+        onEscape();
+      }
+    },
+    [onEscape]
+  );
 
   return (
     <div className={cx(classes.container, isReply && classes.reply)}>
@@ -114,6 +120,6 @@ const PostItemAddComment = ({
       {isLoading && <SkeletonLoad />}
     </div>
   );
-}
+};
 
 export default withStyles(styles)(PostItemAddComment);

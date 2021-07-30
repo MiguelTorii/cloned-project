@@ -1,8 +1,8 @@
 // @flow
-import React from 'react'
-import Typography from '@material-ui/core/Typography'
-import Dialog from 'components/Dialog'
-import useStyles from 'components/_styles/BlockMemberModal'
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Dialog from 'components/Dialog';
+import useStyles from 'components/_styles/BlockMemberModal';
 
 type Props = {
   closeModal: Function,
@@ -11,9 +11,8 @@ type Props = {
   blockUserName: string
 };
 
-
 const BlockMemberModal = ({ closeModal, onOk, open, blockUserName }: Props) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Dialog
@@ -38,20 +37,12 @@ const BlockMemberModal = ({ closeModal, onOk, open, blockUserName }: Props) => {
       >
         <b>{blockUserName}</b> will no longer be able to:
       </Typography>
-      <li>
-        See your posts in classes you have together
-      </li>
-      <li>
-        Tag you
-      </li>
-      <li>
-        Invite you to new chats
-      </li>
-      <li>
-        Send you messages
-      </li>
+      <li>See your posts in classes you have together</li>
+      <li>Tag you</li>
+      <li>Invite you to new chats</li>
+      <li>Send you messages</li>
     </Dialog>
-  )
-}
+  );
+};
 
-export default BlockMemberModal
+export default BlockMemberModal;

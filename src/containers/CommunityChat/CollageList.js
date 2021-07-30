@@ -1,12 +1,12 @@
 // @flow
-import React from 'react'
-import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
+import React from 'react';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
 
-import CommunityMenu from 'components/CommunityMenu'
-import useStyles from './_styles/collageList'
+import CommunityMenu from 'components/CommunityMenu';
+import useStyles from './_styles/collageList';
 
-import DEFAULT_COMMUNITY_MENU_ITEMS from './constants'
+import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
 
 type Props = {
   unreadMessageCount: number,
@@ -23,29 +23,31 @@ const CollageList = ({
   local,
   handleSelect
 }: Props) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  return <List component="nav">
-    <CommunityMenu
-      key="chat"
-      local={local}
-      item={DEFAULT_COMMUNITY_MENU_ITEMS}
-      unreadMessageCount={unreadMessageCount}
-      selectedCourse={selectedCourse}
-      handleSelect={handleSelect}
-    />
-    <Divider classes={{ root: classes.divider }} />
-    {communities.map(course => (
+  return (
+    <List component="nav">
       <CommunityMenu
-        key={course.id}
+        key="chat"
         local={local}
-        item={course}
+        item={DEFAULT_COMMUNITY_MENU_ITEMS}
         unreadMessageCount={unreadMessageCount}
         selectedCourse={selectedCourse}
         handleSelect={handleSelect}
       />
-    ))}
-  </List>
-}
+      <Divider classes={{ root: classes.divider }} />
+      {communities.map((course) => (
+        <CommunityMenu
+          key={course.id}
+          local={local}
+          item={course}
+          unreadMessageCount={unreadMessageCount}
+          selectedCourse={selectedCourse}
+          handleSelect={handleSelect}
+        />
+      ))}
+    </List>
+  );
+};
 
-export default CollageList
+export default CollageList;

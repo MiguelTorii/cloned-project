@@ -22,7 +22,7 @@ import Report from '../Report';
 import DeletePost from '../DeletePost';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -49,23 +49,18 @@ type Props = {
 };
 
 const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
-  const [photoNote, setPhotoNote] = useState(null)
-  const [report, setReport] = useState(false)
-  const [deletePost, setDeletePost] = useState(false)
+  const [photoNote, setPhotoNote] = useState(null);
+  const [report, setReport] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
   const {
     expertMode,
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
   } = user;
 
   const loadData = useCallback(async () => {
     const pn = await getNotes({ userId, noteId });
-    setPhotoNote(pn)
+    setPhotoNote(pn);
     const {
       postInfo: { feedId }
     } = pn;
@@ -77,18 +72,18 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   }, [noteId, userId]);
 
   useEffect(() => {
-    setPhotoNote(null)
-    loadData()
-  }, [loadData, noteId])
+    setPhotoNote(null);
+    loadData();
+  }, [loadData, noteId]);
 
   const handleBookmark = async () => {
     if (!photoNote) return;
     const { feedId, bookmarked } = photoNote;
     try {
-      setPhotoNote({ ...photoNote, bookmarked: !bookmarked })
+      setPhotoNote({ ...photoNote, bookmarked: !bookmarked });
       await bookmark({ feedId, userId, remove: bookmarked });
     } catch (err) {
-      setPhotoNote({ ...photoNote, bookmarked })
+      setPhotoNote({ ...photoNote, bookmarked });
     }
   };
 
@@ -101,14 +96,14 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   };
 
   const handleDelete = () => {
-    setDeletePost(true)
+    setDeletePost(true);
   };
 
-  const handleDeleteClose = ({ deleted }: {deleted: ?boolean}) => {
+  const handleDeleteClose = ({ deleted }: { deleted: ?boolean }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
-    setDeletePost(false)
+    setDeletePost(false);
   };
 
   if (!photoNote)
@@ -138,14 +133,14 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
     bookmarked
   } = photoNote;
 
-  const notesMap = notes.map(item => ({
+  const notesMap = notes.map((item) => ({
     src: item.fullNoteUrl,
     fileName: item.note,
     thumbnail: item.noteUrl
   }));
 
-  const images = notesMap.filter(nm => !nm.src.includes('.pdf'))
-  const pdfs = notesMap.filter(nm => nm.src.includes('.pdf'))
+  const images = notesMap.filter((nm) => !nm.src.includes('.pdf'));
+  const pdfs = notesMap.filter((nm) => nm.src.includes('.pdf'));
 
   return (
     <div className={classes.root}>
@@ -233,7 +228,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
       </ErrorBoundary>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
@@ -244,7 +239,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       push: routePush,
-      pop: goBack,
+      pop: goBack
     },
     dispatch
   );

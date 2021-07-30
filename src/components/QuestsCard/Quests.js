@@ -26,11 +26,15 @@ class Quests extends React.PureComponent<Props, State> {
   };
 
   handlePrevious = () => {
-    this.setState(prevState => ({ currentSlide: prevState.currentSlide - 1 }));
+    this.setState((prevState) => ({
+      currentSlide: prevState.currentSlide - 1
+    }));
   };
 
   handleNext = () => {
-    this.setState(prevState => ({ currentSlide: prevState.currentSlide + 1 }));
+    this.setState((prevState) => ({
+      currentSlide: prevState.currentSlide + 1
+    }));
   };
 
   render() {

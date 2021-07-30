@@ -46,7 +46,7 @@ class About extends React.PureComponent<Props> {
                 Help your classmates learn more about you
               </Button>
             ) : (
-              about.map(item => (
+              about.map((item) => (
                 <div key={item.id}>
                   <Typography variant="h6" gutterBottom>
                     {item.section}

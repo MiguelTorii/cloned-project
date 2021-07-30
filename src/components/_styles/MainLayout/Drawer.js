@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   backHeader: {
@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   },
   newItem: {
     width: 'auto',
@@ -38,14 +38,14 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(6),
     background: theme.circleIn.palette.hoverMenu,
     '& span': {
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
     paddingTop: 0,
     paddingBottom: 0,
     margin: theme.spacing(1, 2),
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   otherPath: {
     width: 'auto',
@@ -55,7 +55,7 @@ export const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   otherBlue: {
     width: 'auto',
@@ -66,7 +66,7 @@ export const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   menuIcon: {
     marginRight: theme.spacing(),
@@ -76,7 +76,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   separator: {
-    marginTop: 'auto',
+    marginTop: 'auto'
   },
   verticalSpacing: {
     margin: theme.spacing(2, 0, 1, 0)
@@ -92,10 +92,10 @@ export const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   newIconContainer: {
-    padding: theme.spacing(3/2),
+    padding: theme.spacing(3 / 2),
     borderRadius: '50%',
     marginRight: theme.spacing(),
     backgroundImage: `linear-gradient(to top, #94daf9, ${theme.circleIn.palette.primaryii222})`
@@ -133,7 +133,7 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     '&:hover': {
       background: theme.circleIn.palette.hoverMenu
-    },
+    }
   },
   flashcardsIcon: {
     width: 24,

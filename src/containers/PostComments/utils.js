@@ -4,11 +4,11 @@
 export const processComments = (comments: Array<Object>) => {
   const commentsById = new Map();
   const commentsTree = [];
-  comments.forEach(comment => {
+  comments.forEach((comment) => {
     commentsById.set(comment.id, { ...comment, children: [] });
   });
 
-  commentsById.forEach(comment => {
+  commentsById.forEach((comment) => {
     if (comment.rootCommentId) {
       const rootComment = commentsById.get(comment.rootCommentId);
       const parentComment = commentsById.get(comment.parentCommentId);

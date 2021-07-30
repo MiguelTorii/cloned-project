@@ -2,24 +2,16 @@ import React, { useMemo } from 'react';
 import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
-import ReactQuill from "react-quill";
+import ReactQuill from 'react-quill';
 import QuillToolbar from '../../components/QillToolbar';
-import Button from "@material-ui/core/Button";
-import IconRepeat from "@material-ui/icons/Replay";
+import Button from '@material-ui/core/Button';
+import IconRepeat from '@material-ui/icons/Replay';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import ClickableImage from 'components/ClickableImage';
 import { extractTextFromHtml } from 'utils/helpers';
 
-const CardBoardContent = (
-  {
-    content,
-    image,
-    editable,
-    toolbarId,
-    onFlip
-  }
-) => {
+const CardBoardContent = ({ content, image, editable, toolbarId, onFlip }) => {
   const classes = useStyles();
   // const [isEditing, setIsEditing] = useState(false);
 
@@ -29,12 +21,10 @@ const CardBoardContent = (
 
   return (
     <div className={classes.cardBoardContainer}>
-      { isEditing && (
-        <div className={classes.gradientBar} />
-      )}
+      {isEditing && <div className={classes.gradientBar} />}
       <div className={classes.cardBoardContent}>
         <Box display="flex" width="100%" height="100%" alignItems="center">
-          { image && (
+          {image && (
             <Box
               width={contentText.length > 0 ? 250 : '100%'}
               height={contentText.length > 0 ? 250 : '100%'}
@@ -43,17 +33,19 @@ const CardBoardContent = (
               alignItems="center"
               mr={3}
             >
-              <ClickableImage src={image} className={classes.cardBoardImage} alt="Flashcard" />
+              <ClickableImage
+                src={image}
+                className={classes.cardBoardImage}
+                alt="Flashcard"
+              />
             </Box>
           )}
-          { contentText.length > 0 && (
+          {contentText.length > 0 && (
             <Box
-              className={
-                clsx(
-                  classes.cardBoardTextContainer,
-                  content.length < 200 && 'large-font'
-                )
-              }
+              className={clsx(
+                classes.cardBoardTextContainer,
+                content.length < 200 && 'large-font'
+              )}
             >
               <ReactQuill
                 modules={{

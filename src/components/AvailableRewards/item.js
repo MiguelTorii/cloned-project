@@ -34,20 +34,14 @@ class AvailableRewardsItem extends React.PureComponent<Props, State> {
     this.setState({ hover: false });
   };
 
-  handleClick = slot => () => {
+  handleClick = (slot) => () => {
     const { rewardId, onClick } = this.props;
     onClick({ slot, rewardId });
   };
 
   render() {
-    const {
-      classes,
-      rewardId,
-      bgColor,
-      imageUrl,
-      displayName,
-      isSelected
-    } = this.props;
+    const { classes, rewardId, bgColor, imageUrl, displayName, isSelected } =
+      this.props;
     const { hover } = this.state;
     return (
       <Paper

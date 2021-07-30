@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,16 +14,14 @@ import FlashcardsListEditor from '../FlashcardsListEditor';
 import TextField from '../Basic/TextField';
 import withRoot from '../../withRoot';
 
-const FlashcardsDeckManager = (
-  {
-    data,
-    title,
-    submitText,
-    isSubmitting,
-    disableClass,
-    onSubmit
-  }
-) => {
+const FlashcardsDeckManager = ({
+  data,
+  title,
+  submitText,
+  isSubmitting,
+  disableClass,
+  onSubmit
+}) => {
   // Hooks
   const myClasses = useSelector((state) => state.user.userClasses.classList);
   const dispatch = useDispatch();
@@ -35,11 +33,13 @@ const FlashcardsDeckManager = (
     summary: null,
     classId: null,
     sectionId: null,
-    deck: [{
-      id: 1,
-      question: '',
-      answer: ''
-    }]
+    deck: [
+      {
+        id: 1,
+        question: '',
+        answer: ''
+      }
+    ]
   });
 
   // Effects
@@ -75,59 +75,76 @@ const FlashcardsDeckManager = (
 
   // Event Handlers
   const handleUpdateField = useCallback((field, value) => {
-    setDeckData((data) => update(data, {
-      [field]: { $set: value }
-    }));
+    setDeckData((data) =>
+      update(data, {
+        [field]: { $set: value }
+      })
+    );
   }, []);
 
   const handleUpdateFlashcardField = useCallback((index, field, value) => {
-    setDeckData((data) => update(data, {
-      deck: {
-        [index]: (item) => update(item, {
-          [field]: { $set: value }
-        })
-      }
-    }))
+    setDeckData((data) =>
+      update(data, {
+        deck: {
+          [index]: (item) =>
+            update(item, {
+              [field]: { $set: value }
+            })
+        }
+      })
+    );
   }, []);
 
   const handleSubmit = useCallback(() => {
     if (!deckData.title || !deckData.classId) {
       setIsValidated(true);
-      return ;
+      return;
     }
 
     const data = update(deckData, {
-      deck: (arr) => arr.filter((card) => (
-        (card.questionImage || !!extractTextFromHtml(card.question)) &&
-        (card.answerImage || !!extractTextFromHtml(card.answer))))
+      deck: (arr) =>
+        arr.filter(
+          (card) =>
+            (card.questionImage || !!extractTextFromHtml(card.question)) &&
+            (card.answerImage || !!extractTextFromHtml(card.answer))
+        )
     });
 
     if (deckData.deck.length === 0) {
-      dispatch(showNotification({
-        message: 'You must have at least one flashcard to save the deck.',
-        variant: 'error'
-      }));
-      return ;
+      dispatch(
+        showNotification({
+          message: 'You must have at least one flashcard to save the deck.',
+          variant: 'error'
+        })
+      );
+      return;
     }
 
     if (data.deck.length < deckData.deck.length) {
-      dispatch(showNotification({
-        message: 'Flashcards should not be empty.',
-        variant: 'error'
-      }));
-      return ;
+      dispatch(
+        showNotification({
+          message: 'Flashcards should not be empty.',
+          variant: 'error'
+        })
+      );
+      return;
     }
 
     onSubmit(data);
   }, [deckData, onSubmit, dispatch]);
 
-  const handleChangeClass = useCallback((event) => {
-    const [classId, sectionId] = event.target.value.split('_');
-    setDeckData(update(deckData, {
-      classId: { $set: Number(classId) },
-      sectionId: { $set: Number(sectionId) }
-    }));
-  }, [deckData]);
+  const handleChangeClass = useCallback(
+    (event) => {
+      const [classId, sectionId] = event.target.value.split('_');
+      setDeckData(
+        update(deckData, {
+          classId: { $set: Number(classId) },
+          sectionId: { $set: Number(sectionId) }
+        })
+      );
+    },
+    [deckData]
+  );
 
   // Rendering Helpers
   const renderForm = () => (
@@ -141,7 +158,9 @@ const FlashcardsDeckManager = (
             InputLabelProps={{
               shrink: true
             }}
-            helperText={isValidated && !deckData.title && "Please input a title"}
+            helperText={
+              isValidated && !deckData.title && 'Please input a title'
+            }
             label="Title"
             placeholder="Add a title"
             value={deckData.title || ''}
@@ -158,19 +177,19 @@ const FlashcardsDeckManager = (
               shrink: true
             }}
             label="Class"
-            helperText={isValidated && !deckData.classId && "Please select your class"}
+            helperText={
+              isValidated && !deckData.classId && 'Please select your class'
+            }
             placeholder="Select your class"
             disabled={disableClass}
             value={selectedDropdownValue}
             onChange={handleChangeClass}
           >
-            {
-              dropdownOptions.map((item) => (
-                <MenuItem key={item.value} value={item.value}>
-                  { item.text }
-                </MenuItem>
-              ))
-            }
+            {dropdownOptions.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.text}
+              </MenuItem>
+            ))}
           </TextField>
         </Grid>
         <Grid item xs={12} lg={6}>
@@ -182,7 +201,9 @@ const FlashcardsDeckManager = (
             label="Description"
             placeholder="Add a description"
             value={deckData.summary || ''}
-            onChange={(event) => handleUpdateField('summary', event.target.value)}
+            onChange={(event) =>
+              handleUpdateField('summary', event.target.value)
+            }
           />
         </Grid>
         {/* <Grid item xs={12} lg={6}> */}
@@ -198,9 +219,7 @@ const FlashcardsDeckManager = (
   return (
     <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h5">
-          {title}
-        </Typography>
+        <Typography variant="h5">{title}</Typography>
         <GradientButton
           loading={isSubmitting}
           disabled={isSubmitting}
@@ -209,7 +228,7 @@ const FlashcardsDeckManager = (
           {submitText}
         </GradientButton>
       </Box>
-      { renderForm() }
+      {renderForm()}
       <FlashcardsListEditor
         data={deckData.deck}
         onUpdate={(data) => handleUpdateField('deck', data)}

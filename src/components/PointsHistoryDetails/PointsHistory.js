@@ -22,7 +22,7 @@ import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 type Props = {
   userId: number,
   isMyProfile: boolean,
-  displayName: string,
+  displayName: string
 };
 
 const UNITS_LOADING = 5;
@@ -32,39 +32,36 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   const dispatch = useDispatch();
   const [records, setRecords] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const isLoadingData = useSelector(isApiCalling(userActions.GET_POINTS_HISTORY));
+  const isLoadingData = useSelector(
+    isApiCalling(userActions.GET_POINTS_HISTORY)
+  );
 
   const fetchRecords = (count) => {
     dispatch(
-      getPointsHistory(
-        userId,
-        records.length,
-        count,
-        (points_history) => {
-          setRecords(update(records, {
+      getPointsHistory(userId, records.length, count, (points_history) => {
+        setRecords(
+          update(records, {
             $push: points_history
-          }));
-          setHasMore(points_history.length === count);
-        }
-      )
+          })
+        );
+        setHasMore(points_history.length === count);
+      })
     );
   };
 
   useEffect(() => {
     fetchRecords(10);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
 
   const renderRecords = (isMobile) => {
     return (
       <Grid container spacing={isMobile ? 2 : 3}>
-        {
-          records.map((record, index) => (
-            <Grid key={index} item xs={12}>
-              <PointsRecordItem data={record} />
-            </Grid>
-          ))
-        }
+        {records.map((record, index) => (
+          <Grid key={index} item xs={12}>
+            <PointsRecordItem data={record} />
+          </Grid>
+        ))}
       </Grid>
     );
   };
@@ -72,7 +69,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h6" paragraph>
-        { isMyProfile ? 'Your' : `${displayName}'s` } Points History
+        {isMyProfile ? 'Your' : `${displayName}'s`} Points History
       </Typography>
       <Hidden smDown>
         <Box display="flex" justifyContent="space-between" mb={2}>
@@ -90,11 +87,11 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
           }
           dataLength={records.length}
         >
-          { renderRecords(false) }
+          {renderRecords(false)}
         </InfiniteScroll>
       </Hidden>
       <Hidden mdUp>
-        { renderRecords(true) }
+        {renderRecords(true)}
         <Box display="flex" justifyContent="center" mt={2}>
           <GradientButton
             loading={isLoadingData}

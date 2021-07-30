@@ -1,24 +1,24 @@
 // @flow
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { push } from 'connected-react-router';
-import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import { decypherClass } from 'utils/crypto'
+import { decypherClass } from 'utils/crypto';
 import type { State as StoreState } from '../../types/state';
-import LeaderBoardTabs from '../../components/LeaderBoardTabs'
-import leaderboardActions from '../../actions/leaderboard'
+import LeaderBoardTabs from '../../components/LeaderBoardTabs';
+import leaderboardActions from '../../actions/leaderboard';
 
-const styles = theme => ({
+const styles = (theme) => ({
   title: {
     marginTop: theme.spacing(4),
     fontWeight: 700,
-    fontSize: 28,
+    fontSize: 28
   }
-})
+});
 
 const LeaderBoards = ({
   classes,
@@ -32,34 +32,33 @@ const LeaderBoards = ({
   classList,
   updateGrandLeaderboards
 }) => {
-  const [courseDisplayName , setCourseDisplayname] = useState('')
+  const [courseDisplayName, setCourseDisplayname] = useState('');
 
   useEffect(() => {
-    updateLeaderboards()
-  }, [updateLeaderboards])
+    updateLeaderboards();
+  }, [updateLeaderboards]);
 
-  const { sectionId, classId } = decypherClass()
+  const { sectionId, classId } = decypherClass();
 
-  const getCourseDisplayName = ()=> {
+  const getCourseDisplayName = () => {
     if (classId && classList) {
-      const c = classList.find(cl => cl.classId === Number(classId))
-      if (c) return c.courseDisplayName
+      const c = classList.find((cl) => cl.classId === Number(classId));
+      if (c) return c.courseDisplayName;
     }
-    return ''
-  }
+    return '';
+  };
 
   useEffect(() => {
-    setCourseDisplayname(getCourseDisplayName())
+    setCourseDisplayname(getCourseDisplayName());
     // eslint-disable-next-line
-  }, [classList, search])
+  }, [classList, search]);
 
   return (
     <Grid xs={12} item>
-      <Typography
-        color="textPrimary"
-        className={classes.title}
-      >
-        {courseDisplayName ? `${courseDisplayName} Leaderboards` : 'Leaderboards'}
+      <Typography color="textPrimary" className={classes.title}>
+        {courseDisplayName
+          ? `${courseDisplayName} Leaderboards`
+          : 'Leaderboards'}
       </Typography>
       <LeaderBoardTabs
         userId={userId}
@@ -71,8 +70,8 @@ const LeaderBoards = ({
         pushTo={pushTo}
       />
     </Grid>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ router, leaderboard, user }: StoreState): {} => ({
   leaderboard,

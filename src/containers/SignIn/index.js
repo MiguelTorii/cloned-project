@@ -19,7 +19,7 @@ import loginBackground from '../../assets/img/login-background.png';
 import * as signInApi from '../../api/sign-in';
 import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     minHeight: '100vh',
     backgroundImage: `url(${loginBackground})`,
@@ -65,19 +65,21 @@ class SignIn extends React.Component<Props, State> {
     isVerified: false
   };
 
-  handleChange = (field: string) => (
-    // eslint-disable-next-line no-undef
-    event: SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { target } = event;
-    // eslint-disable-next-line no-undef
-    if (!(target instanceof HTMLInputElement)) {
-      return;
-    }
-    this.setState({
-      [field]: target.value
-    });
-  };
+  handleChange =
+    (field: string) =>
+    (
+      // eslint-disable-next-line no-undef
+      event: SyntheticEvent<HTMLInputElement>
+    ) => {
+      const { target } = event;
+      // eslint-disable-next-line no-undef
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+      this.setState({
+        [field]: target.value
+      });
+    };
 
   handleSubmit = async () => {
     const {

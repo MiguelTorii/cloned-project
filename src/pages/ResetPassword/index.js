@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withRoot from '../../withRoot';
 import ResetPassword from '../../containers/ResetPassword';
 
-const styles = theme => ({
+const styles = (theme) => ({
   progress: {
     display: 'flex',
     alignItems: 'center',

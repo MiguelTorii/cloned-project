@@ -22,15 +22,11 @@ const styles = () => ({
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
-const CTA = ({
-  classes,
-}: {
-  classes: Object
-}) => {
+const CTA = ({ classes }: { classes: Object }) => {
   const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
 
@@ -41,7 +37,7 @@ const CTA = ({
       if (result) {
         setReferralProgram(result);
       }
-    }
+    };
 
     init();
   }, []);
@@ -60,29 +56,32 @@ const CTA = ({
 
   return (
     <div className={classes.body}>
-      <Typography className={classes.title}>
-        {ctaTitle}
-      </Typography>
+      <Typography className={classes.title}>{ctaTitle}</Typography>
       <Typography className={classes.text}>
-        {ctaBody.split("\n").map((item) => {
-          return (<span key={Math.random()}>{item}<br /></span>)
+        {ctaBody.split('\n').map((item) => {
+          return (
+            <span key={Math.random()}>
+              {item}
+              <br />
+            </span>
+          );
         })}
       </Typography>
       <Button
         className={classes.button}
-        color='primary'
+        color="primary"
         onClick={() => setInviteVisible(true)}
-        variant='contained'
+        variant="contained"
       >
         {cta}
       </Button>
       <Invite
         onHide={() => setInviteVisible(false)}
-        referralData={{code, imageUrl, subtitle, title}}
+        referralData={{ code, imageUrl, subtitle, title }}
         visible={inviteVisible}
       />
     </div>
   );
-}
+};
 
 export default withRouter(withStyles(styles)(CTA));

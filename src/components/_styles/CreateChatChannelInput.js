@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   validatorForm: {
     flex: 1,
     display: 'flex',
@@ -7,10 +7,10 @@ export const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start'
   },
   inputContainer: {
-    flex: 1,
+    flex: 1
   },
   input: {
     display: 'none'
@@ -21,6 +21,6 @@ export const styles = theme => ({
     fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 1,
-    lineHeight: '14px',
-  },
-})
+    lineHeight: '14px'
+  }
+});

@@ -3,10 +3,7 @@
  * @flow
  */
 import update from 'immutability-helper';
-import {
-  leaderboardActions,
-  rootActions
-} from '../constants/action-types';
+import { leaderboardActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 
 export type StudentType = {
@@ -82,7 +79,7 @@ const defaultState = {
           label: ''
         },
         slots: [],
-        currentMonthPointsDisplayName: '',
+        currentMonthPointsDisplayName: ''
       },
       grand: {
         timeLeft: {
@@ -90,18 +87,18 @@ const defaultState = {
           label: ''
         },
         logo: '',
-        text: '',
+        text: ''
       }
     },
     grand: {
       boardName: '',
       scoreLabel: '',
-      students: [],
+      students: []
     },
     tuesday: {
       boardName: '',
       scoreLabel: '',
-      students: [],
+      students: []
     },
     grandDialog: {
       logoUrl: '',
@@ -116,41 +113,41 @@ export default (
   action: Action
 ): LeaderBoardState => {
   switch (action.type) {
-  case leaderboardActions.UPDATE_LEADERBOARD_REQUEST:
-    if(action && action.payload && action.payload.leaderboards)
-      return update(state, {
-        data: {
-          general: { $set: action.payload.leaderboards },
-        }
-      });
-    return state;
-  case leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST:
-    if(action && action.payload && action.payload.grandInfo)
-      return update(state, {
-        data: {
-          grandDialog: { $set: action.payload.grandInfo },
-        }
-      });
-    return state;
-  case leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST:
-    if(action && action.payload && action.payload.leaderboards)
-      return update(state, {
-        data: {
-          grand: { $set: action.payload.leaderboards },
-        }
-      });
-    return state;
-  case leaderboardActions.UPDATE_LEADERBOARD_TUESDAY_REQUEST:
-    if(action && action.payload && action.payload.leaderboards)
-      return update(state, {
-        data: {
-          tuesday: { $set: action.payload.leaderboards },
-        }
-      });
-    return state;
-  case rootActions.CLEAR_STATE:
-    return defaultState;
-  default:
-    return state;
+    case leaderboardActions.UPDATE_LEADERBOARD_REQUEST:
+      if (action && action.payload && action.payload.leaderboards)
+        return update(state, {
+          data: {
+            general: { $set: action.payload.leaderboards }
+          }
+        });
+      return state;
+    case leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST:
+      if (action && action.payload && action.payload.grandInfo)
+        return update(state, {
+          data: {
+            grandDialog: { $set: action.payload.grandInfo }
+          }
+        });
+      return state;
+    case leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST:
+      if (action && action.payload && action.payload.leaderboards)
+        return update(state, {
+          data: {
+            grand: { $set: action.payload.leaderboards }
+          }
+        });
+      return state;
+    case leaderboardActions.UPDATE_LEADERBOARD_TUESDAY_REQUEST:
+      if (action && action.payload && action.payload.leaderboards)
+        return update(state, {
+          data: {
+            tuesday: { $set: action.payload.leaderboards }
+          }
+        });
+      return state;
+    case rootActions.CLEAR_STATE:
+      return defaultState;
+    default:
+      return state;
   }
 };

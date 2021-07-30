@@ -34,6 +34,6 @@ const FlashcardsPage = ({ classes }: Props) => {
       </Layout>
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(FlashcardsPage));

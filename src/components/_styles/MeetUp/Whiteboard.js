@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   main: {
     position: 'absolute',
     top: 0,
@@ -49,6 +49,6 @@ export const styles = theme => ({
     borderColor: theme.palette.primary.main,
     borderRadius: 8,
     borderBottomLeftRadius: 0,
-    padding: theme.spacing(1/2)
+    padding: theme.spacing(1 / 2)
   }
 });

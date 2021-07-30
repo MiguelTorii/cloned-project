@@ -7,17 +7,17 @@ import { getCampaign } from 'api/campaign';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
-import { confirmTooltip as confirmTooltipAction } from '../../actions/user'
+import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import { ONBOARDING_STEPS } from './steps';
 import OnboardingStep from './OnboardingStep';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     width: 750,
     height: 625,
     padding: 0,
     [theme.breakpoints.down('sm')]: {
-      height: 710,
+      height: 710
     }
   },
   dialogContent: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const STUDY_ROOM_ONBOARDING_POPUP_ID = 9065
+const STUDY_ROOM_ONBOARDING_POPUP_ID = 9065;
 
 const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
   const classes = useStyles();
@@ -37,26 +37,26 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
     const init = async () => {
       const aCampaign = await getCampaign({ campaignId: 9 });
       setCampaign(aCampaign);
-    }
+    };
 
-    init()
-  }, [])
+    init();
+  }, []);
 
   useEffect(() => {
     if (
       !!viewedTooltips?.length &&
       viewedTooltips.indexOf(STUDY_ROOM_ONBOARDING_POPUP_ID) === -1
     ) {
-      setOpen(true)
+      setOpen(true);
     }
-  }, [viewedTooltips])
+  }, [viewedTooltips]);
 
   const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden'
-  }, [campaign])
+    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
+  }, [campaign]);
 
   const closePopup = () => {
-    confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID)
+    confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID);
     setOpen(false);
   };
 
@@ -101,5 +101,5 @@ const mapDispatchToProps = (dispatch: *): {} =>
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(withRoot(OnboardingPopup));

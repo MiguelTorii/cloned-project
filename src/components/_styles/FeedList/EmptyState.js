@@ -3,12 +3,12 @@ export const styles = (theme) => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    padding: 50,
+    padding: 50
   },
   content: {
     color: theme.circleIn.palette.primaryText2,
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   title: {
     color: theme.circleIn.palette.primaryText1,
@@ -16,6 +16,6 @@ export const styles = (theme) => ({
     paddingTop: 26,
     maxWidth: 600,
     fontSize: 32,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

@@ -17,14 +17,7 @@ type Props = {
   onClose: Function
 };
 
-const ShareLinkModal = (
-  {
-    open,
-    link,
-    title,
-    onClose
-  }: Props
-) => {
+const ShareLinkModal = ({ open, link, title, onClose }: Props) => {
   const classes = useStyles();
   const [isTooltipShown, setIsTooltipShown] = useState(false);
 
@@ -43,13 +36,9 @@ const ShareLinkModal = (
   ));
 
   return (
-    <Dialog
-      open={open}
-      onCancel={onClose}
-      title="Share Link"
-    >
+    <Dialog open={open} onCancel={onClose} title="Share Link">
       <div className={classes.root}>
-        { title }
+        {title}
         <Box
           display="flex"
           justifyContent="space-between"
@@ -59,11 +48,9 @@ const ShareLinkModal = (
         >
           <Box display="flex">
             <Box mr={2}>
-              <LoadImg url={IconLink}/>
+              <LoadImg url={IconLink} />
             </Box>
-            <Typography>
-              { link }
-            </Typography>
+            <Typography>{link}</Typography>
           </Box>
           <CopyToClipboard text={link} onCopy={handleCopied}>
             <Tooltip

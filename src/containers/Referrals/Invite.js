@@ -9,7 +9,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import LoadImg from 'components/LoadImg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   action: {
     color: theme.circleIn.palette.action,
     marginLeft: 20
@@ -17,7 +17,7 @@ const styles = theme => ({
   body: {
     alignItems: 'center',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   dialog: {
     ...dialogStyle,
@@ -32,23 +32,23 @@ const styles = theme => ({
     height: 40,
     justifyContent: 'space-between',
     margin: '20px 0px',
-    padding: 20,
+    padding: 20
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
-    color: theme.circleIn.palette.primaryText1,
+    color: theme.circleIn.palette.primaryText1
   },
   subtitle: {
     fontSize: 16,
     marginTop: 20,
-    textAlign: 'center',
+    textAlign: 'center'
   }
-})
+});
 
 type Props = {
   classes: Object,
@@ -67,19 +67,14 @@ const Invite = ({
   classes,
   enqueueSnackbar,
   onHide,
-  referralData: {
-    code,
-    imageUrl,
-    subtitle,
-    title
-  },
+  referralData: { code, imageUrl, subtitle, title },
   visible
-}: Props ) => {
+}: Props) => {
   const handleLinkCopied = () => {
     logEventLocally({
       category: 'Referral',
       objectId: code || '',
-      type: 'Copied',
+      type: 'Copied'
     });
 
     enqueueSnackbar('Link copied', {
@@ -91,8 +86,8 @@ const Invite = ({
       autoHideDuration: 3000,
       ContentProps: {
         classes: {
-          root: classes.stackbar,
-        },
+          root: classes.stackbar
+        }
       }
     });
   };
@@ -100,19 +95,18 @@ const Invite = ({
   const link = `${window.location.host}/referral/${code}`;
 
   return (
-    <Dialog
-      className={classes.dialog}
-      onCancel={onHide}
-      open={visible}
-    >
+    <Dialog className={classes.dialog} onCancel={onHide} open={visible}>
       <div className={classes.body}>
         <LoadImg key={imageUrl} url={imageUrl} style={{ width: 200 }} />
-        <Typography className={classes.title}>
-          {title}
-        </Typography>
+        <Typography className={classes.title}>{title}</Typography>
         <Typography className={classes.subtitle}>
-          {subtitle.split("\n").map((item) => {
-            return (<span key={Math.random()}>{item}<br /></span>)
+          {subtitle.split('\n').map((item) => {
+            return (
+              <span key={Math.random()}>
+                {item}
+                <br />
+              </span>
+            );
           })}
         </Typography>
         <CopyToClipboard text={link} onCopy={handleLinkCopied}>
@@ -123,7 +117,7 @@ const Invite = ({
         </CopyToClipboard>
       </div>
     </Dialog>
-  )
+  );
 };
 
-export default withSnackbar((withStyles(styles)(Invite)));
+export default withSnackbar(withStyles(styles)(Invite));

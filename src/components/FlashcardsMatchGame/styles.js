@@ -61,7 +61,7 @@ export default makeStyles((theme) => ({
     backgroundColor: '#1E1F22',
     height: 32,
     borderRadius: 40,
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(1)
   },
   actionBar: {
     position: 'absolute',
@@ -96,7 +96,7 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     backgroundColor: theme.circleIn.palette.modalBackground,
     maxWidth: 350,
-    padding: theme.spacing(5/2),
+    padding: theme.spacing(5 / 2),
     borderRadius: 8,
     border: 'solid 2px #1E1F22',
     boxShadow: '6px 7px 30px rgba(30, 31, 34, 0.3)',

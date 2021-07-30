@@ -1,13 +1,13 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   header: {
     textAlign: 'center',
     fontSize: 42
   },
   text: {
     marginBottom: theme.spacing(),
-    fontSize: 12,
+    fontSize: 12
   },
   primaryText: {
     fontSize: 16,
@@ -42,6 +42,6 @@ export const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   secondaryImg: {
-    height: 90,
+    height: 90
   }
-}))
+}));

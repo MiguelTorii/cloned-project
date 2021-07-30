@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   header: {
@@ -11,5 +11,5 @@ export const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     width: '100%',
     padding: 0
-  },
-}))
+  }
+}));

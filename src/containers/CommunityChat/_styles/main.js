@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles'
-import CoverImg from 'assets/svg/community-chat-default-cover.svg'
+import { makeStyles } from '@material-ui/core/styles';
+import CoverImg from 'assets/svg/community-chat-default-cover.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     flexGrow: 1,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   messageRoot: {
     height: 'calc(100% - 120px)',
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     [theme.breakpoints.down('xs')]: {
       borderRadius: 0,
-      margin: 0,
+      margin: 0
     }
   },
   messageLoadingRoot: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     [theme.breakpoints.down('xs')]: {
       borderRadius: 0,
-      margin: 0,
+      margin: 0
     }
   },
   messageLoadingContainer: {
@@ -88,9 +88,9 @@ const useStyles = makeStyles((theme) => ({
   videoButton: {
     backgroundColor: theme.circleIn.palette.brand,
     fontWeight: 'bold',
-    padding: theme.spacing(1/2, 1),
+    padding: theme.spacing(1 / 2, 1),
     color: theme.circleIn.palette.textOffwhite,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   },
   videoIcon: {
     marginRight: theme.spacing(1 / 2),
@@ -110,9 +110,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundImage: `url(${CoverImg})`
   },
-  banner:{
+  banner: {
     width: '100%'
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     border: 'solid 8px #7572F7',
     pointerEvents: 'none',
-    zIndex: 3000,
+    zIndex: 3000
   },
   header: {
     width: 550,
@@ -56,9 +56,10 @@ const MasqueradeFrame = () => {
         <Grid container justify="space-between" alignItems="center" spacing={2}>
           <Grid item>
             <Box display="flex" alignItems="center">
-              <DesktopMac fontSize="small"/>
+              <DesktopMac fontSize="small" />
               <Typography variant="body2" className={classes.text}>
-                You are currently acting as {`${userData.firstName} ${userData.lastName}`}
+                You are currently acting as{' '}
+                {`${userData.firstName} ${userData.lastName}`}
               </Typography>
             </Box>
           </Grid>

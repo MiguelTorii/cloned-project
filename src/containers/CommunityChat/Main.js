@@ -1,28 +1,35 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react'
-import Lightbox from 'react-images'
-import InfiniteScroll from 'react-infinite-scroller'
-import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import findIndex from 'lodash/findIndex'
-import uuidv4 from 'uuid/v4'
+import React, {
+  memo,
+  useMemo,
+  useCallback,
+  useRef,
+  useState,
+  useEffect
+} from 'react';
+import Lightbox from 'react-images';
+import InfiniteScroll from 'react-infinite-scroller';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import findIndex from 'lodash/findIndex';
+import uuidv4 from 'uuid/v4';
 
-import { sendMessage } from 'api/chat'
-import { logEvent } from 'api/analytics'
-import { getCampaign } from 'api/campaign'
-import MessageQuill from 'containers/CommunityChat/MessageQuill'
-import ChatHeader from 'containers/CommunityChat/ChatHeader'
-import EmptyMain from 'containers/CommunityChat/EmptyMain'
-import InitialAlert from 'containers/CommunityChat/InitialAlert'
-import ChatMessageDate from 'components/FloatingChat/ChatMessageDate'
-import ChatMessage from 'components/FloatingChat/CommunityChatMessage'
-import LoadImg from 'components/LoadImg'
-import { processMessages, fetchAvatars, getAvatar } from 'utils/chat'
-import LoadingMessageGif from 'assets/gif/loading-chat.gif'
-import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg'
-import { PERMISSIONS } from 'constants/common'
-import useStyles from './_styles/main'
+import { sendMessage } from 'api/chat';
+import { logEvent } from 'api/analytics';
+import { getCampaign } from 'api/campaign';
+import MessageQuill from 'containers/CommunityChat/MessageQuill';
+import ChatHeader from 'containers/CommunityChat/ChatHeader';
+import EmptyMain from 'containers/CommunityChat/EmptyMain';
+import InitialAlert from 'containers/CommunityChat/InitialAlert';
+import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
+import LoadImg from 'components/LoadImg';
+import { processMessages, fetchAvatars, getAvatar } from 'utils/chat';
+import LoadingMessageGif from 'assets/gif/loading-chat.gif';
+import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
+import { PERMISSIONS } from 'constants/common';
+import useStyles from './_styles/main';
 
 type Props = {
   isLoading: boolean,
@@ -62,340 +69,383 @@ const Main = ({
   onSend,
   setRightPanel,
   handleBlock,
-  handleUpdateGroupName,
+  handleUpdateGroupName
 }: Props) => {
-  const classes = useStyles()
-  const end = useRef(null)
-  const [loadingMessage, setLoadingMessage] = useState(false)
-  const [errorLoadingMessage, setErrorLoadingMessage] = useState(false)
-  const [messages, setMessages] = useState([])
-  const [paginator, setPaginator] = useState(null)
-  const [hasMore, setHasMore] = useState(false)
-  const [scroll, setScroll] = useState(true)
-  const [value, setValue] = useState('')
-  const [avatars, setAvatars] = useState([])
-  const [typing, setTyping] = useState(null)
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [members, setMembers] = useState({})
-  const [campaign, setCampaign] = useState(null)
-  const [showError, setShowError] = useState(false)
-  const [showHasUnregistered, setShowHasUnregistered] = useState(true)
+  const classes = useStyles();
+  const end = useRef(null);
+  const [loadingMessage, setLoadingMessage] = useState(false);
+  const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [paginator, setPaginator] = useState(null);
+  const [hasMore, setHasMore] = useState(false);
+  const [scroll, setScroll] = useState(true);
+  const [value, setValue] = useState('');
+  const [avatars, setAvatars] = useState([]);
+  const [typing, setTyping] = useState(null);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [members, setMembers] = useState({});
+  const [campaign, setCampaign] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [showHasUnregistered, setShowHasUnregistered] = useState(true);
 
   const hasUnregisteredRef = useRef();
-  const memberKeys = useMemo(() => Object.keys(members), [members])
+  const memberKeys = useMemo(() => Object.keys(members), [members]);
 
   const otherUser = useMemo(() => {
-    if (memberKeys.length !== 2) return null
-    return members[memberKeys.find(key => key !== user.data.userId)]
-  }, [memberKeys, members, user.data.userId])
+    if (memberKeys.length !== 2) return null;
+    return members[memberKeys.find((key) => key !== user.data.userId)];
+  }, [memberKeys, members, user.data.userId]);
 
   const hasUnregistered = useMemo(() => {
-    return Boolean(memberKeys.find(key => !members[key].registered))
-  }, [memberKeys, members])
+    return Boolean(memberKeys.find((key) => !members[key].registered));
+  }, [memberKeys, members]);
 
   const {
     expertMode,
     data: { userId, firstName, lastName }
-  } = user
+  } = user;
 
-  const channelMembers = useMemo(() => channel && local[channel.sid].members, [channel, local])
+  const channelMembers = useMemo(
+    () => channel && local[channel.sid].members,
+    [channel, local]
+  );
 
   const handleScrollToBottom = useCallback(() => {
     try {
       if (scroll && end.current) {
-        end.current.scrollIntoView({ behavior: 'instant' })
+        end.current.scrollIntoView({ behavior: 'instant' });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     // eslint-disable-next-line
-  }, [scroll])
+  }, [scroll]);
 
-  const handleClickOutSide = useCallback(e => {
+  const handleClickOutSide = useCallback((e) => {
     if (!hasUnregisteredRef.current?.contains(e.target)) {
-      setShowHasUnregistered(false)
+      setShowHasUnregistered(false);
     }
   }, []);
 
   useEffect(() => {
     // add when mounted
-    document.addEventListener("mousedown", handleClickOutSide);
+    document.addEventListener('mousedown', handleClickOutSide);
     // return function to be called when unmounted
     return () => {
-      document.removeEventListener("mousedown", handleClickOutSide);
+      document.removeEventListener('mousedown', handleClickOutSide);
     };
   }, [handleClickOutSide]);
 
   useEffect(() => {
     if (channel && local && local[channel.sid]) {
-      const { members } = local[channel.sid]
-      const newMembers = {}
-      members.forEach(m => {
-        newMembers[m.userId] = m
-      })
-      setMembers(newMembers)
+      const { members } = local[channel.sid];
+      const newMembers = {};
+      members.forEach((m) => {
+        newMembers[m.userId] = m;
+      });
+      setMembers(newMembers);
     }
-  }, [local, channel])
+  }, [local, channel]);
 
   useEffect(() => {
     if (channel && newMessage && channel.sid === newMessage.channel.sid) {
       try {
-        channel.setAllMessagesConsumed()
+        channel.setAllMessagesConsumed();
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      const index = findIndex(messages, m => m.sid === newMessage.sid)
+      const index = findIndex(messages, (m) => m.sid === newMessage.sid);
       if (index === -1) {
-        setMessages([...messages, newMessage])
-        setTimeout(handleScrollToBottom, 100)
+        setMessages([...messages, newMessage]);
+        setTimeout(handleScrollToBottom, 100);
       }
     }
     // eslint-disable-next-line
-  }, [newMessage])
+  }, [newMessage]);
 
-  const getTypingMemberName = useCallback(id => {
-    const { members } = local[channel.sid]
-    const currentMember = members.filter(member => member.userId === id)
-    return `${currentMember[0].firstname} ${currentMember[0].lastname}`
-  }, [local, channel])
+  const getTypingMemberName = useCallback(
+    (id) => {
+      const { members } = local[channel.sid];
+      const currentMember = members.filter((member) => member.userId === id);
+      return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
+    },
+    [local, channel]
+  );
 
   useEffect(() => {
     if (channelList.length && !channel) {
-      setLoadingMessage(true)
+      setLoadingMessage(true);
     } else if (!channelList.length && !isLoading) {
-      setLoadingMessage(false)
+      setLoadingMessage(false);
     }
-  }, [channelList, channel, isLoading])
+  }, [channelList, channel, isLoading]);
 
   useEffect(() => {
     const init = async () => {
-      setLoadingMessage(true)
+      setLoadingMessage(true);
       try {
-        channel.setAllMessagesConsumed()
+        channel.setAllMessagesConsumed();
 
-        const av = await fetchAvatars(channel)
-        setAvatars(av)
+        const av = await fetchAvatars(channel);
+        setAvatars(av);
 
-        const aCampaign = await getCampaign({ campaignId: 9 })
-        setCampaign(aCampaign)
+        const aCampaign = await getCampaign({ campaignId: 9 });
+        setCampaign(aCampaign);
 
-        const p = await channel.getMessages(10)
-        if (!p.hasNextPage) setLoadingMessage(false)
-        setMessages(p.items)
-        setPaginator(p)
-        setHasMore(!(p.items.length < 10))
+        const p = await channel.getMessages(10);
+        if (!p.hasNextPage) setLoadingMessage(false);
+        setMessages(p.items);
+        setPaginator(p);
+        setHasMore(!(p.items.length < 10));
         if (end.current) {
-          end.current.scrollIntoView({ behavior: 'instant' })
+          end.current.scrollIntoView({ behavior: 'instant' });
         }
 
-        if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
-          channel.on('typingStarted', member => {
-            const memberId = member?.state?.identity
+        if (
+          !channel._events.typingStarted ||
+          channel._events.typingStarted.length === 0
+        ) {
+          channel.on('typingStarted', (member) => {
+            const memberId = member?.state?.identity;
             if (memberId) {
-              const typingUserName = getTypingMemberName(memberId)
-              setTyping({ channel: channel.sid, friendlyName: typingUserName })
+              const typingUserName = getTypingMemberName(memberId);
+              setTyping({ channel: channel.sid, friendlyName: typingUserName });
             }
-          })
+          });
 
           channel.on('typingEnded', () => {
-            setTyping('')
-          })
+            setTyping('');
+          });
         }
       } catch (e) {
-        console.log(e)
-        setErrorLoadingMessage(true)
+        console.log(e);
+        setErrorLoadingMessage(true);
       }
-    }
+    };
 
-    if (channel) init()
+    if (channel) init();
     // eslint-disable-next-line
-  }, [channel])
+  }, [channel]);
 
-  const messageItems = useMemo(() => processMessages({
-    items: messages,
-    userId
-  }), [messages, userId])
+  const messageItems = useMemo(
+    () =>
+      processMessages({
+        items: messages,
+        userId
+      }),
+    [messages, userId]
+  );
 
-  const hasPermission = useMemo(() => permission &&
-    permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS), [permission])
+  const hasPermission = useMemo(
+    () =>
+      permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
+    [permission]
+  );
 
   const handleLoadMore = useCallback(() => {
-    setScroll(false)
+    setScroll(false);
     try {
       if (paginator.hasPrevPage) {
-        paginator.prevPage().then(result => {
-          setMessages([...result.items, ...messages])
-          setPaginator(result)
-          setHasMore(!(!result.hasPrevPage || result.items.length < 10))
-        })
+        paginator.prevPage().then((result) => {
+          setMessages([...result.items, ...messages]);
+          setPaginator(result);
+          setHasMore(!(!result.hasPrevPage || result.items.length < 10));
+        });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }, [messages, paginator])
+  }, [messages, paginator]);
 
-  const handleImageClick = useCallback(src => {
-    setImages([{ src }])
-  }, [])
+  const handleImageClick = useCallback((src) => {
+    setImages([{ src }]);
+  }, []);
 
   const handleStartVideoCall = useCallback(() => {
     logEvent({
       event: 'Video- Start Video',
       props: { 'Initiated From': 'Chat' }
-    })
-    const win = window.open(`/video-call/${channel.sid}`, '_blank')
-    win.focus()
-  }, [channel])
+    });
+    const win = window.open(`/video-call/${channel.sid}`, '_blank');
+    win.focus();
+  }, [channel]);
 
-  const getRole = useCallback(userId => {
-    if (!members[userId]) return null
-    const { role } = members[userId]
-    return role
-  }, [members])
+  const getRole = useCallback(
+    (userId) => {
+      if (!members[userId]) return null;
+      const { role } = members[userId];
+      return role;
+    },
+    [members]
+  );
 
-  const getIsOnline = useCallback(userId => {
-    if (!members[userId]) return null
-    const { isOnline } = members[userId]
-    return isOnline
-  }, [members])
+  const getIsOnline = useCallback(
+    (userId) => {
+      if (!members[userId]) return null;
+      const { isOnline } = members[userId];
+      return isOnline;
+    },
+    [members]
+  );
 
-  const renderMessage = useCallback((item, profileURLs) => {
-    const { id, type } = item
-    const role = getRole(item.author)
-    const isOnline = getIsOnline(item.author)
+  const renderMessage = useCallback(
+    (item, profileURLs) => {
+      const { id, type } = item;
+      const role = getRole(item.author);
+      const isOnline = getIsOnline(item.author);
 
-    try {
-      switch (type) {
-      case 'date':
-        return <ChatMessageDate key={id} body={item.body} />
-      case 'message':
-      case 'own':
-        return (
-          <ChatMessage
-            key={id}
-            role={role}
-            isCommunityChat={isCommunityChat}
-            date={item.date}
-            isOnline={isOnline}
-            isOwn={type === 'own'}
-            currentUserId={userId}
-            userId={item.author}
-            members={channelMembers}
-            isGroupChannl={members.length === 2}
-            name={item.name}
-            messageList={item.messageList}
-            avatar={getAvatar({ id: item.author, profileURLs })}
-            onImageLoaded={handleScrollToBottom}
-            onStartVideoCall={handleStartVideoCall}
-            onImageClick={handleImageClick}
-            handleBlock={handleBlock}
-          />
-        )
-      case 'end':
-        return (
-          <div
-            key={uuidv4()}
-            style={{
-              float: 'left',
-              clear: 'both'
-            }}
-            ref={end}
-          />
-        )
-      default:
-        return null
+      try {
+        switch (type) {
+          case 'date':
+            return <ChatMessageDate key={id} body={item.body} />;
+          case 'message':
+          case 'own':
+            return (
+              <ChatMessage
+                key={id}
+                role={role}
+                isCommunityChat={isCommunityChat}
+                date={item.date}
+                isOnline={isOnline}
+                isOwn={type === 'own'}
+                currentUserId={userId}
+                userId={item.author}
+                members={channelMembers}
+                isGroupChannl={members.length === 2}
+                name={item.name}
+                messageList={item.messageList}
+                avatar={getAvatar({ id: item.author, profileURLs })}
+                onImageLoaded={handleScrollToBottom}
+                onStartVideoCall={handleStartVideoCall}
+                onImageClick={handleImageClick}
+                handleBlock={handleBlock}
+              />
+            );
+          case 'end':
+            return (
+              <div
+                key={uuidv4()}
+                style={{
+                  float: 'left',
+                  clear: 'both'
+                }}
+                ref={end}
+              />
+            );
+          default:
+            return null;
+        }
+      } catch (err) {
+        console.log(err);
+        return null;
       }
-    } catch (err) {
-      console.log(err)
-      return null
-    }
-  }, [
-    isCommunityChat,
-    getIsOnline,
-    getRole,
-    handleImageClick,
-    handleScrollToBottom,
-    handleStartVideoCall,
-    handleBlock,
-    members,
-    channelMembers,
-    userId
-  ])
+    },
+    [
+      isCommunityChat,
+      getIsOnline,
+      getRole,
+      handleImageClick,
+      handleScrollToBottom,
+      handleStartVideoCall,
+      handleBlock,
+      members,
+      channelMembers,
+      userId
+    ]
+  );
 
-  const onSendMessage = useCallback(async message => {
-    setScroll(true)
-    if (!channel) return
-
-    logEvent({
-      event: 'Chat- Send Message',
-      props: { Content: 'Text', 'Channel SID': channel.sid }
-    })
-
-    const messageAttributes = {
-      firstName,
-      lastName,
-      imageKey: '',
-      isVideoNotification: false
-    }
-    setLoading(true)
-    try {
-      await sendMessage({ message, ...messageAttributes, chatId: channel.sid })
+  const onSendMessage = useCallback(
+    async (message) => {
+      setScroll(true);
+      if (!channel) return;
 
       logEvent({
         event: 'Chat- Send Message',
-        props: { Content: 'Text' }
-      })
+        props: { Content: 'Text', 'Channel SID': channel.sid }
+      });
 
-      onSend()
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setLoading(false)
-    }
-  }, [channel, firstName, lastName, onSend])
+      const messageAttributes = {
+        firstName,
+        lastName,
+        imageKey: '',
+        isVideoNotification: false
+      };
+      setLoading(true);
+      try {
+        await sendMessage({
+          message,
+          ...messageAttributes,
+          chatId: channel.sid
+        });
+
+        logEvent({
+          event: 'Chat- Send Message',
+          props: { Content: 'Text' }
+        });
+
+        onSend();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [channel, firstName, lastName, onSend]
+  );
 
   const onTyping = useCallback(() => {
-    if (!channel) return
+    if (!channel) return;
     try {
-      channel.typing()
+      channel.typing();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }, [channel])
+  }, [channel]);
 
-  const handleRTEChange = useCallback(updatedValue => {
-    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
-      setValue('')
-    }
-    else {
-      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '')
-      setValue(currentValue)
-    }
-  }, [])
-
-  const handleClick = useCallback((quill) => async () => {
-    if (value.trim() === '' || !value) {
-      setShowError(true)
+  const handleRTEChange = useCallback((updatedValue) => {
+    if (
+      updatedValue.trim() === '<p><br></p>' ||
+      updatedValue.trim() === '<p>\n</p>'
+    ) {
+      setValue('');
     } else {
-      await onSendMessage(value.replaceAll('<p><br></p>', ''))
-      setValue('')
-      if (quill) {
-        quill.setText('')
-      }
+      const currentValue = updatedValue
+        .replaceAll('<p><br></p>', '')
+        .replaceAll('<p>\n</p>', '');
+      setValue(currentValue);
     }
-  }, [onSendMessage, value])
+  }, []);
 
-  const handleImageClose = useCallback(() => setImages([]), [])
+  const handleClick = useCallback(
+    (quill) => async () => {
+      if (value.trim() === '' || !value) {
+        setShowError(true);
+      } else {
+        await onSendMessage(value.replaceAll('<p><br></p>', ''));
+        setValue('');
+        if (quill) {
+          quill.setText('');
+        }
+      }
+    },
+    [onSendMessage, value]
+  );
+
+  const handleImageClose = useCallback(() => setImages([]), []);
 
   const startVideo = useCallback(() => {
-    window.open(`/video-call/${channel.sid}`, '_blank')
-  }, [channel])
+    window.open(`/video-call/${channel.sid}`, '_blank');
+  }, [channel]);
 
-  const videoEnabled = useMemo(() => (campaign && campaign.variation_key && campaign.variation_key !== 'hidden'), [campaign])
+  const videoEnabled = useMemo(
+    () =>
+      campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
+    [campaign]
+  );
 
   const unregisteredUserMessage = useMemo(() => {
-    if (newChannel) return null
+    if (newChannel) return null;
     if (showHasUnregistered) {
       if (otherUser && hasUnregistered && messageItems.length !== 1) {
         return (
@@ -403,9 +453,10 @@ const Main = ({
             ref={hasUnregisteredRef}
             className={classes.unregisteredMessage}
           >
-            {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a notification to log on and respond to you.
+            {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a
+            notification to log on and respond to you.
           </Typography>
-        )
+        );
       }
 
       if (hasUnregistered && messageItems.length !== 1) {
@@ -414,14 +465,22 @@ const Main = ({
             ref={hasUnregisteredRef}
             className={classes.unregisteredMessage}
           >
-            Some of your classmates on this chat have not logged into CircleIn yet. We've sent them an email to let them know to join this chat.
+            Some of your classmates on this chat have not logged into CircleIn
+            yet. We've sent them an email to let them know to join this chat.
           </Typography>
-        )
+        );
       }
     }
 
-    return null
-  }, [classes.unregisteredMessage, hasUnregistered, messageItems.length, newChannel, otherUser, showHasUnregistered])
+    return null;
+  }, [
+    classes.unregisteredMessage,
+    hasUnregistered,
+    messageItems.length,
+    newChannel,
+    otherUser,
+    showHasUnregistered
+  ]);
 
   const loadingConversation = useCallback(() => {
     return (
@@ -433,36 +492,43 @@ const Main = ({
           </Typography>
         </div>
       </div>
-    )
-  }, [classes])
+    );
+  }, [classes]);
 
   const loadingErrorMessage = useCallback(() => {
     return (
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
-          <LoadImg url={LoadingErrorMessageSvg} className={classes.emptyChatImg} />
+          <LoadImg
+            url={LoadingErrorMessageSvg}
+            className={classes.emptyChatImg}
+          />
           <Typography className={classes.expertTitle}>
-            Uh oh! There was an error trying to load your<br/>
-            conversation. Try refreshing your browser or <br/>
+            Uh oh! There was an error trying to load your
+            <br />
+            conversation. Try refreshing your browser or <br />
             submit a support ticket.
           </Typography>
         </div>
       </div>
-    )
-  }, [classes])
+    );
+  }, [classes]);
 
-  return loadingMessage || isLoading
-    ? loadingConversation()
-    : errorLoadingMessage
-      ? loadingErrorMessage()
-      : (<div className={classes.root}>
-        {channel && <ChatHeader
+  return loadingMessage || isLoading ? (
+    loadingConversation()
+  ) : errorLoadingMessage ? (
+    loadingErrorMessage()
+  ) : (
+    <div className={classes.root}>
+      {channel && (
+        <ChatHeader
           isCommunityChat={isCommunityChat}
           channel={channel}
           currentUserName={`${firstName} ${lastName}`}
-          title={isCommunityChat
-            ? selectedChannel?.chat_name
-            : local[channel.sid].title
+          title={
+            isCommunityChat
+              ? selectedChannel?.chat_name
+              : local[channel.sid].title
           }
           rightSpace={rightSpace}
           otherUser={otherUser}
@@ -472,18 +538,20 @@ const Main = ({
           local={local}
           onOpenRightPanel={setRightPanel}
           handleUpdateGroupName={handleUpdateGroupName}
-        />}
-        <div className={classes.messageRoot}>
-          <div className={classes.messageContainer}>
-            {!channelList.length && !isLoading && (
-              <EmptyMain
-                otherUser={otherUser}
-                noChannel={!channel}
-                newChannel={newChannel}
-                expertMode={expertMode}
-              />
-            )}
-            {channel && <InfiniteScroll
+        />
+      )}
+      <div className={classes.messageRoot}>
+        <div className={classes.messageContainer}>
+          {!channelList.length && !isLoading && (
+            <EmptyMain
+              otherUser={otherUser}
+              noChannel={!channel}
+              newChannel={newChannel}
+              expertMode={expertMode}
+            />
+          )}
+          {channel && (
+            <InfiniteScroll
               className={classes.messageScroll}
               threshold={50}
               pageStart={0}
@@ -493,41 +561,42 @@ const Main = ({
               initialLoad={false}
               isReverse
             >
-              {!hasMore
-              && isCommunityChat
-              && <div className={classes.bannerImage}>
-                {/* <LoadImg className={classes.banner} url={CoverImg}/> */}
-              </div>
-              }
-              {!hasMore && <InitialAlert
-                hasPermission={hasPermission}
-                handleUpdateGroupName={handleUpdateGroupName}
-                isCommunityChat={isCommunityChat}
-                selectedCourse={selectedCourse}
-                selectedChannel={selectedChannel}
-                local={local}
-                userId={userId}
-                channel={channel}
-              />}
-              {messageItems.map(item =>
-                renderMessage(item, avatars)
+              {!hasMore && isCommunityChat && (
+                <div className={classes.bannerImage}>
+                  {/* <LoadImg className={classes.banner} url={CoverImg}/> */}
+                </div>
               )}
+              {!hasMore && (
+                <InitialAlert
+                  hasPermission={hasPermission}
+                  handleUpdateGroupName={handleUpdateGroupName}
+                  isCommunityChat={isCommunityChat}
+                  selectedCourse={selectedCourse}
+                  selectedChannel={selectedChannel}
+                  local={local}
+                  userId={userId}
+                  channel={channel}
+                />
+              )}
+              {messageItems.map((item) => renderMessage(item, avatars))}
               {loading && (
                 <div className={classes.progress}>
                   <CircularProgress size={20} />
                 </div>
               )}
-            </InfiniteScroll>}
-          </div>
-          {unregisteredUserMessage}
-          <Lightbox
-            images={images}
-            currentImage={0}
-            isOpen={images.length > 0}
-            onClose={handleImageClose}
-          />
+            </InfiniteScroll>
+          )}
+        </div>
+        {unregisteredUserMessage}
+        <Lightbox
+          images={images}
+          currentImage={0}
+          isOpen={images.length > 0}
+          onClose={handleImageClose}
+        />
 
-          {channel && <MessageQuill
+        {channel && (
+          <MessageQuill
             value={value}
             userId={userId}
             onSendMessage={onSendMessage}
@@ -536,18 +605,21 @@ const Main = ({
             handleClick={handleClick}
             onTyping={onTyping}
             showError={showError}
-          />}
+          />
+        )}
 
-          {channel && <div className={classes.typing}>
-            <Typography
-              className={classes.typingText}
-              variant="subtitle1"
-            >
-              {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
+        {channel && (
+          <div className={classes.typing}>
+            <Typography className={classes.typingText} variant="subtitle1">
+              {typing && typing.channel === channel.sid
+                ? `${typing.friendlyName} is typing ...`
+                : ''}
             </Typography>
-          </div>}
-        </div>
-      </div>)
-}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default memo(Main)
+export default memo(Main);

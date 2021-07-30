@@ -16,7 +16,6 @@ const Classes = () => {
       </Layout>
     </main>
   );
-}
+};
 
 export default withRoot(withWidth()(Classes));
-

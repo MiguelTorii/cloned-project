@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 
 import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge'
+import RoleBadge from 'components/RoleBadge';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { getInitials } from 'utils/chat';
 import type { ChatUser } from '../../types/models';
@@ -22,7 +22,7 @@ import { blockUser } from '../../api/user';
 import { getGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   list: {
     width: '100%'
   },
@@ -69,7 +69,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     members: []
   };
 
-  componentDidUpdate = async prevProps => {
+  componentDidUpdate = async (prevProps) => {
     const { chatId, open } = this.props;
     if (open && !prevProps.open) {
       const members = await getGroupMembers({ chatId });
@@ -77,15 +77,17 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     }
   };
 
- handleOpenConfirm = ({ blockedUserId, name }) => () => {
-   this.setState({ blockedUserId, name });
- };
+  handleOpenConfirm =
+    ({ blockedUserId, name }) =>
+    () => {
+      this.setState({ blockedUserId, name });
+    };
 
   handleConfirmClose = () => {
     this.setState({ blockedUserId: null, name: null });
   };
 
-  handleBlock = blockedUserId => async () => {
+  handleBlock = (blockedUserId) => async () => {
     const { userId, onBlock, onClose } = this.props;
 
     this.setState({ loading: true });
@@ -121,28 +123,36 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             title="Members"
           >
             <List className={classes.list}>
-              {members.map(member => {
+              {members.map((member) => {
                 return (
                   <ListItem key={member.userId} role={undefined} dense>
                     <ListItemAvatar>
-                      <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.feedBackground">
+                      <OnlineBadge
+                        isOnline={member.isOnline}
+                        bgColorPath="circleIn.palette.feedBackground"
+                      >
                         <Avatar
                           alt={`${member.firstName} ${member.lastName}`}
                           src={member.profileImageUrl}
                         >
-                          {getInitials(`${member.firstName} ${member.lastName}`)}
+                          {getInitials(
+                            `${member.firstName} ${member.lastName}`
+                          )}
                         </Avatar>
                       </OnlineBadge>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
-                        Number(userId) === Number(member.userId)
-                          ? <Box display="flex">
-                          me &nbsp; {member.role && <RoleBadge />}
+                        Number(userId) === Number(member.userId) ? (
+                          <Box display="flex">
+                            me &nbsp; {member.role && <RoleBadge />}
                           </Box>
-                          : <Box display="flex">
-                            {`${member.firstName} ${member.lastName}`} &nbsp; {member.roleId !== 1 && <RoleBadge />}
+                        ) : (
+                          <Box display="flex">
+                            {`${member.firstName} ${member.lastName}`} &nbsp;{' '}
+                            {member.roleId !== 1 && <RoleBadge />}
                           </Box>
+                        )
                       }
                     />
                     {Number(userId) !== Number(member.userId) && (
@@ -158,7 +168,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                             aria-label="Block"
                             variant="contained"
                           >
-                          Block
+                            Block
                           </Button>
                           {loading && (
                             <CircularProgress
@@ -170,7 +180,8 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                       </ListItemSecondaryAction>
                     )}
                   </ListItem>
-                )})}
+                );
+              })}
             </List>
           </Dialog>
         </ErrorBoundary>
@@ -186,10 +197,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             showCancel
             title="Block User"
           >
-            <Typography
-              color="textPrimary"
-              id="confirm-dialog-description"
-            >
+            <Typography color="textPrimary" id="confirm-dialog-description">
               Are you sure you want to block {name}
             </Typography>
           </Dialog>

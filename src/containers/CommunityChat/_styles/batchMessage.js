@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
       borderRadius: 20
     }
-  },
-}))
+  }
+}));
 
-export default useStyles
+export default useStyles;

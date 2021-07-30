@@ -1,14 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  dialog: {
-
-  },
+  dialog: {},
   searchWrapper: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(1, 2)
   },
   headToRoom: {
     fontWeight: 'bold',
@@ -16,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 163,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.greenInvite,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   },
   disabled: {
     fontWeight: 'bold',
@@ -24,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 163,
     marginLeft: theme.spacing(),
     backgroundColor: theme.circleIn.palette.disabled,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(2)
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

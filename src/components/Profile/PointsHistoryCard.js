@@ -25,23 +25,20 @@ const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
   const [pointsHistory, setPointsHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const title = useMemo(() => {
-    return profile.userId === myUserId ?
-      'Your Points History' :
-      `${ _.capitalize(profile.firstName) } ${ _.capitalize(profile.lastName) }'s Points History`;
+    return profile.userId === myUserId
+      ? 'Your Points History'
+      : `${_.capitalize(profile.firstName)} ${_.capitalize(
+          profile.lastName
+        )}'s Points History`;
   }, [profile, myUserId]);
 
   useEffect(() => {
     setIsLoading(true);
     dispatch(
-      getPointsHistory(
-        profile.userId,
-        0,
-        3,
-        (data) => {
-          setIsLoading(false);
-          setPointsHistory(data);
-        }
-      )
+      getPointsHistory(profile.userId, 0, 3, (data) => {
+        setIsLoading(false);
+        setPointsHistory(data);
+      })
     );
   }, [profile.userId, dispatch]);
 
@@ -49,30 +46,23 @@ const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
     <Paper className={classes.root}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h6">
-            { title }
-          </Typography>
+          <Typography variant="h6">{title}</Typography>
         </Grid>
-        {
-          pointsHistory.map((item, index) => (
-            <Grid key={index} item xs={12}>
-              <PointsRecordItem data={item}/>
-            </Grid>
-          ))
-        }
-        {
-          isLoading &&
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center" mt={3}>
-                <CircularProgress />
-              </Box>
-            </Grid>
-        }
+        {pointsHistory.map((item, index) => (
+          <Grid key={index} item xs={12}>
+            <PointsRecordItem data={item} />
+          </Grid>
+        ))}
+        {isLoading && (
+          <Grid item xs={12}>
+            <Box display="flex" justifyContent="center" mt={3}>
+              <CircularProgress />
+            </Box>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Box display="flex" justifyContent="center">
-            <GradientButton onClick={onSeeMore}>
-              See more
-            </GradientButton>
+            <GradientButton onClick={onSeeMore}>See more</GradientButton>
           </Box>
         </Grid>
       </Grid>

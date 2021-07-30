@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 // import { logEventLocally } from 'api/analytics';
 import ErrorBoundary from 'containers/ErrorBoundary';
 import Dialog, { dialogStyle } from 'components/Dialog';
-import LoadImg from 'components/LoadImg'
+import LoadImg from 'components/LoadImg';
 
 import notesOnboardingFirst from 'assets/svg/notesOnboardingFirst.svg';
 import notesOnboardingSecond from 'assets/svg/notesOnboardingSecond.svg';
@@ -15,16 +15,16 @@ import backgroundImg from 'assets/img/onboarding-background.png';
 const centered = {
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'center'
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   actionPanel: {
     flex: 2,
     flexDirection: 'column',
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(4),
-    ...centered,
+    ...centered
   },
   button: {
     backgroundColor: theme.circleIn.palette.darkActionBlue,
@@ -35,19 +35,19 @@ const styles = theme => ({
     letterSpacing: 0.5,
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1 / 2, 2),
-    width: 200,
+    width: 200
   },
   demoPanel: {
     borderRadius: 8,
     background: `url(${backgroundImg})`,
     flex: 3,
-    ...centered,
+    ...centered
   },
   dialog: {
     ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     zIndex: 1300,
-    height: 700,
+    height: 700
   },
   step: {
     display: 'flex',
@@ -62,7 +62,7 @@ const styles = theme => ({
     justifyContent: 'center',
     maxWidth: 400,
     position: 'absolute',
-    bottom: 20,
+    bottom: 20
   },
   stepDisabled: {
     width: 8,
@@ -79,7 +79,7 @@ const styles = theme => ({
   stepsContainer: {
     width: theme.spacing(3),
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   }
 });
 
@@ -105,7 +105,7 @@ const ImageSecond = () => (
 const titleStyle = {
   fontSize: 48,
   textAlign: 'center'
-}
+};
 
 const bodyStyle = {
   fontSize: 20,
@@ -113,55 +113,61 @@ const bodyStyle = {
   padding: 16,
   textAlign: 'center',
   fontWeight: 'bold'
-}
+};
 
 const FirstTitle = () => (
   <div style={titleStyle}>
     <div>Introducing</div>
-    <div style={{ fontStyle: 'italic' }}><b>In-App Notetaking</b></div>
+    <div style={{ fontStyle: 'italic' }}>
+      <b>In-App Notetaking</b>
+    </div>
   </div>
-)
+);
 
 const SecondTitle = () => (
   <div style={titleStyle}>
-    <div>
-      Organization and
-    </div>
-    <div>
-      Convenience in One Tool.
-    </div>
+    <div>Organization and</div>
+    <div>Convenience in One Tool.</div>
   </div>
-)
+);
 
 const FirstBody = () => (
   <div style={bodyStyle}>
     Now, you can work on CircleIn and take notes all at the same time.
   </div>
-)
+);
 
 const SecondBody = () => (
   <div style={bodyStyle}>
-    The notes you write on CircleIn are visible to you only, so you can work in peace.
+    The notes you write on CircleIn are visible to you only, so you can work in
+    peace.
   </div>
-)
+);
 
 const STEPS = [
   {
     buttonText: 'Next',
     demoComponent: ImageFirst,
     body: FirstBody,
-    title: FirstTitle,
+    title: FirstTitle
   },
   {
     buttonText: 'Cool!',
     demoComponent: ImageSecond,
     body: SecondBody,
-    title: SecondTitle,
-  },
-]
+    title: SecondTitle
+  }
+];
 
-const OnboardingStep = ({ classes, handleButtonClick, activeStep,
-  buttonDisabled, buttonText, DemoComponent, Title, Body,
+const OnboardingStep = ({
+  classes,
+  handleButtonClick,
+  activeStep,
+  buttonDisabled,
+  buttonText,
+  DemoComponent,
+  Title,
+  Body
 }) => {
   return (
     <div className={classes.step}>
@@ -170,25 +176,33 @@ const OnboardingStep = ({ classes, handleButtonClick, activeStep,
         <Body />
         <div>
           <Button
-            color='primary'
+            color="primary"
             disabled={buttonDisabled}
             className={classes.button}
             onClick={handleButtonClick}
-            variant='contained'
+            variant="contained"
           >
             {buttonText}
           </Button>
         </div>
         <div className={classes.stepsContainer}>
-          <div className={activeStep === 0 ? classes.stepEnabled : classes.stepDisabled} />
-          <div className={activeStep === 1 ? classes.stepEnabled : classes.stepDisabled} />
+          <div
+            className={
+              activeStep === 0 ? classes.stepEnabled : classes.stepDisabled
+            }
+          />
+          <div
+            className={
+              activeStep === 1 ? classes.stepEnabled : classes.stepDisabled
+            }
+          />
         </div>
       </div>
       <div className={classes.demoPanel}>
         {DemoComponent && <DemoComponent />}
       </div>
     </div>
-  )
+  );
 };
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
@@ -204,23 +218,21 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     }
   }, [open, userId]);
 
-
   const handleButtonClick = async () => {
-    if (activeStep === 0)
-      setActiveStep(activeStep + 1);
-    else updateOnboarding()
-  }
+    if (activeStep === 0) setActiveStep(activeStep + 1);
+    else updateOnboarding();
+  };
 
   const currentStep = STEPS[activeStep];
 
   return (
     <ErrorBoundary>
       <Dialog
-        ariaDescribedBy='onboarding-description'
+        ariaDescribedBy="onboarding-description"
         className={classes.dialog}
         fullWidth
         disableBackdropClick
-        maxWidth='lg'
+        maxWidth="lg"
         disableEscapeKeyDown
         open={open}
         showHeader={false}
@@ -237,6 +249,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       </Dialog>
     </ErrorBoundary>
   );
-}
+};
 
 export default withStyles(styles)(Onboarding);

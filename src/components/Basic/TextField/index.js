@@ -6,12 +6,7 @@ type Props = {
 };
 
 const TextField = ({ variant, ...rest }: Props) => {
-  return (
-    <StyledTextField
-      variant={variant || 'outlined'}
-      {...rest}
-    />
-  );
+  return <StyledTextField variant={variant || 'outlined'} {...rest} />;
 };
 
 export default TextField;

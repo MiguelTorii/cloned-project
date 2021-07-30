@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
-import Button from "@material-ui/core/Button";
-import IconRepeat from "@material-ui/icons/Replay";
+import Button from '@material-ui/core/Button';
+import IconRepeat from '@material-ui/icons/Replay';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import parse from 'html-react-parser';
@@ -11,15 +11,7 @@ import { ANSWER_LEVELS } from './index';
 import ClickableImage from 'components/ClickableImage';
 import { extractTextFromHtml } from 'utils/helpers';
 
-const CardBoardContent = (
-  {
-    content,
-    image,
-    isQuestion,
-    onFlip,
-    onAction
-  }
-) => {
+const CardBoardContent = ({ content, image, isQuestion, onFlip, onAction }) => {
   const classes = useStyles();
 
   const isEditing = false;
@@ -28,9 +20,7 @@ const CardBoardContent = (
 
   return (
     <div className={classes.cardBoardContainer}>
-      { isEditing && (
-        <div className={classes.gradientBar} />
-      )}
+      {isEditing && <div className={classes.gradientBar} />}
       <div className={classes.cardBoardContent}>
         <Box display="flex" width="100%" height="100%" alignItems="center">
           {image && (
@@ -42,36 +32,36 @@ const CardBoardContent = (
               alignItems="center"
               mr={3}
             >
-              <ClickableImage src={image} className={classes.cardBoardImage} alt="Flashcard" />
+              <ClickableImage
+                src={image}
+                className={classes.cardBoardImage}
+                alt="Flashcard"
+              />
             </Box>
           )}
           {contentText.length > 0 && (
             <Box
-              className={
-                clsx(
-                  classes.cardBoardTextContainer,
-                  content.length < 200 && 'large-font'
-                )
-              }
+              className={clsx(
+                classes.cardBoardTextContainer,
+                content.length < 200 && 'large-font'
+              )}
             >
-              <div>
-                { parse(content) }
-              </div>
+              <div>{parse(content)}</div>
             </Box>
           )}
         </Box>
       </div>
-      { !isQuestion && (
+      {!isQuestion && (
         <Box mt={2} mb={2}>
           <Box display="flex" justifyContent="center" alignItems="center">
-            { ANSWER_LEVELS.map((item) => (
+            {ANSWER_LEVELS.map((item) => (
               <Box ml={2} mr={2} key={item.level}>
                 <Button
                   startIcon={<span>{item.emoji}</span>}
                   className={classes.cardBoardActionButton}
                   onClick={() => onAction(item.level)}
                 >
-                  { item.title }
+                  {item.title}
                 </Button>
               </Box>
             ))}
@@ -79,8 +69,7 @@ const CardBoardContent = (
         </Box>
       )}
       <div className={classes.cardBoardFooter}>
-        <div>
-        </div>
+        <div></div>
         <Button
           size="large"
           endIcon={<IconRepeat />}
@@ -89,10 +78,7 @@ const CardBoardContent = (
           }}
           onClick={onFlip}
         >
-          { isQuestion ?
-            'Flip for Answer' :
-            'Flip'
-          }
+          {isQuestion ? 'Flip for Answer' : 'Flip'}
         </Button>
       </div>
     </div>

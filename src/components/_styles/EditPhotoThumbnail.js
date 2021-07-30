@@ -1,7 +1,7 @@
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     // margin: theme.spacing(2),
     backgroundColor: 'white',
@@ -52,7 +52,7 @@ export const styles = theme => ({
     backgroundColor: theme.circleIn.customBackground.iconButton
   },
   hide: {
-    visibility: 'hidden',
+    visibility: 'hidden'
   },
   icon: {
     color: theme.circleIn.palette.normalButtonText1
@@ -89,7 +89,7 @@ export const styles = theme => ({
   },
   modalRoot: {
     width: 480,
-    zIndex: 2000,
+    zIndex: 2000
   },
   hidden: {
     display: 'none'

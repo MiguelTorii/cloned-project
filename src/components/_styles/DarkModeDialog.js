@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   list: {
@@ -28,14 +28,14 @@ export const useStyles = makeStyles((theme) => ({
     right: 0
   },
   container: {
-    position: 'relative',
+    position: 'relative'
   },
   textContainer: {
     marginRight: 90,
     marginBottom: theme.spacing(4),
-    marginLeft: 128,
+    marginLeft: 128
   },
   dialog: {
     width: 762
-  },
+  }
 }));

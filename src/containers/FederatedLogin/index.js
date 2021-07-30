@@ -27,7 +27,7 @@ class FederatedLogin extends React.Component<Props, State> {
     error: false
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     this.setState({ school: value });
     if (!value) this.setState({ error: true });
     else this.setState({ error: false });
@@ -35,7 +35,7 @@ class FederatedLogin extends React.Component<Props, State> {
 
   handleLoadOptions = async () => {
     const schools = await getLMSSchools();
-    const options = schools.map(school => ({
+    const options = schools.map((school) => ({
       value: school.clientId,
       label: school.school,
       uri: school.uri,
@@ -63,9 +63,7 @@ class FederatedLogin extends React.Component<Props, State> {
 
       const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
 
-      let uri = `${school.authUri}?client_id=${
-        school.value
-      }&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
+      let uri = `${school.authUri}?client_id=${school.value}&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
 
       if (school.lmsTypeId === 1) {
         uri = `${uri}&scope=url:GET|/api/v1/courses`;

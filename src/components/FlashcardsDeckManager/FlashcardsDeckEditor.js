@@ -4,13 +4,7 @@ import FlashcardsDeckManager from './index';
 import { useSelector } from 'react-redux';
 import { updateFlashcards } from '../../api/posts';
 
-const FlashcardsDeckEditor = (
-  {
-    flashcardId,
-    data,
-    onAfterUpdate
-  }
-) => {
+const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
   // Hooks
   const me = useSelector((state) => state.user.data);
 
@@ -18,18 +12,21 @@ const FlashcardsDeckEditor = (
   const [isSaving, setIsSaving] = useState(false);
 
   // Event Handlers
-  const handleUpdate = useCallback(async (updatedData) => {
-    setIsSaving(true);
+  const handleUpdate = useCallback(
+    async (updatedData) => {
+      setIsSaving(true);
 
-    await updateFlashcards({
-      flashcardId: flashcardId,
-      userId: me.userId,
-      ...updatedData
-    })
+      await updateFlashcards({
+        flashcardId: flashcardId,
+        userId: me.userId,
+        ...updatedData
+      });
 
-    setIsSaving(false);
-    onAfterUpdate(updatedData);
-  }, [onAfterUpdate, setIsSaving, me.userId, flashcardId]);
+      setIsSaving(false);
+      onAfterUpdate(updatedData);
+    },
+    [onAfterUpdate, setIsSaving, me.userId, flashcardId]
+  );
 
   return (
     <FlashcardsDeckManager

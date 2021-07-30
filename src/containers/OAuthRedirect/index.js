@@ -6,7 +6,7 @@ import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import queryString from 'query-string'
+import queryString from 'query-string';
 import type { State as StoreState } from '../../types/state';
 import { signLMSUser } from '../../api/lms';
 import * as signInActions from '../../actions/sign-in';
@@ -30,19 +30,16 @@ type Props = {
 
 const origin = window.location.origin.includes('dev')
   ? 'https://insights-dev.circleinapp.com/oauth'
-  : 'https://insights.circleinapp.com/oauth'
+  : 'https://insights.circleinapp.com/oauth';
 
 const OAuthRedirect = ({
   search,
   classes,
   updateUser,
-  pushTo,
-  // user
-}: Props) => {
-  const {
-    state,
-    code
-  } = useMemo(() => queryString.parse(search), [search])
+  pushTo
+}: // user
+Props) => {
+  const { state, code } = useMemo(() => queryString.parse(search), [search]);
 
   useEffect(() => {
     const init = async () => {
@@ -61,29 +58,27 @@ const OAuthRedirect = ({
         });
 
         if (jRes.dashboard) {
-          window.location.href = `${origin}?nonce=${user.nonce}`
-          return
+          window.location.href = `${origin}?nonce=${user.nonce}`;
+          return;
         }
 
         updateUser({ user });
-        pushTo('/', { error: !user.jwtToken })
-
+        pushTo('/', { error: !user.jwtToken });
       } catch (err) {
-        console.log(err)
-        pushTo('/', { error: true })
+        console.log(err);
+        pushTo('/', { error: true });
       }
-    }
+    };
 
-    init()
-  } ,[code, pushTo, state, updateUser])
+    init();
+  }, [code, pushTo, state, updateUser]);
 
   return (
     <main className={classes.main}>
       <CircularProgress />
     </main>
   );
-}
-
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
@@ -101,4 +96,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(OAuthRedirect))
+)(withStyles(styles)(OAuthRedirect));

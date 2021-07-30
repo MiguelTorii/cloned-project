@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
 import TermsOfUse from '../../components/TermsOfUse';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     padding: theme.spacing(2)
   }

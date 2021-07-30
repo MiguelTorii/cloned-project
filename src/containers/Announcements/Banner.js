@@ -1,11 +1,11 @@
 // @flow
 import React, { memo, useEffect } from 'react';
-import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
-import * as userActions from 'actions/user'
-import { Announcement } from 'types/models'
+import * as userActions from 'actions/user';
+import { Announcement } from 'types/models';
 import { INTERVAL } from '../../constants/app';
 import HourlyGiveawayBanner from './Components/HourlyGiveawayBanner';
 import { setIntervalWithFirstCall } from '../../utils/helpers';
@@ -43,13 +43,12 @@ const Banner = ({
 
   if (!announcement || expertMode || pathname === '/chat') return null;
 
-  return announcement.endDate ?
-    <CommonBanner
-      announcement={announcement}
-    /> :
-    <HourlyGiveawayBanner
-      announcement={announcement} />;
-}
+  return announcement.endDate ? (
+    <CommonBanner announcement={announcement} />
+  ) : (
+    <HourlyGiveawayBanner announcement={announcement} />
+  );
+};
 
 const mapStateToProps = ({ user: { announcementData, expertMode } }): {} => ({
   announcement: announcementData,
@@ -59,13 +58,15 @@ const mapStateToProps = ({ user: { announcementData, expertMode } }): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      getAnnouncement: userActions.getAnnouncement,
+      getAnnouncement: userActions.getAnnouncement
     },
     dispatch
   );
 
 // Banner.whyDidYouRender= true
-export default memo(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withResizeDetector(Banner))))
+export default memo(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withRouter(withResizeDetector(Banner)))
+);

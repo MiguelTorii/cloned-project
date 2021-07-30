@@ -1,17 +1,17 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 // @flow
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
-import axios from 'axios'
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 // import Cropper from 'react-easy-crop'
-import { withStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // import Divider from '@material-ui/core/Divider'
 // import Button from '@material-ui/core/Button'
-import CustomQuill from 'components/CustomQuill'
+import CustomQuill from 'components/CustomQuill';
 // import Dialog from 'components/Dialog'
-import AvatarEditor from '../../components/AvatarEditor'
+import AvatarEditor from '../../components/AvatarEditor';
 
 // import { ReactComponent as ZoomIn } from 'assets/svg/zoom_in.svg'
 // import { ReactComponent as ZoomOut } from 'assets/svg/zoom_out.svg'
@@ -19,14 +19,14 @@ import AvatarEditor from '../../components/AvatarEditor'
 // import { ReactComponent as RotateLeft } from 'assets/svg/rotate_left.svg'
 
 // import { getCroppedImg } from './canvasUtils'
-import type { UserState } from '../../reducers/user'
-import type { State as StoreState } from '../../types/state'
-import { getPresignedURL } from '../../api/media'
-import { uploadMedia } from '../../actions/user'
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { getPresignedURL } from '../../api/media';
+import { uploadMedia } from '../../actions/user';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     position: 'relative',
     maxWidth: 'inherit',
@@ -69,7 +69,7 @@ const styles = theme => ({
     marginBottom: theme.spacing(1.5)
   },
   divider: {
-    backgroundColor: theme.circleIn.palette.dividerColor,
+    backgroundColor: theme.circleIn.palette.dividerColor
   },
   contentClassName: {
     paddingRight: 0,
@@ -82,8 +82,8 @@ const styles = theme => ({
     height: 200,
     background: '#333',
     [theme.breakpoints.up('sm')]: {
-      height: 280,
-    },
+      height: 280
+    }
   },
   options: {
     display: 'flex',
@@ -104,7 +104,7 @@ const styles = theme => ({
     width: '100%',
     margin: theme.spacing(3, 1, 5, 1)
   }
-})
+});
 
 type Props = {
   classes: Object,
@@ -128,32 +128,32 @@ const RichTextEditor = ({
   handleImage,
   setEditor
 }: Props) => {
-  const [loading, setLoading] = useState(false)
-  const [imageSrc, setImageSrc] = React.useState(null)
-  const [openImageModal, setOpenImageModal] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [imageSrc, setImageSrc] = React.useState(null);
+  const [openImageModal, setOpenImageModal] = useState(false);
   // const [crop, setCrop] = useState({ x: 0, y: 0 })
   // const [rotation, setRotation] = useState(0)
   // const [zoom, setZoom] = useState(1)
   // const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
 
-  const rte = useRef(null)
-  const fileInput = useRef(null)
+  const rte = useRef(null);
+  const fileInput = useRef(null);
 
   const {
     isLoading,
     error,
     data: { userId }
-  } = user
+  } = user;
 
   const handleImageInput = useCallback(() => {
     if (fileInput.current) {
-      fileInput.current.click()
+      fileInput.current.click();
     }
-  }, [])
+  }, []);
 
   const closeImageModal = useCallback(() => {
-    setOpenImageModal(false)
-  }, [])
+    setOpenImageModal(false);
+  }, []);
 
   // const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
   //   setCroppedAreaPixels(croppedAreaPixels)
@@ -161,22 +161,22 @@ const RichTextEditor = ({
 
   useEffect(() => {
     if (rte.current) {
-      const { editor } = rte.current
-      if (setEditor) setEditor(editor)
+      const { editor } = rte.current;
+      if (setEditor) setEditor(editor);
       editor
         .getEditor()
         .getModule('toolbar')
-        .addHandler('image', handleImageInput)
+        .addHandler('image', handleImageInput);
     }
-  }, [handleImageInput, setEditor])
+  }, [handleImageInput, setEditor]);
 
   const readFile = useCallback((file) => {
-    return new Promise(resolve => {
-      const reader = new FileReader()
-      reader.addEventListener('load', () => resolve(reader.result), false)
-      reader.readAsDataURL(file)
-    })
-  }, [])
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result), false);
+      reader.readAsDataURL(file);
+    });
+  }, []);
 
   // const zoomIn = useCallback(() => {
   //   if (zoom >= 3) setZoom(3)
@@ -198,41 +198,46 @@ const RichTextEditor = ({
   //   else setRotation(rotation - 10)
   // }, [rotation])
 
-  const handleSaveImage = useCallback(async (blob) => {
-    setOpenImageModal(false)
-    setLoading(true)
-    try {
-      const file = fileInput.current.files[0]
-      const range = rte.current.editor.getEditor().getSelection()
-      rte.current.editor.getEditor().enable(false)
-      const { type } = file
-      const result = await getPresignedURL({
-        userId,
-        type: fileType || 1,
-        mediaType: type
-      })
+  const handleSaveImage = useCallback(
+    async (blob) => {
+      setOpenImageModal(false);
+      setLoading(true);
+      try {
+        const file = fileInput.current.files[0];
+        const range = rte.current.editor.getEditor().getSelection();
+        rte.current.editor.getEditor().enable(false);
+        const { type } = file;
+        const result = await getPresignedURL({
+          userId,
+          type: fileType || 1,
+          mediaType: type
+        });
 
-      const { readUrl, url } = result
+        const { readUrl, url } = result;
 
-      await axios.put(url, blob, {
-        headers: {
-          'Content-Type': type
-        }
-      })
+        await axios.put(url, blob, {
+          headers: {
+            'Content-Type': type
+          }
+        });
 
-      if (handleImage) handleImage(readUrl)
+        if (handleImage) handleImage(readUrl);
+        else
+          rte.current.editor
+            .getEditor()
+            .insertEmbed(range.index, 'image', readUrl);
 
-      else rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl)
-
-      rte.current.editor.getEditor().enable(true)
-    } catch (err) {
-      if (rte.current && rte.current.editor)
-        rte.current.editor.getEditor().enable(true)
-    } finally {
-      if (setLoadingImage) setLoadingImage(false)
-      setLoading(false)
-    }
-  }, [fileType, handleImage, setLoadingImage, userId])
+        rte.current.editor.getEditor().enable(true);
+      } catch (err) {
+        if (rte.current && rte.current.editor)
+          rte.current.editor.getEditor().enable(true);
+      } finally {
+        if (setLoadingImage) setLoadingImage(false);
+        setLoading(false);
+      }
+    },
+    [fileType, handleImage, setLoadingImage, userId]
+  );
 
   const handleInputChange = useCallback(async () => {
     if (
@@ -242,31 +247,35 @@ const RichTextEditor = ({
       fileInput.current.files.length > 0 &&
       fileInput.current.files[0].size < 8000000
     ) {
-      setLoading(true)
-      if (setLoadingImage) setLoadingImage(true)
-      const file = fileInput.current.files[0]
-      const imageDataUrl = await readFile(file)
-      setImageSrc(imageDataUrl)
+      setLoading(true);
+      if (setLoadingImage) setLoadingImage(true);
+      const file = fileInput.current.files[0];
+      const imageDataUrl = await readFile(file);
+      setImageSrc(imageDataUrl);
 
-      const range = rte.current.editor.getEditor().getSelection()
-      const result = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.POST_FEED, file)
+      const range = rte.current.editor.getEditor().getSelection();
+      const result = await uploadMedia(
+        userId,
+        UPLOAD_MEDIA_TYPES.POST_FEED,
+        file
+      );
 
-      const { readUrl } = result
+      const { readUrl } = result;
 
-      rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl)
-      setLoading(false)
+      rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
+      setLoading(false);
     }
-  }, [readFile, setLoadingImage, userId])
+  }, [readFile, setLoadingImage, userId]);
 
-  if (isLoading) return <CircularProgress size={12} />
+  if (isLoading) return <CircularProgress size={12} />;
   if (userId === '' || error)
-    return 'Oops, there was an error loading your data, please try again.'
+    return 'Oops, there was an error loading your data, please try again.';
 
   return (
     <>
       <ErrorBoundary>
         <div className={classes.root}>
-          <div className={classes.quill} id='quill-editor'>
+          <div className={classes.quill} id="quill-editor">
             <CustomQuill
               placeholder={placeholder}
               value={value}
@@ -291,21 +300,21 @@ const RichTextEditor = ({
       <ErrorBoundary>
         <AvatarEditor
           open={openImageModal}
-          title={"Edit Image"}
+          title={'Edit Image'}
           originalImage={imageSrc}
           onCancel={closeImageModal}
           onSave={handleSaveImage}
         />
       </ErrorBoundary>
     </>
-  )
-}
+  );
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
-})
+});
 
 export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(RichTextEditor))
+)(withStyles(styles)(RichTextEditor));

@@ -12,17 +12,19 @@ const IMAGE_SIZE = 32;
 
 type Props = {
   data: PointsHistoryItem
-}
+};
 
 const PointsRecordItem = ({ data }: Props) => {
   const classes = useStyles();
   const durationText = useMemo(() => {
-    const minutes = moment.duration(
-      moment().diff(moment.utc(data.date))
-    ).asMinutes();
+    const minutes = moment
+      .duration(moment().diff(moment.utc(data.date)))
+      .asMinutes();
 
-    if (minutes < 60) return moment.duration(-minutes, 'minutes').humanize(true);
-    if (minutes < 60 * 24) return moment.duration(-minutes / 60, 'hours').humanize(true);
+    if (minutes < 60)
+      return moment.duration(-minutes, 'minutes').humanize(true);
+    if (minutes < 60 * 24)
+      return moment.duration(-minutes / 60, 'hours').humanize(true);
     return moment.duration(-minutes / 1440, 'days').humanize(true);
   }, [data]);
 
@@ -36,16 +38,12 @@ const PointsRecordItem = ({ data }: Props) => {
             className={classes.image}
           />
           <div>
-            <Typography>
-              { data.points_title }
-            </Typography>
-            <Typography variant="body1">
-              { durationText }
-            </Typography>
+            <Typography>{data.points_title}</Typography>
+            <Typography variant="body1">{durationText}</Typography>
           </div>
         </Box>
         <Typography variant="body1" align="right">
-          { data.points.toString().toUpperCase() } <br/> Points
+          {data.points.toString().toUpperCase()} <br /> Points
         </Typography>
       </Box>
     </Paper>

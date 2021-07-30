@@ -2,18 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import debounce from 'lodash/debounce';
 import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import TreeView from '@material-ui/lab/TreeView'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import TreeItem from '@material-ui/lab/TreeItem'
-import TextField from '@material-ui/core/TextField'
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 
 import {
   leaveUserClass,
@@ -47,31 +47,28 @@ const AddRemoveClasses = (props: Props) => {
     open,
     user: {
       data: { userId, schoolId },
-      userClasses: {
-        canAddClasses: cac,
-        classList
-      }
+      userClasses: { canAddClasses: cac, classList }
     },
     onClose
   } = props;
 
-  const [tree, setTree] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [sections, setSections] = useState({})
-  const [canAddClasses, setCanAddClasses] = useState(false)
-  const [options, setOptions] = useState([])
+  const [tree, setTree] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [sections, setSections] = useState({});
+  const [canAddClasses, setCanAddClasses] = useState(false);
+  const [options, setOptions] = useState([]);
 
   const fetchUserClasses = async () => {
     try {
-      setCanAddClasses(cac)
-      const sectionsObj = {}
-      classList.forEach(c => {
-        const { section, permissions } = c
-        section.forEach(s => {
-          sectionsObj[`sc${s.sectionId}`] = { canLeave: permissions.canLeave }
-        })
-      })
-      setSections(sectionsObj)
+      setCanAddClasses(cac);
+      const sectionsObj = {};
+      classList.forEach((c) => {
+        const { section, permissions } = c;
+        section.forEach((s) => {
+          sectionsObj[`sc${s.sectionId}`] = { canLeave: permissions.canLeave };
+        });
+      });
+      setSections(sectionsObj);
     } catch (e) {
       enqueueSnackbar({
         notification: {
@@ -92,69 +89,69 @@ const AddRemoveClasses = (props: Props) => {
         }
       });
     }
-  }
+  };
 
   const fetchSections = async (subjectId, classId) => {
-    setLoading(true)
-    const res = await getAvailableClassesSections({ classId })
-    const sectionsObj = {}
-    res.forEach(r => {
+    setLoading(true);
+    const res = await getAvailableClassesSections({ classId });
+    const sectionsObj = {};
+    res.forEach((r) => {
       sectionsObj[`sc${r.section_id}`] = {
         name: r.display_name,
         sectionId: r.section_id,
         classId,
-        subjectId,
-      }
-    })
+        subjectId
+      };
+    });
 
-    tree[`s${subjectId}`].classes[`c${classId}`].sections = sectionsObj
-    setTree(tree)
-    setLoading(false)
-  }
+    tree[`s${subjectId}`].classes[`c${classId}`].sections = sectionsObj;
+    setTree(tree);
+    setLoading(false);
+  };
 
-  const fetchClasses = async subjectId => {
-    setLoading(true)
-    const res = await getAvailableSubjectsClasses({ subjectId })
-    const classesOps = {}
-    res.forEach(r => {
+  const fetchClasses = async (subjectId) => {
+    setLoading(true);
+    const res = await getAvailableSubjectsClasses({ subjectId });
+    const classesOps = {};
+    res.forEach((r) => {
       classesOps[`c${r.class_id}`] = {
         name: r.display_name,
         subjectId,
         sections: {},
         expand: () => fetchSections(subjectId, r.class_id)
-      }
-    })
+      };
+    });
 
-    tree[`s${subjectId}`].classes = classesOps
-    tree[`s${subjectId}`].expanded = true
-    setTree(tree)
-    setLoading(false)
-  }
+    tree[`s${subjectId}`].classes = classesOps;
+    tree[`s${subjectId}`].expanded = true;
+    setTree(tree);
+    setLoading(false);
+  };
 
   const fetchSubjects = async () => {
-    setLoading(true)
-    const res = await getAvailableSubjects()
-    res.forEach(r => {
+    setLoading(true);
+    const res = await getAvailableSubjects();
+    res.forEach((r) => {
       tree[`s${r.subject_id}`] = {
         name: r.display_name,
         subjectId: r.subject_id,
         expanded: false,
         classes: {},
         expand: () => fetchClasses(r.subject_id)
-      }
-    })
+      };
+    });
 
-    setTree(tree)
-    setLoading(false)
-  }
+    setTree(tree);
+    setLoading(false);
+  };
 
   const handleChange = async (classId, sectionId, name) => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (Object.keys(sections).includes(`sc${sectionId}`)) {
-        await leaveUserClass({ sectionId, classId, userId: String(userId) })
-        delete sections[`sc${sectionId}`]
-        setSections(sections)
+        await leaveUserClass({ sectionId, classId, userId: String(userId) });
+        delete sections[`sc${sectionId}`];
+        setSections(sections);
         enqueueSnackbar({
           notification: {
             message: `Left ${name}`,
@@ -174,10 +171,14 @@ const AddRemoveClasses = (props: Props) => {
           }
         });
       } else {
-        const { success } = await joinClass({ classId, sectionId, userId: String(userId) })
+        const { success } = await joinClass({
+          classId,
+          sectionId,
+          userId: String(userId)
+        });
         if (success) {
-          sections[`sc${sectionId}`] = {}
-          setSections(sections)
+          sections[`sc${sectionId}`] = {};
+          setSections(sections);
           enqueueSnackbar({
             notification: {
               message: `Joined ${name}`,
@@ -199,7 +200,7 @@ const AddRemoveClasses = (props: Props) => {
         }
       }
 
-      await updateClasses(true)
+      await updateClasses(true);
     } catch (e) {
       enqueueSnackbar({
         notification: {
@@ -220,16 +221,16 @@ const AddRemoveClasses = (props: Props) => {
         }
       });
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (open) {
-      fetchSubjects()
-      if (userId) fetchUserClasses()
+      fetchSubjects();
+      if (userId) fetchUserClasses();
     }
     // eslint-disable-next-line
-  }, [userId, open])
+  }, [userId, open]);
 
   let debouncedFn;
 
@@ -249,11 +250,14 @@ const AddRemoveClasses = (props: Props) => {
 
   const renderOption = (option) => (
     <div className={classes.optionItem}>
-      <Typography
-        className={classes.optionName}
-      >
-        {option.name.split("\n").map((item) => {
-          return (<span key={Math.random()}>{item}<br /></span>)
+      <Typography className={classes.optionName}>
+        {option.name.split('\n').map((item) => {
+          return (
+            <span key={Math.random()}>
+              {item}
+              <br />
+            </span>
+          );
         })}
       </Typography>
       <Button
@@ -261,12 +265,12 @@ const AddRemoveClasses = (props: Props) => {
         color={option.hasJoined ? 'secondary' : 'primary'}
         onClick={(e) => {
           e.stopPropagation();
-          const newOptions = options.map(o => {
+          const newOptions = options.map((o) => {
             if (o.sectionId === option.sectionId) {
               return {
                 ...o,
                 hasJoined: !option.hasJoined
-              }
+              };
             }
             return o;
           });
@@ -291,14 +295,16 @@ const AddRemoveClasses = (props: Props) => {
       title="Add/Remove Classes"
     >
       <>
-        {loading && <CircularProgress
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%'
-          }}
-        />}
-        {(schoolId === "52" || schoolId === "16") &&
+        {loading && (
+          <CircularProgress
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%'
+            }}
+          />
+        )}
+        {(schoolId === '52' || schoolId === '16') && (
           <Autocomplete
             classes={{ paper: classes.paper }}
             onClose={() => setOptions([])}
@@ -313,30 +319,30 @@ const AddRemoveClasses = (props: Props) => {
                 className={classes.autocomplete}
                 inputProps={{
                   ...params.inputProps,
-                  autoComplete: 'new-password', // disable autocomplete and autofill
+                  autoComplete: 'new-password' // disable autocomplete and autofill
                 }}
               />
             )}
           />
-        }
+        )}
         <TreeView
           className={classes.list}
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
-          {Object.keys(tree).map(t => {
-            const subject = tree[t]
+          {Object.keys(tree).map((t) => {
+            const subject = tree[t];
             return (
               <TreeItem
                 key={t}
-                onClick={!subject.expanded ? subject.expand : () => { }}
+                onClick={!subject.expanded ? subject.expand : () => {}}
                 nodeId={t}
                 label={subject.name}
               >
-                <TreeItem nodeId='classes' />
+                <TreeItem nodeId="classes" />
 
-                {Object.keys(subject.classes).map(c => {
-                  const classC = subject.classes[c]
+                {Object.keys(subject.classes).map((c) => {
+                  const classC = subject.classes[c];
                   return (
                     <TreeItem
                       key={c}
@@ -344,33 +350,43 @@ const AddRemoveClasses = (props: Props) => {
                       nodeId={c}
                       label={classC.name}
                     >
-                      <TreeItem nodeId='sections' />
-                      {Object.keys(classC.sections).map(sc => {
-                        const section = classC.sections[sc]
+                      <TreeItem nodeId="sections" />
+                      {Object.keys(classC.sections).map((sc) => {
+                        const section = classC.sections[sc];
 
-                        return (<div key={sc}>
-                          <Checkbox
-                            checked={Boolean(sections[sc])}
-                            disabled={(sections[sc] && !sections[sc].canLeave) || !canAddClasses}
-                            onChange={() => handleChange(section.classId, section.sectionId, `${classC.name} ${section.name}`)}
-                            value="primary"
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                          />{section.name}
-                        </div>)
+                        return (
+                          <div key={sc}>
+                            <Checkbox
+                              checked={Boolean(sections[sc])}
+                              disabled={
+                                (sections[sc] && !sections[sc].canLeave) ||
+                                !canAddClasses
+                              }
+                              onChange={() =>
+                                handleChange(
+                                  section.classId,
+                                  section.sectionId,
+                                  `${classC.name} ${section.name}`
+                                )
+                              }
+                              value="primary"
+                              inputProps={{ 'aria-label': 'primary checkbox' }}
+                            />
+                            {section.name}
+                          </div>
+                        );
                       })}
                     </TreeItem>
-
-                  )
+                  );
                 })}
               </TreeItem>
-            )
+            );
           })}
         </TreeView>
       </>
     </Dialog>
   );
-}
-
+};
 
 const mapStateToProps = ({ user }: StoreState): {} => ({
   user
@@ -380,7 +396,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       enqueueSnackbar: notificationsActions.enqueueSnackbar,
-      fetchClasses: userActions.fetchClasses,
+      fetchClasses: userActions.fetchClasses
     },
     dispatch
   );

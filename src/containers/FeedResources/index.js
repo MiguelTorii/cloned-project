@@ -9,15 +9,15 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import Linkify from 'react-linkify'
-import { ReferralCTA } from '../Referrals'
+import Linkify from 'react-linkify';
+import { ReferralCTA } from '../Referrals';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     marginTop: theme.spacing(),
-    position: 'fixed',
+    position: 'fixed'
   },
   paper: {
     display: 'flex',
@@ -35,13 +35,13 @@ const styles = theme => ({
     alignItems: 'center',
     background: '#FFF',
     minHeight: theme.spacing(5),
-    borderRadius: theme.spacing(1, 1, 0, 0),
+    borderRadius: theme.spacing(1, 1, 0, 0)
   },
   title: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
-    padding: theme.spacing(2, 0, 2, 0),
+    padding: theme.spacing(2, 0, 2, 0)
   },
   text: {
     padding: theme.spacing(0, 2, 5, 2),
@@ -50,7 +50,7 @@ const styles = theme => ({
       textDecoration: 'none',
       color: theme.circleIn.palette.brand
     },
-    fontSize: 14,
+    fontSize: 14
   }
 });
 
@@ -62,21 +62,22 @@ type Props = {
   onboardingListVisible: boolean
 };
 
-const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }: Props) => {
+const FeedResources = ({
+  gridRef,
+  width,
+  classes,
+  user,
+  onboardingListVisible
+}: Props) => {
   const {
-    syncData: {
-      display,
-      smallLogo,
-      resourcesBody,
-      resourcesTitle
-    }
+    syncData: { display, smallLogo, resourcesBody, resourcesTitle }
   } = user;
   const [scrollYPos, setScrollYPos] = useState(0);
 
   const handleScroll = () => {
     const { scrollY } = window;
     setScrollYPos(scrollY);
-  }
+  };
 
   useEffect(() => {
     if (onboardingListVisible) {
@@ -86,16 +87,15 @@ const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }:
     return window.removeEventListener('scroll', handleScroll);
   }, [onboardingListVisible]);
 
-
-  const [widthParent, setWidthParent] = useState(gridRef?.current?.offsetWidth)
+  const [widthParent, setWidthParent] = useState(gridRef?.current?.offsetWidth);
   useEffect(() => {
-    const  handleResize = () => {
-      setWidthParent(gridRef?.current?.offsetWidth)
-    }
+    const handleResize = () => {
+      setWidthParent(gridRef?.current?.offsetWidth);
+    };
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [gridRef])
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [gridRef]);
 
   if (['xs', 'sm'].includes(width)) return null;
 
@@ -114,30 +114,27 @@ const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }:
   return (
     <div className={classes.container} style={{ top, width: widthParent }}>
       <div className={classes.content}></div>
-      {
-        display &&
+      {display && (
         <Paper className={classes.paper}>
           <Grid item>
             <div className={classes.imgContainer}>
-              {smallLogo && <img alt='logo' className={classes.img} src={smallLogo} />}
+              {smallLogo && (
+                <img alt="logo" className={classes.img} src={smallLogo} />
+              )}
             </div>
           </Grid>
-          <Typography className={classes.title}>
-            {resourcesTitle}
-          </Typography>
+          <Typography className={classes.title}>{resourcesTitle}</Typography>
           <Typography className={classes.text} style={{ width: widthParent }}>
-            <Linkify properties={{ target: '_blank' }}>
-              {resourcesBody}
-            </Linkify>
+            <Linkify properties={{ target: '_blank' }}>{resourcesBody}</Linkify>
           </Typography>
         </Paper>
-      }
+      )}
       <Paper className={classes.paper}>
         <ReferralCTA />
       </Paper>
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
   user,
@@ -147,7 +144,7 @@ const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      push: routePush,
+      push: routePush
     },
     dispatch
   );

@@ -6,12 +6,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import { processClasses } from 'containers/ClassesSelector/utils'
-import queryString from 'query-string'
-import HeaderNavigation from 'containers/Feed/HeaderNavigation'
-import { decypherClass } from 'utils/crypto'
-import ClassmatesDialog from 'components/ClassmatesDialog'
-import Tooltip from 'containers/Tooltip'
+import { processClasses } from 'containers/ClassesSelector/utils';
+import queryString from 'query-string';
+import HeaderNavigation from 'containers/Feed/HeaderNavigation';
+import { decypherClass } from 'utils/crypto';
+import ClassmatesDialog from 'components/ClassmatesDialog';
+import Tooltip from 'containers/Tooltip';
 import PostCreationHeader from 'containers/Feed/PostCreationHeader';
 import FeedList from '../../components/FeedList';
 import FeedFilter from '../../components/FeedFilter';
@@ -62,7 +62,7 @@ type State = {
   report: ?Object,
   deletePost: ?Object,
   selectedClasses: Array,
-  isFiltering: boolean,
+  isFiltering: boolean
 };
 
 class Feed extends React.PureComponent<Props, State> {
@@ -78,18 +78,15 @@ class Feed extends React.PureComponent<Props, State> {
   mounted: boolean;
 
   componentDidUpdate(prevProps) {
-    const {
-      from,
-    } = this.props
+    const { from } = this.props;
     if (from !== prevProps.from) {
-      this.handleUpdateFilter()
+      this.handleUpdateFilter();
     }
   }
 
-
-  setSelectedClasses = selectedClasses => {
-    this.setState({ selectedClasses })
-  }
+  setSelectedClasses = (selectedClasses) => {
+    this.setState({ selectedClasses });
+  };
 
   handleUpdateFilter = () => {
     const { from, updateFilter } = this.props;
@@ -98,7 +95,7 @@ class Feed extends React.PureComponent<Props, State> {
     } else {
       updateFilter({ field: 'from', value: 'everyone' });
     }
-  }
+  };
 
   componentDidMount = async () => {
     this.mounted = true;
@@ -107,12 +104,12 @@ class Feed extends React.PureComponent<Props, State> {
       sectionId,
       updateFilter,
       feed: { scrollData },
-      resetScrollData,
+      resetScrollData
       // push,
       // user: {
       // expertMode
       // }
-    }= this.props;
+    } = this.props;
     // if (!expertMode && !classId) push('/')
 
     if (classId >= 0 && sectionId >= 0) {
@@ -122,7 +119,7 @@ class Feed extends React.PureComponent<Props, State> {
       });
     }
 
-    this.handleUpdateFilter()
+    this.handleUpdateFilter();
 
     window.addEventListener('offline', () => {
       if (
@@ -164,7 +161,7 @@ class Feed extends React.PureComponent<Props, State> {
     } catch (err) {
       console.log(err);
     } finally {
-      this.setState({ isFiltering: false })
+      this.setState({ isFiltering: false });
     }
   };
 
@@ -212,16 +209,16 @@ class Feed extends React.PureComponent<Props, State> {
     this.setState({ deletePost: null });
   };
 
-  handleChange = name => async event => {
+  handleChange = (name) => async (event) => {
     const { updateFilter } = this.props;
     await updateFilter({ field: name, value: event.target.value });
     this.handleFetchFeed();
   };
 
-  handleApplyFilters = filters => {
+  handleApplyFilters = (filters) => {
     const { updateFilter } = this.props;
     // eslint-disable-next-line no-restricted-syntax
-    this.setState({ isFiltering: true })
+    this.setState({ isFiltering: true });
     for (const filter of filters) {
       updateFilter({ field: filter.name, value: filter.value });
     }
@@ -253,13 +250,13 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   updateFeed = async (filters) => {
-    const { updateFilter } = this.props
+    const { updateFilter } = this.props;
     await updateFilter({
       field: 'userClasses',
       value: filters
     });
-    this.handleFetchFeed()
-  }
+    this.handleFetchFeed();
+  };
 
   handleUserClick = ({ userId }: { userId: string }) => {
     const { push } = this.props;
@@ -283,81 +280,77 @@ class Feed extends React.PureComponent<Props, State> {
     this.handleFetchFeed();
   };
 
-  handlePostClick = ({
-    typeId,
-    postId,
-    feedId
-  }: {
-    typeId: number,
-    postId: number,
-    feedId: number
-  }) => () => {
-    const { push, updateScrollData, classId } = this.props;
-    const { search } = window.location
-    const query = queryString.parse(search)
-    const newQuery = queryString.stringify({ ...query, id: feedId })
-    updateScrollData({ position: window.pageYOffset, classId });
-    push(`/feed?${newQuery}`);
-    switch (typeId) {
-    case 3:
-      push(`/flashcards/${postId}${search}`);
-      break;
-    case 4:
-      push(`/notes/${postId}${search}`);
-      break;
-    case 5:
-      push(`/sharelink/${postId}${search}`);
-      break;
-    case 6:
-      push(`/question/${postId}${search}`);
-      break;
-    case 8:
-      push(`/post/${postId}${search}`);
-      break;
-    default:
-      break;
-    }
+  handlePostClick =
+    ({
+      typeId,
+      postId,
+      feedId
+    }: {
+      typeId: number,
+      postId: number,
+      feedId: number
+    }) =>
+    () => {
+      const { push, updateScrollData, classId } = this.props;
+      const { search } = window.location;
+      const query = queryString.parse(search);
+      const newQuery = queryString.stringify({ ...query, id: feedId });
+      updateScrollData({ position: window.pageYOffset, classId });
+      push(`/feed?${newQuery}`);
+      switch (typeId) {
+        case 3:
+          push(`/flashcards/${postId}${search}`);
+          break;
+        case 4:
+          push(`/notes/${postId}${search}`);
+          break;
+        case 5:
+          push(`/sharelink/${postId}${search}`);
+          break;
+        case 6:
+          push(`/question/${postId}${search}`);
+          break;
+        case 8:
+          push(`/post/${postId}${search}`);
+          break;
+        default:
+          break;
+      }
+    };
+
+  openClassmatesDialog = (openClassmates) => () => {
+    this.setState({ openClassmates });
   };
 
-  openClassmatesDialog = openClassmates => () => {
-    this.setState({ openClassmates })
-  }
-
   closeClassmatesDialog = () => {
-    this.setState({ openClassmates: null })
-  }
+    this.setState({ openClassmates: null });
+  };
 
   courseDisplayName = () => {
     const {
-      user: {
-        userClasses
-      },
+      user: { userClasses },
       router: {
-        location: {
-          search
-        }
+        location: { search }
       }
-    } = this.props
-    const query = queryString.parse(search)
+    } = this.props;
+    const query = queryString.parse(search);
 
     if (query.class && userClasses?.classList) {
-      const { classId } = decypherClass(query.class)
-      const selectedCourse = userClasses.classList.find(cl => cl.classId === Number(classId))
-      if (selectedCourse) return selectedCourse.courseDisplayName
+      const { classId } = decypherClass(query.class);
+      const selectedCourse = userClasses.classList.find(
+        (cl) => cl.classId === Number(classId)
+      );
+      if (selectedCourse) return selectedCourse.courseDisplayName;
     }
-    return ''
-  }
+    return '';
+  };
 
   render() {
     const {
       classes,
       push,
       user: {
-        data: {
-          userId,
-          schoolId,
-          firstName
-        },
+        data: { userId, schoolId, firstName },
         userClasses: { classList },
         expertMode
       },
@@ -370,11 +363,7 @@ class Feed extends React.PureComponent<Props, State> {
         isLoading
       },
       router: {
-        location: {
-          search,
-          pathname,
-          state
-        }
+        location: { search, pathname, state }
       },
       feedId: fromFeedId,
       campaign
@@ -386,9 +375,8 @@ class Feed extends React.PureComponent<Props, State> {
       openClassmates,
       selectedClasses,
       isBeforeFirstLoad,
-      isFiltering,
+      isFiltering
     } = this.state;
-
 
     let courseName = '';
 
@@ -424,10 +412,10 @@ class Feed extends React.PureComponent<Props, State> {
               updateFeed={this.updateFeed}
               push={push}
             />
-            { selectedClasses.length === 1 && !selectedClasses[0].isCurrent
-              ? null
-              : <PostCreationHeader />
-            }
+            {selectedClasses.length === 1 &&
+            !selectedClasses[0].isCurrent ? null : (
+              <PostCreationHeader />
+            )}
             <FeedFilter
               query={query}
               from={from}
@@ -522,7 +510,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       clearFilter: feedActions.clearFilter,
       updateFeedLimit: feedActions.updateFeedLimit,
       updateScrollData: feedActions.updateScrollData,
-      resetScrollData: feedActions.resetScrollData,
+      resetScrollData: feedActions.resetScrollData
     },
     dispatch
   );

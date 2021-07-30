@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 // @flow
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment';
 import get from 'lodash/get';
 import { API_ROUTES } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
@@ -38,22 +38,20 @@ export const sendMessage = async ({
       }
     );
 
-    const {
-      data
-    } = result
+    const { data } = result;
 
-    return data
+    return data;
   } catch (err) {
     return null;
   }
-}
+};
 
-export const removeUser = async(userId, chatId) => {
+export const removeUser = async (userId, chatId) => {
   return callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/class/members?chat_id=${userId}`,
     method: 'DELETE'
   });
-}
+};
 
 export const sendBatchMessage = async ({
   message,
@@ -77,15 +75,13 @@ export const sendBatchMessage = async ({
       }
     );
 
-    const {
-      data
-    } = result
+    const { data } = result;
 
-    return data
+    return data;
   } catch (err) {
     return null;
   }
-}
+};
 
 export const getClassmates = async ({
   classId,
@@ -106,12 +102,10 @@ export const getClassmates = async ({
     );
 
     const {
-      data: {
-        members
-      }
-    } = result
+      data: { members }
+    } = result;
 
-    return members.map(m => ({
+    return members.map((m) => ({
       notRegistered: !m.registered,
       firstName: m.first_name,
       lastName: m.last_name,
@@ -213,7 +207,7 @@ export const muteChannel = async (sid): Promise<Object> => {
     console.log(err);
     return {};
   }
-}
+};
 
 export const unmuteChannel = async (sid): Promise<Object> => {
   try {
@@ -233,22 +227,19 @@ export const unmuteChannel = async (sid): Promise<Object> => {
     console.log(err);
     return {};
   }
-}
+};
 
 export const getChannels = async (): Promise<Object> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.CHAT}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.CHAT}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
-    const local = {}
-    data.chats.forEach(c => {
+    const local = {};
+    data.chats.forEach((c) => {
       local[c.id] = {
         sid: c.id,
         title: c.group_name,
@@ -261,29 +252,29 @@ export const getChannels = async (): Promise<Object> => {
             firstname: c.last_received_message.user.first_name,
             lastname: c.last_received_message.user.last_name,
             userId: c.last_received_message.user.user_id,
-            image: c.last_received_message.user.profile_image_url,
-          },
+            image: c.last_received_message.user.profile_image_url
+          }
         },
         thumbnail: c.thumbnail,
-        members: c.users.map(u => ({
+        members: c.users.map((u) => ({
           firstname: u.first_name,
           lastname: u.last_name,
           userId: u.user_id,
           image: u.profile_image_url,
           role: u.role,
           roleId: u.role_id,
-          isOnline: u.is_online,
+          isOnline: u.is_online
         }))
-      }
+      };
     });
-    return local
+    return local;
   } catch (err) {
     console.log(err);
     return {};
   }
 };
 
-export const leaveChat = async ({ sid }: {sid: string}): Promise<Object> => {
+export const leaveChat = async ({ sid }: { sid: string }): Promise<Object> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -344,8 +335,8 @@ export const getGroupMembers = async ({
     const { data = {} } = result;
     const { users = [] } = data;
 
-    return users.map(user => ({
-      registered: Boolean((user.registered) || false),
+    return users.map((user) => ({
+      registered: Boolean(user.registered || false),
       firstName: String((user.first_name: string) || ''),
       hours: Number((user.hours: number) || 0),
       role: String((user.role: string) || ''),
@@ -358,7 +349,7 @@ export const getGroupMembers = async ({
       schoolId: Number((user.school_id: number) || 0),
       state: String((user.state: string) || ''),
       userId: String((user.user_id: string) || ''),
-      isOnline: Boolean((user.is_online) || false)
+      isOnline: Boolean(user.is_online || false)
     }));
   } catch (err) {
     console.log(err);
@@ -401,7 +392,7 @@ export const getShareLink = async (chatId: string) => {
     const response = await axios.post(
       `${API_ROUTES.CHAT_SHARE_LINK}`,
       {
-        chat_id: chatId,
+        chat_id: chatId
       },
       {
         headers: {
@@ -414,7 +405,7 @@ export const getShareLink = async (chatId: string) => {
   } catch (err) {
     return '';
   }
-}
+};
 
 // Fetches chat id with the given hashed chat id
 export const getChatIdFromHash = async (hashId: string) => {
@@ -423,7 +414,7 @@ export const getChatIdFromHash = async (hashId: string) => {
     const response = await axios.post(
       `${API_ROUTES.CHAT_JOIN_LINK}`,
       {
-        hid: hashId,
+        hid: hashId
       },
       {
         headers: {
@@ -436,20 +427,16 @@ export const getChatIdFromHash = async (hashId: string) => {
   } catch (err) {
     return '';
   }
-}
+};
 
 export const apiUpdateChat = async (chatId: string, attributes: Object) => {
   try {
     const token = await getToken();
-    const response = await axios.put(
-      `${API_ROUTES.CHAT}`,
-      attributes,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const response = await axios.put(`${API_ROUTES.CHAT}`, attributes, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     return response.data;
   } catch (err) {

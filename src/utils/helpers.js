@@ -3,21 +3,25 @@ import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';
 
 export const getPointsText = (points: number) => {
-  return points < 1000 ?
-    points.toLocaleString() :
-    `${Math.floor(points / 1000).toLocaleString()}K`
+  return points < 1000
+    ? points.toLocaleString()
+    : `${Math.floor(points / 1000).toLocaleString()}K`;
 };
 
 export const momentWithTimezone = (date: string = undefined) => {
   return moment(date).tz(TIME_ZONE);
 };
 
-export const isApiCalling = type => state => _.get(state.api[type], 'inProgress', false);
+export const isApiCalling = (type) => (state) =>
+  _.get(state.api[type], 'inProgress', false);
 
-export const getPastClassIds = classList => classList.map(classEntry => {
-  if (!classEntry.isCurrent) return classEntry.classId;
-  return "";
-}).filter(item => item)
+export const getPastClassIds = (classList) =>
+  classList
+    .map((classEntry) => {
+      if (!classEntry.isCurrent) return classEntry.classId;
+      return '';
+    })
+    .filter((item) => item);
 
 export const setIntervalWithFirstCall = (func: Function, delay: number) => {
   func();
@@ -40,7 +44,7 @@ export const normalizeArray = (array: Array<any>, idField: string = 'id') => {
 export const shuffleArray = (array) => {
   const result = [...array];
 
-  for(let i = result.length - 1; i > 0; i --){
+  for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * i);
     const temp = result[i];
     result[i] = result[j];
@@ -51,14 +55,13 @@ export const shuffleArray = (array) => {
 };
 
 export const truncate = (str, n) => {
-  return (str.length > n) ? `${str.substr(0, n-1)  }...` : str;
+  return str.length > n ? `${str.substr(0, n - 1)}...` : str;
 };
-
 
 export const arrElemToId = (array) => {
   const result = [];
 
-  array.forEach((elem, id) => result[elem] = id);
+  array.forEach((elem, id) => (result[elem] = id));
 
   return result;
 };
@@ -76,12 +79,15 @@ export const englishIdFromNumber = (number) => {
 
   const rem = [];
 
-  while(number) {
+  while (number) {
     rem.push(number % 26);
     number = Math.floor(number / 26);
   }
 
-  return rem.reverse().map((id) => String.fromCharCode(65 + id)).join('');
+  return rem
+    .reverse()
+    .map((id) => String.fromCharCode(65 + id))
+    .join('');
 };
 
 export const twoDigitsNumber = (number) => {
@@ -92,10 +98,12 @@ export const twoDigitsNumber = (number) => {
 };
 
 export const formatSeconds = (seconds) => {
-  return `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(seconds % 60)}`;
-}
+  return `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(
+    seconds % 60
+  )}`;
+};
 
 export const deepLinkCheck = (pathname) => {
-  const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/)
-  return deepLinkRegExp.test(pathname)
-}
+  const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/);
+  return deepLinkRegExp.test(pathname);
+};

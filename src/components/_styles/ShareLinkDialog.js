@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
-import { dialogStyle } from './Dialog'
+import { makeStyles } from '@material-ui/core/styles';
+import { dialogStyle } from './Dialog';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     ...dialogStyle,
     backgroundColor: theme.circleIn.palette.appBar,
@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 10
   },
   contentClassName: {
-    padding: '0px !important' ,
+    padding: '0px !important'
   },
   header: {
     position: 'relative',
@@ -30,6 +30,6 @@ const useStyles = makeStyles(theme => ({
   content: {
     padding: theme.spacing(3)
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -9,7 +9,7 @@ export const styles = theme => ({
     flex: 1,
     [theme.breakpoints.down('sm')]: {
       paddingTop: theme.spacing(1.5)
-    },
+    }
   },
   hide: {
     display: 'none !important'
@@ -27,7 +27,7 @@ export const styles = theme => ({
     minWidth: 130,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(0.5)
-    },
+    }
   },
   profile: {
     display: 'flex',
@@ -36,7 +36,7 @@ export const styles = theme => ({
     backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground,
     width: '100%',
     height: '100%',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   videoWrapper: {
     backgroundColor: 'black',
@@ -59,7 +59,7 @@ export const styles = theme => ({
       height: '100%   !important',
       objectFit: 'container',
       boxSizing: 'border-box',
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
     }
   },
   avatarImage: {
@@ -69,7 +69,7 @@ export const styles = theme => ({
   content: {
     position: 'absolute',
     bottom: 12,
-    right: 12,
+    right: 12
   },
   title: {
     color: 'black',
@@ -96,7 +96,7 @@ export const styles = theme => ({
     height: '100%'
   },
   initials: {
-    fontWeight:700,
+    fontWeight: 700,
     fontSize: 50,
     color: '#000000'
   },
@@ -131,8 +131,8 @@ export const styles = theme => ({
   cameraVideo: {
     '& video': {
       transform: 'rotateY(180deg)',
-      '-webkit-transform': 'rotateY(180deg)', /* Safari and Chrome */
+      '-webkit-transform': 'rotateY(180deg)' /* Safari and Chrome */,
       '-moz-transform': 'rotateY(180deg)' /* Firefox */
     }
-  },
+  }
 });

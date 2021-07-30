@@ -15,18 +15,13 @@ type Props = {
   }
 };
 
-const OAuthPage = ({
-  classes,
-  history: {
-    location
-  }
-}: Props) => {
+const OAuthPage = ({ classes, history: { location } }: Props) => {
   return (
     <main className={classes.main}>
       <CssBaseline />
       <OAuth search={location.search} />
     </main>
   );
-}
+};
 
 export default withRoot(withStyles(styles)(OAuthPage));

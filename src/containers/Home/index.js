@@ -4,14 +4,14 @@
 /* eslint-disable prefer-rest-params */
 /* eslint-disable no-unused-expressions */
 // @flow
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
-import useScript from 'hooks/useScript'
-import Workflow from 'pages/Workflow'
-import Classes from 'pages/Classes'
-import Feed from 'pages/Feed'
+import useScript from 'hooks/useScript';
+import Workflow from 'pages/Workflow';
+import Classes from 'pages/Classes';
+import Feed from 'pages/Feed';
 import AuthRedirect from 'pages/AuthRedirect';
 import type { State as StoreState } from '../../types/state';
 
@@ -25,67 +25,64 @@ const styles = () => ({
   }
 });
 
+const Home = ({ campaign, classes, user }) => {
+  const {
+    data: { userId },
+    isLoading
+  } = user;
 
-const Home = ({
-  campaign,
-  classes,
-  user
-}) => {
-  const { data: { userId }, isLoading } = user
+  const widgetUrl = useMemo(
+    () => !userId && 'https://widget.freshworks.com/widgets/67000003041.js',
+    [userId]
+  );
 
-  const widgetUrl = useMemo(() => !userId &&
-    "https://widget.freshworks.com/widgets/67000003041.js",
-  [userId])
+  const widgetId = useMemo(() => !userId && 67000003041, [userId]);
 
-  const widgetId = useMemo(() => !userId && 67000003041, [userId])
-
-  const status = useScript(widgetUrl)
+  const status = useScript(widgetUrl);
 
   useEffect(() => {
     async function loadWidget() {
-      if (!userId && typeof window !== "undefined") {
+      if (!userId && typeof window !== 'undefined') {
         window.fwSettings = {
           widget_id: widgetId,
           hideChatButton: true
-        }
+        };
 
-        !(function() {
-          if (typeof window.FreshworksWidget !== "function") {
-            const n = function() {
-              n.q.push(arguments)
-            }; (n.q = []), (window.FreshworksWidget = n)
+        !(function () {
+          if (typeof window.FreshworksWidget !== 'function') {
+            const n = function () {
+              n.q.push(arguments);
+            };
+            (n.q = []), (window.FreshworksWidget = n);
           }
-        })()
+        })();
       }
     }
 
     async function hideWidget() {
-      if (userId) window.FreshworksWidget('hide', 'launcher')
-      else window.FreshworksWidget('show', 'launcher')
+      if (userId) window.FreshworksWidget('hide', 'launcher');
+      else window.FreshworksWidget('show', 'launcher');
     }
 
-    loadWidget()
-    hideWidget()
-  }, [widgetId, widgetUrl, status, userId])
+    loadWidget();
+    hideWidget();
+  }, [widgetId, widgetUrl, status, userId]);
 
-  if(isLoading && !userId) return (
-    <div className={classes.loading}>
-      <CircularProgress />
-    </div>
-  )
+  if (isLoading && !userId)
+    return (
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+    );
 
-  if(!userId) return <AuthRedirect />
-  if (!campaign.newClassExperience) return <Feed />
-  return campaign.landingPageCampaign ? <Workflow /> : <Classes />
-}
+  if (!userId) return <AuthRedirect />;
+  if (!campaign.newClassExperience) return <Feed />;
+  return campaign.landingPageCampaign ? <Workflow /> : <Classes />;
+};
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
   campaign,
-  user,
+  user
 });
 
-
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(Home));
+export default connect(mapStateToProps, null)(withStyles(styles)(Home));

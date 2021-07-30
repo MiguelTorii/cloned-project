@@ -1,11 +1,12 @@
 import green from '@material-ui/core/colors/green';
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles((theme) => ({
   root: {
     borderRadius: 0,
     backgroundColor: theme.circleIn.palette.feedBackground,
-    marginTop: (props) => props.showSimple ? theme.spacing(1) : theme.spacing(3)
+    marginTop: (props) =>
+      props.showSimple ? theme.spacing(1) : theme.spacing(3)
   },
   media: {
     height: 10
@@ -18,10 +19,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     '& > :first-child': {
       fontWeight: 800,
-      marginRight: theme.spacing(1/2)
+      marginRight: theme.spacing(1 / 2)
     },
     '& > :last-child': {
-      marginLeft: theme.spacing(1/2)
+      marginLeft: theme.spacing(1 / 2)
     }
   },
   description: {
@@ -51,21 +52,21 @@ export default makeStyles((theme) => ({
   },
   stats: {
     display: 'flex',
-    margin: theme.spacing(),
+    margin: theme.spacing()
   },
   stat: {
     color: theme.palette.primary.primaryColor,
-    margin: theme.spacing(),
+    margin: theme.spacing()
   },
   stat2: {
     color: theme.palette.primary.primaryColor,
-    margin: theme.spacing(),
+    margin: theme.spacing()
   },
   actionIcons: {
     display: 'flex',
     alignItems: 'center',
     color: theme.palette.primary.primaryColor,
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(3)
   },
   actionIcon: {
     fontSize: 16,
@@ -102,7 +103,7 @@ export default makeStyles((theme) => ({
     color: theme.circleIn.palette.profilebgColor
   },
   imageContainer: {
-    position: 'relative',
+    position: 'relative'
   },
   numberOfCardsStyle: {
     display: 'flex',
@@ -116,7 +117,7 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     background: 'rgba(0,0,0,0.25)',
     borderRadius: 10,
-    top: 0,
+    top: 0
   },
   imagePost: {
     minHeight: 75,
@@ -155,12 +156,12 @@ export default makeStyles((theme) => ({
     flexWrap: 'wrap'
   },
   chip: {
-    margin: theme.spacing(),
+    margin: theme.spacing()
   },
   hashtag: {
     color: theme.palette.primary.main,
     fontSize: 14,
-    marginRight: 5,
+    marginRight: 5
   },
   label: {
     fontSize: 10
@@ -171,22 +172,25 @@ export default makeStyles((theme) => ({
   photoNotes: {
     display: 'flex',
     marginTop: 20,
-    position: 'relative',
+    position: 'relative'
   },
   photoNotePreview: {
     position: 'relative',
-    marginRight: 30,
+    marginRight: 30
   },
   flashCards: {
-    width: (props) => props.showSimple ? 100 : 270,
-    height: (props) => props.showSimple ? 60 : 130,
+    width: (props) => (props.showSimple ? 100 : 270),
+    height: (props) => (props.showSimple ? 60 : 130),
     backgroundColor: theme.circleIn.palette.appBar,
     borderRadius: 10
   },
   gradientBar: {
     width: '100%',
-    height: (props) => props.showSimple ? 6 : 12,
-    background: (props) => props.showSimple ? '#EFC448' : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    height: (props) => (props.showSimple ? 6 : 12),
+    background: (props) =>
+      props.showSimple
+        ? '#EFC448'
+        : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     borderRadius: '10px 10px 0 0'
   },
   flashcardTitle: {
@@ -208,7 +212,7 @@ export default makeStyles((theme) => ({
     '& .ql-editor': {
       background: theme.circleIn.palette.hoverMenu,
       color: theme.palette.common.white,
-      borderRadius: 100,
+      borderRadius: 100
     }
   },
   innerContainerEditor: {
@@ -249,24 +253,24 @@ export default makeStyles((theme) => ({
   error: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1, 2, 1),
+    padding: theme.spacing(0, 1, 2, 1)
   },
   errorMessage: {
     fontSize: 12,
     color: theme.circleIn.palette.danger
   },
   titleText: {
-    fontSize: (props) => props.showSimple ? 12 : 18,
+    fontSize: (props) => (props.showSimple ? 12 : 18),
     marginRight: theme.spacing()
   },
   boldTitle: {
-    fontSize: (props) => props.showSimple ? 14 : 18,
-    fontWeight: 600,
+    fontSize: (props) => (props.showSimple ? 14 : 18),
+    fontWeight: 600
   },
   titleFormat: {
-    fontSize: (props) => props.showSimple ? 12 : 18,
+    fontSize: (props) => (props.showSimple ? 12 : 18),
     lineHeight: '25px',
-    fontWeight: 600,
+    fontWeight: 600
   },
   markdown: {
     color: theme.palette.text.primary,
@@ -282,6 +286,6 @@ export default makeStyles((theme) => ({
 
     display: '-webkit-box',
     WebkitLineClamp: 6,
-    WebkitBoxOrient: 'vertical',
+    WebkitBoxOrient: 'vertical'
   }
 }));

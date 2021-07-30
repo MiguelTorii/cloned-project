@@ -26,18 +26,19 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 
-import RoleBadge from 'components/RoleBadge'
-import CustomQuill from 'components/CustomQuill'
+import RoleBadge from 'components/RoleBadge';
+import CustomQuill from 'components/CustomQuill';
 import Tooltip from 'containers/Tooltip';
 import SharePost from 'containers/SharePost';
 
 import { getInitials } from 'utils/chat';
-import _ from "lodash";
+import _ from 'lodash';
 import { styles } from '../_styles/PostItem/PostItemHeader';
 
 const BODY_LENGTH_THRESHOLD = 80;
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
-
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
+  <RouterLink to={href} {...props} ref={ref} />
+));
 
 type Props = {
   classes: Object,
@@ -82,7 +83,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     showShortSummary: true
   };
 
-  handleMenuOpen = event => {
+  handleMenuOpen = (event) => {
     this.setState({ moreAnchorEl: event.currentTarget });
   };
 
@@ -103,25 +104,20 @@ class PostItemHeader extends React.PureComponent<Props, State> {
   };
 
   handleShare = () => {
-    const { open } = this.state
+    const { open } = this.state;
     this.setState({ open: !open });
   };
 
   handleEdit = () => {
-    const {
-      onEdit,
-      postId,
-      typeId,
-      pushTo
-    } = this.props;
+    const { onEdit, postId, typeId, pushTo } = this.props;
     this.handleMenuClose();
     if (typeId === 3) {
       onEdit();
     }
-    if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`)
-    if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`)
-    if (typeId === 6) pushTo(`/edit/question/${String(postId)}`)
-    if (typeId === 8) pushTo(`/edit/post/${String(postId)}`)
+    if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`);
+    if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`);
+    if (typeId === 6) pushTo(`/edit/question/${String(postId)}`);
+    if (typeId === 8) pushTo(`/edit/post/${String(postId)}`);
   };
 
   handleSummaryMoreOrLess = () => {
@@ -134,19 +130,17 @@ class PostItemHeader extends React.PureComponent<Props, State> {
   handleGoBack = () => {
     const { router, pushTo, pop } = this.props;
     const {
-      location: {
-        query
-      }
+      location: { query }
     } = router;
     const from = new URLSearchParams(query).get('from');
 
-    switch(from) {
-    case 'profile':
-      pop();
-      break;
-    default:
-      pushTo(`/feed?${queryString.stringify(query)}`);
-      break;
+    switch (from) {
+      case 'profile':
+        pop();
+        break;
+      default:
+        pushTo(`/feed?${queryString.stringify(query)}`);
+        break;
     }
   };
 
@@ -215,12 +209,14 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </MenuItem>
         ) : (
           <div>
-            {!isPastClassFlashcard && <MenuItem onClick={this.handleEdit}>
-              <ListItemIcon color="inherit">
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText inset primary="Edit" />
-            </MenuItem>}
+            {!isPastClassFlashcard && (
+              <MenuItem onClick={this.handleEdit}>
+                <ListItemIcon color="inherit">
+                  <CreateIcon />
+                </ListItemIcon>
+                <ListItemText inset primary="Edit" />
+              </MenuItem>
+            )}
             <MenuItem onClick={this.handleDelete}>
               <ListItemIcon color="inherit">
                 <DeleteIcon />
@@ -237,13 +233,13 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         <Grid
           className={classes.backButton}
           container
-          justify='flex-start'
-          alignItems='center'
+          justify="flex-start"
+          alignItems="center"
           onClick={this.handleGoBack}
         >
           <ArrowBackIosRoundedIcon />
           <Typography className={classes.feedTypo}>
-            { navigationTitle }
+            {navigationTitle}
           </Typography>
         </Grid>
         <div className={classes.root}>
@@ -269,7 +265,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Typography>
               {role && <RoleBadge text={role} />}
             </Box>
-            {(!newClassExperience || expertMode) ? (
+            {!newClassExperience || expertMode ? (
               <Typography component="p" variant="subtitle1" noWrap>
                 {classroomName} • {fromNow}
               </Typography>
@@ -279,9 +275,11 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Typography>
             )}
           </div>
-          {hideShare && <Button aria-label="Share" onClick={this.handleShare}>
-            <ShareIcon />
-          </Button>}
+          {hideShare && (
+            <Button aria-label="Share" onClick={this.handleShare}>
+              <ShareIcon />
+            </Button>
+          )}
           <SharePost feedId={feedId} open={open} onClose={this.handleShare} />
           <Tooltip
             id={9043}
@@ -298,18 +296,17 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         </Typography>
         {!isMarkdown ? (
           <Typography className={classes.body} component="p" variant="h6">
-            { showShortSummary ?
-              _.truncate(body, { length: BODY_LENGTH_THRESHOLD })
-              :
-              body
-            }
-            { body.length > BODY_LENGTH_THRESHOLD && (
+            {showShortSummary
+              ? _.truncate(body, { length: BODY_LENGTH_THRESHOLD })
+              : body}
+            {body.length > BODY_LENGTH_THRESHOLD && (
               <Link
                 className={classes.moreLessLink}
                 onClick={this.handleSummaryMoreOrLess}
                 color="inherit"
-                underline="always">
-                { showShortSummary ? 'see more' : 'show less' }
+                underline="always"
+              >
+                {showShortSummary ? 'see more' : 'show less'}
               </Link>
             )}
           </Typography>

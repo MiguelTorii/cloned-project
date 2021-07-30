@@ -51,12 +51,10 @@ const UploadImagesForm = ({
               <input {...getInputProps()} />
               <div className={classes.dropZone}>
                 <div className={classes.dropLabel} align="center">
-                  { loading && <CircularProgress size={50} /> }
-                  { !loading && (
+                  {loading && <CircularProgress size={50} />}
+                  {!loading && (
                     <>
-                      <div>
-                        Drag and drop images here or
-                      </div>
+                      <div>Drag and drop images here or</div>
                       <TransparentButton onClick={() => {}}>
                         Upload Notes
                       </TransparentButton>
@@ -106,5 +104,5 @@ const UploadImagesForm = ({
       </SortableContainer>
     </div>
   );
-}
+};
 export default withStyles(styles)(UploadImagesForm);

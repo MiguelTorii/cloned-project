@@ -1,13 +1,13 @@
 import { dialogStyle } from './Dialog';
 
-export default theme => ({
+export default (theme) => ({
   validatorForm: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column'
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%' // Fix IE 11 issue.
   },
   input: {
     display: 'none'
@@ -32,7 +32,7 @@ export default theme => ({
     display: 'flex',
     justifyContent: 'flex-start',
     marginTop: theme.spacing(1.5),
-    '& > :first-child' :{
+    '& > :first-child': {
       width: '100%'
     }
   },

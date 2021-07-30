@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 // import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 // import CastForEducationIcon from '@material-ui/icons/CastForEducation';
 // import ScreenShareIcon from '@material-ui/icons/ScreenShare';
-import { ReactComponent as Mute } from 'assets/svg/mute.svg'
+import { ReactComponent as Mute } from 'assets/svg/mute.svg';
 
 import { styles } from '../_styles/MeetUp/ThumbnailItem';
 
@@ -42,7 +42,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
     // $FlowIgnore
     this.state = {
       hover: false
-    }
+    };
     this.videoinput = React.createRef();
   }
 
@@ -54,12 +54,12 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
   };
 
   onMouseOver = () => {
-    this.setState({ hover: true })
-  }
+    this.setState({ hover: true });
+  };
 
   onMouseOut = () => {
-    this.setState({ hover: false })
-  }
+    this.setState({ hover: false });
+  };
 
   render() {
     const {
@@ -74,17 +74,25 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
       isLocal,
       // isPinned,
       isVideo,
-      isMic,
+      isMic
       // isDataSharing,
       // isSharing
     } = this.props;
-    const { hover } = this.state
-    const initials = `${firstName !== '' ? firstName === 'You' ? 'You' : firstName.charAt(0) : ''}${
-      lastName !== '' ? lastName.charAt(0) : ''
-    }`;
+    const { hover } = this.state;
+    const initials = `${
+      firstName !== ''
+        ? firstName === 'You'
+          ? 'You'
+          : firstName.charAt(0)
+        : ''
+    }${lastName !== '' ? lastName.charAt(0) : ''}`;
 
-    const isScreenShare = !!(['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && sharingTrackIds.length)
-    const activeBorder = highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {}
+    const isScreenShare = !!(
+      ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 &&
+      sharingTrackIds.length
+    );
+    const activeBorder =
+      highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {};
 
     return (
       <Box
@@ -96,10 +104,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
         <div className={classes.videoWrapper}>
           {isVideo ? (
             <div
-              className={cx(
-                classes.video,
-                isLocal && classes.cameraVideo
-              )}
+              className={cx(classes.video, isLocal && classes.cameraVideo)}
               ref={this.videoinput}
             />
           ) : profileImage ? (
@@ -113,30 +118,27 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
                 }}
                 style={{
                   width: '100%',
-                  height: '100%',
+                  height: '100%'
                 }}
               />
             </div>
           ) : (
             <div className={classes.profile}>
-              <Typography className={classes.initials}>
-                {initials}
-              </Typography>
+              <Typography className={classes.initials}>{initials}</Typography>
             </div>
           )}
         </div>
-        <div className={cx(
-          !isMic
-            ? classes.mic
-            : hover && (firstName || lastName)
+        <div
+          className={cx(
+            !isMic
+              ? classes.mic
+              : hover && (firstName || lastName)
               ? classes.mic
               : classes.hide
-        )}>
+          )}
+        >
           {!isMic && <Mute className={classes.icon} />}
-          <Typography
-            className={classes.username}
-            variant="h6"
-          >
+          <Typography className={classes.username} variant="h6">
             {`${firstName} ${lastName}`}
           </Typography>
         </div>

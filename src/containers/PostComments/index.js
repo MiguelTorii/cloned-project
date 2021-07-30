@@ -10,7 +10,7 @@ import PostItemAddComment from 'components/PostItem/PostItemAddComment';
 import PostItemComment from 'components/PostItem/PostItemComment';
 import SkeletonLoad from 'components/PostItem//SkeletonLoad';
 import update from 'immutability-helper';
-import { bindActionCreators } from "redux";
+import { bindActionCreators } from 'redux';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 
@@ -19,15 +19,16 @@ import {
   createComment,
   thankComment,
   bestAnswer,
-  deleteComment, updateComment
+  deleteComment,
+  updateComment
 } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import type { Comments } from '../../types/models';
 import { processComments } from './utils';
 import ErrorBoundary from '../ErrorBoundary';
-import { showNotification } from "../../actions/notifications";
+import { showNotification } from '../../actions/notifications';
 
-const styles = theme => ({
+const styles = (theme) => ({
   readOnly: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
@@ -83,8 +84,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
-    this.loadData()
-  }
+    this.loadData();
+  };
 
   handlePostComment = async ({
     comment,
@@ -141,25 +142,28 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const { comments } = this.state;
     const { success } = await updateComment(commentId, newValue);
 
-    if (!success) return ;
+    if (!success) return;
 
     const index = comments.comments.findIndex((item) => item.id === commentId);
 
     if (index >= 0) {
       const newComments = update(comments, {
         comments: {
-          [index]: (item) => update(item, {
-            comment: {
-              $set: newValue
-            }
-          })
+          [index]: (item) =>
+            update(item, {
+              comment: {
+                $set: newValue
+              }
+            })
         }
       });
 
-      this.setState(update(this.state, {
-        comments: { $set: newComments },
-        items: { $set: processComments(newComments.comments).reverse() }
-      }));
+      this.setState(
+        update(this.state, {
+          comments: { $set: newComments },
+          items: { $set: processComments(newComments.comments).reverse() }
+        })
+      );
     }
   };
 
@@ -183,7 +187,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleDelete = async id => {
+  handleDelete = async (id) => {
     try {
       this.setState({ isLoading: true });
       const {
@@ -198,7 +202,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleBestAnswer = async ({ commentId }: {commentId: number}) => {
+  handleBestAnswer = async ({ commentId }: { commentId: number }) => {
     const {
       user: {
         data: { userId }
@@ -234,21 +238,21 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
   viewMoreComment = () => {
     const { loadViewMoreComment } = this.state;
-    this.setState({ loadViewMoreComment: !loadViewMoreComment })
-  }
+    this.setState({ loadViewMoreComment: !loadViewMoreComment });
+  };
 
   isCurrent = (classId) => {
     const {
       user: {
         userClasses: { classList }
-      },
+      }
     } = this.props;
 
-    const filteredList = classList.filter((cl) => cl.classId === classId)
+    const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
-      return filteredList[0].isCurrent
+      return filteredList[0].isCurrent;
     }
-  }
+  };
 
   renderComments = () => {
     const {
@@ -260,15 +264,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       hasBestAnswer,
       isOwner,
-      isCurrent,
+      isCurrent
     } = this.props;
-    const {
-      comments,
-      items,
-      isLoading,
-      loadViewMoreComment,
-      replyCommentId
-    } = this.state;
+    const { comments, items, isLoading, loadViewMoreComment, replyCommentId } =
+      this.state;
 
     const name = `${firstName} ${lastName}`;
 
@@ -279,62 +278,28 @@ class ViewNotes extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           {loadViewMoreComment
             ? items.map((item) => (
-              <div key={item.id}>
-                <PostItemComment
-                  id={item.id}
-                  replyCommentId={replyCommentId}
-                  role={item.user.role}
-                  roleId={item.user.roleId}
-                  ownProfileUrl={profileImage}
-                  ownName={name}
-                  ownerId={item.user.userId}
-                  firstName={item.user.firstName}
-                  lastName={item.user.lastName}
-                  profileImageUrl={item.user.profileImageUrl}
-                  created={item.created}
-                  comment={item.comment}
-                  thanksCount={item.thanksCount}
-                  thanked={item.thanked}
-                  isOnline={item.user.isOnline}
-                  rootCommentId={item.id}
-                  accepted={item.accepted}
-                  isLoading={isLoading}
-                  isQuestion={isQuestion}
-                  isOwn={item.user.userId === userId}
-                  readOnly={readOnly}
-                  hasBestAnswer={hasBestAnswer}
-                  isOwner={Boolean(isOwner)}
-                  onPostComment={this.handlePostComment}
-                  onUpdateComment={this.handleUpdateComment}
-                  onThanks={this.handleThanks}
-                  onDelete={this.handleDelete}
-                  onReport={this.handleReport}
-                  onBestAnswer={this.handleBestAnswer}
-                  userId={userId}
-                  isCurrent={isCurrent}
-                />
-                {item.children.reverse().map(reply => (
+                <div key={item.id}>
                   <PostItemComment
-                    key={reply.id}
-                    id={reply.id}
+                    id={item.id}
                     replyCommentId={replyCommentId}
+                    role={item.user.role}
+                    roleId={item.user.roleId}
                     ownProfileUrl={profileImage}
                     ownName={name}
-                    role={reply.user.role}
-                    roleId={reply.user.roleId}
-                    replyTo={reply.replyTo}
-                    firstName={reply.user.firstName}
-                    lastName={reply.user.lastName}
-                    profileImageUrl={reply.user.profileImageUrl}
-                    created={reply.created}
-                    comment={reply.comment}
-                    thanksCount={reply.thanksCount}
-                    thanked={reply.thanked}
+                    ownerId={item.user.userId}
+                    firstName={item.user.firstName}
+                    lastName={item.user.lastName}
+                    profileImageUrl={item.user.profileImageUrl}
+                    created={item.created}
+                    comment={item.comment}
+                    thanksCount={item.thanksCount}
+                    thanked={item.thanked}
                     isOnline={item.user.isOnline}
                     rootCommentId={item.id}
+                    accepted={item.accepted}
                     isLoading={isLoading}
-                    isOwn={reply.user.userId === userId}
-                    isReply
+                    isQuestion={isQuestion}
+                    isOwn={item.user.userId === userId}
                     readOnly={readOnly}
                     hasBestAnswer={hasBestAnswer}
                     isOwner={Boolean(isOwner)}
@@ -347,58 +312,98 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     userId={userId}
                     isCurrent={isCurrent}
                   />
-                ))}
-              </div>
-            ))
-            : (!!items.length && <div key={items[0].id}>
-              <PostItemComment
-                id={items[0].id}
-                role={items[0].user.role}
-                roleId={items[0].user.roleId}
-                ownProfileUrl={profileImage}
-                ownName={name}
-                ownerId={items[0].user.userId}
-                firstName={items[0].user.firstName}
-                lastName={items[0].user.lastName}
-                profileImageUrl={items[0].user.profileImageUrl}
-                created={items[0].created}
-                comment={items[0].comment}
-                thanksCount={items[0].thanksCount}
-                thanked={items[0].thanked}
-                isOnline={items[0].user.isOnline}
-                rootCommentId={items[0].id}
-                accepted={items[0].accepted}
-                isLoading={isLoading}
-                isQuestion={isQuestion}
-                isOwn={items[0].user.userId === userId}
-                readOnly={readOnly}
-                hasBestAnswer={hasBestAnswer}
-                isOwner={Boolean(isOwner)}
-                onPostComment={this.handlePostComment}
-                onUpdateComment={this.handleUpdateComment}
-                onThanks={this.handleThanks}
-                onDelete={this.handleDelete}
-                onReport={this.handleReport}
-                onBestAnswer={this.handleBestAnswer}
-                isCurrent={isCurrent}
-              />
-              {!!replyCommentId && <SkeletonLoad />}
-            </div>)}
+                  {item.children.reverse().map((reply) => (
+                    <PostItemComment
+                      key={reply.id}
+                      id={reply.id}
+                      replyCommentId={replyCommentId}
+                      ownProfileUrl={profileImage}
+                      ownName={name}
+                      role={reply.user.role}
+                      roleId={reply.user.roleId}
+                      replyTo={reply.replyTo}
+                      firstName={reply.user.firstName}
+                      lastName={reply.user.lastName}
+                      profileImageUrl={reply.user.profileImageUrl}
+                      created={reply.created}
+                      comment={reply.comment}
+                      thanksCount={reply.thanksCount}
+                      thanked={reply.thanked}
+                      isOnline={item.user.isOnline}
+                      rootCommentId={item.id}
+                      isLoading={isLoading}
+                      isOwn={reply.user.userId === userId}
+                      isReply
+                      readOnly={readOnly}
+                      hasBestAnswer={hasBestAnswer}
+                      isOwner={Boolean(isOwner)}
+                      onPostComment={this.handlePostComment}
+                      onUpdateComment={this.handleUpdateComment}
+                      onThanks={this.handleThanks}
+                      onDelete={this.handleDelete}
+                      onReport={this.handleReport}
+                      onBestAnswer={this.handleBestAnswer}
+                      userId={userId}
+                      isCurrent={isCurrent}
+                    />
+                  ))}
+                </div>
+              ))
+            : !!items.length && (
+                <div key={items[0].id}>
+                  <PostItemComment
+                    id={items[0].id}
+                    role={items[0].user.role}
+                    roleId={items[0].user.roleId}
+                    ownProfileUrl={profileImage}
+                    ownName={name}
+                    ownerId={items[0].user.userId}
+                    firstName={items[0].user.firstName}
+                    lastName={items[0].user.lastName}
+                    profileImageUrl={items[0].user.profileImageUrl}
+                    created={items[0].created}
+                    comment={items[0].comment}
+                    thanksCount={items[0].thanksCount}
+                    thanked={items[0].thanked}
+                    isOnline={items[0].user.isOnline}
+                    rootCommentId={items[0].id}
+                    accepted={items[0].accepted}
+                    isLoading={isLoading}
+                    isQuestion={isQuestion}
+                    isOwn={items[0].user.userId === userId}
+                    readOnly={readOnly}
+                    hasBestAnswer={hasBestAnswer}
+                    isOwner={Boolean(isOwner)}
+                    onPostComment={this.handlePostComment}
+                    onUpdateComment={this.handleUpdateComment}
+                    onThanks={this.handleThanks}
+                    onDelete={this.handleDelete}
+                    onReport={this.handleReport}
+                    onBestAnswer={this.handleBestAnswer}
+                    isCurrent={isCurrent}
+                  />
+                  {!!replyCommentId && <SkeletonLoad />}
+                </div>
+              )}
         </ErrorBoundary>
         <ErrorBoundary>
           <div>
-            {comments.comments.length > 1 ? <Button
-              className={classes.viewMore}
-              color="secondary"
-              onClick={this.viewMoreComment}
-            >
-              {!loadViewMoreComment ? 'View more comments' : 'View less comments'}
-            </Button> : null}
+            {comments.comments.length > 1 ? (
+              <Button
+                className={classes.viewMore}
+                color="secondary"
+                onClick={this.viewMoreComment}
+              >
+                {!loadViewMoreComment
+                  ? 'View more comments'
+                  : 'View less comments'}
+              </Button>
+            ) : null}
           </div>
         </ErrorBoundary>
       </>
-    )
-  }
+    );
+  };
 
   render() {
     const {
@@ -411,7 +416,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       feedId,
       classId,
-      toolbarPrefix,
+      toolbarPrefix
     } = this.props;
 
     const name = `${firstName} ${lastName}`;
@@ -450,9 +455,13 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps =  (dispatch) => bindActionCreators({
-  showNotification
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      showNotification
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

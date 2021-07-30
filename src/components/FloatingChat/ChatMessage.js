@@ -12,11 +12,13 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 
 import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge'
+import RoleBadge from 'components/RoleBadge';
 import { getInitials } from 'utils/chat';
 import { styles } from '../_styles/FloatingChat/ChatMessage';
 
-const MyLink = React.forwardRef(({ href, ...props }, ref) => <RouterLink to={href} {...props} ref={ref} />);
+const MyLink = React.forwardRef(({ href, ...props }, ref) => (
+  <RouterLink to={href} {...props} ref={ref} />
+));
 
 type Props = {
   classes: Object,
@@ -41,13 +43,14 @@ class ChatMessage extends React.PureComponent<Props> {
 
   linkify = (text: string) => {
     // eslint-disable-next-line
-    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    return text.replace(urlRegex, url => {
+    const urlRegex =
+      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    return text.replace(urlRegex, (url) => {
       return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
     });
   };
 
-  handleImageClick = url => () => {
+  handleImageClick = (url) => () => {
     const { onImageClick } = this.props;
     onImageClick(url);
   };
@@ -116,7 +119,7 @@ class ChatMessage extends React.PureComponent<Props> {
                   className={classes.link}
                   onClick={onStartVideoCall}
                 >
-                Join now!
+                  Join now!
                 </Link>
               </Typography>
             </div>
@@ -131,10 +134,7 @@ class ChatMessage extends React.PureComponent<Props> {
           className={cx(classes.body, isOwn && classes.right)}
           dangerouslySetInnerHTML={{ __html: this.linkify(message) }}
         />
-        <Typography
-          className={cx(classes.createdAt)}
-          variant="caption"
-        >
+        <Typography className={cx(classes.createdAt)} variant="caption">
           {createdAt}
         </Typography>
       </div>
@@ -142,7 +142,16 @@ class ChatMessage extends React.PureComponent<Props> {
   };
 
   render() {
-    const { role, classes, userId, isUserOnline, name, avatar, isOwn, messageList } = this.props;
+    const {
+      role,
+      classes,
+      userId,
+      isUserOnline,
+      name,
+      avatar,
+      isOwn,
+      messageList
+    } = this.props;
 
     const initials = getInitials(name);
 
@@ -157,7 +166,10 @@ class ChatMessage extends React.PureComponent<Props> {
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
+            <OnlineBadge
+              isOnline={isUserOnline}
+              bgColorPath="circleIn.palette.feedBackground"
+            >
               <Avatar alt={name} src={avatar}>
                 {initials}
               </Avatar>
@@ -177,7 +189,7 @@ class ChatMessage extends React.PureComponent<Props> {
               {role && <RoleBadge text={role} />}
             </Typography>
           )}
-          {messageList.map(message => (
+          {messageList.map((message) => (
             <div className={classes.message} key={message.sid}>
               {this.renderItem({
                 imageKey: message.imageKey,

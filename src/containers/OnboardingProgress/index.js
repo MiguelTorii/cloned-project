@@ -9,7 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { logEventLocally } from 'api/analytics';
 import ErrorBoundary from 'containers/ErrorBoundary';
 import Dialog from 'components/Dialog';
-import LoadImg from 'components/LoadImg'
+import LoadImg from 'components/LoadImg';
 
 import classesImg from 'assets/img/circleIn-fem-mascot.png';
 import studentWin from 'assets/video/student-winning.mp4';
@@ -18,7 +18,7 @@ import workflowDemo from 'assets/gif/wf.gif';
 import chatDemo from 'assets/gif/chats.gif';
 import StartPlay from 'assets/svg/video_play.svg';
 import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
-import styles from "./_styles/boardingStyles";
+import styles from './_styles/boardingStyles';
 
 type Props = {
   classes: Object,
@@ -37,21 +37,20 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       logEventLocally({
         category: 'Onboarding',
         objectId: userId,
-        type: 'Started',
+        type: 'Started'
       });
     }
   }, [open, userId]);
 
   const handleClick = useCallback(() => {
     setIsPlaying(!isPlaying);
-    if (!player.current) return
+    if (!player.current) return;
     if (!isPlaying) {
       player.current.play();
     } else {
-      player.current.pause()
+      player.current.pause();
     }
-  }, [isPlaying])
-
+  }, [isPlaying]);
 
   const Intro = () => (
     <div className={classes.demoClass}>
@@ -64,7 +63,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const StudentWin = () => (
     <div className={classes.videoPlayer}>
       <CardMedia
-        component='video'
+        component="video"
         className={classes.demoGif}
         image={studentWin}
         controls={isPlaying}
@@ -80,39 +79,27 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         />
       )}
     </div>
-  )
+  );
 
   const RenderNotes = () => (
     <div className={classes.domGifArea}>
-      <img
-        alt='notes demo'
-        className={classes.notesGif}
-        src={notes}
-      />
+      <img alt="notes demo" className={classes.notesGif} src={notes} />
     </div>
-  )
+  );
 
   const WorkflowDemo = () => (
     <div className={classes.domGifArea}>
       <div className={classes.wfGifArea}>
-        <img
-          alt='workflow demo'
-          className={classes.wfGif}
-          src={workflowDemo}
-        />
+        <img alt="workflow demo" className={classes.wfGif} src={workflowDemo} />
       </div>
     </div>
-  )
+  );
 
   const ChatDemo = () => (
     <div className={classes.domGifArea}>
-      <img
-        alt='chat demo'
-        className={classes.chatGif}
-        src={chatDemo}
-      />
+      <img alt="chat demo" className={classes.chatGif} src={chatDemo} />
     </div>
-  )
+  );
 
   const STEPS = [
     {
@@ -125,7 +112,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         'We bring students together who help each other out during the ups and downs of a semester like when you can’t seem to solve a problem, need some guidance, when you don’t want to study alone, things like that.',
         'By the way, there are points, rewards and scholarships too...'
       ],
-      title: 'Yay! You’re here! 🎉',
+      title: 'Yay! You’re here! 🎉'
     },
     {
       id: 'step-2',
@@ -137,7 +124,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         'Yes. For real! ',
         'The more you help your classmates, and the more you learn -- the more you earn points and receive daily chances to win gift cards. 🤑'
       ],
-      title: 'Study with classmates & win gift cards? 😱',
+      title: 'Study with classmates & win gift cards? 😱'
     },
     {
       id: 'step-3',
@@ -148,7 +135,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       textRows: [
         'When you post notes and resources (flashcards, links) for your classmates to check out, yep, you get points! 🔥'
       ],
-      title: 'Points for: Taking & Sharing Notes! 📝',
+      title: 'Points for: Taking & Sharing Notes! 📝'
     },
     {
       id: 'step-4',
@@ -159,7 +146,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       textRows: [
         'College gets real chaotic, real fast. Students who are organized are less stressed and less likely to fail. Add your tasks, perform better and get points.'
       ],
-      title: 'Points for: Managing tasks in CircleIn ✅',
+      title: 'Points for: Managing tasks in CircleIn ✅'
     },
     {
       id: 'step-5',
@@ -171,66 +158,71 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         'We put all your classmates in a chat group so you can reach everyone on your phone or computer to help each other out. You get points too for chatting! Introduce yourself by sharing your name and major! 😊'
       ],
       title: 'Points for: Chatting with classmates 💬,'
-    },
-  ]
+    }
+  ];
 
   const handleButtonClick = async () => {
-    if (activeStep === (STEPS.length - 1)) {
+    if (activeStep === STEPS.length - 1) {
       logEventLocally({
         category: 'Onboarding',
         objectId: userId,
-        type: 'Ended',
+        type: 'Ended'
       });
       updateOnboarding({ viewedOnboarding: true });
     } else {
       setActiveStep(activeStep + 1);
     }
-  }
+  };
 
   const goBack = () => {
     setActiveStep(activeStep - 1);
-  }
+  };
 
   const OnboardingStep = ({
-    buttonDisabled, buttonText, ActionComponent = null, DemoComponent, textRows, title
+    buttonDisabled,
+    buttonText,
+    ActionComponent = null,
+    DemoComponent,
+    textRows,
+    title
   }) => {
     return (
       <div className={classes.step}>
         <div className={classes.actionPanel}>
           <AppLogo className={classes.logo} />
-          <div className={classes.title}>
-            {title}
-          </div>
+          <div className={classes.title}>{title}</div>
           <div className={classes.textRows}>
-            {
-              textRows.map(textRow => (
-                <div key={Math.random()} className={classes.textRow}>{textRow}</div>
-              ))
-            }
+            {textRows.map((textRow) => (
+              <div key={Math.random()} className={classes.textRow}>
+                {textRow}
+              </div>
+            ))}
           </div>
           <div className={classes.actionPanelComponent}>
             {ActionComponent && <ActionComponent />}
           </div>
           <div>
             <Button
-              color='primary'
+              color="primary"
               label={<span className={classes.buttonLabel}></span>}
               disabled={buttonDisabled}
               className={classes.button}
               classes={{ label: classes.buttonLabel }}
               onClick={handleButtonClick}
-              variant='contained'
+              variant="contained"
             >
               {buttonText}
             </Button>
           </div>
           <div className={classes.sildeButtons}>
-            {activeStep > 0 && <div className={classes.backButton}>
-              <Button color="primary" onClick={goBack}>
-                <ArrowBackIosIcon className={classes.backIcon}/>
-                <u>BACK</u>
-              </Button>
-            </div>}
+            {activeStep > 0 && (
+              <div className={classes.backButton}>
+                <Button color="primary" onClick={goBack}>
+                  <ArrowBackIosIcon className={classes.backIcon} />
+                  <u>BACK</u>
+                </Button>
+              </div>
+            )}
             {STEPS.map((step, index) => {
               const sharpClass = activeStep >= index ? classes.shape : '';
               return (
@@ -238,7 +230,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
                   key={step.id}
                   className={cx(sharpClass, classes.shapeCircle)}
                 />
-              )
+              );
             })}
           </div>
         </div>
@@ -246,7 +238,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           {DemoComponent && <DemoComponent />}
         </div>
       </div>
-    )
+    );
   };
 
   const currentStep = STEPS[activeStep];
@@ -254,7 +246,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   return (
     <ErrorBoundary>
       <Dialog
-        ariaDescribedBy='onboarding-description'
+        ariaDescribedBy="onboarding-description"
         className={classes.dialog}
         contentClassName={classes.contentDialog}
         disableBackdropClick
@@ -273,6 +265,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       </Dialog>
     </ErrorBoundary>
   );
-}
+};
 
 export default memo(withStyles(styles)(Onboarding));

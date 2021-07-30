@@ -5,7 +5,7 @@ import moment from 'moment';
 import type { ToDos, CalendarEvents } from '../../types/models';
 
 export const getEvents = (items: ToDos): CalendarEvents => {
-  return items.map(item => ({
+  return items.map((item) => ({
     id: item.id,
     title: item.title,
     start: moment(item.due),

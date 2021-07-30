@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import { dialogStyle } from 'components/Dialog';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
     ...dialogStyle,
     width: 500,
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   hoverMenu: {
     position: 'absolute',
     bottom: 0,
-    right: 10,
+    right: 10
   },
   root: {
     display: 'flex',
@@ -21,10 +21,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   dark: {
-    backgroundColor: theme.circleIn.palette.navbarBackgroundColor,
+    backgroundColor: theme.circleIn.palette.navbarBackgroundColor
   },
   selected: {
-    backgroundColor: theme.circleIn.palette.rowSelection,
+    backgroundColor: theme.circleIn.palette.rowSelection
   },
   progress: {
     display: 'flex',
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatarProfile: {
     backgroundColor: theme.circleIn.palette.brand,
-    color: 'white',
+    color: 'white'
   },
   grow: {
     flex: 1,
@@ -55,6 +55,6 @@ const useStyles = makeStyles(theme => ({
   leaveGroup: {
     color: theme.circleIn.palette.danger
   }
-}))
+}));
 
-export default useStyles
+export default useStyles;

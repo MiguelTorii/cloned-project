@@ -13,11 +13,11 @@ const setRole = ({ role }): Action => ({
   }
 });
 
-export const updateRole = ({ role }) => async (
-  dispatch: Dispatch
-) => {
-  dispatch(setRole({ role }));
-};
+export const updateRole =
+  ({ role }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(setRole({ role }));
+  };
 
 const setSchool = ({ school }: { school: ?School }): Action => ({
   type: authActions.UPDATE_AUTH_SCHOOL_REQUEST,
@@ -26,21 +26,25 @@ const setSchool = ({ school }: { school: ?School }): Action => ({
   }
 });
 
-export const updateSchool = ({ school }: { school: ?School }) => async (
-  dispatch: Dispatch
-) => {
-  dispatch(setSchool({ school }));
-};
+export const updateSchool =
+  ({ school }: { school: ?School }) =>
+  async (dispatch: Dispatch) => {
+    dispatch(setSchool({ school }));
+  };
 
-const setReferralData = ({ referralData }: { referralData: ReferralData }): Action => ({
+const setReferralData = ({
+  referralData
+}: {
+  referralData: ReferralData
+}): Action => ({
   type: authActions.UPDATE_REFERRAL_DATA,
   payload: {
     referralData
   }
 });
 
-export const updateReferralData = ({ referralData }: { referralData: ReferralData }) =>
+export const updateReferralData =
+  ({ referralData }: { referralData: ReferralData }) =>
   async (dispatch: Dispatch) => {
     dispatch(setReferralData({ referralData }));
   };
-

@@ -28,7 +28,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
     code: ''
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
@@ -53,7 +53,8 @@ class ReferralCode extends React.PureComponent<Props, State> {
         className={cx(classes.form, hide && classes.hide)}
       >
         <Typography align="center" variant="subtitle1">
-            If a classmate referred you to CircleIn, enter their referral code and they will receive 10,000 bonus points. Brilliant!
+          If a classmate referred you to CircleIn, enter their referral code and
+          they will receive 10,000 bonus points. Brilliant!
         </Typography>
         <TextValidator
           variant="outlined"
@@ -68,11 +69,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
           disabled={loading}
         />
         <div className={classes.backButton}>
-          <IconButton
-            color="inherit"
-            onClick={onBack}
-            aria-label="Go Back"
-          >
+          <IconButton color="inherit" onClick={onBack} aria-label="Go Back">
             <ArrowBackIcon />
           </IconButton>
         </div>

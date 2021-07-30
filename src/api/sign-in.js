@@ -28,13 +28,13 @@ export const emailRequest = async ({
 export const signInUser = async (
   email: string,
   password: string,
-  schoolId: number,
+  schoolId: number
 ): Promise<User | {}> => {
   try {
     const result = await axios.post(API_ROUTES.LOGIN, {
       email,
       password,
-      school_id: schoolId,
+      school_id: schoolId
     });
     const { data } = result;
     return userToCamelCase(data);
@@ -46,9 +46,7 @@ export const signInUser = async (
 export const samlLogin = async (token, isGondor): User | {} => {
   try {
     const result = await axios.post(
-      isGondor
-        ? API_ROUTES.SAML_LOGIN_V1_1
-        : API_ROUTES.SAML_LOGIN,
+      isGondor ? API_ROUTES.SAML_LOGIN_V1_1 : API_ROUTES.SAML_LOGIN,
       { token }
     );
     const { data = {} } = result;
@@ -136,7 +134,7 @@ export const searchSchools = async ({
     const { data = {} } = result;
     const { schools = [] } = data;
 
-    return schools.map(school => ({
+    return schools.map((school) => ({
       studentLive: Number((school.student_live: number) || 0),
       id: Number((school.id: number) || 0),
       clientId: String((school.client_id: string) || ''),
@@ -162,9 +160,7 @@ export const getSchool = async ({
   query: string
 }): Promise<Schools> => {
   try {
-    const result = await axios.get(
-      `${API_ROUTES.GET_SCHOOL}/${schoolId}`
-    );
+    const result = await axios.get(`${API_ROUTES.GET_SCHOOL}/${schoolId}`);
     const { data: school = {} } = result;
 
     return {

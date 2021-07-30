@@ -3,17 +3,17 @@
 export const AUTH0_DOMAIN =
   process.env.REACT_APP_STAGE === 'production'
     ? 'circlein-production.us.auth0.com'
-    : 'circlein-dev.us.auth0.com'
+    : 'circlein-dev.us.auth0.com';
 
 export const AUTH0_CLIENT_ID =
   process.env.REACT_APP_STAGE === 'production'
     ? 'Fm9qMmK1krorvq9yRz1KAsI3O24V6KV5'
-    : 'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj'
+    : 'Bps2iaRf3iIxDeTVJa9zOQI20937s7Dj';
 
 export const AMPLITUDE_IDS =
   process.env.REACT_APP_STAGE === 'production'
     ? ['4fa052782766cac0dd349d2ba4ff6aae', 'ce9b8375920be83a09140c26bec6384f']
-    : ['06c93d893f3b14995223804062799b99']
+    : ['06c93d893f3b14995223804062799b99'];
 
 export const ALGOLIA_APP_ID =
   process.env.REACT_APP_STAGE === 'production' ? 'GBPN91RQFL' : 'GBPN91RQFL';
@@ -31,8 +31,8 @@ export const REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
     ? 'https://app.circleinapp.com/oauth'
     : process.env.REACT_APP_STAGE === 'demo'
-      ? 'https://demo.circleinapp.com/oauth'
-      : 'https://dev-app2.circleinapp.com/oauth';
+    ? 'https://demo.circleinapp.com/oauth'
+    : 'https://dev-app2.circleinapp.com/oauth';
 
 export const GOOGLE_ANALYTICS =
   process.env.REACT_APP_STAGE === 'production'
@@ -44,7 +44,7 @@ export const SENTRY =
 
 export const HOTJAR_ID = 1763746;
 
-export const HOTJAR_SV  = 6;
+export const HOTJAR_SV = 6;
 
 export const ENV =
   process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
@@ -83,7 +83,7 @@ export const UPLOAD_MEDIA_TYPES = {
   PROFILE_IMAGE: 2
 };
 
-export const POST_TYPES  = {
+export const POST_TYPES = {
   FLASHCARDS: 3,
   NOTE: 4,
   LINK: 5,
@@ -106,8 +106,8 @@ export const LOG_EVENT_CATEGORIES = {
   REWARDS_STORE: 'Rewards Store',
   CLASS_FEED: 'Class Feed',
   CREATE_NEW_POST: 'Create New Post',
-  NOTIFICATION: 'Notification',
-}
+  NOTIFICATION: 'Notification'
+};
 
 export const EVENT_TYPES = {
   SEND_MESSAGE: 'Send Message',
@@ -115,8 +115,8 @@ export const EVENT_TYPES = {
   END_VIDEO: 'End Video',
   SESSION_LENGTH: 'Session Length',
   VIEWED: 'Viewed',
-  EXITED: 'Exited',
-}
+  EXITED: 'Exited'
+};
 
 export const CIRCLEIN_EVENT_NAMES = [
   'Chat- Send Message',
@@ -136,7 +136,7 @@ export const CIRCLEIN_EVENT_NAMES = [
   'Class Feed- Viewed',
   'Create New Post- Viewed',
   'Notification- Viewed',
-  'Chat- Viewed',
+  'Chat- Viewed'
 ];
 
 export const CAMPAIGN_IDS = {
@@ -147,7 +147,7 @@ export const MEMBER_ROLES = {
   TUTOR: 'Tutor',
   ORIENTATION_LEADER: 'Orientation Leader',
   EXPERT: 'Expert'
-}
+};
 
 export const GONDOR_URL = 'https://siteadmin.circleinapp.com';
 

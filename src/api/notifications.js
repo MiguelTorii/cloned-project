@@ -27,7 +27,7 @@ export const getNotifications = async ({
     );
     const { data } = result;
 
-    const notifications = (data.notifications || []).map(item => ({
+    const notifications = (data.notifications || []).map((item) => ({
       actorFirstName: String((item.actor_first_name: string) || ''),
       actorId: String((item.actor_id: string) || ''),
       actorLastName: String((item.actor_last_name: string) || ''),
@@ -51,7 +51,8 @@ export const getNotifications = async ({
 
     return { notifications, unreadCount };
   } catch (err) {
-    if (err.response && err.response.status === 401) window.location.href = '/auth'
+    if (err.response && err.response.status === 401)
+      window.location.href = '/auth';
     return { notifications: [], unreadCount: 0 };
   }
 };
@@ -117,16 +118,17 @@ export const postPing = async (): Promise<Object> => {
     const token = await getToken();
 
     await axios.post(
-      `${API_ROUTES.PING}`, {},
+      `${API_ROUTES.PING}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`
         }
       }
     );
-    return {}
+    return {};
   } catch (err) {
     console.log(err);
-    return {}
+    return {};
   }
 };

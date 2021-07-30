@@ -1,14 +1,14 @@
 const collegeGrades = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
 const addSuffix = (grade) => {
   switch (grade) {
-  case 1:
-    return 'st';
-  case 2:
-    return 'nd';
-  case 3:
-    return 'rd';
-  default:
-    return 'th';
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
   }
 };
 export const gradeName = (segment, grade = 1) => {
@@ -27,11 +27,26 @@ export const ranks = [
 ];
 
 export const workflowCategories = [
-  { name: 'Overdue', categoryId: 1, bgcolor: '#C45961', buttonColor: '#6F343C' },
-  { name: 'Upcoming', categoryId: 2, bgcolor: '#EBAF64', buttonColor: '#5F472B' },
-  { name: 'In Progress', categoryId: 3, bgcolor: '#4781B3', buttonColor: '#2D5170' },
+  {
+    name: 'Overdue',
+    categoryId: 1,
+    bgcolor: '#C45961',
+    buttonColor: '#6F343C'
+  },
+  {
+    name: 'Upcoming',
+    categoryId: 2,
+    bgcolor: '#EBAF64',
+    buttonColor: '#5F472B'
+  },
+  {
+    name: 'In Progress',
+    categoryId: 3,
+    bgcolor: '#4781B3',
+    buttonColor: '#2D5170'
+  },
   { name: 'Done', categoryId: 4, bgcolor: '#74C182', buttonColor: '#2F5139' }
-]
+];
 
 export const remiderTime = {
   60: { label: '1 minute before', type: 'minutes', value: 1 * 60 },
@@ -42,8 +57,8 @@ export const remiderTime = {
   3600: { label: '1 hour before', type: 'hour', value: 60 * 60 },
   7200: { label: '2 hours before', type: 'hour', value: 120 * 60 },
   86400: { label: '1 day before', type: 'day', value: 24 * 60 * 60 },
-  172800: { label: '2 days before', type: 'day', value: 24 * 120 * 60 },
-}
+  172800: { label: '2 days before', type: 'day', value: 24 * 120 * 60 }
+};
 
 export const PERMISSIONS = {
   EXPERT_MODE_ACCESS: 'expert_mode_access',
@@ -62,9 +77,9 @@ export const PERMISSIONS = {
   VIDEO_ACCESS: 'video_access',
   ALL_COURSE_ACCESS: 'all_course_access',
   REMOVE_USER_GROUP_CHAT_ACCESS: 'remove_user_group_chat_access'
-}
+};
 
 export const TIMEOUT = {
   FLASHCARD_REVEIW: 1 * 60 * 1000,
-  POST_ITEM: 3 * 60 * 1000,
-}
+  POST_ITEM: 3 * 60 * 1000
+};

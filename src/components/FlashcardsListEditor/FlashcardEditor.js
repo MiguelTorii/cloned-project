@@ -16,18 +16,16 @@ const EDITOR_TYPES = {
   ANSWER: 'answer'
 };
 
-const FlashcardEditor = (
-  {
-    index,
-    data,
-    active,
-    dndProps,
-    readOnly,
-    toolbarPrefix,
-    onDelete,
-    onUpdate
-  }
-) => {
+const FlashcardEditor = ({
+  index,
+  data,
+  active,
+  dndProps,
+  readOnly,
+  toolbarPrefix,
+  onDelete,
+  onUpdate
+}) => {
   // Hooks
   const classes = useStyles({ active });
   const [activeEditor, setActiveEditor] = useState(null);
@@ -42,9 +40,12 @@ const FlashcardEditor = (
   }, [toolbarPrefix]);
 
   // Event Handlers
-  const handleUpdateField = useCallback((field, value) => {
-    onUpdate(index, field, value);
-  }, [index, onUpdate]);
+  const handleUpdateField = useCallback(
+    (field, value) => {
+      onUpdate(index, field, value);
+    },
+    [index, onUpdate]
+  );
 
   const handleDelete = useCallback(() => {
     onDelete(index);
@@ -57,8 +58,18 @@ const FlashcardEditor = (
 
   return (
     <div className={classes.flashcardEditorRoot}>
-      <div className={clsx(classes.flashcardHeader, active && classes.gradientHeader)}>
-        <div className={clsx(classes.flashcardHeaderContent, !active && classes.paddingTopZero)}>
+      <div
+        className={clsx(
+          classes.flashcardHeader,
+          active && classes.gradientHeader
+        )}
+      >
+        <div
+          className={clsx(
+            classes.flashcardHeaderContent,
+            !active && classes.paddingTopZero
+          )}
+        >
           <Box hidden={readOnly}>
             <div onMouseDown={handleMouseDown}>
               <IconButton
@@ -69,17 +80,27 @@ const FlashcardEditor = (
               </IconButton>
             </div>
           </Box>
-          <Box display={active && activeEditor !== EDITOR_TYPES.ANSWER? 'block' : 'none'}>
+          <Box
+            display={
+              active && activeEditor !== EDITOR_TYPES.ANSWER ? 'block' : 'none'
+            }
+          >
             <QuillToolbar elementId={questionToolbarId} />
           </Box>
-          <Box display={active && activeEditor === EDITOR_TYPES.ANSWER ? 'block' : 'none'}>
+          <Box
+            display={
+              active && activeEditor === EDITOR_TYPES.ANSWER ? 'block' : 'none'
+            }
+          >
             <QuillToolbar elementId={answerToolbarId} />
           </Box>
           <div>
-            { !readOnly && (
+            {!readOnly && (
               <div onMouseDown={handleMouseDown}>
                 <IconButton
-                  classes={{ root: clsx(classes.iconButton, active && 'active') }}
+                  classes={{
+                    root: clsx(classes.iconButton, active && 'active')
+                  }}
                   onClick={handleDelete}
                 >
                   <IconDelete />
@@ -100,7 +121,9 @@ const FlashcardEditor = (
               value={data.question}
               onChangeValue={(value) => handleUpdateField('question', value)}
               imageUrl={data.questionImage}
-              onChangeImageUrl={(value) => handleUpdateField('questionImage', value)}
+              onChangeImageUrl={(value) =>
+                handleUpdateField('questionImage', value)
+              }
               onFocus={() => setActiveEditor(EDITOR_TYPES.QUESTION)}
             />
           </Grid>
@@ -113,14 +136,16 @@ const FlashcardEditor = (
               value={data.answer}
               onChangeValue={(value) => handleUpdateField('answer', value)}
               imageUrl={data.answerImage}
-              onChangeImageUrl={(value) => handleUpdateField('answerImage', value)}
+              onChangeImageUrl={(value) =>
+                handleUpdateField('answerImage', value)
+              }
               onFocus={() => setActiveEditor(EDITOR_TYPES.ANSWER)}
             />
           </Grid>
         </Grid>
       </div>
     </div>
-  )
+  );
 };
 
 FlashcardEditor.propTypes = {

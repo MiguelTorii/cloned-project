@@ -1,24 +1,24 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   '@global': {
-    'body': {
+    body: {
       overflowY: 'hidden'
-    },
+    }
   },
   container: {
     height: 'calc(100vh - 160px)',
     borderRadius: theme.spacing(1, 1, 0, 0),
     marginRight: theme.spacing(2),
     padding: theme.spacing(1, 0),
-    width: theme.spacing(34),
+    width: theme.spacing(34)
   },
   headerItem: {
     width: 250
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 20
   },
   button: {
     '-webkit-box-shadow': '10px 10px 25px -15px rgba(0,0,0,0.75)',
@@ -30,16 +30,16 @@ export const useStyles = makeStyles(theme => ({
     width: theme.spacing(31),
     borderRadius: theme.spacing(),
     '& span': {
-      textTransform: 'none',
+      textTransform: 'none'
     },
     margin: theme.spacing(1, 0),
     padding: 0,
     '& hover': {
-      backgroundColor: theme.circleIn.palette.brand,
+      backgroundColor: theme.circleIn.palette.brand
     }
   },
   newContainer: {
-    marginBottom: theme.spacing(),
+    marginBottom: theme.spacing()
   },
   listContainer: {
     display: 'flex',
@@ -70,11 +70,11 @@ export const useStyles = makeStyles(theme => ({
     position: 'absolute',
     color: theme.circleIn.palette.primaryText2,
     top: 4,
-    left: 4,
+    left: 4
   },
   textField: {
     '& .MuiInputBase-root': {
-      color: theme.circleIn.palette.normalButtonText1,
+      color: theme.circleIn.palette.normalButtonText1
     }
   }
-}))
+}));

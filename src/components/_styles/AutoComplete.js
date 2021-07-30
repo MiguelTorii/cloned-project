@@ -1,6 +1,6 @@
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
-export default theme => ({
+export default (theme) => ({
   root: {
     flexGrow: 1
   },
@@ -16,7 +16,7 @@ export default theme => ({
   addClassmateInput: {
     position: 'relative',
     display: 'flex',
-    padding: theme.spacing(1/8)
+    padding: theme.spacing(1 / 8)
   },
   startIcon: {
     marginLeft: theme.spacing()
@@ -24,7 +24,7 @@ export default theme => ({
   searchInput: {
     border: '1px solid rgba(95, 97, 101, 0.5)',
     borderRadius: theme.spacing(1),
-    backgroundColor: 'rgba(34, 34, 34, 0.6)',
+    backgroundColor: 'rgba(34, 34, 34, 0.6)'
   },
   floatChatSearchInput: {
     borderBottom: '1px solid #323536',
@@ -43,14 +43,14 @@ export default theme => ({
     overflow: 'hidden'
   },
   addClassmateChip: {
-    margin: `${theme.spacing(1/4)}px ${theme.spacing(1/4)}px`,
+    margin: `${theme.spacing(1 / 4)}px ${theme.spacing(1 / 4)}px`,
     borderRadius: 0,
     maxWidth: 160,
     backgroundColor: theme.circleIn.palette.appBar,
     color: 'white'
   },
   chip: {
-    margin: `${theme.spacing(1/2)}px ${theme.spacing(1/4)}px`,
+    margin: `${theme.spacing(1 / 2)}px ${theme.spacing(1 / 4)}px`,
     maxWidth: 160,
     backgroundColor: theme.palette.primary.main
   },
@@ -95,18 +95,18 @@ export default theme => ({
     left: 0,
     right: 0,
     boxShadow: 'none',
-    'border': 'none',
-    '& > :first-child' :{
+    border: 'none',
+    '& > :first-child': {
       padding: 0,
       backgroundColor: theme.circleIn.palette.appBar,
       width: '100%'
     }
   },
   paperAbsolute: {
-    position: 'absolute',
+    position: 'absolute'
   },
   paperRelative: {
-    position: 'relatve',
+    position: 'relatve'
   },
   errorLabel: {
     paddingLeft: 12
@@ -119,5 +119,5 @@ export default theme => ({
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
     borderRadius: 20
-  },
-})
+  }
+});

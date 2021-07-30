@@ -14,7 +14,7 @@ import type { State as StoreState } from '../../types/state';
 import { report } from '../../api/posts';
 import ErrorBoundary from '../ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     width: '80%'
   },
@@ -68,7 +68,7 @@ class Report extends React.PureComponent<Props, State> {
     this.setState({ reasonId: value });
   };
 
-  handleTextChange = event => {
+  handleTextChange = (event) => {
     this.setState({ description: event.target.value });
   };
 
@@ -130,13 +130,10 @@ class Report extends React.PureComponent<Props, State> {
           title="Report"
         >
           {loading && (
-            <CircularProgress
-              size={24}
-              className={classes.buttonProgress}
-            />
+            <CircularProgress size={24} className={classes.buttonProgress} />
           )}
           <RadioGroup
-            ref={ref => {
+            ref={(ref) => {
               this.radioGroupRef = ref;
             }}
             aria-label="Reason"
@@ -192,7 +189,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(Report));
+export default connect(mapStateToProps, null)(withStyles(styles)(Report));

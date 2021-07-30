@@ -1,4 +1,4 @@
-export default theme => ({
+export default (theme) => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,
@@ -28,13 +28,13 @@ export default theme => ({
     color: theme.circleIn.palette.normalButtonText1,
     borderRadius: theme.spacing(1, 1, 0, 0),
     display: 'flex',
-    height: 40,
+    height: 40
   },
   notificationHeader: {
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'
   },
   icon: {
-    color: theme.circleIn.palette.normalButtonText1,
+    color: theme.circleIn.palette.normalButtonText1
   },
   delete: {
     color: theme.circleIn.palette.danger
@@ -63,7 +63,7 @@ export default theme => ({
     justifyContent: 'space-between'
   },
   contentExpanded: {
-    height: 460,
+    height: 460
   },
   hide: {
     display: 'none'
@@ -80,7 +80,7 @@ export default theme => ({
     zIndex: 2100
   },
   expandIcon: {
-    color: theme.circleIn.palette.normalButtonText1,
+    color: theme.circleIn.palette.normalButtonText1
   },
   settingIcon: {
     width: 20

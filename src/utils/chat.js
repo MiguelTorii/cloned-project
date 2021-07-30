@@ -19,13 +19,13 @@ export const getTitle = (channel: Object, userId: string, members: array) => {
       return attributes.friendlyName;
     }
     if (users) {
-      const filter = members.filter(o => {
+      const filter = members.filter((o) => {
         if (o.userId) return o.userId.toString() !== userId.toString();
         return false;
       });
       if (filter.length > 0) {
         return filter
-          .map(user => `${user.firstname} ${user.lastname}`)
+          .map((user) => `${user.firstname} ${user.lastname}`)
           .join(', ');
       }
     } else if (friendlyName !== '') return friendlyName;
@@ -72,7 +72,7 @@ export const getAvatar = ({
   id: string,
   profileURLs: Array<Object>
 }) => {
-  const item = profileURLs.find(user => Number(user.identity) === Number(id));
+  const item = profileURLs.find((user) => Number(user.identity) === Number(id));
   return item ? item.profileImageUrl : '';
 };
 

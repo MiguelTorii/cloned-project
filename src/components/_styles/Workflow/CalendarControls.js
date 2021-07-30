@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,7 +21,7 @@ export const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: 24
   },
   titleContainer: {
     position: 'relative'
@@ -29,4 +29,4 @@ export const useStyles = makeStyles((theme) => ({
   addTask: {
     textAlign: 'end'
   }
-}))
+}));

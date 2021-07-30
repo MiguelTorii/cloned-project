@@ -42,11 +42,11 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
     openErase: false
   };
 
-  handleToggle = name => () => {
-    this.setState(state => ({ [name]: !state[name] }));
+  handleToggle = (name) => () => {
+    this.setState((state) => ({ [name]: !state[name] }));
   };
 
-  handleClose = name => event => {
+  handleClose = (name) => (event) => {
     if (
       name === 'openPencil' &&
       this.pencilAnchorEl &&
@@ -74,21 +74,21 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
     this.setState({ [name]: false });
   };
 
-  handlePencilChange = size => () => {
+  handlePencilChange = (size) => () => {
     const { onPencilChange } = this.props;
     this.handleToggle('openPencil');
     this.setState({ openPencil: false });
     onPencilChange(size);
   };
 
-  handleColorChange = color => () => {
+  handleColorChange = (color) => () => {
     const { onColorChange } = this.props;
     this.handleToggle('openColor');
     this.setState({ openColor: false });
     onColorChange(color);
   };
 
-  handleEraseChange = size => () => {
+  handleEraseChange = (size) => () => {
     const { onErase } = this.props;
     this.handleToggle('openErase');
     this.setState({ openErase: false });
@@ -111,7 +111,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
           <ButtonBase
             color="primary"
             aria-label="pencil"
-            buttonRef={node => {
+            buttonRef={(node) => {
               this.pencilAnchorEl = node;
             }}
             aria-owns={openPencil ? 'pencil-list-grow' : undefined}
@@ -141,7 +141,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
                         { className: classes.iconMD, size: 4 },
                         { className: classes.iconLG, size: 8 },
                         { className: classes.iconXL, size: 16 }
-                      ].map(item => (
+                      ].map((item) => (
                         <ButtonBase
                           key={item.className}
                           color="primary"
@@ -161,7 +161,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
             color="primary"
             aria-label="select-color"
             className={classes.button}
-            buttonRef={node => {
+            buttonRef={(node) => {
               this.colorAnchorEl = node;
             }}
             aria-owns={openColor ? 'color-list-grow' : undefined}
@@ -193,7 +193,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
                         'purple',
                         'pink',
                         'brown'
-                      ].map(item => (
+                      ].map((item) => (
                         <ButtonBase
                           key={item}
                           color="primary"
@@ -216,7 +216,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
             color="primary"
             aria-label="eraser"
             className={cx(classes.button, classes.buttonLast)}
-            buttonRef={node => {
+            buttonRef={(node) => {
               this.eraseAnchorEl = node;
             }}
             aria-owns={openErase ? 'erase-list-grow' : undefined}
@@ -245,7 +245,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
                         { className: classes.iconMD, size: 8 },
                         { className: classes.iconLG, size: 16 },
                         { className: classes.iconXL, size: 32 }
-                      ].map(item => (
+                      ].map((item) => (
                         <ButtonBase
                           key={item.className}
                           color="primary"

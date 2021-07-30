@@ -1,26 +1,26 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   detailsButton: {
     padding: theme.spacing(0, 1),
     color: theme.circleIn.palette.action,
     '& .MuiButtonBase-root': {
-      minHeight: 0,
+      minHeight: 0
     }
   },
   dragIcon: {
-    height: 20,
+    height: 20
   },
   dragContainer: {
     position: 'absolute',
     left: 0,
-    cursor: 'grab',
+    cursor: 'grab'
   },
   item: {
     paddingLeft: theme.spacing(3),
     cursor: 'pointer',
     minHeight: 40,
-    position: 'relative',
+    position: 'relative'
   },
   chip: {
     color: theme.circleIn.palette.primaryText1,
@@ -30,7 +30,7 @@ export const useStyles = makeStyles(theme => ({
     fontSize: 12,
     padding: 0,
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   itemDetails: {
     cursor: 'pointer',
@@ -47,7 +47,7 @@ export const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis'
   },
   titleContainer: {
     alignItems: 'center',
@@ -60,4 +60,4 @@ export const useStyles = makeStyles(theme => ({
   iconButton: {
     padding: 0
   }
-}))
+}));

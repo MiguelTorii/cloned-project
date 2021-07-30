@@ -38,7 +38,7 @@ import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     // padding: theme.spacing(2)
   },
@@ -70,7 +70,7 @@ type State = {
   search: string,
   canAddClasses: boolean,
   loading: boolean,
-  selectedClasses: Array<{classId: number, sectionId: number}>,
+  selectedClasses: Array<{ classId: number, sectionId: number }>,
   errorText: boolean
 };
 
@@ -85,7 +85,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     errorText: false
   };
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const { open } = this.props;
     if (open !== prevProps.open && open === true) {
       this.handleLoadClasses();
@@ -97,15 +97,12 @@ class ClassesManager extends React.PureComponent<Props, State> {
     const {
       user: {
         data: { userId, schoolId },
-        userClasses: {
-          classList,
-          canAddClasses
-        }
+        userClasses: { classList, canAddClasses }
       }
     } = this.props;
     this.setState({ loading: true });
     try {
-      const ac = await getAvailableClasses({ userId, schoolId })
+      const ac = await getAvailableClasses({ userId, schoolId });
       const availableClasses = [];
       const keys = Object.keys(ac);
       // eslint-disable-next-line no-restricted-syntax
@@ -124,11 +121,11 @@ class ClassesManager extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClassSelect = classId => event => {
+  handleClassSelect = (classId) => (event) => {
     const newState = update(this.state, {
       selectedClasses: {
-        $apply: b => {
-          const index = b.findIndex(item => item.classId === classId);
+        $apply: (b) => {
+          const index = b.findIndex((item) => item.classId === classId);
 
           if (index > -1 && !event.target.checked) {
             b.splice(index, 1);
@@ -145,12 +142,12 @@ class ClassesManager extends React.PureComponent<Props, State> {
     this.setState(newState);
   };
 
-  handleSectionSelect = (classId, sectionId) => async event => {
+  handleSectionSelect = (classId, sectionId) => async (event) => {
     const newState = update(this.state, {
       selectedClasses: {
-        $apply: b => {
+        $apply: (b) => {
           const index = b.findIndex(
-            item => item.classId === classId && item.sectionId === sectionId
+            (item) => item.classId === classId && item.sectionId === sectionId
           );
           if (index > -1 && !event.target.checked) b.splice(index, 1);
           if (event.target.checked) b.push({ classId, sectionId });
@@ -172,57 +169,58 @@ class ClassesManager extends React.PureComponent<Props, State> {
         // this.setState({ loading: true });
         await joinClass({ classId, sectionId, userId });
         this.setState({ userClasses: classes, loading: false });
-        fetchFeed()
+        fetchFeed();
         // this.setState({ loading: false });
       } catch (err) {
         // this.setState({ loading: false });
       } finally {
-        logEvent({ event: 'Join Class- Joined Class', props: { 'Section ID': sectionId } });
+        logEvent({
+          event: 'Join Class- Joined Class',
+          props: { 'Section ID': sectionId }
+        });
       }
     }
   };
 
-  handleRemoveClass = ({ classId }: {classId: number}) => async () => {
-    const {
-      user: {
-        data: { userId },
-        userClasses: { classList: classes }
-      },
-      fetchFeed
-    } = this.props;
-    this.setState({ loading: true });
-    try {
-      await leaveUserClass({ classId, userId });
-      this.setState({ userClasses: classes });
-      fetchFeed()
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
+  handleRemoveClass =
+    ({ classId }: { classId: number }) =>
+    async () => {
+      const {
+        user: {
+          data: { userId },
+          userClasses: { classList: classes }
+        },
+        fetchFeed
+      } = this.props;
+      this.setState({ loading: true });
+      try {
+        await leaveUserClass({ classId, userId });
+        this.setState({ userClasses: classes });
+        fetchFeed();
+      } finally {
+        this.setState({ loading: false });
+      }
+    };
 
-  handleRemoveSection = ({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => async () => {
-    const {
-      user: {
-        data: { userId },
-        userClasses: { classList: classes }
-      },
-      fetchFeed
-    } = this.props;
-    this.setState({ loading: true });
-    try {
-      await leaveUserClass({ classId, sectionId, userId });
-      this.setState({ userClasses: classes });
-      fetchFeed()
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
+  handleRemoveSection =
+    ({ classId, sectionId }: { classId: number, sectionId: number }) =>
+    async () => {
+      const {
+        user: {
+          data: { userId },
+          userClasses: { classList: classes }
+        },
+        fetchFeed
+      } = this.props;
+      this.setState({ loading: true });
+      try {
+        await leaveUserClass({ classId, sectionId, userId });
+        this.setState({ userClasses: classes });
+        fetchFeed();
+      } finally {
+        this.setState({ loading: false });
+      }
+    };
 
   handleSubmit = async () => {
     const { selectedClasses } = this.state;
@@ -246,7 +244,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
         await joinClass({ classId, sectionId, userId });
       }
       this.setState({ userClasses: classes, loading: false });
-      fetchFeed()
+      fetchFeed();
     } catch (err) {
       this.setState({ loading: false });
     }
@@ -269,7 +267,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
     }
 
     if (segment === 'K12') {
-      return userClasses.map(item => (
+      return userClasses.map((item) => (
         <ListItem key={item.classId}>
           <ListItemText
             primary={item.className}
@@ -302,13 +300,11 @@ class ClassesManager extends React.PureComponent<Props, State> {
     }
 
     if (segment === 'College') {
-      return userClasses.map(item =>
-        item.section.map(section => (
+      return userClasses.map((item) =>
+        item.section.map((section) => (
           <ListItem key={`${item.classId}-${section.sectionId}`}>
             <ListItemText
-              primary={`${section.subject} ${item.className}: ${
-                section.firstName
-                } ${section.lastName} - ${section.section}`}
+              primary={`${section.subject} ${item.className}: ${section.firstName} ${section.lastName} - ${section.section}`}
               primaryTypographyProps={{
                 noWrap: true
               }}
@@ -365,7 +361,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
     });
     const filteredClasses = sortedClasses.reduce((result, item) => {
-      const items = item.classes.filter(o =>
+      const items = item.classes.filter((o) =>
         o.class.toLowerCase().includes(search)
       );
       if (items.length > 0) result.push({ name: item.name, classes: items });
@@ -374,27 +370,27 @@ class ClassesManager extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        {filteredClasses.map(item => (
+        {filteredClasses.map((item) => (
           <Accordion key={item.name}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{item.name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <div>
-                {item.classes.map(o => (
+                {item.classes.map((o) => (
                   <Accordion key={o.classId}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography>{o.class}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <FormGroup>
-                        {o.section.map(b => (
+                        {o.section.map((b) => (
                           <FormControlLabel
                             key={`${o.classId}-${b.sectionId}`}
                             disabled={
-                              userClasses.find(c => {
+                              userClasses.find((c) => {
                                 const section = c.section.find(
-                                  s => s.sectionId === b.sectionId
+                                  (s) => s.sectionId === b.sectionId
                                 );
                                 return !!(section && c.classId === o.classId);
                               }) && true
@@ -402,9 +398,9 @@ class ClassesManager extends React.PureComponent<Props, State> {
                             control={
                               <Checkbox
                                 checked={
-                                  userClasses.find(c => {
+                                  userClasses.find((c) => {
                                     const section = c.section.find(
-                                      s => s.sectionId === b.sectionId
+                                      (s) => s.sectionId === b.sectionId
                                     );
                                     return !!(
                                       section && c.classId === o.classId
@@ -417,9 +413,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
                                 )}
                               />
                             }
-                            label={`Section ${
-                              b.section
-                              }: ${b.firstName} ${b.lastName}`}
+                            label={`Section ${b.section}: ${b.firstName} ${b.lastName}`}
                           />
                         ))}
                       </FormGroup>
@@ -443,7 +437,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
     });
     const filteredClasses = sortedClasses.reduce((result, item) => {
-      const items = item.classes.filter(o =>
+      const items = item.classes.filter((o) =>
         o.class.toLowerCase().includes(search)
       );
       if (items.length > 0) result.push({ name: item.name, classes: items });
@@ -452,23 +446,24 @@ class ClassesManager extends React.PureComponent<Props, State> {
 
     return (
       <div>
-        {filteredClasses.map(item => (
+        {filteredClasses.map((item) => (
           <Accordion key={item.name}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{item.name}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <FormGroup>
-                {item.classes.map(o => (
+                {item.classes.map((o) => (
                   <FormControlLabel
                     key={o.classId}
                     disabled={
-                      userClasses.find(b => b.classId === o.classId) && true
+                      userClasses.find((b) => b.classId === o.classId) && true
                     }
                     control={
                       <Checkbox
                         checked={
-                          userClasses.find(b => b.classId === o.classId) && true
+                          userClasses.find((b) => b.classId === o.classId) &&
+                          true
                         }
                         onChange={this.handleClassSelect(o.classId)}
                       />
@@ -496,11 +491,7 @@ class ClassesManager extends React.PureComponent<Props, State> {
       onClose,
       onOpenRequestClass
     } = this.props;
-    const {
-      canAddClasses,
-      loading,
-      errorText
-    } = this.state;
+    const { canAddClasses, loading, errorText } = this.state;
 
     // eslint-disable-next-line no-script-url
     const dudUrl = '';
@@ -538,30 +529,27 @@ class ClassesManager extends React.PureComponent<Props, State> {
                 You have to select at least 1 class
               </FormHelperText>
             )}
-            {canAddClasses &&
-              !loading &&
-              this.renderAvailableClasses()}
+            {canAddClasses && !loading && this.renderAvailableClasses()}
           </DialogContent>
           <DialogContent>
-            <Typography>Can’t find your classes? <Link
-              href={dudUrl}
-              onClick={onOpenRequestClass}
-              color="inherit"
-              className={classes.link}
-            >
-              Click here
-            </Link></Typography>
+            <Typography>
+              Can’t find your classes?{' '}
+              <Link
+                href={dudUrl}
+                onClick={onOpenRequestClass}
+                color="inherit"
+                className={classes.link}
+              >
+                Click here
+              </Link>
+            </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose} color="secondary" variant="contained">
               Close
             </Button>
             {canAddClasses && (
-              <Button
-                onClick={onClose}
-                color="primary"
-                variant="contained"
-              >
+              <Button onClick={onClose} color="primary" variant="contained">
                 Done
               </Button>
             )}

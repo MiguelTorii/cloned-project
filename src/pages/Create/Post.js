@@ -16,7 +16,11 @@ type Props = {
 };
 
 const CreatePostPage = (props: Props) => {
-  const { match: { params: { postId } } } = props
+  const {
+    match: {
+      params: { postId }
+    }
+  } = props;
 
   return (
     <main>

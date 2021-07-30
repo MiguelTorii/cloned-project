@@ -1,53 +1,53 @@
-import React, { useState, useCallback, useEffect } from "react"
-import cx from 'classnames'
-import { Quill } from "react-quill"
+import React, { useState, useCallback, useEffect } from 'react';
+import cx from 'classnames';
+import { Quill } from 'react-quill';
 
-import Tooltip from '@material-ui/core/Tooltip'
-import IconButton from '@material-ui/core/IconButton'
-import Box from '@material-ui/core/Box'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import EmojiSelector from 'components/EmojiSelector'
-import useStyles from './_styles/toolbar'
+import EmojiSelector from 'components/EmojiSelector';
+import useStyles from './_styles/toolbar';
 
-const Link = Quill.import('formats/link')
+const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
   if (!url.includes('http') || !url.includes('https')) {
-    return `https://${url}`
+    return `https://${url}`;
   }
-  return url
-}
+  return url;
+};
 
 export const formats = [
-  "bold",
-  "italic",
-  "underline",
-  "align",
-  "strike",
-  "list",
-  "bullet",
-  "indent",
-  "image"
-]
+  'bold',
+  'italic',
+  'underline',
+  'align',
+  'strike',
+  'list',
+  'bullet',
+  'indent',
+  'image'
+];
 
 export const QuillToolbar = ({ id, handleSelect }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [open, setOpen] = useState(false)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [open, setOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setWindowWidth(window.innerWidth)
-    }
+      setWindowWidth(window.innerWidth);
+    };
 
-    window.addEventListener('resize', handleWindowResize)
-    return () => window.removeEventListener('resize', handleWindowResize)
-  }, [windowWidth])
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, [windowWidth]);
 
   const handleClick = useCallback(() => {
-    setOpen(!open)
-  }, [open])
+    setOpen(!open);
+  }, [open]);
 
   return (
     <div id={id} className={classes.toolbar}>
@@ -73,67 +73,76 @@ export const QuillToolbar = ({ id, handleSelect }) => {
             title="Bold (⌘B)"
             aria-label="bold"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-bold" />
+            <button type="button" className="ql-bold" />
           </Tooltip>
           <Tooltip
             title="Italic (⌘I)"
             aria-label="italic"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-italic" />
+            <button type="button" className="ql-italic" />
           </Tooltip>
           <Tooltip
             title="Underline (⌘U)"
             aria-label="underline"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-underline" />
+            <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
             title="Image (⌘P)"
             aria-label="image"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-image" />
+            <button type="button" className="ql-image" />
           </Tooltip>
           <Tooltip
             title="EmoJi (⌘J)"
             aria-label="emoji"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <div className={cx("ql-emoji", classes.emoji)}>
-              <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle}/>
+            <div className={cx('ql-emoji', classes.emoji)}>
+              <EmojiSelector
+                onSelect={handleSelect}
+                emoIconStyle={classes.emoIconStyle}
+              />
             </div>
           </Tooltip>
         </Box>
       </span>
-      <span className={cx("ql-formats", classes.subToolbar, open ? classes.show : classes.hide)}>
+      <span
+        className={cx(
+          'ql-formats',
+          classes.subToolbar,
+          open ? classes.show : classes.hide
+        )}
+      >
         <Box
           display="flex"
           justifyContent="center"
@@ -144,62 +153,65 @@ export const QuillToolbar = ({ id, handleSelect }) => {
             title="Bold (⌘B)"
             aria-label="bold"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-bold" />
+            <button type="button" className="ql-bold" />
           </Tooltip>
           <Tooltip
             title="Italic (⌘I)"
             aria-label="italic"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-italic" />
+            <button type="button" className="ql-italic" />
           </Tooltip>
           <Tooltip
             title="Underline (⌘U)"
             aria-label="underline"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-underline" />
+            <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
             title="Image (⌘P)"
             aria-label="image"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <button type='button' className="ql-image" />
+            <button type="button" className="ql-image" />
           </Tooltip>
           <Tooltip
             title="EmoJi (⌘J)"
             aria-label="emoji"
             arrow
-            placement='top'
+            placement="top"
             classes={{
               tooltip: classes.tooltip,
               popper: classes.popper
             }}
           >
-            <div className={cx("ql-emoji", classes.emoji)}>
-              <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle}/>
+            <div className={cx('ql-emoji', classes.emoji)}>
+              <EmojiSelector
+                onSelect={handleSelect}
+                emoIconStyle={classes.emoIconStyle}
+              />
             </div>
           </Tooltip>
         </Box>
@@ -207,53 +219,53 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           title="Strike"
           aria-label="strike"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-strike" />
+          <button type="button" className="ql-strike" />
         </Tooltip>
         <Tooltip
           title="Numbered list"
           aria-label="numbered-list"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-list" value="ordered" />
+          <button type="button" className="ql-list" value="ordered" />
         </Tooltip>
         <Tooltip
           title="Bulleted list"
           aria-label="bulleted-list"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-list" value="bullet" />
+          <button type="button" className="ql-list" value="bullet" />
         </Tooltip>
         <Tooltip
           title="Clean"
           aria-label="clean"
           arrow
-          placement='top'
+          placement="top"
           classes={{
             tooltip: classes.tooltip,
             popper: classes.popper
           }}
         >
-          <button type='button' className="ql-clean" />
+          <button type="button" className="ql-clean" />
         </Tooltip>
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default QuillToolbar
+export default QuillToolbar;

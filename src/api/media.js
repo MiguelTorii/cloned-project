@@ -15,7 +15,7 @@ export const getPresignedURLs = async ({
 }): Promise<Object> => {
   try {
     const token = await getToken();
-    const fileArray = fileNames.map(item => `&file_name=${item}`).join('');
+    const fileArray = fileNames.map((item) => `&file_name=${item}`).join('');
     const result = await axios.get(
       `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}${fileArray}`,
       {
@@ -45,9 +45,7 @@ export const getPresignedURL = async ({
   try {
     const token = await getToken();
     const result = await axios.get(
-      `${
-        API_ROUTES.MEDIA_URL
-      }/${type}?user_id=${userId}&media_type=${mediaType}`,
+      `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}&media_type=${mediaType}`,
       {
         headers: {
           Authorization: `Bearer ${token}`

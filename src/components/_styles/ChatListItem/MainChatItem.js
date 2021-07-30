@@ -1,6 +1,6 @@
 import { dialogStyle } from '../Dialog';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   dialog: {
     ...dialogStyle,
     width: 500,
@@ -12,7 +12,7 @@ export const styles = theme => ({
   hoverMenu: {
     position: 'absolute',
     bottom: 0,
-    right: 10,
+    right: 10
   },
   root: {
     display: 'flex',
@@ -20,10 +20,10 @@ export const styles = theme => ({
     width: '100%'
   },
   dark: {
-    backgroundColor: theme.circleIn.palette.primaryBackground,
+    backgroundColor: theme.circleIn.palette.primaryBackground
   },
   selected: {
-    backgroundColor: theme.circleIn.palette.rowSelection,
+    backgroundColor: theme.circleIn.palette.rowSelection
   },
   progress: {
     display: 'flex',
@@ -46,4 +46,4 @@ export const styles = theme => ({
   margin: {
     margin: theme.spacing(2)
   }
-})
+});
