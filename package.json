@@ -104,6 +104,7 @@
     "sanitize-html": "^1.23.0",
     "store": "^2.0.12",
     "styled-components": "^5.0.0",
+    "terser": "3.14.1",
     "twilio-chat": "^3.3.4",
     "twilio-video": "^2.3.0",
     "uuid": "^3.3.2",
@@ -123,6 +124,9 @@
     "eslint-plugin-react": "^7.12.4",
     "flow-bin": "^0.137.0",
     "prettier": "^1.16.3"
+  },
+  "resolutions": {
+    "terser": "3.14.1"
   },
   "scripts": {
     "start": "REACT_APP_STAGE=dev react-scripts start",
