@@ -445,7 +445,6 @@ const Drawer = ({
           <Tooltip
             id={9059}
             placement="right"
-            variant="secondary"
             text="Pssst! You can start video chatting from the left navigation! 😍"
             okButton="Nice!"
           >

@@ -129,10 +129,9 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
         <Tooltip
           id={9063}
           placement="right"
-          variant="secondary"
           text="Change screen views here. You can also select different views when sharing screen."
           totalSteps={4}
-          completedSteps={3}
+          completedSteps={4}
           okButton="Nice!"
         >
           <MenuItem

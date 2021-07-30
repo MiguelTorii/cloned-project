@@ -63,7 +63,7 @@ const styles = (theme) => ({
     textAlign: 'right'
   },
   overDialog: {
-    zIndex: 1400
+    zIndex: 1500
   }
 });
 
@@ -116,6 +116,12 @@ const STUDENT_FEED_CLASSES = 9055;
 const STUDENT_CLASS_LEADERBOARD = 9056;
 const STUDENT_CLASSMATES = 9057;
 
+const VIDEO_CHAT = 9059;
+
+const VIDEO_CHAT_INVITE = 9061;
+const VIDEO_CHAT_PARTICIPANTS = 9062;
+const VIDEO_CHAT_SCREEN = 9063;
+const VIDEO_CHAT_SETTINGS = 9064;
 // not an actual tooltip
 // eslint-disable-next-line
 const GET_APP_POPUP = 4432;
@@ -222,8 +228,11 @@ const Tooltip = ({
         case NOTES_FULLSCREEN:
           result = true;
           break;
-        case CHAT:
+        case VIDEO_CHAT:
           result = true;
+          break;
+        case CHAT:
+          result = viewedTooltips.includes(VIDEO_CHAT);
           break;
         case STUDENT_BLOG:
           result = true;
@@ -244,6 +253,18 @@ const Tooltip = ({
           break;
         case FLASHCARD_BOTTOM:
           result = viewedTooltips.includes(FLASHCARD_TOP);
+          break;
+        case VIDEO_CHAT_INVITE:
+          result = true;
+          break;
+        case VIDEO_CHAT_PARTICIPANTS:
+          result = viewedTooltips.includes(VIDEO_CHAT_INVITE);
+          break;
+        case VIDEO_CHAT_SETTINGS:
+          result = viewedTooltips.includes(VIDEO_CHAT_PARTICIPANTS);
+          break;
+        case VIDEO_CHAT_SCREEN:
+          result = viewedTooltips.includes(VIDEO_CHAT_SETTINGS);
           break;
         default:
           result = true;

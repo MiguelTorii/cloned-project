@@ -78,7 +78,6 @@ class Preview extends React.Component<Props, State> {
           <Tooltip
             id={9060}
             placement="right"
-            variant="secondary"
             text="Meet the new Study Room, a friendlier video chat experience! 😌"
             totalSteps={4}
             completedSteps={0}

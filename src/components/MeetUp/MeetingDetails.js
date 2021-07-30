@@ -31,7 +31,6 @@ const MeetingDetails = ({
         <Tooltip
           id={9061}
           placement="right"
-          variant="secondary"
           text="Invite friends and classmates to your Study Room here! Collaboration made easy! ⚡️"
           totalSteps={4}
           completedSteps={1}

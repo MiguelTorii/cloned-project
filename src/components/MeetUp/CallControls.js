@@ -189,7 +189,6 @@ class Controls extends React.PureComponent<Props, State> {
         <Tooltip
           id={9062}
           placement="top"
-          variant="secondary"
           text="Open a chat with study room participants and see a list of participants and invitees. 🎉"
           totalSteps={4}
           okButton="Nice!"

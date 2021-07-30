@@ -1126,10 +1126,9 @@ class MeetUp extends React.Component<Props, State> {
               <Tooltip
                 id={9064}
                 placement="bottom-start"
-                variant="secondary"
                 text="You can change your audio/visual settings or report an issue here. Happy studying!"
                 totalSteps={4}
-                completedSteps={4}
+                completedSteps={3}
                 okButton="Yay! 🎉"
               >
                 {hover ? (
