@@ -18,14 +18,14 @@ type Props = {
 const ChatPage = ({ chat }: Props) => {
   const {
     data: { local },
-    isLoading,
+    isLoading
   } = chat;
 
   const classes = useStyles();
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [selectedCourse, setSelectedCourse] = useState(
-    DEFAULT_COMMUNITY_MENU_ITEMS,
+    DEFAULT_COMMUNITY_MENU_ITEMS
   );
   const [courseChannels, setCourseChannels] = useState([]);
   const [communityList, setCommunities] = useState([]);
@@ -37,7 +37,7 @@ const ChatPage = ({ chat }: Props) => {
         await getCommunityChannels({ communityId: course.id });
       courseChannels.push({
         courseId: course.id,
-        channels: communityChannels,
+        channels: communityChannels
       });
     });
 
@@ -88,7 +88,7 @@ const ChatPage = ({ chat }: Props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.collageList} direction="row">
-        {communityList && !!courseChannels.length && (
+        {communityList && (
           <CollageList
             local={local}
             unreadMessageCount={unreadMessageCount}
@@ -116,7 +116,7 @@ const ChatPage = ({ chat }: Props) => {
 };
 
 const mapStateToProps = ({ chat }: StoreState): {} => ({
-  chat,
+  chat
 });
 
 export default connect(mapStateToProps, null)(ChatPage);

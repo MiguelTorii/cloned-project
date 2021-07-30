@@ -23,7 +23,7 @@ const CollageList = ({
   communities,
   local,
   courseChannels,
-  handleSelect,
+  handleSelect
 }: Props) => {
   const classes = useStyles();
 
@@ -38,17 +38,18 @@ const CollageList = ({
         handleSelect={handleSelect}
       />
       <Divider classes={{ root: classes.divider }} />
-      {communities.map((course) => (
-        <CommunityMenu
-          key={course.id}
-          local={local}
-          item={course}
-          courseChannels={courseChannels}
-          unreadMessageCount={unreadMessageCount}
-          selectedCourse={selectedCourse}
-          handleSelect={handleSelect}
-        />
-      ))}
+      {!!courseChannels.length &&
+        communities.map((course) => (
+          <CommunityMenu
+            key={course.id}
+            local={local}
+            item={course}
+            courseChannels={courseChannels}
+            unreadMessageCount={unreadMessageCount}
+            selectedCourse={selectedCourse}
+            handleSelect={handleSelect}
+          />
+        ))}
     </List>
   );
 };

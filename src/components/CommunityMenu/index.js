@@ -15,7 +15,7 @@ type Props = {
   unreadMessageCount: number,
   selectedCourse: Object,
   courseChannels: array,
-  handleSelect: Function,
+  handleSelect: Function
 };
 
 const CommunityMenu = ({
@@ -24,7 +24,7 @@ const CommunityMenu = ({
   unreadMessageCount,
   selectedCourse,
   courseChannels,
-  handleSelect,
+  handleSelect
 }: Props) => {
   const classes = useStyles();
   const [unreadMessages, setUnreadMessages] = useState(0);
@@ -32,19 +32,21 @@ const CommunityMenu = ({
     const { id } = item;
     if (id !== 'chat') {
       const currentCourseChannel = courseChannels.filter(
-        (courseChannel) => courseChannel.courseId === id,
+        (courseChannel) => courseChannel.courseId === id
       );
 
-      const communityChannels = currentCourseChannel[0].channels;
-      let count = 0;
-      communityChannels.forEach((communityChannel) => {
-        communityChannel.channels.forEach((channel) => {
-          if (local[channel.chat_id]?.unread) {
-            count += local[channel.chat_id].unread;
-          }
+      if (currentCourseChannel.length) {
+        const communityChannels = currentCourseChannel[0].channels;
+        let count = 0;
+        communityChannels.forEach((communityChannel) => {
+          communityChannel.channels.forEach((channel) => {
+            if (local[channel.chat_id]?.unread) {
+              count += local[channel.chat_id].unread;
+            }
+          });
         });
-      });
-      setUnreadMessages(count);
+        setUnreadMessages(count);
+      }
     }
   }, [item, local, courseChannels]);
 
@@ -68,7 +70,7 @@ const CommunityMenu = ({
       selected={selectedCourse && selectedCourse.id === item.id}
       classes={{ root: classes.listItem, selected: classes.selectedItem }}
       style={{
-        backgroundColor: item.color ? item.color : '#C45960',
+        backgroundColor: item.color ? item.color : '#C45960'
       }}
     >
       {['chat'].indexOf(item.id) > -1 ? (
@@ -87,7 +89,7 @@ const CommunityMenu = ({
           classes={{
             badge: unreadMessages
               ? classes.unreadMessageCount
-              : classes.emptyUnreadMessage,
+              : classes.emptyUnreadMessage
           }}
           badgeContent={unreadMessages}
           color="secondary"
