@@ -29,7 +29,7 @@ export SENTRY_ENV=$REACT_APP_SENTRY_ENV
 fi
 
 echo $1
-REACT_APP_STAGE=$1 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
+DISABLE_ESLINT_PLUGIN=true REACT_APP_STAGE=$1 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
 
 # install sentry cli
 echo "Installing and configuring sentry cli"
