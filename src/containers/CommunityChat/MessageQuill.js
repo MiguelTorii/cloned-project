@@ -28,8 +28,8 @@ const MessageQuill = ({
   const [isPressEnter, setPressEnter] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
 
-  const bindings = useMemo(() => {
-    return {
+  const bindings = useMemo(
+    () => ({
       enter: {
         key: 'enter',
         handler: () => {
@@ -37,8 +37,9 @@ const MessageQuill = ({
           return false;
         }
       }
-    };
-  }, []);
+    }),
+    []
+  );
 
   const imageHandler = useCallback(
     async (imageDataUrl, type, imageData) => {
@@ -89,6 +90,7 @@ const MessageQuill = ({
 
   useEffect(() => {
     if (quill) {
+      quill.focus();
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
           onChange(quill.container.firstChild.innerHTML);
