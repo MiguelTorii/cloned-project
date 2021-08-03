@@ -108,10 +108,10 @@ class FeedFilter extends React.PureComponent<Props, State> {
         if (!sc) return null;
         return {
           ...sc,
-          sectionId: sc.section[0].sectionId
-        };
-      });
-      this.setState({ selectedUserClasses });
+          sectionId: sc.section?.[0]?.sectionId
+        }
+      })
+      this.setState({ selectedUserClasses })
     }
   };
 

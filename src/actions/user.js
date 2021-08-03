@@ -84,7 +84,7 @@ export const fetchClasses =
         const value = classList.map((cl) =>
           JSON.stringify({
             classId: cl.classId,
-            sectionId: cl.section[0].sectionId
+            sectionId: cl.section?.[0]?.sectionId
           })
         );
 

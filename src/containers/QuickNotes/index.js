@@ -164,7 +164,7 @@ const QuickNotes = ({
         .map((c) => ({
           name: c.className,
           color: c.bgColor,
-          sectionId: c.section[0].sectionId,
+          sectionId: c.section?.[0]?.sectionId,
           classId: c.classId
         }));
       return classList;

@@ -35,7 +35,7 @@ const StudyRoomInvite = ({
       await Promise.all(
         classList.map(async (selectedClass) => {
           const classmates = await getClassmates({
-            sectionId: selectedClass.section[0].sectionId,
+            sectionId: selectedClass.section?.[0]?.sectionId,
             classId: selectedClass.classId
           });
           classmates.forEach((classmate) => {
