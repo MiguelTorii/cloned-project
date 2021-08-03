@@ -18,9 +18,9 @@ import HoverPopup from 'components/HoverPopup';
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu';
 
-const MyLink = React.forwardRef(({ link, ...props }, ref) => {
-  return <RouterLink to={link} {...props} ref={ref} />;
-});
+const MyLink = React.forwardRef(({ link, ...props }, ref) => (
+  <RouterLink to={link} {...props} ref={ref} />
+));
 
 const RightMenu = ({ local, channel, setSelectedCourse }) => {
   const classes = useStyles();
@@ -75,7 +75,7 @@ const RightMenu = ({ local, channel, setSelectedCourse }) => {
           }}
         >
           <Typography className={classes.usersTitle}>
-            Members - {localChannel?.members.length}
+            Members - {localChannel?.members?.length}
           </Typography>
           <List dense className={classes.listRoot}>
             {localChannel?.members.map((m) => {

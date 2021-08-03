@@ -20,6 +20,7 @@ const MessageQuill = ({
   value,
   setValue,
   onSendMessage,
+  focusMessageBox,
   showError,
   onTyping,
   userId
@@ -87,6 +88,10 @@ const MessageQuill = ({
   if (Quill && !quill) {
     Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
   }
+
+  useEffect(() => {
+    if (quill) quill.focus();
+  }, [focusMessageBox, quill]);
 
   useEffect(() => {
     if (quill) {

@@ -247,12 +247,12 @@ export const setCurrentChannel =
   (currentChannel) => async (dispatch: Dispatch) => {
     if (currentChannel) {
       localStorage.setItem('currentDMChannel', currentChannel.sid);
+      dispatch(setCurrentChannelAction({ currentChannel }));
       const members = await fetchMembers(currentChannel.sid);
       const shareLink = await getShareLink(currentChannel.sid);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
     }
-    dispatch(setCurrentChannelAction({ currentChannel }));
   };
 
 export const setCurrentCommunityChannel =
@@ -310,12 +310,11 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
         (l) => local[l].lastMessage.message
       );
       if (recentMessageChannels.length) {
-        channelList = recentMessageChannels.sort((a, b) => {
-          return (
+        channelList = recentMessageChannels.sort(
+          (a, b) =>
             moment(local[b].lastMessage.date).valueOf() -
             moment(local[a].lastMessage.date).valueOf()
-          );
-        });
+        );
       }
 
       dispatch(setCurrentChannel(currentLocal[channelList[0]].twilioChannel));

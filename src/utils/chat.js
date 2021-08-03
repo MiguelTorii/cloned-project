@@ -210,12 +210,10 @@ export const getInitials = (name: string = '') => {
   const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
   if (initials.length < 3) {
     return initials;
-  } else {
-    const length = initials.length;
-    return initials[0] + initials[length - 1];
   }
+  const { length } = initials;
+  return initials[0] + initials[length - 1];
 };
 
-export const containsImage = (message: string) => {
-  return message.includes('<img') ? 'Uploaded a image' : parse(message);
-};
+export const containsImage = (message: string) =>
+  message.includes('<img') ? 'Uploaded a image' : parse(message);

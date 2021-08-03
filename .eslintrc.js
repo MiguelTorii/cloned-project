@@ -7,8 +7,8 @@ module.exports = {
     'react/jsx-filename-extension': [
       1,
       {
-        extensions: ['.js', '.jsx'],
-      },
+        extensions: ['.js', '.jsx']
+      }
     ],
     'react/prop-types': 0,
     'no-underscore-dangle': 0,
@@ -18,8 +18,17 @@ module.exports = {
       'error',
       2,
       {
-        ignoredNodes: ['TemplateLiteral'],
-      },
+        ignoredNodes: ['TemplateLiteral', 'ConditionalExpression'],
+        SwitchCase: 1,
+        outerIIFEBody: 0,
+        MemberExpression: 1,
+        FunctionDeclaration: { body: 1, parameters: 2 },
+        CallExpression: { arguments: 1 },
+        ArrayExpression: 1,
+        ObjectExpression: 1,
+        offsetTernaryExpressions: false,
+        ignoreComments: true
+      }
     ],
     'import/newline-after-import': 'error',
     'import/no-unresolved': 0,
@@ -43,8 +52,8 @@ module.exports = {
       0,
       'always',
       {
-        annotateUndefined: 'never',
-      },
+        annotateUndefined: 'never'
+      }
     ],
     'flowtype/require-valid-file-annotation': 2,
     'flowtype/semi': [2, 'always'],
@@ -54,12 +63,12 @@ module.exports = {
     'flowtype/type-id-match': [0, '^([A-Z][a-z0-9]+)+Type$'],
     'flowtype/union-intersection-spacing': [2, 'always'],
     'flowtype/use-flow-type': 1,
-    'flowtype/valid-syntax': 1,
+    'flowtype/valid-syntax': 1
   },
   settings: {
     flowtype: {
-      onlyFilesWithFlowAnnotation: false,
-    },
+      onlyFilesWithFlowAnnotation: false
+    }
   },
   globals: {
     cy: true,
@@ -70,7 +79,7 @@ module.exports = {
     FormData: true,
     FileReader: true,
     Blob: true,
-    navigator: true,
+    navigator: true
   },
-  parser: 'babel-eslint',
+  parser: 'babel-eslint'
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import cx from 'classnames';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -15,20 +15,24 @@ import useStyles from './_styles/initialAlert';
 type Props = {
   local: Array,
   hasPermission: boolean,
+  focusMessageBox: number,
   channel: Object,
   userId: string,
   isCommunityChat: boolean,
   selectedCourse: Object,
+  setFocusMessageBox: Function,
   selectedChannel: Object
 };
 
 const InitialAlert = ({
   local,
   hasPermission,
+  focusMessageBox,
   channel,
   userId,
   isCommunityChat,
   selectedCourse,
+  setFocusMessageBox,
   selectedChannel
 }: Props) => {
   const classes = useStyles();
@@ -54,15 +58,19 @@ const InitialAlert = ({
     }
   }, [channel, local, userId]);
 
-  const initials = useMemo(() => {
-    return getInitials(name);
-  }, [name]);
+  const initials = useMemo(() => getInitials(name), [name]);
 
-  const initialCourseAvatarName = useMemo(() => {
-    return selectedCourse?.name
-      ? selectedCourse?.name.substring(0, 3).toUpperCase()
-      : '';
-  }, [selectedCourse]);
+  const initialCourseAvatarName = useMemo(
+    () =>
+      selectedCourse?.name
+        ? selectedCourse?.name.substring(0, 3).toUpperCase()
+        : '',
+    [selectedCourse]
+  );
+
+  const handleSetFocusMessageBox = useCallback(() => {
+    setFocusMessageBox(focusMessageBox + 1);
+  }, [focusMessageBox]);
 
   return isCommunityChat ? (
     local[channel?.sid]?.twilioChannel.channelState.lastConsumedMessageIndex ===
@@ -97,10 +105,13 @@ const InitialAlert = ({
           alignItems="center"
           marginTop={3}
         >
-          <Button className={classes.initialAlertButton}>
+          <Button
+            className={classes.initialAlertButton}
+            onClick={() => handleSetFocusMessageBox()}
+          >
             <span role="img" aria-label="message">
               💬
-            </span>{' '}
+            </span>
             &nbsp; Send Your First Message
           </Button>
         </Box>
@@ -120,7 +131,7 @@ const InitialAlert = ({
           className={classes.initialAlertDescription}
           variant="subtitle2"
         >
-          This is the beginning of your chat with{' '}
+          This is the beginning of your chat with
           {isOneToOne ? name : 'your group.'}
         </Typography>
       </Box>
@@ -137,7 +148,7 @@ const InitialAlert = ({
         className={classes.initialAlertDescription}
         variant="subtitle2"
       >
-        This is the beginning of your chat with{' '}
+        This is the beginning of your chat with
         {isOneToOne ? name : 'your group.'}
       </Typography>
     </Box>
