@@ -103,29 +103,30 @@ const FlashcardsShow = () => {
   );
 
   // Memos
-  const cardList = useMemo(() => {
-    return (data.deck || []).map((item) => ({
-      id: item.id,
-      question: item.question,
-      questionImage: item.question_image_url,
-      answer: item.answer,
-      answerImage: item.answer_image_url
-    }));
-  }, [data.deck]);
+  const cardList = useMemo(
+    () =>
+      (data.deck || []).map((item) => ({
+        id: item.id,
+        question: item.question,
+        questionImage: item.question_image_url,
+        answer: item.answer,
+        answerImage: item.answer_image_url
+      })),
+    [data.deck]
+  );
 
-  const deckData = useMemo(() => {
-    return {
+  const deckData = useMemo(
+    () => ({
       title: data.title,
       summary: data.summary,
       classId: data.classId,
       sectionId: data.sectionId,
       deck: cardList
-    };
-  }, [data, cardList]);
+    }),
+    [data, cardList]
+  );
 
-  const pastClassIds = useMemo(() => {
-    return getPastClassIds(classList);
-  }, [classList]);
+  const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
 
   const shouldRenderFeed = useMemo(() => {
     if (!lastLocation) {
@@ -389,7 +390,7 @@ const FlashcardsShow = () => {
       <PostItemHeader
         hideShare
         feedId={data.feedId}
-        isPastClassFlashcard={pastClassIds.includes(data.classId)}
+        classId={data.classId}
         expertMode={expertMode}
         pushTo={handlePush}
         router={router}

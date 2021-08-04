@@ -8,6 +8,9 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(1, 0, 0, 0),
     cursor: 'pointer'
   },
+  pastClassRoot: {
+    backgroundColor: theme.circleIn.palette.gray3
+  },
   contentContainer: {
     width: '100%',
     height: '100%',

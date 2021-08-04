@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -32,6 +33,7 @@ import Tooltip from 'containers/Tooltip';
 import SharePost from 'containers/SharePost';
 
 import { getInitials } from 'utils/chat';
+import { getPastClassIds } from 'utils/helpers';
 import _ from 'lodash';
 import { styles } from '../_styles/PostItem/PostItemHeader';
 
@@ -42,8 +44,10 @@ const MyLink = React.forwardRef(({ href, ...props }, ref) => (
 
 type Props = {
   classes: Object,
+  user: Object,
   currentUserId: string,
   userId: string,
+  classId: string,
   name: string,
   userProfileUrl: string,
   classroomName: string,
@@ -63,8 +67,7 @@ type Props = {
   expertMode: boolean,
   router: Object,
   onDelete: Function,
-  onEdit: Function,
-  isPastClassFlashcard?: boolean
+  onEdit: Function
 };
 
 type State = {
@@ -73,8 +76,7 @@ type State = {
 
 class PostItemHeader extends React.PureComponent<Props, State> {
   static defaultProps = {
-    isMarkdown: false,
-    isPastClassFlashcard: false
+    isMarkdown: false
   };
 
   state = {
@@ -164,12 +166,18 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       newClassExperience,
       onBookmark,
       router,
-      isPastClassFlashcard
+      classId,
+      user
     } = this.props;
+
+    const {
+      userClasses: { classList }
+    } = user;
 
     const { moreAnchorEl, open, showShortSummary } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const initials = getInitials(name);
+    const pastClassIds = getPastClassIds(classList);
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
     const from = new URLSearchParams(router.location.query).get('from'); // This indicates where the feed came from.
@@ -209,7 +217,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </MenuItem>
         ) : (
           <div>
-            {!isPastClassFlashcard && (
+            {!pastClassIds.includes(classId) && (
               <MenuItem onClick={this.handleEdit}>
                 <ListItemIcon color="inherit">
                   <CreateIcon />
@@ -229,7 +237,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     );
 
     return (
-      <Fragment>
+      <>
         <Grid
           className={classes.backButton}
           container
@@ -316,9 +324,16 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           </div>
         )}
         {renderMenu}
-      </Fragment>
+      </>
     );
   }
 }
 
-export default withStyles(styles)(PostItemHeader);
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(PostItemHeader));

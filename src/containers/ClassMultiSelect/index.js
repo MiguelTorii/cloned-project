@@ -54,12 +54,10 @@ const ClassMultiSelect = ({
             classList[s.sectionId] = cl;
           });
       });
-      return Object.keys(classList).map((sectionId) => {
-        return {
-          ...classList[sectionId],
-          sectionId: Number(sectionId)
-        };
-      });
+      return Object.keys(classList).map((sectionId) => ({
+        ...classList[sectionId],
+        sectionId: Number(sectionId)
+      }));
     } finally {
       /* NONE */
     }
@@ -68,11 +66,11 @@ const ClassMultiSelect = ({
   const onChange = useCallback(
     (_, value) => {
       if (noEmpty && value.length === 0) return;
-      const filteredList = value.filter((cl) => cl.isCurrent);
-      if (filteredList.find((o) => o.value === 'all')) {
+      // const filteredList = value.filter((cl) => cl.isCurrent);
+      if (value.find((o) => o.value === 'all')) {
         onSelect(options);
       } else {
-        onSelect(filteredList);
+        onSelect(value);
       }
     },
     [noEmpty, onSelect, options]
@@ -98,12 +96,10 @@ const ClassMultiSelect = ({
         )}
         disableClearable={noEmpty}
         openOnFocus
-        getOptionSelected={(option, value) => {
-          return (
-            value.classId === option.classId &&
-            value.sectionId === option.sectionId
-          );
-        }}
+        getOptionSelected={(option, value) =>
+          value.classId === option.classId &&
+          value.sectionId === option.sectionId
+        }
         limitTags={2}
         id="tags-filled"
         onChange={onChange}
@@ -115,7 +111,7 @@ const ClassMultiSelect = ({
         }
         disableCloseOnSelect
         renderOption={(option, { selected }) => (
-          <React.Fragment>
+          <>
             {option.value !== 'all' && (
               <Checkbox
                 icon={icon}
@@ -129,7 +125,7 @@ const ClassMultiSelect = ({
                 ? `${option.section[0].section}-`
                 : ''
             } ${option.className}`}
-          </React.Fragment>
+          </>
         )}
         renderTags={(value, getTagProps) => {
           if (allSelected) return allLabel || 'All Classes Selected';

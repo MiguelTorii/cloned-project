@@ -107,12 +107,7 @@ const Recommendations = () => {
     [dispatch, me.userId, posts]
   );
 
-  const handlePushTo = useCallback(
-    (url) => {
-      return dispatch(push(url));
-    },
-    [dispatch]
-  );
+  const handlePushTo = useCallback((url) => dispatch(push(url)), [dispatch]);
 
   const handleDelete = useCallback(({ feedId }) => {
     setDeleteFeedId(feedId);
@@ -151,7 +146,6 @@ const Recommendations = () => {
     } = currentUser;
     const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
-      console.log('recommendation iscurrent', filteredList[0].isCurrent);
       return filteredList[0].isCurrent;
     }
   };

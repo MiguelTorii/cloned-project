@@ -141,6 +141,7 @@ const ViewShareLink = ({
             <PostItemHeader
               hideShare
               feedId={feedId}
+              classId={classId}
               currentUserId={userId}
               router={router}
               pop={pop}

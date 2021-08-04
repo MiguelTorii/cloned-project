@@ -131,6 +131,8 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
         }
       });
     case feedActions.UPDATE_FEED_FILTER_FIELD_REQUEST:
+      // console.log(action.payload.field);
+      // console.log(action.payload.value);
       return update(state, {
         data: {
           filters: {

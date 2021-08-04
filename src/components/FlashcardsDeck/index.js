@@ -1,5 +1,7 @@
 // @flow
 import React, { useCallback, useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
+import cx from 'classnames';
 import _ from 'lodash';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -29,6 +31,7 @@ type Props = {
 const FlashcardsDeck = ({ data }: Props) => {
   // Hooks
   const classes = useStyles();
+  const { search } = useLocation();
   const dispatch = useDispatch();
   const classList = useSelector((state) => state.user.userClasses.classList);
   const me = useSelector((state) => state.user.data);
@@ -39,13 +42,15 @@ const FlashcardsDeck = ({ data }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Memos
-  const deckClass = useMemo(() => {
-    return classList.find((item) => item.classId === data.class_id);
-  }, [data, classList]);
+  const deckClass = useMemo(
+    () => classList.find((item) => item.classId === data.class_id),
+    [data, classList]
+  );
 
-  const deckLink = useMemo(() => {
-    return `${APP_ROOT_PATH}/flashcards/${data.post_id}`;
-  }, [data]);
+  const deckLink = useMemo(
+    () => `${APP_ROOT_PATH}/flashcards/${data.post_id}`,
+    [data]
+  );
 
   const shareLinkModalTitle = useMemo(
     () => (
@@ -99,7 +104,10 @@ const FlashcardsDeck = ({ data }: Props) => {
   // Rendering
   return (
     <div
-      className={classes.root}
+      className={cx(
+        classes.root,
+        search.includes('past') && classes.pastClassRoot
+      )}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

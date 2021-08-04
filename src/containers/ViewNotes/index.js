@@ -150,6 +150,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
             <PostItemHeader
               hideShare
               feedId={feedId}
+              classId={classId}
               expertMode={expertMode}
               pushTo={push}
               router={router}

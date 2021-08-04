@@ -53,17 +53,17 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }) => {
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const pastClassIds = useMemo(() => {
-    return getPastClassIds(classList);
-  }, [classList]);
+  const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
 
   // Memos
-  const arrFilters = useMemo(() => {
-    return Object.keys(Filters).map((key) => ({
-      value: key,
-      text: Filters[key].text
-    }));
-  }, []);
+  const arrFilters = useMemo(
+    () =>
+      Object.keys(Filters).map((key) => ({
+        value: key,
+        text: Filters[key].text
+      })),
+    []
+  );
 
   const currentFilter = useMemo(() => {
     const query = new URLSearchParams(location.search);
@@ -72,13 +72,16 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }) => {
 
   const decksToShow = useMemo(() => {
     const result = decks.ids.map((id) => decks.byId[id]);
+    const myDecks = result.filter(
+      (item) => !pastClassIds.includes(item.class_id)
+    );
     if (currentFilter === 'bookmarked') {
       return result.filter((item) => item.bookmarked);
     }
     if (currentFilter === 'past') {
       return result.filter((item) => pastClassIds.includes(item.class_id));
     }
-    return result;
+    return myDecks;
   }, [decks, currentFilter, pastClassIds]);
 
   // Callbacks

@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { cypher, decypherClass } from 'utils/crypto';
+import { getPastClassIds } from 'utils/helpers';
 import Tooltip from 'containers/Tooltip';
 import cx from 'clsx';
 import queryString from 'query-string';
@@ -43,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing()
   },
   pastClassLabel: {
-    opacity: 0.4
+    opacity: 0.4,
+    marginLeft: theme.spacing(3)
   }
 }));
 
@@ -75,36 +77,53 @@ const HeaderNavigation = ({
   state
 }: Props) => {
   const [prevFilters, setPrevFilters] = useState('');
-  const options = useMemo(() => {
-    try {
-      const newClassList = {};
-      const currentClassList = classList.filter((cl) => cl.isCurrent);
 
-      currentClassList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-          cl.section.forEach((s) => {
-            newClassList[s.sectionId] = cl;
-          });
-      });
+  const isPastFilter = useMemo(() => {
+    const query = queryString.parse(search);
+    const pastClasses = getPastClassIds(classList);
 
-      return Object.keys(newClassList).map((sectionId) => {
-        return {
-          ...newClassList[sectionId],
-          sectionId: Number(sectionId)
-        };
-      });
-    } finally {
-      /* NONE */
+    if (query?.class) {
+      const { classId } = decypherClass(query?.class);
+      return pastClasses.includes(Number(classId));
     }
-  }, [classList]);
+    if (query?.pastFilter === 'true') {
+      return true;
+    }
+    return false;
+  }, [search, classList]);
+
+  const options = useMemo(() => {
+    const newClassList = {};
+    let currentClassList = [];
+    if (isPastFilter) {
+      currentClassList = classList.filter((cl) => !cl.isCurrent);
+    } else {
+      currentClassList = classList.filter((cl) => cl.isCurrent);
+    }
+    currentClassList.forEach((cl) => {
+      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+        cl.section.forEach((s) => {
+          newClassList[s.sectionId] = cl;
+        });
+    });
+
+    return Object.keys(newClassList).map((sectionId) => ({
+      ...newClassList[sectionId],
+      sectionId: Number(sectionId)
+    }));
+  }, [classList, isPastFilter]);
 
   const allSelected = useMemo(
     () => options.length === selectedClasses.length,
     [options.length, selectedClasses.length]
   );
-  const isPastClassFeed = useMemo(() => {
-    return selectedClasses.length === 1 && !selectedClasses[0].isCurrent;
-  }, [selectedClasses]);
+
+  const allLabel = useMemo(
+    () =>
+      isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`,
+    [firstName, isPastFilter]
+  );
+
   const classes = useStyles();
 
   const handleFilters = useCallback(
@@ -151,12 +170,10 @@ const HeaderNavigation = ({
           });
       });
 
-      const currentSelectedClass = Object.keys(newClass).map((sectionId) => {
-        return {
-          ...newClass[sectionId],
-          sectionId: Number(sectionId)
-        };
-      });
+      const currentSelectedClass = Object.keys(newClass).map((sectionId) => ({
+        ...newClass[sectionId],
+        sectionId: Number(sectionId)
+      }));
       handleFilters(currentSelectedClass);
     } else handleFilters(options);
   }, [classList, handleFilters, options, search, setSelectedClasses, state]);
@@ -222,25 +239,11 @@ const HeaderNavigation = ({
 
   return (
     <Box>
-      {isPastClassFeed ? (
-        <div className={classes.pastClass}>
-          <Typography variant="h5" display="inline">
-            EPD-Incognito
-          </Typography>
-          &nbsp;
-          <Typography
-            variant="h5"
-            display="inline"
-            className={classes.pastClassLabel}
-          >
-            (Past Class)
-          </Typography>
-        </div>
-      ) : (
+      <Box display="flex" alignItems="center">
         <ClassMultiSelect
           noEmpty
           variant="standard"
-          allLabel={`${firstName}'s Classes`}
+          allLabel={allLabel}
           containerStyle={classes.classSelector}
           textFieldStyle={cx(
             classes.classTextField,
@@ -252,7 +255,16 @@ const HeaderNavigation = ({
           schoolId={schoolId}
           onSelect={onSelect}
         />
-      )}
+        {isPastFilter && !allSelected && (
+          <Typography
+            variant="h5"
+            display="inline"
+            className={classes.pastClassLabel}
+          >
+            (Past Class)
+          </Typography>
+        )}
+      </Box>
       <Box className={classes.links}>
         <Button
           onClick={navigate('/feed', {})}

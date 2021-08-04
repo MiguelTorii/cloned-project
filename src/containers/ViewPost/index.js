@@ -132,6 +132,7 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
             <PostItemHeader
               hideShare
               feedId={feedId}
+              classId={classId}
               currentUserId={userId}
               router={router}
               pop={pop}

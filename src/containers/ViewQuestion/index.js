@@ -139,6 +139,7 @@ const ViewQuestion = ({
           <ErrorBoundary>
             <PostItemHeader
               hideShare
+              classId={classId}
               feedId={feedId}
               currentUserId={userId}
               router={router}

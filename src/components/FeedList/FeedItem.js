@@ -114,9 +114,7 @@ const FeedItem = ({
 
   const isMenuOpen = Boolean(moreAnchorEl);
 
-  const pastClassIds = useMemo(() => {
-    return getPastClassIds(classList);
-  }, [classList]);
+  const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
 
   useEffect(() => {
     setThanked(data.thanked);
@@ -191,9 +189,7 @@ const FeedItem = ({
     return cleanBody;
   }, []);
 
-  const getTitle = useCallback((data: Object): string => {
-    return data.title;
-  }, []);
+  const getTitle = useCallback((data: Object): string => data.title, []);
 
   const initials = useMemo(() => getInitials(data.name), [data.name]);
   const date = useMemo(() => moment(data.created), [data.created]);
@@ -285,32 +281,30 @@ const FeedItem = ({
         }
         return (
           <div className={classes.photoNotes}>
-            {data.notes.slice(0, 1).map((note, i) => {
-              return (
-                <div key={note.noteUrl} className={classes.photoNotePreview}>
-                  {isPdf ? (
-                    <PdfComponent
-                      url={note.noteUrl}
-                      height={130}
-                      width={270}
-                      radius={10}
-                    />
-                  ) : (
-                    <Image
-                      noLazyLoad
-                      className={classes.notePost}
-                      src={note.noteUrl}
-                    />
-                  )}
-                  <div className={classes.noteTitleBox}>{data.title}</div>
-                  {numberOfNotes > 2 && i === 1 && (
-                    <div className={classes.numberOfCardsStyle}>
-                      +{numberOfNotes - 2}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {data.notes.slice(0, 1).map((note, i) => (
+              <div key={note.noteUrl} className={classes.photoNotePreview}>
+                {isPdf ? (
+                  <PdfComponent
+                    url={note.noteUrl}
+                    height={130}
+                    width={270}
+                    radius={10}
+                  />
+                ) : (
+                  <Image
+                    noLazyLoad
+                    className={classes.notePost}
+                    src={note.noteUrl}
+                  />
+                )}
+                <div className={classes.noteTitleBox}>{data.title}</div>
+                {numberOfNotes > 2 && i === 1 && (
+                  <div className={classes.numberOfCardsStyle}>
+                    +{numberOfNotes - 2}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         );
       case FeedTypes.resource.id:

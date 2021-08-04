@@ -100,12 +100,14 @@ const Classes = ({
   const [currentFilter, setCurrentFilter] = useState('current');
   const [loading, setLoading] = useState(false);
 
-  const arrFilters = useMemo(() => {
-    return Object.keys(Filters).map((key) => ({
-      value: key,
-      text: Filters[key].text
-    }));
-  }, []);
+  const arrFilters = useMemo(
+    () =>
+      Object.keys(Filters).map((key) => ({
+        value: key,
+        text: Filters[key].text
+      })),
+    []
+  );
 
   const handleLeaveClass = useCallback(
     async ({ sectionId, classId, userId }) => {
@@ -178,10 +180,14 @@ const Classes = ({
   }, [handleLeaveClass, user]);
 
   const navigate = useCallback(
-    ({ courseDisplayName, sectionId, classId }) => {
+    ({ courseDisplayName, sectionId, classId, isCurrent }) => {
       document.title = courseDisplayName;
       clearFeeds();
-      pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}`);
+      pushTo(
+        `/feed?class=${cypher(
+          `${classId}:${sectionId}`
+        )}&pastFilter=${!isCurrent}`
+      );
     },
     [pushTo, clearFeeds]
   );
@@ -191,11 +197,11 @@ const Classes = ({
 
     if (currentFilter === 'current') {
       return classList.filter((cl) => cl.isCurrent);
-    } else if (currentFilter === 'past') {
-      return classList.filter((cl) => !cl.isCurrent);
-    } else {
-      return [];
     }
+    if (currentFilter === 'past') {
+      return classList.filter((cl) => !cl.isCurrent);
+    }
+    return [];
   };
 
   const handleSelectFilter = useCallback((item) => {
@@ -237,7 +243,7 @@ const Classes = ({
       </Grid>
 
       <Grid
-        justify={
+        justifyContent={
           classList && getFilteredList().length > 0 ? 'flex-start' : 'center'
         }
         className={classes.container}

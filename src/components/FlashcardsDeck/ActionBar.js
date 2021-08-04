@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import { useLocation } from 'react-router';
+
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -34,6 +36,7 @@ const ActionBar = ({
   onDelete
 }: Props) => {
   const classes = useStyles();
+  const { search } = useLocation();
 
   return (
     <Box
@@ -44,7 +47,7 @@ const ActionBar = ({
       <ActionItem
         icon={IconEye}
         activeIcon={IconEyeGradient}
-        text="View/Edit"
+        text={search.includes('past') ? 'View' : 'View/Edit'}
         onClick={onViewEdit}
       />
       <ActionItem
