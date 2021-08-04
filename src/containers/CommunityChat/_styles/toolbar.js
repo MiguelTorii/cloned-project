@@ -8,8 +8,12 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     display: 'flex',
     justifyContent: 'flex-end',
+    padding: '0px !important',
+    backgroundColor: theme.circleIn.palette.appBar,
+    margin: theme.spacing(1, 1, 1, 0),
+    borderRadius: theme.spacing(2),
     '& .ql-formats': {
-      marginRight: 0
+      marginRight: '0px !important'
     }
   },
   tooltip: {
@@ -48,11 +52,15 @@ export default makeStyles((theme) => ({
   },
   subToolbar: {
     position: 'absolute',
-    top: -35,
-    right: 0,
+    top: -24,
+    right: 54,
     border: '1px solid',
     borderRadius: 5,
-    backgroundColor: theme.circleIn.palette.appBar
+    backgroundColor: theme.circleIn.palette.appBar,
+    [theme.breakpoints.down('sm')]: {
+      top: -24,
+      right: 0
+    }
   },
   show: {
     display: 'inline-flex'

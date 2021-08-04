@@ -1,7 +1,10 @@
 export default (theme) => ({
   messageQuill: {
     width: '100%',
-    padding: theme.spacing(0, 5)
+    padding: theme.spacing(0, 5),
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(0, 1)
+    }
   },
   editor: {
     display: 'flex',
