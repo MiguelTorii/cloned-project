@@ -192,6 +192,11 @@ const setCurrentCommunityChannelAction = ({
   payload: { currentChannel }
 });
 
+const setCurrentCourseAction = ({ currentCourseId }) => ({
+  type: chatActions.SET_CURRENT_COURSE_ID,
+  payload: { currentCourseId }
+});
+
 const createNewChannel = ({
   newChannel,
   openChannels
@@ -247,10 +252,10 @@ export const setCurrentChannel =
   (currentChannel) => async (dispatch: Dispatch) => {
     if (currentChannel) {
       localStorage.setItem('currentDMChannel', currentChannel.sid);
-      dispatch(setCurrentChannelAction({ currentChannel }));
       const members = await fetchMembers(currentChannel.sid);
       const shareLink = await getShareLink(currentChannel.sid);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
+      dispatch(setCurrentChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
     }
   };
@@ -261,10 +266,14 @@ export const setCurrentCommunityChannel =
       const members = await fetchMembers(currentChannel.sid);
       const shareLink = await getShareLink(currentChannel.sid);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
+      dispatch(setCurrentCommunityChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
     }
+  };
 
-    dispatch(setCurrentCommunityChannelAction({ currentChannel }));
+export const setCurrentCourse =
+  (currentCourseId) => async (dispatch: Dispatch) => {
+    dispatch(setCurrentCourseAction({ currentCourseId }));
   };
 
 export const closeNewChannel = () => (dispatch: Dispatch) => {
@@ -341,63 +350,63 @@ export const openChannelWithEntity =
     fullscreen: boolean,
     notRegistered: boolean
   }) =>
-  async (dispatch: Dispatch, getState: Function) => {
-    if (!fullscreen) {
-      dispatch(
-        requestStartChannelWithEntity({
-          entityId,
-          entityFirstName,
-          entityLastName,
-          entityVideo,
-          entityUuid: uuidv4()
-        })
-      );
-    } else {
-      const { chatId, isNewChat } = await createChannel({
-        users: [entityId]
-      });
-
-      if (isNewChat) await initLocalChannels(dispatch);
-      const {
-        chat: {
-          data: { local }
-        }
-      } = getState();
-      const currentChannel = local[chatId];
-      if (currentChannel) {
+    async (dispatch: Dispatch, getState: Function) => {
+      if (!fullscreen) {
         dispatch(
-          setCurrentChannelAction({
-            currentChannel: currentChannel.twilioChannel
-          })
-        );
-        if (notRegistered) {
-          dispatch(
-            setMainMessageAction({
-              mainMessage: "Hey! Let's connect and study together!"
-            })
-          );
-        } else {
-          const messageAttributes = {
+          requestStartChannelWithEntity({
+            entityId,
             entityFirstName,
             entityLastName,
-            imageKey: '',
-            isVideoNotification: false,
-            source: 'big_chat'
-          };
-          await sendMessage({
-            message: "Hi! Let's chat and study together here!",
-            ...messageAttributes,
-            chatId
-          });
-        }
-        if (entityVideo) {
-          dispatch(push(`/video-call/${chatId}`));
-        } else {
-          dispatch(push('/chat'));
+            entityVideo,
+            entityUuid: uuidv4()
+          })
+        );
+      } else {
+        const { chatId, isNewChat } = await createChannel({
+          users: [entityId]
+        });
+
+        if (isNewChat) await initLocalChannels(dispatch);
+        const {
+          chat: {
+            data: { local }
+          }
+        } = getState();
+        const currentChannel = local[chatId];
+        if (currentChannel) {
+          dispatch(
+            setCurrentChannelAction({
+              currentChannel: currentChannel.twilioChannel
+            })
+          );
+          if (notRegistered) {
+            dispatch(
+              setMainMessageAction({
+                mainMessage: "Hey! Let's connect and study together!"
+              })
+            );
+          } else {
+            const messageAttributes = {
+              entityFirstName,
+              entityLastName,
+              imageKey: '',
+              isVideoNotification: false,
+              source: 'big_chat'
+            };
+            await sendMessage({
+              message: "Hi! Let's chat and study together here!",
+              ...messageAttributes,
+              chatId
+            });
+          }
+          if (entityVideo) {
+            dispatch(push(`/video-call/${chatId}`));
+          } else {
+            dispatch(push('/chat'));
+          }
         }
       }
-    }
-  };
+    };
 
 export const handleInitChat =
   () => async (dispatch: Dispatch, getState: Function) => {
@@ -553,65 +562,65 @@ export const handleShutdownChat =
 
 export const handleUpdateGroupPhoto =
   (channelSid: string, image: Blob, callback: Function) =>
-  async (dispatch: Dispatch, getState: Function) => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = getState();
-
-    try {
-      const result = await getPresignedURL({
-        userId,
-        type: 5,
-        mediaType: image.type
-      });
-
-      const { url, readUrl, mediaId } = result;
-
-      await axios.put(url, image, {
-        headers: {
-          'Content-Type': image.type
+    async (dispatch: Dispatch, getState: Function) => {
+      const {
+        user: {
+          data: { userId }
         }
-      });
+      } = getState();
 
-      await apiUpdateChat(channelSid, {
-        chat_id: channelSid,
-        thumbnail: mediaId
-      });
+      try {
+        const result = await getPresignedURL({
+          userId,
+          type: 5,
+          mediaType: image.type
+        });
 
-      dispatch(
-        updateChannelAttributes(channelSid, {
-          thumbnail: readUrl
-        })
-      );
+        const { url, readUrl, mediaId } = result;
 
-      if (callback) {
-        callback();
-      }
-    } catch (err) {}
-  };
+        await axios.put(url, image, {
+          headers: {
+            'Content-Type': image.type
+          }
+        });
+
+        await apiUpdateChat(channelSid, {
+          chat_id: channelSid,
+          thumbnail: mediaId
+        });
+
+        dispatch(
+          updateChannelAttributes(channelSid, {
+            thumbnail: readUrl
+          })
+        );
+
+        if (callback) {
+          callback();
+        }
+      } catch (err) {}
+    };
 
 export const handleBlockUser =
   ({ blockedUserId }) =>
-  async () => {
-    try {
-      await blockChatUser({ blockedUserId });
-    } catch (err) {}
-  };
+    async () => {
+      try {
+        await blockChatUser({ blockedUserId });
+      } catch (err) {}
+    };
 
 export const handleMuteChannel =
   ({ sid }) =>
-  async (dispatch: Dispatch, getState: Function) => {
-    const {
-      chat: {
-        data: { local }
-      }
-    } = getState();
-    const { muted } = local[sid];
-    const res = muted ? await unmuteChannel(sid) : await muteChannel(sid);
-    if (res && res.success) dispatch(muteChannelLocal({ sid }));
-  };
+    async (dispatch: Dispatch, getState: Function) => {
+      const {
+        chat: {
+          data: { local }
+        }
+      } = getState();
+      const { muted } = local[sid];
+      const res = muted ? await unmuteChannel(sid) : await muteChannel(sid);
+      if (res && res.success) dispatch(muteChannelLocal({ sid }));
+    };
 
 export const handleMarkAsRead =
   (channel: Object) => async (dispatch: Dispatch) => {
@@ -620,12 +629,12 @@ export const handleMarkAsRead =
 
 export const handleRemoveChannel =
   ({ sid }: { sid: string }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      await leaveChat({ sid });
-    } catch (err) {}
-    dispatch(removeChannel({ sid }));
-  };
+    async (dispatch: Dispatch) => {
+      try {
+        await leaveChat({ sid });
+      } catch (err) {}
+      dispatch(removeChannel({ sid }));
+    };
 
 export const handleRoomClick =
   (channel) => async (dispatch: Dispatch, getState: Function) => {

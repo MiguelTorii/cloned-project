@@ -34,7 +34,7 @@ const Chat = ({ user, width, location: { pathname } }: Props) => {
   }, []);
 
   if (!userId || userId === '') return null;
-  if (pathname.includes('video-call') || pathname.includes('chat')) return null;
+  if (pathname.includes('video-call') || pathname.includes('auth')) return null;
   return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
 };
 

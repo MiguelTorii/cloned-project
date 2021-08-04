@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 // @flow
 
-import React, { useCallback, Fragment, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
@@ -119,9 +119,23 @@ const FloatingChat = ({
       online,
       local,
       newChannel,
-      openChannels
+      openChannels,
+      currentChannel,
+      currentCommunityChannel,
+      currentCourseId
     }
   } = chat;
+
+  const showNotification = useCallback(
+    (channel) => {
+      if (currentCourseId === 'chat') {
+        return currentChannel?.sid === channel.sid;
+      }
+
+      return currentCommunityChannel?.sid === channel.sid;
+    },
+    [currentCourseId, currentCommunityChannel]
+  );
 
   const getMembers = useCallback(
     (channel) => {
@@ -192,7 +206,7 @@ const FloatingChat = ({
       setPrevMessageId(newMessage.sid);
       if (
         Number(author) !== Number(userId) &&
-        window.location.pathname !== '/chat' &&
+        !showNotification(channel) &&
         !sids.includes(channel.sid) &&
         !local[channel.sid].muted
       ) {
@@ -313,7 +327,7 @@ const FloatingChat = ({
   if (pathname === '/chat' || userId === '' || !client) return null;
 
   return (
-    <Fragment>
+    <>
       <ErrorBoundary>
         <div className={classes.root}>
           {openChannels.map((item) => (
@@ -403,7 +417,7 @@ const FloatingChat = ({
           onChannelCreated={handleChannelCreated}
         />
       </ErrorBoundary>
-    </Fragment>
+    </>
   );
 };
 

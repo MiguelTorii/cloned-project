@@ -28,6 +28,7 @@ export type ChatState = {
     currentCommunityChannel: ?Object,
     newChannel: boolean,
     mainMessage: string,
+    currentCourseId: string,
     newMessage: ?Object
   },
   error: boolean,
@@ -55,6 +56,7 @@ const defaultState = {
     currentCommunityChannel: null,
     online: false,
     newChannel: false,
+    currentCourseId: 'chat',
     newMessage: null
   },
   isLoading: false,
@@ -89,6 +91,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           mainMessage: action.payload.mainMessage
+        }
+      };
+    case chatActions.SET_CURRENT_COURSE_ID:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          currentCourseId: action.payload.currentCourseId
         }
       };
     case chatActions.SET_CURRENT_CHANNEL:

@@ -14,7 +14,6 @@ import IconRight from '@material-ui/icons/ArrowForward';
 import * as chatActions from 'actions/chat';
 import Main from 'containers/CommunityChat/Main';
 import RightMenu from 'containers/CommunityChat/RightMenu';
-import { getCommunityChannels } from 'api/community';
 import type { State as StoreState } from '../../types/state';
 import CourseChannels from './CourseChannels';
 import useStyles from './_styles/styles';
@@ -60,7 +59,7 @@ const CommunityChat = ({
       (courseChannel) => courseChannel.courseId === selectedCourse.id
     );
 
-    const communityChannels = currentCourseChannel[0].channels;
+    const communityChannels = currentCourseChannel[0]?.channels;
     setCommunityChannels(communityChannels);
     setSelctedChannel(communityChannels[0].channels[0]);
   }, [selectedCourse, courseChannels]);
