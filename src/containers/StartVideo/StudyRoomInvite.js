@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Dialog from 'components/Dialog';
 import Classmate from './Classmate';
+import LoadingImg from 'assets/svg/astro-shuttle.svg';
 import useStyles from './_styles/StudyRoomInvite';
 
 const StudyRoomInvite = ({
@@ -28,9 +29,11 @@ const StudyRoomInvite = ({
   const [searchKey, setSearchKey] = useState('');
   const [campaign, setCampaign] = useState(null);
   const [classmates, setClassmates] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const initSelectedClassesClassmates = async () => {
+      setLoading(true);
       const students = {};
       await Promise.all(
         classList.map(async (selectedClass) => {
@@ -55,6 +58,7 @@ const StudyRoomInvite = ({
         (classmate) => Number(classmate.userId) !== Number(userId)
       );
       setClassmates(classmates);
+      setLoading(false)
     };
 
     if (classList.length > 0) {
@@ -126,23 +130,40 @@ const StudyRoomInvite = ({
             Head to Room
           </Button>
         </div>
-        <List className={classes.list}>
-          {filteredClassmates.map((classmate) => {
-            const isInvited = groupUsers.some(
-              (user) => Number(user.userId) === Number(classmate.userId)
-            );
 
-            return (
-              <Classmate
-                videoEnabled
-                isInvited={isInvited}
-                key={classmate.userId}
-                classmate={classmate}
-                handleInvite={handleInvite}
-              />
-            );
-          })}
-        </List>
+        {loading ? (
+          <div className={classes.loadingScreen}>
+            <img
+              className={classes.img}
+              src={LoadingImg}
+              alt="study room chat"
+            />
+            <div className={classes.text1}>
+              Finding your classmates...
+            </div>
+            <div className={classes.text2}>
+              Sit tight! We’re searching high and low to generate a list for you.
+            </div>
+          </div>
+        ) : (
+          <List className={classes.list}>
+            {filteredClassmates.map((classmate) => {
+              const isInvited = groupUsers.some(
+                (user) => Number(user.userId) === Number(classmate.userId)
+              );
+
+              return (
+                <Classmate
+                  videoEnabled
+                  isInvited={isInvited}
+                  key={classmate.userId}
+                  classmate={classmate}
+                  handleInvite={handleInvite}
+                />
+              );
+            })}
+          </List>
+        )}
       </Dialog>
     </div>
   );

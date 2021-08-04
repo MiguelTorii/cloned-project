@@ -11,17 +11,20 @@ const styles = (theme) => ({
   },
   subtitle: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(7.5)
+    maxWidth: 770,
   },
   wrapper: {
-    width: 413,
+    maxWidth: 500,
     minHeight: 322,
-    padding: theme.spacing(0, 4, 5, 4)
+    padding: theme.spacing(0, 4, 5, 4),
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   note: {
-    width: 300,
-    margin: 'auto',
-    marginBottom: theme.spacing(1)
+    maxWidth: 420,
+    margin: theme.spacing(6, 'auto', 1, 'auto')
   },
   actions: {
     display: 'flex',
@@ -46,10 +49,14 @@ const styles = (theme) => ({
     borderRadius: 200,
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     fontSize: 20,
+    fontWeight: 800,
     lineHeight: '16px',
     letterSpacing: 0.25,
+    maxWidth: 343,
     width: '100%',
-    height: 45
+    height: 45,
+    color: theme.circleIn.palette.black,
+    marginTop: theme.spacing(4)
   }
 });
 

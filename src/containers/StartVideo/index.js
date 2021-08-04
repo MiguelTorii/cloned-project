@@ -23,7 +23,7 @@ import { logEvent } from '../../api/analytics';
 
 import ErrorBoundary from '../ErrorBoundary';
 
-import StudyRoomImg from 'assets/svg/study-room-chat.svg';
+import StudyRoomImg from 'assets/svg/video-chat-image.svg';
 
 import styles from './_styles/index';
 
@@ -292,7 +292,8 @@ class StartVideo extends React.PureComponent<Props, State> {
             </div>
 
             <Typography className={classes.subtitle} variant="body1">
-              Connect & Collaborate
+              What’s better than studying? Studying with the squad of course! Study with your classmates from home.
+              Pants optional. You can earn 20,000 points just for starting a study room!
             </Typography>
 
             <div className={classes.wrapper}>
@@ -307,15 +308,14 @@ class StartVideo extends React.PureComponent<Props, State> {
                 variant="body1"
                 align="center"
               >
-                Studying is so much better and easier with friends and
-                classmates!
+                Get nice and cozy with your study circle. Press the button below to select classmates to join you on a video chat!
               </Typography>
 
               <Button
                 className={classes.button2}
                 onClick={this.handleSetInviteVisible}
               >
-                Choose Classmates
+                Start a Private Study Room
               </Button>
             </div>
           </div>
