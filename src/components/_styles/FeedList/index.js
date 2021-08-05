@@ -54,15 +54,6 @@ export default (theme) => ({
     flexDirection: 'column',
     padding: theme.spacing(2)
   },
-  loader: {
-    position: 'absolute',
-    zIndex: 9999,
-    bottom: 0,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   progress: {
     width: 180,
     height: 100,

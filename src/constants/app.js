@@ -156,3 +156,5 @@ export const POST_SOURCE = {
   FEED: 'feed',
   RECOMMENDATION: 'recommendation'
 };
+
+export const FEEDS_PER_PAGE = 10;

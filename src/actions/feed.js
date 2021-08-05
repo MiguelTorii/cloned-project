@@ -6,6 +6,7 @@ import type { Dispatch } from '../types/store';
 import type { Feed } from '../types/models';
 import * as feedApi from '../api/feed';
 import * as postsApi from '../api/posts';
+import { FEEDS_PER_PAGE } from "../constants/app";
 
 const requestFetchFeed = (): Action => ({
   type: feedActions.FETCH_FEED_REQUEST
@@ -120,7 +121,7 @@ export const fetchFeed =
     try {
       const {
         feed: {
-          data: { filters }
+          data: { filters, items }
         },
         user: {
           data: { userId, schoolId }
@@ -129,8 +130,6 @@ export const fetchFeed =
 
       const {
         userClasses,
-        index,
-        limit,
         postTypes,
         query,
         from,
@@ -143,8 +142,8 @@ export const fetchFeed =
         userId,
         schoolId,
         userClasses,
-        index,
-        limit,
+        index: items.length,
+        limit: FEEDS_PER_PAGE,
         postTypes,
         from,
         query,
@@ -152,7 +151,7 @@ export const fetchFeed =
         toDate
       });
 
-      const hasMore = feed.length === limit;
+      const hasMore = feed.length === FEEDS_PER_PAGE;
 
       dispatch(updateFeed({ feed, hasMore }));
     } catch (err) {
@@ -207,6 +206,7 @@ export const searchFeed =
   ({ query }: { query: string }) =>
   async (dispatch: Dispatch) => {
     try {
+      await dispatch(clearFeeds());
       dispatch(requestSearchFeed());
       const feed = await feedApi.queryFeed({
         query
@@ -227,7 +227,7 @@ export const updateFilter =
   ({ field, value }: { field: string, value: string | number }) =>
   async (dispatch: Dispatch) => {
     try {
-      await dispatch(updateFeedLimitRequest({ limit: 10 }));
+      await dispatch(clearFeeds());
       await dispatch(
         updateFeedFilterFieldRequest({
           field,

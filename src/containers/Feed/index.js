@@ -53,8 +53,8 @@ type Props = {
   updateFilter: Function,
   clearFilter: Function,
   campaign: CampaignState,
-  updateFeedLimit: Function,
-  updateScrollData: Function
+  updateScrollData: Function,
+  clearFeeds: Function
 };
 
 type State = {
@@ -222,6 +222,9 @@ class Feed extends React.PureComponent<Props, State> {
     for (const filter of filters) {
       updateFilter({ field: filter.name, value: filter.value });
     }
+    this.setState({
+      isBeforeFirstLoad: true
+    });
     this.handleFetchFeed();
   };
 
@@ -239,14 +242,9 @@ class Feed extends React.PureComponent<Props, State> {
 
   handleLoadMore = () => {
     const {
-      feed: {
-        data: {
-          filters: { limit }
-        }
-      },
-      updateFeedLimit
+      fetchFeed
     } = this.props;
-    updateFeedLimit({ limit: limit + 100 });
+    fetchFeed();
   };
 
   updateFeed = async (filters) => {
@@ -271,6 +269,12 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleRefresh = () => {
+    const { clearFeeds } = this.props;
+
+    clearFeeds();
+    this.setState({
+      isBeforeFirstLoad: true
+    });
     this.handleFetchFeed();
   };
 
@@ -508,9 +512,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateBookmark: feedActions.updateBookmark,
       updateFilter: feedActions.updateFilter,
       clearFilter: feedActions.clearFilter,
-      updateFeedLimit: feedActions.updateFeedLimit,
       updateScrollData: feedActions.updateScrollData,
-      resetScrollData: feedActions.resetScrollData
+      resetScrollData: feedActions.resetScrollData,
+      clearFeeds: feedActions.clearFeeds
     },
     dispatch
   );

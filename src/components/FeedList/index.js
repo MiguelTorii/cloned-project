@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
 import Paper from '@material-ui/core/Paper';
@@ -40,8 +40,6 @@ type Props = {
 type State = {};
 
 class FeedList extends React.PureComponent<Props, State> {
-  // eslint-disable-next-line no-undef
-  scrollParentRef: ?HTMLDivElement;
 
   selectedRef: {
     // eslint-disable-next-line no-undef
@@ -226,71 +224,60 @@ class FeedList extends React.PureComponent<Props, State> {
             </Typography>
           </>
         )}
-        {isLoading && items.length !== 0 && (
-          <div className={classes.loader}>
-            <div className={classes.progress}>
-              <Typography align="center" variant="subtitle1" paragraph>
-                Loading Posts
-              </Typography>
-              <CircularProgress size={20} />
-            </div>
-          </div>
-        )}
-        {!isFiltering && (
-          <div
-            className={classes.items}
-            ref={(node) => {
-              this.scrollParentRef = node;
-            }}
-          >
-            <InfiniteScroll
-              threshold={50}
-              pageStart={0}
-              loadMore={onLoadMore}
-              hasMore={hasMore}
-              useWindow
-              initialLoad
-              getScrollParent={() => this.scrollParentRef}
-            >
-              {items.map((item) => (
-                <Paper className={classes.root} elevation={0}>
-                  <FeedItem
-                    key={item.feedId}
-                    schoolId={schoolId}
-                    expertMode={expertMode}
-                    userId={userId}
-                    data={item}
-                    handleShareClick={handleShare}
-                    innerRef={(node) => {
-                      if (fromFeedId === item.feedId) this.selectedRef = node;
-                    }}
-                    onPostClick={onPostClick}
-                    newClassExperience={newClassExperience}
-                    onBookmark={onBookmark}
-                    pushTo={pushTo}
-                    onReport={onReport}
-                    onDelete={onDelete}
-                    onUserClick={onUserClick}
-                    setQuillRefs={this.setQuillRefs}
-                    quillRefs={this.quillRefs}
-                    setNewComments={this.setNewComments}
-                    newComments={this.newComments}
-                    isCurrent={this.isCurrent(item.classId)}
-                  />
-                </Paper>
-              ))}
-            </InfiniteScroll>
-          </div>
-        )}
         <Paper className={classes.root} elevation={0}>
           {!isLoading && items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
-        {items.length !== 0 && !hasMore && (
-          <div className={classes.feedEnd}>
-            <Typography variant="h6" align="center">
-              All posts have been loaded
-            </Typography>
-          </div>
+        {items.length > 0 && (
+          <InfiniteScroll
+            dataLength={items.length}
+            next={onLoadMore}
+            hasMore={hasMore}
+            loader={
+              <Box display="flex" justifyContent="center">
+                <div className={classes.progress}>
+                  <Typography align="center" variant="subtitle1" paragraph>
+                    Loading Posts
+                  </Typography>
+                  <CircularProgress size={20} />
+                </div>
+              </Box>
+            }
+            endMessage={
+              <div className={classes.feedEnd}>
+                <Typography variant="h6" align="center">
+                  All posts have been loaded
+                </Typography>
+              </div>
+            }
+          >
+            {items.map(item => (
+              <Paper className={classes.root} elevation={0}>
+                <FeedItem
+                  key={item.feedId}
+                  schoolId={schoolId}
+                  expertMode={expertMode}
+                  userId={userId}
+                  data={item}
+                  handleShareClick={handleShare}
+                  innerRef={node => {
+                    if (fromFeedId === item.feedId) this.selectedRef = node;
+                  }}
+                  onPostClick={onPostClick}
+                  newClassExperience={newClassExperience}
+                  onBookmark={onBookmark}
+                  pushTo={pushTo}
+                  onReport={onReport}
+                  onDelete={onDelete}
+                  onUserClick={onUserClick}
+                  setQuillRefs={this.setQuillRefs}
+                  quillRefs={this.quillRefs}
+                  setNewComments={this.setNewComments}
+                  newComments={this.newComments}
+                />
+              </Paper>
+            ))
+            }
+          </InfiniteScroll>
         )}
       </div>
     );
