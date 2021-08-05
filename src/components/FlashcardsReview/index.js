@@ -199,6 +199,9 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
 
   const handleMarkCardClick = useCallback(
     (level) => {
+      reset();
+      initializeTimer();
+
       if (currentLevel === level) {
         setCurrentLevel(CARDS_TO_REVIEW);
       } else {
@@ -209,7 +212,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         setKeptCardIndex(currentCardIndex);
       }
     },
-    [currentLevel, currentCardIndex]
+    [currentLevel, currentCardIndex, reset, initializeTimer]
   );
 
   const handlePrevCard = useCallback(() => {
