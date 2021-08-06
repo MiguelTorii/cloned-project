@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { getCommunityChannels } from 'api/community';
 import LoadImg from 'components/LoadImg';
 import { ReactComponent as Chat } from 'assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';

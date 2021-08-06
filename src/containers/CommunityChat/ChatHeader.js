@@ -140,6 +140,14 @@ const ChatHeader = ({
     [permission]
   );
 
+  const showThreeDotsMenu = useMemo(
+    () =>
+      (Object.keys(members).length > 2 && isShow) ||
+      deletePermission ||
+      !isCommunityChat,
+    [isCommunityChat, deletePermission, members, isShow]
+  );
+
   const handleEditGroupDetailsClose = useCallback(
     () => setEditGroupDetailsOpen(false),
     []
@@ -254,8 +262,8 @@ const ChatHeader = ({
     setOpenRemoveStudent(false);
   }, []);
 
-  const renderOtherMembers = useCallback(() => {
-    return (
+  const renderOtherMembers = useCallback(
+    () => (
       <List component="nav" aria-label="secondary mailbox folders">
         {members.map((member, index) => {
           if (index > 2)
@@ -269,8 +277,9 @@ const ChatHeader = ({
           return null;
         })}
       </List>
-    );
-  }, [members]);
+    ),
+    [members]
+  );
 
   const openMembers = Boolean(membersEl);
   const openMemberId = openMembers ? 'simple-popover' : undefined;
@@ -343,13 +352,15 @@ const ChatHeader = ({
                 )}
               </IconButton>
             )}
-            <IconButton
-              aria-label="group-details"
-              className={classes.chatIcon}
-              onClick={handleOpenGroupDetailMenu}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            {showThreeDotsMenu && (
+              <IconButton
+                aria-label="group-details"
+                className={classes.chatIcon}
+                onClick={handleOpenGroupDetailMenu}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            )}
 
             <Popover
               id={id}
@@ -372,7 +383,9 @@ const ChatHeader = ({
                       Edit Group Details
                     </MenuItem>
                   )}
-                  <MenuItem onClick={handleShareLink}>Share Link</MenuItem>
+                  {!isCommunityChat && (
+                    <MenuItem onClick={handleShareLink}>Share Link</MenuItem>
+                  )}
                   {deletePermission && (
                     <MenuItem
                       onClick={handleRemoveStudent}

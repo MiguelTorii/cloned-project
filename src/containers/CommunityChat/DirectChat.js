@@ -209,9 +209,7 @@ const DirectChat = ({
     setRightSpace(rightSpace ? 0 : curSize);
   }, [width, curSize, rightSpace]);
 
-  const renderIcon = useCallback((d) => {
-    return d ? <IconLeft /> : <IconRight />;
-  }, []);
+  const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
 
   return (
     <Grid

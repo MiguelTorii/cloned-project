@@ -118,7 +118,7 @@ const Main = ({
         end.current.scrollIntoView({ behavior: 'instant' });
       }
     } catch (err) {
-      console.log(err);
+      setErrorLoadingMessage(true);
     }
     // eslint-disable-next-line
   }, [scroll]);
@@ -154,7 +154,7 @@ const Main = ({
       try {
         channel.setAllMessagesConsumed();
       } catch (e) {
-        console.log(e);
+        setErrorLoadingMessage(true);
       }
       const index = findIndex(messages, (m) => m.sid === newMessage.sid);
       if (index === -1) {
@@ -220,7 +220,6 @@ const Main = ({
           });
         }
       } catch (e) {
-        console.log(e);
         setErrorLoadingMessage(true);
       }
     };
@@ -255,7 +254,7 @@ const Main = ({
         });
       }
     } catch (err) {
-      console.log(err);
+      setErrorLoadingMessage(true);
     }
   }, [messages, paginator]);
 
@@ -338,7 +337,7 @@ const Main = ({
             return null;
         }
       } catch (err) {
-        console.log(err);
+        setErrorLoadingMessage(true);
         return null;
       }
     },
@@ -387,7 +386,7 @@ const Main = ({
 
         onSend();
       } catch (err) {
-        console.log(err);
+        setErrorLoadingMessage(true);
       } finally {
         setLoading(false);
       }
@@ -400,7 +399,7 @@ const Main = ({
     try {
       channel.typing();
     } catch (err) {
-      console.log(err);
+      setErrorLoadingMessage(true);
     }
   }, [channel]);
 

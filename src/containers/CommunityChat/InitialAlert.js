@@ -132,7 +132,7 @@ const InitialAlert = ({
           variant="subtitle2"
         >
           This is the beginning of your chat with
-          {isOneToOne ? name : 'your group.'}
+          {isOneToOne ? name : ' your group.'}
         </Typography>
       </Box>
     )
