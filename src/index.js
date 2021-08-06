@@ -71,6 +71,7 @@ import Chat from './pages/Chat';
 import ChatChannel from './pages/ChatChannel';
 import './index.css';
 import ErrorBoundary from './containers/ErrorBoundary';
+import OnboardingPopup from './containers/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame';
 import {
   FlashcardsListPage,
@@ -103,6 +104,7 @@ ReactDOM.render(
     <Provider store={reduxStore}>
       <SnackbarProvider>
         {/* <Tour /> */}
+        <OnboardingPopup />
         <UserInitializer />
         <MasqueradeFrame />
         <ConnectedRouter history={history}>

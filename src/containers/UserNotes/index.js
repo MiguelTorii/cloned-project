@@ -211,6 +211,7 @@ const UserNotesContainer = ({
           setSectionId={setSectionId}
           editNote={editNote}
           classList={getFilteredList()}
+          currentFilter={currentFilter}
         />
       </div>
     </div>

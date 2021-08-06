@@ -30,6 +30,7 @@ import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary';
 import OnboardingProgress from '../OnboardingProgress';
+import OnboardingPopup from '../OnboardingPopup';
 import Dialog, { dialogStyle } from '../../components/Dialog';
 import { grades } from '../../constants/clients';
 import { updateProfile as updateUserProfile } from '../../api/user';
@@ -358,7 +359,7 @@ const UserInitializer = ({
         </div>
       </Dialog>
       {windowWidth > 640 && (
-        <OnboardingProgress
+        <OnboardingPopup
           open={viewedOnboarding !== null && !viewedOnboarding}
           updateOnboarding={updateOnboarding}
           userId={userId}

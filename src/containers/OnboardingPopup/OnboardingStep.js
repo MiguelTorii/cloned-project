@@ -1,12 +1,14 @@
 // @flow
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import LoadImg from 'components/LoadImg'
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
+import Ellipses from './Ellipses';
+import TransparentButton from './TransparentButton';
 import ActionButton from './ActionButton';
-// import LoadImg from '../../components/LoadImg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,11 +38,11 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   mainContainer: {
-    backgroundColor: 'white',
-    padding: theme.spacing(6, 5, 3, 5),
+    backgroundColor: theme.circleIn.palette.gray1,
+    padding: theme.spacing(4, 5, 3, 5),
     [theme.breakpoints.down('sm')]: {
       height: 353,
-      paddingTop: theme.spacing(4)
+      padding: theme.spacing(3)
     },
     [theme.breakpoints.up('md')]: {
       height: 268
@@ -48,25 +50,34 @@ const useStyles = makeStyles((theme) => ({
   },
   textContainer: {
     display: 'grid',
+    color: theme.circleIn.palette.secondaryText,
     [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'column',
       gridTemplateRows: '60px auto',
-      height: 230
+      height: 'auto'
     },
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '280px auto',
       height: 140
     }
   },
+  title1: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    }
+  },
   title: {
     display: 'flex',
     flexDirection: 'column',
+    maxWidth: 240,
+
     '& > h3': {
       // Title
       margin: 0,
-      color: 'black',
-      fontSize: 40,
-      fontWeight: 700,
-      lineHeight: '50px'
+      fontSize: 24,
+      fontWeight: 400,
+      lineHeight: '125%',
     },
     '& > h4': {
       // Alarm text
@@ -78,24 +89,25 @@ const useStyles = makeStyles((theme) => ({
       textFillColor: 'transparent'
     },
     [theme.breakpoints.down('sm')]: {
+      maxWidth: 500,
       alignItems: 'center',
       '& > h3': {
-        fontSize: 30
+        fontSize: 28
       },
       '& > h4': {
-        fontSize: 16
+        fontSize: 16,
+        display: 'none',
       }
     }
   },
   text: {
     '& > p': {
       margin: 0,
-      color: 'black',
-      fontSize: 16,
-      lineHeight: '28px'
+      fontSize: 14,
+      lineHeight: '19px'
     },
     [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(3)
+      marginTop: theme.spacing(2)
     },
     [theme.breakpoints.up('md')]: {
       flexGrow: 1,
@@ -106,13 +118,18 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(2)
+      marginTop: theme.spacing(2),
+      fontSize: 14,
     }
   },
   ellipseContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: theme.spacing(2)
+    marginBottom: theme.spacing(2)
+  },
+  img: {
+    maxWidth: 563,
+    width: '100%',
   }
 }));
 
@@ -121,6 +138,7 @@ type Props = {
   step: number,
   totalSteps: number,
   onAction: Function,
+  onBackAction: Function,
   onClose: Function
 };
 
@@ -129,27 +147,40 @@ const OnboardingStep = ({
   step,
   totalSteps,
   onAction,
+  onBackAction,
   onClose
 }: Props) => {
   const classes = useStyles();
+  const handleBack = useCallback(() => {
+    if (step === 1) {
+      onClose();
+    }
 
+    onBackAction();
+  }, [step, onClose, onBackAction]);
   return (
     <div className={classes.root}>
       <CloseIcon className={classes.closeIcon} onClick={onClose} />
       <div className={classes.imageContainer}>
-        <img src={data.imageUrl} alt="Study Room Onboarding" />
+        <LoadImg url={data.imageUrl} className={classes.img} />
       </div>
       <div className={classes.mainContainer}>
+        <div className={classes.ellipseContainer}>
+          <Ellipses step={step} totalSteps={totalSteps} />
+        </div>
         <div className={classes.textContainer}>
           <div className={classes.title}>
-            <Typography component="h4">NEW!</Typography>
-            <Typography component="h3">{data.title}</Typography>
+            <Typography component="h4">{data.title1}</Typography>
+            <Typography component="h3" style={{ fontSize: step === 1 && 40 }}>{data.title}</Typography>
           </div>
           <div className={classes.text}>
             <Typography component="p">{data.text}</Typography>
           </div>
         </div>
         <div className={classes.actionContainer}>
+          <TransparentButton onClick={() => handleBack()}>
+            {data.backText}
+          </TransparentButton>
           <ActionButton onClick={() => onAction()}>
             {data.actionText}
           </ActionButton>

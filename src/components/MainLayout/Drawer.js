@@ -538,7 +538,7 @@ const Drawer = ({
           </ListItem>
         )}
 
-        {!expertMode && (
+        {/* {!expertMode && (
           <ListItem
             button
             onClick={handleOpenHowEarnPoints}
@@ -549,7 +549,7 @@ const Drawer = ({
             </ListItemIcon>
             <ListItemText primary="Student Help Center" />
           </ListItem>
-        )}
+        )} */}
         {!expertMode && (
           <DrawerItem
             onClick={handleOpenGetApp}
@@ -560,7 +560,7 @@ const Drawer = ({
           />
         )}
         {/* currently always showing the tooltip, need to implement logic to conditionally render depending on preferences */}
-        {!expertMode && (
+        {/* {!expertMode && (
           <Tooltip
             id={3181}
             delay={600}
@@ -576,7 +576,7 @@ const Drawer = ({
               OffIcon={<StudentBlogIconOff />}
             />
           </Tooltip>
-        )}
+        )} */}
         <DrawerItem
           onClick={handleOpenFeedback}
           listItemClass={classes.lastItem}

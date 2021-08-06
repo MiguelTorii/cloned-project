@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core';
 import { getCampaign } from 'api/campaign';
+import { logEventLocally } from 'api/analytics';
 import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
@@ -25,39 +26,36 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const STUDY_ROOM_ONBOARDING_POPUP_ID = 9065;
+const ONBOARDING_POPUP_ID = 9065;
 
-const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
+type Props = {
+  open: boolean,
+  userId: number,
+  updateOnboarding: Function
+};
+
+const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
-  const [open, setOpen] = useState(false);
   const [campaign, setCampaign] = useState(null);
 
   useEffect(() => {
-    const init = async () => {
-      const aCampaign = await getCampaign({ campaignId: 9 });
-      setCampaign(aCampaign);
-    };
-
-    init();
-  }, []);
-
-  useEffect(() => {
-    if (
-      !!viewedTooltips?.length &&
-      viewedTooltips.indexOf(STUDY_ROOM_ONBOARDING_POPUP_ID) === -1
-    ) {
-      setOpen(true);
+    if (open) {
+      logEventLocally({
+        category: 'Onboarding',
+        objectId: userId,
+        type: 'Started'
+      });
     }
-  }, [viewedTooltips]);
-
-  const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
-  }, [campaign]);
+  }, [open, userId]);
 
   const closePopup = () => {
-    confirmTooltip(STUDY_ROOM_ONBOARDING_POPUP_ID);
-    setOpen(false);
+    logEventLocally({
+      category: 'Onboarding',
+      objectId: userId,
+      type: 'Ended'
+    });
+    updateOnboarding({ viewedOnboarding: true });
   };
 
   const onStepAction = () => {
@@ -67,12 +65,18 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
       setStep(step + 1);
     }
   };
-
+  const onBackAction = () => {
+    if (step <= 0) {
+      return;
+    } else {
+      setStep(step - 1);
+    }
+  };
   return (
     <Dialog
       className={classes.dialog}
       contentClassName={classes.dialogContent}
-      open={open && visiabled}
+      open={open}
       showHeader={false}
       onCancel={closePopup}
     >
@@ -81,25 +85,11 @@ const OnboardingPopup = ({ viewedTooltips, confirmTooltip }) => {
         step={step + 1}
         totalSteps={ONBOARDING_STEPS.length}
         onAction={onStepAction}
+        onBackAction={onBackAction}
         onClose={closePopup}
       />
     </Dialog>
   );
 };
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  viewedTooltips: user.syncData.viewedTooltips
-});
-
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      confirmTooltip: confirmTooltipAction
-    },
-    dispatch
-  );
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRoot(OnboardingPopup));
+export default withRoot(OnboardingPopup);

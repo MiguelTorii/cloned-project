@@ -84,6 +84,7 @@ const ClassesFolders = ({
   hasNotes,
   openConfirmDelete,
   editNote,
+  currentFilter,
   getNotes
 }) => {
   const [status, setStatus] = useState({});
@@ -176,14 +177,25 @@ const ClassesFolders = ({
         <EmptyState imageUrl={EmptyPastClass}>
           <div className={classes.emptyStateContainer}>
             <div className={classes.emptyTitle}>
-              This tab shows notes from “past classes”.
+              {`This tab shows notes from “${currentFilter} classes”.`}
             </div>
             <div className={classes.emptyBody}>
-              You don’t have any past classes yet, but your notes will be saved
-              here and ready for you once you finish your current classes.&nbsp;
-              <span role="img" aria-label="Wink emoji">
-                😉
-              </span>
+              {currentFilter === 'past' && (
+                <>
+                  You don’t have any past classes yet, but your notes will be saved
+                  here and ready for you once you finish your current classes.&nbsp;
+                  <span role="img" aria-label="Wink emoji">
+                    😉
+                  </span>
+                </>
+              )}
+              {currentFilter === 'current' && (
+                <>
+                  This tab shows notes from “current classes”.
+                  You haven’t been added to any classes yet.If you’re currently enrolled in classes,
+                  please contact us at support@circleinapp.com.
+                </>
+              )}
             </div>
           </div>
         </EmptyState>
