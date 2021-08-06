@@ -223,14 +223,16 @@ const MainLayout = ({
   }, []);
 
   const handleOpenHowEarnPoints = useCallback(() => {
-    window.open('https://support.circleinapp.com/', '_blank');
+    if (!expertMode) window.open('https://support.circleinapp.com/', '_blank');
+    else window.open('https://tutors.circleinapp.com/home', '_blank');
     // if (helpLink) {
     // window.open(helpLink, '_blank')
     // } else {
     // setOpenHowEarnPoints(true)
     // handleMenuClose();
     // }
-  }, []);
+    handleMenuClose();
+  }, [expertMode, handleMenuClose]);
 
   const handleCloseHowEarnPoints = useCallback(() => {
     setOpenHowEarnPoints(false);
@@ -270,9 +272,8 @@ const MainLayout = ({
         isMenuOpen={isMenuOpen}
         handleMenuClose={handleMenuClose}
         handleBlockedUsers={handleBlockedUsers}
-        handleOpenReferralStatus={handleOpenReferralStatus}
-        handleManageClasses={handleManageClasses}
-        userClasses={userClasses}
+        handleOpenHowEarnPoints={handleOpenHowEarnPoints}
+        expertMode={expertMode}
         MyLink={MyLink}
         userId={userId}
         handleSignOut={handleSignOutCur}
@@ -282,13 +283,12 @@ const MainLayout = ({
     [
       anchorEl,
       handleBlockedUsers,
-      handleManageClasses,
       handleMenuClose,
-      handleOpenReferralStatus,
       handleSignOutCur,
+      handleOpenHowEarnPoints,
+      expertMode,
       isMenuOpen,
       search,
-      userClasses,
       userId
     ]
   );

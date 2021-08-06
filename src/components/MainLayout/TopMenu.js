@@ -3,36 +3,40 @@ import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import useStyles from '../_styles/MainLayout/TopMenu';
+
 const TopMenu = ({
   anchorEl,
   isMenuOpen,
   handleMenuClose,
   handleBlockedUsers,
-  handleOpenReferralStatus,
-  handleManageClasses,
-  userClasses,
+  expertMode,
+  handleOpenHowEarnPoints,
   MyLink,
   userId,
   handleSignOut,
   search
 }) => {
+  const classes = useStyles();
+
   return (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      classes={{
+        paper: classes.menuPaper,
+        list: classes.avatarMenu
+      }}
     >
       <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
         My Profile
       </MenuItem>
-      {userClasses.canAddClasses && (
-        <MenuItem onClick={handleManageClasses}>Add/Remove Classes</MenuItem>
-      )}
-      <MenuItem onClick={handleBlockedUsers}>Unblock Users</MenuItem>
-      <MenuItem onClick={handleOpenReferralStatus}>
-        Referred Classmates
+      <MenuItem onClick={handleBlockedUsers}>Unblock Classmates</MenuItem>
+      <MenuItem onClick={handleOpenHowEarnPoints}>
+        {expertMode ? 'Expert Help Center' : 'Student Help Center'}
       </MenuItem>
       <MenuItem onClick={handleSignOut}>Logout</MenuItem>
     </Menu>

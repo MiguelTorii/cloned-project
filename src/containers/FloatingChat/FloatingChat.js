@@ -179,7 +179,11 @@ const FloatingChat = ({
     if (local) {
       let unread = 0;
       const cl = Object.keys(local)
-        .filter((l) => local[l].sid)
+        .filter(
+          (l) =>
+            local[l].sid &&
+            !local[l].twilioChannel.channelState?.attributes?.community_id
+        )
         .sort((a, b) => {
           if (!local[a].lastMessage.message) return 0;
           return (

@@ -166,7 +166,11 @@ const Chat = ({
 
   useEffect(() => {
     const channelList = Object.keys(local)
-      .filter((l) => local[l].sid)
+      .filter(
+        (l) =>
+          local[l].sid &&
+          !local[l].twilioChannel.channelState?.attributes?.community_id
+      )
       .sort((a, b) => {
         if (local[a].lastMessage.message === '') return 0;
         return (
@@ -226,13 +230,12 @@ const Chat = ({
   }, [width, curSize, rightSpace]);
 
   const renderIcon = useCallback(
-    (d) => {
-      return d ? (
+    (d) =>
+      d ? (
         <ArrowBackIcon className={classes.icon} />
       ) : (
         <ArrowForwardIcon className={classes.icon} />
-      );
-    },
+      ),
     [classes.icon]
   );
 
