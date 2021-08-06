@@ -384,7 +384,7 @@ const Main = ({
           props: { Content: 'Text' }
         });
 
-        onSend();
+        if (onSend) onSend();
       } catch (err) {
         setErrorLoadingMessage(true);
       } finally {
