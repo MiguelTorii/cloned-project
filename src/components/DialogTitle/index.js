@@ -29,7 +29,7 @@ class DialogTitle extends React.PureComponent<Props> {
     const { classes, id, variant, children, onClose } = this.props;
     return (
       <MuiDialogTitle disableTypography id={id} className={classes.root}>
-        <Typography variant={variant}>{children}</Typography>
+        <Typography variant={variant} align="center">{children}</Typography>
         {onClose ? (
           <IconButton
             aria-label="Close"

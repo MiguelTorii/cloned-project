@@ -265,8 +265,16 @@ let theme = createMuiTheme({
       }
     },
     MuiDialog: {
+      paper: {
+        backgroundColor: circleInTheme.modalBackground
+      },
       paperWidthSm: {
         minWidth: 200
+      }
+    },
+    MuiDialogContent: {
+      dividers: {
+        borderColor: '#E9ECEF41'
       }
     },
     MuiSelect: {

@@ -9,10 +9,11 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import useScript from 'hooks/useScript';
-import Workflow from 'pages/Workflow';
 import Classes from 'pages/Classes';
 import Feed from 'pages/Feed';
 import AuthRedirect from 'pages/AuthRedirect';
+import HomePage from 'pages/Home';
+import Workflow from 'pages/Workflow';
 import type { State as StoreState } from '../../types/state';
 
 const styles = () => ({
@@ -28,7 +29,8 @@ const styles = () => ({
 const Home = ({ campaign, classes, user }) => {
   const {
     data: { userId },
-    isLoading
+    isLoading,
+    expertMode
   } = user;
 
   const widgetUrl = useMemo(
@@ -77,7 +79,10 @@ const Home = ({ campaign, classes, user }) => {
 
   if (!userId) return <AuthRedirect />;
   if (!campaign.newClassExperience) return <Feed />;
-  return campaign.landingPageCampaign ? <Workflow /> : <Classes />;
+  if (!campaign.landingPageCampaign) return <Classes />;
+
+  if (expertMode) return <Workflow />;
+  return  <HomePage />;
 };
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({

@@ -79,6 +79,7 @@ import {
   FlashcardsEditPage
 } from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
+import HomePage from './pages/Home';
 import Gondor from './containers/Auth/Gondor';
 
 defaultKatexRender('White');
@@ -150,6 +151,11 @@ ReactDOM.render(
                   exact
                   path="/share/:code"
                   component={withTracker(Share)}
+                />
+                <Route
+                  exact
+                  path='/home'
+                  component={withTracker(HomePage)}
                 />
                 <Route
                   exact
