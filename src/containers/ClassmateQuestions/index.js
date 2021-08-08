@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Tab, Tabs, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -12,17 +12,21 @@ const ClassmateQuestions = () => {
   const myClasses = useSelector((state) => state.user.userClasses.classList);
   const [selectedClass, setSelectedClass] = useState('');
 
-  useEffect(() => {
-    if (myClasses.length > 0) {
-      setSelectedClass(myClasses[0].classId);
-    }
+  const activeClasses = useMemo(() => {
+    return myClasses.filter((item) => item.isCurrent);
   }, [myClasses]);
+
+  useEffect(() => {
+    if (activeClasses.length > 0) {
+      setSelectedClass(activeClasses[0].classId);
+    }
+  }, [activeClasses]);
 
   const handleChangeClass = useCallback((event, newClass) => {
     setSelectedClass(newClass);
   }, []);
 
-  if (_.isEmpty(myClasses)) return null;
+  if (_.isEmpty(activeClasses)) return null;
 
   return (
     <>
@@ -30,7 +34,7 @@ const ClassmateQuestions = () => {
         Questions from Your Classmates
       </Typography>
       <Tabs
-        value={selectedClass || myClasses[0].classId}
+        value={selectedClass || activeClasses[0].classId}
         onChange={handleChangeClass}
         textColor="inherit"
         variant="scrollable"
@@ -39,7 +43,7 @@ const ClassmateQuestions = () => {
           root: classes.tabs
         }}
       >
-        {myClasses.map((item) => (
+        {activeClasses.map((item) => (
           <Tab
             key={item.classId}
             label={item.className}
@@ -48,11 +52,14 @@ const ClassmateQuestions = () => {
         ))}
       </Tabs>
       <Box mb={3}/>
-      {myClasses.map((classData) => (
-        <Box hidden={classData.classId !== selectedClass} key={classData.classId}>
-          <ClassQuestions classId={classData.classId} />
-        </Box>
-      ))}
+      {selectedClass && (
+        <ClassQuestions classId={selectedClass} />
+      )}
+      {/*{myClasses.map((classData) => (*/}
+      {/*  <Box hidden={classData.classId !== selectedClass} key={classData.classId}>*/}
+      {/*    <ClassQuestions classId={classData.classId} />*/}
+      {/*  </Box>*/}
+      {/*))}*/}
     </>
   );
 };

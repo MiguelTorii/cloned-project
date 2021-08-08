@@ -35,6 +35,7 @@ const ClassQuestions = ({ classId }) => {
 
   useEffect(() => {
     const classes = (classData?.section || []).map((section) => JSON.stringify({ sectionId: section.sectionId }));
+    setLoading(true);
     fetchFeed({
       query: '',
       userId: me.userId,
