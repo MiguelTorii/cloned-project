@@ -43,7 +43,19 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
     });
 
     const channels = await Promise.all(promises);
-    setCourseChannels(channels);
+    const communityChannels = channels.map((channel) => {
+      if (channel.length) {
+        return {
+          courseId: channel[0].community_id,
+          channels: channel
+        };
+      }
+      return {
+        courseId: channel[0].community_id,
+        channels: []
+      };
+    });
+    setCourseChannels(communityChannels);
     setLoading(false);
   };
 
