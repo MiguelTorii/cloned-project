@@ -36,26 +36,23 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
   const [communityList, setCommunities] = useState([]);
 
   const fetchCommunityChannels = async (communities) => {
-    const channels = [];
-    await communities.forEach(async (course) => {
+    const promises = communities.map(async (course) => {
       const { community_channels: communityChannels } =
         await getCommunityChannels({ communityId: course.id });
-      channels.push({
-        courseId: course.id,
-        channels: communityChannels
-      });
+      return communityChannels;
     });
 
+    const channels = await Promise.all(promises);
     setCourseChannels(channels);
     setLoading(false);
   };
 
   useEffect(() => {
     async function fetchCommuniteis() {
+      setLoading(true);
       const { communities } = await getCommunities();
-      setCommunities(communities);
-
       if (communities.length) await fetchCommunityChannels(communities);
+      setCommunities(communities);
     }
     setLoading(true);
     fetchCommuniteis();
@@ -95,16 +92,14 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.collageList} direction="row">
-        {communityList && (
-          <CollageList
-            local={local}
-            unreadMessageCount={unreadMessageCount}
-            selectedCourse={selectedCourse}
-            communities={communityList}
-            courseChannels={courseChannels}
-            handleSelect={handleSelect}
-          />
-        )}
+        <CollageList
+          local={local}
+          unreadMessageCount={unreadMessageCount}
+          selectedCourse={selectedCourse}
+          communities={communityList}
+          courseChannels={courseChannels}
+          handleSelect={handleSelect}
+        />
       </Box>
       <Box className={classes.directChat}>
         {selectedCourse && selectedCourse.id === 'chat' ? (

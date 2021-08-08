@@ -7,14 +7,14 @@ import * as campaignActions from 'actions/campaign';
 import * as chatActions from 'actions/chat';
 import * as userActions from 'actions/user';
 import { sync } from 'actions/user';
+import { deepLinkCheck } from 'utils/helpers';
+import { PERMISSIONS } from 'constants/common';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
 import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
-import { deepLinkCheck } from 'utils/helpers';
-import { PERMISSIONS } from 'constants/common';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -219,6 +219,8 @@ export const checkUserSession =
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(chatActions.handleShutdownChat());
+    sessionStorage.clear();
+    localStorage.clear();
     window.location.href = window.location.origin;
     store.clearAll();
   } catch (err) {
