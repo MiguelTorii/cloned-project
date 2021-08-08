@@ -75,7 +75,7 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
     return update(state, {
       data: {
         // $FlowFixMe
-        items: { $set: action.payload.feed },
+        items: { $push: action.payload.feed },
         // $FlowFixMe
         hasMore: { $set: action.payload.hasMore }
       },
