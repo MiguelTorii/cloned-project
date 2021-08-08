@@ -134,7 +134,6 @@ const FlashcardsDeckManager = ({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log('saving cache...');
       // Only if creating flashcards
       if (!disableClass) {
         store.set(STORAGE_KEYS.FLASHCARD_CACHE, {
@@ -145,7 +144,7 @@ const FlashcardsDeckManager = ({
     }, 5 * INTERVAL.SECOND);
 
     return () => clearInterval(intervalId);
-  }, [deckData, mergeEditorData, getContentFromRef, formData]);
+  }, [deckData, mergeEditorData, formData, disableClass]);
 
   const handleSubmit = useCallback(() => {
     if (!formData.title || !formData.classId) {
