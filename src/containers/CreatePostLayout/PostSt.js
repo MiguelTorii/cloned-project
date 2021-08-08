@@ -295,7 +295,7 @@ const CreatePostSt = ({
             userId,
             title,
             sectionIds: classList.map((c) => c.sectionId),
-            body
+            content: body
           })
         : await api.createPostSt({
             userId,

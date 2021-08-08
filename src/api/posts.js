@@ -207,6 +207,7 @@ export const createBatchPostSt = async ({
       title,
       content,
       anonymous,
+      private: false,
       section_id: sectionIds,
       tags
     };
