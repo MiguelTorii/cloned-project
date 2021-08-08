@@ -266,7 +266,7 @@ let theme = createMuiTheme({
     },
     MuiDialog: {
       paper: {
-        backgroundColor: circleInTheme.modalBackground
+        backgroundColor: circleInTheme.feedBackground
       },
       paperWidthSm: {
         minWidth: 200
