@@ -6,6 +6,7 @@ import moment from 'moment';
 import Box from '@material-ui/core/Box';
 import { getCommunities, getCommunityChannels } from 'api/community';
 import * as chatActions from 'actions/chat';
+import LoadingSpin from 'components/LoadingSpin';
 import DirectChat from './DirectChat';
 import CollageList from './CollageList';
 import CommunityChat from './CommunityChat';
@@ -27,6 +28,7 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
   const classes = useStyles();
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(
     DEFAULT_COMMUNITY_MENU_ITEMS
   );
@@ -34,17 +36,18 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
   const [communityList, setCommunities] = useState([]);
 
   const fetchCommunityChannels = async (communities) => {
-    const courseChannels = [];
+    const channels = [];
     await communities.forEach(async (course) => {
       const { community_channels: communityChannels } =
         await getCommunityChannels({ communityId: course.id });
-      courseChannels.push({
+      channels.push({
         courseId: course.id,
         channels: communityChannels
       });
     });
 
-    setCourseChannels(courseChannels);
+    setCourseChannels(channels);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
 
       if (communities.length) await fetchCommunityChannels(communities);
     }
-
+    setLoading(true);
     fetchCommuniteis();
   }, []);
 
@@ -86,6 +89,8 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
       setCurrentCourse(course.id);
     }
   };
+
+  if (loading) return <LoadingSpin />;
 
   return (
     <div className={classes.root}>

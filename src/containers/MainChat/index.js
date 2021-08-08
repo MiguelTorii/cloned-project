@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingSpin from 'components/LoadingSpin';
 import { getCampaign } from 'api/campaign';
 import Chat from 'containers/Chat';
 import CommunityChat from 'containers/CommunityChat';
@@ -25,7 +25,7 @@ const MainChat = () => {
     [campaign]
   );
 
-  return loading ? <CircularProgress size={20} /> : renderChat();
+  return loading ? <LoadingSpin /> : renderChat();
 };
 
 export default MainChat;
