@@ -43,7 +43,10 @@ const styles = (theme) => ({
     fontSize: 12,
     lineHeight: '16px',
     letterSpacing: 0.5,
-    height: 33
+    height: 33,
+    '& .MuiButton-label': {
+      textTransform: 'none'
+    }
   },
   button2: {
     borderRadius: 200,
@@ -56,7 +59,10 @@ const styles = (theme) => ({
     width: '100%',
     height: 45,
     color: theme.circleIn.palette.black,
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
+    '& .MuiButton-label': {
+      textTransform: 'none'
+    }
   }
 });
 

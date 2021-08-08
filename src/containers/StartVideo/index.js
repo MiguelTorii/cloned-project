@@ -308,7 +308,7 @@ class StartVideo extends React.PureComponent<Props, State> {
                 variant="body1"
                 align="center"
               >
-                Get nice and cozy with your study circle. Press the button below to select classmates to join you on a video chat!
+                Get nice and cozy, stay hydrated and press the button below to select classmates to join you on a video chat!
               </Typography>
 
               <Button
