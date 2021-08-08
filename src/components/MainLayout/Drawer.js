@@ -315,9 +315,9 @@ const Drawer = ({
         {!expertMode && (
           <DrawerItem
             listItemClass={classNames(
-              ['/home', '/'].includes(pathname) ? classes.currentPath : classes.otherPath
+              ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
-            link="/home"
+            link="/"
             pathname={pathname}
             OnIcon={<HomeIconOn />}
             primaryText='Home'
@@ -331,7 +331,7 @@ const Drawer = ({
             primaryText="Workflow"
             pathname={pathname}
             component={MyLink}
-            link="/workflow"
+            link={expertMode ? '/' : '/workflow'}
             OffIcon={<WorkflowIconOff />}
             listItemClass={classNames(
               ['/workflow', expertMode && '/'].includes(pathname) ? classes.currentPath : classes.otherPath
