@@ -157,4 +157,7 @@ export const POST_SOURCE = {
   RECOMMENDATION: 'recommendation'
 };
 
+export const STORAGE_KEYS = {
+  FLASHCARD_CACHE: 'FLASHCARD_CACHE'
+};
 export const FEEDS_PER_PAGE = 10;

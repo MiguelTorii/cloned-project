@@ -9,41 +9,41 @@ import PropTypes from 'prop-types';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import { uploadMedia } from '../../actions/user';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
-const RichTextEditor = ({
-  label,
-  placeholder,
-  value,
-  imageUrl,
-  containerId,
-  readOnly,
-  onChangeValue,
-  onChangeImageUrl,
-  onFocus
-}: Props) => {
+const RichTextEditor = (
+  {
+    active,
+    label,
+    placeholder,
+    value,
+    imageUrl,
+    containerId,
+    readOnly,
+    onChangeImageUrl,
+    onFocus,
+    onSetRef
+  }: Props
+) => {
   // Hooks
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
-  const [isActive, setIsActive] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     disabled: readOnly,
     onDropAccepted: (files) => {
       setIsUploadingImage(true);
-      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(
-        ({ readUrl }) => {
+      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0])
+        .then(({ readUrl }) => {
           onChangeImageUrl(readUrl);
           setIsUploadingImage(false);
-        }
-      );
+        })
     }
   });
 
   // Callbacks
   const removeStyleMatcher = useCallback((node, delta) => {
-    delta.ops = delta.ops.map((op) => {
+    delta.ops = delta.ops.map(op => {
       return {
         insert: op.insert
       };
@@ -54,20 +54,9 @@ const RichTextEditor = ({
   // Event Handlers
   const handleFocus = useCallback(() => {
     if (!readOnly) {
-      setIsActive(true);
       onFocus();
     }
-  }, [setIsActive, onFocus, readOnly]);
-
-  const handleBlur = useCallback(() => {
-    if (!readOnly) setIsActive(false);
-  }, [setIsActive, readOnly]);
-
-  const handleChangeValue = (newValue) => {
-    if (newValue !== value) {
-      onChangeValue(newValue);
-    }
-  };
+  }, [onFocus, readOnly]);
 
   // Rendering Helpers
   const renderImage = () => {
@@ -77,8 +66,12 @@ const RichTextEditor = ({
 
     if (imageUrl) {
       return (
-        <img src={imageUrl} alt="Flashcards" className={classes.thumbnail} />
-      );
+        <img
+          src={imageUrl}
+          alt="Flashcards"
+          className={classes.thumbnail}
+        />
+      )
     }
 
     if (readOnly) return null;
@@ -88,20 +81,23 @@ const RichTextEditor = ({
 
   return (
     <div
-      className={clsx(
-        classes.textEditorContainer,
-        isActive && 'active',
-        readOnly && 'read-only'
-      )}
+      className={
+        clsx(
+          classes.textEditorContainer,
+          active && 'active',
+          readOnly && 'read-only'
+        )
+      }
       onMouseDown={handleFocus}
     >
       {!readOnly && (
-        <div className={clsx(classes.editorLabel, isActive && 'active')}>
-          {label}
+        <div className={clsx(classes.editorLabel, active && 'active')}>
+          { label }
         </div>
       )}
       <div className={classes.textEditor}>
         <ReactQuill
+          ref={onSetRef}
           theme="snow"
           placeholder={readOnly ? '' : placeholder}
           modules={{
@@ -109,23 +105,19 @@ const RichTextEditor = ({
               container: `#${containerId}`
             },
             clipboard: {
-              matchers: [[Node.ELEMENT_NODE, removeStyleMatcher]]
+              matchers: [
+                [Node.ELEMENT_NODE, removeStyleMatcher]
+              ]
             }
           }}
-          value={value}
+          defaultValue={value}
           readOnly={readOnly}
-          onChange={handleChangeValue}
-          onBlur={handleBlur}
         />
       </div>
       <div className="container">
-        <div
-          {...getRootProps({
-            className: clsx(classes.imageDnd, readOnly && 'read-only')
-          })}
-        >
+        <div {...getRootProps({ className: clsx(classes.imageDnd, readOnly && 'read-only') })}>
           <input {...getInputProps()} />
-          {renderImage()}
+          { renderImage() }
         </div>
       </div>
     </div>
@@ -135,23 +127,25 @@ const RichTextEditor = ({
 RichTextEditor.propTypes = {
   label: PropTypes.string.isRequired,
   containerId: PropTypes.string.isRequired,
+  active: PropTypes.bool,
   readOnly: PropTypes.bool,
   placeholder: PropTypes.string,
   value: PropTypes.string,
   imageUrl: PropTypes.string,
-  onChangeValue: PropTypes.func,
   onChangeImageUrl: PropTypes.func,
-  onFocus: PropTypes.func
+  onFocus: PropTypes.func,
+  onSetRef: PropTypes.func
 };
 
 RichTextEditor.defaultProps = {
+  active: false,
   placeholder: '',
   value: '',
   imageUrl: '',
   readOnly: false,
-  onChangeValue: () => {},
   onChangeImageUrl: () => {},
-  onFocus: () => {}
+  onFocus: () => {},
+  onSetRef: () => {}
 };
 
-export default withRoot(RichTextEditor);
+export default RichTextEditor;

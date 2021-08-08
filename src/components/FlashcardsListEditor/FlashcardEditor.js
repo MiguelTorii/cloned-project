@@ -6,38 +6,44 @@ import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
+import OutsideClickHandler from 'react-outside-click-handler';
 import RichTextEditor from './RichTextEditor';
 import QuillToolbar from '../QillToolbar';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
 const EDITOR_TYPES = {
   QUESTION: 'question',
-  ANSWER: 'answer'
+  ANSWER: 'answer',
 };
 
 const FlashcardEditor = ({
   index,
   data,
-  active,
   dndProps,
   readOnly,
   toolbarPrefix,
   onDelete,
-  onUpdate
+  onSetRef,
+  onUpdate,
+  forwardedRef,
 }) => {
   // Hooks
-  const classes = useStyles({ active });
+  const classes = useStyles();
+
+  // States
+  const [active, setActive] = useState(false);
   const [activeEditor, setActiveEditor] = useState(null);
 
   // Memos
-  const questionToolbarId = useMemo(() => {
-    return `flashcard-toolbar-${toolbarPrefix}-question`;
-  }, [toolbarPrefix]);
+  const questionToolbarId = useMemo(
+    () => `flashcard-toolbar-${toolbarPrefix}-question`,
+    [toolbarPrefix]
+  );
 
-  const answerToolbarId = useMemo(() => {
-    return `flashcard-toolbar-${toolbarPrefix}-answer`;
-  }, [toolbarPrefix]);
+  const answerToolbarId = useMemo(
+    () => `flashcard-toolbar-${toolbarPrefix}-answer`,
+    [toolbarPrefix]
+  );
 
   // Event Handlers
   const handleUpdateField = useCallback(
@@ -56,117 +62,177 @@ const FlashcardEditor = ({
     event.stopPropagation();
   }, []);
 
+  const handleSetQuestionRef = useCallback(
+    (el) => {
+      onSetRef(data.id, 'question', el);
+    },
+    [data, onSetRef]
+  );
+
+  const handleSetAnswerRef = useCallback(
+    (el) => {
+      onSetRef(data.id, 'answer', el);
+    },
+    [data, onSetRef]
+  );
+
+  const handleClickEditor = useCallback(() => {
+    if (!readOnly) setActive(true);
+  }, [readOnly]);
+
+  const handleOutsideClick = useCallback(() => {
+    if (!readOnly) setActive(false);
+  }, [readOnly]);
+
+  // Rendering Helpers
+  const Toolbars = useMemo(
+    () => (
+      <>
+        <Box
+          display={
+            active && activeEditor !== EDITOR_TYPES.ANSWER ? 'block' : 'none'
+          }
+        >
+          <QuillToolbar elementId={questionToolbarId} />
+        </Box>
+        <Box
+          display={
+            active && activeEditor === EDITOR_TYPES.ANSWER ? 'block' : 'none'
+          }
+        >
+          <QuillToolbar elementId={answerToolbarId} />
+        </Box>
+      </>
+    ),
+    [active, activeEditor]
+  );
+
+  const TextBoxes = useMemo(
+    () => (
+      <Grid container spacing={2}>
+        <Grid item xs={12} lg={6}>
+          <RichTextEditor
+            label="Question"
+            placeholder="Enter a question, term, or image"
+            containerId={questionToolbarId}
+            readOnly={readOnly}
+            active={active && activeEditor === EDITOR_TYPES.QUESTION}
+            value={data.question}
+            imageUrl={data.questionImage}
+            onChangeImageUrl={(value) =>
+              handleUpdateField('questionImage', value)
+            }
+            onFocus={() => setActiveEditor(EDITOR_TYPES.QUESTION)}
+            onSetRef={handleSetQuestionRef}
+          />
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <RichTextEditor
+            label="Answer"
+            placeholder="Enter the answer or a definition"
+            containerId={answerToolbarId}
+            readOnly={readOnly}
+            active={active && activeEditor === EDITOR_TYPES.ANSWER}
+            value={data.answer}
+            imageUrl={data.answerImage}
+            onChangeImageUrl={(value) =>
+              handleUpdateField('answerImage', value)
+            }
+            onFocus={() => setActiveEditor(EDITOR_TYPES.ANSWER)}
+            onSetRef={handleSetAnswerRef}
+          />
+        </Grid>
+      </Grid>
+    ),
+    [
+      classes,
+      handleUpdateField,
+      handleSetAnswerRef,
+      handleSetQuestionRef,
+      answerToolbarId,
+      questionToolbarId,
+      readOnly,
+      data,
+      active,
+      activeEditor
+    ]
+  );
+
   return (
-    <div className={classes.flashcardEditorRoot}>
+    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div
-        className={clsx(
-          classes.flashcardHeader,
-          active && classes.gradientHeader
-        )}
+        className={classes.flashcardEditorRoot}
+        onMouseDown={handleClickEditor}
+        ref={forwardedRef}
       >
         <div
           className={clsx(
-            classes.flashcardHeaderContent,
-            !active && classes.paddingTopZero
+            classes.flashcardHeader,
+            active && classes.gradientHeader
           )}
         >
-          <Box hidden={readOnly}>
-            <div onMouseDown={handleMouseDown}>
-              <IconButton
-                classes={{ root: clsx(classes.iconButton, active && 'active') }}
-                {...dndProps}
-              >
-                <IconMove />
-              </IconButton>
-            </div>
-          </Box>
-          <Box
-            display={
-              active && activeEditor !== EDITOR_TYPES.ANSWER ? 'block' : 'none'
-            }
+          <div
+            className={clsx(
+              classes.flashcardHeaderContent,
+              !active && classes.paddingTopZero
+            )}
           >
-            <QuillToolbar elementId={questionToolbarId} />
-          </Box>
-          <Box
-            display={
-              active && activeEditor === EDITOR_TYPES.ANSWER ? 'block' : 'none'
-            }
-          >
-            <QuillToolbar elementId={answerToolbarId} />
-          </Box>
-          <div>
-            {!readOnly && (
+            <Box hidden={readOnly}>
               <div onMouseDown={handleMouseDown}>
                 <IconButton
                   classes={{
-                    root: clsx(classes.iconButton, active && 'active')
+                    root: clsx(classes.iconButton, active && 'active'),
                   }}
-                  onClick={handleDelete}
+                  {...dndProps}
                 >
-                  <IconDelete />
+                  <IconMove />
                 </IconButton>
               </div>
-            )}
+            </Box>
+            {Toolbars}
+            <div>
+              {!readOnly && (
+                <div onMouseDown={handleMouseDown}>
+                  <IconButton
+                    classes={{
+                      root: clsx(classes.iconButton, active && 'active'),
+                    }}
+                    onClick={handleDelete}
+                  >
+                    <IconDelete />
+                  </IconButton>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+        <div className={classes.flashcardContent}>{TextBoxes}</div>
       </div>
-      <div className={classes.flashcardContent}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} lg={6}>
-            <RichTextEditor
-              label="Question"
-              placeholder="Enter a question, term, or image"
-              containerId={questionToolbarId}
-              readOnly={readOnly}
-              value={data.question}
-              onChangeValue={(value) => handleUpdateField('question', value)}
-              imageUrl={data.questionImage}
-              onChangeImageUrl={(value) =>
-                handleUpdateField('questionImage', value)
-              }
-              onFocus={() => setActiveEditor(EDITOR_TYPES.QUESTION)}
-            />
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            <RichTextEditor
-              label="Answer"
-              placeholder="Enter the answer or a definition"
-              containerId={answerToolbarId}
-              readOnly={readOnly}
-              value={data.answer}
-              onChangeValue={(value) => handleUpdateField('answer', value)}
-              imageUrl={data.answerImage}
-              onChangeImageUrl={(value) =>
-                handleUpdateField('answerImage', value)
-              }
-              onFocus={() => setActiveEditor(EDITOR_TYPES.ANSWER)}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </div>
+    </OutsideClickHandler>
   );
 };
 
 FlashcardEditor.propTypes = {
   index: PropTypes.number.isRequired,
+  inViewport: PropTypes.bool,
   data: PropTypes.object,
-  active: PropTypes.bool,
   dndProps: PropTypes.object,
   readOnly: PropTypes.bool,
   toolbarPrefix: PropTypes.string,
   onDelete: PropTypes.func,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
+  onSetRef: PropTypes.func,
 };
 
 FlashcardEditor.defaultProps = {
+  inViewport: false,
   data: {},
-  active: false,
   dndProps: {},
   readOnly: false,
   toolbarPrefix: PropTypes.string,
   onDelete: () => {},
-  onUpdate: () => {}
+  onUpdate: () => {},
+  onSetRef: () => {},
 };
 
-export default withRoot(FlashcardEditor);
+export default FlashcardEditor;

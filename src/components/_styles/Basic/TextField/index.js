@@ -1,13 +1,13 @@
 import { TextField as MuiTextField, withStyles } from '@material-ui/core';
 
-export const StyledTextField = withStyles({
+export const StyledTextField = withStyles((theme) => ({
   root: {
     '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white'
-      },
+      // '& fieldset': {
+      //   borderColor: 'white'
+      // },
       '&.Mui-focused fieldset': {
-        borderColor: 'white'
+        borderColor: theme.circleIn.palette.action
       }
     },
     '& label': {
@@ -17,4 +17,4 @@ export const StyledTextField = withStyles({
       fontSize: 18
     }
   }
-})(MuiTextField);
+}))(MuiTextField)

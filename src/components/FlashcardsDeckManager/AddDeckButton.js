@@ -1,5 +1,4 @@
 import React from 'react';
-import withRoot from '../../withRoot';
 import Button from '@material-ui/core/Button';
 import useStyles from './styles';
 
@@ -18,4 +17,4 @@ const AddDeckButton = ({ onClick }) => {
   );
 };
 
-export default withRoot(AddDeckButton);
+export default AddDeckButton;

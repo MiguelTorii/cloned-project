@@ -1,28 +1,26 @@
-import React, { useCallback, useState } from 'react';
-import withRoot from '../../withRoot';
+import React, { useCallback } from 'react';
 import Grid from '@material-ui/core/Grid';
-import FlashcardEditor from './FlashcardEditor';
 import Box from '@material-ui/core/Box';
-import OutsideClickHandler from 'react-outside-click-handler';
-import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import update from 'immutability-helper';
-import useStyles from './styles';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import useStyles from './styles';
+import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
+import FlashcardEditor from './FlashcardEditor';
 
 const FlashcardsListEditor = ({
   data,
   readOnly,
   toolbarPrefix,
   onUpdate,
-  onUpdateFlashcardField
+  onSetRef,
+  onUpdateFlashcardField,
 }: Props) => {
   // Hooks
   const classes = useStyles();
 
   // States
-  const [activeCardIndex, setActiveCardIndex] = useState(null);
 
   // Event Handlers
   const handleAddNewDeck = useCallback(() => {
@@ -33,28 +31,22 @@ const FlashcardsListEditor = ({
           {
             id: maxId ? maxId + 1 : 1,
             question: '',
-            answer: ''
-          }
-        ]
+            answer: '',
+          },
+        ],
       })
     );
   }, [data, onUpdate]);
 
   const handleDeleteDeck = useCallback(
     (index) => {
-      if (activeCardIndex) {
-        if (index === activeCardIndex) setActiveCardIndex(null);
-        else if (activeCardIndex > index)
-          setActiveCardIndex(activeCardIndex - 1);
-      }
-
       onUpdate(
         update(data, {
-          $splice: [[index, 1]]
+          $splice: [[index, 1]],
         })
       );
     },
-    [data, onUpdate, activeCardIndex, setActiveCardIndex]
+    [data, onUpdate]
   );
 
   const handleUpdateDeckField = useCallback(
@@ -63,10 +55,6 @@ const FlashcardsListEditor = ({
     },
     [onUpdateFlashcardField]
   );
-
-  const handleOutsideClick = useCallback(() => {
-    if (!readOnly) setActiveCardIndex(null);
-  }, [setActiveCardIndex, readOnly]);
 
   const handleDragEnd = useCallback(
     (result) => {
@@ -80,72 +68,51 @@ const FlashcardsListEditor = ({
       newData.splice(indexDst, 0, removed);
 
       onUpdate(newData);
-      if (activeCardIndex === indexSrc) {
-        setActiveCardIndex(indexDst);
-      } else if (activeCardIndex > indexSrc && activeCardIndex <= indexDst) {
-        setActiveCardIndex(activeCardIndex - 1);
-      } else if (activeCardIndex >= indexDst && activeCardIndex < indexSrc) {
-        setActiveCardIndex(activeCardIndex + 1);
-      }
     },
-    [data, onUpdate, activeCardIndex]
-  );
-
-  const handleFlashcardMouseDown = useCallback(
-    (index) => {
-      if (!readOnly) setActiveCardIndex(index);
-    },
-    [setActiveCardIndex, readOnly]
+    [data, onUpdate]
   );
 
   return (
     <>
-      <OutsideClickHandler onOutsideClick={handleOutsideClick}>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <Grid
-                container
-                {...provided.droppableProps}
-                placeholder={provided.placeholder}
-                ref={provided.innerRef}
-                style={{ width: '100%' }}
-              >
-                {data.map((item, index) => (
-                  <Grid
-                    key={item.id}
-                    item
-                    xs={12}
-                    onMouseDown={() => handleFlashcardMouseDown(index)}
-                  >
-                    <Draggable draggableId={`item-${item.id}`} index={index}>
-                      {(provided) => (
-                        <div
-                          className={classes.draggableItem}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
-                          <FlashcardEditor
-                            data={item}
-                            active={activeCardIndex === index}
-                            index={index}
-                            toolbarPrefix={`${toolbarPrefix}-${item.id}`}
-                            readOnly={readOnly}
-                            dndProps={provided.dragHandleProps}
-                            onDelete={handleDeleteDeck}
-                            onUpdate={handleUpdateDeckField}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  </Grid>
-                ))}
-                {provided.placeholder}
-              </Grid>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </OutsideClickHandler>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <Grid
+              container
+              {...provided.droppableProps}
+              placeholder={provided.placeholder}
+              ref={provided.innerRef}
+              style={{ width: '100%' }}
+            >
+              {data.map((item, index) => (
+                <Grid key={item.id} item xs={12}>
+                  <Draggable draggableId={`item-${item.id}`} index={index}>
+                    {(provided) => (
+                      <div
+                        className={classes.draggableItem}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                      >
+                        <FlashcardEditor
+                          data={item}
+                          onSetRef={onSetRef}
+                          index={index}
+                          toolbarPrefix={`${toolbarPrefix}-${item.id}`}
+                          readOnly={readOnly}
+                          dndProps={provided.dragHandleProps}
+                          onDelete={handleDeleteDeck}
+                          onUpdate={handleUpdateDeckField}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                </Grid>
+              ))}
+              {provided.placeholder}
+            </Grid>
+          )}
+        </Droppable>
+      </DragDropContext>
       {!readOnly && (
         <Box mt={2}>
           <AddDeckButton onClick={handleAddNewDeck} />
@@ -159,16 +126,18 @@ FlashcardsListEditor.propTypes = {
   data: PropTypes.array,
   onUpdate: PropTypes.func,
   onUpdateFlashcardField: PropTypes.func,
+  onSetRef: PropTypes.func,
   readOnly: PropTypes.bool,
-  toolbarPrefix: PropTypes.string
+  toolbarPrefix: PropTypes.string,
 };
 
 FlashcardsListEditor.defaultProps = {
   data: [],
   onUpdate: () => {},
   onUpdateFlashcardField: () => {},
+  onSetRef: () => {},
   readOnly: false,
-  toolbarPrefix: ''
+  toolbarPrefix: '',
 };
 
-export default withRoot(FlashcardsListEditor);
+export default FlashcardsListEditor;

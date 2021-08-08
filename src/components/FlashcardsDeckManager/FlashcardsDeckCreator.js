@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import store from 'store';
 import FlashcardsDeckManager from './index';
 import { createFlashcards } from '../../api/posts';
 import { showNotification } from '../../actions/notifications';
 import { logEvent, logEventLocally } from '../../api/analytics';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { STORAGE_KEYS } from '../../constants/app';
 
 const FlashcardsDeckCreator = () => {
   // Hooks
@@ -15,6 +17,10 @@ const FlashcardsDeckCreator = () => {
   // States
   const [isSaving, setIsSaving] = useState(false);
 
+  const initialData = useMemo(() => {
+    return store.get(STORAGE_KEYS.FLASHCARD_CACHE) || null;
+  }, []);
+
   // Event Handlers
   const handleCreate = useCallback(
     async (data) => {
@@ -24,7 +30,7 @@ const FlashcardsDeckCreator = () => {
         userId: me.userId,
         grade: me.grade,
         tags: [],
-        ...data
+        ...data,
       });
 
       setIsSaving(false);
@@ -33,7 +39,7 @@ const FlashcardsDeckCreator = () => {
         dispatch(
           showNotification({
             message: 'Sorry, failed to create a flashcard deck.',
-            variant: 'error'
+            variant: 'error',
           })
         );
       } else {
@@ -41,19 +47,21 @@ const FlashcardsDeckCreator = () => {
           showNotification({
             message: `Congratulations ${me.firstName}, you have just earned ${points} points. Good Work!`,
             variant: 'info',
-            nextPath: '/flashcards'
+            nextPath: '/flashcards',
           })
         );
         logEvent({
           event: 'Feed- Create Flashcards',
-          props: { 'Number of cards': data.deck.length, Title: data.title }
+          props: { 'Number of cards': data.deck.length, Title: data.title },
         });
 
         logEventLocally({
           category: 'Flashcard',
           objectId: fcId,
-          type: 'Created'
+          type: 'Created',
         });
+
+        store.remove(STORAGE_KEYS.FLASHCARD_CACHE);
         history.push(`/flashcards/${fcId}?source=deck`);
       }
     },
@@ -62,6 +70,7 @@ const FlashcardsDeckCreator = () => {
 
   return (
     <FlashcardsDeckManager
+      data={initialData}
       title="Create a new flashcard deck"
       submitText="Create"
       isSubmitting={isSaving}

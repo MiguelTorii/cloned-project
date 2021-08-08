@@ -117,5 +117,8 @@ export default makeStyles((theme) => ({
   },
   draggableItem: {
     padding: theme.spacing(1, 0)
+  },
+  placeholderBox: {
+    height: 104
   }
 }));

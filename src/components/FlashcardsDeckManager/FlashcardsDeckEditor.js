@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import FlashcardsDeckManager from './index';
 import { useSelector } from 'react-redux';
+import FlashcardsDeckManager from './index';
 import { updateFlashcards } from '../../api/posts';
 
 const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
@@ -17,9 +17,9 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
       setIsSaving(true);
 
       await updateFlashcards({
-        flashcardId: flashcardId,
+        flashcardId,
         userId: me.userId,
-        ...updatedData
+        ...updatedData,
       });
 
       setIsSaving(false);
@@ -34,7 +34,7 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
       title="Edit flashcard deck"
       submitText="Save"
       isSubmitting={isSaving}
-      disableClass={true}
+      disableClass
       onSubmit={handleUpdate}
     />
   );
@@ -43,11 +43,11 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
 FlashcardsDeckEditor.propTypes = {
   flashcardId: PropTypes.number.isRequired,
   data: PropTypes.object.isRequired,
-  onAfterUpdate: PropTypes.func
+  onAfterUpdate: PropTypes.func,
 };
 
 FlashcardsDeckEditor.defaultProps = {
-  onAfterUpdate: () => {}
+  onAfterUpdate: () => {},
 };
 
 export default FlashcardsDeckEditor;

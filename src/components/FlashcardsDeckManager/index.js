@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
+import store from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
@@ -12,7 +13,7 @@ import { showNotification } from 'actions/notifications';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import FlashcardsListEditor from '../FlashcardsListEditor';
 import TextField from '../Basic/TextField';
-import withRoot from '../../withRoot';
+import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
 
 const FlashcardsDeckManager = ({
   data,
@@ -20,7 +21,7 @@ const FlashcardsDeckManager = ({
   submitText,
   isSubmitting,
   disableClass,
-  onSubmit
+  onSubmit,
 }) => {
   // Hooks
   const myClasses = useSelector((state) => state.user.userClasses.classList);
@@ -28,23 +29,34 @@ const FlashcardsDeckManager = ({
 
   // States
   const [isValidated, setIsValidated] = useState(false);
-  const [deckData, setDeckData] = useState({
+  const [editorRefs, setEditorRefs] = useState({});
+  const [formData, setFormData] = useState({
     title: null,
     summary: null,
     classId: null,
     sectionId: null,
-    deck: [
-      {
-        id: 1,
-        question: '',
-        answer: ''
-      }
-    ]
   });
+  const [deckData, setDeckData] = useState([]);
 
   // Effects
   useEffect(() => {
-    if (data) setDeckData(data);
+    if (data) {
+      setDeckData(data.deck);
+      setFormData({
+        title: data.title,
+        summary: data.summary,
+        classId: data.classId,
+        sectionId: data.sectionId,
+      });
+    } else {
+      setDeckData([
+        {
+          id: 1,
+          question: '',
+          answer: '',
+        },
+      ]);
+    }
   }, [data]);
 
   // Memos
@@ -56,7 +68,7 @@ const FlashcardsDeckManager = ({
         classData.section.forEach((section) => {
           result.push({
             value: `${classData.classId}_${section.sectionId}`,
-            text: `${section.subject} ${classData.className}: - ${section.section}`
+            text: `${section.subject} ${classData.className}: - ${section.section}`,
           });
         });
       }
@@ -66,18 +78,18 @@ const FlashcardsDeckManager = ({
   }, [myClasses]);
 
   const selectedDropdownValue = useMemo(() => {
-    if (deckData.classId && deckData.sectionId) {
-      return `${deckData.classId}_${deckData.sectionId}`;
+    if (formData.classId && formData.sectionId) {
+      return `${formData.classId}_${formData.sectionId}`;
     }
 
     return '';
-  }, [deckData]);
+  }, [formData]);
 
   // Event Handlers
   const handleUpdateField = useCallback((field, value) => {
-    setDeckData((data) =>
+    setFormData((data) =>
       update(data, {
-        [field]: { $set: value }
+        [field]: { $set: value },
       })
     );
   }, []);
@@ -85,65 +97,105 @@ const FlashcardsDeckManager = ({
   const handleUpdateFlashcardField = useCallback((index, field, value) => {
     setDeckData((data) =>
       update(data, {
-        deck: {
-          [index]: (item) =>
-            update(item, {
-              [field]: { $set: value }
-            })
-        }
+        [index]: (item) =>
+          update(item, {
+            [field]: { $set: value },
+          }),
       })
     );
   }, []);
 
+  const handleSetRef = useCallback((id, type, ref) => {
+    setEditorRefs((data) => ({
+      ...data,
+      [`${id}-${type}`]: ref,
+    }));
+  }, []);
+
+  const getContentFromRef = useCallback((ref) => {
+    if (!ref) return null;
+    if (typeof ref.getEditor !== 'function') return null;
+    const editor = ref.getEditor();
+    const unprivilegedEditor = ref.makeUnprivilegedEditor(editor);
+    return unprivilegedEditor.getHTML();
+  }, []);
+
+  const mergeEditorData = useCallback(
+    (data) =>
+      data.map((card) => {
+        const question = getContentFromRef(editorRefs[`${card.id}-question`]);
+        const answer = getContentFromRef(editorRefs[`${card.id}-answer`]);
+        if (question) card.question = question;
+        if (answer) card.answer = answer;
+        return card;
+      }),
+    [editorRefs]
+  );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log('saving cache...');
+      // Only if creating flashcards
+      if (!disableClass) {
+        store.set(STORAGE_KEYS.FLASHCARD_CACHE, {
+          ...formData,
+          deck: mergeEditorData(deckData),
+        });
+      }
+    }, 5 * INTERVAL.SECOND);
+
+    return () => clearInterval(intervalId);
+  }, [deckData, mergeEditorData, getContentFromRef, formData]);
+
   const handleSubmit = useCallback(() => {
-    if (!deckData.title || !deckData.classId) {
+    if (!formData.title || !formData.classId) {
       setIsValidated(true);
       return;
     }
 
-    const data = update(deckData, {
-      deck: (arr) =>
-        arr.filter(
-          (card) =>
-            (card.questionImage || !!extractTextFromHtml(card.question)) &&
-            (card.answerImage || !!extractTextFromHtml(card.answer))
-        )
-    });
+    const data = mergeEditorData(deckData).filter(
+      (card) =>
+        (card.questionImage || !!extractTextFromHtml(card.question)) &&
+        (card.answerImage || !!extractTextFromHtml(card.answer))
+    );
 
-    if (deckData.deck.length === 0) {
+    if (deckData.length === 0) {
       dispatch(
         showNotification({
           message: 'You must have at least one flashcard to save the deck.',
-          variant: 'error'
+          variant: 'error',
         })
       );
       return;
     }
 
-    if (data.deck.length < deckData.deck.length) {
+    if (data.length < deckData.length) {
       dispatch(
         showNotification({
           message: 'Flashcards should not be empty.',
-          variant: 'error'
+          variant: 'error',
         })
       );
       return;
     }
 
-    onSubmit(data);
-  }, [deckData, onSubmit, dispatch]);
+    onSubmit({
+      ...formData,
+      deck: data,
+    });
+  }, [formData, deckData, onSubmit, dispatch, mergeEditorData]);
 
   const handleChangeClass = useCallback(
     (event) => {
       const [classId, sectionId] = event.target.value.split('_');
-      setDeckData(
-        update(deckData, {
+      setFormData(
+        update(formData, {
           classId: { $set: Number(classId) },
-          sectionId: { $set: Number(sectionId) }
+          sectionId: { $set: Number(sectionId) },
         })
       );
     },
-    [deckData]
+    [formData]
   );
 
   // Rendering Helpers
@@ -154,16 +206,16 @@ const FlashcardsDeckManager = ({
           <TextField
             required
             fullWidth
-            error={isValidated && !deckData.title}
+            error={isValidated && !formData.title}
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             helperText={
-              isValidated && !deckData.title && 'Please input a title'
+              isValidated && !formData.title && 'Please input a title'
             }
             label="Title"
             placeholder="Add a title"
-            value={deckData.title || ''}
+            value={formData.title || ''}
             onChange={(event) => handleUpdateField('title', event.target.value)}
           />
         </Grid>
@@ -172,13 +224,13 @@ const FlashcardsDeckManager = ({
             fullWidth
             required
             select
-            error={isValidated && !deckData.classId}
+            error={isValidated && !formData.classId}
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             label="Class"
             helperText={
-              isValidated && !deckData.classId && 'Please select your class'
+              isValidated && !formData.classId && 'Please select your class'
             }
             placeholder="Select your class"
             disabled={disableClass}
@@ -196,11 +248,11 @@ const FlashcardsDeckManager = ({
           <TextField
             fullWidth
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
             label="Description"
             placeholder="Add a description"
-            value={deckData.summary || ''}
+            value={formData.summary || ''}
             onChange={(event) =>
               handleUpdateField('summary', event.target.value)
             }
@@ -216,6 +268,18 @@ const FlashcardsDeckManager = ({
     </Box>
   );
 
+  const ListEditor = useMemo(
+    () => (
+      <FlashcardsListEditor
+        onSetRef={handleSetRef}
+        data={deckData}
+        onUpdate={setDeckData}
+        onUpdateFlashcardField={handleUpdateFlashcardField}
+      />
+    ),
+    [deckData, handleSetRef, handleUpdateFlashcardField]
+  );
+
   return (
     <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -229,11 +293,7 @@ const FlashcardsDeckManager = ({
         </GradientButton>
       </Box>
       {renderForm()}
-      <FlashcardsListEditor
-        data={deckData.deck}
-        onUpdate={(data) => handleUpdateField('deck', data)}
-        onUpdateFlashcardField={handleUpdateFlashcardField}
-      />
+      {ListEditor}
     </Container>
   );
 };
@@ -244,7 +304,7 @@ FlashcardsDeckManager.propTypes = {
   data: PropTypes.object,
   isSubmitting: PropTypes.bool,
   disableClass: PropTypes.bool,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
 };
 
 FlashcardsDeckManager.defaultProps = {
@@ -252,7 +312,7 @@ FlashcardsDeckManager.defaultProps = {
   data: null,
   isSubmitting: false,
   disableClass: false,
-  onSubmit: () => {}
+  onSubmit: () => {},
 };
 
-export default withRoot(FlashcardsDeckManager);
+export default FlashcardsDeckManager;

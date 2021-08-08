@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import withRoot from 'withRoot';
 import { CircularProgress } from '@material-ui/core';
 import { useStyles } from '../../_styles/Basic/Buttons/GradientButton';
 
@@ -26,4 +25,4 @@ const GradientButton = ({ children, compact, loading, ...rest }: Props) => {
   );
 };
 
-export default withRoot(GradientButton);
+export default GradientButton;

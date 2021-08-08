@@ -72,7 +72,7 @@ const circleInTheme = {
   floatChatHeader: '#A2A4A8',
   notesTabBorder: '#F5C264',
   resourceTabBorder: '#6515CF',
-  betaTag: '#F6CD3A'
+  betaTag: '#F6CD3A',
 };
 
 let theme = createMuiTheme({
@@ -138,139 +138,139 @@ let theme = createMuiTheme({
       floatChatHeader: circleInTheme.floatChatHeader,
       notesTabBorder: circleInTheme.notesTabBorder,
       resourceTabBorder: circleInTheme.resourceTabBorder,
-      betaTag: circleInTheme.betaTag
+      betaTag: circleInTheme.betaTag,
     },
     customBackground: {
-      iconButton: 'rgba(173,187,196, 0.5)'
-    }
+      iconButton: 'rgba(173,187,196, 0.5)',
+    },
   },
   snackbar: {
     info: {
       backgroundColor: '#114255',
-      color: '#E9ECEF'
-    }
+      color: '#E9ECEF',
+    },
   },
   palette: {
     secondary: {
-      main: circleInTheme.primaryText1
+      main: circleInTheme.primaryText1,
     },
     primary: {
-      main: circleInTheme.action
+      main: circleInTheme.action,
     },
     background: {
       paper: circleInTheme.modalBackground,
-      default: circleInTheme.primaryBackground
+      default: circleInTheme.primaryBackground,
     },
     text: {
       primary: circleInTheme.primaryText1,
-      disabled: circleInTheme.gray3
+      disabled: circleInTheme.gray3,
     },
     danger: {
-      main: circleInTheme.danger
-    }
+      main: circleInTheme.danger,
+    },
   },
   typography: {
     useNextVariants: true,
     color: circleInTheme.primaryText1,
     fontSize: 14,
-    fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
+    fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif',
   },
   zIndex: {
     mobileStepper: 700,
     appBar: 800,
-    drawer: 900
+    drawer: 900,
   },
   overrides: {
     MuiTypography: {
       caption: {
-        paddingLeft: 8
-      }
+        paddingLeft: 8,
+      },
     },
     MuiListItemIcon: {
       root: {
-        minWidth: 30
-      }
+        minWidth: 30,
+      },
     },
     MuiListItemText: {
       inset: {
-        paddingLeft: 0
-      }
+        paddingLeft: 0,
+      },
     },
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: circleInTheme.appBar
-      }
+        backgroundColor: circleInTheme.appBar,
+      },
     },
     MuiSvgIcon: {
       root: {
-        color: circleInTheme.navIcons
-      }
+        color: circleInTheme.navIcons,
+      },
     },
     MuiTabs: {
       indicator: {
-        height: 0
-      }
+        height: 0,
+      },
     },
     MuiTab: {
       textColorPrimary: {
-        color: circleInTheme.tabColor
-      }
+        color: circleInTheme.tabColor,
+      },
     },
     MuiFab: {
       label: {
-        textTransform: 'capitalize'
-      }
+        textTransform: 'capitalize',
+      },
     },
     MuiButton: {
       label: {
-        textTransform: 'capitalize'
-      }
+        textTransform: 'capitalize',
+      },
     },
     MuiDivider: {
       light: {
         backgroundColor: circleInTheme.dividerColor,
-        opacity: 0.5
-      }
+        opacity: 0.5,
+      },
     },
     MuiInputBase: {
       root: {
-        borderRadius: 8
+        borderRadius: 8,
       },
       input: {
         height: 'fit-content',
         '&:-webkit-autofill': {
           transitionDelay: '9999s',
-          transitionProperty: 'background-color, color'
+          transitionProperty: 'background-color, color',
         },
         '&::placeholder': {
           color: circleInTheme.secondaryText,
-          opacity: 1
-        }
-      }
+          opacity: 1,
+        },
+      },
     },
     MuiInputLabel: {
       root: {
-        color: circleInTheme.secondaryText
-      }
+        color: circleInTheme.secondaryText,
+      },
     },
     MuiOutlinedInput: {
       root: {
         borderRadius: 8,
         '& $notchedOutline': {
-          borderColor: circleInTheme.inputBorderColor
+          borderColor: circleInTheme.inputBorderColor,
         },
         '&$disabled $notchedOutline': {
-          borderColor: circleInTheme.gray3
-        }
-      }
+          borderColor: circleInTheme.gray3,
+        },
+      },
     },
     MuiDialog: {
       paper: {
         backgroundColor: circleInTheme.feedBackground
       },
       paperWidthSm: {
-        minWidth: 200
-      }
+        minWidth: 200,
+      },
     },
     MuiDialogContent: {
       dividers: {
@@ -279,47 +279,49 @@ let theme = createMuiTheme({
     },
     MuiSelect: {
       icon: {
-        color: circleInTheme.inputBorderColor
-      }
+        color: circleInTheme.inputBorderColor,
+      },
     },
     MuiBottomNavigationAction: {
       label: {
-        color: circleInTheme.primaryText2
-      }
+        color: circleInTheme.primaryText2,
+      },
     },
     MuiFormLabel: {
       root: {
-        color: circleInTheme.primaryText1
-      }
+        color: circleInTheme.primaryText1,
+      },
     },
     MuiDrawer: {
       paperAnchorDockedLeft: {
-        borderRight: 'none'
-      }
+        borderRight: 'none',
+      },
     },
     MuiPaper: {
       root: {
-        backgroundColor: circleInTheme.feedBackground
+        backgroundColor: circleInTheme.feedBackground,
       },
       rounded: {
-        borderRadius: 10
-      }
+        borderRadius: 10,
+      },
     },
     MuiBadge: {
       colorSecondary: {
         backgroundColor: circleInTheme.danger,
-        color: circleInTheme.primaryText1
-      }
+        color: circleInTheme.primaryText1,
+      },
     },
     MuiTooltip: {
       popper: {
-        zIndex: 1250
-      }
-    }
-  }
+        zIndex: 1250,
+      },
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);
+
+export { theme };
 
 function withRoot(Component: ComponentType<*>) {
   function WithRoot(props: Object) {

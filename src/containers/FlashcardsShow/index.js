@@ -143,7 +143,7 @@ const FlashcardsShow = () => {
       if (showLoading) setIsLoadingFlashcards(true);
       getFlashcards({
         flashcardId,
-        userId: me.userId
+        userId: me.userId,
       }).then((rsp) => {
         setData(rsp);
         if (showLoading) setIsLoadingFlashcards(false);
@@ -170,7 +170,7 @@ const FlashcardsShow = () => {
   const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
     useIdleTimer({
       timeout,
-      onActive: handleOnActive
+      onActive: handleOnActive,
     });
 
   const initializeTimer = useCallback(() => {
@@ -202,7 +202,7 @@ const FlashcardsShow = () => {
       bookmarkFlashcards(me.userId, data.feedId, data.bookmarked, () =>
         setData(
           update(data, {
-            bookmarked: { $set: !data.bookmarked }
+            bookmarked: { $set: !data.bookmarked },
           })
         )
       )
@@ -260,8 +260,8 @@ const FlashcardsShow = () => {
         elapsed: elapsed.current,
         total_idle_time: totalIdleTime.current,
         effective_time: elapsed.current - totalIdleTime.current,
-        platform: 'Web'
-      }
+        platform: 'Web',
+      },
     });
     setIsReviewing(false);
   }, [data.postId]);
@@ -310,6 +310,13 @@ const FlashcardsShow = () => {
   const handleGoBack = useCallback(() => {
     dispatch(goBack());
   }, [dispatch]);
+
+  const DeckList = useMemo(
+    () => (
+      <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />
+    ),
+    [cardList]
+  );
 
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
@@ -381,7 +388,7 @@ const FlashcardsShow = () => {
           } Deck (${data.deck.length})`}
         </Typography>
       </Box>
-      <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />
+      {DeckList}
     </>
   );
 
@@ -647,4 +654,4 @@ const FlashcardsShow = () => {
   );
 };
 
-export default withRoot(FlashcardsShow);
+export default FlashcardsShow;
