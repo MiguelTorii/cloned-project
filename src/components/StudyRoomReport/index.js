@@ -229,7 +229,7 @@ const ReportIssue = ({
               ))}
             </Select>
             <FormHelperText className={classes.helperText}>
-              User may be temporarily or permenantly removed from CircleIn.
+              User may be temporarily or permanently removed from CircleIn
             </FormHelperText>
           </FormControl>
 

@@ -17,9 +17,9 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
 import Dialog from 'components/Dialog';
 import SimpleErrorDialog from 'components/SimpleErrorDialog';
+import cx from 'classnames';
 import { report, getReasons } from '../../api/posts';
 import type { UserState } from '../../reducers/user';
-import cx from 'classnames';
 import styles from '../_styles/Report';
 
 type Props = {
@@ -52,8 +52,8 @@ const ReportIssue = ({
       const { report_reasons = [] } = await getReasons(2);
       setReasonList(report_reasons);
     };
-    loadData();
-  }, []);
+    if (open) loadData();
+  }, [open]);
 
   const handleSubmit = useCallback(async () => {
     if (selectedReason.length === 0) {
@@ -170,7 +170,7 @@ const ReportIssue = ({
               )}
             />
             <FormHelperText className={classes.helperText}>
-              User may be temporarily or permenantly removed from CircleIn.
+              User may be temporarily or permanently removed from CircleIn
             </FormHelperText>
           </FormControl>
 
