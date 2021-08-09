@@ -241,9 +241,7 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   handleLoadMore = () => {
-    const {
-      fetchFeed
-    } = this.props;
+    const { fetchFeed } = this.props;
     fetchFeed();
   };
 
@@ -294,33 +292,33 @@ class Feed extends React.PureComponent<Props, State> {
       postId: number,
       feedId: number
     }) =>
-    () => {
-      const { push, updateScrollData, classId } = this.props;
-      const { search } = window.location;
-      const query = queryString.parse(search);
-      const newQuery = queryString.stringify({ ...query, id: feedId });
-      updateScrollData({ position: window.pageYOffset, classId });
-      push(`/feed?${newQuery}`);
-      switch (typeId) {
-        case 3:
-          push(`/flashcards/${postId}${search}`);
-          break;
-        case 4:
-          push(`/notes/${postId}${search}`);
-          break;
-        case 5:
-          push(`/sharelink/${postId}${search}`);
-          break;
-        case 6:
-          push(`/question/${postId}${search}`);
-          break;
-        case 8:
-          push(`/post/${postId}${search}`);
-          break;
-        default:
-          break;
-      }
-    };
+      () => {
+        const { push, updateScrollData, classId } = this.props;
+        const { search } = window.location;
+        const query = queryString.parse(search);
+        const newQuery = queryString.stringify({ ...query, id: feedId });
+        updateScrollData({ position: window.pageYOffset, classId });
+        push(`/feed?${newQuery}`);
+        switch (typeId) {
+          case 3:
+            push(`/flashcards/${postId}${search}`);
+            break;
+          case 4:
+            push(`/notes/${postId}${search}`);
+            break;
+          case 5:
+            push(`/sharelink/${postId}${search}`);
+            break;
+          case 6:
+            push(`/question/${postId}${search}`);
+            break;
+          case 8:
+            push(`/post/${postId}${search}`);
+            break;
+          default:
+            break;
+        }
+      };
 
   openClassmatesDialog = (openClassmates) => () => {
     this.setState({ openClassmates });

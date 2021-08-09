@@ -6,7 +6,7 @@ import type { Dispatch } from '../types/store';
 import type { Feed } from '../types/models';
 import * as feedApi from '../api/feed';
 import * as postsApi from '../api/posts';
-import { FEEDS_PER_PAGE } from "../constants/app";
+import { FEEDS_PER_PAGE } from '../constants/app';
 
 const requestFetchFeed = (): Action => ({
   type: feedActions.FETCH_FEED_REQUEST
@@ -128,15 +128,7 @@ export const fetchFeed =
         }
       } = getState();
 
-      const {
-        userClasses,
-        postTypes,
-        query,
-        from,
-        fromDate,
-        toDate
-      } = filters;
-
+      const { userClasses, postTypes, query, from, fromDate, toDate } = filters;
       dispatch(requestFetchFeed());
       const feed = await feedApi.fetchFeed({
         userId,
@@ -172,8 +164,8 @@ export const clearFeeds = () => async (dispatch) =>
 
 export const updateScrollData =
   (scrollData: { position: number, clasId: number }) =>
-  async (dispatch: Dispatch) =>
-    dispatch(updateScrollDataRequest(scrollData));
+    async (dispatch: Dispatch) =>
+      dispatch(updateScrollDataRequest(scrollData));
 
 export const resetScrollData = () => async (dispatch: Dispatch) =>
   dispatch(resetScrollDataRequest());
@@ -188,81 +180,81 @@ export const updateBookmark =
     userId: string,
     bookmarked: boolean
   }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      postsApi.bookmark({ feedId, userId, remove: bookmarked });
-      dispatch(setBookmark({ feedId, bookmarked }));
-    } catch (err) {
-      dispatch(
-        setError({
-          title: 'Error Updating Bookmark',
-          body: 'Please contact us if the issue persists'
-        })
-      );
-    }
-  };
+    async (dispatch: Dispatch) => {
+      try {
+        postsApi.bookmark({ feedId, userId, remove: bookmarked });
+        dispatch(setBookmark({ feedId, bookmarked }));
+      } catch (err) {
+        dispatch(
+          setError({
+            title: 'Error Updating Bookmark',
+            body: 'Please contact us if the issue persists'
+          })
+        );
+      }
+    };
 
 export const searchFeed =
   ({ query }: { query: string }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      await dispatch(clearFeeds());
-      dispatch(requestSearchFeed());
-      const feed = await feedApi.queryFeed({
-        query
-      });
+    async (dispatch: Dispatch) => {
+      try {
+        await dispatch(clearFeeds());
+        dispatch(requestSearchFeed());
+        const feed = await feedApi.queryFeed({
+          query
+        });
 
-      dispatch(updateSearchFeed({ feed }));
-    } catch (err) {
-      dispatch(
-        setError({
-          title: 'Error Fetching Feed',
-          body: 'Please contact us if the issue persists'
-        })
-      );
-    }
-  };
+        dispatch(updateSearchFeed({ feed }));
+      } catch (err) {
+        dispatch(
+          setError({
+            title: 'Error Fetching Feed',
+            body: 'Please contact us if the issue persists'
+          })
+        );
+      }
+    };
 
 export const updateFilter =
   ({ field, value }: { field: string, value: string | number }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      await dispatch(clearFeeds());
-      await dispatch(
-        updateFeedFilterFieldRequest({
-          field,
-          value
-        })
-      );
-    } catch (err) {
-      dispatch(
-        setError({
-          title: 'Error Updating Filter',
-          body: 'Please contact us if the issue persists'
-        })
-      );
-    }
-  };
+    async (dispatch: Dispatch) => {
+      try {
+        await dispatch(clearFeeds());
+        await dispatch(
+          updateFeedFilterFieldRequest({
+            field,
+            value
+          })
+        );
+      } catch (err) {
+        dispatch(
+          setError({
+            title: 'Error Updating Filter',
+            body: 'Please contact us if the issue persists'
+          })
+        );
+      }
+    };
 
 export const updateFeedLimit =
   ({ limit }: { limit: number }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      await dispatch(
-        updateFeedLimitRequest({
-          limit
-        })
-      );
-      dispatch(fetchFeed());
-    } catch (err) {
-      dispatch(
-        setError({
-          title: 'Error Updating Limit',
-          body: 'Please contact us if the issue persists'
-        })
-      );
-    }
-  };
+    async (dispatch: Dispatch) => {
+      try {
+        await dispatch(
+          updateFeedLimitRequest({
+            limit
+          })
+        );
+        dispatch(fetchFeed());
+      } catch (err) {
+        dispatch(
+          setError({
+            title: 'Error Updating Limit',
+            body: 'Please contact us if the issue persists'
+          })
+        );
+      }
+    };
 
 export const clearFilter = () => async (dispatch: Dispatch) => {
   try {

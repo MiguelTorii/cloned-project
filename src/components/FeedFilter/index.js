@@ -109,9 +109,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
         return {
           ...sc,
           sectionId: sc.section?.[0]?.sectionId
-        }
-      })
-      this.setState({ selectedUserClasses })
+        };
+      });
+      this.setState({ selectedUserClasses });
     }
   };
 
@@ -191,16 +191,13 @@ class FeedFilter extends React.PureComponent<Props, State> {
 
   handleRemoveFilter = (id) => () => {
     let currentPropTypes = [];
-    const { onApplyFilters } = this.props;
-    const { postTypes, userClasses } = this.state;
+    const { onApplyFilters, userClasses } = this.props;
+    const { postTypes } = this.state;
 
     if (id !== 'all') {
       currentPropTypes = postTypes.filter((postType) => postType !== id);
     }
     this.setState({ postTypes: currentPropTypes });
-    const userClassesValues = userClasses
-      ? userClasses.map((uc) => uc.value)
-      : [];
 
     const filters = [
       {
@@ -209,7 +206,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       },
       {
         name: 'userClasses',
-        value: userClassesValues
+        value: userClasses
       }
     ];
     onApplyFilters(filters);
@@ -223,12 +220,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   handleApplyFilters = () => {
-    const { onApplyFilters } = this.props;
-    const { postTypes, userClasses } = this.state;
-
-    const userClassesValues = userClasses
-      ? userClasses.map((uc) => uc.value)
-      : [];
+    const { onApplyFilters, userClasses } = this.props;
+    const { postTypes } = this.state;
 
     const filters = [
       {
@@ -237,7 +230,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       },
       {
         name: 'userClasses',
-        value: userClassesValues
+        value: userClasses
       }
     ];
     onApplyFilters(filters);
@@ -284,7 +277,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const isUserClassesSelected = userClasses.length > 0;
 
     return (
-      <Fragment>
+      <>
         <Paper className={classes.root} elevation={0}>
           <div className={classes.filtersHeader}>
             <InputBase
@@ -509,7 +502,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             </Grid>
           </Grid>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

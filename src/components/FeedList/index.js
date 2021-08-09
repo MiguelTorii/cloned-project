@@ -40,7 +40,6 @@ type Props = {
 type State = {};
 
 class FeedList extends React.PureComponent<Props, State> {
-
   selectedRef: {
     // eslint-disable-next-line no-undef
     el: ?HTMLDivElement
@@ -178,7 +177,7 @@ class FeedList extends React.PureComponent<Props, State> {
 
     return (
       <div className={`${classes.container} tour-onboarding-feed`}>
-        {isLoading && items.length === 0 && (
+        {isLoading && !isFiltering && items.length === 0 && (
           <>
             <Box display="flex" justifyContent="center">
               <img
@@ -250,7 +249,7 @@ class FeedList extends React.PureComponent<Props, State> {
               </div>
             }
           >
-            {items.map(item => (
+            {items.map((item) => (
               <Paper className={classes.root} elevation={0}>
                 <FeedItem
                   key={item.feedId}
@@ -259,7 +258,7 @@ class FeedList extends React.PureComponent<Props, State> {
                   userId={userId}
                   data={item}
                   handleShareClick={handleShare}
-                  innerRef={node => {
+                  innerRef={(node) => {
                     if (fromFeedId === item.feedId) this.selectedRef = node;
                   }}
                   onPostClick={onPostClick}
@@ -275,8 +274,7 @@ class FeedList extends React.PureComponent<Props, State> {
                   newComments={this.newComments}
                 />
               </Paper>
-            ))
-            }
+            ))}
           </InfiniteScroll>
         )}
       </div>
