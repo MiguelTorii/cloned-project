@@ -128,9 +128,10 @@ const Main = ({
     [channel, local]
   );
 
-  const hasUnregistered = useMemo(() => {
-    return Boolean(memberKeys.find((key) => !members[key].registered));
-  }, [memberKeys, members]);
+  const hasUnregistered = useMemo(
+    () => Boolean(memberKeys.find((key) => !members[key].registered)),
+    [memberKeys, members]
+  );
 
   const {
     expertMode,
@@ -462,7 +463,7 @@ const Main = ({
         {channel && (
           <Grid container justify="space-between">
             <Typography className={classes.headerTitle}>
-              {localChannel.title}
+              {localChannel?.title}
             </Typography>
             {(otherUser?.registered || memberKeys.length > 2) && videoEnabled && (
               <Button

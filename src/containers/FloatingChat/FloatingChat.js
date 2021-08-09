@@ -182,7 +182,7 @@ const FloatingChat = ({
         .filter(
           (l) =>
             local[l].sid &&
-            !local[l].twilioChannel.channelState?.attributes?.community_id
+            !local[l]?.twilioChannel?.channelState?.attributes?.community_id
         )
         .sort((a, b) => {
           if (!local[a].lastMessage.message) return 0;
