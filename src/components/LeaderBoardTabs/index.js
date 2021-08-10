@@ -244,7 +244,7 @@ const LeaderBoardTabs = ({
                   </div>
                 </div>
                 <div className={classes.footnote}>
-                  *Must earn 200k points in a week to earn an MVP.
+                  *Must earn 300k points in a week to earn an MVP.
                 </div>
                 <div className={classes.footnote}>
                   Learn more about how to qualify by clicking more info
@@ -264,8 +264,7 @@ const LeaderBoardTabs = ({
             <span className={classes.count}>{tuesdayPoints}</span>
           </div>
           <div className={classes.footnote}>
-            *You must earn a minimum of 200,000 points on CircleIn to qualify
-            for Monthly Rewards
+            *To become eligible to win Monthly Rewards, earn 450,000 points in a calendar month. No more than 150,000 points can come from the same category (flashcards, sharing notes, etc.)
           </div>
         </div>
         <div className={classes.rewardContainer}>
