@@ -25,12 +25,15 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
       first_tuesday_reward: {
         time_left: { time: timeTuesday, label: labelTuesday },
         slots,
-        current_month_points_display_name: currentMonthPointsDisplayName
+        current_month_points_display_name: currentMonthPointsDisplayName,
+        eligibility: eligibilityTuesday
       },
       grand_prize: {
         time_left: { time: timeGrand, label: labelGrand },
         logo_url: logo,
-        grand_prize_text: text
+        grand_prize_text: text,
+        eligibility: eligibilityGrand,
+        eligibility_subtitle
       }
     } = res;
     const camelSlots = slots.map((s) => ({
@@ -47,6 +50,7 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
           time: timeTuesday,
           label: labelTuesday
         },
+        eligibility: eligibilityTuesday,
         slots: camelSlots,
         currentMonthPointsDisplayName
       },
@@ -56,7 +60,9 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
           label: labelGrand
         },
         logo,
-        text
+        text,
+        eligibility: eligibilityGrand,
+        eligibilitySubtitle: eligibility_subtitle
       }
     };
 

@@ -240,14 +240,13 @@ const LeaderBoardTabs = ({
                     <div className={classes.highlight}>
                       Eligibility Requirements*
                     </div>
-                    <div className={classes.labelSmall}>{eligibility}</div>
+                    <div className={classes.labelSmall}>
+                      {leaderboard.data.general.grand.eligibility || ''}
+                    </div>
                   </div>
                 </div>
                 <div className={classes.footnote}>
-                  *Must earn 300k points in a week to earn an MVP.
-                </div>
-                <div className={classes.footnote}>
-                  Learn more about how to qualify by clicking more info
+                  {leaderboard.data.general.grand.eligibilitySubtitle || ''}
                 </div>
               </div>
             </div>
@@ -264,7 +263,7 @@ const LeaderBoardTabs = ({
             <span className={classes.count}>{tuesdayPoints}</span>
           </div>
           <div className={classes.footnote}>
-            *To become eligible to win Monthly Rewards, earn 450,000 points in a calendar month. No more than 150,000 points can come from the same category (flashcards, sharing notes, etc.)
+            {leaderboard.data.general.tuesday.eligibility || ''}
           </div>
         </div>
         <div className={classes.rewardContainer}>

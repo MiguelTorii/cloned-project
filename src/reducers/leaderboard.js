@@ -79,7 +79,8 @@ const defaultState = {
           label: ''
         },
         slots: [],
-        currentMonthPointsDisplayName: ''
+        currentMonthPointsDisplayName: '',
+        eligibility: ''
       },
       grand: {
         timeLeft: {
@@ -87,7 +88,9 @@ const defaultState = {
           label: ''
         },
         logo: '',
-        text: ''
+        text: '',
+        eligibility: '',
+        eligibilitySubtitle: ''
       }
     },
     grand: {
