@@ -149,8 +149,8 @@ const DirectChat = ({
     const channelList = Object.keys(local)
       .filter(
         (l) =>
-          local[l].sid &&
-          !local[l].twilioChannel.channelState?.attributes?.community_id
+          local[l]?.sid &&
+          !local[l]?.twilioChannel?.channelState?.attributes?.community_id
       )
       .sort((a, b) => {
         if (local[a].lastMessage.message === '') return 0;
