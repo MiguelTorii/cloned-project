@@ -326,7 +326,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
         );
       }
 
-      dispatch(setCurrentChannel(currentLocal[channelList[0]].twilioChannel));
+      dispatch(setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel));
     }
     dispatch(initLocal({ local }));
   } catch (e) {
@@ -376,7 +376,7 @@ export const openChannelWithEntity =
         if (currentChannel) {
           dispatch(
             setCurrentChannelAction({
-              currentChannel: currentChannel.twilioChannel
+              currentChannel: currentChannel?.twilioChannel
             })
           );
           if (notRegistered) {
