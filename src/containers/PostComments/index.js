@@ -264,7 +264,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
       readOnly,
       hasBestAnswer,
       isOwner,
-      isCurrent
+      classId
     } = this.props;
     const { comments, items, isLoading, loadViewMoreComment, replyCommentId } =
       this.state;
@@ -310,7 +310,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     onReport={this.handleReport}
                     onBestAnswer={this.handleBestAnswer}
                     userId={userId}
-                    isCurrent={isCurrent}
+                    isCurrent={() => this.isCurrent(classId)}
                   />
                   {item.children.reverse().map((reply) => (
                     <PostItemComment
@@ -344,7 +344,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                       onReport={this.handleReport}
                       onBestAnswer={this.handleBestAnswer}
                       userId={userId}
-                      isCurrent={isCurrent}
+                      isCurrent={() => this.isCurrent(classId)}
                     />
                   ))}
                 </div>
@@ -380,7 +380,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
                     onDelete={this.handleDelete}
                     onReport={this.handleReport}
                     onBestAnswer={this.handleBestAnswer}
-                    isCurrent={isCurrent}
+                    isCurrent={() => this.isCurrent(classId)}
                   />
                   {!!replyCommentId && <SkeletonLoad />}
                 </div>

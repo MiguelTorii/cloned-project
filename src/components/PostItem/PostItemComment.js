@@ -315,7 +315,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
           </div>
         </div>
 
-        {isCurrent && (
+        {isCurrent() && (
           <IconButton onClick={this.handleMenuOpen}>
             <MoreVertIcon />
           </IconButton>
@@ -388,7 +388,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
                 </IconButton>
               )}
 
-              {isCurrent && (
+              {isCurrent() && (
                 <Typography
                   component="p"
                   variant="subtitle2"
