@@ -71,7 +71,7 @@ const CommunityChat = ({
 
     if (currentSelectedChannel) {
       if (['xs'].includes(width)) setLeftSpace(0);
-      setCurrentCommunityChannel(currentSelectedChannel.twilioChannel);
+      setCurrentCommunityChannel(currentSelectedChannel?.twilioChannel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel, setCurrentCommunityChannel, width]);
