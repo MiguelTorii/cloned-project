@@ -81,7 +81,10 @@ const useStyles = makeStyles((theme) => ({
   },
   selectClassmates: {
     backgroundColor: theme.circleIn.palette.appBar,
-    marginTop: theme.spacing()
+    marginTop: theme.spacing(),
+    '&> :first-child': {
+      padding: 0
+    }
   }
 }));
 

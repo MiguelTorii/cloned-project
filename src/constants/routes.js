@@ -126,7 +126,8 @@ export const API_ROUTES = {
   ANNOUNCEMENT: `${API_URL}/announcement`,
   ONBOARDING_STATUS: `${API_URL}/onboarding/status`,
   GET_ANNOUNCEMENT_CAMPAIGN: `${API_URL}/campaigns/12/variations/me`,
-  GET_COMMUNITY: `${API_URL}/community`,
+  GET_COMMUNITY: `${API_URL_V1_1}/community`,
+  GET_COMMUNITY_V1: `${API_URL}/community`,
   WEEKLY_STUDY_GOALS: `${API_URL_V1_2}/home/study_goals`,
   HOME_GREETINGS: `${API_URL_V1_2}/home/greeting`
 };

@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
 import { PERMISSIONS } from 'constants/common';
 import * as chatActions from 'actions/chat';
 import { sendMessage, createChannel } from 'api/chat';
@@ -21,23 +21,14 @@ import SelectClassmates from './SelectClassmates';
 const styles = (theme) => ({
   validatorForm: {
     flex: 1,
-    padding: theme.spacing(3),
     minWidth: 350,
+    maxWidth: 520,
     display: 'flex',
     flexDirection: 'column'
   },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  typography: {
-    fontSize: 20,
-    color: 'white'
-  },
   shortDescription: {
     fontSize: 16,
-    margin: theme.spacing(1, 0, 2, 0)
+    margin: theme.spacing(2)
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -56,7 +47,6 @@ const styles = (theme) => ({
   },
   createDM: {
     marginTop: theme.spacing(),
-    width: '100%',
     fontWeight: 'bold',
     color: 'white',
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
@@ -72,6 +62,9 @@ const styles = (theme) => ({
     '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.circleIn.palette.gray3
     }
+  },
+  emptyOption: {
+    marginTop: theme.spacing(2)
   },
   helperText: {
     color: theme.circleIn.palette.darkTextColor,
@@ -101,7 +94,6 @@ const styles = (theme) => ({
 type Props = {
   classes: Object,
   user: UserState,
-  onClosePopover: Function,
   onOpenChannel: Function,
   setIsOpen: Function,
   createMessage: Object,
@@ -114,7 +106,6 @@ type Props = {
 const CreateChatChannelInput = ({
   classes,
   user,
-  onClosePopover,
   createMessage,
   setIsOpen,
   onOpenChannel,
@@ -139,6 +130,7 @@ const CreateChatChannelInput = ({
   const {
     data: { client }
   } = chat;
+  // ONE_TOUCH_SEND_CHAT
 
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') setChatType('group');
@@ -282,15 +274,10 @@ const CreateChatChannelInput = ({
 
   return (
     <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
-      <div className={classes.header}>
-        <Typography className={classes.typography} variant="h6">
-          SELECT CLASSMATES
-        </Typography>
-        <CloseIcon className={classes.closeIcon} onClick={onClosePopover} />
-      </div>
       <Typography className={classes.shortDescription}>
         Invite up to one or more classmates to chat.
       </Typography>
+
       <div className={classes.form}>
         <div className={classes.inputContainer}>
           <SelectClassmates
@@ -335,14 +322,21 @@ const CreateChatChannelInput = ({
           />
         )}
 
-        <Button
-          className={classes.createDM}
-          variant="contained"
-          onClick={handleSubmit}
-          color="primary"
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          width={1}
         >
-          Create New Message
-        </Button>
+          <Button
+            className={classes.createDM}
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+          >
+            Create New Message
+          </Button>
+        </Box>
       </div>
     </ValidatorForm>
   );

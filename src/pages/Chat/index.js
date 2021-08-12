@@ -29,7 +29,7 @@ const ChatPage = () => {
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container justify="center" className={classes.container}>
+        <Grid container justifyContent="center" className={classes.container}>
           <Chat />
         </Grid>
       </Layout>

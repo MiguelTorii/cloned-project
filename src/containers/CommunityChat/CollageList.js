@@ -41,9 +41,9 @@ const CollageList = ({
       {!!courseChannels.length &&
         communities.map((course) => (
           <CommunityMenu
-            key={course.id}
+            key={course.community.id}
             local={local}
-            item={course}
+            item={course.community}
             courseChannels={courseChannels}
             unreadMessageCount={unreadMessageCount}
             selectedCourse={selectedCourse}
