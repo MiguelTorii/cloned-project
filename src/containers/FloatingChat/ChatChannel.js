@@ -366,14 +366,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
     try {
       if (paginator.hasPrevPage) {
         paginator.prevPage().then((result) => {
-          this.setState((prevState) => {
-            return {
-              messages: [...result.items, ...prevState.messages],
-              paginator: result,
-              hasMore: !(!result.hasPrevPage || result.items.length < 10),
-              scroll: false
-            };
-          });
+          this.setState((prevState) => ({
+            messages: [...result.items, ...prevState.messages],
+            paginator: result,
+            hasMore: !(!result.hasPrevPage || result.items.length < 10),
+            scroll: false
+          }));
         });
       }
     } catch (err) {
@@ -510,40 +508,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
   };
 
-  unregisteredUserMessage = () => {
-    const { user, channel, classes, getMembers } = this.props;
-    const { messages } = this.state;
-    if (!channel?.sid) return null;
-    const members = getMembers(channel);
-    const keys = Object.keys(members);
-    const otherUser =
-      keys.length !== 2
-        ? null
-        : members[keys.find((key) => key !== user.data.userId)];
-    const hasUnregistered = Boolean(
-      keys.find((key) => !members[key].registered)
-    );
-    if (otherUser && hasUnregistered && messages.length > 0) {
-      return (
-        <Typography className={classes.unregisteredMessage}>
-          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a
-          notification to log on and respond to you.
-        </Typography>
-      );
-    }
-
-    if (hasUnregistered && messages.length > 0) {
-      return (
-        <Typography className={classes.unregisteredMessage}>
-          Some of your classmates on this chat have not logged into CircleIn
-          yet. We've sent them an email to let them know to join this chat.
-        </Typography>
-      );
-    }
-
-    return null;
-  };
-
   render() {
     const {
       classes,
@@ -589,7 +553,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     });
 
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <ChatItem
             title={title}
@@ -658,7 +622,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
                 >{`${typing} is typing ...`}</Typography>
               </div>
             )}
-            {this.unregisteredUserMessage()}
             <ChatTextField
               expanded={expanded}
               onSendMessage={this.handleSendMessage}
@@ -692,7 +655,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onClose={this.handleImageClose}
           />
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 }

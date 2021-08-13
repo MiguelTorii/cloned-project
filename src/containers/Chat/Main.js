@@ -128,11 +128,6 @@ const Main = ({
     [channel, local]
   );
 
-  const hasUnregistered = useMemo(
-    () => Boolean(memberKeys.find((key) => !members[key].registered)),
-    [memberKeys, members]
-  );
-
   const {
     expertMode,
     data: { userId, firstName, lastName }
@@ -427,35 +422,6 @@ const Main = ({
     [campaign]
   );
 
-  const unregisteredUserMessage = useMemo(() => {
-    if (newChannel) return null;
-    if (otherUser && hasUnregistered && messageItems.length !== 1) {
-      return (
-        <Typography className={classes.unregisteredMessage}>
-          {otherUser.firstname} hasn't logged into CircleIn yet. We’ve sent a
-          notification to log on and respond to you.
-        </Typography>
-      );
-    }
-
-    if (hasUnregistered && messageItems.length !== 1) {
-      return (
-        <Typography className={classes.unregisteredMessage}>
-          Some of your classmates on this chat have not logged into CircleIn
-          yet. We've sent them an email to let them know to join this chat.
-        </Typography>
-      );
-    }
-
-    return null;
-  }, [
-    classes.unregisteredMessage,
-    hasUnregistered,
-    messageItems.length,
-    newChannel,
-    otherUser
-  ]);
-
   return (
     <div className={classes.root}>
       <div className={classes.header}>
@@ -519,7 +485,6 @@ const Main = ({
           </Typography>
         </div>
       )}
-      {unregisteredUserMessage}
       {channel && (
         <ChatTextField
           onSendMessage={onSendMessage}
