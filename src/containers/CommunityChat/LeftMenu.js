@@ -13,11 +13,13 @@ import Fuse from 'fuse.js';
 
 import ChatListItem from 'components/CommunityChatListItem';
 import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput';
+import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
 import Dialog from 'components/Dialog';
 import MainChatItem from 'components/CommunityChatListItem/MainChatItem';
 import EmptyLeftMenu from 'containers/CommunityChat/EmptyLeftMenu';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import { getTitle } from 'utils/chat';
+import { PERMISSIONS } from 'constants/common';
 import useStyles from './_styles/leftMenu';
 
 type Props = {
@@ -62,9 +64,14 @@ const LeftMenu = ({
   const [searchChannels, setSearchChannels] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const switchOneTouchSend = () =>
+    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS);
+
   const handleCreateNewChannel = () => {
     setIsOpen(true);
-    onNewChannel();
+    if (!switchOneTouchSend()) {
+      onNewChannel();
+    }
   };
 
   const handleClose = async () => {
@@ -159,13 +166,23 @@ const LeftMenu = ({
           showHeader={false}
           showActions={false}
         >
-          <CreateChatChannelInput
-            setIsOpen={setIsOpen}
-            onClosePopover={handleClose}
-            onOpenChannel={onOpenChannel}
-            permission={permission}
-            handleUpdateGroupName={handleUpdateGroupName}
-          />
+          {switchOneTouchSend() ? (
+            <OneTouchSend
+              setIsOpen={setIsOpen}
+              onClosePopover={handleClose}
+              onOpenChannel={onOpenChannel}
+              permission={permission}
+              handleUpdateGroupName={handleUpdateGroupName}
+            />
+          ) : (
+            <CreateChatChannelInput
+              setIsOpen={setIsOpen}
+              onClosePopover={handleClose}
+              onOpenChannel={onOpenChannel}
+              permission={permission}
+              handleUpdateGroupName={handleUpdateGroupName}
+            />
+          )}
         </Dialog>
         <Grid
           item

@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
 import { PERMISSIONS } from 'constants/common';
 import * as chatActions from 'actions/chat';
 import { sendMessage, createChannel } from 'api/chat';
@@ -16,112 +16,33 @@ import { searchUsers } from 'api/user';
 import type { UserState } from 'reducers/user';
 import type { ChatState } from 'reducers/chat';
 import { getInitials } from 'utils/chat';
+import styles from 'components/_styles/CreateCommunityChatChannelInput/sendStudent';
 import SelectClassmates from './SelectClassmates';
-
-const styles = (theme) => ({
-  validatorForm: {
-    flex: 1,
-    padding: theme.spacing(3),
-    minWidth: 350,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  typography: {
-    fontSize: 20,
-    color: 'white'
-  },
-  shortDescription: {
-    fontSize: 16,
-    margin: theme.spacing(1, 0, 2, 0)
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexDirection: 'column'
-  },
-  inputContainer: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: theme.circleIn.palette.feedBackground,
-    borderRadius: theme.spacing(),
-    boxSizing: 'border-box',
-    boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
-    marginBottom: theme.spacing()
-  },
-  createDM: {
-    marginTop: theme.spacing(),
-    width: '100%',
-    fontWeight: 'bold',
-    color: 'white',
-    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
-    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
-    borderRadius: 20
-  },
-  groupName: {
-    marginTop: theme.spacing(),
-    backgroundColor: theme.circleIn.palette.feedBackground,
-    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.circleIn.palette.gray3
-    },
-    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.circleIn.palette.gray3
-    }
-  },
-  helperText: {
-    color: theme.circleIn.palette.darkTextColor,
-    backgroundColor: theme.circleIn.palette.appBar,
-    fontSize: 12,
-    lineHeight: '16px',
-    textAlign: 'right',
-    margin: 0
-  },
-  input: {
-    display: 'none'
-  },
-  labelText: {
-    color: `${theme.circleIn.palette.secondaryText} !important`,
-    fontSize: 16
-  },
-  notchedOutline: {
-    borderColor: 'white'
-  },
-  name: {
-    color: theme.circleIn.palette.darkTextColor,
-    fontSize: 14,
-    lineHeight: '19px'
-  }
-});
 
 type Props = {
   classes: Object,
   user: UserState,
-  onClosePopover: Function,
   onOpenChannel: Function,
   setIsOpen: Function,
   createMessage: Object,
   handleClearCreateMessage: Function,
   chat: ChatState,
   permission: Array,
-  handleUpdateGroupName: Function
+  handleUpdateGroupName: Function,
+  onClosePopover: Function
 };
 
 const CreateChatChannelInput = ({
   classes,
   user,
-  onClosePopover,
   createMessage,
   setIsOpen,
   onOpenChannel,
   handleClearCreateMessage,
   chat,
   permission,
-  handleUpdateGroupName
+  handleUpdateGroupName,
+  onClosePopover
 }: Props) => {
   const [chatType, setChatType] = useState('single');
   const [name, setName] = useState('');
@@ -139,6 +60,7 @@ const CreateChatChannelInput = ({
   const {
     data: { client }
   } = chat;
+  // ONE_TOUCH_SEND_CHAT
 
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') setChatType('group');
@@ -282,15 +204,10 @@ const CreateChatChannelInput = ({
 
   return (
     <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
-      <div className={classes.header}>
-        <Typography className={classes.typography} variant="h6">
-          SELECT CLASSMATES
-        </Typography>
-        <CloseIcon className={classes.closeIcon} onClick={onClosePopover} />
-      </div>
       <Typography className={classes.shortDescription}>
         Invite up to one or more classmates to chat.
       </Typography>
+
       <div className={classes.form}>
         <div className={classes.inputContainer}>
           <SelectClassmates
@@ -335,14 +252,28 @@ const CreateChatChannelInput = ({
           />
         )}
 
-        <Button
-          className={classes.createDM}
-          variant="contained"
-          onClick={handleSubmit}
-          color="primary"
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          width={1}
         >
-          Create New Message
-        </Button>
+          <Button
+            className={classes.cancelBtn}
+            color="primary"
+            onClick={onClosePopover}
+          >
+            Cancel
+          </Button>
+          <Button
+            className={classes.createDM}
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+          >
+            Create New Message
+          </Button>
+        </Box>
       </div>
     </ValidatorForm>
   );

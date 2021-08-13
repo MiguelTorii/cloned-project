@@ -65,6 +65,17 @@ export const fetchAvatars = async (channel: Object) => {
   }
 };
 
+const capitalize = (string) => {
+  if (typeof string !== 'string') return '';
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export const getChannelName = (chatName) => {
+  const name = chatName.replaceAll('-', ' ');
+
+  return capitalize(name);
+};
+
 export const getAvatar = ({
   id,
   profileURLs

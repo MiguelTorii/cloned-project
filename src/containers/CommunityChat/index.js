@@ -19,7 +19,12 @@ type Props = {
   setCurrentCourse: Function
 };
 
-const ChatPage = ({ chat, setCurrentCourse }: Props) => {
+const ChatPage = ({
+  chat,
+  setCurrentCourse,
+  setCommunityList,
+  setCommunityChannels
+}: Props) => {
   const {
     data: { local },
     isLoading
@@ -36,35 +41,47 @@ const ChatPage = ({ chat, setCurrentCourse }: Props) => {
   const [communityList, setCommunities] = useState([]);
 
   const fetchCommunityChannels = async (communities) => {
-    const promises = communities.map(async (course) => {
-      const { community_channels: communityChannels } =
-        await getCommunityChannels({ communityId: course.id });
-      return communityChannels;
-    });
+    try {
+      const promises = communities.map(async (course) => {
+        if (course?.community) {
+          const { community_channels: communityChannels } =
+            await getCommunityChannels({ communityId: course.community.id });
+          return communityChannels;
+        }
+      });
 
-    const channels = await Promise.all(promises);
-    const communityChannels = channels.map((channel) => {
-      if (channel.length) {
+      const channels = await Promise.all(promises);
+      const communityChannels = channels.map((channel) => {
+        if (channel.length) {
+          return {
+            courseId: channel[0].community_id,
+            channels: channel
+          };
+        }
         return {
           courseId: channel[0].community_id,
-          channels: channel
+          channels: []
         };
-      }
-      return {
-        courseId: channel[0].community_id,
-        channels: []
-      };
-    });
-    setCourseChannels(communityChannels);
-    setLoading(false);
+      });
+      setCourseChannels(communityChannels);
+      setCommunityChannels(communityChannels);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     async function fetchCommuniteis() {
-      setLoading(true);
-      const { communities } = await getCommunities();
-      if (communities.length) await fetchCommunityChannels(communities);
-      setCommunities(communities);
+      try {
+        setLoading(true);
+        const { communities } = await getCommunities();
+        if (communities.length) await fetchCommunityChannels(communities);
+        setCommunityList(communities);
+        setCommunities(communities);
+      } catch (e) {
+        setLoading(false);
+      }
     }
     setLoading(true);
     fetchCommuniteis();
@@ -136,7 +153,9 @@ const mapStateToProps = ({ chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      setCurrentCourse: chatActions.setCurrentCourse
+      setCurrentCourse: chatActions.setCurrentCourse,
+      setCommunityList: chatActions.setCommunityList,
+      setCommunityChannels: chatActions.setCommunityChannels
     },
     dispatch
   );

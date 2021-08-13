@@ -29,6 +29,8 @@ export type ChatState = {
     newChannel: boolean,
     mainMessage: string,
     currentCourseId: string,
+    communities: Array,
+    communityChannels: Array,
     newMessage: ?Object
   },
   error: boolean,
@@ -107,6 +109,22 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           currentChannel: action.payload.currentChannel
+        }
+      };
+    case chatActions.SET_COMMUNITIES:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          communities: action.payload.communities
+        }
+      };
+    case chatActions.SET_COMMUNITY_CHANNELS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          communityChannels: action.payload.communityChannels
         }
       };
     case chatActions.SET_CURRENT_COMMUNITY_CHANNEL:
@@ -320,7 +338,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
               ...state.data.local[action.payload.member.channel.sid],
               members: state.data.local[
                 action.payload.member.channel.sid
-              ].members.filter(
+              ]?.members.filter(
                 (m) =>
                   Number(m.userId) !== Number(action.payload.member.identity)
               )
