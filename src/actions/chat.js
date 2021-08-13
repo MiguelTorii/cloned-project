@@ -24,6 +24,7 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { getPresignedURL } from '../api/media';
 import { apiUpdateChat } from '../api/chat';
+import { uploadMedia } from './user';
 
 const getAvailableSlots = (width) => {
   try {
@@ -593,19 +594,9 @@ export const handleUpdateGroupPhoto =
     } = getState();
 
     try {
-      const result = await getPresignedURL({
-        userId,
-        type: 5,
-        mediaType: image.type
-      });
+      const result = await uploadMedia(userId, 5, image);
 
-      const { url, readUrl, mediaId } = result;
-
-      await axios.put(url, image, {
-        headers: {
-          'Content-Type': image.type
-        }
-      });
+      const { readUrl, mediaId } = result;
 
       await apiUpdateChat(channelSid, {
         chat_id: channelSid,

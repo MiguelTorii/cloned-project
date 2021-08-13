@@ -1,15 +1,13 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from 'components/_styles/CreateCommunityChatChannelInput/messageQuill';
-
+import { uploadMedia } from '../../actions/user';
 import EditorToolbar, { formats } from './Toolbar';
-import { getPresignedURL } from '../../api/media';
 
 const MessageQuill = ({ classes, onChange, setValue, userId }) => {
   const [loading, setLoading] = useState(false);
@@ -20,20 +18,8 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
       setLoading(true);
       try {
         const file = imageData.toFile('');
-
-        const result = await getPresignedURL({
-          userId,
-          type: 1,
-          mediaType: file.type
-        });
-
-        const { readUrl, url } = result;
-
-        await axios.put(url, file, {
-          headers: {
-            'Content-Type': type
-          }
-        });
+        const result = await uploadMedia(userId, 1, file);
+        const { readUrl } = result;
         setPasteImageUrl(readUrl);
       } catch (e) {
         setLoading(false);
@@ -118,20 +104,8 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
       try {
         const file = input.files[0];
         const range = quill.getSelection(true);
-        const { type } = file;
-        const result = await getPresignedURL({
-          userId,
-          type: 1,
-          mediaType: type
-        });
-        const { readUrl, url } = result;
-
-        await axios.put(url, file, {
-          headers: {
-            'Content-Type': type
-          }
-        });
-
+        const result = await uploadMedia(userId, 1, file);
+        const { readUrl } = result;
         quill.insertEmbed(range.index, 'image', readUrl);
         quill.insertText(range.index + 1, '\n');
         setLoading(false);

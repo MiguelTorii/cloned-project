@@ -88,7 +88,7 @@ export default (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20
+    borderRadius: theme.spacing()
   },
   sendMessageIcon: {
     fontSize: 16,

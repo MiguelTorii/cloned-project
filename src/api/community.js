@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
+import { callApi } from './api_base';
 
 import { getToken } from './utils';
 
@@ -44,38 +45,19 @@ export const getCommunityChannels = async ({
   }
 };
 
-export const getCommunityTemplates = async () => {
-  try {
-    const token = await getToken();
-
-    const result = await axios.get(
-      `${API_ROUTES.GET_COMMUNITY_V1}/template/1`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    const { data } = result;
-    return data;
-  } catch (err) {
-    return null;
-  }
-};
+export const getCommunityTemplates = async () =>
+  callApi({
+    url: `${API_ROUTES.GET_COMMUNITY_V1}/template/1`,
+    method: 'GET'
+  });
 
 export const batchMessage = async ({ message, chatIds }) => {
-  const token = await getToken();
-  const result = await axios.post(
-    API_ROUTES.BATCH_MESSAGE,
-    {
+  callApi({
+    url: API_ROUTES.BATCH_MESSAGE,
+    data: {
       message,
       chat_ids: chatIds
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
-  return result;
+    method: 'post'
+  });
 };
