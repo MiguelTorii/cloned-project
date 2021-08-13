@@ -4,13 +4,13 @@ export default makeStyles((theme) => ({
   toolbar: {
     textAlign: 'center',
     bottom: 0,
-    right: 0,
+    right: theme.spacing(),
     position: 'absolute',
     display: 'flex',
     justifyContent: 'flex-end',
     padding: '0px !important',
     backgroundColor: '#2B2C2C',
-    margin: theme.spacing(1, 1, 1, 0),
+    margin: theme.spacing(1.5, 1, 1.5, 0),
     borderRadius: theme.spacing(2),
     '& .ql-formats': {
       marginRight: '0px !important'

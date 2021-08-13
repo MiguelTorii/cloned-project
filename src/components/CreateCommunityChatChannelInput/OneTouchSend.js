@@ -8,26 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiTabs from 'components/Tabs';
 import * as chatActions from 'actions/chat';
+import styles from 'components/_styles/CreateCommunityChatChannelInput/oneTouchSend';
 import SendStudent from './SendStudent';
 import SendClass from './SendClass';
-
-const styles = (theme) => ({
-  header: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: theme.spacing(2, 2, 1, 2),
-    borderBottom: '1px solid rgba(233, 236, 239, 0.25)'
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: theme.spacing(2)
-  },
-  typography: {
-    fontSize: 20,
-    color: 'white'
-  }
-});
 
 type Props = {
   classes: Object,
@@ -59,11 +42,15 @@ const CreateChatChannelInput = ({
         createMessage={createMessage}
         handleClearCreateMessage={handleClearCreateMessage}
         handleUpdateGroupName={handleUpdateGroupName}
+        onClosePopover={onClosePopover}
       />
     ),
     [onOpenChannel, setIsOpen]
   );
-  const oneTouchSend = useCallback(() => <SendClass />, []);
+  const oneTouchSend = useCallback(
+    () => <SendClass onClosePopover={onClosePopover} />,
+    []
+  );
 
   return (
     <>

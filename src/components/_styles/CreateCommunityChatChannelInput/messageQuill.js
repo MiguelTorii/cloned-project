@@ -12,9 +12,12 @@ export default (theme) => ({
     },
     '& .ql-editor': {
       maxHeight: 500,
+      maxWidth: 489,
       background: '#2B2C2C',
       color: theme.palette.common.white,
       borderRadius: theme.spacing(),
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
       border: '1px solid #5F6165',
       '& > p': {
         '& > img': {
@@ -74,10 +77,6 @@ export default (theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1, 2, 1)
-  },
-  errorMessage: {
-    fontSize: 12,
-    color: theme.circleIn.palette.danger
   },
   loader: {
     position: 'absolute',

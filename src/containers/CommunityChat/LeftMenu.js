@@ -69,7 +69,9 @@ const LeftMenu = ({
 
   const handleCreateNewChannel = () => {
     setIsOpen(true);
-    onNewChannel();
+    if (!switchOneTouchSend()) {
+      onNewChannel();
+    }
   };
 
   const handleClose = async () => {

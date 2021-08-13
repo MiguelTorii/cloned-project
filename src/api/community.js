@@ -62,3 +62,20 @@ export const getCommunityTemplates = async () => {
     return null;
   }
 };
+
+export const batchMessage = async ({ message, chatIds }) => {
+  const token = await getToken();
+  const result = await axios.post(
+    API_ROUTES.BATCH_MESSAGE,
+    {
+      message,
+      chat_ids: chatIds
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return result;
+};

@@ -1,19 +1,17 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback } from 'react';
-import cx from 'classnames';
 import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
 import styles from 'components/_styles/CreateCommunityChatChannelInput/messageQuill';
 
 import EditorToolbar, { formats } from './Toolbar';
 import { getPresignedURL } from '../../api/media';
 
-const MessageQuill = ({ classes, onChange, setValue, userId, showError }) => {
+const MessageQuill = ({ classes, onChange, setValue, userId }) => {
   const [loading, setLoading] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
 
@@ -46,7 +44,7 @@ const MessageQuill = ({ classes, onChange, setValue, userId, showError }) => {
 
   const { quill, quillRef, Quill } = useQuill({
     modules: {
-      toolbar: '#message-toolbar',
+      toolbar: '#one-touch-send',
       imageDropAndPaste: {
         handler: imageHandler
       }
@@ -78,8 +76,8 @@ const MessageQuill = ({ classes, onChange, setValue, userId, showError }) => {
           }
           const currentFocusPosition = quill.getSelection(true).index;
           const leftPosition = quill.getBounds(currentFocusPosition).left;
-          const currentTooltipWidth = document.getElementById('message-toolbar')
-            ? document.getElementById('message-toolbar').clientWidth
+          const currentTooltipWidth = document.getElementById('one-touch-send')
+            ? document.getElementById('one-touch-send').clientWidth
             : 0;
           const currentEditorWidth = quill.container.firstChild.clientWidth;
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
@@ -171,7 +169,7 @@ const MessageQuill = ({ classes, onChange, setValue, userId, showError }) => {
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />
-            <EditorToolbar id="message-toolbar" handleSelect={insertEmoji} />
+            <EditorToolbar id="one-touch-send" handleSelect={insertEmoji} />
           </div>
           {loading && (
             <div className={classes.loader}>
@@ -179,16 +177,6 @@ const MessageQuill = ({ classes, onChange, setValue, userId, showError }) => {
             </div>
           )}
         </div>
-      </div>
-
-      <div className={cx(showError ? classes.error : classes.nonError)}>
-        <Typography
-          component="p"
-          variant="subtitle1"
-          className={classes.errorMessage}
-        >
-          We couldn't send your message for some reason. 😥
-        </Typography>
       </div>
     </div>
   );
