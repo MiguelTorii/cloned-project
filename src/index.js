@@ -65,7 +65,7 @@ import {
   ENV,
   RELEASE,
   HOTJAR_ID,
-  HOTJAR_SV,
+  HOTJAR_SV
 } from './constants/app';
 import withTracker from './withTracker';
 import Chat from './pages/Chat';
@@ -77,7 +77,7 @@ import MasqueradeFrame from './containers/MasqueradeFrame';
 import {
   FlashcardsListPage,
   FlashcardsShowPage,
-  FlashcardsEditPage,
+  FlashcardsEditPage
 } from './pages/Flashcards';
 import Flashcards from './pages/View/Flashcards';
 import HomePage from './pages/Home';
@@ -99,7 +99,7 @@ if (process.env.NODE_ENV !== 'development') {
   sentryInit({
     dsn: SENTRY,
     environment: process.env.REACT_APP_SENTRY_ENV || ENV,
-    release: process.env.REACT_APP_SENTRY_RELEASE || RELEASE,
+    release: process.env.REACT_APP_SENTRY_RELEASE || RELEASE
   });
 }
 
@@ -178,7 +178,7 @@ ReactDOM.render(
                     />
                     <Route
                       exact
-                      path='/home'
+                      path="/home"
                       component={withTracker(HomePage)}
                     />
                     <Route
