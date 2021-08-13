@@ -8,7 +8,17 @@ export default (theme) => ({
     position: 'relative'
   },
   inputRoot: {
-    paddingLeft: `${theme.spacing(4)}px !important`
+    paddingLeft: `${theme.spacing(4)}px !important`,
+    '&> fieldset': {
+      border: '1px solid #5F6165 !important'
+    }
+  },
+  loadingDisable: {
+    color: 'white'
+  },
+  loading: {
+    width: '20px !important',
+    height: '20px !important'
   },
   chip: {
     backgroundColor: 'rgb(196, 89, 96)',

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -44,6 +45,7 @@ const CreateChatChannelInput = ({
   const [templateChannels, setTemplateChannels] = useState([]);
   const [chatIds, setChatIds] = useState([]);
   const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
   const {
@@ -118,6 +120,7 @@ const CreateChatChannelInput = ({
   }, []);
 
   const handleSubmit = useCallback(async () => {
+    setLoading(true);
     try {
       await batchMessage({
         message: value,
@@ -125,8 +128,10 @@ const CreateChatChannelInput = ({
       });
       setShowError(false);
       onClosePopover();
+      setLoading(false);
     } catch (e) {
       setShowError(true);
+      setLoading(false);
     }
   }, [value, chatIds, onClosePopover]);
 
@@ -237,19 +242,36 @@ const CreateChatChannelInput = ({
         >
           Cancel
         </Button>
-        <Button
-          className={cx(showError ? classes.disabled : classes.createDM)}
-          classes={{
-            disabled: classes.disabled
-          }}
-          disabled={!chatIds.length || value === ''}
-          variant="contained"
-          onClick={showError ? handleRetry : handleSubmit}
-          startIcon={showError && <ReplayIcon />}
-          color="primary"
-        >
-          {showError ? 'Retry' : 'Send Message'}
-        </Button>
+        {loading ? (
+          <Button
+            className={classes.createDM}
+            classes={{
+              disabled: classes.loadingDisable
+            }}
+            disabled={loading}
+            variant="contained"
+            startIcon={
+              <CircularProgress className={classes.loading} color="secondary" />
+            }
+            color="primary"
+          >
+            Sending
+          </Button>
+        ) : (
+          <Button
+            className={cx(showError ? classes.disabled : classes.createDM)}
+            classes={{
+              disabled: classes.disabled
+            }}
+            disabled={!chatIds.length || value === ''}
+            variant="contained"
+            onClick={showError ? handleRetry : handleSubmit}
+            startIcon={showError && <ReplayIcon />}
+            color="primary"
+          >
+            {showError ? 'Retry' : 'Send Message'}
+          </Button>
+        )}
       </Box>
     </>
   );

@@ -51,7 +51,7 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
     },
     scrollingContainer: 'editor',
     formats,
-    placeholder: 'Send a message to channel',
+    placeholder: 'Start typing a message',
     preserveWhitespace: true
   });
 

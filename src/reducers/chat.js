@@ -338,7 +338,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
               ...state.data.local[action.payload.member.channel.sid],
               members: state.data.local[
                 action.payload.member.channel.sid
-              ].members.filter(
+              ]?.members.filter(
                 (m) =>
                   Number(m.userId) !== Number(action.payload.member.identity)
               )
