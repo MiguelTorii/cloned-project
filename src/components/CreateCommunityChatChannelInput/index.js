@@ -289,7 +289,7 @@ const CreateChatChannelInput = ({
         <CloseIcon className={classes.closeIcon} onClick={onClosePopover} />
       </div>
       <Typography className={classes.shortDescription}>
-        Invite up to one or more classmates to chat.
+        Invite one or more classmates to chat
       </Typography>
       <div className={classes.form}>
         <div className={classes.inputContainer}>
