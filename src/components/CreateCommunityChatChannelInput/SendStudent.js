@@ -205,7 +205,7 @@ const CreateChatChannelInput = ({
   return (
     <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
       <Typography className={classes.shortDescription}>
-        Invite up to one or more classmates to chat.
+        Invite one or more classmates to chat
       </Typography>
 
       <div className={classes.form}>
