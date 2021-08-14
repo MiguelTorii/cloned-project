@@ -232,7 +232,7 @@ export const unmuteChannel = async (sid): Promise<Object> => {
 export const getChannels = async (): Promise<Object> => {
   try {
     const token = await getToken();
-    const result = await axios.get(`${API_ROUTES.CHAT_V1_1}`, {
+    const result = await axios.get(`${API_ROUTES.CHAT}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
