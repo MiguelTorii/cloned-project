@@ -103,7 +103,7 @@ export const API_ROUTES = {
   NOTIFICATIONS: `${API_URL}/notifications`,
   PING: `${API_URL}/ping`,
   SCHOOL_USERS: `${API_URL}/school`,
-  CHAT: `${API_URL}/chat`,
+  CHAT: `${API_URL_V1_1}/chat`,
   LEADERBOARD: `${API_URL_V1_1}/leaderboard`,
   HOME: `${API_URL}/home`,
   HOME_V1_1: `${API_URL_V1_1}/home`,
