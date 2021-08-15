@@ -46,12 +46,11 @@ export const sendMessage = async ({
   }
 };
 
-export const removeUser = async (userId, chatId) => {
-  return callApi({
+export const removeUser = async (userId, chatId) =>
+  callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/class/members?chat_id=${userId}`,
     method: 'DELETE'
   });
-};
 
 export const sendBatchMessage = async ({
   message,

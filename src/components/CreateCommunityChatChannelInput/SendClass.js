@@ -30,7 +30,8 @@ type Props = {
   classes: Object,
   user: UserState,
   onClosePopover: Function,
-  handleClearCreateMessage: Function,
+  setCurrentCourse: Function,
+  setCurrentCommunityChannel: Function,
   chat: ChatState
 };
 
@@ -38,7 +39,9 @@ const CreateChatChannelInput = ({
   classes,
   chat,
   user,
-  onClosePopover
+  onClosePopover,
+  setCurrentCommunityChannel,
+  setCurrentCourse
 }: Props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectChannel, setSelectedChannel] = useState('');
@@ -49,7 +52,7 @@ const CreateChatChannelInput = ({
   const [showError, setShowError] = useState(false);
 
   const {
-    data: { communityChannels, communities }
+    data: { communityChannels, communities, local }
   } = chat;
 
   const {
@@ -97,8 +100,8 @@ const CreateChatChannelInput = ({
     []
   );
 
-  const handleSelectedClasses = useCallback((e, option) => {
-    setSelectedClasses(option);
+  const handleSelectedClasses = useCallback((e, options) => {
+    setSelectedClasses(options);
   }, []);
 
   const handleSelectedChannel = useCallback((e, option) => {
@@ -122,10 +125,15 @@ const CreateChatChannelInput = ({
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     try {
+      const lastSelectedClassChannelId = chatIds[chatIds.length - 1];
       await batchMessage({
         message: value,
         chatIds
       });
+      setCurrentCourse(
+        selectedClasses[selectedClasses.length - 1]?.community?.id
+      );
+      setCurrentCommunityChannel(lastSelectedClassChannelId?.twilioChannel);
       setShowError(false);
       onClosePopover();
       setLoading(false);
@@ -133,7 +141,14 @@ const CreateChatChannelInput = ({
       setShowError(true);
       setLoading(false);
     }
-  }, [value, chatIds, onClosePopover]);
+  }, [
+    value,
+    local,
+    chatIds,
+    onClosePopover,
+    selectedClasses,
+    setCurrentCourse
+  ]);
 
   const handleRetry = useCallback(() => {
     setShowError(false);
@@ -151,10 +166,12 @@ const CreateChatChannelInput = ({
         options={currentCommunities}
         getOptionLabel={(option) => option.community.name}
         defaultValue={selectedClasses}
+        noOptionsText="No Class"
         filterSelectedOptions
         classes={{
           root: classes.autoComplete,
-          inputRoot: classes.inputRoot
+          inputRoot: classes.inputRoot,
+          noOptions: classes.noOptions
         }}
         onChange={handleSelectedClasses}
         renderTags={(value, getTagProps) =>
@@ -192,8 +209,8 @@ const CreateChatChannelInput = ({
       />
       <Autocomplete
         id="select-channel"
-        freeSolo={!!templateChannels.length}
-        options={templateChannels.map((option) => option.added)}
+        options={templateChannels.map((option) => option.chat_name)}
+        noOptionsText="No Channel"
         classes={{
           root: classes.autoComplete,
           inputRoot: classes.inputRoot,
@@ -285,7 +302,9 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      closeNewChannel: chatActions.closeNewChannel
+      closeNewChannel: chatActions.closeNewChannel,
+      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
     },
     dispatch
   );
