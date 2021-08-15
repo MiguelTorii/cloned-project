@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Grid,
@@ -8,30 +8,26 @@ import {
   Typography,
 } from '@material-ui/core';
 import IconHelp from '@material-ui/icons/HelpOutline';
-import moment from 'moment';
 
-import StudyGoals from 'constants/study-goals';
 import useStyles from './styles';
 import StudyGoalProgress from '../../components/StudyGoalProgress';
 import HelpModal from './HelpModal';
-import MidWeekReportModal from './MidWeekReportModal';
-import EndWeekReportModal from './EndWeekReportModal';
+import ReportModal from './ReportModal';
 import { fetchWeeklyStudyGoals } from '../../api/home';
 import LoadingSpin from '../../components/LoadingSpin';
+import ModalData from './modal-data';
 
 const WeeklyGoals = () => {
   const classes = useStyles();
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
-  const [isMidWeekReportModalOpen, setIsMidWeekReportModalOpen] =
-    useState(false);
-  const [isEndWeekReportModalOpen, setIsEndWeekReportModalOpen] =
-    useState(false);
   const [goals, setGoals] = useState([]);
   const [modalStatus, setModalStatus] = useState({
+    id: 0,
     current: 0,
     goal: 0
   });
   const [loading, setLoading] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -42,31 +38,16 @@ const WeeklyGoals = () => {
     });
   }, []);
 
-  const showMidWeekReport = useMemo(() => moment().day() === 3, []);
-
-  const showEndWeekReport = useMemo(
-    () => moment().day() >= 5 || moment().day() === 0,
-    []
-  );
-
   const handleOpenHelpModal = useCallback(() => setIsHelpModalOpen(true), []);
   const handleCloseHelpModal = useCallback(() => setIsHelpModalOpen(false), []);
 
-  const handleOpenViewMidWeekReportModal = useCallback(
-    () => setIsMidWeekReportModalOpen(true),
-    []
-  );
-  const handleCloseViewMidWeekReportModal = useCallback(
-    () => setIsMidWeekReportModalOpen(false),
+  const handleReportOpenModal = useCallback(
+    () => setIsReportModalOpen(true),
     []
   );
 
-  const handleOpenViewEndWeekReportModal = useCallback(
-    () => setIsEndWeekReportModalOpen(true),
-    []
-  );
-  const handleCloseViewEndWeekReportModal = useCallback(
-    () => setIsEndWeekReportModalOpen(false),
+  const handleCloseReportModal = useCallback(
+    () => setIsReportModalOpen(false),
     []
   );
 
@@ -109,40 +90,27 @@ const WeeklyGoals = () => {
             ))}
           </Grid>
           <Box display="flex" justifyContent="center" mt={3} mb={1}>
-            {showMidWeekReport && (
+            {modalStatus.id > 0 && (
               <Link
                 component="button"
                 underline="none"
-                onClick={handleOpenViewMidWeekReportModal}
+                onClick={handleReportOpenModal}
                 className={classes.reportButton}
               >
-                View Mid-Week Report
-              </Link>
-            )}
-            {showEndWeekReport && (
-              <Link
-                component="button"
-                underline="none"
-                onClick={handleOpenViewEndWeekReportModal}
-                className={classes.reportButton}
-              >
-                View End of Week Report
+                {modalStatus.id > 3 ? 'View End of Week Report' : 'View Mid-Week Report'}
               </Link>
             )}
           </Box>
           <HelpModal open={isHelpModalOpen} onClose={handleCloseHelpModal} />
-          <MidWeekReportModal
-            open={isMidWeekReportModalOpen}
-            onClose={handleCloseViewMidWeekReportModal}
-            value={modalStatus.current}
-            total={modalStatus.goal}
-          />
-          <EndWeekReportModal
-            open={isEndWeekReportModalOpen}
-            onClose={handleCloseViewEndWeekReportModal}
-            value={modalStatus.current}
-            total={modalStatus.goal}
-          />
+          {modalStatus.id > 0 && (
+            <ReportModal
+              data={ModalData[modalStatus.id]}
+              open={isReportModalOpen}
+              onClose={handleCloseReportModal}
+              value={modalStatus.current}
+              total={modalStatus.goal}
+            />
+          )}
         </>
       )}
     </Paper>
