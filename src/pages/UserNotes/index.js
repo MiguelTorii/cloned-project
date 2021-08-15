@@ -6,13 +6,16 @@ import withWidth from '@material-ui/core/withWidth';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout';
 import UserNotesContainer from '../../containers/UserNotes';
+import { NotesContextProvider } from '../../hooks/useNotes';
 
 const UserNotes = () => {
   return (
     <main>
       <CssBaseline />
       <Layout>
-        <UserNotesContainer />
+        <NotesContextProvider>
+          <UserNotesContainer />
+        </NotesContextProvider>
       </Layout>
     </main>
   );
