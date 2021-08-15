@@ -201,6 +201,11 @@ const setCurrentCourseAction = ({ currentCourseId }) => ({
   payload: { currentCourseId }
 });
 
+const setOneTouchSendAction = ({ open }) => ({
+  type: chatActions.SET_OPEN_ONE_TOUCH_SEND,
+  payload: { open }
+});
+
 const createNewChannel = ({
   newChannel,
   openChannels
@@ -295,6 +300,10 @@ export const setCurrentCommunityChannel =
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
     }
   };
+
+export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
+  dispatch(setOneTouchSendAction({ open }));
+};
 
 export const setCurrentCourse =
   (currentCourseId) => async (dispatch: Dispatch) => {

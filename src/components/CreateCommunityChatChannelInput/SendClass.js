@@ -33,6 +33,7 @@ type Props = {
   onClosePopover: Function,
   setCurrentCourse: Function,
   setCurrentCommunityChannel: Function,
+  setOneTouchSend: Function,
   selectCurrentCommunity: Function,
   enqueueSnackbarAction: Function,
   chat: ChatState
@@ -43,6 +44,7 @@ const CreateChatChannelInput = ({
   chat,
   user,
   onClosePopover,
+  setOneTouchSend,
   selectCurrentCommunity,
   enqueueSnackbarAction,
   setCurrentCourse
@@ -144,6 +146,7 @@ const CreateChatChannelInput = ({
       setShowError(false);
       onClosePopover();
       setLoading(false);
+      setOneTouchSend(false);
       enqueueSnackbarAction({
         notification: {
           message: `You successfully sent a message to ${
@@ -167,6 +170,7 @@ const CreateChatChannelInput = ({
     } catch (e) {
       setShowError(true);
       setLoading(false);
+      setOneTouchSend(false);
       enqueueSnackbarAction({
         notification: {
           message: `There was an error sending your message to ${
@@ -196,6 +200,7 @@ const CreateChatChannelInput = ({
     onClosePopover,
     selectedClasses,
     setCurrentCourse,
+    setOneTouchSend,
     selectCurrentCommunity,
     enqueueSnackbarAction
   ]);
@@ -356,6 +361,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentCourse: chatActions.setCurrentCourse,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setOneTouchSend: chatActions.setOneTouchSend,
       enqueueSnackbarAction: enqueueSnackbar
     },
     dispatch

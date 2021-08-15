@@ -62,7 +62,7 @@ import { ReactComponent as HomeIconOff } from 'assets/svg/home-inactive.svg';
 import { ReactComponent as OffStudyRoom } from 'assets/svg/inactive-study-room.svg';
 import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem';
-import BatchMessageDialog from 'containers/BatchMessageDialog';
+// import BatchMessageDialog from 'containers/BatchMessageDialog';
 
 import { useStyles } from '../_styles/MainLayout/Drawer';
 
@@ -80,6 +80,7 @@ const Drawer = ({
   // handleCreatePostMenuOpen,
   handleOpenUseCases,
   handleOpenHowEarnPoints,
+  setOneTouchSend,
   landingPageCampaign,
   expertMode,
   isExpert,
@@ -93,17 +94,17 @@ const Drawer = ({
 }) => {
   const classes = useStyles();
   // const [openClassmates, setOpenClassmates] = useState(null)
-  const [openOneTouchSend, setOpenOneTouchSend] = useState(false);
+  // const [openOneTouchSend, setOpenOneTouchSend] = useState(false);
   const [campaign, setCampaign] = useState(null);
 
   const handleOpenOneTouchSend = useCallback(
-    () => setOpenOneTouchSend(true),
-    []
+    () => setOneTouchSend(true),
+    [setOneTouchSend]
   );
-  const handleCloseOneTouchSend = useCallback(
-    () => setOpenOneTouchSend(false),
-    []
-  );
+  // const handleCloseOneTouchSend = useCallback(
+  //   () => setOpenOneTouchSend(false),
+  //   []
+  // );
 
   // const openClassmatesDialog = useCallback(name => () => {
   // setOpenClassmates(name)
@@ -167,10 +168,10 @@ const Drawer = ({
     () =>
       expertMode && (
         <div>
-          <BatchMessageDialog
+          {/* <BatchMessageDialog
             open={openOneTouchSend}
             closeDialog={handleCloseOneTouchSend}
-          />
+          /> */}
           <DrawerItem
             listItemClass={classNames(
               // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
@@ -261,8 +262,8 @@ const Drawer = ({
       classes.label,
       classes.otherPath,
       expertMode,
-      handleCloseOneTouchSend,
-      openOneTouchSend,
+      // handleCloseOneTouchSend,
+      // openOneTouchSend,
       pathname,
       qs
     ]
@@ -466,9 +467,11 @@ const Drawer = ({
           <DrawerItem
             OnIcon={<OneTouchSendIconOn />}
             primaryText="One-Touch Send"
-            onClick={handleOpenOneTouchSend}
+            component={MyLink}
+            link="/chat"
             OffIcon={<OneTouchSendIconOff />}
             listItemClass={classes.otherPath}
+            onClick={handleOpenOneTouchSend}
           />
         )}
         {!expertMode && (

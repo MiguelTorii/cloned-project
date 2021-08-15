@@ -11,6 +11,7 @@ import Hidden from '@material-ui/core/Hidden';
 import AddRemoveClasses from 'components/AddRemoveClasses';
 import Dialog, { dialogStyle } from 'components/Dialog';
 import { ReferralStatus } from 'containers/Referrals';
+import { getInitials } from 'utils/chat';
 import * as userActions from '../../actions/user';
 import MainLayout from '../../components/MainLayout';
 import type { State as StoreState } from '../../types/state';
@@ -28,7 +29,6 @@ import ErrorBoundary from '../ErrorBoundary';
 import Notifier from '../Notifier';
 import * as notificationsActions from '../../actions/notifications';
 import * as feedActions from '../../actions/feed';
-import { getInitials } from 'utils/chat';
 
 const styles = (theme) => ({
   loader: {
@@ -55,7 +55,8 @@ type Props = {
   fetchFeed: Function,
   updateFilter: Function,
   push: Function,
-  setBannerHeight: Function
+  setBannerHeight: Function,
+  setOneTouchSend: Function
 };
 
 const Layout = ({
@@ -71,7 +72,8 @@ const Layout = ({
   toggleExpertMode,
   updateFilter,
   push,
-  setBannerHeight
+  setBannerHeight,
+  setOneTouchSend
 }: Props) => {
   const [manageClasses, setManageClasses] = useState(false);
   const [manageBlockedUsers, setManageBlockedUsers] = useState(false);
@@ -231,6 +233,7 @@ const Layout = ({
           pathname={pathname}
           updateFeed={updateFeed}
           userClasses={userClasses}
+          setOneTouchSend={setOneTouchSend}
           handleNotificationOpen={handleNotificationOpen}
           handleSignOut={signOut}
           onManageClasses={handleOpenManageClasses}
@@ -310,6 +313,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateFilter: feedActions.updateFilter,
       toggleExpertMode: userActions.toggleExpertMode,
       setBannerHeight: userActions.setBannerHeight,
+      setOneTouchSend: chatActions.setOneTouchSend,
       // getVaiation: userActions.getVaiation,
       push: routePush
     },

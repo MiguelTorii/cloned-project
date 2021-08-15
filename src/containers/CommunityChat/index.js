@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+
 import Box from '@material-ui/core/Box';
 import { getCommunities, getCommunityChannels } from 'api/community';
 import * as chatActions from 'actions/chat';
@@ -14,11 +15,6 @@ import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
 import useStyles from './_styles/styles';
 import type { State as StoreState } from '../../types/state';
 
-type Props = {
-  chat: Object,
-  setCurrentCourse: Function
-};
-
 const ChatPage = ({
   chat,
   setCurrentCourse,
@@ -26,7 +22,7 @@ const ChatPage = ({
   setCommunityChannels
 }: Props) => {
   const {
-    data: { local, currentCommunity, currentCourseId },
+    data: { local, currentCommunity, currentCourseId, oneTouchSendOpen },
     isLoading
   } = chat;
 
@@ -34,9 +30,8 @@ const ChatPage = ({
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(
-    DEFAULT_COMMUNITY_MENU_ITEMS
-  );
+  const [selectCourseLoading, setSelectedCouseLoading] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState([]);
   const [courseChannels, setCourseChannels] = useState([]);
   const [communityList, setCommunities] = useState([]);
 
@@ -65,7 +60,6 @@ const ChatPage = ({
       });
       setCourseChannels(communityChannels);
       setCommunityChannels(communityChannels);
-      setLoading(false);
     } catch (e) {
       setLoading(false);
     }
@@ -79,6 +73,7 @@ const ChatPage = ({
         if (communities.length) await fetchCommunityChannels(communities);
         setCommunityList(communities);
         setCommunities(communities);
+        setLoading(false);
       } catch (e) {
         setLoading(false);
       }
@@ -110,7 +105,10 @@ const ChatPage = ({
   }, [local, isLoading]);
 
   useEffect(() => {
-    if (
+    setSelectedCouseLoading(true);
+    if (oneTouchSendOpen) {
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else if (
       currentCommunity &&
       !!communityList.length &&
       currentCourseId &&
@@ -120,8 +118,12 @@ const ChatPage = ({
         (course) => course.community.id === currentCourseId
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
+      else setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else {
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     }
-  }, [currentCourseId, currentCommunity, communityList]);
+    setSelectedCouseLoading(false);
+  }, [currentCourseId, currentCommunity, communityList, loading]);
 
   const handleSelect = (course) => () => {
     if (course.id !== selectedCourse?.id) {
@@ -130,7 +132,7 @@ const ChatPage = ({
     }
   };
 
-  if (loading) return <LoadingSpin />;
+  if (loading || selectCourseLoading) return <LoadingSpin />;
 
   return (
     <div className={classes.root}>

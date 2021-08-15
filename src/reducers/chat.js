@@ -32,7 +32,8 @@ export type ChatState = {
     currentCourseId: string,
     communities: Array,
     communityChannels: Array,
-    newMessage: ?Object
+    newMessage: ?Object,
+    oneTouchSendOpen: boolean
   },
   error: boolean,
   errorMessage: {
@@ -61,7 +62,8 @@ const defaultState = {
     online: false,
     newChannel: false,
     currentCourseId: 'chat',
-    newMessage: null
+    newMessage: null,
+    oneTouchSendOpen: false
   },
   isLoading: false,
   error: false,
@@ -95,6 +97,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           mainMessage: action.payload.mainMessage
+        }
+      };
+    case chatActions.SET_OPEN_ONE_TOUCH_SEND:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          oneTouchSendOpen: action.payload.open
         }
       };
     case chatActions.SET_CURRENT_COURSE_ID:
