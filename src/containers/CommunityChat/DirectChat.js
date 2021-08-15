@@ -32,6 +32,7 @@ type Props = {
   handleBlockUser: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
+  setOneTouchSend: Function,
   handleUpdateFriendlyName: Function,
   handleMarkAsRead: Function,
   getOnboardingList: Function,
@@ -45,6 +46,7 @@ const DirectChat = ({
   handleMuteChannel,
   handleNewChannel,
   handleUpdateFriendlyName,
+  setOneTouchSend,
   handleMarkAsRead,
   setCurrentChannel,
   width,
@@ -64,7 +66,8 @@ const DirectChat = ({
       local,
       newChannel,
       mainMessage,
-      currentChannel
+      currentChannel,
+      oneTouchSendOpen
     }
   } = chat;
   const classes = useStyles();
@@ -242,6 +245,8 @@ const DirectChat = ({
             channels={channels}
             channelList={channelList}
             local={local}
+            oneTouchSendOpen={oneTouchSendOpen}
+            setOneTouchSend={setOneTouchSend}
             handleNewChannel={handleNewChannel}
             setCurrentChannel={setCurrentChannel}
             lastChannelSid={lastChannelSid}
@@ -320,6 +325,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleNewChannel: chatActions.handleNewChannel,
       setCurrentChannel: chatActions.setCurrentChannel,
       handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
+      setOneTouchSend: chatActions.setOneTouchSend,
       getOnboardingList: OnboardingActions.getOnboardingList
     },
     dispatch

@@ -31,9 +31,11 @@ type Props = {
   onOpenChannel: Function,
   handleRemoveChannel: Function,
   setCurrentChannel: Function,
+  setOneTouchSend: ?Function,
   lastChannelSid: string,
   currentChannel: ?Object,
   permission: array,
+  oneTouchSendOpen: boolean,
   onNewChannel: Function,
   handleMarkAsRead: Function,
   handleMuteChannel: Function,
@@ -46,6 +48,8 @@ const LeftMenu = ({
   channelList,
   handleMuteChannel,
   userId,
+  oneTouchSendOpen = false,
+  setOneTouchSend,
   lastChannelSid,
   handleNewChannel,
   setCurrentChannel,
@@ -76,11 +80,18 @@ const LeftMenu = ({
 
   const handleClose = async () => {
     setIsOpen(false);
+    if (setOneTouchSend) setOneTouchSend(false);
     await handleNewChannel(false);
     setCurrentChannel(local[lastChannelSid]?.twilioChannel);
   };
 
   const onChangeSearch = (e) => setSearch(e.target.value);
+
+  useEffect(() => {
+    if (oneTouchSendOpen) {
+      handleCreateNewChannel();
+    }
+  }, [oneTouchSendOpen, handleCreateNewChannel]);
 
   useEffect(() => {
     if (search && channels) {

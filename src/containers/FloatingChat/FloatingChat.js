@@ -75,6 +75,7 @@ type Props = {
   updateOpenChannels: Function,
   handleChannelClose: Function,
   enqueueSnackbarAction: Function,
+  setCurrentCourse: Function,
   updateTitleAction: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
@@ -97,6 +98,7 @@ const FloatingChat = ({
   handleMuteChannel,
   updateOpenChannels,
   handleChannelClose,
+  setCurrentCourse,
   handleNewChannel,
   enqueueSnackbarAction,
   updateTitleAction,
@@ -338,6 +340,7 @@ const FloatingChat = ({
             <ChatChannel
               key={`op${item.sid}`}
               push={push}
+              setCurrentCourse={setCurrentCourse}
               getMembers={getMembers}
               user={user}
               channel={item}
@@ -359,6 +362,7 @@ const FloatingChat = ({
               <ChatChannel
                 push={push}
                 user={user}
+                setCurrentCourse={setCurrentCourse}
                 onClose={handleNewChannelClose}
                 newChannel
                 handleChannelCreated={handleChannelCreated}
@@ -451,6 +455,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentChannel: chatActions.setCurrentChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
+      setCurrentCourse: chatActions.setCurrentCourse,
       // markAsCompleted: OnboardingActions.markAsCompleted,
       getOnboardingList: OnboardingActions.getOnboardingList
     },

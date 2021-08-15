@@ -102,7 +102,8 @@ class ChatItem extends React.PureComponent<Props, State> {
   };
 
   handleGotoChat = async () => {
-    const { channel, setCurrentChannel, push } = this.props;
+    const { channel, setCurrentChannel, push, setCurrentCourse } = this.props;
+    await setCurrentCourse('chat');
     await setCurrentChannel(channel);
     await localStorage.setItem('currentDMChannel', channel.sid);
     push('/chat');
@@ -128,7 +129,7 @@ class ChatItem extends React.PureComponent<Props, State> {
     } = this.props;
     const { anchorEl, openRemove } = this.state;
     return (
-      <Fragment>
+      <>
         <div
         // ref={node => {
         //   this.el = node
@@ -164,7 +165,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                 </Typography>
               </ButtonBase>
               {open ? (
-                <Fragment>
+                <>
                   <ButtonBase className={classes.iconButton} onClick={onExpand}>
                     {expanded ? (
                       <ExpandChatIcon className={classes.expandIcon} />
@@ -204,7 +205,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                       <ClearIcon className={classes.icon} />
                     </ButtonBase>
                   )}
-                </Fragment>
+                </>
               ) : (
                 <ButtonBase className={classes.iconButton} onClick={onClose}>
                   <ClearIcon className={classes.icon} />
@@ -265,7 +266,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             Deleting this chat can't be undone
           </Typography>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

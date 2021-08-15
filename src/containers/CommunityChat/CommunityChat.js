@@ -51,27 +51,36 @@ const CommunityChat = ({
   } = user;
   const {
     isLoading,
-    data: { newMessage, local, mainMessage, currentCommunityChannel }
+    data: {
+      newMessage,
+      local,
+      mainMessage,
+      currentCommunity,
+      currentCommunityChannel
+    }
   } = chat;
 
   useEffect(() => {
     const currentCourseChannel = courseChannels.filter(
       (courseChannel) => courseChannel.courseId === selectedCourse.id
     );
-
     const communityChannels = currentCourseChannel[0]?.channels;
     setCommunityChannels(communityChannels);
-    setSelctedChannel(communityChannels[0].channels[0]);
-  }, [selectedCourse, courseChannels]);
+    if (currentCommunity) {
+      setSelctedChannel(currentCommunity);
+    } else {
+      setSelctedChannel(communityChannels[0].channels[0]);
+    }
+  }, [selectedCourse, courseChannels, currentCommunity]);
 
   useEffect(() => {
-    const currentSelectedChannel = selectedChannel
+    const targetSelectedChannel = selectedChannel
       ? local[selectedChannel.chat_id]
       : null;
 
-    if (currentSelectedChannel) {
+    if (targetSelectedChannel) {
       if (['xs'].includes(width)) setLeftSpace(0);
-      setCurrentCommunityChannel(currentSelectedChannel?.twilioChannel);
+      setCurrentCommunityChannel(targetSelectedChannel?.twilioChannel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel, setCurrentCommunityChannel, width]);

@@ -19,6 +19,7 @@ import { getCommunityTemplates, batchMessage } from 'api/community';
 import { PERMISSIONS } from 'constants/common';
 import { getChannelName } from 'utils/chat';
 import * as chatActions from 'actions/chat';
+import { enqueueSnackbar } from 'actions/notifications';
 import { ReactComponent as ClassIcon } from 'assets/svg/class-book-icon.svg';
 import { ReactComponent as HashTag } from 'assets/svg/hashtag-icon.svg';
 import type { UserState } from 'reducers/user';
@@ -30,7 +31,11 @@ type Props = {
   classes: Object,
   user: UserState,
   onClosePopover: Function,
-  handleClearCreateMessage: Function,
+  setCurrentCourse: Function,
+  setCurrentCommunityChannel: Function,
+  setOneTouchSend: Function,
+  selectCurrentCommunity: Function,
+  enqueueSnackbarAction: Function,
   chat: ChatState
 };
 
@@ -38,18 +43,23 @@ const CreateChatChannelInput = ({
   classes,
   chat,
   user,
-  onClosePopover
+  onClosePopover,
+  setOneTouchSend,
+  selectCurrentCommunity,
+  enqueueSnackbarAction,
+  setCurrentCourse
 }: Props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectChannel, setSelectedChannel] = useState('');
   const [templateChannels, setTemplateChannels] = useState([]);
   const [chatIds, setChatIds] = useState([]);
+  const [channels, setChannels] = useState([]);
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
   const {
-    data: { communityChannels, communities }
+    data: { communityChannels, communities, local }
   } = chat;
 
   const {
@@ -65,6 +75,7 @@ const CreateChatChannelInput = ({
   }, []);
 
   useEffect(() => {
+    const selectedChannelIs = [];
     const selectedChannels = [];
 
     selectedClasses.forEach((selectedClass) => {
@@ -79,13 +90,15 @@ const CreateChatChannelInput = ({
 
         channels.forEach((channel) => {
           if (getChannelName(channel.chat_name) === selectChannel) {
-            selectedChannels.push(channel.chat_id);
+            selectedChannelIs.push(channel.chat_id);
+            selectedChannels.push(channel);
           }
         });
       });
     });
 
-    setChatIds(selectedChannels);
+    setChatIds(selectedChannelIs);
+    setChannels(selectedChannels);
   }, [selectChannel, selectedClasses, communityChannels]);
 
   const currentCommunities = useMemo(
@@ -97,8 +110,8 @@ const CreateChatChannelInput = ({
     []
   );
 
-  const handleSelectedClasses = useCallback((e, option) => {
-    setSelectedClasses(option);
+  const handleSelectedClasses = useCallback((e, options) => {
+    setSelectedClasses(options);
   }, []);
 
   const handleSelectedChannel = useCallback((e, option) => {
@@ -126,14 +139,71 @@ const CreateChatChannelInput = ({
         message: value,
         chatIds
       });
+      setCurrentCourse(
+        selectedClasses[selectedClasses.length - 1]?.community?.id
+      );
+      selectCurrentCommunity(channels[channels.length - 1]);
       setShowError(false);
       onClosePopover();
       setLoading(false);
+      setOneTouchSend(false);
+      enqueueSnackbarAction({
+        notification: {
+          message: `You successfully sent a message to ${
+            selectedClasses[selectedClasses.length - 1]?.community.name
+          }: ${selectChannel}`,
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.snackbarStyle
+              }
+            }
+          }
+        }
+      });
     } catch (e) {
       setShowError(true);
       setLoading(false);
+      setOneTouchSend(false);
+      enqueueSnackbarAction({
+        notification: {
+          message: `There was an error sending your message to ${
+            selectedClasses[selectedClasses.length - 1]?.community.name
+          }: ${selectChannel}`,
+          options: {
+            variant: 'default',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.snackbarStyle
+              }
+            }
+          }
+        }
+      });
     }
-  }, [value, chatIds, onClosePopover]);
+  }, [
+    value,
+    local,
+    channels,
+    chatIds,
+    onClosePopover,
+    selectedClasses,
+    setCurrentCourse,
+    setOneTouchSend,
+    selectCurrentCommunity,
+    enqueueSnackbarAction
+  ]);
 
   const handleRetry = useCallback(() => {
     setShowError(false);
@@ -151,10 +221,12 @@ const CreateChatChannelInput = ({
         options={currentCommunities}
         getOptionLabel={(option) => option.community.name}
         defaultValue={selectedClasses}
+        noOptionsText="No Class"
         filterSelectedOptions
         classes={{
           root: classes.autoComplete,
-          inputRoot: classes.inputRoot
+          inputRoot: classes.inputRoot,
+          noOptions: classes.noOptions
         }}
         onChange={handleSelectedClasses}
         renderTags={(value, getTagProps) =>
@@ -192,8 +264,8 @@ const CreateChatChannelInput = ({
       />
       <Autocomplete
         id="select-channel"
-        freeSolo={!!templateChannels.length}
-        options={templateChannels.map((option) => option.added)}
+        options={templateChannels.map((option) => option.chat_name)}
+        noOptionsText="No Channel"
         classes={{
           root: classes.autoComplete,
           inputRoot: classes.inputRoot,
@@ -285,7 +357,12 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      closeNewChannel: chatActions.closeNewChannel
+      closeNewChannel: chatActions.closeNewChannel,
+      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
+      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setOneTouchSend: chatActions.setOneTouchSend,
+      enqueueSnackbarAction: enqueueSnackbar
     },
     dispatch
   );

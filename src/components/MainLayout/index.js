@@ -71,6 +71,7 @@ type Props = {
   onManageClasses: Function,
   userClasses: Object,
   onManageBlockedUsers: Function,
+  setOneTouchSend: Function,
   newClassExperience: boolean,
   onOpenReferralStatus: Function,
   landingPageCampaign: boolean,
@@ -100,6 +101,7 @@ const MainLayout = ({
   setBannerHeight,
   toggleExpertMode,
   initials,
+  setOneTouchSend,
   newNotesScreen,
   userProfileUrl,
   children,
@@ -367,6 +369,7 @@ const MainLayout = ({
         createPostOpen={createPostOpen}
         handleOpenGetApp={handleOpenGetApp}
         handleOpenFeedback={handleOpenFeedback}
+        setOneTouchSend={setOneTouchSend}
         MyLink={MyLink}
         search={search}
         pathname={pathname}
@@ -390,6 +393,7 @@ const MainLayout = ({
       handleOpenHowEarnPoints,
       handleOpenStudentJobs,
       handleOpenUseCases,
+      setOneTouchSend,
       initials,
       isExpert,
       landingPageCampaign,

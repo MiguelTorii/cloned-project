@@ -26,12 +26,14 @@ export type ChatState = {
     online: boolean,
     currentChannel: ?Object,
     currentCommunityChannel: ?Object,
+    currentCommunity: ?Object,
     newChannel: boolean,
     mainMessage: string,
     currentCourseId: string,
     communities: Array,
     communityChannels: Array,
-    newMessage: ?Object
+    newMessage: ?Object,
+    oneTouchSendOpen: boolean
   },
   error: boolean,
   errorMessage: {
@@ -56,10 +58,12 @@ const defaultState = {
     local: {},
     currentChannel: null,
     currentCommunityChannel: null,
+    currentCommunity: null,
     online: false,
     newChannel: false,
     currentCourseId: 'chat',
-    newMessage: null
+    newMessage: null,
+    oneTouchSendOpen: false
   },
   isLoading: false,
   error: false,
@@ -93,6 +97,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           mainMessage: action.payload.mainMessage
+        }
+      };
+    case chatActions.SET_OPEN_ONE_TOUCH_SEND:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          oneTouchSendOpen: action.payload.open
         }
       };
     case chatActions.SET_CURRENT_COURSE_ID:
@@ -133,6 +145,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           currentCommunityChannel: action.payload.currentChannel
+        }
+      };
+    case chatActions.SET_CURRENT_COMMUNITY:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          currentCommunity: action.payload.channel
         }
       };
     case chatActions.CREATE_NEW_CHANNEL:

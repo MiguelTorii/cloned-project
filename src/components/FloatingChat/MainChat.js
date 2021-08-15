@@ -50,7 +50,7 @@ class MainChat extends React.PureComponent<Props, State> {
         >
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
             <Typography variant="h6" className={classes.title}>
-              Chats
+              Direct Messages
             </Typography>
             <Badge
               className={classes.margin}

@@ -5,7 +5,8 @@ export default (theme) => ({
   },
   autoComplete: {
     marginBottom: theme.spacing(2),
-    position: 'relative'
+    position: 'relative',
+    maxWidth: 489
   },
   inputRoot: {
     paddingLeft: `${theme.spacing(4)}px !important`,

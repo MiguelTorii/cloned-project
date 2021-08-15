@@ -62,7 +62,7 @@ import { ReactComponent as HomeIconOff } from 'assets/svg/home-inactive.svg';
 import { ReactComponent as OffStudyRoom } from 'assets/svg/inactive-study-room.svg';
 import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg';
 import DrawerItem from 'components/MainLayout/DrawerItem';
-import BatchMessageDialog from 'containers/BatchMessageDialog';
+// import BatchMessageDialog from 'containers/BatchMessageDialog';
 
 import { useStyles } from '../_styles/MainLayout/Drawer';
 
@@ -80,6 +80,7 @@ const Drawer = ({
   // handleCreatePostMenuOpen,
   handleOpenUseCases,
   handleOpenHowEarnPoints,
+  setOneTouchSend,
   landingPageCampaign,
   expertMode,
   isExpert,
@@ -93,17 +94,17 @@ const Drawer = ({
 }) => {
   const classes = useStyles();
   // const [openClassmates, setOpenClassmates] = useState(null)
-  const [openOneTouchSend, setOpenOneTouchSend] = useState(false);
+  // const [openOneTouchSend, setOpenOneTouchSend] = useState(false);
   const [campaign, setCampaign] = useState(null);
 
   const handleOpenOneTouchSend = useCallback(
-    () => setOpenOneTouchSend(true),
-    []
+    () => setOneTouchSend(true),
+    [setOneTouchSend]
   );
-  const handleCloseOneTouchSend = useCallback(
-    () => setOpenOneTouchSend(false),
-    []
-  );
+  // const handleCloseOneTouchSend = useCallback(
+  //   () => setOpenOneTouchSend(false),
+  //   []
+  // );
 
   // const openClassmatesDialog = useCallback(name => () => {
   // setOpenClassmates(name)
@@ -133,9 +134,10 @@ const Drawer = ({
     init();
   }, []);
 
-  const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
-  }, [campaign]);
+  const visiabled = useMemo(
+    () => campaign?.variation_key && campaign?.variation_key !== 'hidden',
+    [campaign]
+  );
 
   const handleOpenBlog = useCallback(() => {
     window.open('https://blog.circleinapp.com/', '_blank');
@@ -162,86 +164,110 @@ const Drawer = ({
     [expertMode, toggleExpertMode]
   );
 
-  const expertMenu = useMemo (() => expertMode && (
-    <div>
-      <BatchMessageDialog
-        open={openOneTouchSend}
-        closeDialog={handleCloseOneTouchSend}
-      />
-      <DrawerItem
-        listItemClass={classNames(
-          // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
-          ['/feed'].includes(pathname)
-            ? classes.currentPath
-            : classes.otherPath
-        )}
-        link="/feed"
-        pathname={pathname}
-        OnIcon={<ClassFeedIconOn />}
-        primaryText="Class Feed"
-        component={MyLink}
-        OffIcon={<ClassFeedIconOff />}
-      />
-      <ListItem
-        button
-        component={MyLink}
-        link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
-        className={classNames(
-          classes.item,
-          ['/my_posts'].includes(pathname) && qs.from === 'me' ? classes.currentPath : classes.otherPath
-        )}
-      >
-        <ListItemText
-          primary="My Posts"
-          classes={{
-            primary: classes.label
-          }}
-        />
-      </ListItem>
-      <ListItem
-        button
-        component={MyLink}
-        link={`/bookmarks?${queryString.stringify({ ...qs, from: 'bookmarks' })}`}
-        className={classNames(
-          classes.item,
-          ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks' ? classes.currentPath : classes.otherPath
-        )}
-      >
-        <ListItemText
-          primary="Bookmarks"
-          classes={{
-            primary: classes.label
-          }}
-        />
-      </ListItem>
-      <DrawerItem
-        OnIcon={<MyClassOn />}
-        primaryText='My Classes'
-        pathname={pathname}
-        component={MyLink}
-        link="/classes"
-        OffIcon={<MyClassOff />}
-        listItemClass={classNames(
-          ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
-        )}
-      />
-      {/* <ListItem */}
-      {/* button */}
-      {/* onClick={openClassmatesDialog('student')} */}
-      {/* className={classNames( */}
-      {/* classes.item, */}
-      {/* classes.otherPath */}
-      {/* )} */}
-      {/* > */}
-      {/* <ListItemText */}
-      {/* primary="Students" */}
-      {/* classes={{ */}
-      {/* primary: classes.label */}
-      {/* }} */}
-      {/* /> */}
-      {/* </ListItem> */}
-    </div>
-  ), [MyLink, classes.currentPath, classes.item, classes.label, classes.otherPath, expertMode, handleCloseOneTouchSend, openOneTouchSend, pathname, qs])
+  const expertMenu = useMemo(
+    () =>
+      expertMode && (
+        <div>
+          {/* <BatchMessageDialog
+            open={openOneTouchSend}
+            closeDialog={handleCloseOneTouchSend}
+          /> */}
+          <DrawerItem
+            listItemClass={classNames(
+              // ['/feed', '/my_posts', '/bookmarks'].includes(pathname) ? classes.currentPath : classes.otherPath
+              ['/feed'].includes(pathname)
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+            link="/feed"
+            pathname={pathname}
+            OnIcon={<ClassFeedIconOn />}
+            primaryText="Class Feed"
+            component={MyLink}
+            OffIcon={<ClassFeedIconOff />}
+          />
+          <ListItem
+            button
+            component={MyLink}
+            link={`/my_posts?${queryString.stringify({ ...qs, from: 'me' })}`}
+            className={classNames(
+              classes.item,
+              ['/my_posts'].includes(pathname) && qs.from === 'me'
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+          >
+            <ListItemText
+              primary="My Posts"
+              classes={{
+                primary: classes.label
+              }}
+            />
+          </ListItem>
+          <ListItem
+            button
+            component={MyLink}
+            link={`/bookmarks?${queryString.stringify({
+              ...qs,
+              from: 'bookmarks'
+            })}`}
+            className={classNames(
+              classes.item,
+              ['/bookmarks'].includes(pathname) && qs.from === 'bookmarks'
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+          >
+            <ListItemText
+              primary="Bookmarks"
+              classes={{
+                primary: classes.label
+              }}
+            />
+          </ListItem>
+          <DrawerItem
+            OnIcon={<MyClassOn />}
+            primaryText="My Classes"
+            pathname={pathname}
+            component={MyLink}
+            link="/classes"
+            OffIcon={<MyClassOff />}
+            listItemClass={classNames(
+              ['/classes'].includes(pathname)
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+          />
+          {/* <ListItem */}
+          {/* button */}
+          {/* onClick={openClassmatesDialog('student')} */}
+          {/* className={classNames( */}
+          {/* classes.item, */}
+          {/* classes.otherPath */}
+          {/* )} */}
+          {/* > */}
+          {/* <ListItemText */}
+          {/* primary="Students" */}
+          {/* classes={{ */}
+          {/* primary: classes.label */}
+          {/* }} */}
+          {/* /> */}
+          {/* </ListItem> */}
+        </div>
+      ),
+    [
+      MyLink,
+      classes.currentPath,
+      classes.item,
+      classes.label,
+      classes.otherPath,
+      expertMode,
+      // handleCloseOneTouchSend,
+      // openOneTouchSend,
+      pathname,
+      qs
+    ]
+  );
 
   const createNewPost = useMemo(
     () => (
@@ -286,7 +312,7 @@ const Drawer = ({
   );
 
   return (
-    <Fragment>
+    <>
       {/* <ClassmatesDialog */}
       {/* userId={userId} */}
       {/* userClasses={userClasses} */}
@@ -320,37 +346,29 @@ const Drawer = ({
             link="/"
             pathname={pathname}
             OnIcon={<HomeIconOn />}
-            primaryText='Home'
+            primaryText="Home"
             component={MyLink}
             OffIcon={<HomeIconOff />}
           />
         )}
-        {landingPageCampaign && (
-          <DrawerItem
-            OnIcon={<WorkflowIconOn />}
-            primaryText="Workflow"
-            pathname={pathname}
-            component={MyLink}
-            link={expertMode ? '/' : '/workflow'}
-            OffIcon={<WorkflowIconOff />}
-            listItemClass={classNames(
-              ['/workflow', expertMode && '/'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          />
-        )}
-        {newNotesScreen && (
-          <DrawerItem
-            OnIcon={<NotesIconOn />}
-            primaryText="Notes"
-            pathname={pathname}
-            component={MyLink}
-            link="/notes"
-            OffIcon={<NotesIconOff />}
-            listItemClass={classNames(
-              ['/notes'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
-            )}
+        <DrawerItem
+          OnIcon={<ChatIconOn />}
+          primaryText="Chats"
+          pathname={pathname}
+          component={MyLink}
+          link="/chat"
+          OffIcon={<ChatIconOff />}
+          listItemClass={classes.otherPath}
+        />
+        {!expertMode && (
+          <HomeItem
+            MyLink={MyLink}
+            newClassExperience={newClassExperience}
+            // createPostOpen={createPostOpen}
+            // userClasses={userClasses}
+            // updateFeed={updateFeed}
+            // landingPageCampaign={landingPageCampaign}
+            // openClassmatesDialog={openClassmatesDialog('classmate')}
           />
         )}
         <DrawerItem
@@ -372,27 +390,49 @@ const Drawer = ({
               : classes.otherPath
           )}
         />
-        {!expertMode && (
-          <HomeItem
-            MyLink={MyLink}
-            newClassExperience={newClassExperience}
-            // createPostOpen={createPostOpen}
-            // userClasses={userClasses}
-            // updateFeed={updateFeed}
-            // landingPageCampaign={landingPageCampaign}
-            // openClassmatesDialog={openClassmatesDialog('classmate')}
-          />
+        {visiabled && (
+          <Tooltip
+            id={9059}
+            placement="right"
+            text="Pssst! You can start video chatting from the left navigation! 😍"
+            okButton="Nice!"
+          >
+            <DrawerItem
+              onClick={handleOpenGetApp}
+              listItemClass={classes.otherPath}
+              OnIcon={<OnStudyRoom />}
+              component={MyLink}
+              link="/video-call"
+              primaryText="Study Room"
+              OffIcon={<OffStudyRoom />}
+            />
+          </Tooltip>
         )}
-        {!expertMode && (
+        {landingPageCampaign && (
           <DrawerItem
-            OnIcon={<MyClassOn />}
-            primaryText="My Classes"
+            OnIcon={<WorkflowIconOn />}
+            primaryText="Workflow"
             pathname={pathname}
             component={MyLink}
-            link="/classes"
-            OffIcon={<MyClassOff />}
+            link={expertMode ? '/' : '/workflow'}
+            OffIcon={<WorkflowIconOff />}
             listItemClass={classNames(
-              ['/classes'].includes(pathname)
+              ['/workflow', expertMode && '/'].includes(pathname)
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+          />
+        )}
+        {newNotesScreen && (
+          <DrawerItem
+            OnIcon={<NotesIconOn />}
+            primaryText="Notes"
+            pathname={pathname}
+            component={MyLink}
+            link="/notes"
+            OffIcon={<NotesIconOff />}
+            listItemClass={classNames(
+              ['/notes'].includes(pathname)
                 ? classes.currentPath
                 : classes.otherPath
             )}
@@ -413,15 +453,6 @@ const Drawer = ({
             )}
           />
         )}
-        <DrawerItem
-          OnIcon={<ChatIconOn />}
-          primaryText="Chats"
-          pathname={pathname}
-          component={MyLink}
-          link="/chat"
-          OffIcon={<ChatIconOff />}
-          listItemClass={classes.otherPath}
-        />
 
         {/* <DrawerItem
           OnIcon={<CommunityOn />}
@@ -432,31 +463,15 @@ const Drawer = ({
           OffIcon={<CommunityOff />}
           listItemClass={classes.otherPath}
         /> */}
-        {visiabled && (
-          <Tooltip
-            id={9059}
-            placement="right"
-            text="Pssst! You can start video chatting from the left navigation! 😍"
-            okButton="Nice!"
-          >
-            <DrawerItem
-              onClick={handleOpenGetApp}
-              listItemClass={classes.otherPath}
-              OnIcon={<OnStudyRoom />}
-              component={MyLink}
-              link="/video-call"
-              primaryText="Study Room"
-              OffIcon={<OffStudyRoom />}
-            />
-          </Tooltip>
-        )}
         {expertMode && (
           <DrawerItem
             OnIcon={<OneTouchSendIconOn />}
             primaryText="One-Touch Send"
-            onClick={handleOpenOneTouchSend}
+            component={MyLink}
+            link="/chat"
             OffIcon={<OneTouchSendIconOff />}
             listItemClass={classes.otherPath}
+            onClick={handleOpenOneTouchSend}
           />
         )}
         {!expertMode && (
@@ -502,7 +517,7 @@ const Drawer = ({
             <ClassList onClick={handleManageClasses} />
           </ListItemText>
         )}
-        {!expertMode && (
+        {/* {!expertMode && (
           <ListItem
             button
             className={classes.otherBlue}
@@ -513,6 +528,21 @@ const Drawer = ({
             </ListItemIcon>
             <ListItemText primary="Studying on CircleIn" />
           </ListItem>
+        )} */}
+        {!expertMode && (
+          <DrawerItem
+            OnIcon={<MyClassOn />}
+            primaryText="My Classes"
+            pathname={pathname}
+            component={MyLink}
+            link="/classes"
+            OffIcon={<MyClassOff />}
+            listItemClass={classNames(
+              ['/classes'].includes(pathname)
+                ? classes.currentPath
+                : classes.otherPath
+            )}
+          />
         )}
 
         <div className={classes.divider} />
@@ -575,7 +605,7 @@ const Drawer = ({
           primaryText="Give Feedback"
           OffIcon={<FeedbackIconOff />}
         />
-        <div className={classes.separator}></div>
+        <div className={classes.separator} />
         <ListItem
           button
           link={`/profile/${userId}`}
@@ -588,7 +618,7 @@ const Drawer = ({
           <ListItemText primary={fullName} />
         </ListItem>
       </List>
-    </Fragment>
+    </>
   );
 };
 export default memo(Drawer);
