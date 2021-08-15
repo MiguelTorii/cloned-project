@@ -26,7 +26,7 @@ const ChatPage = ({
   setCommunityChannels
 }: Props) => {
   const {
-    data: { local },
+    data: { local, currentCommunity, currentCourseId },
     isLoading
   } = chat;
 
@@ -108,6 +108,20 @@ const ChatPage = ({
       setUnreadMessageCount(count);
     }
   }, [local, isLoading]);
+
+  useEffect(() => {
+    if (
+      currentCommunity &&
+      !!communityList.length &&
+      currentCourseId &&
+      currentCourseId !== 'chat'
+    ) {
+      const targetCourse = communityList.filter(
+        (course) => course.community.id === currentCourseId
+      );
+      if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
+    }
+  }, [currentCourseId, currentCommunity, communityList]);
 
   const handleSelect = (course) => () => {
     if (course.id !== selectedCourse?.id) {

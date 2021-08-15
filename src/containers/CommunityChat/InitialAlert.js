@@ -73,8 +73,8 @@ const InitialAlert = ({
   }, [focusMessageBox]);
 
   return isCommunityChat ? (
-    local[channel?.sid]?.twilioChannel.channelState.lastConsumedMessageIndex ===
-    null ? (
+    local[channel?.sid]?.twilioChannel?.channelState
+      ?.lastConsumedMessageIndex === null ? (
       <Box
         className={classes.root}
         display="flex"

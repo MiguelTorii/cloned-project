@@ -32,6 +32,7 @@ type Props = {
   onClosePopover: Function,
   setCurrentCourse: Function,
   setCurrentCommunityChannel: Function,
+  selectCurrentCommunity: Function,
   chat: ChatState
 };
 
@@ -40,13 +41,14 @@ const CreateChatChannelInput = ({
   chat,
   user,
   onClosePopover,
-  setCurrentCommunityChannel,
+  selectCurrentCommunity,
   setCurrentCourse
 }: Props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectChannel, setSelectedChannel] = useState('');
   const [templateChannels, setTemplateChannels] = useState([]);
   const [chatIds, setChatIds] = useState([]);
+  const [channels, setChannels] = useState([]);
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -68,6 +70,7 @@ const CreateChatChannelInput = ({
   }, []);
 
   useEffect(() => {
+    const selectedChannelIs = [];
     const selectedChannels = [];
 
     selectedClasses.forEach((selectedClass) => {
@@ -82,13 +85,15 @@ const CreateChatChannelInput = ({
 
         channels.forEach((channel) => {
           if (getChannelName(channel.chat_name) === selectChannel) {
-            selectedChannels.push(channel.chat_id);
+            selectedChannelIs.push(channel.chat_id);
+            selectedChannels.push(channel);
           }
         });
       });
     });
 
-    setChatIds(selectedChannels);
+    setChatIds(selectedChannelIs);
+    setChannels(selectedChannels);
   }, [selectChannel, selectedClasses, communityChannels]);
 
   const currentCommunities = useMemo(
@@ -125,7 +130,6 @@ const CreateChatChannelInput = ({
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     try {
-      const lastSelectedClassChannelId = chatIds[chatIds.length - 1];
       await batchMessage({
         message: value,
         chatIds
@@ -133,7 +137,7 @@ const CreateChatChannelInput = ({
       setCurrentCourse(
         selectedClasses[selectedClasses.length - 1]?.community?.id
       );
-      setCurrentCommunityChannel(lastSelectedClassChannelId?.twilioChannel);
+      selectCurrentCommunity(channels[channels.length - 1]);
       setShowError(false);
       onClosePopover();
       setLoading(false);
@@ -144,10 +148,12 @@ const CreateChatChannelInput = ({
   }, [
     value,
     local,
+    channels,
     chatIds,
     onClosePopover,
     selectedClasses,
-    setCurrentCourse
+    setCurrentCourse,
+    selectCurrentCommunity
   ]);
 
   const handleRetry = useCallback(() => {
@@ -304,7 +310,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       closeNewChannel: chatActions.closeNewChannel,
       setCurrentCourse: chatActions.setCurrentCourse,
-      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
+      selectCurrentCommunity: chatActions.selectCurrentCommunity
     },
     dispatch
   );
