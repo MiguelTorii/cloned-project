@@ -19,6 +19,7 @@ import { getCommunityTemplates, batchMessage } from 'api/community';
 import { PERMISSIONS } from 'constants/common';
 import { getChannelName } from 'utils/chat';
 import * as chatActions from 'actions/chat';
+import { enqueueSnackbar } from 'actions/notifications';
 import { ReactComponent as ClassIcon } from 'assets/svg/class-book-icon.svg';
 import { ReactComponent as HashTag } from 'assets/svg/hashtag-icon.svg';
 import type { UserState } from 'reducers/user';
@@ -33,6 +34,7 @@ type Props = {
   setCurrentCourse: Function,
   setCurrentCommunityChannel: Function,
   selectCurrentCommunity: Function,
+  enqueueSnackbarAction: Function,
   chat: ChatState
 };
 
@@ -42,6 +44,7 @@ const CreateChatChannelInput = ({
   user,
   onClosePopover,
   selectCurrentCommunity,
+  enqueueSnackbarAction,
   setCurrentCourse
 }: Props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
@@ -141,9 +144,49 @@ const CreateChatChannelInput = ({
       setShowError(false);
       onClosePopover();
       setLoading(false);
+      enqueueSnackbarAction({
+        notification: {
+          message: `You successfully sent a message to ${
+            selectedClasses[selectedClasses.length - 1]?.community.name
+          }: ${selectChannel}`,
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.snackbarStyle
+              }
+            }
+          }
+        }
+      });
     } catch (e) {
       setShowError(true);
       setLoading(false);
+      enqueueSnackbarAction({
+        notification: {
+          message: `There was an error sending your message to ${
+            selectedClasses[selectedClasses.length - 1]?.community.name
+          }: ${selectChannel}`,
+          options: {
+            variant: 'default',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000,
+            ContentProps: {
+              classes: {
+                root: classes.snackbarStyle
+              }
+            }
+          }
+        }
+      });
     }
   }, [
     value,
@@ -153,7 +196,8 @@ const CreateChatChannelInput = ({
     onClosePopover,
     selectedClasses,
     setCurrentCourse,
-    selectCurrentCommunity
+    selectCurrentCommunity,
+    enqueueSnackbarAction
   ]);
 
   const handleRetry = useCallback(() => {
@@ -311,7 +355,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       closeNewChannel: chatActions.closeNewChannel,
       setCurrentCourse: chatActions.setCurrentCourse,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity
+      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      enqueueSnackbarAction: enqueueSnackbar
     },
     dispatch
   );
