@@ -95,7 +95,7 @@ type Props = {
 
 const CommonBanner = ({ announcement }: Props) => {
   const classes = useStyles();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [durationText, setDurationText] = useState(null);
   const [timeOver, setTimeOver] = useState(false);
