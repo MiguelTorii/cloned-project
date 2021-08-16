@@ -61,12 +61,20 @@ const CommunityChat = ({
   } = chat;
 
   useEffect(() => {
+    let filterChannel = [];
     const currentCourseChannel = courseChannels.filter(
       (courseChannel) => courseChannel.courseId === selectedCourse.id
     );
     const communityChannels = currentCourseChannel[0]?.channels;
     setCommunityChannels(communityChannels);
-    if (currentCommunity) {
+    communityChannels.forEach((communityChannel) => {
+      const { channels } = communityChannel;
+
+      filterChannel = channels.filter(
+        (channel) => channel.id === currentCommunity.id
+      );
+    });
+    if (currentCommunity && !!filterChannel.length) {
       setSelctedChannel(currentCommunity);
     } else {
       setSelctedChannel(communityChannels[0].channels[0]);
