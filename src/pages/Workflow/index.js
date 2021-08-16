@@ -20,21 +20,19 @@ const styles = () => ({
 
 const backend = isMobile ? TouchBackend : HTML5Backend;
 
-const WorkflowPage = ({ classes }: Props) => {
-  return (
-    <DndProvider backend={backend}>
-      <main>
-        <Layout>
-          <CssBaseline />
-          <Grid container justify="center">
-            <Grid item xs={12} md={11} className={classes.item}>
-              <Workflow />
-            </Grid>
+const WorkflowPage = ({ classes }: Props) => (
+  <DndProvider backend={backend}>
+    <main>
+      <Layout>
+        <CssBaseline />
+        <Grid container justify="center">
+          <Grid item xs={12} md={11} className={classes.item}>
+            <Workflow />
           </Grid>
-        </Layout>
-      </main>
-    </DndProvider>
-  );
-};
+        </Grid>
+      </Layout>
+    </main>
+  </DndProvider>
+);
 
 export default withRoot(withStyles(styles)(WorkflowPage));

@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import axios from 'axios';
 import { init as sentryInit } from '@sentry/browser';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
@@ -82,10 +85,7 @@ import {
 import Flashcards from './pages/View/Flashcards';
 import HomePage from './pages/Home';
 import Gondor from './containers/Auth/Gondor';
-import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { theme } from './withRoot';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 defaultKatexRender('White');
 
