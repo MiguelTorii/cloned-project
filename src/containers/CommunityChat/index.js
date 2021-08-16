@@ -19,7 +19,8 @@ const ChatPage = ({
   chat,
   setCurrentCourse,
   setCommunityList,
-  setCommunityChannels
+  setCommunityChannels,
+  selectCurrentCommunity
 }: Props) => {
   const {
     data: { local, currentCommunity, currentCourseId, oneTouchSendOpen },
@@ -30,7 +31,6 @@ const ChatPage = ({
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [selectCourseLoading, setSelectedCouseLoading] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState([]);
   const [courseChannels, setCourseChannels] = useState([]);
   const [communityList, setCommunities] = useState([]);
@@ -105,7 +105,6 @@ const ChatPage = ({
   }, [local, isLoading]);
 
   useEffect(() => {
-    setSelectedCouseLoading(true);
     if (oneTouchSendOpen) {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
@@ -118,21 +117,20 @@ const ChatPage = ({
         (course) => course.community.id === currentCourseId
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
-      else setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     }
-    setSelectedCouseLoading(false);
   }, [currentCourseId, currentCommunity, communityList, loading]);
 
   const handleSelect = (course) => () => {
     if (course.id !== selectedCourse?.id) {
-      setSelectedCourse(course);
       setCurrentCourse(course.id);
+      setSelectedCourse(course);
+      selectCurrentCommunity(course);
     }
   };
 
-  if (loading || selectCourseLoading) return <LoadingSpin />;
+  if (loading) return <LoadingSpin />;
 
   return (
     <div className={classes.root}>
@@ -171,7 +169,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       setCurrentCourse: chatActions.setCurrentCourse,
       setCommunityList: chatActions.setCommunityList,
-      setCommunityChannels: chatActions.setCommunityChannels
+      setCommunityChannels: chatActions.setCommunityChannels,
+      selectCurrentCommunity: chatActions.selectCurrentCommunity
     },
     dispatch
   );
