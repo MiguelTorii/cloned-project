@@ -13,7 +13,6 @@ import Classes from 'pages/Classes';
 import Feed from 'pages/Feed';
 import AuthRedirect from 'pages/AuthRedirect';
 import HomePage from 'pages/Home';
-import Workflow from 'pages/Workflow';
 import type { State as StoreState } from '../../types/state';
 
 const styles = () => ({
@@ -81,8 +80,8 @@ const Home = ({ campaign, classes, user }) => {
   if (!campaign.newClassExperience) return <Feed />;
   if (!campaign.landingPageCampaign) return <Classes />;
 
-  if (expertMode) return <Workflow />;
-  return  <HomePage />;
+  if (expertMode) return <Feed />;
+  return <HomePage />;
 };
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({

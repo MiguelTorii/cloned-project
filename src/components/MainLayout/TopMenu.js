@@ -36,7 +36,7 @@ const TopMenu = ({
       </MenuItem>
       <MenuItem onClick={handleBlockedUsers}>Unblock Classmates</MenuItem>
       <MenuItem onClick={handleOpenHowEarnPoints}>
-        {expertMode ? 'Expert Help Center' : 'Student Help Center'}
+        {expertMode ? 'Expert Mode Support Center' : 'Student Help Center'}
       </MenuItem>
       <MenuItem onClick={handleSignOut}>Logout</MenuItem>
     </Menu>
