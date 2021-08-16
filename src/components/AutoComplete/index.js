@@ -314,7 +314,8 @@ type Props = {
   autoFocus: boolean,
   relative: boolean,
   id: string,
-  onLoadOptions: Function
+  onLoadOptions: Function,
+  debounceTimeout: number
 };
 
 const AutoComplete = ({
@@ -337,7 +338,8 @@ const AutoComplete = ({
   autoFocus,
   relative,
   id,
-  onLoadOptions
+  onLoadOptions,
+  debounceTimeout = 500
 }: Props) => {
   const selectStyles = {
     input: (base) => ({
@@ -360,6 +362,7 @@ const AutoComplete = ({
             label,
             variant
           }}
+          debounceTimeout={debounceTimeout}
           inputValue={inputValue}
           components={components}
           searchClassmate={searchClassmate}
