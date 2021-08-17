@@ -18,6 +18,7 @@ export type ChatState = {
     entityLastName: string,
     entityVideo: boolean,
     entityUuid: string,
+    selectedChannelId: string,
     client: ?Object,
     channels: Array<ChatChannels>,
     openChannels: Array<ChatChannels>,
@@ -49,6 +50,7 @@ const defaultState = {
     entityId: '',
     entityFirstName: '',
     entityLastName: '',
+    selectedChannelId: '',
     entityVideo: false,
     entityUuid: '',
     client: null,
@@ -137,6 +139,14 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: {
           ...state.data,
           communityChannels: action.payload.communityChannels
+        }
+      };
+    case chatActions.SET_CURRENT_CHANNEL_ID:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          selectedChannelId: action.payload.selectedChannelId
         }
       };
     case chatActions.SET_CURRENT_COMMUNITY_CHANNEL:

@@ -33,6 +33,7 @@ import useStyles from './_styles/main';
 type Props = {
   isLoading: boolean,
   isCommunityChat: boolean,
+  selectedChannelId: string,
   selectedCourse: Object,
   channel: Object,
   channelList: Array,
@@ -61,6 +62,7 @@ const Main = ({
   selectedChannel,
   newMessage,
   rightSpace,
+  selectedChannelId = '',
   local,
   newChannel,
   permission,
@@ -173,10 +175,15 @@ const Main = ({
         setCampaign(aCampaign);
 
         const p = await channel.getMessages(10);
-        if (!p.hasNextPage) setLoadingMessage(false);
-        setMessages(p.items);
-        setPaginator(p);
-        setHasMore(!(p.items.length < 10));
+        if (
+          !selectedChannelId ||
+          selectedChannelId === p?.items?.[0]?.channel?.sid
+        ) {
+          if (!p.hasNextPage) setLoadingMessage(false);
+          setMessages(p.items);
+          setPaginator(p);
+          setHasMore(!(p.items.length < 10));
+        }
         if (end.current) {
           end.current.scrollIntoView({ behavior: 'instant' });
         }
@@ -204,7 +211,7 @@ const Main = ({
 
     if (channel) init();
     // eslint-disable-next-line
-  }, [channel]);
+  }, [channel, selectedChannelId]);
 
   const messageItems = useMemo(
     () =>

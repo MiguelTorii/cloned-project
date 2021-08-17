@@ -182,6 +182,15 @@ const setCurrentChannelAction = ({
   payload: { currentChannel }
 });
 
+const setCurrentChannelSidAction = ({
+  selectedChannelId
+}: {
+  selectedChannelId: string
+}) => ({
+  type: chatActions.SET_CURRENT_CHANNEL_ID,
+  payload: { selectedChannelId }
+});
+
 const setCurrentCommunityAction = ({ channel }: { channel: Object }) => ({
   type: chatActions.SET_CURRENT_COMMUNITY,
   payload: { channel }
@@ -275,6 +284,13 @@ export const selectCurrentCommunity =
   (channel) => async (dispatch: Dispatch) => {
     if (channel) {
       dispatch(setCurrentCommunityAction({ channel }));
+    }
+  };
+
+export const setCurrentChannelSid =
+  (selectedChannelId) => async (dispatch: Dispatch) => {
+    if (setCurrentChannelSid) {
+      dispatch(setCurrentChannelSidAction({ selectedChannelId }));
     }
   };
 
