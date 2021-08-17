@@ -74,7 +74,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   textField: {
     '& .MuiInputBase-root': {
-      color: theme.circleIn.palette.normalButtonText1
+      color: `${theme.circleIn.palette.normalButtonText1} !important`
     }
+  },
+  multilineColor: {
+    color: `${theme.circleIn.palette.normalButtonText1} !important`
   }
 }));
