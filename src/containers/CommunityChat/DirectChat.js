@@ -315,7 +315,6 @@ const DirectChat = ({
           local={local}
         />
       </Grid>
-      )
     </Grid>
   );
 };
