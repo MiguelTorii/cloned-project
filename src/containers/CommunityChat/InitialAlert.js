@@ -1,10 +1,9 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import cx from 'classnames';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
 import LoadImg from 'components/LoadImg';
@@ -14,25 +13,19 @@ import useStyles from './_styles/initialAlert';
 
 type Props = {
   local: Array,
-  hasPermission: boolean,
-  focusMessageBox: number,
   channel: Object,
   userId: string,
   isCommunityChat: boolean,
   selectedCourse: Object,
-  setFocusMessageBox: Function,
   selectedChannel: Object
 };
 
 const InitialAlert = ({
   local,
-  hasPermission,
-  focusMessageBox,
   channel,
   userId,
   isCommunityChat,
   selectedCourse,
-  setFocusMessageBox,
   selectedChannel
 }: Props) => {
   const classes = useStyles();
@@ -68,10 +61,6 @@ const InitialAlert = ({
     [selectedCourse]
   );
 
-  const handleSetFocusMessageBox = useCallback(() => {
-    setFocusMessageBox(focusMessageBox + 1);
-  }, [focusMessageBox]);
-
   return isCommunityChat ? (
     local[channel?.sid]?.twilioChannel?.channelState
       ?.lastConsumedMessageIndex === null ? (
@@ -84,37 +73,14 @@ const InitialAlert = ({
       >
         <LoadImg url={InitialCommunityImage} />
         <Typography className={classes.members} variant="h5">
-          Welcome To Community Chat
+          Welcome To #{selectedChannel?.chat_name}
         </Typography>
-        {hasPermission ? (
-          <Typography className={classes.initialAlert} variant="subtitle2">
-            Get started with our community template or start customizing your
-            community by editing the categories and channels.
-          </Typography>
-        ) : (
-          <Typography className={classes.initialAlert} variant="subtitle2">
-            There’s no activity here yet, but you can get to know <br />
-            your community by sending your first message in
-            <br />
-            <b>#{selectedChannel?.chat_name}</b>
-          </Typography>
-        )}
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          marginTop={3}
-        >
-          <Button
-            className={classes.initialAlertButton}
-            onClick={() => handleSetFocusMessageBox()}
-          >
-            <span role="img" aria-label="message">
-              💬
-            </span>
-            &nbsp; Send Your First Message
-          </Button>
-        </Box>
+        <Typography className={classes.initialAlert} variant="subtitle2">
+          Gasp...you’re the first one here! Start this chat by sending a message
+          below to light the way for your classmates! It feels good to connect
+          with others no matter where you are. Who knows, you might make a
+          friend!
+        </Typography>
       </Box>
     ) : (
       <Box className={classes.root}>
