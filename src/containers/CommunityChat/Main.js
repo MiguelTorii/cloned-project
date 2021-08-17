@@ -176,6 +176,8 @@ const Main = ({
 
         const p = await channel.getMessages(10);
         if (
+          isCommunityChat ||
+          !p?.items?.length ||
           !selectedChannelId ||
           selectedChannelId === p?.items?.[0]?.channel?.sid
         ) {
@@ -211,7 +213,7 @@ const Main = ({
 
     if (channel) init();
     // eslint-disable-next-line
-  }, [channel, selectedChannelId]);
+  }, [channel, selectedChannelId, isCommunityChat]);
 
   const messageItems = useMemo(
     () =>
