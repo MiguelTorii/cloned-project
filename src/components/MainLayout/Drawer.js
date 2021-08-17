@@ -399,21 +399,19 @@ const Drawer = ({
             />
           </Tooltip>
         )}
-        {!landingPageCampaign && (
-          <DrawerItem
-            OnIcon={<WorkflowIconOn />}
-            primaryText="Workflow"
-            pathname={pathname}
-            component={MyLink}
-            link="/workflow"
-            OffIcon={<WorkflowIconOff />}
-            listItemClass={classNames(
-              ['/workflow'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
-            )}
-          />
-        )}
+        <DrawerItem
+          OnIcon={<WorkflowIconOn />}
+          primaryText="Workflow"
+          pathname={pathname}
+          component={MyLink}
+          link="/workflow"
+          OffIcon={<WorkflowIconOff />}
+          listItemClass={classNames(
+            ['/workflow'].includes(pathname)
+              ? classes.currentPath
+              : classes.otherPath
+          )}
+        />
         {newNotesScreen && (
           <DrawerItem
             OnIcon={<NotesIconOn />}
@@ -516,6 +514,7 @@ const Drawer = ({
       landingPageCampaign,
       newClassExperience,
       pathname,
+      visiabled,
       classes,
       newNotesScreen,
       qs,
