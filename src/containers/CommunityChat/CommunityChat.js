@@ -40,7 +40,7 @@ const CommunityChat = ({
 }: Props) => {
   const classes = useStyles();
   const [leftSpace, setLeftSpace] = useState(2);
-  const [rightSpace, setRightSpace] = useState(3);
+  const [rightSpace, setRightSpace] = useState(0);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
 
@@ -116,8 +116,10 @@ const CommunityChat = ({
       }
     }
 
+    if (currentCommunityChannel && !isLoading) setRightSpace(3);
+
     setPrevWidth(width);
-  }, [prevWidth, width, curSize, currentCommunityChannel]);
+  }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
 
   const onCollapseLeft = useCallback(() => {
     if (width === 'xs') {
