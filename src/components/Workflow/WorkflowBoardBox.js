@@ -53,6 +53,9 @@ const WorkflowBoardBox = ({
         <TextField
           fullWidth
           className={classes.textField}
+          InputProps={{
+            className: classes.multilineColor
+          }}
           autoFocus
           multiline
           rowsMax={3}
