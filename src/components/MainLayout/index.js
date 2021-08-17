@@ -30,6 +30,7 @@ import GetAppDialog from 'components/GetAppDialog';
 import GetStudentJob from 'components/GetStudentJob';
 import QuickNotes from 'containers/QuickNotes';
 import logo from '../../assets/svg/circlein_logo.svg';
+import { ReactComponent as Home } from '../../assets/svg/home.svg';
 import './currentRoute.css';
 import UseCases from '../UseCases';
 import Dialog from '../Dialog';
@@ -42,6 +43,7 @@ import { styles } from '../_styles/MainLayout/index';
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (
     ![
+      '/',
       '/feed',
       '/create/notes',
       '/create/sharelink',
@@ -448,6 +450,16 @@ const MainLayout = ({
             )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <Tooltip
+                id={9086}
+                placement="bottom-end"
+                text="Click “Home” to access your Workspace and all of your Study Tools, like flashcards, class feeds and notes."
+                okButton="Yay! 🎉"
+              >
+                <IconButton color="inherit" component={MyLink} link="/">
+                  <Home />
+                </IconButton>
+              </Tooltip>
               <IconButton
                 color="inherit"
                 onClick={handleOpenWidget}
