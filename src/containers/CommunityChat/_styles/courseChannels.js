@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     color: 'white',
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(.5, 2),
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center'

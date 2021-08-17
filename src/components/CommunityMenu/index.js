@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -49,10 +49,14 @@ const CommunityMenu = ({
     }
   }, [item, local, courseChannels]);
 
+  const handleSelectItem = useCallback(() => {
+    handleSelect(item);
+  }, [handleSelect, item]);
+
   return item.communityIconUrl ? (
     <ListItem
       button
-      onClick={handleSelect(item)}
+      onClick={handleSelectItem}
       selected={selectedCourse && selectedCourse.id === item.id}
       classes={{ root: classes.listItem, selected: classes.selectedItem }}
     >
@@ -65,7 +69,7 @@ const CommunityMenu = ({
   ) : (
     <ListItem
       button
-      onClick={handleSelect(item)}
+      onClick={handleSelectItem}
       selected={selectedCourse && selectedCourse.id === item.id}
       classes={{ root: classes.listItem, selected: classes.selectedItem }}
       style={{

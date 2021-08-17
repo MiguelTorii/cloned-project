@@ -9,14 +9,16 @@ import type { Action } from '../types/action';
 
 export type CampaignState = {
   newClassExperience: boolean,
-  newFlashcardsExperience: boolean
+  newFlashcardsExperience: boolean,
+  chatLanding: boolean
 };
 
 const defaultState = {
   newClassExperience: null,
   newFlashcardsExperience: true,
   newNotesScreen: null,
-  landingPageCampaign: null
+  landingPageCampaign: null,
+  chatLanding: false
 };
 
 export default (
@@ -32,6 +34,13 @@ export default (
       return update(state, {
         newFlashcardsExperience: {
           $set: action.payload.variation_key === 'visible'
+        }
+      });
+    }
+    case campaignActions.GET_CHAT_LANDING_CAMPAIGN: {
+      return update(state, {
+        chatLanding: {
+          $set: action.payload.variation_key === 'chat'
         }
       });
     }

@@ -12,7 +12,8 @@ export const notesActions = {
 
 export const campaignActions = {
   GET_CAMPAIGN: 'GET_CAMPAIGN',
-  GET_FLASHCARDS_CAMPAIGN: 'GET_FLASHCARDS_CAMPAIGN'
+  GET_FLASHCARDS_CAMPAIGN: 'GET_FLASHCARDS_CAMPAIGN',
+  GET_CHAT_LANDING_CAMPAIGN: 'GET_CHAT_LANDING_CAMPAIGN'
 };
 
 export const dialogActions = {

@@ -37,7 +37,7 @@ import { updateProfile as updateUserProfile } from '../../api/user';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
-import { getFlashcardsCampaign } from '../../actions/campaign';
+import { getChatLandingCampaign, getFlashcardsCampaign } from '../../actions/campaign';
 
 const styles = (theme) => ({
   root: {
@@ -188,6 +188,7 @@ const UserInitializer = ({
   useEffect(() => {
     if (userId !== '') {
       dispatch(getFlashcardsCampaign());
+      dispatch(getChatLandingCampaign());
     }
   }, [dispatch, userId]);
 

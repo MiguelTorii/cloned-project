@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect, useMemo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core';
 import { getCampaign } from 'api/campaign';
@@ -9,7 +9,7 @@ import Dialog from '../../components/Dialog';
 import type { State as StoreState } from '../../types/state';
 import withRoot from '../../withRoot';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import { ONBOARDING_STEPS } from './steps';
+import { ONBOARDING_STEPS, ONBOARDING_STEPS_FOR_CHAT_LANDING } from './steps';
 import OnboardingStep from './OnboardingStep';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +37,13 @@ type Props = {
 const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
-  const [campaign, setCampaign] = useState(null);
+  const campaign = useSelector((state) => state.campaign);
+
+  // If landing page is Chat, we put chat page to the last.
+  const onboardingSteps = useMemo(() => {
+    if (campaign.chatLanding) return ONBOARDING_STEPS_FOR_CHAT_LANDING;
+    return ONBOARDING_STEPS;
+  }, [campaign.chatLanding]);
 
   useEffect(() => {
     if (open) {
@@ -59,7 +65,7 @@ const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
   };
 
   const onStepAction = () => {
-    if (step >= ONBOARDING_STEPS.length - 1) {
+    if (step >= onboardingSteps.length - 1) {
       closePopup();
     } else {
       setStep(step + 1);
@@ -81,9 +87,9 @@ const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
       onCancel={closePopup}
     >
       <OnboardingStep
-        data={ONBOARDING_STEPS[step]}
+        data={onboardingSteps[step]}
         step={step + 1}
-        totalSteps={ONBOARDING_STEPS.length}
+        totalSteps={onboardingSteps.length}
         onAction={onStepAction}
         onBackAction={onBackAction}
         onClose={closePopup}

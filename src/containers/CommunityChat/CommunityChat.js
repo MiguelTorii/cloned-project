@@ -40,7 +40,7 @@ const CommunityChat = ({
 }: Props) => {
   const classes = useStyles();
   const [leftSpace, setLeftSpace] = useState(2);
-  const [rightSpace, setRightSpace] = useState(0);
+  const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
 

@@ -1,12 +1,16 @@
 // @flow
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import cx from 'classnames';
 import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import { push } from 'connected-react-router';
 import LoadImg from 'components/LoadImg';
 import CollapseNavbar from 'components/CollapseNavbar';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './_styles/courseChannels';
+import { useDispatch, useSelector } from 'react-redux';
+import { cypher } from '../../utils/crypto';
 
 type Props = {
   course: Object,
@@ -24,6 +28,23 @@ const CourseChannels = ({
   setSelctedChannel
 }: Props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const userClasses = useSelector((state) => state.user.userClasses);
+
+  const handleGoToFeed = useCallback(() => {
+    const courseClass = (userClasses.classList || []).find((item) => {
+      return (item.section || [])
+        .map((section) => section.sectionId)
+        .includes(course.section_id);
+    });
+
+    if (!courseClass) {
+      dispatch(push('/feed'));
+      return;
+    }
+
+    dispatch(push(`/feed?class=${cypher(courseClass.classId + ':' + course.section_id)}`));
+  }, [course, userClasses, dispatch]);
 
   return (
     <Box>
@@ -50,11 +71,19 @@ const CourseChannels = ({
         display="flex"
         justifyContent="center"
         alignItems="center"
+        flexDirection="column"
         mb={3}
       >
         <Typography variant="h3" className={classes.name}>
           {course.name}
         </Typography>
+        <Link
+          component="button"
+          underline="none"
+          onClick={handleGoToFeed}
+        >
+          Go to Class Feed
+        </Link>
       </Box>
       <CollapseNavbar
         channels={communityChannels}

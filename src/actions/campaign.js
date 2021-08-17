@@ -80,3 +80,9 @@ export const getFlashcardsCampaign = () => ({
   type: campaignActions.GET_FLASHCARDS_CAMPAIGN,
   apiCall: () => getCampaign({ campaignId: CAMPAIGN_IDS.FLASHCARD_VERSION })
 });
+
+export const getChatLandingCampaign = () => ({
+  isApiCall: true,
+  type: campaignActions.GET_CHAT_LANDING_CAMPAIGN,
+  apiCall: () => getCampaign({ campaignId: CAMPAIGN_IDS.CHAT_LANDING })
+});

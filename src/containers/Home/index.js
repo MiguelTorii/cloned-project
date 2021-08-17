@@ -5,15 +5,18 @@
 /* eslint-disable no-unused-expressions */
 // @flow
 import React, { useEffect, useMemo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Redirect } from 'react-router';
+
 import useScript from 'hooks/useScript';
 import Classes from 'pages/Classes';
 import Feed from 'pages/Feed';
 import AuthRedirect from 'pages/AuthRedirect';
-import HomePage from 'pages/Home';
 import type { State as StoreState } from '../../types/state';
+import { isApiCalling } from '../../utils/helpers';
+import { campaignActions } from '../../constants/action-types';
 
 const styles = () => ({
   loading: {
@@ -31,6 +34,8 @@ const Home = ({ campaign, classes, user }) => {
     isLoading,
     expertMode
   } = user;
+
+  const isLoadingCampaign = useSelector(isApiCalling(campaignActions.GET_CHAT_LANDING_CAMPAIGN));
 
   const widgetUrl = useMemo(
     () => !userId && 'https://widget.freshworks.com/widgets/67000003041.js',
@@ -69,7 +74,7 @@ const Home = ({ campaign, classes, user }) => {
     hideWidget();
   }, [widgetId, widgetUrl, status, userId]);
 
-  if (isLoading && !userId)
+  if (isLoadingCampaign || (isLoading && !userId))
     return (
       <div className={classes.loading}>
         <CircularProgress />
@@ -77,11 +82,16 @@ const Home = ({ campaign, classes, user }) => {
     );
 
   if (!userId) return <AuthRedirect />;
-  if (!campaign.newClassExperience) return <Feed />;
-  if (!campaign.landingPageCampaign) return <Classes />;
 
   if (expertMode) return <Feed />;
-  return <HomePage />;
+
+  if (!campaign.newClassExperience) return <Feed />;
+  if (!campaign.landingPageCampaign) return <Classes />;
+  if (campaign.chatLanding) {
+    return <Redirect to="/chat" />;
+  }
+
+  return <Redirect to="/home" />;
 };
 
 const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
