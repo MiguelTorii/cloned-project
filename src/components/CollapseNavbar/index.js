@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -17,7 +18,6 @@ import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-me
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
-    textTransform: 'capitalize',
     maxHeight: 32
   },
   unreadMessageChannel: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14
   },
   channelIcon: {
-    minWidth: 20
+    minWidth: 16
   },
   selectedChannel: {
     color: 'white'
@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }
+  },
+  badge: {
+    right: theme.spacing()
   }
 }));
 
@@ -128,15 +131,29 @@ const CollapseNavbar = ({
               primary={channel.name}
             />
           ) : local[channel.chat_id] ? (
-            <ListItemText
-              classes={{
-                primary: cx(
-                  classes.channelName,
-                  local[channel.chat_id]?.unread && classes.unreadMessageChannel
-                )
-              }}
-              primary={local[channel.chat_id] && channel.chat_name}
-            />
+            <>
+              <ListItemText
+                classes={{
+                  primary: cx(
+                    classes.channelName,
+                    local[channel.chat_id]?.unread &&
+                      classes.unreadMessageChannel
+                  )
+                }}
+                primary={local[channel.chat_id] && channel.chat_name}
+              />
+              {local[channel.chat_id]?.unread > 0 && (
+                <Badge
+                  badgeContent={local[channel.chat_id]?.unread}
+                  color="secondary"
+                  classes={{
+                    badge: classes.badge
+                  }}
+                >
+                  <span />
+                </Badge>
+              )}
+            </>
           ) : null}
         </ListItem>,
         channel?.channels && renderSubList(channel.channels, channel.name)
@@ -146,18 +163,16 @@ const CollapseNavbar = ({
     return content;
   };
 
-  const renderSubList = (childChannels, parentChannelName) => {
-    return (
-      <Collapse
-        in={subListOpen !== parentChannelName}
-        timeout="auto"
-        unmountOnExit
-        key={parentChannelName}
-      >
-        <List component="div">{renderChannels(childChannels)}</List>
-      </Collapse>
-    );
-  };
+  const renderSubList = (childChannels, parentChannelName) => (
+    <Collapse
+      in={subListOpen !== parentChannelName}
+      timeout="auto"
+      unmountOnExit
+      key={parentChannelName}
+    >
+      <List component="div">{renderChannels(childChannels)}</List>
+    </Collapse>
+  );
 
   return <List component="nav">{renderChannels(channels)}</List>;
 };

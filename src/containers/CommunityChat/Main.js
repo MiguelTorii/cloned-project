@@ -186,6 +186,7 @@ const Main = ({
           setPaginator(p);
           setHasMore(!(p.items.length < 10));
         }
+        setLoadingMessage(false);
         if (end.current) {
           end.current.scrollIntoView({ behavior: 'instant' });
         }

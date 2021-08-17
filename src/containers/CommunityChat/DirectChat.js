@@ -194,10 +194,10 @@ const DirectChat = ({
       }
     }
 
-    if (currentChannel) setRightSpace(0);
+    if (currentChannel && !isLoading) setRightSpace(3);
 
     setPrevWidth(width);
-  }, [prevWidth, width, curSize, currentChannel]);
+  }, [prevWidth, width, curSize, currentChannel, isLoading]);
 
   const handleBlock = useCallback(
     async (blockedUserId) => {

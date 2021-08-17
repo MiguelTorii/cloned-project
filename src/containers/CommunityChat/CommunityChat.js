@@ -116,8 +116,10 @@ const CommunityChat = ({
       }
     }
 
+    if (currentCommunityChannel && !isLoading) setRightSpace(3);
+
     setPrevWidth(width);
-  }, [prevWidth, width, curSize, currentCommunityChannel]);
+  }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
 
   const onCollapseLeft = useCallback(() => {
     if (width === 'xs') {

@@ -20,8 +20,9 @@ const ChatPage = ({
   setCurrentCourse,
   setCommunityList,
   setCommunityChannels,
-  selectCurrentCommunity
-}: Props) => {
+  selectCurrentCommunity,
+  setCurrentChannelSid
+}) => {
   const {
     data: { local, currentCommunity, currentCourseId, oneTouchSendOpen },
     isLoading
@@ -111,10 +112,16 @@ const ChatPage = ({
       if (course.id !== selectedCourse?.id) {
         setCurrentCourse(course.id);
         setSelectedCourse(course);
+        setCurrentChannelSid('');
         selectCurrentCommunity(course);
       }
     },
-    [selectedCourse, setCurrentCourse, selectCurrentCommunity]
+    [
+      selectedCourse,
+      setCurrentCourse,
+      selectCurrentCommunity,
+      setCurrentChannelSid
+    ]
   );
 
   useEffect(() => {
@@ -186,7 +193,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentCourse: chatActions.setCurrentCourse,
       setCommunityList: chatActions.setCommunityList,
       setCommunityChannels: chatActions.setCommunityChannels,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity
+      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setCurrentChannelSid: chatActions.setCurrentChannelSid
     },
     dispatch
   );

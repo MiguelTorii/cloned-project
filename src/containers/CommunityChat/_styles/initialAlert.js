@@ -17,8 +17,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700
   },
   initialAlert: {
+    maxWidth: 460,
     fontSize: 16,
-    marginTop: theme.spacing(),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(6),
+    lineHeight: '24.55px',
     textAlign: 'center'
   },
   initialAlertDescription: {

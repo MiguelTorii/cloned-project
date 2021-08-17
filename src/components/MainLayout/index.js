@@ -45,6 +45,7 @@ import { ReactComponent as HomeIcon } from 'assets/svg/home-inactive.svg';
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (
     ![
+      '/',
       '/feed',
       '/create/notes',
       '/create/sharelink',
@@ -456,9 +457,16 @@ const MainLayout = ({
             )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton onClick={handleGoHome}>
-                <HomeIcon />
-              </IconButton>
+              <Tooltip
+                id={9086}
+                placement="bottom-start"
+                text="Click “Home” to access your Workspace and all of your Study Tools, like flashcards, class feeds and notes."
+                okButton="Yay! 🎉"
+              >
+                <IconButton onClick={handleGoHome}>
+                  <HomeIcon />
+                </IconButton>
+              </Tooltip>
               <IconButton
                 color="inherit"
                 onClick={handleOpenWidget}
