@@ -32,6 +32,7 @@ type Props = {
   handleBlockUser: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
+  setCurrentChannelSid: Function,
   setOneTouchSend: Function,
   handleUpdateFriendlyName: Function,
   handleMarkAsRead: Function,
@@ -44,6 +45,7 @@ const DirectChat = ({
   handleRemoveChannel,
   handleBlockUser,
   handleMuteChannel,
+  setCurrentChannelSid,
   handleNewChannel,
   handleUpdateFriendlyName,
   setOneTouchSend,
@@ -63,6 +65,7 @@ const DirectChat = ({
       client,
       channels,
       newMessage,
+      selectedChannelId,
       local,
       newChannel,
       mainMessage,
@@ -107,9 +110,16 @@ const DirectChat = ({
       if (newChannel) {
         await handleNewChannel(false);
       }
+      setCurrentChannelSid(channel.sid);
       setCurrentChannel(channel);
     },
-    [handleNewChannel, setCurrentChannel, width, newChannel]
+    [
+      handleNewChannel,
+      setCurrentChannel,
+      setCurrentChannelSid,
+      width,
+      newChannel
+    ]
   );
 
   const handleRemove = useCallback(
@@ -271,6 +281,7 @@ const DirectChat = ({
             isLoading={isLoading}
             newMessage={newMessage}
             channelList={channelList}
+            selectedChannelId={selectedChannelId}
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             handleBlock={handleBlock}
@@ -326,6 +337,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentChannel: chatActions.setCurrentChannel,
       handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
       setOneTouchSend: chatActions.setOneTouchSend,
+      setCurrentChannelSid: chatActions.setCurrentChannelSid,
       getOnboardingList: OnboardingActions.getOnboardingList
     },
     dispatch
