@@ -140,7 +140,8 @@ export const CIRCLEIN_EVENT_NAMES = [
 ];
 
 export const CAMPAIGN_IDS = {
-  FLASHCARD_VERSION: 14
+  FLASHCARD_VERSION: 14,
+  CHAT_LANDING: 16
 };
 
 export const MEMBER_ROLES = {

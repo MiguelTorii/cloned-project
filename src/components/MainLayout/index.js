@@ -3,6 +3,8 @@
 import React, { useMemo, memo, useState, useCallback } from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import ChatIcon from '@material-ui/icons/Chat';
 import { withStyles } from '@material-ui/core/styles';
@@ -38,6 +40,7 @@ import GiveFeedback from '../../containers/GiveFeedback';
 import Tooltip from '../../containers/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements';
 import { styles } from '../_styles/MainLayout/index';
+import { ReactComponent as HomeIcon } from 'assets/svg/home-inactive.svg';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (
@@ -120,6 +123,7 @@ const MainLayout = ({
   viewedOnboarding,
   location: { search }
 }: Props) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -256,6 +260,10 @@ const MainLayout = ({
   const handleCloseUseCases = useCallback(() => {
     setOpenUseCases(false);
   }, []);
+
+  const handleGoHome = useCallback(() => {
+    dispatch(push('/home'));
+  }, [dispatch]);
 
   const isMenuOpen = useMemo(() => Boolean(anchorEl), [anchorEl]);
   const isMobileMenuOpen = useMemo(
@@ -448,6 +456,9 @@ const MainLayout = ({
             )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <IconButton onClick={handleGoHome}>
+                <HomeIcon />
+              </IconButton>
               <IconButton
                 color="inherit"
                 onClick={handleOpenWidget}

@@ -1,6 +1,6 @@
 // @flow
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
@@ -28,6 +28,8 @@ const ChatPage = ({
   } = chat;
 
   const classes = useStyles();
+
+  const campaign = useSelector((state) => state.campaign);
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -104,6 +106,17 @@ const ChatPage = ({
     }
   }, [local, isLoading]);
 
+  const handleSelect = useCallback(
+    (course) => {
+      if (course.id !== selectedCourse?.id) {
+        setCurrentCourse(course.id);
+        setSelectedCourse(course);
+        selectCurrentCommunity(course);
+      }
+    },
+    [selectedCourse, setCurrentCourse, selectCurrentCommunity]
+  );
+
   useEffect(() => {
     if (oneTouchSendOpen) {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
@@ -117,18 +130,21 @@ const ChatPage = ({
         (course) => course.community.id === currentCourseId
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
+    } else if (campaign.chatLanding && communityList.length > 0) {
+      // Check if landing page is chat. In this case, we select first class by default.
+      handleSelect(communityList[0].community);
     } else {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     }
-  }, [currentCourseId, currentCommunity, communityList, loading]);
-
-  const handleSelect = (course) => () => {
-    if (course.id !== selectedCourse?.id) {
-      setCurrentCourse(course.id);
-      setSelectedCourse(course);
-      selectCurrentCommunity(course);
-    }
-  };
+  }, [
+    setCurrentCourse,
+    selectCurrentCommunity,
+    currentCourseId,
+    currentCommunity,
+    communityList,
+    loading,
+    campaign.chatLanding
+  ]);
 
   if (loading) return <LoadingSpin />;
 

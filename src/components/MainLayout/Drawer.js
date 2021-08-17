@@ -343,9 +343,9 @@ const Drawer = ({
       <>
         <DrawerItem
           listItemClass={classNames(
-            ['/'].includes(pathname) ? classes.currentPath : classes.otherPath
+            ['/home'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
-          link="/"
+          link="/home"
           pathname={pathname}
           OnIcon={<HomeIconOn />}
           primaryText="Home"
