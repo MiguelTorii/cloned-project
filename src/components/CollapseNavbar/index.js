@@ -136,7 +136,7 @@ const CollapseNavbar = ({
               {channel.chat_name === 'introduce-yourself' ? (
                 <Tooltip
                   id={9089}
-                  placement="top-end"
+                  placement="right"
                   text="Let your classmates know you’re here, tell them where you’re from, and we made a space for everything you need to chat about. "
                   okButton="Yay! 🎉"
                 >

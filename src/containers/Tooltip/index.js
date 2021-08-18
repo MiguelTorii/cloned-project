@@ -271,6 +271,20 @@ const Tooltip = ({
         case VIDEO_CHAT_SCREEN:
           result = viewedTooltips.includes(VIDEO_CHAT_SETTINGS);
           break;
+        case GO_CHAT:
+          result = viewedTooltips.includes(GO_HOME);
+          break;
+        case GIVEAWAY_BANNER:
+          result =
+            viewedTooltips.includes(GO_CHAT) ||
+            viewedTooltips.includes(GO_HOME);
+          break;
+        case INTRODUCE_YOURSELF:
+          result = viewedTooltips.includes(GO_HOME);
+          break;
+        case COMMENT_FEED:
+          result = viewedTooltips.includes(GIVEAWAY_BANNER);
+          break;
         default:
           result = true;
       }

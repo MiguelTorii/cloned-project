@@ -164,7 +164,7 @@ const Drawer = ({
         {!chatLanding ? (
           <Tooltip
             id={9087}
-            placement="Left"
+            placement="right"
             text="We made group chat for all of your classes because we know it will help you have a better college experience. "
             okButton="Yay! 🎉"
           >
@@ -379,7 +379,7 @@ const Drawer = ({
         {!chatLanding ? (
           <Tooltip
             id={9087}
-            placement="Left"
+            placement="right"
             text="We made group chat for all of your classes because we know it will help you have a better college experience. "
             okButton="Yay! 🎉"
           >
