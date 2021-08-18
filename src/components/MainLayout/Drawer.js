@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import queryString from 'query-string';
+import { useSelector } from 'react-redux';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
@@ -80,7 +81,8 @@ const Drawer = ({
 }) => {
   const classes = useStyles();
   const [campaign, setCampaign] = useState(null);
-
+  const { chatLanding } = useSelector((state) => state.campaign);
+  console.log(chatLanding);
   const handleOpenOneTouchSend = useCallback(
     () => setOneTouchSend(true),
     [setOneTouchSend]
@@ -159,15 +161,34 @@ const Drawer = ({
   const renderExpertMenu = useCallback(
     () => (
       <>
-        <DrawerItem
-          OnIcon={<ChatIconOn />}
-          primaryText="Chats"
-          pathname={pathname}
-          component={MyLink}
-          link="/chat"
-          OffIcon={<ChatIconOff />}
-          listItemClass={classes.otherPath}
-        />
+        {!chatLanding ? (
+          <Tooltip
+            id={9087}
+            placement="Left"
+            text="We made group chat for all of your classes because we know it will help you have a better college experience. "
+            okButton="Yay! 🎉"
+          >
+            <DrawerItem
+              OnIcon={<ChatIconOn />}
+              primaryText="Chats"
+              pathname={pathname}
+              component={MyLink}
+              link="/chat"
+              OffIcon={<ChatIconOff />}
+              listItemClass={classes.otherPath}
+            />
+          </Tooltip>
+        ) : (
+          <DrawerItem
+            OnIcon={<ChatIconOn />}
+            primaryText="Chats"
+            pathname={pathname}
+            component={MyLink}
+            link="/chat"
+            OffIcon={<ChatIconOff />}
+            listItemClass={classes.otherPath}
+          />
+        )}
         {landingPageCampaign && (
           <DrawerItem
             listItemClass={classNames(
@@ -334,6 +355,7 @@ const Drawer = ({
       classes,
       newNotesScreen,
       qs,
+      chatLanding,
       handleManageClasses
     ]
   );
@@ -343,7 +365,9 @@ const Drawer = ({
       <>
         <DrawerItem
           listItemClass={classNames(
-            ['/home'].includes(pathname) ? classes.currentPath : classes.otherPath
+            ['/home'].includes(pathname)
+              ? classes.currentPath
+              : classes.otherPath
           )}
           link="/home"
           pathname={pathname}
@@ -352,15 +376,34 @@ const Drawer = ({
           component={MyLink}
           OffIcon={<HomeIconOff />}
         />
-        <DrawerItem
-          OnIcon={<ChatIconOn />}
-          primaryText="Chats"
-          pathname={pathname}
-          component={MyLink}
-          link="/chat"
-          OffIcon={<ChatIconOff />}
-          listItemClass={classes.otherPath}
-        />
+        {!chatLanding ? (
+          <Tooltip
+            id={9087}
+            placement="Left"
+            text="We made group chat for all of your classes because we know it will help you have a better college experience. "
+            okButton="Yay! 🎉"
+          >
+            <DrawerItem
+              OnIcon={<ChatIconOn />}
+              primaryText="Chats"
+              pathname={pathname}
+              component={MyLink}
+              link="/chat"
+              OffIcon={<ChatIconOff />}
+              listItemClass={classes.otherPath}
+            />
+          </Tooltip>
+        ) : (
+          <DrawerItem
+            OnIcon={<ChatIconOn />}
+            primaryText="Chats"
+            pathname={pathname}
+            component={MyLink}
+            link="/chat"
+            OffIcon={<ChatIconOff />}
+            listItemClass={classes.otherPath}
+          />
+        )}
         <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
         <DrawerItem
           OnIcon={
@@ -518,6 +561,7 @@ const Drawer = ({
       classes,
       newNotesScreen,
       qs,
+      chatLanding,
       handleManageClasses
     ]
   );
