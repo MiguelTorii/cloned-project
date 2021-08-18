@@ -12,7 +12,7 @@ import {
   TextValidator,
   SelectValidator
 } from 'react-material-ui-form-validator';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -89,7 +89,29 @@ const UserInitializer = ({
   });
   const [widgetUrl, setWidgetUrl] = useState('');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [onboardingPopupOpen, setOnboardingPopupOpen] = useState(false);
   const dispatch = useDispatch();
+  const viewedOnboarding = useSelector((state) => state.user.syncData.viewedOnboarding);
+  const chatLanding = useSelector((state) => state.campaign.chatLanding);
+
+  // Check to show onboarding popup or not.
+  // This got complex after chat landing campaign. (5 seconds delay)
+  useEffect(() => {
+    let timeoutId = null;
+
+    if (viewedOnboarding) setOnboardingPopupOpen(false);
+    else if (viewedOnboarding === false) {
+      if (!chatLanding) setOnboardingPopupOpen(true);
+      else {
+        // Since it is delayed 5 seconds, it shows up after 6 seconds to make it natural.
+        timeoutId = setTimeout(() => {
+          setOnboardingPopupOpen(true);
+        }, 6000);
+      }
+    }
+
+    return () => timeoutId && clearTimeout(timeoutId);
+  }, [chatLanding, viewedOnboarding]);
 
   const {
     data: { userId }
@@ -239,8 +261,7 @@ const UserInitializer = ({
   };
 
   const {
-    data: { updateProfile, segment },
-    syncData: { viewedOnboarding }
+    data: { updateProfile, segment }
   } = user;
 
   if (userId === '' || campaign.landingPageCampaign === null) return null;
@@ -361,7 +382,7 @@ const UserInitializer = ({
       </Dialog>
       {windowWidth > 640 && (
         <OnboardingPopup
-          open={viewedOnboarding !== null && !viewedOnboarding}
+          open={onboardingPopupOpen}
           updateOnboarding={updateOnboarding}
           userId={userId}
         />
