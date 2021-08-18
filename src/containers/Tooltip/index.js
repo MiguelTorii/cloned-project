@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @flow
 
 import React, {
@@ -122,14 +123,17 @@ const VIDEO_CHAT_INVITE = 9061;
 const VIDEO_CHAT_PARTICIPANTS = 9062;
 const VIDEO_CHAT_SCREEN = 9063;
 const VIDEO_CHAT_SETTINGS = 9064;
-const GO_HOME = 9086;
 // not an actual tooltip
-// eslint-disable-next-line
 const GET_APP_POPUP = 4432;
-// eslint-disable-next-line
 const ONBOARDING_EXPERT = 9052;
-// eslint-disable-next-line
 const ONBOARDING_NOTES = 8453;
+
+const GO_HOME = 9086;
+const GO_CHAT = 9087;
+const GIVEAWAY_BANNER = 9088;
+const INTRODUCE_YOURSELF = 9089;
+const CREATE_NEW_POST = 9090;
+const COMMENT_FEED = 9091;
 
 const TRANSITION_TIME = 750;
 
@@ -266,9 +270,6 @@ const Tooltip = ({
           break;
         case VIDEO_CHAT_SCREEN:
           result = viewedTooltips.includes(VIDEO_CHAT_SETTINGS);
-          break;
-        case GO_HOME:
-          result = viewedTooltips.includes(GO_HOME);
           break;
         default:
           result = true;

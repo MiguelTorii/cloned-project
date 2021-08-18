@@ -289,15 +289,9 @@ class PostItemHeader extends React.PureComponent<Props, State> {
             </Button>
           )}
           <SharePost feedId={feedId} open={open} onClose={this.handleShare} />
-          <Tooltip
-            id={9043}
-            placement="right"
-            text="Save what you want to review later during your study time. Set a reminder to view your bookmarks"
-          >
-            <IconButton onClick={this.handleMenuOpen}>
-              <MoreVertIcon />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={this.handleMenuOpen}>
+            <MoreVertIcon />
+          </IconButton>
         </div>
         <Typography component="p" variant="h4" paragraph>
           {title}

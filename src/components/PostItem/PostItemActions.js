@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '../../containers/Tooltip';
+// import Tooltip from '../../containers/Tooltip';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 // import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -102,25 +102,19 @@ class PostItemActions extends React.PureComponent<Props> {
             {!isOwner && (
               <>
                 {!noThanks && (
-                  <Tooltip
-                    id={2197}
-                    placement="top"
-                    text="When your classmates post, be sure to thank them"
-                  >
-                    <Button aria-label="Thanks" onClick={onThanks}>
-                      <img
-                        src={thanksSvg}
-                        className={classes.actionIcon}
-                        alt="thanks"
-                      />
-                      <Typography
-                        variant="subtitle1"
-                        className={classes.buttonText}
-                      >
-                        {thanksCount}
-                      </Typography>
-                    </Button>
-                  </Tooltip>
+                  <Button aria-label="Thanks" onClick={onThanks}>
+                    <img
+                      src={thanksSvg}
+                      className={classes.actionIcon}
+                      alt="thanks"
+                    />
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.buttonText}
+                    >
+                      {thanksCount}
+                    </Typography>
+                  </Button>
                 )}
                 <Typography variant="subtitle1" className={classes.buttonText}>
                   <img
