@@ -4,8 +4,8 @@ import Dialog, { dialogStyle } from 'components/Dialog';
 import { setIntervalWithFirstCall } from 'utils/helpers';
 import { INTERVAL } from 'constants/app';
 import type { Announcement } from 'types/models';
-import { makeStyles } from '@material-ui/core';
 import HourlyGiveawayPopup from './HourlyGiveawayPopup';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   hourlyBody: {

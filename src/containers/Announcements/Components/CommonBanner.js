@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core';
 import momentTz from 'moment-timezone';
 import moment from 'moment';
 import pluralize from 'pluralize';
-import Tooltip from 'containers/Tooltip';
 import LoadImg from '../../../components/LoadImg';
 import expandSvg from '../../../assets/svg/expand.svg';
 import minimizeSvg from '../../../assets/svg/minimize.svg';
@@ -125,8 +124,9 @@ const CommonBanner = ({ announcement }: Props) => {
     return () => clearInterval(intervalID);
   }, [announcement.endDate]);
 
-  const replaceDuration = (text) =>
-    text.replace(DURATION_REPLACE_TEXT, durationText);
+  const replaceDuration = (text) => {
+    return text.replace(DURATION_REPLACE_TEXT, durationText);
+  };
 
   if (timeOver) return null;
 
@@ -164,14 +164,7 @@ const CommonBanner = ({ announcement }: Props) => {
           color="primary"
           onClick={() => setDialogOpen(true)}
         >
-          <Tooltip
-            id={9088}
-            placement="top-end"
-            text="We’ve given out over $100,000 to students and every week we have a new give away. Check it out. "
-            okButton="Yay! 🎉"
-          >
-            <u> Learn More </u>
-          </Tooltip>
+          <u> Learn More </u>
         </Button>
         {isExpanded ? (
           <Button onClick={() => setIsExpanded(false)}>

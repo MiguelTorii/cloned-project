@@ -13,7 +13,6 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import Tooltip from 'containers/Tooltip';
 import { ReactComponent as ChannelIcon } from 'assets/svg/public-channel.svg';
 import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-message-channel-icon.svg';
 
@@ -133,36 +132,16 @@ const CollapseNavbar = ({
             />
           ) : local[channel.chat_id] ? (
             <>
-              {channel.chat_name === 'introduce-yourself' ? (
-                <Tooltip
-                  id={9089}
-                  placement="top-end"
-                  text="Let your classmates know you’re here, tell them where you’re from, and we made a space for everything you need to chat about. "
-                  okButton="Yay! 🎉"
-                >
-                  <ListItemText
-                    classes={{
-                      primary: cx(
-                        classes.channelName,
-                        local[channel.chat_id]?.unread &&
-                          classes.unreadMessageChannel
-                      )
-                    }}
-                    primary={local[channel.chat_id] && channel.chat_name}
-                  />
-                </Tooltip>
-              ) : (
-                <ListItemText
-                  classes={{
-                    primary: cx(
-                      classes.channelName,
-                      local[channel.chat_id]?.unread &&
-                        classes.unreadMessageChannel
-                    )
-                  }}
-                  primary={local[channel.chat_id] && channel.chat_name}
-                />
-              )}
+              <ListItemText
+                classes={{
+                  primary: cx(
+                    classes.channelName,
+                    local[channel.chat_id]?.unread &&
+                      classes.unreadMessageChannel
+                  )
+                }}
+                primary={local[channel.chat_id] && channel.chat_name}
+              />
               {local[channel.chat_id]?.unread > 0 && (
                 <Badge
                   badgeContent={local[channel.chat_id]?.unread}
