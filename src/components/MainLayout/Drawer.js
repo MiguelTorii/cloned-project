@@ -355,7 +355,6 @@ const Drawer = ({
       classes,
       newNotesScreen,
       qs,
-      chatLanding,
       handleManageClasses
     ]
   );
@@ -425,15 +424,22 @@ const Drawer = ({
           )}
         />
         {visiabled && (
-          <DrawerItem
-            onClick={handleOpenGetApp}
-            listItemClass={classes.otherPath}
-            OnIcon={<OnStudyRoom />}
-            component={MyLink}
-            link="/video-call"
-            primaryText="Study Room"
-            OffIcon={<OffStudyRoom />}
-          />
+          <Tooltip
+            id={9059}
+            placement="right"
+            text="Pssst! You can start video chatting from the left navigation! 😍"
+            okButton="Nice!"
+          >
+            <DrawerItem
+              onClick={handleOpenGetApp}
+              listItemClass={classes.otherPath}
+              OnIcon={<OnStudyRoom />}
+              component={MyLink}
+              link="/video-call"
+              primaryText="Study Room"
+              OffIcon={<OffStudyRoom />}
+            />
+          </Tooltip>
         )}
         <DrawerItem
           OnIcon={<WorkflowIconOn />}
@@ -554,7 +560,6 @@ const Drawer = ({
       classes,
       newNotesScreen,
       qs,
-      chatLanding,
       handleManageClasses
     ]
   );

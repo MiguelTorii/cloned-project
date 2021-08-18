@@ -349,7 +349,8 @@ type Props = {
   relative: boolean,
   id: string,
   onLoadOptions: Function,
-  isFloatChat: boolean
+  isFloatChat: boolean,
+  debounceTimeout: number
 };
 
 const SelectClassmates = ({
@@ -372,7 +373,8 @@ const SelectClassmates = ({
   relative,
   id,
   onLoadOptions,
-  isFloatChat
+  isFloatChat,
+  debounceTimeout = 500
 }: Props) => {
   const selectStyles = {
     input: (base) => ({
@@ -402,6 +404,7 @@ const SelectClassmates = ({
           loadOptions={onLoadOptions}
           searchClassmate
           isFloatChat={isFloatChat}
+          debounceTimeout={debounceTimeout}
           additional={{
             page
           }}
