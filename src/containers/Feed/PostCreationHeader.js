@@ -12,6 +12,7 @@ import IconResource from 'assets/svg/links.svg';
 import { push } from 'connected-react-router';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
+import Tooltip from 'containers/Tooltip';
 import useStyles from './styles';
 
 const POST_BUTTONS = [
@@ -62,16 +63,23 @@ const PostCreationHeader = () => {
             />
           </Box>
           <Box flexGrow={1}>
-            <Button
-              fullWidth
-              className={classes.postAnyButton}
-              onClick={() => handleGotoPostCreate()}
+            <Tooltip
+              id={9090}
+              placement="bottom"
+              text="Earn points and earn money. A great way to do that is by creating a post."
+              okButton="Yay! 🎉"
             >
-              <Hidden smDown>
-                Create a new post, offer support or share useful links!
-              </Hidden>
-              <Hidden mdUp>Create a new post</Hidden>
-            </Button>
+              <Button
+                fullWidth
+                className={classes.postAnyButton}
+                onClick={() => handleGotoPostCreate()}
+              >
+                <Hidden smDown>
+                  Create a new post, offer support or share useful links!
+                </Hidden>
+                <Hidden mdUp>Create a new post</Hidden>
+              </Button>
+            </Tooltip>
           </Box>
         </Box>
         <hr className={classes.divider} />

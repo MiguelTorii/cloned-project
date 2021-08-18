@@ -82,7 +82,7 @@ const Drawer = ({
   const classes = useStyles();
   const [campaign, setCampaign] = useState(null);
   const { chatLanding } = useSelector((state) => state.campaign);
-  console.log(chatLanding);
+
   const handleOpenOneTouchSend = useCallback(
     () => setOneTouchSend(true),
     [setOneTouchSend]
@@ -425,22 +425,15 @@ const Drawer = ({
           )}
         />
         {visiabled && (
-          <Tooltip
-            id={9059}
-            placement="right"
-            text="Pssst! You can start video chatting from the left navigation! 😍"
-            okButton="Nice!"
-          >
-            <DrawerItem
-              onClick={handleOpenGetApp}
-              listItemClass={classes.otherPath}
-              OnIcon={<OnStudyRoom />}
-              component={MyLink}
-              link="/video-call"
-              primaryText="Study Room"
-              OffIcon={<OffStudyRoom />}
-            />
-          </Tooltip>
+          <DrawerItem
+            onClick={handleOpenGetApp}
+            listItemClass={classes.otherPath}
+            OnIcon={<OnStudyRoom />}
+            component={MyLink}
+            link="/video-call"
+            primaryText="Study Room"
+            OffIcon={<OffStudyRoom />}
+          />
         )}
         <DrawerItem
           OnIcon={<WorkflowIconOn />}
