@@ -91,7 +91,7 @@ const CommunityChat = ({
       setCurrentCommunityChannel(targetSelectedChannel?.twilioChannel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel, setCurrentCommunityChannel, width]);
+  }, [selectedChannel, setCurrentCommunityChannel, width, isLoading]);
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
@@ -174,7 +174,7 @@ const CommunityChat = ({
           )}
         </Grid>
       )}
-      {leftSpace !== 12 && (
+      {!isLoading && leftSpace !== 12 && (
         <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
           <Main
             isCommunityChat
@@ -194,20 +194,22 @@ const CommunityChat = ({
           />
         </Grid>
       )}
-      <Grid
-        item
-        xs={rightSpace || 1}
-        className={rightSpace !== 0 ? classes.right : classes.hidden}
-      >
-        <RightMenu
-          userId={userId}
-          schoolId={schoolId}
-          channel={currentCommunityChannel}
-          selectedCourse={selectedCourse}
-          setSelectedCourse={setSelectedCourse}
-          local={local}
-        />
-      </Grid>
+      {!isLoading && (
+        <Grid
+          item
+          xs={rightSpace || 1}
+          className={rightSpace !== 0 ? classes.right : classes.hidden}
+        >
+          <RightMenu
+            userId={userId}
+            schoolId={schoolId}
+            channel={currentCommunityChannel}
+            selectedCourse={selectedCourse}
+            setSelectedCourse={setSelectedCourse}
+            local={local}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };

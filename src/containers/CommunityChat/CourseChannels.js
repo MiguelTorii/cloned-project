@@ -82,7 +82,9 @@ const CourseChannels = ({
           underline="none"
           onClick={handleGoToFeed}
         >
-          Go to Class Feed
+          <Typography variant="body2">
+            Go to Class Feed
+          </Typography>
         </Link>
       </Box>
       <CollapseNavbar

@@ -76,6 +76,12 @@ const ChatPage = ({
         if (communities.length) await fetchCommunityChannels(communities);
         setCommunityList(communities);
         setCommunities(communities);
+        if (communities.length > 0) {
+          const defaultCommunity = communities[0].community;
+          setCurrentCourse(defaultCommunity.id);
+          setSelectedCourse(defaultCommunity);
+          selectCurrentCommunity(defaultCommunity);
+        }
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -137,9 +143,6 @@ const ChatPage = ({
         (course) => course.community.id === currentCourseId
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
-    } else if (campaign.chatLanding && communityList.length > 0) {
-      // Check if landing page is chat. In this case, we select first class by default.
-      handleSelect(communityList[0].community);
     } else {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     }
