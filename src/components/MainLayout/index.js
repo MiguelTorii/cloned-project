@@ -447,7 +447,7 @@ const MainLayout = ({
                 <MenuIcon />
               </IconButton>
             </Hidden>
-            <Link href="/" component={MyLink} link="/">
+            <Link href="/home" component={MyLink} link="/home">
               <img src={logo} alt="Logo" className={classes.logo} />
             </Link>
             {expertMode && (
