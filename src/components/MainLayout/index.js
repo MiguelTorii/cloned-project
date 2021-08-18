@@ -485,11 +485,17 @@ const MainLayout = ({
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit" component={MyLink} link="/chat">
-                <Badge badgeContent={unreadMessages} color="secondary">
-                  <ChatIcon />
-                </Badge>
-              </IconButton>
+              <Tooltip
+                id={3292}
+                placement="left"
+                text="Setup a group chat with your class to connect on topics and discuss problems"
+              >
+                <IconButton color="inherit" component={MyLink} link="/chat">
+                  <Badge badgeContent={unreadMessages} color="secondary">
+                    <ChatIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
