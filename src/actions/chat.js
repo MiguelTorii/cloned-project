@@ -515,7 +515,7 @@ export const handleInitChat =
 
           if (channel.lastMessage?.index > -1) {
             if (channel.lastConsumedMessageIndex === 0) {
-              return (
+              return Math.abs(
                 channel.lastMessage.index - channel.lastConsumedMessageIndex
               );
             }
@@ -526,7 +526,9 @@ export const handleInitChat =
 
           if (!channel.lastConsumedMessageIndex || !channel.lastMessage)
             return 0;
-          return channel.lastMessage.index - channel.lastConsumedMessageIndex;
+          return Math.abs(
+            channel.lastMessage.index - channel.lastConsumedMessageIndex
+          );
         } finally {
         }
       };
