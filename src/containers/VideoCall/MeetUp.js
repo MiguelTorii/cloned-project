@@ -279,12 +279,10 @@ class MeetUp extends React.Component<Props, State> {
         });
     });
 
-    const currentClassList = Object.keys(newClassList).map((sectionId) => {
-      return {
-        ...newClassList[sectionId],
-        sectionId: Number(sectionId)
-      };
-    });
+    const currentClassList = Object.keys(newClassList).map((sectionId) => ({
+      ...newClassList[sectionId],
+      sectionId: Number(sectionId)
+    }));
 
     this.setState({
       profiles: {
@@ -1113,7 +1111,7 @@ class MeetUp extends React.Component<Props, State> {
     const unreadMessageCount = get(chat, `data.local.${channel.sid}.unread`);
 
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <div className={classes.root}>
             <StudyRoomChat
@@ -1269,7 +1267,7 @@ class MeetUp extends React.Component<Props, State> {
               currentUserId={currentUserId}
             />
             {Boolean(dataTrack) && (
-              <Fragment>
+              <>
                 <Whiteboard
                   innerRef={this.whiteboard}
                   userId={userId}
@@ -1289,7 +1287,7 @@ class MeetUp extends React.Component<Props, State> {
                   onSave={this.handleSave}
                   onClear={this.handleClear}
                 />
-              </Fragment>
+              </>
             )}
           </div>
           <Dialog
@@ -1366,7 +1364,7 @@ class MeetUp extends React.Component<Props, State> {
             profiles={profiles}
           />
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 }

@@ -162,6 +162,8 @@ const StudyRoomChat = ({
   useEffect(() => {
     const initAvatars = async () => {
       const twilioChannel = get(channel, 'twilioChannel');
+      console.log('-----twiliochannel-----	');
+      console.log(twilioChannel);
       const av = await fetchAvatars(twilioChannel);
       setMembers((members) => {
         av.forEach((a) => {
@@ -170,6 +172,8 @@ const StudyRoomChat = ({
         return members;
       });
     };
+    console.log('-----channel-----');
+    console.log(channel);
 
     if (channel && channel.members) {
       const { members } = channel;
@@ -186,15 +190,21 @@ const StudyRoomChat = ({
     setTabs(value);
   }, []);
 
-  const participantsIdList = useMemo(() => {
-    return participants.map((p) => p.participant.identity);
-  }, [participants]);
+  console.log('------participants---');
+  console.log(participants);
 
-  const memberListOnVideo = useMemo(() => {
-    return Object.keys(members).filter(
-      (member) => participantsIdList.indexOf(member) > -1
-    );
-  }, [members, participantsIdList]);
+  const participantsIdList = useMemo(
+    () => participants.map((p) => p.participant.identity),
+    [participants]
+  );
+
+  const memberListOnVideo = useMemo(
+    () =>
+      Object.keys(members).filter(
+        (member) => participantsIdList.indexOf(member) > -1
+      ),
+    [members, participantsIdList]
+  );
 
   if (!open) return null;
   return (
