@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import queryString from 'query-string';
+import { useSelector, connect } from 'react-redux';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
@@ -76,10 +77,12 @@ const Drawer = ({
   userId,
   fullName,
   userProfileUrl,
-  initials
+  initials,
+  campaignState
 }) => {
   const classes = useStyles();
   const [campaign, setCampaign] = useState(null);
+  const { chatLanding } = campaignState;
 
   const handleOpenOneTouchSend = useCallback(
     () => setOneTouchSend(true),
@@ -159,15 +162,23 @@ const Drawer = ({
   const renderExpertMenu = useCallback(
     () => (
       <>
-        <DrawerItem
-          OnIcon={<ChatIconOn />}
-          primaryText="Chats"
-          pathname={pathname}
-          component={MyLink}
-          link="/chat"
-          OffIcon={<ChatIconOff />}
-          listItemClass={classes.otherPath}
-        />
+        <Tooltip
+          id={9087}
+          hidden={!!chatLanding}
+          placement="right"
+          text="We made group chat for all of your classes because we know it will help you have a better college experience. "
+          okButton="Yay! 🎉"
+        >
+          <DrawerItem
+            OnIcon={<ChatIconOn />}
+            primaryText="Chats"
+            pathname={pathname}
+            component={MyLink}
+            link="/chat"
+            OffIcon={<ChatIconOff />}
+            listItemClass={classes.otherPath}
+          />
+        </Tooltip>
         {landingPageCampaign && (
           <DrawerItem
             listItemClass={classNames(
@@ -343,7 +354,9 @@ const Drawer = ({
       <>
         <DrawerItem
           listItemClass={classNames(
-            ['/home'].includes(pathname) ? classes.currentPath : classes.otherPath
+            ['/home'].includes(pathname)
+              ? classes.currentPath
+              : classes.otherPath
           )}
           link="/home"
           pathname={pathname}
@@ -352,15 +365,24 @@ const Drawer = ({
           component={MyLink}
           OffIcon={<HomeIconOff />}
         />
-        <DrawerItem
-          OnIcon={<ChatIconOn />}
-          primaryText="Chats"
-          pathname={pathname}
-          component={MyLink}
-          link="/chat"
-          OffIcon={<ChatIconOff />}
-          listItemClass={classes.otherPath}
-        />
+        <Tooltip
+          id={9087}
+          hidden={!!chatLanding}
+          placement="right"
+          text="We made group chat for all of your classes because we know it will help you have a better college experience. "
+          okButton="Yay! 🎉"
+        >
+          <DrawerItem
+            OnIcon={<ChatIconOn />}
+            primaryText="Chats"
+            pathname={pathname}
+            component={MyLink}
+            link="/chat"
+            OffIcon={<ChatIconOff />}
+            listItemClass={classes.otherPath}
+          />
+        </Tooltip>
+
         <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
         <DrawerItem
           OnIcon={
@@ -557,4 +579,9 @@ const Drawer = ({
     </>
   );
 };
-export default memo(Drawer);
+
+const mapStateToProps = ({ campaign }): {} => ({
+  campaignState: campaign
+});
+
+export default connect(mapStateToProps, null)(memo(Drawer));
