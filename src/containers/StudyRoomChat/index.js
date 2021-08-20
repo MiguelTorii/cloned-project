@@ -16,6 +16,7 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { getGroupMembers } from 'api/chat';
 
 import OnlineBadge from 'components/OnlineBadge';
 import ErrorBoundary from '../ErrorBoundary';
@@ -171,6 +172,26 @@ const StudyRoomChat = ({
       });
     };
 
+    const getMembers = async () => {
+      const res = await getGroupMembers({ chatId: channelId });
+      const members = res.map((m) => ({
+        registered: m.registered,
+        firstname: m.firstName,
+        lastname: m.lastName,
+        image: m.profileImageUrl,
+        roleId: m.roleId,
+        role: m.role,
+        userId: m.userId,
+        isOnline: m.isOnline
+      }));
+      const newMembers = {};
+      members.forEach((m) => {
+        newMembers[m.userId] = m;
+      });
+      setMembers(newMembers);
+      await initAvatars();
+    };
+
     if (channel && channel.members) {
       const { members } = channel;
       const newMembers = {};
@@ -180,21 +201,28 @@ const StudyRoomChat = ({
       setMembers(newMembers);
       initAvatars();
     }
-  }, [channel]);
+
+    if (channel?.twilioChannel && !channel?.members) {
+      getMembers();
+    }
+  }, [channel, channelId]);
 
   const handleChangeTabs = useCallback((_, value) => {
     setTabs(value);
   }, []);
 
-  const participantsIdList = useMemo(() => {
-    return participants.map((p) => p.participant.identity);
-  }, [participants]);
+  const participantsIdList = useMemo(
+    () => participants.map((p) => p.participant.identity),
+    [participants]
+  );
 
-  const memberListOnVideo = useMemo(() => {
-    return Object.keys(members).filter(
-      (member) => participantsIdList.indexOf(member) > -1
-    );
-  }, [members, participantsIdList]);
+  const memberListOnVideo = useMemo(
+    () =>
+      Object.keys(members).filter(
+        (member) => participantsIdList.indexOf(member) > -1
+      ),
+    [members, participantsIdList]
+  );
 
   if (!open) return null;
   return (
