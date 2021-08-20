@@ -156,8 +156,7 @@ const UserInitializer = ({
 
       if (ENV !== 'dev') {
         hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
-        const hotjarId = HOTJAR_ID || null;
-        window.hj('identify', hotjarId, {
+        window.hj('identify', userId, {
           user_id: userId,
           school_id: schoolId,
           school,
