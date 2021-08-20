@@ -242,17 +242,9 @@ const QuickNotes = ({
 
   return (
     <Grid container>
-      <Tooltip
-        id={2341}
-        delay={600}
-        hidden={!viewedOnboarding}
-        placement="right"
-        text="Write a QuickNote by clicking here. These QuickNotes save to Notes"
-      >
-        <IconButton ref={noteRef} onClick={handleClick}>
-          <QuickNoteIcon />
-        </IconButton>
-      </Tooltip>
+      <IconButton ref={noteRef} onClick={handleClick}>
+        <QuickNoteIcon />
+      </IconButton>
       <Popover
         open={Boolean(anchorEl)}
         className={classes.container}

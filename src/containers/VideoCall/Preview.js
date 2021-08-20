@@ -75,35 +75,26 @@ class Preview extends React.Component<Props, State> {
     return (
       <ErrorBoundary>
         <div className={classes.root}>
-          <Tooltip
-            id={9060}
-            placement="right"
-            text="Meet the new Study Room, a friendlier video chat experience! 😌"
-            totalSteps={4}
-            completedSteps={0}
-            okButton="Nice!"
-          >
-            <MeetupPreview
-              pushTo={pushTo}
-              innerRef={meetupPreview}
-              roomName={roomName}
-              firstName={firstName}
-              lastName={lastName}
-              profileImage={profileImage}
-              audioinput={audioinput}
-              videoinput={videoinput}
-              audiooutput={audiooutput}
-              selectedvideoinput={selectedvideoinput}
-              selectedaudioinput={selectedaudioinput}
-              selectedaudiooutput={selectedaudiooutput}
-              isVideoEnabled={videoinputEnabled}
-              isAudioEnabled={audioinputEnabled}
-              error={error}
-              onUpdateDeviceSelection={onUpdateDeviceSelection}
-              onDisableDevice={onDisableDevice}
-              onJoin={this.handleJoin}
-            />
-          </Tooltip>
+          <MeetupPreview
+            pushTo={pushTo}
+            innerRef={meetupPreview}
+            roomName={roomName}
+            firstName={firstName}
+            lastName={lastName}
+            profileImage={profileImage}
+            audioinput={audioinput}
+            videoinput={videoinput}
+            audiooutput={audiooutput}
+            selectedvideoinput={selectedvideoinput}
+            selectedaudioinput={selectedaudioinput}
+            selectedaudiooutput={selectedaudiooutput}
+            isVideoEnabled={videoinputEnabled}
+            isAudioEnabled={audioinputEnabled}
+            error={error}
+            onUpdateDeviceSelection={onUpdateDeviceSelection}
+            onDisableDevice={onDisableDevice}
+            onJoin={this.handleJoin}
+          />
         </div>
       </ErrorBoundary>
     );

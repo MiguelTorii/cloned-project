@@ -102,25 +102,19 @@ class PostItemActions extends React.PureComponent<Props> {
             {!isOwner && (
               <>
                 {!noThanks && (
-                  <Tooltip
-                    id={2197}
-                    placement="top"
-                    text="When your classmates post, be sure to thank them"
-                  >
-                    <Button aria-label="Thanks" onClick={onThanks}>
-                      <img
-                        src={thanksSvg}
-                        className={classes.actionIcon}
-                        alt="thanks"
-                      />
-                      <Typography
-                        variant="subtitle1"
-                        className={classes.buttonText}
-                      >
-                        {thanksCount}
-                      </Typography>
-                    </Button>
-                  </Tooltip>
+                  <Button aria-label="Thanks" onClick={onThanks}>
+                    <img
+                      src={thanksSvg}
+                      className={classes.actionIcon}
+                      alt="thanks"
+                    />
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.buttonText}
+                    >
+                      {thanksCount}
+                    </Typography>
+                  </Button>
                 )}
                 <Typography variant="subtitle1" className={classes.buttonText}>
                   <img
