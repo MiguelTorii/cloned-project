@@ -382,7 +382,6 @@ const Drawer = ({
             listItemClass={classes.otherPath}
           />
         </Tooltip>
-
         <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
         <DrawerItem
           OnIcon={
@@ -403,24 +402,15 @@ const Drawer = ({
               : classes.otherPath
           )}
         />
-        {visiabled && (
-          <Tooltip
-            id={9059}
-            placement="right"
-            text="Pssst! You can start video chatting from the left navigation! 😍"
-            okButton="Nice!"
-          >
-            <DrawerItem
-              onClick={handleOpenGetApp}
-              listItemClass={classes.otherPath}
-              OnIcon={<OnStudyRoom />}
-              component={MyLink}
-              link="/video-call"
-              primaryText="Study Room"
-              OffIcon={<OffStudyRoom />}
-            />
-          </Tooltip>
-        )}
+        <DrawerItem
+          onClick={handleOpenGetApp}
+          listItemClass={classes.otherPath}
+          OnIcon={<OnStudyRoom />}
+          component={MyLink}
+          link="/video-call"
+          primaryText="Study Room"
+          OffIcon={<OffStudyRoom />}
+        />
         <DrawerItem
           OnIcon={<WorkflowIconOn />}
           primaryText="Workflow"
