@@ -42,6 +42,14 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: 'none'
   },
+  list: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    '&>:first-child': {
+      width: '100%'
+    }
+  },
   listItem: {
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
@@ -131,7 +139,7 @@ const CollapseNavbar = ({
               primary={channel.name}
             />
           ) : local[channel.chat_id] ? (
-            <>
+            <div className={classes.list}>
               <Tooltip
                 id={9089}
                 hidden={channel.chat_name !== 'introduce-yourself'}
@@ -161,7 +169,7 @@ const CollapseNavbar = ({
                   <span />
                 </Badge>
               )}
-            </>
+            </div>
           ) : null}
         </ListItem>,
         channel?.channels && renderSubList(channel.channels, channel.name)
