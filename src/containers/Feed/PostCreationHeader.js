@@ -72,7 +72,7 @@ const PostCreationHeader = () => {
               <Button
                 fullWidth
                 className={classes.postAnyButton}
-                onClick={() => handleGotoPostCreate()}
+                onClick={handleGotoPostCreate}
               >
                 <Hidden smDown>
                   Create a new post, offer support or share useful links!
