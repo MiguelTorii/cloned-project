@@ -12,6 +12,7 @@ import {
   TextValidator,
   SelectValidator
 } from 'react-material-ui-form-validator';
+import { hotjar } from 'react-hotjar';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -19,7 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import useScript from 'hooks/useScript';
-import { AMPLITUDE_IDS } from 'constants/app';
+import { AMPLITUDE_IDS, ENV, HOTJAR_ID, HOTJAR_SV } from 'constants/app';
 import {
   LOGGED_IN_WIDGET_ID,
   LOGGED_OUT_WIDGET_ID,
@@ -37,7 +38,10 @@ import { updateProfile as updateUserProfile } from '../../api/user';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
-import { getChatLandingCampaign, getFlashcardsCampaign } from '../../actions/campaign';
+import {
+  getChatLandingCampaign,
+  getFlashcardsCampaign
+} from '../../actions/campaign';
 
 const styles = (theme) => ({
   root: {
@@ -91,7 +95,9 @@ const UserInitializer = ({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [onboardingPopupOpen, setOnboardingPopupOpen] = useState(false);
   const dispatch = useDispatch();
-  const viewedOnboarding = useSelector((state) => state.user.syncData.viewedOnboarding);
+  const viewedOnboarding = useSelector(
+    (state) => state.user.syncData.viewedOnboarding
+  );
   const chatLanding = useSelector((state) => state.campaign.chatLanding);
 
   // Check to show onboarding popup or not.
@@ -114,7 +120,7 @@ const UserInitializer = ({
   }, [chatLanding, viewedOnboarding]);
 
   const {
-    data: { userId }
+    data: { userId, schoolId, school, email, firstName }
   } = user;
 
   useEffect(() => {
@@ -147,6 +153,18 @@ const UserInitializer = ({
         amplitude.getInstance('student-application').setUserId(userId);
         amplitude.getInstance('student-application').logEvent('Init');
       });
+
+      if (ENV !== 'dev') {
+        hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
+        const hotjarId = HOTJAR_ID || null;
+        window.hj('identify', hotjarId, {
+          user_id: userId,
+          school_id: schoolId,
+          school,
+          email,
+          first_name: firstName
+        });
+      }
     }
   }, [userId]);
 
@@ -266,95 +284,93 @@ const UserInitializer = ({
 
   if (userId === '' || campaign.landingPageCampaign === null) return null;
 
-  const renderForm = () => {
-    return (
-      <>
-        {updateProfile.map(({ field }) => {
-          switch (field) {
-            case 'first_name':
-              return (
-                <TextValidator
-                  key={field}
-                  label="First Name"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={handleChange('firstName')}
-                  name="firstName"
-                  autoComplete="firstName"
-                  autoFocus
-                  fullWidth
-                  value={currentUser.firstName}
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['first name is required']}
-                />
-              );
-            case 'last_name':
-              return (
-                <TextValidator
-                  key={field}
-                  label="Last Name"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={handleChange('lastName')}
-                  name="lastName"
-                  autoComplete="lastName"
-                  autoFocus
-                  fullWidth
-                  value={currentUser.lastName}
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['last name is required']}
-                />
-              );
-            case 'grade':
-              return (
-                <SelectValidator
-                  key={field}
-                  value={currentUser.grade}
-                  fullWidth
-                  name="grade"
-                  label="Year"
-                  onChange={handleChange('grade')}
-                  variant="outlined"
-                  margin="normal"
-                  disabled={loading}
-                  validators={['required']}
-                  errorMessages={['Year is required']}
-                >
-                  <MenuItem value="" />
-                  {(grades[segment] || []).map((item) => (
-                    <MenuItem key={item.value} value={item.value}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </SelectValidator>
-              );
-            case 'email':
-              return (
-                <TextValidator
-                  key={field}
-                  label="Email"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={handleChange('email')}
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  fullWidth
-                  value={currentUser.email}
-                  disabled={loading}
-                  validators={['required', 'isEmail']}
-                  errorMessages={['email is required', 'email is not valid']}
-                />
-              );
-            default:
-              return null;
-          }
-        })}
-      </>
-    );
-  };
+  const renderForm = () => (
+    <>
+      {updateProfile.map(({ field }) => {
+        switch (field) {
+          case 'first_name':
+            return (
+              <TextValidator
+                key={field}
+                label="First Name"
+                margin="normal"
+                variant="outlined"
+                onChange={handleChange('firstName')}
+                name="firstName"
+                autoComplete="firstName"
+                autoFocus
+                fullWidth
+                value={currentUser.firstName}
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['first name is required']}
+              />
+            );
+          case 'last_name':
+            return (
+              <TextValidator
+                key={field}
+                label="Last Name"
+                margin="normal"
+                variant="outlined"
+                onChange={handleChange('lastName')}
+                name="lastName"
+                autoComplete="lastName"
+                autoFocus
+                fullWidth
+                value={currentUser.lastName}
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['last name is required']}
+              />
+            );
+          case 'grade':
+            return (
+              <SelectValidator
+                key={field}
+                value={currentUser.grade}
+                fullWidth
+                name="grade"
+                label="Year"
+                onChange={handleChange('grade')}
+                variant="outlined"
+                margin="normal"
+                disabled={loading}
+                validators={['required']}
+                errorMessages={['Year is required']}
+              >
+                <MenuItem value="" />
+                {(grades[segment] || []).map((item) => (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </SelectValidator>
+            );
+          case 'email':
+            return (
+              <TextValidator
+                key={field}
+                label="Email"
+                margin="normal"
+                variant="outlined"
+                onChange={handleChange('email')}
+                name="email"
+                autoComplete="email"
+                autoFocus
+                fullWidth
+                value={currentUser.email}
+                disabled={loading}
+                validators={['required', 'isEmail']}
+                errorMessages={['email is required', 'email is not valid']}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
+    </>
+  );
 
   return (
     <ErrorBoundary>

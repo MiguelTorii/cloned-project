@@ -14,7 +14,6 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
-import { hotjar } from 'react-hotjar';
 import { LastLocationProvider } from 'react-router-last-location';
 // import Tour from 'components/Tour'
 import Home from 'containers/Home';
@@ -62,14 +61,7 @@ import Redirect from './pages/Redirect';
 import Sandbox from './pages/Sandbox';
 import Miss from './pages/Miss';
 import UserNotes from './pages/UserNotes';
-import {
-  GOOGLE_ANALYTICS,
-  SENTRY,
-  ENV,
-  RELEASE,
-  HOTJAR_ID,
-  HOTJAR_SV
-} from './constants/app';
+import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from './constants/app';
 import withTracker from './withTracker';
 import Chat from './pages/Chat';
 import ChatChannel from './pages/ChatChannel';
@@ -90,10 +82,6 @@ import { theme } from './withRoot';
 defaultKatexRender('White');
 
 ReactGA.initialize(GOOGLE_ANALYTICS);
-
-if (ENV !== 'dev') {
-  hotjar.initialize(HOTJAR_ID, HOTJAR_SV);
-}
 
 if (process.env.NODE_ENV !== 'development') {
   sentryInit({
