@@ -22,7 +22,7 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
-const RightMenu = ({ local, channel, setSelectedCourse }) => {
+const RightMenu = ({ local, channel, userId, setSelectedCourse }) => {
   const classes = useStyles();
   const localChannel = useMemo(
     () => channel && local[channel.sid],
@@ -82,6 +82,7 @@ const RightMenu = ({ local, channel, setSelectedCourse }) => {
               const fullName = `${m.firstname} ${m.lastname}`;
               return (
                 <HoverPopup
+                  userId={userId}
                   key={m.userId}
                   member={m}
                   setSelectedCourse={setSelectedCourse}

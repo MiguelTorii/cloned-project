@@ -31,6 +31,7 @@ const HoverPopup = ({
   // getUserStatus = null,
   leftAligned = false,
   children = null,
+  userId,
   member,
   selectedCourse = null,
   setSelectedCourse,
@@ -72,7 +73,7 @@ const HoverPopup = ({
   };
 
   const keepPopoverOpen = () => {
-    setOpen(true);
+    if (userId !== member.userId) setOpen(true);
   };
 
   const mouseEnter = (event) => {
@@ -100,7 +101,7 @@ const HoverPopup = ({
   };
 
   const onTimeout = () => {
-    setOpen(true);
+    if (userId !== member.userId) setOpen(true);
   };
 
   useEffect(() => {
