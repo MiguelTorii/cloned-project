@@ -16,6 +16,7 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { getGroupMembers } from 'api/chat';
 
 import OnlineBadge from 'components/OnlineBadge';
 import ErrorBoundary from '../ErrorBoundary';
@@ -162,8 +163,6 @@ const StudyRoomChat = ({
   useEffect(() => {
     const initAvatars = async () => {
       const twilioChannel = get(channel, 'twilioChannel');
-      console.log('-----twiliochannel-----	');
-      console.log(twilioChannel);
       const av = await fetchAvatars(twilioChannel);
       setMembers((members) => {
         av.forEach((a) => {
@@ -172,8 +171,26 @@ const StudyRoomChat = ({
         return members;
       });
     };
-    console.log('-----channel-----');
-    console.log(channel);
+
+    const getMembers = async () => {
+      const res = await getGroupMembers({ chatId: channelId });
+      const members = res.map((m) => ({
+        registered: m.registered,
+        firstname: m.firstName,
+        lastname: m.lastName,
+        image: m.profileImageUrl,
+        roleId: m.roleId,
+        role: m.role,
+        userId: m.userId,
+        isOnline: m.isOnline
+      }));
+      const newMembers = {};
+      members.forEach((m) => {
+        newMembers[m.userId] = m;
+      });
+      setMembers(newMembers);
+      await initAvatars();
+    };
 
     if (channel && channel.members) {
       const { members } = channel;
@@ -184,14 +201,15 @@ const StudyRoomChat = ({
       setMembers(newMembers);
       initAvatars();
     }
-  }, [channel]);
+
+    if (channel?.twilioChannel && !channel?.members) {
+      getMembers();
+    }
+  }, [channel, channelId]);
 
   const handleChangeTabs = useCallback((_, value) => {
     setTabs(value);
   }, []);
-
-  console.log('------participants---');
-  console.log(participants);
 
   const participantsIdList = useMemo(
     () => participants.map((p) => p.participant.identity),
