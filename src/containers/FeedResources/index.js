@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -13,11 +13,14 @@ import Linkify from 'react-linkify';
 import { ReferralCTA } from '../Referrals';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
+import Recommendations from '../Recommendations';
 
 const styles = (theme) => ({
   container: {
     marginTop: theme.spacing(),
-    position: 'fixed'
+    position: 'fixed',
+    overflowY: 'auto',
+    overflowX: 'hidden'
   },
   paper: {
     display: 'flex',
@@ -73,6 +76,7 @@ const FeedResources = ({
     syncData: { display, smallLogo, resourcesBody, resourcesTitle }
   } = user;
   const [scrollYPos, setScrollYPos] = useState(0);
+  const bannerHeight = useSelector((state) => state.user.bannerHeight);
 
   const handleScroll = () => {
     const { scrollY } = window;
@@ -112,7 +116,14 @@ const FeedResources = ({
   }
 
   return (
-    <div className={classes.container} style={{ top, width: widthParent }}>
+    <div
+      className={classes.container}
+      style={{
+        top,
+        width: widthParent,
+        height: `calc(100vh - ${bannerHeight + 90}px)`
+      }}
+    >
       <div className={classes.content}></div>
       {display && (
         <Paper className={classes.paper}>
@@ -132,6 +143,7 @@ const FeedResources = ({
       <Paper className={classes.paper}>
         <ReferralCTA />
       </Paper>
+      <Recommendations />
     </div>
   );
 };

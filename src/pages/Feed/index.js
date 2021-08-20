@@ -60,11 +60,6 @@ const FeedPage = ({ classes, location }: Props) => {
               <Grid item xs={12}>
                 <FeedResources gridRef={gridRef} />
               </Grid>
-              <Hidden mdDown>
-                <Grid item xs={12}>
-                  <Recommendations />
-                </Grid>
-              </Hidden>
             </Grid>
           </Grid>
         </Grid>
