@@ -345,6 +345,7 @@ const Tooltip = ({
             ? classes.secondaryTooltip
             : classes.primaryTooltip
       }}
+      PopperProps={{ disablePortal: true }}
       open={open}
       placement={placement}
       TransitionComponent={Zoom}
