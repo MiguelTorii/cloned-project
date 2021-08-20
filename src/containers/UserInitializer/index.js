@@ -166,7 +166,7 @@ const UserInitializer = ({
         });
       }
     }
-  }, [userId]);
+  }, [userId, schoolId, school, email, firstName]);
 
   useEffect(() => {
     if (typeof window !== undefined) {
