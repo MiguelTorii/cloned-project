@@ -4,11 +4,12 @@ import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
 import { getToken } from './utils';
 
-export const getTodos = async () => {
+export const getTodos = async (params) => {
   try {
     const token = await getToken();
 
     const result = await axios.get(`${API_ROUTES.TODO}`, {
+      params,
       headers: {
         Authorization: `Bearer ${token}`
       }

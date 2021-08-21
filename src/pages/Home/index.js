@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Hidden } from '@material-ui/core';
 import Layout from '../../containers/Layout';
 import withRoot from '../../withRoot';
 import HomeGreetings from '../../containers/HomeGreetings';
 import WeeklyGoals from '../../containers/WeeklyGoals';
 import ClassmateQuestions from '../../containers/ClassmateQuestions';
 import useStyles from './styles';
+import MiniWorkflows from '../../containers/MiniWorkflows';
 
 const Home = () => {
   const classes = useStyles();
@@ -14,8 +15,7 @@ const Home = () => {
     <main>
       <Layout>
         <Box p={3}>
-          <Grid container className={classes.root}>
-            <Grid item sm={0} lg={1} />
+          <Grid container className={classes.root} spacing={3}>
             <Grid item xl={6} lg={8} sm={12}>
               <Grid container direction='column' spacing={5}>
                 <Grid item xs={12}>
@@ -29,6 +29,11 @@ const Home = () => {
                 </Grid>
               </Grid>
             </Grid>
+            <Hidden mdDown>
+              <Grid item xs={0} lg={4} xl={3}>
+                <MiniWorkflows />
+              </Grid>
+            </Hidden>
           </Grid>
         </Box>
       </Layout>
