@@ -19,7 +19,7 @@ const MiniWorkflows = () => {
   useEffect(() => {
     setLoading(true);
     getTodos({
-      category_id: 1,
+      category_id: 2,
       limit: 3
     }).then((data) => {
       setTasks((data || []).slice(0, 3));
