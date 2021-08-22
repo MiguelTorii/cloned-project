@@ -457,16 +457,6 @@ const MainLayout = ({
             )}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <Tooltip
-                id={9086}
-                placement="bottom-start"
-                text="Click “Home” to access your Workspace and all of your Study Tools, like flashcards, class feeds and notes."
-                okButton="Yay! 🎉"
-              >
-                <IconButton onClick={handleGoHome}>
-                  <HomeIcon />
-                </IconButton>
-              </Tooltip>
               <IconButton
                 color="inherit"
                 onClick={handleOpenWidget}
