@@ -201,6 +201,7 @@ const CommunityChat = ({
           className={rightSpace !== 0 ? classes.right : classes.hidden}
         >
           <RightMenu
+            isCommunityChat
             userId={userId}
             schoolId={schoolId}
             channel={currentCommunityChannel}

@@ -23,7 +23,13 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
-const RightMenu = ({ local, channel, userId, setSelectedCourse }) => {
+const RightMenu = ({
+  local,
+  channel,
+  userId,
+  setSelectedCourse,
+  isCommunityChat
+}) => {
   const classes = useStyles();
   const localChannel = useMemo(
     () => channel && local[channel.sid],
@@ -114,12 +120,14 @@ const RightMenu = ({ local, channel, userId, setSelectedCourse }) => {
           })}
         </List>
       </Grid>
-      <Box padding={2}>
-        <ShareLinkWidget
-          shareLink={localChannel.shareLink}
-          headerText="Share an invite link"
-        />
-      </Box>
+      {!isCommunityChat && (
+        <Box padding={2}>
+          <ShareLinkWidget
+            shareLink={localChannel.shareLink}
+            headerText="Share an invite link"
+          />
+        </Box>
+      )}
     </Box>
   );
 };
