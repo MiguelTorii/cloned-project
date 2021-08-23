@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     right: 5,
     top: '90%'
+  },
+  tooltip: {
+    fontSize: 14
   }
 }));
 

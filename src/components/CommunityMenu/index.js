@@ -7,6 +7,7 @@ import LoadImg from 'components/LoadImg';
 import { ReactComponent as Chat } from 'assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
+import { Tooltip } from '@material-ui/core';
 
 type Props = {
   item: Object,
@@ -53,57 +54,68 @@ const CommunityMenu = ({
     handleSelect(item);
   }, [handleSelect, item]);
 
-  return item.communityIconUrl ? (
-    <ListItem
-      button
-      onClick={handleSelectItem}
-      selected={selectedCourse && selectedCourse.id === item.id}
-      classes={{ root: classes.listItem, selected: classes.selectedItem }}
-    >
-      <StyledBadge max={99} badgeContent={unreadMessages} color="secondary">
-        <ListItemIcon classes={{ root: classes.itemContent }}>
-          <LoadImg url={item.communityIconUrl} />
-        </ListItemIcon>
-      </StyledBadge>
-    </ListItem>
-  ) : (
-    <ListItem
-      button
-      onClick={handleSelectItem}
-      selected={selectedCourse && selectedCourse.id === item.id}
-      classes={{ root: classes.listItem, selected: classes.selectedItem }}
-      style={{
-        backgroundColor: item.color ? item.color : '#C45960'
+  return (
+    <Tooltip
+      title={item.name}
+      placement="top"
+      arrow
+      classes={{
+        tooltip: classes.tooltip
       }}
     >
-      {['chat'].indexOf(item.id) > -1 ? (
-        <StyledBadge
-          max={99}
-          badgeContent={unreadMessageCount}
-          color="secondary"
+      {item.communityIconUrl ? (
+        <ListItem
+          button
+          onClick={handleSelectItem}
+          selected={selectedCourse && selectedCourse.id === item.id}
+          classes={{ root: classes.listItem, selected: classes.selectedItem }}
         >
-          <ListItemIcon classes={{ root: classes.itemContent }}>
-            <Chat />
-          </ListItemIcon>
-        </StyledBadge>
+          <StyledBadge max={99} badgeContent={unreadMessages} color="secondary">
+            <ListItemIcon classes={{ root: classes.itemContent }}>
+              <LoadImg url={item.communityIconUrl} />
+            </ListItemIcon>
+          </StyledBadge>
+        </ListItem>
       ) : (
-        <StyledBadge
-          max={99}
-          classes={{
-            badge: unreadMessages
-              ? classes.unreadMessageCount
-              : classes.emptyUnreadMessage
+        <ListItem
+          button
+          onClick={handleSelectItem}
+          selected={selectedCourse && selectedCourse.id === item.id}
+          classes={{ root: classes.listItem, selected: classes.selectedItem }}
+          style={{
+            backgroundColor: item.color ? item.color : '#C45960'
           }}
-          badgeContent={unreadMessages}
-          color="secondary"
         >
-          <ListItemText
-            classes={{ root: classes.itemContent }}
-            primary={item.name.substring(0, 3).toUpperCase()}
-          />
-        </StyledBadge>
+          {['chat'].indexOf(item.id) > -1 ? (
+            <StyledBadge
+              max={99}
+              badgeContent={unreadMessageCount}
+              color="secondary"
+            >
+              <ListItemIcon classes={{ root: classes.itemContent }}>
+                <Chat />
+              </ListItemIcon>
+            </StyledBadge>
+          ) : (
+            <StyledBadge
+              max={99}
+              classes={{
+                badge: unreadMessages
+                  ? classes.unreadMessageCount
+                  : classes.emptyUnreadMessage
+              }}
+              badgeContent={unreadMessages}
+              color="secondary"
+            >
+              <ListItemText
+                classes={{ root: classes.itemContent }}
+                primary={item.name.substring(0, 3).toUpperCase()}
+              />
+            </StyledBadge>
+          )}
+        </ListItem>
       )}
-    </ListItem>
+    </Tooltip>
   );
 };
 
