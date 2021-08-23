@@ -260,7 +260,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
             />
           </Grid>
           <Grid item xs={12} md={8}>
-            <DateInput fixed selected={date} onChange={updateDate} />
+            <DateInput selected={date} onChange={updateDate} />
           </Grid>
           <Grid item xs={12} md={4}>
             <FormControl className={classes.selectForm}>
