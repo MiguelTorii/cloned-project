@@ -2,7 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   usersContainer: {
+    flexGrow: 1,
     width: '100%',
+    maxHeight: '100%',
+    overflowY: 'auto',
     padding: theme.spacing(2),
     borderTop: `1px solid ${theme.circleIn.palette.modalBackground}`
   },
@@ -36,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis'
   },
   container: {
+    height: '100%',
     flexGrow: 1,
     backgroundColor: theme.circleIn.palette.primaryBackground
   },

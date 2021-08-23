@@ -65,7 +65,6 @@ const ChatHeader = ({
   const classes = useStyles();
   const [channelType, setChannelType] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openShareLink, setOpenShareLink] = useState(false);
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
   const [openRemoveStudent, setOpenRemoveStudent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -143,8 +142,7 @@ const ChatHeader = ({
   const showThreeDotsMenu = useMemo(
     () =>
       (Object.keys(members).length > 2 && isShow) ||
-      deletePermission ||
-      !isCommunityChat,
+      deletePermission,
     [isCommunityChat, deletePermission, members, isShow]
   );
 
@@ -161,15 +159,6 @@ const ChatHeader = ({
     () => setChannelType('group'),
     []
   );
-
-  const handleShareLink = useCallback(() => {
-    setOpenShareLink(true);
-    handleCloseGroupDetailMenu();
-  }, [handleCloseGroupDetailMenu]);
-
-  const closeShareLinkDialog = useCallback(() => {
-    setOpenShareLink(false);
-  }, []);
 
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
@@ -383,9 +372,6 @@ const ChatHeader = ({
                       Edit Group Details
                     </MenuItem>
                   )}
-                  {!isCommunityChat && (
-                    <MenuItem onClick={handleShareLink}>Share Link</MenuItem>
-                  )}
                   {deletePermission && (
                     <MenuItem
                       onClick={handleRemoveStudent}
@@ -426,15 +412,6 @@ const ChatHeader = ({
         channel={channel}
         isCommunityChat
       />
-      {channel && (
-        <ShareLinkDialog
-          open={openShareLink}
-          isGroupChannel={local[channel.sid].members.length === 2}
-          localChannel={local[channel.sid]}
-          channelName={title}
-          handleClose={closeShareLinkDialog}
-        />
-      )}
     </div>
   );
 };

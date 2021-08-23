@@ -17,6 +17,7 @@ import RoleBadge from 'components/RoleBadge';
 import HoverPopup from 'components/HoverPopup';
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu';
+import ShareLinkWidget from '../../components/ShareLinkWidget';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
@@ -32,97 +33,94 @@ const RightMenu = ({ local, channel, userId, setSelectedCourse }) => {
   if (!channel || !localChannel) return null;
 
   return (
-    <Grid
-      item
-      classes={{
-        root: classes.container
-      }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      className={classes.container}
     >
       <Grid
         container
-        classes={{
-          root: classes.container
-        }}
         alignItems="flex-start"
+        justify="flex-start"
+        classes={{
+          root: classes.header
+        }}
+        item
       >
-        <Grid
-          container
-          alignItems="flex-start"
-          justify="flex-start"
-          classes={{
-            root: classes.header
-          }}
-          item
-        >
-          {/* <Paper component="form" className={classes.searchPaperRoot}>
-            <IconButton
-              type="submit"
-              className={classes.iconButton}
-              aria-label="search"
-            >
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              className={classes.search}
-              placeholder="Search For Anything"
-              inputProps={{ 'aria-label': 'search for anything' }}
-            />
-          </Paper> */}
-        </Grid>
-        <Grid
-          classes={{
-            root: classes.usersContainer
-          }}
-        >
-          <Typography className={classes.usersTitle}>
-            Members - {localChannel?.members?.length}
-          </Typography>
-          <List dense className={classes.listRoot}>
-            {localChannel?.members.map((m) => {
-              const fullName = `${m.firstname} ${m.lastname}`;
-              return (
-                <HoverPopup
-                  userId={userId}
-                  key={m.userId}
-                  member={m}
-                  setSelectedCourse={setSelectedCourse}
-                >
-                  <ListItem
-                    component={MyLink}
-                    disableGutters
-                    link={`/profile/${m.userId}`}
-                    button
-                    classes={{
-                      secondaryAction: classes.secondaryAction
-                    }}
-                  >
-                    <ListItemAvatar>
-                      <OnlineBadge
-                        isOnline={m.isOnline}
-                        bgColorPath="circleIn.palette.primaryBackground"
-                      >
-                        <Avatar alt={fullName} src={m.image}>
-                          {getInitials(fullName)}
-                        </Avatar>
-                      </OnlineBadge>
-                    </ListItemAvatar>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      className={classes.memberName}
-                    >
-                      {fullName}
-                      {m.roleId !== 1 && <RoleBadge />}
-                    </Box>
-                  </ListItem>
-                </HoverPopup>
-              );
-            })}
-          </List>
-        </Grid>
+        {/* <Paper component="form" className={classes.searchPaperRoot}>
+          <IconButton
+            type="submit"
+            className={classes.iconButton}
+            aria-label="search"
+          >
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+            className={classes.search}
+            placeholder="Search For Anything"
+            inputProps={{ 'aria-label': 'search for anything' }}
+          />
+        </Paper> */}
       </Grid>
-    </Grid>
+      <Grid
+        classes={{
+          root: classes.usersContainer
+        }}
+      >
+        <Typography className={classes.usersTitle}>
+          Members - {localChannel?.members?.length}
+        </Typography>
+        <List dense className={classes.listRoot}>
+          {localChannel?.members.map((m) => {
+            const fullName = `${m.firstname} ${m.lastname}`;
+            return (
+              <HoverPopup
+                userId={userId}
+                key={m.userId}
+                member={m}
+                setSelectedCourse={setSelectedCourse}
+              >
+                <ListItem
+                  component={MyLink}
+                  disableGutters
+                  link={`/profile/${m.userId}`}
+                  button
+                  classes={{
+                    secondaryAction: classes.secondaryAction
+                  }}
+                >
+                  <ListItemAvatar>
+                    <OnlineBadge
+                      isOnline={m.isOnline}
+                      bgColorPath="circleIn.palette.primaryBackground"
+                    >
+                      <Avatar alt={fullName} src={m.image}>
+                        {getInitials(fullName)}
+                      </Avatar>
+                    </OnlineBadge>
+                  </ListItemAvatar>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    className={classes.memberName}
+                  >
+                    {fullName}
+                    {m.roleId !== 1 && <RoleBadge />}
+                  </Box>
+                </ListItem>
+              </HoverPopup>
+            );
+          })}
+        </List>
+      </Grid>
+      <Box padding={2}>
+        <ShareLinkWidget
+          shareLink={localChannel.shareLink}
+          headerText="Share an invite link"
+        />
+      </Box>
+    </Box>
   );
 };
 
