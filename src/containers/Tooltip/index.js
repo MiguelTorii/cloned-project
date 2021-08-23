@@ -131,12 +131,12 @@ const ONBOARDING_EXPERT = 9052;
 // eslint-disable-next-line
 const ONBOARDING_NOTES = 8453;
 
-const GO_HOME = 9086;
 const GO_CHAT = 9087;
 const GIVEAWAY_BANNER = 9088;
 const INTRODUCE_YOURSELF = 9089;
 const CREATE_NEW_POST = 9090;
-const COMMENT_FEED = 9091;
+// const GO_HOME = 9086;
+// const COMMENT_FEED = 9091;
 
 const TRANSITION_TIME = 750;
 
@@ -275,15 +275,10 @@ const Tooltip = ({
           result = viewedTooltips.includes(VIDEO_CHAT_SETTINGS);
           break;
         case GO_CHAT:
-          result = viewedTooltips.includes(GO_HOME);
+          result = viewedTooltips.includes(INTRODUCE_YOURSELF);
           break;
         case GIVEAWAY_BANNER:
-          result =
-            viewedTooltips.includes(GO_CHAT) ||
-            viewedTooltips.includes(GO_HOME);
-          break;
-        case INTRODUCE_YOURSELF:
-          result = viewedTooltips.includes(GO_HOME);
+          result = viewedTooltips.includes(GO_CHAT);
           break;
         case CREATE_NEW_POST:
           result = viewedTooltips.includes(GIVEAWAY_BANNER);
