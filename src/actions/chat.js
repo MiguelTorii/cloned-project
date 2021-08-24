@@ -548,7 +548,7 @@ export const handleInitChat =
           setTimeout(async () => {
             const members = await fetchMembers(sid);
             dispatch(addChannel({ channel, userId, members }));
-          }, 1000);
+          }, 2000);
         });
 
         client.on('channelLeft', async (channel) => {

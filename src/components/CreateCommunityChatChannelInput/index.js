@@ -17,6 +17,7 @@ import type { UserState } from 'reducers/user';
 import type { ChatState } from 'reducers/chat';
 import { getInitials } from 'utils/chat';
 import SelectClassmates from './SelectClassmates';
+import { CircularProgress } from '@material-ui/core';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -340,6 +341,10 @@ const CreateChatChannelInput = ({
           variant="contained"
           onClick={handleSubmit}
           color="primary"
+          disabled={isLoading}
+          startIcon={isLoading && (
+            <CircularProgress size={20} />
+          )}
         >
           Create New Message
         </Button>

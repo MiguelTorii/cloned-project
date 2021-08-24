@@ -124,16 +124,14 @@ const DirectChat = ({
 
   const handleRemove = useCallback(
     async (sid) => {
-      clearCurrentChannel();
-      await handleRemoveChannel(sid);
       const restChannels = channelList.filter((channel) => channel !== sid.sid);
       if (currentChannel.sid === sid.sid) {
-        setCurrentChannel(
+        await setCurrentChannel(
           local[restChannels[0]] ? local[restChannels[0]].twilioChannel : null
         );
-      } else {
-        setCurrentChannel(currentChannel);
       }
+
+      await handleRemoveChannel(sid);
     },
     [
       handleRemoveChannel,
