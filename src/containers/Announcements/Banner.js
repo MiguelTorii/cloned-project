@@ -15,7 +15,6 @@ type Props = {
   announcement: Announcement,
   setBannerHeight: Function,
   getAnnouncement: Function,
-  location: { pathname: string },
   height: number
 };
 
@@ -24,7 +23,6 @@ const Banner = ({
   announcement,
   getAnnouncement,
   setBannerHeight,
-  location: { pathname },
   height
 }: Props) => {
   useEffect(() => {
@@ -41,7 +39,7 @@ const Banner = ({
     setBannerHeight({ bannerHeight: undefined === height ? 0 : height });
   }, [height, setBannerHeight]);
 
-  if (!announcement || expertMode || pathname === '/chat') return null;
+  if (!announcement || expertMode) return null;
 
   return announcement.endDate ? (
     <CommonBanner announcement={announcement} />

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex'
   },
   container: {
-    height: 'calc(100vh - 68px)',
+    height: 'calc(100vh - 113px)',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100vh - 116px)',
       marginBottom: -64

@@ -355,7 +355,7 @@ const MainLayout = ({
   );
 
   const appBarHeight = useMemo(
-    () => (pathname !== '/chat' && announcementData ? bannerHeight + 68 : 68),
+    () => (announcementData ? bannerHeight + 68 : 68),
     [announcementData, bannerHeight, pathname]
   );
 
