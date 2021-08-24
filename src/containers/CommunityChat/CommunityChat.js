@@ -191,6 +191,7 @@ const CommunityChat = ({
             onCollapseRight={onCollapseRight}
             setRightPanel={handleOpenRightPanel}
             user={user}
+            rightSpace={rightSpace}
           />
         </Grid>
       )}

@@ -328,7 +328,7 @@ const ChatHeader = ({
                 <ChatAddMember />
               </IconButton>
             )}
-            {Object.keys(members).length > 2 && (
+            {Object.keys(members).length > 0 && (
               <IconButton
                 aria-label="studyroom-members"
                 className={classes.chatIcon}
