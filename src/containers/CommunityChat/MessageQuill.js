@@ -28,6 +28,7 @@ const MessageQuill = ({
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
+  const [files, setFiles] = useState([]);
 
   const bindings = useMemo(
     () => ({
@@ -221,13 +222,55 @@ const MessageQuill = ({
     [quill, setValue]
   );
 
+  const handleUploadFile = useCallback(() => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.click();
+
+    input.onchange = async () => {
+      setLoading(true);
+      try {
+        const file = input.files[0];
+        const { type, name } = file;
+
+        const result = await getPresignedURL({
+          userId,
+          type: 1,
+          mediaType: type
+        });
+        const { readUrl, url } = result;
+        await axios.put(url, file, {
+          headers: {
+            'Content-Type': type
+          }
+        });
+
+        const anyFile = {
+          type,
+          name,
+          url: readUrl
+        };
+
+        setFiles([...files, anyFile]);
+      } catch (error) {
+        quill.enable(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+  }, [quill]);
+
   return (
     <div className={classes.messageQuill}>
       <div className={classes.editor}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />
-            <EditorToolbar id="message-toolbar" handleSelect={insertEmoji} />
+            <EditorToolbar
+              id="message-toolbar"
+              handleSelect={insertEmoji}
+              handleUploadFile={handleUploadFile}
+            />
           </div>
           {loading && (
             <div className={classes.loader}>
