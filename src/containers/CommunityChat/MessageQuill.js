@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
+import AttachFile from 'components/FileUpload/AttachFile';
 import EditorToolbar, { formats } from './Toolbar';
 import { getPresignedURL } from '../../api/media';
 
@@ -258,11 +259,28 @@ const MessageQuill = ({
         setLoading(false);
       }
     };
-  }, [quill]);
+  }, [quill, files]);
+
+  const onClose = useCallback(
+    (deleteFile) => {
+      const filterFiles = files.filter((file) => file.url !== deleteFile.url);
+      setFiles(filterFiles);
+    },
+    [files]
+  );
 
   return (
     <div className={classes.messageQuill}>
-      <div className={classes.editor}>
+      {files.length > 0 && (
+        <div className={classes.files}>
+          {files.map((file) => (
+            <AttachFile file={file} onClose={() => onClose(file)} />
+          ))}
+        </div>
+      )}
+      <div
+        className={cx(files.length > 0 ? classes.editWithFile : classes.editor)}
+      >
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />

@@ -6,6 +6,34 @@ export default (theme) => ({
       padding: theme.spacing(0, 1)
     }
   },
+  files: {
+    width: '100%',
+    padding: theme.spacing(1),
+    background: theme.circleIn.palette.hoverMenu,
+    borderRadius: theme.spacing(2.5, 2.5, 0, 0),
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  editWithFile: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingBottom: theme.spacing(2),
+    '& .ql-toolbar.ql-snow': {
+      border: 'none',
+      padding: theme.spacing(1, 0)
+    },
+    '& .ql-editor': {
+      maxHeight: 500,
+      background: theme.circleIn.palette.hoverMenu,
+      color: theme.palette.common.white,
+      borderRadius: theme.spacing(0, 0, 2.5, 2.5),
+      '& > p': {
+        '& > img': {
+          maxWidth: `120px !important`
+        }
+      }
+    }
+  },
   editor: {
     display: 'flex',
     justifyContent: 'space-between',
