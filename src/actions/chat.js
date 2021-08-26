@@ -504,36 +504,47 @@ export const handleInitChat =
       });
       const local = {};
 
-      const unreadCount = (channel) => {
-        try {
-          if (
-            channel.lastMessage?.index === 0 &&
-            channel.lastConsumedMessageIndex === 0
-          ) {
-            return 0;
-          }
+      // const unreadCount = (channel) => {
+      //   try {
+      //     if (
+      //       channel.lastMessage?.index === 0 &&
+      //       channel.lastConsumedMessageIndex === 0
+      //     ) {
+      //       return 0;
+      //     }
 
-          if (channel.lastMessage?.index > -1) {
-            if (channel.lastConsumedMessageIndex === 0) {
-              return (
-                channel.lastMessage.index - channel.lastConsumedMessageIndex
-              );
-            }
-            if (!channel.lastConsumedMessageIndex) {
-              return channel.lastMessage.index + 1;
-            }
-          }
+      //     if (channel.lastMessage?.index > -1) {
+      //       if (channel.lastConsumedMessageIndex === 0) {
+      //         return Math.abs(
+      //           channel.lastMessage.index - channel.lastConsumedMessageIndex
+      //         );
+      //       }
+      //       if (!channel.lastConsumedMessageIndex) {
+      //         return channel.lastMessage.index + 1;
+      //       }
+      //     }
 
-          if (!channel.lastConsumedMessageIndex || !channel.lastMessage)
-            return 0;
-          return channel.lastMessage.index - channel.lastConsumedMessageIndex;
-        } finally {
-        }
-      };
+      //     if (!channel.lastConsumedMessageIndex || !channel.lastMessage)
+      //       return 0;
+      //     return Math.abs(
+      //       channel.lastMessage.index - channel.lastConsumedMessageIndex
+      //     );
+      //   } finally {
+      //   }
+      // };
 
-      channels.forEach((c) => {
+      const promises = channels.map(async (channel) => {
+        const unreadMessage = await channel.getUnconsumedMessagesCount();
+        return {
+          [channel.sid]: unreadMessage
+        };
+      });
+
+      const unreadMessages = await Promise.all(promises);
+      channels.forEach((c, key) => {
         local[c.sid] = {
-          unread: unreadCount(c),
+          // unread: unreadCount(c),
+          unread: unreadMessages[key][c.sid],
           twilioChannel: c
         };
       });
@@ -573,13 +584,23 @@ export const handleInitChat =
         });
 
         client.on('channelUpdated', async ({ channel }) => {
-          dispatch(updateChannel({ channel, unread: unreadCount(channel) }));
+          dispatch(
+            updateChannel({
+              channel,
+              unread: await channel.getUnconsumedMessagesCount()
+            })
+          );
         });
 
         client.on('messageAdded', async (message) => {
           const { channel } = message;
           dispatch(newMessage({ message }));
-          dispatch(updateChannel({ channel, unread: unreadCount(channel) }));
+          dispatch(
+            updateChannel({
+              channel,
+              unread: await channel.getUnconsumedMessagesCount()
+            })
+          );
         });
 
         client.on('tokenAboutToExpire', async () => {
