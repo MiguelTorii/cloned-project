@@ -89,6 +89,7 @@ const Main = ({
   const [campaign, setCampaign] = useState(null);
   const [showError, setShowError] = useState(false);
   const [focusMessageBox, setFocusMessageBox] = useState(0);
+  const [files, setFiles] = useState([]);
 
   const memberKeys = useMemo(() => Object.keys(members), [members]);
 
@@ -345,6 +346,7 @@ const Main = ({
 
   const onSendMessage = useCallback(
     async (message) => {
+      let newMessage = message;
       setScroll(true);
       if (!channel) return;
 
@@ -352,6 +354,15 @@ const Main = ({
         event: 'Chat- Send Message',
         props: { Content: 'Text', 'Channel SID': channel.sid }
       });
+
+      if (files.length > 0) {
+        newMessage += '\n Attach Files';
+        files.forEach((file) => {
+          newMessage += `${JSON.stringify(file)} \n`;
+        });
+      }
+
+      console.log(newMessage);
 
       const messageAttributes = {
         firstName,
@@ -362,7 +373,7 @@ const Main = ({
       setLoading(true);
       try {
         await sendMessage({
-          message,
+          message: newMessage,
           ...messageAttributes,
           chatId: channel.sid
         });
@@ -379,7 +390,7 @@ const Main = ({
         setLoading(false);
       }
     },
-    [channel, firstName, lastName, onSend]
+    [channel, firstName, lastName, onSend, files]
   );
 
   const onTyping = useCallback(() => {
@@ -552,6 +563,8 @@ const Main = ({
           <MessageQuill
             value={value}
             userId={userId}
+            setFiles={setFiles}
+            files={files}
             focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}

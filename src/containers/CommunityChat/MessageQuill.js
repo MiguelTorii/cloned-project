@@ -24,12 +24,13 @@ const MessageQuill = ({
   focusMessageBox,
   showError,
   onTyping,
-  userId
+  userId,
+  setFiles,
+  files
 }) => {
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
-  const [files, setFiles] = useState([]);
 
   const bindings = useMemo(
     () => ({
