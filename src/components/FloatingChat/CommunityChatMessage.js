@@ -69,8 +69,7 @@ const ChatMessage = ({
   onStartVideoCall,
   onImageClick,
   handleBlock
-}: // isCommunityChat
-Props) => {
+}: Props) => {
   const classes = useStyles();
 
   const [showOpetions, setShowOptions] = useState(0);
@@ -135,6 +134,12 @@ Props) => {
         onLoad=window.loadImage()
         class=${classes.image}`
     );
+
+    const splitHtmlStringByFiles = htmlString.split('File Attachment');
+    if (splitHtmlStringByFiles.length > 1) {
+      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      return linkify(splitHtmlStringByFiles[0]);
+    }
     return linkify(htmlString);
   };
 

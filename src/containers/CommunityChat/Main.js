@@ -356,13 +356,9 @@ const Main = ({
       });
 
       if (files.length > 0) {
-        newMessage += '\n Attach Files';
-        files.forEach((file) => {
-          newMessage += `${JSON.stringify(file)} \n`;
-        });
+        newMessage += '\n File Attachment';
+        newMessage += `${JSON.stringify(files)}`;
       }
-
-      console.log(newMessage);
 
       const messageAttributes = {
         firstName,
@@ -388,6 +384,7 @@ const Main = ({
         setErrorLoadingMessage(true);
       } finally {
         setLoading(false);
+        setFiles([]);
       }
     },
     [channel, firstName, lastName, onSend, files]
