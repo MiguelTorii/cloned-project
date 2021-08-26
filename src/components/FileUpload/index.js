@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-properties */
 import React, { useState } from 'react';
+import withWidth from '@material-ui/core/withWidth';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -90,7 +91,7 @@ const getFileContent = (extension) => {
 
 const getFileExtension = (filename) => filename.split('.').pop();
 
-const FileUploadContainer = ({ classes, file }) => {
+const FileUploadContainer = ({ classes, file, width }) => {
   const [isDownload, setDownload] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
@@ -142,18 +143,32 @@ const FileUploadContainer = ({ classes, file }) => {
           <img src={iconUrl} alt={iconUrl} />
         </div>
         <div className={classes.infoContainer}>
-          <div className={classes.name}>{name}</div>
-          <Box display="flex" alignItems="center">
-            <Typography variant="body2" component="div">
-              {size} {getFileContent(extension)}
-            </Typography>
-            {isDownload && (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <div className={classes.name}>{name}</div>
+            {width === 'xs' && isDownload && (
               <DownloadIcon
                 onClick={downloadFile}
                 className={classes.downloadIcon}
               />
             )}
           </Box>
+          {width !== 'xs' && (
+            <Box display="flex" alignItems="center">
+              <Typography variant="body2" component="div">
+                {size} {getFileContent(extension)}
+              </Typography>
+              {isDownload && (
+                <DownloadIcon
+                  onClick={downloadFile}
+                  className={classes.downloadIcon}
+                />
+              )}
+            </Box>
+          )}
           {percentage > 0 && (
             <div className={classes.progressBar}>
               <div
@@ -168,4 +183,4 @@ const FileUploadContainer = ({ classes, file }) => {
   );
 };
 
-export default withStyles(styles)(FileUploadContainer);
+export default withStyles(styles)(withWidth()(FileUploadContainer));

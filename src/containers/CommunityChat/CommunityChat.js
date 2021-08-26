@@ -99,7 +99,7 @@ const CommunityChat = ({
   );
 
   const handleOpenRightPanel = useCallback(() => {
-    if (['xs'].includes(width)) {
+    if (['xs', 'sm'].includes(width)) {
       setRightSpace(0);
     } else if (!rightSpace) setRightSpace(3);
     else setRightSpace(0);
@@ -107,7 +107,7 @@ const CommunityChat = ({
 
   useEffect(() => {
     if (width !== prevWidth) {
-      if (['xs'].includes(width)) {
+      if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
         if (currentCommunityChannel) setLeftSpace(0);
         else setLeftSpace(curSize);
@@ -116,13 +116,18 @@ const CommunityChat = ({
       }
     }
 
-    if (currentCommunityChannel && !isLoading) setRightSpace(3);
+    if (
+      currentCommunityChannel &&
+      !isLoading &&
+      !['xs', 'sm', 'md'].includes(width)
+    )
+      setRightSpace(3);
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
 
   const onCollapseLeft = useCallback(() => {
-    if (width === 'xs') {
+    if (['xs', 'sm', 'md'].includes(width)) {
       setRightSpace(0);
     }
     setLeftSpace(leftSpace ? 0 : curSize);

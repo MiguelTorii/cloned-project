@@ -11,10 +11,26 @@ export default (theme) => ({
     minWidth: 370,
     height: 107,
     padding: theme.spacing(1.5, 0, 1.5, 2),
-    'word-break': 'break-all'
+    'word-break': 'break-all',
+    [theme.breakpoints.down('sm')]: {
+      gap: theme.spacing(2),
+      maxWidth: 320,
+      minWidth: 280,
+      height: 55,
+      padding: theme.spacing()
+    }
   },
   fileIcon: {
-    width: 64
+    width: 64,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: '100%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 24
+    }
   },
   infoContainer: {
     display: 'flex',
@@ -27,7 +43,10 @@ export default (theme) => ({
     lineHeight: '27px',
     height: 27,
     overflow: 'hidden',
-    '-webkit-line-clamp': 1
+    '-webkit-line-clamp': 1,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14
+    }
   },
   info: {
     fontSize: 16,
