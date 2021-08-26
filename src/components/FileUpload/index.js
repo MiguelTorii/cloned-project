@@ -1,10 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+/* eslint-disable no-restricted-properties */
+import React, { useState } from 'react';
+import axios from 'axios';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import Box from '@material-ui/core/Box';
 import { withStyles } from '@material-ui/core/styles';
-import queryString from 'query-string';
-import cx from 'classnames';
 
+import { fileContent } from 'constants/common';
 import Icon3GPUrl from 'assets/svg/icons/3gp-icon.svg';
 import IconAACUrl from 'assets/svg/icons/aac-icon.svg';
 import IconAIFUrl from 'assets/svg/icons/aif-icon.svg';
@@ -37,11 +39,11 @@ import IconZIPUrl from 'assets/svg/icons/zip-icon.svg';
 import IconBINARYUrl from 'assets/svg/icons/binary-default-icon.svg';
 import IconCODEUrl from 'assets/svg/icons/code-default-icon.svg';
 import IconOTHERUrl from 'assets/svg/icons/other-default-icon.svg';
-import { ReactComponent as CancelIcon } from 'assets/svg/file-upload-cancel.svg';
+import { ReactComponent as DownloadIcon } from 'assets/svg/download.svg';
 
-import { styles } from '../_styles/FileUpload';
+import styles from '../_styles/FileUpload';
 
-const URLs = {
+const URIS = {
   '3gp': Icon3GPUrl,
   aac: IconAACUrl,
   aif: IconAIFUrl,
@@ -75,37 +77,94 @@ const URLs = {
   'code-default': IconCODEUrl,
   'other-default': IconOTHERUrl
 };
-const getIconURL = (extension) => {};
 
-const FileUploadContainer = (props) => {
-  const { classes, file, onCancel } = props;
-  const { type, name, url } = file;
+const getIconURL = (extension) => {
+  if (URIS[extension]) return URIS[extension];
+  return URIS['other-default'];
+};
+
+const getFileContent = (extension) => {
+  if (fileContent[extension]) return fileContent[extension];
+  return fileContent['other-default'];
+};
+
+const getFileExtension = (filename) => filename.split('.').pop();
+
+const FileUploadContainer = ({ classes, file }) => {
+  const [isDownload, setDownload] = useState(false);
+  const [percentage, setPercentage] = useState(0);
+
+  const { name, size, url } = file;
+
+  const extension = getFileExtension(name);
+  const iconUrl = getIconURL(extension);
+
+  const onMouseEnterHandler = () => {
+    setDownload(true);
+  };
+
+  const onMouseLeaveHandler = () => {
+    setDownload(false);
+  };
+
+  const downloadFile = async () => {
+    axios({
+      url,
+      method: 'GET',
+      responseType: 'blob',
+      onDownloadProgress(progressEvent) {
+        const progress = Math.round(
+          (progressEvent.loaded / progressEvent.total) * 100
+        );
+
+        setPercentage(progress);
+      }
+    }).then(() => {
+      setPercentage(0);
+    });
+  };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.fileIcon}>
-        <img src={Icon3GPUrl} alt="3GP Icon" />
-      </div>
-      <div className={classes.infoContainer}>
-        <div className={classes.name}>{name}</div>
-        {/* {info && <div className={classes.info}>{info}</div>} */}
-
-        {/* {progress > 0 && (
-          <div className={classes.progressBar}>
-            <div
-              className={classes.content}
-              style={{ width: `${(progress / 100) * 80}px` }}
-            />
-          </div>
-        )} */}
-      </div>
-
-      {onCancel && (
-        <div className={classes.cancelIcon} onClick={onCancel}>
-          <CancelIcon />
+    <Tooltip
+      title={name}
+      placement="top"
+      arrow
+      classes={{
+        popper: classes.titleTooltip
+      }}
+    >
+      <div
+        className={classes.container}
+        onMouseEnter={onMouseEnterHandler}
+        onMouseLeave={onMouseLeaveHandler}
+      >
+        <div className={classes.fileIcon}>
+          <img src={iconUrl} alt={iconUrl} />
         </div>
-      )}
-    </div>
+        <div className={classes.infoContainer}>
+          <div className={classes.name}>{name}</div>
+          <Box display="flex" alignItems="center">
+            <Typography variant="body2" component="div">
+              {size} {getFileContent(extension)}
+            </Typography>
+            {isDownload && (
+              <DownloadIcon
+                onClick={downloadFile}
+                className={classes.downloadIcon}
+              />
+            )}
+          </Box>
+          {percentage > 0 && (
+            <div className={classes.progressBar}>
+              <div
+                className={classes.content}
+                style={{ width: `${(percentage / 100) * 80}px` }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </Tooltip>
   );
 };
 

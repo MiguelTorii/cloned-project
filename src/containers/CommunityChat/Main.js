@@ -356,8 +356,7 @@ const Main = ({
       });
 
       if (files.length > 0) {
-        newMessage += '\n File Attachment';
-        newMessage += `${JSON.stringify(files)}`;
+        newMessage += `File Attachment${JSON.stringify(files)}`;
       }
 
       const messageAttributes = {

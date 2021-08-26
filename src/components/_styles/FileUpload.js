@@ -8,7 +8,7 @@ export default (theme) => ({
     borderRadius: 8,
     color: theme.circleIn.palette.white,
     maxWidth: 500,
-    minWidth: 300,
+    minWidth: 370,
     height: 107,
     padding: theme.spacing(1.5, 0, 1.5, 2),
     'word-break': 'break-all'
@@ -54,5 +54,8 @@ export default (theme) => ({
     width: 20,
     height: 20,
     cursor: 'pointer'
+  },
+  downloadIcon: {
+    marginLeft: theme.spacing(1)
   }
 });
