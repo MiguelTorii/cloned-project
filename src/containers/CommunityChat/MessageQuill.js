@@ -23,7 +23,8 @@ const MessageQuill = ({
   focusMessageBox,
   showError,
   onTyping,
-  userId
+  userId,
+  isCommunityChat
 }) => {
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
@@ -81,7 +82,7 @@ const MessageQuill = ({
     },
     scrollingContainer: 'editor',
     formats,
-    placeholder: 'Send a message to channel',
+    placeholder: isCommunityChat ? 'Send a message to channel' : 'Send a message',
     preserveWhitespace: true
   });
 
