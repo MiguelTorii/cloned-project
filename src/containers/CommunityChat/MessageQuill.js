@@ -152,9 +152,10 @@ const MessageQuill = ({
   useEffect(() => {
     async function sendMessage() {
       if (
-        value.trim() === '<p><br></p>' ||
-        !value ||
-        value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === ''
+        files.length === 0 &&
+        (value.trim() === '<p><br></p>' ||
+          !value ||
+          value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '')
       ) {
         setValue('');
         setPressEnter(false);
