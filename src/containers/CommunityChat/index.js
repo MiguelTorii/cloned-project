@@ -39,6 +39,8 @@ const ChatPage = ({
   const [communityList, setCommunities] = useState([]);
 
   const fetchCommunityChannels = async (communities) => {
+    if (!communities?.length) return [];
+
     try {
       const promises = communities.map(async (course) => {
         if (course?.community) {
@@ -49,22 +51,14 @@ const ChatPage = ({
       });
 
       const channels = await Promise.all(promises);
-      const communityChannels = channels.map((channel) => {
-        if (channel.length) {
-          return {
-            courseId: channel[0].community_id,
-            channels: channel
-          };
-        }
-        return {
+      return channels
+        .filter((channel) => channel.length > 0)
+        .map((channel) => ({
           courseId: channel[0].community_id,
-          channels: []
-        };
-      });
-      setCourseChannels(communityChannels);
-      setCommunityChannels(communityChannels);
+          channels: channel
+        }));
     } catch (e) {
-      setLoading(false);
+      return [];
     }
   };
 
@@ -73,11 +67,23 @@ const ChatPage = ({
       try {
         setLoading(true);
         const { communities } = await getCommunities();
-        if (communities.length) await fetchCommunityChannels(communities);
-        setCommunityList(communities);
-        setCommunities(communities);
-        if (communities.length > 0) {
-          const defaultCommunity = communities[0].community;
+        const communityChannels = await fetchCommunityChannels(communities);
+        const nonEmptyCommunityIds = communityChannels
+          .filter((channelGroup) => channelGroup.channels.length > 0)
+          .map((channelGroup) => channelGroup.courseId);
+
+        const nonEmptyCommunities = communities.filter((community) =>
+          nonEmptyCommunityIds.includes(community.community.id)
+        );
+
+        setCommunityList(nonEmptyCommunities);
+        setCommunities(nonEmptyCommunities);
+
+        setCourseChannels(communityChannels);
+        setCommunityChannels(communityChannels);
+
+        if (nonEmptyCommunities.length > 0) {
+          const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
           setSelectedCourse(defaultCommunity);
           selectCurrentCommunity(defaultCommunity);
