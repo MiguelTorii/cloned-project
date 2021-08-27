@@ -3,7 +3,6 @@
 // @flow
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
-import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';

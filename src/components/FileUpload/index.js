@@ -109,7 +109,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
     setDownload(false);
   };
 
-  const downloadFile = async () => {
+  const downloadFile = async (filename) => {
     axios({
       url,
       method: 'GET',
@@ -118,10 +118,15 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
         const progress = Math.round(
           (progressEvent.loaded / progressEvent.total) * 100
         );
-
         setPercentage(progress);
       }
-    }).then(() => {
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
       setPercentage(0);
     });
   };
@@ -156,7 +161,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
             </div>
             {(width === 'xs' || smallChat) && isDownload && (
               <DownloadIcon
-                onClick={downloadFile}
+                onClick={() => downloadFile(name)}
                 className={classes.downloadIcon}
               />
             )}
@@ -169,7 +174,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
                 </Typography>
                 {isDownload && (
                   <DownloadIcon
-                    onClick={downloadFile}
+                    onClick={() => downloadFile(name)}
                     className={classes.downloadIcon}
                   />
                 )}

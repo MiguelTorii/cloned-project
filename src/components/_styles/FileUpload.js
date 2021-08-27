@@ -36,6 +36,7 @@ export default (theme) => ({
   },
   fileIcon: {
     width: 64,
+    minWidth: 64,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -43,11 +44,13 @@ export default (theme) => ({
       width: '100%'
     },
     [theme.breakpoints.down('sm')]: {
-      width: 24
+      width: 24,
+      minWidth: 24
     }
   },
   smallFileIcon: {
     width: 24,
+    minWidth: 24,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

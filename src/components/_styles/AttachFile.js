@@ -29,6 +29,7 @@ export default (theme) => ({
 	},
   fileIcon: {
     width: 24,
+		minWidth: 24,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
