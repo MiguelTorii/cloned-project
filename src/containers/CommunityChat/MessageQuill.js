@@ -4,11 +4,13 @@ import cx from 'classnames';
 import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
+import { bytesToSize } from 'utils/chat';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
+import AttachFile from 'components/FileUpload/AttachFile';
 import EditorToolbar, { formats } from './Toolbar';
 import { getPresignedURL } from '../../api/media';
 
@@ -24,6 +26,8 @@ const MessageQuill = ({
   showError,
   onTyping,
   userId,
+  setFiles,
+  files,
   isCommunityChat
 }) => {
   const [loading, setLoading] = useState(false);
@@ -82,7 +86,9 @@ const MessageQuill = ({
     },
     scrollingContainer: 'editor',
     formats,
-    placeholder: isCommunityChat ? 'Send a message to channel' : 'Send a message',
+    placeholder: isCommunityChat
+      ? 'Send a message to channel'
+      : 'Send a message',
     preserveWhitespace: true
   });
 
@@ -146,9 +152,10 @@ const MessageQuill = ({
   useEffect(() => {
     async function sendMessage() {
       if (
-        value.trim() === '<p><br></p>' ||
-        !value ||
-        value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === ''
+        files.length === 0 &&
+        (value.trim() === '<p><br></p>' ||
+          !value ||
+          value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '')
       ) {
         setValue('');
         setPressEnter(false);
@@ -222,13 +229,66 @@ const MessageQuill = ({
     [quill, setValue]
   );
 
+  const handleUploadFile = useCallback(() => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.click();
+
+    input.onchange = async () => {
+      setLoading(true);
+      try {
+        const file = input.files[0];
+        const { type, name, size } = file;
+
+        const result = await getPresignedURL({
+          userId,
+          type: 1,
+          mediaType: type
+        });
+        const { readUrl, url } = result;
+        await axios.put(url, file, {
+          headers: {
+            'Content-Type': type
+          }
+        });
+
+        const anyFile = {
+          type,
+          name,
+          url: readUrl,
+          size: bytesToSize(size)
+        };
+
+        setFiles([...files, anyFile]);
+      } catch (error) {
+        quill.enable(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+  }, [quill, files]);
+
+  const onClose = useCallback(
+    (deleteFile) => {
+      const filterFiles = files.filter((file) => file.url !== deleteFile.url);
+      setFiles(filterFiles);
+    },
+    [files]
+  );
+
   return (
     <div className={classes.messageQuill}>
-      <div className={classes.editor}>
+      <div
+        className={cx(files.length > 0 ? classes.editWithFile : classes.editor)}
+      >
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />
-            <EditorToolbar id="message-toolbar" handleSelect={insertEmoji} />
+            <EditorToolbar
+              id="message-toolbar"
+              handleSelect={insertEmoji}
+              handleUploadFile={handleUploadFile}
+            />
           </div>
           {loading && (
             <div className={classes.loader}>
@@ -256,6 +316,13 @@ const MessageQuill = ({
             </Button>}
         </div> */}
       </div>
+      {files.length > 0 && (
+        <div className={classes.files}>
+          {files.map((file) => (
+            <AttachFile file={file} onClose={() => onClose(file)} />
+          ))}
+        </div>
+      )}
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
         <Typography

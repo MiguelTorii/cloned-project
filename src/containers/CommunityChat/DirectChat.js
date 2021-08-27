@@ -183,7 +183,7 @@ const DirectChat = ({
 
   useEffect(() => {
     if (width !== prevWidth) {
-      if (['xs'].includes(width)) {
+      if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
         if (currentChannel) setLeftSpace(0);
         else setLeftSpace(curSize);
@@ -192,7 +192,8 @@ const DirectChat = ({
       }
     }
 
-    if (currentChannel && !isLoading) setRightSpace(3);
+    if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width))
+      setRightSpace(3);
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentChannel, isLoading]);
@@ -211,14 +212,14 @@ const DirectChat = ({
   );
 
   const onCollapseLeft = useCallback(() => {
-    if (width === 'xs') {
+    if (['xs', 'sm', 'md'].includes(width)) {
       setRightSpace(0);
     }
     setLeftSpace(leftSpace ? 0 : curSize);
   }, [width, curSize, leftSpace]);
 
   const onCollapseRight = useCallback(() => {
-    if (width === 'xs') {
+    if (['xs'].includes(width)) {
       setLeftSpace(0);
     }
     setRightSpace(rightSpace ? 0 : curSize);

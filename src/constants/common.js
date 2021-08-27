@@ -83,3 +83,38 @@ export const TIMEOUT = {
   FLASHCARD_REVEIW: 1 * 60 * 1000,
   POST_ITEM: 3 * 60 * 1000
 };
+
+export const fileContent = {
+  '3gp': 'Video File',
+  aac: 'File Extension',
+  aif: 'Audio File',
+  asf: 'Media Audio File',
+  avi: 'Video File',
+  cvs: 'CSV File',
+  doc: 'Word Document',
+  docx: 'Word Document',
+  flv: 'Adobe Flash',
+  html: 'HTML File',
+  m4v: 'Video File',
+  mov: 'Video File',
+  mp3: 'Audio File',
+  mp4: 'Audio File',
+  odp: 'OpenOffice.org',
+  odt: 'Word Processing Applications',
+  ogg: 'Audio File',
+  ops: 'Microsoft Office software suite',
+  pdf: 'PDF Document',
+  ppt: 'PowerPoint Presentation',
+  pptx: 'PowerPoint Presentation',
+  rtf: 'Rich Text Format',
+  txt: 'Text File',
+  wav: 'Wav Audio File',
+  webm: 'Webm File',
+  wmv: 'Wmv File',
+  xls: 'Excel',
+  xlsx: 'Excel',
+  zip: 'Zip File',
+  'binary-default': 'Binary File',
+  'code-default': 'Code',
+  'other-default': 'Other File'
+};

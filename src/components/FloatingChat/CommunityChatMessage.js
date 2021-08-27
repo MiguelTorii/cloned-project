@@ -26,6 +26,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import RoleBadge from 'components/RoleBadge';
 import BlockMemberModal from 'components/BlockMemberModal';
 import OnlineBadge from 'components/OnlineBadge';
+import FileUpload from 'components/FileUpload';
 import StudyRoomReport from 'components/StudyRoomReport';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import { getInitials } from 'utils/chat';
@@ -69,8 +70,7 @@ const ChatMessage = ({
   onStartVideoCall,
   onImageClick,
   handleBlock
-}: // isCommunityChat
-Props) => {
+}: Props) => {
   const classes = useStyles();
 
   const [showOpetions, setShowOptions] = useState(0);
@@ -135,6 +135,7 @@ Props) => {
         onLoad=window.loadImage()
         class=${classes.image}`
     );
+
     return linkify(htmlString);
   };
 
@@ -194,18 +195,46 @@ Props) => {
 
   const open = Boolean(anchorEl);
 
+  const showMessages = (message) => {
+    const splitHtmlStringByFiles = message.split('File Attachment');
+
+    if (splitHtmlStringByFiles.length > 1) {
+      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      const fileHtml = files.map((file) => <FileUpload file={file} />);
+
+      return (
+        <div className={cx(classes.bodyWrapper)}>
+          <Typography
+            className={clsx(classes.body, 'ql-editor')}
+            dangerouslySetInnerHTML={{
+              __html: renderHtmlWithImage(splitHtmlStringByFiles[0])
+            }}
+          />
+          {fileHtml}
+        </div>
+      );
+    }
+
+    return (
+      <div className={cx(classes.bodyWrapper)}>
+        <Typography
+          className={clsx(classes.body, 'ql-editor')}
+          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
+        />
+      </div>
+    );
+  };
+
   const renderItem = ({
     imageKey,
     body,
     isVideoNotification,
-    firstName,
-    isOwn
+    firstName
   }: {
     imageKey: string,
     body: string,
     isVideoNotification: boolean,
-    firstName: string,
-    isOwn: boolean
+    firstName: string
   }) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
 
@@ -260,15 +289,7 @@ Props) => {
         </div>
       );
     }
-
-    return (
-      <div className={cx(classes.bodyWrapper)}>
-        <Typography
-          className={clsx(classes.body, 'ql-editor')}
-          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
-        />
-      </div>
-    );
+    return showMessages(message);
   };
 
   return (
@@ -372,8 +393,7 @@ Props) => {
               body: message.body,
               isVideoNotification: message.isVideoNotification,
               firstName: message.firstName,
-              createdAt: message.createdAt,
-              isOwn
+              createdAt: message.createdAt
             })}
           </div>
         </ListItem>

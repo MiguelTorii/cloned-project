@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import EmojiSelector from 'components/EmojiSelector';
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
 
 const Link = Quill.import('formats/link');
@@ -27,10 +28,11 @@ export const formats = [
   'list',
   'bullet',
   'indent',
-  'image'
+  'image',
+  'file'
 ];
 
-export const QuillToolbar = ({ id, handleSelect }) => {
+export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -116,6 +118,20 @@ export const QuillToolbar = ({ id, handleSelect }) => {
             }}
           >
             <button type="button" className="ql-image" />
+          </Tooltip>
+          <Tooltip
+            title="Upload (max limit: 40 MB)"
+            aria-label="file"
+            arrow
+            placement="top"
+            classes={{
+              tooltip: classes.tooltip,
+              popper: classes.popper
+            }}
+          >
+            <button type="button" onClick={handleUploadFile}>
+              <PaperClip />
+            </button>
           </Tooltip>
           <Tooltip
             title="EmoJi (⌘J)"

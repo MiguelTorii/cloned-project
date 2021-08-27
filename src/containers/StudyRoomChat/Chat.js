@@ -13,8 +13,10 @@ import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import ChatTextField from 'containers/StudyRoomChat/ChatTextField';
 import Lightbox from 'react-images';
-import { processMessages } from 'utils/chat';
+import { processMessages, bytesToSize } from 'utils/chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import ChatMessage from 'containers/StudyRoomChat/ChatMessage';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import uuidv4 from 'uuid/v4';
@@ -23,6 +25,8 @@ import { logEvent } from 'api/analytics';
 import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = (theme) => ({
@@ -50,6 +54,25 @@ const styles = (theme) => ({
   typingText: {
     // color: 'black'
     marginLeft: theme.spacing()
+  },
+  uploadButton: {
+    marginRight: theme.spacing(),
+    backgroundColor: theme.circleIn.palette.appBar,
+    border: `1px solid ${theme.circleIn.palette.helperText}`,
+    boxSizing: 'border-box',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: theme.spacing()
+  },
+  input: {
+    display: 'none'
+  },
+  files: {
+    width: '100%',
+    padding: theme.spacing(1),
+    background: theme.circleIn.palette.hoverMenu,
+    borderRadius: theme.spacing(0, 0, 2.5, 2.5),
+    display: 'flex',
+    flexWrap: 'wrap'
   }
 });
 
@@ -60,10 +83,12 @@ type Props = {
 };
 
 const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
+  const end = useRef(null);
+  const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(null);
   const [loading, setLoading] = useState(false);
-  const end = useRef(null);
+  const [files, setFiles] = useState([]);
   const [scroll, setScroll] = useState(true);
   const [images, setImages] = useState([]);
   const [paginator, setPaginator] = useState(null);
@@ -194,9 +219,7 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
   }, []);
 
   const isMemberOnline = useCallback(
-    (userId) => {
-      return members[userId]?.isOnline;
-    },
+    (userId) => members[userId]?.isOnline,
     [members]
   );
 
@@ -326,6 +349,36 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
 
   const handleImageClose = useCallback(() => setImages([]), []);
 
+  const uploadFile = useCallback(() => {
+    if (fileInput.current) fileInput.current.click();
+  }, []);
+
+  const handleInputChange = useCallback(async () => {
+    const file = fileInput.current.files[0];
+    const { type, name, size } = file;
+
+    const result = await uploadMedia(userId, 1, file);
+
+    const { readUrl } = result;
+
+    const anyFile = {
+      type,
+      name,
+      url: readUrl,
+      size: bytesToSize(size)
+    };
+
+    setFiles([...files, anyFile]);
+  }, [userId, fileInput]);
+
+  const onClose = useCallback(
+    (deleteFile) => {
+      const filterFiles = files.filter((file) => file.url !== deleteFile.url);
+      setFiles(filterFiles);
+    },
+    [files]
+  );
+
   return (
     <ErrorBoundary>
       <div
@@ -354,6 +407,18 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
           </InfiniteScroll>
         )}
       </div>
+      <input
+        accept="*/*"
+        className={classes.input}
+        ref={fileInput}
+        onChange={handleInputChange}
+        type="file"
+      />
+      <Box display="flex" alignItems="center" justifyContent="flex-end">
+        <Button className={classes.uploadButton} onClick={uploadFile}>
+          Upload &nbsp; <PaperClip />
+        </Button>
+      </Box>
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">
@@ -372,6 +437,9 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
           message={mainMessage}
           setMessage={setMainMessage}
           onSendInput={onSendInput}
+          setFiles={setFiles}
+          files={files}
+          onClose={onClose}
         />
       )}
       <Lightbox
