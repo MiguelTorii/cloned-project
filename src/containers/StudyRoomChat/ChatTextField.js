@@ -2,6 +2,7 @@
 // @flow
 import React, { useRef, useCallback, useState } from 'react';
 import Textarea from 'react-textarea-autosize';
+import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -11,6 +12,7 @@ import EmojiSelector from 'components/EmojiSelector';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import ClearIcon from '@material-ui/icons/Clear';
+import AttachFile from 'components/FileUpload/AttachFile';
 
 const styles = (theme) => ({
   input: {
@@ -34,7 +36,8 @@ const styles = (theme) => ({
     display: 'flex',
     backgroundColor: theme.circleIn.palette.primaryBackground,
     width: '100%',
-    borderRadius: 20
+    borderRadius: 20,
+    flexDirection: 'column'
   },
   inputContainer: {
     display: 'flex',
@@ -56,6 +59,14 @@ const styles = (theme) => ({
     height: '100%',
     width: '100%',
     minHeight: 44
+  },
+  fileInputContainer: {
+    display: 'flex',
+    borderRadius: theme.spacing(2.5, 2.5, 0, 0),
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: theme.circleIn.palette.hoverMenu,
+    marginLeft: 8
   },
   textfield: {
     width: '100%',
@@ -91,6 +102,15 @@ const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  files: {
+    width: 358,
+    marginLeft: theme.spacing(1),
+    padding: theme.spacing(1),
+    background: theme.circleIn.palette.hoverMenu,
+    borderRadius: theme.spacing(0, 0, 2.5, 2.5),
+    display: 'flex',
+    flexWrap: 'wrap'
   }
 });
 
@@ -101,7 +121,10 @@ type Props = {
   onSendInput: Function,
   onTyping: Function,
   message: string,
-  setMessage: Function
+  setMessage: Function,
+  files: Array,
+  setFiles: Function,
+  onClose: Function
 };
 
 const ChatTextField = ({
@@ -113,7 +136,10 @@ const ChatTextField = ({
   input,
   setInput,
   expanded,
-  onTyping
+  onTyping,
+  files,
+  setFiles,
+  onClose
 }: Props) => {
   const [addNextLine, setAddNextLine] = useState(false);
   const [isHover, setIsHover] = useState(false);
@@ -123,8 +149,7 @@ const ChatTextField = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-
-      if (input) {
+      if (input && !files.length) {
         onSendInput(input);
         setInput(null);
         setImage(null);
@@ -132,12 +157,26 @@ const ChatTextField = ({
         setInput(null);
       }
 
-      if (message.trim() !== '') {
-        onSendMessage(message);
+      if (message.trim() !== '' || !!files.length) {
+        let newMessage = message;
+        if (files.length > 0) {
+          newMessage += `File Attachment${JSON.stringify(files)}`;
+        }
+        onSendMessage(newMessage);
         setMessage('');
+        setFiles([]);
       }
     },
-    [input, message, onSendInput, onSendMessage, setInput, setMessage]
+    [
+      input,
+      message,
+      onSendInput,
+      onSendMessage,
+      setInput,
+      setMessage,
+      files,
+      setFiles
+    ]
   );
 
   const handleChange = useCallback(
@@ -235,10 +274,22 @@ const ChatTextField = ({
     }
   }, [setInput]);
 
+  const checkDisabled = useCallback(() => {
+    if (files.length > 0) return false;
+    if (!message && !input) return true;
+    return false;
+  }, [files, message, input]);
+
   return (
     <Paper className={classes.root} elevation={1}>
       <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
-        <div className={classes.inputContainer}>
+        <div
+          className={cx(
+            files.length > 0
+              ? classes.fileInputContainer
+              : classes.inputContainer
+          )}
+        >
           <input
             accept="image/*"
             className={classes.input}
@@ -295,22 +346,28 @@ const ChatTextField = ({
         </div>
         <div className={classes.iconButton}>
           <IconButton
-            disabled={!message && !input}
+            disabled={checkDisabled()}
             className={classes.icon}
             type="submit"
             aria-label="Send"
           >
             <SendIcon
               classes={{
-                root:
-                  !message && !input
-                    ? classes.sendIconDisabled
-                    : classes.sendIcon
+                root: checkDisabled()
+                  ? classes.sendIconDisabled
+                  : classes.sendIcon
               }}
             />
           </IconButton>
         </div>
       </form>
+      {files.length > 0 && (
+        <div className={classes.files}>
+          {files.map((file) => (
+            <AttachFile smallChat file={file} onClose={() => onClose(file)} />
+          ))}
+        </div>
+      )}
     </Paper>
   );
 };

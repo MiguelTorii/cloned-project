@@ -393,8 +393,7 @@ const ChatMessage = ({
               body: message.body,
               isVideoNotification: message.isVideoNotification,
               firstName: message.firstName,
-              createdAt: message.createdAt,
-              isOwn
+              createdAt: message.createdAt
             })}
           </div>
         </ListItem>

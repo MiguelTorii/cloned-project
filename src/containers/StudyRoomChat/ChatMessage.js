@@ -12,6 +12,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
 import RoleBadge from 'components/RoleBadge';
+import FileUpload from 'components/FileUpload';
 import { getInitials } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
@@ -151,14 +152,79 @@ class ChatMessageDate extends React.PureComponent<Props> {
     // eslint-disable-next-line
     const urlRegex =
       /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    return text.replace(urlRegex, (url) => {
-      return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
-    });
+    return text.replace(
+      urlRegex,
+      (url) =>
+        `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
+    );
   };
 
   handleImageClick = (url) => () => {
     const { onImageClick } = this.props;
     onImageClick(url);
+  };
+
+  renderHtmlWithImage = (text) => {
+    const { classes } = this.props;
+
+    const htmlString = text.replaceAll(
+      '<img',
+      `<img
+        onClick=window.clickImage(this)
+        onLoad=window.loadImage()
+        class=${classes.image}`
+    );
+
+    return this.linkify(htmlString);
+  };
+
+  showMessages = (message, createdAt, isOwn) => {
+    const { classes } = this.props;
+    const splitHtmlStringByFiles = message.split('File Attachment');
+
+    if (splitHtmlStringByFiles.length > 1) {
+      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      const fileHtml = files.map((file) => (
+        <FileUpload smallChat file={file} />
+      ));
+
+      return (
+        <>
+          <div className={cx(classes.bodyWrapper)}>
+            {splitHtmlStringByFiles[0] ? (
+              <Typography
+                className={cx(
+                  classes.body,
+                  isOwn && classes.right,
+                  'ql-editor'
+                )}
+                dangerouslySetInnerHTML={{
+                  __html: this.renderHtmlWithImage(splitHtmlStringByFiles[0])
+                }}
+              />
+            ) : null}
+            {fileHtml}
+          </div>
+          <Typography className={cx(classes.createdAt)} variant="caption">
+            {createdAt}
+          </Typography>
+        </>
+      );
+    }
+
+    return (
+      <div className={cx(classes.bodyWrapper)}>
+        <Typography
+          className={cx(classes.body, isOwn && classes.right)}
+          dangerouslySetInnerHTML={{
+            __html: this.renderHtmlWithImage(message)
+          }}
+        />
+        <Typography className={cx(classes.createdAt)} variant="caption">
+          {createdAt}
+        </Typography>
+      </div>
+    );
   };
 
   renderItem = ({
@@ -234,17 +300,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       );
     }
 
-    return (
-      <div className={cx(classes.bodyWrapper, isOwn && classes.reverse)}>
-        <Typography
-          className={cx(classes.body, isOwn && classes.right)}
-          dangerouslySetInnerHTML={{ __html: this.linkify(message) }}
-        />
-        <Typography className={cx(classes.createdAt)} variant="caption">
-          {createdAt}
-        </Typography>
-      </div>
-    );
+    return this.showMessages(message, createdAt, isOwn);
   };
 
   render() {

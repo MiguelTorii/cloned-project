@@ -28,8 +28,8 @@ export default (theme) => ({
     border: '1px solid #5F6165',
     borderRadius: 8,
     color: theme.circleIn.palette.white,
-    maxWidth: 220,
-    minWidth: 215,
+    maxWidth: 210,
+    minWidth: 210,
     height: 55,
     padding: theme.spacing(1),
     'word-break': 'break-all'
