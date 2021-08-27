@@ -3,6 +3,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router';
 import cx from 'classnames';
+import clsx from 'clsx';
 import { Link as RouterLink } from 'react-router-dom';
 // import parse from 'html-react-parser'
 import ListItem from '@material-ui/core/ListItem';
@@ -16,9 +17,10 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
+import FileUpload from 'components/FileUpload';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
-import useStyles from '../_styles/FloatingChat/FloatChatMessage';
 import { getInitials } from 'utils/chat';
+import useStyles from '../_styles/FloatingChat/FloatChatMessage';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -96,6 +98,38 @@ const ChatMessage = ({
 
   const initials = getInitials(name);
 
+  const showMessages = (message) => {
+    const splitHtmlStringByFiles = message.split('File Attachment');
+
+    if (splitHtmlStringByFiles.length > 1) {
+      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      const fileHtml = files.map((file) => (
+        <FileUpload file={file} smallChat />
+      ));
+
+      return (
+        <div className={cx(classes.bodyWrapper)}>
+          <Typography
+            className={clsx(classes.body, 'ql-editor')}
+            dangerouslySetInnerHTML={{
+              __html: renderHtmlWithImage(splitHtmlStringByFiles[0])
+            }}
+          />
+          {fileHtml}
+        </div>
+      );
+    }
+
+    return (
+      <div className={cx(classes.bodyWrapper)}>
+        <Typography
+          className={clsx(classes.body, 'ql-editor')}
+          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
+        />
+      </div>
+    );
+  };
+
   const renderItem = ({
     imageKey,
     body,
@@ -163,14 +197,7 @@ const ChatMessage = ({
       );
     }
 
-    return (
-      <div className={cx(classes.bodyWrapper)}>
-        <Typography
-          className={classes.body}
-          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
-        />
-      </div>
-    );
+    return showMessages(message);
   };
 
   return (

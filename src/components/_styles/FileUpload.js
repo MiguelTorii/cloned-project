@@ -20,6 +20,20 @@ export default (theme) => ({
       padding: theme.spacing()
     }
   },
+  smallContainer: {
+    position: 'relative',
+    display: 'flex',
+    gap: theme.spacing(2),
+    background: '#303032',
+    border: '1px solid #5F6165',
+    borderRadius: 8,
+    color: theme.circleIn.palette.white,
+    maxWidth: 220,
+    minWidth: 215,
+    height: 55,
+    padding: theme.spacing(1),
+    'word-break': 'break-all'
+  },
   fileIcon: {
     width: 64,
     display: 'flex',
@@ -30,6 +44,15 @@ export default (theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: 24
+    }
+  },
+  smallFileIcon: {
+    width: 24,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: '100%'
     }
   },
   infoContainer: {
@@ -47,6 +70,14 @@ export default (theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 14
     }
+  },
+  fileName: {
+    fontWeight: 800,
+    lineHeight: '27px',
+    height: 27,
+    overflow: 'hidden',
+    '-webkit-line-clamp': 1,
+    fontSize: 14
   },
   info: {
     fontSize: 16,

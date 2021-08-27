@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import withWidth from '@material-ui/core/withWidth';
 import axios from 'axios';
+import cx from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
@@ -91,7 +92,7 @@ const getFileContent = (extension) => {
 
 const getFileExtension = (filename) => filename.split('.').pop();
 
-const FileUploadContainer = ({ classes, file, width }) => {
+const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
   const [isDownload, setDownload] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
@@ -135,11 +136,13 @@ const FileUploadContainer = ({ classes, file, width }) => {
       }}
     >
       <div
-        className={classes.container}
+        className={cx(smallChat ? classes.smallContainer : classes.container)}
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
       >
-        <div className={classes.fileIcon}>
+        <div
+          className={cx(smallChat ? classes.smallFileIcon : classes.fileIcon)}
+        >
           <img src={iconUrl} alt={iconUrl} />
         </div>
         <div className={classes.infoContainer}>
@@ -148,27 +151,30 @@ const FileUploadContainer = ({ classes, file, width }) => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <div className={classes.name}>{name}</div>
-            {width === 'xs' && isDownload && (
+            <div className={cx(smallChat ? classes.fileName : classes.name)}>
+              {name}
+            </div>
+            {(width === 'xs' || smallChat) && isDownload && (
               <DownloadIcon
                 onClick={downloadFile}
                 className={classes.downloadIcon}
               />
             )}
           </Box>
-          {width !== 'xs' && (
-            <Box display="flex" alignItems="center">
-              <Typography variant="body2" component="div">
-                {size} {getFileContent(extension)}
-              </Typography>
-              {isDownload && (
-                <DownloadIcon
-                  onClick={downloadFile}
-                  className={classes.downloadIcon}
-                />
-              )}
-            </Box>
-          )}
+          {smallChat ||
+            (width !== 'xs' && (
+              <Box display="flex" alignItems="center">
+                <Typography variant="body2" component="div">
+                  {size} {getFileContent(extension)}
+                </Typography>
+                {isDownload && (
+                  <DownloadIcon
+                    onClick={downloadFile}
+                    className={classes.downloadIcon}
+                  />
+                )}
+              </Box>
+            ))}
           {percentage > 0 && (
             <div className={classes.progressBar}>
               <div
