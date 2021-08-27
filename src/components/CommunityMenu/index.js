@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -54,9 +54,14 @@ const CommunityMenu = ({
     handleSelect(item);
   }, [handleSelect, item]);
 
+  const isDirectChat = useMemo(
+    () => ['chat'].indexOf(item.id) > -1,
+    [item]
+  );
+
   return (
     <Tooltip
-      title={item.name}
+      title={isDirectChat ? 'Direct Chat' : item.name}
       placement="top"
       arrow
       classes={{
@@ -86,7 +91,7 @@ const CommunityMenu = ({
             backgroundColor: item.color ? item.color : '#C45960'
           }}
         >
-          {['chat'].indexOf(item.id) > -1 ? (
+          {isDirectChat ? (
             <StyledBadge
               max={99}
               badgeContent={unreadMessageCount}

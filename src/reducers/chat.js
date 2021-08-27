@@ -122,7 +122,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         ...state,
         data: {
           ...state.data,
-          currentChannel: action.payload.currentChannel
+          currentChannel: action.payload.currentChannel,
+          currentCourseId: null
         }
       };
     case chatActions.SET_COMMUNITIES:

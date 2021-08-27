@@ -557,6 +557,7 @@ const Main = ({
 
         {channel && (
           <MessageQuill
+            isCommunityChat={isCommunityChat}
             value={value}
             userId={userId}
             setFiles={setFiles}
