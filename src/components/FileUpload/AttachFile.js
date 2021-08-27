@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import cx from 'classnames';
 import Box from '@material-ui/core/Box';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -74,7 +75,7 @@ const URIS = {
 };
 
 const FileUploadContainer = (props) => {
-  const { classes, file, onClose } = props;
+  const { classes, file, onClose, smallChat } = props;
   const { name } = file;
 
   const getFileExtension = useCallback(
@@ -89,7 +90,7 @@ const FileUploadContainer = (props) => {
   const extension = getFileExtension(name);
   const fileUrl = getIconURL(extension);
   return (
-    <div className={classes.container}>
+    <div className={cx(smallChat ? classes.smallContainer : classes.container)}>
       <div className={classes.fileIcon}>
         <img src={fileUrl} alt={extension} />
       </div>

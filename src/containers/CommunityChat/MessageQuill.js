@@ -4,6 +4,7 @@ import cx from 'classnames';
 import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
+import { bytesToSize } from 'utils/chat';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -224,13 +225,6 @@ const MessageQuill = ({
     [quill, setValue]
   );
 
-  const bytesToSize = useCallback((bytes) => {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (!bytes) return '0 Byte';
-    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-    return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`;
-  }, []);
-
   const handleUploadFile = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -280,13 +274,6 @@ const MessageQuill = ({
 
   return (
     <div className={classes.messageQuill}>
-      {files.length > 0 && (
-        <div className={classes.files}>
-          {files.map((file) => (
-            <AttachFile file={file} onClose={() => onClose(file)} />
-          ))}
-        </div>
-      )}
       <div
         className={cx(files.length > 0 ? classes.editWithFile : classes.editor)}
       >
@@ -325,6 +312,13 @@ const MessageQuill = ({
             </Button>}
         </div> */}
       </div>
+      {files.length > 0 && (
+        <div className={classes.files}>
+          {files.map((file) => (
+            <AttachFile file={file} onClose={() => onClose(file)} />
+          ))}
+        </div>
+      )}
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
         <Typography

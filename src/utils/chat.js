@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 // @flow
@@ -227,4 +228,15 @@ export const getInitials = (name: string = '') => {
 };
 
 export const containsImage = (message: string) =>
-  message.includes('<img') ? 'Uploaded a image' : parse(message);
+  message.includes('<img')
+    ? 'Uploaded a image'
+    : message.includes('File Attachment')
+    ? 'Uploaded a file'
+    : parse(message);
+
+export const bytesToSize = (bytes) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (!bytes) return '0 Byte';
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+  return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`;
+};

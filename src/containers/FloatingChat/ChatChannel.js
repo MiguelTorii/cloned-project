@@ -626,6 +626,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
               </div>
             )}
             <ChatTextField
+              userId={userId}
               expanded={expanded}
               onSendMessage={this.handleSendMessage}
               onSendInput={this.handleSendInput}

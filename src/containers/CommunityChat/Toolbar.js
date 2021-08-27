@@ -120,7 +120,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" className="ql-image" />
           </Tooltip>
           <Tooltip
-            title="Attach File (⌘F)"
+            title="Upload (max limit: 40 MB)"
             aria-label="file"
             arrow
             placement="top"
