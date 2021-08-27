@@ -162,23 +162,15 @@ const Drawer = ({
   const renderExpertMenu = useCallback(
     () => (
       <>
-        <Tooltip
-          id={9087}
-          hidden={!!chatLanding}
-          placement="right"
-          text="We made group chat for all of your classes because we know it will help you have a better college experience. "
-          okButton="Yay! 🎉"
-        >
-          <DrawerItem
-            OnIcon={<ChatIconOn />}
-            primaryText="Chats"
-            pathname={pathname}
-            component={MyLink}
-            link="/chat"
-            OffIcon={<ChatIconOff />}
-            listItemClass={classes.otherPath}
-          />
-        </Tooltip>
+        <DrawerItem
+          OnIcon={<ChatIconOn />}
+          primaryText="Chats"
+          pathname={pathname}
+          component={MyLink}
+          link="/chat"
+          OffIcon={<ChatIconOff />}
+          listItemClass={classes.otherPath}
+        />
         {landingPageCampaign && (
           <DrawerItem
             listItemClass={classNames(
@@ -365,23 +357,15 @@ const Drawer = ({
           component={MyLink}
           OffIcon={<HomeIconOff />}
         />
-        <Tooltip
-          id={9087}
-          hidden={!!chatLanding}
-          placement="right"
-          text="We made group chat for all of your classes because we know it will help you have a better college experience. "
-          okButton="Yay! 🎉"
-        >
-          <DrawerItem
-            OnIcon={<ChatIconOn />}
-            primaryText="Chats"
-            pathname={pathname}
-            component={MyLink}
-            link="/chat"
-            OffIcon={<ChatIconOff />}
-            listItemClass={classes.otherPath}
-          />
-        </Tooltip>
+        <DrawerItem
+          OnIcon={<ChatIconOn />}
+          primaryText="Chats"
+          pathname={pathname}
+          component={MyLink}
+          link="/chat"
+          OffIcon={<ChatIconOff />}
+          listItemClass={classes.otherPath}
+        />
         <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
         <DrawerItem
           OnIcon={
