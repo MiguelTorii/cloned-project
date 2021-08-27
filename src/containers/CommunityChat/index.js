@@ -24,7 +24,7 @@ const ChatPage = ({
   setCurrentChannelSid
 }) => {
   const {
-    data: { local, currentCommunity, currentCourseId, oneTouchSendOpen },
+    data: { local, currentCommunity, currentCourseId, oneTouchSendOpen, currentChannel },
     isLoading
   } = chat;
 
@@ -82,7 +82,7 @@ const ChatPage = ({
         setCourseChannels(communityChannels);
         setCommunityChannels(communityChannels);
 
-        if (nonEmptyCommunities.length > 0) {
+        if (!currentChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
           setSelectedCourse(defaultCommunity);
