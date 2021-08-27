@@ -26,6 +26,7 @@ import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary';
 
 const styles = (theme) => ({
@@ -348,7 +349,7 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
 
   const handleImageClose = useCallback(() => setImages([]), []);
 
-  const uploadFIle = useCallback(() => {
+  const uploadFile = useCallback(() => {
     if (fileInput.current) fileInput.current.click();
   }, []);
 
@@ -356,17 +357,9 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
     const file = fileInput.current.files[0];
     const { type, name, size } = file;
 
-    const result = await getPresignedURL({
-      userId,
-      type: 1,
-      mediaType: type
-    });
-    const { readUrl, url } = result;
-    await axios.put(url, file, {
-      headers: {
-        'Content-Type': type
-      }
-    });
+    const result = await uploadMedia(userId, 1, file);
+
+    const { readUrl } = result;
 
     const anyFile = {
       type,
@@ -422,7 +415,7 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
         type="file"
       />
       <Box display="flex" alignItems="center" justifyContent="flex-end">
-        <Button className={classes.uploadButton} onClick={uploadFIle}>
+        <Button className={classes.uploadButton} onClick={uploadFile}>
           Upload &nbsp; <PaperClip />
         </Button>
       </Box>

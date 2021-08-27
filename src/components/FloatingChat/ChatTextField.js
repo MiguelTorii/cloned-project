@@ -17,9 +17,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 // import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
-import { getPresignedURL } from 'api/media';
 import AttachFile from 'components/FileUpload/AttachFile';
 import { bytesToSize } from 'utils/chat';
+import { uploadMedia } from '../../actions/user';
 import EmojiSelector from '../EmojiSelector';
 
 import styles from '../_styles/FloatingChat/ChatTextField';
@@ -146,17 +146,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
       this.setState({ loading: true });
 
-      const result = await getPresignedURL({
-        userId,
-        type: 1,
-        mediaType: type
-      });
-      const { readUrl, url } = result;
-      await axios.put(url, file, {
-        headers: {
-          'Content-Type': type
-        }
-      });
+      const result = await uploadMedia(userId, 1, file);
+
+      const { readUrl } = result;
 
       const anyFile = {
         type,

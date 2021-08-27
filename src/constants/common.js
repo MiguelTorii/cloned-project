@@ -103,7 +103,7 @@ export const fileContent = {
   odt: 'Word Processing Applications',
   ogg: 'Audio File',
   ops: 'Microsoft Office software suite',
-  pdf: 'Pdf Document',
+  pdf: 'PDF Document',
   ppt: 'PowerPoint Presentation',
   pptx: 'PowerPoint Presentation',
   rtf: 'Rich Text Format',
