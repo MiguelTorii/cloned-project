@@ -10,11 +10,10 @@ export default (theme) => ({
     minWidth: 280,
     maxWidth: 300,
     padding: theme.spacing(1),
-    margin: theme.spacing(0.5),
-    'word-break': 'break-all'
+    margin: theme.spacing(0.5)
   },
-	smallContainer: {
-		position: 'relative',
+  smallContainer: {
+    position: 'relative',
     display: 'flex',
     gap: theme.spacing(1),
     background: '#303032',
@@ -24,12 +23,11 @@ export default (theme) => ({
     minWidth: 220,
     maxWidth: 200,
     padding: theme.spacing(1),
-    margin: theme.spacing(0.5),
-    'word-break': 'break-all'
-	},
+    margin: theme.spacing(0.5)
+  },
   fileIcon: {
     width: 24,
-		minWidth: 24,
+    minWidth: 24,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

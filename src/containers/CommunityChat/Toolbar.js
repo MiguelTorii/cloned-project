@@ -78,6 +78,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -90,6 +91,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -102,31 +104,34 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
             <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
-            title="Image (⌘P)"
+            title="Image"
             aria-label="image"
             arrow
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
             <button type="button" className="ql-image" />
           </Tooltip>
           <Tooltip
-            title="Upload (max limit: 40 MB)"
+            title="Upload File (max limit: 40 MB)"
             aria-label="file"
             arrow
             placement="top"
             classes={{
               tooltip: classes.tooltip,
-              popper: classes.popper
+              arrow: classes.tooltipArrow,
+              popper: classes.uploadFilePopper
             }}
           >
             <button type="button" onClick={handleUploadFile}>
@@ -140,6 +145,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -172,6 +178,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -184,6 +191,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -196,22 +204,39 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
             <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
-            title="Image (⌘P)"
+            title="Image"
             aria-label="image"
             arrow
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
             <button type="button" className="ql-image" />
+          </Tooltip>
+          <Tooltip
+            title="Upload File (max limit: 40 MB)"
+            aria-label="file"
+            arrow
+            placement="top"
+            classes={{
+              tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
+              popper: classes.uploadFilePopper
+            }}
+          >
+            <button type="button" onClick={handleUploadFile}>
+              <PaperClip />
+            </button>
           </Tooltip>
           <Tooltip
             title="EmoJi (⌘J)"
@@ -220,6 +245,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             placement="top"
             classes={{
               tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
               popper: classes.popper
             }}
           >
@@ -238,6 +264,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           placement="top"
           classes={{
             tooltip: classes.tooltip,
+            arrow: classes.tooltipArrow,
             popper: classes.popper
           }}
         >
@@ -250,6 +277,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           placement="top"
           classes={{
             tooltip: classes.tooltip,
+            arrow: classes.tooltipArrow,
             popper: classes.popper
           }}
         >
@@ -262,6 +290,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           placement="top"
           classes={{
             tooltip: classes.tooltip,
+            arrow: classes.tooltipArrow,
             popper: classes.popper
           }}
         >
@@ -274,6 +303,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           placement="top"
           classes={{
             tooltip: classes.tooltip,
+            arrow: classes.tooltipArrow,
             popper: classes.popper
           }}
         >

@@ -2,15 +2,13 @@ import moment from 'moment';
 import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';
 
-export const getPointsText = (points: number) => {
-  return points < 1000
+export const getPointsText = (points: number) =>
+  points < 1000
     ? points.toLocaleString()
     : `${Math.floor(points / 1000).toLocaleString()}K`;
-};
 
-export const momentWithTimezone = (date: string = undefined) => {
-  return moment(date).tz(TIME_ZONE);
-};
+export const momentWithTimezone = (date: string = undefined) =>
+  moment(date).tz(TIME_ZONE);
 
 export const isApiCalling = (type) => (state) =>
   _.get(state.api[type], 'inProgress', false);
@@ -54,9 +52,8 @@ export const shuffleArray = (array) => {
   return result;
 };
 
-export const truncate = (str, n) => {
-  return str.length > n ? `${str.substr(0, n - 1)}...` : str;
-};
+export const truncate = (str, n) =>
+  str.length > n ? `${str.substr(0, n - 1)}...` : str;
 
 export const arrElemToId = (array) => {
   const result = [];
@@ -90,18 +87,16 @@ export const englishIdFromNumber = (number) => {
     .join('');
 };
 
-export const twoDigitsNumber = (number) => {
-  return number.toLocaleString('en-Us', {
+export const twoDigitsNumber = (number) =>
+  number.toLocaleString('en-Us', {
     minimumIntegerDigits: 2,
     useGrouping: false
   });
-};
 
-export const formatSeconds = (seconds) => {
-  return `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(
+export const formatSeconds = (seconds) =>
+  `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(
     seconds % 60
   )}`;
-};
 
 export const deepLinkCheck = (pathname) => {
   const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/);

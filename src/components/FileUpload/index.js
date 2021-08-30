@@ -42,7 +42,7 @@ import IconBINARYUrl from 'assets/svg/icons/binary-default-icon.svg';
 import IconCODEUrl from 'assets/svg/icons/code-default-icon.svg';
 import IconOTHERUrl from 'assets/svg/icons/other-default-icon.svg';
 import { ReactComponent as DownloadIcon } from 'assets/svg/download.svg';
-
+import { truncate } from 'utils/helpers';
 import styles from '../_styles/FileUpload';
 
 const URIS = {
@@ -137,6 +137,8 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
       placement="top"
       arrow
       classes={{
+        tooltip: classes.tooltip,
+        arrow: classes.tooltipArrow,
         popper: classes.titleTooltip
       }}
     >
@@ -157,7 +159,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
             alignItems="center"
           >
             <div className={cx(smallChat ? classes.fileName : classes.name)}>
-              {name}
+              {truncate(name, 22)}
             </div>
             {(width === 'xs' || smallChat) && isDownload && (
               <DownloadIcon

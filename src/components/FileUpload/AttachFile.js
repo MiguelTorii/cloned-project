@@ -36,7 +36,7 @@ import IconBINARYUrl from 'assets/svg/icons/binary-default-icon.svg';
 import IconCODEUrl from 'assets/svg/icons/code-default-icon.svg';
 import IconOTHERUrl from 'assets/svg/icons/other-default-icon.svg';
 import { ReactComponent as CancelIcon } from 'assets/svg/file-upload-cancel.svg';
-
+import { truncate } from 'utils/helpers';
 import styles from '../_styles/AttachFile';
 
 const URIS = {
@@ -95,7 +95,7 @@ const FileUploadContainer = (props) => {
         <img src={fileUrl} alt={extension} />
       </div>
       <div className={classes.infoContainer}>
-        <div className={classes.name}>{name}</div>
+        <div className={classes.name}>{truncate(name, 22)}</div>
       </div>
 
       {onClose && (

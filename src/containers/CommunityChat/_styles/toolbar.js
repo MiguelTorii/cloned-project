@@ -17,10 +17,21 @@ export default makeStyles((theme) => ({
     }
   },
   tooltip: {
-    fontSize: 14
+    fontSize: 14,
+    backgroundColor: theme.circleIn.palette.tooltipBackground
+  },
+  tooltipArrow: {
+    '&::before': {
+      backgroundColor: theme.circleIn.palette.tooltipBackground
+    }
   },
   popper: {
     zIndex: 1500
+  },
+  uploadFilePopper: {
+    zIndex: 1500,
+    width: 123,
+    textAlign: 'center'
   },
   openSelectBox: {
     zIndex: 2000
