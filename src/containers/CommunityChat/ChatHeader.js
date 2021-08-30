@@ -18,6 +18,7 @@ import CreateChatChannelDialog from 'components/CreateChatChannelDialog';
 import ShareLinkDialog from 'components/ShareLinkDialog';
 import RemoveStudentDialog from 'components/RemoveStudentDialog';
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
+import IconShare from '@material-ui/icons/Share';
 
 import { searchUsers } from 'api/user';
 import { addGroupMembers, sendMessage } from 'api/chat';
@@ -65,6 +66,7 @@ const ChatHeader = ({
   const classes = useStyles();
   const [channelType, setChannelType] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openShareLink, setOpenShareLink] = useState(false);
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
   const [openRemoveStudent, setOpenRemoveStudent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -159,6 +161,15 @@ const ChatHeader = ({
     () => setChannelType('group'),
     []
   );
+
+  const handleShareLink = useCallback(() => {
+    setOpenShareLink(true);
+    handleCloseGroupDetailMenu();
+  }, [handleCloseGroupDetailMenu]);
+
+  const closeShareLinkDialog = useCallback(() => {
+    setOpenShareLink(false);
+  }, []);
 
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
@@ -341,6 +352,15 @@ const ChatHeader = ({
                 )}
               </IconButton>
             )}
+            {!isCommunityChat && (
+              <IconButton
+                aria-label="share-link"
+                className={classes.chatIcon}
+                onClick={handleShareLink}
+              >
+                <IconShare className={classes.grayIcon}/>
+              </IconButton>
+            )}
             {showThreeDotsMenu && (
               <IconButton
                 aria-label="group-details"
@@ -412,6 +432,15 @@ const ChatHeader = ({
         channel={channel}
         isCommunityChat
       />
+      {channel && (
+        <ShareLinkDialog
+          open={openShareLink}
+          isGroupChannel={local[channel.sid].members.length === 2}
+          localChannel={local[channel.sid]}
+          channelName={title}
+          handleClose={closeShareLinkDialog}
+        />
+      )}
     </div>
   );
 };
