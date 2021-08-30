@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0
   },
+  grayIcon: {
+    color: '#BFBFC1'
+  },
   removeStudent: {
     color: theme.circleIn.palette.danger
   }
