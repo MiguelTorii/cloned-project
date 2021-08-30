@@ -460,12 +460,10 @@ const MainLayout = ({
               <IconButton onClick={handleGoHome}>
                 <HomeIcon />
               </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={handleOpenWidget}
-                aria-haspopup="true"
-              >
-                <HelpIcon />
+              <IconButton color="inherit" component={MyLink} link="/chat">
+                <Badge badgeContent={unreadMessages} color="secondary">
+                  <ChatIcon />
+                </Badge>
               </IconButton>
               <QuickNotes />
               <IconButton
@@ -478,10 +476,12 @@ const MainLayout = ({
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit" component={MyLink} link="/chat">
-                <Badge badgeContent={unreadMessages} color="secondary">
-                  <ChatIcon />
-                </Badge>
+              <IconButton
+                color="inherit"
+                onClick={handleOpenWidget}
+                aria-haspopup="true"
+              >
+                <HelpIcon />
               </IconButton>
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
