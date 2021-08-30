@@ -102,7 +102,7 @@ export const fileContent = {
   odp: 'OpenOffice.org',
   odt: 'Word Processing Applications',
   ogg: 'Audio File',
-  ops: 'Microsoft Office software suite',
+  ops: 'Microsoft Office Suite',
   pdf: 'PDF Document',
   ppt: 'PowerPoint Presentation',
   pptx: 'PowerPoint Presentation',
@@ -114,6 +114,7 @@ export const fileContent = {
   xls: 'Excel',
   xlsx: 'Excel',
   zip: 'Zip File',
+  pages: 'Pages Document',
   'binary-default': 'Binary File',
   'code-default': 'Code',
   'other-default': 'Other File'

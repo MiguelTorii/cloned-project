@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import ChatTextField from 'containers/StudyRoomChat/ChatTextField';
@@ -73,6 +74,20 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(0, 0, 2.5, 2.5),
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  tooltip: {
+    fontSize: 14,
+    backgroundColor: theme.circleIn.palette.tooltipBackground
+  },
+  tooltipArrow: {
+    '&::before': {
+      backgroundColor: theme.circleIn.palette.tooltipBackground
+    }
+  },
+  popper: {
+    zIndex: 1500,
+    width: 123,
+    textAlign: 'center'
   }
 });
 
@@ -415,9 +430,21 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
         type="file"
       />
       <Box display="flex" alignItems="center" justifyContent="flex-end">
-        <Button className={classes.uploadButton} onClick={uploadFile}>
-          Upload &nbsp; <PaperClip />
-        </Button>
+        <Tooltip
+          title="Upload File (max limit: 40 MB)"
+          aria-label="file"
+          arrow
+          placement="top"
+          classes={{
+            tooltip: classes.tooltip,
+            arrow: classes.tooltipArrow,
+            popper: classes.popper
+          }}
+        >
+          <Button className={classes.uploadButton} onClick={uploadFile}>
+            Upload &nbsp; <PaperClip />
+          </Button>
+        </Tooltip>
       </Box>
       {channel && (
         <div className={classes.typing}>

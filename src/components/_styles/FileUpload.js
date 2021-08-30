@@ -7,11 +7,10 @@ export default (theme) => ({
     border: '1px solid #5F6165',
     borderRadius: 8,
     color: theme.circleIn.palette.white,
-    maxWidth: 500,
+    maxWidth: 370,
     minWidth: 370,
     height: 107,
-    padding: theme.spacing(1.5, 0, 1.5, 2),
-    'word-break': 'break-all',
+    padding: theme.spacing(1.5),
     [theme.breakpoints.down('sm')]: {
       gap: theme.spacing(2),
       maxWidth: 320,
@@ -31,8 +30,21 @@ export default (theme) => ({
     maxWidth: 210,
     minWidth: 210,
     height: 55,
-    padding: theme.spacing(1),
-    'word-break': 'break-all'
+    padding: theme.spacing(1)
+  },
+  tooltip: {
+    fontSize: 14,
+    backgroundColor: theme.circleIn.palette.tooltipBackground
+  },
+  tooltipArrow: {
+    '&::before': {
+      backgroundColor: theme.circleIn.palette.tooltipBackground
+    }
+  },
+  titleTooltip: {
+    zIndex: 1500,
+    width: 300,
+    textAlign: 'center'
   },
   fileIcon: {
     width: 64,
