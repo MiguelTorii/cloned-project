@@ -533,11 +533,24 @@ export const handleInitChat =
       //   }
       // };
 
-      const promises = channels.map(async (channel) => {
-        const unreadMessage = await channel.getUnconsumedMessagesCount();
+      const unreadCount = async (channel) => {
+        const count = await channel.getMessagesCount();
+        const unreadCount =
+          channel.lastConsumedMessageIndex === null
+            ? count
+            : channel.lastConsumedMessageIndex === 0
+            ? 0
+            : count - channel.lastConsumedMessageIndex - 1;
+
         return {
-          [channel.sid]: unreadMessage
+          [channel.sid]: unreadCount
         };
+      };
+
+      const promises = channels.map(async (channel) => {
+        // const unreadMessage = await channel.getUnconsumedMessagesCount();
+        const unreadMessage = await unreadCount(channel);
+        return unreadMessage;
       });
 
       const unreadMessages = await Promise.all(promises);
@@ -584,21 +597,24 @@ export const handleInitChat =
         });
 
         client.on('channelUpdated', async ({ channel }) => {
+          const unreadMessageCount = await unreadCount(channel);
           dispatch(
             updateChannel({
               channel,
-              unread: await channel.getUnconsumedMessagesCount()
+              unread: unreadMessageCount[channel.sid]
             })
           );
         });
 
         client.on('messageAdded', async (message) => {
           const { channel } = message;
+          const unreadMessageCount = await unreadCount(channel);
+
           dispatch(newMessage({ message }));
           dispatch(
             updateChannel({
               channel,
-              unread: await channel.getUnconsumedMessagesCount()
+              unread: unreadMessageCount[channel.sid]
             })
           );
         });
