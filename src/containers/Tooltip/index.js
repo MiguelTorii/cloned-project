@@ -133,6 +133,7 @@ const ONBOARDING_NOTES = 8453;
 
 const GO_CHAT = 9087;
 const GIVEAWAY_BANNER = 9088;
+const INTRODUCE_CHANNEL = 9089;
 const CREATE_NEW_POST = 9090;
 // const GO_HOME = 9086;
 // const COMMENT_FEED = 9091;
@@ -274,7 +275,10 @@ const Tooltip = ({
           result = viewedTooltips.includes(VIDEO_CHAT_SETTINGS);
           break;
         case GO_CHAT:
-          result = viewedTooltips.includes(GIVEAWAY_BANNER);
+          result = viewedTooltips.includes(INTRODUCE_CHANNEL);
+          break;
+        case GIVEAWAY_BANNER:
+          result = viewedTooltips.includes(INTRODUCE_CHANNEL);
           break;
         case CREATE_NEW_POST:
           result = viewedTooltips.includes(GIVEAWAY_BANNER);
