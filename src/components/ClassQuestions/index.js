@@ -30,11 +30,14 @@ const ClassQuestions = ({ classId }) => {
   const [shareData, setShareData] = useState(null);
 
   const classData = useMemo(() => {
+    if (!classId) return null;
     return myClasses.find((item) => item.classId === classId);
   }, [myClasses, classId]);
 
   useEffect(() => {
-    const classes = (classData?.section || []).map((section) => JSON.stringify({ sectionId: section.sectionId }));
+    const classes = (classData?.section || []).map((section) =>
+      JSON.stringify({ sectionId: section.sectionId })
+    );
     setLoading(true);
     fetchFeed({
       query: '',
@@ -50,20 +53,27 @@ const ClassQuestions = ({ classId }) => {
     });
   }, [classData, me.userId, me.schoolId]);
 
-  const handleBookmark = useCallback(({ feedId, bookmarked }) => {
-    dispatch(updateBookmark({
-      feedId,
-      bookmarked,
-      userId: me.userId
-    }));
-    setFeedList((data) => data.map((item) => {
-      if (item.feedId !== feedId) return item;
-      return {
-        ...item,
-        bookmarked: !bookmarked
-      }
-    }));
-  }, [me.userId, dispatch]);
+  const handleBookmark = useCallback(
+    ({ feedId, bookmarked }) => {
+      dispatch(
+        updateBookmark({
+          feedId,
+          bookmarked,
+          userId: me.userId
+        })
+      );
+      setFeedList((data) =>
+        data.map((item) => {
+          if (item.feedId !== feedId) return item;
+          return {
+            ...item,
+            bookmarked: !bookmarked
+          };
+        })
+      );
+    },
+    [me.userId, dispatch]
+  );
 
   const handleShare = useCallback(({ feedId }) => {
     setShareData({ feedId });
@@ -77,12 +87,17 @@ const ClassQuestions = ({ classId }) => {
     setDeleteData({ feedId });
   }, []);
 
-  const handleDeleteClose = useCallback(({ deleted }) => {
-    if (deleted) {
-      setFeedList((data) => data.filter((item) => item.feedId !== deleteData.feedId));
-    }
-    setDeleteData(null);
-  }, [deleteData]);
+  const handleDeleteClose = useCallback(
+    ({ deleted }) => {
+      if (deleted) {
+        setFeedList((data) =>
+          data.filter((item) => item.feedId !== deleteData.feedId)
+        );
+      }
+      setDeleteData(null);
+    },
+    [deleteData]
+  );
 
   const handleReport = useCallback(({ feedId, ownerId }) => {
     setReportData({
@@ -95,36 +110,50 @@ const ClassQuestions = ({ classId }) => {
     setReportData(null);
   }, []);
 
-  const handleUserClick = useCallback(({ userId }) => {
-    dispatch(push(`/profile/${userId}`));
-  }, [dispatch]);
+  const handleUserClick = useCallback(
+    ({ userId }) => {
+      dispatch(push(`/profile/${userId}`));
+    },
+    [dispatch]
+  );
 
-  const handlePostClick = useCallback(({ typeId, postId }) => () => {
-    let url = '';
-    switch (typeId) {
-    case 3:
-      url = `/flashcards/${postId}`;
-      break;
-    case 4:
-      url = `/notes/${postId}`;
-      break;
-    case 5:
-      url = `/sharelink/${postId}`;
-      break;
-    case 6:
-      url = `/question/${postId}`;
-      break;
-    case 8:
-      url = `/post/${postId}`;
-      break;
-    default:
-      throw new Error('unknown post type');
-    }
-    dispatch(push(url));
-  }, [dispatch]);
+  const handlePostClick = useCallback(
+    ({ typeId, postId }) =>
+      () => {
+        let url = '';
+        switch (typeId) {
+          case 3:
+            url = `/flashcards/${postId}`;
+            break;
+          case 4:
+            url = `/notes/${postId}`;
+            break;
+          case 5:
+            url = `/sharelink/${postId}`;
+            break;
+          case 6:
+            url = `/question/${postId}`;
+            break;
+          case 8:
+            url = `/post/${postId}`;
+            break;
+          default:
+            throw new Error('unknown post type');
+        }
+        dispatch(push(url));
+      },
+    [dispatch]
+  );
 
   const handleGoToFeed = useCallback(() => {
-    const queryString = cypher(`${classData.classId}:${classData.section?.[0].sectionId}`);
+    if (!classData) {
+      dispatch(push(`/feed`));
+      return;
+    }
+
+    const queryString = cypher(
+      `${classData.classId}:${classData.section?.[0].sectionId}`
+    );
     dispatch(push(`/feed?class=${queryString}`));
   }, [dispatch, classData]);
 
@@ -133,9 +162,7 @@ const ClassQuestions = ({ classId }) => {
   }, [dispatch]);
 
   if (loading) {
-    return (
-      <LoadingSpin />
-    );
+    return <LoadingSpin />;
   }
 
   if (feedList.length === 0) {
@@ -148,8 +175,8 @@ const ClassQuestions = ({ classId }) => {
           No questions yet
         </Typography>
         <Typography variant="body2" paragraph>
-          When a question gets asked in this class, they’ll show up here.
-          Click the button below to ask a question in this class!
+          When a question gets asked in this class, they’ll show up here. Click
+          the button below to ask a question in this class!
         </Typography>
         <Box display="flex" justifyContent="center">
           <GradientButton onClick={handleAskQuestion}>
@@ -165,7 +192,11 @@ const ClassQuestions = ({ classId }) => {
       <Grid container direction="column" spacing={3}>
         {feedList.map((item) => (
           <Grid item key={item.feedId}>
-            <Paper elevation={0} square={false} className={classes.feedContainer}>
+            <Paper
+              elevation={0}
+              square={false}
+              className={classes.feedContainer}
+            >
               <FeedItem
                 expertMode={isExpertMode}
                 userId={me.userId}
@@ -183,9 +214,7 @@ const ClassQuestions = ({ classId }) => {
         ))}
       </Grid>
       <Box display="flex" justifyContent="center" mt={3}>
-        <GradientButton onClick={handleGoToFeed}>
-          Go to Feed
-        </GradientButton>
+        <GradientButton onClick={handleGoToFeed}>Go to Feed</GradientButton>
       </Box>
       <DeletePost
         open={Boolean(deleteData)}
@@ -208,7 +237,7 @@ const ClassQuestions = ({ classId }) => {
 };
 
 ClassQuestions.propTypes = {
-  classId: PropTypes.number.isRequired
+  classId: PropTypes.number
 };
 
 export default ClassQuestions;

@@ -10,17 +10,11 @@ import ClassQuestions from '../../components/ClassQuestions';
 const ClassmateQuestions = () => {
   const classes = useStyles();
   const myClasses = useSelector((state) => state.user.userClasses.classList);
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedClass, setSelectedClass] = useState('all');
 
   const activeClasses = useMemo(() => {
     return myClasses.filter((item) => item.isCurrent);
   }, [myClasses]);
-
-  useEffect(() => {
-    if (activeClasses.length > 0) {
-      setSelectedClass(activeClasses[0].classId);
-    }
-  }, [activeClasses]);
 
   const handleChangeClass = useCallback((event, newClass) => {
     setSelectedClass(newClass);
@@ -34,7 +28,7 @@ const ClassmateQuestions = () => {
         Questions from Your Classmates
       </Typography>
       <Tabs
-        value={selectedClass || activeClasses[0].classId}
+        value={selectedClass}
         onChange={handleChangeClass}
         textColor="inherit"
         variant="scrollable"
@@ -43,6 +37,11 @@ const ClassmateQuestions = () => {
           root: classes.tabs
         }}
       >
+        <Tab
+          key="all"
+          label="All Courses"
+          value="all"
+        />
         {activeClasses.map((item) => (
           <Tab
             key={item.classId}
@@ -53,7 +52,7 @@ const ClassmateQuestions = () => {
       </Tabs>
       <Box mb={3}/>
       {selectedClass && (
-        <ClassQuestions classId={selectedClass} />
+        <ClassQuestions classId={selectedClass === 'all' ? null : selectedClass} />
       )}
       {/*{myClasses.map((classData) => (*/}
       {/*  <Box hidden={classData.classId !== selectedClass} key={classData.classId}>*/}
