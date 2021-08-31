@@ -111,11 +111,11 @@ export const fileContent = {
   wav: 'Wav Audio File',
   webm: 'Webm File',
   wmv: 'Wmv File',
-  xls: 'Excel',
-  xlsx: 'Excel',
+  xls: 'Excel File',
+  xlsx: 'Excel File',
   zip: 'Zip File',
-  pages: 'Pages Document',
+  pages: 'Pages File',
   'binary-default': 'Binary File',
   'code-default': 'Code',
-  'other-default': 'Other File'
+  'other-default': 'File'
 };

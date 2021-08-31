@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-restricted-properties */
 import React, { useState } from 'react';
 import withWidth from '@material-ui/core/withWidth';
@@ -143,9 +145,13 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
       }}
     >
       <div
-        className={cx(smallChat ? classes.smallContainer : classes.container)}
+        className={cx(
+          smallChat ? classes.smallContainer : classes.container,
+          isDownload && classes.download
+        )}
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
+        onClick={() => downloadFile(name)}
       >
         <div
           className={cx(smallChat ? classes.smallFileIcon : classes.fileIcon)}

@@ -41,6 +41,9 @@ export default (theme) => ({
       backgroundColor: theme.circleIn.palette.tooltipBackground
     }
   },
+  download: {
+    borderColor: theme.circleIn.palette.secondaryText
+  },
   titleTooltip: {
     zIndex: 1500,
     width: 300,

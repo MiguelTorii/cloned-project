@@ -219,7 +219,9 @@ const FloatingChat = ({
         const msg = `${firstName} ${lastName} sent you a message:`;
         const messageContent = truncate(
           typeof parse(body) === 'string'
-            ? body
+            ? body.includes('File Attachment')
+              ? 'File Attachment'
+              : body
             : body.replace(/(<([^>]+)>)/gi, ''),
           50
         );
