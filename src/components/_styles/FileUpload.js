@@ -49,6 +49,10 @@ export default (theme) => ({
     width: 300,
     textAlign: 'center'
   },
+  smallTitleTooltip: {
+    zIndex: 1500,
+    textAlign: 'center'
+  },
   fileIcon: {
     width: 64,
     minWidth: 64,

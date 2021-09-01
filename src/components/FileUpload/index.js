@@ -141,7 +141,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
       classes={{
         tooltip: classes.tooltip,
         arrow: classes.tooltipArrow,
-        popper: classes.titleTooltip
+        popper: smallChat ? classes.smallTitleTooltip : classes.titleTooltip
       }}
     >
       <div
@@ -165,7 +165,7 @@ const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
             alignItems="center"
           >
             <div className={cx(smallChat ? classes.fileName : classes.name)}>
-              {truncate(name, 22)}
+              {truncate(name, smallChat ? 20 : 22)}
             </div>
             {(width === 'xs' || smallChat) && isDownload && (
               <DownloadIcon

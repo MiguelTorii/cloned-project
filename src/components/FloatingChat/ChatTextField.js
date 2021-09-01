@@ -80,7 +80,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   handleKeyDown = (event) => {
     const { addNextLine, input, files } = this.state;
     const { onSendInput } = this.props;
-    if (event.keyCode === 13 && !addNextLine) {
+    if (event.keyCode === 13 && (files.length > 0 || !addNextLine)) {
       event.preventDefault();
       const { onSendMessage } = this.props;
       const { message } = this.state;
@@ -88,7 +88,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
       if (files.length > 0) {
         newMessage += `File Attachment${JSON.stringify(files)}`;
       }
-      if (message.trim() !== '') {
+      if (newMessage.trim() !== '') {
         onSendMessage(newMessage);
         this.setState({ message: '', files: [] });
       }
