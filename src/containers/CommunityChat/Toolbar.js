@@ -111,19 +111,6 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
-            title="Image"
-            aria-label="image"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-image" />
-          </Tooltip>
-          <Tooltip
             title="Upload File (max limit: 40 MB)"
             aria-label="file"
             arrow
@@ -209,19 +196,6 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             }}
           >
             <button type="button" className="ql-underline" />
-          </Tooltip>
-          <Tooltip
-            title="Image"
-            aria-label="image"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-image" />
           </Tooltip>
           <Tooltip
             title="Upload File (max limit: 40 MB)"
