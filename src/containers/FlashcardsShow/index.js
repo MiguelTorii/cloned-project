@@ -70,9 +70,24 @@ import CardBoard from './CardBoard';
 import useStyles from './styles';
 import Report from '../Report';
 import DeletePost from '../DeletePost';
+import HotKeyGuide from '../../components/HotKeyGuide';
 
 const DESCRIPTION_LENGTH_THRESHOLD = 80;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
+const HOT_KEYS = [
+  {
+    description: 'Previous',
+    keys: ['⇨']
+  },
+  {
+    description: 'Next',
+    keys: ['⇦']
+  },
+  {
+    description: 'Flip',
+    keys: ['Space']
+  }
+];
 
 const FlashcardsShow = () => {
   // Hooks
@@ -352,6 +367,7 @@ const FlashcardsShow = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
+            position="relative"
           >
             <Box mr={2}>
               <TransparentIconButton
@@ -372,6 +388,9 @@ const FlashcardsShow = () => {
               >
                 <IconNext />
               </TransparentIconButton>
+            </Box>
+            <Box className={classes.hotkey}>
+              <HotKeyGuide data={HOT_KEYS} />
             </Box>
           </Box>
         </Grid>
