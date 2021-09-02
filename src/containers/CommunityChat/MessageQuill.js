@@ -26,6 +26,7 @@ const MessageQuill = ({
   showError,
   onTyping,
   userId,
+  enqueueSnackbar,
   setFiles,
   files,
   isCommunityChat
@@ -199,31 +200,52 @@ const MessageQuill = ({
         const file = input.files[0];
         const { type, name, size } = file;
 
-        const result = await getPresignedURL({
-          userId,
-          type: 1,
-          mediaType: type
-        });
-        const { readUrl, url } = result;
-        await axios.put(url, file, {
-          headers: {
-            'Content-Type': type
+        if (size < 40960) {
+          const result = await getPresignedURL({
+            userId,
+            type: 1,
+            mediaType: type
+          });
+          const { readUrl, url } = result;
+          await axios.put(url, file, {
+            headers: {
+              'Content-Type': type
+            }
+          });
+
+          if (type.includes('image')) {
+            const range = quill.getSelection(true);
+            quill.insertEmbed(range.index, 'image', readUrl);
+            quill.insertText(range.index + 1, '\n');
+          } else {
+            const anyFile = {
+              type,
+              name,
+              url: readUrl,
+              size: bytesToSize(size)
+            };
+
+            setFiles([...files, anyFile]);
           }
-        });
-
-        if (type.includes('image')) {
-          const range = quill.getSelection(true);
-          quill.insertEmbed(range.index, 'image', readUrl);
-          quill.insertText(range.index + 1, '\n');
         } else {
-          const anyFile = {
-            type,
-            name,
-            url: readUrl,
-            size: bytesToSize(size)
-          };
-
-          setFiles([...files, anyFile]);
+          enqueueSnackbar({
+            notification: {
+              message: 'Upload File size is over 40 MB',
+              options: {
+                variant: 'info',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                },
+                autoHideDuration: 3000,
+                ContentProps: {
+                  classes: {
+                    root: classes.stackbar
+                  }
+                }
+              }
+            }
+          });
         }
       } catch (error) {
         quill.enable(true);

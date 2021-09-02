@@ -18,6 +18,7 @@ import * as chatActions from 'actions/chat';
 import LeftMenu from 'containers/CommunityChat/LeftMenu';
 import RightMenu from 'containers/CommunityChat/RightMenu';
 import Main from 'containers/CommunityChat/Main';
+import * as notificationsActions from '../../actions/notifications';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
@@ -36,6 +37,7 @@ type Props = {
   setOneTouchSend: Function,
   handleUpdateFriendlyName: Function,
   handleMarkAsRead: Function,
+  enqueueSnackbar: Function,
   getOnboardingList: Function,
   setCurrentChannel: Function,
   onboardingListVisible: boolean
@@ -50,6 +52,7 @@ const DirectChat = ({
   handleUpdateFriendlyName,
   setOneTouchSend,
   handleMarkAsRead,
+  enqueueSnackbar,
   setCurrentChannel,
   width,
   chat,
@@ -291,6 +294,7 @@ const DirectChat = ({
             rightSpace={rightSpace}
             channel={currentChannel}
             newChannel={newChannel}
+            enqueueSnackbar={enqueueSnackbar}
             user={user}
             handleUpdateGroupName={updateGroupName}
             setRightPanel={handleOpenRightPanel}
@@ -337,7 +341,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
       setOneTouchSend: chatActions.setOneTouchSend,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
-      getOnboardingList: OnboardingActions.getOnboardingList
+      getOnboardingList: OnboardingActions.getOnboardingList,
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch
   );

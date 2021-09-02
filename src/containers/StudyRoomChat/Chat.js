@@ -7,6 +7,8 @@ import React, {
   useCallback,
   useState
 } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -27,6 +29,7 @@ import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -94,10 +97,17 @@ const styles = (theme) => ({
 type Props = {
   classes: Object,
   user: Object,
-  channel: Object
+  channel: Object,
+  enqueueSnackbar: Function
 };
 
-const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
+const StudyRoomChat = ({
+  members,
+  user,
+  channel,
+  classes,
+  enqueueSnackbar
+}: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -371,20 +381,35 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
   const handleInputChange = useCallback(async () => {
     const file = fileInput.current.files[0];
     const { type, name, size } = file;
+    if (size < 40960) {
+      const result = await uploadMedia(userId, 1, file);
 
-    const result = await uploadMedia(userId, 1, file);
+      const { readUrl } = result;
 
-    const { readUrl } = result;
+      const anyFile = {
+        type,
+        name,
+        url: readUrl,
+        size: bytesToSize(size)
+      };
 
-    const anyFile = {
-      type,
-      name,
-      url: readUrl,
-      size: bytesToSize(size)
-    };
-
-    setFiles([...files, anyFile]);
-  }, [userId, fileInput]);
+      setFiles([...files, anyFile]);
+    } else {
+      enqueueSnackbar({
+        notification: {
+          message: 'Upload File size is over 40 MB',
+          options: {
+            variant: 'info',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000
+          }
+        }
+      });
+    }
+  }, [userId, fileInput, enqueueSnackbar]);
 
   const onClose = useCallback(
     (deleteFile) => {
@@ -479,4 +504,17 @@ const StudyRoomChat = ({ members, user, channel, classes }: Props) => {
   );
 };
 
-export default withStyles(styles)(StudyRoomChat);
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch: *): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(StudyRoomChat));
