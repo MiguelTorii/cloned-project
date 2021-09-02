@@ -59,6 +59,19 @@ const FlashcardsDeckManager = ({
     }
   }, [data]);
 
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.keyCode === 9) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener('keydown', listener);
+
+    return () => document.removeEventListener('keydown', listener);
+  }, []);
+
   // Memos
   const dropdownOptions = useMemo(() => {
     const result = [];

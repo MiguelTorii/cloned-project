@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -8,6 +8,14 @@ import _ from 'lodash';
 import useStyles from './styles';
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 import FlashcardEditor from './FlashcardEditor';
+import { FlashcardListContext, FlashcardListContextProvider } from './FlashcardListContext';
+import { useHotkeys } from 'react-hotkeys-hook';
+import OutsideClickHandler from 'react-outside-click-handler';
+
+export const EDITOR_TYPES = {
+  QUESTION: 'question',
+  ANSWER: 'answer'
+};
 
 const FlashcardsListEditor = ({
   data,
@@ -19,6 +27,7 @@ const FlashcardsListEditor = ({
 }: Props) => {
   // Hooks
   const classes = useStyles();
+  const { activeFlashcard, setActiveFlashcard } = useContext(FlashcardListContext);
 
   // States
 
@@ -72,8 +81,89 @@ const FlashcardsListEditor = ({
     [data, onUpdate]
   );
 
+  const handleGoToNextCard = useCallback(() => {
+    if (readOnly) return;
+
+    const modalElement = document.getElementById('flashcards-edit-modal');
+    const { index, card } = activeFlashcard;
+
+    if (index === null) {
+      setActiveFlashcard({
+        index: 0,
+        card: EDITOR_TYPES.QUESTION
+      });
+
+      return;
+    }
+
+    if (card === EDITOR_TYPES.QUESTION) {
+      setActiveFlashcard({
+        index,
+        card: EDITOR_TYPES.ANSWER
+      });
+    } else {
+      if (index === data.length - 1) {
+        handleAddNewDeck();
+      }
+
+      setActiveFlashcard({
+        index: index + 1,
+        card: EDITOR_TYPES.QUESTION
+      });
+
+      modalElement.scrollTo({
+        top: modalElement.scrollTop + 220,
+        behavior: 'smooth'
+      });
+    }
+  }, [activeFlashcard, setActiveFlashcard, handleAddNewDeck, readOnly]);
+
+  const handleGoToPrevCard = useCallback(() => {
+    if (readOnly) return;
+
+    const modalElement = document.getElementById('flashcards-edit-modal');
+    const { index, card } = activeFlashcard;
+
+    if (index === null) return;
+
+    if (card === EDITOR_TYPES.ANSWER) {
+      setActiveFlashcard({
+        index,
+        card: EDITOR_TYPES.QUESTION
+      });
+    } else if (index > 0) {
+      setActiveFlashcard({
+        index: index - 1,
+        card: EDITOR_TYPES.ANSWER
+      });
+
+      modalElement.scrollTo({
+        top: modalElement.scrollTop - 220,
+        behavior: 'smooth'
+      });
+    } else {
+      setActiveFlashcard({
+        index: null,
+        card: null
+      });
+    }
+  }, [activeFlashcard, setActiveFlashcard, readOnly]);
+
+  const handleOutsideClick = useCallback(() => {
+    if (readOnly) return;
+
+    setActiveFlashcard({
+      index: null,
+      card: null
+    });
+  }, [readOnly]);
+
+  // Handle Shortcut keys
+  useHotkeys('Tab', handleGoToNextCard, {}, [handleGoToNextCard]);
+  useHotkeys('Shift+Tab', handleGoToPrevCard, {}, [handleGoToPrevCard]);
+
   return (
-    <>
+    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
@@ -118,7 +208,7 @@ const FlashcardsListEditor = ({
           <AddDeckButton onClick={handleAddNewDeck} />
         </Box>
       )}
-    </>
+    </OutsideClickHandler>
   );
 };
 
@@ -140,4 +230,8 @@ FlashcardsListEditor.defaultProps = {
   toolbarPrefix: '',
 };
 
-export default FlashcardsListEditor;
+export default (props) => (
+  <FlashcardListContextProvider>
+    <FlashcardsListEditor {...props} />
+  </FlashcardListContextProvider>
+);

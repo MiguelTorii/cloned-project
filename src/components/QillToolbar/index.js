@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import useStyles from './styles';
 import withRoot from '../../withRoot';
 
@@ -9,8 +9,13 @@ type Props = {
 const QuillToolbar = ({ elementId }: Props) => {
   const classes = useStyles();
 
+  const handleClick = useCallback((event) => {
+    event.stopPropagation();
+    event.preventDefault();
+  }, []);
+
   return (
-    <div id={elementId} className={classes.root}>
+    <div id={elementId} className={classes.root} onClick={handleClick}>
       <button className="ql-bold" />
       <button className="ql-italic" />
       <button className="ql-underline" />

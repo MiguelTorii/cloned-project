@@ -40,7 +40,6 @@ import { TIMEOUT } from 'constants/common';
 import { INTERVAL, APP_ROOT_PATH } from 'constants/app';
 import { userActions } from 'constants/action-types';
 
-import withRoot from 'withRoot';
 import PostComments from 'containers/PostComments';
 import PostItemActions from 'containers/PostItemActions';
 
@@ -64,6 +63,7 @@ import Avatar from 'components/Avatar';
 import { isApiCalling, getPastClassIds } from 'utils/helpers';
 import { getInitials } from 'utils/chat';
 
+import { useHotkeys } from 'react-hotkeys-hook';
 import PostTags from '../PostTags';
 import ActionButton from './ActionButton';
 import CardBoard from './CardBoard';
@@ -143,7 +143,7 @@ const FlashcardsShow = () => {
       if (showLoading) setIsLoadingFlashcards(true);
       getFlashcards({
         flashcardId,
-        userId: me.userId,
+        userId: me.userId
       }).then((rsp) => {
         setData(rsp);
         if (showLoading) setIsLoadingFlashcards(false);
@@ -170,7 +170,7 @@ const FlashcardsShow = () => {
   const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
     useIdleTimer({
       timeout,
-      onActive: handleOnActive,
+      onActive: handleOnActive
     });
 
   const initializeTimer = useCallback(() => {
@@ -202,7 +202,7 @@ const FlashcardsShow = () => {
       bookmarkFlashcards(me.userId, data.feedId, data.bookmarked, () =>
         setData(
           update(data, {
-            bookmarked: { $set: !data.bookmarked },
+            bookmarked: { $set: !data.bookmarked }
           })
         )
       )
@@ -226,12 +226,16 @@ const FlashcardsShow = () => {
   }, [dispatch]);
 
   const handlePrevDeck = useCallback(() => {
+    if (boardDeckIndex === 0) return;
+
     setBoardDeckIndex(boardDeckIndex - 1);
   }, [boardDeckIndex]);
 
   const handleNextDeck = useCallback(() => {
+    if (boardDeckIndex >= data.deck.length - 1) return;
+
     setBoardDeckIndex(boardDeckIndex + 1);
-  }, [boardDeckIndex]);
+  }, [boardDeckIndex, data]);
 
   const handleCloseShareLinkModal = useCallback(() => {
     setIsShareModalOpen(false);
@@ -260,8 +264,8 @@ const FlashcardsShow = () => {
         elapsed: elapsed.current,
         total_idle_time: totalIdleTime.current,
         effective_time: elapsed.current - totalIdleTime.current,
-        platform: 'Web',
-      },
+        platform: 'Web'
+      }
     });
     setIsReviewing(false);
   }, [data.postId]);
@@ -317,6 +321,23 @@ const FlashcardsShow = () => {
     ),
     [cardList]
   );
+
+  // Prevent page down from `Space`
+  useEffect(() => {
+    const eventListener = (event) => {
+      if (event.keyCode === 32 && event.target === document.body) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', eventListener);
+
+    return () => window.removeEventListener('keydown', eventListener);
+  }, []);
+
+  // Deal with keyboard shortcut keys
+  useHotkeys('Left', handlePrevDeck, {}, [handlePrevDeck]);
+  useHotkeys('Right', handleNextDeck, {}, [handleNextDeck]);
 
   // Rendering
   if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
@@ -589,6 +610,7 @@ const FlashcardsShow = () => {
         open={isEditing}
         onCancel={handleCloseEditModal}
         TransitionComponent={SlideUp}
+        id="flashcards-edit-modal"
       >
         <FlashcardsDeckEditor
           flashcardId={data.postId}
