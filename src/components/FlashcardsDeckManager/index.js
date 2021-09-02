@@ -14,6 +14,18 @@ import GradientButton from '../Basic/Buttons/GradientButton';
 import FlashcardsListEditor from '../FlashcardsListEditor';
 import TextField from '../Basic/TextField';
 import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
+import HotKeyGuide from '../HotKeyGuide';
+
+const HOT_KEYS = [
+  {
+    description: 'Next field or card',
+    keys: ['Tab']
+  },
+  {
+    description: 'Previous field',
+    keys: ['Shift', 'Tab']
+  }
+];
 
 const FlashcardsDeckManager = ({
   data,
@@ -269,6 +281,11 @@ const FlashcardsDeckManager = ({
               handleUpdateField('summary', event.target.value)
             }
           />
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Box display="flex" justifyContent="flex-end">
+            <HotKeyGuide data={HOT_KEYS} />
+          </Box>
         </Grid>
         {/* <Grid item xs={12} lg={6}> */}
         {/*  <Box display="flex" justifyContent="flex-end" alignItems="center"> */}

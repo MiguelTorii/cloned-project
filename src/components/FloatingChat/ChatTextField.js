@@ -325,7 +325,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch: *): {} =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       enqueueSnackbar: notificationsActions.enqueueSnackbar

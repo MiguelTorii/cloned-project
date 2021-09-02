@@ -87,5 +87,9 @@ export default makeStyles((theme) => ({
   },
   iconMiddle: {
     verticalAlign: 'middle'
+  },
+  hotkey: {
+    position: 'absolute',
+    right: 10
   }
 }));

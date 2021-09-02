@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import AttachFile from 'components/FileUpload/AttachFile';
 import EditorToolbar, { formats } from './Toolbar';
 import { getPresignedURL } from '../../api/media';
+import { uploadMedia } from '../../actions/user';
 
 import styles from './_styles/messageQuill';
 
@@ -54,19 +55,9 @@ const MessageQuill = ({
       try {
         const file = imageData.toFile('');
 
-        const result = await getPresignedURL({
-          userId,
-          type: 1,
-          mediaType: file.type
-        });
+        const result = await uploadMedia(userId, 1, file);
+        const { readUrl } = result;
 
-        const { readUrl, url } = result;
-
-        await axios.put(url, file, {
-          headers: {
-            'Content-Type': type
-          }
-        });
         setPasteImageUrl(readUrl);
       } catch (e) {
         setLoading(false);
@@ -201,17 +192,8 @@ const MessageQuill = ({
         const { type, name, size } = file;
 
         if (size < 40960) {
-          const result = await getPresignedURL({
-            userId,
-            type: 1,
-            mediaType: type
-          });
-          const { readUrl, url } = result;
-          await axios.put(url, file, {
-            headers: {
-              'Content-Type': type
-            }
-          });
+          const result = await uploadMedia(userId, 1, file);
+          const { readUrl } = result;
 
           if (type.includes('image')) {
             const range = quill.getSelection(true);
