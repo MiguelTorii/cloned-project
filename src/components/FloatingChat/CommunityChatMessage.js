@@ -28,6 +28,7 @@ import BlockMemberModal from 'components/BlockMemberModal';
 import OnlineBadge from 'components/OnlineBadge';
 import FileUpload from 'components/FileUpload';
 import StudyRoomReport from 'components/StudyRoomReport';
+import AnyFileUpload from 'components/AnyFileUpload';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import { getInitials } from 'utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
@@ -195,45 +196,6 @@ const ChatMessage = ({
 
   const open = Boolean(anchorEl);
 
-  const showMessages = (message) => {
-    const splitHtmlStringByFiles = message.split('File Attachment');
-
-    if (splitHtmlStringByFiles.length > 1) {
-      const files = JSON.parse(
-        splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
-      );
-      const fileHtml = files.map((file) => <FileUpload file={file} />);
-
-      let html = '';
-      splitHtmlStringByFiles.forEach((splitHtmlString, key) => {
-        if (key < splitHtmlStringByFiles.length - 1) {
-          html += splitHtmlString;
-        }
-      });
-
-      return (
-        <div className={cx(classes.bodyWrapper)}>
-          <Typography
-            className={clsx(classes.body, 'ql-editor')}
-            dangerouslySetInnerHTML={{
-              __html: renderHtmlWithImage(html)
-            }}
-          />
-          {fileHtml}
-        </div>
-      );
-    }
-
-    return (
-      <div className={cx(classes.bodyWrapper)}>
-        <Typography
-          className={clsx(classes.body, 'ql-editor')}
-          dangerouslySetInnerHTML={{ __html: renderHtmlWithImage(message) }}
-        />
-      </div>
-    );
-  };
-
   const renderItem = ({
     imageKey,
     body,
@@ -298,7 +260,12 @@ const ChatMessage = ({
         </div>
       );
     }
-    return showMessages(message);
+    return (
+      <AnyFileUpload
+        message={message}
+        renderHtmlWithImage={renderHtmlWithImage}
+      />
+    );
   };
 
   return (

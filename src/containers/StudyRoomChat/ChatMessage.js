@@ -189,13 +189,8 @@ class ChatMessageDate extends React.PureComponent<Props> {
       const fileHtml = files.map((file) => (
         <FileUpload smallChat file={file} />
       ));
-
-      let html = '';
-      splitHtmlStringByFiles.forEach((splitHtmlString, key) => {
-        if (key < splitHtmlStringByFiles.length - 1) {
-          html += splitHtmlString;
-        }
-      });
+      splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
+      const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
 
       return (
         <>
