@@ -2,7 +2,6 @@ export default (theme) => ({
   container: {
     position: 'relative',
     display: 'flex',
-    gap: theme.spacing(1),
     background: '#303032',
     border: '1px solid #5F6165',
     borderRadius: 8,
@@ -15,7 +14,6 @@ export default (theme) => ({
   smallContainer: {
     position: 'relative',
     display: 'flex',
-    gap: theme.spacing(1),
     background: '#303032',
     border: '1px solid #5F6165',
     borderRadius: 8,
@@ -28,6 +26,7 @@ export default (theme) => ({
   fileIcon: {
     width: 24,
     minWidth: 24,
+    marginRight: theme.spacing(1),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

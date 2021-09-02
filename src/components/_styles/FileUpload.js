@@ -2,7 +2,6 @@ export default (theme) => ({
   container: {
     position: 'relative',
     display: 'flex',
-    gap: theme.spacing(3),
     background: '#303032',
     border: '1px solid #5F6165',
     borderRadius: 8,
@@ -12,7 +11,6 @@ export default (theme) => ({
     height: 107,
     padding: theme.spacing(1.5),
     [theme.breakpoints.down('sm')]: {
-      gap: theme.spacing(2),
       maxWidth: 320,
       minWidth: 280,
       height: 55,
@@ -22,7 +20,6 @@ export default (theme) => ({
   smallContainer: {
     position: 'relative',
     display: 'flex',
-    gap: theme.spacing(2),
     background: '#303032',
     border: '1px solid #5F6165',
     borderRadius: 8,
@@ -56,6 +53,7 @@ export default (theme) => ({
   fileIcon: {
     width: 64,
     minWidth: 64,
+    marginRight: theme.spacing(3),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -70,6 +68,7 @@ export default (theme) => ({
   smallFileIcon: {
     width: 24,
     minWidth: 24,
+    marginRight: theme.spacing(2),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

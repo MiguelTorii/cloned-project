@@ -183,10 +183,14 @@ class ChatMessageDate extends React.PureComponent<Props> {
     const splitHtmlStringByFiles = message.split('File Attachment');
 
     if (splitHtmlStringByFiles.length > 1) {
-      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      const files = JSON.parse(
+        splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
+      );
       const fileHtml = files.map((file) => (
         <FileUpload smallChat file={file} />
       ));
+      splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
+      const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
 
       return (
         <>
@@ -199,7 +203,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                   'ql-editor'
                 )}
                 dangerouslySetInnerHTML={{
-                  __html: this.renderHtmlWithImage(splitHtmlStringByFiles[0])
+                  __html: this.renderHtmlWithImage(html)
                 }}
               />
             ) : null}
