@@ -2,6 +2,8 @@
 /* eslint-disable react/no-danger */
 // @flow
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Textarea from 'react-textarea-autosize';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -18,6 +20,7 @@ import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 // import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
 import AttachFile from 'components/FileUpload/AttachFile';
 import { bytesToSize } from 'utils/chat';
+import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
 import EmojiSelector from '../EmojiSelector';
 
@@ -29,6 +32,7 @@ type Props = {
   hideImage: boolean,
   onSendMessage: Function,
   onSendInput: Function,
+  enqueueSnackbar: Function,
   onTyping: Function,
   userId: string
 };
@@ -109,7 +113,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   };
 
   handleInputChange = async () => {
-    // const { onSendInput } = this.props;
+    const { enqueueSnackbar } = this.props;
     const fileType = this.fileInput.files[0].type;
     const { files } = this.state;
     const { userId } = this.props;
@@ -142,21 +146,36 @@ class ChatTextField extends React.PureComponent<Props, State> {
     } else {
       const file = this.fileInput.files[0];
       const { type, name, size } = file;
+      if (size < 40960) {
+        this.setState({ loading: true });
 
-      this.setState({ loading: true });
+        const result = await uploadMedia(userId, 1, file);
 
-      const result = await uploadMedia(userId, 1, file);
+        const { readUrl } = result;
 
-      const { readUrl } = result;
+        const anyFile = {
+          type,
+          name,
+          url: readUrl,
+          size: bytesToSize(size)
+        };
 
-      const anyFile = {
-        type,
-        name,
-        url: readUrl,
-        size: bytesToSize(size)
-      };
-
-      this.setState({ files: [...files, anyFile], loading: false });
+        this.setState({ files: [...files, anyFile], loading: false });
+      } else {
+        enqueueSnackbar({
+          notification: {
+            message: 'Upload File size is over 40 MB',
+            options: {
+              variant: 'info',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'left'
+              },
+              autoHideDuration: 3000
+            }
+          }
+        });
+      }
     }
   };
 
@@ -304,4 +323,17 @@ class ChatTextField extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles)(ChatTextField);
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ChatTextField));

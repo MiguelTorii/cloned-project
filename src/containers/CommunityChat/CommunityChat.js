@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
 import * as chatActions from 'actions/chat';
+import * as notificationsActions from 'actions/notifications';
 import Main from 'containers/CommunityChat/Main';
 import RightMenu from 'containers/CommunityChat/RightMenu';
 import type { State as StoreState } from '../../types/state';
@@ -24,6 +25,7 @@ type Props = {
   setCurrentCommunityChannel: Function,
   setMainMessage: Function,
   setSelectedCourse: Function,
+  enqueueSnackbar: Function,
   courseChannels: array,
   width: string
 };
@@ -33,6 +35,7 @@ const CommunityChat = ({
   setMainMessage,
   setCurrentCommunityChannel,
   setSelectedCourse,
+  enqueueSnackbar,
   courseChannels,
   user,
   chat,
@@ -197,6 +200,7 @@ const CommunityChat = ({
             setRightPanel={handleOpenRightPanel}
             user={user}
             rightSpace={rightSpace}
+            enqueueSnackbar={enqueueSnackbar}
           />
         </Grid>
       )}
@@ -229,6 +233,7 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
       setMainMessage: chatActions.setMainMessage,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
     },

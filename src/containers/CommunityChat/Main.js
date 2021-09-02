@@ -48,7 +48,8 @@ type Props = {
   onSend: Function,
   setRightPanel: Function,
   handleBlock: Function,
-  handleUpdateGroupName: Function
+  handleUpdateGroupName: Function,
+  enqueueSnackbar: Function
 };
 
 const Main = ({
@@ -70,7 +71,8 @@ const Main = ({
   onSend,
   setRightPanel,
   handleBlock,
-  handleUpdateGroupName
+  handleUpdateGroupName,
+  enqueueSnackbar
 }: Props) => {
   const classes = useStyles();
   const end = useRef(null);
@@ -564,6 +566,7 @@ const Main = ({
             focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
+            enqueueSnackbar={enqueueSnackbar}
             setValue={setValue}
             handleClick={handleClick}
             onTyping={onTyping}
