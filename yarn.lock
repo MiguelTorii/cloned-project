@@ -7073,6 +7073,11 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
   integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
+hotkeys-js@3.8.7:
+  version "3.8.7"
+  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.8.7.tgz#c16cab978b53d7242f860ca3932e976b92399981"
+  integrity sha512-ckAx3EkUr5XjDwjEHDorHxRO2Kb7z6Z2Sxul4MbBkN8Nho7XDslQsgMJT+CiJ5Z4TgRxxvKHEpuLE3imzqy4Lg==
+
 hpack.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/hpack.js/-/hpack.js-2.1.6.tgz#87774c0949e513f42e84575b3c45681fade2a0b2"
@@ -11694,6 +11699,13 @@ react-hotjar@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-2.2.1.tgz#5f06d15a146960262dba612657c828c8b58da8a3"
   integrity sha512-rkHdsFDfI7HCKeAwkHPf8Vq7ZbpX0oE4/5GgVvNambWw8z0PSKKxi59qWYX7H+dDYjchiL3z3hrAFQ+PohgQOA==
+
+react-hotkeys-hook@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-3.4.0.tgz#4d8a81e58eb7ec0d3f6e4fbc4cb0f7830fb6c2aa"
+  integrity sha512-TFtMNb9ALuL3uvtqGpaehwCeua3uYCrG3dKUqd+hEI2UgbVU94ifA1AEeemXSF6K81llPDX1RZvp7teUEQzAPA==
+  dependencies:
+    hotkeys-js "3.8.7"
 
 react-idle-timer@^4.6.2:
   version "4.6.4"

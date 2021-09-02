@@ -53,6 +53,7 @@ const Dialog = ({
   headerTitleClass,
   hrClass,
   closeButtonClass,
+  id,
   ...props
 }: {
   ariaDescribedBy: ?string,
@@ -81,6 +82,7 @@ const Dialog = ({
   hrClass: ?string,
   closeButtonClass: ?string,
   rightButton: ?ReactNode,
+  id: ?string,
   props: Object
 }) => {
   const [dialogRef, setDialogRef] = useState(null);
@@ -122,6 +124,7 @@ const Dialog = ({
         </div>
       )}
       <DialogContent
+        id={id}
         aria-labelledby="circle-in-dialog-content"
         classes={{ root: contentClassName || classes.contentRoot }}
         ref={setDialogRef}

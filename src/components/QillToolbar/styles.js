@@ -8,6 +8,7 @@ export default makeStyles((theme) => ({
       [theme.breakpoints.down('sm')]: {
         margin: theme.spacing(0, 1 / 3)
       }
-    }
+    },
+    padding: '0 !important'
   }
 }));

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import IconMove from '@material-ui/icons/OpenWith';
 import IconDelete from '@material-ui/icons/DeleteOutlined';
@@ -10,11 +10,8 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import RichTextEditor from './RichTextEditor';
 import QuillToolbar from '../QillToolbar';
 import useStyles from './styles';
-
-const EDITOR_TYPES = {
-  QUESTION: 'question',
-  ANSWER: 'answer',
-};
+import { FlashcardListContext } from './FlashcardListContext';
+import { EDITOR_TYPES } from './index';
 
 const FlashcardEditor = ({
   index,
@@ -25,19 +22,22 @@ const FlashcardEditor = ({
   onDelete,
   onSetRef,
   onUpdate,
-  forwardedRef,
+  forwardedRef
 }) => {
   // Hooks
   const classes = useStyles();
-
-  // States
-  const [active, setActive] = useState(false);
-  const [activeEditor, setActiveEditor] = useState(null);
+  const { activeFlashcard, setActiveFlashcard } =
+    useContext(FlashcardListContext);
 
   // Memos
   const questionToolbarId = useMemo(
     () => `flashcard-toolbar-${toolbarPrefix}-question`,
     [toolbarPrefix]
+  );
+
+  const active = useMemo(
+    () => index === activeFlashcard.index,
+    [index, activeFlashcard]
   );
 
   const answerToolbarId = useMemo(
@@ -76,13 +76,14 @@ const FlashcardEditor = ({
     [data, onSetRef]
   );
 
-  const handleClickEditor = useCallback(() => {
-    if (!readOnly) setActive(true);
-  }, [readOnly]);
+  const handleClickEditor = useCallback((event) => {
+    if (readOnly) return;
 
-  const handleOutsideClick = useCallback(() => {
-    if (!readOnly) setActive(false);
-  }, [readOnly]);
+    // setActiveFlashcard({
+    //   index,
+    //   card: null
+    // });
+  }, [readOnly, index, setActiveFlashcard]);
 
   // Rendering Helpers
   const Toolbars = useMemo(
@@ -90,21 +91,25 @@ const FlashcardEditor = ({
       <>
         <Box
           display={
-            active && activeEditor !== EDITOR_TYPES.ANSWER ? 'block' : 'none'
+            active && EDITOR_TYPES.QUESTION === activeFlashcard.card
+              ? 'block'
+              : 'none'
           }
         >
           <QuillToolbar elementId={questionToolbarId} />
         </Box>
         <Box
           display={
-            active && activeEditor === EDITOR_TYPES.ANSWER ? 'block' : 'none'
+            active && EDITOR_TYPES.ANSWER === activeFlashcard.card
+              ? 'block'
+              : 'none'
           }
         >
           <QuillToolbar elementId={answerToolbarId} />
         </Box>
       </>
     ),
-    [active, activeEditor]
+    [active, activeFlashcard]
   );
 
   const TextBoxes = useMemo(
@@ -116,13 +121,18 @@ const FlashcardEditor = ({
             placeholder="Enter a question, term, or image"
             containerId={questionToolbarId}
             readOnly={readOnly}
-            active={active && activeEditor === EDITOR_TYPES.QUESTION}
+            active={active && activeFlashcard.card === EDITOR_TYPES.QUESTION}
             value={data.question}
             imageUrl={data.questionImage}
             onChangeImageUrl={(value) =>
               handleUpdateField('questionImage', value)
             }
-            onFocus={() => setActiveEditor(EDITOR_TYPES.QUESTION)}
+            onFocus={() => {
+              setActiveFlashcard({
+                index,
+                card: EDITOR_TYPES.QUESTION
+              });
+            }}
             onSetRef={handleSetQuestionRef}
           />
         </Grid>
@@ -132,13 +142,18 @@ const FlashcardEditor = ({
             placeholder="Enter the answer or a definition"
             containerId={answerToolbarId}
             readOnly={readOnly}
-            active={active && activeEditor === EDITOR_TYPES.ANSWER}
+            active={active && activeFlashcard.card === EDITOR_TYPES.ANSWER}
             value={data.answer}
             imageUrl={data.answerImage}
             onChangeImageUrl={(value) =>
               handleUpdateField('answerImage', value)
             }
-            onFocus={() => setActiveEditor(EDITOR_TYPES.ANSWER)}
+            onFocus={() => {
+              setActiveFlashcard({
+                index,
+                card: EDITOR_TYPES.ANSWER
+              });
+            }}
             onSetRef={handleSetAnswerRef}
           />
         </Grid>
@@ -154,61 +169,60 @@ const FlashcardEditor = ({
       readOnly,
       data,
       active,
-      activeEditor
+      activeFlashcard,
+      setActiveFlashcard
     ]
   );
 
   return (
-    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
+    <div
+      className={classes.flashcardEditorRoot}
+      onMouseDown={handleClickEditor}
+      ref={forwardedRef}
+    >
       <div
-        className={classes.flashcardEditorRoot}
-        onMouseDown={handleClickEditor}
-        ref={forwardedRef}
+        className={clsx(
+          classes.flashcardHeader,
+          active && classes.gradientHeader
+        )}
       >
         <div
           className={clsx(
-            classes.flashcardHeader,
-            active && classes.gradientHeader
+            classes.flashcardHeaderContent,
+            !active && classes.paddingTopZero
           )}
         >
-          <div
-            className={clsx(
-              classes.flashcardHeaderContent,
-              !active && classes.paddingTopZero
-            )}
-          >
-            <Box hidden={readOnly}>
+          <Box hidden={readOnly}>
+            <div onMouseDown={handleMouseDown}>
+              <IconButton
+                classes={{
+                  root: clsx(classes.iconButton, active && 'active')
+                }}
+                {...dndProps}
+              >
+                <IconMove />
+              </IconButton>
+            </div>
+          </Box>
+          {Toolbars}
+          <div>
+            {!readOnly && (
               <div onMouseDown={handleMouseDown}>
                 <IconButton
                   classes={{
-                    root: clsx(classes.iconButton, active && 'active'),
+                    root: clsx(classes.iconButton, active && 'active')
                   }}
-                  {...dndProps}
+                  onClick={handleDelete}
                 >
-                  <IconMove />
+                  <IconDelete />
                 </IconButton>
               </div>
-            </Box>
-            {Toolbars}
-            <div>
-              {!readOnly && (
-                <div onMouseDown={handleMouseDown}>
-                  <IconButton
-                    classes={{
-                      root: clsx(classes.iconButton, active && 'active'),
-                    }}
-                    onClick={handleDelete}
-                  >
-                    <IconDelete />
-                  </IconButton>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
-        <div className={classes.flashcardContent}>{TextBoxes}</div>
       </div>
-    </OutsideClickHandler>
+      <div className={classes.flashcardContent}>{TextBoxes}</div>
+    </div>
   );
 };
 
@@ -221,7 +235,7 @@ FlashcardEditor.propTypes = {
   toolbarPrefix: PropTypes.string,
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
-  onSetRef: PropTypes.func,
+  onSetRef: PropTypes.func
 };
 
 FlashcardEditor.defaultProps = {
@@ -232,7 +246,7 @@ FlashcardEditor.defaultProps = {
   toolbarPrefix: PropTypes.string,
   onDelete: () => {},
   onUpdate: () => {},
-  onSetRef: () => {},
+  onSetRef: () => {}
 };
 
 export default FlashcardEditor;

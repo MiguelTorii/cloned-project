@@ -3,6 +3,7 @@ import withRoot from '../../withRoot';
 import PropTypes from 'prop-types';
 import ReactCardFlip from 'react-card-flip';
 import CardBoardContent from './CardBoardContent';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const QUESTION_TOOLBAR_ID = 'cardboard_toolbar_question';
 const ANSWER_TOOLBAR_ID = 'cardboard_toolbar_answer';
@@ -21,6 +22,9 @@ const CardBoard = ({ data }) => {
   const handleFlip = useCallback(() => {
     setIsQuestion(!isQuestion);
   }, [isQuestion, setIsQuestion]);
+
+  // Handle Shortcut Keys
+  useHotkeys('Space', handleFlip, {}, [handleFlip]);
 
   return (
     <ReactCardFlip isFlipped={!isQuestion} key={currentData.id}>
