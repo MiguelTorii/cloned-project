@@ -102,17 +102,26 @@ const ChatMessage = ({
     const splitHtmlStringByFiles = message.split('File Attachment');
 
     if (splitHtmlStringByFiles.length > 1) {
-      const files = JSON.parse(splitHtmlStringByFiles[1]);
+      const files = JSON.parse(
+        splitHtmlStringByFiles[splitHtmlStringByFiles - 1]
+      );
       const fileHtml = files.map((file) => (
         <FileUpload file={file} smallChat />
       ));
+
+      let html = '';
+      splitHtmlStringByFiles.forEach((splitHtmlString, key) => {
+        if (key < splitHtmlStringByFiles.length - 1) {
+          html += splitHtmlString;
+        }
+      });
 
       return (
         <div className={cx(classes.bodyWrapper)}>
           <Typography
             className={clsx(classes.body, 'ql-editor')}
             dangerouslySetInnerHTML={{
-              __html: renderHtmlWithImage(splitHtmlStringByFiles[0])
+              __html: renderHtmlWithImage(html)
             }}
           />
           {fileHtml}
