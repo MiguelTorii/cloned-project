@@ -23,6 +23,7 @@ type Props = {
   chat: Object,
   user: Object,
   setCurrentCommunityChannel: Function,
+  startMessageLoading: Function,
   setMainMessage: Function,
   setSelectedCourse: Function,
   enqueueSnackbar: Function,
@@ -33,6 +34,7 @@ type Props = {
 const CommunityChat = ({
   selectedCourse,
   setMainMessage,
+  startMessageLoading,
   setCurrentCommunityChannel,
   setSelectedCourse,
   enqueueSnackbar,
@@ -46,6 +48,7 @@ const CommunityChat = ({
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
+  const [currentCommunityChannels, setCurrentCommunityChannels] = useState([]);
 
   const [selectedChannel, setSelctedChannel] = useState(null);
 
@@ -59,12 +62,14 @@ const CommunityChat = ({
       local,
       mainMessage,
       currentCommunity,
-      currentCommunityChannel
+      currentCommunityChannel,
+      messageLoading
     }
   } = chat;
 
   useEffect(() => {
     let filterChannel = [];
+    const currentCommunityChannels = [];
     const currentCourseChannel = courseChannels.filter(
       (courseChannel) => courseChannel.courseId === selectedCourse.id
     );
@@ -72,17 +77,33 @@ const CommunityChat = ({
     setCommunityChannels(communityChannels);
     communityChannels.forEach((communityChannel) => {
       const { channels } = communityChannel;
-
+      currentCommunityChannels.push(...channels);
       filterChannel = channels.filter(
         (channel) => channel.id === currentCommunity.id
       );
     });
+    setCurrentCommunityChannels(currentCommunityChannels);
     if (currentCommunity && !!filterChannel.length) {
       setSelctedChannel(currentCommunity);
     } else {
       setSelctedChannel(communityChannels[0].channels[0]);
     }
-  }, [selectedCourse, courseChannels, currentCommunity]);
+  }, [
+    selectedCourse,
+    courseChannels,
+    currentCommunity,
+    setCurrentCommunityChannels
+  ]);
+
+  useEffect(() => {
+    if (currentCommunityChannel) {
+      const filterChannel = currentCommunityChannels.filter(
+        (channel) => channel.chat_id === currentCommunityChannel.sid
+      );
+
+      setSelctedChannel(filterChannel[0]);
+    }
+  }, [currentCommunityChannel, currentCommunityChannels]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -175,6 +196,7 @@ const CommunityChat = ({
             <CourseChannels
               setSelctedChannel={setSelctedChannel}
               selectedChannel={selectedChannel}
+              startMessageLoading={startMessageLoading}
               communityChannels={communityChannels}
               local={local}
               course={selectedCourse}
@@ -190,6 +212,8 @@ const CommunityChat = ({
             selectedCourse={selectedCourse}
             selectedChannel={selectedChannel}
             newMessage={newMessage}
+            messageLoading={messageLoading}
+            startMessageLoading={startMessageLoading}
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             permission={permission}
@@ -235,7 +259,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       enqueueSnackbar: notificationsActions.enqueueSnackbar,
       setMainMessage: chatActions.setMainMessage,
-      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
+      startMessageLoading: chatActions.startMessageLoading
     },
     dispatch
   );

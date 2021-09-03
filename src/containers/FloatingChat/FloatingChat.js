@@ -80,9 +80,11 @@ type Props = {
   handleMuteChannel: Function,
   handleNewChannel: Function,
   push: Function,
+  setCurrentChannelSid: Function,
   onboardingListVisible: boolean,
   getOnboardingList: Function,
-  setCurrentChannel: Function
+  setCurrentChannel: Function,
+  setCurrentCommunityChannel: Function
   // markAsCompleted: Function
 };
 
@@ -105,7 +107,9 @@ const FloatingChat = ({
   onboardingListVisible,
   setCurrentChannel,
   // markAsCompleted,
-  getOnboardingList
+  getOnboardingList,
+  setCurrentChannelSid,
+  setCurrentCommunityChannel
 }: Props) => {
   const [createChannel, setCreateChat] = useState(null);
   const [unread, setUnread] = useState(0);
@@ -166,11 +170,29 @@ const FloatingChat = ({
     handleNewChannel(false);
   }, [handleNewChannel]);
 
+  const handleOpenChannel = (channel) => {
+    const {
+      channel: {
+        channelState: { attributes }
+      }
+    } = newMessage;
+
+    if (attributes?.community_id) {
+      setCurrentCourse(attributes?.community_id);
+      setCurrentChannelSid(channel.sid);
+      setCurrentCommunityChannel(channel);
+    } else {
+      setCurrentCourse('chat');
+      setCurrentChannel(channel);
+    }
+    push('/chat');
+  };
+
   const handleMessageReceived = (channel) => () =>
     (
       <Button
         onClick={() => {
-          handleRoomClick(channel);
+          handleOpenChannel(channel);
         }}
       >
         Open
@@ -459,7 +481,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
       enqueueSnackbarAction: enqueueSnackbar,
       setCurrentCourse: chatActions.setCurrentCourse,
       // markAsCompleted: OnboardingActions.markAsCompleted,
-      getOnboardingList: OnboardingActions.getOnboardingList
+      getOnboardingList: OnboardingActions.getOnboardingList,
+      setCurrentChannelSid: chatActions.setCurrentChannelSid,
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
     },
     dispatch
   );

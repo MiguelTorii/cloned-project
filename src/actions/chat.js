@@ -97,6 +97,11 @@ const initChannels = ({
   payload: { channels, local }
 });
 
+const messageLoading = (loading) => ({
+  type: chatActions.MAIN_MESSAGE_LOADING,
+  payload: { loading }
+});
+
 const updateChannel = ({
   channel,
   unread
@@ -358,6 +363,10 @@ export const handleNewChannel =
 
 export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
+};
+
+export const startMessageLoading = (loading) => async (dispatch: Dispatch) => {
+  dispatch(messageLoading(loading));
 };
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {

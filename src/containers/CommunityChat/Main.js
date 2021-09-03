@@ -37,6 +37,7 @@ type Props = {
   selectedCourse: Object,
   channel: Object,
   channelList: Array,
+  startMessageLoading: Function,
   // mainMessage: Array,
   // setMainMessage: Function,
   newMessage: Object,
@@ -45,6 +46,7 @@ type Props = {
   newChannel: boolean,
   permission: Array,
   user: Object,
+  messageLoading: boolean,
   onSend: Function,
   setRightPanel: Function,
   handleBlock: Function,
@@ -58,6 +60,8 @@ const Main = ({
   selectedCourse,
   channel,
   channelList,
+  messageLoading,
+  startMessageLoading,
   // mainMessage,
   // setMainMessage,
   selectedChannel,
@@ -76,7 +80,6 @@ const Main = ({
 }: Props) => {
   const classes = useStyles();
   const end = useRef(null);
-  const [loadingMessage, setLoadingMessage] = useState(false);
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
   const [messages, setMessages] = useState([]);
   const [paginator, setPaginator] = useState(null);
@@ -159,15 +162,14 @@ const Main = ({
 
   useEffect(() => {
     if (channelList.length && !channel) {
-      setLoadingMessage(true);
+      startMessageLoading(true);
     } else if (!channelList.length && !isLoading) {
-      setLoadingMessage(false);
+      startMessageLoading(false);
     }
   }, [channelList, channel, isLoading]);
-
   useEffect(() => {
     const init = async () => {
-      setLoadingMessage(true);
+      startMessageLoading(true);
       try {
         channel.setAllMessagesConsumed();
 
@@ -184,7 +186,7 @@ const Main = ({
           !selectedChannelId ||
           selectedChannelId === p?.items?.[0]?.channel?.sid
         ) {
-          if (!p.hasNextPage) setLoadingMessage(false);
+          if (!p.hasNextPage) startMessageLoading(false);
           setMessages(p.items);
           setPaginator(p);
           setHasMore(!(p.items.length < 10));
@@ -474,7 +476,7 @@ const Main = ({
     [classes]
   );
 
-  return loadingMessage || isLoading ? (
+  return messageLoading || isLoading ? (
     loadingConversation()
   ) : errorLoadingMessage ? (
     loadingErrorMessage()

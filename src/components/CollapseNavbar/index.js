@@ -64,12 +64,14 @@ type Props = {
   channels: Array,
   selectedChannel: Array,
   local: Array,
+  startMessageLoading: Function,
   setSelctedChannel: Function
 };
 
 const CollapseNavbar = ({
   channels,
   selectedChannel,
+  startMessageLoading,
   local,
   setSelctedChannel
 }: Props) => {
@@ -89,6 +91,7 @@ const CollapseNavbar = ({
 
     if (!channel?.channels) {
       setSelctedChannel(channel);
+      startMessageLoading(true);
     }
   };
 

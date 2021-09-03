@@ -24,7 +24,13 @@ const ChatPage = ({
   setCurrentChannelSid
 }) => {
   const {
-    data: { local, currentCommunity, currentCourseId, oneTouchSendOpen, currentChannel },
+    data: {
+      local,
+      currentCommunity,
+      currentCourseId,
+      oneTouchSendOpen,
+      currentChannel
+    },
     isLoading
   } = chat;
 

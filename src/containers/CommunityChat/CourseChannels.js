@@ -8,13 +8,14 @@ import { push } from 'connected-react-router';
 import LoadImg from 'components/LoadImg';
 import CollapseNavbar from 'components/CollapseNavbar';
 import Typography from '@material-ui/core/Typography';
-import useStyles from './_styles/courseChannels';
 import { useDispatch, useSelector } from 'react-redux';
+import useStyles from './_styles/courseChannels';
 import { cypher } from '../../utils/crypto';
 
 type Props = {
   course: Object,
   selectedChannel: Object,
+  startMessageLoading: Function,
   communityChannels: Array,
   local: Array,
   setSelctedChannel: Function
@@ -24,6 +25,7 @@ const CourseChannels = ({
   course,
   selectedChannel,
   communityChannels,
+  startMessageLoading,
   local,
   setSelctedChannel
 }: Props) => {
@@ -32,18 +34,22 @@ const CourseChannels = ({
   const userClasses = useSelector((state) => state.user.userClasses);
 
   const handleGoToFeed = useCallback(() => {
-    const courseClass = (userClasses.classList || []).find((item) => {
-      return (item.section || [])
+    const courseClass = (userClasses.classList || []).find((item) =>
+      (item.section || [])
         .map((section) => section.sectionId)
-        .includes(course.section_id);
-    });
+        .includes(course.section_id)
+    );
 
     if (!courseClass) {
       dispatch(push('/feed'));
       return;
     }
 
-    dispatch(push(`/feed?class=${cypher(courseClass.classId + ':' + course.section_id)}`));
+    dispatch(
+      push(
+        `/feed?class=${cypher(`${courseClass.classId}:${course.section_id}`)}`
+      )
+    );
   }, [course, userClasses, dispatch]);
 
   return (
@@ -77,18 +83,13 @@ const CourseChannels = ({
         <Typography variant="h3" className={classes.name}>
           {course.name}
         </Typography>
-        <Link
-          component="button"
-          underline="none"
-          onClick={handleGoToFeed}
-        >
-          <Typography variant="body2">
-            Go to Class Feed
-          </Typography>
+        <Link component="button" underline="none" onClick={handleGoToFeed}>
+          <Typography variant="body2">Go to Class Feed</Typography>
         </Link>
       </Box>
       <CollapseNavbar
         channels={communityChannels}
+        startMessageLoading={startMessageLoading}
         local={local}
         selectedChannel={selectedChannel}
         setSelctedChannel={setSelctedChannel}
