@@ -142,7 +142,6 @@ class CreatePostForm extends React.PureComponent<Props, State> {
           onCancel={this.onClose}
           open={open}
           title="🏆 Points Breakdown"
-          headerTitleClass={classes.headerTitleClass}
         >
           <div className={classes.childContent}>
             <div className={classes.pointItems}>
@@ -158,7 +157,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                 <div className={classes.questionItem}>Question 🤔</div>
               </div>
               <div className={classes.itemText}>
-                Earn 2K points for answering a question & 40K for Best Answer.
+                Earn 5K points for asking a question, 2K for answering a question & 40K for Best Answer.
               </div>
             </div>
             <div className={classes.pointItems}>
