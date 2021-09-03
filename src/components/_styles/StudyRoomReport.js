@@ -52,12 +52,10 @@ export default (theme) => ({
   },
   chip: {
     boxShadow: 'none',
-    '&.MuiChip-root': {
-      backgroundColor: theme.circleIn.palette.chipBackground,
-      color: theme.circleIn.palette.secondaryText,
-      borderRadius: 4,
-      margin: theme.spacing(0.25, 0.25)
-    }
+    backgroundColor: theme.circleIn.palette.chipBackground,
+    color: theme.circleIn.palette.secondaryText,
+    borderRadius: 4,
+    margin: theme.spacing(0.25, 0.25)
   },
   menuItem: {
     color: theme.circleIn.palette.white,
