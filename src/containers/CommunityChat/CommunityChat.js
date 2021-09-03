@@ -83,7 +83,10 @@ const CommunityChat = ({
       );
     });
     setCurrentCommunityChannels(currentCommunityChannels);
-    if (currentCommunity && !!filterChannel.length) {
+    if (
+      (currentCommunity && !!filterChannel.length) ||
+      currentCommunityChannel
+    ) {
       setSelctedChannel(currentCommunity);
     } else {
       setSelctedChannel(communityChannels[0].channels[0]);
@@ -92,6 +95,7 @@ const CommunityChat = ({
     selectedCourse,
     courseChannels,
     currentCommunity,
+    currentCommunityChannel,
     setCurrentCommunityChannels
   ]);
 
@@ -101,7 +105,11 @@ const CommunityChat = ({
         (channel) => channel.chat_id === currentCommunityChannel.sid
       );
 
-      setSelctedChannel(filterChannel[0]);
+      if (filterChannel.length) {
+        setSelctedChannel(filterChannel[0]);
+      } else {
+        setSelctedChannel(currentCommunityChannels[0]);
+      }
     }
   }, [currentCommunityChannel, currentCommunityChannels]);
 

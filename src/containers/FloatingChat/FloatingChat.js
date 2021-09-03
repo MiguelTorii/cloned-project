@@ -134,7 +134,7 @@ const FloatingChat = ({
 
   const showNotification = useCallback(
     (channel) => {
-      if (currentCourseId === 'chat') {
+      if (currentCourseId === 'chat' || !currentCourseId) {
         return currentChannel?.sid === channel.sid;
       }
 

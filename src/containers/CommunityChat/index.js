@@ -44,6 +44,19 @@ const ChatPage = ({
   const [courseChannels, setCourseChannels] = useState([]);
   const [communityList, setCommunities] = useState([]);
 
+  useEffect(() => {
+    if (currentCourseId && communityList) {
+      const targetCourseChannel = communityList.filter(
+        (community) => community.community.id === Number(currentCourseId)
+      );
+      if (targetCourseChannel.length) {
+        setSelectedCourse(targetCourseChannel[0].community);
+      } else {
+        setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+      }
+    }
+  }, [currentCourseId]);
+
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) return [];
 
@@ -157,6 +170,7 @@ const ChatPage = ({
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
     } else {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+      setCurrentCourse('chat');
     }
   }, [
     setCurrentCourse,
