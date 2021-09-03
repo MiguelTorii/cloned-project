@@ -191,7 +191,7 @@ const MessageQuill = ({
         const file = input.files[0];
         const { type, name, size } = file;
 
-        if (size < 40960) {
+        if (size < 40 * 1024 * 1024) {
           const result = await uploadMedia(userId, 1, file);
           const { readUrl } = result;
 
@@ -214,7 +214,7 @@ const MessageQuill = ({
             notification: {
               message: 'Upload File size is over 40 MB',
               options: {
-                variant: 'info',
+                variant: 'warning',
                 anchorOrigin: {
                   vertical: 'bottom',
                   horizontal: 'left'

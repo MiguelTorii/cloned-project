@@ -146,7 +146,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     } else {
       const file = this.fileInput.files[0];
       const { type, name, size } = file;
-      if (size < 40960) {
+      if (size < 40 * 1024 * 1024) {
         this.setState({ loading: true });
 
         const result = await uploadMedia(userId, 1, file);
@@ -166,7 +166,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
           notification: {
             message: 'Upload File size is over 40 MB',
             options: {
-              variant: 'info',
+              variant: 'warning',
               anchorOrigin: {
                 vertical: 'bottom',
                 horizontal: 'left'
