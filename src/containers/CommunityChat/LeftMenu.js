@@ -21,6 +21,7 @@ import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import { getTitle } from 'utils/chat';
 import { PERMISSIONS } from 'constants/common';
 import useStyles from './_styles/leftMenu';
+import { useSelector } from 'react-redux';
 
 type Props = {
   userId: string,
@@ -67,9 +68,10 @@ const LeftMenu = ({
   const [search, setSearch] = useState();
   const [searchChannels, setSearchChannels] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const expertMode = useSelector((state) => state.user.expertMode);
 
   const switchOneTouchSend = () =>
-    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS);
+    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && expertMode;
 
   const handleCreateNewChannel = () => {
     setIsOpen(true);
