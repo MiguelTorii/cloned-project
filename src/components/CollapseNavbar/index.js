@@ -65,7 +65,8 @@ type Props = {
   selectedChannel: Array,
   local: Array,
   startMessageLoading: Function,
-  setSelctedChannel: Function
+  setSelctedChannel: Function,
+  setCurrentCommunityChannel: Function
 };
 
 const CollapseNavbar = ({
@@ -73,7 +74,8 @@ const CollapseNavbar = ({
   selectedChannel,
   startMessageLoading,
   local,
-  setSelctedChannel
+  setSelctedChannel,
+  setCurrentCommunityChannel
 }: Props) => {
   const classes = useStyles();
   const [subListOpen, setSubListOpen] = useState('');
@@ -90,6 +92,7 @@ const CollapseNavbar = ({
     }
 
     if (!channel?.channels) {
+      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel);
       setSelctedChannel(channel);
       startMessageLoading(true);
     }

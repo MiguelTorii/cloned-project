@@ -110,8 +110,10 @@ const CommunityChat = ({
       } else {
         setSelctedChannel(currentCommunityChannels[0]);
       }
+    } else {
+      setSelctedChannel(currentCommunityChannels[0]);
     }
-  }, [currentCommunityChannel, currentCommunityChannels]);
+  }, [currentCommunityChannels, currentCommunityChannel]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -120,10 +122,9 @@ const CommunityChat = ({
 
     if (targetSelectedChannel) {
       if (['xs'].includes(width)) setLeftSpace(0);
-      setCurrentCommunityChannel(targetSelectedChannel?.twilioChannel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel, setCurrentCommunityChannel, width, isLoading]);
+  }, [selectedChannel, width, isLoading]);
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
@@ -208,6 +209,7 @@ const CommunityChat = ({
               communityChannels={communityChannels}
               local={local}
               course={selectedCourse}
+              setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
           )}
         </Grid>

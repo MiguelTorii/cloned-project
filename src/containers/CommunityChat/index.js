@@ -29,7 +29,7 @@ const ChatPage = ({
       currentCommunity,
       currentCourseId,
       oneTouchSendOpen,
-      currentChannel
+      currentCommunityChannel
     },
     isLoading
   } = chat;
@@ -45,7 +45,7 @@ const ChatPage = ({
   const [communityList, setCommunities] = useState([]);
 
   useEffect(() => {
-    if (currentCourseId && communityList) {
+    if (currentCourseId && communityList.length > 0) {
       const targetCourseChannel = communityList.filter(
         (community) => community.community.id === Number(currentCourseId)
       );
@@ -83,6 +83,8 @@ const ChatPage = ({
 
   useEffect(() => {
     async function fetchCommuniteis() {
+      console.log('--currentCommunityChannel------');
+      console.log(currentCommunityChannel);
       try {
         setLoading(true);
         const { communities } = await getCommunities();
@@ -101,7 +103,7 @@ const ChatPage = ({
         setCourseChannels(communityChannels);
         setCommunityChannels(communityChannels);
 
-        if (!currentChannel && nonEmptyCommunities.length > 0) {
+        if (!currentCommunityChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
           setSelectedCourse(defaultCommunity);
@@ -158,14 +160,9 @@ const ChatPage = ({
   useEffect(() => {
     if (oneTouchSendOpen) {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (
-      currentCommunity &&
-      !!communityList.length &&
-      currentCourseId &&
-      currentCourseId !== 'chat'
-    ) {
+    } else if (currentCommunity && !!communityList.length) {
       const targetCourse = communityList.filter(
-        (course) => course.community.id === currentCourseId
+        (course) => course.community.id === currentCommunity.id
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
     } else {
@@ -175,7 +172,6 @@ const ChatPage = ({
   }, [
     setCurrentCourse,
     selectCurrentCommunity,
-    currentCourseId,
     currentCommunity,
     communityList,
     loading,

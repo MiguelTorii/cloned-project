@@ -27,6 +27,7 @@ const CourseChannels = ({
   communityChannels,
   startMessageLoading,
   local,
+  setCurrentCommunityChannel,
   setSelctedChannel
 }: Props) => {
   const classes = useStyles();
@@ -90,6 +91,7 @@ const CourseChannels = ({
       <CollapseNavbar
         channels={communityChannels}
         startMessageLoading={startMessageLoading}
+        setCurrentCommunityChannel={setCurrentCommunityChannel}
         local={local}
         selectedChannel={selectedChannel}
         setSelctedChannel={setSelctedChannel}

@@ -179,12 +179,12 @@ const FloatingChat = ({
 
     if (attributes?.community_id) {
       setCurrentCourse(attributes?.community_id);
-      setCurrentChannelSid(channel.sid);
       setCurrentCommunityChannel(channel);
     } else {
       setCurrentCourse('chat');
       setCurrentChannel(channel);
     }
+    setCurrentChannelSid(channel.sid);
     push('/chat');
   };
 

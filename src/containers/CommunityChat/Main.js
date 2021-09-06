@@ -181,7 +181,6 @@ const Main = ({
 
         const p = await channel.getMessages(10);
         if (
-          isCommunityChat ||
           !p?.items?.length ||
           !selectedChannelId ||
           selectedChannelId === p?.items?.[0]?.channel?.sid
@@ -523,11 +522,6 @@ const Main = ({
               initialLoad={false}
               isReverse
             >
-              {!hasMore && isCommunityChat && (
-                <div className={classes.bannerImage}>
-                  {/* <LoadImg className={classes.banner} url={CoverImg}/> */}
-                </div>
-              )}
               {!hasMore && (
                 <InitialAlert
                   hasPermission={hasPermission}
