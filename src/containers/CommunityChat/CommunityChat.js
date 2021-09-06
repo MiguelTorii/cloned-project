@@ -27,6 +27,7 @@ type Props = {
   setMainMessage: Function,
   setSelectedCourse: Function,
   enqueueSnackbar: Function,
+  setCurrentChannelSidAction: Function,
   courseChannels: array,
   width: string
 };
@@ -37,6 +38,7 @@ const CommunityChat = ({
   startMessageLoading,
   setCurrentCommunityChannel,
   setSelectedCourse,
+  setCurrentChannelSidAction,
   enqueueSnackbar,
   courseChannels,
   user,
@@ -112,8 +114,12 @@ const CommunityChat = ({
       }
     } else {
       setSelctedChannel(currentCommunityChannels[0]);
+      setCurrentCommunityChannel(
+        local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+      );
+      setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
     }
-  }, [currentCommunityChannels, currentCommunityChannel]);
+  }, [currentCommunityChannels, currentCommunityChannel, local]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -209,6 +215,7 @@ const CommunityChat = ({
               communityChannels={communityChannels}
               local={local}
               course={selectedCourse}
+              setCurrentChannelSidAction={setCurrentChannelSidAction}
               setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
           )}
@@ -270,7 +277,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       enqueueSnackbar: notificationsActions.enqueueSnackbar,
       setMainMessage: chatActions.setMainMessage,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
-      startMessageLoading: chatActions.startMessageLoading
+      startMessageLoading: chatActions.startMessageLoading,
+      setCurrentChannelSidAction: chatActions.setCurrentChannelSid
     },
     dispatch
   );

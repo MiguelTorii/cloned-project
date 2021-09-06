@@ -150,12 +150,6 @@ export const styles = (theme) => ({
   itemText: {
     maxWidth: 150
   },
-  headerTitleClass: {
-    textAlign: 'center',
-    fontSize: 20,
-    marginBottom: theme.spacing(1.5),
-    zIndex: 999999
-  },
   gotIt: {
     width: '100%',
     display: 'flex',

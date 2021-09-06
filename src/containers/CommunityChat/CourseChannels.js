@@ -18,6 +18,7 @@ type Props = {
   startMessageLoading: Function,
   communityChannels: Array,
   local: Array,
+  setCurrentChannelSidAction: Function,
   setSelctedChannel: Function
 };
 
@@ -28,6 +29,7 @@ const CourseChannels = ({
   startMessageLoading,
   local,
   setCurrentCommunityChannel,
+  setCurrentChannelSidAction,
   setSelctedChannel
 }: Props) => {
   const classes = useStyles();
@@ -92,6 +94,7 @@ const CourseChannels = ({
         channels={communityChannels}
         startMessageLoading={startMessageLoading}
         setCurrentCommunityChannel={setCurrentCommunityChannel}
+        setCurrentChannelSidAction={setCurrentChannelSidAction}
         local={local}
         selectedChannel={selectedChannel}
         setSelctedChannel={setSelctedChannel}

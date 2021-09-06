@@ -217,7 +217,7 @@ const Main = ({
 
     if (channel) init();
     // eslint-disable-next-line
-  }, [channel, selectedChannelId, isCommunityChat]);
+  }, [channel, selectedChannelId]);
 
   const messageItems = useMemo(
     () =>

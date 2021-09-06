@@ -83,8 +83,6 @@ const ChatPage = ({
 
   useEffect(() => {
     async function fetchCommuniteis() {
-      console.log('--currentCommunityChannel------');
-      console.log(currentCommunityChannel);
       try {
         setLoading(true);
         const { communities } = await getCommunities();
