@@ -1,29 +1,30 @@
-# Create React App example with Flow
+# Circle In App
 
-## flow-typed
+## Prerequisites
 
-[flow-typed](https://github.com/flowtype/flow-typed) is a repository of third-party library interface definitions for use with Flow.
-The community is maintaining [the definitions under this project](https://github.com/flow-typed/flow-typed/tree/master/definitions/npm/%40material-ui).
-
-## How to use:
-
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
+You will need yarn globally (this avoids dependency errors that occur when using bare npm commands with this project):
 
 ```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app-with-flow
-cd create-react-app-with-flow
+npm install yarn -g
 ```
 
-Install it and run:
+The installed yarn version should be 1.22 or above:
+
+```sh
+yarn -v
+```
+
+The installed node version should be 12-14 (the current version of node is not compatible with webpack 4):
+
+```sh
+node -v
+```
+
+## Getting started
+
+To install and build the project:
 
 ```sh
 yarn install
-yarn global add flow-typed
-flow-typed install
-yarn flow
 yarn start
 ```
-
-## The idea behind the example
-
-This example demonstrate how you can use [Create React App](https://github.com/facebookincubator/create-react-app) with [Flow](https://github.com/facebook/flow)
