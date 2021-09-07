@@ -142,9 +142,7 @@ const ChatHeader = ({
   );
 
   const showThreeDotsMenu = useMemo(
-    () =>
-      (Object.keys(members).length > 2 && isShow) ||
-      deletePermission,
+    () => (Object.keys(members).length > 2 && isShow) || deletePermission,
     [isCommunityChat, deletePermission, members, isShow]
   );
 
@@ -358,7 +356,7 @@ const ChatHeader = ({
                 className={classes.chatIcon}
                 onClick={handleShareLink}
               >
-                <IconShare className={classes.grayIcon}/>
+                <IconShare className={classes.grayIcon} />
               </IconButton>
             )}
             {showThreeDotsMenu && (
@@ -435,9 +433,7 @@ const ChatHeader = ({
       {channel && (
         <ShareLinkDialog
           open={openShareLink}
-          isGroupChannel={local[channel.sid].members.length === 2}
           localChannel={local[channel.sid]}
-          channelName={title}
           handleClose={closeShareLinkDialog}
         />
       )}

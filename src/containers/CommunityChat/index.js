@@ -44,19 +44,6 @@ const ChatPage = ({
   const [courseChannels, setCourseChannels] = useState([]);
   const [communityList, setCommunities] = useState([]);
 
-  useEffect(() => {
-    if (currentCourseId && communityList.length > 0) {
-      const targetCourseChannel = communityList.filter(
-        (community) => community.community.id === Number(currentCourseId)
-      );
-      if (targetCourseChannel.length) {
-        setSelectedCourse(targetCourseChannel[0].community);
-      } else {
-        setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-      }
-    }
-  }, [currentCourseId]);
-
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) return [];
 
@@ -163,11 +150,21 @@ const ChatPage = ({
         (course) => course.community.id === currentCommunity.id
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
+    } else if (currentCourseId && !!communityList.length) {
+      const targetCourseChannel = communityList.filter(
+        (community) => community.community.id === Number(currentCourseId)
+      );
+      if (targetCourseChannel.length) {
+        setSelectedCourse(targetCourseChannel[0].community);
+      } else {
+        setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+      }
     } else {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
       setCurrentCourse('chat');
     }
   }, [
+    currentCourseId,
     setCurrentCourse,
     selectCurrentCommunity,
     currentCommunity,
