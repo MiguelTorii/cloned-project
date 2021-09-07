@@ -13,7 +13,7 @@ import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
 import RoleBadge from 'components/RoleBadge';
 import FileUpload from 'components/FileUpload';
-import { getInitials } from 'utils/chat';
+import { getInitials, bytesToSize } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -222,13 +222,10 @@ class ChatMessageDate extends React.PureComponent<Props> {
     }
 
     if (files?.length) {
-      console.log('-----files-------');
-      console.log(files);
-      console.log(message);
       const fileHtml = files.map((file) => (
         <FileUpload
           name={file.fileName}
-          size={file.fileSize}
+          size={bytesToSize(file.fileSize)}
           url={file.readUrl}
           smallChat
         />
@@ -237,7 +234,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       return (
         <>
           <div className={cx(classes.bodyWrapper)}>
-            {message ? (
+            {message && (
               <Typography
                 className={cx(
                   classes.body,
@@ -248,7 +245,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                   __html: this.renderHtmlWithImage(message)
                 }}
               />
-            ) : null}
+            )}
             {fileHtml}
           </div>
           <Typography className={cx(classes.createdAt)} variant="caption">

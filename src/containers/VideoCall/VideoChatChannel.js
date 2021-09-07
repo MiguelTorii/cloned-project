@@ -281,7 +281,7 @@ class VideoChatChannel extends React.Component<Props, State> {
           this.setState((prevState) => ({
             messages: [...result.items, ...prevState.messages],
             paginator: result,
-            hasMore: !(!result.hasPrevPage || result.items.length < 10),
+            hasMore: result.hasPrevPage && result.items.length >= 10,
             scroll: false
           }));
         });

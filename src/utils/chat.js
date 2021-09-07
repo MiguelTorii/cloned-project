@@ -231,11 +231,11 @@ const getFileExtension = (filename) => filename.split('.').pop();
 const sizeToByte = (size) => {
   let byte = 0;
   if (size.includes('KB')) {
-    byte = parseInt(size.split('KB')[0], 10);
+    byte = parseInt(size.split('KB')[0], 10) * 1024;
   }
 
   if (size.includes('MB')) {
-    byte = parseInt(size.split('MB')[0], 10);
+    byte = parseInt(size.split('MB')[0], 10) * 1024 * 1024;
   } else {
     byte = parseInt(size.split('Bytes')[0], 10);
   }

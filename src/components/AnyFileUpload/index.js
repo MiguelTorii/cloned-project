@@ -3,6 +3,7 @@ import cx from 'classnames';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from 'components/FileUpload';
+import { bytesToSize } from 'utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 
 const AnyFileUpload = ({
@@ -12,6 +13,18 @@ const AnyFileUpload = ({
   smallChat = false
 }) => {
   const classes = useStyles();
+
+  const renderMessage = (html, fileHtml) => (
+    <div className={cx(classes.bodyWrapper)}>
+      <Typography
+        className={clsx(classes.body, 'ql-editor')}
+        dangerouslySetInnerHTML={{
+          __html: renderHtmlWithImage(message)
+        }}
+      />
+      {fileHtml}
+    </div>
+  );
 
   const splitHtmlStringByFiles = message.split('File Attachment');
 
@@ -29,41 +42,20 @@ const AnyFileUpload = ({
     ));
     splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
     const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
-
-    return (
-      <div className={cx(classes.bodyWrapper)}>
-        <Typography
-          className={clsx(classes.body, 'ql-editor')}
-          dangerouslySetInnerHTML={{
-            __html: renderHtmlWithImage(html)
-          }}
-        />
-        {fileHtml}
-      </div>
-    );
+    return renderMessage(html, fileHtml);
   }
 
   if (files?.length) {
     const fileHtml = files.map((file) => (
       <FileUpload
         name={file.fileName}
-        size={file.fileSize}
+        size={bytesToSize(file.fileSize)}
         url={file.readUrl}
         smallChat={smallChat}
       />
     ));
 
-    return (
-      <div className={cx(classes.bodyWrapper)}>
-        <Typography
-          className={clsx(classes.body, 'ql-editor')}
-          dangerouslySetInnerHTML={{
-            __html: renderHtmlWithImage(message)
-          }}
-        />
-        {fileHtml}
-      </div>
-    );
+    return renderMessage(message, fileHtml);
   }
 
   return (
