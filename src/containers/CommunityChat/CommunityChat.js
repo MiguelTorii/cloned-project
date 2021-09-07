@@ -103,16 +103,19 @@ const CommunityChat = ({
 
   useEffect(() => {
     if (currentCommunityChannel) {
+      // currentCommunityChannel is exists, need to find the channel and select channel
       const filterChannel = currentCommunityChannels.filter(
         (channel) => channel.chat_id === currentCommunityChannel.sid
       );
-
       if (filterChannel.length) {
+        // set select channel
         setSelctedChannel(filterChannel[0]);
       } else {
+        // currentCommunityChannel is not in course channels, set the default first channel
         setSelctedChannel(currentCommunityChannels[0]);
       }
     } else {
+      // currentCommunityChannel is not exists, set the default first channel
       setSelctedChannel(currentCommunityChannels[0]);
       setCurrentCommunityChannel(
         local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel

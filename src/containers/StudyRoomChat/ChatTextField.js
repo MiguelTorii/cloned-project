@@ -158,11 +158,7 @@ const ChatTextField = ({
       }
 
       if (message.trim() !== '' || !!files.length) {
-        let newMessage = message;
-        if (files.length > 0) {
-          newMessage += `File Attachment${JSON.stringify(files)}`;
-        }
-        onSendMessage(newMessage);
+        onSendMessage(message, files);
         setMessage('');
         setFiles([]);
       }
@@ -191,9 +187,10 @@ const ChatTextField = ({
     (event) => {
       if (event.keyCode === 13 && !addNextLine) {
         event.preventDefault();
-        if (message.trim() !== '') {
-          onSendMessage(message);
+        if (message.trim() !== '' || !!files.length) {
+          onSendMessage(message, files);
           setMessage('');
+          setFiles([]);
         }
         if (input) {
           setInput(null);
@@ -214,7 +211,8 @@ const ChatTextField = ({
       onSendInput,
       onSendMessage,
       setInput,
-      setMessage
+      setMessage,
+      files
     ]
   );
 

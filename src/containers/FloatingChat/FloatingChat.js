@@ -85,7 +85,6 @@ type Props = {
   getOnboardingList: Function,
   setCurrentChannel: Function,
   setCurrentCommunityChannel: Function
-  // markAsCompleted: Function
 };
 
 const FloatingChat = ({
@@ -106,7 +105,6 @@ const FloatingChat = ({
   updateTitleAction,
   onboardingListVisible,
   setCurrentChannel,
-  // markAsCompleted,
   getOnboardingList,
   setCurrentChannelSid,
   setCurrentCommunityChannel
@@ -480,7 +478,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
       setCurrentCourse: chatActions.setCurrentCourse,
-      // markAsCompleted: OnboardingActions.markAsCompleted,
       getOnboardingList: OnboardingActions.getOnboardingList,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
