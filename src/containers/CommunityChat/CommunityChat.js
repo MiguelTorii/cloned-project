@@ -65,7 +65,8 @@ const CommunityChat = ({
       mainMessage,
       currentCommunity,
       currentCommunityChannel,
-      messageLoading
+      messageLoading,
+      selectedChannelId
     }
   } = chat;
 
@@ -239,6 +240,7 @@ const CommunityChat = ({
             permission={permission}
             local={local}
             channel={currentCommunityChannel}
+            selectedChannelId={selectedChannelId}
             onCollapseLeft={onCollapseLeft}
             onCollapseRight={onCollapseRight}
             setRightPanel={handleOpenRightPanel}

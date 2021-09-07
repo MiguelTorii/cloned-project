@@ -94,8 +94,8 @@ const CollapseNavbar = ({
     }
 
     if (!channel?.channels) {
-      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel);
       setCurrentChannelSidAction(channel.chat_id);
+      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel);
       setSelctedChannel(channel);
       startMessageLoading(true);
     }
