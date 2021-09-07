@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 import Fuse from 'fuse.js';
 
 import ChatListItem from 'components/CommunityChatListItem';
@@ -20,6 +21,7 @@ import EmptyLeftMenu from 'containers/CommunityChat/EmptyLeftMenu';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import { getTitle } from 'utils/chat';
 import { PERMISSIONS } from 'constants/common';
+
 import useStyles from './_styles/leftMenu';
 
 type Props = {
@@ -67,9 +69,10 @@ const LeftMenu = ({
   const [search, setSearch] = useState();
   const [searchChannels, setSearchChannels] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const expertMode = useSelector((state) => state.user.expertMode);
 
   const switchOneTouchSend = () =>
-    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS);
+    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && expertMode;
 
   const handleCreateNewChannel = () => {
     setIsOpen(true);
