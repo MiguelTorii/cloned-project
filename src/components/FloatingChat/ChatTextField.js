@@ -88,12 +88,8 @@ class ChatTextField extends React.PureComponent<Props, State> {
       event.preventDefault();
       const { onSendMessage } = this.props;
       const { message } = this.state;
-      let newMessage = message;
-      if (files.length > 0) {
-        newMessage += `File Attachment${JSON.stringify(files)}`;
-      }
-      if (newMessage.trim() !== '') {
-        onSendMessage(newMessage);
+      if (message.trim() !== '' || !!files.length) {
+        onSendMessage(message, files);
         this.setState({ message: '', files: [] });
       }
       if (input) {

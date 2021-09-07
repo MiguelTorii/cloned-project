@@ -13,7 +13,7 @@ import Link from '@material-ui/core/Link';
 import OnlineBadge from 'components/OnlineBadge';
 import RoleBadge from 'components/RoleBadge';
 import FileUpload from 'components/FileUpload';
-import { getInitials } from 'utils/chat';
+import { getInitials, bytesToSize } from 'utils/chat';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -178,7 +178,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     return this.linkify(htmlString);
   };
 
-  showMessages = (message, createdAt, isOwn) => {
+  showMessages = (message, createdAt, isOwn, files) => {
     const { classes } = this.props;
     const splitHtmlStringByFiles = message.split('File Attachment');
 
@@ -187,7 +187,12 @@ class ChatMessageDate extends React.PureComponent<Props> {
         splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
       );
       const fileHtml = files.map((file) => (
-        <FileUpload smallChat file={file} />
+        <FileUpload
+          smallChat
+          name={file.name}
+          size={file.size}
+          url={file.url}
+        />
       ));
       splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
       const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
@@ -207,6 +212,40 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 }}
               />
             ) : null}
+            {fileHtml}
+          </div>
+          <Typography className={cx(classes.createdAt)} variant="caption">
+            {createdAt}
+          </Typography>
+        </>
+      );
+    }
+
+    if (files?.length) {
+      const fileHtml = files.map((file) => (
+        <FileUpload
+          name={file.fileName}
+          size={bytesToSize(file.fileSize)}
+          url={file.readUrl}
+          smallChat
+        />
+      ));
+
+      return (
+        <>
+          <div className={cx(classes.bodyWrapper)}>
+            {message && (
+              <Typography
+                className={cx(
+                  classes.body,
+                  isOwn && classes.right,
+                  'ql-editor'
+                )}
+                dangerouslySetInnerHTML={{
+                  __html: this.renderHtmlWithImage(message)
+                }}
+              />
+            )}
             {fileHtml}
           </div>
           <Typography className={cx(classes.createdAt)} variant="caption">
@@ -237,6 +276,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     isVideoNotification,
     firstName,
     lastName,
+    files,
     createdAt,
     isOwn
   }: {
@@ -246,6 +286,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     firstName: string,
     lastName: string,
     createdAt: string,
+    files: object,
     isOwn: boolean
   }) => {
     const { classes, onImageLoaded, onStartVideoCall } = this.props;
@@ -304,7 +345,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       );
     }
 
-    return this.showMessages(message, createdAt, isOwn);
+    return this.showMessages(message, createdAt, isOwn, files);
   };
 
   render() {
@@ -363,6 +404,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 firstName: message.firstName,
                 lastName: message.lastName,
                 createdAt: message.createdAt,
+                files: message?.files,
                 isOwn: Boolean(isOwn)
               })}
             </div>

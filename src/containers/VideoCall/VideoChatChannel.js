@@ -12,7 +12,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { processMessages, getAvatar, fetchAvatars } from 'utils/chat';
+import {
+  processMessages,
+  getAvatar,
+  fetchAvatars,
+  getFileAttributes
+} from 'utils/chat';
 import { sendMessage } from 'api/chat';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
@@ -185,15 +190,18 @@ class VideoChatChannel extends React.Component<Props, State> {
     this.mounted = false;
   };
 
-  handleSendMessage = async (message) => {
+  handleSendMessage = async (message, files) => {
     const {
       channel,
       user: { firstName, lastName }
     } = this.props;
+    const fileAttributes = getFileAttributes(files);
+
     const messageAttributes = {
       firstName,
       lastName,
       imageKey: '',
+      files: fileAttributes,
       isVideoNotification: false
     };
     this.setState({ loading: true });
@@ -270,14 +278,12 @@ class VideoChatChannel extends React.Component<Props, State> {
     try {
       if (paginator.hasPrevPage) {
         paginator.prevPage().then((result) => {
-          this.setState((prevState) => {
-            return {
-              messages: [...result.items, ...prevState.messages],
-              paginator: result,
-              hasMore: !(!result.hasPrevPage || result.items.length < 10),
-              scroll: false
-            };
-          });
+          this.setState((prevState) => ({
+            messages: [...result.items, ...prevState.messages],
+            paginator: result,
+            hasMore: result.hasPrevPage && result.items.length >= 10,
+            scroll: false
+          }));
         });
       }
     } catch (err) {
@@ -379,7 +385,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     });
 
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <div className={classes.root}>
             <div
@@ -431,7 +437,7 @@ class VideoChatChannel extends React.Component<Props, State> {
             onClose={this.handleImageClose}
           />
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 }

@@ -104,10 +104,12 @@ const ChatMessage = ({
     body,
     isVideoNotification,
     firstName,
+    files,
     isOwn
   }: {
     imageKey: string,
     body: string,
+    files: object,
     isVideoNotification: boolean,
     firstName: string,
     isOwn: boolean
@@ -169,6 +171,7 @@ const ChatMessage = ({
     return (
       <AnyFileUpload
         message={message}
+        files={files}
         renderHtmlWithImage={renderHtmlWithImage}
         smallChat
       />
@@ -225,6 +228,7 @@ const ChatMessage = ({
               imageKey: message.imageKey,
               body: message.body,
               isVideoNotification: message.isVideoNotification,
+              files: message?.files,
               firstName: message.firstName,
               isOwn
             })}

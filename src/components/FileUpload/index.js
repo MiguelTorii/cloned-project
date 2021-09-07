@@ -94,11 +94,16 @@ const getFileContent = (extension) => {
 
 const getFileExtension = (filename) => filename.split('.').pop();
 
-const FileUploadContainer = ({ classes, file, width, smallChat = false }) => {
+const FileUploadContainer = ({
+  classes,
+  name,
+  size,
+  url,
+  width,
+  smallChat = false
+}) => {
   const [isDownload, setDownload] = useState(false);
   const [percentage, setPercentage] = useState(0);
-
-  const { name, size, url } = file;
 
   const extension = getFileExtension(name);
   const iconUrl = getIconURL(extension);
