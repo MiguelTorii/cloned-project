@@ -7,19 +7,13 @@
 
 > _Describe the changes in detail_
 
-<br />
-
 ## :movie_camera:  Screenshot or Video
 
 > _Attach a screenshot OR video of the changes made if the UI is affected_
 
-<br />
-
 ## :robot:  How can it be tested?
 
 > _If it cannot be tested explain why._
-
-<br />
 
 - [ ] **Use case 1:** _A brief description of the use case that should be tested_
 - [ ] **Use case 2:** _If the use case requires some complex steps, increase indentation_
