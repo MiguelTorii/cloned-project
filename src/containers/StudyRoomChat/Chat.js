@@ -265,6 +265,7 @@ const StudyRoomChat = ({
                 userId={item.author}
                 name={item.name}
                 messageList={item.messageList}
+                files={files}
                 avatar={get(members, `${item.author}.avatar`)}
                 onImageLoaded={handleScrollToBottom}
                 onStartVideoCall={() => {}}

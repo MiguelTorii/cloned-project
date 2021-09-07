@@ -24,7 +24,12 @@ import InitialAlert from 'containers/CommunityChat/InitialAlert';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
 import LoadImg from 'components/LoadImg';
-import { processMessages, fetchAvatars, getAvatar } from 'utils/chat';
+import {
+  processMessages,
+  fetchAvatars,
+  getAvatar,
+  getFileAttributes
+} from 'utils/chat';
 import LoadingMessageGif from 'assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
 import { PERMISSIONS } from 'constants/common';
@@ -347,7 +352,6 @@ const Main = ({
 
   const onSendMessage = useCallback(
     async (message) => {
-      let newMessage = message;
       setScroll(true);
       if (!channel) return;
 
@@ -356,20 +360,19 @@ const Main = ({
         props: { Content: 'Text', 'Channel SID': channel.sid }
       });
 
-      if (files.length > 0) {
-        newMessage += `File Attachment${JSON.stringify(files)}`;
-      }
+      const fileAttributes = getFileAttributes(files);
 
       const messageAttributes = {
         firstName,
         lastName,
         imageKey: '',
-        isVideoNotification: false
+        isVideoNotification: false,
+        files: fileAttributes
       };
       setLoading(true);
       try {
         await sendMessage({
-          message: newMessage,
+          message,
           ...messageAttributes,
           chatId: channel.sid
         });

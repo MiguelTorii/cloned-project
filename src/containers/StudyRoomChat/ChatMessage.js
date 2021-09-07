@@ -134,6 +134,7 @@ type Props = {
   name?: string,
   avatar?: string,
   isOwn?: boolean,
+  files: Array<Object>,
   messageList: Array<Object>,
   onImageLoaded: Function,
   onStartVideoCall: Function,
@@ -187,7 +188,12 @@ class ChatMessageDate extends React.PureComponent<Props> {
         splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
       );
       const fileHtml = files.map((file) => (
-        <FileUpload smallChat file={file} />
+        <FileUpload
+          smallChat
+          name={file.name}
+          size={file.size}
+          url={file.url}
+        />
       ));
       splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
       const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
@@ -204,6 +210,42 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 )}
                 dangerouslySetInnerHTML={{
                   __html: this.renderHtmlWithImage(html)
+                }}
+              />
+            ) : null}
+            {fileHtml}
+          </div>
+          <Typography className={cx(classes.createdAt)} variant="caption">
+            {createdAt}
+          </Typography>
+        </>
+      );
+    }
+
+    const { files } = this.props;
+
+    if (files?.length) {
+      const fileHtml = files.map((file) => (
+        <FileUpload
+          name={file.fileName}
+          size={file.fileSize}
+          url={file.readUrl}
+          smallChat
+        />
+      ));
+
+      return (
+        <>
+          <div className={cx(classes.bodyWrapper)}>
+            {splitHtmlStringByFiles[0] ? (
+              <Typography
+                className={cx(
+                  classes.body,
+                  isOwn && classes.right,
+                  'ql-editor'
+                )}
+                dangerouslySetInnerHTML={{
+                  __html: this.renderHtmlWithImage(message)
                 }}
               />
             ) : null}

@@ -100,7 +100,8 @@ export const processMessages = ({
     for (const item of items) {
       const { state } = item;
       const { attributes, author, body, sid, timestamp } = state;
-      const { firstName, lastName, imageKey, isVideoNotification } = attributes;
+      const { firstName, lastName, imageKey, isVideoNotification, files } =
+        attributes;
       const date = moment(timestamp).format('MMMM DD');
       const createdAt = moment(timestamp).format('h:mm a');
       if (data.length === 0) {
@@ -120,12 +121,14 @@ export const processMessages = ({
           name: `${firstName} ${lastName}`,
           author,
           body: '',
+          files,
           imageKey: '',
           date,
           messageList: [
             {
               sid,
               body,
+              files,
               imageKey,
               isVideoNotification,
               firstName,
@@ -151,6 +154,7 @@ export const processMessages = ({
           name: `${firstName} ${lastName}`,
           author,
           body: '',
+          files,
           imageKey: '',
           date,
           messageList: [
@@ -159,6 +163,7 @@ export const processMessages = ({
               body,
               imageKey,
               isVideoNotification,
+              files,
               firstName,
               lastName,
               createdAt
@@ -173,6 +178,7 @@ export const processMessages = ({
             body,
             imageKey,
             isVideoNotification,
+            files,
             firstName,
             lastName,
             createdAt
@@ -183,6 +189,7 @@ export const processMessages = ({
             id: `${author}-${uuidv4()}`,
             name: `${firstName} ${lastName}`,
             author,
+            files,
             body: '',
             imageKey: '',
             date,
@@ -191,6 +198,7 @@ export const processMessages = ({
                 sid,
                 body,
                 imageKey,
+                files,
                 isVideoNotification,
                 firstName,
                 lastName,
@@ -217,6 +225,30 @@ export const processMessages = ({
     return [];
   }
 };
+
+const getFileExtension = (filename) => filename.split('.').pop();
+
+const sizeToByte = (size) => {
+  let byte = 0;
+  if (size.includes('KB')) {
+    byte = parseInt(size.split('KB')[0], 10);
+  }
+
+  if (size.includes('MB')) {
+    byte = parseInt(size.split('MB')[0], 10);
+  } else {
+    byte = parseInt(size.split('Bytes')[0], 10);
+  }
+  return byte;
+};
+
+export const getFileAttributes = (files) =>
+  files.map((file) => ({
+    file_name: file.name,
+    file_size: sizeToByte(file.size),
+    file_extension: getFileExtension(file.name),
+    file_read_url: file.url
+  }));
 
 export const getInitials = (name: string = '') => {
   const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';

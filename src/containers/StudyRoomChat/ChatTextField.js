@@ -158,11 +158,7 @@ const ChatTextField = ({
       }
 
       if (message.trim() !== '' || !!files.length) {
-        let newMessage = message;
-        if (files.length > 0) {
-          newMessage += `File Attachment${JSON.stringify(files)}`;
-        }
-        onSendMessage(newMessage);
+        onSendMessage(message, files);
         setMessage('');
         setFiles([]);
       }

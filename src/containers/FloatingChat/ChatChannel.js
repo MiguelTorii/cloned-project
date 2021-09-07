@@ -10,7 +10,13 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getTitle, fetchAvatars, processMessages, getAvatar } from 'utils/chat';
+import {
+  getTitle,
+  fetchAvatars,
+  processMessages,
+  getAvatar,
+  getFileAttributes
+} from 'utils/chat';
 // import FormControl from '@material-ui/core/FormControl';
 // import Input from '@material-ui/core/Input';
 import CreateChatChannelInput from 'components/CreateChatChannelInput';
@@ -263,7 +269,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleClearCreateMessage = () => this.setState({ createMessage: null });
 
-  handleSendMessage = async (message) => {
+  handleSendMessage = async (message, files) => {
     const {
       channel,
       user: {
@@ -271,9 +277,11 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onSend
     } = this.props;
+    const fileAttributes = getFileAttributes(files);
     const messageAttributes = {
       firstName,
       lastName,
+      files: fileAttributes,
       imageKey: '',
       isVideoNotification: false,
       source: 'little_chat'

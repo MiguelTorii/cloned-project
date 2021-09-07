@@ -200,10 +200,12 @@ const ChatMessage = ({
     imageKey,
     body,
     isVideoNotification,
+    files,
     firstName
   }: {
     imageKey: string,
     body: string,
+    files: object,
     isVideoNotification: boolean,
     firstName: string
   }) => {
@@ -262,6 +264,7 @@ const ChatMessage = ({
     }
     return (
       <AnyFileUpload
+        files={files}
         message={message}
         renderHtmlWithImage={renderHtmlWithImage}
       />
@@ -367,6 +370,7 @@ const ChatMessage = ({
             {renderItem({
               imageKey: message.imageKey,
               body: message.body,
+              files: message?.files,
               isVideoNotification: message.isVideoNotification,
               firstName: message.firstName,
               createdAt: message.createdAt
