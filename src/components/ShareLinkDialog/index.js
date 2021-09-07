@@ -5,13 +5,7 @@ import useStyles from 'components/_styles/ShareLinkDialog';
 import ShareLink from 'components/ShareLinkDialog/ShareLink';
 import Dialog from 'components/Dialog';
 
-const ShareLinkDialog = ({
-  open,
-  channelName,
-  handleClose,
-  localChannel,
-  isGroupChannel
-}) => {
+const ShareLinkDialog = ({ open, handleClose, localChannel }) => {
   const classes = useStyles();
 
   return (
@@ -35,10 +29,9 @@ const ShareLinkDialog = ({
         <Typography variant="body1">
           <span role="img" aria-label="Two hands">
             🙌
-          </span>{' '}
-          &nbsp; Need to invite a student to this chat? Invite them to your{' '}
-          <b>{channelName}</b> {isGroupChannel ? '' : 'group '}chat by sharing
-          the following link.
+          </span>
+          &nbsp; Need to invite someone to this chat? Invite them by sharing the
+          following link
         </Typography>
 
         <ShareLink shareLink={localChannel.shareLink} />
