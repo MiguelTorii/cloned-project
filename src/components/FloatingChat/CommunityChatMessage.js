@@ -26,7 +26,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import RoleBadge from 'components/RoleBadge';
 import BlockMemberModal from 'components/BlockMemberModal';
 import OnlineBadge from 'components/OnlineBadge';
-import FileUpload from 'components/FileUpload';
 import StudyRoomReport from 'components/StudyRoomReport';
 import AnyFileUpload from 'components/AnyFileUpload';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
@@ -41,7 +40,6 @@ type Props = {
   userId: string,
   name: string,
   avatar: string,
-  isOwn: boolean,
   isOnline: boolean,
   role: string,
   date: string,
@@ -61,7 +59,6 @@ const ChatMessage = ({
   role,
   date,
   avatar,
-  isOwn,
   isOnline,
   currentUserId,
   members,

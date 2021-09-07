@@ -134,7 +134,6 @@ type Props = {
   name?: string,
   avatar?: string,
   isOwn?: boolean,
-  files: Array<Object>,
   messageList: Array<Object>,
   onImageLoaded: Function,
   onStartVideoCall: Function,
@@ -179,7 +178,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     return this.linkify(htmlString);
   };
 
-  showMessages = (message, createdAt, isOwn) => {
+  showMessages = (message, createdAt, isOwn, files) => {
     const { classes } = this.props;
     const splitHtmlStringByFiles = message.split('File Attachment');
 
@@ -222,9 +221,10 @@ class ChatMessageDate extends React.PureComponent<Props> {
       );
     }
 
-    const { files } = this.props;
-
     if (files?.length) {
+      console.log('-----files-------');
+      console.log(files);
+      console.log(message);
       const fileHtml = files.map((file) => (
         <FileUpload
           name={file.fileName}
@@ -237,7 +237,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       return (
         <>
           <div className={cx(classes.bodyWrapper)}>
-            {splitHtmlStringByFiles[0] ? (
+            {message ? (
               <Typography
                 className={cx(
                   classes.body,
@@ -279,6 +279,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     isVideoNotification,
     firstName,
     lastName,
+    files,
     createdAt,
     isOwn
   }: {
@@ -288,6 +289,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
     firstName: string,
     lastName: string,
     createdAt: string,
+    files: object,
     isOwn: boolean
   }) => {
     const { classes, onImageLoaded, onStartVideoCall } = this.props;
@@ -346,7 +348,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
       );
     }
 
-    return this.showMessages(message, createdAt, isOwn);
+    return this.showMessages(message, createdAt, isOwn, files);
   };
 
   render() {
@@ -405,6 +407,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 firstName: message.firstName,
                 lastName: message.lastName,
                 createdAt: message.createdAt,
+                files: message?.files,
                 isOwn: Boolean(isOwn)
               })}
             </div>

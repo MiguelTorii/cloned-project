@@ -45,9 +45,11 @@ class ChatMessage extends React.PureComponent<Props> {
     // eslint-disable-next-line
     const urlRegex =
       /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-    return text.replace(urlRegex, (url) => {
-      return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
-    });
+    return text.replace(
+      urlRegex,
+      (url) =>
+        `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
+    );
   };
 
   handleImageClick = (url) => () => {

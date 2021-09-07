@@ -16,7 +16,7 @@ import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import ChatTextField from 'containers/StudyRoomChat/ChatTextField';
 import Lightbox from 'react-images';
-import { processMessages, bytesToSize } from 'utils/chat';
+import { processMessages, bytesToSize, getFileAttributes } from 'utils/chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -166,7 +166,7 @@ const StudyRoomChat = ({
   }, [scroll]);
 
   const onSendMessage = useCallback(
-    async (message) => {
+    async (message, files) => {
       setScroll(true);
       if (!channel) return;
 
@@ -175,11 +175,14 @@ const StudyRoomChat = ({
         props: { Content: 'Text', 'Channel SID': channel.sid }
       });
 
+      const fileAttributes = getFileAttributes(files);
+
       const messageAttributes = {
         firstName,
         lastName,
         imageKey: '',
-        isVideoNotification: false
+        isVideoNotification: false,
+        files: fileAttributes
       };
       setLoading(true);
       try {
@@ -265,7 +268,6 @@ const StudyRoomChat = ({
                 userId={item.author}
                 name={item.name}
                 messageList={item.messageList}
-                files={files}
                 avatar={get(members, `${item.author}.avatar`)}
                 onImageLoaded={handleScrollToBottom}
                 onStartVideoCall={() => {}}
