@@ -41,6 +41,7 @@ import commentSvg from '../../assets/svg/comment.svg';
 
 import { styles } from '../_styles/PostItem/PostItemComment';
 import OnlineBadge from '../OnlineBadge';
+import HoverPopup from '../HoverPopup';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -329,13 +330,15 @@ class PostItemComment extends React.PureComponent<Props, State> {
       <>
         <div className={cx(classes.container, isReply && classes.reply)}>
           <Link component={MyLink} href={`/profile/${ownerId}`}>
-            <OnlineBadge
-              isOnline={isOnline}
-              bgColorPath="circleIn.palette.feedBackground"
-              fromChat
-            >
-              <Avatar src={profileImageUrl}>{initials}</Avatar>
-            </OnlineBadge>
+            <HoverPopup userId={ownerId}>
+              <OnlineBadge
+                isOnline={isOnline}
+                bgColorPath="circleIn.palette.feedBackground"
+                fromChat
+              >
+                <Avatar src={profileImageUrl}>{initials}</Avatar>
+              </OnlineBadge>
+            </HoverPopup>
           </Link>
           <div className={classes.info}>
             {isEditing ? (

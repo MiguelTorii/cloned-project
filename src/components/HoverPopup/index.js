@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Popover from '@material-ui/core/Popover';
@@ -32,12 +32,12 @@ const HoverPopup = ({
   leftAligned = false,
   children = null,
   userId,
-  member,
   selectedCourse = null,
   setSelectedCourse,
   ...props
 }) => {
   const classes = useStyles();
+  const myUserId = useSelector((state) => state.user.data.userId);
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -47,17 +47,19 @@ const HoverPopup = ({
   const [chatLoading, setChatLoading] = useState(false);
   const popoverContainer = useRef(null);
   const postFeedItemContainer = useRef(null);
+  const [profile, setProfile] = useState({});
 
   const fetchUserInfo = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      if (member.userId) {
-        const { about } = await getUserProfile({ userId: member.userId });
+      if (userId) {
+        const { about, userProfile } = await getUserProfile({ userId });
         const idx = _.findIndex(about, (item) => item.id === 6);
         const userbio = idx < 0 ? null : about[idx].answer;
         setBio(userbio);
+        setProfile(userProfile);
       }
       setIsLoading(false);
     } catch (e) {}
@@ -73,7 +75,7 @@ const HoverPopup = ({
   };
 
   const keepPopoverOpen = () => {
-    if (userId !== member.userId) setOpen(true);
+    if (userId !== myUserId) setOpen(true);
   };
 
   const mouseEnter = (event) => {
@@ -101,7 +103,7 @@ const HoverPopup = ({
   };
 
   const onTimeout = () => {
-    if (userId !== member.userId) setOpen(true);
+    if (userId !== myUserId) setOpen(true);
   };
 
   useEffect(() => {
@@ -113,7 +115,6 @@ const HoverPopup = ({
 
   const onStartChat = () => {
     const { openChannelWithEntity } = props;
-    const { userId, firstname, lastname } = member;
 
     setChatLoading(true);
     if (selectedCourse && selectedCourse.id !== 'chat') {
@@ -121,8 +122,8 @@ const HoverPopup = ({
     }
     openChannelWithEntity({
       entityId: Number(userId),
-      entityFirstName: firstname,
-      entityLastName: lastname,
+      entityFirstName: profile.firstName,
+      entityLastName: profile.lastName,
       entityVideo: false,
       fullscreen: true
     });
@@ -133,13 +134,12 @@ const HoverPopup = ({
 
   const onStartVideo = () => {
     const { openChannelWithEntity } = props;
-    const { userId, firstname, lastname } = member;
 
     setChatLoading(true);
     openChannelWithEntity({
       entityId: Number(userId),
-      entityFirstName: firstname,
-      entityLastName: lastname,
+      entityFirstName: profile.firstName,
+      entityLastName: profile.lastName,
       entityVideo: true,
       fullscreen: true
     });
@@ -148,7 +148,7 @@ const HoverPopup = ({
     }, 2000);
   };
 
-  const fullName = `${member.firstname} ${member.lastname}`;
+  const fullName = `${profile.firstName} ${profile.lastName}`;
 
   return (
     <>
@@ -191,16 +191,17 @@ const HoverPopup = ({
           {/* <div className={classes.overviewContainer}> */}
           <div className={classes.hasBio}>
             <OnlineBadge
-              isOnline={member.isOnline}
+              isOnline={profile.isOnline}
               bgColorPath="circleIn.palette.primaryBackground"
               fromChat={false}
             >
               <Avatar
                 alt={fullName}
-                src={member.image}
+                src={profile.userProfileUrl}
                 className={classes.overviewAvatar}
               >
-                {getInitials(fullName)}
+                {/* If name does not exist, we recognize it as an anonymous student. */}
+                {getInitials(fullName) || 'AS'}
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>

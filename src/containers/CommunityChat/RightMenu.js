@@ -81,9 +81,8 @@ const RightMenu = ({
             const fullName = `${m.firstname} ${m.lastname}`;
             return (
               <HoverPopup
-                userId={userId}
+                userId={m.userId}
                 key={m.userId}
-                member={m}
                 setSelectedCourse={setSelectedCourse}
               >
                 <ListItem
