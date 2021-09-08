@@ -23,6 +23,7 @@ import { getUserProfile } from '../../api/user';
 import * as chatActions from '../../actions/chat';
 
 import useStyles from '../_styles/HoverPopup';
+import { anonymousStudentInitials } from '../../constants/common';
 
 const HoverPopup = ({
   // userId = null,
@@ -201,7 +202,7 @@ const HoverPopup = ({
                 className={classes.overviewAvatar}
               >
                 {/* If name does not exist, we recognize it as an anonymous student. */}
-                {getInitials(fullName) || 'AS'}
+                {getInitials(fullName) || anonymousStudentInitials}
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>
