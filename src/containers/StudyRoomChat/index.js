@@ -30,7 +30,9 @@ const styles = (theme) => ({
     bottom: 145,
     right: 60,
     width: 420,
-    height: 640,
+    // height: 640,
+    // temporarily
+    height: 600,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     borderRadius: 20,
     border: '1px solid #FFFFFF',
