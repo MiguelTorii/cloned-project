@@ -16,8 +16,8 @@ import Box from '@material-ui/core/Box';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
-// import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
+// import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
 import AttachFile from 'components/FileUpload/AttachFile';
 import { bytesToSize } from 'utils/chat';
 import * as notificationsActions from '../../actions/notifications';
@@ -222,12 +222,13 @@ class ChatTextField extends React.PureComponent<Props, State> {
                 className={classes.iconButton}
                 aria-label="Insert Photo"
               >
-                {/* <FloatChatInsertPhotoIcon /> */}
-                <PaperClip />
+                <FloatChatInsertPhotoIcon />
+                {/* <PaperClip /> */}
               </IconButton>
             )}
             <input
-              accept="*/*"
+              // accept="*/*"
+              accept="image/*"
               className={classes.input}
               ref={(fileInput) => {
                 this.fileInput = fileInput;
