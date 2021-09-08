@@ -11,15 +11,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
+// import Tooltip from '@material-ui/core/Tooltip';
 import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import ChatTextField from 'containers/StudyRoomChat/ChatTextField';
 import Lightbox from 'react-images';
 import { processMessages, bytesToSize, getFileAttributes } from 'utils/chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+// import Button from '@material-ui/core/Button';
+// import Box from '@material-ui/core/Box';
 import ChatMessage from 'containers/StudyRoomChat/ChatMessage';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import uuidv4 from 'uuid/v4';
@@ -28,7 +28,7 @@ import { logEvent } from 'api/analytics';
 import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
-import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+// import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary';
@@ -457,7 +457,7 @@ const StudyRoomChat = ({
         onChange={handleInputChange}
         type="file"
       />
-      <Box display="flex" alignItems="center" justifyContent="flex-end">
+      {/* <Box display="flex" alignItems="center" justifyContent="flex-end">
         <Tooltip
           title="Upload File (max limit: 40 MB)"
           aria-label="file"
@@ -473,7 +473,7 @@ const StudyRoomChat = ({
             Upload &nbsp; <PaperClip />
           </Button>
         </Tooltip>
-      </Box>
+      </Box> */}
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">

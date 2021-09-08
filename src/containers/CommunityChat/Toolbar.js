@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import EmojiSelector from 'components/EmojiSelector';
-import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+// import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
 
 const Link = Quill.import('formats/link');
@@ -111,6 +111,20 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
+            title="Image"
+            aria-label="image"
+            arrow
+            placement="top"
+            classes={{
+              tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
+              popper: classes.popper
+            }}
+          >
+            <button type="button" className="ql-image" />
+          </Tooltip>
+          {/* temporarily */}
+          {/* <Tooltip
             title="Upload File (max limit: 40 MB)"
             aria-label="file"
             arrow
@@ -124,7 +138,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" onClick={handleUploadFile}>
               <PaperClip />
             </button>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip
             title="EmoJi (⌘J)"
             aria-label="emoji"
@@ -198,6 +212,20 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" className="ql-underline" />
           </Tooltip>
           <Tooltip
+            title="Image"
+            aria-label="image"
+            arrow
+            placement="top"
+            classes={{
+              tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
+              popper: classes.popper
+            }}
+          >
+            <button type="button" className="ql-image" />
+          </Tooltip>
+          {/* temporarily */}
+          {/* <Tooltip
             title="Upload File (max limit: 40 MB)"
             aria-label="file"
             arrow
@@ -211,7 +239,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
             <button type="button" onClick={handleUploadFile}>
               <PaperClip />
             </button>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip
             title="EmoJi (⌘J)"
             aria-label="emoji"
