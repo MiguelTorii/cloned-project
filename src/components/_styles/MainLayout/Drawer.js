@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   newItem: {
     width: 'auto',
+    flexShrink: 0,
     margin: theme.spacing(),
     padding: 0,
     paddingLeft: theme.spacing(3),
@@ -49,6 +50,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   otherPath: {
     width: 'auto',
+    flexShrink: 0,
     borderRadius: theme.spacing(6),
     margin: theme.spacing(1, 2),
     paddingTop: 0,
@@ -86,6 +88,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   lastItem: {
     width: 'auto',
+    flexShrink: 0,
     borderRadius: theme.spacing(6),
     margin: theme.spacing(1, 2),
     paddingTop: 0,
@@ -126,6 +129,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   item: {
     width: 'auto',
+    flexShrink: 0,
     borderRadius: theme.spacing(6),
     paddingTop: 0,
     paddingBottom: 0,
