@@ -18,7 +18,6 @@ import { Typography } from '@material-ui/core';
 
 import cx from 'classnames';
 import _ from 'lodash';
-import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
 import { getUserProfile } from '../../api/user';
 import * as chatActions from '../../actions/chat';
 
@@ -26,15 +25,14 @@ import useStyles from '../_styles/HoverPopup';
 import { anonymousStudentInitials } from '../../constants/common';
 
 const HoverPopup = ({
-  // userId = null,
-  // api = null,
-  // userInfoTemp = null,
-  // getUserStatus = null,
   leftAligned = false,
   children = null,
   userId,
-  selectedCourse = null,
   setSelectedCourse,
+  setCurrentCourse,
+  setCurrentChannel,
+  selectCurrentCommunity,
+  setCurrentChannelSid,
   ...props
 }) => {
   const classes = useStyles();
@@ -114,13 +112,13 @@ const HoverPopup = ({
     };
   }, [hover]);
 
-  const onStartChat = () => {
+  const onStartChat = async () => {
     const { openChannelWithEntity } = props;
-
     setChatLoading(true);
-    if (selectedCourse && selectedCourse.id !== 'chat') {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-    }
+    setCurrentCourse('chat');
+    setCurrentChannelSid('');
+    setCurrentChannel(null);
+
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: profile.firstName,
@@ -258,7 +256,11 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      openChannelWithEntity: chatActions.openChannelWithEntity
+      openChannelWithEntity: chatActions.openChannelWithEntity,
+      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentChannel: chatActions.setCurrentChannel,
+      setCurrentChannelSid: chatActions.setCurrentChannelSid,
+      selectCurrentCommunity: chatActions.selectCurrentCommunity
     },
     dispatch
   );
