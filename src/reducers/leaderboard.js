@@ -90,7 +90,8 @@ const defaultState = {
         logo: '',
         text: '',
         eligibility: '',
-        eligibilitySubtitle: ''
+        eligibilitySubtitle: '',
+        mvpCount: ''
       }
     },
     grand: {

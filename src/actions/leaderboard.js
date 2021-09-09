@@ -33,7 +33,8 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
         logo_url: logo,
         grand_prize_text: text,
         eligibility: eligibilityGrand,
-        eligibility_subtitle
+        eligibility_subtitle,
+        mvp_count: mvpCount
       }
     } = res;
     const camelSlots = slots.map((s) => ({
@@ -62,7 +63,8 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
         logo,
         text,
         eligibility: eligibilityGrand,
-        eligibilitySubtitle: eligibility_subtitle
+        eligibilitySubtitle: eligibility_subtitle,
+        mvpCount
       }
     };
 
