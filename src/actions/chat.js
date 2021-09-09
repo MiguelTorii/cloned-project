@@ -298,8 +298,10 @@ export const setCurrentChannel =
   (currentChannel) => async (dispatch: Dispatch) => {
     if (currentChannel) {
       localStorage.setItem('currentDMChannel', currentChannel.sid);
-      const members = await fetchMembers(currentChannel.sid);
-      const shareLink = await getShareLink(currentChannel.sid);
+      const [members, shareLink] = await Promise.all([
+        fetchMembers(currentChannel.sid),
+        getShareLink(currentChannel.sid)
+      ]);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
       dispatch(setCurrentChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
@@ -435,8 +437,10 @@ export const openChannelWithEntity =
 
       if (channel) {
         localStorage.setItem('currentDMChannel', channel.sid);
-        const members = await fetchMembers(channel.sid);
-        const shareLink = await getShareLink(channel.sid);
+        const [members, shareLink] = await Promise.all([
+          fetchMembers(channel.sid),
+          getShareLink(channel.sid)
+        ]);
         dispatch(updateMembers({ members, channelId: channel.sid }));
         dispatch(updateShareLink({ shareLink, channelId: channel.sid }));
         dispatch(setCurrentChannelAction({ currentChannel: channel }));
