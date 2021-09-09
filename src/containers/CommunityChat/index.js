@@ -145,23 +145,27 @@ const ChatPage = ({
   useEffect(() => {
     if (oneTouchSendOpen) {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (currentCommunity && !!communityList.length) {
+    } else if (currentCourseId === 'chat' || !currentCourseId) {
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else if (
+      currentCommunity &&
+      !!communityList.length &&
+      currentCommunity.id !== 'chat'
+    ) {
       const targetCourse = communityList.filter(
         (course) => course.community.id === currentCommunity.id
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
-    } else if (currentCourseId && !!communityList.length) {
+    } else if (
+      currentCourseId &&
+      !!communityList.length &&
+      currentCourseId !== 'chat'
+    ) {
       const targetCourseChannel = communityList.filter(
         (community) => community.community.id === Number(currentCourseId)
       );
-      if (targetCourseChannel.length) {
+      if (targetCourseChannel.length)
         setSelectedCourse(targetCourseChannel[0].community);
-      } else {
-        setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-      }
-    } else {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-      setCurrentCourse('chat');
     }
   }, [
     currentCourseId,

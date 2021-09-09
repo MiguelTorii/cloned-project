@@ -201,7 +201,7 @@ const LeaderBoardTabs = ({
           </div>
           <div className={classes.days}>
             MVPs earned:
-            <span className={classes.count}>{me.score}</span>
+            <span className={classes.count}>{leaderboard.data.general.grand.mvpCount}</span>
           </div>
           <div style={{ marginTop: 24 }}>
             <div style={{ display: 'flex' }}>

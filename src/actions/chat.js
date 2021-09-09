@@ -303,11 +303,16 @@ export const setCurrentChannel =
   (currentChannel) => async (dispatch: Dispatch) => {
     if (currentChannel) {
       localStorage.setItem('currentDMChannel', currentChannel.sid);
-      const members = await fetchMembers(currentChannel.sid);
-      const shareLink = await getShareLink(currentChannel.sid);
+      const [members, shareLink] = await Promise.all([
+        fetchMembers(currentChannel.sid),
+        getShareLink(currentChannel.sid)
+      ]);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
       dispatch(setCurrentChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
+    } else {
+      localStorage.removeItem('currentDMChannel');
+      dispatch(setCurrentChannelAction({ currentChannel: null }));
     }
   };
 
@@ -371,9 +376,7 @@ export const startMessageLoading = (loading) => async (dispatch: Dispatch) => {
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
-    dispatch(startLoading());
     const local = await getChannels();
-
     if (
       Object.keys(local).length > 0 &&
       Object.keys(currentLocal).length > 0 &&
@@ -408,15 +411,13 @@ export const openChannelWithEntity =
     entityFirstName,
     entityLastName,
     entityVideo,
-    fullscreen = false,
-    notRegistered = false
+    fullscreen = false
   }: {
     entityId: string,
     entityFirstName: string,
     entityLastName: string,
     entityVideo: boolean,
-    fullscreen: boolean,
-    notRegistered: boolean
+    fullscreen: boolean
   }) =>
   async (dispatch: Dispatch, getState: Function) => {
     if (!fullscreen) {
@@ -437,36 +438,21 @@ export const openChannelWithEntity =
       if (isNewChat) await initLocalChannels(dispatch);
       const {
         chat: {
-          data: { local }
+          data: { client }
         }
       } = getState();
-      const currentChannel = local[chatId];
-      if (currentChannel) {
-        dispatch(
-          setCurrentChannelAction({
-            currentChannel: currentChannel?.twilioChannel
-          })
-        );
-        if (notRegistered) {
-          dispatch(
-            setMainMessageAction({
-              mainMessage: "Hey! Let's connect and study together!"
-            })
-          );
-        } else {
-          const messageAttributes = {
-            entityFirstName,
-            entityLastName,
-            imageKey: '',
-            isVideoNotification: false,
-            source: 'big_chat'
-          };
-          await sendMessage({
-            message: "Hi! Let's chat and study together here!",
-            ...messageAttributes,
-            chatId
-          });
-        }
+
+      const channel = await client.getChannelBySid(chatId);
+
+      if (channel) {
+        localStorage.setItem('currentDMChannel', channel.sid);
+        const [members, shareLink] = await Promise.all([
+          fetchMembers(channel.sid),
+          getShareLink(channel.sid)
+        ]);
+        dispatch(updateMembers({ members, channelId: channel.sid }));
+        dispatch(updateShareLink({ shareLink, channelId: channel.sid }));
+        dispatch(setCurrentChannelAction({ currentChannel: channel }));
         if (entityVideo) {
           dispatch(push(`/video-call/${chatId}`));
         } else {

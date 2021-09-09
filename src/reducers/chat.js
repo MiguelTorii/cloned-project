@@ -64,7 +64,7 @@ const defaultState = {
     currentCommunity: null,
     online: false,
     newChannel: false,
-    currentCourseId: 'chat',
+    currentCourseId: null,
     newMessage: null,
     oneTouchSendOpen: false,
     messageLoading: false
