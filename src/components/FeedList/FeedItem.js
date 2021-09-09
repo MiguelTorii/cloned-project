@@ -55,6 +55,7 @@ import { getPastClassIds } from 'utils/helpers';
 
 import useStyles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge';
+import HoverPopup from '../HoverPopup';
 
 const FeedTypes = {
   flashcards: {
@@ -481,37 +482,41 @@ const FeedItem = ({
             </Grid>
           )}
           <Grid item>
-            <ButtonBase className={classes.avatar} onClick={handleUserClick}>
-              <OnlineBadge
-                isOnline={data.isOnline}
-                bgColorPath="circleIn.palette.feedBackground"
-                fromChat
-              >
-                <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                  {initials}
-                </Avatar>
-              </OnlineBadge>
-            </ButtonBase>
-          </Grid>
-          <Grid item>
-            <CardActionArea
-              classes={{
-                focusHighlight: classes.cardHighlight
-              }}
-              onClick={handleUserClick}
-            >
+            <HoverPopup userId={data.userId}>
               <Box display="flex" alignItems="center">
-                <Typography
-                  className={classes.titleText}
-                  component="div"
-                  variant="h6"
-                  noWrap
-                >
-                  {data.name}
-                </Typography>
-                {data.role && <RoleBadge text={data.role} />}
+                <ButtonBase className={classes.avatar} onClick={handleUserClick}>
+                  <OnlineBadge
+                    isOnline={data.isOnline}
+                    bgColorPath="circleIn.palette.feedBackground"
+                    fromChat
+                  >
+                    <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                      {initials}
+                    </Avatar>
+                  </OnlineBadge>
+                </ButtonBase>
+                <Box marginLeft={1}>
+                  <CardActionArea
+                    classes={{
+                      focusHighlight: classes.cardHighlight
+                    }}
+                    onClick={handleUserClick}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Typography
+                        className={classes.titleText}
+                        component="div"
+                        variant="h6"
+                        noWrap
+                      >
+                        {data.name}
+                      </Typography>
+                      {data.role && <RoleBadge text={data.role} />}
+                    </Box>
+                  </CardActionArea>
+                </Box>
               </Box>
-            </CardActionArea>
+            </HoverPopup>
           </Grid>
           <Grid item>
             <Box ml={2}>

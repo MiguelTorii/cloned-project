@@ -36,6 +36,7 @@ import { getInitials } from 'utils/chat';
 import { getPastClassIds } from 'utils/helpers';
 import _ from 'lodash';
 import { styles } from '../_styles/PostItem/PostItemHeader';
+import HoverPopup from '../HoverPopup';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
@@ -256,9 +257,11 @@ class PostItemHeader extends React.PureComponent<Props, State> {
             component={MyLink}
             href={`/profile/${userId}`}
           >
-            <Avatar src={userProfileUrl} className={classes.bigAvatar}>
-              {initials}
-            </Avatar>
+            <HoverPopup userId={userId}>
+              <Avatar src={userProfileUrl} className={classes.bigAvatar}>
+                {initials}
+              </Avatar>
+            </HoverPopup>
           </Link>
           <div className={classes.userInfo}>
             <Box display="flex" alignItems="center">

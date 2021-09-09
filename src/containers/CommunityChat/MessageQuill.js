@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
+import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 import { bytesToSize } from 'utils/chat';
@@ -11,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 
 import AttachFile from 'components/FileUpload/AttachFile';
 import EditorToolbar, { formats } from './Toolbar';
+import { getPresignedURL } from '../../api/media';
 import { uploadMedia } from '../../actions/user';
 
 import styles from './_styles/messageQuill';
@@ -89,36 +91,6 @@ const MessageQuill = ({
   useEffect(() => {
     if (quill) quill.focus();
   }, [focusMessageBox, quill]);
-
-  const selectLocalImage = useCallback(() => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.onchange = async () => {
-      setLoading(true);
-      try {
-        const file = input.files[0];
-        const range = quill.getSelection(true);
-        const result = await uploadMedia(userId, 1, file);
-        const { readUrl } = result;
-
-        quill.insertEmbed(range.index, 'image', readUrl);
-        quill.insertText(range.index + 1, '\n');
-        setLoading(false);
-      } catch (error) {
-        quill.enable(true);
-        setLoading(false);
-      }
-    };
-  }, [quill, userId]);
-
-  useEffect(() => {
-    if (quill) {
-      quill.getModule('toolbar').addHandler('image', selectLocalImage);
-    }
-  }, [quill, selectLocalImage]);
 
   useEffect(() => {
     if (quill) {
@@ -211,8 +183,6 @@ const MessageQuill = ({
   const handleUploadFile = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
-    // temporarily
-    input.setAttribute('accept', 'image/*');
     input.click();
 
     input.onchange = async () => {

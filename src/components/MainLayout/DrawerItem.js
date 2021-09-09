@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import { useStyles } from '../_styles/MainLayout/DrawerItem';
+import clsx from 'clsx';
 
 const DrawerItem = ({
   onClick = () => {},
@@ -34,7 +35,7 @@ const DrawerItem = ({
       link={link}
       onMouseOver={onHover(true)}
       onMouseLeave={onHover(false)}
-      className={listItemClass}
+      className={clsx(classes.root, listItemClass)}
     >
       <ListItemIcon className={classes.menuIcon}>
         {hover || pathname === link ? OnIcon : OffIcon}

@@ -145,6 +145,7 @@ export const CAMPAIGN_IDS = {
 };
 
 export const MEMBER_ROLES = {
+  STUDENT: 'Student',
   TUTOR: 'Tutor',
   ORIENTATION_LEADER: 'Orientation Leader',
   EXPERT: 'Expert'

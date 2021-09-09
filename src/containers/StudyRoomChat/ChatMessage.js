@@ -14,6 +14,7 @@ import OnlineBadge from 'components/OnlineBadge';
 import RoleBadge from 'components/RoleBadge';
 import FileUpload from 'components/FileUpload';
 import { getInitials, bytesToSize } from 'utils/chat';
+import { MEMBER_ROLES } from '../../constants/app';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -392,7 +393,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               >
                 {name}
               </Link>
-              {role && <RoleBadge text={role} />}
+              {role && role !== MEMBER_ROLES.STUDENT && <RoleBadge text={role} />}
             </Typography>
           )}
           {messageList.map((message) => (

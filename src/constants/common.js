@@ -119,3 +119,5 @@ export const fileContent = {
   'code-default': 'Code',
   'other-default': 'File'
 };
+
+export const anonymousStudentInitials = 'AS';
