@@ -23,7 +23,7 @@ import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatTextField from '../../components/FloatingChat/ChatTextField';
 import type { User } from '../../types/models';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { logEvent } from '../../api/analytics';
 import { getPresignedURL } from '../../api/media';
 

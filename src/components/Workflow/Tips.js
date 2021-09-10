@@ -1,12 +1,12 @@
 import React from 'react';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TipsAnimation from 'assets/gif/tips.gif';
 import tipsBubbles from 'assets/svg/tipsBubbles.svg';
 import tipsCards from 'assets/svg/tipsCards.svg';
 import tipsPad from 'assets/svg/tipsPad.svg';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import { useStyles } from '../_styles/Workflow/Tips';
 
 const Tips = ({ open, close }) => {

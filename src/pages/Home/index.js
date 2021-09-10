@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, Grid, Hidden } from '@material-ui/core';
-import Layout from '../../containers/Layout';
+import Layout from '../../containers/Layout/Layout';
 import withRoot from '../../withRoot';
-import HomeGreetings from '../../containers/HomeGreetings';
-import WeeklyGoals from '../../containers/WeeklyGoals';
-import ClassmateQuestions from '../../containers/ClassmateQuestions';
+import HomeGreetings from '../../containers/HomeGreetings/HomeGreetings';
+import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
+import ClassmateQuestions from '../../containers/ClassmateQuestions/ClassmateQuestions';
 import useStyles from './styles';
-import MiniWorkflows from '../../containers/MiniWorkflows';
+import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
 const Home = () => {
   const classes = useStyles();

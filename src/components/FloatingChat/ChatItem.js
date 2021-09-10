@@ -18,7 +18,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { ReactComponent as VideoCameraIcon } from 'assets/svg/float_chat_camera.svg';
 import { ReactComponent as ExpandChatIcon } from 'assets/svg/float_chat_collapse.svg';
 import { ReactComponent as CollapseChatIcon } from 'assets/svg/float_chat_expand.svg';
-import Dialog from '../Dialog';
+import Dialog from '../Dialog/Dialog';
 
 import styles from '../_styles/FloatingChat/ChatItem';
 

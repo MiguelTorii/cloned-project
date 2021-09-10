@@ -11,8 +11,8 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
 
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
 import { getInitials } from 'utils/chat';
 import { styles } from '../_styles/FloatingChat/ChatMessage';
 

@@ -8,10 +8,10 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import OutsideClickHandler from 'react-outside-click-handler';
 import RichTextEditor from './RichTextEditor';
-import QuillToolbar from '../QillToolbar';
+import QuillToolbar from '../QillToolbar/QuillToolbar';
 import useStyles from './styles';
 import { FlashcardListContext } from './FlashcardListContext';
-import { EDITOR_TYPES } from './index';
+import { EDITOR_TYPES } from './FlashcardsListEditor';
 
 const FlashcardEditor = ({
   index,

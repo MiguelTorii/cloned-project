@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import InitialCommunityImage from 'assets/svg/community_first_time.svg';
 import { getInitials } from 'utils/chat';
 import useStyles from './_styles/initialAlert';

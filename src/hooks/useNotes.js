@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import * as api from 'api/notes';
 import moment from 'moment';
 import { logEventLocally } from '../api/analytics';
-import UserNotesEditor from '../components/UserNotesEditor';
+import UserNotesEditor from '../components/UserNotesEditor/UserNotesEditor';
 import DeleteNote from '../containers/UserNotes/DeleteNote';
 
 const useNotes = () => {

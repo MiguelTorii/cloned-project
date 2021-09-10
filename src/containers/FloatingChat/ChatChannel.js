@@ -19,7 +19,7 @@ import {
 } from 'utils/chat';
 // import FormControl from '@material-ui/core/FormControl';
 // import Input from '@material-ui/core/Input';
-import CreateChatChannelInput from 'components/CreateChatChannelInput';
+import CreateChatChannelInput from 'components/CreateChatChannelInput/CreateChatChannelInput';
 import { getCampaign } from 'api/campaign';
 import { sendMessage } from 'api/chat';
 import type { UserState } from '../../reducers/user';
@@ -31,7 +31,7 @@ import ChatChannelViewMembers from './ChatChannelViewMembers';
 import ChatChannelAddMembers from './ChatChannelAddMembers';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
   list: {

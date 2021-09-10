@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import classNames from 'classnames';
 import queryString from 'query-string';
-import Tooltip from '../../containers/Tooltip';
+import Tooltip from '../../containers/Tooltip/Tooltip';
 import { useStyles } from '../_styles/MainLayout/SubMenu';
 
 type Props = {

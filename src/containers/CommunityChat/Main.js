@@ -23,7 +23,7 @@ import EmptyMain from 'containers/CommunityChat/EmptyMain';
 import InitialAlert from 'containers/CommunityChat/InitialAlert';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import {
   processMessages,
   fetchAvatars,

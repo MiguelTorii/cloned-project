@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import SettingsIcon from '@material-ui/icons/Settings';
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
-import RemoveStudentDialog from 'components/RemoveStudentDialog';
+import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
 import { PERMISSIONS } from 'constants/common';
 
 const useStyles = makeStyles((theme) => ({

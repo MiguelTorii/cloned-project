@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import CustomQuill from 'components/CustomQuill';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
 import { useStyles } from '../_styles/FeedList/FeedFlashcards';
 
 const strip = (s) => s.replace(/<[^>]*>?/gm, '');

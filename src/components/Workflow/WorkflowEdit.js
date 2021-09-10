@@ -9,7 +9,7 @@ import React, {
   useEffect,
   useCallback
 } from 'react';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DateInput from 'components/Workflow/DateInput';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,10 +17,10 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import AddRemoveClasses from 'components/AddRemoveClasses';
+import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
 import { workflowCategories, remiderTime } from 'constants/common';
-import RichTextEditor from 'containers/RichTextEditor';
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
 // import WorkflowImageUpload from 'components/Workflow/WorkflowImageUpload'
 import WorkflowContext from 'containers/Workflow/WorkflowContext';
 import Notification from 'components/Workflow/Notification';

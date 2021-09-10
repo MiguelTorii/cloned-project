@@ -10,17 +10,17 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import CreatePostForm from 'components/CreatePostForm';
-import OutlinedTextValidator from 'components/OutlinedTextValidator';
-import SimpleErrorDialog from 'components/SimpleErrorDialog';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
 import { cypher } from 'utils/crypto';
-import RichTextEditor from 'containers/RichTextEditor';
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({

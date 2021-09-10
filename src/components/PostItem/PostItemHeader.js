@@ -27,16 +27,16 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 
-import RoleBadge from 'components/RoleBadge';
-import CustomQuill from 'components/CustomQuill';
-import Tooltip from 'containers/Tooltip';
-import SharePost from 'containers/SharePost';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
+import Tooltip from 'containers/Tooltip/Tooltip';
+import SharePost from 'containers/SharePost/SharePost';
 
 import { getInitials } from 'utils/chat';
 import { getPastClassIds } from 'utils/helpers';
 import _ from 'lodash';
 import { styles } from '../_styles/PostItem/PostItemHeader';
-import HoverPopup from '../HoverPopup';
+import HoverPopup from '../HoverPopup/HoverPopup';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (

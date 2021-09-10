@@ -22,7 +22,7 @@ import AttachFile from 'components/FileUpload/AttachFile';
 import { bytesToSize } from 'utils/chat';
 import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
-import EmojiSelector from '../EmojiSelector';
+import EmojiSelector from '../EmojiSelector/EmojiSelector';
 
 import styles from '../_styles/FloatingChat/ChatTextField';
 

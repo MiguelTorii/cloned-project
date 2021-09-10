@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 // import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
 import { ReactComponent as SpeakerView } from 'assets/svg/speaker-view.svg';
 import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';

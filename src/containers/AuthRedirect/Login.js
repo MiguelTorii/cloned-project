@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import getappqrcode from 'assets/img/getappqrcode.png';
 import getappandroid from 'assets/img/getappandroid.png';
 import getappios from 'assets/img/getappios.png';

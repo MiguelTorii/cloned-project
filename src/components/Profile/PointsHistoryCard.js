@@ -5,7 +5,7 @@ import withRoot from '../../withRoot';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
-import PointsRecordItem from '../PointsRecordItem';
+import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import GradientButton from '../Basic/Buttons/GradientButton';

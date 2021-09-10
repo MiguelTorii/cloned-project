@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';

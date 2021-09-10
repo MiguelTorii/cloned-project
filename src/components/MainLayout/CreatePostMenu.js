@@ -2,7 +2,7 @@
 import React, { memo, useMemo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Tooltip from '../../containers/Tooltip';
+import Tooltip from '../../containers/Tooltip/Tooltip';
 import Notes from '../../assets/svg/notes.svg';
 import Questions from '../../assets/svg/questions.svg';
 import Links from '../../assets/svg/links.svg';

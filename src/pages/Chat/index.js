@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import withRoot from 'withRoot';
-import Layout from 'containers/Layout';
-import Chat from 'containers/MainChat';
+import Layout from 'containers/Layout/Layout';
+import Chat from 'containers/MainChat/MainChat';
 
 const useStyles = makeStyles((theme) => ({
   item: {

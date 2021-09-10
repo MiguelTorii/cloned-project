@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
 

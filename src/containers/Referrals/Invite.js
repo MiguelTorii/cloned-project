@@ -3,11 +3,11 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { withSnackbar } from 'notistack';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import { logEventLocally } from 'api/analytics';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 
 const styles = (theme) => ({
   action: {

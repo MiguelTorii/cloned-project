@@ -14,8 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import withRoot from 'withRoot';
-import ChatListItem from 'components/ChatListItem';
-import LoadImg from 'components/LoadImg';
+import ChatListItem from 'components/ChatListItem/ChatListItem';
+import LoadImg from 'components/LoadImg/LoadImg';
 import MainChat from 'components/FloatingChat/MainChat';
 
 import * as OnboardingActions from 'actions/onboarding';
@@ -32,8 +32,8 @@ import { logEvent } from 'api/analytics';
 import { truncate } from 'utils/helpers';
 
 import ChatChannel from './ChatChannel';
-import CreateChatChannel from '../CreateChatChannel';
-import ErrorBoundary from '../ErrorBoundary';
+import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
   root: {

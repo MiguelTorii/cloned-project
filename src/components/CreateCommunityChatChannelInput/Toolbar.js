@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import useStyles from 'components/_styles/CreateCommunityChatChannelInput/toolbar';
 
 const Link = Quill.import('formats/link');

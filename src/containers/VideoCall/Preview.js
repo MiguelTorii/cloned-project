@@ -3,10 +3,10 @@
 // @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import type { User } from '../../types/models';
-import ErrorBoundary from '../ErrorBoundary';
-import MeetupPreview from '../../components/MeetUpPreview';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import MeetupPreview from '../../components/MeetUpPreview/Preview';
 
 const styles = () => ({
   root: {

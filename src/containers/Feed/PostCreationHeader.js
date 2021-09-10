@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
-import Avatar from 'components/Avatar';
+import Avatar from 'components/Avatar/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInitials } from 'utils/chat';
 import Button from '@material-ui/core/Button';
@@ -12,7 +12,7 @@ import IconResource from 'assets/svg/links.svg';
 import { push } from 'connected-react-router';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import useStyles from './styles';
 
 const POST_BUTTONS = [

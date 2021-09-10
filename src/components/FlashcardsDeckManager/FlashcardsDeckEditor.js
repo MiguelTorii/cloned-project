@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import FlashcardsDeckManager from './index';
+import FlashcardsDeckManager from './FlashcardsDeckManager';
 import { updateFlashcards } from '../../api/posts';
 
 const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {

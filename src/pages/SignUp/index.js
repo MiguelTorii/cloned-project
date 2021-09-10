@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
-import SignUp from '../../containers/SignUp';
+import SignUp from '../../containers/SignUp/SignUp';
 
 const styles = () => ({});
 
