@@ -23,9 +23,11 @@ type Props = {
   chat: Object,
   user: Object,
   setCurrentCommunityChannel: Function,
+  startMessageLoading: Function,
   setMainMessage: Function,
   setSelectedCourse: Function,
   enqueueSnackbar: Function,
+  setCurrentChannelSidAction: Function,
   courseChannels: array,
   width: string
 };
@@ -33,8 +35,10 @@ type Props = {
 const CommunityChat = ({
   selectedCourse,
   setMainMessage,
+  startMessageLoading,
   setCurrentCommunityChannel,
   setSelectedCourse,
+  setCurrentChannelSidAction,
   enqueueSnackbar,
   courseChannels,
   user,
@@ -46,6 +50,7 @@ const CommunityChat = ({
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
+  const [currentCommunityChannels, setCurrentCommunityChannels] = useState([]);
 
   const [selectedChannel, setSelctedChannel] = useState(null);
 
@@ -59,12 +64,15 @@ const CommunityChat = ({
       local,
       mainMessage,
       currentCommunity,
-      currentCommunityChannel
+      currentCommunityChannel,
+      messageLoading,
+      selectedChannelId
     }
   } = chat;
 
   useEffect(() => {
     let filterChannel = [];
+    const currentCommunityChannels = [];
     const currentCourseChannel = courseChannels.filter(
       (courseChannel) => courseChannel.courseId === selectedCourse.id
     );
@@ -72,17 +80,50 @@ const CommunityChat = ({
     setCommunityChannels(communityChannels);
     communityChannels.forEach((communityChannel) => {
       const { channels } = communityChannel;
-
+      currentCommunityChannels.push(...channels);
       filterChannel = channels.filter(
         (channel) => channel.id === currentCommunity.id
       );
     });
-    if (currentCommunity && !!filterChannel.length) {
+    setCurrentCommunityChannels(currentCommunityChannels);
+    if (
+      (currentCommunity && !!filterChannel.length) ||
+      currentCommunityChannel
+    ) {
       setSelctedChannel(currentCommunity);
     } else {
       setSelctedChannel(communityChannels[0].channels[0]);
     }
-  }, [selectedCourse, courseChannels, currentCommunity]);
+  }, [
+    selectedCourse,
+    courseChannels,
+    currentCommunity,
+    currentCommunityChannel,
+    setCurrentCommunityChannels
+  ]);
+
+  useEffect(() => {
+    if (currentCommunityChannel) {
+      // currentCommunityChannel is exists, need to find the channel and select channel
+      const filterChannel = currentCommunityChannels.filter(
+        (channel) => channel.chat_id === currentCommunityChannel.sid
+      );
+      if (filterChannel.length) {
+        // set select channel
+        setSelctedChannel(filterChannel[0]);
+      } else {
+        // currentCommunityChannel is not in course channels, set the default first channel
+        setSelctedChannel(currentCommunityChannels[0]);
+      }
+    } else {
+      // currentCommunityChannel is not exists, set the default first channel
+      setSelctedChannel(currentCommunityChannels[0]);
+      setCurrentCommunityChannel(
+        local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+      );
+      setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
+    }
+  }, [currentCommunityChannels, currentCommunityChannel, local]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -91,10 +132,9 @@ const CommunityChat = ({
 
     if (targetSelectedChannel) {
       if (['xs'].includes(width)) setLeftSpace(0);
-      setCurrentCommunityChannel(targetSelectedChannel?.twilioChannel);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel, setCurrentCommunityChannel, width, isLoading]);
+  }, [selectedChannel, width, isLoading]);
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
@@ -175,9 +215,12 @@ const CommunityChat = ({
             <CourseChannels
               setSelctedChannel={setSelctedChannel}
               selectedChannel={selectedChannel}
+              startMessageLoading={startMessageLoading}
               communityChannels={communityChannels}
               local={local}
               course={selectedCourse}
+              setCurrentChannelSidAction={setCurrentChannelSidAction}
+              setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
           )}
         </Grid>
@@ -190,11 +233,14 @@ const CommunityChat = ({
             selectedCourse={selectedCourse}
             selectedChannel={selectedChannel}
             newMessage={newMessage}
+            messageLoading={messageLoading}
+            startMessageLoading={startMessageLoading}
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             permission={permission}
             local={local}
             channel={currentCommunityChannel}
+            selectedChannelId={selectedChannelId}
             onCollapseLeft={onCollapseLeft}
             onCollapseRight={onCollapseRight}
             setRightPanel={handleOpenRightPanel}
@@ -235,7 +281,9 @@ const mapDispatchToProps = (dispatch: *): {} =>
     {
       enqueueSnackbar: notificationsActions.enqueueSnackbar,
       setMainMessage: chatActions.setMainMessage,
-      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
+      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
+      startMessageLoading: chatActions.startMessageLoading,
+      setCurrentChannelSidAction: chatActions.setCurrentChannelSid
     },
     dispatch
   );

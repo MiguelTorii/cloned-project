@@ -64,14 +64,20 @@ type Props = {
   channels: Array,
   selectedChannel: Array,
   local: Array,
-  setSelctedChannel: Function
+  startMessageLoading: Function,
+  setSelctedChannel: Function,
+  setCurrentChannelSidAction: Function,
+  setCurrentCommunityChannel: Function
 };
 
 const CollapseNavbar = ({
   channels,
   selectedChannel,
+  startMessageLoading,
   local,
-  setSelctedChannel
+  setSelctedChannel,
+  setCurrentChannelSidAction,
+  setCurrentCommunityChannel
 }: Props) => {
   const classes = useStyles();
   const [subListOpen, setSubListOpen] = useState('');
@@ -88,7 +94,10 @@ const CollapseNavbar = ({
     }
 
     if (!channel?.channels) {
+      setCurrentChannelSidAction(channel.chat_id);
+      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel);
       setSelctedChannel(channel);
+      startMessageLoading(true);
     }
   };
 

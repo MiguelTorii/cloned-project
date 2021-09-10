@@ -38,6 +38,7 @@ type Props = {
   handleUpdateFriendlyName: Function,
   handleMarkAsRead: Function,
   enqueueSnackbar: Function,
+  startMessageLoading: Function,
   getOnboardingList: Function,
   setCurrentChannel: Function,
   onboardingListVisible: boolean
@@ -52,6 +53,7 @@ const DirectChat = ({
   handleUpdateFriendlyName,
   setOneTouchSend,
   handleMarkAsRead,
+  startMessageLoading,
   enqueueSnackbar,
   setCurrentChannel,
   width,
@@ -73,7 +75,8 @@ const DirectChat = ({
       newChannel,
       mainMessage,
       currentChannel,
-      oneTouchSendOpen
+      oneTouchSendOpen,
+      messageLoading
     }
   } = chat;
   const classes = useStyles();
@@ -287,6 +290,8 @@ const DirectChat = ({
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             handleBlock={handleBlock}
+            messageLoading={messageLoading}
+            startMessageLoading={startMessageLoading}
             onCollapseLeft={onCollapseLeft}
             onCollapseRight={onCollapseRight}
             local={local}
@@ -340,6 +345,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentChannel: chatActions.setCurrentChannel,
       handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
       setOneTouchSend: chatActions.setOneTouchSend,
+      startMessageLoading: chatActions.startMessageLoading,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
       getOnboardingList: OnboardingActions.getOnboardingList,
       enqueueSnackbar: notificationsActions.enqueueSnackbar

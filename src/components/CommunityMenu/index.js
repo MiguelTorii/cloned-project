@@ -3,11 +3,11 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 import LoadImg from 'components/LoadImg';
 import { ReactComponent as Chat } from 'assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
-import { Tooltip } from '@material-ui/core';
 
 type Props = {
   item: Object,
@@ -54,10 +54,7 @@ const CommunityMenu = ({
     handleSelect(item);
   }, [handleSelect, item]);
 
-  const isDirectChat = useMemo(
-    () => ['chat'].indexOf(item.id) > -1,
-    [item]
-  );
+  const isDirectChat = useMemo(() => ['chat'].indexOf(item.id) > -1, [item]);
 
   return (
     <Tooltip

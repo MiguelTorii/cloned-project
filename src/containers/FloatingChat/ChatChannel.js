@@ -249,7 +249,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
   handleChatOpen = () => {
     const { open } = this.state;
     const { channel, setCurrentCourse } = this.props;
-    setCurrentCourse('chat');
+    setCurrentCourse('null');
     if (open) {
       this.setState({ open: false });
       return;

@@ -115,7 +115,7 @@ const HoverPopup = ({
   const onStartChat = async () => {
     const { openChannelWithEntity } = props;
     setChatLoading(true);
-    setCurrentCourse('chat');
+    setCurrentCourse('null');
     setCurrentChannelSid('');
     setCurrentChannel(null);
 

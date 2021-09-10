@@ -24,7 +24,13 @@ const ChatPage = ({
   setCurrentChannelSid
 }) => {
   const {
-    data: { local, currentCommunity, currentCourseId, oneTouchSendOpen, currentChannel },
+    data: {
+      local,
+      currentCommunity,
+      currentCourseId,
+      oneTouchSendOpen,
+      currentCommunityChannel
+    },
     isLoading
   } = chat;
 
@@ -82,7 +88,7 @@ const ChatPage = ({
         setCourseChannels(communityChannels);
         setCommunityChannels(communityChannels);
 
-        if (!currentChannel && nonEmptyCommunities.length > 0) {
+        if (!currentCommunityChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
           setSelectedCourse(defaultCommunity);
@@ -139,23 +145,32 @@ const ChatPage = ({
   useEffect(() => {
     if (oneTouchSendOpen) {
       setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else if (currentCourseId === 'chat' || !currentCourseId) {
+      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
       currentCommunity &&
       !!communityList.length &&
-      currentCourseId &&
-      currentCourseId !== 'chat'
+      currentCommunity.id !== 'chat'
     ) {
       const targetCourse = communityList.filter(
-        (course) => course.community.id === currentCourseId
+        (course) => course.community.id === currentCommunity.id
       );
       if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
-    } else {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else if (
+      currentCourseId &&
+      !!communityList.length &&
+      currentCourseId !== 'chat'
+    ) {
+      const targetCourseChannel = communityList.filter(
+        (community) => community.community.id === Number(currentCourseId)
+      );
+      if (targetCourseChannel.length)
+        setSelectedCourse(targetCourseChannel[0].community);
     }
   }, [
+    currentCourseId,
     setCurrentCourse,
     selectCurrentCommunity,
-    currentCourseId,
     currentCommunity,
     communityList,
     loading,
