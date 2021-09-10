@@ -43,9 +43,22 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
       setWindowWidth(window.innerWidth);
     };
 
+    // If the toolbar menu is open and the user clicks anywhere on the screen,
+    // we should close the toolbar menu.
+    const handleWindowClick = () => {
+      if (open) {
+        setOpen(false);
+      }
+    };
+
     window.addEventListener('resize', handleWindowResize);
-    return () => window.removeEventListener('resize', handleWindowResize);
-  }, [windowWidth]);
+    window.addEventListener('click', handleWindowClick);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, [open, windowWidth]);
 
   const handleClick = useCallback(() => {
     setOpen(!open);
