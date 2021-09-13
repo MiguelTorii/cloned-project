@@ -18,7 +18,7 @@ import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import clsx from 'clsx';
 
-import OnlineBadge from 'components/OnlineBadge';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 
 import useStyles from './_styles/Classmate';
 import { getInitials } from 'utils/chat';

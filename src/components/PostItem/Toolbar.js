@@ -6,7 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { useStyles } from '../_styles/PostItem/Toolbar';
 
 const Link = Quill.import('formats/link');

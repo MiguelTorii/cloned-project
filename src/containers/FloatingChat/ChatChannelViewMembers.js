@@ -13,14 +13,14 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import { getInitials } from 'utils/chat';
 import type { ChatUser } from '../../types/models';
 import { blockUser } from '../../api/user';
 import { getGroupMembers } from '../../api/chat';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
   list: {

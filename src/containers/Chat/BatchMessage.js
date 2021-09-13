@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { UserState } from 'reducers/user';
 import { withRouter } from 'react-router';
-import Tooltip from 'containers/Tooltip';
-import BatchMessageDialog from 'containers/BatchMessageDialog';
+import Tooltip from 'containers/Tooltip/Tooltip';
+import BatchMessageDialog from 'containers/BatchMessageDialog/BatchMessageDialog';
 import { PERMISSIONS } from 'constants/common';
 
 const useStyles = makeStyles((theme) => ({

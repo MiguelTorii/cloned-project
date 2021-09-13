@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '../../containers/Tooltip';
+import Tooltip from '../../containers/Tooltip/Tooltip';
 // import AddIcon from '@material-ui/icons/Add';
 // import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 // import ThumbUpIcon from '@material-ui/icons/ThumbUp';

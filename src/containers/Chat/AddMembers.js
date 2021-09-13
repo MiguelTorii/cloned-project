@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import CreateChatChannelDialog from 'components/CreateChatChannelDialog';
+import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
 import { searchUsers } from 'api/user';
 import { addGroupMembers } from 'api/chat';
 import AddUserIcon from 'assets/svg/add-user.svg';

@@ -9,7 +9,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { ReactComponent as AddFile } from 'assets/svg/add-file.svg';
 import useStyles from './_styles/chatTextField';
 

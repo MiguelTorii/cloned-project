@@ -22,12 +22,12 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
-import ShareLinkWidget from 'components/ShareLinkWidget';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
 import { useDispatch } from 'react-redux';
 import { PERMISSIONS } from 'constants/common';
-import AvatarEditor from '../../components/AvatarEditor';
+import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {

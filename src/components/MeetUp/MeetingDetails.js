@@ -11,7 +11,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import { ReactComponent as AddUser } from 'assets/svg/add-user.svg';
 import { ReactComponent as ClipIcon } from 'assets/svg/clip.svg';
 

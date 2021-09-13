@@ -16,7 +16,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
 import { LastLocationProvider } from 'react-router-last-location';
 // import Tour from 'components/Tour'
-import Home from 'containers/Home';
+import Home from 'containers/Home/Home';
 import Classes from 'pages/Classes';
 import defaultKatexRender from 'utils/quill';
 import './wdyr';
@@ -42,9 +42,9 @@ import Reminders from './pages/Reminders';
 import VideoCall from './pages/VideoCall';
 import StartVideo from './pages/StartVideo';
 // import StudyCircle from './pages/StudyCircle';
-import FloatingChat from './containers/FloatingChat';
-import UserInitializer from './containers/UserInitializer';
-import { Referral } from './containers/Referrals';
+import FloatingChat from './containers/FloatingChat/Chat';
+import UserInitializer from './containers/UserInitializer/UserInitializer';
+import Referral from './containers/Referrals/Referral';
 import Saml from './containers/Auth/Saml';
 // import TwoWeekNotesContest from './containers/TwoWeekNotesContest';
 import Auth from './pages/Auth';
@@ -66,9 +66,9 @@ import withTracker from './withTracker';
 import Chat from './pages/Chat';
 import ChatChannel from './pages/ChatChannel';
 import './index.css';
-import ErrorBoundary from './containers/ErrorBoundary';
-import OnboardingPopup from './containers/OnboardingPopup';
-import MasqueradeFrame from './containers/MasqueradeFrame';
+import ErrorBoundary from './containers/ErrorBoundary/ErrorBoundary';
+import OnboardingPopup from './containers/OnboardingPopup/OnboardingPopup';
+import MasqueradeFrame from './containers/MasqueradeFrame/MasqueradeFrame';
 import {
   FlashcardsListPage,
   FlashcardsShowPage,

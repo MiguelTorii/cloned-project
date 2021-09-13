@@ -5,11 +5,11 @@ import { makeStyles } from '@material-ui/core';
 import momentTz from 'moment-timezone';
 import moment from 'moment';
 import pluralize from 'pluralize';
-import Tooltip from 'containers/Tooltip';
-import LoadImg from '../../../components/LoadImg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+import LoadImg from '../../../components/LoadImg/LoadImg';
 import expandSvg from '../../../assets/svg/expand.svg';
 import minimizeSvg from '../../../assets/svg/minimize.svg';
-import Dialog from '../../../components/Dialog';
+import Dialog from '../../../components/Dialog/Dialog';
 import type { Announcement } from '../../../types/models';
 import { setIntervalWithFirstCall } from '../../../utils/helpers';
 import {

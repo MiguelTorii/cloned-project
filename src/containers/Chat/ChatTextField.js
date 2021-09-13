@@ -11,7 +11,7 @@ import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 
 const styles = (theme) => ({
   tooltip: {

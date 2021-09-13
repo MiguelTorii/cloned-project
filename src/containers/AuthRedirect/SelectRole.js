@@ -5,14 +5,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import Tooltip from '@material-ui/core/Tooltip';
 import more from 'assets/svg/ic_moreinfo.svg';
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app';
 import auth0 from 'auth0-js';
 import store from 'store';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 
 const useStyles = makeStyles((theme) => ({
   container: {

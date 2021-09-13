@@ -7,8 +7,8 @@ import IconRepeat from '@material-ui/icons/Replay';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import parse from 'html-react-parser';
-import { ANSWER_LEVELS } from './index';
-import ClickableImage from 'components/ClickableImage';
+import { ANSWER_LEVELS } from './FlashcardsReview';
+import ClickableImage from 'components/ClickableImage/ClickableImage';
 import { extractTextFromHtml } from 'utils/helpers';
 
 const CardBoardContent = ({ content, image, isQuestion, onFlip, onAction }) => {

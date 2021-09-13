@@ -14,9 +14,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CreateChatChannelDialog from 'components/CreateChatChannelDialog';
-import ShareLinkDialog from 'components/ShareLinkDialog';
-import RemoveStudentDialog from 'components/RemoveStudentDialog';
+import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
+import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
+import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
 import IconShare from '@material-ui/icons/Share';
 
