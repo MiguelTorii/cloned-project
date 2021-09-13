@@ -38,7 +38,7 @@ const CollageList = ({
         handleSelect={handleSelect}
       />
       <Divider classes={{ root: classes.divider }} />
-      {!!courseChannels.length &&
+      {!!courseChannels?.length &&
         communities.map((course) => (
           <CommunityMenu
             key={course.community.id}
