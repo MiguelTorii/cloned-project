@@ -3,7 +3,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 // import ExpertEmptyChat from 'assets/svg/expertCommunityEmptyChat.svg'
 import ExpertEmptyChat from 'assets/svg/empty_chat.svg';
 import EmptyUnregistered from 'assets/svg/emptyCommunityChatUnregistered.svg';

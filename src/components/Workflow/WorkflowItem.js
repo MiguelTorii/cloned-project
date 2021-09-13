@@ -13,7 +13,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import cx from 'classnames';
 import { isMobile } from 'react-device-detect';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import WorkflowListItem from 'components/Workflow/WorkflowListItem';
 import WorkflowBoardItem from 'components/Workflow/WorkflowBoardItem';
 import WorkflowContext from 'containers/Workflow/WorkflowContext';

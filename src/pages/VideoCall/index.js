@@ -5,9 +5,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { isMobile } from 'react-device-detect';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout';
-import VideoCall from '../../containers/VideoCall';
-import OpenApp from '../../components/OpenApp';
+import Layout from '../../containers/Layout/Layout';
+import VideoCall from '../../containers/VideoCall/VideoCall';
+import OpenApp from '../../components/OpenApp/OpenApp';
 
 const styles = () => ({});
 

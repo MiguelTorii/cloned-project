@@ -20,7 +20,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import GroupIcon from '@material-ui/icons/Group';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import DialogTitle from '../DialogTitle';
+import DialogTitle from '../DialogTitle/DialogTitle';
 
 import { styles } from '../_styles/FloatingChat/DialogChatItem';
 

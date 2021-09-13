@@ -4,8 +4,8 @@ import React, { useMemo, useCallback, useState } from 'react';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 import { UserState } from 'reducers/user';
-import Tooltip from 'containers/Tooltip';
-import BatchMessageDialog from 'containers/BatchMessageDialog';
+import Tooltip from 'containers/Tooltip/Tooltip';
+import BatchMessageDialog from 'containers/BatchMessageDialog/BatchMessageDialog';
 import { PERMISSIONS } from 'constants/common';
 import useStyles from './_styles/batchMessage';
 

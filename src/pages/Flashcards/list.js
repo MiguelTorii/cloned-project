@@ -1,15 +1,15 @@
 import React from 'react';
 import withRoot from '../../withRoot';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from '../../containers/Layout';
-import FlashcardsList from '../../containers/FlashcardsList';
-import LoadingSpin from 'components/LoadingSpin';
+import Layout from '../../containers/Layout/Layout';
+import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import { useSelector } from 'react-redux';
 import { isApiCalling } from 'utils/helpers';
 import { campaignActions } from 'constants/action-types';
 import Grid from '@material-ui/core/Grid';
-import CreateFlashcards from 'containers/CreateFlashcards';
-import PostTips from 'components/PostTips';
+import CreateFlashcards from 'containers/CreateFlashcards/CreateFlashcards';
+import PostTips from 'components/PostTips/PostTips';
 import { useParams } from 'react-router';
 
 const FlashcardsListPage = () => {

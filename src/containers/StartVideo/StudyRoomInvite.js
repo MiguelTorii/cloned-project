@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import Classmate from './Classmate';
 import LoadingImg from 'assets/svg/astro-shuttle.svg';
 import useStyles from './_styles/StudyRoomInvite';

@@ -11,9 +11,9 @@ import AddIcon from '@material-ui/icons/Add';
 import List from '@material-ui/core/List';
 
 import useStyles from './styles';
-import Tooltip from '../Tooltip';
+import Tooltip from '../Tooltip/Tooltip';
 import { NotesContext } from '../../hooks/useNotes';
-import LoadingSpin from '../../components/LoadingSpin';
+import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import Note from './Note';
 
 const ClassNotes = ({ classData, arrayIndex }) => {

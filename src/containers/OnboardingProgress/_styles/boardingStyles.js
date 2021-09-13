@@ -1,4 +1,4 @@
-import { dialogStyle } from 'components/Dialog';
+import { dialogStyle } from 'components/Dialog/Dialog';
 import { detect } from 'detect-browser';
 
 const browser = detect();

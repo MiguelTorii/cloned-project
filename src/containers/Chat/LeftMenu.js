@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
-import ChatListItem from 'components/ChatListItem';
+import ChatListItem from 'components/ChatListItem/ChatListItem';
 import Fuse from 'fuse.js';
 import { getTitle } from 'utils/chat';
 import EmptyLeftMenu from 'containers/Chat/EmptyLeftMenu';

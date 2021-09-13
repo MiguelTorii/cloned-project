@@ -8,8 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Dialog from '../Dialog';
-import AutoComplete from '../AutoComplete';
+import Dialog from '../Dialog/Dialog';
+import AutoComplete from '../AutoComplete/AutoComplete';
 
 import { styles } from '../_styles/FloatingChat/AddMembers';
 

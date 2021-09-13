@@ -13,12 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { cypher } from 'utils/crypto';
-import OutlinedTextValidator from 'components/OutlinedTextValidator';
-import SimpleErrorDialog from 'components/SimpleErrorDialog';
-import CreatePostForm from 'components/CreatePostForm';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from 'containers/RichTextEditor';
-import ErrorBoundary from 'containers/ErrorBoundary';
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -31,7 +31,7 @@ import {
 } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import { logEventLocally } from '../../api/analytics';
-import UploadImages from '../UploadImages';
+import UploadImages from '../UploadImages/UploadImages';
 
 const styles = (theme) => ({
   stackbar: {

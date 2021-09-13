@@ -32,7 +32,7 @@ import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import { FILE_LIMIT_SIZE } from 'constants/chat';
 import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
   messageScroll: {

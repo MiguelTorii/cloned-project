@@ -4,7 +4,7 @@ import React from 'react';
 import cx from 'classnames';
 import ReactDOMServer from 'react-dom/server';
 import { Quill } from 'react-quill';
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import Tooltip from '@material-ui/core/Tooltip';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import useStyles from './_styles/toolbar';

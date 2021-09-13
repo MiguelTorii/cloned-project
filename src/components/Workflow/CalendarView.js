@@ -12,7 +12,7 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import { workflowCategories } from 'constants/common';
 import WorkflowEdit from 'components/Workflow/WorkflowEdit';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import Typography from '@material-ui/core/Typography';
 import CalendarControls from 'components/Workflow/CalendarControls';
 import WorkflowContext from 'containers/Workflow/WorkflowContext';

@@ -24,15 +24,15 @@ import FlagIcon from '@material-ui/icons/Flag';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PenIcon from '@material-ui/icons/Create';
 
-import RoleBadge from 'components/RoleBadge';
-import CustomQuill from 'components/CustomQuill';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
 import SkeletonLoad from 'components/PostItem/SkeletonLoad';
-import Report from 'components/Report';
+import Report from 'components/Report/ReportIssue';
 
 import { getInitials } from 'utils/chat';
 import IconBadge from 'assets/svg/badge.svg';
 import PostItemAddComment from './PostItemAddComment';
-import Dialog from '../Dialog';
+import Dialog from '../Dialog/Dialog';
 // $FlowIgnore
 import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
 import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
@@ -40,8 +40,8 @@ import thanksSvg from '../../assets/svg/thanks.svg';
 import commentSvg from '../../assets/svg/comment.svg';
 
 import { styles } from '../_styles/PostItem/PostItemComment';
-import OnlineBadge from '../OnlineBadge';
-import HoverPopup from '../HoverPopup';
+import OnlineBadge from '../OnlineBadge/OnlineBadge';
+import HoverPopup from '../HoverPopup/HoverPopup';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

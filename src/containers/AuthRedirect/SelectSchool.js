@@ -1,6 +1,6 @@
 // @flow
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import AutoComplete from 'components/AutoComplete';
+import AutoComplete from 'components/AutoComplete/AutoComplete';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { searchSchools } from 'api/sign-in';

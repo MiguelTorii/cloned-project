@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadImg from '../LoadImg';
+import LoadImg from '../LoadImg/LoadImg';
 
 const Student = ({ student, you }) => {
   const { firstName, lastName, profileImg } = student;

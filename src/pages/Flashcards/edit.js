@@ -1,16 +1,16 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from '../../containers/Layout';
+import Layout from '../../containers/Layout/Layout';
 import Grid from '@material-ui/core/Grid';
-import CreateFlashcards from '../../containers/CreateFlashcards';
-import PostTips from '../../components/PostTips';
+import CreateFlashcards from '../../containers/CreateFlashcards/CreateFlashcards';
+import PostTips from '../../components/PostTips/PostTips';
 import { useParams } from 'react-router';
 import withRoot from '../../withRoot';
 import { useSelector } from 'react-redux';
 import { isApiCalling } from '../../utils/helpers';
 import { campaignActions } from '../../constants/action-types';
-import LoadingSpin from '../../components/LoadingSpin';
-import FlashcardsEdit from '../../containers/FlashcardsEdit';
+import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
+import FlashcardsEdit from '../../containers/FlashcardsEdit/FlashcardsEdit';
 
 const FlashcardsEditPage = () => {
   const { flashcardId } = useParams();

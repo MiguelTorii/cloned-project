@@ -1,13 +1,13 @@
 // @flow
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 
-import ClassMultiSelect from 'containers/ClassMultiSelect';
+import ClassMultiSelect from 'containers/ClassMultiSelect/ClassMultiSelect';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { cypher, decypherClass } from 'utils/crypto';
 import { getPastClassIds } from 'utils/helpers';
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import cx from 'clsx';
 import queryString from 'query-string';
 import { Typography } from '@material-ui/core';

@@ -32,11 +32,11 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
 
-import PostComments from 'containers/PostComments';
+import PostComments from 'containers/PostComments/ViewNotes';
 
-import RoleBadge from 'components/RoleBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
 import PdfComponent from 'components/PdfGallery/PdfComponent';
-import LinkPreview from 'components/LinkPreview';
+import LinkPreview from 'components/LinkPreview/LinkPreview';
 
 import * as api from 'api/posts';
 import linkPost from 'assets/svg/ic_link_post.svg';
@@ -54,8 +54,8 @@ import { getInitials } from 'utils/chat';
 import { getPastClassIds } from 'utils/helpers';
 
 import useStyles from '../_styles/FeedList/FeedItem';
-import OnlineBadge from '../OnlineBadge';
-import HoverPopup from '../HoverPopup';
+import OnlineBadge from '../OnlineBadge/OnlineBadge';
+import HoverPopup from '../HoverPopup/HoverPopup';
 
 const FeedTypes = {
   flashcards: {

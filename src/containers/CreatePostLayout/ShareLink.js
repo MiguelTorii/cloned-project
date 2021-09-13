@@ -14,12 +14,12 @@ import { cypher } from 'utils/crypto';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
-import CreatePostForm from '../../components/CreatePostForm';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator';
-import LinkPreview from '../../components/LinkPreview';
+import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
+import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
+import LinkPreview from '../../components/LinkPreview/LinkPreview';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from 'containers/RichTextEditor';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog';
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
+import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import {
   updateShareURL,
   createBatchShareLink,
@@ -28,7 +28,7 @@ import {
 } from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
 import postingImage from 'assets/gif/loading-rocket.gif';
 
@@ -610,7 +610,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                   errorMessages={['URL is required']}
                 />
               </Grid>
-              {/* 
+              {/*
               <Grid item xs={12} sm={12} md={12}>
                 <OutlinedTextValidator
                   required

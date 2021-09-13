@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import withRoot from 'withRoot';
 import useStyles from './styles';
 import PropTypes from 'prop-types';

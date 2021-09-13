@@ -3,7 +3,7 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withRoot from '../../withRoot';
-import Canvas from '../../containers/Canvas';
+import Canvas from '../../containers/Canvas/Canvas';
 
 type Props = {
   match: {

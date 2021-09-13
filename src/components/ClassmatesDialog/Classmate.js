@@ -18,7 +18,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import clsx from 'clsx';
 
-import OnlineBadge from 'components/OnlineBadge';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 import InviteIcon from 'assets/svg/invite-icon.svg';
 
 import useStyles from '../_styles/ClassmatesDialog/Classmate';

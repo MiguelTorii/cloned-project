@@ -12,9 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import get from 'lodash/get';
 
 import withRoot from 'withRoot';
-import Layout from 'containers/Layout';
-import Chat from 'containers/Chat';
-import CommunityChat from 'containers/CommunityChat';
+import Layout from 'containers/Layout/Layout';
+import Chat from 'containers/Chat/Chat';
+import CommunityChat from 'containers/CommunityChat/ChatPage';
 import * as notificationActions from 'actions/notifications';
 import * as chatActions from 'actions/chat';
 import { getChatIdFromHash } from 'api/chat';

@@ -21,9 +21,9 @@ import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 
 import HomeItem from 'components/MainLayout/HomeItem';
-import ClassList from 'components/ClassList';
+import ClassList from 'components/ClassList/ClassList';
 import CustomSwitch from 'components/MainLayout/Switch';
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import { getCampaign } from 'api/campaign';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -385,15 +385,6 @@ const Drawer = ({
               ? classes.currentPath
               : classes.otherPath
           )}
-        />
-        <DrawerItem
-          onClick={handleOpenGetApp}
-          listItemClass={classes.otherPath}
-          OnIcon={<OnStudyRoom />}
-          component={MyLink}
-          link="/video-call"
-          primaryText="Study Room"
-          OffIcon={<OffStudyRoom />}
         />
         <DrawerItem
           OnIcon={<WorkflowIconOn />}

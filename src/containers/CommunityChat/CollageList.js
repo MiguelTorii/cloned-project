@@ -3,7 +3,7 @@ import React from 'react';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 
-import CommunityMenu from 'components/CommunityMenu';
+import CommunityMenu from 'components/CommunityMenu/CommunityMenu';
 import useStyles from './_styles/collageList';
 
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';

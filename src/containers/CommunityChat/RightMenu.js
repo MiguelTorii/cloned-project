@@ -12,12 +12,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import { getInitials } from 'utils/chat';
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
-import HoverPopup from 'components/HoverPopup';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import HoverPopup from 'components/HoverPopup/HoverPopup';
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu';
-import ShareLinkWidget from '../../components/ShareLinkWidget';
+import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />

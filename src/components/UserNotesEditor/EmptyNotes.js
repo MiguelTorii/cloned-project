@@ -1,6 +1,6 @@
 import React from 'react';
 import emptyNotes from 'assets/svg/emptyNotes.svg';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import { useStyles } from '../_styles/UserNotesEditor';
 
 const Empty = () => {
