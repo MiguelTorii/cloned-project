@@ -256,11 +256,11 @@ export const bytesToSize = (bytes, decimals = 1) => {
   if (bytes === 0) return '0 Bytes';
 
   const kb = 1000;
-  const dm = decimals < 0 ? 0 : decimals;
+  const decimal = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   const exponent = Math.floor(Math.log(bytes) / Math.log(kb));
 
-  return `${parseFloat((bytes / Math.pow(kb, exponent)).toFixed(dm))} ${
+  return `${parseFloat((bytes / Math.pow(kb, exponent)).toFixed(decimal))} ${
     sizes[exponent]
   }`;
 };
