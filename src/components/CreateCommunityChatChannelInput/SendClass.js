@@ -34,7 +34,7 @@ type Props = {
   setCurrentCourse: Function,
   setCurrentCommunityChannel: Function,
   setOneTouchSend: Function,
-  selectCurrentCommunity: Function,
+  setCurrentCommunity: Function,
   enqueueSnackbarAction: Function,
   chat: ChatState
 };
@@ -45,7 +45,7 @@ const CreateChatChannelInput = ({
   user,
   onClosePopover,
   setOneTouchSend,
-  selectCurrentCommunity,
+  setCurrentCommunity,
   enqueueSnackbarAction,
   setCurrentCourse
 }: Props) => {
@@ -142,7 +142,7 @@ const CreateChatChannelInput = ({
       setCurrentCourse(
         selectedClasses[selectedClasses.length - 1]?.community?.id
       );
-      selectCurrentCommunity(channels[channels.length - 1]);
+      setCurrentCommunity(channels[channels.length - 1]);
       setShowError(false);
       onClosePopover();
       setLoading(false);
@@ -201,7 +201,7 @@ const CreateChatChannelInput = ({
     selectedClasses,
     setCurrentCourse,
     setOneTouchSend,
-    selectCurrentCommunity,
+    setCurrentCommunity,
     enqueueSnackbarAction
   ]);
 
@@ -360,7 +360,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       closeNewChannel: chatActions.closeNewChannel,
       setCurrentCourse: chatActions.setCurrentCourse,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setCurrentCommunity: chatActions.setCurrentCommunity,
       setOneTouchSend: chatActions.setOneTouchSend,
       enqueueSnackbarAction: enqueueSnackbar
     },

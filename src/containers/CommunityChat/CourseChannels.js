@@ -13,8 +13,9 @@ import useStyles from './_styles/courseChannels';
 import { cypher } from '../../utils/crypto';
 
 type Props = {
-  course: Object,
+  currentCommunity: Object,
   selectedChannel: Object,
+  currentCommunityChannel: Object,
   startMessageLoading: Function,
   communityChannels: Array,
   local: Array,
@@ -23,8 +24,9 @@ type Props = {
 };
 
 const CourseChannels = ({
-  course,
+  currentCommunity,
   selectedChannel,
+  currentCommunityChannel,
   communityChannels,
   startMessageLoading,
   local,
@@ -37,27 +39,29 @@ const CourseChannels = ({
   const userClasses = useSelector((state) => state.user.userClasses);
 
   const handleGoToFeed = useCallback(() => {
-    const courseClass = (userClasses.classList || []).find((item) =>
+    const communityClass = (userClasses.classList || []).find((item) =>
       (item.section || [])
         .map((section) => section.sectionId)
-        .includes(course.section_id)
+        .includes(currentCommunity.section_id)
     );
 
-    if (!courseClass) {
+    if (!communityClass) {
       dispatch(push('/feed'));
       return;
     }
 
     dispatch(
       push(
-        `/feed?class=${cypher(`${courseClass.classId}:${course.section_id}`)}`
+        `/feed?class=${cypher(
+          `${communityClass.classId}:${currentCommunity.section_id}`
+        )}`
       )
     );
-  }, [course, userClasses, dispatch]);
+  }, [currentCommunity, userClasses, dispatch]);
 
   return (
     <Box>
-      {course.communityBannerUrl && (
+      {currentCommunity.communityBannerUrl && (
         <Box
           className={classes.courseLogo}
           display="flex"
@@ -66,14 +70,14 @@ const CourseChannels = ({
           mb={3}
         >
           <LoadImg
-            url={course.communityBannerUrl}
+            url={currentCommunity.communityBannerUrl}
             className={classes.courseBanner}
           />
         </Box>
       )}
       <Box
         className={cx(
-          course.communityBannerUrl
+          currentCommunity.communityBannerUrl
             ? classes.courseNameWithLogo
             : classes.courseName
         )}
@@ -84,7 +88,7 @@ const CourseChannels = ({
         mb={3}
       >
         <Typography variant="h3" className={classes.name}>
-          {course.name}
+          {currentCommunity.name}
         </Typography>
         <Link component="button" underline="none" onClick={handleGoToFeed}>
           <Typography variant="body2">Go to Class Feed</Typography>
@@ -92,6 +96,7 @@ const CourseChannels = ({
       </Box>
       <CollapseNavbar
         channels={communityChannels}
+        currentCommunityChannel={currentCommunityChannel}
         startMessageLoading={startMessageLoading}
         setCurrentCommunityChannel={setCurrentCommunityChannel}
         setCurrentChannelSidAction={setCurrentChannelSidAction}

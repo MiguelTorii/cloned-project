@@ -183,9 +183,10 @@ const DirectChat = ({
     if (!currentChannel && lastChannelSid && !isLoading) {
       const lastChannel = local[lastChannelSid];
       setCurrentChannel(lastChannel?.twilioChannel);
+      setCurrentChannelSid(lastChannel?.twilioChannel.sid);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChannel, setCurrentChannel, isLoading, lastChannelSid]);
+  }, [currentChannel, isLoading, lastChannelSid]);
 
   useEffect(() => {
     if (width !== prevWidth) {

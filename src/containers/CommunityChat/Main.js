@@ -39,7 +39,7 @@ type Props = {
   isLoading: boolean,
   isCommunityChat: boolean,
   selectedChannelId: string,
-  selectedCourse: Object,
+  currentCommunity: Object,
   channel: Object,
   channelList: Array,
   startMessageLoading: Function,
@@ -62,7 +62,7 @@ type Props = {
 const Main = ({
   isLoading,
   isCommunityChat = false,
-  selectedCourse,
+  currentCommunity,
   channel,
   channelList,
   messageLoading,
@@ -187,7 +187,6 @@ const Main = ({
         const p = await channel.getMessages(10);
         if (
           !p?.items?.length ||
-          !selectedChannelId ||
           selectedChannelId === p?.items?.[0]?.channel?.sid
         ) {
           if (!p.hasNextPage) startMessageLoading(false);
@@ -532,7 +531,7 @@ const Main = ({
                   setFocusMessageBox={setFocusMessageBox}
                   handleUpdateGroupName={handleUpdateGroupName}
                   isCommunityChat={isCommunityChat}
-                  selectedCourse={selectedCourse}
+                  currentCommunity={currentCommunity}
                   selectedChannel={selectedChannel}
                   local={local}
                   userId={userId}

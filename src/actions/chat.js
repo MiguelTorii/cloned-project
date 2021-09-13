@@ -11,7 +11,6 @@ import {
   renewTwilioToken,
   leaveChat,
   blockChatUser,
-  sendMessage,
   createChannel
 } from 'api/chat';
 import Chat from 'twilio-chat';
@@ -285,12 +284,11 @@ const fetchMembers = async (sid) => {
   return members;
 };
 
-export const selectCurrentCommunity =
-  (channel) => async (dispatch: Dispatch) => {
-    if (channel) {
-      dispatch(setCurrentCommunityAction({ channel }));
-    }
-  };
+export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
+  if (channel) {
+    dispatch(setCurrentCommunityAction({ channel }));
+  }
+};
 
 export const setCurrentChannelSid =
   (selectedChannelId) => async (dispatch: Dispatch) => {
@@ -319,8 +317,10 @@ export const setCurrentChannel =
 export const setCurrentCommunityChannel =
   (currentChannel) => async (dispatch: Dispatch) => {
     if (currentChannel) {
-      const members = await fetchMembers(currentChannel.sid);
-      const shareLink = await getShareLink(currentChannel.sid);
+      const [members, shareLink] = await Promise.all([
+        fetchMembers(currentChannel.sid),
+        getShareLink(currentChannel.sid)
+      ]);
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
       dispatch(setCurrentCommunityChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));

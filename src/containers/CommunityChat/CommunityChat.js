@@ -25,22 +25,19 @@ type Props = {
   setCurrentCommunityChannel: Function,
   startMessageLoading: Function,
   setMainMessage: Function,
-  setSelectedCourse: Function,
+  setCurrentCommunity: Function,
   enqueueSnackbar: Function,
   setCurrentChannelSidAction: Function,
-  courseChannels: array,
   width: string
 };
 
 const CommunityChat = ({
-  selectedCourse,
+  setCurrentCommunity,
   setMainMessage,
   startMessageLoading,
   setCurrentCommunityChannel,
-  setSelectedCourse,
   setCurrentChannelSidAction,
   enqueueSnackbar,
-  courseChannels,
   user,
   chat,
   width
@@ -50,7 +47,6 @@ const CommunityChat = ({
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
-  const [currentCommunityChannels, setCurrentCommunityChannels] = useState([]);
 
   const [selectedChannel, setSelctedChannel] = useState(null);
 
@@ -64,6 +60,7 @@ const CommunityChat = ({
       local,
       mainMessage,
       currentCommunity,
+      communityChannels: allCommunityChannels,
       currentCommunityChannel,
       messageLoading,
       selectedChannelId
@@ -71,38 +68,18 @@ const CommunityChat = ({
   } = chat;
 
   useEffect(() => {
-    let filterChannel = [];
     const currentCommunityChannels = [];
-    const currentCourseChannel = courseChannels.filter(
-      (courseChannel) => courseChannel.courseId === selectedCourse.id
+    const filterCurrentCommunityChannel = allCommunityChannels.filter(
+      (courseChannel) => courseChannel.courseId === currentCommunity.id
     );
-    const communityChannels = currentCourseChannel[0]?.channels;
-    setCommunityChannels(communityChannels);
-    communityChannels.forEach((communityChannel) => {
+    const channels = filterCurrentCommunityChannel[0]?.channels;
+
+    channels.forEach((communityChannel) => {
       const { channels } = communityChannel;
       currentCommunityChannels.push(...channels);
-      filterChannel = channels.filter(
-        (channel) => channel.id === currentCommunity.id
-      );
     });
-    setCurrentCommunityChannels(currentCommunityChannels);
-    if (
-      (currentCommunity && !!filterChannel.length) ||
-      currentCommunityChannel
-    ) {
-      setSelctedChannel(currentCommunity);
-    } else {
-      setSelctedChannel(communityChannels[0].channels[0]);
-    }
-  }, [
-    selectedCourse,
-    courseChannels,
-    currentCommunity,
-    currentCommunityChannel,
-    setCurrentCommunityChannels
-  ]);
+    setCommunityChannels(channels);
 
-  useEffect(() => {
     if (currentCommunityChannel) {
       // currentCommunityChannel is exists, need to find the channel and select channel
       const filterChannel = currentCommunityChannels.filter(
@@ -114,6 +91,10 @@ const CommunityChat = ({
       } else {
         // currentCommunityChannel is not in course channels, set the default first channel
         setSelctedChannel(currentCommunityChannels[0]);
+        setCurrentCommunityChannel(
+          local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+        );
+        setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
       }
     } else {
       // currentCommunityChannel is not exists, set the default first channel
@@ -123,7 +104,7 @@ const CommunityChat = ({
       );
       setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
     }
-  }, [currentCommunityChannels, currentCommunityChannel, local]);
+  }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -218,7 +199,8 @@ const CommunityChat = ({
               startMessageLoading={startMessageLoading}
               communityChannels={communityChannels}
               local={local}
-              course={selectedCourse}
+              currentCommunity={currentCommunity}
+              currentCommunityChannel={currentCommunityChannel}
               setCurrentChannelSidAction={setCurrentChannelSidAction}
               setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
@@ -230,7 +212,7 @@ const CommunityChat = ({
           <Main
             isCommunityChat
             channelList={communityChannels}
-            selectedCourse={selectedCourse}
+            currentCommunity={currentCommunity}
             selectedChannel={selectedChannel}
             newMessage={newMessage}
             messageLoading={messageLoading}
@@ -261,8 +243,8 @@ const CommunityChat = ({
             userId={userId}
             schoolId={schoolId}
             channel={currentCommunityChannel}
-            selectedCourse={selectedCourse}
-            setSelectedCourse={setSelectedCourse}
+            selectedCourse={currentCommunity}
+            setSelectedCourse={setCurrentCommunity}
             local={local}
           />
         </Grid>
@@ -283,7 +265,8 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setMainMessage: chatActions.setMainMessage,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       startMessageLoading: chatActions.startMessageLoading,
-      setCurrentChannelSidAction: chatActions.setCurrentChannelSid
+      setCurrentChannelSidAction: chatActions.setCurrentChannelSid,
+      setCurrentCommunity: chatActions.setCurrentCommunity
     },
     dispatch
   );

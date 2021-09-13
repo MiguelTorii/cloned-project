@@ -20,7 +20,7 @@ const ChatPage = ({
   setCurrentCourse,
   setCommunityList,
   setCommunityChannels,
-  selectCurrentCommunity,
+  setCurrentCommunity,
   setCurrentChannelSid
 }) => {
   const {
@@ -82,13 +82,12 @@ const ChatPage = ({
         );
 
         setCommunityList(nonEmptyCommunities);
-
         setCommunityChannels(communityChannels);
 
         if (!currentCommunityChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
-          selectCurrentCommunity(defaultCommunity);
+          setCurrentCommunity(defaultCommunity);
         }
         setLoading(false);
       } catch (e) {
@@ -125,24 +124,21 @@ const ChatPage = ({
     (course) => {
       if (course.id !== currentCommunity?.id) {
         setCurrentCourse(course.id);
-        selectCurrentCommunity(course);
         setCurrentChannelSid('');
-        selectCurrentCommunity(course);
+        setCurrentCommunity(course);
       }
     },
     [
       currentCommunity,
       setCurrentCourse,
-      selectCurrentCommunity,
+      setCurrentCommunity,
       setCurrentChannelSid
     ]
   );
 
   useEffect(() => {
-    if (oneTouchSendOpen) {
-      selectCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (currentCourseId === 'chat' || !currentCourseId) {
-      selectCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
+    if (oneTouchSendOpen || currentCourseId === 'chat' || !currentCourseId) {
+      setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
       currentCommunity &&
       !!communities.length &&
@@ -151,8 +147,7 @@ const ChatPage = ({
       const targetCourse = communities.filter(
         (course) => course.community.id === currentCommunity.id
       );
-      if (targetCourse.length)
-        selectCurrentCommunity(targetCourse[0]?.community);
+      if (targetCourse.length) setCurrentCommunity(targetCourse[0]?.community);
     } else if (
       currentCourseId &&
       !!communities.length &&
@@ -162,12 +157,12 @@ const ChatPage = ({
         (community) => community.community.id === Number(currentCourseId)
       );
       if (targetCourseChannel.length)
-        selectCurrentCommunity(targetCourseChannel[0].community);
+        setCurrentCommunity(targetCourseChannel[0].community);
     }
   }, [
     currentCourseId,
     setCurrentCourse,
-    selectCurrentCommunity,
+    setCurrentCommunity,
     currentCommunity,
     communities,
     loading,
@@ -192,12 +187,7 @@ const ChatPage = ({
         {currentCommunity && currentCommunity.id === 'chat' ? (
           <DirectChat />
         ) : (
-          <CommunityChat
-            isLoading={isLoading}
-            selectedCourse={currentCommunity}
-            courseChannels={communityChannels}
-            setSelectedCourse={selectCurrentCommunity}
-          />
+          <CommunityChat />
         )}
       </Box>
     </div>
@@ -214,7 +204,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentCourse: chatActions.setCurrentCourse,
       setCommunityList: chatActions.setCommunityList,
       setCommunityChannels: chatActions.setCommunityChannels,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setCurrentCommunity: chatActions.setCurrentCommunity,
       setCurrentChannelSid: chatActions.setCurrentChannelSid
     },
     dispatch
