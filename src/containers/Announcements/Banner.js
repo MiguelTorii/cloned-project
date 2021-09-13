@@ -7,7 +7,7 @@ import { withResizeDetector } from 'react-resize-detector';
 import * as userActions from 'actions/user';
 import { Announcement } from 'types/models';
 import { INTERVAL } from '../../constants/app';
-import HourlyGiveawayBanner from './Components/HourlyGiveawayBanner';
+import HourlyGiveawayBanner from './Components/HourlyGiveawayBanner/HourlyGiveawayBanner';
 import { setIntervalWithFirstCall } from '../../utils/helpers';
 import CommonBanner from './Components/CommonBanner';
 

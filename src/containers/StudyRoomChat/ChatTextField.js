@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import ClearIcon from '@material-ui/icons/Clear';

@@ -19,10 +19,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 // import { ReactComponent as FloatChatInsertPhotoIcon } from 'assets/svg/float_chat_insert_photo.svg';
 import AttachFile from 'components/FileUpload/AttachFile';
-import { bytesToSize } from 'utils/chat';
+import { FILE_LIMIT_SIZE } from 'constants/chat';
 import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
-import EmojiSelector from '../EmojiSelector';
+import EmojiSelector from '../EmojiSelector/EmojiSelector';
 
 import styles from '../_styles/FloatingChat/ChatTextField';
 
@@ -142,7 +142,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     } else {
       const file = this.fileInput.files[0];
       const { type, name, size } = file;
-      if (size < 40 * 1024 * 1024) {
+      if (size < FILE_LIMIT_SIZE) {
         this.setState({ loading: true });
 
         const result = await uploadMedia(userId, 1, file);
@@ -153,7 +153,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
           type,
           name,
           url: readUrl,
-          size: bytesToSize(size)
+          size
         };
 
         this.setState({ files: [...files, anyFile], loading: false });

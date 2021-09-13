@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 

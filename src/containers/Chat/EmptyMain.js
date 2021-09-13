@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ExpertEmptyChat from 'assets/svg/expertEmptyChat.svg';
 import { makeStyles } from '@material-ui/core/styles';
-import LoadImg from 'components/LoadImg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import EmptyUnregistered from 'assets/svg/emptyChatUnregistered.svg';
 
 const useStyles = makeStyles((theme) => ({

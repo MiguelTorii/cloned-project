@@ -8,7 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import ButtonBase from '@material-ui/core/ButtonBase';
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto'
 import ClearIcon from '@material-ui/icons/Clear';
-import EmojiSelector from 'components/EmojiSelector';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import get from 'lodash/get';
 import useStyles from './_styles/multipleChatTextField';
 

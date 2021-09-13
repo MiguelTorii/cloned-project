@@ -9,8 +9,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import CustomQuill from 'components/CustomQuill';
-import SelectedImage from 'components/SelectedImage';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
+import SelectedImage from 'components/SelectedImage/SelectedImage';
 
 import { styles } from '../_styles/FlashcardManager/Flashcard';
 

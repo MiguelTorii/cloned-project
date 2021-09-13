@@ -22,8 +22,8 @@ import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
 import type { SelectType } from '../../types/models';
 import styles from '../_styles/AutoComplete';
 

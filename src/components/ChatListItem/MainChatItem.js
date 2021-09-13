@@ -14,8 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import Dialog from 'components/Dialog';
-import OnlineBadge from 'components/OnlineBadge';
+import Dialog from 'components/Dialog/Dialog';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 import { containsImage, getInitials } from 'utils/chat';
 import { styles } from '../_styles/ChatListItem/MainChatItem';
 

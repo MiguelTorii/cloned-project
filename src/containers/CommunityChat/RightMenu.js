@@ -12,24 +12,18 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import { getInitials } from 'utils/chat';
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
-import HoverPopup from 'components/HoverPopup';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import HoverPopup from 'components/HoverPopup/HoverPopup';
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu';
-import ShareLinkWidget from '../../components/ShareLinkWidget';
+import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
-const RightMenu = ({
-  local,
-  channel,
-  userId,
-  setSelectedCourse,
-  isCommunityChat
-}) => {
+const RightMenu = ({ local, channel, isCommunityChat }) => {
   const classes = useStyles();
   const localChannel = useMemo(
     () => channel && local[channel.sid],
@@ -39,11 +33,7 @@ const RightMenu = ({
   if (!channel || !localChannel) return null;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      className={classes.container}
-    >
+    <Box display="flex" flexDirection="column" className={classes.container}>
       <Grid
         container
         alignItems="flex-start"
@@ -80,11 +70,7 @@ const RightMenu = ({
           {localChannel?.members.map((m) => {
             const fullName = `${m.firstname} ${m.lastname}`;
             return (
-              <HoverPopup
-                userId={m.userId}
-                key={m.userId}
-                setSelectedCourse={setSelectedCourse}
-              >
+              <HoverPopup userId={m.userId} key={m.userId}>
                 <ListItem
                   component={MyLink}
                   disableGutters

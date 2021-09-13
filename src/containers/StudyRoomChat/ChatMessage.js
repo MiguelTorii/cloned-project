@@ -10,9 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
-import OnlineBadge from 'components/OnlineBadge';
-import RoleBadge from 'components/RoleBadge';
-import FileUpload from 'components/FileUpload';
+import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import FileUpload from 'components/FileUpload/FileUploadContainer';
 import { getInitials, bytesToSize } from 'utils/chat';
 import { MEMBER_ROLES } from '../../constants/app';
 

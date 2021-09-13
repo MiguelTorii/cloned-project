@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Dialog, DialogContent, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import DialogTitle from '../../components/DialogTitle';
+import DialogTitle from '../../components/DialogTitle/DialogTitle';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import useStyles from './styles';
 

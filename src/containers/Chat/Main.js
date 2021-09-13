@@ -23,7 +23,7 @@ import EmptyMain from 'containers/Chat/EmptyMain';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Grid from '@material-ui/core/Grid';
-import CreateChatChannelInput from 'components/CreateChatChannelInput';
+import CreateChatChannelInput from 'components/CreateChatChannelInput/CreateChatChannelInput';
 import { logEvent } from 'api/analytics';
 import { getCampaign } from 'api/campaign';
 import findIndex from 'lodash/findIndex';

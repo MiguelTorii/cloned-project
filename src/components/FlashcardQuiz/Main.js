@@ -13,7 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import { saveQuizAnswers, generateQuiz } from 'api/feed';
 
 import { useStyles } from '../_styles/FlashcardQuiz';

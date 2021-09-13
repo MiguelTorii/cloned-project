@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import MuiTabs from 'components/Tabs';
+import MuiTabs from 'components/Tabs/TabPanel';
 import * as chatActions from 'actions/chat';
 import styles from 'components/_styles/CreateCommunityChatChannelInput/oneTouchSend';
 import SendStudent from './SendStudent';

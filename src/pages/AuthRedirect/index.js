@@ -7,7 +7,7 @@ import { Box, CircularProgress } from '@material-ui/core';
 import { useHistory, withRouter } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
-import Auth from '../../containers/AuthRedirect';
+import Auth from '../../containers/AuthRedirect/Auth';
 import { masquerade } from '../../actions/user';
 
 const styles = () => ({});

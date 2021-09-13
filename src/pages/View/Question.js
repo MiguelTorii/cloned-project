@@ -5,8 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout';
-import ViewQuestion from '../../containers/ViewQuestion';
+import Layout from '../../containers/Layout/Layout';
+import ViewQuestion from '../../containers/ViewQuestion/ViewQuestion';
 
 const styles = () => ({
   item: {

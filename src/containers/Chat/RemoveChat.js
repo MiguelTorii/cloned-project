@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Dialog, { dialogStyle } from 'components/Dialog';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import leaveGroup from 'assets/svg/leave-group.svg';
 
 const useStyles = makeStyles((theme) => ({

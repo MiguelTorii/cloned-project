@@ -25,14 +25,12 @@ type Props = {
   setCurrentCommunityChannel: Function,
   startMessageLoading: Function,
   setMainMessage: Function,
-  setCurrentCommunity: Function,
   enqueueSnackbar: Function,
   setCurrentChannelSidAction: Function,
   width: string
 };
 
 const CommunityChat = ({
-  setCurrentCommunity,
   setMainMessage,
   startMessageLoading,
   setCurrentCommunityChannel,
@@ -70,39 +68,43 @@ const CommunityChat = ({
   useEffect(() => {
     const currentCommunityChannels = [];
     const filterCurrentCommunityChannel = allCommunityChannels.filter(
-      (courseChannel) => courseChannel.courseId === currentCommunity.id
+      (communityChannel) => communityChannel.courseId === currentCommunity.id
     );
-    const channels = filterCurrentCommunityChannel[0]?.channels;
 
-    channels.forEach((communityChannel) => {
-      const { channels } = communityChannel;
-      currentCommunityChannels.push(...channels);
-    });
-    setCommunityChannels(channels);
+    if (currentCommunity.id !== 'chat') {
+      const channels = filterCurrentCommunityChannel[0]?.channels;
 
-    if (currentCommunityChannel) {
-      // currentCommunityChannel is exists, need to find the channel and select channel
-      const filterChannel = currentCommunityChannels.filter(
-        (channel) => channel.chat_id === currentCommunityChannel.sid
-      );
-      if (filterChannel.length) {
-        // set select channel
-        setSelctedChannel(filterChannel[0]);
+      channels.forEach((communityChannel) => {
+        const { channels } = communityChannel;
+        currentCommunityChannels.push(...channels);
+      });
+      setCommunityChannels(channels);
+
+      if (currentCommunityChannel) {
+        // currentCommunityChannel is exists, need to find the channel and select channel
+        const filterChannel = currentCommunityChannels.filter(
+          (channel) => channel.chat_id === currentCommunityChannel.sid
+        );
+        if (filterChannel.length) {
+          // set select channel
+          setSelctedChannel(filterChannel[0]);
+          setCurrentChannelSidAction(filterChannel[0]?.chat_id);
+        } else {
+          // currentCommunityChannel is not in course channels, set the default first channel
+          setSelctedChannel(currentCommunityChannels[0]);
+          setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
+          setCurrentCommunityChannel(
+            local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+          );
+        }
       } else {
-        // currentCommunityChannel is not in course channels, set the default first channel
+        // currentCommunityChannel is not exists, set the default first channel
         setSelctedChannel(currentCommunityChannels[0]);
         setCurrentCommunityChannel(
           local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
         );
         setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
       }
-    } else {
-      // currentCommunityChannel is not exists, set the default first channel
-      setSelctedChannel(currentCommunityChannels[0]);
-      setCurrentCommunityChannel(
-        local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
-      );
-      setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
     }
   }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
 
@@ -243,8 +245,6 @@ const CommunityChat = ({
             userId={userId}
             schoolId={schoolId}
             channel={currentCommunityChannel}
-            selectedCourse={currentCommunity}
-            setSelectedCourse={setCurrentCommunity}
             local={local}
           />
         </Grid>
@@ -265,8 +265,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setMainMessage: chatActions.setMainMessage,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       startMessageLoading: chatActions.startMessageLoading,
-      setCurrentChannelSidAction: chatActions.setCurrentChannelSid,
-      setCurrentCommunity: chatActions.setCurrentCommunity
+      setCurrentChannelSidAction: chatActions.setCurrentChannelSid
     },
     dispatch
   );

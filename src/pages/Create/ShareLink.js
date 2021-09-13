@@ -4,8 +4,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout';
-import CreateShareLink from '../../containers/CreatePostLayout';
+import Layout from '../../containers/Layout/Layout';
+import CreateShareLink from '../../containers/CreatePostLayout/CreatePostLayout';
 // import PostTips from '../../components/PostTips';
 
 type Props = {

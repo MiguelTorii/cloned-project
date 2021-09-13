@@ -1,9 +1,9 @@
 import React from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Layout from '../../containers/Layout';
-import FlashcardsShow from '../../containers/FlashcardsShow';
+import Layout from '../../containers/Layout/Layout';
+import FlashcardsShow from '../../containers/FlashcardsShow/FlashcardsShow';
 import withRoot from '../../withRoot';
-import LoadingSpin from 'components/LoadingSpin';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import Flashcards from 'pages/View/Flashcards';
 import { useSelector } from 'react-redux';
 import { isApiCalling } from 'utils/helpers';

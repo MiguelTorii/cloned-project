@@ -14,7 +14,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Badge from '@material-ui/core/Badge';
 
-import Tooltip from 'containers/Tooltip';
+import Tooltip from 'containers/Tooltip/Tooltip';
 import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
 import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
 import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';

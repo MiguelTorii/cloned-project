@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import store from 'store';
-import FlashcardsDeckManager from './index';
+import FlashcardsDeckManager from './FlashcardsDeckManager';
 import { createFlashcards } from '../../api/posts';
 import { showNotification } from '../../actions/notifications';
 import { logEvent, logEventLocally } from '../../api/analytics';

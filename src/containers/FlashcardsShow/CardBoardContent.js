@@ -3,12 +3,12 @@ import withRoot from '../../withRoot';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
 import ReactQuill from 'react-quill';
-import QuillToolbar from '../../components/QillToolbar';
+import QuillToolbar from '../../components/QillToolbar/QuillToolbar';
 import Button from '@material-ui/core/Button';
 import IconRepeat from '@material-ui/icons/Replay';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
-import ClickableImage from 'components/ClickableImage';
+import ClickableImage from 'components/ClickableImage/ClickableImage';
 import { extractTextFromHtml } from 'utils/helpers';
 
 const CardBoardContent = ({ content, image, editable, toolbarId, onFlip }) => {

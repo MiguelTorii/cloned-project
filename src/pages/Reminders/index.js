@@ -4,8 +4,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout';
-import Reminders from '../../containers/Reminders';
+import Layout from '../../containers/Layout/Layout';
+import Reminders from '../../containers/Reminders/Reminders';
 
 const styles = () => ({});
 

@@ -8,7 +8,7 @@ import type { State as StoreState } from '../../types/state';
 import AddMembers from '../../components/FloatingChat/AddMembers';
 import { searchUsers } from '../../api/user';
 import { addGroupMembers } from '../../api/chat';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { getInitials } from 'utils/chat';
 
 type Props = {

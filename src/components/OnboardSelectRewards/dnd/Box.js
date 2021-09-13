@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import LoadImg from '../../LoadImg';
+import LoadImg from '../../LoadImg/LoadImg';
 
 const style = {
   cursor: 'move'

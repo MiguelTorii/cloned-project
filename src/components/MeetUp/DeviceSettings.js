@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
-import Dialog from 'components/Dialog';
-import StudyRoomReport from 'components/StudyRoomReport';
+import Dialog from 'components/Dialog/Dialog';
+import StudyRoomReport from 'components/StudyRoomReport/ReportIssue';
 
 import { styles } from '../_styles/MeetUp/DeviceSettings';
 

@@ -12,10 +12,10 @@ import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import Fuse from 'fuse.js';
 
-import ChatListItem from 'components/CommunityChatListItem';
-import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput';
+import ChatListItem from 'components/CommunityChatListItem/ChatListItem';
+import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput/CreateChatChannelInput';
 import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
-import Dialog from 'components/Dialog';
+import Dialog from 'components/Dialog/Dialog';
 import MainChatItem from 'components/CommunityChatListItem/MainChatItem';
 import EmptyLeftMenu from 'containers/CommunityChat/EmptyLeftMenu';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';

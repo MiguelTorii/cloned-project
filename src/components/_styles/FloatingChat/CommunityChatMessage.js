@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0
   },
   message: {
-    maxWidth: '100%',
+    maxWidth: 'calc(100% - 50px)',
     width: '100%',
     margin: theme.spacing(0.5),
     display: 'flex',

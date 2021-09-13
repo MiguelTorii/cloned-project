@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withRoot from '../../withRoot';
-import ResetPassword from '../../containers/ResetPassword';
+import ResetPassword from '../../containers/ResetPassword/SignIn';
 
 const styles = (theme) => ({
   progress: {
