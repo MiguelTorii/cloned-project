@@ -1,6 +1,13 @@
 module.exports = {
-  extends: ['react-app', 'airbnb', 'prettier', 'plugin:jsx-a11y/recommended'],
-  plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react-hooks', 'only-warn'],
+  extends: [
+    'eslint:recommended',
+    'airbnb',
+    'prettier',
+    'plugin:jsx-a11y/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
+  ],
+  plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
     'prettier/prettier': 'warn',
     'object-curly-spacing': 2,

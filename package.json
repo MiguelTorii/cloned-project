@@ -117,6 +117,7 @@
     "yarn": "^1.21.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "cypress": "^4.12.1",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -127,12 +128,13 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "flow-bin": "^0.137.0",
     "prettier": "^2.4.0"
   },
   "scripts": {
     "start": "ESLINT_NO_DEV_ERRORS='true' REACT_APP_STAGE=dev react-scripts start",
-    "lint": "eslint --max-warnings=0 src || exit 0",
+    "lint": "eslint --max-warnings=0 src",
     "format": "prettier --write 'src/**/*.js'",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build:production": "yarn install && ./build.sh production",
