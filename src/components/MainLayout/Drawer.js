@@ -387,15 +387,6 @@ const Drawer = ({
           )}
         />
         <DrawerItem
-          onClick={handleOpenGetApp}
-          listItemClass={classes.otherPath}
-          OnIcon={<OnStudyRoom />}
-          component={MyLink}
-          link="/video-call"
-          primaryText="Study Room"
-          OffIcon={<OffStudyRoom />}
-        />
-        <DrawerItem
           OnIcon={<WorkflowIconOn />}
           primaryText="Workflow"
           pathname={pathname}
