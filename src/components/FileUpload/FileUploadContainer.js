@@ -45,6 +45,10 @@ import IconCODEUrl from 'assets/svg/icons/code-default-icon.svg';
 import IconOTHERUrl from 'assets/svg/icons/other-default-icon.svg';
 import { ReactComponent as DownloadIcon } from 'assets/svg/download.svg';
 import { truncate } from 'utils/helpers';
+import {
+  BIG_CHAT_FILE_NAME_TRANCATE_LIMIT,
+  SMALL_CHAT_FILE_NAME_TRANCATE_LIMIT
+} from 'constants/chat';
 import styles from '../_styles/FileUpload';
 
 const URIS = {
@@ -170,7 +174,12 @@ const FileUploadContainer = ({
             alignItems="center"
           >
             <div className={cx(smallChat ? classes.fileName : classes.name)}>
-              {truncate(name, smallChat ? 20 : 22)}
+              {truncate(
+                name,
+                smallChat
+                  ? SMALL_CHAT_FILE_NAME_TRANCATE_LIMIT
+                  : BIG_CHAT_FILE_NAME_TRANCATE_LIMIT
+              )}
             </div>
             {(width === 'xs' || smallChat) && isDownload && (
               <DownloadIcon

@@ -16,7 +16,7 @@ import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import ChatTextField from 'containers/StudyRoomChat/ChatTextField';
 import Lightbox from 'react-images';
-import { processMessages, bytesToSize, getFileAttributes } from 'utils/chat';
+import { processMessages, getFileAttributes } from 'utils/chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -29,6 +29,7 @@ import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import { FILE_LIMIT_SIZE } from 'constants/chat';
 import * as notificationsActions from '../../actions/notifications';
 import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
@@ -384,7 +385,7 @@ const StudyRoomChat = ({
   const handleInputChange = useCallback(async () => {
     const file = fileInput.current.files[0];
     const { type, name, size } = file;
-    if (size < 40 * 1024 * 1024) {
+    if (size < FILE_LIMIT_SIZE) {
       const result = await uploadMedia(userId, 1, file);
 
       const { readUrl } = result;
@@ -393,7 +394,7 @@ const StudyRoomChat = ({
         type,
         name,
         url: readUrl,
-        size: bytesToSize(size)
+        size
       };
 
       setFiles([...files, anyFile]);

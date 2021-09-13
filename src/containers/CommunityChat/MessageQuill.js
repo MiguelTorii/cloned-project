@@ -1,18 +1,16 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
-import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { bytesToSize } from 'utils/chat';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
 import AttachFile from 'components/FileUpload/AttachFile';
+import { FILE_LIMIT_SIZE } from 'constants/chat';
 import EditorToolbar, { formats } from './Toolbar';
-import { getPresignedURL } from '../../api/media';
 import { uploadMedia } from '../../actions/user';
 
 import styles from './_styles/messageQuill';
@@ -191,7 +189,7 @@ const MessageQuill = ({
         const file = input.files[0];
         const { type, name, size } = file;
 
-        if (size < 40 * 1024 * 1024) {
+        if (size < FILE_LIMIT_SIZE) {
           const result = await uploadMedia(userId, 1, file);
           const { readUrl } = result;
 
@@ -204,7 +202,7 @@ const MessageQuill = ({
               type,
               name,
               url: readUrl,
-              size: bytesToSize(size)
+              size
             };
 
             setFiles([...files, anyFile]);
