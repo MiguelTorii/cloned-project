@@ -87,9 +87,6 @@ module.exports = {
     'import/no-cycle': 'off',
 
     // TODO turn this back on
-    'radix': 'off',
-
-    // TODO turn this back on
     'no-mixed-operators': 'off',
 
     // TODO turn this back on
