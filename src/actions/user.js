@@ -260,6 +260,11 @@ export const getPointsHistory = (
   successCallback: successCb
 });
 
+export const setIsMasquerading = (isMasquerading: boolean) => ({
+  type: userActions.SET_IS_MASQUERADING,
+  payload: isMasquerading
+});
+
 export const masquerade =
   (userId: string, refreshToken: string, callback: Function) =>
   async (dispatch: Dispatch) => {
@@ -276,11 +281,6 @@ export const masquerade =
       callback(isAuthenticated);
     }
   };
-
-export const setIsMasquerading = (isMasquerading: boolean) => ({
-  type: userActions.SET_IS_MASQUERADING,
-  payload: isMasquerading
-});
 
 export const getFlashcards = (
   userId: number,

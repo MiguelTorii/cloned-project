@@ -78,12 +78,6 @@ module.exports = {
     'no-restricted-syntax': 'off',
 
     // TODO turn this back on
-    'no-use-before-define': 'off',
-
-    // TODO turn this back on
-    'no-useless-return': 'off',
-
-    // TODO turn this back on
     'import/no-cycle': 'off',
 
     // TODO turn this back on
