@@ -8,10 +8,10 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     width: 600,
     minHeight: 440,
-    overflow: 'visible',
-    '& .MuiDialogContent-root': {
-      overflowY: 'visible'
-    }
+    overflow: 'visible'
+  },
+  dialogContent: {
+    overflowY: 'visible'
   },
   dialogImg: {
     height: 'inherit'

@@ -228,6 +228,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
     () => (
       <Dialog
         className={classes.dialog}
+        contentClassName={classes.dialogContent}
         onCancel={onClose}
         open={open}
         onOk={updateTask}
