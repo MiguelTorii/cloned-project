@@ -196,9 +196,15 @@ const OnboardingStep = ({
     amplitude.getInstance('student-application').logEvent(event);
 
     setIsPlaying(!isPlaying);
-    if (!player.current) return;
-    !isPlaying && player.current.play();
-    isPlaying && player.current.pause();
+    if (!player.current) {
+      return;
+    }
+
+    if (isPlaying) {
+      player.current.pause();
+    } else {
+      player.current.play();
+    }
   }, [isPlaying]);
 
   return (
