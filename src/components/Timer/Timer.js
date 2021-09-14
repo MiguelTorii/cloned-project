@@ -11,7 +11,9 @@ import { twoDigitsNumber } from 'utils/helpers';
 import Button from '@material-ui/core/Button';
 import NumberSelector from 'components/Timer/NumberSelector';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import useStyles from './styles';
+import { showNotification } from '../../actions/notifications';
 
 export const TIMER_STATUS = {
   INITIALIZED: 'initialized',
@@ -22,6 +24,7 @@ export const TIMER_STATUS = {
 
 const Timer = ({ defaultStatus }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [status, setStatus] = useState(TIMER_STATUS.INITIALIZED);
   const [currentSeconds, setCurrentSeconds] = useState(null);
   const [initialHours, setInitialHours] = useState(1);
@@ -31,11 +34,16 @@ const Timer = ({ defaultStatus }) => {
 
   const handleStartTimer = useCallback(() => {
     if (initialHours === 0 && initialMinutes === 0) {
-      alert('Please set a valid timer');
+      dispatch(
+        showNotification({
+          message: 'Please set a valid timer.',
+          variant: 'error'
+        })
+      );
       return;
     }
     setStatus(TIMER_STATUS.STARTED);
-  }, [initialHours, initialMinutes]);
+  }, [dispatch, initialHours, initialMinutes]);
 
   const handleResetTimer = useCallback(() => {
     setStatus(TIMER_STATUS.INITIALIZED);
@@ -82,62 +90,60 @@ const Timer = ({ defaultStatus }) => {
   }, [status]);
 
   // Rendering Helpers
-  const renderTimeBox = () => {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="baseline"
-        className={clsx(
-          classes.timerBox,
-          status !== TIMER_STATUS.STARTED && 'hand'
-        )}
-      >
-        <Box mr={1 / 2}>
-          {status === TIMER_STATUS.INITIALIZED ? (
-            <NumberSelector
-              value={initialHours}
-              limit={9}
-              onChange={setInitialHours}
-            />
-          ) : (
-            <Typography variant="h4">
-              {twoDigitsNumber(Math.floor(currentSeconds / 3600))}
-            </Typography>
-          )}
-        </Box>
-        <Box mr={2}>
-          <Typography>h</Typography>
-        </Box>
-        <Box mr={1 / 2}>
-          {status === TIMER_STATUS.INITIALIZED ? (
-            <NumberSelector
-              limit={59}
-              onChange={setInitialMinutes}
-              value={initialMinutes}
-            />
-          ) : (
-            <Typography variant="h4">
-              {twoDigitsNumber(Math.floor(currentSeconds / 60) % 60)}
-            </Typography>
-          )}
-        </Box>
-        <Box mr={2}>
-          <Typography>m</Typography>
-        </Box>
-        <Box mr={1 / 2}>
+  const renderTimeBox = () => (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="baseline"
+      className={clsx(
+        classes.timerBox,
+        status !== TIMER_STATUS.STARTED && 'hand'
+      )}
+    >
+      <Box mr={1 / 2}>
+        {status === TIMER_STATUS.INITIALIZED ? (
+          <NumberSelector
+            value={initialHours}
+            limit={9}
+            onChange={setInitialHours}
+          />
+        ) : (
           <Typography variant="h4">
-            {twoDigitsNumber(
-              status === TIMER_STATUS.INITIALIZED
-                ? 0
-                : Math.floor(currentSeconds % 60)
-            )}
+            {twoDigitsNumber(Math.floor(currentSeconds / 3600))}
           </Typography>
-        </Box>
-        <Typography>s</Typography>
+        )}
       </Box>
-    );
-  };
+      <Box mr={2}>
+        <Typography>h</Typography>
+      </Box>
+      <Box mr={1 / 2}>
+        {status === TIMER_STATUS.INITIALIZED ? (
+          <NumberSelector
+            limit={59}
+            onChange={setInitialMinutes}
+            value={initialMinutes}
+          />
+        ) : (
+          <Typography variant="h4">
+            {twoDigitsNumber(Math.floor(currentSeconds / 60) % 60)}
+          </Typography>
+        )}
+      </Box>
+      <Box mr={2}>
+        <Typography>m</Typography>
+      </Box>
+      <Box mr={1 / 2}>
+        <Typography variant="h4">
+          {twoDigitsNumber(
+            status === TIMER_STATUS.INITIALIZED
+              ? 0
+              : Math.floor(currentSeconds % 60)
+          )}
+        </Typography>
+      </Box>
+      <Typography>s</Typography>
+    </Box>
+  );
 
   return (
     <div className={classes.root}>
