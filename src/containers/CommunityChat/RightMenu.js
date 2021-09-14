@@ -23,13 +23,7 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
-const RightMenu = ({
-  local,
-  channel,
-  userId,
-  setSelectedCourse,
-  isCommunityChat
-}) => {
+const RightMenu = ({ local, channel, isCommunityChat }) => {
   const classes = useStyles();
   const localChannel = useMemo(
     () => channel && local[channel.sid],
@@ -39,11 +33,7 @@ const RightMenu = ({
   if (!channel || !localChannel) return null;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      className={classes.container}
-    >
+    <Box display="flex" flexDirection="column" className={classes.container}>
       <Grid
         container
         alignItems="flex-start"
@@ -80,11 +70,7 @@ const RightMenu = ({
           {localChannel?.members.map((m) => {
             const fullName = `${m.firstname} ${m.lastname}`;
             return (
-              <HoverPopup
-                userId={m.userId}
-                key={m.userId}
-                setSelectedCourse={setSelectedCourse}
-              >
+              <HoverPopup userId={m.userId} key={m.userId}>
                 <ListItem
                   component={MyLink}
                   disableGutters

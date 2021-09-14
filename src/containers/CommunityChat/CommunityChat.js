@@ -25,22 +25,17 @@ type Props = {
   setCurrentCommunityChannel: Function,
   startMessageLoading: Function,
   setMainMessage: Function,
-  setSelectedCourse: Function,
   enqueueSnackbar: Function,
   setCurrentChannelSidAction: Function,
-  courseChannels: array,
   width: string
 };
 
 const CommunityChat = ({
-  selectedCourse,
   setMainMessage,
   startMessageLoading,
   setCurrentCommunityChannel,
-  setSelectedCourse,
   setCurrentChannelSidAction,
   enqueueSnackbar,
-  courseChannels,
   user,
   chat,
   width
@@ -50,7 +45,6 @@ const CommunityChat = ({
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
-  const [currentCommunityChannels, setCurrentCommunityChannels] = useState([]);
 
   const [selectedChannel, setSelctedChannel] = useState(null);
 
@@ -64,6 +58,7 @@ const CommunityChat = ({
       local,
       mainMessage,
       currentCommunity,
+      communityChannels: allCommunityChannels,
       currentCommunityChannel,
       messageLoading,
       selectedChannelId
@@ -71,59 +66,47 @@ const CommunityChat = ({
   } = chat;
 
   useEffect(() => {
-    let filterChannel = [];
     const currentCommunityChannels = [];
-    const currentCourseChannel = courseChannels.filter(
-      (courseChannel) => courseChannel.courseId === selectedCourse.id
+    const filterCurrentCommunityChannel = allCommunityChannels.filter(
+      (communityChannel) => communityChannel.courseId === currentCommunity.id
     );
-    const communityChannels = currentCourseChannel[0]?.channels;
-    setCommunityChannels(communityChannels);
-    communityChannels.forEach((communityChannel) => {
-      const { channels } = communityChannel;
-      currentCommunityChannels.push(...channels);
-      filterChannel = channels.filter(
-        (channel) => channel.id === currentCommunity.id
-      );
-    });
-    setCurrentCommunityChannels(currentCommunityChannels);
-    if (
-      (currentCommunity && !!filterChannel.length) ||
-      currentCommunityChannel
-    ) {
-      setSelctedChannel(currentCommunity);
-    } else {
-      setSelctedChannel(communityChannels[0].channels[0]);
-    }
-  }, [
-    selectedCourse,
-    courseChannels,
-    currentCommunity,
-    currentCommunityChannel,
-    setCurrentCommunityChannels
-  ]);
 
-  useEffect(() => {
-    if (currentCommunityChannel) {
-      // currentCommunityChannel is exists, need to find the channel and select channel
-      const filterChannel = currentCommunityChannels.filter(
-        (channel) => channel.chat_id === currentCommunityChannel.sid
-      );
-      if (filterChannel.length) {
-        // set select channel
-        setSelctedChannel(filterChannel[0]);
+    if (currentCommunity.id !== 'chat') {
+      const channels = filterCurrentCommunityChannel[0]?.channels;
+
+      channels.forEach((communityChannel) => {
+        const { channels } = communityChannel;
+        currentCommunityChannels.push(...channels);
+      });
+      setCommunityChannels(channels);
+
+      if (currentCommunityChannel) {
+        // currentCommunityChannel is exists, need to find the channel and select channel
+        const filterChannel = currentCommunityChannels.filter(
+          (channel) => channel.chat_id === currentCommunityChannel.sid
+        );
+        if (filterChannel.length) {
+          // set select channel
+          setSelctedChannel(filterChannel[0]);
+          setCurrentChannelSidAction(filterChannel[0]?.chat_id);
+        } else {
+          // currentCommunityChannel is not in course channels, set the default first channel
+          setSelctedChannel(currentCommunityChannels[0]);
+          setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
+          setCurrentCommunityChannel(
+            local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+          );
+        }
       } else {
-        // currentCommunityChannel is not in course channels, set the default first channel
+        // currentCommunityChannel is not exists, set the default first channel
         setSelctedChannel(currentCommunityChannels[0]);
+        setCurrentCommunityChannel(
+          local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
+        );
+        setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
       }
-    } else {
-      // currentCommunityChannel is not exists, set the default first channel
-      setSelctedChannel(currentCommunityChannels[0]);
-      setCurrentCommunityChannel(
-        local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
-      );
-      setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
     }
-  }, [currentCommunityChannels, currentCommunityChannel, local]);
+  }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
 
   useEffect(() => {
     const targetSelectedChannel = selectedChannel
@@ -218,7 +201,8 @@ const CommunityChat = ({
               startMessageLoading={startMessageLoading}
               communityChannels={communityChannels}
               local={local}
-              course={selectedCourse}
+              currentCommunity={currentCommunity}
+              currentCommunityChannel={currentCommunityChannel}
               setCurrentChannelSidAction={setCurrentChannelSidAction}
               setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
@@ -230,7 +214,7 @@ const CommunityChat = ({
           <Main
             isCommunityChat
             channelList={communityChannels}
-            selectedCourse={selectedCourse}
+            currentCommunity={currentCommunity}
             selectedChannel={selectedChannel}
             newMessage={newMessage}
             messageLoading={messageLoading}
@@ -261,8 +245,6 @@ const CommunityChat = ({
             userId={userId}
             schoolId={schoolId}
             channel={currentCommunityChannel}
-            selectedCourse={selectedCourse}
-            setSelectedCourse={setSelectedCourse}
             local={local}
           />
         </Grid>

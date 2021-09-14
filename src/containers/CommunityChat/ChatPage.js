@@ -20,12 +20,14 @@ const ChatPage = ({
   setCurrentCourse,
   setCommunityList,
   setCommunityChannels,
-  selectCurrentCommunity,
+  setCurrentCommunity,
   setCurrentChannelSid
 }) => {
   const {
     data: {
       local,
+      communityChannels,
+      communities,
       currentCommunity,
       currentCourseId,
       oneTouchSendOpen,
@@ -40,9 +42,6 @@ const ChatPage = ({
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState([]);
-  const [courseChannels, setCourseChannels] = useState([]);
-  const [communityList, setCommunities] = useState([]);
 
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) return [];
@@ -83,16 +82,12 @@ const ChatPage = ({
         );
 
         setCommunityList(nonEmptyCommunities);
-        setCommunities(nonEmptyCommunities);
-
-        setCourseChannels(communityChannels);
         setCommunityChannels(communityChannels);
 
         if (!currentCommunityChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
-          setSelectedCourse(defaultCommunity);
-          selectCurrentCommunity(defaultCommunity);
+          setCurrentCommunity(defaultCommunity);
         }
         setLoading(false);
       } catch (e) {
@@ -127,52 +122,49 @@ const ChatPage = ({
 
   const handleSelect = useCallback(
     (course) => {
-      if (course.id !== selectedCourse?.id) {
+      if (course.id !== currentCommunity?.id) {
         setCurrentCourse(course.id);
-        setSelectedCourse(course);
         setCurrentChannelSid('');
-        selectCurrentCommunity(course);
+        setCurrentCommunity(course);
       }
     },
     [
-      selectedCourse,
+      currentCommunity,
       setCurrentCourse,
-      selectCurrentCommunity,
+      setCurrentCommunity,
       setCurrentChannelSid
     ]
   );
 
   useEffect(() => {
-    if (oneTouchSendOpen) {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (currentCourseId === 'chat' || !currentCourseId) {
-      setSelectedCourse(DEFAULT_COMMUNITY_MENU_ITEMS);
+    if (oneTouchSendOpen || currentCourseId === 'chat' || !currentCourseId) {
+      setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
       currentCommunity &&
-      !!communityList.length &&
+      !!communities.length &&
       currentCommunity.id !== 'chat'
     ) {
-      const targetCourse = communityList.filter(
+      const targetCourse = communities.filter(
         (course) => course.community.id === currentCommunity.id
       );
-      if (targetCourse.length) setSelectedCourse(targetCourse[0]?.community);
+      if (targetCourse.length) setCurrentCommunity(targetCourse[0]?.community);
     } else if (
       currentCourseId &&
-      !!communityList.length &&
+      !!communities.length &&
       currentCourseId !== 'chat'
     ) {
-      const targetCourseChannel = communityList.filter(
+      const targetCourseChannel = communities.filter(
         (community) => community.community.id === Number(currentCourseId)
       );
       if (targetCourseChannel.length)
-        setSelectedCourse(targetCourseChannel[0].community);
+        setCurrentCommunity(targetCourseChannel[0].community);
     }
   }, [
     currentCourseId,
     setCurrentCourse,
-    selectCurrentCommunity,
+    setCurrentCommunity,
     currentCommunity,
-    communityList,
+    communities,
     loading,
     campaign.chatLanding
   ]);
@@ -185,22 +177,17 @@ const ChatPage = ({
         <CollageList
           local={local}
           unreadMessageCount={unreadMessageCount}
-          selectedCourse={selectedCourse}
-          communities={communityList}
-          courseChannels={courseChannels}
+          selectedCourse={currentCommunity}
+          communities={communities}
+          communityChannels={communityChannels}
           handleSelect={handleSelect}
         />
       </Box>
       <Box className={classes.directChat}>
-        {selectedCourse && selectedCourse.id === 'chat' ? (
+        {currentCommunity && currentCommunity.id === 'chat' ? (
           <DirectChat />
         ) : (
-          <CommunityChat
-            isLoading={isLoading}
-            selectedCourse={selectedCourse}
-            courseChannels={courseChannels}
-            setSelectedCourse={setSelectedCourse}
-          />
+          <CommunityChat />
         )}
       </Box>
     </div>
@@ -217,7 +204,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentCourse: chatActions.setCurrentCourse,
       setCommunityList: chatActions.setCommunityList,
       setCommunityChannels: chatActions.setCommunityChannels,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity,
+      setCurrentCommunity: chatActions.setCurrentCommunity,
       setCurrentChannelSid: chatActions.setCurrentChannelSid
     },
     dispatch

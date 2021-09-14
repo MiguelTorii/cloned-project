@@ -14,7 +14,7 @@ type Props = {
   local: Object,
   unreadMessageCount: number,
   selectedCourse: Object,
-  courseChannels: array,
+  communityChannels: array,
   handleSelect: Function
 };
 
@@ -23,7 +23,7 @@ const CommunityMenu = ({
   local,
   unreadMessageCount,
   selectedCourse,
-  courseChannels,
+  communityChannels,
   handleSelect
 }: Props) => {
   const classes = useStyles();
@@ -31,7 +31,7 @@ const CommunityMenu = ({
   useEffect(() => {
     const { id } = item;
     if (id !== 'chat') {
-      const currentCourseChannel = courseChannels.filter(
+      const currentCourseChannel = communityChannels.filter(
         (courseChannel) => courseChannel.courseId === id
       );
 
@@ -48,7 +48,7 @@ const CommunityMenu = ({
         setUnreadMessages(count);
       }
     }
-  }, [item, local, courseChannels]);
+  }, [item, local, communityChannels]);
 
   const handleSelectItem = useCallback(() => {
     handleSelect(item);

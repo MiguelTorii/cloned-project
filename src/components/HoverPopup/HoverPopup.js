@@ -28,10 +28,9 @@ const HoverPopup = ({
   leftAligned = false,
   children = null,
   userId,
-  setSelectedCourse,
   setCurrentCourse,
   setCurrentChannel,
-  selectCurrentCommunity,
+  setCurrentCommunity,
   setCurrentChannelSid,
   ...props
 }) => {
@@ -260,7 +259,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentCourse: chatActions.setCurrentCourse,
       setCurrentChannel: chatActions.setCurrentChannel,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
-      selectCurrentCommunity: chatActions.selectCurrentCommunity
+      setCurrentCommunity: chatActions.setCurrentCommunity
     },
     dispatch
   );

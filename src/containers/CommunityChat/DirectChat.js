@@ -180,12 +180,17 @@ const DirectChat = ({
   }, [local]);
 
   useEffect(() => {
-    if (!currentChannel && lastChannelSid && !isLoading) {
+    if (!currentChannel && lastChannelSid && !isLoading && selectedChannelId) {
       const lastChannel = local[lastChannelSid];
       setCurrentChannel(lastChannel?.twilioChannel);
+      setCurrentChannelSid(lastChannelSid);
+    }
+
+    if (!selectedChannelId && lastChannelSid) {
+      setCurrentChannelSid(lastChannelSid);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChannel, setCurrentChannel, isLoading, lastChannelSid]);
+  }, [currentChannel, isLoading, lastChannelSid, selectedChannelId]);
 
   useEffect(() => {
     if (width !== prevWidth) {
