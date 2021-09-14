@@ -87,9 +87,6 @@ module.exports = {
     'jsx-quotes': 'off',
 
     // TODO turn this back on
-    'no-alert': 'off',
-
-    // TODO turn this back on
     'import/no-mutable-exports': 'off',
 
     // TODO turn this back on
