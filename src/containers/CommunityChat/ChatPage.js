@@ -84,7 +84,11 @@ const ChatPage = ({
         setCommunityList(nonEmptyCommunities);
         setCommunityChannels(communityChannels);
 
-        if (!currentCommunityChannel && nonEmptyCommunities.length > 0) {
+        if (
+          currentCourseId &&
+          !currentCommunityChannel &&
+          nonEmptyCommunities.length > 0
+        ) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCourse(defaultCommunity.id);
           setCurrentCommunity(defaultCommunity);

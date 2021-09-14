@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -22,7 +22,6 @@ import { getUserProfile } from '../../api/user';
 import * as chatActions from '../../actions/chat';
 
 import useStyles from '../_styles/HoverPopup';
-import { anonymousStudentInitials } from '../../constants/common';
 
 const HoverPopup = ({
   leftAligned = false,
@@ -100,21 +99,22 @@ const HoverPopup = ({
     handlePopoverClose();
   };
 
-  const onTimeout = () => {
-    if (userId !== myUserId) setOpen(true);
-  };
+  const onTimeout = useCallback(() => {
+    if (userId !== myUserId && (profile.firstName || profile.lastName))
+      setOpen(true);
+  }, [userId, myUserId, profile]);
 
   useEffect(() => {
     const timer = hover && setTimeout(onTimeout, 500);
     return () => {
       clearTimeout(timer);
     };
-  }, [hover]);
+  }, [hover, onTimeout]);
 
   const onStartChat = async () => {
     const { openChannelWithEntity } = props;
     setChatLoading(true);
-    setCurrentCourse('null');
+    setCurrentCourse(null);
     setCurrentChannelSid('');
     setCurrentChannel(null);
 
@@ -198,8 +198,7 @@ const HoverPopup = ({
                 src={profile.userProfileUrl}
                 className={classes.overviewAvatar}
               >
-                {/* If name does not exist, we recognize it as an anonymous student. */}
-                {getInitials(fullName) || anonymousStudentInitials}
+                {getInitials(fullName)}
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>
