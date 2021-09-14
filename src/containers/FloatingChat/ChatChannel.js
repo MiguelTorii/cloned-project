@@ -168,8 +168,10 @@ class ChatChannel extends React.PureComponent<Props, State> {
       this.setState({ title });
 
       try {
-        const paginator = await channel.getMessages(10);
-        const campaign = await getCampaign({ campaignId: 9 });
+        const [paginator, campaign] = await Promise.all([
+          channel.getMessages(10),
+          getCampaign({ campaignId: 9 })
+        ]);
 
         if (paginator)
           this.setState({
