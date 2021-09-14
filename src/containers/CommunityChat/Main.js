@@ -178,21 +178,22 @@ const Main = ({
       try {
         channel.setAllMessagesConsumed();
 
-        const av = await fetchAvatars(channel);
-        setAvatars(av);
+        const [avatars, aCampaign, chatData] = await Promise.all([
+          fetchAvatars(channel),
+          getCampaign({ campaignId: 9 }),
+          channel.getMessages(10)
+        ]);
 
-        const aCampaign = await getCampaign({ campaignId: 9 });
+        setAvatars(avatars);
         setCampaign(aCampaign);
-
-        const p = await channel.getMessages(10);
         if (
-          !p?.items?.length ||
-          selectedChannelId === p?.items?.[0]?.channel?.sid
+          !chatData?.items?.length ||
+          selectedChannelId === chatData?.items?.[0]?.channel?.sid
         ) {
-          if (!p.hasNextPage) startMessageLoading(false);
-          setMessages(p.items);
-          setPaginator(p);
-          setHasMore(!(p.items.length < 10));
+          if (!chatData.hasNextPage) startMessageLoading(false);
+          setMessages(chatData.items);
+          setPaginator(chatData);
+          setHasMore(!(chatData.items.length < 10));
         }
         if (end.current) {
           end.current.scrollIntoView({ behavior: 'instant' });
