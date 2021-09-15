@@ -74,7 +74,7 @@ const URIS = {
   'other-default': IconOTHERUrl
 };
 
-const UPLOAD_FILE_TEXT_LIMIT = 18;
+const UPLOAD_FILENAME_CHARACTER_LIMIT = 18;
 
 const FileUploadContainer = (props) => {
   const { classes, file, onClose, smallChat } = props;
@@ -98,7 +98,7 @@ const FileUploadContainer = (props) => {
       </div>
       <div className={classes.infoContainer}>
         <div className={classes.name}>
-          {truncate(name, UPLOAD_FILE_TEXT_LIMIT)}
+          {truncate(name, UPLOAD_FILENAME_CHARACTER_LIMIT)}
         </div>
       </div>
 

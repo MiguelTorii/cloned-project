@@ -388,18 +388,10 @@ const StudyRoomChat = ({
     const { type, name, size } = file;
     if (size < FILE_LIMIT_SIZE) {
       if (type.includes('image')) {
-        if (
-          fileInput.current &&
-          fileInput.current.files &&
-          fileInput.current.files.length > 0
-        ) {
+        if (fileInput.current?.files?.length > 0) {
           const reader = new FileReader();
           reader.onload = (event) => {
-            if (
-              fileInput.current &&
-              fileInput.current.files &&
-              fileInput.current.files.length > 0
-            ) {
+            if (fileInput.current?.files?.length > 0) {
               setImage(event.target.result);
               setInput(fileInput.current.files[0]);
             }

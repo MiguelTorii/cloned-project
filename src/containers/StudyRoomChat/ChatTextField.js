@@ -253,18 +253,10 @@ const ChatTextField = ({
   }, [setInput]);
 
   const handleInputChange = useCallback(() => {
-    if (
-      fileInput.current &&
-      fileInput.current.files &&
-      fileInput.current.files.length > 0
-    ) {
+    if (fileInput.current?.files?.length > 0) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (
-          fileInput.current &&
-          fileInput.current.files &&
-          fileInput.current.files.length > 0
-        ) {
+        if (fileInput.current?.files?.length > 0) {
           setImage(event.target.result);
           setInput(fileInput.current.files[0]);
         }
