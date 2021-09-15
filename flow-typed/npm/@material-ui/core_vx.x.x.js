@@ -1278,7 +1278,7 @@ declare module '@material-ui/core/es/styles/createMixins' {
   declare module.exports: any;
 }
 
-declare module '@material-ui/core/es/styles/createMuiTheme' {
+declare module '@material-ui/core/es/styles/createTheme' {
   declare module.exports: any;
 }
 
@@ -2230,7 +2230,7 @@ declare module '@material-ui/core/styles/createMixins' {
   declare module.exports: any;
 }
 
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module '@material-ui/core/styles/createTheme' {
   declare module.exports: any;
 }
 
@@ -3525,8 +3525,8 @@ declare module '@material-ui/core/es/styles/createGenerateClassName.js' {
 declare module '@material-ui/core/es/styles/createMixins.js' {
   declare module.exports: $Exports<'@material-ui/core/es/styles/createMixins'>;
 }
-declare module '@material-ui/core/es/styles/createMuiTheme.js' {
-  declare module.exports: $Exports<'@material-ui/core/es/styles/createMuiTheme'>;
+declare module '@material-ui/core/es/styles/createTheme.js' {
+  declare module.exports: $Exports<'@material-ui/core/es/styles/createTheme'>;
 }
 declare module '@material-ui/core/es/styles/createPalette.js' {
   declare module.exports: $Exports<'@material-ui/core/es/styles/createPalette'>;
@@ -4245,8 +4245,8 @@ declare module '@material-ui/core/styles/createGenerateClassName.js' {
 declare module '@material-ui/core/styles/createMixins.js' {
   declare module.exports: $Exports<'@material-ui/core/styles/createMixins'>;
 }
-declare module '@material-ui/core/styles/createMuiTheme.js' {
-  declare module.exports: $Exports<'@material-ui/core/styles/createMuiTheme'>;
+declare module '@material-ui/core/styles/createTheme.js' {
+  declare module.exports: $Exports<'@material-ui/core/styles/createTheme'>;
 }
 declare module '@material-ui/core/styles/createPalette.js' {
   declare module.exports: $Exports<'@material-ui/core/styles/createPalette'>;

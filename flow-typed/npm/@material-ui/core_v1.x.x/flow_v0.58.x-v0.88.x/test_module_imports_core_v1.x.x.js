@@ -83,7 +83,7 @@ import {
   MuiThemeProvider,
   withStyles,
   withTheme,
-  createMuiTheme,
+  createTheme,
   jssPreset
 } from "@material-ui/core/styles";
 
