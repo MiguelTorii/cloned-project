@@ -119,6 +119,7 @@ const StudyRoomChat = ({
   const [images, setImages] = useState([]);
   const [paginator, setPaginator] = useState(null);
   const [input, setInput] = useState(null);
+  const [image, setImage] = useState(null);
   const [hasMore, setHasMore] = useState(false);
   const [mainMessage, setMainMessage] = useState('');
 
@@ -386,18 +387,35 @@ const StudyRoomChat = ({
     const file = fileInput.current.files[0];
     const { type, name, size } = file;
     if (size < FILE_LIMIT_SIZE) {
-      const result = await uploadMedia(userId, 1, file);
+      if (type.includes('image')) {
+        if (fileInput.current?.files?.length > 0) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            if (fileInput.current?.files?.length > 0) {
+              setImage(event.target.result);
+              setInput(fileInput.current.files[0]);
+            }
+            if (fileInput.current) {
+              fileInput.current.value = '';
+            }
+          };
 
-      const { readUrl } = result;
+          reader.readAsDataURL(fileInput.current.files[0]);
+        }
+      } else {
+        const result = await uploadMedia(userId, 1, file);
 
-      const anyFile = {
-        type,
-        name,
-        url: readUrl,
-        size
-      };
+        const { readUrl } = result;
 
-      setFiles([...files, anyFile]);
+        const anyFile = {
+          type,
+          name,
+          url: readUrl,
+          size
+        };
+
+        setFiles([...files, anyFile]);
+      }
     } else {
       enqueueSnackbar({
         notification: {
@@ -489,7 +507,9 @@ const StudyRoomChat = ({
           onSendMessage={onSendMessage}
           onTyping={onTyping}
           input={input}
+          image={image}
           setInput={setInput}
+          setImage={setImage}
           message={mainMessage}
           setMessage={setMainMessage}
           onSendInput={onSendInput}
