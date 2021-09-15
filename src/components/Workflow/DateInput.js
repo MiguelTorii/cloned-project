@@ -13,7 +13,7 @@ import { useStyles } from '../_styles/Workflow/DateInput';
 const DateInputComponent = forwardRef((props, ref) => {
   const { component: Component, inputRef, ...other } = props;
   return (
-    <Component {...other} ref={(ref) => inputRef(ReactDOM.findDOMNode(ref))} />
+    <Component {...other} ref={(ref) => inputRef(ref)} />
   );
 });
 
@@ -36,21 +36,18 @@ const getDate = (date) => {
 
 const DateInput = ({ onChange, selected, fixed, style }: Props) => {
   const classes = useStyles();
-  const [time, setTime] = useState(getTime(selected));
-  const [date, setDate] = useState(getDate(selected));
 
   const handleDate = useCallback(
     (v) => {
       const date = getDate(v);
       const nowTime = moment().format('HH:mm:ss');
       if (date) {
-        setDate(date);
         onChange(
-          moment(`${date} ${time || nowTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
+          moment(`${date} ${getTime(selected) || nowTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
         );
       }
     },
-    [time, onChange]
+    [onChange, selected]
   );
 
   const handleTime = useCallback(
@@ -58,13 +55,12 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
       const time = getTime(v);
       const nowDate = moment().format('YYYY-MM-DD');
       if (time) {
-        setTime(time);
         onChange(
-          moment(`${date || nowDate} ${time}`, 'YYYY-MM-DD HH:mm:ss').toDate()
+          moment(`${getDate(selected) || nowDate} ${time}`, 'YYYY-MM-DD HH:mm:ss').toDate()
         );
       }
     },
-    [date, onChange]
+    [onChange, selected]
   );
 
   return (

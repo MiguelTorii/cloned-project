@@ -224,144 +224,110 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
     // setNotifications(n => n.filter((_, idx) => idx !== index))
   }, [setNotifications]);
 
-  return useMemo(
-    () => (
-      <Dialog
-        className={classes.dialog}
-        contentClassName={classes.dialogContent}
-        onCancel={onClose}
-        open={open}
-        onOk={updateTask}
-        secondaryRemoveTitle="Delete"
-        onSecondaryRemove={openConfirmArchive}
-        showActions
-        okTitle="Save"
-      >
-        <Grid container spacing={2} className={classes.container}>
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Enter a task"
-              inputProps={{
-                className: classes.title
-              }}
-              fullWidth
-              multiline
-              onChange={updateTitle}
-              value={title}
-              size="small"
-            />
-          </Grid>
-          <Grid item xs={12} className={classes.richText}>
-            <ToolbarTooltip toolbar={additionalDetailToolbar} />
-            <RichTextEditor
-              setEditor={setEditor}
-              placeholder="Additional Details"
-              value={description}
-              onChange={updateDescription}
-            />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <DateInput selected={date} onChange={updateDate} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControl className={classes.selectForm}>
-              <InputLabel>Task Status</InputLabel>
-              <Select
-                className={classes.select}
-                value={categoryId}
-                fullWidth
-                onChange={updateType}
-              >
-                {workflowCategories.map((w) => (
-                  <MenuItem key={`cat-${w.name}`} value={w.categoryId}>
-                    {w.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            {isFuture(date) &&
-              notifications &&
-              notifications.map((n, index) => (
-                <Notification
-                  n={n}
-                  key={`reminders-${n.key}`}
-                  dueDate={date}
-                  index={index}
-                  editNotification={editNotification}
-                  deleteNotification={deleteNotification}
-                />
-              ))}
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl className={classes.selectForm}>
-              <InputLabel>What class is this for?</InputLabel>
-              <Select
-                className={classes.select}
-                value={sectionId}
-                fullWidth
-                onChange={updateClass}
-              >
-                <MenuItem value="" className={classes.emptyOption} />
-                {Object.keys(classList).map((k) => {
-                  const cl = classList[k];
-                  return (
-                    <MenuItem key={k} value={k}>
-                      {cl.courseDisplayName}
-                    </MenuItem>
-                  );
-                })}
-                {canAddClasses && (
-                  <MenuItem value="new" className={classes.newClass}>
-                    Add Classes
-                  </MenuItem>
-                )}
-              </Select>
-            </FormControl>
-            <AddRemoveClasses
-              open={openAddClasses}
-              onClose={handleCloseManageClasses}
-            />
-          </Grid>
-          {/* <Grid xs={12} item> */}
-          {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
-          {/* </Grid> */}
+  return (
+    <Dialog
+      className={classes.dialog}
+      contentClassName={classes.dialogContent}
+      onCancel={onClose}
+      open={open}
+      onOk={updateTask}
+      secondaryRemoveTitle="Delete"
+      onSecondaryRemove={openConfirmArchive}
+      showActions
+      okTitle="Save"
+    >
+      <Grid container spacing={2} className={classes.container}>
+        <Grid item xs={12}>
+          <TextField
+            placeholder="Enter a task"
+            inputProps={{
+              className: classes.title
+            }}
+            fullWidth
+            multiline
+            onChange={updateTitle}
+            value={title}
+            size="small"
+          />
         </Grid>
-      </Dialog>
-    ),
-    [
-      additionalDetailToolbar,
-      canAddClasses,
-      categoryId,
-      classList,
-      classes.container,
-      classes.dialog,
-      classes.emptyOption,
-      classes.newClass,
-      classes.richText,
-      classes.select,
-      classes.selectForm,
-      classes.title,
-      date,
-      deleteNotification,
-      description,
-      editNotification,
-      handleCloseManageClasses,
-      notifications,
-      onClose,
-      open,
-      openAddClasses,
-      openConfirmArchive,
-      sectionId,
-      title,
-      updateClass,
-      updateDate,
-      updateDescription,
-      updateTask,
-      updateTitle,
-      updateType
-    ]
+        <Grid item xs={12} className={classes.richText}>
+          <ToolbarTooltip toolbar={additionalDetailToolbar} />
+          <RichTextEditor
+            setEditor={setEditor}
+            placeholder="Additional Details"
+            value={description}
+            onChange={updateDescription}
+          />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <DateInput selected={date} onChange={updateDate} />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <FormControl className={classes.selectForm}>
+            <InputLabel>Task Status</InputLabel>
+            <Select
+              className={classes.select}
+              value={categoryId}
+              fullWidth
+              onChange={updateType}
+            >
+              {workflowCategories.map((w) => (
+                <MenuItem key={`cat-${w.name}`} value={w.categoryId}>
+                  {w.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          {isFuture(date) &&
+            notifications &&
+            notifications.map((n, index) => (
+              <Notification
+                n={n}
+                key={`reminders-${n.key}`}
+                dueDate={date}
+                index={index}
+                editNotification={editNotification}
+                deleteNotification={deleteNotification}
+              />
+            ))}
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl className={classes.selectForm}>
+            <InputLabel>What class is this for?</InputLabel>
+            <Select
+              className={classes.select}
+              value={sectionId}
+              fullWidth
+              onChange={updateClass}
+            >
+              <MenuItem value="" className={classes.emptyOption} />
+              {Object.keys(classList).map((k) => {
+                const cl = classList[k];
+                return (
+                  <MenuItem key={k} value={k}>
+                    {cl.courseDisplayName}
+                  </MenuItem>
+                );
+              })}
+              {canAddClasses && (
+                <MenuItem value="new" className={classes.newClass}>
+                  Add Classes
+                </MenuItem>
+              )}
+            </Select>
+          </FormControl>
+          <AddRemoveClasses
+            open={openAddClasses}
+            onClose={handleCloseManageClasses}
+          />
+        </Grid>
+        {/* <Grid xs={12} item> */}
+        {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}
+        {/* </Grid> */}
+      </Grid>
+    </Dialog>
   );
 };
 

@@ -4,7 +4,7 @@
   "arrowParens": "always",
   "trailingComma": "none",
   "bracketSpacing": true,
-  "allowIndentationTabs": true,
   "tabWidth": 2,
-  "useTabs": false
+  "useTabs": false,
+  "printWidth": 100
 }
