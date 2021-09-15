@@ -22,7 +22,6 @@ module.exports = {
 
     // TODO turn this back on
     // 'import/imports-first': ['error', 'absolute-first'],
-    'import/imports-first': 'off',
 
     'react/no-unescaped-entities': 0,
 
@@ -119,8 +118,7 @@ module.exports = {
     // TODO turn this back on
     'react/jsx-closing-bracket-location': 'off',
 
-    // TODO turn this back on
-    'import/no-duplicates': 'off',
+    'import/no-duplicates': 'error',
 
     // TODO turn this back on
     'no-console': 'off',
