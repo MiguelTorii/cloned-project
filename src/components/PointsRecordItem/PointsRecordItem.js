@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useMemo } from 'react';
 import withRoot from '../../withRoot';
 import type { PointsHistoryItem } from '../../types/models';

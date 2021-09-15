@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
+// @flow
+
 export const processSeasons = (stats: Array<Object>) => {
   const seasons = [];
   const all = {

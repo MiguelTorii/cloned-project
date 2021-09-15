@@ -327,13 +327,10 @@ module.exports = {
     'flowtype/no-mixed': 2,
 
     // TODO turn this back on (or switch to TS)
-    'flowtype/no-primitive-constructor-types': 'off',
     // 'flowtype/no-primitive-constructor-types': 2,
+    'flowtype/no-primitive-constructor-types': 'off',
 
-    // TODO turn this back on
-    'flowtype/no-types-missing-file-annotation': 'off',
-    // 'flowtype/no-types-missing-file-annotation': 2,
-
+    'flowtype/no-types-missing-file-annotation': 2,
     'flowtype/no-weak-types': 0,
     'flowtype/object-type-delimiter': [2, 'comma'],
     'flowtype/require-parameter-type': 0,

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
