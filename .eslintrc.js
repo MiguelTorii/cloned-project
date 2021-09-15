@@ -68,11 +68,8 @@ module.exports = {
     // TODO turn this back on
     'no-undef': 'off',
 
-    // TODO turn this back on
-    'brace-style': 'off',
-
-    // TODO turn this back on
-    'no-nested-ternary': 'off',
+    'brace-style': 'error',
+    'no-nested-ternary': 'error',
 
     // TODO turn this back on
     'no-restricted-syntax': 'off',
