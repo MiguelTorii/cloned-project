@@ -6,6 +6,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import debounce from 'lodash/debounce';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
@@ -60,7 +61,6 @@ const DirectChat = ({
   chat,
   user,
   setMainMessage,
-  // markAsCompleted,
   getOnboardingList,
   onboardingListVisible
 }: Props) => {
@@ -92,6 +92,11 @@ const DirectChat = ({
   const lastChannelSid = useMemo(
     () => localStorage.getItem('currentDMChannel'),
     []
+  );
+
+  const currentChannelId = useMemo(
+    () => selectedChannelId || lastChannelSid || channelList[0],
+    [selectedChannelId, lastChannelSid, channelList]
   );
 
   const onNewChannel = useCallback(async () => {
@@ -178,19 +183,6 @@ const DirectChat = ({
       });
     setChannelList(channelList);
   }, [local]);
-
-  useEffect(() => {
-    if (!currentChannel && lastChannelSid && !isLoading && selectedChannelId) {
-      const lastChannel = local[lastChannelSid];
-      setCurrentChannel(lastChannel?.twilioChannel);
-      setCurrentChannelSid(lastChannelSid);
-    }
-
-    if (!selectedChannelId && lastChannelSid) {
-      setCurrentChannelSid(lastChannelSid);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChannel, isLoading, lastChannelSid, selectedChannelId]);
 
   useEffect(() => {
     if (width !== prevWidth) {
@@ -291,7 +283,7 @@ const DirectChat = ({
             isLoading={isLoading}
             newMessage={newMessage}
             channelList={channelList}
-            selectedChannelId={selectedChannelId}
+            selectedChannelId={currentChannelId}
             setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             handleBlock={handleBlock}

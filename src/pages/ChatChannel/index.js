@@ -91,9 +91,10 @@ const ChatChannelPage = (props) => {
     }
   }, [chatId, props, loaded]);
 
-  const renderChat = useCallback(() => {
-    return campaign && !campaign.is_disabled ? <CommunityChat /> : <Chat />;
-  }, [campaign]);
+  const renderChat = useCallback(
+    () => (campaign && !campaign.is_disabled ? <CommunityChat /> : <Chat />),
+    [campaign]
+  );
 
   return (
     <main>
