@@ -502,54 +502,23 @@ export const handleInitChat =
       });
       const local = {};
 
-      // const unreadCount = (channel) => {
-      //   try {
-      //     if (
-      //       channel.lastMessage?.index === 0 &&
-      //       channel.lastConsumedMessageIndex === 0
-      //     ) {
-      //       return 0;
-      //     }
-
-      //     if (channel.lastMessage?.index > -1) {
-      //       if (channel.lastConsumedMessageIndex === 0) {
-      //         return Math.abs(
-      //           channel.lastMessage.index - channel.lastConsumedMessageIndex
-      //         );
-      //       }
-      //       if (!channel.lastConsumedMessageIndex) {
-      //         return channel.lastMessage.index + 1;
-      //       }
-      //     }
-
-      //     if (!channel.lastConsumedMessageIndex || !channel.lastMessage)
-      //       return 0;
-      //     return Math.abs(
-      //       channel.lastMessage.index - channel.lastConsumedMessageIndex
-      //     );
-      //   } finally {
-      //   }
-      // };
-
       const unreadCount = async (channel) => {
         const count = await channel.getMessagesCount();
-        const unreadCount =
-          channel.lastConsumedMessageIndex === null
-            ? count
-            : channel.lastConsumedMessageIndex === 0
-            ? 0
-            : count - channel.lastConsumedMessageIndex - 1;
+        let unreadCount;
+        if (channel.lastConsumedMessageIndex === null) {
+          unreadCount = count;
+        } else if (channel.lastConsumedMessageIndex === 0) {
+          unreadCount = 0;
+        } else {
+          unreadCount = count - channel.lastConsumedMessageIndex - 1;
+        }
 
         return {
           [channel.sid]: unreadCount
         };
       };
 
-      const promises = channels.map(async (channel) => {
-        // const unreadMessage = await channel.getUnconsumedMessagesCount();
-        const unreadMessage = await unreadCount(channel);
-        return unreadMessage;
-      });
+      const promises = channels.map((channel) => unreadCount(channel));
 
       const unreadMessages = await Promise.all(promises);
       channels.forEach((c, key) => {
