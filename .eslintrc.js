@@ -61,12 +61,8 @@ module.exports = {
     // TODO turn this back on
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
 
-    // TODO turn this back on
-    'no-unused-expressions': 'off',
-
-    // TODO turn this back on
-    'no-undef': 'off',
-
+    'no-unused-expressions': 'error',
+    'no-undef': 'error',
     'brace-style': 'error',
     'no-nested-ternary': 'error',
 
@@ -358,7 +354,12 @@ module.exports = {
     Blob: true,
     navigator: true,
     btoa: true,
-    atob: true
+    atob: true,
+    sessionStorage: true,
+    fetch: true,
+    MutationObserver: true,
+    Node: true,
+    Image: true
   },
   parser: 'babel-eslint'
 };

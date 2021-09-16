@@ -178,7 +178,9 @@ const Auth = ({
       } catch (err) {}
     };
 
-    schoolId && loadSchoolById();
+    if (schoolId) {
+      loadSchoolById();
+    }
   }, [setSchool, pathname]);
 
   useEffect(() => {
