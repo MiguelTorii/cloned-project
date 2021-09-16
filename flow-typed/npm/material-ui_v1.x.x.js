@@ -1621,7 +1621,7 @@ declare module "material-ui/styles/createMixins" {
   ) => any;
 }
 
-declare module "material-ui/styles/createMuiTheme" {
+declare module "material-ui/styles/createTheme" {
   declare module.exports: (options: Object) => any;
 }
 
@@ -1651,7 +1651,7 @@ declare module "material-ui/styles" {
     MuiThemeProvider: $Exports<"material-ui/styles/MuiThemeProvider">,
     withStyles: $Exports<"material-ui/styles/withStyles">,
     withTheme: $Exports<"material-ui/styles/withTheme">,
-    createMuiTheme: $Exports<"material-ui/styles/createMuiTheme">,
+    createTheme: $Exports<"material-ui/styles/createTheme">,
     jssPreset: $Exports<"material-ui/styles/jssPreset">
   };
 }
@@ -2779,8 +2779,8 @@ declare module "material-ui/styles/createGenerateClassName.js" {
 declare module "material-ui/styles/createMixins.js" {
   declare module.exports: $Exports<"material-ui/styles/createMixins">;
 }
-declare module "material-ui/styles/createMuiTheme.js" {
-  declare module.exports: $Exports<"material-ui/styles/createMuiTheme">;
+declare module "material-ui/styles/createTheme.js" {
+  declare module.exports: $Exports<"material-ui/styles/createTheme">;
 }
 declare module "material-ui/styles/createPalette.js" {
   declare module.exports: $Exports<"material-ui/styles/createPalette">;
@@ -3106,8 +3106,8 @@ declare module "material-ui" {
   >;
   declare export var withStyles: $Exports<"material-ui/styles/withStyles">;
   declare export var withTheme: $Exports<"material-ui/styles/withTheme">;
-  declare export var createMuiTheme: $Exports<
-    "material-ui/styles/createMuiTheme"
+  declare export var createTheme: $Exports<
+    "material-ui/styles/createTheme"
   >;
   declare export var jssPreset: $Exports<"material-ui/styles/jssPreset">;
   declare export var SvgIcon: $Exports<"material-ui/SvgIcon/SvgIcon">;

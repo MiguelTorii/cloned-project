@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { ComponentType } from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -75,7 +75,7 @@ const circleInTheme = {
   betaTag: '#F6CD3A',
 };
 
-let theme = createMuiTheme({
+let theme = createTheme({
   circleIn: {
     palette: {
       white: circleInTheme.white,

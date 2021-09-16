@@ -13,7 +13,7 @@ import withTheme from "@material-ui/core/styles/withTheme";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
 
 import type {
   Theme,
@@ -172,9 +172,9 @@ const withStylesInvalidOptions = () => (
   })(TestComponent)
 )
 
-// createMuiTheme test valid options - custom breakpoints and palette
+// createTheme test valid options - custom breakpoints and palette
 const customTheme = () => (
-  createMuiTheme({
+  createTheme({
     breakpoints: {
       keys: ['sm', 'md', 'lg'],
       values: {
@@ -194,19 +194,19 @@ const customTheme = () => (
   })
 )
 
-// createMuiTheme test theme custom variables
+// createTheme test theme custom variables
 // https://material-ui.com/customization/themes/#custom-variables
 const customThemeVariables = () => (
-  createMuiTheme({
+  createTheme({
     status: {
       danger: 'someValue'
     }
   })
 )
 
-// createMuiTheme test adding custom palette colors and augmenting them
+// createTheme test adding custom palette colors and augmenting them
 const customPaletteColors = () => {
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       ourCustomColor: {
         main: '#ce1100',
@@ -217,9 +217,9 @@ const customPaletteColors = () => {
   theme.palette.augmentColor(theme.palette.ourCustomColor);
 }
 
-// createMuiTheme test invalid palette color
+// createTheme test invalid palette color
 const invalidPaletteColors = () => (
-  createMuiTheme({
+  createTheme({
     palette: {
       // $ExpectError no property 'realdark' on SimplePaletteColorOptions
       primary: {
@@ -230,9 +230,9 @@ const invalidPaletteColors = () => (
   })
 )
 
-// createMuiTheme test invalid nested options
+// createTheme test invalid nested options
 const createMuiCustomThemeInvalidNestedOptions = () => (
-  createMuiTheme({
+  createTheme({
     // $ExpectError no property 'wigglywoo' in BreakpointsOptions
     breakpoints: {
       wigglywoo: 42,
@@ -255,9 +255,9 @@ const createMuiCustomThemeInvalidNestedOptions = () => (
   })
 )
 
-// createMuiTheme test without any options
+// createTheme test without any options
 const createMuiCustomThemeWithoutAnyOptions = () => (
-  createMuiTheme()
+  createTheme()
 )
 
 // ****** TEST withMobileDialog ********
