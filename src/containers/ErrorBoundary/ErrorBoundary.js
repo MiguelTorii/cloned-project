@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import * as Sentry from '@sentry/browser';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -35,9 +36,10 @@ class ErrorBoundary extends React.Component<Props, State> {
         console.log('Debug:', error, JSON.stringify(error));
         Sentry.captureException(error, { extra: info });
       }
+    } else {
+      // TODO replace this with more appropriate error handler
+      console.error('Boundary: ', error);
     }
-    // eslint-disable-next-line
-    else console.log('Boundary: ', error);
   }
 
   render() {

@@ -35,6 +35,8 @@ import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
+const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
+
 const styles = (theme) => ({
   root: {
     position: 'fixed',
@@ -237,14 +239,23 @@ const FloatingChat = ({
         !local[channel.sid].muted
       ) {
         const msg = `${firstName} ${lastName} sent you a message:`;
-        const messageContent = truncate(
-          typeof parse(body) === 'string'
-            ? body.includes('File Attachment')
-              ? 'File Attachment'
-              : body
-            : body.replace(/(<([^>]+)>)/gi, ''),
-          50
-        );
+        let fullMessageContent;
+        if (typeof parse(body) === 'string') {
+          // TODO see if there is a better method for determining whether
+          // this is an attachment or not.
+          // It seems possible that a message that is not an attachment could
+          // still include the string 'File Attachment' and the
+          // rest of the message would be lost.
+          if (body.includes('File Attachment')) {
+            fullMessageContent = 'File Attachment';
+          } else {
+            fullMessageContent = body;
+          }
+        } else {
+          // TODO add unit tests for regex.
+          fullMessageContent = body.replace(/(<([^>]+)>)/gi, '');
+        }
+        const messageContent = truncate(fullMessageContent, MESSAGE_CONTENT_CHARACTER_LIMIT);
 
         enqueueSnackbarAction({
           notification: {

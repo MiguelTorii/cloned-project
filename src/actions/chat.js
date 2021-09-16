@@ -332,7 +332,7 @@ export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
 };
 
 export const setCurrentCommunityId =
-  (currentCommunityId) => async (dispatch: Dispatch) => {
+  (currentCommunityId) => (dispatch: Dispatch) => {
     dispatch(setCurrentCommunityIdAction({ currentCommunityId }));
   };
 
@@ -341,7 +341,7 @@ export const setCommunityList = (communities) => async (dispatch: Dispatch) => {
 };
 
 export const setCommunityChannels =
-  (communityChannels) => async (dispatch: Dispatch) => {
+  (communityChannels) => (dispatch: Dispatch) => {
     dispatch(setCommunityChannelsAction({ communityChannels }));
   };
 
@@ -397,6 +397,10 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
         );
       }
 
+      /**
+       * Set the default current channel id if there is no previus selected channel
+       * Save channel Id for checking the messages from another channel
+       */
       dispatch(
         setCurrentChannelSidAction({ selectedChannelId: channelList[0] })
       );
@@ -442,17 +446,17 @@ export const openChannelWithEntity =
           })
         );
       } else {
-        const { chatId, isNewChat } = await createChannel({
-          users: [entityId]
-        });
-
-        if (isNewChat) await initLocalChannels(dispatch);
         const {
           chat: {
             data: { client }
           }
         } = getState();
+        // Create Channel with users
+        const { chatId } = await createChannel({
+          users: [entityId]
+        });
 
+        // Get Created Channel By Chat Id
         const channel = await client.getChannelBySid(chatId);
 
         if (channel) {
@@ -511,54 +515,23 @@ export const handleInitChat =
       });
       const local = {};
 
-      // const unreadCount = (channel) => {
-      //   try {
-      //     if (
-      //       channel.lastMessage?.index === 0 &&
-      //       channel.lastConsumedMessageIndex === 0
-      //     ) {
-      //       return 0;
-      //     }
-
-      //     if (channel.lastMessage?.index > -1) {
-      //       if (channel.lastConsumedMessageIndex === 0) {
-      //         return Math.abs(
-      //           channel.lastMessage.index - channel.lastConsumedMessageIndex
-      //         );
-      //       }
-      //       if (!channel.lastConsumedMessageIndex) {
-      //         return channel.lastMessage.index + 1;
-      //       }
-      //     }
-
-      //     if (!channel.lastConsumedMessageIndex || !channel.lastMessage)
-      //       return 0;
-      //     return Math.abs(
-      //       channel.lastMessage.index - channel.lastConsumedMessageIndex
-      //     );
-      //   } finally {
-      //   }
-      // };
-
       const unreadCount = async (channel) => {
         const count = await channel.getMessagesCount();
-        const unreadCount =
-          channel.lastConsumedMessageIndex === null
-            ? count
-            : channel.lastConsumedMessageIndex === 0
-            ? 0
-            : count - channel.lastConsumedMessageIndex - 1;
+        let unreadCount;
+        if (channel.lastConsumedMessageIndex === null) {
+          unreadCount = count;
+        } else if (channel.lastConsumedMessageIndex === 0) {
+          unreadCount = 0;
+        } else {
+          unreadCount = count - channel.lastConsumedMessageIndex - 1;
+        }
 
         return {
           [channel.sid]: unreadCount
         };
       };
 
-      const promises = channels.map(async (channel) => {
-        // const unreadMessage = await channel.getUnconsumedMessagesCount();
-        const unreadMessage = await unreadCount(channel);
-        return unreadMessage;
-      });
+      const promises = channels.map((channel) => unreadCount(channel));
 
       const unreadMessages = await Promise.all(promises);
       channels.forEach((c, key) => {
