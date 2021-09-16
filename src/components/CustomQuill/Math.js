@@ -5,22 +5,6 @@ export default () => {
   const { katex } = window;
   const { localStorage } = window;
 
-  if (!areAllDependenciesMet()) {
-    return;
-  }
-
-  const tooltip = getTooltip();
-
-  const historyCacheKey =
-    options.historyCacheKey || '__mathquill4quill_historylist_cache__';
-  let historyList = fetchHistoryList(historyCacheKey);
-  const historySize = options.historySize || 10;
-  const displayHistory = options.displayHistory || false;
-
-  const mqInput = newMathquillInput();
-  const operatorButtons = newOperatorButtons();
-  const historyListButtons = newHistoryList();
-
   function setCacheItem(key, value) {
     try {
       localStorage.setItem(key, value);
@@ -51,6 +35,13 @@ export default () => {
 
   function enableMathQuillFormulaAuthoring(quill, options) {
     options = options || {};
+
+    const historyCacheKey =
+    options.historyCacheKey || '__mathquill4quill_historylist_cache__';
+    const historySize = options.historySize || 10;
+    const displayHistory = options.displayHistory || false;
+
+    let historyList;
 
     function areAllDependenciesMet() {
       if (!Quill) {
@@ -138,11 +129,6 @@ export default () => {
       }
 
       function syncMathquillToQuill(latexInput, saveButton) {
-        const mqField = MathQuill.getInterface(2).MathField(
-          mqInput,
-          mathQuillConfig
-        );
-
         const handlers =
           mathQuillConfig.handlers == null ? {} : mathQuillConfig.handlers;
         mathQuillConfig.handlers = {
@@ -156,6 +142,11 @@ export default () => {
             saveButton.click();
           }
         };
+
+        mqField = MathQuill.getInterface(2).MathField(
+          mqInput,
+          mathQuillConfig
+        );
 
         const cachedLatex = getCacheItem(cacheKey);
         if (cachedLatex) {
@@ -278,20 +269,6 @@ export default () => {
       };
     }
 
-    // If tooltip hangs below Quill div, Quill will position tooltip in bad place if function is clicked twice
-    // This addresses the position issue
-    function fixToolTipHeight() {
-      const tooltip = getTooltip();
-
-      if (
-        tooltip.getBoundingClientRect().top -
-          quill.container.getBoundingClientRect().top <
-        0
-      ) {
-        tooltip.style.top = '0px';
-      }
-    }
-
     function newHistoryList() {
       const history = historyList || [];
       let historyDiv = null;
@@ -319,6 +296,20 @@ export default () => {
         };
 
         return button;
+      }
+
+      // If tooltip hangs below Quill div, Quill will position tooltip in bad place if function is clicked twice
+      // This addresses the position issue
+      function fixToolTipHeight() {
+        const tooltip = getTooltip();
+
+        if (
+          tooltip.getBoundingClientRect().top -
+            quill.container.getBoundingClientRect().top <
+          0
+        ) {
+          tooltip.style.top = '0px';
+        }
       }
 
       return {
@@ -356,6 +347,17 @@ export default () => {
         }
       };
     }
+
+    if (!areAllDependenciesMet()) {
+      return;
+    }
+
+    const tooltip = getTooltip();
+    historyList = fetchHistoryList(historyCacheKey);
+
+    const mqInput = newMathquillInput();
+    const operatorButtons = newOperatorButtons();
+    const historyListButtons = newHistoryList();
 
     const observer = new MutationObserver(() => {
       const isFormulaTooltipActive =
