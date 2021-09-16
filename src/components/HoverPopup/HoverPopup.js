@@ -27,7 +27,7 @@ const HoverPopup = ({
   leftAligned = false,
   children = null,
   userId,
-  setCurrentCourse,
+  setCurrentCommunityId,
   setCurrentChannel,
   setCurrentCommunity,
   setCurrentChannelSid,
@@ -114,7 +114,7 @@ const HoverPopup = ({
   const onStartChat = async () => {
     const { openChannelWithEntity } = props;
     setChatLoading(true);
-    setCurrentCourse(null);
+    setCurrentCommunityId(null);
     setCurrentChannelSid('');
     setCurrentChannel(null);
 
@@ -255,7 +255,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       openChannelWithEntity: chatActions.openChannelWithEntity,
-      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentChannel: chatActions.setCurrentChannel,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
       setCurrentCommunity: chatActions.setCurrentCommunity

@@ -102,8 +102,8 @@ class ChatItem extends React.PureComponent<Props, State> {
   };
 
   handleGotoChat = async () => {
-    const { channel, setCurrentChannel, push, setCurrentCourse } = this.props;
-    await setCurrentCourse('null');
+    const { channel, setCurrentChannel, push, setCurrentCommunityId } = this.props;
+    await setCurrentCommunityId('chat');
     await setCurrentChannel(channel);
     await localStorage.setItem('currentDMChannel', channel.sid);
     push('/chat');

@@ -250,8 +250,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
   handleChatOpen = () => {
     const { open } = this.state;
-    const { channel, setCurrentCourse } = this.props;
-    setCurrentCourse('null');
+    const { channel, setCurrentCommunityId } = this.props;
+    setCurrentCommunityId('chat');
     if (open) {
       this.setState({ open: false });
       return;
@@ -538,7 +538,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       onBlock,
       handleChannelCreated,
       setCurrentChannel,
-      setCurrentCourse,
+      setCurrentCommunityId,
       push
     } = this.props;
 
@@ -571,7 +571,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             title={title}
             open={open}
             unread={unread}
-            setCurrentCourse={setCurrentCourse}
+            setCurrentCommunityId={setCurrentCommunityId}
             isGroup={groupType !== ''}
             expanded={expanded}
             channels={channels}

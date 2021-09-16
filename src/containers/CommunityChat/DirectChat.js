@@ -6,7 +6,6 @@ import cx from 'classnames';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import debounce from 'lodash/debounce';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
@@ -137,6 +136,7 @@ const DirectChat = ({
     async (sid) => {
       const restChannels = channelList.filter((channel) => channel !== sid.sid);
       if (currentChannel.sid === sid.sid) {
+        await setCurrentChannelSid(restChannels[0]);
         await setCurrentChannel(
           local[restChannels[0]] ? local[restChannels[0]].twilioChannel : null
         );

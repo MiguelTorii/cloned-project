@@ -209,9 +209,9 @@ const setCurrentCommunityChannelAction = ({
   payload: { currentChannel }
 });
 
-const setCurrentCourseAction = ({ currentCourseId }) => ({
+const setCurrentCommunityIdAction = ({ currentCommunityId }) => ({
   type: chatActions.SET_CURRENT_COURSE_ID,
-  payload: { currentCourseId }
+  payload: { currentCommunityId }
 });
 
 const setOneTouchSendAction = ({ open }) => ({
@@ -308,11 +308,10 @@ export const setCurrentChannel =
       dispatch(updateMembers({ members, channelId: currentChannel.sid }));
       dispatch(setCurrentChannelAction({ currentChannel }));
       dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
+    } else {
+      localStorage.removeItem('currentDMChannel');
+      dispatch(setCurrentChannelAction({ currentChannel: null }));
     }
-    // else {
-    //   localStorage.removeItem('currentDMChannel');
-    //   dispatch(setCurrentChannelAction({ currentChannel: null }));
-    // }
   };
 
 export const setCurrentCommunityChannel =
@@ -332,9 +331,9 @@ export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
   dispatch(setOneTouchSendAction({ open }));
 };
 
-export const setCurrentCourse =
-  (currentCourseId) => async (dispatch: Dispatch) => {
-    dispatch(setCurrentCourseAction({ currentCourseId }));
+export const setCurrentCommunityId =
+  (currentCommunityId) => async (dispatch: Dispatch) => {
+    dispatch(setCurrentCommunityIdAction({ currentCommunityId }));
   };
 
 export const setCommunityList = (communities) => async (dispatch: Dispatch) => {
@@ -399,9 +398,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
       }
 
       dispatch(
-        setCurrentChannelSidAction({
-          selectedChannelId: currentLocal[channelList[0]]?.twilioChannel.sid
-        })
+        setCurrentChannelSidAction({ selectedChannelId: channelList[0] })
       );
       dispatch(setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel));
     } else if (localStorage.getItem('currentDMChannel')) {
@@ -466,9 +463,7 @@ export const openChannelWithEntity =
           ]);
           dispatch(updateMembers({ members, channelId: channel.sid }));
           dispatch(updateShareLink({ shareLink, channelId: channel.sid }));
-        dispatch(
-          setCurrentChannelSidAction({ selectedChannelId: channel.sid })
-        );
+          dispatch(setCurrentChannelSidAction({ selectedChannelId: channel.sid }));
           dispatch(setCurrentChannelAction({ currentChannel: channel }));
           if (entityVideo) {
             dispatch(push(`/video-call/${chatId}`));

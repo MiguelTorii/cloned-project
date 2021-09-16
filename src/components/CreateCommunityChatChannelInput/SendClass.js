@@ -31,7 +31,7 @@ type Props = {
   classes: Object,
   user: UserState,
   onClosePopover: Function,
-  setCurrentCourse: Function,
+  setCurrentCommunityId: Function,
   setCurrentCommunityChannel: Function,
   setOneTouchSend: Function,
   setCurrentCommunity: Function,
@@ -47,7 +47,7 @@ const CreateChatChannelInput = ({
   setOneTouchSend,
   setCurrentCommunity,
   enqueueSnackbarAction,
-  setCurrentCourse
+  setCurrentCommunityId
 }: Props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectChannel, setSelectedChannel] = useState('');
@@ -139,7 +139,7 @@ const CreateChatChannelInput = ({
         message: value,
         chatIds
       });
-      setCurrentCourse(
+      setCurrentCommunityId(
         selectedClasses[selectedClasses.length - 1]?.community?.id
       );
       setCurrentCommunity(channels[channels.length - 1]);
@@ -199,7 +199,7 @@ const CreateChatChannelInput = ({
     chatIds,
     onClosePopover,
     selectedClasses,
-    setCurrentCourse,
+    setCurrentCommunityId,
     setOneTouchSend,
     setCurrentCommunity,
     enqueueSnackbarAction
@@ -358,7 +358,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       closeNewChannel: chatActions.closeNewChannel,
-      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       setCurrentCommunity: chatActions.setCurrentCommunity,
       setOneTouchSend: chatActions.setOneTouchSend,
