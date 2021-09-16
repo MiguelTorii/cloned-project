@@ -210,7 +210,7 @@ const setCurrentCommunityChannelAction = ({
 });
 
 const setCurrentCommunityIdAction = ({ currentCommunityId }) => ({
-  type: chatActions.SET_CURRENT_COURSE_ID,
+  type: chatActions.SET_CURRENT_COMMUNITY_ID,
   payload: { currentCommunityId }
 });
 

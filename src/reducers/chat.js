@@ -119,7 +119,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           messageLoading: action.payload.loading
         }
       };
-    case chatActions.SET_CURRENT_COURSE_ID:
+    case chatActions.SET_CURRENT_COMMUNITY_ID:
       return {
         ...state,
         data: {
