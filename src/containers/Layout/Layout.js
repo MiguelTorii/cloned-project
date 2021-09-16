@@ -279,9 +279,6 @@ const Layout = ({
         </Dialog>
       </ErrorBoundary>
       <ErrorBoundary>
-        <Announcements />
-      </ErrorBoundary>
-      <ErrorBoundary>
         <WebNotifications />
       </ErrorBoundary>
       <ErrorBoundary>
