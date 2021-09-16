@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import cx from 'classnames';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 import AttachFile from 'components/FileUpload/AttachFile';
 import { FILE_LIMIT_SIZE } from 'constants/chat';
+import { Picker } from 'emoji-mart';
+import { Popover } from '@material-ui/core';
 import EditorToolbar, { formats } from './Toolbar';
 import { uploadMedia } from '../../actions/user';
 
@@ -33,6 +35,8 @@ const MessageQuill = ({
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
+  const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
+  const inputFieldRef = useRef();
 
   const bindings = useMemo(
     () => ({
@@ -41,6 +45,14 @@ const MessageQuill = ({
         handler: () => {
           setPressEnter(true);
           return false;
+        }
+      },
+      emoji: {
+        key: 'J',
+        shortKey: true,
+        handler: () => {
+          setEmojiPopupOpen(true);
+          return true;
         }
       }
     }),
@@ -63,6 +75,10 @@ const MessageQuill = ({
     },
     [userId]
   );
+
+  const handleCloseEmojiPopup = useCallback(() => {
+    setEmojiPopupOpen(false);
+  }, []);
 
   const { quill, quillRef, Quill } = useQuill({
     modules: {
@@ -178,6 +194,16 @@ const MessageQuill = ({
     [quill, setValue]
   );
 
+  const handleSelectEmoji = useCallback(
+    (emoji) => {
+      const { native } = emoji;
+
+      insertEmoji(native);
+      setEmojiPopupOpen(false);
+    },
+    [insertEmoji]
+  );
+
   const handleUploadFile = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -247,6 +273,7 @@ const MessageQuill = ({
     <div className={classes.messageQuill}>
       <div
         className={cx(files.length > 0 ? classes.editWithFile : classes.editor)}
+        ref={inputFieldRef}
       >
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
@@ -283,6 +310,21 @@ const MessageQuill = ({
             </Button>}
         </div> */}
       </div>
+      <Popover
+        open={emojiPopupOpen}
+        onClose={handleCloseEmojiPopup}
+        anchorEl={inputFieldRef.current}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+      >
+        <Picker onSelect={handleSelectEmoji} />
+      </Popover>
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (

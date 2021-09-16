@@ -72,9 +72,7 @@ const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
     }
   };
   const onBackAction = () => {
-    if (step <= 0) {
-      return;
-    } else {
+    if (step > 0) {
       setStep(step - 1);
     }
   };

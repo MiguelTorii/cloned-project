@@ -23,7 +23,6 @@ import Notifications from '../Notifications/Feed';
 import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
 import WebNotifications from '../WebNotifications/WebNotification';
 import RequestClass from '../RequestClass/RequestClass';
-import Announcements from '../../components/Announcements/Announcements';
 import BottomNav from '../../components/BottomNav/BottomNav';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import Notifier from '../Notifier/Notifier';
@@ -277,9 +276,6 @@ const Layout = ({
         >
           <ReferralStatus />
         </Dialog>
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <Announcements />
       </ErrorBoundary>
       <ErrorBoundary>
         <WebNotifications />

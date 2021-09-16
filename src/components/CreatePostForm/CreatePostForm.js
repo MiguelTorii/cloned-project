@@ -40,6 +40,14 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     this.setState({ open: false });
   };
 
+  getButtonLabel = () => {
+    if (this.props.loading || !this.props.changed) {
+      return 'Post';
+    } else {
+      return this.props.buttonLabel || 'Create';
+    }
+  }
+
   render() {
     const {
       currentTag,
@@ -55,9 +63,6 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     } = this.props;
 
     const { open } = this.state;
-
-    // const { location: { pathname } } = window
-    // const isEdit = pathname.includes('/edit')
 
     return (
       <>
@@ -120,10 +125,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                             className={classes.buttonProgress}
                           />
                         </div>
-                      ) : Boolean(loading || !changed) ? (
-                        'Post'
                       ) : (
-                        buttonLabel || 'Create'
+                        this.getButtonLabel()
                       )}
                     </Button>
                   </div>

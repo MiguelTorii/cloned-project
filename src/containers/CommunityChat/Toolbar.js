@@ -10,6 +10,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
+import { commandHotkeyText } from '../../utils/helpers';
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
@@ -64,6 +65,83 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
     setOpen(!open);
   }, [open]);
 
+  const renderCommonTools = () => (
+    <>
+      <Tooltip
+        title={`Bold (${commandHotkeyText('B')})`}
+        aria-label="bold"
+        arrow
+        placement="top"
+        classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.popper
+        }}
+      >
+        <button type="button" className="ql-bold" />
+      </Tooltip>
+      <Tooltip
+        title={`Italic (${commandHotkeyText('I')})`}
+        aria-label="italic"
+        arrow
+        placement="top"
+        classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.popper
+        }}
+      >
+        <button type="button" className="ql-italic" />
+      </Tooltip>
+      <Tooltip
+        title={`Underline (${commandHotkeyText('U')})`}
+        aria-label="underline"
+        arrow
+        placement="top"
+        classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.popper
+        }}
+      >
+        <button type="button" className="ql-underline" />
+      </Tooltip>
+      <Tooltip
+        title="Upload File (max limit: 40 MB)"
+        aria-label="file"
+        arrow
+        placement="top"
+        classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.uploadFilePopper
+        }}
+      >
+        <button type="button" onClick={handleUploadFile}>
+          <PaperClip />
+        </button>
+      </Tooltip>
+      <Tooltip
+        title={`Emoji (${commandHotkeyText('J')})`}
+        aria-label="emoji"
+        arrow
+        placement="top"
+        classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.popper
+        }}
+      >
+        <div className={cx('ql-emoji', classes.emoji)}>
+          <EmojiSelector
+            onSelect={handleSelect}
+            emoIconStyle={classes.emoIconStyle}
+          />
+        </div>
+      </Tooltip>
+    </>
+  );
+
   return (
     <div id={id} className={classes.toolbar}>
       <span className="ql-formats">
@@ -84,78 +162,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           alignItems="center"
           className={cx(windowWidth < 815 ? classes.hide : classes.show)}
         >
-          <Tooltip
-            title="Bold (⌘B)"
-            aria-label="bold"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-bold" />
-          </Tooltip>
-          <Tooltip
-            title="Italic (⌘I)"
-            aria-label="italic"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-italic" />
-          </Tooltip>
-          <Tooltip
-            title="Underline (⌘U)"
-            aria-label="underline"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-underline" />
-          </Tooltip>
-          <Tooltip
-            title="Upload File (max limit: 40 MB)"
-            aria-label="file"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.uploadFilePopper
-            }}
-          >
-            <button type="button" onClick={handleUploadFile}>
-              <PaperClip />
-            </button>
-          </Tooltip>
-          <Tooltip
-            title="EmoJi (⌘J)"
-            aria-label="emoji"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <div className={cx('ql-emoji', classes.emoji)}>
-              <EmojiSelector
-                onSelect={handleSelect}
-                emoIconStyle={classes.emoIconStyle}
-              />
-            </div>
-          </Tooltip>
+          {renderCommonTools()}
         </Box>
       </span>
       <span
@@ -171,78 +178,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           alignItems="center"
           className={cx(windowWidth > 815 ? classes.hide : classes.show)}
         >
-          <Tooltip
-            title="Bold (⌘B)"
-            aria-label="bold"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-bold" />
-          </Tooltip>
-          <Tooltip
-            title="Italic (⌘I)"
-            aria-label="italic"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-italic" />
-          </Tooltip>
-          <Tooltip
-            title="Underline (⌘U)"
-            aria-label="underline"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <button type="button" className="ql-underline" />
-          </Tooltip>
-          <Tooltip
-            title="Upload File (max limit: 40 MB)"
-            aria-label="file"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.uploadFilePopper
-            }}
-          >
-            <button type="button" onClick={handleUploadFile}>
-              <PaperClip />
-            </button>
-          </Tooltip>
-          <Tooltip
-            title="EmoJi (⌘J)"
-            aria-label="emoji"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <div className={cx('ql-emoji', classes.emoji)}>
-              <EmojiSelector
-                onSelect={handleSelect}
-                emoIconStyle={classes.emoIconStyle}
-              />
-            </div>
-          </Tooltip>
+          {renderCommonTools()}
         </Box>
         <Tooltip
           title="Strike"

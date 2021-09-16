@@ -77,7 +77,9 @@ const FlashcardEditor = ({
   );
 
   const handleClickEditor = useCallback((event) => {
-    if (readOnly) return;
+    // if (readOnly) {
+    //   return;
+    // }
 
     // setActiveFlashcard({
     //   index,

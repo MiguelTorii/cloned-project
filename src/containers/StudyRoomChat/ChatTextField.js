@@ -121,6 +121,10 @@ type Props = {
   onSendInput: Function,
   onTyping: Function,
   message: string,
+  input: Object,
+  image: Object,
+  setImage: Function,
+  setInput: Function,
   setMessage: Function,
   files: Array,
   setFiles: Function,
@@ -134,6 +138,8 @@ const ChatTextField = ({
   onSendMessage,
   onSendInput,
   input,
+  image,
+  setImage,
   setInput,
   expanded,
   onTyping,
@@ -143,7 +149,6 @@ const ChatTextField = ({
 }: Props) => {
   const [addNextLine, setAddNextLine] = useState(false);
   const [isHover, setIsHover] = useState(false);
-  const [image, setImage] = useState(null);
   const fileInput = useRef(null);
 
   const handleSubmit = useCallback(
@@ -248,18 +253,10 @@ const ChatTextField = ({
   }, [setInput]);
 
   const handleInputChange = useCallback(() => {
-    if (
-      fileInput.current &&
-      fileInput.current.files &&
-      fileInput.current.files.length > 0
-    ) {
+    if (fileInput.current?.files?.length > 0) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (
-          fileInput.current &&
-          fileInput.current.files &&
-          fileInput.current.files.length > 0
-        ) {
+        if (fileInput.current?.files?.length > 0) {
           setImage(event.target.result);
           setInput(fileInput.current.files[0]);
         }

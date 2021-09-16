@@ -79,7 +79,7 @@ import {
   MuiThemeProvider,
   withStyles,
   withTheme,
-  createMuiTheme,
+  createTheme,
   jssPreset,
   SvgIcon,
   SwipeableDrawer,

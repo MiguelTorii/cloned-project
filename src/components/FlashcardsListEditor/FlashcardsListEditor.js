@@ -70,7 +70,9 @@ const FlashcardsListEditor = ({
       const indexSrc = result.source.index;
       const indexDst = result.destination.index;
 
-      if (indexDst === null || indexDst === indexSrc) return;
+      if (indexDst === null || indexDst === indexSrc) {
+        return;
+      }
 
       const newData = [...data];
       const [removed] = newData.splice(indexSrc, 1);

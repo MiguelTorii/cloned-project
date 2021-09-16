@@ -10,7 +10,13 @@ import type { Action } from '../types/action';
 export type CampaignState = {
   newClassExperience: boolean,
   newFlashcardsExperience: boolean,
-  chatLanding: boolean
+  chatLanding: boolean,
+  showScholarshipTracker: boolean,
+  showSupportCenter: boolean
+};
+
+const VARIATION_KEY = {
+  HIDDEN: 'hidden'
 };
 
 const defaultState = {
@@ -18,7 +24,9 @@ const defaultState = {
   newFlashcardsExperience: true,
   newNotesScreen: null,
   landingPageCampaign: null,
-  chatLanding: false
+  chatLanding: false,
+  showScholarshipTracker: false,
+  showSupportCenter: false
 };
 
 export default (
@@ -42,6 +50,13 @@ export default (
         chatLanding: {
           $set: action.payload.variation_key === 'chat'
         }
+      });
+    }
+    case campaignActions.GET_LEADERBOARD_AND_SUPPORTCENTER_VISIBILITY_CAMPAIGN: {
+      const { is_disabled, variation_key } = action.payload;
+      return update(state, {
+        showScholarshipTracker: { $set: !is_disabled && variation_key !== VARIATION_KEY.HIDDEN },
+        showSupportCenter: { $set: !is_disabled && variation_key !== VARIATION_KEY.HIDDEN }
       });
     }
     default:
