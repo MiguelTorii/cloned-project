@@ -1,3 +1,5 @@
+import { gutterStyle } from '../Gutter';
+
 export const styles = (theme) => ({
   container: {
     maxHeight: 'inherit',
@@ -13,7 +15,7 @@ export const styles = (theme) => ({
     cursor: 'pointer'
   },
   root: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),
     backgroundColor: theme.circleIn.palette.feedBackground,

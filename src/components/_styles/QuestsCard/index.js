@@ -1,6 +1,8 @@
+import { gutterStyle } from '../Gutter';
+
 export const styles = (theme) => ({
   root: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     height: '100%'

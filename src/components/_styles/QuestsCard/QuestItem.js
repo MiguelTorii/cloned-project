@@ -1,6 +1,5 @@
 export const styles = (theme) => ({
   root: {
-    // ...theme.mixins.gutters(),
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
     paddingTop: theme.spacing(),

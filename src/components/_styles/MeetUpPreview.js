@@ -1,4 +1,5 @@
 import { dialogStyle } from './Dialog';
+import { gutterStyle } from './Gutter';
 
 export const styles = (theme) => ({
   root: {
@@ -8,7 +9,7 @@ export const styles = (theme) => ({
     justifyContent: 'center'
   },
   paper: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     paddingTop: 0,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
