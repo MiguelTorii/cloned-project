@@ -14,6 +14,7 @@ import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
 import { styles } from '../_styles/LeaderBoardTabs/index';
+import { useSelector } from 'react-redux';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,6 +41,8 @@ const LeaderBoardTabs = ({
   pushTo,
   updateGrandLeaderboards
 }) => {
+  // On this page, scholarship tracker is called `grand board`.
+  const showScholarshipTracker = useSelector((state) => state.campaign.showScholarshipTracker);
   const [selectedTab, setSelectedTab] = useState('tuesday');
   const [tuesdayBoardName, setTuesdayBoardName] = useState('');
   const [grandBoardName, setGrandBoardName] = useState('');
@@ -184,14 +187,16 @@ const LeaderBoardTabs = ({
             label={tuesdayBoardName}
             value="tuesday"
           />
-          <Tab
-            className="tour-onboarding-leaderboard-grand"
-            classes={{
-              wrapper: classes.tabs
-            }}
-            label={grandBoardName}
-            value="grand"
-          />
+          {showScholarshipTracker && (
+            <Tab
+              className="tour-onboarding-leaderboard-grand"
+              classes={{
+                wrapper: classes.tabs
+              }}
+              label={grandBoardName}
+              value="grand"
+            />
+          )}
         </Tabs>
       </div>
       <TabPanel value={selectedTab} index="grand">

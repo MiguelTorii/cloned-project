@@ -30,7 +30,6 @@ import {
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import OnboardingProgress from '../OnboardingProgress/Onboarding';
 import OnboardingPopup from '../OnboardingPopup/OnboardingPopup';
 import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
 import { grades } from '../../constants/clients';
@@ -40,7 +39,8 @@ import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
 import {
   getChatLandingCampaign,
-  getFlashcardsCampaign
+  getFlashcardsCampaign,
+  getLeaderboardAndSupportCenterVisibilityCampaign
 } from '../../actions/campaign';
 
 const styles = (theme) => ({
@@ -228,6 +228,7 @@ const UserInitializer = ({
     if (userId !== '') {
       dispatch(getFlashcardsCampaign());
       dispatch(getChatLandingCampaign());
+      dispatch(getLeaderboardAndSupportCenterVisibilityCampaign());
     }
   }, [dispatch, userId]);
 
