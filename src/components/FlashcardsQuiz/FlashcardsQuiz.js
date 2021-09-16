@@ -384,7 +384,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
           </Typography>
           <RadioGroup
             onChange={(event) =>
-              handleChoiceSelectAnswer(item.qId, parseInt(event.target.value))
+              handleChoiceSelectAnswer(item.qId, parseInt(event.target.value, 10))
             }
             value={choiceSelections[item.qId] || ''}
             name={`question-${item.qId}`}
