@@ -80,10 +80,8 @@ class ChatItem extends React.PureComponent<Props, State> {
     );
 
     if (findAnotherDefaultChannel) {
-      await localStorage.setItem('currentDMChannel', findAnotherDefaultChannel);
       await setCurrentChannel(local[findAnotherDefaultChannel].twilioChannel);
     } else {
-      await localStorage.removeItem('currentDMChannel');
       await setCurrentChannel(null);
     }
     onDelete();
@@ -102,10 +100,9 @@ class ChatItem extends React.PureComponent<Props, State> {
   };
 
   handleGotoChat = async () => {
-    const { channel, setCurrentChannel, push, setCurrentCourse } = this.props;
-    await setCurrentCourse('null');
+    const { channel, setCurrentChannel, push, setCurrentCommunityId } = this.props;
+    setCurrentCommunityId('chat');
     await setCurrentChannel(channel);
-    await localStorage.setItem('currentDMChannel', channel.sid);
     push('/chat');
   };
 

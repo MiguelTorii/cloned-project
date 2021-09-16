@@ -77,7 +77,7 @@ type Props = {
   updateOpenChannels: Function,
   handleChannelClose: Function,
   enqueueSnackbarAction: Function,
-  setCurrentCourse: Function,
+  setCurrentCommunityId: Function,
   updateTitleAction: Function,
   handleMuteChannel: Function,
   handleNewChannel: Function,
@@ -101,7 +101,7 @@ const FloatingChat = ({
   handleMuteChannel,
   updateOpenChannels,
   handleChannelClose,
-  setCurrentCourse,
+  setCurrentCommunityId,
   handleNewChannel,
   enqueueSnackbarAction,
   updateTitleAction,
@@ -128,19 +128,19 @@ const FloatingChat = ({
       openChannels,
       currentChannel,
       currentCommunityChannel,
-      currentCourseId
+      currentCommunityId
     }
   } = chat;
 
   const showNotification = useCallback(
     (channel) => {
-      if (currentCourseId === 'chat' || !currentCourseId) {
+      if (currentCommunityId === 'chat' || !currentCommunityId) {
         return currentChannel?.sid === channel.sid;
       }
 
       return currentCommunityChannel?.sid === channel.sid;
     },
-    [currentCourseId, currentCommunityChannel]
+    [currentCommunityId, currentCommunityChannel]
   );
 
   const getMembers = useCallback(
@@ -178,10 +178,10 @@ const FloatingChat = ({
     } = newMessage;
 
     if (attributes?.community_id) {
-      setCurrentCourse(attributes?.community_id);
+      setCurrentCommunityId(attributes?.community_id);
       setCurrentCommunityChannel(channel);
     } else {
-      setCurrentCourse('null');
+      setCurrentCommunityId('chat');
       setCurrentChannel(channel);
     }
     setCurrentChannelSid(channel.sid);
@@ -334,6 +334,7 @@ const FloatingChat = ({
 
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel);
+    setCurrentChannelSid(channel.sid)
     setCurrentChannel(channel);
   };
 
@@ -373,7 +374,7 @@ const FloatingChat = ({
             <ChatChannel
               key={`op${item.sid}`}
               push={push}
-              setCurrentCourse={setCurrentCourse}
+              setCurrentCommunityId={setCurrentCommunityId}
               getMembers={getMembers}
               user={user}
               channel={item}
@@ -395,7 +396,7 @@ const FloatingChat = ({
               <ChatChannel
                 push={push}
                 user={user}
-                setCurrentCourse={setCurrentCourse}
+                setCurrentCommunityId={setCurrentCommunityId}
                 onClose={handleNewChannelClose}
                 newChannel
                 handleChannelCreated={handleChannelCreated}
@@ -488,7 +489,7 @@ const mapDispatchToProps = (dispatch: *): {} =>
       setCurrentChannel: chatActions.setCurrentChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
-      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityId: chatActions.setCurrentCommunityId,
       getOnboardingList: OnboardingActions.getOnboardingList,
       setCurrentChannelSid: chatActions.setCurrentChannelSid,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel

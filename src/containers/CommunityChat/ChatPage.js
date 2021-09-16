@@ -17,7 +17,7 @@ import type { State as StoreState } from '../../types/state';
 
 const ChatPage = ({
   chat,
-  setCurrentCourse,
+  setCurrentCommunityId,
   setCommunityList,
   setCommunityChannels,
   setCurrentCommunity,
@@ -29,7 +29,7 @@ const ChatPage = ({
       communityChannels,
       communities,
       currentCommunity,
-      currentCourseId,
+      currentCommunityId,
       oneTouchSendOpen,
       currentCommunityChannel
     },
@@ -85,12 +85,12 @@ const ChatPage = ({
         setCommunityChannels(communityChannels);
 
         if (
-          currentCourseId &&
+          currentCommunityId &&
           !currentCommunityChannel &&
           nonEmptyCommunities.length > 0
         ) {
           const defaultCommunity = nonEmptyCommunities[0].community;
-          setCurrentCourse(defaultCommunity.id);
+          setCurrentCommunityId(defaultCommunity.id);
           setCurrentCommunity(defaultCommunity);
         }
         setLoading(false);
@@ -127,21 +127,21 @@ const ChatPage = ({
   const handleSelect = useCallback(
     (course) => {
       if (course.id !== currentCommunity?.id) {
-        setCurrentCourse(course.id);
+        setCurrentCommunityId(course.id);
         setCurrentChannelSid('');
         setCurrentCommunity(course);
       }
     },
     [
       currentCommunity,
-      setCurrentCourse,
+      setCurrentCommunityId,
       setCurrentCommunity,
       setCurrentChannelSid
     ]
   );
 
   useEffect(() => {
-    if (oneTouchSendOpen || currentCourseId === 'chat' || !currentCourseId) {
+    if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
       setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
       currentCommunity &&
@@ -153,19 +153,19 @@ const ChatPage = ({
       );
       if (targetCourse.length) setCurrentCommunity(targetCourse[0]?.community);
     } else if (
-      currentCourseId &&
+      currentCommunityId &&
       !!communities.length &&
-      currentCourseId !== 'chat'
+      currentCommunityId !== 'chat'
     ) {
       const targetCourseChannel = communities.filter(
-        (community) => community.community.id === Number(currentCourseId)
+        (community) => community.community.id === Number(currentCommunityId)
       );
       if (targetCourseChannel.length)
         setCurrentCommunity(targetCourseChannel[0].community);
     }
   }, [
-    currentCourseId,
-    setCurrentCourse,
+    currentCommunityId,
+    setCurrentCommunityId,
     setCurrentCommunity,
     currentCommunity,
     communities,
@@ -205,7 +205,7 @@ const mapStateToProps = ({ chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      setCurrentCourse: chatActions.setCurrentCourse,
+      setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCommunityList: chatActions.setCommunityList,
       setCommunityChannels: chatActions.setCommunityChannels,
       setCurrentCommunity: chatActions.setCurrentCommunity,
