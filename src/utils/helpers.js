@@ -102,3 +102,11 @@ export const deepLinkCheck = (pathname) => {
   const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/);
   return deepLinkRegExp.test(pathname);
 };
+
+export const isMac = () => window.navigator.platform.includes('Mac');
+
+export const commandHotkeyText = (key) => {
+  if (isMac()) return `⌘${key}`;
+
+  return `CTRL + ${key}`;
+};
