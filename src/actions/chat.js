@@ -520,10 +520,13 @@ export const handleInitChat =
         let unreadCount;
         if (channel.lastConsumedMessageIndex === null) {
           unreadCount = count;
-        } else if (channel.lastConsumedMessageIndex === 0) {
+        } else if (
+          channel.lastConsumedMessageIndex === 0 ||
+          channel.lastConsumedMessageIndex - 1 > count) {
+          // check the channel is new or check lastConsumedMessageIndex is bigger than message count
           unreadCount = 0;
         } else {
-          unreadCount = count - channel.lastConsumedMessageIndex - 1;
+          unreadCount = count - (channel.lastConsumedMessageIndex + 1);
         }
 
         return {

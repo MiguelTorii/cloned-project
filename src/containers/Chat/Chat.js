@@ -128,8 +128,8 @@ const Chat = ({
   const [prevWidth, setPrevWidth] = useState(null);
   const [channelList, setChannelList] = useState([]);
 
-  const onNewChannel = useCallback(async () => {
-    await handleNewChannel(true);
+  const onNewChannel = useCallback(() => {
+    handleNewChannel(true);
     setCurrentChannel(null);
   }, [handleNewChannel, setCurrentChannel]);
 
@@ -139,9 +139,9 @@ const Chat = ({
   );
 
   const onOpenChannel = useCallback(
-    async ({ channel }) => {
+    ({ channel }) => {
       setCurrentChannel(channel);
-      await handleNewChannel(false);
+      handleNewChannel(false);
     },
     [handleNewChannel, setCurrentChannel]
   );
