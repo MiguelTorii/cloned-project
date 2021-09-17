@@ -1,3 +1,5 @@
+import { gutterStyle } from '../Gutter';
+
 export const styles = (theme) => ({
   root: {
     position: 'absolute',
@@ -14,7 +16,7 @@ export const styles = (theme) => ({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     display: 'flex',

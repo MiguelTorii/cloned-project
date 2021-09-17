@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { gutterStyle } from '../Gutter';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     padding: theme.spacing(),
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),

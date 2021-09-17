@@ -15,6 +15,7 @@ import RoleBadge from 'components/RoleBadge/RoleBadge';
 import FileUpload from 'components/FileUpload/FileUploadContainer';
 import { getInitials, bytesToSize } from 'utils/chat';
 import { MEMBER_ROLES } from '../../constants/app';
+import { gutterStyle } from '../../components/_styles/Gutter';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -22,7 +23,7 @@ const MyLink = React.forwardRef(({ href, ...props }, ref) => (
 
 const styles = (theme) => ({
   paper: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
   },

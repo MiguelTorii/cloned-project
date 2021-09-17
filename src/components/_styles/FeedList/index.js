@@ -1,3 +1,5 @@
+import { gutterStyle } from '../Gutter';
+
 export default (theme) => ({
   container: {
     maxHeight: 'inherit',
@@ -7,7 +9,7 @@ export default (theme) => ({
     minHeight: 400
   },
   root: {
-    ...theme.mixins.gutters(),
+    ...gutterStyle(theme),
     backgroundColor: theme.circleIn.palette.feedBackground,
     marginBottom: theme.spacing(3),
     display: 'flex',
