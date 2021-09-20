@@ -173,20 +173,6 @@ const MessageQuill = ({
         setPressEnter(false);
         quill.setText('');
       }
-
-      // else if (files.length &&
-      //   (value.trim() === '<p><br></p>' ||
-      //     !value ||
-      //     value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '')
-      // ) {
-      //   let message = '';
-      //   if (files.length === 1) {
-      //     message = `${userName} shared ${files[0].name}`;
-      //   } else {
-      //     message = `${userName} shared multiple files`;
-      //   }
-      //   await onSendMessage(message);
-      // }
     }
 
     if (isPressEnter) {

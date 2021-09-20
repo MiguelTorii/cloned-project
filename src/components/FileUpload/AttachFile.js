@@ -92,8 +92,7 @@ const FileUploadContainer = (props) => {
 
   const extension = getFileExtension(name);
   const fileUrl = getIconURL(extension);
-  console.log('------type----')
-  console.log(type);
+
   return (
     <div className={cx(smallChat ? classes.smallContainer : classes.container)}>
       <div className={cx(type.includes('image') ? classes.imageThumbnail : classes.fileIcon)}>

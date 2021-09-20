@@ -232,6 +232,7 @@ export const getFileAttributes = (files) =>
   files.map((file) => ({
     file_name: file.name,
     file_size: file.size,
+    file_type: file.type,
     file_extension: getFileExtension(file.name),
     file_read_url: file.url
   }));
