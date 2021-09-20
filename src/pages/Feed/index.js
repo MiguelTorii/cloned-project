@@ -9,12 +9,12 @@ import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
 import FeedResources from 'containers/FeedResources/FeedResources';
 import { decypherClass } from 'utils/crypto';
+import { Hidden } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import Feed from '../../containers/Feed/Feed';
 import Recommendations from '../../containers/Recommendations/Recommendations';
-import { Hidden } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
 
 const styles = () => ({
   item: {

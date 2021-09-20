@@ -8,13 +8,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { getInitials } from 'utils/chat';
 import type { Notification as NotificationState } from '../../types/models';
 import questionImage from '../../assets/svg/ic_question_post.svg';
 import flashcardImage from '../../assets/svg/ic_flashcard_post.svg';
 import linkImage from '../../assets/svg/ic_link_post.svg';
 
 import { styles } from '../_styles/Notifications/notification-item';
-import { getInitials } from 'utils/chat';
 
 type Props = {
   classes: Object,

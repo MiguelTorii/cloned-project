@@ -13,11 +13,11 @@ import {
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import update from 'immutability-helper';
-import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import { getPointsHistory } from 'actions/user';
-import GradientButton from '../Basic/Buttons/GradientButton';
 import { isApiCalling } from 'utils/helpers';
 import { userActions } from 'constants/action-types';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 
 import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 

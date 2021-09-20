@@ -1,18 +1,18 @@
 // @flow
 
 import React, { useEffect, useMemo, useState } from 'react';
-import type { UserProfile } from '../../types/models';
 import { useDispatch, useSelector } from 'react-redux';
-import withRoot from '../../withRoot';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
-import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import { getPointsHistory } from '../../actions/user';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import withRoot from '../../withRoot';
+import type { UserProfile } from '../../types/models';
 import { useStyles } from '../_styles/Profile/PointsHistoryCard';
 
 type Props = {

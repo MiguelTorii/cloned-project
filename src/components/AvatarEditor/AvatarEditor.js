@@ -2,16 +2,16 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import withRoot from 'withRoot';
-import Dialog from '../Dialog/Dialog';
 import { Box, Grid } from '@material-ui/core';
-import Toolbar from './Toolbar';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
-import GradientButton from '../Basic/Buttons/GradientButton';
 import DefaultAvatarEditor from 'react-avatar-editor';
 import _ from 'lodash';
 import Hidden from '@material-ui/core/Hidden';
 import clsx from 'clsx';
 import Dropzone from 'react-dropzone';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import Toolbar from './Toolbar';
+import Dialog from '../Dialog/Dialog';
 import { useStyles } from '../_styles/AvatarEditor/index';
 
 type Props = {

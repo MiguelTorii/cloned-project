@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
 
-import useStyles from './styles';
 import clsx from 'clsx';
+import useStyles from './styles';
 
 const StudyGoalProgress = ({
   title,

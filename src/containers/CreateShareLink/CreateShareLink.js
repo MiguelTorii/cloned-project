@@ -14,6 +14,7 @@ import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { cypher, decypherClass } from 'utils/crypto';
 import Tooltip from 'containers/Tooltip/Tooltip';
+import { PERMISSIONS } from 'constants/common';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -33,7 +34,6 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
-import { PERMISSIONS } from 'constants/common';
 
 const styles = (theme) => ({
   preview: {

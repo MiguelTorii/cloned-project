@@ -10,11 +10,11 @@ import withWidth from '@material-ui/core/withWidth';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import { useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
 import { styles } from '../_styles/LeaderBoardTabs/index';
-import { useSelector } from 'react-redux';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

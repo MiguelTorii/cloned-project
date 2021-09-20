@@ -14,6 +14,7 @@ import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
 import { decypherClass, cypher } from 'utils/crypto';
 import ClassMultiSelect from 'containers/ClassMultiSelect/ClassMultiSelect';
+import { PERMISSIONS } from 'constants/common';
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -35,7 +36,6 @@ import {
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { logEventLocally } from '../../api/analytics';
-import { PERMISSIONS } from 'constants/common';
 
 const styles = (theme) => ({
   stackbar: {

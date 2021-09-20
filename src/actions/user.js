@@ -13,6 +13,7 @@ import {
 import store from 'store';
 import isEqual from 'lodash/isEqual';
 import * as feedActions from 'actions/feed';
+import axios from 'axios';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { Announcement } from '../types/models';
@@ -21,7 +22,6 @@ import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
-import axios from 'axios';
 
 const setBannerHeightAction = ({
   bannerHeight

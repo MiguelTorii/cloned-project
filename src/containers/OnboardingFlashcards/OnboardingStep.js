@@ -4,13 +4,13 @@ import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
+import amplitude from 'amplitude-js';
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import ActionButton from './ActionButton';
 import Ellipses from './Ellipses';
 import TransparentButton from './TransparentButton';
 import StartPlay from '../../assets/svg/video_play.svg';
-import amplitude from 'amplitude-js';
 // import LoadImg from '../../components/LoadImg';
 
 const useStyles = makeStyles((theme) => ({

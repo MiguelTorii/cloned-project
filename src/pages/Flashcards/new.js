@@ -1,6 +1,6 @@
 import React from 'react';
-import withRoot from '../../withRoot';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import FlashcardsNew from '../../containers/FlashcardsNew/FlashcardsNew';
 

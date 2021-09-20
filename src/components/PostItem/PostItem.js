@@ -10,15 +10,15 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';
-import { logEvent } from '../../api/analytics';
-import { styles } from '../_styles/PostItem';
 import { TIMEOUT } from 'constants/common';
-import Recommendations from '../../containers/Recommendations/Recommendations';
 import { Grid } from '@material-ui/core';
 import { useLocation } from 'react-router';
+import Box from '@material-ui/core/Box';
+import { logEvent } from '../../api/analytics';
+import { styles } from '../_styles/PostItem';
+import Recommendations from '../../containers/Recommendations/Recommendations';
 import RecommendationsFeedback from '../RecommendationsFeedback/RecommendationsFeedback';
 import { POST_SOURCE } from '../../constants/app';
-import Box from '@material-ui/core/Box';
 
 const timeout = TIMEOUT.POST_ITEM;
 

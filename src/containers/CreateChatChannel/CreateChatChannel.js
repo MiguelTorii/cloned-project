@@ -5,6 +5,7 @@ import axios from 'axios';
 // import some from 'lodash/some';
 import { connect } from 'react-redux';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { getInitials } from 'utils/chat';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import type { State as StoreState } from '../../types/state';
@@ -16,7 +17,6 @@ import {
 import { getPresignedURL } from '../../api/media';
 import { createChannel } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { getInitials } from 'utils/chat';
 
 type Props = {
   user: UserState,

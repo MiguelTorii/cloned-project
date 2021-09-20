@@ -1,8 +1,5 @@
 import React from 'react';
-import withRoot from '../../withRoot';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from '../../containers/Layout/Layout';
-import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
 import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import { useSelector } from 'react-redux';
 import { isApiCalling } from 'utils/helpers';
@@ -11,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import CreateFlashcards from 'containers/CreateFlashcards/CreateFlashcards';
 import PostTips from 'components/PostTips/PostTips';
 import { useParams } from 'react-router';
+import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
+import Layout from '../../containers/Layout/Layout';
+import withRoot from '../../withRoot';
 
 const FlashcardsListPage = () => {
   const isNewVersion = useSelector(

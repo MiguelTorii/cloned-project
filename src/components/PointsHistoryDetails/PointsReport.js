@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import withRoot from '../../withRoot';
 import { Paper, Typography } from '@material-ui/core';
+import withRoot from '../../withRoot';
 
 import { useStyles } from '../_styles/PointsHistoryDetails/PointsReport';
 

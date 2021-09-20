@@ -18,6 +18,7 @@ import { useDebounce } from '@react-hook/debounce';
 import store from 'store';
 // import Dialog, { dialogStyle } from 'components/Dialog';
 import Tooltip from 'containers/Tooltip/Tooltip';
+import { PERMISSIONS } from 'constants/common';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { CampaignState } from '../../reducers/campaign';
@@ -32,7 +33,6 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { PERMISSIONS } from 'constants/common';
 
 const styles = (theme) => ({
   flashcards: {

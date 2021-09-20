@@ -1,16 +1,16 @@
 // @flow
 
 import React from 'react';
-import type { UserProfile } from '../../types/models';
-import withRoot from '../../withRoot';
 import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
-import Avatar from '../Avatar/Avatar';
-import { getPointsText } from '../../utils/helpers';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
+import { getInitials } from 'utils/chat';
+import type { UserProfile } from '../../types/models';
+import withRoot from '../../withRoot';
+import Avatar from '../Avatar/Avatar';
+import { getPointsText } from '../../utils/helpers';
 
 import { useStyles } from '../_styles/PointsHistoryDetails/Header';
-import { getInitials } from 'utils/chat';
 
 type Props = {
   profile: UserProfile
