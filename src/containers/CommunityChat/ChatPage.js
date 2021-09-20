@@ -145,7 +145,7 @@ const ChatPage = ({
       setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
     } else if (
       currentCommunity &&
-      !!communities.length &&
+      !!communities?.length &&
       currentCommunity.id !== 'chat'
     ) {
       const targetCourse = communities.filter(
@@ -154,7 +154,7 @@ const ChatPage = ({
       if (targetCourse.length) setCurrentCommunity(targetCourse[0]?.community);
     } else if (
       currentCommunityId &&
-      !!communities.length &&
+      !!communities?.length &&
       currentCommunityId !== 'chat'
     ) {
       const targetCourseChannel = communities.filter(
