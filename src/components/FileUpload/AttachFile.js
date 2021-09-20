@@ -37,6 +37,7 @@ import IconCODEUrl from 'assets/svg/icons/code-default-icon.svg';
 import IconOTHERUrl from 'assets/svg/icons/other-default-icon.svg';
 import { ReactComponent as CancelIcon } from 'assets/svg/file-upload-cancel.svg';
 import { truncate } from 'utils/helpers';
+import { getFileExtension } from 'utils/chat';
 import styles from '../_styles/AttachFile';
 
 const URIS = {
@@ -78,7 +79,7 @@ const UPLOAD_FILENAME_CHARACTER_LIMIT = 18;
 
 const FileUploadContainer = (props) => {
   const { classes, file, onClose, smallChat } = props;
-  const { name } = file;
+  const { name, type, url } = file;
 
   const getFileExtension = useCallback(
     (filename) => filename.split('.').pop(),
@@ -91,10 +92,11 @@ const FileUploadContainer = (props) => {
 
   const extension = getFileExtension(name);
   const fileUrl = getIconURL(extension);
+
   return (
     <div className={cx(smallChat ? classes.smallContainer : classes.container)}>
-      <div className={classes.fileIcon}>
-        <img src={fileUrl} alt={extension} />
+      <div className={cx(type.includes('image') ? classes.imageThumbnail : classes.fileIcon)}>
+        <img src={type.includes('image') ? url : fileUrl} alt={extension} />
       </div>
       <div className={classes.infoContainer}>
         <div className={classes.name}>

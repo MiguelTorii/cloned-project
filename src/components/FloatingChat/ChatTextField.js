@@ -40,7 +40,6 @@ type Props = {
 type State = {
   message: string,
   addNextLine: boolean,
-  image: ?Object,
   input: ?Object,
   isHover: boolean
 };
@@ -49,7 +48,6 @@ class ChatTextField extends React.PureComponent<Props, State> {
   state = {
     message: '',
     addNextLine: false,
-    image: null,
     input: null,
     isHover: false,
     files: [],
@@ -67,7 +65,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
     if (input) {
       onSendInput(input);
-      this.setState({ input: null, image: null, isHover: false });
+      this.setState({ input: null, isHover: false });
     }
   };
 
@@ -94,7 +92,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
       }
       if (input) {
         onSendInput(input);
-        this.setState({ input: null, image: null, isHover: false });
+        this.setState({ input: null, isHover: false });
       }
     }
     if (event.keyCode === 16) {
@@ -114,69 +112,42 @@ class ChatTextField extends React.PureComponent<Props, State> {
     const { files } = this.state;
     const { userId } = this.props;
 
-    if (fileType.includes('image')) {
-      if (
-        this.fileInput &&
-        this.fileInput.files &&
-        this.fileInput.files.length > 0
-      ) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (
-            this.fileInput &&
-            this.fileInput.files &&
-            this.fileInput.files.length > 0
-          ) {
-            this.setState({
-              image: event.target.result,
-              input: this.fileInput.files[0]
-            });
-          }
-          if (this.fileInput) {
-            this.fileInput.value = '';
-          }
-        };
+    const file = this.fileInput.files[0];
+    const { type, name, size } = file;
+    if (size < FILE_LIMIT_SIZE) {
+      this.setState({ loading: true });
 
-        reader.readAsDataURL(this.fileInput.files[0]);
-      }
+      const result = await uploadMedia(userId, 1, file);
+
+      const { readUrl } = result;
+
+      const anyFile = {
+        type,
+        name,
+        url: readUrl,
+        size
+      };
+
+      this.setState({ files: [...files, anyFile], loading: false });
     } else {
-      const file = this.fileInput.files[0];
-      const { type, name, size } = file;
-      if (size < FILE_LIMIT_SIZE) {
-        this.setState({ loading: true });
-
-        const result = await uploadMedia(userId, 1, file);
-
-        const { readUrl } = result;
-
-        const anyFile = {
-          type,
-          name,
-          url: readUrl,
-          size
-        };
-
-        this.setState({ files: [...files, anyFile], loading: false });
-      } else {
-        enqueueSnackbar({
-          notification: {
-            message: 'Upload File size is over 40 MB',
-            options: {
-              variant: 'warning',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'left'
-              },
-              autoHideDuration: 3000
-            }
+      enqueueSnackbar({
+        notification: {
+          message: 'Upload File size is over 40 MB',
+          options: {
+            variant: 'warning',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000
           }
-        });
-      }
+        }
+      });
     }
   };
 
   handleRemoveImg = () => {
-    this.setState({ image: null, input: null, isHover: false });
+    this.setState({ input: null, isHover: false });
   };
 
   handleMouseEnter = () => {
@@ -202,7 +173,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
   render() {
     const { hideImage, classes, expanded } = this.props;
-    const { message, image, isHover, files, loading } = this.state;
+    const { message, isHover, files, loading } = this.state;
 
     return (
       <Paper className={classes.root} elevation={1}>
@@ -259,30 +230,13 @@ class ChatTextField extends React.PureComponent<Props, State> {
                 placeholder="Type a message"
                 autoComplete="off"
                 autoFocus
-                endAdornment={
-                  image && (
-                    <ButtonBase
-                      className={classes.imgContainer}
-                      onClick={this.handleRemoveImg}
-                      onMouseEnter={this.handleMouseEnter}
-                      onMouseLeave={this.handleMouseLeave}
-                    >
-                      <img className={classes.img} src={image} alt="test" />
-                      {isHover && (
-                        <div className={classes.clearIcon}>
-                          <ClearIcon fontSize="small" />
-                        </div>
-                      )}
-                    </ButtonBase>
-                  )
-                }
               />
             </div>
             <EmojiSelector onSelect={this.handleSelect} isFloatChat />
-            {(message || image) && (
+            {message && (
               <Divider light className={classes.divider} />
             )}
-            {(message || image) && (
+            {message && (
               <Tooltip
                 arrow
                 classes={{

@@ -8,11 +8,14 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
-import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
 import ClearIcon from '@material-ui/icons/Clear';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import AttachFile from 'components/FileUpload/AttachFile';
+import Tooltip from '@material-ui/core/Tooltip';
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import { FILE_LIMIT_SIZE } from 'constants/chat';
+import { uploadMedia } from '../../actions/user';
 
 const styles = (theme) => ({
   input: {
@@ -28,9 +31,6 @@ const styles = (theme) => ({
     objectFit: 'scale-down',
     width: '60%',
     borderRadius: 4
-  },
-  tooltip: {
-    fontSize: 14
   },
   root: {
     display: 'flex',
@@ -111,6 +111,20 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(0, 0, 2.5, 2.5),
     display: 'flex',
     flexWrap: 'wrap'
+  },
+   tooltip: {
+    fontSize: 14,
+    backgroundColor: theme.circleIn.palette.tooltipBackground
+  },
+  tooltipArrow: {
+    '&::before': {
+      backgroundColor: theme.circleIn.palette.tooltipBackground
+    }
+  },
+  popper: {
+    zIndex: 1500,
+    width: 123,
+    textAlign: 'center'
   }
 });
 
@@ -120,10 +134,11 @@ type Props = {
   expanded: boolean,
   onSendInput: Function,
   onTyping: Function,
+  enqueueSnackbar: Function,
+  userId: string,
   message: string,
   input: Object,
   image: Object,
-  setImage: Function,
   setInput: Function,
   setMessage: Function,
   files: Array,
@@ -137,9 +152,9 @@ const ChatTextField = ({
   setMessage,
   onSendMessage,
   onSendInput,
+  enqueueSnackbar,
   input,
-  image,
-  setImage,
+  userId,
   setInput,
   expanded,
   onTyping,
@@ -157,7 +172,6 @@ const ChatTextField = ({
       if (input && !files.length) {
         onSendInput(input);
         setInput(null);
-        setImage(null);
         setIsHover(false);
         setInput(null);
       }
@@ -199,7 +213,6 @@ const ChatTextField = ({
         }
         if (input) {
           setInput(null);
-          setImage(null);
           setIsHover(false);
           onSendInput(input);
           setInput(null);
@@ -248,26 +261,38 @@ const ChatTextField = ({
 
   const handleRemoveImg = useCallback(() => {
     setInput(null);
-    setImage(null);
     setIsHover(false);
   }, [setInput]);
 
-  const handleInputChange = useCallback(() => {
-    if (fileInput.current?.files?.length > 0) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (fileInput.current?.files?.length > 0) {
-          setImage(event.target.result);
-          setInput(fileInput.current.files[0]);
-        }
-        if (fileInput.current) {
-          fileInput.current.value = '';
-        }
+  const handleInputChange = useCallback(async () => {
+    const file = fileInput.current.files[0];
+    const { type, name, size } = file;
+    if (size < FILE_LIMIT_SIZE) {
+      const result = await uploadMedia(userId, 1, file);
+      const { readUrl } = result;
+      const anyFile = {
+        type,
+        name,
+        url: readUrl,
+        size
       };
-
-      reader.readAsDataURL(fileInput.current.files[0]);
+      setFiles([...files, anyFile]);
+    } else {
+      enqueueSnackbar({
+        notification: {
+          message: 'Upload File size is over 40 MB',
+          options: {
+            variant: 'warning',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000
+          }
+        }
+      });
     }
-  }, [setInput]);
+  }, [userId, fileInput, enqueueSnackbar, files]);
 
   const checkDisabled = useCallback(() => {
     if (files.length > 0) return false;
@@ -286,35 +311,32 @@ const ChatTextField = ({
           )}
         >
           <input
-            accept="image/*"
+            accept="*/*"
             className={classes.input}
             ref={fileInput}
             onChange={handleInputChange}
             type="file"
           />
-          <IconButton
-            className={classes.imgIcon}
-            onClick={handleOpenInputFile}
-            aria-label="Insert Photo"
+          <Tooltip
+            title="Upload File (max limit: 40 MB)"
+            aria-label="file"
+            arrow
+            placement="top"
+            classes={{
+              tooltip: classes.tooltip,
+              arrow: classes.tooltipArrow,
+              popper: classes.popper
+            }}
           >
-            <InsertPhotoIcon />
-          </IconButton>
+            <IconButton
+              className={classes.imgIcon}
+              onClick={handleOpenInputFile}
+              aria-label="Upload File"
+            >
+              <PaperClip />
+            </IconButton>
+          </Tooltip>
           <div className={classes.inputWrapper}>
-            {image && (
-              <ButtonBase
-                className={classes.imgContainer}
-                onClick={handleRemoveImg}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <img className={classes.img} src={image} alt="test" />
-                {isHover && (
-                  <div className={classes.clearIcon}>
-                    <ClearIcon fontSize="small" />
-                  </div>
-                )}
-              </ButtonBase>
-            )}
             <InputBase
               value={message}
               onChange={handleChange}

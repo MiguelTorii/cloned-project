@@ -172,6 +172,8 @@ const ChatMessage = ({
       <AnyFileUpload
         message={message}
         files={files}
+        onImageClick={onImageClick}
+        onImageLoaded={onImageLoaded}
         renderHtmlWithImage={renderHtmlWithImage}
         smallChat
       />
