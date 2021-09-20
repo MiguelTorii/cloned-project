@@ -132,15 +132,20 @@ const FloatingChat = ({
     }
   } = chat;
 
+  const {
+    location: { pathname }
+  } = router;
+
   const showNotification = useCallback(
     (channel) => {
+      if (!pathname.includes('chat')) return false;
       if (currentCommunityId === 'chat' || !currentCommunityId) {
         return currentChannel?.sid === channel.sid;
       }
 
       return currentCommunityChannel?.sid === channel.sid;
     },
-    [currentCommunityId, currentCommunityChannel]
+    [currentCommunityId, currentChannel, currentCommunityChannel, pathname]
   );
 
   const getMembers = useCallback(
@@ -181,7 +186,7 @@ const FloatingChat = ({
       setCurrentCommunityId(attributes?.community_id);
       setCurrentCommunityChannel(channel);
     } else {
-      setCurrentCommunityId('chat');
+      setCurrentCommunityId(null);
       setCurrentChannel(channel);
     }
     setCurrentChannelSid(channel.sid);
@@ -287,9 +292,6 @@ const FloatingChat = ({
     // eslint-disable-next-line
   }, [newMessage, local, prevMessageId]);
 
-  const {
-    location: { pathname }
-  } = router;
   useEffect(() => {
     handleNewChannelClose();
     const updateOpenChannelsDebounce = debounce(updateOpenChannels, 250);
