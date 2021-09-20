@@ -226,7 +226,7 @@ export const processMessages = ({
   }
 };
 
-const getFileExtension = (filename) => filename.split('.').pop();
+export const getFileExtension = (filename) => filename.split('.').pop();
 
 export const getFileAttributes = (files) =>
   files.map((file) => ({

@@ -24,6 +24,7 @@ const MessageQuill = ({
   setValue,
   onSendMessage,
   focusMessageBox,
+  getFullName,
   showError,
   onTyping,
   userId,
@@ -38,6 +39,7 @@ const MessageQuill = ({
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
   const inputFieldRef = useRef();
 
+  const userName = getFullName(userId)
   const bindings = useMemo(
     () => ({
       enter: {
@@ -171,6 +173,20 @@ const MessageQuill = ({
         setPressEnter(false);
         quill.setText('');
       }
+
+      // else if (files.length &&
+      //   (value.trim() === '<p><br></p>' ||
+      //     !value ||
+      //     value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '')
+      // ) {
+      //   let message = '';
+      //   if (files.length === 1) {
+      //     message = `${userName} shared ${files[0].name}`;
+      //   } else {
+      //     message = `${userName} shared multiple files`;
+      //   }
+      //   await onSendMessage(message);
+      // }
     }
 
     if (isPressEnter) {
@@ -218,21 +234,14 @@ const MessageQuill = ({
         if (size < FILE_LIMIT_SIZE) {
           const result = await uploadMedia(userId, 1, file);
           const { readUrl } = result;
+          const anyFile = {
+            type,
+            name,
+            url: readUrl,
+            size
+          };
 
-          if (type.includes('image')) {
-            const range = quill.getSelection(true);
-            quill.insertEmbed(range.index, 'image', readUrl);
-            quill.insertText(range.index + 1, '\n');
-          } else {
-            const anyFile = {
-              type,
-              name,
-              url: readUrl,
-              size
-            };
-
-            setFiles([...files, anyFile]);
-          }
+          setFiles([...files, anyFile]);
         } else {
           enqueueSnackbar({
             notification: {
@@ -328,7 +337,7 @@ const MessageQuill = ({
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (
-            <AttachFile file={file} onClose={() => onClose(file)} />
+            <AttachFile file={file} onClose={() => onClose(file)} smallChat />
           ))}
         </div>
       )}

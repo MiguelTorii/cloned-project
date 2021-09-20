@@ -203,6 +203,16 @@ const FloatingChat = ({
         Open
       </Button>
     );
+  const notificationMessageWithoutBody = (files, fullName) => {
+    let content = '';
+
+    if (files?.length === 1) {
+      content = `${fullName} shared ${files[0].fileName}`;
+    }
+    if (files?.length > 1) {
+      content = `${fullName} shared multiple files`;
+    }
+  }
 
   useEffect(() => {
     if (local) {
@@ -234,7 +244,7 @@ const FloatingChat = ({
     const handleMessage = () => {
       const { state, channel } = newMessage;
       const { author, attributes, body } = state;
-      const { firstName, lastName } = attributes;
+      const { firstName, lastName, files } = attributes;
       const sids = openChannels.map((oc) => oc.sid);
       setPrevMessageId(newMessage.sid);
       if (
@@ -244,18 +254,21 @@ const FloatingChat = ({
         !local[channel.sid].muted
       ) {
         const msg = `${firstName} ${lastName} sent you a message:`;
-        let fullMessageContent;
+        let fullMessageContent = '';
         if (typeof parse(body) === 'string') {
-          // TODO see if there is a better method for determining whether
-          // this is an attachment or not.
-          // It seems possible that a message that is not an attachment could
-          // still include the string 'File Attachment' and the
-          // rest of the message would be lost.
-          if (body.includes('File Attachment')) {
-            fullMessageContent = 'File Attachment';
+          if (!body) {
+            fullMessageContent = notificationMessageWithoutBody(
+              files,
+              `${firstName} ${lastName}`
+            )
           } else {
             fullMessageContent = body;
           }
+        } else if (!body.length) {
+          fullMessageContent = notificationMessageWithoutBody(
+            files,
+            `${firstName} ${lastName}`
+          )
         } else {
           // TODO add unit tests for regex.
           fullMessageContent = body.replace(/(<([^>]+)>)/gi, '');

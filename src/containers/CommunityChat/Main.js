@@ -285,6 +285,16 @@ const Main = ({
     [members]
   );
 
+  const getFullName = useCallback(
+    (userId) => {
+      if (!members[userId]) return null;
+      const { firstName, lastName } = members[userId];
+
+      return `${firstName} ${lastName}`
+    },
+    [members]
+  );
+
   const renderMessage = useCallback(
     (item, profileURLs) => {
       const { id, type } = item;
@@ -563,6 +573,7 @@ const Main = ({
             setFiles={setFiles}
             files={files}
             focusMessageBox={focusMessageBox}
+            getFullName={getFullName}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
             enqueueSnackbar={enqueueSnackbar}
