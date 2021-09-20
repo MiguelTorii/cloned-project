@@ -112,65 +112,38 @@ class ChatTextField extends React.PureComponent<Props, State> {
     const { files } = this.state;
     const { userId } = this.props;
 
-    // if (fileType.includes('image')) {
-    //   if (
-    //     this.fileInput &&
-    //     this.fileInput.files &&
-    //     this.fileInput.files.length > 0
-    //   ) {
-    //     const reader = new FileReader();
-    //     reader.onload = (event) => {
-    //       if (
-    //         this.fileInput &&
-    //         this.fileInput.files &&
-    //         this.fileInput.files.length > 0
-    //       ) {
-    //         this.setState({
-    //           image: event.target.result,
-    //           input: this.fileInput.files[0]
-    //         });
-    //       }
-    //       if (this.fileInput) {
-    //         this.fileInput.value = '';
-    //       }
-    //     };
+    const file = this.fileInput.files[0];
+    const { type, name, size } = file;
+    if (size < FILE_LIMIT_SIZE) {
+      this.setState({ loading: true });
 
-    //     reader.readAsDataURL(this.fileInput.files[0]);
-    //   }
-    // } else {
-      const file = this.fileInput.files[0];
-      const { type, name, size } = file;
-      if (size < FILE_LIMIT_SIZE) {
-        this.setState({ loading: true });
+      const result = await uploadMedia(userId, 1, file);
 
-        const result = await uploadMedia(userId, 1, file);
+      const { readUrl } = result;
 
-        const { readUrl } = result;
+      const anyFile = {
+        type,
+        name,
+        url: readUrl,
+        size
+      };
 
-        const anyFile = {
-          type,
-          name,
-          url: readUrl,
-          size
-        };
-
-        this.setState({ files: [...files, anyFile], loading: false });
-      } else {
-        enqueueSnackbar({
-          notification: {
-            message: 'Upload File size is over 40 MB',
-            options: {
-              variant: 'warning',
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'left'
-              },
-              autoHideDuration: 3000
-            }
+      this.setState({ files: [...files, anyFile], loading: false });
+    } else {
+      enqueueSnackbar({
+        notification: {
+          message: 'Upload File size is over 40 MB',
+          options: {
+            variant: 'warning',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            },
+            autoHideDuration: 3000
           }
-        });
-      }
-    // }
+        }
+      });
+    }
   };
 
   handleRemoveImg = () => {

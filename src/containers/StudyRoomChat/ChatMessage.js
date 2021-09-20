@@ -181,57 +181,37 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   showMessages = (message, createdAt, isOwn, files) => {
-    const { classes } = this.props;
-    const splitHtmlStringByFiles = message.split('File Attachment');
-
-    if (splitHtmlStringByFiles.length > 1) {
-      const files = JSON.parse(
-        splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
-      );
-      const fileHtml = files.map((file) => (
-        <FileUpload
-          smallChat
-          name={file.name}
-          size={file.size}
-          url={file.url}
-        />
-      ));
-      splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
-      const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
-
-      return (
-        <>
-          <div className={cx(classes.bodyWrapper)}>
-            {splitHtmlStringByFiles[0] ? (
-              <Typography
-                className={cx(
-                  classes.body,
-                  isOwn && classes.right,
-                  'ql-editor'
-                )}
-                dangerouslySetInnerHTML={{
-                  __html: this.renderHtmlWithImage(html)
-                }}
-              />
-            ) : null}
-            {fileHtml}
-          </div>
-          <Typography className={cx(classes.createdAt)} variant="caption">
-            {createdAt}
-          </Typography>
-        </>
-      );
-    }
+    const { classes, onImageClick, onImageLoaded } = this.props;
 
     if (files?.length) {
-      const fileHtml = files.map((file) => (
-        <FileUpload
-          name={file.fileName}
-          size={bytesToSize(file.fileSize)}
-          url={file.readUrl}
-          smallChat
-        />
-      ));
+      const fileHtml = files.map((file, index) => {
+        const { readUrl, fileName, fileType } = file;
+        if (fileType && fileType.includes('image')) {
+          return (
+            <div className={classes.bodyWrapper}>
+            <ButtonBase
+              onClick={() => onImageClick(readUrl)}
+              key={`${fileName}-${index}`}
+              >
+              <img
+                className={classes.image}
+                src={readUrl}
+                alt="chat"
+                onLoad={onImageLoaded}
+              />
+              </ButtonBase>
+            </div>
+          )
+        }
+        return (
+          <FileUpload
+            name={file.fileName}
+            size={bytesToSize(file.fileSize)}
+            url={file.readUrl}
+            smallChat
+          />
+        );
+      });
 
       return (
         <>

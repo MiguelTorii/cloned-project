@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import FileUpload from 'components/FileUpload/FileUploadContainer';
-import { bytesToSize, getFileExtension } from 'utils/chat';
+import { bytesToSize } from 'utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 
 
@@ -33,10 +33,12 @@ const AnyFileUpload = ({
   if (!!files?.length) {
     const fileHtml = files.map((file, index) => {
       const { readUrl, fileName, fileType } = file;
-      const extension = getFileExtension(fileName);
       if (fileType && fileType.includes('image')) {
         return <div className={classes.bodyWrapper}>
-           <ButtonBase onClick={() => onImageClick(readUrl)} key={`${fileName}-${index}`}>
+           <ButtonBase
+             onClick={() => onImageClick(readUrl)}
+             key={`${fileName}-${index}`}
+          >
             <img
               className={classes.image}
               src={readUrl}

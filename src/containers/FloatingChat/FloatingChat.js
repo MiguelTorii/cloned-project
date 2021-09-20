@@ -212,6 +212,8 @@ const FloatingChat = ({
     if (files?.length > 1) {
       content = `${fullName} shared multiple files`;
     }
+
+    return content;
   }
 
   useEffect(() => {
