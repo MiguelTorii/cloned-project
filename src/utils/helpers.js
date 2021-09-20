@@ -1,3 +1,5 @@
+// @flow
+
 import moment from 'moment';
 import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';

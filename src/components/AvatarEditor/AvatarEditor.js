@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import withRoot from 'withRoot';
 import Dialog from '../Dialog/Dialog';

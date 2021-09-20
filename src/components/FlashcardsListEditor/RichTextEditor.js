@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { useDropzone } from 'react-dropzone';

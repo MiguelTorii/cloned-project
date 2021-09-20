@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import type { UserProfile } from '../../types/models';
 import withRoot from '../../withRoot';
