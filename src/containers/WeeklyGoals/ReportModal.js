@@ -7,7 +7,7 @@ import useStyles from './styles';
 
 const ReportModal = ({ open, data, onClose, value, total }) => {
   const classes = useStyles();
-  const remainingPercent = (100 - value * 100.0 / total).toFixed(1);
+  const remainingPercent = (100 - ((value * 100.0) / total)).toFixed(1);
 
   return (
     <Dialog
