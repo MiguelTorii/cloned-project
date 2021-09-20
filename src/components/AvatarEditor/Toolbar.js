@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import withRoot from 'withRoot';
 import { Paper, Grid, IconButton } from '@material-ui/core';

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { StyledTextField } from '../../_styles/Basic/TextField/index';
 

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useState } from 'react';
 import Dialog from '../Dialog/Dialog';
 import useStyles from './styles';

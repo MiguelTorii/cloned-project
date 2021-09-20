@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useCallback } from 'react';
 import useStyles from './styles';
 import withRoot from '../../withRoot';

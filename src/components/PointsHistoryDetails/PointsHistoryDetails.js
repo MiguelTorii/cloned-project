@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import type { UserProfile } from 'types/models';
 import { Box } from '@material-ui/core';

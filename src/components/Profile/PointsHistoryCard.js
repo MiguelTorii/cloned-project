@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useEffect, useMemo, useState } from 'react';
 import type { UserProfile } from '../../types/models';
 import { useDispatch, useSelector } from 'react-redux';
