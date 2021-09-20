@@ -6,7 +6,6 @@ import _ from 'lodash';
 import useStyles from './styles';
 import ClassQuestions from '../../components/ClassQuestions/ClassQuestions';
 
-
 const ClassmateQuestions = () => {
   const classes = useStyles();
   const myClasses = useSelector((state) => state.user.userClasses.classList);
