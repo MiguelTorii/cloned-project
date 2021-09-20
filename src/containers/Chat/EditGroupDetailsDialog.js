@@ -6,15 +6,15 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import Typography from '@material-ui/core/Typography';
-import TextField from '../../components/Basic/TextField/TextField';
 import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
 import { Create } from '@material-ui/icons';
-import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import { useDispatch } from 'react-redux';
+import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
+import GradientButton from '../../components/Basic/Buttons/GradientButton';
+import TextField from '../../components/Basic/TextField/TextField';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
 const styles = (theme) => ({

@@ -16,9 +16,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { getInitials } from 'utils/chat';
 import type { StudyCircle } from '../../types/models';
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
-
 import { styles } from '../_styles/MyStudyCircle';
+
+const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
 type Props = {
   classes: Object,

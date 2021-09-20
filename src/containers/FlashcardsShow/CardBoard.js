@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import withRoot from '../../withRoot';
 import PropTypes from 'prop-types';
 import ReactCardFlip from 'react-card-flip';
-import CardBoardContent from './CardBoardContent';
 import { useHotkeys } from 'react-hotkeys-hook';
+import CardBoardContent from './CardBoardContent';
+import withRoot from '../../withRoot';
 
 const QUESTION_TOOLBAR_ID = 'cardboard_toolbar_question';
 const ANSWER_TOOLBAR_ID = 'cardboard_toolbar_answer';

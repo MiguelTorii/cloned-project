@@ -17,7 +17,7 @@ const Home = () => {
         <Box p={3}>
           <Grid container className={classes.root} spacing={3}>
             <Grid item xl={6} lg={8} sm={12}>
-              <Grid container direction='column' spacing={5}>
+              <Grid container direction="column" spacing={5}>
                 <Grid item xs={12}>
                   <HomeGreetings />
                 </Grid>

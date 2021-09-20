@@ -72,17 +72,13 @@ module.exports = {
     // TODO turn this back on
     'import/no-cycle': 'off',
 
-    // TODO turn this back on
-    'no-mixed-operators': 'off',
-
-    // TODO turn this back on
-    'jsx-quotes': 'off',
+    'no-mixed-operators': 'error',
+    'jsx-quotes': 'error',
 
     // TODO turn this back on
     'import/no-mutable-exports': 'off',
 
-    // TODO turn this back on
-    'no-multiple-empty-lines': 'off',
+    'no-multiple-empty-lines': 'error',
 
     // TODO turn this back on
     'react/button-has-type': 'off',
@@ -93,8 +89,7 @@ module.exports = {
     // TODO turn this back on
     'react/default-props-match-prop-types': 'off',
 
-    // TODO turn this back on
-    'import/order': 'off',
+    'import/order': 'error',
 
     // TODO turn this back on
     'react/jsx-closing-bracket-location': 'off',
@@ -170,8 +165,7 @@ module.exports = {
     // TODO turn this back on
     'consistent-return': 'off',
 
-    // TODO turn this back on
-    'object-curly-newline': 'off',
+    'object-curly-newline': ["error", { "consistent": true }],
 
     // TODO turn this back on
     'import/no-named-as-default': 'off',

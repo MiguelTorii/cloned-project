@@ -1,5 +1,5 @@
-import { apiActions } from '../constants/action-types';
 import { get } from 'lodash';
+import { apiActions } from '../constants/action-types';
 
 const apiActionCreator =
   ({ dispatch }) =>

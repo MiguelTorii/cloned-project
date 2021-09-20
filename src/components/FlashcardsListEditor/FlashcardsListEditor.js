@@ -7,12 +7,12 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { useHotkeys } from 'react-hotkeys-hook';
+import OutsideClickHandler from 'react-outside-click-handler';
 import useStyles from './styles';
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 import FlashcardEditor from './FlashcardEditor';
 import { FlashcardListContext, FlashcardListContextProvider } from './FlashcardListContext';
-import { useHotkeys } from 'react-hotkeys-hook';
-import OutsideClickHandler from 'react-outside-click-handler';
 
 export const EDITOR_TYPES = {
   QUESTION: 'question',

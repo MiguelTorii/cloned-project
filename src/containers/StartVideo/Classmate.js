@@ -20,8 +20,8 @@ import clsx from 'clsx';
 
 import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 
-import useStyles from './_styles/Classmate';
 import { getInitials } from 'utils/chat';
+import useStyles from './_styles/Classmate';
 
 type ClassmateType = {
   userId: string,

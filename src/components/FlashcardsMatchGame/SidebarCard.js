@@ -1,8 +1,8 @@
 import React from 'react';
-import useStyles from './styles';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import useStyles from './styles';
 
 const SidebarCard = ({ title, text }) => {
   const classes = useStyles();

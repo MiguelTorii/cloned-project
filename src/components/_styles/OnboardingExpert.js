@@ -1,5 +1,5 @@
-import { dialogStyle } from './Dialog';
 import backgroundImg from 'assets/img/onboarding-background.png';
+import { dialogStyle } from './Dialog';
 
 const centered = {
   alignItems: 'center',

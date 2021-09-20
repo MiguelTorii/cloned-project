@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Dialog from 'components/Dialog/Dialog';
-import Classmate from './Classmate';
 import LoadingImg from 'assets/svg/astro-shuttle.svg';
+import Classmate from './Classmate';
 import useStyles from './_styles/StudyRoomInvite';
 
 const StudyRoomInvite = ({

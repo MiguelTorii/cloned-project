@@ -1,12 +1,12 @@
 // @flow
 
-import createEvent from './events';
-import { EventData } from '../types/models';
 import {
   LOG_EVENT_CATEGORIES,
   CIRCLEIN_EVENT_NAMES,
   EVENT_TYPES
 } from 'constants/app';
+import createEvent from './events';
+import { EventData } from '../types/models';
 
 const toEventData = (eventName: string, props: object): EventData => {
   const [category, eventType] = eventName.split('- ');

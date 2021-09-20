@@ -12,13 +12,13 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import { getInitials } from 'utils/chat';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { BlockedUsers } from '../../types/models';
 import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
 import { getBlockedUsers, unblockUser } from '../../api/user';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { getInitials } from 'utils/chat';
 
 const styles = () => ({
   dialog: {

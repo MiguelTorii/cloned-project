@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 import { decypherClass } from 'utils/crypto';
 
+import StudyRoomImg from 'assets/svg/video-chat-image.svg';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 
@@ -22,8 +23,6 @@ import {
 import { logEvent } from '../../api/analytics';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
-import StudyRoomImg from 'assets/svg/video-chat-image.svg';
 
 import styles from './_styles/index';
 

@@ -1,19 +1,19 @@
 // @flow
 
 import React, { useEffect, useState } from 'react';
+import { Button, Grid, Box } from '@material-ui/core';
+import { Create } from '@material-ui/icons';
+import _ from 'lodash';
+import { getInitials } from 'utils/chat';
 import withRoot from '../../withRoot';
 import Dialog from '../Dialog/Dialog';
-import { Button, Grid, Box } from '@material-ui/core';
 import TextField from '../Basic/TextField/TextField';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import AvatarEditor from '../AvatarEditor/AvatarEditor';
 import Avatar, { DEFAULT_AVATAR_SIZE } from '../Avatar/Avatar';
-import { Create } from '@material-ui/icons';
 import type { About, UserProfile } from '../../types/models';
-import _ from 'lodash';
 import { useStyles } from '../_styles/Profile/EditProfileModal';
-import { getInitials } from 'utils/chat';
 
 type Props = {
   profile: UserProfile,

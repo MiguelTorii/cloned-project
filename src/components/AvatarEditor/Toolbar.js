@@ -4,8 +4,8 @@ import React from 'react';
 import withRoot from 'withRoot';
 import { Paper, Grid, IconButton } from '@material-ui/core';
 import { ZoomIn, ZoomOut, RotateRight, RotateLeft } from '@material-ui/icons';
-import { useStyles } from '../_styles/AvatarEditor/Toolbar';
 import _ from 'lodash';
+import { useStyles } from '../_styles/AvatarEditor/Toolbar';
 
 type Props = {
   onAction: Function,
