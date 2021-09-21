@@ -30,9 +30,7 @@ import { PERMISSIONS } from 'constants/common';
 import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
-const MyLink = React.forwardRef(({ link, ...props }, ref) => {
-  return <RouterLink to={link} {...props} ref={ref} />;
-});
+const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -199,9 +197,7 @@ const RightMenu = ({
     );
   };
 
-  const isStudent = useMemo(() => {
-    return !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS);
-  }, [permission]);
+  const isStudent = useMemo(() => !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS), [permission]);
 
   if (!channel || !localChannel) return null;
 

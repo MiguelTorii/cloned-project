@@ -3,8 +3,7 @@ import { Dialog, Box, Typography } from '@material-ui/core';
 
 import RocketImage from 'assets/gif/rocket-loading.gif';
 
-const FullScreenLoader = () => {
-  return (
+const FullScreenLoader = () => (
     <Dialog fullScreen open>
       <Box
         display="flex"
@@ -23,6 +22,5 @@ const FullScreenLoader = () => {
       </Box>
     </Dialog>
   );
-};
 
 export default FullScreenLoader;

@@ -120,7 +120,7 @@ const HeaderNavigation = ({
 
   const allLabel = useMemo(
     () =>
-      isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`,
+      (isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`),
     [firstName, isPastFilter]
   );
 

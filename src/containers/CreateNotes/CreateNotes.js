@@ -531,10 +531,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  getLeftCharts = (field) => {
+  getLeftCharts = (field) =>
     // help ? 50 - help.length : 50;
-    return 50 - field.length >= 0 ? 50 - field.length : 0;
-  };
+     (50 - field.length >= 0 ? 50 - field.length : 0)
+  ;
 
   imageChange = () => {
     this.setState({ changed: true });

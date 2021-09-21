@@ -53,8 +53,7 @@ type Props = {
   body: string
 };
 
-const Empty = ({ classes, logo, body }: Props) => {
-  return (
+const Empty = ({ classes, logo, body }: Props) => (
     <Paper className={classes.paper}>
       <Grid item>
         <div className={classes.imgContainer}>
@@ -76,6 +75,5 @@ const Empty = ({ classes, logo, body }: Props) => {
       </Grid>
     </Paper>
   );
-};
 
 export default withStyles(styles)(Empty);

@@ -12,13 +12,11 @@ type Props = {
   classes: Object
 };
 
-const AuthPage = ({ classes }: Props) => {
-  return (
+const AuthPage = ({ classes }: Props) => (
     <main className={classes.main}>
       <CssBaseline />
       <Auth />
     </main>
   );
-};
 
 export default withRoot(withStyles(styles)(AuthPage));

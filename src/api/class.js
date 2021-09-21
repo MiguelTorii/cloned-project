@@ -19,14 +19,12 @@ const searchClasses = async (query: stirng): Promise<Class> => {
       }
     );
 
-    const classes = result.data.classes.map((c) => {
-      return {
+    const classes = result.data.classes.map((c) => ({
         classId: c.class_id,
         hasJoined: c.has_joined,
         name: c.course_display_name,
         sectionId: c.section_id
-      };
-    });
+      }));
 
     return classes;
   } catch (err) {

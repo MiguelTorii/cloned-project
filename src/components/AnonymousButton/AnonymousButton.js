@@ -9,11 +9,11 @@ const AnonymousButton = ({ active = false, toggleActive }) => {
 
   const button = useMemo(
     () =>
-      active ? (
+      (active ? (
         <img alt="anonymous button" src={anon} />
       ) : (
         <img alt="anonymous button" src={anoff} />
-      ),
+      )),
     [active]
   );
 

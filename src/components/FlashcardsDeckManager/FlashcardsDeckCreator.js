@@ -17,9 +17,7 @@ const FlashcardsDeckCreator = () => {
   // States
   const [isSaving, setIsSaving] = useState(false);
 
-  const initialData = useMemo(() => {
-    return store.get(STORAGE_KEYS.FLASHCARD_CACHE) || null;
-  }, []);
+  const initialData = useMemo(() => store.get(STORAGE_KEYS.FLASHCARD_CACHE) || null, []);
 
   // Event Handlers
   const handleCreate = useCallback(

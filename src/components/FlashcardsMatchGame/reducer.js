@@ -98,14 +98,12 @@ const getCardPosition = (
       cardY >= 0 &&
       cardY < containerHeight - cardHeight
     ) {
-      const intersectIndex = placedCards.findIndex((rect) => {
-        return intersectRect(rect, {
+      const intersectIndex = placedCards.findIndex((rect) => intersectRect(rect, {
           x: cardX - CARD_PLACE_OFFSET,
           y: cardY - CARD_PLACE_OFFSET,
           w: cardWidth + 2 * CARD_PLACE_OFFSET,
           h: cardHeight + 2 * CARD_PLACE_OFFSET
-        });
-      });
+        }));
 
       if (intersectIndex < 0) {
         return [cardX, cardY];

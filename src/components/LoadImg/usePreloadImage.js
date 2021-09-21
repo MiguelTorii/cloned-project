@@ -17,11 +17,9 @@ const usePreloadImage = (imageToLoad) => {
     []
   );
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       mounted.current = false;
-    };
-  }, []);
+    }, []);
 
   useLayoutEffect(() => {
     if (typeof window === 'object' && imageToLoad) {

@@ -19,7 +19,7 @@ export default (theme) => {
         `${get(theme, props.bgColorPath)} 0 0 0 ${props.fromChat ? 3 : 7}px`,
       borderRadius: '50%',
       backgroundColor: (props) =>
-        props.isOnline ? greenRingColor : get(theme, props.bgColorPath),
+        (props.isOnline ? greenRingColor : get(theme, props.bgColorPath)),
       '&::after': {
         position: 'absolute',
         top: 0,

@@ -231,11 +231,11 @@ const Chat = ({
 
   const renderIcon = useCallback(
     (d) =>
-      d ? (
+      (d ? (
         <ArrowBackIcon className={classes.icon} />
       ) : (
         <ArrowForwardIcon className={classes.icon} />
-      ),
+      )),
     [classes.icon]
   );
 

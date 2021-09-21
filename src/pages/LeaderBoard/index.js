@@ -20,8 +20,7 @@ type Props = {
   classes: Object
 };
 
-const LeaderBoard = ({ classes }: Props) => {
-  return (
+const LeaderBoard = ({ classes }: Props) => (
     <main>
       <CssBaseline />
       <Layout>
@@ -33,7 +32,6 @@ const LeaderBoard = ({ classes }: Props) => {
       </Layout>
     </main>
   );
-};
 
 export default withRoot(
   withStyles(styles)(withWidth()(withRouter(LeaderBoard)))

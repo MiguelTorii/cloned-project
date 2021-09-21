@@ -18,8 +18,7 @@ type Props = {
   onGoBack: Function
 };
 
-const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
-  return (
+const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => (
     <div>
       <Link
         component="button"
@@ -66,6 +65,5 @@ const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
       </Grid>
     </div>
   );
-};
 
 export default withRoot(PointsHistoryDetails);

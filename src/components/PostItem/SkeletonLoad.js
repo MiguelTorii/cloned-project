@@ -5,8 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { styles } from '../_styles/PostItem/SkeletonLoad';
 
-const SkeletonLoad = ({ classes }) => {
-  return (
+const SkeletonLoad = ({ classes }) => (
     <div className={classes.root}>
       <SkeletonTheme color="#202020" highlightColor="#444">
         <div className={classes.skeletonLoad}>
@@ -18,6 +17,5 @@ const SkeletonLoad = ({ classes }) => {
       </SkeletonTheme>
     </div>
   );
-};
 
 export default withStyles(styles)(SkeletonLoad);

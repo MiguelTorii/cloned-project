@@ -35,9 +35,7 @@ const AvatarEditor = ({
   const [angle, setAngle] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const editorRef = useRef(null);
-  const disabledActions = useMemo(() => {
-    return [scale === 1.0 && 'zoom_out'];
-  }, [scale]);
+  const disabledActions = useMemo(() => [scale === 1.0 && 'zoom_out'], [scale]);
   const [dropzoneRef, setDropzoneRef] = useState(null);
 
   useEffect(() => {

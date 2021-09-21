@@ -11,9 +11,7 @@ const ClassmateQuestions = () => {
   const myClasses = useSelector((state) => state.user.userClasses.classList);
   const [selectedClass, setSelectedClass] = useState('all');
 
-  const activeClasses = useMemo(() => {
-    return myClasses.filter((item) => item.isCurrent);
-  }, [myClasses]);
+  const activeClasses = useMemo(() => myClasses.filter((item) => item.isCurrent), [myClasses]);
 
   const handleChangeClass = useCallback((event, newClass) => {
     setSelectedClass(newClass);

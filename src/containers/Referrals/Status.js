@@ -44,14 +44,12 @@ const Status = ({ classes }: { classes: Object }) => {
   return (
     <div className={classes.body}>
       <Typography className={classes.subtitle}>
-        {subtitle.split('\n').map((item) => {
-          return (
+        {subtitle.split('\n').map((item) => (
             <span key={Math.random()}>
               {item}
               <br />
             </span>
-          );
-        })}
+          ))}
       </Typography>
       {users.map((user, index) => (
         <div className={classes.row}>

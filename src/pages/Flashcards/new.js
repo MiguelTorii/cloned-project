@@ -4,8 +4,7 @@ import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import FlashcardsNew from '../../containers/FlashcardsNew/FlashcardsNew';
 
-const FlashcardsNewPage = () => {
-  return (
+const FlashcardsNewPage = () => (
     <main>
       <CssBaseline />
       <Layout>
@@ -13,6 +12,5 @@ const FlashcardsNewPage = () => {
       </Layout>
     </main>
   );
-};
 
 export default withRoot(FlashcardsNewPage);

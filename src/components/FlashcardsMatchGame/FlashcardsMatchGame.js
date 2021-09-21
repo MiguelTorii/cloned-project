@@ -104,9 +104,7 @@ const FlashcardsMatchGame = ({
   } = state;
 
   // Memos
-  const isFinished = useMemo(() => {
-    return matchCards.length > 0 && correctCount * 2 === matchCards.length;
-  }, [correctCount, matchCards.length]);
+  const isFinished = useMemo(() => matchCards.length > 0 && correctCount * 2 === matchCards.length, [correctCount, matchCards.length]);
 
   const elapsedSeconds = useMemo(() => {
     if (!matchStartTime || !lastRecordTime) return 0;

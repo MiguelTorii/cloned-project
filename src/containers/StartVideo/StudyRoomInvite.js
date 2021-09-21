@@ -75,9 +75,7 @@ const StudyRoomInvite = ({
     init();
   }, []);
 
-  const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
-  }, [campaign]);
+  const visiabled = useMemo(() => campaign?.variation_key && campaign?.variation_key !== 'hidden', [campaign]);
 
   const handleChange = useCallback(
     (e) => {
