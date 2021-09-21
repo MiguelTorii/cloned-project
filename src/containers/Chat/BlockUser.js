@@ -37,7 +37,7 @@ const BlockUser = ({ otherUser, userId, handleBlock }) => {
 
   if (!otherUser) return null;
   return (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <Button
         onClick={handleOpenBlock(true)}
         startIcon={<img src={BlockUserIcon} alt="block user" />}

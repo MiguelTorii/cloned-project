@@ -82,7 +82,6 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
       <Dialog
         ariaDescribedBy="video-points-description"
         className={classes.dialog}
-        disableBackdropClick={loading}
         disableActions={loading}
         disableEscapeKeyDown={loading}
         okTitle="Submit"

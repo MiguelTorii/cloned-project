@@ -184,7 +184,7 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }) => {
       />
 
       {/* Title Section */}
-      <Grid container justify="flex-start" alignItems="center" spacing={3}>
+      <Grid container justifyContent="flex-start" alignItems="center" spacing={3}>
         <Grid item>
           <Typography variant="h5">Flashcards</Typography>
         </Grid>

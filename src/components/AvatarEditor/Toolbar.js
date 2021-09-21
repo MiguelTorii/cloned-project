@@ -40,7 +40,7 @@ const Toolbar = ({ onAction, disabledActions }: Props) => {
 
   return (
     <Paper className={classes.root}>
-      <Grid container justify="space-around">
+      <Grid container justifyContent="space-around">
         {Actions.map((action) => (
           <Grid key={action.id} item>
             <IconButton

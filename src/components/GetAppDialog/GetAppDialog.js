@@ -41,7 +41,7 @@ const GetAppDialog = ({ open, onClose }: Props) => {
           <Typography className={classes.bold}>
             <b>Download the App</b>
           </Typography>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <a href="https://apps.apple.com/us/app/circlein-circle-in-daily/id969803973">
               <LoadImg url={getappios} className={classes.image} />
             </a>

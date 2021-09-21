@@ -232,7 +232,7 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
                     <Grid
                       container
                       alignItems="center"
-                      justify="center"
+                      justifyContent="center"
                       spacing={2}
                       className={classes.uploadContainer}
                     >

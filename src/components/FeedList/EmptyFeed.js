@@ -173,7 +173,7 @@ const EmptyFeed = ({
     >
       <Grid
         container
-        justify="center"
+        justifyContent="center"
         classes={{ root: classes.container }}
         item
       >
@@ -201,7 +201,7 @@ const EmptyFeed = ({
       <Grid
         container
         spacing={4}
-        justify="center"
+        justifyContent="center"
         classes={{
           root: classes.container
         }}
@@ -222,7 +222,7 @@ const EmptyFeed = ({
           ref={fileRef}
           className={classes.hidden}
         />
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           {!profileStep && (
             <img
               className={classes.imgFirst}
@@ -263,7 +263,7 @@ const EmptyFeed = ({
             )}
           </Button>
         </Grid>
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           {!inviteStep && (
             <img
               className={classes.imgSecond}
@@ -293,7 +293,7 @@ const EmptyFeed = ({
             Invite your Classmates
           </Button>
         </Grid>
-        <Grid container justify="space-around">
+        <Grid container justifyContent="space-around">
           {!chatStep && (
             <img
               className={classes.imgThird}

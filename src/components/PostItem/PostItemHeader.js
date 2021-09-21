@@ -242,7 +242,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         <Grid
           className={classes.backButton}
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="center"
           onClick={this.handleGoBack}
         >

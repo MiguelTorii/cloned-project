@@ -285,7 +285,7 @@ const ChatHeader = ({
   return (
     <div className={classes.header}>
       {channel && (
-        <Grid container justify="space-between">
+        <Grid container justifyContent="space-between">
           <Typography className={classes.headerTitle}>
             <ChatIcon className={classes.headerIcon} /> {currentChannelTitle}
             {members.length > 3 && !channel.channelState.friendlyName && (

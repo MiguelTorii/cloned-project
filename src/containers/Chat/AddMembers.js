@@ -98,7 +98,7 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
   return (
     <Grid
       container
-      justify="center"
+      justifyContent="center"
       classes={{
         root: classes.addMembers
       }}

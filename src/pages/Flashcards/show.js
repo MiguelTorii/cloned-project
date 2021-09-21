@@ -29,7 +29,7 @@ const FlashcardsShowPage = () => {
   return (
     <main>
       <Layout>
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           <Grid item xs={11} lg={10}>
             { renderBody() }
           </Grid>

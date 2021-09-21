@@ -124,14 +124,14 @@ const LeftMenu = ({
         <Grid
           container
           classes={{ root: classes.header }}
-          justify="center"
+          justifyContent="center"
           alignItems="center"
           direction="column"
         >
           <Grid
             container
             item
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="center"
             className={classes.headerTitle}
           >

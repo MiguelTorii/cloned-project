@@ -33,10 +33,12 @@ const AnyFileUpload = ({
     const fileHtml = files.map((file, index) => {
       const { readUrl, fileName, fileType } = file;
       if (fileType && fileType.includes('image')) {
-        return <div className={classes.bodyWrapper}>
+        return <div
+          className={classes.bodyWrapper}
+          key={`${fileName}-${index}`}
+        >
            <ButtonBase
              onClick={() => onImageClick(readUrl)}
-             key={`${fileName}-${index}`}
           >
             <img
               className={classes.image}
@@ -49,6 +51,7 @@ const AnyFileUpload = ({
       }
 
       return <FileUpload
+        key={`${fileName}-${index}`}
         name={fileName}
         size={bytesToSize(file.fileSize)}
         url={readUrl}

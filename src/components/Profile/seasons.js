@@ -85,7 +85,7 @@ class Seasons extends React.PureComponent<Props, State> {
           {/* </ButtonBase> */}
           <Grid
             container
-            justify="space-evenly"
+            justifyContent="space-evenly"
             spacing={2}
             className={classes.gridContainer}
             item
@@ -125,7 +125,7 @@ class Seasons extends React.PureComponent<Props, State> {
           </Grid>
           {/* <Grid
             container
-            justify="space-evenly"
+            justifyContent="space-evenly"
             alignItems="stretch"
             spacing={2}
             className={classes.rankContainer}

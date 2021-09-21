@@ -65,7 +65,7 @@ const Empty = ({ classes, logo, body }: Props) => {
         container
         className={classes.textContainer}
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         spacing={2}
       >
         {body.split('\n').map((line) => (

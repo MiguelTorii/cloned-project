@@ -120,7 +120,6 @@ class Report extends React.PureComponent<Props, State> {
         <Dialog
           className={classes.dialog}
           disableActions={loading}
-          disableBackdropClick={loading}
           okTitle="Report"
           onCancel={onClose}
           onOk={this.handleSubmit}

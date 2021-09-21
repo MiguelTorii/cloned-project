@@ -339,7 +339,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
       <Dialog
         ariaDescribedBy="onboarding-description"
         className={classes.dialog}
-        disableBackdropClick
         disableEscapeKeyDown
         open={open}
         showHeader={false}

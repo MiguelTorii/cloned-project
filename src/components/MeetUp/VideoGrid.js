@@ -310,7 +310,7 @@ const VideoGrid = ({
       <Grid
         container
         spacing={1}
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         alignContent="center"
         className={cx(

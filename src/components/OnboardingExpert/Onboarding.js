@@ -163,7 +163,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         ariaDescribedBy="onboarding-description"
         className={classes.dialog}
         fullWidth
-        disableBackdropClick
         maxWidth="lg"
         disableEscapeKeyDown
         open={open}

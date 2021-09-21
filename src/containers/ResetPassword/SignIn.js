@@ -95,7 +95,7 @@ class SignIn extends React.Component<Props, State> {
 
     return (
       <main className={classes.main}>
-        <Grid container justify="space-around">
+        <Grid container justifyContent="space-around">
           <Grid item xs={12} sm={6}>
             <ErrorBoundary>
               <ResetPasswordForm
