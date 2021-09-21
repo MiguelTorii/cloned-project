@@ -145,8 +145,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
     [handleSubmit]
   );
 
-  const renderSignUp = useMemo(() => {
-    return (
+  const renderSignUp = useMemo(() => (
       <div className={classes.container}>
         <form className={classes.form} onSubmit={onSubmit}>
           <TextField
@@ -243,8 +242,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
           </Button>
         </div>
       </div>
-    );
-  }, [
+    ), [
     classes.container,
     classes.createButton,
     classes.form,

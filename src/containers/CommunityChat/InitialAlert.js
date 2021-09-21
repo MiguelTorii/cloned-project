@@ -55,9 +55,9 @@ const InitialAlert = ({
 
   const initialCourseAvatarName = useMemo(
     () =>
-      selectedCourse?.name
+      (selectedCourse?.name
         ? selectedCourse?.name.substring(0, 3).toUpperCase()
-        : '',
+        : ''),
     [selectedCourse]
   );
 

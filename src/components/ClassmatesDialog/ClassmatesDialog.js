@@ -33,11 +33,11 @@ const ClassmatesDialog = ({
 
   const title = useMemo(
     () =>
-      meetingInvite
+      (meetingInvite
         ? 'Invite To Study Room'
         : expertMode
         ? 'Students'
-        : 'Classmates',
+        : 'Classmates'),
     [expertMode, meetingInvite]
   );
 

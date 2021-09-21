@@ -42,7 +42,7 @@ const MiniWorkflows = () => {
             </Typography>
           </Box>
         </Box>
-      )
+      );
     }
 
     if (tasks.length === 0) {
@@ -59,7 +59,7 @@ const MiniWorkflows = () => {
             Go to Workflow
           </GradientButton>
         </Box>
-      )
+      );
     }
 
     return (

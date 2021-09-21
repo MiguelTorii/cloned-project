@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import LoadImg from 'components/LoadImg/LoadImg'
+import LoadImg from 'components/LoadImg/LoadImg';
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import Ellipses from './Ellipses';
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title1: {
     [theme.breakpoints.down('sm')]: {
-      display: 'none',
+      display: 'none'
     }
   },
   title: {
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
       fontSize: 24,
       fontWeight: 400,
-      lineHeight: '125%',
+      lineHeight: '125%'
     },
     '& > h4': {
       // Alarm text
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
       },
       '& > h4': {
         fontSize: 16,
-        display: 'none',
+        display: 'none'
       }
     }
   },
@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(2),
-      fontSize: 14,
+      fontSize: 14
     }
   },
   ellipseContainer: {
@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     maxWidth: 563,
-    width: '100%',
+    width: '100%'
   }
 }));
 

@@ -577,9 +577,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  getLeftCharts = (field) => {
-    return 50 - field.length >= 0 ? 50 - field.length : 0;
-  };
+  getLeftCharts = (field) => (50 - field.length >= 0 ? 50 - field.length : 0);
 
   errorMessage = () => {
     const { classes } = this.props;

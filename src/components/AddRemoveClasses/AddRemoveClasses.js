@@ -251,14 +251,12 @@ const AddRemoveClasses = (props: Props) => {
   const renderOption = (option) => (
     <div className={classes.optionItem}>
       <Typography className={classes.optionName}>
-        {option.name.split('\n').map((item) => {
-          return (
+        {option.name.split('\n').map((item) => (
             <span key={Math.random()}>
               {item}
               <br />
             </span>
-          );
-        })}
+          ))}
       </Typography>
       <Button
         className={classes.optionButton}

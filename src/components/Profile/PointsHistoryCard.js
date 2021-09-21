@@ -26,13 +26,11 @@ const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
   const myUserId = useSelector((state) => state.user.data.userId);
   const [pointsHistory, setPointsHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const title = useMemo(() => {
-    return profile.userId === myUserId
+  const title = useMemo(() => (profile.userId === myUserId
       ? 'Your Points History'
       : `${_.capitalize(profile.firstName)} ${_.capitalize(
           profile.lastName
-        )}'s Points History`;
-  }, [profile, myUserId]);
+        )}'s Points History`), [profile, myUserId]);
 
   useEffect(() => {
     setIsLoading(true);

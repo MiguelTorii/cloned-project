@@ -27,9 +27,9 @@ export default (
       return {
         ...state,
         items: state.items.map((notification) =>
-          action.payload.dismissAll || notification.key === action.payload.key
+          (action.payload.dismissAll || notification.key === action.payload.key
             ? { ...notification, dismissed: true }
-            : { ...notification }
+            : { ...notification })
         )
       };
 

@@ -24,8 +24,7 @@ const MeetingDetails = ({
   meetingUri,
   setRef,
   openClassmatesDialog
-}) => {
-  return (
+}) => (
     <ClickAwayListener onClickAway={onClose}>
       <Paper elevation={3} className={classes.meetingDetails}>
         <Tooltip
@@ -90,6 +89,5 @@ const MeetingDetails = ({
       </Paper>
     </ClickAwayListener>
   );
-};
 
 export default withStyles(styles)(MeetingDetails);

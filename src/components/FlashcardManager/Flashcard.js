@@ -66,8 +66,7 @@ const Flashcard = ({
     }
   }, [prevIsAnimating, isAnimating]);
 
-  const animatedBoxKeyframes = ({ x, y }) => {
-    return keyframes`
+  const animatedBoxKeyframes = ({ x, y }) => keyframes`
       0% {
         transform: translate(0px, 0px) scale(1);
       }
@@ -75,7 +74,6 @@ const Flashcard = ({
         transform: translate(${x}px, ${y}px) scale(0);
       }
     `;
-  };
 
   const AnimatedBox = styled.div`
     display: inline-block;
@@ -92,12 +90,10 @@ const Flashcard = ({
     transform-origin: 50% 50%;
   `;
 
-  const getRectangleCenter = (rectangle) => {
-    return {
+  const getRectangleCenter = (rectangle) => ({
       x: rectangle.left + (rectangle.right - rectangle.left) / 2,
       y: rectangle.top + (rectangle.bottom - rectangle.top) / 2
-    };
-  };
+    });
 
   const calculateOffset = () => {
     const sourceCenter = getRectangleCenter(

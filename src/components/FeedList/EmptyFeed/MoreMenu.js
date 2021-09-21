@@ -21,8 +21,7 @@ const MoreMenu = ({
   completed,
   hide,
   toggleHide
-}: Props) => {
-  return (
+}: Props) => (
     <Menu
       disableAutoFocusItem
       anchorEl={anchor}
@@ -41,6 +40,5 @@ const MoreMenu = ({
       )}
     </Menu>
   );
-};
 
 export default MoreMenu;

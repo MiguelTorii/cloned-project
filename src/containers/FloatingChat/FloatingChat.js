@@ -214,7 +214,7 @@ const FloatingChat = ({
     }
 
     return content;
-  }
+  };
 
   useEffect(() => {
     if (local) {
@@ -262,7 +262,7 @@ const FloatingChat = ({
             fullMessageContent = notificationMessageWithoutBody(
               files,
               `${firstName} ${lastName}`
-            )
+            );
           } else {
             fullMessageContent = body;
           }
@@ -270,7 +270,7 @@ const FloatingChat = ({
           fullMessageContent = notificationMessageWithoutBody(
             files,
             `${firstName} ${lastName}`
-          )
+          );
         } else {
           // TODO add unit tests for regex.
           fullMessageContent = body.replace(/(<([^>]+)>)/gi, '');
@@ -351,7 +351,7 @@ const FloatingChat = ({
 
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel);
-    setCurrentChannelSid(channel.sid)
+    setCurrentChannelSid(channel.sid);
     setCurrentChannel(channel);
   };
 

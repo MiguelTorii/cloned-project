@@ -13,7 +13,7 @@ export const ONBOARDING_STEPS = [
     title: 'CircleIn?',
     text: "At CircleIn, students come together to help each other out. Whether it's finding the motivation to study, figuring out where to start, learning how to solve a problem, or getting together with classmates so you don't have to study alone! PLUS, there are points, rewards and scholarships too...🤑",
     backText: 'Skip',
-    actionText: "Tell me more"
+    actionText: 'Tell me more'
   },
   {
     id: 'step-2',
@@ -70,7 +70,7 @@ export const ONBOARDING_STEPS_FOR_CHAT_LANDING = [
     title: 'CircleIn?',
     text: "At CircleIn, students come together to help each other out. Whether it's finding the motivation to study, figuring out where to start, learning how to solve a problem, or getting together with classmates so you don't have to study alone! PLUS, there are points, rewards and scholarships too...🤑",
     backText: 'Skip',
-    actionText: "Tell me more"
+    actionText: 'Tell me more'
   },
   {
     id: 'step-2',

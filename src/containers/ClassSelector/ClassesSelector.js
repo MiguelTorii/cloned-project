@@ -182,8 +182,7 @@ const ClassesSelector = ({
               options={userClasses}
               getOptionLabel={(option) => option.label}
               onChange={handleChange}
-              renderOption={(option) => {
-                return (
+              renderOption={(option) => (
                   <div className={classes.optionItem}>
                     {value === option.value ? (
                       <CheckCircleIcon className={classes.mr1} />
@@ -192,8 +191,7 @@ const ClassesSelector = ({
                     )}
                     <span>{option.label}</span>
                   </div>
-                );
-              }}
+                )}
               renderInput={(params) => (
                 <TextField
                   {...params}

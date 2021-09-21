@@ -52,18 +52,6 @@ const Header = ({ profile }: Props) => {
                 {`${profile.firstName} ${profile.lastName}`}
               </Typography>
             </Grid>
-            {/*<Grid item container spacing={2}>*/}
-            {/*  <Grid item>*/}
-            {/*    <Typography>*/}
-            {/*      24*/}
-            {/*    </Typography>*/}
-            {/*  </Grid>*/}
-            {/*  <Grid item>*/}
-            {/*    <Typography>*/}
-            {/*      16*/}
-            {/*    </Typography>*/}
-            {/*  </Grid>*/}
-            {/*</Grid>*/}
             <Grid item>
               <Typography>Rank: #{profile.rank}</Typography>
             </Grid>
@@ -81,14 +69,6 @@ const Header = ({ profile }: Props) => {
               Total
             </Typography>
           </Grid>
-          {/*<Grid item xs={6} md={12}>*/}
-          {/*  <Typography variant="h5" className={classes.textAlign}>*/}
-          {/*    + 20K Points*/}
-          {/*  </Typography>*/}
-          {/*  <Typography variant="body2" className={clsx(classes.subtext, classes.textAlign)}>*/}
-          {/*    From Today*/}
-          {/*  </Typography>*/}
-          {/*</Grid>*/}
         </Grid>
       </Grid>
     </Paper>

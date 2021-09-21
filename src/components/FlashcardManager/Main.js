@@ -27,9 +27,7 @@ import FlashcardItem from './Flashcard';
 
 import { styles } from '../_styles/FlashcardManager/Main';
 
-const Transition = React.forwardRef((props, ref) => {
-  return <Slide ref={ref} direction="up" {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => <Slide ref={ref} direction="up" {...props} />);
 
 type Props = {
   classes: Object,
@@ -122,12 +120,10 @@ const FlashcardManager = ({
     setFlipped(false);
   };
 
-  const getRectangleCenter = (rectangle) => {
-    return {
+  const getRectangleCenter = (rectangle) => ({
       x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
       y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2)
-    };
-  };
+    });
 
   useEffect(() => {
     const saveDeck = () => {

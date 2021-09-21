@@ -20,9 +20,7 @@ import { useStyles } from '../_styles/FlashcardQuiz';
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-const createMarkup = (html) => {
-  return { __html: sanitizeHtml(html) };
-};
+const createMarkup = (html) => ({ __html: sanitizeHtml(html) });
 
 type Props = {
   flashcardId: number,

@@ -25,7 +25,7 @@ const FlashcardsListEditor = ({
   toolbarPrefix,
   onUpdate,
   onSetRef,
-  onUpdateFlashcardField,
+  onUpdateFlashcardField
 }: Props) => {
   // Hooks
   const classes = useStyles();
@@ -42,9 +42,9 @@ const FlashcardsListEditor = ({
           {
             id: maxId ? maxId + 1 : 1,
             question: '',
-            answer: '',
-          },
-        ],
+            answer: ''
+          }
+        ]
       })
     );
   }, [data, onUpdate]);
@@ -53,7 +53,7 @@ const FlashcardsListEditor = ({
     (index) => {
       onUpdate(
         update(data, {
-          $splice: [[index, 1]],
+          $splice: [[index, 1]]
         })
       );
     },
@@ -222,7 +222,7 @@ FlashcardsListEditor.propTypes = {
   onUpdateFlashcardField: PropTypes.func,
   onSetRef: PropTypes.func,
   readOnly: PropTypes.bool,
-  toolbarPrefix: PropTypes.string,
+  toolbarPrefix: PropTypes.string
 };
 
 FlashcardsListEditor.defaultProps = {
@@ -231,7 +231,7 @@ FlashcardsListEditor.defaultProps = {
   onUpdateFlashcardField: () => {},
   onSetRef: () => {},
   readOnly: false,
-  toolbarPrefix: '',
+  toolbarPrefix: ''
 };
 
 export default (props) => (

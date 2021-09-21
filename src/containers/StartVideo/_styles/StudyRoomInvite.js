@@ -32,24 +32,24 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     margin: 'auto',
     marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(18),
+    marginBottom: theme.spacing(18)
   },
   img: {
-    width: 120,
+    width: 120
   },
   text1: {
     color: theme.circleIn.palette.darkTextColor,
     fontWeight: 800,
     fontSize: 24,
     lineHeight: '33px',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   text2: {
     color: theme.circleIn.palette.darkTextColor,
     fontWeight: 400,
     fontSize: 20,
     lineHeight: '27px',
-    textAlign: 'center',
+    textAlign: 'center'
   }
 }));
 

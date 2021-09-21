@@ -112,12 +112,10 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   }, [elapsed, totalIdleTime, remaining, lastActive]);
 
   // Memos
-  const dropdownOptions = useMemo(() => {
-    return [...new Array(quizData.match.qIds.length).keys()].map((id) => ({
+  const dropdownOptions = useMemo(() => [...new Array(quizData.match.qIds.length).keys()].map((id) => ({
       value: id + 1,
       text: String.fromCharCode('A'.charCodeAt(0) + id)
-    }));
-  }, [quizData]);
+    })), [quizData]);
 
   const unansweredCount = useMemo(() => {
     let result = 0;

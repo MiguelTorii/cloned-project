@@ -63,19 +63,15 @@ const getNotificationOptions = (seconds, updated, due) => {
     const now = moment().valueOf();
     if (now + optionSeconds * 1000 > dueValue) return null;
 
-    const option = Object.keys(remiderTime).reduce((prev, cur) => {
-      return Math.abs(cur - optionSeconds) < Math.abs(prev - optionSeconds)
+    const option = Object.keys(remiderTime).reduce((prev, cur) => (Math.abs(cur - optionSeconds) < Math.abs(prev - optionSeconds)
         ? cur
-        : prev;
-    });
+        : prev));
     return option;
   }
   return null;
 };
 
-const isFuture = (date) => {
-  return moment(date).valueOf() - moment().valueOf() > 0;
-};
+const isFuture = (date) => moment(date).valueOf() - moment().valueOf() > 0;
 
 const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
   const { classList, canAddClasses, updateItem } = useContext(WorkflowContext);

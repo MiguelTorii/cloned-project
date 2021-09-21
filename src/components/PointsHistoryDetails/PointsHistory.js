@@ -56,8 +56,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderRecords = (isMobile) => {
-    return (
+  const renderRecords = (isMobile) => (
       <Grid container spacing={isMobile ? 2 : 3}>
         {records.map((record, index) => (
           <Grid key={index} item xs={12}>
@@ -66,7 +65,6 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
         ))}
       </Grid>
     );
-  };
 
   return (
     <Paper className={classes.root}>
