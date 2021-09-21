@@ -111,7 +111,8 @@ const HoverPopup = ({
     };
   }, [hover, onTimeout]);
 
-  const onStartChat = async () => {
+  const onStartChat = async (event) => {
+    event.stopPropagation();
     const { openChannelWithEntity } = props;
     setChatLoading(true);
     setCurrentCommunityId(null);
