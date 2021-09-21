@@ -44,7 +44,8 @@ export default makeStyles((theme) => ({
     textAlign: 'center'
   },
   name: {
-    fontSize: 16
+    fontSize: 16,
+    cursor: 'pointer'
   },
   subTitle: {
     fontSize: 14
