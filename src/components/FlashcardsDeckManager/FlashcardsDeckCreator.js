@@ -28,7 +28,7 @@ const FlashcardsDeckCreator = () => {
         userId: me.userId,
         grade: me.grade,
         tags: [],
-        ...data,
+        ...data
       });
 
       setIsSaving(false);
@@ -37,7 +37,7 @@ const FlashcardsDeckCreator = () => {
         dispatch(
           showNotification({
             message: 'Sorry, failed to create a flashcard deck.',
-            variant: 'error',
+            variant: 'error'
           })
         );
       } else {
@@ -45,18 +45,18 @@ const FlashcardsDeckCreator = () => {
           showNotification({
             message: `Congratulations ${me.firstName}, you have just earned ${points} points. Good Work!`,
             variant: 'info',
-            nextPath: '/flashcards',
+            nextPath: '/flashcards'
           })
         );
         logEvent({
           event: 'Feed- Create Flashcards',
-          props: { 'Number of cards': data.deck.length, Title: data.title },
+          props: { 'Number of cards': data.deck.length, Title: data.title }
         });
 
         logEventLocally({
           category: 'Flashcard',
           objectId: fcId,
-          type: 'Created',
+          type: 'Created'
         });
 
         store.remove(STORAGE_KEYS.FLASHCARD_CACHE);
