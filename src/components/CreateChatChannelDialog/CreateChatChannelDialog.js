@@ -93,7 +93,6 @@ const CreateChatChannelDialog = ({
     <Dialog
       className={classes.dialog}
       disableActions={isLoading}
-      disableBackdropClick={isLoading}
       disableEscapeKeyDown={isLoading}
       open={Boolean(chatType)}
       onCancel={handleClose}

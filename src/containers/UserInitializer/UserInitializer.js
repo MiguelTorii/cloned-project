@@ -376,7 +376,6 @@ const UserInitializer = ({
     <ErrorBoundary>
       <Dialog
         open={open}
-        disableBackdropClick
         disableEscapeKeyDown
         okTitle="Update"
         onOk={handleSubmit}

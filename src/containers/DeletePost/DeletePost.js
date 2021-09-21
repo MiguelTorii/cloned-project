@@ -83,7 +83,6 @@ class DeletePost extends React.PureComponent<Props, State> {
         <Dialog
           ariaDescribedBy="confirmation-dialog-description"
           disableActions={loading}
-          disableBackdropClick={loading}
           okTitle="Delete"
           onCancel={onClose}
           onOk={this.handleSubmit}

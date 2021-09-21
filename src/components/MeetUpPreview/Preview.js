@@ -243,7 +243,6 @@ class Preview extends React.Component<Props, State> {
         />
         <Dialog
           className={classes.dialog}
-          disableBackdropClick
           disableEscapeKeyDown
           title="Permissions Not Granted"
           open={error}
