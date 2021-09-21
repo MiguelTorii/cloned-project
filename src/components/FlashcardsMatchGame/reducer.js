@@ -224,8 +224,10 @@ const reducer = (state, action) => {
 
       // If only one card is left, leave 2
       if (currentIndex === matchCards.length - 2) {
-        matchCards[currentIndex--].visible = false;
-        matchCards[currentIndex--].visible = false;
+        matchCards[currentIndex].visible = false;
+        currentIndex -= 1;
+        matchCards[currentIndex].visible = false;
+        currentIndex -= 1;
       }
 
       return update(state, {
