@@ -17,4 +17,4 @@ export const StyledTextField = withStyles((theme) => ({
       fontSize: 18
     }
   }
-}))(MuiTextField)
+}))(MuiTextField);

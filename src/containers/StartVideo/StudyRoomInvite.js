@@ -58,7 +58,7 @@ const StudyRoomInvite = ({
         (classmate) => Number(classmate.userId) !== Number(userId)
       );
       setClassmates(classmates);
-      setLoading(false)
+      setLoading(false);
     };
 
     if (classList.length > 0) {

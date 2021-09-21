@@ -6,5 +6,5 @@ export const gutterStyle = (theme) => {
       paddingLeft: theme.spacing(3),
       paddingRight: theme.spacing(3),
     }
-  }
+  };
 };

@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import LoadImg from 'components/LoadImg/LoadImg'
+import LoadImg from 'components/LoadImg/LoadImg';
 import { StudyRoomOnboardingStepData } from '../../types/models';
 import withRoot from '../../withRoot';
 import Ellipses from './Ellipses';

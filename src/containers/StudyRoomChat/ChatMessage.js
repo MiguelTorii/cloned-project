@@ -201,7 +201,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
               />
               </ButtonBase>
             </div>
-          )
+          );
         }
         return (
           <FileUpload

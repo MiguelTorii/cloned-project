@@ -290,7 +290,7 @@ const Main = ({
       if (!members[userId]) return null;
       const { firstName, lastName } = members[userId];
 
-      return `${firstName} ${lastName}`
+      return `${firstName} ${lastName}`;
     },
     [members]
   );

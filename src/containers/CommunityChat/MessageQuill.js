@@ -39,7 +39,7 @@ const MessageQuill = ({
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
   const inputFieldRef = useRef();
 
-  const userName = getFullName(userId)
+  const userName = getFullName(userId);
   const bindings = useMemo(
     () => ({
       enter: {
