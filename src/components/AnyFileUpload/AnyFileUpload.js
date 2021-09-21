@@ -29,7 +29,7 @@ const AnyFileUpload = ({
     </div>
   );
 
-  if (!!files?.length) {
+  if (files?.length) {
     const fileHtml = files.map((file, index) => {
       const { readUrl, fileName, fileType } = file;
       if (fileType && fileType.includes('image')) {
