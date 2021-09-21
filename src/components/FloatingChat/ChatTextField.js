@@ -57,15 +57,15 @@ class ChatTextField extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { onSendMessage, onSendInput } = this.props;
-    const { message, input } = this.state;
-    if (message.trim() !== '') {
-      onSendMessage(message);
-      this.setState({ message: '' });
+    const { message, input, files } = this.state;
+    if (message.trim() !== '' || !!files.length) {
+      onSendMessage(message, files);
+      this.setState({ message: '', files: [] });
     }
 
-    if (input) {
+    if (input && !files.length) {
       onSendInput(input);
-      this.setState({ input: null, isHover: false });
+      this.setState({ input: null, isHover: false, files: [] });
     }
   };
 
@@ -90,9 +90,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
         onSendMessage(message, files);
         this.setState({ message: '', files: [] });
       }
-      if (input) {
+      if (input && !files.length) {
         onSendInput(input);
-        this.setState({ input: null, isHover: false });
+        this.setState({ input: null, isHover: false, files: [] });
       }
     }
     if (event.keyCode === 16) {

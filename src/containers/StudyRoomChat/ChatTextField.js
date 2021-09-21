@@ -211,11 +211,12 @@ const ChatTextField = ({
           setMessage('');
           setFiles([]);
         }
-        if (input) {
+        if (input || !!files.length) {
           setInput(null);
           setIsHover(false);
           onSendInput(input);
           setInput(null);
+          setFiles([]);
         }
       }
       if (event.keyCode === 16) {
