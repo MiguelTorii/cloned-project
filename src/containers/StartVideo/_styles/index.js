@@ -11,7 +11,7 @@ const styles = (theme) => ({
   },
   subtitle: {
     marginTop: theme.spacing(4),
-    maxWidth: 770,
+    maxWidth: 770
   },
   wrapper: {
     maxWidth: 500,
@@ -20,7 +20,7 @@ const styles = (theme) => ({
     margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   note: {
     maxWidth: 420,

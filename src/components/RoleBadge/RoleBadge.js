@@ -6,8 +6,7 @@ import Chip from '@material-ui/core/Chip';
 import { ReactComponent as BadgeVector } from 'assets/svg/badge_vector.svg';
 import styles from '../_styles/RoleBadge';
 
-const RoleBadge = ({ text, classes }) => {
-  return (
+const RoleBadge = ({ text, classes }) => (
     <Chip
       size="small"
       color="primary"
@@ -23,7 +22,6 @@ const RoleBadge = ({ text, classes }) => {
       }}
     />
   );
-};
 
 RoleBadge.propTypes = {
   classes: Proptypes.object.isRequired

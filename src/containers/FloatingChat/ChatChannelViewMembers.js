@@ -122,8 +122,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             title="Members"
           >
             <List className={classes.list}>
-              {members.map((member) => {
-                return (
+              {members.map((member) => (
                   <ListItem key={member.userId} role={undefined} dense>
                     <ListItemAvatar>
                       <OnlineBadge
@@ -179,8 +178,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
                       </ListItemSecondaryAction>
                     )}
                   </ListItem>
-                );
-              })}
+                ))}
             </List>
           </Dialog>
         </ErrorBoundary>

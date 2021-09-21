@@ -45,8 +45,7 @@ export const showNotification = ({
   vertical = 'bottom',
   horizontal = 'left',
   autoHideDuration = 7000
-}) => {
-  return enqueueSnackbar({
+}) => enqueueSnackbar({
     notification: {
       message,
       nextPath,
@@ -60,7 +59,6 @@ export const showNotification = ({
       }
     }
   });
-};
 
 export const closeSnackbar =
   ({ key }: { key: string }) =>

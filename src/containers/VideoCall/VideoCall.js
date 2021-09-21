@@ -137,8 +137,7 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleUpdateDeviceSelectionOptions = () => {
-    return (
+  handleUpdateDeviceSelectionOptions = () => (
       navigator &&
       navigator.mediaDevices &&
       navigator.mediaDevices
@@ -148,7 +147,6 @@ class VideoCall extends React.Component<Props, State> {
           throw err;
         })
     );
-  };
 
   handleUpdateDeviceSelection = async (kind, deviceId) => {
     this.setState({ [`selected${kind}`]: deviceId });

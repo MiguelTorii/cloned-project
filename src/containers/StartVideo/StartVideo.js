@@ -192,8 +192,8 @@ class StartVideo extends React.PureComponent<Props, State> {
     try {
       const users = selectedUsers.map((item) => Number(item.userId));
 
-      let chatId,
-        isNew = false;
+      let chatId;
+      let isNew = false;
       // Create New study room
       if (!channel) {
         const { chatId: newChatId, isNewChat } = await createChannel({

@@ -87,11 +87,11 @@ const VideoGrid = ({
 
   const numberOfParticipants = useMemo(
     () =>
-      sharingTrackIds.length ||
+      (sharingTrackIds.length ||
       (dominantView && dominant) ||
       ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1
         ? 1
-        : participants.length,
+        : participants.length),
     [dominant, dominantView, participants.length, sharingTrackIds, viewMode]
   );
 
@@ -184,8 +184,7 @@ const VideoGrid = ({
     [dominantSpeaker]
   );
 
-  const renderAudio = useCallback(() => {
-    return participants.map((item) => {
+  const renderAudio = useCallback(() => participants.map((item) => {
       if (item.audio.length > 0) {
         return item.audio.map((track) => (
           <AudioTrack
@@ -207,11 +206,9 @@ const VideoGrid = ({
         );
       }
       return null;
-    });
-  }, [meetupRef, participants]);
+    }), [meetupRef, participants]);
 
-  const renderParticipants = useCallback(() => {
-    return currentPageParticipants.map((item) => {
+  const renderParticipants = useCallback(() => currentPageParticipants.map((item) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
@@ -283,8 +280,7 @@ const VideoGrid = ({
           />
         );
       });
-    });
-  }, [
+    }), [
     currentPageParticipants,
     currentUserId,
     handleSelectedScreenSharing,

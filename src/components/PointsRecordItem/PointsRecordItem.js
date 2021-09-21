@@ -10,6 +10,7 @@ import type { PointsHistoryItem } from '../../types/models';
 import withRoot from '../../withRoot';
 
 import { useStyles } from '../_styles/PointsRecordItem';
+
 const IMAGE_SIZE = 32;
 
 type Props = {

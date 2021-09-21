@@ -8,8 +8,7 @@ import Layout from '../../containers/Layout/Layout';
 import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
 import { NotesContextProvider } from '../../hooks/useNotes';
 
-const UserNotes = () => {
-  return (
+const UserNotes = () => (
     <main>
       <CssBaseline />
       <Layout>
@@ -19,6 +18,5 @@ const UserNotes = () => {
       </Layout>
     </main>
   );
-};
 
 export default withRoot(withWidth()(UserNotes));

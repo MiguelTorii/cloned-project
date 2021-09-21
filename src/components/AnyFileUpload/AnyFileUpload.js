@@ -29,7 +29,7 @@ const AnyFileUpload = ({
     </div>
   );
 
-  if (!!files?.length) {
+  if (files?.length) {
     const fileHtml = files.map((file, index) => {
       const { readUrl, fileName, fileType } = file;
       if (fileType && fileType.includes('image')) {
@@ -47,7 +47,7 @@ const AnyFileUpload = ({
               onLoad={onImageLoaded}
             />
           </ButtonBase>
-        </div>
+        </div>;
       }
 
       return <FileUpload
@@ -56,7 +56,7 @@ const AnyFileUpload = ({
         size={bytesToSize(file.fileSize)}
         url={readUrl}
         smallChat={smallChat}
-      />
+      />;
     });
 
     return renderMessage(message, fileHtml);

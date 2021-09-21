@@ -99,8 +99,7 @@ const Thumbnails = ({
     [dominantSpeaker]
   );
 
-  const renderParticipants = useCallback(() => {
-    return currentPageParticipants.map((item) => {
+  const renderParticipants = useCallback(() => currentPageParticipants.map((item) => {
       const profile = profiles[item.participant.identity] || {};
       const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
@@ -128,8 +127,7 @@ const Thumbnails = ({
           );
         }
 
-        return item.video.map((track) => {
-          return (
+        return item.video.map((track) => (
             <ThumbnailItem
               key={item.type === 'local' ? track.id : track.sid}
               firstName={
@@ -153,8 +151,7 @@ const Thumbnails = ({
               isMic={item.audio.length > 0}
               isDataSharing={item.data.length > 0}
             />
-          );
-        });
+          ));
       }
 
       /*
@@ -317,8 +314,7 @@ const Thumbnails = ({
         }
         return null;
       });
-    });
-  }, [
+    }), [
     currentPageParticipants,
     currentUserId,
     lockedParticipant,
@@ -341,8 +337,7 @@ const Thumbnails = ({
     }
   }, [selectedPage, totalPageCount]);
 
-  const renderAudio = useCallback(() => {
-    return participants.map((item) => {
+  const renderAudio = useCallback(() => participants.map((item) => {
       if (item.audio.length > 0) {
         return item.audio.map((track) => (
           <AudioTrack
@@ -364,8 +359,7 @@ const Thumbnails = ({
         );
       }
       return null;
-    });
-  }, [meetupRef, participants]);
+    }), [meetupRef, participants]);
 
   return (
     <div

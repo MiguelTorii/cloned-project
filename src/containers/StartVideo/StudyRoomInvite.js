@@ -58,7 +58,7 @@ const StudyRoomInvite = ({
         (classmate) => Number(classmate.userId) !== Number(userId)
       );
       setClassmates(classmates);
-      setLoading(false)
+      setLoading(false);
     };
 
     if (classList.length > 0) {
@@ -75,9 +75,7 @@ const StudyRoomInvite = ({
     init();
   }, []);
 
-  const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
-  }, [campaign]);
+  const visiabled = useMemo(() => campaign?.variation_key && campaign?.variation_key !== 'hidden', [campaign]);
 
   const handleChange = useCallback(
     (e) => {

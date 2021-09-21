@@ -69,7 +69,7 @@ const WorkflowBoardBox = ({
 
   const containerStyle = useMemo(
     () =>
-      announcementData ? classes.containerAnnouncement : classes.listContainer,
+      (announcementData ? classes.containerAnnouncement : classes.listContainer),
     [announcementData, classes.containerAnnouncement, classes.listContainer]
   );
 

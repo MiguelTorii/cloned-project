@@ -7,8 +7,7 @@ import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import ClassesGrid from '../../containers/ClassesGrid/Classes';
 
-const Classes = () => {
-  return (
+const Classes = () => (
     <main>
       <CssBaseline />
       <Layout>
@@ -16,6 +15,5 @@ const Classes = () => {
       </Layout>
     </main>
   );
-};
 
 export default withRoot(withWidth()(Classes));

@@ -475,8 +475,8 @@ const CreatePostSt = ({
       <ErrorBoundary>
         <SimpleErrorDialog
           open={errorDialog}
-          title={error['title']}
-          body={error['body']}
+          title={error.title}
+          body={error.body}
           handleClose={handleErrorDialogClose}
         />
       </ErrorBoundary>

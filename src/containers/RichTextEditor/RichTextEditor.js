@@ -170,13 +170,11 @@ const RichTextEditor = ({
     }
   }, [handleImageInput, setEditor]);
 
-  const readFile = useCallback((file) => {
-    return new Promise((resolve) => {
+  const readFile = useCallback((file) => new Promise((resolve) => {
       const reader = new FileReader();
       reader.addEventListener('load', () => resolve(reader.result), false);
       reader.readAsDataURL(file);
-    });
-  }, []);
+    }), []);
 
   // const zoomIn = useCallback(() => {
   //   if (zoom >= 3) setZoom(3)

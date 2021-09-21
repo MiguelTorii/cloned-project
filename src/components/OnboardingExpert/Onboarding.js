@@ -100,8 +100,7 @@ const OnboardingStep = ({
   DemoComponent,
   Title,
   Body
-}) => {
-  return (
+}) => (
     <div className={classes.step}>
       <div className={classes.actionPanel}>
         <Title />
@@ -135,7 +134,6 @@ const OnboardingStep = ({
       </div>
     </div>
   );
-};
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const [activeStep, setActiveStep] = useState(0);

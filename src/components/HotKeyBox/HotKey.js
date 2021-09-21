@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Box } from '@material-ui/core';
 import Key from './Key';
 
-const HotKey = ({ keys }) => {
-  return (
+const HotKey = ({ keys }) => (
     <Box display="flex" alignItems="center" marginLeft={6}>
       {keys.map((key, index) => (
         <React.Fragment key={key}>
@@ -18,7 +17,6 @@ const HotKey = ({ keys }) => {
       ))}
     </Box>
   );
-};
 
 HotKey.propTypes = {
   keys: PropTypes.array.isRequired

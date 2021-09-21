@@ -185,8 +185,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     DemoComponent,
     textRows,
     title
-  }) => {
-    return (
+  }) => (
       <div className={classes.step}>
         <div className={classes.actionPanel}>
           <AppLogo className={classes.logo} />
@@ -239,7 +238,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         </div>
       </div>
     );
-  };
 
   const currentStep = STEPS[activeStep];
 

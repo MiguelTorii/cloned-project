@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';
 
 export const getPointsText = (points: number) =>
-  points < 1000
+  (points < 1000
     ? points.toLocaleString()
-    : `${Math.floor(points / 1000).toLocaleString()}K`;
+    : `${Math.floor(points / 1000).toLocaleString()}K`);
 
 export const momentWithTimezone = (date: string = undefined) =>
   moment(date).tz(TIME_ZONE);
@@ -55,12 +55,14 @@ export const shuffleArray = (array) => {
 };
 
 export const truncate = (str, n) =>
-  str.length > n ? `${str.substr(0, n - 1)}...` : str;
+  (str.length > n ? `${str.substr(0, n - 1)}...` : str);
 
 export const arrElemToId = (array) => {
   const result = [];
 
-  array.forEach((elem, id) => (result[elem] = id));
+  array.forEach((elem, id) => {
+    result[elem] = id;
+  });
 
   return result;
 };

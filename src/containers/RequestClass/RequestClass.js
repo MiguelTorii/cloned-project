@@ -131,15 +131,13 @@ class RequestClass extends React.PureComponent<Props, State> {
     );
   };
 
-  renderThanks = () => {
-    return (
+  renderThanks = () => (
       <Fragment>
         <Typography paragraph>
           We will contact you when your classes become available.
         </Typography>
       </Fragment>
     );
-  };
 
   render() {
     const { classes, open } = this.props;

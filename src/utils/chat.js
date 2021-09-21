@@ -247,11 +247,11 @@ export const getInitials = (name: string = '') => {
 };
 
 export const containsImage = (message: string) =>
-  message.includes('<img')
+  (message.includes('<img')
     ? 'Uploaded a image'
     : message.includes('File Attachment')
     ? 'Uploaded a file'
-    : parse(message);
+    : parse(message));
 
 export const bytesToSize = (bytes, decimals = 1) => {
   if (bytes === 0) return '0 Bytes';

@@ -455,7 +455,7 @@ const FeedItem = ({
         {data.tags.length > 0 && (
           <CardContent className={classes.tags}>
             {data.tags.map((tag) =>
-              !newClassExperience ? (
+              (!newClassExperience ? (
                 <Chip
                   key={tag.id}
                   label={`#${tag.name}`}
@@ -467,7 +467,7 @@ const FeedItem = ({
                   key={tag.id}
                   className={classes.hashtag}
                 >{`#${tag.name}`}</span>
-              )
+              ))
             )}
           </CardContent>
         )}

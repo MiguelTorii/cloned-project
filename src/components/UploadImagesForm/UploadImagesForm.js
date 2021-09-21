@@ -32,9 +32,7 @@ const UploadImagesForm = ({
 
   const SortableItem = sortableElement(({ children }) => children);
 
-  const SortableContainer = sortableContainer(({ children }) => {
-    return children;
-  });
+  const SortableContainer = sortableContainer(({ children }) => children);
 
   return (
     <div className={classes.dropzoneWrapper}>

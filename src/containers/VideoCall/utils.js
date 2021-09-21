@@ -1,11 +1,7 @@
 import Video from 'twilio-video';
 import update from 'immutability-helper';
 
-const getDevicesOfKind = (deviceInfos, kind) => {
-  return deviceInfos.filter((deviceInfo) => {
-    return deviceInfo.kind === kind;
-  });
-};
+const getDevicesOfKind = (deviceInfos, kind) => deviceInfos.filter((deviceInfo) => deviceInfo.kind === kind);
 
 const switchLocalTracks = (room, track) => {
   room.localParticipant.tracks.forEach((trackPublication) => {
@@ -17,8 +13,7 @@ const switchLocalTracks = (room, track) => {
   room.localParticipant.publishTrack(track);
 };
 
-export const getDeviceSelectionOptions = () => {
-  return navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
+export const getDeviceSelectionOptions = () => navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
     const kinds = ['audioinput', 'audiooutput', 'videoinput'];
     return kinds.reduce((deviceSelectionOptions, kind) => {
       // eslint-disable-next-line no-param-reassign
@@ -26,10 +21,8 @@ export const getDeviceSelectionOptions = () => {
       return deviceSelectionOptions;
     }, {});
   });
-};
 
-export const applyVideoInputDeviceSelection = (deviceId, video, room) => {
-  return Video.createLocalVideoTrack({
+export const applyVideoInputDeviceSelection = (deviceId, video, room) => Video.createLocalVideoTrack({
     deviceId: {
       exact: deviceId
     }
@@ -45,10 +38,8 @@ export const applyVideoInputDeviceSelection = (deviceId, video, room) => {
       console.log('applyVideoInputDeviceSelection failed:', err);
       throw err;
     });
-};
 
-export const applyAudioInputDeviceSelection = (deviceId, audio, room) => {
-  return Video.createLocalAudioTrack({
+export const applyAudioInputDeviceSelection = (deviceId, audio, room) => Video.createLocalAudioTrack({
     deviceId: {
       exact: deviceId // NOTE: on ios safari - it respects the deviceId only if its exact.
     }
@@ -64,17 +55,14 @@ export const applyAudioInputDeviceSelection = (deviceId, audio, room) => {
       console.log('applyAudioInputDeviceSelection failed:', err);
       throw err;
     });
-};
 
-export const applyAudioOutputDeviceSelection = (deviceId, audio) => {
-  return typeof audio.setSinkId === 'function'
+export const applyAudioOutputDeviceSelection = (deviceId, audio) => (typeof audio.setSinkId === 'function'
     ? audio.setSinkId(deviceId)
     : Promise.reject(
         new Error(
           'This browser does not support setting an audio output device'
         )
-      );
-};
+      ));
 
 export const detachTrack = (track) => {
   //   track.detach().forEach(detachedElement => {
@@ -84,8 +72,7 @@ export const detachTrack = (track) => {
   track.stop();
 };
 
-export const addParticipant = (state, participant, track, local = false) => {
-  return update(state, {
+export const addParticipant = (state, participant, track, local = false) => update(state, {
     participants: {
       $apply: (b) => {
         const index = b.findIndex(
@@ -109,7 +96,7 @@ export const addParticipant = (state, participant, track, local = false) => {
               [track.kind]: {
                 $apply: (t) => {
                   const trackIndex = t.findIndex((item) =>
-                    local ? item.id === track.id : item.sid === track.sid
+                    (local ? item.id === track.id : item.sid === track.sid)
                   );
                   if (trackIndex === -1) {
                     return [...t, track];
@@ -124,10 +111,8 @@ export const addParticipant = (state, participant, track, local = false) => {
       }
     }
   });
-};
 
-export const removeParticipant = (state, participant) => {
-  return update(state, {
+export const removeParticipant = (state, participant) => update(state, {
     participants: {
       $apply: (b) => {
         const index = b.findIndex(
@@ -146,10 +131,8 @@ export const removeParticipant = (state, participant) => {
       }
     }
   });
-};
 
-export const removeTrack = (state, participant, track, local = false) => {
-  return update(state, {
+export const removeTrack = (state, participant, track, local = false) => update(state, {
     participants: {
       $apply: (b) => {
         const index = b.findIndex(
@@ -161,7 +144,7 @@ export const removeTrack = (state, participant, track, local = false) => {
               [track.kind]: {
                 $apply: (t) => {
                   const trackIndex = t.findIndex((item) =>
-                    local ? item.id === track.id : item.sid === track.sid
+                    (local ? item.id === track.id : item.sid === track.sid)
                   );
                   if (trackIndex > -1) {
                     return update(t, { $splice: [[trackIndex, 1]] });
@@ -183,17 +166,12 @@ export const removeTrack = (state, participant, track, local = false) => {
       }
     }
   });
-};
 
 export const addProfile = (
   state,
   { userId, firstName, lastName, userProfileUrl }
-) => {
-  return update(state, {
+) => update(state, {
     profiles: {
-      $apply: (b) => {
-        return { ...b, [userId]: { firstName, lastName, userProfileUrl } };
-      }
+      $apply: (b) => ({ ...b, [userId]: { firstName, lastName, userProfileUrl } })
     }
   });
-};

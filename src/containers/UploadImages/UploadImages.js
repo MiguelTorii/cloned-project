@@ -284,13 +284,11 @@ class UploadImages extends React.PureComponent<Props, State> {
 
   getFileExtension = (filename) => filename.split('.').pop();
 
-  uploadImageRequest = (url, image, type) => {
-    return axios.put(url, image, {
+  uploadImageRequest = (url, image, type) => axios.put(url, image, {
       headers: {
         'Content-Type': type
       }
     });
-  };
 
   render() {
     const { classes } = this.props;

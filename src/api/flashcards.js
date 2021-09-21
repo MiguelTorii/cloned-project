@@ -1,7 +1,7 @@
 import { callApi } from 'api/api_base';
 import { API_URL_V1_1 } from 'constants/routes';
 
-/***
+/**
  *
  * @param flashcardId
  * @response
@@ -9,15 +9,14 @@ import { API_URL_V1_1 } from 'constants/routes';
  *   match_game_id: number
  * }
  */
-export const apiInitializeMatchGame = async (flashcardId) => {
+export const apiInitializeMatchGame = async (flashcardId) =>
   // return {
   //   match_game_id: 1
   // };
-  return callApi({
+   callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match`,
     method: 'POST'
   });
-};
 
 /**
  *
@@ -33,18 +32,17 @@ export const apiSaveMatchGameRecords = async (
   flashcardId,
   matchGameId,
   matches
-) => {
+) =>
   // return { success: true }
-  return callApi({
+   callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}`,
     method: 'POST',
     data: {
       matches
     }
   });
-};
 
-/***
+/**
  * @param flashcardId: number
  * @param matchGameId: number
  * @param startTime: UTC timestamp in milliseconds
@@ -61,8 +59,7 @@ export const apiEndMatchGame = async (
   startTime,
   endTime,
   duration
-) => {
-  return callApi({
+) => callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}/end`,
     method: 'POST',
     data: {
@@ -71,9 +68,8 @@ export const apiEndMatchGame = async (
       duration
     }
   });
-};
 
-/***
+/**
  *
  * @param flashcardId: number
  * @response
@@ -83,9 +79,7 @@ export const apiEndMatchGame = async (
  *   }
  * }
  */
-export const apiGetMatchStats = async (flashcardId) => {
-  return callApi({
+export const apiGetMatchStats = async (flashcardId) => callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
     method: 'GET'
   });
-};
