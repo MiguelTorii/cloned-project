@@ -431,7 +431,7 @@ const FlashcardsMatchGame = ({
       return <LoadingSpin />;
     }
 
-    let highScore = matchStat?.highScore || null;
+    const highScore = matchStat?.highScore || null;
 
     return (
       <Box padding={4} mt={4} className={clsx(!isFinished && classes.hidden)}>
