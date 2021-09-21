@@ -142,7 +142,7 @@ const AvatarEditor = ({
       <Box px={5} mb={4}>
         <Toolbar disabledActions={disabledActions} onAction={onAction} />
       </Box>
-      <Grid container justify="space-between">
+      <Grid container justifyContent="space-between">
         <Grid item>
           {/*<Button onClick={handleDelete}>*/}
           {/*  Delete*/}

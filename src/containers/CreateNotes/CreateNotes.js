@@ -712,7 +712,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 item
                 xs={12}
                 md={10}
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
               >
                 <Grid item xs={2} md={2}>

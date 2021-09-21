@@ -191,7 +191,7 @@ class Header extends React.PureComponent<Props, State> {
           <div className={classes.gridInfo}>
             <Grid
               container
-              justify="space-between"
+              justifyContent="space-between"
               alignItems="center"
               wrap="nowrap"
             >

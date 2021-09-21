@@ -224,7 +224,7 @@ const CreatePostLayout = ({
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid
-        justify="flex-start"
+        justifyContent="flex-start"
         className={classes.container}
         container
         spacing={2}

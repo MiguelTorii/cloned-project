@@ -25,7 +25,7 @@ const WorkflowPage = ({ classes }: Props) => (
     <main>
       <Layout>
         <CssBaseline />
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           <Grid item xs={12} md={11} className={classes.item}>
             <Workflow />
           </Grid>

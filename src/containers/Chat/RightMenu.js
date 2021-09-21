@@ -216,7 +216,7 @@ const RightMenu = ({
         <Grid
           container
           alignItems="flex-start"
-          justify="space-between"
+          justifyContent="space-between"
           classes={{
             root: classes.header
           }}
@@ -237,7 +237,7 @@ const RightMenu = ({
           container
           direction="column"
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           classes={{
             root: classes.infoContainer
           }}

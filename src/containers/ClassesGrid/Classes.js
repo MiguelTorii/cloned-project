@@ -312,7 +312,7 @@ const Classes = ({
           </Grid>
         )}
         {emptyVisibility && (
-          <Grid container justify="center" item xs={12}>
+          <Grid container justifyContent="center" item xs={12}>
             <Grid item xs={12} md={9}>
               <Empty logo={emptyLogo} body={emptyBody} />
             </Grid>

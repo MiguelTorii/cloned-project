@@ -494,7 +494,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
             onAction={handleSetCurrentCardLevel}
           />
         </Box>
-        <Grid container justify="space-between" alignItems="center">
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             {currentLevel === CARDS_TO_REVIEW && (
               <Button

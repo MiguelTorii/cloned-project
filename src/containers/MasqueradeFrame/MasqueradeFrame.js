@@ -53,7 +53,7 @@ const MasqueradeFrame = () => {
   return (
     <div className={classes.root}>
       <div className={classes.header}>
-        <Grid container justify="space-between" alignItems="center" spacing={2}>
+        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item>
             <Box display="flex" alignItems="center">
               <DesktopMac fontSize="small" />

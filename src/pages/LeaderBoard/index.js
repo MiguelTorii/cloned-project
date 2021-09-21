@@ -25,7 +25,7 @@ const LeaderBoard = ({ classes }: Props) => {
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container spacing={0} justify="center">
+        <Grid container spacing={0} justifyContent="center">
           <Grid item xs={12} md={9} className={classes.item}>
             <LeaderBoards />
           </Grid>

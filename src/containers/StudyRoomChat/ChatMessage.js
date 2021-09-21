@@ -188,17 +188,14 @@ class ChatMessageDate extends React.PureComponent<Props> {
         const { readUrl, fileName, fileType } = file;
         if (fileType && fileType.includes('image')) {
           return (
-            <div className={classes.bodyWrapper}>
-            <ButtonBase
-              onClick={() => onImageClick(readUrl)}
-              key={`${fileName}-${index}`}
-              >
-              <img
-                className={classes.image}
-                src={readUrl}
-                alt="chat"
-                onLoad={onImageLoaded}
-              />
+            <div className={classes.bodyWrapper} key={`${fileName}-${index}`}>
+              <ButtonBase onClick={() => onImageClick(readUrl)}>
+                <img
+                  className={classes.image}
+                  src={readUrl}
+                  alt="chat"
+                  onLoad={onImageLoaded}
+                />
               </ButtonBase>
             </div>
           )

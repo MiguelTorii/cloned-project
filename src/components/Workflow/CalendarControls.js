@@ -66,7 +66,7 @@ const CalendarControls = ({
   }, [api, title]);
 
   return (
-    <Grid className={classes.container} container justify="space-between">
+    <Grid className={classes.container} container justifyContent="space-between">
       <Grid item xs={4}>
         <IconButton
           aria-label="previous"

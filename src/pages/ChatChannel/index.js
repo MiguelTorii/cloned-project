@@ -100,7 +100,7 @@ const ChatChannelPage = (props) => {
     <main>
       <CssBaseline />
       <Layout>
-        <Grid container justify="center" className={classes.container}>
+        <Grid container justifyContent="center" className={classes.container}>
           {loading ? <CircularProgress size={20} /> : renderChat()}
         </Grid>
       </Layout>

@@ -428,7 +428,7 @@ const Main = ({
       <div className={classes.header}>
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && (
-          <Grid container justify="space-between">
+          <Grid container justifyContent="space-between">
             <Typography className={classes.headerTitle}>
               {localChannel?.title}
             </Typography>

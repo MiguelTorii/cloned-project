@@ -307,7 +307,7 @@ const UserNotesEditor = ({
             </Toolbar>
           </AppBar>
           {hasNote && (
-            <Grid container justify="center" className={classes.editor}>
+            <Grid container justifyContent="center" className={classes.editor}>
               <div className={classes.editorToolbar}>
                 <EditorToolbar />
               </div>
