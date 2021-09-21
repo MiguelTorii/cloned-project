@@ -1,5 +1,5 @@
 import React from 'react';
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from '@material-ui/core/CssBaseline';
 import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import Flashcards from 'pages/View/Flashcards';
 import { useSelector } from 'react-redux';
