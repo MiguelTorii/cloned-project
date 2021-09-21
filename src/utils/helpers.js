@@ -60,7 +60,9 @@ export const truncate = (str, n) =>
 export const arrElemToId = (array) => {
   const result = [];
 
-  array.forEach((elem, id) => (result[elem] = id));
+  array.forEach((elem, id) => {
+    result[elem] = id;
+  });
 
   return result;
 };

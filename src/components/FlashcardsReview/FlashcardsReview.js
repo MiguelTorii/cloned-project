@@ -182,7 +182,9 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
   const cardCountsByLevel = useMemo(() => {
     const count = { to_review: 0 };
 
-    ANSWER_LEVELS.forEach((item) => (count[item.level] = 0));
+    ANSWER_LEVELS.forEach((item) => {
+      count[item.level] = 0;
+    });
     (cards || []).forEach((item) => {
       count[cardsLevel[item.id] || CARDS_TO_REVIEW] += 1;
     });
