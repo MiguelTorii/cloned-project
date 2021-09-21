@@ -67,7 +67,6 @@ const Note = ({ noteData }) => {
           }}
         />
 
-        {/* <div className={classes.date}>{timeFromNow(n)}</div> */}
       </ListItem>
       {hovered && (
         <IconButton
@@ -78,7 +77,6 @@ const Note = ({ noteData }) => {
           <DeleteIcon fontSize="small" />
         </IconButton>
       )}
-      {/*<div className={classes.hidden}>{refresh}</div>*/}
     </div>
   );
 };

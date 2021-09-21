@@ -51,11 +51,6 @@ const ClassmateQuestions = () => {
       {selectedClass && (
         <ClassQuestions classId={selectedClass === 'all' ? null : selectedClass} />
       )}
-      {/*{myClasses.map((classData) => (*/}
-      {/*  <Box hidden={classData.classId !== selectedClass} key={classData.classId}>*/}
-      {/*    <ClassQuestions classId={classData.classId} />*/}
-      {/*  </Box>*/}
-      {/*))}*/}
     </>
   );
 };

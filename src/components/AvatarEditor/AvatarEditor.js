@@ -115,10 +115,6 @@ const AvatarEditor = ({
       });
   };
 
-  // const handleDelete = () => {
-  //   setImage(null);
-  // };
-
   return (
     <Dialog
       title={title ?? 'Edit Profile Picture'}
@@ -142,9 +138,6 @@ const AvatarEditor = ({
       </Box>
       <Grid container justify="space-between">
         <Grid item>
-          {/*<Button onClick={handleDelete}>*/}
-          {/*  Delete*/}
-          {/*</Button>*/}
         </Grid>
         <Grid item>
           <Grid container spacing={2}>

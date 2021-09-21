@@ -1,7 +1,7 @@
 import { callApi } from 'api/api_base';
 import { API_URL_V1_1 } from 'constants/routes';
 
-/***
+/**
  *
  * @param flashcardId
  * @response
@@ -42,7 +42,7 @@ export const apiSaveMatchGameRecords = async (
     }
   });
 
-/***
+/**
  * @param flashcardId: number
  * @param matchGameId: number
  * @param startTime: UTC timestamp in milliseconds
@@ -69,7 +69,7 @@ export const apiEndMatchGame = async (
     }
   });
 
-/***
+/**
  *
  * @param flashcardId: number
  * @response

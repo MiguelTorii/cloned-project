@@ -48,20 +48,6 @@ const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => (
             </Grid>
           </Grid>
         </Grid>
-        {/*<Grid item xs={12} lg={4}>*/}
-        {/*  <Grid container spacing={3}>*/}
-        {/*    <Grid item xs={12}>*/}
-        {/*      <PointsReport*/}
-        {/*        userId={profile.userId}*/}
-        {/*        isMyProfile={isMyProfile}*/}
-        {/*        displayName={profile.firstName}*/}
-        {/*      />*/}
-        {/*    </Grid>*/}
-        {/*    <Grid item xs={12}>*/}
-        {/*      <StudyStats userId={profile.userId} />*/}
-        {/*    </Grid>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
       </Grid>
     </div>
   );
