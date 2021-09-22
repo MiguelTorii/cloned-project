@@ -5,6 +5,7 @@ import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
@@ -62,7 +63,7 @@ const MessageQuill = ({
 
   const uploadFile = useCallback(async (file) => {
     const { type, name, size } = file;
-    console.log(file);
+
     if (size < FILE_LIMIT_SIZE) {
       const result = await uploadMedia(userId, 1, file);
       const { readUrl } = result;
@@ -308,7 +309,12 @@ const MessageQuill = ({
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (
-            <AttachFile file={file} onClose={() => onClose(file)} smallChat />
+            <AttachFile
+              key={file.url}
+              file={file}
+              onClose={() => onClose(file)}
+              smallChat
+            />
           ))}
         </div>
       )}

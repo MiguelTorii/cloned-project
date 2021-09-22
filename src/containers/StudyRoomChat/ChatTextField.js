@@ -372,9 +372,9 @@ const ChatTextField = ({
       </form>
       {files.length > 0 && (
         <div className={classes.files}>
-          {files.map((file, index) => (
+          {files.map((file) => (
             <AttachFile
-              key={`${file.name}-${index}`}
+              key={file.url}
               smallChat
               file={file}
               onClose={() => onClose(file)}

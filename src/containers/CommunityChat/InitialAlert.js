@@ -16,7 +16,6 @@ type Props = {
   channel: Object,
   userId: string,
   isCommunityChat: boolean,
-  selectedCourse: Object,
   selectedChannel: Object
 };
 
@@ -25,7 +24,6 @@ const InitialAlert = ({
   channel,
   userId,
   isCommunityChat,
-  selectedCourse,
   selectedChannel
 }: Props) => {
   const classes = useStyles();
@@ -52,14 +50,6 @@ const InitialAlert = ({
   }, [channel, local, userId]);
 
   const initials = useMemo(() => getInitials(name), [name]);
-
-  const initialCourseAvatarName = useMemo(
-    () =>
-      (selectedCourse?.name
-        ? selectedCourse?.name.substring(0, 3).toUpperCase()
-        : ''),
-    [selectedCourse]
-  );
 
   return isCommunityChat ? (
     local[channel?.sid]?.twilioChannel?.channelState
@@ -88,7 +78,7 @@ const InitialAlert = ({
           className={cx(classes.avatarProfile, classes.communityChannelProfile)}
           src={thumbnail}
         >
-          {initialCourseAvatarName}
+          <GroupIcon />
         </Avatar>
         <Typography className={classes.members} variant="h5">
           #{selectedChannel?.chat_name}

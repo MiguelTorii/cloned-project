@@ -132,8 +132,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
     } else {
       showNotification({
         message: 'Upload File size is over 40 MB',
-        variant: 'warning',
-        autoHideDuration: 3000
+        variant: 'warning'
       });
     }
   };
@@ -251,9 +250,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
         )}
         {files.length > 0 && (
           <div className={classes.files}>
-            {files.map((file, index) => (
+            {files.map((file) => (
               <AttachFile
-                key={`${file.name}-${index}`}
+                key={file.url}
                 smallChat
                 file={file}
                 onClose={() => this.onClose(file)}
