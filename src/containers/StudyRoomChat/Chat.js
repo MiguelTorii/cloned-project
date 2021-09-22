@@ -96,7 +96,7 @@ type Props = {
   classes: Object,
   user: Object,
   channel: Object,
-  enqueueSnackbar: Function
+  showNotification: Function
 };
 
 const StudyRoomChat = ({
@@ -104,7 +104,7 @@ const StudyRoomChat = ({
   user,
   channel,
   classes,
-  enqueueSnackbar
+  showNotification
 }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
@@ -433,7 +433,7 @@ const StudyRoomChat = ({
           userId={userId}
           setFiles={setFiles}
           files={files}
-          enqueueSnackbar={enqueueSnackbar}
+          showNotification={showNotification}
           onClose={onClose}
         />
       )}
@@ -452,7 +452,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
+      showNotification: notificationsActions.showNotification
     },
     dispatch
   );

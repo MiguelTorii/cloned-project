@@ -134,7 +134,7 @@ type Props = {
   expanded: boolean,
   onSendInput: Function,
   onTyping: Function,
-  enqueueSnackbar: Function,
+  showNotification: Function,
   userId: string,
   message: string,
   input: Object,
@@ -152,7 +152,7 @@ const ChatTextField = ({
   setMessage,
   onSendMessage,
   onSendInput,
-  enqueueSnackbar,
+  showNotification,
   input,
   userId,
   setInput,
@@ -211,11 +211,12 @@ const ChatTextField = ({
           setMessage('');
           setFiles([]);
         }
-        if (input) {
+        if (input || !!files.length) {
           setInput(null);
           setIsHover(false);
           onSendInput(input);
           setInput(null);
+          setFiles([]);
         }
       }
       if (event.keyCode === 16) {
@@ -278,21 +279,12 @@ const ChatTextField = ({
       };
       setFiles([...files, anyFile]);
     } else {
-      enqueueSnackbar({
-        notification: {
-          message: 'Upload File size is over 40 MB',
-          options: {
-            variant: 'warning',
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left'
-            },
-            autoHideDuration: 3000
-          }
-        }
+      showNotification({
+        message: 'Upload File size is over 40 MB',
+        variant: 'warning'
       });
     }
-  }, [userId, fileInput, enqueueSnackbar, files]);
+  }, [userId, fileInput, showNotification, files]);
 
   const checkDisabled = useCallback(() => {
     if (files.length > 0) return false;
@@ -381,7 +373,12 @@ const ChatTextField = ({
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (
-            <AttachFile smallChat file={file} onClose={() => onClose(file)} />
+            <AttachFile
+              key={file.url}
+              smallChat
+              file={file}
+              onClose={() => onClose(file)}
+            />
           ))}
         </div>
       )}

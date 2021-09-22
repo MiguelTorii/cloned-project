@@ -188,7 +188,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
         const { readUrl, fileName, fileType } = file;
         if (fileType && fileType.includes('image')) {
           return (
-            <div className={classes.bodyWrapper} key={`${fileName}-${index}`}>
+            <div className={classes.bodyWrapper} key={readUrl}>
               <ButtonBase onClick={() => onImageClick(readUrl)}>
                 <img
                   className={classes.image}
@@ -202,6 +202,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
         }
         return (
           <FileUpload
+            key={readUrl}
             name={file.fileName}
             size={bytesToSize(file.fileSize)}
             url={file.readUrl}

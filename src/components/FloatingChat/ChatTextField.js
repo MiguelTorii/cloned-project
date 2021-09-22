@@ -32,7 +32,7 @@ type Props = {
   hideImage: boolean,
   onSendMessage: Function,
   onSendInput: Function,
-  enqueueSnackbar: Function,
+  showNotification: Function,
   onTyping: Function,
   userId: string
 };
@@ -57,15 +57,15 @@ class ChatTextField extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { onSendMessage, onSendInput } = this.props;
-    const { message, input } = this.state;
-    if (message.trim() !== '') {
-      onSendMessage(message);
-      this.setState({ message: '' });
+    const { message, input, files } = this.state;
+    if (message.trim() !== '' || !!files.length) {
+      onSendMessage(message, files);
+      this.setState({ message: '', files: [] });
     }
 
-    if (input) {
+    if (input && !files.length) {
       onSendInput(input);
-      this.setState({ input: null, isHover: false });
+      this.setState({ input: null, isHover: false, files: [] });
     }
   };
 
@@ -90,9 +90,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
         onSendMessage(message, files);
         this.setState({ message: '', files: [] });
       }
-      if (input) {
+      if (input && !files.length) {
         onSendInput(input);
-        this.setState({ input: null, isHover: false });
+        this.setState({ input: null, isHover: false, files: [] });
       }
     }
     if (event.keyCode === 16) {
@@ -107,7 +107,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   };
 
   handleInputChange = async () => {
-    const { enqueueSnackbar } = this.props;
+    const { showNotification } = this.props;
     const fileType = this.fileInput.files[0].type;
     const { files } = this.state;
     const { userId } = this.props;
@@ -130,18 +130,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
       this.setState({ files: [...files, anyFile], loading: false });
     } else {
-      enqueueSnackbar({
-        notification: {
-          message: 'Upload File size is over 40 MB',
-          options: {
-            variant: 'warning',
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left'
-            },
-            autoHideDuration: 3000
-          }
-        }
+      showNotification({
+        message: 'Upload File size is over 40 MB',
+        variant: 'warning'
       });
     }
   };
@@ -261,6 +252,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
           <div className={classes.files}>
             {files.map((file) => (
               <AttachFile
+                key={file.url}
                 smallChat
                 file={file}
                 onClose={() => this.onClose(file)}
@@ -278,7 +270,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
+      showNotification: notificationsActions.showNotification
     },
     dispatch
   );

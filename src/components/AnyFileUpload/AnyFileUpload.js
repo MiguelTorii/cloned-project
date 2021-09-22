@@ -35,7 +35,7 @@ const AnyFileUpload = ({
       if (fileType && fileType.includes('image')) {
         return <div
           className={classes.bodyWrapper}
-          key={`${fileName}-${index}`}
+          key={readUrl}
         >
            <ButtonBase
              onClick={() => onImageClick(readUrl)}
@@ -51,7 +51,7 @@ const AnyFileUpload = ({
       }
 
       return <FileUpload
-        key={`${fileName}-${index}`}
+        key={readUrl}
         name={fileName}
         size={bytesToSize(file.fileSize)}
         url={readUrl}

@@ -56,7 +56,7 @@ type Props = {
   setRightPanel: Function,
   handleBlock: Function,
   handleUpdateGroupName: Function,
-  enqueueSnackbar: Function
+  showNotification: Function
 };
 
 const Main = ({
@@ -81,7 +81,7 @@ const Main = ({
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  enqueueSnackbar
+  showNotification
 }: Props) => {
   const classes = useStyles();
   const end = useRef(null);
@@ -576,7 +576,7 @@ const Main = ({
             getFullName={getFullName}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
-            enqueueSnackbar={enqueueSnackbar}
+            showNotification={showNotification}
             setValue={setValue}
             handleClick={handleClick}
             onTyping={onTyping}
