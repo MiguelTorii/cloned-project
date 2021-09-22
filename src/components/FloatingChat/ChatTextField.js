@@ -32,7 +32,7 @@ type Props = {
   hideImage: boolean,
   onSendMessage: Function,
   onSendInput: Function,
-  enqueueSnackbar: Function,
+  showNotification: Function,
   onTyping: Function,
   userId: string
 };
@@ -107,7 +107,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
   };
 
   handleInputChange = async () => {
-    const { enqueueSnackbar } = this.props;
+    const { showNotification } = this.props;
     const fileType = this.fileInput.files[0].type;
     const { files } = this.state;
     const { userId } = this.props;
@@ -130,18 +130,10 @@ class ChatTextField extends React.PureComponent<Props, State> {
 
       this.setState({ files: [...files, anyFile], loading: false });
     } else {
-      enqueueSnackbar({
-        notification: {
-          message: 'Upload File size is over 40 MB',
-          options: {
-            variant: 'warning',
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left'
-            },
-            autoHideDuration: 3000
-          }
-        }
+      showNotification({
+        message: 'Upload File size is over 40 MB',
+        variant: 'warning',
+        autoHideDuration: 3000
       });
     }
   };
@@ -259,8 +251,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
         )}
         {files.length > 0 && (
           <div className={classes.files}>
-            {files.map((file) => (
+            {files.map((file, index) => (
               <AttachFile
+                key={`${file.name}-${index}`}
                 smallChat
                 file={file}
                 onClose={() => this.onClose(file)}
@@ -278,7 +271,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
+      showNotification: notificationsActions.showNotification
     },
     dispatch
   );

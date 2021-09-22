@@ -7,13 +7,13 @@ import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
+import Popover from '@material-ui/core/Popover';
+import { Picker } from 'emoji-mart';
 
 import AttachFile from 'components/FileUpload/AttachFile';
 import { FILE_LIMIT_SIZE } from 'constants/chat';
-import { Picker } from 'emoji-mart';
-import { Popover } from '@material-ui/core';
+import { uploadMedia } from 'actions/user';
 import EditorToolbar, { formats } from './Toolbar';
-import { uploadMedia } from '../../actions/user';
 
 import styles from './_styles/messageQuill';
 
@@ -28,14 +28,13 @@ const MessageQuill = ({
   showError,
   onTyping,
   userId,
-  enqueueSnackbar,
+  showNotification,
   setFiles,
   files,
   isCommunityChat
 }) => {
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
-  const [pasteImageUrl, setPasteImageUrl] = useState('');
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
   const inputFieldRef = useRef();
 
@@ -61,16 +60,46 @@ const MessageQuill = ({
     []
   );
 
+  const uploadFile = useCallback(async (file) => {
+    const { type, name, size } = file;
+
+    if (size < FILE_LIMIT_SIZE) {
+      const result = await uploadMedia(userId, 1, file);
+      const { readUrl } = result;
+      const anyFile = {
+        type,
+        name,
+        url: readUrl,
+        size
+      };
+
+      setFiles([...files, anyFile]);
+    } else {
+      showNotification({
+        message: 'Upload File size is over 40 MB',
+        variant: 'warning',
+        autoHideDuration: 3000
+      });
+    }
+  }, [setFiles, showNotification, classes, files]);
+
   const imageHandler = useCallback(
     async (imageDataUrl, type, imageData) => {
       setLoading(true);
       try {
-        const file = imageData.toFile('');
-
-        const result = await uploadMedia(userId, 1, file);
-        const { readUrl } = result;
-
-        setPasteImageUrl(readUrl);
+        const filename = [
+          'image',
+          '-',
+          Math.floor(Math.random() * 1e12),
+          '-',
+          new Date().getTime(),
+          '.',
+          type.match(/^image\/(\w+)$/i)[1]
+        ].join('');
+        const file = imageData.toFile(filename);
+        console.log(file);
+        await uploadFile(file);
+        setLoading(false);
       } catch (e) {
         setLoading(false);
       }
@@ -148,16 +177,6 @@ const MessageQuill = ({
   }, [onChange, quill, Quill, onTyping]);
 
   useEffect(() => {
-    if (pasteImageUrl) {
-      const range = quill.getSelection(true);
-      quill.insertEmbed(range.index, 'image', pasteImageUrl);
-      quill.insertText(range.index + 1, '\n');
-      setLoading(false);
-      setPasteImageUrl('');
-    }
-  }, [quill, pasteImageUrl]);
-
-  useEffect(() => {
     async function sendMessage() {
       if (
         files.length === 0 &&
@@ -215,39 +234,7 @@ const MessageQuill = ({
       setLoading(true);
       try {
         const file = input.files[0];
-        const { type, name, size } = file;
-
-        if (size < FILE_LIMIT_SIZE) {
-          const result = await uploadMedia(userId, 1, file);
-          const { readUrl } = result;
-          const anyFile = {
-            type,
-            name,
-            url: readUrl,
-            size
-          };
-
-          setFiles([...files, anyFile]);
-        } else {
-          enqueueSnackbar({
-            notification: {
-              message: 'Upload File size is over 40 MB',
-              options: {
-                variant: 'warning',
-                anchorOrigin: {
-                  vertical: 'bottom',
-                  horizontal: 'left'
-                },
-                autoHideDuration: 3000,
-                ContentProps: {
-                  classes: {
-                    root: classes.stackbar
-                  }
-                }
-              }
-            }
-          });
-        }
+        await uploadFile(file);
       } catch (error) {
         quill.enable(true);
       } finally {
