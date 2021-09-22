@@ -17,8 +17,8 @@ import Button from '@material-ui/core/Button';
 import IconPrev from '@material-ui/icons/SkipPrevious';
 import IconClose from '@material-ui/icons/Close';
 import IconShuffle from '@material-ui/icons/Shuffle';
-import { IconLeft, IconPrevious } from '@material-ui/icons/ArrowBack';
-import { IconRight, IconNext } from '@material-ui/icons/ArrowForward';
+import IconLeft from '@material-ui/icons/ArrowBack';
+import IconRight from '@material-ui/icons/ArrowForward';
 import store from 'store';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
@@ -519,7 +519,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
                   disabled={currentCardIndex === 0}
                   onClick={handlePrevCard}
                 >
-                  <IconPrevious />
+                  <IconLeft />
                 </TransparentIconButton>
               </Box>
               <Box ml={3}>
@@ -527,7 +527,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
                   disabled={currentCardIndex >= currentCardList.length - 1}
                   onClick={handleNextCard}
                 >
-                  <IconNext />
+                  <IconRight />
                 </TransparentIconButton>
               </Box>
             </Box>
