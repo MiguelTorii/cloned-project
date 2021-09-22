@@ -62,7 +62,7 @@ const MessageQuill = ({
 
   const uploadFile = useCallback(async (file) => {
     const { type, name, size } = file;
-
+    console.log(file);
     if (size < FILE_LIMIT_SIZE) {
       const result = await uploadMedia(userId, 1, file);
       const { readUrl } = result;
@@ -77,8 +77,7 @@ const MessageQuill = ({
     } else {
       showNotification({
         message: 'Upload File size is over 40 MB',
-        variant: 'warning',
-        autoHideDuration: 3000
+        variant: 'warning'
       });
     }
   }, [setFiles, showNotification, classes, files]);
@@ -97,7 +96,6 @@ const MessageQuill = ({
           type.match(/^image\/(\w+)$/i)[1]
         ].join('');
         const file = imageData.toFile(filename);
-        console.log(file);
         await uploadFile(file);
         setLoading(false);
       } catch (e) {

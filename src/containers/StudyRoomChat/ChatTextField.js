@@ -281,8 +281,7 @@ const ChatTextField = ({
     } else {
       showNotification({
         message: 'Upload File size is over 40 MB',
-        variant: 'warning',
-        autoHideDuration: 3000
+        variant: 'warning'
       });
     }
   }, [userId, fileInput, showNotification, files]);
