@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Popover from '@material-ui/core/Popover';
@@ -15,6 +15,7 @@ import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 
 import { getInitials } from 'utils/chat';
 import { Typography } from '@material-ui/core';
+import { push } from 'connected-react-router';
 
 import cx from 'classnames';
 import _ from 'lodash';
@@ -35,6 +36,7 @@ const HoverPopup = ({
 }) => {
   const classes = useStyles();
   const myUserId = useSelector((state) => state.user.data.userId);
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -147,6 +149,10 @@ const HoverPopup = ({
     }, 2000);
   };
 
+  const handleGotoProfile = useCallback(() => {
+    dispatch(push(`/profile/${profile.userId}`));
+  }, [profile, dispatch]);
+
   const fullName = `${profile.firstName} ${profile.lastName}`;
 
   return (
@@ -203,7 +209,11 @@ const HoverPopup = ({
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>
-              <Typography variant="subtitle1" className={classes.name}>
+              <Typography
+                variant="subtitle1"
+                className={classes.name}
+                onClick={handleGotoProfile}
+              >
                 {fullName}
               </Typography>
 
