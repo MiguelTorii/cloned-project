@@ -9,6 +9,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import LoadImg from 'components/LoadImg/LoadImg';
 import InitialCommunityImage from 'assets/svg/community_first_time.svg';
 import { getInitials } from 'utils/chat';
+import { ReactComponent as CommunityGroupIcon } from 'assets/svg/community_chat_group.svg';
 import useStyles from './_styles/initialAlert';
 
 type Props = {
@@ -74,12 +75,7 @@ const InitialAlert = ({
       </Box>
     ) : (
       <Box className={classes.root}>
-        <Avatar
-          className={cx(classes.avatarProfile, classes.communityChannelProfile)}
-          src={thumbnail}
-        >
-          <GroupIcon />
-        </Avatar>
+        <CommunityGroupIcon />
         <Typography className={classes.members} variant="h5">
           #{selectedChannel?.chat_name}
         </Typography>
