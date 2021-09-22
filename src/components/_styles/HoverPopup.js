@@ -34,7 +34,8 @@ export default makeStyles((theme) => ({
   overviewAvatar: {
     width: 90,
     height: 90,
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
+    cursor: 'pointer'
   },
   userInfo: {
     textAlign: 'left'

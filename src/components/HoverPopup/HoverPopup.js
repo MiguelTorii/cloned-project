@@ -204,6 +204,7 @@ const HoverPopup = ({
                 alt={fullName}
                 src={profile.userProfileUrl}
                 className={classes.overviewAvatar}
+                onClick={handleGotoProfile}
               >
                 {getInitials(fullName)}
               </Avatar>
