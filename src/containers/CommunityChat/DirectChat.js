@@ -98,8 +98,8 @@ const DirectChat = ({
     [selectedChannelId, lastChannelSid, channelList]
   );
 
-  const onNewChannel = useCallback(async () => {
-    await handleNewChannel(true);
+  const onNewChannel = useCallback(() => {
+    handleNewChannel(true);
   }, [handleNewChannel]);
 
   const handleOpenRightPanel = useCallback(() => {
@@ -115,10 +115,10 @@ const DirectChat = ({
   );
 
   const onOpenChannel = useCallback(
-    async ({ channel }) => {
+    ({ channel }) => {
       if (['xs'].includes(width)) setLeftSpace(0);
       if (newChannel) {
-        await handleNewChannel(false);
+        handleNewChannel(false);
       }
       setCurrentChannelSid(channel.sid);
       setCurrentChannel(channel);
