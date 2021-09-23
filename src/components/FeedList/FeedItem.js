@@ -115,7 +115,9 @@ const FeedItem = ({
   const isCurrent = useMemo(() => {
     const postClass = classList.find((classData) => classData.classId === data.classId);
 
-    if (!postClass) return false;
+    if (!postClass) {
+      return false;
+    }
 
     return !!postClass.isCurrent;
   }, [data, classList]);
