@@ -39,7 +39,9 @@ class VideoCallPage extends React.Component<ProvidedProps & Props, State> {
         params: { roomId = '' }
       }
     } = this.props;
-    if (roomId !== '') { this.setState({ roomId }); }
+    if (roomId !== '') {
+      this.setState({ roomId });
+    }
   };
 
   render() {

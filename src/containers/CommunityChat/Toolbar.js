@@ -133,10 +133,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
         }}
       >
         <div className={cx('ql-emoji', classes.emoji)}>
-          <EmojiSelector
-            onSelect={handleSelect}
-            emoIconStyle={classes.emoIconStyle}
-          />
+          <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle} />
         </div>
       </Tooltip>
     </>
@@ -165,13 +162,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           {renderCommonTools()}
         </Box>
       </span>
-      <span
-        className={cx(
-          'ql-formats',
-          classes.subToolbar,
-          open ? classes.show : classes.hide
-        )}
-      >
+      <span className={cx('ql-formats', classes.subToolbar, open ? classes.show : classes.hide)}>
         <Box
           display="flex"
           justifyContent="center"

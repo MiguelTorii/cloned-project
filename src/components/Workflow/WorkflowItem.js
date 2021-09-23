@@ -1,12 +1,5 @@
 // @flow
-import React, {
-  memo,
-  useContext,
-  useRef,
-  useState,
-  useCallback,
-  useMemo
-} from 'react';
+import React, { memo, useContext, useRef, useState, useCallback, useMemo } from 'react';
 import Typography from '@material-ui/core/Typography';
 import WorkflowEdit from 'components/Workflow/WorkflowEdit';
 import { useDrag, useDrop } from 'react-dnd';
@@ -25,15 +18,8 @@ type Props = {
 };
 
 const WorkflowItem = ({ index, task }: Props) => {
-  const {
-    updateItem,
-    archiveTask,
-    listView,
-    onDrag,
-    dragId,
-    moveTask,
-    classList
-  } = useContext(WorkflowContext);
+  const { updateItem, archiveTask, listView, onDrag, dragId, moveTask, classList } =
+    useContext(WorkflowContext);
   const taskRef = useRef(null);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -49,8 +35,7 @@ const WorkflowItem = ({ index, task }: Props) => {
         return;
       }
       const hoverBoundingRect = taskRef.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -74,7 +59,9 @@ const WorkflowItem = ({ index, task }: Props) => {
       onDrag(null);
     },
     canDrag() {
-      if (isMobile) { return showDetails; }
+      if (isMobile) {
+        return showDetails;
+      }
       return true;
     },
     collect: (monitor) => ({
@@ -82,7 +69,9 @@ const WorkflowItem = ({ index, task }: Props) => {
     })
   });
 
-  if (listView) { preview(getEmptyImage(), { captureDraggingState: true }); }
+  if (listView) {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }
   const classes = useStyles();
   const hiddenClass = dragId === task.id ? classes.hidden : '';
 
@@ -95,7 +84,9 @@ const WorkflowItem = ({ index, task }: Props) => {
   const onClose = useCallback(() => setOpen(false), []);
 
   const onMouseEnter = useCallback(() => {
-    if (!dragId) { setShowDetails(true); }
+    if (!dragId) {
+      setShowDetails(true);
+    }
   }, [dragId]);
   const onMouseLeave = useCallback(() => setShowDetails(false), []);
   drag(drop(taskRef));

@@ -152,7 +152,9 @@ const Layout = ({
 
   const renderChildren = useCallback(() => {
     const { data, isLoading } = user;
-    if (data.userId && !isLoading) { return children; }
+    if (data.userId && !isLoading) {
+      return children;
+    }
     return (
       <div className={classes.loader}>
         <CircularProgress />
@@ -178,7 +180,9 @@ const Layout = ({
   const unreadMessages = useMemo(() => {
     let unreadMessages = 0;
     Object.keys(local).forEach((l) => {
-      if (local[l]?.unread) { unreadMessages += Number(local[l].unread); }
+      if (local[l]?.unread) {
+        unreadMessages += Number(local[l].unread);
+      }
     });
     return unreadMessages;
   }, [local]);
@@ -197,12 +201,13 @@ const Layout = ({
     [fetchFeed, updateFilter]
   );
 
-  if (
-    campaign.newClassExperience === null ||
-    campaign.landingPageCampaign === null
-  ) { return null; }
+  if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) {
+    return null;
+  }
 
-  if (isNaked) { return renderChildren(); }
+  if (isNaked) {
+    return renderChildren();
+  }
 
   return (
     <>
@@ -261,10 +266,7 @@ const Layout = ({
         />
       </ErrorBoundary>
       <ErrorBoundary>
-        <BlockedUsersManager
-          open={manageBlockedUsers}
-          onClose={handleCloseManageBlockedUsers}
-        />
+        <BlockedUsersManager open={manageBlockedUsers} onClose={handleCloseManageBlockedUsers} />
       </ErrorBoundary>
       <ErrorBoundary>
         <Dialog
@@ -280,10 +282,7 @@ const Layout = ({
         <WebNotifications />
       </ErrorBoundary>
       <ErrorBoundary>
-        <RequestClass
-          open={openRequestClass}
-          onClose={handleCloseRequestClass}
-        />
+        <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
       </ErrorBoundary>
       <ErrorBoundary>
         <Notifier />
@@ -315,7 +314,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withRouter(Layout)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(Layout)));

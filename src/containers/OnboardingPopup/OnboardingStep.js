@@ -142,14 +142,7 @@ type Props = {
   onClose: Function
 };
 
-const OnboardingStep = ({
-  data,
-  step,
-  totalSteps,
-  onAction,
-  onBackAction,
-  onClose
-}: Props) => {
+const OnboardingStep = ({ data, step, totalSteps, onAction, onBackAction, onClose }: Props) => {
   const classes = useStyles();
   const handleBack = useCallback(() => {
     if (step === 1) {
@@ -171,19 +164,17 @@ const OnboardingStep = ({
         <div className={classes.textContainer}>
           <div className={classes.title}>
             <Typography component="h4">{data.title1}</Typography>
-            <Typography component="h3" style={{ fontSize: step === 1 && 40 }}>{data.title}</Typography>
+            <Typography component="h3" style={{ fontSize: step === 1 && 40 }}>
+              {data.title}
+            </Typography>
           </div>
           <div className={classes.text}>
             <Typography component="p">{data.text}</Typography>
           </div>
         </div>
         <div className={classes.actionContainer}>
-          <TransparentButton onClick={() => handleBack()}>
-            {data.backText}
-          </TransparentButton>
-          <ActionButton onClick={() => onAction()}>
-            {data.actionText}
-          </ActionButton>
+          <TransparentButton onClick={() => handleBack()}>{data.backText}</TransparentButton>
+          <ActionButton onClick={() => onAction()}>{data.actionText}</ActionButton>
         </div>
       </div>
     </div>

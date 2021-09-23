@@ -142,7 +142,9 @@ const EditGroupDetailsDialog = ({
   }, [localChannel.title, onClose]);
 
   const updateChannelName = async () => {
-    if (name === channel.channelState.friendlyName) { return; }
+    if (name === channel.channelState.friendlyName) {
+      return;
+    }
 
     try {
       const res = await channel.updateFriendlyName(name);
@@ -211,11 +213,7 @@ const EditGroupDetailsDialog = ({
       </Box>
       <Box display="flex" justifyContent="center" mt={2}>
         <Box position="relative">
-          <Avatar
-            src={groupImageUrl}
-            alt="group-image"
-            className={classes.avatar}
-          >
+          <Avatar src={groupImageUrl} alt="group-image" className={classes.avatar}>
             <GroupIcon />
           </Avatar>
           <Button
@@ -230,11 +228,7 @@ const EditGroupDetailsDialog = ({
       </Box>
       <Box display="flex" justifyContent="space-between" mt={2}>
         <Button onClick={handleClose}>Cancel</Button>
-        <GradientButton
-          onClick={handleSubmit}
-          loading={isSaving}
-          disabled={isSaving}
-        >
+        <GradientButton onClick={handleSubmit} loading={isSaving} disabled={isSaving}>
           Save Changes
         </GradientButton>
       </Box>

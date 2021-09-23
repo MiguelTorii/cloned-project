@@ -55,13 +55,10 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
   const handleChange = useCallback(
     (value) => {
-      if (!value) { return; }
-      const {
-        lmsTypeId,
-        launchType,
-        redirect_message: redirectMessage,
-        connection
-      } = value;
+      if (!value) {
+        return;
+      }
+      const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = value;
       if (launchType === 'lti') {
         setLit(true);
         setRedirectMessage(redirectMessage);
@@ -170,7 +167,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Auth));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Auth));

@@ -5,11 +5,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { withStyles } from '@material-ui/core/styles';
 import type { SelectType } from '../../types/models';
 import AutoComplete from '../../components/AutoComplete/AutoComplete';
-import {
-  ALGOLIA_APP_ID,
-  ALGOLIA_API_KEY,
-  ALGOLIA_INDEX
-} from '../../constants/app';
+import { ALGOLIA_APP_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX } from '../../constants/app';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);

@@ -14,9 +14,7 @@ import { useStyles } from '../_styles/Workflow/DateInput';
 
 const DateInputComponent = forwardRef((props, ref) => {
   const { component: Component, inputRef, ...other } = props;
-  return (
-    <Component {...other} ref={(ref) => inputRef(ref)} />
-  );
+  return <Component {...other} ref={(ref) => inputRef(ref)} />;
 });
 
 type Props = {
@@ -44,9 +42,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
       const date = getDate(v);
       const nowTime = moment().format('HH:mm:ss');
       if (date) {
-        onChange(
-          moment(`${date} ${getTime(selected) || nowTime}`, 'YYYY-MM-DD HH:mm:ss').toDate()
-        );
+        onChange(moment(`${date} ${getTime(selected) || nowTime}`, 'YYYY-MM-DD HH:mm:ss').toDate());
       }
     },
     [onChange, selected]
@@ -57,9 +53,7 @@ const DateInput = ({ onChange, selected, fixed, style }: Props) => {
       const time = getTime(v);
       const nowDate = moment().format('YYYY-MM-DD');
       if (time) {
-        onChange(
-          moment(`${getDate(selected) || nowDate} ${time}`, 'YYYY-MM-DD HH:mm:ss').toDate()
-        );
+        onChange(moment(`${getDate(selected) || nowDate} ${time}`, 'YYYY-MM-DD HH:mm:ss').toDate());
       }
     },
     [onChange, selected]

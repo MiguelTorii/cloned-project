@@ -46,14 +46,7 @@ type Props = {
   router: Object
 };
 
-const ViewQuestion = ({
-  classes,
-  user,
-  questionId,
-  push,
-  router,
-  pop
-}: Props) => {
+const ViewQuestion = ({ classes, user, questionId, push, router, pop }: Props) => {
   const [question, setQuestion] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
@@ -81,7 +74,9 @@ const ViewQuestion = ({
   }, [questionId]);
 
   const handleBookmark = async () => {
-    if (!question) { return; }
+    if (!question) {
+      return;
+    }
     const { feedId, bookmarked } = question;
     try {
       setQuestion({ ...question, bookmarked: !bookmarked });
@@ -105,12 +100,12 @@ const ViewQuestion = ({
   };
 
   if (!question) {
-return (
+    return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
-}
+  }
 
   const {
     feedId,
@@ -199,19 +194,10 @@ return (
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Report
-              open={report}
-              ownerId={ownerId}
-              objectId={feedId}
-              onClose={handleReportClose}
-            />
+            <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <DeletePost
-              open={deletePost}
-              feedId={feedId}
-              onClose={handleDeleteClose}
-            />
+            <DeletePost open={deletePost} feedId={feedId} onClose={handleDeleteClose} />
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
@@ -233,7 +219,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ViewQuestion));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewQuestion));

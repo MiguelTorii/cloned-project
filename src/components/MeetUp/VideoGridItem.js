@@ -44,13 +44,8 @@ class VideoGridItem extends React.PureComponent<Props, State> {
   }
 
   componentDidMount = () => {
-    const {
-      video,
-      handleSelectedScreenSharing,
-      isSharing,
-      sharingTrackIds,
-      localSharing
-    } = this.props;
+    const { video, handleSelectedScreenSharing, isSharing, sharingTrackIds, localSharing } =
+      this.props;
     if (video) {
       this.videoinput.current.appendChild(video.attach());
 
@@ -130,24 +125,17 @@ class VideoGridItem extends React.PureComponent<Props, State> {
     let xs = 0;
     let height = '';
     const initials = `${
-      firstName !== ''
-        ? firstName === 'You'
-          ? 'You'
-          : firstName.charAt(0)
-        : ''
+      firstName !== '' ? (firstName === 'You' ? 'You' : firstName.charAt(0)) : ''
     }${lastName !== '' ? lastName.charAt(0) : ''}`;
 
     const isScreen = video && video.name === 'screenSharing';
 
     const factor = Math.ceil(Math.sqrt(count));
     xs = windowWidth > 600 ? 12 / factor : 12;
-    height =
-      windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`;
+    height = windowWidth > 600 ? `${100 / factor}%` : `${Math.ceil(100 / count)}%`;
 
     const activeBorder =
-      highlight && !sharingTrackIds.length
-        ? { border: '4px solid #03A9F4' }
-        : {};
+      highlight && !sharingTrackIds.length ? { border: '4px solid #03A9F4' } : {};
     return (
       <Grid
         item
@@ -161,22 +149,21 @@ class VideoGridItem extends React.PureComponent<Props, State> {
         hidden={!isVisible}
       >
         <div className={classes.root} style={{ ...activeBorder }}>
-          {totalPageCount > 1 &&
-            ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && (
-              <Button
-                onClick={this.goBack}
-                size="small"
-                className={classes.prevPage}
-                classes={{
-                  label: classes.labelButton
-                }}
-              >
-                <ArrowBackIosIcon fontSize="small" />
-                <Typography variant="subtitle1" component="p">
-                  {selectedPage} / {totalPageCount}
-                </Typography>
-              </Button>
-            )}
+          {totalPageCount > 1 && ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && (
+            <Button
+              onClick={this.goBack}
+              size="small"
+              className={classes.prevPage}
+              classes={{
+                label: classes.labelButton
+              }}
+            >
+              <ArrowBackIosIcon fontSize="small" />
+              <Typography variant="subtitle1" component="p">
+                {selectedPage} / {totalPageCount}
+              </Typography>
+            </Button>
+          )}
           <div className={classes.videoWrapper}>
             {isVideo ? (
               <div
@@ -189,9 +176,7 @@ class VideoGridItem extends React.PureComponent<Props, State> {
                 ref={this.videoinput}
               />
             ) : profileImage ? (
-              <div
-                className={count > 1 ? classes.avatar : classes.singleAvatar}
-              >
+              <div className={count > 1 ? classes.avatar : classes.singleAvatar}>
                 <Avatar
                   alt={initials}
                   variant="square"
@@ -208,20 +193,14 @@ class VideoGridItem extends React.PureComponent<Props, State> {
                 />
               </div>
             ) : (
-              <div
-                className={count > 1 ? classes.profile : classes.singleProfile}
-              >
+              <div className={count > 1 ? classes.profile : classes.singleProfile}>
                 <Typography className={classes.initials}>{initials}</Typography>
               </div>
             )}
           </div>
           <div
             className={cx(
-              !isMic
-                ? classes.mic
-                : hover && (firstName || lastName)
-                ? classes.mic
-                : classes.hidden
+              !isMic ? classes.mic : hover && (firstName || lastName) ? classes.mic : classes.hidden
             )}
           >
             {!isMic && <Mute className={classes.icon} />}
@@ -229,25 +208,21 @@ class VideoGridItem extends React.PureComponent<Props, State> {
               {`${firstName} ${lastName}`}
             </Typography>
           </div>
-          {totalPageCount > 1 &&
-            ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && (
-              <Button
-                onClick={this.goNext}
-                size="small"
-                className={classes.nextPage}
-                classes={{
-                  label: classes.labelButton
-                }}
-              >
-                <ArrowForwardIosIcon
-                  fontSize="small"
-                  className={classes.activeColor}
-                />
-                <Typography variant="subtitle1" component="p">
-                  {selectedPage} / {totalPageCount}
-                </Typography>
-              </Button>
-            )}
+          {totalPageCount > 1 && ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && (
+            <Button
+              onClick={this.goNext}
+              size="small"
+              className={classes.nextPage}
+              classes={{
+                label: classes.labelButton
+              }}
+            >
+              <ArrowForwardIosIcon fontSize="small" className={classes.activeColor} />
+              <Typography variant="subtitle1" component="p">
+                {selectedPage} / {totalPageCount}
+              </Typography>
+            </Button>
+          )}
         </div>
       </Grid>
     );

@@ -77,8 +77,7 @@ class Header extends React.PureComponent<Props, State> {
   componentWillMount = async () => {
     const campaign = await getCampaign({ campaignId: 9 });
     this.setState({
-      videoEnabled:
-        campaign.variation_key && campaign.variation_key !== 'hidden'
+      videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
     });
   };
 
@@ -88,19 +87,13 @@ class Header extends React.PureComponent<Props, State> {
     return (
       <Grid container spacing={3}>
         <Grid item>
-          <Typography variant="body1">
-            {getPointsText(points)} Points
-          </Typography>
+          <Typography variant="body1">{getPointsText(points)} Points</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body1">
-            {bestAnswers.toLocaleString()} Best Answers
-          </Typography>
+          <Typography variant="body1">{bestAnswers.toLocaleString()} Best Answers</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body1">
-            {thanks.toLocaleString()} Thanks
-          </Typography>
+          <Typography variant="body1">{thanks.toLocaleString()} Thanks</Typography>
         </Grid>
       </Grid>
     );
@@ -110,7 +103,9 @@ class Header extends React.PureComponent<Props, State> {
     const { about } = this.props;
     const idx = _.findIndex(about, (item) => item.id === id);
 
-    if (idx < 0) { return null; }
+    if (idx < 0) {
+      return null;
+    }
 
     return about[idx].answer;
   };
@@ -156,10 +151,7 @@ class Header extends React.PureComponent<Props, State> {
           <div className={classes.actionContainer}>
             {
               isMyProfile ? (
-                <IconButton
-                  classes={{ root: classes.penIcon }}
-                  onClick={onEditProfile}
-                >
+                <IconButton classes={{ root: classes.penIcon }} onClick={onEditProfile}>
                   <Create />
                 </IconButton>
               ) : (
@@ -189,12 +181,7 @@ class Header extends React.PureComponent<Props, State> {
             </div>
           </div>
           <div className={classes.gridInfo}>
-            <Grid
-              container
-              justifyContent="space-between"
-              alignItems="center"
-              wrap="nowrap"
-            >
+            <Grid container justifyContent="space-between" alignItems="center" wrap="nowrap">
               <Hidden smDown>
                 <Grid item xs={12} md={8}>
                   {this.renderNumbers()}
@@ -212,11 +199,7 @@ class Header extends React.PureComponent<Props, State> {
             <Grid item xs={12} md={6}>
               <Grid container direction="column">
                 <Box display="flex" alignItems="center" mb={1}>
-                  <Typography
-                    variant="h5"
-                    gutterBottom
-                    className={classes.name}
-                  >
+                  <Typography variant="h5" gutterBottom className={classes.name}>
                     {name}
                   </Typography>
                   {role && <RoleBadge text={role} />}
@@ -236,25 +219,13 @@ class Header extends React.PureComponent<Props, State> {
             <Grid item xs={12} md={6}>
               <Grid container direction="column" className={classes.schoolGrid}>
                 <Grid item xs={12}>
-                  <Typography
-                    variant="h6"
-                    gutterBottom
-                    className={classes.typoData}
-                  >
+                  <Typography variant="h6" gutterBottom className={classes.typoData}>
                     <Hidden smDown>
-                      <img
-                        src={schoolIcon}
-                        alt="School"
-                        className={classes.icon}
-                      />
+                      <img src={schoolIcon} alt="School" className={classes.icon} />
                     </Hidden>
                     {`${school}, ${state}`}
                     <Hidden mdUp>
-                      <img
-                        src={schoolIcon}
-                        alt="School"
-                        className={classes.icon}
-                      />
+                      <img src={schoolIcon} alt="School" className={classes.icon} />
                     </Hidden>
                   </Typography>
                 </Grid>
@@ -289,10 +260,7 @@ class Header extends React.PureComponent<Props, State> {
         </Paper>
         <Hidden lgUp>
           <Box mt={5}>
-            <PointsHistoryCard
-              profile={profile}
-              onSeeMore={onSeePointsHistoryDetails}
-            />
+            <PointsHistoryCard profile={profile} onSeeMore={onSeePointsHistoryDetails} />
           </Box>
         </Hidden>
         <Tabs

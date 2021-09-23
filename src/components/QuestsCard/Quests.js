@@ -66,9 +66,7 @@ class Quests extends React.PureComponent<Props, State> {
               task={item.task}
               action={item.action}
               isHidden={
-                index !== currentSlide - 1 &&
-                index !== currentSlide &&
-                index !== currentSlide + 1
+                index !== currentSlide - 1 && index !== currentSlide && index !== currentSlide + 1
               }
               isCurrent={currentSlide === index}
               status={item.status}

@@ -1,14 +1,6 @@
 // @flow
 
-import React, {
-  memo,
-  useMemo,
-  useRef,
-  useContext,
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React, { memo, useMemo, useRef, useContext, useState, useEffect, useCallback } from 'react';
 import Dialog from 'components/Dialog/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DateInput from 'components/Workflow/DateInput';
@@ -56,16 +48,16 @@ const getNotificationOptions = (seconds, updated, due) => {
   if (seconds && updated && due) {
     const dueValue = moment(toISO(due)).valueOf();
     const updatedValue = moment(toISO(updated)).valueOf();
-    const optionSeconds = Math.floor(
-      (dueValue - updatedValue - seconds * 1000) / 1000
-    );
+    const optionSeconds = Math.floor((dueValue - updatedValue - seconds * 1000) / 1000);
 
     const now = moment().valueOf();
-    if (now + optionSeconds * 1000 > dueValue) { return null; }
+    if (now + optionSeconds * 1000 > dueValue) {
+      return null;
+    }
 
-    const option = Object.keys(remiderTime).reduce((prev, cur) => (Math.abs(cur - optionSeconds) < Math.abs(prev - optionSeconds)
-        ? cur
-        : prev));
+    const option = Object.keys(remiderTime).reduce((prev, cur) =>
+      Math.abs(cur - optionSeconds) < Math.abs(prev - optionSeconds) ? cur : prev
+    );
     return option;
   }
   return null;
@@ -93,17 +85,16 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
   const imagesRef = useRef(null);
 
   const handleOpenManageClass = useCallback(() => setOpenAddClasses(true), []);
-  const handleCloseManageClasses = useCallback(
-    () => setOpenAddClasses(false),
-    []
-  );
+  const handleCloseManageClasses = useCallback(() => setOpenAddClasses(false), []);
 
   useEffect(() => {
     setCategoryId(task.categoryId);
     setTitle(task.title);
     setDescription(task.description);
     setSectionId(task.sectionId);
-    if (task.images) { setImages(task.images); }
+    if (task.images) {
+      setImages(task.images);
+    }
 
     if (task.date) {
       if (typeof task.date.getMonth === 'function') {
@@ -130,10 +121,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
     if (!notifications && date) {
       if (notificationValue) {
         setNotifications([{ key: notificationValue }]);
-      } else if (
-        moment(date).valueOf() / 1000 - moment().valueOf() / 1000 >
-        86400
-      ) {
+      } else if (moment(date).valueOf() / 1000 - moment().valueOf() / 1000 > 86400) {
         setNotifications([{ key: '86400' }]);
       } else {
         setNotifications([{ key: '' }]);
@@ -156,7 +144,9 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
       reminder: getNotificationTime(notifications),
       images: imagesRef.current?.images
     });
-    if (title) { onClose(); }
+    if (title) {
+      onClose();
+    }
   }, [
     notifications,
     updateItem,
@@ -190,7 +180,11 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
 
   const updateClass = useCallback(
     (e) => {
-      if (e.target.value === 'new') { handleOpenManageClass(); } else { setSectionId(e.target.value); }
+      if (e.target.value === 'new') {
+        handleOpenManageClass();
+      } else {
+        setSectionId(e.target.value);
+      }
     },
     [handleOpenManageClass]
   );
@@ -199,16 +193,12 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
     (e, index) => {
       const { key, value } = e.target;
       if (key === 'custom') {
-        setNotifications((n) =>
-          n.map((v, i) => (i === index ? { key: key + index, value } : v))
-        );
+        setNotifications((n) => n.map((v, i) => (i === index ? { key: key + index, value } : v)));
         return;
       }
 
       if (!notifications.includes(value)) {
-        setNotifications((n) =>
-          n.map((v, i) => (i === index ? { key: value } : v))
-        );
+        setNotifications((n) => n.map((v, i) => (i === index ? { key: value } : v)));
       }
     },
     [notifications, setNotifications]
@@ -260,12 +250,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
         <Grid item xs={12} md={4}>
           <FormControl className={classes.selectForm}>
             <InputLabel>Task Status</InputLabel>
-            <Select
-              className={classes.select}
-              value={categoryId}
-              fullWidth
-              onChange={updateType}
-            >
+            <Select className={classes.select} value={categoryId} fullWidth onChange={updateType}>
               {workflowCategories.map((w) => (
                 <MenuItem key={`cat-${w.name}`} value={w.categoryId}>
                   {w.name}
@@ -291,12 +276,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
         <Grid item xs={12}>
           <FormControl className={classes.selectForm}>
             <InputLabel>What class is this for?</InputLabel>
-            <Select
-              className={classes.select}
-              value={sectionId}
-              fullWidth
-              onChange={updateClass}
-            >
+            <Select className={classes.select} value={sectionId} fullWidth onChange={updateClass}>
               <MenuItem value="" className={classes.emptyOption} />
               {Object.keys(classList).map((k) => {
                 const cl = classList[k];
@@ -313,10 +293,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
               )}
             </Select>
           </FormControl>
-          <AddRemoveClasses
-            open={openAddClasses}
-            onClose={handleCloseManageClasses}
-          />
+          <AddRemoveClasses open={openAddClasses} onClose={handleCloseManageClasses} />
         </Grid>
         {/* <Grid xs={12} item> */}
         {/* <WorkflowImageUpload ref={imagesRef} imagesProps={images} /> */}

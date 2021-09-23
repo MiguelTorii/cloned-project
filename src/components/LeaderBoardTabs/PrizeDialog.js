@@ -58,8 +58,8 @@ const LeaderBoardTabs = ({
       title={dialogTitle}
     >
       <div className={classes.subtitle}>
-        For students who positively impact their classmates’ academic success
-        through collaboration on CircleIn.
+        For students who positively impact their classmates’ academic success through collaboration
+        on CircleIn.
       </div>
       <hr className={classes.hr} />
       <div style={{ padding: 20 }}>
@@ -77,18 +77,12 @@ const LeaderBoardTabs = ({
             <div className={classes.label}>{eligibilityDialog}</div>
           </div>
         </div>
-        <div className={classes.dialogFootnote}>
-          {eligibilitySubtitleDialog}
-        </div>
+        <div className={classes.dialogFootnote}>{eligibilitySubtitleDialog}</div>
         <div className={classes.title}>Best Practices to Earn MVPs:</div>
         <div className={classes.mvpActions}>
           {mvpActions.map((action) => (
             <div key={action.title} className={classes.mvpAction}>
-              <LoadImg
-                key={action.imageUlrl}
-                url={action.imageUrl}
-                style={imgStyle}
-              />
+              <LoadImg key={action.imageUlrl} url={action.imageUrl} style={imgStyle} />
               <div style={{ marginTop: 8 }}>
                 <b>{action.title}</b>
               </div>

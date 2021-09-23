@@ -10,13 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  getTitle,
-  fetchAvatars,
-  processMessages,
-  getAvatar,
-  getFileAttributes
-} from 'utils/chat';
+import { getTitle, fetchAvatars, processMessages, getAvatar, getFileAttributes } from 'utils/chat';
 // import FormControl from '@material-ui/core/FormControl';
 // import Input from '@material-ui/core/Input';
 import CreateChatChannelInput from 'components/CreateChatChannelInput/CreateChatChannelInput';
@@ -174,14 +168,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
         ]);
 
         if (paginator) {
-this.setState({
+          this.setState({
             messages: paginator.items,
             paginator,
             hasMore: !(paginator.items.length < 10),
-            videoEnabled:
-              campaign.variation_key && campaign.variation_key !== 'hidden'
+            videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
           });
-}
+        }
       } catch (err) {
         console.log(err);
       }
@@ -194,7 +187,9 @@ this.setState({
       }
 
       channel.on('messageAdded', (message) => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
         this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
@@ -213,7 +208,9 @@ this.setState({
       });
 
       channel.on('typingStarted', (member) => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
 
         const memberId = member?.state?.identity;
         if (memberId) {
@@ -223,7 +220,9 @@ this.setState({
       });
 
       channel.on('typingEnded', () => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
         this.setState({ typing: '' });
       });
 
@@ -237,7 +236,9 @@ this.setState({
   };
 
   componentDidUpdate = () => {
-    if (this.mounted && this.end) { this.handleScrollToBottom(); }
+    if (this.mounted && this.end) {
+      this.handleScrollToBottom();
+    }
   };
 
   componentWillUnmount = () => {
@@ -324,7 +325,9 @@ this.setState({
       },
       onSend
     } = this.props;
-    if (newChannel) { return; }
+    if (newChannel) {
+      return;
+    }
 
     this.setState({ loading: true });
 
@@ -618,9 +621,7 @@ this.setState({
                 isReverse
                 getScrollParent={() => this.scrollParentRef}
               >
-                {messageItems.map((item) =>
-                  this.renderMessage(item, profileURLs)
-                )}
+                {messageItems.map((item) => this.renderMessage(item, profileURLs))}
                 {loading && (
                   <div className={classes.progress}>
                     <CircularProgress size={20} />

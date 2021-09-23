@@ -59,7 +59,9 @@ class OAuth extends React.Component<Props> {
         data: { userId }
       }
     } = this.props;
-    if (userId !== '') { return <Redirect to="/" />; }
+    if (userId !== '') {
+      return <Redirect to="/" />;
+    }
     return (
       <main className={classes.main}>
         <CircularProgress />
@@ -81,7 +83,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(OAuth));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(OAuth));

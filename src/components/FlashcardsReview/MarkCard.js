@@ -10,10 +10,7 @@ const MarkCard = ({ title, mark, markColor, active, ...props }) => {
   const classes = useStyles({ markColor });
 
   return (
-    <div
-      className={clsx(classes.markCardContainer, active && 'active')}
-      {...props}
-    >
+    <div className={clsx(classes.markCardContainer, active && 'active')} {...props}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography className={classes.markTitle}>{title}</Typography>

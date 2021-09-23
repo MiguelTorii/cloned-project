@@ -26,8 +26,7 @@ const FlashcardEditor = ({
 }) => {
   // Hooks
   const classes = useStyles();
-  const { activeFlashcard, setActiveFlashcard } =
-    useContext(FlashcardListContext);
+  const { activeFlashcard, setActiveFlashcard } = useContext(FlashcardListContext);
 
   // Memos
   const questionToolbarId = useMemo(
@@ -35,10 +34,7 @@ const FlashcardEditor = ({
     [toolbarPrefix]
   );
 
-  const active = useMemo(
-    () => index === activeFlashcard.index,
-    [index, activeFlashcard]
-  );
+  const active = useMemo(() => index === activeFlashcard.index, [index, activeFlashcard]);
 
   const answerToolbarId = useMemo(
     () => `flashcard-toolbar-${toolbarPrefix}-answer`,
@@ -76,37 +72,27 @@ const FlashcardEditor = ({
     [data, onSetRef]
   );
 
-  const handleClickEditor = useCallback((event) => {
-    // if (readOnly) {
-    //   return;
-    // }
-
-    // setActiveFlashcard({
-    //   index,
-    //   card: null
-    // });
-  }, [readOnly, index, setActiveFlashcard]);
+  const handleClickEditor = useCallback(
+    (event) => {
+      // if (readOnly) {
+      //   return;
+      // }
+      // setActiveFlashcard({
+      //   index,
+      //   card: null
+      // });
+    },
+    [readOnly, index, setActiveFlashcard]
+  );
 
   // Rendering Helpers
   const Toolbars = useMemo(
     () => (
       <>
-        <Box
-          display={
-            active && EDITOR_TYPES.QUESTION === activeFlashcard.card
-              ? 'block'
-              : 'none'
-          }
-        >
+        <Box display={active && EDITOR_TYPES.QUESTION === activeFlashcard.card ? 'block' : 'none'}>
           <QuillToolbar elementId={questionToolbarId} />
         </Box>
-        <Box
-          display={
-            active && EDITOR_TYPES.ANSWER === activeFlashcard.card
-              ? 'block'
-              : 'none'
-          }
-        >
+        <Box display={active && EDITOR_TYPES.ANSWER === activeFlashcard.card ? 'block' : 'none'}>
           <QuillToolbar elementId={answerToolbarId} />
         </Box>
       </>
@@ -126,9 +112,7 @@ const FlashcardEditor = ({
             active={active && activeFlashcard.card === EDITOR_TYPES.QUESTION}
             value={data.question}
             imageUrl={data.questionImage}
-            onChangeImageUrl={(value) =>
-              handleUpdateField('questionImage', value)
-            }
+            onChangeImageUrl={(value) => handleUpdateField('questionImage', value)}
             onFocus={() => {
               setActiveFlashcard({
                 index,
@@ -147,9 +131,7 @@ const FlashcardEditor = ({
             active={active && activeFlashcard.card === EDITOR_TYPES.ANSWER}
             value={data.answer}
             imageUrl={data.answerImage}
-            onChangeImageUrl={(value) =>
-              handleUpdateField('answerImage', value)
-            }
+            onChangeImageUrl={(value) => handleUpdateField('answerImage', value)}
             onFocus={() => {
               setActiveFlashcard({
                 index,
@@ -177,23 +159,9 @@ const FlashcardEditor = ({
   );
 
   return (
-    <div
-      className={classes.flashcardEditorRoot}
-      onMouseDown={handleClickEditor}
-      ref={forwardedRef}
-    >
-      <div
-        className={clsx(
-          classes.flashcardHeader,
-          active && classes.gradientHeader
-        )}
-      >
-        <div
-          className={clsx(
-            classes.flashcardHeaderContent,
-            !active && classes.paddingTopZero
-          )}
-        >
+    <div className={classes.flashcardEditorRoot} onMouseDown={handleClickEditor} ref={forwardedRef}>
+      <div className={clsx(classes.flashcardHeader, active && classes.gradientHeader)}>
+        <div className={clsx(classes.flashcardHeaderContent, !active && classes.paddingTopZero)}>
           <Box hidden={readOnly}>
             <div onMouseDown={handleMouseDown}>
               <IconButton

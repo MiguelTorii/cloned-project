@@ -21,10 +21,7 @@ type Props = {
   }
 };
 
-const AuthPage = ({
-  classes,
-  location: { search, state, pathname }
-}: Props) => {
+const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => {
   /** *
    * Logic for masquerading starts
    ** */
@@ -40,20 +37,15 @@ const AuthPage = ({
       email: query.get('acting_user_email')
     };
   }, [search]);
-  const isMasquerading = !!(
-    pathname === '/auth' &&
-    userId &&
-    refreshToken &&
-    email
-  );
+  const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
 
   // Check if there are parameters for masquerading
   useEffect(() => {
-    if (!isMasquerading) { return; }
+    if (!isMasquerading) {
+      return;
+    }
 
-    dispatch(
-      masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/'))
-    );
+    dispatch(masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

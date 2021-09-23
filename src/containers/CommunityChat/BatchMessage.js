@@ -41,7 +41,9 @@ const BatchMessage = ({
     closeNewChannel();
   }, [closeNewChannel]);
 
-  if (!canBatchMessage || pathname !== '/chat') { return null; }
+  if (!canBatchMessage || pathname !== '/chat') {
+    return null;
+  }
 
   return (
     <div className={classes.selectClasses}>

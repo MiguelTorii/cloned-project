@@ -13,8 +13,11 @@ export default {
     buttonText: <>🎯&nbsp;&nbsp;Get back on track!</>,
     content: (remainingPercent) => (
       <>
-        You’re currently <b>{Math.floor(remainingPercent)}% away</b> from reaching your Weekly Study Goals.<br/>
-        Take the rest of this week to work towards meeting your goals.<br/>
+        You’re currently <b>{Math.floor(remainingPercent)}% away</b> from reaching your Weekly Study
+        Goals.
+        <br />
+        Take the rest of this week to work towards meeting your goals.
+        <br />
         There’s still time to catch up! You can do it! 🔥
       </>
     )
@@ -26,8 +29,11 @@ export default {
     buttonText: <>👍&nbsp;&nbsp;Awesome!</>,
     content: (remainingPercent) => (
       <>
-        You’re making great progress! 👏<br/>
-        You’re currently <b>{Math.floor(remainingPercent)}% away</b> from reaching your Weekly Study Goals.<br/>
+        You’re making great progress! 👏
+        <br />
+        You’re currently <b>{Math.floor(remainingPercent)}% away</b> from reaching your Weekly Study
+        Goals.
+        <br />
         Keep up the pace in order to achieve your goals! 💪
       </>
     )
@@ -39,45 +45,55 @@ export default {
     buttonText: <>🎉&nbsp;&nbsp;Hooray!</>,
     content: () => (
       <>
-        Amazing job! You’ve already achieved 100% of your Weekly Study Goals! 👏<br/>
-        Next week, try spending more time on your goals to really challenge yourself and see all the progress you’ve made along the way! ✨
+        Amazing job! You’ve already achieved 100% of your Weekly Study Goals! 👏
+        <br />
+        Next week, try spending more time on your goals to really challenge yourself and see all the
+        progress you’ve made along the way! ✨
       </>
     )
   },
   4: {
     title: 'Your End of Week Report',
-    preText: (currentGoals, totalGoals) => `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
+    preText: (currentGoals, totalGoals) =>
+      `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
     image: ImageEndLessThan100,
     buttonText: <>🎯 Got it!</>,
     content: () => (
       <>
-        You didn’t achieve your goals this week 😔<br/>
-        But that’s okay! Try spending more time attaining your goals next week!<br/>
+        You didn’t achieve your goals this week 😔
+        <br />
+        But that’s okay! Try spending more time attaining your goals next week!
+        <br />
         It’s all about the progress, not perfection. 💪
       </>
     )
   },
   5: {
     title: 'Your End of Week Report',
-    preText: (currentGoals, totalGoals) => `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
+    preText: (currentGoals, totalGoals) =>
+      `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
     image: ImageEndLessThan100,
     buttonText: <>🎯 Got it!</>,
     content: () => (
       <>
-        You were so close to achieving your goals this week! 😬<br/>
-        Try increasing your time spent on attaining your goals next week.<br/>
+        You were so close to achieving your goals this week! 😬
+        <br />
+        Try increasing your time spent on attaining your goals next week.
+        <br />
         In time, you’ll be achieving all of your goals! 🙌
       </>
     )
   },
   6: {
     title: 'Your End of Week Report',
-    preText: (currentGoals, totalGoals) => `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
+    preText: (currentGoals, totalGoals) =>
+      `Completed Weekly Study Goals: ${currentGoals}/${totalGoals}`,
     image: ImageEnd100,
     buttonText: <>🎯 Got it!</>,
     content: () => (
       <>
-        You’re a rockstar for achieving your goals this week! 🔥<br/>
+        You’re a rockstar for achieving your goals this week! 🔥
+        <br />
         Push yourself to the next level by completing even more study actions next week! 🚀
       </>
     )

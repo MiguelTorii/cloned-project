@@ -123,11 +123,7 @@ const DeviceSettings = ({
           Save
         </Button>
       </Box>
-      <StudyRoomReport
-        profiles={profiles}
-        open={openReport}
-        handleClose={handleClose}
-      />
+      <StudyRoomReport profiles={profiles} open={openReport} handleClose={handleClose} />
     </Dialog>
   );
 };

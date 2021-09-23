@@ -1,12 +1,6 @@
 // @flow
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useRef
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -113,9 +107,7 @@ const FlashcardsShow = () => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isShortSummary, setIsShortSummary] = useState(true);
-  const isBookmarking = useSelector(
-    isApiCalling(userActions.BOOKMARK_FLASHCARDS)
-  );
+  const isBookmarking = useSelector(isApiCalling(userActions.BOOKMARK_FLASHCARDS));
 
   // Memos
   const cardList = useMemo(
@@ -146,7 +138,9 @@ const FlashcardsShow = () => {
   const shouldRenderFeed = useMemo(() => {
     if (!lastLocation) {
       const query = new URLSearchParams(location.search);
-      if (query.get('source') === 'deck') { return false; }
+      if (query.get('source') === 'deck') {
+        return false;
+      }
       return true;
     }
     return lastLocation.pathname.includes('/feed');
@@ -155,13 +149,17 @@ const FlashcardsShow = () => {
   // Callbacks
   const reloadData = useCallback(
     (showLoading = false) => {
-      if (showLoading) { setIsLoadingFlashcards(true); }
+      if (showLoading) {
+        setIsLoadingFlashcards(true);
+      }
       getFlashcards({
         flashcardId,
         userId: me.userId
       }).then((rsp) => {
         setData(rsp);
-        if (showLoading) { setIsLoadingFlashcards(false); }
+        if (showLoading) {
+          setIsLoadingFlashcards(false);
+        }
       });
     },
     [flashcardId, setData, setIsLoadingFlashcards, me.userId]
@@ -182,11 +180,10 @@ const FlashcardsShow = () => {
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
-    useIdleTimer({
-      timeout,
-      onActive: handleOnActive
-    });
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive
+  });
 
   const initializeTimer = useCallback(() => {
     elapsed.current = 0;
@@ -241,13 +238,17 @@ const FlashcardsShow = () => {
   }, [dispatch]);
 
   const handlePrevDeck = useCallback(() => {
-    if (boardDeckIndex === 0) { return; }
+    if (boardDeckIndex === 0) {
+      return;
+    }
 
     setBoardDeckIndex(boardDeckIndex - 1);
   }, [boardDeckIndex]);
 
   const handleNextDeck = useCallback(() => {
-    if (boardDeckIndex >= data.deck.length - 1) { return; }
+    if (boardDeckIndex >= data.deck.length - 1) {
+      return;
+    }
 
     setBoardDeckIndex(boardDeckIndex + 1);
   }, [boardDeckIndex, data]);
@@ -331,9 +332,7 @@ const FlashcardsShow = () => {
   }, [dispatch]);
 
   const DeckList = useMemo(
-    () => (
-      <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />
-    ),
+    () => <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />,
     [cardList]
   );
 
@@ -355,7 +354,9 @@ const FlashcardsShow = () => {
   useHotkeys('Right', handleNextDeck, {}, [handleNextDeck]);
 
   // Rendering
-  if (_.isEmpty(data) || isLoadingFlashcards) { return <LoadingSpin />; }
+  if (_.isEmpty(data) || isLoadingFlashcards) {
+    return <LoadingSpin />;
+  }
 
   const renderBody = () => (
     <>
@@ -370,17 +371,11 @@ const FlashcardsShow = () => {
             position="relative"
           >
             <Box mr={2}>
-              <TransparentIconButton
-                disabled={boardDeckIndex === 0}
-                onClick={handlePrevDeck}
-              >
+              <TransparentIconButton disabled={boardDeckIndex === 0} onClick={handlePrevDeck}>
                 <IconPrevious />
               </TransparentIconButton>
             </Box>
-            <LinearProgressBar
-              value={boardDeckIndex + 1}
-              totalValue={data.deck.length}
-            />
+            <LinearProgressBar value={boardDeckIndex + 1} totalValue={data.deck.length} />
             <Box ml={2}>
               <TransparentIconButton
                 disabled={boardDeckIndex === data.deck.length - 1}
@@ -412,10 +407,7 @@ const FlashcardsShow = () => {
             Game Mode
           </Box>
           <Box mt={3}>
-            <ActionButton
-              startIcon={<IconNote />}
-              onClick={handleStartMatchGame}
-            >
+            <ActionButton startIcon={<IconNote />} onClick={handleStartMatchGame}>
               Match Magic
             </ActionButton>
           </Box>
@@ -423,9 +415,9 @@ const FlashcardsShow = () => {
       </Grid>
       <Box mt={3} mb={3}>
         <Typography variant="h6">
-          {`List of Flashcards in ${
-            me.userId === data.userId ? 'Your' : `${data.name}'s`
-          } Deck (${data.deck.length})`}
+          {`List of Flashcards in ${me.userId === data.userId ? 'Your' : `${data.name}'s`} Deck (${
+            data.deck.length
+          })`}
         </Typography>
       </Box>
       {DeckList}
@@ -499,12 +491,7 @@ const FlashcardsShow = () => {
   const renderAsNonFeed = () => (
     <>
       <Box pt={2} mb={2}>
-        <Link
-          component="button"
-          color="inherit"
-          underline="none"
-          onClick={handleBack}
-        >
+        <Link component="button" color="inherit" underline="none" onClick={handleBack}>
           <Typography variant="h6">
             <IconBack className={classes.iconMiddle} />
             Back
@@ -525,17 +512,11 @@ const FlashcardsShow = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link
-                underline="none"
-                component="button"
-                onClick={handleClickUser}
-                variant="h6"
-              >
+              <Link underline="none" component="button" onClick={handleClickUser} variant="h6">
                 {data.name}
               </Link>
               <Typography variant="body2">
-                {data.courseDisplayName} &nbsp; • &nbsp;{' '}
-                {moment(data.created).fromNow()}
+                {data.courseDisplayName} &nbsp; • &nbsp; {moment(data.created).fromNow()}
               </Typography>
             </Grid>
           </Grid>
@@ -570,9 +551,7 @@ const FlashcardsShow = () => {
             {data.title}
           </Typography>
           <Typography>
-            {isShortSummary
-              ? _.truncate(data.summary, { length: 50 })
-              : data.summary}
+            {isShortSummary ? _.truncate(data.summary, { length: 50 }) : data.summary}
             {data.summary.length > DESCRIPTION_LENGTH_THRESHOLD && (
               <Link
                 className={classes.moreLessLink}
@@ -603,11 +582,7 @@ const FlashcardsShow = () => {
         onClose={handleReportClose}
       />
 
-      <DeletePost
-        open={isDeleteModalOpen}
-        feedId={data.feedId}
-        onClose={handleDeleteClose}
-      />
+      <DeletePost open={isDeleteModalOpen} feedId={data.feedId} onClose={handleDeleteClose} />
 
       <ShareLinkModal
         open={isShareModalOpen}
@@ -617,8 +592,8 @@ const FlashcardsShow = () => {
             <span role="img" aria-label="Two hands">
               🙌
             </span>
-            &nbsp; You’re awesome for helping your peers! Ready to share a link
-            to your <b>{data.title}</b> deck?
+            &nbsp; You’re awesome for helping your peers! Ready to share a link to your{' '}
+            <b>{data.title}</b> deck?
           </Typography>
         }
         onClose={handleCloseShareLinkModal}
@@ -664,20 +639,13 @@ const FlashcardsShow = () => {
         showHeader={false}
         TransitionComponent={SlideUp}
       >
-        <FlashcardsQuiz
-          flashcardId={data.postId}
-          cards={cardList}
-          onClose={handleCloseQuiz}
-        />
+        <FlashcardsQuiz flashcardId={data.postId} cards={cardList} onClose={handleCloseQuiz} />
       </Dialog>
 
       <Dialog
         fullScreen
         className={classes.reviewModal}
-        contentClassName={clsx(
-          classes.reviewModalContent,
-          classes.matchModalContent
-        )}
+        contentClassName={clsx(classes.reviewModalContent, classes.matchModalContent)}
         open={isInMatchGame}
         onCancel={handleCloseMatchGame}
         showHeader={false}

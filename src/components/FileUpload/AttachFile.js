@@ -81,14 +81,8 @@ const FileUploadContainer = (props) => {
   const { classes, file, onClose, smallChat } = props;
   const { name, type, url } = file;
 
-  const getFileExtension = useCallback(
-    (filename) => filename.split('.').pop(),
-    []
-  );
-  const getIconURL = useCallback(
-    (extension) => URIS[extension] || URIS['other-default'],
-    []
-  );
+  const getFileExtension = useCallback((filename) => filename.split('.').pop(), []);
+  const getIconURL = useCallback((extension) => URIS[extension] || URIS['other-default'], []);
 
   const extension = getFileExtension(name);
   const fileUrl = getIconURL(extension);
@@ -99,9 +93,7 @@ const FileUploadContainer = (props) => {
         <img src={type.includes('image') ? url : fileUrl} alt={extension} />
       </div>
       <div className={classes.infoContainer}>
-        <div className={classes.name}>
-          {truncate(name, UPLOAD_FILENAME_CHARACTER_LIMIT)}
-        </div>
+        <div className={classes.name}>{truncate(name, UPLOAD_FILENAME_CHARACTER_LIMIT)}</div>
       </div>
 
       {onClose && (

@@ -28,10 +28,7 @@ const FiltersBar = ({ data, activeValue, onSelectItem }: Props) => {
           key={item.value}
           label={item.text}
           classes={{
-            root: clsx(
-              classes.item,
-              item.value === activeValue && classes.itemActive
-            )
+            root: clsx(classes.item, item.value === activeValue && classes.itemActive)
           }}
           onClick={() => onSelectItem(item.value)}
         />

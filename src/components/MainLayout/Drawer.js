@@ -1,12 +1,5 @@
 // @flow
-import React, {
-  useState,
-  useEffect,
-  memo,
-  useCallback,
-  useMemo,
-  Fragment
-} from 'react';
+import React, { useState, useEffect, memo, useCallback, useMemo, Fragment } from 'react';
 import classNames from 'classnames';
 import queryString from 'query-string';
 import { useSelector, connect } from 'react-redux';
@@ -84,10 +77,7 @@ const Drawer = ({
   const [campaign, setCampaign] = useState(null);
   const { chatLanding } = campaignState;
 
-  const handleOpenOneTouchSend = useCallback(
-    () => setOneTouchSend(true),
-    [setOneTouchSend]
-  );
+  const handleOpenOneTouchSend = useCallback(() => setOneTouchSend(true), [setOneTouchSend]);
 
   useEffect(() => {
     const init = async () => {
@@ -113,11 +103,7 @@ const Drawer = ({
     () => (
       <FormControlLabel
         control={
-          <CustomSwitch
-            checked={expertMode}
-            onChange={toggleExpertMode}
-            name="expert-mode"
-          />
+          <CustomSwitch checked={expertMode} onChange={toggleExpertMode} name="expert-mode" />
         }
       />
     ),
@@ -174,9 +160,7 @@ const Drawer = ({
         {landingPageCampaign && (
           <DrawerItem
             listItemClass={classNames(
-              ['/feed', '/'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
+              ['/feed', '/'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
             link="/"
             pathname={pathname}
@@ -233,9 +217,7 @@ const Drawer = ({
           link="/classes"
           OffIcon={<MyClassOff />}
           listItemClass={classNames(
-            ['/classes'].includes(pathname)
-              ? classes.currentPath
-              : classes.otherPath
+            ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
         {landingPageCampaign && (
@@ -247,9 +229,7 @@ const Drawer = ({
             link="/workflow"
             OffIcon={<WorkflowIconOff />}
             listItemClass={classNames(
-              ['/workflow'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
+              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           />
         )}
@@ -262,19 +242,13 @@ const Drawer = ({
             link="/notes"
             OffIcon={<NotesIconOff />}
             listItemClass={classNames(
-              ['/notes'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
+              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           />
         )}
         <DrawerItem
           OnIcon={
-            <img
-              src={FlashcardsIconOn}
-              alt="flashcards on"
-              className={classes.flashcardIconOn}
-            />
+            <img src={FlashcardsIconOn} alt="flashcards on" className={classes.flashcardIconOn} />
           }
           primaryText="Flashcards"
           pathname={pathname}
@@ -282,9 +256,7 @@ const Drawer = ({
           link={`/flashcards${search}`}
           OffIcon={<FlashcardsIconOff />}
           listItemClass={classNames(
-            pathname.includes('/flashcards')
-              ? classes.currentPath
-              : classes.otherPath
+            pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath
           )}
         />
         {!newClassExperience && (
@@ -310,11 +282,7 @@ const Drawer = ({
           onClick={handleOpenOneTouchSend}
         />
         <div className={classes.divider} />
-        <ListItem
-          button
-          onClick={handleOpenTutorHelp}
-          className={classes.otherPath}
-        >
+        <ListItem button onClick={handleOpenTutorHelp} className={classes.otherPath}>
           <ListItemIcon className={classes.menuIcon}>
             <HelpIcon />
           </ListItemIcon>
@@ -346,9 +314,7 @@ const Drawer = ({
       <>
         <DrawerItem
           listItemClass={classNames(
-            ['/home'].includes(pathname)
-              ? classes.currentPath
-              : classes.otherPath
+            ['/home'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
           link="/home"
           pathname={pathname}
@@ -369,11 +335,7 @@ const Drawer = ({
         <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
         <DrawerItem
           OnIcon={
-            <img
-              src={FlashcardsIconOn}
-              alt="flashcards on"
-              className={classes.flashcardIconOn}
-            />
+            <img src={FlashcardsIconOn} alt="flashcards on" className={classes.flashcardIconOn} />
           }
           primaryText="Flashcards"
           pathname={pathname}
@@ -381,9 +343,7 @@ const Drawer = ({
           link={`/flashcards${search}`}
           OffIcon={<FlashcardsIconOff />}
           listItemClass={classNames(
-            pathname.includes('/flashcards')
-              ? classes.currentPath
-              : classes.otherPath
+            pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath
           )}
         />
         <DrawerItem
@@ -394,9 +354,7 @@ const Drawer = ({
           link="/workflow"
           OffIcon={<WorkflowIconOff />}
           listItemClass={classNames(
-            ['/workflow'].includes(pathname)
-              ? classes.currentPath
-              : classes.otherPath
+            ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
         {newNotesScreen && (
@@ -408,9 +366,7 @@ const Drawer = ({
             link="/notes"
             OffIcon={<NotesIconOff />}
             listItemClass={classNames(
-              ['/notes'].includes(pathname)
-                ? classes.currentPath
-                : classes.otherPath
+              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
             )}
           />
         )}
@@ -435,9 +391,7 @@ const Drawer = ({
           link="/store"
           OffIcon={<RewardsIconOff />}
           listItemClass={classNames(
-            ['/store'].includes(pathname)
-              ? classes.currentPath
-              : classes.otherPath
+            ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
         {!newClassExperience && (
@@ -474,9 +428,7 @@ const Drawer = ({
           link="/classes"
           OffIcon={<MyClassOff />}
           listItemClass={classNames(
-            ['/classes'].includes(pathname)
-              ? classes.currentPath
-              : classes.otherPath
+            ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
         <div className={classes.divider} />
@@ -519,9 +471,7 @@ const Drawer = ({
             text="You can easily toggle between Expert Mode and Student Mode! 🙌🏽"
           >
             <div className={classes.expertContainer}>
-              <Typography className={classes.expertTitle}>
-                Expert Mode
-              </Typography>
+              <Typography className={classes.expertTitle}>Expert Mode</Typography>
               {button}
             </div>
           </Tooltip>

@@ -88,9 +88,7 @@ const CreateQuestion = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost
-          ? `?class=${cypher(`${classId}:${sectionId}`)}`
-          : '';
+        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);
@@ -119,7 +117,9 @@ const CreateQuestion = ({
   }, [questionId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (questionId && userId) { loadData(); }
+    if (questionId && userId) {
+      loadData();
+    }
     const { classId, sectionId } = decypherClass();
 
     setClassId(Number(classId));
@@ -148,7 +148,9 @@ const CreateQuestion = ({
         sectionId
       });
 
-      if (!res.success) { throw new Error('Couldnt update'); }
+      if (!res.success) {
+        throw new Error('Couldnt update');
+      }
 
       enqueueSnackbar({
         notification: {
@@ -217,7 +219,9 @@ const CreateQuestion = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') { hasError = true; }
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           setLoading(false);
@@ -282,7 +286,11 @@ const CreateQuestion = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (questionId) { updateQuestion(); } else { createQuestion(); }
+      if (questionId) {
+        updateQuestion();
+      } else {
+        createQuestion();
+      }
     },
     [createQuestion, questionId, updateQuestion]
   );
@@ -297,7 +305,11 @@ const CreateQuestion = ({
 
   const handleRTEChange = useCallback(
     (value) => {
-      if (changed === null) { setChanged(false); } else { setChanged(true); }
+      if (changed === null) {
+        setChanged(false);
+      } else {
+        setChanged(true);
+      }
       setBody(value);
     },
     [changed]
@@ -307,13 +319,13 @@ const CreateQuestion = ({
     ({ classId, sectionId }: { classId: number, sectionId: number }) => {
       const selected = userClasses.classList.find((c) => c.classId === classId);
       if (selected) {
-setClassList([
+        setClassList([
           {
             ...selected,
             sectionId
           }
         ]);
-}
+      }
       setSectionId(sectionId);
       setClassId(classId);
     },
@@ -386,10 +398,7 @@ setClassList([
                   placement="right"
                   text="In Expert Mode, you can post the same thing in more than one class! 🙌"
                 >
-                  <ClassMultiSelect
-                    selected={classList}
-                    onSelect={handleClasses}
-                  />
+                  <ClassMultiSelect selected={classList} onSelect={handleClasses} />
                 </Tooltip>
               ) : (
                 <ClassesSelector
@@ -408,17 +417,13 @@ setClassList([
 
             {!questionId && !canBatchPost && (
               <Grid item xs={12} sm={12} md={10}>
-                <AnonymousButton
-                  active={anonymousActive}
-                  toggleActive={toggleAnonymousActive}
-                />
+                <AnonymousButton active={anonymousActive} toggleActive={toggleAnonymousActive} />
               </Grid>
             )}
             <Grid item xs={12}>
               <Typography className={classes.anonymouslyExplanation}>
-                When you post a question anonymously, classmates cannot see who
-                asked the question. However, your post can still be flagged for
-                academic dishonesty.
+                When you post a question anonymously, classmates cannot see who asked the question.
+                However, your post can still be flagged for academic dishonesty.
               </Typography>
             </Grid>
           </Grid>

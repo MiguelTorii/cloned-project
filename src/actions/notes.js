@@ -13,13 +13,7 @@ const updateNotes = ({ notes }: { notes: array<NotesType> }): Action => ({
   notes
 });
 
-const addNote = ({
-  notes,
-  quicknoteId
-}: {
-  notes: NotesType,
-  quicknote: number
-}): Action => ({
+const addNote = ({ notes, quicknoteId }: { notes: NotesType, quicknote: number }): Action => ({
   type: notesActions.ADD_NOTE,
   quicknoteId,
   notes
@@ -52,11 +46,7 @@ const setSectionIdAction = ({
   classId
 });
 
-const updateQuickNoteContentAction = ({
-  content
-}: {
-  content: string
-}): Action => ({
+const updateQuickNoteContentAction = ({ content }: { content: string }): Action => ({
   type: notesActions.UPDATE_QUICKNOTE_CONTENT,
   content
 });
@@ -82,23 +72,26 @@ const sortNotes = (notes) =>
     return dateB - dateA;
   });
 
-export const getNotes =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    try {
-      const {
-        notes: {
-          data: { sectionId }
-        }
-      } = getState();
-      dispatch(loadingAction({ loading: true }));
-      const { notes } = await api.getNotes({ sectionId });
+export const getNotes = () => async (dispatch: Dispatch, getState: Function) => {
+  try {
+    const {
+      notes: {
+        data: { sectionId }
+      }
+    } = getState();
+    dispatch(loadingAction({ loading: true }));
+    const { notes } = await api.getNotes({ sectionId });
 
-      if (notes) { dispatch(updateNotes({ notes: sortNotes(notes) })); } else { dispatch(loadingAction({ loading: false })); }
-      return notes;
-    } catch (err) {
+    if (notes) {
+      dispatch(updateNotes({ notes: sortNotes(notes) }));
+    } else {
       dispatch(loadingAction({ loading: false }));
     }
-  };
+    return notes;
+  } catch (err) {
+    dispatch(loadingAction({ loading: false }));
+  }
+};
 
 export const updateNote =
   ({ note }: { note: NotesType }) =>
@@ -125,9 +118,13 @@ export const updateNote =
           ...note,
           lastModified: new Date()
         };
-        if (sectionId === note.sectionId) { dispatch(updateNotes({ notes: [newNote, ...filtered] })); }
+        if (sectionId === note.sectionId) {
+          dispatch(updateNotes({ notes: [newNote, ...filtered] }));
+        }
         dispatch(loadingAction({ loading: false }));
-      } else { dispatch(loadingAction({ loading: false })); }
+      } else {
+        dispatch(loadingAction({ loading: false }));
+      }
     } catch (err) {
       dispatch(loadingAction({ loading: false }));
     }
@@ -174,20 +171,20 @@ export const saveNoteAction =
           lastModified: new Date()
         };
         if (curSectionId === sectionId) {
-dispatch(
+          dispatch(
             addNote({
               quicknoteId: quicknote ? noteId : null,
               notes: [newNote, ...notes]
             })
           );
-} else {
-dispatch(
+        } else {
+          dispatch(
             addNote({
               quicknoteId: quicknote ? noteId : null,
               notes
             })
           );
-}
+        }
       }
       dispatch(loadingAction({ loading: false }));
     } catch (err) {
@@ -232,7 +229,9 @@ export const deleteNoteAction =
       if (success) {
         const id = notes.findIndex((n) => n.id === note.id);
         dispatch(removeNote({ id }));
-      } else { dispatch(loadingAction({ loading: false })); }
+      } else {
+        dispatch(loadingAction({ loading: false }));
+      }
     } catch (err) {
       dispatch(loadingAction({ loading: false }));
     }

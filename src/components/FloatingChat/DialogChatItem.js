@@ -76,8 +76,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, children, title, open, onClose, onStartVideoCall } =
-      this.props;
+    const { classes, children, title, open, onClose, onStartVideoCall } = this.props;
     const { anchorEl, openRemove } = this.state;
     return (
       <Fragment>
@@ -93,10 +92,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
               </Typography>
             </ButtonBase>
             <Fragment>
-              <ButtonBase
-                className={classes.iconButton}
-                onClick={onStartVideoCall}
-              >
+              <ButtonBase className={classes.iconButton} onClick={onStartVideoCall}>
                 <VideoCamIcon />
               </ButtonBase>
               <ButtonBase
@@ -152,17 +148,11 @@ class DialogChatItem extends React.PureComponent<Props, State> {
           aria-labelledby="remove-dialog-title"
           aria-describedby="remove-dialog-description"
         >
-          <DialogTitle
-            id="remove-dialog-title"
-            onClose={this.handleRemoveClose}
-          >
+          <DialogTitle id="remove-dialog-title" onClose={this.handleRemoveClose}>
             Delete Chat
           </DialogTitle>
           <DialogContent>
-            <DialogContentText
-              color="textPrimary"
-              id="remove-dialog-description"
-            >
+            <DialogContentText color="textPrimary" id="remove-dialog-description">
               Are you sure you want to delete this chat?
               <br />
               <br />
@@ -170,19 +160,10 @@ class DialogChatItem extends React.PureComponent<Props, State> {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={this.handleRemoveClose}
-              color="primary"
-              autoFocus
-              variant="contained"
-            >
+            <Button onClick={this.handleRemoveClose} color="primary" autoFocus variant="contained">
               Cancel
             </Button>
-            <Button
-              onClick={this.handleRemoveSubmit}
-              color="secondary"
-              variant="contained"
-            >
+            <Button onClick={this.handleRemoveSubmit} color="secondary" variant="contained">
               Delete
             </Button>
           </DialogActions>

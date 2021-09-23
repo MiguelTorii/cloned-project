@@ -1,11 +1,7 @@
 // @flow
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import {
-  sortableContainer,
-  sortableElement,
-  sortableHandle
-} from 'react-sortable-hoc';
+import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -53,9 +49,7 @@ const UploadImagesForm = ({
                   {!loading && (
                     <>
                       <div>Drag and drop images here or</div>
-                      <TransparentButton onClick={() => {}}>
-                        Upload Notes
-                      </TransparentButton>
+                      <TransparentButton onClick={() => {}}>Upload Notes</TransparentButton>
                     </>
                   )}
                 </div>
@@ -83,15 +77,8 @@ const UploadImagesForm = ({
                 />
                 <DragHandle>
                   <div className={classes.drag}>
-                    <IconButton
-                      color="inherit"
-                      aria-label="Drag"
-                      className={classes.button}
-                    >
-                      <DragIndicatorIcon
-                        className={classes.icon}
-                        fontSize="small"
-                      />
+                    <IconButton color="inherit" aria-label="Drag" className={classes.button}>
+                      <DragIndicatorIcon className={classes.icon} fontSize="small" />
                     </IconButton>
                   </div>
                 </DragHandle>

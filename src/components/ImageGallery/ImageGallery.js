@@ -59,8 +59,7 @@ class ImageGallery extends React.PureComponent<Props, State> {
   handleNext = () => {
     const { images } = this.props;
     this.setState(({ currentImage }) => ({
-      currentImage:
-        currentImage === images.length ? currentImage : currentImage + 1
+      currentImage: currentImage === images.length ? currentImage : currentImage + 1
     }));
   };
 
@@ -90,14 +89,8 @@ class ImageGallery extends React.PureComponent<Props, State> {
 
     const rotate = (
       <div style={{ paddingTop: 10 }}>
-        <RotateLeftIcon
-          style={{ cursor: 'pointer' }}
-          onClick={this.rotateLeft}
-        />
-        <RotateRightIcon
-          style={{ cursor: 'pointer' }}
-          onClick={this.rotateRight}
-        />
+        <RotateLeftIcon style={{ cursor: 'pointer' }} onClick={this.rotateLeft} />
+        <RotateRightIcon style={{ cursor: 'pointer' }} onClick={this.rotateRight} />
       </div>
     );
 

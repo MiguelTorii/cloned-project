@@ -47,8 +47,7 @@ const types = [
   {
     value: '5',
     label: 'Resources',
-    description:
-      'View all links and resources shared by you and your classmates',
+    description: 'View all links and resources shared by you and your classmates',
     color: '#6F08D7'
   },
   {
@@ -105,7 +104,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
       const selectedUserClasses = userClasses.map((uc) => {
         const { classId } = JSON.parse(uc);
         const sc = classList.find((c) => classId === c.classId);
-        if (!sc) { return null; }
+        if (!sc) {
+          return null;
+        }
         return {
           ...sc,
           sectionId: sc.section?.[0]?.sectionId
@@ -247,8 +248,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
   getFilterCount = () => {
     const { newClassExperience, userClasses, postTypes } = this.props;
     let count = 0;
-    if (!newClassExperience && userClasses.length > 0) { count += 1; }
-    if (postTypes.length > 0) { count += 1; }
+    if (!newClassExperience && userClasses.length > 0) {
+      count += 1;
+    }
+    if (postTypes.length > 0) {
+      count += 1;
+    }
     return count;
   };
 
@@ -289,20 +294,13 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   }}
                 />
               }
-              placeholder={
-                courseDisplayName
-                  ? 'Search posts'
-                  : 'To search add some posts first'
-              }
+              placeholder={courseDisplayName ? 'Search posts' : 'To search add some posts first'}
               value={query}
               onChange={onChange('query')}
               endAdornment={
                 query !== '' && (
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={onClearSearch}
-                    >
+                    <IconButton aria-label="Toggle password visibility" onClick={onClearSearch}>
                       <ClearIcon fontSize="small" />
                     </IconButton>
                   </InputAdornment>
@@ -320,11 +318,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             </IconButton>
           </div>
           <div className={classes.filtersFooter}>
-            <DateRange
-              from={fromDate}
-              to={toDate}
-              onChange={onChangeDateRange}
-            />
+            <DateRange from={fromDate} to={toDate} onChange={onChangeDateRange} />
             <Tooltip
               id={9047}
               hidden={!expertMode}
@@ -336,11 +330,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 aria-label="Filter"
                 aria-owns={open ? 'filter-popper' : undefined}
                 className={classes.filterButton}
-                onClick={
-                  filterCount
-                    ? this.handleRemoveFilter('all')
-                    : this.handleClick
-                }
+                onClick={filterCount ? this.handleRemoveFilter('all') : this.handleClick}
                 variant="outlined"
                 compact
               >
@@ -351,9 +341,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
               {!!filterCount &&
                 !!postTypes.length &&
                 postTypes.map((postType) => {
-                  const targetPostType = types.filter(
-                    (type) => type.value === postType
-                  );
+                  const targetPostType = types.filter((type) => type.value === postType);
                   return (
                     <Chip
                       key={targetPostType[0].label}
@@ -365,14 +353,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         backgroundColor: targetPostType[0].color
                       }}
                       clickable
-                      onDelete={this.handleRemoveFilter(
-                        targetPostType[0].value
-                      )}
+                      onDelete={this.handleRemoveFilter(targetPostType[0].value)}
                       deleteIcon={
-                        <ClearIcon
-                          className={classes.deleteFilterIcon}
-                          fontSize="small"
-                        />
+                        <ClearIcon className={classes.deleteFilterIcon} fontSize="small" />
                       }
                     />
                   );
@@ -405,10 +388,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         key={item.label}
                         control={
                           <Checkbox
-                            checked={
-                              userClasses.findIndex((o) => o === item.value) >
-                              -1
-                            }
+                            checked={userClasses.findIndex((o) => o === item.value) > -1}
                             onChange={this.handleChange('userClasses')}
                             value={item.value}
                           />
@@ -440,10 +420,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
             )}
             <Grid item xs={12} className={classes.option}>
               <FormControl className={classes.formControl}>
-                <FormLabel
-                  className={classes.filterDescription}
-                  component="legend"
-                >
+                <FormLabel className={classes.filterDescription} component="legend">
                   Select posts you’d like to see below:
                 </FormLabel>
                 <FormGroup>
@@ -453,16 +430,9 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         key={type.label}
                         control={
                           <Checkbox
-                            checked={
-                              postTypes.findIndex((o) => o === type.value) > -1
-                            }
+                            checked={postTypes.findIndex((o) => o === type.value) > -1}
                             checkedIcon={
-                              <span
-                                className={clsx(
-                                  classes.icon,
-                                  classes.checkedIcon
-                                )}
-                              />
+                              <span className={clsx(classes.icon, classes.checkedIcon)} />
                             }
                             icon={<span className={classes.icon} />}
                             onChange={this.handleChange('postTypes')}
@@ -471,9 +441,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         }
                         label={type.label}
                       />
-                      <span className={classes.description}>
-                        {type.description}
-                      </span>
+                      <span className={classes.description}>{type.description}</span>
                     </>
                   ))}
                 </FormGroup>
@@ -482,11 +450,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
                   control={
                     <Checkbox
                       checked={isPostTypesSelected}
-                      checkedIcon={
-                        <span
-                          className={clsx(classes.icon, classes.checkedIcon)}
-                        />
-                      }
+                      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
                       icon={<span className={classes.icon} />}
                       onChange={
                         isPostTypesSelected

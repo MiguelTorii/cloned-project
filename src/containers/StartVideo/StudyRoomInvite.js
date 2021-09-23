@@ -42,9 +42,7 @@ const StudyRoomInvite = ({
             classId: selectedClass.classId
           });
           classmates.forEach((classmate) => {
-            const classes = students[classmate.userId]
-              ? students[classmate.userId].classes
-              : [];
+            const classes = students[classmate.userId] ? students[classmate.userId].classes : [];
             students[classmate.userId] = {
               ...classmate,
               classes: [...classes, selectedClass]
@@ -54,9 +52,7 @@ const StudyRoomInvite = ({
       );
 
       const res = Object.values(students);
-      const classmates = res.filter(
-        (classmate) => Number(classmate.userId) !== Number(userId)
-      );
+      const classmates = res.filter((classmate) => Number(classmate.userId) !== Number(userId));
       setClassmates(classmates);
       setLoading(false);
     };
@@ -75,7 +71,10 @@ const StudyRoomInvite = ({
     init();
   }, []);
 
-  const visiabled = useMemo(() => campaign?.variation_key && campaign?.variation_key !== 'hidden', [campaign]);
+  const visiabled = useMemo(
+    () => campaign?.variation_key && campaign?.variation_key !== 'hidden',
+    [campaign]
+  );
 
   const handleChange = useCallback(
     (e) => {
@@ -119,9 +118,7 @@ const StudyRoomInvite = ({
           </FormControl>
           <Button
             variant="contained"
-            className={
-              groupUsers.length === 0 ? classes.disabled : classes.headToRoom
-            }
+            className={groupUsers.length === 0 ? classes.disabled : classes.headToRoom}
             startIcon={<VideocamRoundedIcon />}
             onClick={handleStart}
           >
@@ -131,14 +128,8 @@ const StudyRoomInvite = ({
 
         {loading ? (
           <div className={classes.loadingScreen}>
-            <img
-              className={classes.img}
-              src={LoadingImg}
-              alt="study room chat"
-            />
-            <div className={classes.text1}>
-              Finding your classmates...
-            </div>
+            <img className={classes.img} src={LoadingImg} alt="study room chat" />
+            <div className={classes.text1}>Finding your classmates...</div>
             <div className={classes.text2}>
               Sit tight! We’re searching high and low to generate a list for you.
             </div>

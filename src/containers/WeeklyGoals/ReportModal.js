@@ -7,32 +7,25 @@ import useStyles from './styles';
 
 const ReportModal = ({ open, data, onClose, value, total }) => {
   const classes = useStyles();
-  const remainingPercent = (100 - ((value * 100.0) / total)).toFixed(1);
+  const remainingPercent = (100 - (value * 100.0) / total).toFixed(1);
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="sm"
-      open={open}
-      onClose={onClose}
-    >
+    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
       <DialogTitle variant="h5" onClose={onClose}>
         <b>{data.title}</b>
       </DialogTitle>
       <DialogContent dividers>
-        <Typography>
-          {data.preText(value, total)}
-        </Typography>
+        <Typography>{data.preText(value, total)}</Typography>
         <Box display="flex" justifyContent="center" mb={2}>
-          <img src={data.image} alt="rocket representing progress" className={classes.reportImage}/>
+          <img
+            src={data.image}
+            alt="rocket representing progress"
+            className={classes.reportImage}
+          />
         </Box>
-        <Typography paragraph>
-          {data.content(remainingPercent)}
-        </Typography>
+        <Typography paragraph>{data.content(remainingPercent)}</Typography>
         <Box display="flex" justifyContent="flex-end">
-          <GradientButton onClick={onClose}>
-            {data.buttonText}
-          </GradientButton>
+          <GradientButton onClick={onClose}>{data.buttonText}</GradientButton>
         </Box>
       </DialogContent>
     </Dialog>

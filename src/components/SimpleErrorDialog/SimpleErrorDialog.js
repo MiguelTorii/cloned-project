@@ -20,10 +20,7 @@ type Props = {
   pushTo: Function
 };
 
-class SimpleErrorDialog extends React.PureComponent<
-  ProvidedProps & Props,
-  State
-> {
+class SimpleErrorDialog extends React.PureComponent<ProvidedProps & Props, State> {
   static defaultProps = {
     showSignup: false
   };
@@ -49,10 +46,7 @@ class SimpleErrorDialog extends React.PureComponent<
         </Typography>
         <div className={classes.buttons}>
           {showSignup && (
-            <TransparentButton
-              className={classes.button}
-              onClick={this.handleSignUp}
-            >
+            <TransparentButton className={classes.button} onClick={this.handleSignUp}>
               Sign up
             </TransparentButton>
           )}
@@ -73,7 +67,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(SimpleErrorDialog));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SimpleErrorDialog));

@@ -43,7 +43,11 @@ class AddMembers extends React.PureComponent<Props, State> {
 
   handleAutoComplete = (values) => {
     this.setState({ users: values });
-    if (values.length === 0) { this.setState({ error: true }); } else { this.setState({ error: false }); }
+    if (values.length === 0) {
+      this.setState({ error: true });
+    } else {
+      this.setState({ error: false });
+    }
   };
 
   handleLoadOptions = (query) => {
@@ -55,7 +59,9 @@ class AddMembers extends React.PureComponent<Props, State> {
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const { users } = this.state;
-    if (users.length === 0) { this.setState({ error: true }); } else {
+    if (users.length === 0) {
+      this.setState({ error: true });
+    } else {
       this.setState({ error: false });
       onSubmit({ selectedUsers: users });
       this.setState({
@@ -101,10 +107,7 @@ class AddMembers extends React.PureComponent<Props, State> {
             }}
           />
         )}
-        <ValidatorForm
-          onSubmit={this.handleSubmit}
-          className={classes.validatorForm}
-        >
+        <ValidatorForm onSubmit={this.handleSubmit} className={classes.validatorForm}>
           <div className={classes.form}>
             <FormControl component="fieldset">
               <RadioGroup

@@ -22,14 +22,18 @@ const OnboardSelectRewards = ({ user }: Props) => {
   useEffect(() => {
     const fetchRewards = async () => {
       const { availableRewards } = await getRewards({ userId });
-      if (availableRewards) { setRewards(availableRewards); }
+      if (availableRewards) {
+        setRewards(availableRewards);
+      }
     };
     fetchRewards();
   }, [userId]);
 
   const saveReward = (name, slot) => {
     const { rewardId } = rewards.find((el) => el.displayName === name);
-    if (rewardId) { updateRewards({ userId, rewardId, slot }); }
+    if (rewardId) {
+      updateRewards({ userId, rewardId, slot });
+    }
   };
 
   return (

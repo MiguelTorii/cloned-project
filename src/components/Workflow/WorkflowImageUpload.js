@@ -34,18 +34,14 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
     return imageCompression(file, options);
   }, []);
 
-  const getFileExtension = useCallback(
-    (filename) => filename.split('.').pop(),
-    []
-  );
+  const getFileExtension = useCallback((filename) => filename.split('.').pop(), []);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
       setLoading(true);
       const newImages = await Promise.all(
         acceptedFiles.map(async (file) => {
-          const compressedFile =
-            file.type === 'application/pdf' ? file : await compressImage(file);
+          const compressedFile = file.type === 'application/pdf' ? file : await compressImage(file);
           const url = URL.createObjectURL(compressedFile);
           const { path, type } = file;
           const extension = getFileExtension(path);
@@ -93,7 +89,8 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
 
   const setImagesUploading = useCallback(() => {
     const newImages = update(images, {
-      $apply: (b) => b.map((item) => ({
+      $apply: (b) =>
+        b.map((item) => ({
           ...item,
           loading: true,
           loaded: false,
@@ -107,7 +104,8 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
   const setImagesUploaded = useCallback(() => {
     setDisabled(false);
     const newImages = update(images, {
-      $apply: (b) => b.map((item) => ({
+      $apply: (b) =>
+        b.map((item) => ({
           ...item,
           loading: false,
           loaded: true,
@@ -117,15 +115,23 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
     setImages(newImages);
   }, [images]);
 
-  const uploadImageRequest = useCallback((url, image, type) => axios.put(url, image, {
-      headers: {
-        'Content-Type': type
-      }
-    }), []);
+  const uploadImageRequest = useCallback(
+    (url, image, type) =>
+      axios.put(url, image, {
+        headers: {
+          'Content-Type': type
+        }
+      }),
+    []
+  );
 
   const handleUploadImages = useCallback(async () => {
-    if (images.length === 0) { throw new Error('no images'); }
-    if (images.length === 0) { return false; }
+    if (images.length === 0) {
+      throw new Error('no images');
+    }
+    if (images.length === 0) {
+      return false;
+    }
     setImagesUploading();
     const fileNames = images.map((image) => image.id);
     const result = await getPresignedURLs({
@@ -138,9 +144,7 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
       .all(
         images.map(async (item) => {
           const compress =
-            item.file.type === 'application/pdf'
-              ? item.file
-              : await compressImage(item.file);
+            item.file.type === 'application/pdf' ? item.file : await compressImage(item.file);
           uploadImageRequest(result[item.id].url, compress, item.type);
         })
       )
@@ -153,14 +157,7 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
       .catch(() => {
         throw new Error('error uploading');
       });
-  }, [
-    compressImage,
-    images,
-    setImagesUploaded,
-    setImagesUploading,
-    uploadImageRequest,
-    userId
-  ]);
+  }, [compressImage, images, setImagesUploaded, setImagesUploading, uploadImageRequest, userId]);
 
   const handleImageDelete = useCallback(
     (id: string) => {
@@ -185,14 +182,9 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
     setCurrentImage(idx);
   }, []);
   const handleImageClose = useCallback(() => setCurrentImage(null), []);
-  const lightboxImages = useMemo(
-    () => images.map((im) => ({ src: im.image })),
-    [images]
-  );
+  const lightboxImages = useMemo(() => images.map((im) => ({ src: im.image })), [images]);
   const next = useCallback(() => {
-    setCurrentImage(
-      currentImage === images.length ? currentImage : currentImage + 1
-    );
+    setCurrentImage(currentImage === images.length ? currentImage : currentImage + 1);
   }, [currentImage, images]);
   const prev = useCallback(() => {
     setCurrentImage(currentImage === 0 ? 0 : currentImage - 1);
@@ -237,9 +229,7 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
                         <Typography>
                           Drag files here to attach them or tap here to browse
                         </Typography>
-                        <Typography>
-                          (Currently support JPEG, JPG, PNG and PDFs)
-                        </Typography>
+                        <Typography>(Currently support JPEG, JPG, PNG and PDFs)</Typography>
                       </Grid>
                     </Grid>
                   )}
@@ -252,16 +242,10 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
       <Grid container className={classes.imagesContainer}>
         {images.map((im, idx) => (
           <Grid item key={im.image} className={classes.imageContainer}>
-            <IconButton
-              className={classes.iconButton}
-              onClick={() => handleImageDelete(im.id)}
-            >
+            <IconButton className={classes.iconButton} onClick={() => handleImageDelete(im.id)}>
               <CloseIcon className={classes.icon} />
             </IconButton>
-            <ButtonBase
-              onClick={() => openImage(idx)}
-              className={classes.buttonImage}
-            >
+            <ButtonBase onClick={() => openImage(idx)} className={classes.buttonImage}>
               <img alt="uploadimage" src={im.image} className={classes.image} />
             </ButtonBase>
           </Grid>

@@ -29,14 +29,14 @@ class QuestsCard extends React.PureComponent<Props, State> {
     const { classes, userId, data, isLoading } = this.props;
 
     if (isLoading) {
-return (
+      return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
-}
+    }
 
     return (
       <Paper className={classes.root} elevation={1}>
@@ -46,10 +46,7 @@ return (
         <Quests userId={userId} quests={data.activeQuests} />
         <div className={classes.status}>
           <Typography variant="subtitle1" align="center">
-            {renderText(
-              data.availablePointsText.text,
-              data.availablePointsText.style
-            )}
+            {renderText(data.availablePointsText.text, data.availablePointsText.style)}
           </Typography>
           <Typography variant="subtitle1" align="center">
             {renderText(data.progressText.text, data.progressText.style)}

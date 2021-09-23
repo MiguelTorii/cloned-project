@@ -14,12 +14,7 @@ import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 
 import StudyRoomInvite from './StudyRoomInvite';
-import {
-  renewTwilioToken,
-  createChannel,
-  addGroupMembers,
-  getGroupMembers
-} from '../../api/chat';
+import { renewTwilioToken, createChannel, addGroupMembers, getGroupMembers } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
@@ -84,7 +79,9 @@ class StartVideo extends React.PureComponent<Props, State> {
       this.setState({ online: true });
     });
 
-    if (userId !== '') { this.handleInitChat(); }
+    if (userId !== '') {
+      this.handleInitChat();
+    }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -119,7 +116,9 @@ class StartVideo extends React.PureComponent<Props, State> {
     if (client) {
       client.shutdown();
     }
-    if (this.mounted) { this.setState({ client: null, channels: [] }); }
+    if (this.mounted) {
+      this.setState({ client: null, channels: [] });
+    }
   };
 
   handleInitChat = async () => {
@@ -170,7 +169,9 @@ class StartVideo extends React.PureComponent<Props, State> {
 
   handleStart = () => {
     const { channel, groupUsers } = this.state;
-    if (groupUsers.length <= 1) { return; }
+    if (groupUsers.length <= 1) {
+      return;
+    }
 
     logEvent({
       event: 'Video- Start Video',
@@ -180,13 +181,7 @@ class StartVideo extends React.PureComponent<Props, State> {
     win.focus();
   };
 
-  handleInvite = async ({
-    chatType,
-    name,
-    type,
-    selectedUsers,
-    startVideo = false
-  }) => {
+  handleInvite = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
     const { client, channel } = this.state;
     this.setState({ isLoading: true });
     try {
@@ -242,13 +237,7 @@ class StartVideo extends React.PureComponent<Props, State> {
     this.setState({ createChannel: type });
   };
 
-  handleChannelUpdated = ({
-    channel,
-    isNew
-  }: {
-    channel: Object,
-    isNew: boolean
-  }) => {
+  handleChannelUpdated = ({ channel, isNew }: { channel: Object, isNew: boolean }) => {
     this.setState(({ channels }) => ({
       // channelList
       channels: [channel, ...channels],
@@ -282,38 +271,26 @@ class StartVideo extends React.PureComponent<Props, State> {
           <div className={classes.root}>
             <div className={classes.row}>
               <Typography variant="h4">Study Room</Typography>
-              <Button
-                className={classes.button1}
-                onClick={this.handleSetInviteVisible}
-              >
+              <Button className={classes.button1} onClick={this.handleSetInviteVisible}>
                 Start a Study Room
               </Button>
             </div>
 
             <Typography className={classes.subtitle} variant="body1">
-              What’s better than studying? Studying with the squad of course! Study with your classmates from home.
-              Pants optional. You can earn 20,000 points just for starting a study room!
+              What’s better than studying? Studying with the squad of course! Study with your
+              classmates from home. Pants optional. You can earn 20,000 points just for starting a
+              study room!
             </Typography>
 
             <div className={classes.wrapper}>
-              <img
-                className={classes.img}
-                src={StudyRoomImg}
-                alt="study room chat"
-              />
+              <img className={classes.img} src={StudyRoomImg} alt="study room chat" />
 
-              <Typography
-                className={classes.note}
-                variant="body1"
-                align="center"
-              >
-                Get nice and cozy, stay hydrated and press the button below to select classmates to join you on a video chat!
+              <Typography className={classes.note} variant="body1" align="center">
+                Get nice and cozy, stay hydrated and press the button below to select classmates to
+                join you on a video chat!
               </Typography>
 
-              <Button
-                className={classes.button2}
-                onClick={this.handleSetInviteVisible}
-              >
+              <Button className={classes.button2} onClick={this.handleSetInviteVisible}>
                 Start a Private Study Room
               </Button>
             </div>

@@ -4,18 +4,23 @@ import moment from 'moment';
 import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';
 
+<<<<<<< HEAD
 export const getPointsText = (points: number) => Math.floor(points).toLocaleString();
+=======
+export const getPointsText = (points: number) =>
+  points < 1000 ? points.toLocaleString() : `${Math.floor(points / 1000).toLocaleString()}K`;
+>>>>>>> b3b9da56 (Autofix all files for prettier errors.)
 
-export const momentWithTimezone = (date: string = undefined) =>
-  moment(date).tz(TIME_ZONE);
+export const momentWithTimezone = (date: string = undefined) => moment(date).tz(TIME_ZONE);
 
-export const isApiCalling = (type) => (state) =>
-  _.get(state.api[type], 'inProgress', false);
+export const isApiCalling = (type) => (state) => _.get(state.api[type], 'inProgress', false);
 
 export const getPastClassIds = (classList) =>
   classList
     .map((classEntry) => {
-      if (!classEntry.isCurrent) { return classEntry.classId; }
+      if (!classEntry.isCurrent) {
+        return classEntry.classId;
+      }
       return '';
     })
     .filter((item) => item);
@@ -51,8 +56,7 @@ export const shuffleArray = (array) => {
   return result;
 };
 
-export const truncate = (str, n) =>
-  (str.length > n ? `${str.substr(0, n - 1)}...` : str);
+export const truncate = (str, n) => (str.length > n ? `${str.substr(0, n - 1)}...` : str);
 
 export const arrElemToId = (array) => {
   const result = [];
@@ -65,7 +69,9 @@ export const arrElemToId = (array) => {
 };
 
 export const extractTextFromHtml = (html) => {
-  if (!html) { return ''; }
+  if (!html) {
+    return '';
+  }
   const tempDivElement = document.createElement('div');
   tempDivElement.innerHTML = html;
   const result = tempDivElement.textContent || tempDivElement.innerText || '';
@@ -73,7 +79,9 @@ export const extractTextFromHtml = (html) => {
 };
 
 export const englishIdFromNumber = (number) => {
-  if (number === 0) { return 'A'; }
+  if (number === 0) {
+    return 'A';
+  }
 
   const rem = [];
 
@@ -95,9 +103,7 @@ export const twoDigitsNumber = (number) =>
   });
 
 export const formatSeconds = (seconds) =>
-  `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(
-    seconds % 60
-  )}`;
+  `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(seconds % 60)}`;
 
 export const deepLinkCheck = (pathname) => {
   const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/);
@@ -107,7 +113,9 @@ export const deepLinkCheck = (pathname) => {
 export const isMac = () => window.navigator.platform.includes('Mac');
 
 export const commandHotkeyText = (key) => {
-  if (isMac()) { return `⌘${key}`; }
+  if (isMac()) {
+    return `⌘${key}`;
+  }
 
   return `CTRL + ${key}`;
 };

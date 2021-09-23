@@ -8,12 +8,8 @@ const Empty = () => {
   return (
     <div className={classes.container}>
       <LoadImg alt="empty-notes" url={emptyNotes} className={classes.image} />
-      <div className={classes.title}>
-        Now, you can type class notes right inside of CircleIn.
-      </div>
-      <div className={classes.subtitle}>
-        Organization just got so much easier.
-      </div>
+      <div className={classes.title}>Now, you can type class notes right inside of CircleIn.</div>
+      <div className={classes.subtitle}>Organization just got so much easier.</div>
     </div>
   );
 };

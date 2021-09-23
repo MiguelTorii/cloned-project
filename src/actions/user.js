@@ -1,9 +1,6 @@
 // @flow
 import { userActions } from 'constants/action-types';
-import {
-  getAnnouncement as fetchAnnouncement,
-  getAnnouncementCampaign
-} from 'api/announcement';
+import { getAnnouncement as fetchAnnouncement, getAnnouncementCampaign } from 'api/announcement';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
@@ -23,11 +20,7 @@ import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
 
-const setBannerHeightAction = ({
-  bannerHeight
-}: {
-  bannerHeight: number
-}): Action => ({
+const setBannerHeightAction = ({ bannerHeight }: { bannerHeight: number }): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
   payload: {
     bannerHeight
@@ -60,94 +53,85 @@ const setClassesAction = ({
   }
 });
 
-export const fetchClasses =
-  (skipCache) => async (dispatch: Dispatch, getState: Function) => {
-    try {
-      const {
-        user: {
-          userClasses,
-          data: { userId },
-          expertMode
-        }
-      } = getState();
-
-      const res = await getUserClasses({ userId, skipCache, expertMode });
-      const {
-        classes: classList,
-        emptyState,
-        permissions: { canAddClasses }
-      } = res;
-
-      if (expertMode) {
-        store.remove('CLASSES_CACHE');
-
-        const value = classList.map((cl) =>
-          JSON.stringify({
-            classId: cl.classId,
-            sectionId: cl.section?.[0]?.sectionId
-          })
-        );
-
-        dispatch(
-          feedActions.updateFilter({
-            value,
-            field: 'userClasses'
-          })
-        );
+export const fetchClasses = (skipCache) => async (dispatch: Dispatch, getState: Function) => {
+  try {
+    const {
+      user: {
+        userClasses,
+        data: { userId },
+        expertMode
       }
+    } = getState();
 
-      if (
-        !isEqual(userClasses.classList, classList) ||
-        userClasses.canAddClasses !== canAddClasses
-      ) {
-        dispatch(
-          setClassesAction({
-            userClasses: {
-              classList,
-              canAddClasses,
-              emptyState
-            }
-          })
-        );
-      }
-    } catch (e) {
-      /* NONE */
+    const res = await getUserClasses({ userId, skipCache, expertMode });
+    const {
+      classes: classList,
+      emptyState,
+      permissions: { canAddClasses }
+    } = res;
+
+    if (expertMode) {
+      store.remove('CLASSES_CACHE');
+
+      const value = classList.map((cl) =>
+        JSON.stringify({
+          classId: cl.classId,
+          sectionId: cl.section?.[0]?.sectionId
+        })
+      );
+
+      dispatch(
+        feedActions.updateFilter({
+          value,
+          field: 'userClasses'
+        })
+      );
     }
-  };
+
+    if (!isEqual(userClasses.classList, classList) || userClasses.canAddClasses !== canAddClasses) {
+      dispatch(
+        setClassesAction({
+          userClasses: {
+            classList,
+            canAddClasses,
+            emptyState
+          }
+        })
+      );
+    }
+  } catch (e) {
+    /* NONE */
+  }
+};
 
 export const setExpertModeAction = (expertMode) => ({
   type: userActions.SET_EXPERT_MODE,
   payload: { expertMode }
 });
 
-export const toggleExpertMode =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    const {
-      user: {
-        data: { userId },
-        expertMode
-      }
-    } = getState();
-
-    const newExpertMode = !expertMode;
-    dispatch(setExpertModeAction(newExpertMode));
-
-    const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
-
-    if (apiSuccess) {
-      dispatch(fetchClasses(true));
-    } else {
-      dispatch(setExpertModeAction(expertMode));
+export const toggleExpertMode = () => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    user: {
+      data: { userId },
+      expertMode
     }
+  } = getState();
 
-    setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
-  };
+  const newExpertMode = !expertMode;
+  dispatch(setExpertModeAction(newExpertMode));
 
-const updateTourAction = ({
-  runningTour
-}: {
-  runningTour: boolean
-}): Action => ({
+  const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
+
+  if (apiSuccess) {
+    dispatch(fetchClasses(true));
+  } else {
+    dispatch(setExpertModeAction(expertMode));
+  }
+
+  setTimeout(() => dispatch(clearDialogMessageAction()), 2000);
+};
+
+const updateTourAction = ({ runningTour }: { runningTour: boolean }): Action => ({
   type: userActions.UPDATE_TOUR,
   payload: {
     runningTour
@@ -192,7 +176,9 @@ const syncSuccessAction = ({
 
 export const sync = (userId) => async (dispatch: Dispatch) => {
   const result = await getSync(userId);
-  if (result) { dispatch(syncSuccessAction(result)); }
+  if (result) {
+    dispatch(syncSuccessAction(result));
+  }
 };
 
 const confirmTooltipSuccessAction = (tooltipId: number): Action => ({
@@ -202,11 +188,10 @@ const confirmTooltipSuccessAction = (tooltipId: number): Action => ({
   }
 });
 
-export const confirmTooltip =
-  (tooltipId: number) => async (dispatch: Dispatch) => {
-    await postConfirmTooltip(tooltipId);
-    dispatch(confirmTooltipSuccessAction(tooltipId));
-  };
+export const confirmTooltip = (tooltipId: number) => async (dispatch: Dispatch) => {
+  await postConfirmTooltip(tooltipId);
+  dispatch(confirmTooltipSuccessAction(tooltipId));
+};
 
 const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
   type: userActions.UPDATE_ONBOARDING,
@@ -266,8 +251,7 @@ export const setIsMasquerading = (isMasquerading: boolean) => ({
 });
 
 export const masquerade =
-  (userId: string, refreshToken: string, callback: Function) =>
-  async (dispatch: Dispatch) => {
+  (userId: string, refreshToken: string, callback: Function) => async (dispatch: Dispatch) => {
     store.set('REFRESH_TOKEN', refreshToken);
     store.set('USER_ID', userId);
 

@@ -17,30 +17,21 @@ const GetApp = (props: Props) => {
   const { innerWidth } = window;
 
   return (
-    <Dialog
-      className={classes.dialog}
-      onCancel={onClose}
-      open={open}
-      title="CircleIn Mobile App"
-    >
+    <Dialog className={classes.dialog} onCancel={onClose} open={open} title="CircleIn Mobile App">
       <Typography color="textPrimary" paragraph>
-        The app is great for posting a picture of your notes for points, direct
-        or group messaging with classmates, getting notifications and reminders,
-        and checking your points on the go.
+        The app is great for posting a picture of your notes for points, direct or group messaging
+        with classmates, getting notifications and reminders, and checking your points on the go.
       </Typography>
       <Typography color="textPrimary" paragraph>
-        The web version is great for: sharing google docs of your notes for
-        points, doing video study sessions for points, viewing what your
-        classmates have shared with everyone, and creating flashcards for
-        points.
+        The web version is great for: sharing google docs of your notes for points, doing video
+        study sessions for points, viewing what your classmates have shared with everyone, and
+        creating flashcards for points.
       </Typography>
       <Typography color="textPrimary" paragraph>
         Download the app now
       </Typography>
       <Typography
-        className={
-          innerWidth < 800 ? classes.downloadColumn : classes.downloads
-        }
+        className={innerWidth < 800 ? classes.downloadColumn : classes.downloads}
         color="textPrimary"
         paragraph
       >

@@ -95,10 +95,7 @@ const ChatHeader = ({
     data: { userId, schoolId, permission }
   } = user;
 
-  const members = useMemo(
-    () => channel && local[channel.sid].members,
-    [channel, local]
-  );
+  const members = useMemo(() => channel && local[channel.sid].members, [channel, local]);
 
   const currentChannelTitle = useMemo(() => {
     if (!channel?.channelState?.friendlyName) {
@@ -129,15 +126,12 @@ const ChatHeader = ({
   );
 
   const temporaryAddMemberPermissionOfCommunityChat = useMemo(
-    () =>
-      permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
+    () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
   );
 
   const deletePermission = useMemo(
-    () =>
-      permission &&
-      permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS),
+    () => permission && permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS),
     [permission]
   );
 
@@ -146,19 +140,10 @@ const ChatHeader = ({
     [isCommunityChat, deletePermission, members, isShow]
   );
 
-  const handleEditGroupDetailsClose = useCallback(
-    () => setEditGroupDetailsOpen(false),
-    []
-  );
-  const handleEditGroupDetailsOpen = useCallback(
-    () => setEditGroupDetailsOpen(true),
-    []
-  );
+  const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
+  const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), []);
   const handleCreateChannelClose = useCallback(() => setChannelType(null), []);
-  const handleCreateChannelOpen = useCallback(
-    () => setChannelType('group'),
-    []
-  );
+  const handleCreateChannelOpen = useCallback(() => setChannelType('group'), []);
 
   const handleShareLink = useCallback(() => {
     setOpenShareLink(true);
@@ -172,11 +157,11 @@ const ChatHeader = ({
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
       if (query.trim() === '' || query.trim().length < 3) {
-return {
+        return {
           options: [],
           hasMore: false
         };
-}
+      }
 
       const users = await searchUsers({
         userId,
@@ -266,14 +251,12 @@ return {
       <List component="nav" aria-label="secondary mailbox folders">
         {members.map((member, index) => {
           if (index > 2) {
-return (
+            return (
               <ListItem button key={member.userId}>
-                <ListItemText
-                  primary={`${member.firstname} ${member.lastname}`}
-                />
+                <ListItemText primary={`${member.firstname} ${member.lastname}`} />
               </ListItem>
             );
-}
+          }
           return null;
         })}
       </List>
@@ -313,11 +296,7 @@ return (
           </Popover>
           <div className={classes.chatIcons}>
             {(otherUser?.registered || memberKeys.length > 2) && videoEnabled && (
-              <IconButton
-                aria-label="study-room"
-                className={classes.chatIcon}
-                onClick={startVideo}
-              >
+              <IconButton aria-label="study-room" className={classes.chatIcon} onClick={startVideo}>
                 <ChatStudyRoom />
               </IconButton>
             )}
@@ -345,11 +324,7 @@ return (
                 className={classes.chatIcon}
                 onClick={onOpenRightPanel}
               >
-                {rightSpace ? (
-                  <ChatActiveStudyRoomMemberrs />
-                ) : (
-                  <ChatStudyRoomMemberrs />
-                )}
+                {rightSpace ? <ChatActiveStudyRoomMemberrs /> : <ChatStudyRoomMemberrs />}
               </IconButton>
             )}
             {!isCommunityChat && (
@@ -388,15 +363,10 @@ return (
               <Paper className={classes.paper}>
                 <MenuList>
                   {Object.keys(members).length > 2 && isShow && (
-                    <MenuItem onClick={handleEditGroup}>
-                      Edit Group Details
-                    </MenuItem>
+                    <MenuItem onClick={handleEditGroup}>Edit Group Details</MenuItem>
                   )}
                   {deletePermission && (
-                    <MenuItem
-                      onClick={handleRemoveStudent}
-                      className={classes.removeStudent}
-                    >
+                    <MenuItem onClick={handleRemoveStudent} className={classes.removeStudent}>
                       Remove Students
                     </MenuItem>
                   )}

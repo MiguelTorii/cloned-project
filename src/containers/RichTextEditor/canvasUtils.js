@@ -36,11 +36,7 @@ export async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   ctx.translate(-safeArea / 2, -safeArea / 2);
 
   // draw rotated image and store data.
-  ctx.drawImage(
-    image,
-    safeArea / 2 - image.width * 0.5,
-    safeArea / 2 - image.height * 0.5
-  );
+  ctx.drawImage(image, safeArea / 2 - image.width * 0.5, safeArea / 2 - image.height * 0.5);
   const data = ctx.getImageData(0, 0, safeArea, safeArea);
 
   // set canvas width to final desired crop size - this will clear existing context
@@ -71,10 +67,7 @@ export async function getRotatedImage(imageSrc, rotation = 0) {
   const ctx = canvas.getContext('2d');
 
   const orientationChanged =
-    rotation === 90 ||
-    rotation === -90 ||
-    rotation === 270 ||
-    rotation === -270;
+    rotation === 90 || rotation === -90 || rotation === 270 || rotation === -270;
   if (orientationChanged) {
     canvas.width = image.height;
     canvas.height = image.width;

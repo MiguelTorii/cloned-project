@@ -140,9 +140,7 @@ const CreateQuestion = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost
-          ? `?class=${cypher(`${classId}:${sectionId}`)}`
-          : '';
+        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);
@@ -171,7 +169,9 @@ const CreateQuestion = ({
   }, [questionId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (questionId && userId) { loadData(); }
+    if (questionId && userId) {
+      loadData();
+    }
     // const { classId, sectionId } = decypherClass()
     // setClassId(Number(classId))
     // setSectionId(Number(sectionId))
@@ -199,7 +199,9 @@ const CreateQuestion = ({
         sectionId
       });
 
-      if (!res.success) { throw new Error('Couldnt update'); }
+      if (!res.success) {
+        throw new Error('Couldnt update');
+      }
 
       enqueueSnackbar({
         notification: {
@@ -284,7 +286,9 @@ const CreateQuestion = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') { hasError = true; }
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           setIsPosting(false);
@@ -353,7 +357,11 @@ const CreateQuestion = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (questionId) { updateQuestion(); } else { createQuestion(); }
+      if (questionId) {
+        updateQuestion();
+      } else {
+        createQuestion();
+      }
     },
     [createQuestion, questionId, updateQuestion]
   );
@@ -433,10 +441,7 @@ const CreateQuestion = ({
               />
             </Grid>
             <Grid item xs={12} sm={12} className={classes.quillGrid}>
-              <ToolbarTooltip
-                toolbar={questionToolbar}
-                toolbarClass={classes.toolbarClass}
-              />
+              <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
               <RichTextEditor
                 setEditor={setEditor}
                 placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too."

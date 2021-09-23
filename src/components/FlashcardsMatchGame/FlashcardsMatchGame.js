@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
@@ -64,12 +58,7 @@ const ANIMATION_TYPES = {
 const ANIMATION_DURATION = 300;
 const TIMER_INTERVAL = 100;
 
-const FlashcardsMatchGame = ({
-  cards,
-  flashcardId,
-  flashcardTitle,
-  onClose
-}) => {
+const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) => {
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
 
@@ -93,36 +82,28 @@ const FlashcardsMatchGame = ({
   // Reducer
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const {
-    matchCards,
-    matchGameId,
-    lastIndex,
-    correctCount,
-    incorrectCount,
-    matchStartTime,
-    logs
-  } = state;
+  const { matchCards, matchGameId, lastIndex, correctCount, incorrectCount, matchStartTime, logs } =
+    state;
 
   // Memos
-  const isFinished = useMemo(() => matchCards.length > 0 && correctCount * 2 === matchCards.length, [correctCount, matchCards.length]);
+  const isFinished = useMemo(
+    () => matchCards.length > 0 && correctCount * 2 === matchCards.length,
+    [correctCount, matchCards.length]
+  );
 
   const elapsedSeconds = useMemo(() => {
-    if (!matchStartTime || !lastRecordTime) { return 0; }
-    return Math.floor(
-      moment.duration(lastRecordTime.diff(matchStartTime)).as('seconds')
-    );
+    if (!matchStartTime || !lastRecordTime) {
+      return 0;
+    }
+    return Math.floor(moment.duration(lastRecordTime.diff(matchStartTime)).as('seconds'));
   }, [matchStartTime, lastRecordTime]);
 
   // Callbacks
   const initializeMatchGame = useCallback(async () => {
     const { match_game_id } = await apiInitializeMatchGame(flashcardId);
     const getCardSize = (image, text) => {
-      ReactDOM.render(
-        <ContentCard image={image} text={text} x={0} y={0} />,
-        containerRef
-      );
-      const element =
-        containerRef.childNodes[containerRef.childNodes.length - 1];
+      ReactDOM.render(<ContentCard image={image} text={text} x={0} y={0} />, containerRef);
+      const element = containerRef.childNodes[containerRef.childNodes.length - 1];
       const rect = element.getBoundingClientRect();
       return [Math.floor(rect.width), Math.floor(rect.height)];
     };
@@ -182,14 +163,7 @@ const FlashcardsMatchGame = ({
       lastRecordTime.utc().valueOf(),
       elapsedSeconds
     );
-  }, [
-    logs,
-    flashcardId,
-    matchGameId,
-    matchStartTime,
-    lastRecordTime,
-    elapsedSeconds
-  ]);
+  }, [logs, flashcardId, matchGameId, matchStartTime, lastRecordTime, elapsedSeconds]);
 
   // Effects
   useEffect(() => {
@@ -208,11 +182,7 @@ const FlashcardsMatchGame = ({
   useEffect(() => {
     const func = async () => {
       if (logs.length > 4) {
-        const { logged } = await apiSaveMatchGameRecords(
-          flashcardId,
-          matchGameId,
-          logs
-        );
+        const { logged } = await apiSaveMatchGameRecords(flashcardId, matchGameId, logs);
         if (logged) {
           dispatch(removeLogs(logs.length));
         }
@@ -247,14 +217,7 @@ const FlashcardsMatchGame = ({
         dispatch(recordDraggedCards(index1, index2));
       }, ANIMATION_DURATION);
     },
-    [
-      dispatch,
-      correctCount,
-      lastIndex,
-      finishMatchGame,
-      matchCards.length,
-      loadStats
-    ]
+    [dispatch, correctCount, lastIndex, finishMatchGame, matchCards.length, loadStats]
   );
 
   const handleIncorrectDrop = useCallback(
@@ -294,10 +257,7 @@ const FlashcardsMatchGame = ({
     setIsShareModalOpen(true);
   }, []);
 
-  const handleCloseShareModal = useCallback(
-    () => setIsShareModalOpen(false),
-    []
-  );
+  const handleCloseShareModal = useCallback(() => setIsShareModalOpen(false), []);
 
   const handleStartOver = useCallback(() => {
     if (isFinished) {
@@ -307,10 +267,7 @@ const FlashcardsMatchGame = ({
     }
   }, [initializeMatchGame, isFinished]);
 
-  const handleCloseRestartModal = useCallback(
-    () => setIsRestartModalOpen(false),
-    []
-  );
+  const handleCloseRestartModal = useCallback(() => setIsRestartModalOpen(false), []);
 
   const handleRestart = useCallback(() => {
     setIsRestartModalOpen(false);
@@ -319,12 +276,7 @@ const FlashcardsMatchGame = ({
 
   // Rendering Helpers
   const renderSidebar = () => (
-    <Box
-      className={clsx(
-        classes.sidebar,
-        !isExpanded && classes.unExpandedSidebar
-      )}
-    >
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
         <Link
           component="button"
@@ -350,9 +302,7 @@ const FlashcardsMatchGame = ({
               {matchStartTime &&
                 lastRecordTime &&
                 (
-                  moment
-                    .duration(lastRecordTime.diff(matchStartTime))
-                    .as('milliseconds') / 1000
+                  moment.duration(lastRecordTime.diff(matchStartTime)).as('milliseconds') / 1000
                 ).toFixed(1)}
               {(!matchStartTime || !lastRecordTime) && '0.0'}
               <Typography className={classes.cardSubText}>sec</Typography>
@@ -390,7 +340,9 @@ const FlashcardsMatchGame = ({
   );
 
   const renderCard = (card, index) => {
-    if (!card.visible) { return null; }
+    if (!card.visible) {
+      return null;
+    }
 
     return (
       <DraggableCard
@@ -417,10 +369,7 @@ const FlashcardsMatchGame = ({
 
   const renderContent = () => (
     <DndProvider backend={HTML5Backend}>
-      <div
-        ref={setContainerRef}
-        className={clsx(classes.contentBox, isFinished && classes.hidden)}
-      >
+      <div ref={setContainerRef} className={clsx(classes.contentBox, isFinished && classes.hidden)}>
         {matchCards.map((card, index) => renderCard(card, index))}
       </div>
     </DndProvider>
@@ -441,13 +390,7 @@ const FlashcardsMatchGame = ({
             👏
           </span>
         </Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          mt={3}
-          mb={3}
-          alignItems="center"
-        >
+        <Box display="flex" justifyContent="center" mt={3} mb={3} alignItems="center">
           <Box>
             <Typography align="center" paragraph>
               Last High Score
@@ -455,17 +398,11 @@ const FlashcardsMatchGame = ({
             <Typography variant="h2" align="center">
               {!highScore && '--'}
               {highScore && formatSeconds(highScore)}
-              {highScore && (
-                <Typography className={classes.cardSubText}>min</Typography>
-              )}
+              {highScore && <Typography className={classes.cardSubText}>min</Typography>}
             </Typography>
           </Box>
           <Box>
-            <img
-              src={GifCongrats}
-              alt="Trophy"
-              className={classes.congratsGif}
-            />
+            <img src={GifCongrats} alt="Trophy" className={classes.congratsGif} />
           </Box>
           <Box>
             <Typography align="center" paragraph>
@@ -473,27 +410,16 @@ const FlashcardsMatchGame = ({
               {highScore && "Today's Score"}
 
               {highScore && highScore > elapsedSeconds && (
-                <img
-                  src={IconDown}
-                  alt="Icon Down"
-                  className={classes.scoreImage}
-                />
+                <img src={IconDown} alt="Icon Down" className={classes.scoreImage} />
               )}
               {highScore && highScore < elapsedSeconds && (
-                <img
-                  src={IconUp}
-                  alt="Icon Up"
-                  className={classes.scoreImage}
-                />
+                <img src={IconUp} alt="Icon Up" className={classes.scoreImage} />
               )}
             </Typography>
             <Typography
               variant="h2"
               align="center"
-              className={clsx(
-                (!highScore || highScore > elapsedSeconds) &&
-                  classes.highScoreText
-              )}
+              className={clsx((!highScore || highScore > elapsedSeconds) && classes.highScoreText)}
             >
               {formatSeconds(elapsedSeconds)}
               <Typography className={classes.cardSubText}>min</Typography>
@@ -501,29 +427,23 @@ const FlashcardsMatchGame = ({
           </Box>
         </Box>
         <Typography variant="h6" align="center" paragraph>
-          {!highScore &&
-            'Hooray for your first time playing with this deck! New high score!'}
+          {!highScore && 'Hooray for your first time playing with this deck! New high score!'}
           {highScore &&
             highScore <= elapsedSeconds &&
             'Almost there! Beat your time by playing again!'}
           {highScore &&
             highScore > elapsedSeconds &&
-            `You beat your personal record by ${formatSeconds(
-              highScore - elapsedSeconds
-            )} min!`}
+            `You beat your personal record by ${formatSeconds(highScore - elapsedSeconds)} min!`}
         </Typography>
         <Typography align="center">
           {!highScore && 'Play again and beat your personal record!'}
           {highScore &&
             highScore <= elapsedSeconds &&
             'Practice, practice, practice, and you’ll do even better next time!'}
-          {highScore &&
-            highScore > elapsedSeconds &&
-            'High five! Your hard work is paying off! 🙌'}
+          {highScore && highScore > elapsedSeconds && 'High five! Your hard work is paying off! 🙌'}
         </Typography>
         <Typography align="center" paragraph>
-          {!highScore &&
-            'Get faster and keep playing or share it with classmates too!'}
+          {!highScore && 'Get faster and keep playing or share it with classmates too!'}
           {highScore &&
             highScore <= elapsedSeconds &&
             'Get faster and keep playing or share it with classmates too!'}
@@ -532,10 +452,7 @@ const FlashcardsMatchGame = ({
             'Get even faster and keep playing or share it with classmates too!'}
         </Typography>
         <Box display="flex" justifyContent="center">
-          <TransparentButton
-            startIcon={<IconShare />}
-            onClick={handleOpenShareModal}
-          >
+          <TransparentButton startIcon={<IconShare />} onClick={handleOpenShareModal}>
             Share this Flashcard Deck with Classmates
           </TransparentButton>
         </Box>
@@ -549,11 +466,7 @@ const FlashcardsMatchGame = ({
         {renderSidebar()}
       </Slide>
       <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          className={classes.actionBar}
-        >
+        <Box display="flex" justifyContent="flex-end" className={classes.actionBar}>
           <Button
             startIcon={<IconPrev />}
             className={classes.actionButton}
@@ -562,11 +475,7 @@ const FlashcardsMatchGame = ({
           >
             Start Over
           </Button>
-          <Button
-            startIcon={<IconClose />}
-            className={classes.actionButton}
-            onClick={handleClose}
-          >
+          <Button startIcon={<IconClose />} className={classes.actionButton} onClick={handleClose}>
             Exit Game
           </Button>
         </Box>
@@ -587,8 +496,7 @@ const FlashcardsMatchGame = ({
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you'll reset your progress. Are you sure you
-        want to restart?
+        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </Dialog>
       <ShareLinkModal
         open={isShareModalOpen}
@@ -598,8 +506,8 @@ const FlashcardsMatchGame = ({
             <span role="img" aria-label="Two hands">
               🙌
             </span>
-            &nbsp; You’re awesome for helping your peers! Ready to share a link
-            to your <b>{flashcardTitle}</b> deck?
+            &nbsp; You’re awesome for helping your peers! Ready to share a link to your{' '}
+            <b>{flashcardTitle}</b> deck?
           </Typography>
         }
         onClose={handleCloseShareModal}

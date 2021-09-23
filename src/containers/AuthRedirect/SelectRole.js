@@ -92,12 +92,7 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
         return false;
       }
 
-      const {
-        lmsTypeId,
-        launchType,
-        redirect_message: redirectMessage,
-        connection
-      } = value;
+      const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = value;
       if (launchType === 'lti') {
         updateError({
           title: '',
@@ -155,14 +150,18 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
 
   const onClick = useCallback(async () => {
     const redirect = await onChange(school);
-    if (!redirect) { setScreen('login'); }
+    if (!redirect) {
+      setScreen('login');
+    }
   }, [onChange, school, setScreen]);
 
   const handleChange = useCallback(
     async (e) => {
       if (e?.target?.value) {
         const { value } = e.target;
-        if (value === 'dk') { setOpen(true); } else {
+        if (value === 'dk') {
+          setOpen(true);
+        } else {
           store.set('ROLE', value);
           updateRole({ role: value });
         }
@@ -185,20 +184,16 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
           onChange={handleChange}
         >
           <MenuItem value="student">Student</MenuItem>
-          <MenuItem value="faculty">
-            Faculty, Administrator, or Director
-          </MenuItem>
-          <MenuItem value="tutor">
-            Tutor, Mentor, Supplemental Instructor, or other
-          </MenuItem>
+          <MenuItem value="faculty">Faculty, Administrator, or Director</MenuItem>
+          <MenuItem value="tutor">Tutor, Mentor, Supplemental Instructor, or other</MenuItem>
           <MenuItem value="dk">I don’t see my role</MenuItem>
           <MenuItem value="email">
             I need to login through CircleIn
             <Tooltip
               title={
                 <Typography className={classes.tooltipText}>
-                  You may need to log onto the main application without going
-                  through your school’s LMS. Choose this option to do so.
+                  You may need to log onto the main application without going through your school’s
+                  LMS. Choose this option to do so.
                 </Typography>
               }
               classes={{
@@ -213,17 +208,8 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
           </MenuItem>
         </Select>
       </div>
-      <Button
-        disabled={!role}
-        variant="contained"
-        onClick={onClick}
-        color="primary"
-      >
-        {loading ? (
-          <CircularProgress size={20} color="secondary" />
-        ) : (
-          'Select Role'
-        )}
+      <Button disabled={!role} variant="contained" onClick={onClick} color="primary">
+        {loading ? <CircularProgress size={20} color="secondary" /> : 'Select Role'}
       </Button>
 
       <Dialog
@@ -235,11 +221,9 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
       >
         <div className={classes.content}>
           <Typography color="textPrimary" className={classes.dialogText}>
-            If you’re trying to log into the main CircleIn application to
-            support students, you’ll want to log in using the{' '}
-            <b>Tutor, Mentor, Supplemental Instructor, or Other</b> role. An
-            example of people who might fall into this role include (but or not
-            limited to):
+            If you’re trying to log into the main CircleIn application to support students, you’ll
+            want to log in using the <b>Tutor, Mentor, Supplemental Instructor, or Other</b> role.
+            An example of people who might fall into this role include (but or not limited to):
           </Typography>
 
           <li className={classes.item}>Peer mentors</li>
@@ -256,9 +240,9 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
           </Typography>
 
           <Typography color="textPrimary" className={classes.dialogCaption}>
-            If you need access to CircleIn but are not sure if you need access
-            to the main application, Insights Dashboard, or both, please contact
-            your institution or us at support@circleinapp.com for help.
+            If you need access to CircleIn but are not sure if you need access to the main
+            application, Insights Dashboard, or both, please contact your institution or us at
+            support@circleinapp.com for help.
           </Typography>
           <Button
             className={classes.gotItButton}

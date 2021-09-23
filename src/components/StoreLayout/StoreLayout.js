@@ -22,11 +22,10 @@ class StoreLayout extends React.PureComponent<Props> {
             Welcome to the Rewards Store
           </Typography>
           <Typography variant="subtitle1" paragraph>
-            Whenever you share something useful on CircleIn or help a classmate,
-            you’ll earn points. As your points add up, at the end of every
-            month, you’ll have a chance to win our monthly reward. Select three
-            rewards below and if you’re selected as a winner, we’ll send you an
-            e-giftcard for one of your choices!
+            Whenever you share something useful on CircleIn or help a classmate, you’ll earn points.
+            As your points add up, at the end of every month, you’ll have a chance to win our
+            monthly reward. Select three rewards below and if you’re selected as a winner, we’ll
+            send you an e-giftcard for one of your choices!
           </Typography>
           <Typography variant="subtitle1" paragraph>
             Your Monthly Rewards Selections

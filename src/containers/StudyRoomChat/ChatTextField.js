@@ -112,7 +112,7 @@ const styles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap'
   },
-   tooltip: {
+  tooltip: {
     fontSize: 14,
     backgroundColor: theme.circleIn.palette.tooltipBackground
   },
@@ -182,16 +182,7 @@ const ChatTextField = ({
         setFiles([]);
       }
     },
-    [
-      input,
-      message,
-      onSendInput,
-      onSendMessage,
-      setInput,
-      setMessage,
-      files,
-      setFiles
-    ]
+    [input, message, onSendInput, onSendMessage, setInput, setMessage, files, setFiles]
   );
 
   const handleChange = useCallback(
@@ -223,16 +214,7 @@ const ChatTextField = ({
         setAddNextLine(true);
       }
     },
-    [
-      addNextLine,
-      input,
-      message,
-      onSendInput,
-      onSendMessage,
-      setInput,
-      setMessage,
-      files
-    ]
+    [addNextLine, input, message, onSendInput, onSendMessage, setInput, setMessage, files]
   );
 
   const handleKeyUp = useCallback((event) => {
@@ -249,7 +231,9 @@ const ChatTextField = ({
   );
 
   const handleOpenInputFile = useCallback(() => {
-    if (fileInput.current) { fileInput.current.click(); }
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -287,21 +271,19 @@ const ChatTextField = ({
   }, [userId, fileInput, showNotification, files]);
 
   const checkDisabled = useCallback(() => {
-    if (files.length > 0) { return false; }
-    if (!message && !input) { return true; }
+    if (files.length > 0) {
+      return false;
+    }
+    if (!message && !input) {
+      return true;
+    }
     return false;
   }, [files, message, input]);
 
   return (
     <Paper className={classes.root} elevation={1}>
       <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
-        <div
-          className={cx(
-            files.length > 0
-              ? classes.fileInputContainer
-              : classes.inputContainer
-          )}
-        >
+        <div className={cx(files.length > 0 ? classes.fileInputContainer : classes.inputContainer)}>
           <input
             accept="*/*"
             className={classes.input}
@@ -362,9 +344,7 @@ const ChatTextField = ({
           >
             <SendIcon
               classes={{
-                root: checkDisabled()
-                  ? classes.sendIconDisabled
-                  : classes.sendIcon
+                root: checkDisabled() ? classes.sendIconDisabled : classes.sendIcon
               }}
             />
           </IconButton>
@@ -373,12 +353,7 @@ const ChatTextField = ({
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (
-            <AttachFile
-              key={file.url}
-              smallChat
-              file={file}
-              onClose={() => onClose(file)}
-            />
+            <AttachFile key={file.url} smallChat file={file} onClose={() => onClose(file)} />
           ))}
         </div>
       )}

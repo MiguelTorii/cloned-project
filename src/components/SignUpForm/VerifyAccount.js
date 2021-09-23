@@ -109,18 +109,10 @@ class VerifyAccount extends React.PureComponent<Props, State> {
           </Button>
         </div>
         <div className={classes.wrapper}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={loading}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" disabled={loading}>
             Submit
           </Button>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
       </ValidatorForm>
     );

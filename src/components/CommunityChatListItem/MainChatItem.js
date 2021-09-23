@@ -79,14 +79,8 @@ const MainChatItem = ({
     [permission]
   );
 
-  const handleEditGroupDetailsClose = useCallback(
-    () => setEditGroupDetailsOpen(false),
-    []
-  );
-  const handleEditGroupDetailsOpen = useCallback(
-    () => setEditGroupDetailsOpen(true),
-    []
-  );
+  const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
+  const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -104,7 +98,9 @@ const MainChatItem = ({
   const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
-    if (handleRemoveChannel && handleMuteChannel) { setShowMenu(true); }
+    if (handleRemoveChannel && handleMuteChannel) {
+      setShowMenu(true);
+    }
   }, [handleMuteChannel, handleRemoveChannel]);
 
   const onMouseLeave = useCallback(() => {
@@ -126,7 +122,9 @@ const MainChatItem = ({
   }, [handleClose]);
 
   const handleRemoveSubmit = useCallback(async () => {
-    if (roomId) { await handleRemoveChannel({ sid: roomId }); }
+    if (roomId) {
+      await handleRemoveChannel({ sid: roomId });
+    }
     handleRemoveClose();
   }, [handleRemoveChannel, roomId, handleRemoveClose]);
 
@@ -136,19 +134,15 @@ const MainChatItem = ({
   }, [handleClose, handleEditGroupDetailsOpen]);
 
   if (isLoading) {
-return (
+    return (
       <div className={classes.progress}>
         <CircularProgress size={20} color="secondary" />
       </div>
     );
-}
+  }
 
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className={classes.container}
-    >
+    <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={classes.container}>
       <ButtonBase
         className={cx(classes.root, {
           [classes.dark]: dark,
@@ -159,9 +153,7 @@ return (
         <OnlineBadge
           isVisible={isDirectChat}
           isOnline={isOnline}
-          bgColorPath={
-            dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'
-          }
+          bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
         >
           <Avatar className={classes.avatarProfile} src={imageProfile}>
             {initials || <GroupIcon />}
@@ -172,30 +164,18 @@ return (
             {roomName}
           </Typography>
           {members?.length > 2 && (
-            <Typography
-              className={classes.groupMemberCount}
-              variant="subtitle1"
-              noWrap
-            >
+            <Typography className={classes.groupMemberCount} variant="subtitle1" noWrap>
               {members?.length} members
             </Typography>
           )}
         </div>
         {muted && <NotificationsOffIcon />}
-        <Badge
-          className={classes.margin}
-          badgeContent={unReadCount}
-          color="secondary"
-        >
+        <Badge className={classes.margin} badgeContent={unReadCount} color="secondary">
           <span />
         </Badge>
       </ButtonBase>
       {showMenu && (
-        <IconButton
-          onClick={handleClick}
-          className={classes.hoverMenu}
-          size="small"
-        >
+        <IconButton onClick={handleClick} className={classes.hoverMenu} size="small">
           <MoreHorizIcon fontSize="inherit" />
         </IconButton>
       )}
@@ -215,12 +195,8 @@ return (
         onClose={handleClose}
       >
         <MenuItem onClick={handleRead}>Mark as Read</MenuItem>
-        {members?.length > 2 && isShow && (
-          <MenuItem onClick={handleEditGroup}>Edit Group</MenuItem>
-        )}
-        <MenuItem onClick={handleMute}>
-          {muted ? 'Unmute Group' : 'Mute Group'}
-        </MenuItem>
+        {members?.length > 2 && isShow && <MenuItem onClick={handleEditGroup}>Edit Group</MenuItem>}
+        <MenuItem onClick={handleMute}>{muted ? 'Unmute Group' : 'Mute Group'}</MenuItem>
         <MenuItem className={classes.leaveGroup} onClick={handleRemoveOpen}>
           Leave Group
         </MenuItem>
@@ -249,8 +225,7 @@ return (
         <Typography color="textPrimary" id="remove-dialog-description">
           Are you sure you want to leave this chat group?
           <br />
-          If you leave, this chat group will be deleted from your Direct
-          Messages.
+          If you leave, this chat group will be deleted from your Direct Messages.
         </Typography>
       </Dialog>
     </div>

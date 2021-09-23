@@ -32,11 +32,7 @@ const getAvailableSlots = (width) => {
   }
 };
 
-const requestOpenCreateChatGroupChannel = ({
-  uuid
-}: {
-  uuid: string
-}): Action => ({
+const requestOpenCreateChatGroupChannel = ({ uuid }: { uuid: string }): Action => ({
   type: chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST,
   payload: {
     uuid
@@ -85,13 +81,7 @@ const initClient = ({ client }: { client: Object }): Action => ({
   payload: { client }
 });
 
-const initChannels = ({
-  channels,
-  local
-}: {
-  channels: array,
-  local: Object
-}): Action => ({
+const initChannels = ({ channels, local }: { channels: array, local: Object }): Action => ({
   type: chatActions.INIT_CHANNELS_CHAT,
   payload: { channels, local }
 });
@@ -101,13 +91,7 @@ const messageLoading = (loading) => ({
   payload: { loading }
 });
 
-const updateChannel = ({
-  channel,
-  unread
-}: {
-  channel: Object,
-  unread: number
-}): Action => ({
+const updateChannel = ({ channel, unread }: { channel: Object, unread: number }): Action => ({
   type: chatActions.UPDATE_CHANNEL_CHAT,
   payload: { channel, unread }
 });
@@ -123,13 +107,7 @@ const updateShareLink = ({
   payload: { shareLink, channelId }
 });
 
-const updateMembers = ({
-  members,
-  channelId
-}: {
-  channelId: number,
-  members: Object
-}): Action => ({
+const updateMembers = ({ members, channelId }: { channelId: number, members: Object }): Action => ({
   type: chatActions.UPDATE_MEMBERS_CHAT,
   payload: { members, channelId }
 });
@@ -177,20 +155,12 @@ const muteChannelLocal = ({ sid }: { sid: string }) => ({
   payload: { sid }
 });
 
-const setCurrentChannelAction = ({
-  currentChannel
-}: {
-  currentChannel: Object
-}) => ({
+const setCurrentChannelAction = ({ currentChannel }: { currentChannel: Object }) => ({
   type: chatActions.SET_CURRENT_CHANNEL,
   payload: { currentChannel }
 });
 
-const setCurrentChannelSidAction = ({
-  selectedChannelId
-}: {
-  selectedChannelId: string
-}) => ({
+const setCurrentChannelSidAction = ({ selectedChannelId }: { selectedChannelId: string }) => ({
   type: chatActions.SET_CURRENT_CHANNEL_ID,
   payload: { selectedChannelId }
 });
@@ -200,11 +170,7 @@ const setCurrentCommunityAction = ({ channel }: { channel: Object }) => ({
   payload: { channel }
 });
 
-const setCurrentCommunityChannelAction = ({
-  currentChannel
-}: {
-  currentChannel: Object
-}) => ({
+const setCurrentCommunityChannelAction = ({ currentChannel }: { currentChannel: Object }) => ({
   type: chatActions.SET_CURRENT_COMMUNITY_CHANNEL,
   payload: { currentChannel }
 });
@@ -258,10 +224,7 @@ export const setMainMessage = (mainMessage) => (dispatch: Dispatch) => {
   dispatch(setMainMessageAction({ mainMessage }));
 };
 
-export const updateChannelAttributes = (
-  channelSid: string,
-  attributes: Object
-) => ({
+export const updateChannelAttributes = (channelSid: string, attributes: Object) => ({
   type: chatActions.UPDATE_CHANNEL_ATTRIBUTES,
   payload: {
     sid: channelSid,
@@ -290,81 +253,75 @@ export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
   }
 };
 
-export const setCurrentChannelSid =
-  (selectedChannelId) => async (dispatch: Dispatch) => {
-    if (setCurrentChannelSid) {
-      dispatch(setCurrentChannelSidAction({ selectedChannelId }));
-    }
-  };
+export const setCurrentChannelSid = (selectedChannelId) => async (dispatch: Dispatch) => {
+  if (setCurrentChannelSid) {
+    dispatch(setCurrentChannelSidAction({ selectedChannelId }));
+  }
+};
 
-export const setCurrentChannel =
-  (currentChannel) => async (dispatch: Dispatch) => {
-    if (currentChannel) {
-      localStorage.setItem('currentDMChannel', currentChannel.sid);
-      const [members, shareLink] = await Promise.all([
-        fetchMembers(currentChannel.sid),
-        getShareLink(currentChannel.sid)
-      ]);
-      dispatch(updateMembers({ members, channelId: currentChannel.sid }));
-      dispatch(setCurrentChannelAction({ currentChannel }));
-      dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
-    } else {
-      localStorage.removeItem('currentDMChannel');
-      dispatch(setCurrentChannelAction({ currentChannel: null }));
-    }
-  };
+export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
+  if (currentChannel) {
+    localStorage.setItem('currentDMChannel', currentChannel.sid);
+    const [members, shareLink] = await Promise.all([
+      fetchMembers(currentChannel.sid),
+      getShareLink(currentChannel.sid)
+    ]);
+    dispatch(updateMembers({ members, channelId: currentChannel.sid }));
+    dispatch(setCurrentChannelAction({ currentChannel }));
+    dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
+  } else {
+    localStorage.removeItem('currentDMChannel');
+    dispatch(setCurrentChannelAction({ currentChannel: null }));
+  }
+};
 
-export const setCurrentCommunityChannel =
-  (currentChannel) => async (dispatch: Dispatch) => {
-    if (currentChannel) {
-      const [members, shareLink] = await Promise.all([
-        fetchMembers(currentChannel.sid),
-        getShareLink(currentChannel.sid)
-      ]);
-      dispatch(updateMembers({ members, channelId: currentChannel.sid }));
-      dispatch(setCurrentCommunityChannelAction({ currentChannel }));
-      dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
-    }
-  };
+export const setCurrentCommunityChannel = (currentChannel) => async (dispatch: Dispatch) => {
+  if (currentChannel) {
+    const [members, shareLink] = await Promise.all([
+      fetchMembers(currentChannel.sid),
+      getShareLink(currentChannel.sid)
+    ]);
+    dispatch(updateMembers({ members, channelId: currentChannel.sid }));
+    dispatch(setCurrentCommunityChannelAction({ currentChannel }));
+    dispatch(updateShareLink({ shareLink, channelId: currentChannel.sid }));
+  }
+};
 
 export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
   dispatch(setOneTouchSendAction({ open }));
 };
 
-export const setCurrentCommunityId =
-  (currentCommunityId) => (dispatch: Dispatch) => {
-    dispatch(setCurrentCommunityIdAction({ currentCommunityId }));
-  };
+export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
+  dispatch(setCurrentCommunityIdAction({ currentCommunityId }));
+};
 
 export const setCommunityList = (communities) => async (dispatch: Dispatch) => {
   dispatch(setCommunitiesAction({ communities }));
 };
 
-export const setCommunityChannels =
-  (communityChannels) => (dispatch: Dispatch) => {
-    dispatch(setCommunityChannelsAction({ communityChannels }));
-  };
+export const setCommunityChannels = (communityChannels) => (dispatch: Dispatch) => {
+  dispatch(setCommunityChannelsAction({ communityChannels }));
+};
 
 export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
 };
 
-export const handleNewChannel =
-  (newChannel) => (dispatch: Dispatch, getState: Function) => {
-    const {
-      chat: {
-        data: { openChannels }
-      }
-    } = getState();
-    const availableSlots = getAvailableSlots(window.innerWidth);
-    const newState = update(openChannels, {
-      $apply: (b) => {
-        const newB = update(b, { $splice: [[availableSlots - 1]] });
-        return [...newB];
-      }
-    });
-    dispatch(createNewChannel({ newChannel, openChannels: newState }));
-  };
+export const handleNewChannel = (newChannel) => (dispatch: Dispatch, getState: Function) => {
+  const {
+    chat: {
+      data: { openChannels }
+    }
+  } = getState();
+  const availableSlots = getAvailableSlots(window.innerWidth);
+  const newState = update(openChannels, {
+    $apply: (b) => {
+      const newB = update(b, { $splice: [[availableSlots - 1]] });
+      return [...newB];
+    }
+  });
+  dispatch(createNewChannel({ newChannel, openChannels: newState }));
+};
 
 export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
   dispatch(requestOpenCreateChatGroupChannel({ uuid: uuidv4() }));
@@ -383,12 +340,8 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
       !localStorage.getItem('currentDMChannel')
     ) {
       let channelList = [];
-      channelList = Object.keys(local).filter(
-        (l) => !local[l].lastMessage.message
-      );
-      const recentMessageChannels = Object.keys(local).filter(
-        (l) => local[l].lastMessage.message
-      );
+      channelList = Object.keys(local).filter((l) => !local[l].lastMessage.message);
+      const recentMessageChannels = Object.keys(local).filter((l) => local[l].lastMessage.message);
       if (recentMessageChannels.length) {
         channelList = recentMessageChannels.sort(
           (a, b) =>
@@ -401,9 +354,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
        * Set the default current channel id if there is no previus selected channel
        * Save channel Id for checking the messages from another channel
        */
-      dispatch(
-        setCurrentChannelSidAction({ selectedChannelId: channelList[0] })
-      );
+      dispatch(setCurrentChannelSidAction({ selectedChannelId: channelList[0] }));
       dispatch(setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel));
     } else if (localStorage.getItem('currentDMChannel')) {
       const lastChannelId = localStorage.getItem('currentDMChannel');
@@ -434,329 +385,332 @@ export const openChannelWithEntity =
     entityVideo: boolean,
     fullscreen: boolean
   }) =>
-    async (dispatch: Dispatch, getState: Function) => {
-      if (!fullscreen) {
-        dispatch(
-          requestStartChannelWithEntity({
-            entityId,
-            entityFirstName,
-            entityLastName,
-            entityVideo,
-            entityUuid: uuidv4()
-          })
-        );
-      } else {
-        const {
-          chat: {
-            data: { client }
-          }
-        } = getState();
-        // Create Channel with users
-        const { chatId } = await createChannel({
-          users: [entityId]
-        });
+  async (dispatch: Dispatch, getState: Function) => {
+    if (!fullscreen) {
+      dispatch(
+        requestStartChannelWithEntity({
+          entityId,
+          entityFirstName,
+          entityLastName,
+          entityVideo,
+          entityUuid: uuidv4()
+        })
+      );
+    } else {
+      const {
+        chat: {
+          data: { client }
+        }
+      } = getState();
+      // Create Channel with users
+      const { chatId } = await createChannel({
+        users: [entityId]
+      });
 
-        // Get Created Channel By Chat Id
-        const channel = await client.getChannelBySid(chatId);
+      // Get Created Channel By Chat Id
+      const channel = await client.getChannelBySid(chatId);
 
-        if (channel) {
-          localStorage.setItem('currentDMChannel', channel.sid);
-          const [members, shareLink] = await Promise.all([
-            fetchMembers(channel.sid),
-            getShareLink(channel.sid)
-          ]);
-          dispatch(updateMembers({ members, channelId: channel.sid }));
-          dispatch(updateShareLink({ shareLink, channelId: channel.sid }));
-          dispatch(setCurrentChannelSidAction({ selectedChannelId: channel.sid }));
-          dispatch(setCurrentChannelAction({ currentChannel: channel }));
-          if (entityVideo) {
-            dispatch(push(`/video-call/${chatId}`));
-          } else {
-            dispatch(push('/chat'));
-          }
+      if (channel) {
+        localStorage.setItem('currentDMChannel', channel.sid);
+        const [members, shareLink] = await Promise.all([
+          fetchMembers(channel.sid),
+          getShareLink(channel.sid)
+        ]);
+        dispatch(updateMembers({ members, channelId: channel.sid }));
+        dispatch(updateShareLink({ shareLink, channelId: channel.sid }));
+        dispatch(setCurrentChannelSidAction({ selectedChannelId: channel.sid }));
+        dispatch(setCurrentChannelAction({ currentChannel: channel }));
+        if (entityVideo) {
+          dispatch(push(`/video-call/${chatId}`));
+        } else {
+          dispatch(push('/chat'));
         }
       }
+    }
+  };
+
+export const handleInitChat = () => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    user: {
+      data: { userId }
+    },
+    chat: {
+      data: { client: curClient }
+    }
+  } = getState();
+
+  try {
+    dispatch(startLoading());
+
+    if (curClient && curClient.connectionState === 'connected') {
+      return;
+    }
+    const accessToken = await renewTwilioToken({
+      userId
+    });
+
+    if (!accessToken || (accessToken && accessToken === '')) {
+      setTimeout(handleInitChat, 2000);
+      return;
+    }
+
+    const client = await Chat.create(accessToken, { logLevel: 'silent' });
+
+    let paginator = await client.getSubscribedChannels();
+    while (paginator.hasNextPage) {
+      // eslint-disable-next-line no-await-in-loop
+      paginator = await paginator.nextPage();
+    }
+    const channels = await client.getLocalChannels({
+      criteria: 'lastMessage',
+      order: 'descending'
+    });
+    const local = {};
+
+    const unreadCount = async (channel) => {
+      const count = await channel.getMessagesCount();
+      let unreadCount;
+      if (channel.lastConsumedMessageIndex === null) {
+        unreadCount = count;
+      } else if (channel.lastConsumedMessageIndex + 1 > count) {
+        unreadCount = 0;
+        // check the channel is new or check lastConsumedMessageIndex is bigger than message count
+      } else {
+        unreadCount = count - (channel.lastConsumedMessageIndex + 1);
+      }
+
+      return {
+        [channel.sid]: unreadCount
+      };
     };
 
-export const handleInitChat =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    const {
-      user: {
-        data: { userId }
-      },
-      chat: {
-        data: { client: curClient }
-      }
-    } = getState();
+    const promises = channels.map((channel) => unreadCount(channel));
 
-    try {
-      dispatch(startLoading());
-
-      if (curClient && curClient.connectionState === 'connected') { return; }
-      const accessToken = await renewTwilioToken({
-        userId
-      });
-
-      if (!accessToken || (accessToken && accessToken === '')) {
-        setTimeout(handleInitChat, 2000);
-        return;
-      }
-
-      const client = await Chat.create(accessToken, { logLevel: 'silent' });
-
-      let paginator = await client.getSubscribedChannels();
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
-      }
-      const channels = await client.getLocalChannels({
-        criteria: 'lastMessage',
-        order: 'descending'
-      });
-      const local = {};
-
-      const unreadCount = async (channel) => {
-        const count = await channel.getMessagesCount();
-        let unreadCount;
-        if (channel.lastConsumedMessageIndex === null) {
-          unreadCount = count;
-        } else if (channel.lastConsumedMessageIndex + 1 > count) {
-          unreadCount = 0;
-          // check the channel is new or check lastConsumedMessageIndex is bigger than message count
-        } else {
-          unreadCount = count - (channel.lastConsumedMessageIndex + 1);
-        }
-
-        return {
-          [channel.sid]: unreadCount
-        };
+    const unreadMessages = await Promise.all(promises);
+    channels.forEach((c, key) => {
+      local[c.sid] = {
+        // unread: unreadCount(c),
+        unread: unreadMessages[key][c.sid],
+        twilioChannel: c
       };
+    });
 
-      const promises = channels.map((channel) => unreadCount(channel));
+    dispatch(initClient({ client }));
+    dispatch(initChannels({ channels, local }));
+    await initLocalChannels(dispatch, local);
 
-      const unreadMessages = await Promise.all(promises);
-      channels.forEach((c, key) => {
-        local[c.sid] = {
-          // unread: unreadCount(c),
-          unread: unreadMessages[key][c.sid],
-          twilioChannel: c
-        };
+    if (client._eventsCount === 0) {
+      client.on('channelJoined', async (channel) => {
+        const { sid } = channel;
+        setTimeout(async () => {
+          const members = await fetchMembers(sid);
+          dispatch(addChannel({ channel, userId, members }));
+        }, 2000);
       });
 
-      dispatch(initClient({ client }));
-      dispatch(initChannels({ channels, local }));
-      await initLocalChannels(dispatch, local);
+      client.on('channelLeft', async (channel) => {
+        const { sid } = channel;
+        dispatch(removeChannel({ sid }));
+      });
 
-      if (client._eventsCount === 0) {
-        client.on('channelJoined', async (channel) => {
-          const { sid } = channel;
-          setTimeout(async () => {
-            const members = await fetchMembers(sid);
-            dispatch(addChannel({ channel, userId, members }));
-          }, 2000);
-        });
+      client.on('memberJoined', (member) => {
+        const update = async () => {
+          const {
+            channel: { sid }
+          } = member;
+          const members = await fetchMembers(sid);
+          dispatch(updateMembers({ members, channelId: sid }));
+        };
 
-        client.on('channelLeft', async (channel) => {
-          const { sid } = channel;
-          dispatch(removeChannel({ sid }));
-        });
+        setTimeout(update, 1000);
+      });
 
-        client.on('memberJoined', (member) => {
-          const update = async () => {
-            const {
-              channel: { sid }
-            } = member;
-            const members = await fetchMembers(sid);
-            dispatch(updateMembers({ members, channelId: sid }));
-          };
+      client.on('memberLeft', async (member) => {
+        dispatch(removeMember({ member }));
+      });
 
-          setTimeout(update, 1000);
-        });
+      client.on('channelUpdated', async ({ channel }) => {
+        const unreadMessageCount = await unreadCount(channel);
+        dispatch(
+          updateChannel({
+            channel,
+            unread: unreadMessageCount[channel.sid]
+          })
+        );
+      });
 
-        client.on('memberLeft', async (member) => {
-          dispatch(removeMember({ member }));
-        });
+      client.on('messageAdded', async (message) => {
+        const { channel } = message;
+        const unreadMessageCount = await unreadCount(channel);
 
-        client.on('channelUpdated', async ({ channel }) => {
-          const unreadMessageCount = await unreadCount(channel);
-          dispatch(
-            updateChannel({
-              channel,
-              unread: unreadMessageCount[channel.sid]
-            })
-          );
-        });
+        dispatch(newMessage({ message }));
+        dispatch(
+          updateChannel({
+            channel,
+            unread: unreadMessageCount[channel.sid]
+          })
+        );
+      });
 
-        client.on('messageAdded', async (message) => {
-          const { channel } = message;
-          const unreadMessageCount = await unreadCount(channel);
-
-          dispatch(newMessage({ message }));
-          dispatch(
-            updateChannel({
-              channel,
-              unread: unreadMessageCount[channel.sid]
-            })
-          );
-        });
-
-        client.on('tokenAboutToExpire', async () => {
-          try {
-            const newToken = await renewTwilioToken({
-              userId
-            });
-            if (!newToken || (newToken && newToken === '')) {
-              return;
-            }
-            await client.updateToken(newToken);
-          } catch (e) {}
-        });
-      }
-    } catch (err) {
-      setTimeout(handleInitChat, 2000);
+      client.on('tokenAboutToExpire', async () => {
+        try {
+          const newToken = await renewTwilioToken({
+            userId
+          });
+          if (!newToken || (newToken && newToken === '')) {
+            return;
+          }
+          await client.updateToken(newToken);
+        } catch (e) {}
+      });
     }
-  };
+  } catch (err) {
+    setTimeout(handleInitChat, 2000);
+  }
+};
 
-export const handleShutdownChat =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    const {
-      chat: {
-        data: { client, channels }
-      }
-    } = getState();
-
-    if (client) {
-      try {
-        client.removeAllListeners();
-        channels.forEach((c) => {
-          c.removeAllListeners();
-        });
-        // client.shutdown();
-      } catch (err) {}
+export const handleShutdownChat = () => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    chat: {
+      data: { client, channels }
     }
-    dispatch(shutdown());
-  };
+  } = getState();
+
+  if (client) {
+    try {
+      client.removeAllListeners();
+      channels.forEach((c) => {
+        c.removeAllListeners();
+      });
+      // client.shutdown();
+    } catch (err) {}
+  }
+  dispatch(shutdown());
+};
 
 export const handleUpdateGroupPhoto =
   (channelSid: string, image: Blob, callback: Function) =>
-    async (dispatch: Dispatch, getState: Function) => {
-      const {
-        user: {
-          data: { userId }
-        }
-      } = getState();
+  async (dispatch: Dispatch, getState: Function) => {
+    const {
+      user: {
+        data: { userId }
+      }
+    } = getState();
 
-      try {
-        const result = await uploadMedia(userId, 5, image);
+    try {
+      const result = await uploadMedia(userId, 5, image);
 
-        const { readUrl, mediaId } = result;
+      const { readUrl, mediaId } = result;
 
-        await apiUpdateChat(channelSid, {
-          chat_id: channelSid,
-          thumbnail: mediaId
-        });
+      await apiUpdateChat(channelSid, {
+        chat_id: channelSid,
+        thumbnail: mediaId
+      });
 
-        dispatch(
-          updateChannelAttributes(channelSid, {
-            thumbnail: readUrl
-          })
-        );
+      dispatch(
+        updateChannelAttributes(channelSid, {
+          thumbnail: readUrl
+        })
+      );
 
-        if (callback) {
-          callback();
-        }
-      } catch (err) {}
-    };
+      if (callback) {
+        callback();
+      }
+    } catch (err) {}
+  };
 
 export const handleBlockUser =
   ({ blockedUserId }) =>
-    async () => {
-      try {
-        await blockChatUser({ blockedUserId });
-      } catch (err) {}
-    };
+  async () => {
+    try {
+      await blockChatUser({ blockedUserId });
+    } catch (err) {}
+  };
 
 export const handleMuteChannel =
   ({ sid }) =>
-    async (dispatch: Dispatch, getState: Function) => {
-      const {
-        chat: {
-          data: { local }
-        }
-      } = getState();
-      const { muted } = local[sid];
-      const res = muted ? await unmuteChannel(sid) : await muteChannel(sid);
-      if (res && res.success) { dispatch(muteChannelLocal({ sid })); }
-    };
-
-export const handleMarkAsRead =
-  (channel: Object) => async (dispatch: Dispatch) => {
-    dispatch(updateChannel({ channel, unread: 0 }));
+  async (dispatch: Dispatch, getState: Function) => {
+    const {
+      chat: {
+        data: { local }
+      }
+    } = getState();
+    const { muted } = local[sid];
+    const res = muted ? await unmuteChannel(sid) : await muteChannel(sid);
+    if (res && res.success) {
+      dispatch(muteChannelLocal({ sid }));
+    }
   };
+
+export const handleMarkAsRead = (channel: Object) => async (dispatch: Dispatch) => {
+  dispatch(updateChannel({ channel, unread: 0 }));
+};
 
 export const handleRemoveChannel =
   ({ sid }: { sid: string }) =>
-    async (dispatch: Dispatch) => {
-      try {
-        await leaveChat({ sid });
-      } catch (err) {}
-      dispatch(removeChannel({ sid }));
-    };
-
-export const handleRoomClick =
-  (channel) => async (dispatch: Dispatch, getState: Function) => {
-    const {
-      chat: {
-        data: { openChannels }
-      }
-    } = getState();
+  async (dispatch: Dispatch) => {
     try {
-      const availableSlots = getAvailableSlots(window.innerWidth);
+      await leaveChat({ sid });
+    } catch (err) {}
+    dispatch(removeChannel({ sid }));
+  };
 
-      const newState = update(openChannels, {
-        $apply: (b) => {
-          if (availableSlots === 0) { return []; }
-          const index = b.findIndex((item) => item.sid === channel.sid);
-          if (index > -1) {
-            let newB = update(b, { $splice: [[index, 1]] });
-            newB = update(newB, { $splice: [[availableSlots - 1]] });
-            return [channel, ...newB];
-          }
-          const newB = update(b, { $splice: [[availableSlots - 1]] });
+export const handleRoomClick = (channel) => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    chat: {
+      data: { openChannels }
+    }
+  } = getState();
+  try {
+    const availableSlots = getAvailableSlots(window.innerWidth);
+
+    const newState = update(openChannels, {
+      $apply: (b) => {
+        if (availableSlots === 0) {
+          return [];
+        }
+        const index = b.findIndex((item) => item.sid === channel.sid);
+        if (index > -1) {
+          let newB = update(b, { $splice: [[index, 1]] });
+          newB = update(newB, { $splice: [[availableSlots - 1]] });
           return [channel, ...newB];
         }
-      });
-      if (channel) {
-        const members = await fetchMembers(channel.sid);
-        dispatch(updateMembers({ members, channelId: channel.sid }));
+        const newB = update(b, { $splice: [[availableSlots - 1]] });
+        return [channel, ...newB];
       }
-      dispatch(setOpenChannels({ openChannels: newState }));
-    } catch (err) {}
-  };
+    });
+    if (channel) {
+      const members = await fetchMembers(channel.sid);
+      dispatch(updateMembers({ members, channelId: channel.sid }));
+    }
+    dispatch(setOpenChannels({ openChannels: newState }));
+  } catch (err) {}
+};
 
-export const updateOpenChannels =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    const {
-      chat: {
-        data: { openChannels }
-      }
-    } = getState();
-    try {
-      const availableSlots = getAvailableSlots(window.innerWidth);
-      if (availableSlots === 0) {
-        return;
-      }
+export const updateOpenChannels = () => async (dispatch: Dispatch, getState: Function) => {
+  const {
+    chat: {
+      data: { openChannels }
+    }
+  } = getState();
+  try {
+    const availableSlots = getAvailableSlots(window.innerWidth);
+    if (availableSlots === 0) {
+      return;
+    }
 
-      if (availableSlots === 0) { dispatch(setOpenChannels({ openChannels: [] })); }
-      const newState = update(openChannels, {
-        $apply: (b) => {
-          const newB = update(b, { $splice: [[availableSlots]] });
-          return [...newB];
-        }
-      });
-      dispatch(setOpenChannels({ openChannels: newState }));
-    } catch (err) {}
-  };
+    if (availableSlots === 0) {
+      dispatch(setOpenChannels({ openChannels: [] }));
+    }
+    const newState = update(openChannels, {
+      $apply: (b) => {
+        const newB = update(b, { $splice: [[availableSlots]] });
+        return [...newB];
+      }
+    });
+    dispatch(setOpenChannels({ openChannels: newState }));
+  } catch (err) {}
+};
 
 export const handleChannelClose =
   (sid: string) => async (dispatch: Dispatch, getState: Function) => {
@@ -772,7 +726,6 @@ export const handleChannelClose =
     );
   };
 
-export const handleUpdateFriendlyName =
-  (channel: Object) => async (dispatch: Dispatch) => {
-    dispatch(updateFriendlyName({ channel }));
-  };
+export const handleUpdateFriendlyName = (channel: Object) => async (dispatch: Dispatch) => {
+  dispatch(updateFriendlyName({ channel }));
+};

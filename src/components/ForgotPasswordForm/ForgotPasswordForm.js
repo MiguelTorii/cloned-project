@@ -28,10 +28,7 @@ type Props = {
 
 type State = {};
 
-class ForgotPasswordForm extends React.PureComponent<
-  ProvidedProps & Props,
-  State
-> {
+class ForgotPasswordForm extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
     const { classes, email, loading, onSubmit, onChange } = this.props;
     return (
@@ -41,11 +38,7 @@ class ForgotPasswordForm extends React.PureComponent<
           <Typography component="h1" variant="h5">
             Recover Password
           </Typography>
-          <ValidatorForm
-            instantValidate={false}
-            onSubmit={onSubmit}
-            className={classes.form}
-          >
+          <ValidatorForm instantValidate={false} onSubmit={onSubmit} className={classes.form}>
             <TextValidator
               label="Email Address"
               margin="normal"
@@ -70,12 +63,7 @@ class ForgotPasswordForm extends React.PureComponent<
               >
                 Recover
               </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
+              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </div>
           </ValidatorForm>
           <div className={classes.links}>

@@ -24,16 +24,7 @@ type State = {};
 
 class StudyCircleDialog extends React.PureComponent<Props, State> {
   render() {
-    const {
-      classes,
-      open,
-      name,
-      userProfileUrl,
-      loading,
-      circle,
-      ownName,
-      onClose
-    } = this.props;
+    const { classes, open, name, userProfileUrl, loading, circle, ownName, onClose } = this.props;
     const initials = getInitials(ownName);
     const degreeAngle = circle.length === 0 ? 0 : 360 / circle.length;
 
@@ -45,11 +36,7 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
         title="Congratulations"
       >
         <div className={classes.content}>
-          <Typography
-            align="center"
-            id="study-circle-description"
-            color="textPrimary"
-          >
+          <Typography align="center" id="study-circle-description" color="textPrimary">
             You added <strong>{name}</strong> to your Study Circle
           </Typography>
           {loading && (
@@ -69,18 +56,13 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
                   key={item.userId}
                   className={classes.circle}
                   style={{
-                    transform: `rotate(${
-                      270 + index * degreeAngle
-                    }deg) translate(120px) rotate(${-(
+                    transform: `rotate(${270 + index * degreeAngle}deg) translate(120px) rotate(${-(
                       270 +
                       index * degreeAngle
                     )}deg)`
                   }}
                 >
-                  <Avatar
-                    className={classes.avatarSmall}
-                    src={item.profileImageUrl}
-                  >
+                  <Avatar className={classes.avatarSmall} src={item.profileImageUrl}>
                     {getInitials(`${item.firstName} ${item.lastName}`)}
                   </Avatar>
                 </div>
@@ -88,8 +70,7 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
             </div>
           )}
           <Typography align="center" color="textPrimary">
-            You will be notified when <strong>{name}</strong> publishes new
-            content
+            You will be notified when <strong>{name}</strong> publishes new content
           </Typography>
         </div>
       </Dialog>

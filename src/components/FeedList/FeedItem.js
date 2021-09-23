@@ -176,11 +176,21 @@ const FeedItem = ({
     const { postId, typeId } = data;
 
     handleMenuClose();
-    if (typeId === 3) { pushTo(`/edit/flashcards/${postId}`); }
-    if (typeId === 4) { pushTo(`/edit/notes/${postId}`); }
-    if (typeId === 5) { pushTo(`/edit/sharelink/${postId}`); }
-    if (typeId === 6) { pushTo(`/edit/question/${postId}`); }
-    if (typeId === 8) { pushTo(`/edit/post/${postId}`); }
+    if (typeId === 3) {
+      pushTo(`/edit/flashcards/${postId}`);
+    }
+    if (typeId === 4) {
+      pushTo(`/edit/notes/${postId}`);
+    }
+    if (typeId === 5) {
+      pushTo(`/edit/sharelink/${postId}`);
+    }
+    if (typeId === 6) {
+      pushTo(`/edit/question/${postId}`);
+    }
+    if (typeId === 8) {
+      pushTo(`/edit/post/${postId}`);
+    }
   }, [data, handleMenuClose, pushTo]);
 
   const handleUserClick = useCallback(() => {
@@ -189,7 +199,9 @@ const FeedItem = ({
   }, [data, onUserClick]);
 
   const handleDescription = useCallback((typeId, body) => {
-    if (typeId === 6) { return ''; }
+    if (typeId === 6) {
+      return '';
+    }
 
     // eslint-disable-next-line
     const cleanBody = body.replace(/<[^>]*>/g, '').replace(/\&nbsp;/g, ' ');
@@ -209,9 +221,7 @@ const FeedItem = ({
     [data.body, data.typeId, handleDescription]
   );
   const feedTypeData = useMemo(() => {
-    const type = Object.values(FeedTypes).find(
-      (item) => item.id === data.typeId
-    );
+    const type = Object.values(FeedTypes).find((item) => item.id === data.typeId);
     if (!type) {
       throw new Error('Unknown Feed Type');
     }
@@ -226,14 +236,8 @@ const FeedItem = ({
         if (!newClassExperience) {
           return (
             <div className={classes.flashCardsImage}>
-              <img
-                src={flashcardPost}
-                className={classes.flashcardImage}
-                alt="Flascarhds"
-              />
-              <div className={classes.deckCount}>
-                {`${data.deck.length} Cards`}
-              </div>
+              <img src={flashcardPost} className={classes.flashcardImage} alt="Flascarhds" />
+              <div className={classes.deckCount}>{`${data.deck.length} Cards`}</div>
             </div>
           );
         }
@@ -251,11 +255,7 @@ const FeedItem = ({
                   className={classes.flashcardCount}
                   align={showSimple ? 'left' : 'center'}
                 >
-                  {pluralize(
-                    showSimple ? 'card' : 'flashcard',
-                    data.deck.length,
-                    true
-                  )}
+                  {pluralize(showSimple ? 'card' : 'flashcard', data.deck.length, true)}
                 </Typography>
               </Box>
             </Box>
@@ -266,23 +266,12 @@ const FeedItem = ({
           return (
             <div className={classes.imageContainer}>
               {isPdf ? (
-                <PdfComponent
-                  url={data.noteUrl}
-                  height={75}
-                  width={75}
-                  radius={10}
-                />
+                <PdfComponent url={data.noteUrl} height={75} width={75} radius={10} />
               ) : (
-                <Image
-                  noLazyLoad
-                  className={classes.notePost}
-                  src={data.noteUrl}
-                />
+                <Image noLazyLoad className={classes.notePost} src={data.noteUrl} />
               )}
               {numberOfNotes > 1 && (
-                <div className={classes.numberOfCardsStyle}>
-                  +{numberOfNotes - 1}
-                </div>
+                <div className={classes.numberOfCardsStyle}>+{numberOfNotes - 1}</div>
               )}
             </div>
           );
@@ -292,24 +281,13 @@ const FeedItem = ({
             {data.notes.slice(0, 1).map((note, i) => (
               <div key={note.noteUrl} className={classes.photoNotePreview}>
                 {isPdf ? (
-                  <PdfComponent
-                    url={note.noteUrl}
-                    height={130}
-                    width={270}
-                    radius={10}
-                  />
+                  <PdfComponent url={note.noteUrl} height={130} width={270} radius={10} />
                 ) : (
-                  <Image
-                    noLazyLoad
-                    className={classes.notePost}
-                    src={note.noteUrl}
-                  />
+                  <Image noLazyLoad className={classes.notePost} src={note.noteUrl} />
                 )}
                 <div className={classes.noteTitleBox}>{data.title}</div>
                 {numberOfNotes > 2 && i === 1 && (
-                  <div className={classes.numberOfCardsStyle}>
-                    +{numberOfNotes - 2}
-                  </div>
+                  <div className={classes.numberOfCardsStyle}>+{numberOfNotes - 2}</div>
                 )}
               </div>
             ))}
@@ -317,9 +295,7 @@ const FeedItem = ({
         );
       case FeedTypes.resource.id:
         if (!newClassExperience) {
-          return (
-            <img src={linkPost} className={classes.imagePost} alt="Link" />
-          );
+          return <img src={linkPost} className={classes.imagePost} alt="Link" />;
         }
         return <LinkPreview uri={data.uri} />;
       default:
@@ -378,11 +354,7 @@ const FeedItem = ({
   );
 
   return (
-    <Card
-      className={classes.card}
-      elevation={0}
-      classes={{ root: classes.root }}
-    >
+    <Card className={classes.card} elevation={0} classes={{ root: classes.root }}>
       <CardHeader
         className={classes.header}
         avatar={<Avatar src={feedTypeData.url} />}
@@ -409,20 +381,13 @@ const FeedItem = ({
         }
         title={
           <div className={classes.title}>
-            <Typography
-              component="div"
-              variant={showSimple ? 'body' : 'h6'}
-              noWrap
-            >
+            <Typography component="div" variant={showSimple ? 'body' : 'h6'} noWrap>
               {feedTypeData.title}
             </Typography>
           </div>
         }
         subheader={
-          <Typography
-            className={classes.feedSubheader}
-            variant={showSimple ? 'subtitle1' : 'body'}
-          >
+          <Typography className={classes.feedSubheader} variant={showSimple ? 'subtitle1' : 'body'}>
             {data.classroomName}
           </Typography>
         }
@@ -447,9 +412,7 @@ const FeedItem = ({
             {description && (
               <div
                 className={
-                  !data.title && description.length < 220
-                    ? classes.titleFormat
-                    : classes.markdown
+                  !data.title && description.length < 220 ? classes.titleFormat : classes.markdown
                 }
               >
                 {description}
@@ -462,7 +425,7 @@ const FeedItem = ({
         {data.tags.length > 0 && (
           <CardContent className={classes.tags}>
             {data.tags.map((tag) =>
-              (!newClassExperience ? (
+              !newClassExperience ? (
                 <Chip
                   key={tag.id}
                   label={`#${tag.name}`}
@@ -470,11 +433,8 @@ const FeedItem = ({
                   classes={{ label: classes.label }}
                 />
               ) : (
-                <span
-                  key={tag.id}
-                  className={classes.hashtag}
-                >{`#${tag.name}`}</span>
-              ))
+                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+              )
             )}
           </CardContent>
         )}
@@ -510,12 +470,7 @@ const FeedItem = ({
                     onClick={handleUserClick}
                   >
                     <Box display="flex" alignItems="center">
-                      <Typography
-                        className={classes.titleText}
-                        component="div"
-                        variant="h6"
-                        noWrap
-                      >
+                      <Typography className={classes.titleText} component="div" variant="h6" noWrap>
                         {data.name}
                       </Typography>
                       {data.role && <RoleBadge text={data.role} />}
@@ -527,11 +482,7 @@ const FeedItem = ({
           </Grid>
           <Grid item>
             <Box ml={2}>
-              <Typography
-                component="p"
-                noWrap
-                variant={showSimple ? 'body2' : 'body'}
-              >
+              <Typography component="p" noWrap variant={showSimple ? 'body2' : 'body'}>
                 {fromNow}
               </Typography>
             </Box>
@@ -551,31 +502,15 @@ const FeedItem = ({
               onClick={handleThanks}
             >
               {thanked ? (
-                <img
-                  src={thankedSvg}
-                  className={classes.actionIcon}
-                  alt="thanked"
-                />
+                <img src={thankedSvg} className={classes.actionIcon} alt="thanked" />
               ) : (
-                <img
-                  src={thanksSvg}
-                  className={classes.actionIcon}
-                  alt="thanks"
-                />
+                <img src={thanksSvg} className={classes.actionIcon} alt="thanks" />
               )}
             </IconButton>
             <strong>{thanksCount}</strong>
           </Typography>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            className={classes.actionIcons}
-          >
-            <img
-              src={commentSvg}
-              className={classes.actionIcon}
-              alt="comment"
-            />
+          <Typography component="p" variant="subtitle1" className={classes.actionIcons}>
+            <img src={commentSvg} className={classes.actionIcon} alt="comment" />
             <strong>{data.postInfo.questionsCount}</strong>
           </Typography>
         </div>
@@ -592,8 +527,7 @@ const FeedItem = ({
       {showComments && (
         <PostComments
           isPastClassFlashcard={
-            pastClassIds.includes(data.classId) &&
-            data.typeId === FeedTypes.flashcards.id
+            pastClassIds.includes(data.classId) && data.typeId === FeedTypes.flashcards.id
           }
           feedId={data.feedId}
           postId={data.postId}

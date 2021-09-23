@@ -115,11 +115,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
               <Typography component="h1" variant="h5">
                 Reminders - Calendar
               </Typography>
-              <Button
-                color="primary"
-                className={classes.marginLeft}
-                onClick={onSwitch}
-              >
+              <Button color="primary" className={classes.marginLeft} onClick={onSwitch}>
                 Switch to List View
               </Button>
             </div>
@@ -145,13 +141,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
           </Paper>
         </main>
         <Dialog
-          open={
-            id !== -1 &&
-            title !== '' &&
-            due !== '' &&
-            label !== -2 &&
-            status !== -1
-          }
+          open={id !== -1 && title !== '' && due !== '' && label !== -2 && status !== -1}
           okTitle="OK"
           onCancel={this.handleClose}
           onOk={this.handleClose}

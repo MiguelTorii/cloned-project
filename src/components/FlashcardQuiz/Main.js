@@ -73,10 +73,14 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     init();
   }, [generateNewQuiz, isOpen]);
 
-  if (!quiz) { return <div>Loading...</div>; }
+  if (!quiz) {
+    return <div>Loading...</div>;
+  }
 
   const onAnswerChange = ({ currentAnswerId, newAnswerId, questionId }) => {
-    if (isQuizCompleted) { return; }
+    if (isQuizCompleted) {
+      return;
+    }
 
     const updatedAnswers = answers.map((a) => {
       if (a.id === currentAnswerId) {
@@ -99,9 +103,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     setQuestions(updatedQuestions);
   };
 
-  const Question = ({
-    question: { answerId, id, question, question_image_url, uuid }
-  }) => {
+  const Question = ({ question: { answerId, id, question, question_image_url, uuid } }) => {
     const isAnswerCorrect = answerId === id;
     let color = 'white';
 
@@ -185,11 +187,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 setIsImageDialogOpen(true);
               }}
             >
-              <img
-                className={classes.image}
-                src={question_image_url}
-                alt={question}
-              />
+              <img className={classes.image} src={question_image_url} alt={question} />
             </div>
           )}
         </div>
@@ -239,11 +237,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 setIsImageDialogOpen(true);
               }}
             >
-              <img
-                className={classes.image}
-                src={answer_image_url}
-                alt={answer}
-              />
+              <img className={classes.image} src={answer_image_url} alt={answer} />
             </div>
           </div>
         )}
@@ -256,12 +250,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     multiQuestion: { answerId, answers, id, question, question_image_url, uuid }
   }) => {
     const Choice = ({
-      answer: {
-        answer_image_url: option_image_url,
-        answer: optionText,
-        id: optionId,
-        uuid
-      },
+      answer: { answer_image_url: option_image_url, answer: optionText, id: optionId, uuid },
       index
     }) => {
       const isAnswerCorrect = optionId === id;
@@ -278,7 +267,9 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       }
 
       const onAnswerClicked = (answerId) => {
-        if (isQuizCompleted) { return; }
+        if (isQuizCompleted) {
+          return;
+        }
 
         const updatedMultiQuestions = multiQuestions.map((mq) => {
           if (mq.id === id) {
@@ -363,11 +354,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 setIsImageDialogOpen(true);
               }}
             >
-              <img
-                className={classes.image}
-                src={option_image_url}
-                alt={question}
-              />
+              <img className={classes.image} src={option_image_url} alt={question} />
             </div>
           )}
         </div>
@@ -380,10 +367,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       <div className={classes.multiQuestion}>
         <div className={classes.questionTitle}>
           <span>{`${index}.`}</span>
-          <span
-            dangerouslySetInnerHTML={createMarkup(question)}
-            style={{ paddingLeft: 8 }}
-          />
+          <span dangerouslySetInnerHTML={createMarkup(question)} style={{ paddingLeft: 8 }} />
           {question && question_image_url && (
             <>
               <div
@@ -414,11 +398,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
               setIsImageDialogOpen(true);
             }}
           >
-            <img
-              className={classes.image}
-              src={question_image_url}
-              alt={question}
-            />
+            <img className={classes.image} src={question_image_url} alt={question} />
           </div>
         )}
         <div className={classes.choices}>
@@ -431,31 +411,22 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
   };
 
   const numberOfQuestions = questions.length + multiQuestions.length;
-  const numberOfAnsweredMatchingQuestions = questions.filter(
-    (q) => q.answerId !== ''
-  ).length;
-  const numberOfAnsweredMultiQuestions = multiQuestions.filter(
-    (q) => q.answerId !== ''
-  ).length;
+  const numberOfAnsweredMatchingQuestions = questions.filter((q) => q.answerId !== '').length;
+  const numberOfAnsweredMultiQuestions = multiQuestions.filter((q) => q.answerId !== '').length;
 
   const canEvaluate =
-    numberOfQuestions ===
-    numberOfAnsweredMatchingQuestions + numberOfAnsweredMultiQuestions;
+    numberOfQuestions === numberOfAnsweredMatchingQuestions + numberOfAnsweredMultiQuestions;
 
   return (
     <Grid item xs={12} md={12}>
       <div className={classes.content}>
         <div className={classes.header}>
           <div className={classes.title}>Matching</div>
-          {isEvaluationMode && (
-            <div className={classes.title}>{`Score ${score}`}</div>
-          )}
+          {isEvaluationMode && <div className={classes.title}>{`Score ${score}`}</div>}
         </div>
         <Grid container spacing={2} item xs={12} md={12}>
           <Grid item xs={12} md={6}>
-            <div className={classes.subtitle}>
-              Match the question with the correct answer
-            </div>
+            <div className={classes.subtitle}>Match the question with the correct answer</div>
             {questions.map((question) => (
               <Question key={`${question.id}-question`} question={question} />
             ))}
@@ -463,24 +434,16 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
           <Grid item xs={12} md={6}>
             <div className={classes.subtitle}>Answer Bank</div>
             {answers.map((answer, i) => (
-              <Answer
-                key={`${answer.id}-answer`}
-                answer={answer}
-                char={alphabet.split('')[i]}
-              />
+              <Answer key={`${answer.id}-answer`} answer={answer} char={alphabet.split('')[i]} />
             ))}
           </Grid>
           {multiQuestions.length > 0 && (
             <Grid item xs={12} md={12}>
-              <div
-                className={classes.title}
-                style={{ paddingTop: 24, paddingBottom: 8 }}
-              >
+              <div className={classes.title} style={{ paddingTop: 24, paddingBottom: 8 }}>
                 Multiple Choice
               </div>
               <div className={classes.subtitle}>
-                Answer these next questions by clicking on the answer you
-                believe is correct.
+                Answer these next questions by clicking on the answer you believe is correct.
               </div>
               {multiQuestions.map((multiQuestion, i) => (
                 <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
@@ -504,13 +467,10 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 (q) => q.answerId === q.id
               ).length;
               setIsQuizCompleted(true);
-              document
-                .querySelector('[aria-labelledby="circle-in-dialog-content"]')
-                .scroll(0, 0);
+              document.querySelector('[aria-labelledby="circle-in-dialog-content"]').scroll(0, 0);
               setScore(
                 `${
-                  numberOfCorrectMatchingQuestions +
-                  numberOfCorrectMultiQuestions
+                  numberOfCorrectMatchingQuestions + numberOfCorrectMultiQuestions
                 } / ${numberOfQuestions}`
               );
               const results = [...questions, ...multiQuestions].map((q) => ({
@@ -550,11 +510,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
         aria-labelledby="simple-dialog-title"
         aria-describedby="simple-dialog-description"
       >
-        <img
-          className={classes.dialogImage}
-          src={dialogImageUrl}
-          alt="dialog"
-        />
+        <img className={classes.dialogImage} src={dialogImageUrl} alt="dialog" />
       </Dialog>
     </Grid>
   );

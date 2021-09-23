@@ -84,13 +84,7 @@ type Props = {
   clearFeeds: Function
 };
 
-const Classes = ({
-  pushTo,
-  fetchClasses,
-  clearFeeds,
-  classes,
-  user
-}: Props) => {
+const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => {
   const [classList, setClassList] = useState(null);
   const [canAddClasses, setCanAddClasses] = useState(false);
   const [openAddClasses, setOpenAddClasses] = useState(false);
@@ -163,7 +157,9 @@ const Classes = ({
                   }),
                 canLeave: cl.permissions.canLeave
               }));
-              if (classesInter.length > 0) { return classesInter[0]; }
+              if (classesInter.length > 0) {
+                return classesInter[0];
+              }
               return null;
             })
           );
@@ -183,17 +179,15 @@ const Classes = ({
     ({ courseDisplayName, sectionId, classId, isCurrent }) => {
       document.title = courseDisplayName;
       clearFeeds();
-      pushTo(
-        `/feed?class=${cypher(
-          `${classId}:${sectionId}`
-        )}&pastFilter=${!isCurrent}`
-      );
+      pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}&pastFilter=${!isCurrent}`);
     },
     [pushTo, clearFeeds]
   );
 
   const getFilteredList = () => {
-    if (!classList) { return []; }
+    if (!classList) {
+      return [];
+    }
 
     if (currentFilter === 'current') {
       return classList.filter((cl) => cl.isCurrent);
@@ -220,15 +214,14 @@ const Classes = ({
             <span role="img" aria-label="Clap">
               👋
             </span>
-            These are the current classes you are enrolled in on CircleIn. Click
-            on the classes below to see the Class Feed where you can connect
-            with your classmates, ask questions and share study materials!
+            These are the current classes you are enrolled in on CircleIn. Click on the classes
+            below to see the Class Feed where you can connect with your classmates, ask questions
+            and share study materials!
           </Typography>
         ) : (
           <Typography variant="body1">
-            You can access the materials from past classes, but keep in mind
-            this is read-only, you cannot post new comments, or share posts on
-            this feed.
+            You can access the materials from past classes, but keep in mind this is read-only, you
+            cannot post new comments, or share posts on this feed.
           </Typography>
         )}
       </Grid>
@@ -243,30 +236,17 @@ const Classes = ({
       </Grid>
 
       <Grid
-        justifyContent={
-          classList && getFilteredList().length > 0 ? 'flex-start' : 'center'
-        }
+        justifyContent={classList && getFilteredList().length > 0 ? 'flex-start' : 'center'}
         className={classes.container}
         container
         spacing={2}
       >
-        <AddRemoveClasses
-          open={openAddClasses}
-          onClose={() => setOpenAddClasses(false)}
-        />
+        <AddRemoveClasses open={openAddClasses} onClose={() => setOpenAddClasses(false)} />
         {classList &&
           getFilteredList().map(
             (cl) =>
               cl && (
-                <Grid
-                  key={cl.sectionId}
-                  item
-                  xs={12}
-                  md={6}
-                  lg={4}
-                  xl={3}
-                  className={classes.item}
-                >
+                <Grid key={cl.sectionId} item xs={12} md={6} lg={4} xl={3} className={classes.item}>
                   <ClassCard
                     sectionDisplayName={cl.sectionDisplayName}
                     instructorDisplayName={cl.instructorDisplayName}
@@ -283,9 +263,7 @@ const Classes = ({
         {classList && getFilteredList().length === 0 && (
           <EmptyState imageUrl={EmptyClass}>
             <div className={classes.emptyTitle}>
-              {currentFilter === 'current'
-                ? 'No classes yet.'
-                : 'No past classes yet.'}
+              {currentFilter === 'current' ? 'No classes yet.' : 'No past classes yet.'}
             </div>
             <div className={classes.emptyBody}>
               {currentFilter === 'current'

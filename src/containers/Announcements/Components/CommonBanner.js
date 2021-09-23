@@ -12,11 +12,7 @@ import minimizeSvg from '../../../assets/svg/minimize.svg';
 import Dialog from '../../../components/Dialog/Dialog';
 import type { Announcement } from '../../../types/models';
 import { setIntervalWithFirstCall } from '../../../utils/helpers';
-import {
-  DURATION_REPLACE_TEXT,
-  INTERVAL,
-  TIME_ZONE
-} from '../../../constants/app';
+import { DURATION_REPLACE_TEXT, INTERVAL, TIME_ZONE } from '../../../constants/app';
 import DialogContent from './DialogContent';
 
 const useStyles = makeStyles((theme) => ({
@@ -125,10 +121,11 @@ const CommonBanner = ({ announcement }: Props) => {
     return () => clearInterval(intervalID);
   }, [announcement.endDate]);
 
-  const replaceDuration = (text) =>
-    text.replace(DURATION_REPLACE_TEXT, durationText);
+  const replaceDuration = (text) => text.replace(DURATION_REPLACE_TEXT, durationText);
 
-  if (timeOver) { return null; }
+  if (timeOver) {
+    return null;
+  }
 
   return (
     <div className={classes.body}>

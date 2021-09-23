@@ -63,15 +63,14 @@ const Timer = ({ defaultStatus }) => {
       if (
         defaultStatus === TIMER_STATUS.PAUSED &&
         (st === TIMER_STATUS.INITIALIZED || st === TIMER_STATUS.TIME_UP)
-      ) { return st; }
+      ) {
+        return st;
+      }
       return defaultStatus;
     });
   }, [defaultStatus]);
   useEffect(() => {
-    if (
-      status === TIMER_STATUS.INITIALIZED ||
-      status === TIMER_STATUS.TIME_UP
-    ) {
+    if (status === TIMER_STATUS.INITIALIZED || status === TIMER_STATUS.TIME_UP) {
       setCurrentSeconds(initialHours * 3600 + initialMinutes * 60);
     }
   }, [status, initialHours, initialMinutes]);
@@ -80,7 +79,9 @@ const Timer = ({ defaultStatus }) => {
     const intervalId = setInterval(() => {
       if (status === TIMER_STATUS.STARTED) {
         setCurrentSeconds((seconds) => {
-          if (seconds === 1) { setStatus(TIMER_STATUS.TIME_UP); }
+          if (seconds === 1) {
+            setStatus(TIMER_STATUS.TIME_UP);
+          }
           return seconds > 0 ? seconds - 1 : seconds;
         });
       }
@@ -94,22 +95,13 @@ const Timer = ({ defaultStatus }) => {
       display="flex"
       justifyContent="center"
       alignItems="baseline"
-      className={clsx(
-        classes.timerBox,
-        status !== TIMER_STATUS.STARTED && 'hand'
-      )}
+      className={clsx(classes.timerBox, status !== TIMER_STATUS.STARTED && 'hand')}
     >
       <Box mr={1 / 2}>
         {status === TIMER_STATUS.INITIALIZED ? (
-          <NumberSelector
-            value={initialHours}
-            limit={9}
-            onChange={setInitialHours}
-          />
+          <NumberSelector value={initialHours} limit={9} onChange={setInitialHours} />
         ) : (
-          <Typography variant="h4">
-            {twoDigitsNumber(Math.floor(currentSeconds / 3600))}
-          </Typography>
+          <Typography variant="h4">{twoDigitsNumber(Math.floor(currentSeconds / 3600))}</Typography>
         )}
       </Box>
       <Box mr={2}>
@@ -117,11 +109,7 @@ const Timer = ({ defaultStatus }) => {
       </Box>
       <Box mr={1 / 2}>
         {status === TIMER_STATUS.INITIALIZED ? (
-          <NumberSelector
-            limit={59}
-            onChange={setInitialMinutes}
-            value={initialMinutes}
-          />
+          <NumberSelector limit={59} onChange={setInitialMinutes} value={initialMinutes} />
         ) : (
           <Typography variant="h4">
             {twoDigitsNumber(Math.floor(currentSeconds / 60) % 60)}
@@ -134,9 +122,7 @@ const Timer = ({ defaultStatus }) => {
       <Box mr={1 / 2}>
         <Typography variant="h4">
           {twoDigitsNumber(
-            status === TIMER_STATUS.INITIALIZED
-              ? 0
-              : Math.floor(currentSeconds % 60)
+            status === TIMER_STATUS.INITIALIZED ? 0 : Math.floor(currentSeconds % 60)
           )}
         </Typography>
       </Box>

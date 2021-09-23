@@ -41,29 +41,17 @@ class MainChat extends React.PureComponent<Props, State> {
     const { open } = this.state;
 
     return (
-      <Paper
-        className={cx(classes.paper, open && classes.paperOpen)}
-        elevation={24}
-      >
-        <div
-          className={cx(classes.header, unread && classes.notificationHeader)}
-        >
+      <Paper className={cx(classes.paper, open && classes.paperOpen)} elevation={24}>
+        <div className={cx(classes.header, unread && classes.notificationHeader)}>
           <ButtonBase className={classes.headerTitle} onClick={this.handleOpen}>
             <Typography variant="h6" className={classes.title}>
               Direct Messages
             </Typography>
-            <Badge
-              className={classes.margin}
-              badgeContent={unread}
-              color="secondary"
-            >
+            <Badge className={classes.margin} badgeContent={unread} color="secondary">
               <span />
             </Badge>
           </ButtonBase>
-          <ButtonBase
-            className={classes.iconButton}
-            onClick={this.handleCreateChannel('single')}
-          >
+          <ButtonBase className={classes.iconButton} onClick={this.handleCreateChannel('single')}>
             <img
               id="circlein-newchat"
               src={FloatChatNewIcon}
@@ -72,10 +60,7 @@ class MainChat extends React.PureComponent<Props, State> {
             />
           </ButtonBase>
           {open && (
-            <ButtonBase
-              className={classes.iconButton}
-              onClick={this.handleOpen}
-            >
+            <ButtonBase className={classes.iconButton} onClick={this.handleOpen}>
               <RemoveIcon className={classes.icon} />
             </ButtonBase>
           )}

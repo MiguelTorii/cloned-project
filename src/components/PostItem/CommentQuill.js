@@ -57,9 +57,7 @@ const CommentQuill = ({
           const currentTooltipWidth = document.getElementById(
             `comment-toolbar-${feedId}-${toolbarPrefix}`
           )
-            ? document.getElementById(
-                `comment-toolbar-${feedId}-${toolbarPrefix}`
-              ).clientWidth
+            ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
             : 0;
           const currentEditorWidth = quill.container.firstChild.clientWidth;
 
@@ -79,10 +77,7 @@ const CommentQuill = ({
 
   useEffect(() => {
     if (currentQuill && isNewLine) {
-      currentQuill.insertText(
-        currentQuill.container.firstChild.innerHTML.length.index + 1,
-        '\n'
-      );
+      currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n');
     }
   }, [currentQuill, isNewLine]);
 
@@ -158,11 +153,7 @@ const CommentQuill = ({
       <div className={classes.editor}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
-            <div
-              id={`editor-${feedId}`}
-              className={classes.editorable}
-              ref={quillRef}
-            />
+            <div id={`editor-${feedId}`} className={classes.editorable} ref={quillRef} />
             <EditorToolbar
               id={`comment-toolbar-${feedId}-${toolbarPrefix}`}
               handleSelect={insertEmoji}
@@ -176,10 +167,7 @@ const CommentQuill = ({
         </div>
         <div className={classes.postCommentAction}>
           {value ? (
-            <Button
-              className={classes.postComment}
-              onClick={handleClick(quill)}
-            >
+            <Button className={classes.postComment} onClick={handleClick(quill)}>
               <b>Comment</b>
             </Button>
           ) : (
@@ -197,11 +185,7 @@ const CommentQuill = ({
       </div>
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
-        <Typography
-          component="p"
-          variant="subtitle1"
-          className={classes.errorMessage}
-        >
+        <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
           We couldn't post your comment for some reason. 😥
         </Typography>
       </div>

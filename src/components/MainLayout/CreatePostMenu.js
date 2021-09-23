@@ -32,12 +32,7 @@ const CreatePostMenu = ({
             </div>
           </div>
         ),
-    [
-      classes.icon,
-      classes.menuItemContent,
-      classes.primaryItem,
-      classes.secondaryItem
-    ]
+    [classes.icon, classes.menuItemContent, classes.primaryItem, classes.secondaryItem]
   );
 
   return (
@@ -104,12 +99,7 @@ const CreatePostMenu = ({
         />
       </MenuItem>
       <hr className={classes.hr} />
-      <MenuItem
-        button
-        onClick={handleCreatePostMenuClose}
-        component={MyLink}
-        link="/video-call"
-      >
+      <MenuItem button onClick={handleCreatePostMenuClose} component={MyLink} link="/video-call">
         <MenuItemContent
           primaryText="Study Room"
           secondaryText="Earn 20k points for initiating a video session, then 50k points for staying on for at least 10 minutes"

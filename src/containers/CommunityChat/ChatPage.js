@@ -44,13 +44,16 @@ const ChatPage = ({
   const [loading, setLoading] = useState(false);
 
   const fetchCommunityChannels = async (communities) => {
-    if (!communities?.length) { return []; }
+    if (!communities?.length) {
+      return [];
+    }
 
     try {
       const promises = communities.map(async (course) => {
         if (course?.community) {
-          const { community_channels: communityChannels } =
-            await getCommunityChannels({ communityId: course.community.id });
+          const { community_channels: communityChannels } = await getCommunityChannels({
+            communityId: course.community.id
+          });
           return communityChannels;
         }
       });
@@ -84,11 +87,7 @@ const ChatPage = ({
         setCommunityList(nonEmptyCommunities);
         setCommunityChannels(communityChannels);
 
-        if (
-          currentCommunityId &&
-          !currentCommunityChannel &&
-          nonEmptyCommunities.length > 0
-        ) {
+        if (currentCommunityId && !currentCommunityChannel && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           setCurrentCommunityId(defaultCommunity.id);
           setCurrentCommunity(defaultCommunity);
@@ -108,7 +107,9 @@ const ChatPage = ({
       const channelList = Object.keys(local)
         .filter((l) => local[l].sid)
         .sort((a, b) => {
-          if (local[a].lastMessage.message === '') { return 0; }
+          if (local[a].lastMessage.message === '') {
+            return 0;
+          }
           return (
             moment(local[b].lastMessage.date).valueOf() -
             moment(local[a].lastMessage.date).valueOf()
@@ -132,35 +133,26 @@ const ChatPage = ({
         setCurrentCommunity(course);
       }
     },
-    [
-      currentCommunity,
-      setCurrentCommunityId,
-      setCurrentCommunity,
-      setCurrentChannelSid
-    ]
+    [currentCommunity, setCurrentCommunityId, setCurrentCommunity, setCurrentChannelSid]
   );
 
   useEffect(() => {
     if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
       setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (
-      currentCommunity &&
-      !!communities?.length &&
-      currentCommunity.id !== 'chat'
-    ) {
+    } else if (currentCommunity && !!communities?.length && currentCommunity.id !== 'chat') {
       const targetCourse = communities.filter(
         (course) => course.community.id === currentCommunity.id
       );
-      if (targetCourse.length) { setCurrentCommunity(targetCourse[0]?.community); }
-    } else if (
-      currentCommunityId &&
-      !!communities?.length &&
-      currentCommunityId !== 'chat'
-    ) {
+      if (targetCourse.length) {
+        setCurrentCommunity(targetCourse[0]?.community);
+      }
+    } else if (currentCommunityId && !!communities?.length && currentCommunityId !== 'chat') {
       const targetCourseChannel = communities.filter(
         (community) => community.community.id === Number(currentCommunityId)
       );
-      if (targetCourseChannel.length) { setCurrentCommunity(targetCourseChannel[0].community); }
+      if (targetCourseChannel.length) {
+        setCurrentCommunity(targetCourseChannel[0].community);
+      }
     }
   }, [
     currentCommunityId,
@@ -172,7 +164,9 @@ const ChatPage = ({
     campaign.chatLanding
   ]);
 
-  if (loading) { return <LoadingSpin />; }
+  if (loading) {
+    return <LoadingSpin />;
+  }
 
   return (
     <div className={classes.root}>
@@ -187,11 +181,7 @@ const ChatPage = ({
         />
       </Box>
       <Box className={classes.directChat}>
-        {currentCommunity && currentCommunity.id === 'chat' ? (
-          <DirectChat />
-        ) : (
-          <CommunityChat />
-        )}
+        {currentCommunity && currentCommunity.id === 'chat' ? <DirectChat /> : <CommunityChat />}
       </Box>
     </div>
   );

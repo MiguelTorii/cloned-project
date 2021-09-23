@@ -69,9 +69,7 @@ const SubItems = ({ MyLink, openClassmatesDialog, createPostOpen }: Props) => {
         }}
         className={classNames(
           classes.item,
-          ['/leaderboard'].includes(pathname)
-            ? classes.currentPath
-            : classes.otherPath
+          ['/leaderboard'].includes(pathname) ? classes.currentPath : classes.otherPath
         )}
       >
         <Tooltip
@@ -88,11 +86,7 @@ const SubItems = ({ MyLink, openClassmatesDialog, createPostOpen }: Props) => {
           />
         </Tooltip>
       </ListItem>
-      <ListItem
-        button
-        onClick={openClassmatesDialog}
-        className={classNames(classes.item)}
-      >
+      <ListItem button onClick={openClassmatesDialog} className={classNames(classes.item)}>
         <ListItemText
           primary="Classmates"
           classes={{

@@ -22,14 +22,14 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
     const { classes, data, isLoading } = this.props;
 
     if (isLoading) {
-return (
+      return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
-}
+    }
 
     const options = [
       { label: 'Thanks', value: data.thanks },

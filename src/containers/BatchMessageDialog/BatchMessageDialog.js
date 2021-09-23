@@ -65,17 +65,9 @@ const BatchMessageDialog = ({ chat, open, closeDialog }) => {
   }, [closeDialog, local, message, selectedClasses]);
 
   return (
-    <Dialog
-      open={open}
-      fullWidth
-      maxWidth="sm"
-      onClose={closeDialog}
-      onCancel={closeDialog}
-    >
+    <Dialog open={open} fullWidth maxWidth="sm" onClose={closeDialog} onCancel={closeDialog}>
       <div className={classes.dialogRoot}>
-        <Typography className={classes.title}>
-          Send a message to multiple classes
-        </Typography>
+        <Typography className={classes.title}>Send a message to multiple classes</Typography>
 
         <MultipleChatTextField
           setMessage={setMessage}
@@ -97,12 +89,7 @@ const BatchMessageDialog = ({ chat, open, closeDialog }) => {
           />
         </Tooltip>
 
-        <Button
-          variant="contained"
-          onClick={onSendMessage}
-          disabled={!readyToSend}
-          color="primary"
-        >
+        <Button variant="contained" onClick={onSendMessage} disabled={!readyToSend} color="primary">
           {loading ? <CircularProgress /> : 'Send Multiple Messages'}
         </Button>
       </div>

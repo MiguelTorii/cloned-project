@@ -138,7 +138,9 @@ const FloatingChat = ({
 
   const showNotification = useCallback(
     (channel) => {
-      if (!pathname.includes('chat')) { return false; }
+      if (!pathname.includes('chat')) {
+        return false;
+      }
       if (currentCommunityId === 'chat' || !currentCommunityId) {
         return currentChannel?.sid === channel.sid;
       }
@@ -221,12 +223,12 @@ const FloatingChat = ({
       let unread = 0;
       const cl = Object.keys(local)
         .filter(
-          (l) =>
-            local[l].sid &&
-            !local[l]?.twilioChannel?.channelState?.attributes?.community_id
+          (l) => local[l].sid && !local[l]?.twilioChannel?.channelState?.attributes?.community_id
         )
         .sort((a, b) => {
-          if (!local[a].lastMessage.message) { return 0; }
+          if (!local[a].lastMessage.message) {
+            return 0;
+          }
           return (
             moment(local[b].lastMessage.date).valueOf() -
             moment(local[a].lastMessage.date).valueOf()
@@ -234,7 +236,9 @@ const FloatingChat = ({
         });
       setChannelList(cl);
       cl.forEach((l) => {
-        if (local[l]?.unread) { unread += local[l].unread; }
+        if (local[l]?.unread) {
+          unread += local[l].unread;
+        }
       });
       setUnread(unread);
     }
@@ -259,18 +263,12 @@ const FloatingChat = ({
         let fullMessageContent = '';
         if (typeof parse(body) === 'string') {
           if (!body) {
-            fullMessageContent = notificationMessageWithoutBody(
-              files,
-              `${firstName} ${lastName}`
-            );
+            fullMessageContent = notificationMessageWithoutBody(files, `${firstName} ${lastName}`);
           } else {
             fullMessageContent = body;
           }
         } else if (!body.length) {
-          fullMessageContent = notificationMessageWithoutBody(
-            files,
-            `${firstName} ${lastName}`
-          );
+          fullMessageContent = notificationMessageWithoutBody(files, `${firstName} ${lastName}`);
         } else {
           // TODO add unit tests for regex.
           fullMessageContent = body.replace(/(<([^>]+)>)/gi, '');
@@ -302,7 +300,9 @@ const FloatingChat = ({
         });
       }
     };
-    if (newMessage && prevMessageId !== newMessage.sid) { handleMessage(); }
+    if (newMessage && prevMessageId !== newMessage.sid) {
+      handleMessage();
+    }
 
     // eslint-disable-next-line
   }, [newMessage, local, prevMessageId]);
@@ -317,7 +317,9 @@ const FloatingChat = ({
       if (
         updateOpenChannelsDebounce.cancel &&
         typeof updateOpenChannelsDebounce.cancel === 'function'
-      ) { updateOpenChannelsDebounce.cancel(); }
+      ) {
+        updateOpenChannelsDebounce.cancel();
+      }
     };
   }, [handleNewChannelClose, updateOpenChannels]);
 
@@ -333,16 +335,18 @@ const FloatingChat = ({
         data: { uuid: prevUuid }
       } = prevChat;
 
-      if (uuid !== prevUuid && uuid !== '') { handleCreateChannelOpen('group'); }
+      if (uuid !== prevUuid && uuid !== '') {
+        handleCreateChannelOpen('group');
+      }
 
       if (client && profileImage !== '') {
         try {
           if (client.user.attributes.profileImageUrl !== profileImage) {
-client.user.updateAttributes({
+            client.user.updateAttributes({
               ...client.user.attributes,
               profileImageUrl: profileImage
             });
-}
+          }
         } catch (err) {}
       }
     }
@@ -370,7 +374,9 @@ client.user.updateAttributes({
         props: { 'Initiated From': 'Profile' }
       });
       const win = window.open(`/video-call/${channel.sid}`, '_blank');
-      if (win && win.focus) { win.focus(); }
+      if (win && win.focus) {
+        win.focus();
+      }
       if (!win || win.closed || typeof win.closed === 'undefined') {
         push(`/video-call/${channel.sid}`);
       }
@@ -381,7 +387,9 @@ client.user.updateAttributes({
     setCreateChat(null);
   };
 
-  if (pathname === '/chat' || userId === '' || !client) { return null; }
+  if (pathname === '/chat' || userId === '' || !client) {
+    return null;
+  }
 
   return (
     <>
@@ -403,7 +411,9 @@ client.user.updateAttributes({
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
               onSend={() => {
-                if (onboardingListVisible) { setTimeout(() => getOnboardingList(), 1000); }
+                if (onboardingListVisible) {
+                  setTimeout(() => getOnboardingList(), 1000);
+                }
               }}
             />
           ))}
@@ -435,8 +445,7 @@ client.user.updateAttributes({
                   <>
                     <LoadImg url={FloatEmptyChat} />
                     <Typography variant="subtitle1" align="center">
-                      You have no chats yet. Start a conversation with a
-                      classmate!
+                      You have no chats yet. Start a conversation with a classmate!
                     </Typography>
                   </>
                 ) : (
@@ -479,12 +488,7 @@ client.user.updateAttributes({
   );
 };
 
-const mapStateToProps = ({
-  router,
-  user,
-  chat,
-  onboarding
-}: StoreState): {} => ({
+const mapStateToProps = ({ router, user, chat, onboarding }: StoreState): {} => ({
   user,
   router,
   chat,

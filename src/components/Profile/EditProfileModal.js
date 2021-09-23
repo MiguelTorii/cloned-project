@@ -26,14 +26,7 @@ type Props = {
 
 const MAX_BIO_LENGTH = 160;
 
-const EditProfileModal = ({
-  profile,
-  about,
-  open,
-  isSaving,
-  onClose,
-  onSave
-}: Props) => {
+const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null); // image can be URL or BLOB data from the editor.
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
@@ -71,21 +64,14 @@ const EditProfileModal = ({
   };
 
   return (
-    <Dialog
-      title="Edit Your Profile"
-      open={open}
-      onCancel={onClose}
-      maxWidth="lg"
-    >
+    <Dialog title="Edit Your Profile" open={open} onCancel={onClose} maxWidth="lg">
       <Grid container className={classes.root} spacing={4}>
         <Grid item xs={12}>
           <Box display="inline-block" position="relative">
             <Avatar
               mobileSize={DEFAULT_AVATAR_SIZE.desktop}
               src={image}
-              initialText={getInitials(
-                `${profile.firstName} ${profile.lastName}`
-              )}
+              initialText={getInitials(`${profile.firstName} ${profile.lastName}`)}
             />
             <Button
               onClick={() => setIsEditingAvatar(true)}
@@ -107,13 +93,10 @@ const EditProfileModal = ({
             }}
             value={bioText}
             onChange={(event) =>
-              event.target.value.length <= MAX_BIO_LENGTH &&
-              setBioText(event.target.value)
+              event.target.value.length <= MAX_BIO_LENGTH && setBioText(event.target.value)
             }
             maxLength={MAX_BIO_LENGTH}
-            label={`Bio(${
-              MAX_BIO_LENGTH - bioText.length
-            } characters remaining)`}
+            label={`Bio(${MAX_BIO_LENGTH - bioText.length} characters remaining)`}
             placeholder="Add a quick description about you here! Your classmates will view your profile to learn more about you!"
           />
         </Grid>
@@ -123,12 +106,7 @@ const EditProfileModal = ({
               Cancel
             </TransparentButton>
             <Box ml={2}>
-              <GradientButton
-                compact
-                onClick={handleSave}
-                loading={isSaving}
-                disabled={isSaving}
-              >
+              <GradientButton compact onClick={handleSave} loading={isSaving} disabled={isSaving}>
                 Save Changes
               </GradientButton>
             </Box>

@@ -75,7 +75,9 @@ const MainChatItem = ({
   const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
-    if (handleRemoveChannel && handleMuteChannel) { setShowMenu(true); }
+    if (handleRemoveChannel && handleMuteChannel) {
+      setShowMenu(true);
+    }
   }, [handleMuteChannel, handleRemoveChannel]);
 
   const onMouseLeave = useCallback(() => {
@@ -92,24 +94,22 @@ const MainChatItem = ({
   }, [handleClose]);
 
   const handleRemoveSubmit = useCallback(async () => {
-    if (roomId) { await handleRemoveChannel({ sid: roomId }); }
+    if (roomId) {
+      await handleRemoveChannel({ sid: roomId });
+    }
     handleRemoveClose();
   }, [handleRemoveChannel, roomId, handleRemoveClose]);
 
   if (isLoading) {
-return (
+    return (
       <div className={classes.progress}>
         <CircularProgress size={20} color="secondary" />
       </div>
     );
-}
+  }
 
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className={classes.container}
-    >
+    <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={classes.container}>
       <ButtonBase
         className={cx(classes.root, {
           [classes.dark]: dark,
@@ -120,9 +120,7 @@ return (
         <OnlineBadge
           isVisible={isDirectChat}
           isOnline={isOnline}
-          bgColorPath={
-            dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'
-          }
+          bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
         >
           <Avatar src={imageProfile}>{initials || <GroupIcon />}</Avatar>
         </OnlineBadge>
@@ -135,20 +133,12 @@ return (
           </Typography>
         </div>
         {muted && <NotificationsOffIcon />}
-        <Badge
-          className={classes.margin}
-          badgeContent={unReadCount}
-          color="secondary"
-        >
+        <Badge className={classes.margin} badgeContent={unReadCount} color="secondary">
           <span />
         </Badge>
       </ButtonBase>
       {showMenu && (
-        <IconButton
-          onClick={handleClick}
-          className={classes.hoverMenu}
-          size="small"
-        >
+        <IconButton onClick={handleClick} className={classes.hoverMenu} size="small">
           <MoreHorizIcon fontSize="inherit" />
         </IconButton>
       )}

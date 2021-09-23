@@ -24,7 +24,9 @@ class ErrorBoundary extends React.Component<Props, State> {
       JSON.stringify(error).includes(
         'transition is invalid while previous transition is still in progress'
       )
-    ) { return true; }
+    ) {
+      return true;
+    }
     return false;
   };
 

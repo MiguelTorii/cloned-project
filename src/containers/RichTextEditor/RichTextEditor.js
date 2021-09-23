@@ -162,19 +162,22 @@ const RichTextEditor = ({
   useEffect(() => {
     if (rte.current) {
       const { editor } = rte.current;
-      if (setEditor) { setEditor(editor); }
-      editor
-        .getEditor()
-        .getModule('toolbar')
-        .addHandler('image', handleImageInput);
+      if (setEditor) {
+        setEditor(editor);
+      }
+      editor.getEditor().getModule('toolbar').addHandler('image', handleImageInput);
     }
   }, [handleImageInput, setEditor]);
 
-  const readFile = useCallback((file) => new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => resolve(reader.result), false);
-      reader.readAsDataURL(file);
-    }), []);
+  const readFile = useCallback(
+    (file) =>
+      new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => resolve(reader.result), false);
+        reader.readAsDataURL(file);
+      }),
+    []
+  );
 
   // const zoomIn = useCallback(() => {
   //   if (zoom >= 3) setZoom(3)
@@ -219,17 +222,21 @@ const RichTextEditor = ({
           }
         });
 
-        if (handleImage) { handleImage(readUrl); } else {
-rte.current.editor
-            .getEditor()
-            .insertEmbed(range.index, 'image', readUrl);
-}
+        if (handleImage) {
+          handleImage(readUrl);
+        } else {
+          rte.current.editor.getEditor().insertEmbed(range.index, 'image', readUrl);
+        }
 
         rte.current.editor.getEditor().enable(true);
       } catch (err) {
-        if (rte.current && rte.current.editor) { rte.current.editor.getEditor().enable(true); }
+        if (rte.current && rte.current.editor) {
+          rte.current.editor.getEditor().enable(true);
+        }
       } finally {
-        if (setLoadingImage) { setLoadingImage(false); }
+        if (setLoadingImage) {
+          setLoadingImage(false);
+        }
         setLoading(false);
       }
     },
@@ -245,17 +252,15 @@ rte.current.editor
       fileInput.current.files[0].size < 8000000
     ) {
       setLoading(true);
-      if (setLoadingImage) { setLoadingImage(true); }
+      if (setLoadingImage) {
+        setLoadingImage(true);
+      }
       const file = fileInput.current.files[0];
       const imageDataUrl = await readFile(file);
       setImageSrc(imageDataUrl);
 
       const range = rte.current.editor.getEditor().getSelection();
-      const result = await uploadMedia(
-        userId,
-        UPLOAD_MEDIA_TYPES.POST_FEED,
-        file
-      );
+      const result = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.POST_FEED, file);
 
       const { readUrl } = result;
 
@@ -264,20 +269,19 @@ rte.current.editor
     }
   }, [readFile, setLoadingImage, userId]);
 
-  if (isLoading) { return <CircularProgress size={12} />; }
-  if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
+  if (isLoading) {
+    return <CircularProgress size={12} />;
+  }
+  if (userId === '' || error) {
+    return 'Oops, there was an error loading your data, please try again.';
+  }
 
   return (
     <>
       <ErrorBoundary>
         <div className={classes.root}>
           <div className={classes.quill} id="quill-editor">
-            <CustomQuill
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              ref={rte}
-            />
+            <CustomQuill placeholder={placeholder} value={value} onChange={onChange} ref={rte} />
           </div>
           <input
             accept="image/*"
@@ -310,7 +314,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(RichTextEditor));
+export default connect(mapStateToProps, null)(withStyles(styles)(RichTextEditor));

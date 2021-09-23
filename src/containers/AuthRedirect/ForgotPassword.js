@@ -48,7 +48,9 @@ const ForgotPassword = ({ updateError }) => {
     (field) => (e) => {
       if (e?.target) {
         const { value } = e.target;
-        if (field === 'email') { setEmail(value); }
+        if (field === 'email') {
+          setEmail(value);
+        }
       }
     },
     []
@@ -81,7 +83,7 @@ const ForgotPassword = ({ updateError }) => {
   );
 
   if (step === 'email') {
-return (
+    return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
           <Typography component="h1" variant="h5" align="center">
@@ -104,16 +106,12 @@ return (
             onClick={onSubmitEmail}
             color="primary"
           >
-            {loading ? (
-              <CircularProgress size={20} color="secondary" />
-            ) : (
-              'Send Code'
-            )}
+            {loading ? <CircularProgress size={20} color="secondary" /> : 'Send Code'}
           </Button>
         </form>
       </div>
     );
-}
+  }
 
   return (
     <div className={classes.container}>

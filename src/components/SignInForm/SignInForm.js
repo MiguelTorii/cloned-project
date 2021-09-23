@@ -51,11 +51,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <ValidatorForm
-            instantValidate={false}
-            onSubmit={handleSubmit}
-            className={classes.form}
-          >
+          <ValidatorForm instantValidate={false} onSubmit={handleSubmit} className={classes.form}>
             {!isVerified ? (
               <TextValidator
                 label="Email Address"
@@ -96,12 +92,7 @@ class SignInForm extends React.PureComponent<ProvidedProps & Props, State> {
               >
                 {!isVerified ? 'Next' : 'Sign In'}
               </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
+              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </div>
           </ValidatorForm>
           <div className={classes.links}>

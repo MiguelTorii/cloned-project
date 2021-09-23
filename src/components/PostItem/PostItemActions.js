@@ -36,8 +36,12 @@ type Props = {
 class PostItemActions extends React.PureComponent<Props> {
   renderThanks = () => {
     const { thanked, isThanksLoading } = this.props;
-    if (isThanksLoading) { return <CircularProgress size={24} />; }
-    if (thanked) { return <ThanksIcon />; }
+    if (isThanksLoading) {
+      return <CircularProgress size={24} />;
+    }
+    if (thanked) {
+      return <ThanksIcon />;
+    }
     return <ThanksIcon />;
   };
 
@@ -103,25 +107,14 @@ class PostItemActions extends React.PureComponent<Props> {
               <>
                 {!noThanks && (
                   <Button aria-label="Thanks" onClick={onThanks}>
-                    <img
-                      src={thanksSvg}
-                      className={classes.actionIcon}
-                      alt="thanks"
-                    />
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.buttonText}
-                    >
+                    <img src={thanksSvg} className={classes.actionIcon} alt="thanks" />
+                    <Typography variant="subtitle1" className={classes.buttonText}>
                       {thanksCount}
                     </Typography>
                   </Button>
                 )}
                 <Typography variant="subtitle1" className={classes.buttonText}>
-                  <img
-                    src={commentSvg}
-                    className={classes.actionIcon}
-                    alt="comment"
-                  />
+                  <img src={commentSvg} className={classes.actionIcon} alt="comment" />
                   {questionsCount}
                 </Typography>
               </>

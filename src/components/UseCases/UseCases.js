@@ -47,10 +47,11 @@ const UseCases = ({
     init();
   }, []);
 
-  if (!campaign) { return null; }
+  if (!campaign) {
+    return null;
+  }
 
-  const videoEnabled =
-    campaign.variation_key && campaign.variation_key !== 'hidden';
+  const videoEnabled = campaign.variation_key && campaign.variation_key !== 'hidden';
 
   const Item = ({
     imageUrl,
@@ -102,7 +103,9 @@ const UseCases = ({
 
   const onClickChat = () => {
     const newChat = document.getElementById('circlein-newchat');
-    if (newChat) { newChat.click(); }
+    if (newChat) {
+      newChat.click();
+    }
   };
 
   return (
@@ -112,17 +115,9 @@ const UseCases = ({
           title="Need Help"
           text="It feels terrible to struggle and not have immediate help. Post a question, your classmates get notified, and when you vote a student with “Best Answer”, they get 25,000 points for helping you out."
         >
-          <Item
-            imageUrl={question}
-            title="Post a Question"
-            to="/create/question"
-          />
+          <Item imageUrl={question} title="Post a Question" to="/create/question" />
           {videoEnabled && (
-            <Item
-              imageUrl={videos}
-              to="/video-call"
-              title="Start a Chat or Group Chat"
-            />
+            <Item imageUrl={videos} to="/video-call" title="Start a Chat or Group Chat" />
           )}
         </UseCase>
         <UseCase
@@ -130,22 +125,10 @@ const UseCases = ({
           text="CircleIn makes group projects and studying so much easier. Don’t worry if someone is down the hall or across the country"
         >
           {videoEnabled && (
-            <Item
-              imageUrl={videos}
-              to="/video-call"
-              title="Create a Video Study Session"
-            />
+            <Item imageUrl={videos} to="/video-call" title="Create a Video Study Session" />
           )}
-          <Item
-            imageUrl={groupchat}
-            onClick={onClickChat}
-            title="Start a Chat or Group Chat"
-          />
-          <Item
-            imageUrl={links}
-            title="Share a link to a file or video"
-            to="/create/sharelink"
-          />
+          <Item imageUrl={groupchat} onClick={onClickChat} title="Start a Chat or Group Chat" />
+          <Item imageUrl={links} title="Share a link to a file or video" to="/create/sharelink" />
         </UseCase>
       </div>
       <div className={classes.row}>
@@ -153,29 +136,13 @@ const UseCases = ({
           title="Get Ready for a Test"
           text="CircleIn is great for preparing for your next midterm or final exam"
         >
-          <Item
-            imageUrl={flashcards}
-            title="Create Flashcards"
-            to="/create/flashcards"
-          />
+          <Item imageUrl={flashcards} title="Create Flashcards" to="/create/flashcards" />
           <Item imageUrl={notes} title="Upload your Notes" to="/create/notes" />
-          <Item
-            imageUrl={reminders}
-            title="Add a task to your Workflow"
-            to="/"
-          />
+          <Item imageUrl={reminders} title="Add a task to your Workflow" to="/" />
         </UseCase>
         <UseCase title="Get Organized" text={organizeText}>
-          <Item
-            imageUrl={reminders}
-            title="Add a task to your Workflow"
-            to="/"
-          />
-          <Item
-            imageUrl={bookmarks}
-            title="View my Bookmarks"
-            to={`/profile/${userId}/2`}
-          />
+          <Item imageUrl={reminders} title="Add a task to your Workflow" to="/" />
+          <Item imageUrl={bookmarks} title="View my Bookmarks" to={`/profile/${userId}/2`} />
         </UseCase>
       </div>
       <div className={classes.text2}>

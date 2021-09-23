@@ -83,7 +83,9 @@ const LeftMenu = ({
 
   const handleClose = () => {
     setIsOpen(false);
-    if (setOneTouchSend) { setOneTouchSend(false); }
+    if (setOneTouchSend) {
+      setOneTouchSend(false);
+    }
     handleNewChannel(false);
     setCurrentChannel(local[lastChannelSid]?.twilioChannel);
   };
@@ -153,11 +155,7 @@ const LeftMenu = ({
             alignItems="center"
             direction="column"
           >
-            <Typography
-              className={classes.createNewChate}
-              variant="subtitle1"
-              component="p"
-            >
+            <Typography className={classes.createNewChate} variant="subtitle1" component="p">
               Create New Chat
             </Typography>
 
@@ -198,12 +196,7 @@ const LeftMenu = ({
             />
           )}
         </Dialog>
-        <Grid
-          item
-          className={
-            isLoading ? classes.gridChatListLoading : classes.gridChatList
-          }
-        >
+        <Grid item className={isLoading ? classes.gridChatListLoading : classes.gridChatList}>
           <EmptyLeftMenu
             emptyChannels={channelList.length === 0}
             handleCreateNewChannel={handleCreateNewChannel}
@@ -216,16 +209,12 @@ const LeftMenu = ({
                 local[c] && (
                   <div
                     key={local[c].sid}
-                    className={clsx(
-                      !searchChannels.includes(local[c].sid) && classes.hidden
-                    )}
+                    className={clsx(!searchChannels.includes(local[c].sid) && classes.hidden)}
                   >
                     <ChatListItem
                       selected={currentChannel && c === currentChannel.sid}
                       channel={local[c]}
-                      targetChannel={channels.filter(
-                        (channel) => channel.sid === c
-                      )}
+                      targetChannel={channels.filter((channel) => channel.sid === c)}
                       userId={userId}
                       local={local}
                       permission={permission}

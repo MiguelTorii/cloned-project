@@ -1,13 +1,6 @@
 /* eslint-disable no-nested-ternary */
 // @flow
-import React, {
-  memo,
-  useMemo,
-  useCallback,
-  useRef,
-  useState,
-  useEffect
-} from 'react';
+import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
@@ -24,12 +17,7 @@ import InitialAlert from 'containers/CommunityChat/InitialAlert';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
 import LoadImg from 'components/LoadImg/LoadImg';
-import {
-  processMessages,
-  fetchAvatars,
-  getAvatar,
-  getFileAttributes
-} from 'utils/chat';
+import { processMessages, fetchAvatars, getAvatar, getFileAttributes } from 'utils/chat';
 import LoadingMessageGif from 'assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
 import { PERMISSIONS } from 'constants/common';
@@ -104,7 +92,9 @@ const Main = ({
   const memberKeys = useMemo(() => Object.keys(members), [members]);
 
   const otherUser = useMemo(() => {
-    if (memberKeys.length !== 2) { return null; }
+    if (memberKeys.length !== 2) {
+      return null;
+    }
     return members[memberKeys.find((key) => key !== user.data.userId)];
   }, [memberKeys, members, user.data.userId]);
 
@@ -113,10 +103,7 @@ const Main = ({
     data: { userId, firstName, lastName }
   } = user;
 
-  const channelMembers = useMemo(
-    () => channel && local[channel.sid].members,
-    [channel, local]
-  );
+  const channelMembers = useMemo(() => channel && local[channel.sid].members, [channel, local]);
 
   const handleScrollToBottom = useCallback(() => {
     try {
@@ -186,11 +173,10 @@ const Main = ({
 
         setAvatars(avatars);
         setCampaign(aCampaign);
-        if (
-          !chatData?.items?.length ||
-          selectedChannelId === chatData?.items?.[0]?.channel?.sid
-        ) {
-          if (!chatData.hasNextPage) { startMessageLoading(false); }
+        if (!chatData?.items?.length || selectedChannelId === chatData?.items?.[0]?.channel?.sid) {
+          if (!chatData.hasNextPage) {
+            startMessageLoading(false);
+          }
           setMessages(chatData.items);
           setPaginator(chatData);
           setHasMore(!(chatData.items.length < 10));
@@ -199,10 +185,7 @@ const Main = ({
           end.current.scrollIntoView({ behavior: 'instant' });
         }
 
-        if (
-          !channel._events.typingStarted ||
-          channel._events.typingStarted.length === 0
-        ) {
+        if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', (member) => {
             const memberId = member?.state?.identity;
             if (memberId) {
@@ -220,7 +203,9 @@ const Main = ({
       }
     };
 
-    if (channel) { init(); }
+    if (channel) {
+      init();
+    }
     // eslint-disable-next-line
   }, [channel, selectedChannelId]);
 
@@ -234,8 +219,7 @@ const Main = ({
   );
 
   const hasPermission = useMemo(
-    () =>
-      permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
+    () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
   );
 
@@ -269,7 +253,9 @@ const Main = ({
 
   const getRole = useCallback(
     (userId) => {
-      if (!members[userId]) { return null; }
+      if (!members[userId]) {
+        return null;
+      }
       const { role } = members[userId];
       return role;
     },
@@ -278,7 +264,9 @@ const Main = ({
 
   const getIsOnline = useCallback(
     (userId) => {
-      if (!members[userId]) { return null; }
+      if (!members[userId]) {
+        return null;
+      }
       const { isOnline } = members[userId];
       return isOnline;
     },
@@ -287,7 +275,9 @@ const Main = ({
 
   const getFullName = useCallback(
     (userId) => {
-      if (!members[userId]) { return null; }
+      if (!members[userId]) {
+        return null;
+      }
       const { firstName, lastName } = members[userId];
 
       return `${firstName} ${lastName}`;
@@ -364,7 +354,9 @@ const Main = ({
   const onSendMessage = useCallback(
     async (message) => {
       setScroll(true);
-      if (!channel) { return; }
+      if (!channel) {
+        return;
+      }
 
       logEvent({
         event: 'Chat- Send Message',
@@ -393,7 +385,9 @@ const Main = ({
           props: { Content: 'Text' }
         });
 
-        if (onSend) { onSend(); }
+        if (onSend) {
+          onSend();
+        }
       } catch (err) {
         setErrorLoadingMessage(true);
       } finally {
@@ -405,7 +399,9 @@ const Main = ({
   );
 
   const onTyping = useCallback(() => {
-    if (!channel) { return; }
+    if (!channel) {
+      return;
+    }
     try {
       channel.typing();
     } catch (err) {
@@ -414,15 +410,10 @@ const Main = ({
   }, [channel]);
 
   const handleRTEChange = useCallback((updatedValue) => {
-    if (
-      updatedValue.trim() === '<p><br></p>' ||
-      updatedValue.trim() === '<p>\n</p>'
-    ) {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('');
     } else {
-      const currentValue = updatedValue
-        .replaceAll('<p><br></p>', '')
-        .replaceAll('<p>\n</p>', '');
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
       setValue(currentValue);
     }
   }, []);
@@ -449,8 +440,7 @@ const Main = ({
   }, [channel]);
 
   const videoEnabled = useMemo(
-    () =>
-      campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
+    () => campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
     [campaign]
   );
 
@@ -459,9 +449,7 @@ const Main = ({
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
           <LoadImg url={LoadingMessageGif} className={classes.emptyChatImg} />
-          <Typography className={classes.expertTitle}>
-            Loading your conversation...
-          </Typography>
+          <Typography className={classes.expertTitle}>Loading your conversation...</Typography>
         </div>
       </div>
     ),
@@ -472,10 +460,7 @@ const Main = ({
     () => (
       <div className={classes.messageLoadingRoot}>
         <div className={classes.messageLoadingContainer}>
-          <LoadImg
-            url={LoadingErrorMessageSvg}
-            className={classes.emptyChatImg}
-          />
+          <LoadImg url={LoadingErrorMessageSvg} className={classes.emptyChatImg} />
           <Typography className={classes.expertTitle}>
             Uh oh! There was an error trying to load your
             <br />
@@ -499,11 +484,7 @@ const Main = ({
           isCommunityChat={isCommunityChat}
           channel={channel}
           currentUserName={`${firstName} ${lastName}`}
-          title={
-            isCommunityChat
-              ? selectedChannel?.chat_name
-              : local[channel.sid].title
-          }
+          title={isCommunityChat ? selectedChannel?.chat_name : local[channel.sid].title}
           rightSpace={rightSpace}
           otherUser={otherUser}
           memberKeys={memberKeys}

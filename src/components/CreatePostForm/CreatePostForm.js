@@ -44,8 +44,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     if (this.props.loading || !this.props.changed) {
       return 'Post';
     }
-      return this.props.buttonLabel || 'Create';
-  }
+    return this.props.buttonLabel || 'Create';
+  };
 
   render() {
     const {
@@ -82,14 +82,12 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                         />
                       }
                       label={
-                        anonymousActive
-                          ? 'This post is anonymous!'
-                          : 'Make this post anonymous! 👀'
+                        anonymousActive ? 'This post is anonymous!' : 'Make this post anonymous! 👀'
                       }
                     />
                     <Typography className={classes.anonymouslyExplanation}>
-                      Your classmates cannot see who asked the question, but
-                      this post can still be flagged for academic dishonesty.
+                      Your classmates cannot see who asked the question, but this post can still be
+                      flagged for academic dishonesty.
                     </Typography>
                   </>
                 ) : (
@@ -119,10 +117,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                     >
                       {loading ? (
                         <div className={classes.divProgress}>
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
+                          <CircularProgress size={24} className={classes.buttonProgress} />
                         </div>
                       ) : (
                         this.getButtonLabel()
@@ -150,40 +145,31 @@ class CreatePostForm extends React.PureComponent<Props, State> {
               <div className={classes.itemMark}>
                 <div className={classes.postItem}>Post ✏️</div>
               </div>
-              <div className={classes.itemText}>
-                Earn 1k points for creating a post.
-              </div>
+              <div className={classes.itemText}>Earn 1k points for creating a post.</div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
                 <div className={classes.questionItem}>Question 🤔</div>
               </div>
               <div className={classes.itemText}>
-                Earn 5K points for asking a question, 2K for answering a question & 40K for Best Answer.
+                Earn 5K points for asking a question, 2K for answering a question & 40K for Best
+                Answer.
               </div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
                 <div className={classes.noteItem}>Notes 📝</div>
               </div>
-              <div className={classes.itemText}>
-                Earn 10K points for every page of notes.
-              </div>
+              <div className={classes.itemText}>Earn 10K points for every page of notes.</div>
             </div>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
                 <div className={classes.resourceItem}>Resource 🔗</div>
               </div>
-              <div className={classes.itemText}>
-                Earn 5K points for each resource shared.
-              </div>
+              <div className={classes.itemText}>Earn 5K points for each resource shared.</div>
             </div>
             <div className={classes.gotIt}>
-              <Button
-                variant="contained"
-                className={classes.btnGotIt}
-                onClick={this.onClose}
-              >
+              <Button variant="contained" className={classes.btnGotIt} onClick={this.onClose}>
                 Got it! 👍
               </Button>
             </div>

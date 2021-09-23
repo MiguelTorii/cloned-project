@@ -108,27 +108,18 @@ const CollapseNavbar = ({
     channels.forEach((channel) => {
       content.push(
         <ListItem
-          key={
-            channel?.channels
-              ? `${channel.id}-${channel.name}`
-              : channel.chat_name
-          }
+          key={channel?.channels ? `${channel.id}-${channel.name}` : channel.chat_name}
           className={cx(
             classes.navLink,
             !channel?.channels && classes.childChannel,
             !channel?.channels && !local[channel.chat_id] && classes.hide
           )}
-          selected={
-            selectedChannel && selectedChannel.chat_id === channel.chat_id
-          }
+          selected={selectedChannel && selectedChannel.chat_id === channel.chat_id}
           classes={{
             selected: classes.selected,
             button: classes.listItem
           }}
-          onClick={handleSubList(
-            channel?.channels ? channel.name : channel.chat_name,
-            channel
-          )}
+          onClick={handleSubList(channel?.channels ? channel.name : channel.chat_name, channel)}
           button
         >
           {channel?.channels ? (
@@ -137,18 +128,11 @@ const CollapseNavbar = ({
             </ListItemIcon>
           ) : local[channel.chat_id] ? (
             <ListItemIcon classes={{ root: classes.channelIcon }}>
-              {local[channel.chat_id]?.unread ? (
-                <UnreadMessageChannelIcon />
-              ) : (
-                <ChannelIcon />
-              )}
+              {local[channel.chat_id]?.unread ? <UnreadMessageChannelIcon /> : <ChannelIcon />}
             </ListItemIcon>
           ) : null}
           {channel?.channels ? (
-            <ListItemText
-              classes={{ primary: classes.channelName }}
-              primary={channel.name}
-            />
+            <ListItemText classes={{ primary: classes.channelName }} primary={channel.name} />
           ) : local[channel.chat_id] ? (
             <div className={classes.list}>
               <Tooltip
@@ -162,8 +146,7 @@ const CollapseNavbar = ({
                   classes={{
                     primary: cx(
                       classes.channelName,
-                      local[channel.chat_id]?.unread &&
-                        classes.unreadMessageChannel
+                      local[channel.chat_id]?.unread && classes.unreadMessageChannel
                     )
                   }}
                   primary={local[channel.chat_id] && channel.chat_name}

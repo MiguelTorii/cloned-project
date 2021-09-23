@@ -98,8 +98,7 @@ class ForgotPassword extends React.Component<Props, State> {
             {success ? (
               <div className={classes.success}>
                 <Typography align="center" variant="h5">
-                  We have sent you an email, please follow the link inside to
-                  reset your password
+                  We have sent you an email, please follow the link inside to reset your password
                 </Typography>
               </div>
             ) : (

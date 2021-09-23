@@ -10,9 +10,7 @@ const HotKeyBox = ({ data }) => {
 
   return (
     <Box className={classes.root}>
-      <Typography className={classes.title}>
-        Keyboard Shortcuts
-      </Typography>
+      <Typography className={classes.title}>Keyboard Shortcuts</Typography>
       {data.map((hotKeyItem) => (
         <Box
           marginTop={1}
@@ -21,9 +19,7 @@ const HotKeyBox = ({ data }) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography>
-            {hotKeyItem.description}
-          </Typography>
+          <Typography>{hotKeyItem.description}</Typography>
           <Box>
             <HotKey keys={hotKeyItem.keys} />
           </Box>

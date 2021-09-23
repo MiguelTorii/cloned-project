@@ -12,12 +12,7 @@ const RECORD_DRAGGED_CARDS = 'RECORD_DRAGGED_CARDS';
 const REMOVE_LOGS = 'REMOVE_LOGS';
 
 // Actions
-export const initializeGame = (
-  matchGameId,
-  cardsData,
-  containerWidth,
-  containerHeight
-) => ({
+export const initializeGame = (matchGameId, cardsData, containerWidth, containerHeight) => ({
   type: INITIALIZE_GAME,
   payload: {
     matchGameId,
@@ -65,19 +60,19 @@ const dx = [0, -1, 0, 1];
 const dy = [-1, 0, 1, 0];
 
 const intersectRect = (rect1, rect2) => {
-  if (rect2.x >= rect1.x + rect1.w) { return false; }
-  if (rect1.x >= rect2.x + rect2.w) { return false; }
-  if (rect2.y >= rect1.y + rect1.h) { return false; }
+  if (rect2.x >= rect1.x + rect1.w) {
+    return false;
+  }
+  if (rect1.x >= rect2.x + rect2.w) {
+    return false;
+  }
+  if (rect2.y >= rect1.y + rect1.h) {
+    return false;
+  }
   return rect1.y < rect2.y + rect2.h;
 };
 
-const getCardPosition = (
-  containerWidth,
-  containerHeight,
-  cardWidth,
-  cardHeight,
-  placedCards
-) => {
+const getCardPosition = (containerWidth, containerHeight, cardWidth, cardHeight, placedCards) => {
   const randomX = Math.floor(Math.random() * containerWidth);
   const randomY = Math.floor(Math.random() * containerHeight);
   const size = _.max([containerWidth, containerHeight]);
@@ -98,12 +93,14 @@ const getCardPosition = (
       cardY >= 0 &&
       cardY < containerHeight - cardHeight
     ) {
-      const intersectIndex = placedCards.findIndex((rect) => intersectRect(rect, {
+      const intersectIndex = placedCards.findIndex((rect) =>
+        intersectRect(rect, {
           x: cardX - CARD_PLACE_OFFSET,
           y: cardY - CARD_PLACE_OFFSET,
           w: cardWidth + 2 * CARD_PLACE_OFFSET,
           h: cardHeight + 2 * CARD_PLACE_OFFSET
-        }));
+        })
+      );
 
       if (intersectIndex < 0) {
         return [cardX, cardY];
@@ -114,7 +111,9 @@ const getCardPosition = (
       direction = (direction + 1) % dx.length;
       mode = (mode + 1) % 2;
       currentStep = 0;
-      if (mode === 0) { currentStepLength += 1; }
+      if (mode === 0) {
+        currentStepLength += 1;
+      }
     }
 
     offsetX += dx[direction];
@@ -140,8 +139,7 @@ export const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case INITIALIZE_GAME: {
-      const { matchGameId, cardsData, containerWidth, containerHeight } =
-        action.payload;
+      const { matchGameId, cardsData, containerWidth, containerHeight } = action.payload;
       const indexes = shuffleArray([...new Array(cardsData.length).keys()]);
       const cards = [];
 
@@ -184,11 +182,7 @@ const reducer = (state, action) => {
       const placedRects = [];
       let currentIndex;
 
-      for (
-        currentIndex = lastIndex;
-        currentIndex < matchCards.length;
-        currentIndex += 2
-      ) {
+      for (currentIndex = lastIndex; currentIndex < matchCards.length; currentIndex += 2) {
         let i;
         for (i = 0; i < 2; ++i) {
           const position = getCardPosition(
@@ -199,7 +193,9 @@ const reducer = (state, action) => {
             placedRects
           );
 
-          if (!position) { break; }
+          if (!position) {
+            break;
+          }
 
           placedRects.push({
             x: position[0],
@@ -209,13 +205,13 @@ const reducer = (state, action) => {
           });
         }
 
-        if (i !== 2) { break; }
+        if (i !== 2) {
+          break;
+        }
 
         for (i = 0; i < 2; ++i) {
-          matchCards[currentIndex + i].x =
-            placedRects[placedRects.length - 2 + i].x;
-          matchCards[currentIndex + i].y =
-            placedRects[placedRects.length - 2 + i].y;
+          matchCards[currentIndex + i].x = placedRects[placedRects.length - 2 + i].x;
+          matchCards[currentIndex + i].y = placedRects[placedRects.length - 2 + i].y;
           matchCards[currentIndex + i].visible = true;
         }
       }

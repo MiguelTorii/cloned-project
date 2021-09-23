@@ -22,23 +22,23 @@ const MoreMenu = ({
   hide,
   toggleHide
 }: Props) => (
-    <Menu
-      disableAutoFocusItem
-      anchorEl={anchor}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={Boolean(anchor)}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={toggleHide}>
-        <ListItemText inset primary={hide ? 'Expand' : 'Minimise'} />
+  <Menu
+    disableAutoFocusItem
+    anchorEl={anchor}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={Boolean(anchor)}
+    onClose={handleMenuClose}
+  >
+    <MenuItem onClick={toggleHide}>
+      <ListItemText inset primary={hide ? 'Expand' : 'Minimise'} />
+    </MenuItem>
+    {completed && (
+      <MenuItem onClick={handleRemove}>
+        <ListItemText inset primary="Remove from feed" />
       </MenuItem>
-      {completed && (
-        <MenuItem onClick={handleRemove}>
-          <ListItemText inset primary="Remove from feed" />
-        </MenuItem>
-      )}
-    </Menu>
-  );
+    )}
+  </Menu>
+);
 
 export default MoreMenu;

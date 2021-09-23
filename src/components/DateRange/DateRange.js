@@ -68,7 +68,9 @@ class DateRange extends React.PureComponent<Props, State> {
     } else if (date.isAfter(from, 'day')) {
       if (date.isSame(moment(), 'day')) {
         this.setState({ to: moment().utc() });
-      } else { this.setState({ to: date }); }
+      } else {
+        this.setState({ to: date });
+      }
     }
   };
 
@@ -138,10 +140,7 @@ class DateRange extends React.PureComponent<Props, State> {
             >
               {this.renderButtonText()}
               {(from || to) && (
-                <DeleteOutlineIcon
-                  className={classes.deleteIcon}
-                  fontSize="small"
-                />
+                <DeleteOutlineIcon className={classes.deleteIcon} fontSize="small" />
               )}
             </TransparentButton>
           </div>

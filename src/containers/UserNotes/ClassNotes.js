@@ -18,21 +18,14 @@ import Note from './Note';
 
 const ClassNotes = ({ classData, arrayIndex }) => {
   const classes = useStyles();
-  const { fetchNotesBySectionId, notesBySectionId, createNewNote } =
-    useContext(NotesContext);
+  const { fetchNotesBySectionId, notesBySectionId, createNewNote } = useContext(NotesContext);
   const [notesLoaded, setNotesLoaded] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const sectionId = useMemo(
-    () => classData.section?.[0].sectionId,
-    [classData]
-  );
+  const sectionId = useMemo(() => classData.section?.[0].sectionId, [classData]);
 
-  const noteList = useMemo(
-    () => notesBySectionId[sectionId] || [],
-    [sectionId, notesBySectionId]
-  );
+  const noteList = useMemo(() => notesBySectionId[sectionId] || [], [sectionId, notesBySectionId]);
 
   const handleSwitchExpand = useCallback(() => {
     // Try to fetch notes if it's the first time
@@ -72,7 +65,9 @@ const ClassNotes = ({ classData, arrayIndex }) => {
   }, [sectionId, classData, createNewNote]);
 
   const renderNotes = useCallback(() => {
-    if (!expanded) { return null; }
+    if (!expanded) {
+      return null;
+    }
     if (loading) {
       return <LoadingSpin />;
     }
@@ -112,11 +107,7 @@ const ClassNotes = ({ classData, arrayIndex }) => {
             />
           </ListItemIcon>
           <ListItemText
-            primary={renderTitleAndTooltip(
-              classData.className,
-              arrayIndex,
-              false
-            )}
+            primary={renderTitleAndTooltip(classData.className, arrayIndex, false)}
             className={classes.title}
           />
         </ListItem>

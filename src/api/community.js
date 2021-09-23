@@ -22,22 +22,15 @@ export const getCommunities = async () => {
   }
 };
 
-export const getCommunityChannels = async ({
-  communityId
-}: {
-  communityId: number
-}) => {
+export const getCommunityChannels = async ({ communityId }: { communityId: number }) => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.GET_COMMUNITY_V1}/${communityId}/channels`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.GET_COMMUNITY_V1}/${communityId}/channels`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data } = result;
     return data;
   } catch (err) {

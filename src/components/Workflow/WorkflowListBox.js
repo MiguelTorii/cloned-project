@@ -18,10 +18,7 @@ const WorkflowListBox = ({ drop, name, tasks, list, isExpanded, onExpand }) => {
       expanded={isExpanded}
       onChange={onExpand}
     >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        className={classes.summary}
-      >
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
         <Typography className={classes.header}>
           {name} ({tasks.length})
         </Typography>

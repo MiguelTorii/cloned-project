@@ -11,9 +11,7 @@ const CalendarToday = () => {
   return (
     <Box className={classes.root}>
       <Box className={classes.monthBox}>
-        <Typography className={classes.monthText}>
-          {today.format('MMMM')}
-        </Typography>
+        <Typography className={classes.monthText}>{today.format('MMMM')}</Typography>
       </Box>
       <Box
         className={classes.dayBox}
@@ -21,12 +19,8 @@ const CalendarToday = () => {
         flexDirection="column"
         justifyContent="space-between"
       >
-        <Typography className={classes.dayText}>
-          {today.format('DD')}
-        </Typography>
-        <Typography className={classes.weekDayText}>
-          {today.format('dddd')}
-        </Typography>
+        <Typography className={classes.dayText}>{today.format('DD')}</Typography>
+        <Typography className={classes.weekDayText}>{today.format('dddd')}</Typography>
       </Box>
     </Box>
   );

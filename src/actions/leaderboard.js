@@ -100,17 +100,16 @@ const camelCaseLeaderboard = (res: Object) => {
   };
 };
 
-const updateTuesdayLeaderboard =
-  (sectionId, index) => async (dispatch: Dispatch) => {
-    try {
-      const res: Object = await getTuesdayPrizeScores(sectionId, index);
-      const leaderboards = camelCaseLeaderboard(res);
+const updateTuesdayLeaderboard = (sectionId, index) => async (dispatch: Dispatch) => {
+  try {
+    const res: Object = await getTuesdayPrizeScores(sectionId, index);
+    const leaderboards = camelCaseLeaderboard(res);
 
-      dispatch(updateTuesdayLeaderboardRequest({ leaderboards }));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+    dispatch(updateTuesdayLeaderboardRequest({ leaderboards }));
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST,
@@ -119,16 +118,15 @@ const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
   }
 });
 
-const updateGrandLeaderboards =
-  (sectionId, index) => async (dispatch: Dispatch) => {
-    try {
-      const res = await getGrandPrizeScores(sectionId, index);
-      const leaderboards = camelCaseLeaderboard(res);
-      dispatch(updateGrandLeaderboardRequest({ leaderboards }));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+const updateGrandLeaderboards = (sectionId, index) => async (dispatch: Dispatch) => {
+  try {
+    const res = await getGrandPrizeScores(sectionId, index);
+    const leaderboards = camelCaseLeaderboard(res);
+    dispatch(updateGrandLeaderboardRequest({ leaderboards }));
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST,

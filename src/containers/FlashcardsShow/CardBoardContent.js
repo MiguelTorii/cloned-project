@@ -33,19 +33,12 @@ const CardBoardContent = ({ content, image, editable, toolbarId, onFlip }) => {
               alignItems="center"
               mr={3}
             >
-              <ClickableImage
-                src={image}
-                className={classes.cardBoardImage}
-                alt="Flashcard"
-              />
+              <ClickableImage src={image} className={classes.cardBoardImage} alt="Flashcard" />
             </Box>
           )}
           {contentText.length > 0 && (
             <Box
-              className={clsx(
-                classes.cardBoardTextContainer,
-                content.length < 200 && 'large-font'
-              )}
+              className={clsx(classes.cardBoardTextContainer, content.length < 200 && 'large-font')}
             >
               <ReactQuill
                 modules={{

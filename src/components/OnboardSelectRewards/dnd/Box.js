@@ -20,11 +20,7 @@ const Box = ({ name, type, ic, isDropped }) => {
 
   return (
     <div ref={drag} style={{ ...style, opacity }}>
-      <LoadImg
-        url={ic}
-        loadingSize={10}
-        style={{ ...droppedStyle, ...imgStyle }}
-      />
+      <LoadImg url={ic} loadingSize={10} style={{ ...droppedStyle, ...imgStyle }} />
     </div>
   );
 };

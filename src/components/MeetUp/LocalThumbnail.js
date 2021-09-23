@@ -41,7 +41,9 @@ class LocalThumbnail extends React.PureComponent<Props, State> {
   componentWillUnmount = () => {
     const { video } = this.props;
     if (video) {
-      if (video.stop) { video.stop(); }
+      if (video.stop) {
+        video.stop();
+      }
       const attachedElements = video.detach();
       attachedElements.forEach((element) => element.remove());
     }
@@ -72,11 +74,7 @@ class LocalThumbnail extends React.PureComponent<Props, State> {
             ) : (
               <VideocamOffIcon className={classes.icon} />
             )}
-            {isMic ? (
-              <MicIcon className={classes.icon} />
-            ) : (
-              <MicOffIcon className={classes.icon} />
-            )}
+            {isMic ? <MicIcon className={classes.icon} /> : <MicOffIcon className={classes.icon} />}
           </div>
         </div>
       </div>

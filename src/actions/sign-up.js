@@ -126,15 +126,13 @@ export const signUp =
       return dispatch(push('/'));
     } catch (err) {
       //   const { response = {} } = err;
-      return dispatch(
-        setError({ title: 'Unknown error', body: 'Please contact us' })
-      );
+      return dispatch(setError({ title: 'Unknown error', body: 'Please contact us' }));
     }
   };
 
 export const updateError =
   ({ title, body, action }: { title: string, body: string, action?: string }) =>
-  async (dispatch: Dispatch) => dispatch(setError({ title, body, action }));
+  async (dispatch: Dispatch) =>
+    dispatch(setError({ title, body, action }));
 
-export const clearSignUpError = () => async (dispatch: Dispatch) =>
-  dispatch(clearError());
+export const clearSignUpError = () => async (dispatch: Dispatch) => dispatch(clearError());

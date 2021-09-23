@@ -13,14 +13,15 @@ const HomeGreetings = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss'))
-      .then((rsp) => {
-        setData(rsp.greetings);
-      });
+    fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((rsp) => {
+      setData(rsp.greetings);
+    });
   }, []);
 
   const greetingData = useMemo(() => {
-    if (!data) { return <Box />; }
+    if (!data) {
+      return <Box />;
+    }
     return (
       <Box mr={2}>
         <Typography variant="h6" className={classes.greetingTitle} paragraph>

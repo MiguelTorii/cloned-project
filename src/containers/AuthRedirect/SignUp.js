@@ -113,7 +113,9 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
       !state.firstName;
 
     dispatch({ type: 'LOADING', loading: true });
-    if (hasError) { dispatch({ type: 'UPDATE_ERROR' }); } else {
+    if (hasError) {
+      dispatch({ type: 'UPDATE_ERROR' });
+    } else {
       const result = await sendCode({ email: state.email });
 
       if (result.error) {
@@ -144,7 +146,8 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
     [handleSubmit]
   );
 
-  const renderSignUp = useMemo(() => (
+  const renderSignUp = useMemo(
+    () => (
       <div className={classes.container}>
         <form className={classes.form} onSubmit={onSubmit}>
           <TextField
@@ -170,9 +173,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
             onChange={updateSignup('email')}
             error={state.error && !validateEmail(state.email)}
             value={state.email}
-            helperText={
-              state.error && !validateEmail(state.email) && 'Invalid Email'
-            }
+            helperText={state.error && !validateEmail(state.email) && 'Invalid Email'}
             fullWidth
             autoComplete="new=email"
             placeholder="Email"
@@ -183,9 +184,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
             error={state.error && state.email !== state.confirmEmail}
             value={state.confirmEmail}
             helperText={
-              state.error &&
-              state.email !== state.confirmEmail &&
-              'Must be equal to email'
+              state.error && state.email !== state.confirmEmail && 'Must be equal to email'
             }
             autoComplete="new-email"
             fullWidth
@@ -207,9 +206,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
             onChange={updateSignup('confirmPassword')}
             error={state.error && state.password !== state.confirmPassword}
             helperText={
-              state.error &&
-              state.password !== state.confirmPassword &&
-              'Must be equal to password'
+              state.error && state.password !== state.confirmPassword && 'Must be equal to password'
             }
             value={state.confirmPassword}
             type="password"
@@ -241,26 +238,28 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
           </Button>
         </div>
       </div>
-    ), [
-    classes.container,
-    classes.createButton,
-    classes.form,
-    classes.login,
-    classes.orButton,
-    classes.textField,
-    goLogin,
-    handleSubmit,
-    onSubmit,
-    state.confirmEmail,
-    state.confirmPassword,
-    state.email,
-    state.error,
-    state.firstName,
-    state.lastName,
-    state.loading,
-    state.password,
-    updateSignup
-  ]);
+    ),
+    [
+      classes.container,
+      classes.createButton,
+      classes.form,
+      classes.login,
+      classes.orButton,
+      classes.textField,
+      goLogin,
+      handleSubmit,
+      onSubmit,
+      state.confirmEmail,
+      state.confirmPassword,
+      state.email,
+      state.error,
+      state.firstName,
+      state.lastName,
+      state.loading,
+      state.password,
+      updateSignup
+    ]
+  );
 
   const handleVerifyCode = useCallback(async () => {
     dispatch({ type: 'LOADING', loading: true });

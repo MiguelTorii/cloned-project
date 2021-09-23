@@ -30,8 +30,7 @@ const ShareLinkDialog = ({ open, handleClose, localChannel }) => {
           <span role="img" aria-label="Two hands">
             🙌
           </span>
-          &nbsp; Need to invite someone to this chat? Invite them by sharing the
-          following link
+          &nbsp; Need to invite someone to this chat? Invite them by sharing the following link
         </Typography>
 
         <ShareLink shareLink={localChannel.shareLink} />

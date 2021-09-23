@@ -38,17 +38,18 @@ const ForgotPassword = ({ updateError, signIn, search }) => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
-  const { email, reset_token: resetToken } = useMemo(
-    () => queryString.parse(search),
-    [search]
-  );
+  const { email, reset_token: resetToken } = useMemo(() => queryString.parse(search), [search]);
 
   const onChange = useCallback(
     (field) => (e) => {
       if (e?.target) {
         const { value } = e.target;
-        if (field === 'password') { setPassword(value); }
-        if (field === 'confirm') { setConfirm(value); }
+        if (field === 'password') {
+          setPassword(value);
+        }
+        if (field === 'confirm') {
+          setConfirm(value);
+        }
       }
     },
     []
@@ -125,11 +126,7 @@ const ForgotPassword = ({ updateError, signIn, search }) => {
           disabled={!match || !password || loading}
           color="primary"
         >
-          {loading ? (
-            <CircularProgress size={20} color="secondary" />
-          ) : (
-            'Set Password'
-          )}
+          {loading ? <CircularProgress size={20} color="secondary" /> : 'Set Password'}
         </Button>
       </form>
     </div>

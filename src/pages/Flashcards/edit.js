@@ -14,12 +14,8 @@ import FlashcardsEdit from '../../containers/FlashcardsEdit/FlashcardsEdit';
 
 const FlashcardsEditPage = () => {
   const { flashcardId } = useParams();
-  const isNewVersion = useSelector(
-    (state) => state.campaign.newFlashcardsExperience
-  );
-  const isLoading = useSelector(
-    isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN)
-  );
+  const isNewVersion = useSelector((state) => state.campaign.newFlashcardsExperience);
+  const isLoading = useSelector(isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN));
 
   const renderBody = () => {
     if (isLoading) {

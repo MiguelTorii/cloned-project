@@ -58,8 +58,7 @@ const MasqueradeFrame = () => {
             <Box display="flex" alignItems="center">
               <DesktopMac fontSize="small" />
               <Typography variant="body2" className={classes.text}>
-                You are currently acting as{' '}
-                {`${userData.firstName} ${userData.lastName}`}
+                You are currently acting as {`${userData.firstName} ${userData.lastName}`}
               </Typography>
             </Box>
           </Grid>

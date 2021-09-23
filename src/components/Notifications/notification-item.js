@@ -44,11 +44,7 @@ class FeedItem extends React.PureComponent<Props, State> {
         case 3:
           return (
             <div className={classes.flashCard}>
-              <img
-                src={flashcardImage}
-                className={classes.flashCardImage}
-                alt="Flascarhds"
-              />
+              <img src={flashcardImage} className={classes.flashCardImage} alt="Flascarhds" />
               <Typography
                 className={classes.deckCount}
                 variant="caption"
@@ -100,13 +96,7 @@ class FeedItem extends React.PureComponent<Props, State> {
   render() {
     const {
       classes,
-      notification: {
-        actorFirstName,
-        actorLastName,
-        profileImageUrl,
-        notificationText,
-        createdOn
-      }
+      notification: { actorFirstName, actorLastName, profileImageUrl, notificationText, createdOn }
     } = this.props;
     const name = `${actorFirstName} ${actorLastName}`;
     const initials = getInitials(name);

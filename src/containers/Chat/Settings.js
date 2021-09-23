@@ -61,22 +61,10 @@ const Settings = ({
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
   const [removeStudentsModalOpen, setRemoveStudentsModalOpen] = useState(false);
 
-  const handleEditGroupDetailsClose = useCallback(
-    () => setEditGroupDetailsOpen(false),
-    []
-  );
-  const handleEditGroupDetailsOpen = useCallback(
-    () => setEditGroupDetailsOpen(true),
-    []
-  );
-  const handleRemoveStudents = useCallback(
-    () => setRemoveStudentsModalOpen(true),
-    []
-  );
-  const handleRemoveStudentModalClose = useCallback(
-    () => setRemoveStudentsModalOpen(false),
-    []
-  );
+  const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
+  const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), []);
+  const handleRemoveStudents = useCallback(() => setRemoveStudentsModalOpen(true), []);
+  const handleRemoveStudentModalClose = useCallback(() => setRemoveStudentsModalOpen(false), []);
 
   const handleSettingsOpen = useCallback(
     (event) => {
@@ -98,18 +86,11 @@ const Settings = ({
     permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) &&
     permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS);
 
-  const deletePermission = permission.includes(
-    PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS
-  );
+  const deletePermission = permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS);
 
   return (
     <>
-      {isShow && (
-        <SettingsIcon
-          onClick={handleSettingsOpen}
-          className={classes.settingsIcon}
-        />
-      )}
+      {isShow && <SettingsIcon onClick={handleSettingsOpen} className={classes.settingsIcon} />}
       <Popover
         id="settings-option-popper"
         open={isShow && Boolean(anchorEl)}
@@ -126,17 +107,11 @@ const Settings = ({
       >
         {isShow && channel.members._c.size !== 2 && (
           <>
-            <ListItem
-              className={classes.selectOption}
-              onClick={handleEditGroupDetailsOpen}
-            >
+            <ListItem className={classes.selectOption} onClick={handleEditGroupDetailsOpen}>
               <ListItemText>Edit Group Details</ListItemText>
             </ListItem>
             {deletePermission && (
-              <ListItem
-                className={classes.selectOption}
-                onClick={handleRemoveStudents}
-              >
+              <ListItem className={classes.selectOption} onClick={handleRemoveStudents}>
                 <ListItemText>Remove Students</ListItemText>
               </ListItem>
             )}

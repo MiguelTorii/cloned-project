@@ -19,10 +19,7 @@ function useScript(src) {
       document.body.appendChild(script);
 
       const setAttributeFromEvent = (event) => {
-        script.setAttribute(
-          'data-status',
-          event.type === 'load' ? 'ready' : 'error'
-        );
+        script.setAttribute('data-status', event.type === 'load' ? 'ready' : 'error');
       };
       script.addEventListener('load', setAttributeFromEvent);
       script.addEventListener('error', setAttributeFromEvent);

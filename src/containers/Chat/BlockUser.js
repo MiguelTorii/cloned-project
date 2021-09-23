@@ -31,11 +31,15 @@ const BlockUser = ({ otherUser, userId, handleBlock }) => {
   const handleOpenBlock = useCallback((v) => () => setBlockUser(v), []);
 
   const onOk = async () => {
-    if (userId !== otherUser.userId) { await handleBlock(otherUser.userId); }
+    if (userId !== otherUser.userId) {
+      await handleBlock(otherUser.userId);
+    }
     handleOpenBlock(false)();
   };
 
-  if (!otherUser) { return null; }
+  if (!otherUser) {
+    return null;
+  }
   return (
     <Grid container justifyContent="center">
       <Button
@@ -61,8 +65,7 @@ const BlockUser = ({ otherUser, userId, handleBlock }) => {
         title="Block User"
       >
         <Typography color="textPrimary" id="confirm-dialog-description">
-          Are you sure you want to block {otherUser.firstName}{' '}
-          {otherUser.lastName}
+          Are you sure you want to block {otherUser.firstName} {otherUser.lastName}
         </Typography>
       </Dialog>
     </Grid>

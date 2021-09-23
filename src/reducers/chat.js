@@ -80,7 +80,9 @@ const defaultState = {
 const mergeObjects = (first, second) => {
   const merged = {};
   const keys = Object.keys(first);
-  if (keys.length === 0) { return second; }
+  if (keys.length === 0) {
+    return second;
+  }
   keys.forEach((l) => {
     merged[l] = { ...first[l], ...second[l] };
   });
@@ -281,9 +283,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           ...state.data,
           channels: [
             action.payload.channel,
-            ...state.data.channels.filter(
-              (c) => c.sid !== action.payload.channel.sid
-            )
+            ...state.data.channels.filter((c) => c.sid !== action.payload.channel.sid)
           ],
           local: {
             ...state.data.local,
@@ -331,13 +331,9 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         ...state,
         data: {
           ...state.data,
-          channels: state.data.channels.filter(
-            (c) => c.sid !== action.payload.sid
-          ),
+          channels: state.data.channels.filter((c) => c.sid !== action.payload.sid),
           local: { ...removeParam(state.data.local, action.payload.sid) },
-          openChannels: state.data.openChannels.filter(
-            (c) => c.sid !== action.payload.sid
-          )
+          openChannels: state.data.openChannels.filter((c) => c.sid !== action.payload.sid)
         }
       };
     case chatActions.UPDATE_MEMBERS_CHAT:
@@ -377,11 +373,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
             ...state.data.local,
             [action.payload.member.channel.sid]: {
               ...state.data.local[action.payload.member.channel.sid],
-              members: state.data.local[
-                action.payload.member.channel.sid
-              ]?.members.filter(
-                (m) =>
-                  Number(m.userId) !== Number(action.payload.member.identity)
+              members: state.data.local[action.payload.member.channel.sid]?.members.filter(
+                (m) => Number(m.userId) !== Number(action.payload.member.identity)
               )
             }
           }

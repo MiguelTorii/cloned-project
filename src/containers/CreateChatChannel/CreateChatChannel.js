@@ -48,13 +48,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   componentDidUpdate = (prevProps) => {
     const {
       chat: {
-        data: {
-          entityId,
-          entityFirstName,
-          entityLastName,
-          entityVideo,
-          entityUuid
-        }
+        data: { entityId, entityFirstName, entityLastName, entityVideo, entityUuid }
       }
     } = this.props;
 
@@ -83,11 +77,11 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
 
   handleLoadOptions = async ({ query, from }) => {
     if (query.trim() === '' || query.trim().length < 3) {
-return {
+      return {
         options: [],
         hasMore: false
       };
-}
+    }
     const {
       user: {
         data: { userId, schoolId }
@@ -146,13 +140,7 @@ return {
     this.setState({ thumbnail: readUrl });
   };
 
-  handleSubmit = async ({
-    chatType,
-    name,
-    type,
-    selectedUsers,
-    startVideo = false
-  }) => {
+  handleSubmit = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
     const {
       client,
       // channels,
@@ -286,7 +274,4 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   chat
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withMobileDialog()(CreateChatChannel));
+export default connect(mapStateToProps, null)(withMobileDialog()(CreateChatChannel));

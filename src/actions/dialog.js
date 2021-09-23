@@ -12,7 +12,6 @@ const updateVisibilityAction = (visible: boolean): Action => ({
   }
 });
 
-export const updateVisibility =
-  (visible: boolean) => async (dispatch: Dispatch) => {
-    dispatch(updateVisibilityAction(visible));
-  };
+export const updateVisibility = (visible: boolean) => async (dispatch: Dispatch) => {
+  dispatch(updateVisibilityAction(visible));
+};

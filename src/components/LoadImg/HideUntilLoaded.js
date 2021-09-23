@@ -15,13 +15,7 @@ import './keyframes.css';
  * style:       {Object} Custom style rules as required
  */
 
-const HideUntilLoaded = ({
-  animationIn,
-  children,
-  Spinner,
-  imageToLoad,
-  style
-}) => {
+const HideUntilLoaded = ({ animationIn, children, Spinner, imageToLoad, style }) => {
   const [errored, loaded] = usePreloadImage(imageToLoad);
 
   const styles = {

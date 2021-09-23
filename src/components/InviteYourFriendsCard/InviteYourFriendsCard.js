@@ -27,14 +27,14 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
     const { classes, data, onCopy, isLoading } = this.props;
 
     if (isLoading) {
-return (
+      return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
-}
+    }
 
     return (
       <Paper className={classes.root} elevation={1}>
@@ -52,12 +52,7 @@ return (
             </Typography>
           </div>
           <CopyToClipboard text={data.referralCode} onCopy={onCopy}>
-            <Button
-              variant="contained"
-              color="primary"
-              autoFocus
-              className={classes.button}
-            >
+            <Button variant="contained" color="primary" autoFocus className={classes.button}>
               Share
             </Button>
           </CopyToClipboard>

@@ -138,8 +138,12 @@ const FlashcardsDeckManager = ({
   }, []);
 
   const getContentFromRef = useCallback((ref) => {
-    if (!ref) { return null; }
-    if (typeof ref.getEditor !== 'function') { return null; }
+    if (!ref) {
+      return null;
+    }
+    if (typeof ref.getEditor !== 'function') {
+      return null;
+    }
     const editor = ref.getEditor();
     const unprivilegedEditor = ref.makeUnprivilegedEditor(editor);
     return unprivilegedEditor.getHTML();
@@ -150,8 +154,12 @@ const FlashcardsDeckManager = ({
       data.map((card) => {
         const question = getContentFromRef(editorRefs[`${card.id}-question`]);
         const answer = getContentFromRef(editorRefs[`${card.id}-answer`]);
-        if (question) { card.question = question; }
-        if (answer) { card.answer = answer; }
+        if (question) {
+          card.question = question;
+        }
+        if (answer) {
+          card.answer = answer;
+        }
         return card;
       }),
     [editorRefs]
@@ -234,9 +242,7 @@ const FlashcardsDeckManager = ({
             InputLabelProps={{
               shrink: true
             }}
-            helperText={
-              isValidated && !formData.title && 'Please input a title'
-            }
+            helperText={isValidated && !formData.title && 'Please input a title'}
             label="Title"
             placeholder="Add a title"
             value={formData.title || ''}
@@ -253,9 +259,7 @@ const FlashcardsDeckManager = ({
               shrink: true
             }}
             label="Class"
-            helperText={
-              isValidated && !formData.classId && 'Please select your class'
-            }
+            helperText={isValidated && !formData.classId && 'Please select your class'}
             placeholder="Select your class"
             disabled={disableClass}
             value={selectedDropdownValue}
@@ -277,9 +281,7 @@ const FlashcardsDeckManager = ({
             label="Description"
             placeholder="Add a description"
             value={formData.summary || ''}
-            onChange={(event) =>
-              handleUpdateField('summary', event.target.value)
-            }
+            onChange={(event) => handleUpdateField('summary', event.target.value)}
           />
         </Grid>
         <Grid item xs={12} lg={6}>
@@ -313,11 +315,7 @@ const FlashcardsDeckManager = ({
     <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">{title}</Typography>
-        <GradientButton
-          loading={isSubmitting}
-          disabled={isSubmitting}
-          onClick={handleSubmit}
-        >
+        <GradientButton loading={isSubmitting} disabled={isSubmitting} onClick={handleSubmit}>
           {submitText}
         </GradientButton>
       </Box>

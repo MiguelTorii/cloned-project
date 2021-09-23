@@ -68,7 +68,9 @@ class TwoWeekNotesContest extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    if (userId === '') { return null; }
+    if (userId === '') {
+      return null;
+    }
 
     const { open } = this.state;
 
@@ -83,14 +85,12 @@ class TwoWeekNotesContest extends React.PureComponent<Props, State> {
           title="TWO-WEEK NOTES CONTEST"
         >
           <Typography color="textPrimary" paragraph>
-            Everyone who shares 5 pages of notes over the next 2 weeks will earn
-            an MVP certificate that goes towards the Season 1 Grand Prize raffle
-            for Beats Headphones.
+            Everyone who shares 5 pages of notes over the next 2 weeks will earn an MVP certificate
+            that goes towards the Season 1 Grand Prize raffle for Beats Headphones.
           </Typography>
           <Typography color="textPrimary" paragraph>
-            We’re also going to select a special student who shares 5 pages of
-            notes, and send them $100 towards one of their top three rewards
-            selected!
+            We’re also going to select a special student who shares 5 pages of notes, and send them
+            $100 towards one of their top three rewards selected!
           </Typography>
           <Typography color="textPrimary" paragraph>
             These are the rules:
@@ -101,11 +101,7 @@ class TwoWeekNotesContest extends React.PureComponent<Props, State> {
             <br />
             Do not repost the same page of notes
           </Typography>
-          <Typography
-            color="textPrimary"
-            style={{ fontWeight: 'bold' }}
-            align="center"
-          >
+          <Typography color="textPrimary" style={{ fontWeight: 'bold' }} align="center">
             Choose your top three rewards to begin!
           </Typography>
           <div className={classes.frame}>

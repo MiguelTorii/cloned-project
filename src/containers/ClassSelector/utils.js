@@ -11,13 +11,13 @@ export const processClasses = ({
   segment: string
 }): Array<SelectType> => {
   if (segment === 'K12') {
-return classes
+    return classes
       .filter((item) => item.permissions.canCreate)
       .map((item) => ({
         label: item.className,
         value: JSON.stringify({ classId: item.classId })
       }));
-}
+  }
   const items = classes
     .filter((item) => item.permissions.canCreate)
     .map((item) =>

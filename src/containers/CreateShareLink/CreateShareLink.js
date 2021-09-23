@@ -109,9 +109,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost()
-        ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : '';
+      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);
@@ -120,7 +118,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   componentDidMount = () => {
     const { sharelinkId } = this.props;
-    if (sharelinkId) { this.loadData(); }
+    if (sharelinkId) {
+      this.loadData();
+    }
 
     const { classId, sectionId } = decypherClass();
     this.setState({ classId: Number(classId), sectionId: Number(sectionId) });
@@ -167,10 +167,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   componentWillUnmount = () => {
-    if (
-      this.updatePreview.cancel &&
-      typeof this.updatePreview.cancel === 'function'
-    ) { this.updatePreview.cancel(); }
+    if (this.updatePreview.cancel && typeof this.updatePreview.cancel === 'function') {
+      this.updatePreview.cancel();
+    }
   };
 
   updateSharelink = async () => {
@@ -194,7 +193,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sectionId
       });
 
-      if (!res.success) { throw new Error(`Couldn't update`); }
+      if (!res.success) {
+        throw new Error(`Couldn't update`);
+      }
 
       logEvent({
         event: 'Feed- Update Share Link',
@@ -283,7 +284,9 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       let hasError = false;
       if (this.canBatchPost()) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') { hasError = true; }
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           this.setState({
@@ -355,26 +358,26 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { sharelinkId } = this.props;
-    if (sharelinkId) { this.updateSharelink(); } else { this.createSharelink(); }
+    if (sharelinkId) {
+      this.updateSharelink();
+    } else {
+      this.createSharelink();
+    }
   };
 
   handleTextChange = (name) => (event) => {
     this.setState({ [name]: event.target.value, changed: true });
-    if (name === 'url') { this.updatePreview(event.target.value); }
+    if (name === 'url') {
+      this.updatePreview(event.target.value);
+    }
   };
 
-  handleClassChange = ({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
+  handleClassChange = ({ classId, sectionId }: { classId: number, sectionId: number }) => {
     const { user } = this.props;
-    const selected = user.userClasses.classList.find(
-      (c) => c.classId === classId
-    );
-    if (selected) { this.setState({ classList: [selected] }); }
+    const selected = user.userClasses.classList.find((c) => c.classId === classId);
+    if (selected) {
+      this.setState({ classList: [selected] });
+    }
     this.setState({ classId, sectionId });
   };
 
@@ -444,9 +447,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           >
             <Grid container alignItems="center">
               <Grid item xs={12} sm={12} md={2}>
-                <Typography variant="subtitle1">
-                  What's the title of your resource?
-                </Typography>
+                <Typography variant="subtitle1">What's the title of your resource?</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={10}>
                 <OutlinedTextValidator
@@ -497,10 +498,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                     placement="right"
                     text="In Expert Mode, you can post the same thing in more than one class! 🙌"
                   >
-                    <ClassMultiSelect
-                      selected={classList}
-                      onSelect={this.handleClasses}
-                    />
+                    <ClassMultiSelect selected={classList} onSelect={this.handleClasses} />
                   </Tooltip>
                 ) : (
                   <ClassesSelector

@@ -29,11 +29,11 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
 
   handleLoadOptions = async ({ query, from }) => {
     if (query.trim() === '' || query.trim().length < 3) {
-return {
+      return {
         options: [],
         hasMore: false
       };
-}
+    }
     const {
       user: {
         data: { userId, schoolId }
@@ -107,7 +107,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withMobileDialog()(ChatChannelAddMembers));
+export default connect(mapStateToProps, null)(withMobileDialog()(ChatChannelAddMembers));

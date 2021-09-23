@@ -18,13 +18,7 @@ type Props = {
   height: number
 };
 
-const Banner = ({
-  expertMode,
-  announcement,
-  getAnnouncement,
-  setBannerHeight,
-  height
-}: Props) => {
+const Banner = ({ expertMode, announcement, getAnnouncement, setBannerHeight, height }: Props) => {
   useEffect(() => {
     const intervalID = setIntervalWithFirstCall(() => {
       if (announcement === undefined) {
@@ -39,7 +33,9 @@ const Banner = ({
     setBannerHeight({ bannerHeight: undefined === height ? 0 : height });
   }, [height, setBannerHeight]);
 
-  if (!announcement || expertMode) { return null; }
+  if (!announcement || expertMode) {
+    return null;
+  }
 
   return announcement.endDate ? (
     <CommonBanner announcement={announcement} />
@@ -63,8 +59,5 @@ const mapDispatchToProps = (dispatch: *): {} =>
 
 // Banner.whyDidYouRender= true
 export default memo(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withRouter(withResizeDetector(Banner)))
+  connect(mapStateToProps, mapDispatchToProps)(withRouter(withResizeDetector(Banner)))
 );

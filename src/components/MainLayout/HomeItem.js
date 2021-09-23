@@ -93,18 +93,13 @@ Props) => {
         className={classNames(
           classes.item,
           // isHome ? classes.currentPath : null
-          ['/feed', '/my_posts', '/bookmarks'].includes(
-            window.location.pathname
-          )
+          ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname)
             ? classes.currentPath
             : classes.otherPath
         )}
       >
         <ListItemIcon className={classes.menuIcon}>
-          {hoverState ||
-          ['/feed', '/my_posts', '/bookmarks'].includes(
-            window.location.pathname
-          ) ? (
+          {hoverState || ['/feed', '/my_posts', '/bookmarks'].includes(window.location.pathname) ? (
             <ClassFeedIconOn />
           ) : (
             <ClassFeedIconOff />

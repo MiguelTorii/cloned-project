@@ -1,8 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   monthBox: {
     width: 135,
     height: 32,

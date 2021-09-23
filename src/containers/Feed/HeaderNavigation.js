@@ -102,10 +102,10 @@ const HeaderNavigation = ({
     }
     currentClassList.forEach((cl) => {
       if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
-cl.section.forEach((s) => {
+        cl.section.forEach((s) => {
           newClassList[s.sectionId] = cl;
         });
-}
+      }
     });
 
     return Object.keys(newClassList).map((sectionId) => ({
@@ -120,8 +120,7 @@ cl.section.forEach((s) => {
   );
 
   const allLabel = useMemo(
-    () =>
-      (isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`),
+    () => (isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`),
     [firstName, isPastFilter]
   );
 
@@ -161,16 +160,14 @@ cl.section.forEach((s) => {
       });
     } else if (query.class) {
       const { classId } = decypherClass(query.class);
-      const currentClass = classList.filter(
-        (userClass) => userClass.classId === Number(classId)
-      );
+      const currentClass = classList.filter((userClass) => userClass.classId === Number(classId));
       const newClass = {};
       currentClass.forEach((cl) => {
         if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
-cl.section.forEach((s) => {
+          cl.section.forEach((s) => {
             newClass[s.sectionId] = cl;
           });
-}
+        }
       });
 
       const currentSelectedClass = Object.keys(newClass).map((sectionId) => ({
@@ -178,7 +175,9 @@ cl.section.forEach((s) => {
         sectionId: Number(sectionId)
       }));
       handleFilters(currentSelectedClass);
-    } else { handleFilters(options); }
+    } else {
+      handleFilters(options);
+    }
   }, [classList, handleFilters, options, search, setSelectedClasses, state]);
 
   const onSelect = useCallback(
@@ -216,9 +215,7 @@ cl.section.forEach((s) => {
         const newSearch = queryString.stringify({
           ...rest,
           ...extras,
-          class: cypher(
-            `${selectedClasses[0].classId}:${selectedClasses[0].sectionId}`
-          )
+          class: cypher(`${selectedClasses[0].classId}:${selectedClasses[0].sectionId}`)
         });
         push({
           pathname: path,
@@ -259,11 +256,7 @@ cl.section.forEach((s) => {
           onSelect={onSelect}
         />
         {isPastFilter && !allSelected && (
-          <Typography
-            variant="h5"
-            display="inline"
-            className={classes.pastClassLabel}
-          >
+          <Typography variant="h5" display="inline" className={classes.pastClassLabel}>
             (Past Class)
           </Typography>
         )}
@@ -291,9 +284,7 @@ cl.section.forEach((s) => {
         </Button>
         <>
           <span> | </span>
-          <Button
-            onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')}
-          >
+          <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')}>
             <Tooltip
               id={9057}
               placement="right"

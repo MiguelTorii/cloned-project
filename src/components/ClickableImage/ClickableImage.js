@@ -16,11 +16,7 @@ const ClickableImage = ({ src, className, alt }) => {
         alt={alt}
         onClick={() => setModalOpen(true)}
       />
-      <ImageDialog
-        open={modalOpen}
-        imageUrl={src}
-        onClose={() => setModalOpen(false)}
-      />
+      <ImageDialog open={modalOpen} imageUrl={src} onClose={() => setModalOpen(false)} />
     </>
   );
 };

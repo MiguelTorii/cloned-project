@@ -38,13 +38,8 @@ type Props = {
 
 class Preview extends React.Component<Props, State> {
   handleJoin = () => {
-    const {
-      audioinputEnabled,
-      videoinputEnabled,
-      selectedaudioinput,
-      selectedvideoinput,
-      onJoin
-    } = this.props;
+    const { audioinputEnabled, videoinputEnabled, selectedaudioinput, selectedvideoinput, onJoin } =
+      this.props;
 
     onJoin({
       audioinput: audioinputEnabled ? selectedaudioinput : '',

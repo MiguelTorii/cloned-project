@@ -2,14 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import withRoot from 'withRoot';
-import {
-  Hidden,
-  Paper,
-  Typography,
-  Box,
-  Grid,
-  CircularProgress
-} from '@material-ui/core';
+import { Hidden, Paper, Typography, Box, Grid, CircularProgress } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import update from 'immutability-helper';
@@ -34,9 +27,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   const dispatch = useDispatch();
   const [records, setRecords] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const isLoadingData = useSelector(
-    isApiCalling(userActions.GET_POINTS_HISTORY)
-  );
+  const isLoadingData = useSelector(isApiCalling(userActions.GET_POINTS_HISTORY));
 
   const fetchRecords = (count) => {
     dispatch(
@@ -57,14 +48,14 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   }, []);
 
   const renderRecords = (isMobile) => (
-      <Grid container spacing={isMobile ? 2 : 3}>
-        {records.map((record, index) => (
-          <Grid key={index} item xs={12}>
-            <PointsRecordItem data={record} />
-          </Grid>
-        ))}
-      </Grid>
-    );
+    <Grid container spacing={isMobile ? 2 : 3}>
+      {records.map((record, index) => (
+        <Grid key={index} item xs={12}>
+          <PointsRecordItem data={record} />
+        </Grid>
+      ))}
+    </Grid>
+  );
 
   return (
     <Paper className={classes.root}>

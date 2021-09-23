@@ -32,19 +32,16 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
   const [loading, setLoading] = useState(false);
 
   const handleCreateChannelClose = useCallback(() => setChannelType(null), []);
-  const handleCreateChannelOpen = useCallback(
-    () => setChannelType('group'),
-    []
-  );
+  const handleCreateChannelOpen = useCallback(() => setChannelType('group'), []);
 
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
       if (query.trim() === '' || query.trim().length < 3) {
-return {
+        return {
           options: [],
           hasMore: false
         };
-}
+      }
 
       const users = await searchUsers({
         userId,

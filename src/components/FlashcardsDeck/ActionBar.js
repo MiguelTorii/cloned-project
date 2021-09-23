@@ -27,23 +27,12 @@ type Props = {
   onDelete: Function
 };
 
-const ActionBar = ({
-  isOwn,
-  bookmarked,
-  onViewEdit,
-  onBookmark,
-  onShareLink,
-  onDelete
-}: Props) => {
+const ActionBar = ({ isOwn, bookmarked, onViewEdit, onBookmark, onShareLink, onDelete }: Props) => {
   const classes = useStyles();
   const { search } = useLocation();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      className={classes.actionBar}
-    >
+    <Box display="flex" justifyContent="space-between" className={classes.actionBar}>
       <ActionItem
         icon={IconEye}
         activeIcon={IconEyeGradient}
@@ -61,11 +50,7 @@ const ActionBar = ({
         {(popupState) => (
           <>
             <div {...bindTrigger(popupState)}>
-              <ActionItem
-                icon={IconThreeDots}
-                activeIcon={IconDotsGradient}
-                text="More"
-              />
+              <ActionItem icon={IconThreeDots} activeIcon={IconDotsGradient} text="More" />
             </div>
             <Menu {...bindMenu(popupState)}>
               <MenuItem

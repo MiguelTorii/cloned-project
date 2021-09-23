@@ -168,22 +168,15 @@ const LeftMenu = ({
           </Grid>
         </Grid>
         <Grid item className={classes.gridChatList}>
-          <EmptyLeftMenu
-            emptyChannels={channelList.length === 0}
-            isLoading={isLoading}
-          />
+          <EmptyLeftMenu emptyChannels={channelList.length === 0} isLoading={isLoading} />
           <List className={classes.root}>
-            {newChannel && (
-              <MainChatItem name="" roomName="New Chat" selected />
-            )}
+            {newChannel && <MainChatItem name="" roomName="New Chat" selected />}
             {channelList.map(
               (c) =>
                 local[c] && (
                   <div
                     key={local[c].sid}
-                    className={clsx(
-                      !searchChannels.includes(local[c].sid) && classes.hidden
-                    )}
+                    className={clsx(!searchChannels.includes(local[c].sid) && classes.hidden)}
                   >
                     <ChatListItem
                       selected={currentChannel && c === currentChannel.sid}

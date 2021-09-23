@@ -52,11 +52,9 @@ const OnboardingList = ({
     getOnboardingList();
   }, [getOnboardingList]);
 
-  if (
-    !viewedOnboarding ||
-    onboardingList?.checklist?.length < 1 ||
-    !onboardingList.visible
-  ) { return null; }
+  if (!viewedOnboarding || onboardingList?.checklist?.length < 1 || !onboardingList.visible) {
+    return null;
+  }
 
   const LinearProgressWithLabel = ({ value }: { value: number }) => (
     <Box className={classes.progress}>
@@ -93,11 +91,7 @@ const OnboardingList = ({
   ));
 
   const OnboardingListItem = ({ item }: { item: OnboardingListItemType }) => (
-    <Link
-      completed={item.completed}
-      href={ID_TO_URL[item.id]}
-      component={ItemLink}
-    >
+    <Link completed={item.completed} href={ID_TO_URL[item.id]} component={ItemLink}>
       <div className={classes.listItem}>
         <div className={classes.listItemCheckBox}>
           {item.completed ? (
@@ -106,13 +100,7 @@ const OnboardingList = ({
             <img src={checkmarkEmptySvg} alt="checkmark" />
           )}
         </div>
-        <div
-          className={
-            item.completed
-              ? classes.listItemText
-              : classes.listItemTextCompleted
-          }
-        >
+        <div className={item.completed ? classes.listItemText : classes.listItemTextCompleted}>
           {item.text}
         </div>
       </div>
@@ -120,20 +108,15 @@ const OnboardingList = ({
   );
 
   const completedItems = onboardingList.checklist.filter((i) => i.completed);
-  const completionPercentage =
-    (completedItems.length / onboardingList.checklist.length) * 100;
+  const completionPercentage = (completedItems.length / onboardingList.checklist.length) * 100;
   const isCompleted = completedItems.length === onboardingList.checklist.length;
 
   return (
     <div className={classes.container}>
       <div className={classes.titleContainer}>
-        {isCompleted && (
-          <CloseIcon className={classes.icon} onClick={finishOnboardingList} />
-        )}
+        {isCompleted && <CloseIcon className={classes.icon} onClick={finishOnboardingList} />}
         <div className={classes.title}>
-          {isCompleted
-            ? `You're ready to use CircleIn to the fullest!`
-            : `Get Started on CircleIn`}
+          {isCompleted ? `You're ready to use CircleIn to the fullest!` : `Get Started on CircleIn`}
         </div>
       </div>
       <div className={classes.list}>
@@ -165,7 +148,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withWidth()(OnboardingList));
+export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(OnboardingList));

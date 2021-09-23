@@ -12,12 +12,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  processMessages,
-  getAvatar,
-  fetchAvatars,
-  getFileAttributes
-} from 'utils/chat';
+import { processMessages, getAvatar, fetchAvatars, getFileAttributes } from 'utils/chat';
 import { sendMessage } from 'api/chat';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
@@ -131,7 +126,9 @@ class VideoChatChannel extends React.Component<Props, State> {
       }
 
       channel.on('messageAdded', (message) => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
         this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
@@ -150,7 +147,9 @@ class VideoChatChannel extends React.Component<Props, State> {
       });
 
       channel.on('typingStarted', (member) => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
         member.getUser().then((user) => {
           const { state } = user;
           const { friendlyName } = state;
@@ -159,7 +158,9 @@ class VideoChatChannel extends React.Component<Props, State> {
       });
 
       channel.on('typingEnded', () => {
-        if (!this.mounted) { return; }
+        if (!this.mounted) {
+          return;
+        }
         this.setState({ typing: '' });
       });
 
@@ -173,7 +174,9 @@ class VideoChatChannel extends React.Component<Props, State> {
   };
 
   componentDidUpdate = (prevProps) => {
-    if (this.mounted && this.end) { this.handleScrollToBottom(); }
+    if (this.mounted && this.end) {
+      this.handleScrollToBottom();
+    }
     const { channel, open, onUnreadUpdate } = this.props;
     if (prevProps.open !== open && open === true) {
       console.log('update');
@@ -376,8 +379,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       classes,
       user: { userId }
     } = this.props;
-    const { typing, hasMore, loading, messages, profileURLs, images } =
-      this.state;
+    const { typing, hasMore, loading, messages, profileURLs, images } = this.state;
 
     const messageItems = processMessages({
       items: messages,
@@ -404,9 +406,7 @@ class VideoChatChannel extends React.Component<Props, State> {
                 isReverse
                 getScrollParent={() => this.scrollParentRef}
               >
-                {messageItems
-                  .slice(0, 2)
-                  .map((item) => this.renderMessage(item, profileURLs))}
+                {messageItems.slice(0, 2).map((item) => this.renderMessage(item, profileURLs))}
                 {loading && (
                   <div className={classes.progress}>
                     <CircularProgress size={20} />

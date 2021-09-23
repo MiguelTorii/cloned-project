@@ -14,14 +14,14 @@ type Props = {
 };
 
 const OnlineBadge = ({ isVisible, classes, children }: Props) =>
-  (isVisible ? (
+  isVisible ? (
     <span className={classes.root}>
       {children}
       <span className={classes.badge}></span>
     </span>
   ) : (
     children
-  ));
+  );
 
 OnlineBadge.defaultProps = {
   isVisible: true,

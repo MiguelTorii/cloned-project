@@ -67,9 +67,7 @@ type Props = {
 const HourlyGiveawayBanner = ({ announcement }: Props) => {
   const classes = useStyles();
   const [isActive, setIsActive] = useState(false);
-  const [minutesRemaining, setMinutesRemaining] = useState(
-    60 - new Date().getMinutes()
-  );
+  const [minutesRemaining, setMinutesRemaining] = useState(60 - new Date().getMinutes());
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -85,13 +83,7 @@ const HourlyGiveawayBanner = ({ announcement }: Props) => {
   return (
     <div className={classes.hourlyBody}>
       <div className={classes.image}>
-        {isActive && (
-          <img
-            src={announcement.imageUrl}
-            alt="gift"
-            style={{ maxHeight: 56 }}
-          />
-        )}
+        {isActive && <img src={announcement.imageUrl} alt="gift" style={{ maxHeight: 56 }} />}
       </div>
       <div className={classes.content}>
         <div className={classes.title}>{isActive && announcement.title}</div>

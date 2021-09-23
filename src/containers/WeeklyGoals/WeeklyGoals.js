@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Box,
-  Grid,
-  IconButton,
-  Link,
-  Paper,
-  Typography
-} from '@material-ui/core';
+import { Box, Grid, IconButton, Link, Paper, Typography } from '@material-ui/core';
 import IconHelp from '@material-ui/icons/HelpOutline';
 
 import useStyles from './styles';
@@ -41,24 +34,13 @@ const WeeklyGoals = () => {
   const handleOpenHelpModal = useCallback(() => setIsHelpModalOpen(true), []);
   const handleCloseHelpModal = useCallback(() => setIsHelpModalOpen(false), []);
 
-  const handleReportOpenModal = useCallback(
-    () => setIsReportModalOpen(true),
-    []
-  );
+  const handleReportOpenModal = useCallback(() => setIsReportModalOpen(true), []);
 
-  const handleCloseReportModal = useCallback(
-    () => setIsReportModalOpen(false),
-    []
-  );
+  const handleCloseReportModal = useCallback(() => setIsReportModalOpen(false), []);
 
   return (
     <Paper elevation={0} square={false} className={classes.root}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={3}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h6" className={classes.title}>
           Your Weekly Study Goals
         </Typography>

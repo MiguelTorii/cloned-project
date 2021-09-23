@@ -46,13 +46,13 @@ export const requestCampaign =
           );
         } catch (e) {
           if (campaignId === LANDING_PAGE_CAMPAIGN) {
-dispatch(
+            dispatch(
               requestGetCampaign({
                 campaign: 'newClassExperience',
                 active: false
               })
             );
-}
+          }
         }
       }
 
@@ -67,9 +67,7 @@ dispatch(
             })
           );
         } catch (e) {
-          dispatch(
-            requestGetCampaign({ campaign: 'newNotesScreen', active: false })
-          );
+          dispatch(requestGetCampaign({ campaign: 'newNotesScreen', active: false }));
         }
       }
     }

@@ -110,13 +110,8 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
   renderCreateIcon = () => {
     const { classes, loaded } = this.props;
     if (loaded) {
-return (
-        <DoneIcon
-          className={cx(classes.icon, classes.green)}
-          fontSize="small"
-        />
-      );
-}
+      return <DoneIcon className={cx(classes.icon, classes.green)} fontSize="small" />;
+    }
     return <CreateIcon className={classes.icon} fontSize="small" />;
   };
 
@@ -156,10 +151,7 @@ return (
             <IconButton
               aria-label="Edit"
               disabled={loaded || loading}
-              className={cx(
-                classes.button,
-                type === 'application/pdf' && classes.hide
-              )}
+              className={cx(classes.button, type === 'application/pdf' && classes.hide)}
               onClick={this.handleOpen}
             >
               {this.renderCreateIcon()}
@@ -227,11 +219,7 @@ return (
               >
                 <ZoomOutIcon />
               </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={this.handleRotateLeft}
-                aria-label="Rotate Left"
-              >
+              <IconButton color="inherit" onClick={this.handleRotateLeft} aria-label="Rotate Left">
                 <RotateLeftIcon />
               </IconButton>
               <IconButton
@@ -242,11 +230,7 @@ return (
                 <RotateRightIcon />
               </IconButton>
             </div>
-            <GradientButton
-              compact
-              onClick={this.handleSave}
-              style={{ width: '100%' }}
-            >
+            <GradientButton compact onClick={this.handleSave} style={{ width: '100%' }}>
               Save changes{' '}
               <span role="img" aria-label="tada">
                 🎉

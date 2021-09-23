@@ -39,7 +39,7 @@ const EmptyMain = ({ newChannel, otherUser, expertMode }) => {
   }
 
   if (expertMode) {
-return (
+    return (
       <Box
         justifyContent="center"
         alignItems="center"
@@ -55,12 +55,7 @@ return (
           className={classes.expertContainerText}
         >
           <LoadImg url={ExpertEmptyChat} />
-          <Box
-            justifyContent="center"
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-          >
+          <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
             <Typography className={classes.expertTitle}>
               You don’t have any chats yet, but when you do,
             </Typography>
@@ -77,18 +72,13 @@ return (
         </Box>
       </Box>
     );
-}
+  }
 
   return (
     <div className={classes.container}>
       <div className={classes.messageContainer}>
         <LoadImg url={ExpertEmptyChat} className={classes.emptyChatImg} />
-        <Box
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
+        <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
           <Typography className={classes.expertTitle}>
             You don’t have any conversations started yet,
           </Typography>

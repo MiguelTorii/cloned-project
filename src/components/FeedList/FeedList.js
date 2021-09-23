@@ -59,7 +59,9 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   componentDidUpdate = () => {
-    if (this.mounted && this.selectedRef) { this.handleScrollToRef(); }
+    if (this.mounted && this.selectedRef) {
+      this.handleScrollToRef();
+    }
   };
 
   componentWillUnmount = () => {
@@ -70,20 +72,10 @@ class FeedList extends React.PureComponent<Props, State> {
     const { classes, expertMode } = this.props;
 
     if (expertMode) {
-return (
-        <Box
-          justifyContent="center"
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
+      return (
+        <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
           <Box className={classes.expertContainerText}>
-            <Box
-              justifyContent="center"
-              alignItems="center"
-              display="flex"
-              flexDirection="column"
-            >
+            <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
               <Typography className={classes.expertTitle}>
                 Welcome!{' '}
                 <span role="img" aria-label="wave">
@@ -102,32 +94,30 @@ return (
           <LoadImg url={ExpertFeedEmpty} />
         </Box>
       );
-}
+    }
 
     if (pathname === '/bookmarks') {
-return (
+      return (
         <EmptyState
           imageUrl={EmptyBookmarks}
           title="When you bookmark posts you can search for them!"
         />
       );
-}
+    }
 
     if (pathname === '/my_posts') {
-return (
+      return (
         <EmptyState imageUrl={EmptyMyPosts} title="Your posts will appear here">
-          After posting, your study material will be here for you to view later
-          for an exam
+          After posting, your study material will be here for you to view later for an exam
         </EmptyState>
       );
-}
+    }
 
     return (
       <EmptyState imageUrl={EmptyFeed} title="">
         <div className={classes.title2}>
-          Click <p className={classes.newPost}>+ Create New Post</p> to post and
-          earn points, and get yourself closer to winning a gift card or
-          scholarship!
+          Click <p className={classes.newPost}>+ Create New Post</p> to post and earn points, and
+          get yourself closer to winning a gift card or scholarship!
         </div>
       </EmptyState>
     );
@@ -183,18 +173,9 @@ return (
         {isLoading && !isFiltering && items.length === 0 && (
           <>
             <Box display="flex" justifyContent="center">
-              <img
-                src={ImgLoading}
-                alt="load feeds"
-                className={classes.loadingGif}
-              />
+              <img src={ImgLoading} alt="load feeds" className={classes.loadingGif} />
             </Box>
-            <Typography
-              className={classes.loadingText}
-              variant="h4"
-              align="center"
-              gutterBottom
-            >
+            <Typography className={classes.loadingText} variant="h4" align="center" gutterBottom>
               Loading...
             </Typography>
             <Typography className={classes.loadingSmallText} align="center">
@@ -206,18 +187,9 @@ return (
         {isFiltering && (
           <>
             <Box display="flex" justifyContent="center">
-              <img
-                src={FilterLoading}
-                alt="Filter Feeds"
-                className={classes.loadingGif}
-              />
+              <img src={FilterLoading} alt="Filter Feeds" className={classes.loadingGif} />
             </Box>
-            <Typography
-              className={classes.loadingText}
-              variant="h4"
-              align="center"
-              gutterBottom
-            >
+            <Typography className={classes.loadingText} variant="h4" align="center" gutterBottom>
               Loading...
             </Typography>
             <Typography className={classes.loadingSmallText} align="center">
@@ -262,7 +234,9 @@ return (
                   data={item}
                   handleShareClick={handleShare}
                   innerRef={(node) => {
-                    if (fromFeedId === item.feedId) { this.selectedRef = node; }
+                    if (fromFeedId === item.feedId) {
+                      this.selectedRef = node;
+                    }
                   }}
                   onPostClick={onPostClick}
                   newClassExperience={newClassExperience}

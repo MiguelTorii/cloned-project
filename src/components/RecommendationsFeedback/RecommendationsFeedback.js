@@ -27,8 +27,7 @@ const ratings = [
   {
     image: Image3,
     text: 'A Little Useful',
-    description:
-      'We’re going to work on sending you better post recommendations you’ll love.'
+    description: 'We’re going to work on sending you better post recommendations you’ll love.'
   },
   {
     image: Image4,
@@ -86,16 +85,10 @@ const RecommendationsFeedback = ({ feedId }) => {
         <Typography gutterBottom>{ratings[ratingIndex].description}</Typography>
         {ratingIndex === 3 && !gaveMore && (
           <Box display="flex" justifyContent="space-between">
-            <TransparentButton
-              compact
-              onClick={() => handleNotUsefulFeedback('Irrelevant')}
-            >
+            <TransparentButton compact onClick={() => handleNotUsefulFeedback('Irrelevant')}>
               It's irrelevant
             </TransparentButton>
-            <TransparentButton
-              compact
-              onClick={() => handleNotUsefulFeedback('Spam')}
-            >
+            <TransparentButton compact onClick={() => handleNotUsefulFeedback('Spam')}>
               It's spam
             </TransparentButton>
           </Box>
@@ -104,7 +97,9 @@ const RecommendationsFeedback = ({ feedId }) => {
     );
   };
 
-  if (hidden) { return null; }
+  if (hidden) {
+    return null;
+  }
 
   return (
     <Paper elevation={0} className={classes.root}>
@@ -121,21 +116,11 @@ const RecommendationsFeedback = ({ feedId }) => {
               <img
                 src={item.image}
                 alt={item.text}
-                className={clsx(
-                  classes.image,
-                  ratingIndex !== index && 'disabled'
-                )}
+                className={clsx(classes.image, ratingIndex !== index && 'disabled')}
               />
             ) : (
-              <Link
-                component="button"
-                onClick={() => handleGiveFeedback(index)}
-              >
-                <img
-                  src={item.image}
-                  alt={item.text}
-                  className={classes.image}
-                />
+              <Link component="button" onClick={() => handleGiveFeedback(index)}>
+                <img src={item.image} alt={item.text} className={classes.image} />
               </Link>
             )}
           </Grid>

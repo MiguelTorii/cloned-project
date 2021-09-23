@@ -22,42 +22,42 @@ const MobileMenu = ({
   initials,
   userProfileUrl
 }) => (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      {width !== 'xs' && (
-        <MenuItem
-          onClick={handleNotificationOpen}
-          aria-haspopup="true"
-          aria-owns={open ? 'notifications-popper' : undefined}
-        >
-          <IconButton color="inherit">
-            <Badge badgeContent={unreadCount} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
-      )}
-      <MenuItem button component={MyLink} link="/chat">
+  <Menu
+    anchorEl={mobileMoreAnchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMobileMenuOpen}
+    onClose={handleMobileMenuClose}
+  >
+    {width !== 'xs' && (
+      <MenuItem
+        onClick={handleNotificationOpen}
+        aria-haspopup="true"
+        aria-owns={open ? 'notifications-popper' : undefined}
+      >
         <IconButton color="inherit">
-          <Badge badgeContent={unreadMessages} color="secondary">
-            <ChatIcon />
+          <Badge badgeContent={unreadCount} color="secondary">
+            <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Chats</p>
+        <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton color="inherit">
-          <Avatar src={userProfileUrl}>{initials}</Avatar>
-        </IconButton>
-        <p>Account</p>
-      </MenuItem>
-    </Menu>
-  );
+    )}
+    <MenuItem button component={MyLink} link="/chat">
+      <IconButton color="inherit">
+        <Badge badgeContent={unreadMessages} color="secondary">
+          <ChatIcon />
+        </Badge>
+      </IconButton>
+      <p>Chats</p>
+    </MenuItem>
+    <MenuItem onClick={handleProfileMenuOpen}>
+      <IconButton color="inherit">
+        <Avatar src={userProfileUrl}>{initials}</Avatar>
+      </IconButton>
+      <p>Account</p>
+    </MenuItem>
+  </Menu>
+);
 
 export default memo(MobileMenu);

@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useLayoutEffect,
-  useState,
-  useCallback
-} from 'react';
+import { useEffect, useRef, useLayoutEffect, useState, useCallback } from 'react';
 
 const usePreloadImage = (imageToLoad) => {
   const [loaded, setLoaded] = useState(true); // so that it renders on server
@@ -12,14 +6,19 @@ const usePreloadImage = (imageToLoad) => {
   const mounted = useRef(true);
   const eventWrapper = useCallback(
     (methodToCall) => () => {
-      if (mounted.current) { methodToCall(true); }
+      if (mounted.current) {
+        methodToCall(true);
+      }
     },
     []
   );
 
-  useEffect(() => () => {
+  useEffect(
+    () => () => {
       mounted.current = false;
-    }, []);
+    },
+    []
+  );
 
   useLayoutEffect(() => {
     if (typeof window === 'object' && imageToLoad) {

@@ -29,7 +29,11 @@ class FederatedLogin extends React.Component<Props, State> {
 
   handleChange = (value) => {
     this.setState({ school: value });
-    if (!value) { this.setState({ error: true }); } else { this.setState({ error: false }); }
+    if (!value) {
+      this.setState({ error: true });
+    } else {
+      this.setState({ error: false });
+    }
   };
 
   handleLoadOptions = async () => {

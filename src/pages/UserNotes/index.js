@@ -9,14 +9,14 @@ import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
 import { NotesContextProvider } from '../../hooks/useNotes';
 
 const UserNotes = () => (
-    <main>
-      <CssBaseline />
-      <Layout>
-        <NotesContextProvider>
-          <UserNotesContainer />
-        </NotesContextProvider>
-      </Layout>
-    </main>
-  );
+  <main>
+    <CssBaseline />
+    <Layout>
+      <NotesContextProvider>
+        <UserNotesContainer />
+      </NotesContextProvider>
+    </Layout>
+  </main>
+);
 
 export default withRoot(withWidth()(UserNotes));

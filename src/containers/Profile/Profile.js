@@ -11,13 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import Hidden from '@material-ui/core/Hidden';
-import type {
-  UserProfile,
-  About,
-  UserStatistic,
-  FeedItem,
-  StudyCircle
-} from '../../types/models';
+import type { UserProfile, About, UserStatistic, FeedItem, StudyCircle } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import {
@@ -322,7 +316,9 @@ class Profile extends React.PureComponent<Props, State> {
       newBookmarks = newBookmarks.filter((item) => item.feedId !== feedId);
     } else {
       // If a bookmark is added, the post is added to the bookmarks. In this case, postIndex must exist.
-      if (postIndex < 0) { throw new Error('Post must exist'); }
+      if (postIndex < 0) {
+        throw new Error('Post must exist');
+      }
       newBookmarks = [feed[postIndex], ...bookmarks];
     }
 
@@ -358,9 +354,7 @@ class Profile extends React.PureComponent<Props, State> {
       // Update Local State
       const { deletePost, bookmarks, feed } = this.state;
       this.setState({
-        bookmarks: bookmarks.filter(
-          (item) => item.feedId !== deletePost.feedId
-        ),
+        bookmarks: bookmarks.filter((item) => item.feedId !== deletePost.feedId),
         feed: feed.filter((item) => item.feedId !== deletePost.feedId)
       });
     }
@@ -453,11 +447,7 @@ class Profile extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    const { mediaId } = await uploadMedia(
-      userId,
-      UPLOAD_MEDIA_TYPES.PROFILE_IMAGE,
-      imageData
-    );
+    const { mediaId } = await uploadMedia(userId, UPLOAD_MEDIA_TYPES.PROFILE_IMAGE, imageData);
     await updateUserProfileUrl({ userId, mediaId });
   };
 
@@ -545,13 +535,15 @@ class Profile extends React.PureComponent<Props, State> {
     } = userProfile;
 
     if (isLoading) {
-return (
+      return (
         <div className={classes.loader}>
           <CircularProgress />
         </div>
       );
-}
-    if (error) { return <Redirect to="/" />; }
+    }
+    if (error) {
+      return <Redirect to="/" />;
+    }
     const seasons = processSeasons(userStatistics);
 
     return (
@@ -569,16 +561,8 @@ return (
                       lastName={lastName}
                       userProfileUrl={userProfileUrl}
                       points={points}
-                      thanks={
-                        seasons.length > 0
-                          ? seasons[seasons.length - 1].thanks
-                          : 0
-                      }
-                      bestAnswers={
-                        seasons.length > 0
-                          ? seasons[seasons.length - 1].bestAnswers
-                          : 0
-                      }
+                      thanks={seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0}
+                      bestAnswers={seasons.length > 0 ? seasons[seasons.length - 1].bestAnswers : 0}
                       school={school}
                       state={state}
                       segment={segment}
@@ -661,9 +645,7 @@ return (
                   <Grid item xs={12}>
                     <PointsHistoryCard
                       profile={userProfile}
-                      onSeeMore={() =>
-                        this.switchPage(PROFILE_PAGES.points_history)
-                      }
+                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
                     />
                   </Grid>
                 </Hidden>
@@ -696,11 +678,7 @@ return (
           </ErrorBoundary>
         </div>
         <ErrorBoundary>
-          <SharePost
-            feedId={feedId}
-            open={Boolean(feedId)}
-            onClose={this.handleShareClose}
-          />
+          <SharePost feedId={feedId} open={Boolean(feedId)} onClose={this.handleShareClose} />
         </ErrorBoundary>
         <ErrorBoundary>
           <Report

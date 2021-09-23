@@ -80,8 +80,7 @@ const UserNotesContainer = () => {
       <Grid item className={classes.pastNote}>
         {currentFilter === 'current' ? (
           <Typography variant="body1">
-            Take notes, review notes, and keep track of all your quick notes
-            here!&nbsp;
+            Take notes, review notes, and keep track of all your quick notes here!&nbsp;
             <span role="img" aria-label="Clap">
               😉
             </span>
@@ -89,8 +88,7 @@ const UserNotesContainer = () => {
           </Typography>
         ) : (
           <Typography variant="body1">
-            These notes are saved from your past classes, just in case you need
-            them!&nbsp;
+            These notes are saved from your past classes, just in case you need them!&nbsp;
             <span role="img" aria-label="Clap">
               😉
             </span>
@@ -100,19 +98,12 @@ const UserNotesContainer = () => {
       </Grid>
       <Grid item>
         <Box mt={4} mb={2}>
-          <FiltersBar
-            data={Filters}
-            activeValue={currentFilter}
-            onSelectItem={setCurrentFilter}
-          />
+          <FiltersBar data={Filters} activeValue={currentFilter} onSelectItem={setCurrentFilter} />
         </Box>
       </Grid>
 
       <div className={classes.paper}>
-        <ClassesFolders
-          classList={classList}
-          currentFilter={currentFilter}
-        />
+        <ClassesFolders classList={classList} currentFilter={currentFilter} />
       </div>
     </div>
   );

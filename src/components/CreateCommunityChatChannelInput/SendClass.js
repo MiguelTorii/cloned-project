@@ -69,7 +69,9 @@ const CreateChatChannelInput = ({
   useEffect(() => {
     const getTemplateChannels = async () => {
       const channels = await getCommunityTemplates();
-      if (channels.length) { setTemplateChannels(channels); }
+      if (channels.length) {
+        setTemplateChannels(channels);
+      }
     };
     getTemplateChannels();
   }, []);
@@ -80,8 +82,7 @@ const CreateChatChannelInput = ({
 
     selectedClasses.forEach((selectedClass) => {
       const communityChannel = communityChannels.filter(
-        (communityChanel) =>
-          communityChanel.courseId === selectedClass.community.id
+        (communityChanel) => communityChanel.courseId === selectedClass.community.id
       );
 
       const { channels } = communityChannel[0];
@@ -104,8 +105,7 @@ const CreateChatChannelInput = ({
   const currentCommunities = useMemo(
     () =>
       communities.filter(
-        (community) =>
-          community.permissions.indexOf(PERMISSIONS.ONE_TOUCH_SEND_CHAT) > -1
+        (community) => community.permissions.indexOf(PERMISSIONS.ONE_TOUCH_SEND_CHAT) > -1
       ),
     []
   );
@@ -119,15 +119,10 @@ const CreateChatChannelInput = ({
   }, []);
 
   const handleRTEChange = useCallback((updatedValue) => {
-    if (
-      updatedValue.trim() === '<p><br></p>' ||
-      updatedValue.trim() === '<p>\n</p>'
-    ) {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('');
     } else {
-      const currentValue = updatedValue
-        .replaceAll('<p><br></p>', '')
-        .replaceAll('<p>\n</p>', '');
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
       setValue(currentValue);
     }
   }, []);
@@ -139,9 +134,7 @@ const CreateChatChannelInput = ({
         message: value,
         chatIds
       });
-      setCurrentCommunityId(
-        selectedClasses[selectedClasses.length - 1]?.community?.id
-      );
+      setCurrentCommunityId(selectedClasses[selectedClasses.length - 1]?.community?.id);
       setCurrentCommunity(channels[channels.length - 1]);
       setShowError(false);
       onClosePopover();
@@ -247,17 +240,9 @@ const CreateChatChannelInput = ({
             <ClassIcon className={classes.classIcon} />
             <TextField
               {...params}
-              className={
-                selectedClasses.length
-                  ? classes.selectClass
-                  : classes.emptySelectedClass
-              }
+              className={selectedClasses.length ? classes.selectClass : classes.emptySelectedClass}
               variant="outlined"
-              label={
-                selectedClasses.length
-                  ? 'Class'
-                  : 'Select one or multiple classes'
-              }
+              label={selectedClasses.length ? 'Class' : 'Select one or multiple classes'}
             />
           </>
         )}
@@ -277,41 +262,22 @@ const CreateChatChannelInput = ({
             <HashTag className={classes.hashIcon} />
             <TextField
               {...params}
-              className={cx(
-                selectChannel ? classes.selectClass : classes.emptySelectedClass
-              )}
+              className={cx(selectChannel ? classes.selectClass : classes.emptySelectedClass)}
               variant="outlined"
               label={selectChannel ? 'Channel' : 'Select a channel'}
             />
           </>
         )}
       />
-      <MessageQuill
-        onChange={handleRTEChange}
-        setValue={setValue}
-        userId={userId}
-      />
+      <MessageQuill onChange={handleRTEChange} setValue={setValue} userId={userId} />
 
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="flex-end"
-        width={1}
-      >
+      <Box display="flex" alignItems="center" justifyContent="flex-end" width={1}>
         <div className={cx(showError ? classes.error : classes.nonError)}>
-          <Typography
-            component="p"
-            variant="subtitle1"
-            className={classes.errorMessage}
-          >
+          <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
             There was an error sending your message.
           </Typography>
         </div>
-        <Button
-          className={classes.cancelBtn}
-          color="primary"
-          onClick={onClosePopover}
-        >
+        <Button className={classes.cancelBtn} color="primary" onClick={onClosePopover}>
           Cancel
         </Button>
         {loading ? (
@@ -322,9 +288,7 @@ const CreateChatChannelInput = ({
             }}
             disabled={loading}
             variant="contained"
-            startIcon={
-              <CircularProgress className={classes.loading} color="secondary" />
-            }
+            startIcon={<CircularProgress className={classes.loading} color="secondary" />}
             color="primary"
           >
             Sending

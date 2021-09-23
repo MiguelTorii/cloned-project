@@ -1,10 +1,6 @@
 // @flow
 
-import {
-  LOG_EVENT_CATEGORIES,
-  CIRCLEIN_EVENT_NAMES,
-  EVENT_TYPES
-} from 'constants/app';
+import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from 'constants/app';
 import createEvent from './events';
 import { EventData } from '../types/models';
 
@@ -14,7 +10,9 @@ const toEventData = (eventName: string, props: object): EventData => {
   let objectId = '';
   const customProps = {};
 
-  if (props.Length) { customProps.duration_ms = parseInt(props.Length, 10) * 1000; }
+  if (props.Length) {
+    customProps.duration_ms = parseInt(props.Length, 10) * 1000;
+  }
 
   if (category === LOG_EVENT_CATEGORIES.CHAT) {
     objectId = props['Channel SID'];
@@ -85,13 +83,7 @@ const sendToCircleIn = (eventName: string, props: object) => {
   }
 };
 
-export const logEvent = ({
-  event,
-  props
-}: {
-  event: string,
-  props: Object
-}) => {
+export const logEvent = ({ event, props }: { event: string, props: Object }) => {
   try {
     sendToCircleIn(event, props);
   } catch (err) {

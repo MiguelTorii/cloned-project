@@ -74,8 +74,12 @@ class DeletePost extends React.PureComponent<Props, State> {
       onClose
     } = this.props;
     const { loading } = this.state;
-    if (isLoading) { return <CircularProgress size={12} />; }
-    if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
+    if (isLoading) {
+      return <CircularProgress size={12} />;
+    }
+    if (userId === '' || error) {
+      return 'Oops, there was an error loading your data, please try again.';
+    }
 
     return (
       <ErrorBoundary>

@@ -5,13 +5,7 @@ import { API_ROUTES } from '../constants/routes';
 import type { User, Schools } from '../types/models';
 import { userToCamelCase } from './utils';
 
-export const emailRequest = async ({
-  email,
-  reason
-}: {
-  email: string,
-  reason: string
-}): {} => {
+export const emailRequest = async ({ email, reason }: { email: string, reason: string }): {} => {
   try {
     const result = await axios.post(API_ROUTES.REQUEST, {
       email,
@@ -45,10 +39,9 @@ export const signInUser = async (
 
 export const samlLogin = async (token, isGondor): User | {} => {
   try {
-    const result = await axios.post(
-      isGondor ? API_ROUTES.SAML_LOGIN_V1_1 : API_ROUTES.SAML_LOGIN,
-      { token }
-    );
+    const result = await axios.post(isGondor ? API_ROUTES.SAML_LOGIN_V1_1 : API_ROUTES.SAML_LOGIN, {
+      token
+    });
     const { data = {} } = result;
     return userToCamelCase(data);
   } catch (err) {
@@ -80,11 +73,7 @@ export const checkUser = async (): User | {} => {
   }
 };
 
-export const recoverPassword = async ({
-  email
-}: {
-  email: string
-}): Promise<boolean> => {
+export const recoverPassword = async ({ email }: { email: string }): Promise<boolean> => {
   try {
     const result = await axios.post(API_ROUTES.RESET_PASSWORD, {
       email
@@ -122,15 +111,9 @@ export const changePassword = async ({
   }
 };
 
-export const searchSchools = async ({
-  query
-}: {
-  query: string
-}): Promise<Schools> => {
+export const searchSchools = async ({ query }: { query: string }): Promise<Schools> => {
   try {
-    const result = await axios.get(
-      `${API_ROUTES.SEARCH_SCHOOLS}?query=${query}`
-    );
+    const result = await axios.get(`${API_ROUTES.SEARCH_SCHOOLS}?query=${query}`);
     const { data = {} } = result;
     const { schools = [] } = data;
 
@@ -154,11 +137,7 @@ export const searchSchools = async ({
   }
 };
 
-export const getSchool = async ({
-  schoolId
-}: {
-  query: string
-}): Promise<Schools> => {
+export const getSchool = async ({ schoolId }: { query: string }): Promise<Schools> => {
   try {
     const result = await axios.get(`${API_ROUTES.GET_SCHOOL}/${schoolId}`);
     const { data: school = {} } = result;
@@ -183,16 +162,10 @@ export const getSchool = async ({
   }
 };
 
-export const verifyEmail = async ({
-  email
-}: {
-  email: string
-}): Promise<boolean> => {
+export const verifyEmail = async ({ email }: { email: string }): Promise<boolean> => {
   try {
     const result = await axios.get(
-      `${API_ROUTES.CHECK_EMAIL}?email=${encodeURIComponent(
-        email
-      )}&user_id=-1&token=NA`
+      `${API_ROUTES.CHECK_EMAIL}?email=${encodeURIComponent(email)}&user_id=-1&token=NA`
     );
     const { data = {} } = result;
     const { exists } = data;

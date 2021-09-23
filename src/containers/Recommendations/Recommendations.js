@@ -19,9 +19,7 @@ const Recommendations = () => {
   const dispatch = useDispatch();
   const me = useSelector((state) => state.user.data);
   const [posts, setPosts] = useState([]);
-  const newClassExperience = useSelector(
-    (state) => state.campaign.newClassExperience
-  );
+  const newClassExperience = useSelector((state) => state.campaign.newClassExperience);
   const [shareFeedId, setShareFeedId] = useState(null);
   const [deleteFeedId, setDeleteFeedId] = useState(null);
   const [reportData, setReportData] = useState(null);
@@ -173,11 +171,7 @@ const Recommendations = () => {
           </Grid>
         </Grid>
       </Grid>
-      <SharePost
-        feedId={shareFeedId}
-        open={Boolean(shareFeedId)}
-        onClose={handleShareClose}
-      />
+      <SharePost feedId={shareFeedId} open={Boolean(shareFeedId)} onClose={handleShareClose} />
       <DeletePost
         open={Boolean(deleteFeedId)}
         feedId={deleteFeedId || -1}

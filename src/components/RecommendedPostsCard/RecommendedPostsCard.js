@@ -47,14 +47,14 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
     ];
 
     if (isLoading) {
-return (
+      return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
-}
+    }
 
     return (
       <Paper className={classes.root} elevation={1}>

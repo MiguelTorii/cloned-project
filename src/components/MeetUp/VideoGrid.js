@@ -47,7 +47,9 @@ const VideoGrid = ({
   const [selectedPage, setSelectedPage] = useState(1);
 
   useEffect(() => {
-    if (dominantSpeaker) { setDominant(dominantSpeaker); }
+    if (dominantSpeaker) {
+      setDominant(dominantSpeaker);
+    }
 
     const handleWindowResize = () => {
       setWindowWidth(window.innerWidth);
@@ -60,7 +62,9 @@ const VideoGrid = ({
   useEffect(() => {
     if (windowWidth < 700) {
       setPageSize(2);
-    } else { setPageSize(12); }
+    } else {
+      setPageSize(12);
+    }
   }, [windowWidth]);
 
   useEffect(() => {
@@ -69,10 +73,14 @@ const VideoGrid = ({
         setPageSize(12);
         break;
       case 'speaker-view':
-        if (sharingTrackIds.length) { setPageSize(1); }
+        if (sharingTrackIds.length) {
+          setPageSize(1);
+        }
         break;
       case 'side-by-side':
-        if (sharingTrackIds.length) { setPageSize(1); }
+        if (sharingTrackIds.length) {
+          setPageSize(1);
+        }
         break;
       default:
         break;
@@ -87,11 +95,11 @@ const VideoGrid = ({
 
   const numberOfParticipants = useMemo(
     () =>
-      (sharingTrackIds.length ||
+      sharingTrackIds.length ||
       (dominantView && dominant) ||
       ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1
         ? 1
-        : participants.length),
+        : participants.length,
     [dominant, dominantView, participants.length, sharingTrackIds, viewMode]
   );
 
@@ -99,37 +107,37 @@ const VideoGrid = ({
     (viewMode, identity, id, other) => {
       if (viewMode === 'speaker-view' || viewMode === 'side-by-side') {
         if (sharingTrackIds.length) {
-          if (
-            sharingTrackIds.indexOf(id) > -1 ||
-            sharingTrackIds.indexOf(other) > -1
-          ) { return true; }
+          if (sharingTrackIds.indexOf(id) > -1 || sharingTrackIds.indexOf(other) > -1) {
+            return true;
+          }
           return false;
         }
-        if (dominantSpeaker && dominantSpeaker === id) { return true; }
-        if (!dominantSpeaker && currentUserId === identity) { return true; }
+        if (dominantSpeaker && dominantSpeaker === id) {
+          return true;
+        }
+        if (!dominantSpeaker && currentUserId === identity) {
+          return true;
+        }
         return false;
       }
 
       if (lockedParticipant) {
-        if (lockedParticipant === (other || id)) { return true; }
+        if (lockedParticipant === (other || id)) {
+          return true;
+        }
         return false;
       }
 
       if (dominantView && dominant) {
-        if (dominant === id) { return true; }
+        if (dominant === id) {
+          return true;
+        }
         return false;
       }
 
       return true;
     },
-    [
-      currentUserId,
-      dominant,
-      dominantSpeaker,
-      dominantView,
-      lockedParticipant,
-      sharingTrackIds
-    ]
+    [currentUserId, dominant, dominantSpeaker, dominantView, lockedParticipant, sharingTrackIds]
   );
 
   const galleryTotalPageCount = useMemo(
@@ -139,21 +147,15 @@ const VideoGrid = ({
 
   const currentPageParticipants = useMemo(() => {
     if (viewMode === 'gallery-view') {
-return participants.slice(
-        pageSize * (selectedPage - 1),
-        pageSize * selectedPage
-      );
-}
+      return participants.slice(pageSize * (selectedPage - 1), pageSize * selectedPage);
+    }
     if (sharingTrackIds.length) {
       const sharedParticipants = [];
       participants.forEach((item) => {
         const sharedParticipant =
           item.video.length &&
           item.video.filter(
-            (track) =>
-              sharingTrackIds.indexOf(
-                item.type === 'local' ? track.id : track.sid
-              ) > -1
+            (track) => sharingTrackIds.indexOf(item.type === 'local' ? track.id : track.sid) > -1
           );
 
         if (sharedParticipant.length) {
@@ -163,10 +165,7 @@ return participants.slice(
 
       setTotalPageCount(Math.ceil(sharedParticipants.length / pageSize));
 
-      return sharedParticipants.slice(
-        pageSize * (selectedPage - 1),
-        pageSize * selectedPage
-      );
+      return sharedParticipants.slice(pageSize * (selectedPage - 1), pageSize * selectedPage);
     }
     return participants;
   }, [pageSize, participants, selectedPage, sharingTrackIds, viewMode]);
@@ -177,123 +176,111 @@ return participants.slice(
 
   const setHighlight = useCallback(
     (id, audio) => {
-      if (dominantSpeaker === id) { return true; }
-      if (!dominantSpeaker && audio) { return true; }
+      if (dominantSpeaker === id) {
+        return true;
+      }
+      if (!dominantSpeaker && audio) {
+        return true;
+      }
       return false;
     },
     [dominantSpeaker]
   );
 
-  const renderAudio = useCallback(() => participants.map((item) => {
-      if (item.audio.length > 0) {
-        return item.audio.map((track) => (
-          <AudioTrack
-            type={item.type}
-            key={item.type === 'local' ? track.id : track.sid}
-            audio={track}
-            innerRef={meetupRef}
-          />
-        ));
-      }
-      if (!item.audio.length && item.type === 'local') {
-        return (
-          <AudioTrack
-            type={item.type}
-            key="no-audio"
-            audio={null}
-            innerRef={meetupRef}
-          />
-        );
-      }
-      return null;
-    }), [meetupRef, participants]);
+  const renderAudio = useCallback(
+    () =>
+      participants.map((item) => {
+        if (item.audio.length > 0) {
+          return item.audio.map((track) => (
+            <AudioTrack
+              type={item.type}
+              key={item.type === 'local' ? track.id : track.sid}
+              audio={track}
+              innerRef={meetupRef}
+            />
+          ));
+        }
+        if (!item.audio.length && item.type === 'local') {
+          return <AudioTrack type={item.type} key="no-audio" audio={null} innerRef={meetupRef} />;
+        }
+        return null;
+      }),
+    [meetupRef, participants]
+  );
 
-  const renderParticipants = useCallback(() => currentPageParticipants.map((item) => {
-      const profile = profiles[item.participant.identity] || {};
-      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+  const renderParticipants = useCallback(
+    () =>
+      currentPageParticipants.map((item) => {
+        const profile = profiles[item.participant.identity] || {};
+        const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
-      if (item.video.length === 0) {
-        return (
-          <VideoGridItem
-            key={item.participant.sid}
-            firstName={
-              item.participant.identity === currentUserId ? 'You' : firstName
-            }
-            lastName={
-              item.participant.identity === currentUserId ? '' : lastName
-            }
-            profileImage={userProfileUrl}
-            highlight={setHighlight(item.participant.sid, item.audio.length)}
-            sharingTrackIds={sharingTrackIds}
-            isVideo={false}
-            localSharing={localSharing}
-            totalPageCount={totalPageCount}
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-            handleSelectedScreenSharing={handleSelectedScreenSharing}
-            sharingType={item.type}
-            isMic={item.audio.length > 0}
-            count={numberOfParticipants}
-            isSharing={!!sharingTrackIds.length}
-            isVisible={isVisible(
-              viewMode,
-              item.participant.identity,
-              item.participant.sid
-            )}
-            viewMode={viewMode}
-          />
-        );
-      }
-      return item.video.map((track) => {
-        const id = item.type === 'local' ? track.id : track.sid;
-        const isVideo = item.video.length !== 0;
-        return (
-          <VideoGridItem
-            key={id}
-            firstName={
-              item.participant.identity === currentUserId ? 'You' : firstName
-            }
-            lastName={
-              item.participant.identity === currentUserId ? '' : lastName
-            }
-            profileImage={userProfileUrl}
-            localSharing={localSharing}
-            sharingTrackIds={sharingTrackIds}
-            video={track}
-            isVideo={isVideo}
-            totalPageCount={totalPageCount}
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-            handleSelectedScreenSharing={handleSelectedScreenSharing}
-            sharingType={item.type}
-            isMic={item.audio.length > 0}
-            highlight={setHighlight(item.participant.sid, item.audio.length)}
-            count={numberOfParticipants}
-            isSharing={!!sharingTrackIds.length}
-            isVisible={isVisible(
-              viewMode,
-              item.participant.identity,
-              item.participant.sid,
-              id
-            )}
-            viewMode={viewMode}
-          />
-        );
-      });
-    }), [
-    currentPageParticipants,
-    currentUserId,
-    handleSelectedScreenSharing,
-    isVisible,
-    localSharing,
-    numberOfParticipants,
-    profiles,
-    selectedPage,
-    setHighlight,
-    sharingTrackIds,
-    totalPageCount,
-    viewMode
-  ]);
+        if (item.video.length === 0) {
+          return (
+            <VideoGridItem
+              key={item.participant.sid}
+              firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+              lastName={item.participant.identity === currentUserId ? '' : lastName}
+              profileImage={userProfileUrl}
+              highlight={setHighlight(item.participant.sid, item.audio.length)}
+              sharingTrackIds={sharingTrackIds}
+              isVideo={false}
+              localSharing={localSharing}
+              totalPageCount={totalPageCount}
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+              handleSelectedScreenSharing={handleSelectedScreenSharing}
+              sharingType={item.type}
+              isMic={item.audio.length > 0}
+              count={numberOfParticipants}
+              isSharing={!!sharingTrackIds.length}
+              isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid)}
+              viewMode={viewMode}
+            />
+          );
+        }
+        return item.video.map((track) => {
+          const id = item.type === 'local' ? track.id : track.sid;
+          const isVideo = item.video.length !== 0;
+          return (
+            <VideoGridItem
+              key={id}
+              firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+              lastName={item.participant.identity === currentUserId ? '' : lastName}
+              profileImage={userProfileUrl}
+              localSharing={localSharing}
+              sharingTrackIds={sharingTrackIds}
+              video={track}
+              isVideo={isVideo}
+              totalPageCount={totalPageCount}
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+              handleSelectedScreenSharing={handleSelectedScreenSharing}
+              sharingType={item.type}
+              isMic={item.audio.length > 0}
+              highlight={setHighlight(item.participant.sid, item.audio.length)}
+              count={numberOfParticipants}
+              isSharing={!!sharingTrackIds.length}
+              isVisible={isVisible(viewMode, item.participant.identity, item.participant.sid, id)}
+              viewMode={viewMode}
+            />
+          );
+        });
+      }),
+    [
+      currentPageParticipants,
+      currentUserId,
+      handleSelectedScreenSharing,
+      isVisible,
+      localSharing,
+      numberOfParticipants,
+      profiles,
+      selectedPage,
+      setHighlight,
+      sharingTrackIds,
+      totalPageCount,
+      viewMode
+    ]
+  );
 
   return (
     <div
@@ -310,9 +297,7 @@ return participants.slice(
         alignItems="center"
         alignContent="center"
         className={cx(
-          numberOfParticipants > 4
-            ? classes.gridContainer
-            : classes.initialContainer,
+          numberOfParticipants > 4 ? classes.gridContainer : classes.initialContainer,
           viewMode !== 'gallery-view'
             ? viewMode === 'side-by-side'
               ? classes.sideBySideView
@@ -328,11 +313,7 @@ return participants.slice(
             hideNextButton
             hidePrevButton
             renderItem={(item) => (
-              <PaginationItem
-                {...item}
-                className={classes.paginationItem}
-                size="small"
-              />
+              <PaginationItem {...item} className={classes.paginationItem} size="small" />
             )}
             onChange={handlePageChange}
             count={galleryTotalPageCount}

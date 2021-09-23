@@ -48,20 +48,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ClassesFolders = ({
-  classList,
-  currentFilter
-}) => {
+const ClassesFolders = ({ classList, currentFilter }) => {
   const classes = useStyles();
 
   return (
     <List className={classes.listRoot}>
       {classList.map((cl, idx) => (
-        <ClassNotes
-          key={cl.classId}
-          arrayIndex={idx}
-          classData={cl}
-        />
+        <ClassNotes key={cl.classId} arrayIndex={idx} classData={cl} />
       ))}
       {classList.length === 0 && (
         <EmptyState imageUrl={EmptyPastClass}>
@@ -72,8 +65,8 @@ const ClassesFolders = ({
             <div className={classes.emptyBody}>
               {currentFilter === 'past' && (
                 <>
-                  You don’t have any past classes yet, but your notes will be saved
-                  here and ready for you once you finish your current classes.&nbsp;
+                  You don’t have any past classes yet, but your notes will be saved here and ready
+                  for you once you finish your current classes.&nbsp;
                   <span role="img" aria-label="Wink emoji">
                     😉
                   </span>
@@ -81,9 +74,9 @@ const ClassesFolders = ({
               )}
               {currentFilter === 'current' && (
                 <>
-                  This tab shows notes from “current classes”.
-                  You haven’t been added to any classes yet.If you’re currently enrolled in classes,
-                  please contact us at support@circleinapp.com.
+                  This tab shows notes from “current classes”. You haven’t been added to any classes
+                  yet.If you’re currently enrolled in classes, please contact us at
+                  support@circleinapp.com.
                 </>
               )}
             </div>

@@ -77,7 +77,9 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   }, [loadData, noteId]);
 
   const handleBookmark = async () => {
-    if (!photoNote) { return; }
+    if (!photoNote) {
+      return;
+    }
     const { feedId, bookmarked } = photoNote;
     try {
       setPhotoNote({ ...photoNote, bookmarked: !bookmarked });
@@ -107,12 +109,12 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   };
 
   if (!photoNote) {
-return (
+    return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
-}
+  }
   const {
     feedId,
     postId,
@@ -212,19 +214,10 @@ return (
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Report
-              open={report}
-              ownerId={ownerId}
-              objectId={feedId}
-              onClose={handleReportClose}
-            />
+            <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <DeletePost
-              open={deletePost}
-              feedId={feedId}
-              onClose={handleDeleteClose}
-            />
+            <DeletePost open={deletePost} feedId={feedId} onClose={handleDeleteClose} />
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
@@ -246,7 +239,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ViewNotes));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewNotes));

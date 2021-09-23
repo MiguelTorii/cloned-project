@@ -88,10 +88,7 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
     () => (
       <MenuList>
         {isSharing ? (
-          <MenuItem
-            onClick={selctView('side-by-side')}
-            classes={{ root: classes.viewItem }}
-          >
+          <MenuItem onClick={selctView('side-by-side')} classes={{ root: classes.viewItem }}>
             <div className={classes.view}>
               <div className={classes.center}>
                 <ListItemIcon>
@@ -107,10 +104,7 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
             </div>
           </MenuItem>
         ) : (
-          <MenuItem
-            onClick={selctView('gallery-view')}
-            classes={{ root: classes.viewItem }}
-          >
+          <MenuItem onClick={selctView('gallery-view')} classes={{ root: classes.viewItem }}>
             <div className={classes.view}>
               <div className={classes.center}>
                 <ListItemIcon>
@@ -134,10 +128,7 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
           completedSteps={4}
           okButton="Nice!"
         >
-          <MenuItem
-            onClick={selctView('speaker-view')}
-            classes={{ root: classes.viewItem }}
-          >
+          <MenuItem onClick={selctView('speaker-view')} classes={{ root: classes.viewItem }}>
             <div className={classes.view}>
               <div className={classes.center}>
                 <ListItemIcon>

@@ -86,7 +86,13 @@ class Index extends React.Component<Props, State> {
     if (drawData !== prevProps.drawData && drawData !== '') {
       const data = JSON.parse(drawData);
       const { type = '' } = data;
-      if (type === 'drawing') { this.handleDrawingEvent(data); } else if (type === 'texting') { this.handleTextingEvent(data); } else if (type === 'cursor') { this.handleCursorEvent(data); }
+      if (type === 'drawing') {
+        this.handleDrawingEvent(data);
+      } else if (type === 'texting') {
+        this.handleTextingEvent(data);
+      } else if (type === 'cursor') {
+        this.handleCursorEvent(data);
+      }
     }
     if (prevProps.isText && !isText) {
       this.setState({ showInput: false, inputValue: '' });
@@ -115,7 +121,9 @@ class Index extends React.Component<Props, State> {
 
   handleMouseDown = (e) => {
     const { isText } = this.props;
-    if (isText) { return; }
+    if (isText) {
+      return;
+    }
     const current = {};
     current.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
     current.y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
@@ -127,7 +135,9 @@ class Index extends React.Component<Props, State> {
 
   handleMouseUp = (e) => {
     const { isText } = this.props;
-    if (isText) { return; }
+    if (isText) {
+      return;
+    }
     const { lineWidth, color, eraser } = this.props;
     const { drawing, current } = this.state;
     if (!drawing) {
@@ -155,7 +165,9 @@ class Index extends React.Component<Props, State> {
     );
 
     const { isText } = this.props;
-    if (isText) { return; }
+    if (isText) {
+      return;
+    }
     const { lineWidth, color, eraser } = this.props;
     const { drawing, current } = this.state;
     if (!drawing) {
@@ -247,7 +259,9 @@ class Index extends React.Component<Props, State> {
     // const { context } = this.state;
     const context = this.canvas.current.getContext('2d');
     const { sendDataMessage } = this.props;
-    if (!context) { return null; }
+    if (!context) {
+      return null;
+    }
     context.lineJoin = 'round';
     context.lineCap = 'round';
     context.strokeStyle = color;
@@ -283,7 +297,9 @@ class Index extends React.Component<Props, State> {
   drawText = (text, color, x, y, emit) => {
     const { sendDataMessage } = this.props;
     const { context } = this.state;
-    if (!context) { return null; }
+    if (!context) {
+      return null;
+    }
     context.fillStyle = color;
     context.font = '16px Roboto';
     context.fillText(text, x, y);
@@ -326,14 +342,7 @@ class Index extends React.Component<Props, State> {
   handleDrawingEvent = (data) => {
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
-    this.drawLine(
-      data.x0 * w,
-      data.y0 * h,
-      data.x1 * w,
-      data.y1 * h,
-      data.lineWidth,
-      data.color
-    );
+    this.drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.lineWidth, data.color);
   };
 
   handleTextingEvent = (data) => {

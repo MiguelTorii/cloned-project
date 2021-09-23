@@ -34,19 +34,10 @@ class WeeklyStudyPackCard extends React.PureComponent<Props, State> {
           </div>
           <div className={classes.packetContainer}>
             <div className={classes.packet}>
-              <Typography
-                variant="h4"
-                className={classes.packetText}
-                align="center"
-                paragraph
-              >
+              <Typography variant="h4" className={classes.packetText} align="center" paragraph>
                 Welcome Packet
               </Typography>
-              <Typography
-                variant="h6"
-                className={classes.packetText}
-                align="center"
-              >
+              <Typography variant="h6" className={classes.packetText} align="center">
                 August 2019
               </Typography>
             </div>
@@ -54,12 +45,7 @@ class WeeklyStudyPackCard extends React.PureComponent<Props, State> {
         </div>
         <div className={classes.links}>
           <Typography variant="h6">
-            <Link
-              href="/"
-              component={MyLink}
-              color="inherit"
-              className={classes.link}
-            >
+            <Link href="/" component={MyLink} color="inherit" className={classes.link}>
               View previous packets
             </Link>
           </Typography>

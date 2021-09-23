@@ -49,7 +49,11 @@ const Thumbnails = ({
   }, [windowWidth]);
 
   useEffect(() => {
-    if (viewMode === 'speaker-view') { setPageCount(5); } else { setPageCount(4); }
+    if (viewMode === 'speaker-view') {
+      setPageCount(5);
+    } else {
+      setPageCount(4);
+    }
   }, [viewMode]);
 
   const totalPageCount = useMemo(() => {
@@ -61,15 +65,16 @@ const Thumbnails = ({
 
   const currentPageParticipants = useMemo(() => {
     if (sharingTrackIds.length) {
-      return participants.slice(
-        pageCount * (selectedPage - 1),
-        pageCount * selectedPage
-      );
+      return participants.slice(pageCount * (selectedPage - 1), pageCount * selectedPage);
     }
     return participants
       .filter((item) => {
-        if (dominantSpeaker && dominantSpeaker !== item.participant.sid) { return item; }
-        if (!dominantSpeaker && item.participant.identity !== currentUserId) { return item; }
+        if (dominantSpeaker && dominantSpeaker !== item.participant.sid) {
+          return item;
+        }
+        if (!dominantSpeaker && item.participant.identity !== currentUserId) {
+          return item;
+        }
         return null;
       })
       .filter((item) => item)
@@ -89,21 +94,82 @@ const Thumbnails = ({
 
   const setHighlight = useCallback(
     (id, audio) => {
-      if (dominantSpeaker === id) { return true; }
-      if (!dominantSpeaker && audio) { return true; }
+      if (dominantSpeaker === id) {
+        return true;
+      }
+      if (!dominantSpeaker && audio) {
+        return true;
+      }
       return false;
     },
     [dominantSpeaker]
   );
 
-  const renderParticipants = useCallback(() => currentPageParticipants.map((item) => {
-      const profile = profiles[item.participant.identity] || {};
-      const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
+  const renderParticipants = useCallback(
+    () =>
+      currentPageParticipants.map((item) => {
+        const profile = profiles[item.participant.identity] || {};
+        const { firstName = '', lastName = '', userProfileUrl = '' } = profile;
 
-      /*
-       * Not shared screen (filter inactive speakers)
-       */
-      if (!sharingTrackIds.length) {
+        /*
+         * Not shared screen (filter inactive speakers)
+         */
+        if (!sharingTrackIds.length) {
+          if (item.video.length === 0) {
+            return (
+              <ThumbnailItem
+                key={item.participant.sid}
+                firstName={firstName}
+                lastName={lastName}
+                isLocal={item.type === 'local'}
+                profileImage={userProfileUrl}
+                highlight={setHighlight(item.participant.sid, item.audio.length)}
+                isPinned={lockedParticipant === item.participant.sid}
+                isVideo={false}
+                isVisible={false}
+                sharingTrackIds={sharingTrackIds}
+                viewMode={viewMode}
+                isMic={item.audio.length > 0}
+                isDataSharing={item.data.length > 0}
+              />
+            );
+          }
+
+          return item.video.map((track) => (
+            <ThumbnailItem
+              key={item.type === 'local' ? track.id : track.sid}
+              firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+              lastName={item.participant.identity === currentUserId ? '' : lastName}
+              isLocal={item.type === 'local'}
+              profileImage={userProfileUrl}
+              highlight={setHighlight(item.participant.sid, item.audio.length)}
+              video={track}
+              isPinned={
+                item.type === 'local'
+                  ? lockedParticipant === track.id
+                  : lockedParticipant === track.sid
+              }
+              isVideo
+              sharingTrackIds={sharingTrackIds}
+              viewMode={viewMode}
+              isMic={item.audio.length > 0}
+              isDataSharing={item.data.length > 0}
+            />
+          ));
+        }
+
+        /*
+         * Shared screens
+         * 1. item.video.length === 0 => Not shared the screen and turn off the camera
+         * 2. item.video.length === 1 => Not shared the screen or turn off the camera
+         *    - Need to check the screen share only
+         *    - Need to check the turn on the camera only
+         * 3. item.video.length > 1 => Shared screen and turn on the camera
+         *    - Need to selected screenshare of Id from the Video Grid and
+         *      filter that from the speaker-view or side-by-side bars
+         *    - If screenshared selected on the Video Grid,
+         *      need to show the Camera (or Profile photo or default turn off view)
+         */
         if (item.video.length === 0) {
           return (
             <ThumbnailItem
@@ -124,85 +190,43 @@ const Thumbnails = ({
           );
         }
 
-        return item.video.map((track) => (
-            <ThumbnailItem
-              key={item.type === 'local' ? track.id : track.sid}
-              firstName={
-                item.participant.identity === currentUserId ? 'You' : firstName
-              }
-              lastName={
-                item.participant.identity === currentUserId ? '' : lastName
-              }
-              isLocal={item.type === 'local'}
-              profileImage={userProfileUrl}
-              highlight={setHighlight(item.participant.sid, item.audio.length)}
-              video={track}
-              isPinned={
-                item.type === 'local'
-                  ? lockedParticipant === track.id
-                  : lockedParticipant === track.sid
-              }
-              isVideo
-              sharingTrackIds={sharingTrackIds}
-              viewMode={viewMode}
-              isMic={item.audio.length > 0}
-              isDataSharing={item.data.length > 0}
-            />
-          ));
-      }
+        return item.video.map((track) => {
+          if (item.video.length === 1) {
+            if (selectedScreenShareId === track.id || selectedScreenShareId === track.sid) {
+              return (
+                <ThumbnailItem
+                  key={item.participant.sid}
+                  firstName={firstName}
+                  lastName={lastName}
+                  isLocal={item.type === 'local'}
+                  profileImage={userProfileUrl}
+                  highlight={setHighlight(item.participant.sid, item.audio.length)}
+                  isPinned={lockedParticipant === item.participant.sid}
+                  isVideo={false}
+                  isVisible={false}
+                  sharingTrackIds={sharingTrackIds}
+                  viewMode={viewMode}
+                  isMic={item.audio.length > 0}
+                  isDataSharing={item.data.length > 0}
+                />
+              );
+            }
 
-      /*
-       * Shared screens
-       * 1. item.video.length === 0 => Not shared the screen and turn off the camera
-       * 2. item.video.length === 1 => Not shared the screen or turn off the camera
-       *    - Need to check the screen share only
-       *    - Need to check the turn on the camera only
-       * 3. item.video.length > 1 => Shared screen and turn on the camera
-       *    - Need to selected screenshare of Id from the Video Grid and
-       *      filter that from the speaker-view or side-by-side bars
-       *    - If screenshared selected on the Video Grid,
-       *      need to show the Camera (or Profile photo or default turn off view)
-       */
-      if (item.video.length === 0) {
-        return (
-          <ThumbnailItem
-            key={item.participant.sid}
-            firstName={firstName}
-            lastName={lastName}
-            isLocal={item.type === 'local'}
-            profileImage={userProfileUrl}
-            highlight={setHighlight(item.participant.sid, item.audio.length)}
-            isPinned={lockedParticipant === item.participant.sid}
-            isVideo={false}
-            isVisible={false}
-            sharingTrackIds={sharingTrackIds}
-            viewMode={viewMode}
-            isMic={item.audio.length > 0}
-            isDataSharing={item.data.length > 0}
-          />
-        );
-      }
-
-      return item.video.map((track) => {
-        if (item.video.length === 1) {
-          if (
-            selectedScreenShareId === track.id ||
-            selectedScreenShareId === track.sid
-          ) {
             return (
               <ThumbnailItem
-                key={item.participant.sid}
-                firstName={firstName}
-                lastName={lastName}
+                key={item.type === 'local' ? track.id : track.sid}
+                firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+                lastName={item.participant.identity === currentUserId ? '' : lastName}
                 isLocal={item.type === 'local'}
                 profileImage={userProfileUrl}
-                highlight={setHighlight(
-                  item.participant.sid,
-                  item.audio.length
-                )}
-                isPinned={lockedParticipant === item.participant.sid}
-                isVideo={false}
-                isVisible={false}
+                highlight={setHighlight(item.participant.sid, item.audio.length)}
+                video={track}
+                isPinned={
+                  item.type === 'local'
+                    ? lockedParticipant === track.id
+                    : lockedParticipant === track.sid
+                }
+                isVideo
                 sharingTrackIds={sharingTrackIds}
                 viewMode={viewMode}
                 isMic={item.audio.length > 0}
@@ -211,116 +235,74 @@ const Thumbnails = ({
             );
           }
 
-          return (
-            <ThumbnailItem
-              key={item.type === 'local' ? track.id : track.sid}
-              firstName={
-                item.participant.identity === currentUserId ? 'You' : firstName
+          if (selectedScreenShareId === track.id || selectedScreenShareId === track.sid) {
+            const filterCamera = item.video.filter((video) => {
+              if (item.type === 'local') {
+                return selectedScreenShareId !== video.id;
               }
-              lastName={
-                item.participant.identity === currentUserId ? '' : lastName
-              }
-              isLocal={item.type === 'local'}
-              profileImage={userProfileUrl}
-              highlight={setHighlight(item.participant.sid, item.audio.length)}
-              video={track}
-              isPinned={
-                item.type === 'local'
-                  ? lockedParticipant === track.id
-                  : lockedParticipant === track.sid
-              }
-              isVideo
-              sharingTrackIds={sharingTrackIds}
-              viewMode={viewMode}
-              isMic={item.audio.length > 0}
-              isDataSharing={item.data.length > 0}
-            />
-          );
-        }
+              return selectedScreenShareId !== video.sid;
+            });
 
-        if (
-          selectedScreenShareId === track.id ||
-          selectedScreenShareId === track.sid
-        ) {
-          const filterCamera = item.video.filter((video) => {
-            if (item.type === 'local') {
-              return selectedScreenShareId !== video.id;
-            }
-            return selectedScreenShareId !== video.sid;
-          });
+            return (
+              <ThumbnailItem
+                key={item.type === 'local' ? filterCamera[0].id : filterCamera[0].sid}
+                firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+                lastName={item.participant.identity === currentUserId ? '' : lastName}
+                profileImage={userProfileUrl}
+                isLocal={item.type === 'local'}
+                highlight={setHighlight(item.participant.sid, item.audio.length)}
+                video={filterCamera[0]}
+                isPinned={
+                  item.type === 'local'
+                    ? lockedParticipant === filterCamera[0].id
+                    : lockedParticipant === filterCamera[0].sid
+                }
+                isVideo
+                sharingTrackIds={sharingTrackIds}
+                viewMode={viewMode}
+                isMic={item.audio.length > 0}
+                isDataSharing={item.data.length > 0}
+              />
+            );
+          }
 
-          return (
-            <ThumbnailItem
-              key={
-                item.type === 'local' ? filterCamera[0].id : filterCamera[0].sid
-              }
-              firstName={
-                item.participant.identity === currentUserId ? 'You' : firstName
-              }
-              lastName={
-                item.participant.identity === currentUserId ? '' : lastName
-              }
-              profileImage={userProfileUrl}
-              isLocal={item.type === 'local'}
-              highlight={setHighlight(item.participant.sid, item.audio.length)}
-              video={filterCamera[0]}
-              isPinned={
-                item.type === 'local'
-                  ? lockedParticipant === filterCamera[0].id
-                  : lockedParticipant === filterCamera[0].sid
-              }
-              isVideo
-              sharingTrackIds={sharingTrackIds}
-              viewMode={viewMode}
-              isMic={item.audio.length > 0}
-              isDataSharing={item.data.length > 0}
-            />
-          );
-        }
-
-        if (
-          sharingTrackIds.indexOf(
-            item.type === 'local' ? track.id : track.sid
-          ) > -1
-        ) {
-          return (
-            <ThumbnailItem
-              key={item.type === 'local' ? track.id : track.sid}
-              firstName={
-                item.participant.identity === currentUserId ? 'You' : firstName
-              }
-              lastName={
-                item.participant.identity === currentUserId ? '' : lastName
-              }
-              isLocal={item.type === 'local'}
-              profileImage={userProfileUrl}
-              highlight={setHighlight(item.participant.sid, item.audio.length)}
-              video={track}
-              isPinned={
-                item.type === 'local'
-                  ? lockedParticipant === track.id
-                  : lockedParticipant === track.sid
-              }
-              isVideo
-              sharingTrackIds={sharingTrackIds}
-              viewMode={viewMode}
-              isMic={item.audio.length > 0}
-              isDataSharing={item.data.length > 0}
-            />
-          );
-        }
-        return null;
-      });
-    }), [
-    currentPageParticipants,
-    currentUserId,
-    lockedParticipant,
-    profiles,
-    selectedScreenShareId,
-    setHighlight,
-    sharingTrackIds,
-    viewMode
-  ]);
+          if (sharingTrackIds.indexOf(item.type === 'local' ? track.id : track.sid) > -1) {
+            return (
+              <ThumbnailItem
+                key={item.type === 'local' ? track.id : track.sid}
+                firstName={item.participant.identity === currentUserId ? 'You' : firstName}
+                lastName={item.participant.identity === currentUserId ? '' : lastName}
+                isLocal={item.type === 'local'}
+                profileImage={userProfileUrl}
+                highlight={setHighlight(item.participant.sid, item.audio.length)}
+                video={track}
+                isPinned={
+                  item.type === 'local'
+                    ? lockedParticipant === track.id
+                    : lockedParticipant === track.sid
+                }
+                isVideo
+                sharingTrackIds={sharingTrackIds}
+                viewMode={viewMode}
+                isMic={item.audio.length > 0}
+                isDataSharing={item.data.length > 0}
+              />
+            );
+          }
+          return null;
+        });
+      }),
+    [
+      currentPageParticipants,
+      currentUserId,
+      lockedParticipant,
+      profiles,
+      selectedScreenShareId,
+      setHighlight,
+      sharingTrackIds,
+      viewMode
+    ]
+  );
 
   const goBack = useCallback(() => {
     if (selectedPage !== 1) {
@@ -334,54 +316,39 @@ const Thumbnails = ({
     }
   }, [selectedPage, totalPageCount]);
 
-  const renderAudio = useCallback(() => participants.map((item) => {
-      if (item.audio.length > 0) {
-        return item.audio.map((track) => (
-          <AudioTrack
-            type={item.type}
-            key={item.type === 'local' ? track.id : track.sid}
-            audio={track}
-            innerRef={meetupRef}
-          />
-        ));
-      }
-      if (!item.audio.length && item.type === 'local') {
-        return (
-          <AudioTrack
-            type={item.type}
-            key="no-audio"
-            audio={null}
-            innerRef={meetupRef}
-          />
-        );
-      }
-      return null;
-    }), [meetupRef, participants]);
+  const renderAudio = useCallback(
+    () =>
+      participants.map((item) => {
+        if (item.audio.length > 0) {
+          return item.audio.map((track) => (
+            <AudioTrack
+              type={item.type}
+              key={item.type === 'local' ? track.id : track.sid}
+              audio={track}
+              innerRef={meetupRef}
+            />
+          ));
+        }
+        if (!item.audio.length && item.type === 'local') {
+          return <AudioTrack type={item.type} key="no-audio" audio={null} innerRef={meetupRef} />;
+        }
+        return null;
+      }),
+    [meetupRef, participants]
+  );
 
   return (
-    <div
-      className={cx(
-        classes.root,
-        viewMode === 'side-by-side' && classes.sideBySideRoot
-      )}
-    >
+    <div className={cx(classes.root, viewMode === 'side-by-side' && classes.sideBySideRoot)}>
       {totalPageCount > 1 && (
         <Button
           onClick={goBack}
           size="small"
-          className={cx(
-            classes.prevPage,
-            viewMode === 'side-by-side' && classes.prevPageSideView
-          )}
+          className={cx(classes.prevPage, viewMode === 'side-by-side' && classes.prevPageSideView)}
           classes={{
             label: classes.labelButton
           }}
         >
-          {viewMode === 'speaker-view' ? (
-            <ArrowBackIosIcon fontSize="small" />
-          ) : (
-            <ExpandLessIcon />
-          )}
+          {viewMode === 'speaker-view' ? <ArrowBackIosIcon fontSize="small" /> : <ExpandLessIcon />}
           <Typography variant="p">
             {selectedPage} / {totalPageCount}
           </Typography>
@@ -395,11 +362,7 @@ const Thumbnails = ({
           hideNextButton
           hidePrevButton
           renderItem={(item) => (
-            <PaginationItem
-              {...item}
-              className={classes.paginationItem}
-              size="small"
-            />
+            <PaginationItem {...item} className={classes.paginationItem} size="small" />
           )}
           onChange={handlePageChange}
           count={totalPageCount}
@@ -412,26 +375,18 @@ const Thumbnails = ({
         <Button
           onClick={goNext}
           size="small"
-          className={cx(
-            classes.nextPage,
-            viewMode === 'side-by-side' && classes.nextPageSideView
-          )}
+          className={cx(classes.nextPage, viewMode === 'side-by-side' && classes.nextPageSideView)}
           classes={{
             label: classes.labelButton
           }}
         >
           {viewMode === 'speaker-view' && (
-            <ArrowForwardIosIcon
-              fontSize="small"
-              className={classes.activeColor}
-            />
+            <ArrowForwardIosIcon fontSize="small" className={classes.activeColor} />
           )}
           <Typography variant="p">
             {selectedPage} / {totalPageCount}
           </Typography>
-          {viewMode === 'side-by-side' && (
-            <ExpandMoreIcon className={classes.activeColor} />
-          )}
+          {viewMode === 'side-by-side' && <ExpandMoreIcon className={classes.activeColor} />}
         </Button>
       )}
     </div>

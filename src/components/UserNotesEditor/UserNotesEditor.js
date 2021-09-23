@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useMemo,
-  useEffect,
-  useState,
-  useCallback
-} from 'react';
+import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
@@ -71,15 +65,21 @@ const UserNotesEditor = ({
   useEffect(() => setDebouncedNote(note), [note, setDebouncedNote]);
 
   const renderSaved = useMemo(() => {
-    if (savedState === 'hidden') { return null; }
-    if (savedState === 'saving') { return <div className={classes.lastSaved}>Saving...</div>; }
+    if (savedState === 'hidden') {
+      return null;
+    }
+    if (savedState === 'saving') {
+      return <div className={classes.lastSaved}>Saving...</div>;
+    }
     return <div className={classes.lastSaved}>Last Saved {lastSave}</div>;
   }, [classes.lastSaved, lastSave, savedState]);
 
   useEffect(() => {
     setLastSave(timeFromNow(currentNote));
     const interval = setInterval(() => {
-      if (currentNote) { setLastSave(timeFromNow(curNoteRef.current)); }
+      if (currentNote) {
+        setLastSave(timeFromNow(curNoteRef.current));
+      }
     }, 60000);
     return () => {
       clearInterval(interval);
@@ -89,8 +89,7 @@ const UserNotesEditor = ({
   useEffect(() => {
     if (
       debouncedNote &&
-      (debouncedNote.title !== prevSaved.title ||
-        debouncedNote.content !== prevSaved.content)
+      (debouncedNote.title !== prevSaved.title || debouncedNote.content !== prevSaved.content)
     ) {
       const now = new Date();
       updateNote({
@@ -119,11 +118,10 @@ const UserNotesEditor = ({
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
-    useIdleTimer({
-      timeout,
-      onActive: handleOnActive
-    });
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive
+  });
 
   useEffect(() => {
     remaining.current = getRemainingTime();
@@ -180,15 +178,7 @@ const UserNotesEditor = ({
       type: 'Closed',
       sectionId: note.sectionId
     });
-  }, [
-    exitNoteTaker,
-    handleClose,
-    note,
-    prevSaved,
-    updateNote,
-    reset,
-    initializeTimer
-  ]);
+  }, [exitNoteTaker, handleClose, note, prevSaved, updateNote, reset, initializeTimer]);
 
   useEffect(() => {
     if (currentNote !== null) {
@@ -240,7 +230,9 @@ const UserNotesEditor = ({
 
   const hasNote = useMemo(() => {
     const hasNote = currentNote !== null;
-    if (hasNote) { setFormulasColor('Black'); }
+    if (hasNote) {
+      setFormulasColor('Black');
+    }
     return hasNote;
   }, [currentNote]);
   // const [menuAnchor, setMenuAchor] = useState(null)
@@ -260,19 +252,10 @@ const UserNotesEditor = ({
   return (
     <div>
       {hasNote && (
-        <Dialog
-          fullScreen
-          open
-          onClose={onExit}
-          TransitionComponent={Transition}
-        >
+        <Dialog fullScreen open onClose={onExit} TransitionComponent={Transition}>
           <AppBar className={classes.appBar}>
             <Toolbar className={classes.toolbar}>
-              <img
-                className={classes.circleInLogo}
-                src={CircleInLogo}
-                alt="CircleIn logo"
-              />
+              <img className={classes.circleInLogo} src={CircleInLogo} alt="CircleIn logo" />
               <TextField
                 fullWidth
                 InputProps={{ disableUnderline: true }}
@@ -310,12 +293,7 @@ const UserNotesEditor = ({
               <div className={classes.editorToolbar}>
                 <EditorToolbar />
               </div>
-              <Grid
-                item
-                xs={12}
-                md={7}
-                className={classes.innerContainerEditor}
-              >
+              <Grid item xs={12} md={7} className={classes.innerContainerEditor}>
                 {/* commenting out this delete menu for now, need to determine where to place it with the title section moved */}
                 {/* <div className={classes.header}>
                 <IconButton

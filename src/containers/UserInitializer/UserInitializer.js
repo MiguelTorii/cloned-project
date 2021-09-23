@@ -7,11 +7,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import amplitude from 'amplitude-js';
-import {
-  ValidatorForm,
-  TextValidator,
-  SelectValidator
-} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 import { hotjar } from 'react-hotjar';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -95,9 +91,7 @@ const UserInitializer = ({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [onboardingPopupOpen, setOnboardingPopupOpen] = useState(false);
   const dispatch = useDispatch();
-  const viewedOnboarding = useSelector(
-    (state) => state.user.syncData.viewedOnboarding
-  );
+  const viewedOnboarding = useSelector((state) => state.user.syncData.viewedOnboarding);
   const chatLanding = useSelector((state) => state.campaign.chatLanding);
 
   // Check to show onboarding popup or not.
@@ -105,8 +99,12 @@ const UserInitializer = ({
   useEffect(() => {
     let timeoutId = null;
 
-    if (viewedOnboarding) { setOnboardingPopupOpen(false); } else if (viewedOnboarding === false) {
-      if (!chatLanding) { setOnboardingPopupOpen(true); } else {
+    if (viewedOnboarding) {
+      setOnboardingPopupOpen(false);
+    } else if (viewedOnboarding === false) {
+      if (!chatLanding) {
+        setOnboardingPopupOpen(true);
+      } else {
         // Since it is delayed 5 seconds, it shows up after 6 seconds to make it natural.
         timeoutId = setTimeout(() => {
           setOnboardingPopupOpen(true);
@@ -126,7 +124,9 @@ const UserInitializer = ({
       await import('./custom-widget.css');
     }
 
-    if (userId) { loadStyle(); }
+    if (userId) {
+      loadStyle();
+    }
   }, [userId]);
   useEffect(() => {
     setWidgetUrl(userId ? LOGGED_IN_WIDGET_URL : LOGGED_OUT_WIDGET_URL);
@@ -138,16 +138,16 @@ const UserInitializer = ({
     const oldScript = document.querySelector(
       `script[src="${userId ? LOGGED_OUT_WIDGET_URL : LOGGED_IN_WIDGET_URL}"]`
     );
-    if (oldScript) { oldScript.remove(); }
+    if (oldScript) {
+      oldScript.remove();
+    }
   }, [userId]);
 
   useEffect(() => {
     if (userId) {
       AMPLITUDE_IDS.forEach((id) => {
         amplitude.getInstance().init(id, null, { batchEvents: true });
-        amplitude
-          .getInstance('student-application')
-          .init(id, null, { includeReferrer: true });
+        amplitude.getInstance('student-application').init(id, null, { includeReferrer: true });
         amplitude.getInstance('student-application').setUserId(userId);
         amplitude.getInstance('student-application').logEvent('Init');
       });
@@ -182,12 +182,16 @@ const UserInitializer = ({
       })();
     }
 
-    if (!userId) { window.FreshworksWidget('show', 'launcher'); }
+    if (!userId) {
+      window.FreshworksWidget('show', 'launcher');
+    }
   }, [userId, status]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (userId) { window.FreshworksWidget('hide', 'launcher'); }
+      if (userId) {
+        window.FreshworksWidget('hide', 'launcher');
+      }
     }, 1000);
     return () => clearTimeout(timer);
   }, [userId]);
@@ -200,14 +204,18 @@ const UserInitializer = ({
     const {
       data: { updateProfile }
     } = user;
-    if (updateProfile.length > 0) { setOpen(true); }
+    if (updateProfile.length > 0) {
+      setOpen(true);
+    }
   }, [user]);
 
   useEffect(() => {
     const init = async () => {
       const loggedIn = await checkUserSession();
       if (loggedIn) {
-        if (userId !== '') { handleCheckUpdate(); }
+        if (userId !== '') {
+          handleCheckUpdate();
+        }
       }
 
       window.addEventListener('resize', updateDimensions);
@@ -219,7 +227,9 @@ const UserInitializer = ({
   }, []);
 
   useEffect(() => {
-    if (userId !== '') { handleCheckUpdate(); }
+    if (userId !== '') {
+      handleCheckUpdate();
+    }
   }, [handleCheckUpdate, userId]);
 
   useEffect(() => {
@@ -280,7 +290,9 @@ const UserInitializer = ({
     data: { updateProfile, segment }
   } = user;
 
-  if (userId === '' || campaign.landingPageCampaign === null) { return null; }
+  if (userId === '' || campaign.landingPageCampaign === null) {
+    return null;
+  }
 
   const renderForm = () => (
     <>
@@ -381,14 +393,8 @@ const UserInitializer = ({
         title="Update Profile"
       >
         <div className={classes.dialog}>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
-          <ValidatorForm
-            instantValidate
-            onSubmit={handleSubmit}
-            className={classes.form}
-          >
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          <ValidatorForm instantValidate onSubmit={handleSubmit} className={classes.form}>
             {renderForm}
           </ValidatorForm>
         </div>

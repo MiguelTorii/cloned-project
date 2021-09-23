@@ -25,14 +25,12 @@ const getItemStyles = (initialOffset, currentOffset) => {
 const DragPreview = () => {
   const { listView, classList } = useContext(WorkflowContext);
   const classes = useStyles();
-  const { isDragging, task, initialOffset, currentOffset } = useDragLayer(
-    (monitor) => ({
-      task: monitor.getItem(),
-      initialOffset: monitor.getInitialSourceClientOffset(),
-      currentOffset: monitor.getSourceClientOffset(),
-      isDragging: monitor.isDragging()
-    })
-  );
+  const { isDragging, task, initialOffset, currentOffset } = useDragLayer((monitor) => ({
+    task: monitor.getItem(),
+    initialOffset: monitor.getInitialSourceClientOffset(),
+    currentOffset: monitor.getSourceClientOffset(),
+    isDragging: monitor.isDragging()
+  }));
 
   if (!isDragging) {
     return null;
@@ -48,11 +46,7 @@ const DragPreview = () => {
         {listView ? (
           <WorkflowListItem task={task} classList={classList} />
         ) : (
-          <WorkflowBoardCard
-            title={task.title}
-            date={date}
-            selectedClass={selectedClass}
-          />
+          <WorkflowBoardCard title={task.title} date={date} selectedClass={selectedClass} />
         )}
       </div>
     </div>

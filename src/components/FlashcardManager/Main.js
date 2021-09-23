@@ -88,7 +88,11 @@ const FlashcardManager = ({
 
     orgFlashcards.forEach((card) => {
       const deck = previousDecks ? previousDecks[String(card.id)] : 'main';
-      if (deck) { current[deck] = [...current[deck], card]; } else { current.main = [...current.main, card]; }
+      if (deck) {
+        current[deck] = [...current[deck], card];
+      } else {
+        current.main = [...current.main, card];
+      }
     });
 
     setDecks(current);
@@ -96,7 +100,9 @@ const FlashcardManager = ({
 
   const keyboardControl = useCallback(
     ({ keyCode }) => {
-      if (keyCode === 32) { setFlipped(!flipped); }
+      if (keyCode === 32) {
+        setFlipped(!flipped);
+      }
     },
     [flipped]
   );
@@ -120,9 +126,9 @@ const FlashcardManager = ({
   };
 
   const getRectangleCenter = (rectangle) => ({
-      x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
-      y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2)
-    });
+    x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
+    y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2)
+  });
 
   useEffect(() => {
     const saveDeck = () => {
@@ -174,9 +180,7 @@ const FlashcardManager = ({
     }
 
     setIsAnimating(true);
-    setDestinationCenter(
-      getRectangleCenter(ref.current.getBoundingClientRect())
-    );
+    setDestinationCenter(getRectangleCenter(ref.current.getBoundingClientRect()));
   };
 
   const DIFFICULTY = {
@@ -205,9 +209,7 @@ const FlashcardManager = ({
       } else if (currentDeckId !== answer) {
         setDecks({
           ...decks,
-          [answer]: decks[answer].concat(
-            decks[currentDeckId].splice(currentIndex, 1)
-          )
+          [answer]: decks[answer].concat(decks[currentDeckId].splice(currentIndex, 1))
         });
       } else if (decks[currentDeckId][currentIndex + 1]) {
         setCurrentIndex(currentIndex + 1);
@@ -224,12 +226,7 @@ const FlashcardManager = ({
       ref={ref}
       tabIndex="0"
     >
-      <div
-        className={cx(
-          classes.score,
-          deckId === currentDeckId ? classes.selected : ''
-        )}
-      >
+      <div className={cx(classes.score, deckId === currentDeckId ? classes.selected : '')}>
         {value}
       </div>
       <div className={classes.scoreLabel}>{title}</div>
@@ -244,17 +241,9 @@ const FlashcardManager = ({
   return (
     <>
       <div className={classes.root}>
-        <SharePost
-          feedId={feedId}
-          open={openShare}
-          onClose={handleCloseShare}
-        />
+        <SharePost feedId={feedId} open={openShare} onClose={handleCloseShare} />
         <div style={{ display: 'flex' }}>
-          <Tooltip
-            id={2287}
-            placement="bottom"
-            text="New Study Mode experience is now available!"
-          >
+          <Tooltip id={2287} placement="bottom" text="New Study Mode experience is now available!">
             <Button
               color="primary"
               className={classes.studyButton}
@@ -280,20 +269,11 @@ const FlashcardManager = ({
           </Typography>
         </Button>
       </div>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                aria-label="Close"
-                color="primary"
-                onClick={handleClose}
-              >
+              <IconButton aria-label="Close" color="primary" onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
               <Typography color="textPrimary" variant="h6">
@@ -327,11 +307,7 @@ const FlashcardManager = ({
               placement="right"
               text="Here's the total number of flashcards that need to be reviewed in this stack."
             >
-              <ScoreBox
-                deckId="main"
-                title="Cards To Review"
-                value={decks.main.length}
-              />
+              <ScoreBox deckId="main" title="Cards To Review" value={decks.main.length} />
             </Tooltip>
             <ScoreBox
               deckId="difficult"
@@ -354,12 +330,7 @@ const FlashcardManager = ({
                 value={decks.medium.length}
               />
             </Tooltip>
-            <ScoreBox
-              deckId="easy"
-              title="Correct!"
-              ref={refScoreEasy}
-              value={decks.easy.length}
-            />
+            <ScoreBox deckId="easy" title="Correct!" ref={refScoreEasy} value={decks.easy.length} />
           </div>
           {currentDeck.length > 0 && currentIndex !== currentDeck.length ? (
             <FlashcardItem
@@ -399,11 +370,7 @@ const FlashcardManager = ({
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                aria-label="Close"
-                color="primary"
-                onClick={() => setIsQuizOpen(false)}
-              >
+              <IconButton aria-label="Close" color="primary" onClick={() => setIsQuizOpen(false)}>
                 <CloseIcon />
               </IconButton>
               <Typography color="textPrimary" variant="h6">
@@ -440,8 +407,7 @@ const FlashcardManager = ({
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you'll reset your progress. Are you sure you
-        want to restart?
+        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </Dialog>
     </>
   );
@@ -455,7 +421,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(withRouter(FlashcardManager)));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(withRouter(FlashcardManager)));

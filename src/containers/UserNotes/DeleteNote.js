@@ -8,11 +8,7 @@ const useStyles = makeStyles(() => ({
   dialog: {}
 }));
 
-const DeleteNote = ({
-  handleDeleteNote,
-  confirmDelete,
-  closeConfirmDelete
-}) => {
+const DeleteNote = ({ handleDeleteNote, confirmDelete, closeConfirmDelete }) => {
   const classes = useStyles();
 
   return (
@@ -27,8 +23,7 @@ const DeleteNote = ({
       showCancel
     >
       <Typography className={classes.archiveTitle}>
-        You're about to delete these notes. Once you do this, you cannot get
-        them back.
+        You're about to delete these notes. Once you do this, you cannot get them back.
       </Typography>
     </Dialog>
   );

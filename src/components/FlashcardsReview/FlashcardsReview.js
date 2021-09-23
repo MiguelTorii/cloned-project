@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useRef
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -99,11 +93,10 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
-    useIdleTimer({
-      timeout,
-      onActive: handleOnActive
-    });
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive
+  });
 
   useEffect(() => {
     remaining.current = getRemainingTime();
@@ -136,9 +129,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         setCurrentCardList(cards);
       }
     } else {
-      setCurrentCardList(
-        cards.filter((card) => cardsLevel[card.id] === currentLevel)
-      );
+      setCurrentCardList(cards.filter((card) => cardsLevel[card.id] === currentLevel));
     }
   }, [cards, currentLevel, cardsLevel, isShuffleOn, shuffledCards]);
 
@@ -227,7 +218,9 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
 
   const handleSetCurrentCardLevel = useCallback(
     (level) => {
-      if (level === currentLevel) { return; }
+      if (level === currentLevel) {
+        return;
+      }
 
       const card = currentCardList[currentCardIndex];
       const levelData = ANSWER_LEVELS.find((item) => item.level === level);
@@ -307,26 +300,12 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     setIsShareModalOpen(true);
   }, []);
 
-  const handleCloseShareModal = useCallback(
-    () => setIsShareModalOpen(false),
-    []
-  );
+  const handleCloseShareModal = useCallback(() => setIsShareModalOpen(false), []);
 
   const renderSidebar = () => (
-    <Box
-      className={clsx(
-        classes.sidebar,
-        !isExpanded && classes.unExpandedSidebar
-      )}
-    >
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
-        <Link
-          component="button"
-          onClick={onClose}
-          color="inherit"
-          variant="h5"
-          underline="none"
-        >
+        <Link component="button" onClick={onClose} color="inherit" variant="h5" underline="none">
           <IconBack className={classes.iconMiddle} /> Back
         </Link>
       </Box>
@@ -422,10 +401,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         }
 
         const correctCount = cardCountsByLevel[ANSWER_LEVELS[0].level];
-        const percentage = (
-          (correctCount * 100.0) /
-          currentCardList.length
-        ).toFixed(0);
+        const percentage = ((correctCount * 100.0) / currentCardList.length).toFixed(0);
         return (
           <Box mt={8}>
             <Typography variant="h4" align="center">
@@ -435,25 +411,16 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
               <img src={GifCongrats} alt="Congratulations!" />
             </Box>
             <Box mt={3}>
-              <Typography
-                className={classes.secondaryText}
-                variant="h6"
-                align="center"
-                paragraph
-              >
-                You got <b className={classes.successText}>{correctCount}</b>{' '}
-                out of <b>{currentCardList.length}</b> correct and score a{' '}
-                <b>{percentage}</b>%.
+              <Typography className={classes.secondaryText} variant="h6" align="center" paragraph>
+                You got <b className={classes.successText}>{correctCount}</b> out of{' '}
+                <b>{currentCardList.length}</b> correct and score a <b>{percentage}</b>%.
               </Typography>
               <Typography className={classes.secondaryText} align="center">
                 {renderHelperText(percentage)}
               </Typography>
             </Box>
             <Box mt={2} display="flex" justifyContent="center">
-              <TransparentButton
-                startIcon={<IconShare />}
-                onClick={handleOpenShareModal}
-              >
+              <TransparentButton startIcon={<IconShare />} onClick={handleOpenShareModal}>
                 Share this Flashcard Deck with Classmates
               </TransparentButton>
             </Box>
@@ -465,12 +432,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
           <Box mt={8} display="flex" justifyContent="center">
             <img src={ImgNoCards} alt="No cards" />
           </Box>
-          <Typography
-            variant="h6"
-            gutterBottom
-            align="center"
-            className={classes.secondaryText}
-          >
+          <Typography variant="h6" gutterBottom align="center" className={classes.secondaryText}>
             You don't have any cards in this stack yet.
           </Typography>
           <Typography align="center" className={classes.secondaryText}>
@@ -510,15 +472,9 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
           </Grid>
           <Grid item>
             <Box display="flex">
-              <LinearProgressBar
-                value={currentCardIndex + 1}
-                totalValue={currentCardList.length}
-              />
+              <LinearProgressBar value={currentCardIndex + 1} totalValue={currentCardList.length} />
               <Box ml={3}>
-                <TransparentIconButton
-                  disabled={currentCardIndex === 0}
-                  onClick={handlePrevCard}
-                >
+                <TransparentIconButton disabled={currentCardIndex === 0} onClick={handlePrevCard}>
                   <IconLeft />
                 </TransparentIconButton>
               </Box>
@@ -548,11 +504,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         >
           Start Over
         </Button>
-        <Button
-          startIcon={<IconClose />}
-          className={classes.actionButton}
-          onClick={onClose}
-        >
+        <Button startIcon={<IconClose />} className={classes.actionButton} onClick={onClose}>
           Exit Mode
         </Button>
       </Box>
@@ -565,9 +517,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
       <Slide in={isExpanded} direction="right">
         {renderSidebar()}
       </Slide>
-      <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
-        {renderContent()}
-      </Box>
+      <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>{renderContent()}</Box>
       <Dialog
         okTitle="Yes"
         onCancel={handleCloseConfirmModal}
@@ -577,8 +527,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you'll reset your progress. Are you sure you
-        want to restart?
+        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
       </Dialog>
       <ShareLinkModal
         open={isShareModalOpen}
@@ -588,8 +537,8 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
             <span role="img" aria-label="Two hands">
               🙌
             </span>
-            &nbsp; You’re awesome for helping your peers! Ready to share a link
-            to your <b>{flashcardTitle}</b> deck?
+            &nbsp; You’re awesome for helping your peers! Ready to share a link to your{' '}
+            <b>{flashcardTitle}</b> deck?
           </Typography>
         }
         onClose={handleCloseShareModal}

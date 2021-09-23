@@ -132,15 +132,12 @@ const SecondTitle = () => (
 );
 
 const FirstBody = () => (
-  <div style={bodyStyle}>
-    Now, you can work on CircleIn and take notes all at the same time.
-  </div>
+  <div style={bodyStyle}>Now, you can work on CircleIn and take notes all at the same time.</div>
 );
 
 const SecondBody = () => (
   <div style={bodyStyle}>
-    The notes you write on CircleIn are visible to you only, so you can work in
-    peace.
+    The notes you write on CircleIn are visible to you only, so you can work in peace.
   </div>
 );
 
@@ -169,39 +166,29 @@ const OnboardingStep = ({
   Title,
   Body
 }) => (
-    <div className={classes.step}>
-      <div className={classes.actionPanel}>
-        <Title />
-        <Body />
-        <div>
-          <Button
-            color="primary"
-            disabled={buttonDisabled}
-            className={classes.button}
-            onClick={handleButtonClick}
-            variant="contained"
-          >
-            {buttonText}
-          </Button>
-        </div>
-        <div className={classes.stepsContainer}>
-          <div
-            className={
-              activeStep === 0 ? classes.stepEnabled : classes.stepDisabled
-            }
-          />
-          <div
-            className={
-              activeStep === 1 ? classes.stepEnabled : classes.stepDisabled
-            }
-          />
-        </div>
+  <div className={classes.step}>
+    <div className={classes.actionPanel}>
+      <Title />
+      <Body />
+      <div>
+        <Button
+          color="primary"
+          disabled={buttonDisabled}
+          className={classes.button}
+          onClick={handleButtonClick}
+          variant="contained"
+        >
+          {buttonText}
+        </Button>
       </div>
-      <div className={classes.demoPanel}>
-        {DemoComponent && <DemoComponent />}
+      <div className={classes.stepsContainer}>
+        <div className={activeStep === 0 ? classes.stepEnabled : classes.stepDisabled} />
+        <div className={activeStep === 1 ? classes.stepEnabled : classes.stepDisabled} />
       </div>
     </div>
-  );
+    <div className={classes.demoPanel}>{DemoComponent && <DemoComponent />}</div>
+  </div>
+);
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -217,7 +204,11 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   }, [open, userId]);
 
   const handleButtonClick = async () => {
-    if (activeStep === 0) { setActiveStep(activeStep + 1); } else { updateOnboarding(); }
+    if (activeStep === 0) {
+      setActiveStep(activeStep + 1);
+    } else {
+      updateOnboarding();
+    }
   };
 
   const currentStep = STEPS[activeStep];

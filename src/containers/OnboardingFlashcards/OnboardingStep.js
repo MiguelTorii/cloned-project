@@ -209,9 +209,7 @@ const OnboardingStep = ({
 
   return (
     <div className={classes.root} style={{ background: step === 1 && 'black' }}>
-      {step !== 1 && (
-        <CloseIcon className={classes.closeIcon} onClick={onClose} />
-      )}
+      {step !== 1 && <CloseIcon className={classes.closeIcon} onClick={onClose} />}
       {step === 1 ? (
         <div className={classes.mediaContainer}>
           <CardMedia
@@ -223,11 +221,7 @@ const OnboardingStep = ({
             style={{ display: isPlaying ? 'block' : 'none' }}
           />
           {!isPlaying && (
-            <img
-              src={data.imageUrl}
-              alt="Step One"
-              className={classes.firstStepImage}
-            />
+            <img src={data.imageUrl} alt="Step One" className={classes.firstStepImage} />
           )}
           {!isPlaying && (
             <img
@@ -260,12 +254,8 @@ const OnboardingStep = ({
           </div>
         </div>
         <div className={classes.actionContainer}>
-          <TransparentButton onClick={() => handleBack()}>
-            {data.backText}
-          </TransparentButton>
-          <ActionButton onClick={() => onAction()}>
-            {data.actionText}
-          </ActionButton>
+          <TransparentButton onClick={() => handleBack()}>{data.backText}</TransparentButton>
+          <ActionButton onClick={() => onAction()}>{data.actionText}</ActionButton>
         </div>
       </div>
     </div>

@@ -20,21 +20,18 @@ const HelpModal = ({ open, onClose }) => {
   const classes = useStyles();
 
   return (
-    <Dialog
-      fullWidth
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-    >
+    <Dialog fullWidth open={open} onClose={onClose} maxWidth="sm">
       <DialogTitle>
         <Typography className={classes.helpTitle} align="center" paragraph>
           What are Weekly Study Goals?
         </Typography>
         <Typography>
-          These Weekly Study Goals are here to help you establish
-          healthy studying habits and achieve academic success!
-          <span role="img" aria-labelledby="rocket">🚀</span>
-          <br/>
+          These Weekly Study Goals are here to help you establish healthy studying habits and
+          achieve academic success!
+          <span role="img" aria-labelledby="rocket">
+            🚀
+          </span>
+          <br />
           Read below to learn how to achieve each goal!
         </Typography>
         <IconButton onClick={onClose} className={classes.closeButton}>
@@ -49,9 +46,7 @@ const HelpModal = ({ open, onClose }) => {
                 <Typography className={classes.goalTitle} gutterBottom>
                   {item.title}
                 </Typography>
-                <Typography className={classes.goalDescription}>
-                  {item.description}
-                </Typography>
+                <Typography className={classes.goalDescription}>{item.description}</Typography>
               </Grid>
             ))}
           </Grid>

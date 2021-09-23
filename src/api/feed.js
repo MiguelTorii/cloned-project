@@ -82,11 +82,7 @@ export const fetchRecommendations = async (limit) => {
   }
 };
 
-export const saveQuizAnswers = async ({
-  results
-}: {
-  results: array
-}): Promise<Object> => {
+export const saveQuizAnswers = async ({ results }: { results: array }): Promise<Object> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -112,11 +108,7 @@ export const saveQuizAnswers = async ({
   }
 };
 
-export const feedResources = async ({
-  userId
-}: {
-  userId: string
-}): Promise<Object> => {
+export const feedResources = async ({ userId }: { userId: string }): Promise<Object> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SYNC}/${userId}`, {
@@ -148,11 +140,7 @@ export const feedResources = async ({
   }
 };
 
-export const queryFeed = async ({
-  query
-}: {
-  query: string
-}): Promise<Array<Object>> => {
+export const queryFeed = async ({ query }: { query: string }): Promise<Array<Object>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
@@ -216,7 +204,9 @@ export const postEvent = async ({
   category: string,
   type: string
 }): Promise<Array<Object>> => {
-  if (reduxStore.getState().user.isMasquerading) { return; }
+  if (reduxStore.getState().user.isMasquerading) {
+    return;
+  }
 
   try {
     const token = await getToken();
@@ -243,22 +233,15 @@ export const postEvent = async ({
   }
 };
 
-export const generateQuiz = async ({
-  deckId
-}: {
-  deckId: number
-}): Promise<Object> => {
+export const generateQuiz = async ({ deckId }: { deckId: number }): Promise<Object> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     return result.data;
   } catch (err) {
@@ -266,12 +249,14 @@ export const generateQuiz = async ({
   }
 };
 
-export const apiFetchFeeds = async (params) => callApi({
+export const apiFetchFeeds = async (params) =>
+  callApi({
     url: API_ROUTES.FEED_V1_1,
     params
   });
 
-export const apiDeleteFeed = async (userId, feedId) => callApi({
+export const apiDeleteFeed = async (userId, feedId) =>
+  callApi({
     url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
     method: 'DELETE'
   });

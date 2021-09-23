@@ -53,8 +53,8 @@ class ReferralCode extends React.PureComponent<Props, State> {
         className={cx(classes.form, hide && classes.hide)}
       >
         <Typography align="center" variant="subtitle1">
-          If a classmate referred you to CircleIn, enter their referral code and
-          they will receive 10,000 bonus points. Brilliant!
+          If a classmate referred you to CircleIn, enter their referral code and they will receive
+          10,000 bonus points. Brilliant!
         </Typography>
         <TextValidator
           variant="outlined"
@@ -93,9 +93,7 @@ class ReferralCode extends React.PureComponent<Props, State> {
               Skip this step →
             </Button>
           </div>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
       </ValidatorForm>
     );

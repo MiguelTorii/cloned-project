@@ -66,23 +66,13 @@ const WorkflowBoardCard = ({
       <Grid container className={classes.container} direction="row">
         <Grid item xs={12}>
           {newInput || (
-            <Typography
-              variant="body1"
-              className={cx(classes.title, lineStyle)}
-            >
+            <Typography variant="body1" className={cx(classes.title, lineStyle)}>
               {clampTitle}
             </Typography>
           )}
-          {hasNotification && (
-            <NotificationsActiveIcon className={classes.bell} />
-          )}
+          {hasNotification && <NotificationsActiveIcon className={classes.bell} />}
         </Grid>
-        <Grid
-          container
-          alignContent="flex-end"
-          alignItems="center"
-          className={classes.bottom}
-        >
+        <Grid container alignContent="flex-end" alignItems="center" className={classes.bottom}>
           {selectedClass && (
             <Grid item xs={5}>
               <Chip
@@ -103,10 +93,7 @@ const WorkflowBoardCard = ({
               <Button className={classes.detailsButton} onClick={onOpen}>
                 Details
               </Button>
-              <IconButton
-                onClick={openConfirmArchive}
-                className={classes.iconButton}
-              >
+              <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
                 <DeleteIcon className={classes.icon} />
               </IconButton>
             </Grid>

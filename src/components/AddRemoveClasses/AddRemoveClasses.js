@@ -227,7 +227,9 @@ const AddRemoveClasses = (props: Props) => {
   useEffect(() => {
     if (open) {
       fetchSubjects();
-      if (userId) { fetchUserClasses(); }
+      if (userId) {
+        fetchUserClasses();
+      }
     }
     // eslint-disable-next-line
   }, [userId, open]);
@@ -252,11 +254,11 @@ const AddRemoveClasses = (props: Props) => {
     <div className={classes.optionItem}>
       <Typography className={classes.optionName}>
         {option.name.split('\n').map((item) => (
-            <span key={Math.random()}>
-              {item}
-              <br />
-            </span>
-          ))}
+          <span key={Math.random()}>
+            {item}
+            <br />
+          </span>
+        ))}
       </Typography>
       <Button
         className={classes.optionButton}
@@ -342,12 +344,7 @@ const AddRemoveClasses = (props: Props) => {
                 {Object.keys(subject.classes).map((c) => {
                   const classC = subject.classes[c];
                   return (
-                    <TreeItem
-                      key={c}
-                      onClick={classC.expand}
-                      nodeId={c}
-                      label={classC.name}
-                    >
+                    <TreeItem key={c} onClick={classC.expand} nodeId={c} label={classC.name}>
                       <TreeItem nodeId="sections" />
                       {Object.keys(classC.sections).map((sc) => {
                         const section = classC.sections[sc];
@@ -356,10 +353,7 @@ const AddRemoveClasses = (props: Props) => {
                           <div key={sc}>
                             <Checkbox
                               checked={Boolean(sections[sc])}
-                              disabled={
-                                (sections[sc] && !sections[sc].canLeave) ||
-                                !canAddClasses
-                              }
+                              disabled={(sections[sc] && !sections[sc].canLeave) || !canAddClasses}
                               onChange={() =>
                                 handleChange(
                                   section.classId,
@@ -399,7 +393,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(AddRemoveClasses));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddRemoveClasses));

@@ -88,10 +88,7 @@ const DirectChat = ({
   const [prevWidth, setPrevWidth] = useState(null);
   const [channelList, setChannelList] = useState([]);
 
-  const lastChannelSid = useMemo(
-    () => localStorage.getItem('currentDMChannel'),
-    []
-  );
+  const lastChannelSid = useMemo(() => localStorage.getItem('currentDMChannel'), []);
 
   const currentChannelId = useMemo(
     () => selectedChannelId || lastChannelSid || channelList[0],
@@ -105,30 +102,27 @@ const DirectChat = ({
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
       setRightSpace(0);
-    } else if (!rightSpace) { setRightSpace(3); } else { setRightSpace(0); }
+    } else if (!rightSpace) {
+      setRightSpace(3);
+    } else {
+      setRightSpace(0);
+    }
   }, [rightSpace, width]);
 
-  const clearCurrentChannel = useCallback(
-    () => setCurrentChannel(null),
-    [setCurrentChannel]
-  );
+  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [setCurrentChannel]);
 
   const onOpenChannel = useCallback(
     ({ channel }) => {
-      if (['xs'].includes(width)) { setLeftSpace(0); }
+      if (['xs'].includes(width)) {
+        setLeftSpace(0);
+      }
       if (newChannel) {
         handleNewChannel(false);
       }
       setCurrentChannelSid(channel.sid);
       setCurrentChannel(channel);
     },
-    [
-      handleNewChannel,
-      setCurrentChannel,
-      setCurrentChannelSid,
-      width,
-      newChannel
-    ]
+    [handleNewChannel, setCurrentChannel, setCurrentChannelSid, width, newChannel]
   );
 
   const handleRemove = useCallback(
@@ -169,15 +163,14 @@ const DirectChat = ({
   useEffect(() => {
     const channelList = Object.keys(local)
       .filter(
-        (l) =>
-          local[l]?.sid &&
-          !local[l]?.twilioChannel?.channelState?.attributes?.community_id
+        (l) => local[l]?.sid && !local[l]?.twilioChannel?.channelState?.attributes?.community_id
       )
       .sort((a, b) => {
-        if (local[a].lastMessage.message === '') { return 0; }
+        if (local[a].lastMessage.message === '') {
+          return 0;
+        }
         return (
-          moment(local[b].lastMessage.date).valueOf() -
-          moment(local[a].lastMessage.date).valueOf()
+          moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
         );
       });
     setChannelList(channelList);
@@ -187,13 +180,19 @@ const DirectChat = ({
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
-        if (currentChannel) { setLeftSpace(0); } else { setLeftSpace(curSize); }
+        if (currentChannel) {
+          setLeftSpace(0);
+        } else {
+          setLeftSpace(curSize);
+        }
       } else {
         setLeftSpace(curSize);
       }
     }
 
-    if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) { setRightSpace(3); }
+    if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
+      setRightSpace(3);
+    }
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentChannel, isLoading]);
@@ -229,9 +228,7 @@ const DirectChat = ({
 
   return (
     <Grid
-      className={cx(
-        leftSpace !== 0 ? classes.container : classes.directContainer
-      )}
+      className={cx(leftSpace !== 0 ? classes.container : classes.directContainer)}
       direction="row"
       container
     >
@@ -245,11 +242,7 @@ const DirectChat = ({
         {renderIcon(leftSpace !== 0)}
       </IconButton>
       {leftSpace !== 0 && (
-        <Grid
-          item
-          xs={leftSpace || 1}
-          className={leftSpace !== 0 ? classes.left : classes.hidden}
-        >
+        <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
           <LeftMenu
             channels={channels}
             channelList={channelList}
@@ -298,16 +291,14 @@ const DirectChat = ({
             handleUpdateGroupName={updateGroupName}
             setRightPanel={handleOpenRightPanel}
             onSend={() => {
-              if (onboardingListVisible) { setTimeout(() => getOnboardingList(), 1000); }
+              if (onboardingListVisible) {
+                setTimeout(() => getOnboardingList(), 1000);
+              }
             }}
           />
         </Grid>
       )}
-      <Grid
-        item
-        xs={rightSpace || 1}
-        className={rightSpace !== 0 ? classes.right : classes.hidden}
-      >
+      <Grid item xs={rightSpace || 1} className={rightSpace !== 0 ? classes.right : classes.hidden}>
         <RightMenu
           handleRemoveChannel={handleRemove}
           userId={userId}
@@ -346,7 +337,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withWidth()(DirectChat));
+export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(DirectChat));

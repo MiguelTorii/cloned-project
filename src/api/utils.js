@@ -4,14 +4,7 @@ import store from 'store';
 import decode from 'jwt-decode';
 import moment from 'moment';
 import { API_ROUTES } from '../constants/routes';
-import type {
-  Post,
-  Comments,
-  User,
-  UpdateProfile,
-  Feed,
-  PostResponse
-} from '../types/models';
+import type { Post, Comments, User, UpdateProfile, Feed, PostResponse } from '../types/models';
 
 export const getToken = async (): Promise<string> => {
   try {
@@ -76,10 +69,7 @@ export const postToCamelCase = (post: Object): Post => ({
     postId: Number((post.post_info.post_id: number) || 0),
     questionsCount: Number((post.post_info.questions_count: number) || 0),
     thanksCount: Number((post.post_info.thanks_count: number) || 0),
-    userId:
-      post.post_info.user_id === 0
-        ? '0'
-        : String((post.post_info.user_id: string) || ''),
+    userId: post.post_info.user_id === 0 ? '0' : String((post.post_info.user_id: string) || ''),
     viewCount: Number((post.post_info.view_count: number) || 0)
   },
   rank: Number((post.rank: number) || 0),
@@ -100,9 +90,7 @@ export const postToCamelCase = (post: Object): Post => ({
 
 export const postResponseToCamelCase = (response: Object): PostResponse => ({
   classes: response.classes || [],
-  communityServiceHours: Number(
-    (response.community_service_hours: number) || 0
-  ),
+  communityServiceHours: Number((response.community_service_hours: number) || 0),
   linkId: Number((response.link_id: number) || 0),
   linksLeft: Number((response.links_left: number) || 0),
   points: Number((response.points: number) || 0),
@@ -120,13 +108,9 @@ export const postResponseToCamelCase = (response: Object): PostResponse => ({
     hours: Number(((response.user || {}).hours: number) || 0),
     joined: String(((response.user || {}).joined: string) || ''),
     lastName: String(((response.user || {}).last_name: string) || ''),
-    profileImageUrl: String(
-      ((response.user || {}).profile_image_url: string) || ''
-    ),
+    profileImageUrl: String(((response.user || {}).profile_image_url: string) || ''),
     rank: Number(((response.user || {}).number: number) || 0),
-    scholarshipPoints: Number(
-      ((response.user || {}).scholarship_points: number) || 0
-    ),
+    scholarshipPoints: Number(((response.user || {}).scholarship_points: number) || 0),
     schoolId: Number(((response.user || {}).school_id: number) || 0),
     state: String(((response.user || {}).state: string) || ''),
     userId: String(((response.user || {}).user_id: string) || '')
