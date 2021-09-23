@@ -13,14 +13,14 @@ const CreateWorkflow = () => {
   const classes = useStyles();
 
   const addTask = useCallback(() => {
-    if (!taskRef.current.value) return;
+    if (!taskRef.current.value) { return; }
     handleAddTask({ title: taskRef.current.value });
     taskRef.current.value = '';
   }, [handleAddTask]);
 
   const onKeyPress = useCallback(
     (e) => {
-      if (e.key === 'Enter') addTask();
+      if (e.key === 'Enter') { addTask(); }
     },
     [addTask]
   );

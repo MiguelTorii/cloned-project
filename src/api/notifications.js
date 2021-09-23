@@ -15,8 +15,8 @@ export const getNotifications = async ({
   try {
     const token = await getToken();
     let type = '';
-    if (tab === 1) type = 'recommended=true';
-    if (tab === 2) type = 'announcement=true';
+    if (tab === 1) { type = 'recommended=true'; }
+    if (tab === 2) { type = 'announcement=true'; }
     const result = await axios.get(
       `${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`,
       {
@@ -51,8 +51,7 @@ export const getNotifications = async ({
 
     return { notifications, unreadCount };
   } catch (err) {
-    if (err.response && err.response.status === 401)
-      window.location.href = '/auth';
+    if (err.response && err.response.status === 401) { window.location.href = '/auth'; }
     return { notifications: [], unreadCount: 0 };
   }
 };

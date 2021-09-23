@@ -101,10 +101,11 @@ const HeaderNavigation = ({
       currentClassList = classList.filter((cl) => cl.isCurrent);
     }
     currentClassList.forEach((cl) => {
-      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-        cl.section.forEach((s) => {
+      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+cl.section.forEach((s) => {
           newClassList[s.sectionId] = cl;
         });
+}
     });
 
     return Object.keys(newClassList).map((sectionId) => ({
@@ -165,10 +166,11 @@ const HeaderNavigation = ({
       );
       const newClass = {};
       currentClass.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-          cl.section.forEach((s) => {
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+cl.section.forEach((s) => {
             newClass[s.sectionId] = cl;
           });
+}
       });
 
       const currentSelectedClass = Object.keys(newClass).map((sectionId) => ({
@@ -176,7 +178,7 @@ const HeaderNavigation = ({
         sectionId: Number(sectionId)
       }));
       handleFilters(currentSelectedClass);
-    } else handleFilters(options);
+    } else { handleFilters(options); }
   }, [classList, handleFilters, options, search, setSelectedClasses, state]);
 
   const onSelect = useCallback(

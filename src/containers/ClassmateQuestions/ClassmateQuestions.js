@@ -17,7 +17,7 @@ const ClassmateQuestions = () => {
     setSelectedClass(newClass);
   }, []);
 
-  if (_.isEmpty(activeClasses)) return null;
+  if (_.isEmpty(activeClasses)) { return null; }
 
   return (
     <>

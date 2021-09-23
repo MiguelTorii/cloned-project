@@ -49,7 +49,7 @@ const HoverPopup = ({
   const [profile, setProfile] = useState({});
 
   const fetchUserInfo = async () => {
-    if (isLoading) return;
+    if (isLoading) { return; }
     setIsLoading(true);
 
     try {
@@ -74,7 +74,7 @@ const HoverPopup = ({
   };
 
   const keepPopoverOpen = () => {
-    if (userId !== myUserId) setOpen(true);
+    if (userId !== myUserId) { setOpen(true); }
   };
 
   const mouseEnter = (event) => {
@@ -102,8 +102,7 @@ const HoverPopup = ({
   };
 
   const onTimeout = useCallback(() => {
-    if (userId !== myUserId && (profile.firstName || profile.lastName))
-      setOpen(true);
+    if (userId !== myUserId && (profile.firstName || profile.lastName)) { setOpen(true); }
   }, [userId, myUserId, profile]);
 
   useEffect(() => {

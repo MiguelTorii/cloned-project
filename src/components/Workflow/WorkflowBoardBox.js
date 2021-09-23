@@ -37,7 +37,7 @@ const WorkflowBoardBox = ({
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (e.key === 'Enter') handleNew();
+      if (e.key === 'Enter') { handleNew(); }
     },
     [handleNew]
   );

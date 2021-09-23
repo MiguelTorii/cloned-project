@@ -21,16 +21,17 @@ class SelectedRewards extends React.PureComponent<Props> {
     const { classes, slots, loading } = this.props;
     const newItems = items.map((item, index) => {
       const slot = slots.find((o) => o.slot === index);
-      if (slot) return { ...item, ...slot };
+      if (slot) { return { ...item, ...slot }; }
       return item;
     });
 
-    if (loading)
-      return (
+    if (loading) {
+return (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       );
+}
 
     return (
       <div className={classes.root}>

@@ -72,7 +72,7 @@ const Classmate = ({
   }, [setLoadingVideo, classmate, handleInvite]);
 
   const classList = useMemo(() => {
-    if (courseDisplayName) return null;
+    if (courseDisplayName) { return null; }
 
     return `${classmate.classes[0].className} ${
       classmate.classes.length > 1 ? `, ${classmate.classes[1].className}` : ''
@@ -84,7 +84,7 @@ const Classmate = ({
   }, [classmate.classes, courseDisplayName]);
 
   const videoButtonText = useMemo(() => {
-    if (loadingVideo) return <CircularProgress size={20} />;
+    if (loadingVideo) { return <CircularProgress size={20} />; }
     return isInvited ? 'Invited' : 'Invite now';
   }, [isInvited, loadingVideo]);
 

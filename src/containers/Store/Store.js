@@ -44,8 +44,7 @@ class Store extends React.PureComponent<Props, State> {
       if (
         this.handleFetchRewards.cancel &&
         typeof this.handleFetchRewards.cancel === 'function'
-      )
-        this.handleFetchRewards.cancel();
+      ) { this.handleFetchRewards.cancel(); }
     });
     window.addEventListener('online', () => {
       this.handleFetchRewards();
@@ -61,8 +60,7 @@ class Store extends React.PureComponent<Props, State> {
     if (
       this.handleFetchRewards.cancel &&
       typeof this.handleFetchRewards.cancel === 'function'
-    )
-      this.handleFetchRewards.cancel();
+    ) { this.handleFetchRewards.cancel(); }
   };
 
   handleFetchRewards = async () => {
@@ -72,12 +70,12 @@ class Store extends React.PureComponent<Props, State> {
       }
     } = this.props;
     if (userId !== '') {
-      if (this.mounted) this.setState({ loading: true });
+      if (this.mounted) { this.setState({ loading: true }); }
       try {
         const { availableRewards, slots } = await getRewards({ userId });
-        if (this.mounted) this.setState({ availableRewards, slots });
+        if (this.mounted) { this.setState({ availableRewards, slots }); }
       } finally {
-        if (this.mounted) this.setState({ loading: false });
+        if (this.mounted) { this.setState({ loading: false }); }
       }
     } else {
       this.handleFetchRewards();

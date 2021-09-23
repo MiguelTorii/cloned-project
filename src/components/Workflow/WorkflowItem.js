@@ -74,7 +74,7 @@ const WorkflowItem = ({ index, task }: Props) => {
       onDrag(null);
     },
     canDrag() {
-      if (isMobile) return showDetails;
+      if (isMobile) { return showDetails; }
       return true;
     },
     collect: (monitor) => ({
@@ -82,7 +82,7 @@ const WorkflowItem = ({ index, task }: Props) => {
     })
   });
 
-  if (listView) preview(getEmptyImage(), { captureDraggingState: true });
+  if (listView) { preview(getEmptyImage(), { captureDraggingState: true }); }
   const classes = useStyles();
   const hiddenClass = dragId === task.id ? classes.hidden : '';
 
@@ -95,7 +95,7 @@ const WorkflowItem = ({ index, task }: Props) => {
   const onClose = useCallback(() => setOpen(false), []);
 
   const onMouseEnter = useCallback(() => {
-    if (!dragId) setShowDetails(true);
+    if (!dragId) { setShowDetails(true); }
   }, [dragId]);
   const onMouseLeave = useCallback(() => setShowDetails(false), []);
   drag(drop(taskRef));

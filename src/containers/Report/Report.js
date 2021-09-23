@@ -61,7 +61,7 @@ class Report extends React.PureComponent<Props, State> {
   radioGroupRef: ?Object;
 
   handleEntering = () => {
-    if (this.radioGroupRef) this.radioGroupRef.focus();
+    if (this.radioGroupRef) { this.radioGroupRef.focus(); }
   };
 
   handleChange = (event, value) => {
@@ -111,9 +111,8 @@ class Report extends React.PureComponent<Props, State> {
       onClose
     } = this.props;
     const { reasonId, description, loading } = this.state;
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
-      return 'Oops, there was an error loading your data, please try again.';
+    if (isLoading) { return <CircularProgress size={12} />; }
+    if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
     return (
       <ErrorBoundary>

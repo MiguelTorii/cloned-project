@@ -26,7 +26,7 @@ class LinkPreview extends React.PureComponent<Props, State> {
   render() {
     const { classes, uri } = this.props;
     const url = this.parseURL(uri);
-    if (validate({ website: url }, { website: { url: true } })) return '';
+    if (validate({ website: url }, { website: { url: true } })) { return ''; }
     return (
       <div className={classes.container}>
         <MicrolinkCard url={url} size="large" target="_blank" />

@@ -97,9 +97,8 @@ class SharePost extends React.PureComponent<Props, State> {
 
     const { link, loading } = this.state;
 
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
-      return 'Oops, there was an error loading your data, please try again.';
+    if (isLoading) { return <CircularProgress size={12} />; }
+    if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
     return (
       <ErrorBoundary>

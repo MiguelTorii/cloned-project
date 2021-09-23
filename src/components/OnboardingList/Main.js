@@ -56,8 +56,7 @@ const OnboardingList = ({
     !viewedOnboarding ||
     onboardingList?.checklist?.length < 1 ||
     !onboardingList.visible
-  )
-    return null;
+  ) { return null; }
 
   const LinearProgressWithLabel = ({ value }: { value: number }) => (
     <Box className={classes.progress}>

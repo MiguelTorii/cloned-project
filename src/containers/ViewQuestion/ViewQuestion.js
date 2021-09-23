@@ -81,7 +81,7 @@ const ViewQuestion = ({
   }, [questionId]);
 
   const handleBookmark = async () => {
-    if (!question) return;
+    if (!question) { return; }
     const { feedId, bookmarked } = question;
     try {
       setQuestion({ ...question, bookmarked: !bookmarked });
@@ -104,12 +104,13 @@ const ViewQuestion = ({
     setDeletePost(false);
   };
 
-  if (!question)
-    return (
+  if (!question) {
+return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+}
 
   const {
     feedId,

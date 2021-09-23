@@ -105,8 +105,7 @@ const DirectChat = ({
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
       setRightSpace(0);
-    } else if (!rightSpace) setRightSpace(3);
-    else setRightSpace(0);
+    } else if (!rightSpace) { setRightSpace(3); } else { setRightSpace(0); }
   }, [rightSpace, width]);
 
   const clearCurrentChannel = useCallback(
@@ -116,7 +115,7 @@ const DirectChat = ({
 
   const onOpenChannel = useCallback(
     ({ channel }) => {
-      if (['xs'].includes(width)) setLeftSpace(0);
+      if (['xs'].includes(width)) { setLeftSpace(0); }
       if (newChannel) {
         handleNewChannel(false);
       }
@@ -175,7 +174,7 @@ const DirectChat = ({
           !local[l]?.twilioChannel?.channelState?.attributes?.community_id
       )
       .sort((a, b) => {
-        if (local[a].lastMessage.message === '') return 0;
+        if (local[a].lastMessage.message === '') { return 0; }
         return (
           moment(local[b].lastMessage.date).valueOf() -
           moment(local[a].lastMessage.date).valueOf()
@@ -188,15 +187,13 @@ const DirectChat = ({
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
-        if (currentChannel) setLeftSpace(0);
-        else setLeftSpace(curSize);
+        if (currentChannel) { setLeftSpace(0); } else { setLeftSpace(curSize); }
       } else {
         setLeftSpace(curSize);
       }
     }
 
-    if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width))
-      setRightSpace(3);
+    if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) { setRightSpace(3); }
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentChannel, isLoading]);
@@ -301,8 +298,7 @@ const DirectChat = ({
             handleUpdateGroupName={updateGroupName}
             setRightPanel={handleOpenRightPanel}
             onSend={() => {
-              if (onboardingListVisible)
-                setTimeout(() => getOnboardingList(), 1000);
+              if (onboardingListVisible) { setTimeout(() => getOnboardingList(), 1000); }
             }}
           />
         </Grid>

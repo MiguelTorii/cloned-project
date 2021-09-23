@@ -83,7 +83,7 @@ const LeftMenu = ({
 
   const handleClose = () => {
     setIsOpen(false);
-    if (setOneTouchSend) setOneTouchSend(false);
+    if (setOneTouchSend) { setOneTouchSend(false); }
     handleNewChannel(false);
     setCurrentChannel(local[lastChannelSid]?.twilioChannel);
   };

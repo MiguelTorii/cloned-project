@@ -33,7 +33,7 @@ const UserDialog = ({ user }) => {
   } = user;
   const classes = useStyles();
 
-  if (!title) return null;
+  if (!title) { return null; }
   return (
     <div className={classes.background}>
       <Typography className={classes.text}>{title}</Typography>

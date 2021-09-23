@@ -102,10 +102,9 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
       onClose
     } = this.props;
     const { loading, blockedUsers } = this.state;
-    if (!open) return null;
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
-      return 'Oops, there was an error loading your data, please try again.';
+    if (!open) { return null; }
+    if (isLoading) { return <CircularProgress size={12} />; }
+    if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
     return (
       <ErrorBoundary>

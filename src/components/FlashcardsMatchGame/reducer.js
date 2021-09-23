@@ -65,9 +65,9 @@ const dx = [0, -1, 0, 1];
 const dy = [-1, 0, 1, 0];
 
 const intersectRect = (rect1, rect2) => {
-  if (rect2.x >= rect1.x + rect1.w) return false;
-  if (rect1.x >= rect2.x + rect2.w) return false;
-  if (rect2.y >= rect1.y + rect1.h) return false;
+  if (rect2.x >= rect1.x + rect1.w) { return false; }
+  if (rect1.x >= rect2.x + rect2.w) { return false; }
+  if (rect2.y >= rect1.y + rect1.h) { return false; }
   return rect1.y < rect2.y + rect2.h;
 };
 
@@ -114,7 +114,7 @@ const getCardPosition = (
       direction = (direction + 1) % dx.length;
       mode = (mode + 1) % 2;
       currentStep = 0;
-      if (mode === 0) currentStepLength += 1;
+      if (mode === 0) { currentStepLength += 1; }
     }
 
     offsetX += dx[direction];
@@ -199,7 +199,7 @@ const reducer = (state, action) => {
             placedRects
           );
 
-          if (!position) break;
+          if (!position) { break; }
 
           placedRects.push({
             x: position[0],
@@ -209,7 +209,7 @@ const reducer = (state, action) => {
           });
         }
 
-        if (i !== 2) break;
+        if (i !== 2) { break; }
 
         for (i = 0; i < 2; ++i) {
           matchCards[currentIndex + i].x =

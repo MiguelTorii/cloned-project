@@ -170,7 +170,7 @@ const CreatePostSt = ({
   }, [postId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (postId && userId) loadData();
+    if (postId && userId) { loadData(); }
     // const { classId, sectionId } = decypherClass()
 
     // setClassId(Number(classId))
@@ -209,7 +209,7 @@ const CreatePostSt = ({
         content: body
       });
 
-      if (!res.success) throw new Error('Couldnt update');
+      if (!res.success) { throw new Error('Couldnt update'); }
 
       enqueueSnackbar({
         notification: {
@@ -309,7 +309,7 @@ const CreatePostSt = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') { hasError = true; }
         });
         if (hasError || resClasses.length === 0) {
           setIsPosting(false);
@@ -380,8 +380,7 @@ const CreatePostSt = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (postId) updatePostSt();
-      else createPostSt();
+      if (postId) { updatePostSt(); } else { createPostSt(); }
     },
     [createPostSt, postId, updatePostSt]
   );

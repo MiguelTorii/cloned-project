@@ -159,7 +159,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       noteId
     } = this.props;
     try {
-      if (!noteId) return;
+      if (!noteId) { return; }
       this.setState({ isEdit: true });
       const photoNote = await getNotes({
         userId,
@@ -230,7 +230,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       let hasError = false;
       if (this.canBatchPost() && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') { hasError = true; }
         });
         if (hasError || resClasses.length === 0) {
           this.setState({
@@ -352,7 +352,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         let hasError = false;
         if (this.canBatchPost() && resClasses) {
           resClasses.forEach((r) => {
-            if (r.status !== 'Success') hasError = true;
+            if (r.status !== 'Success') { hasError = true; }
           });
           if (hasError || resClasses.length === 0) {
             this.setState({
@@ -393,20 +393,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush('/feed');
         }, 3000);
       } catch (err) {
-        if (err.message === 'no images')
-          this.setState({
+        if (err.message === 'no images') {
+this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Error',
             errorBody: 'You must add at least 1 image'
           });
-        else
-          this.setState({
+} else {
+this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Unknown Error',
             errorBody: 'Please try again'
           });
+}
       }
     }
   };
@@ -460,20 +461,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush(`/notes/${noteId}`);
         }, 3000);
       } catch (err) {
-        if (err.message === 'no images')
-          this.setState({
+        if (err.message === 'no images') {
+this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Error',
             errorBody: 'You must add at least 1 image'
           });
-        else
-          this.setState({
+} else {
+this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Unknown Error',
             errorBody: 'Please try again'
           });
+}
       }
     }
   };
@@ -482,9 +484,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
     event.preventDefault();
     const { noteId } = this.props;
     const { url } = this.state;
-    if (url) this.createSharelink();
-    if (noteId) this.updateNotes();
-    else this.createNotes();
+    if (url) { this.createSharelink(); }
+    if (noteId) { this.updateNotes(); } else { this.createNotes(); }
   };
 
   handleTextChange = (name) => (event) => {
@@ -517,7 +518,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const selected = user.userClasses.classList.find(
       (c) => c.classId === classId
     );
-    if (selected) this.setState({ classList: [selected] });
+    if (selected) { this.setState({ classList: [selected] }); }
     this.setState({ classId, sectionId });
   };
 
@@ -552,8 +553,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { summary } = this.state;
 
-    if (Number(this.getLeftCharts(summary)) <= 0) return null;
-    if (this.canBatchPost()) return <div />;
+    if (Number(this.getLeftCharts(summary)) <= 0) { return null; }
+    if (this.canBatchPost()) { return <div />; }
 
     return (
       <Typography

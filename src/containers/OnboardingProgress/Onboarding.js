@@ -44,7 +44,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
 
   const handleClick = useCallback(() => {
     setIsPlaying(!isPlaying);
-    if (!player.current) return;
+    if (!player.current) { return; }
     if (!isPlaying) {
       player.current.play();
     } else {

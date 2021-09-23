@@ -49,8 +49,7 @@ const Thumbnails = ({
   }, [windowWidth]);
 
   useEffect(() => {
-    if (viewMode === 'speaker-view') setPageCount(5);
-    else setPageCount(4);
+    if (viewMode === 'speaker-view') { setPageCount(5); } else { setPageCount(4); }
   }, [viewMode]);
 
   const totalPageCount = useMemo(() => {
@@ -69,10 +68,8 @@ const Thumbnails = ({
     }
     return participants
       .filter((item) => {
-        if (dominantSpeaker && dominantSpeaker !== item.participant.sid)
-          return item;
-        if (!dominantSpeaker && item.participant.identity !== currentUserId)
-          return item;
+        if (dominantSpeaker && dominantSpeaker !== item.participant.sid) { return item; }
+        if (!dominantSpeaker && item.participant.identity !== currentUserId) { return item; }
         return null;
       })
       .filter((item) => item)
@@ -92,8 +89,8 @@ const Thumbnails = ({
 
   const setHighlight = useCallback(
     (id, audio) => {
-      if (dominantSpeaker === id) return true;
-      if (!dominantSpeaker && audio) return true;
+      if (dominantSpeaker === id) { return true; }
+      if (!dominantSpeaker && audio) { return true; }
       return false;
     },
     [dominantSpeaker]

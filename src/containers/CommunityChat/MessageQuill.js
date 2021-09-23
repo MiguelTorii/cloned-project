@@ -135,7 +135,7 @@ const MessageQuill = ({
   }
 
   useEffect(() => {
-    if (quill) quill.focus();
+    if (quill) { quill.focus(); }
   }, [focusMessageBox, quill]);
 
   useEffect(() => {

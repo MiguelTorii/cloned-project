@@ -29,10 +29,10 @@ const Notifier = () => {
         }
 
         // display only on correct screen after navigation
-        if (nextPath && pathname && pathname !== nextPath) return;
+        if (nextPath && pathname && pathname !== nextPath) { return; }
 
         // do nothing if snackbar is already displayed
-        if (displayed.includes(key)) return;
+        if (displayed.includes(key)) { return; }
 
         // display snackbar using notistack
         enqueueSnackbar(message, {

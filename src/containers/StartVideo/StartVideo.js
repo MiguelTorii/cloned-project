@@ -84,7 +84,7 @@ class StartVideo extends React.PureComponent<Props, State> {
       this.setState({ online: true });
     });
 
-    if (userId !== '') this.handleInitChat();
+    if (userId !== '') { this.handleInitChat(); }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -119,7 +119,7 @@ class StartVideo extends React.PureComponent<Props, State> {
     if (client) {
       client.shutdown();
     }
-    if (this.mounted) this.setState({ client: null, channels: [] });
+    if (this.mounted) { this.setState({ client: null, channels: [] }); }
   };
 
   handleInitChat = async () => {
@@ -170,7 +170,7 @@ class StartVideo extends React.PureComponent<Props, State> {
 
   handleStart = () => {
     const { channel, groupUsers } = this.state;
-    if (groupUsers.length <= 1) return;
+    if (groupUsers.length <= 1) { return; }
 
     logEvent({
       event: 'Video- Start Video',

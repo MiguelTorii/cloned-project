@@ -255,14 +255,14 @@ const Auth = ({
   ]);
 
   const goBack = useCallback(() => {
-    if (isDeepLink) setSchool({});
+    if (isDeepLink) { setSchool({}); }
     if (screen === 'login') {
       setLoginAsExternalUser(false);
       setScreen('school');
     }
-    if (screen === 'signup') setScreen('role');
-    if (screen === 'forgotPassword') setScreen('login');
-    if (screen === 'firstTime') setScreen('login');
+    if (screen === 'signup') { setScreen('role'); }
+    if (screen === 'forgotPassword') { setScreen('login'); }
+    if (screen === 'firstTime') { setScreen('login'); }
   }, [screen, isDeepLink]);
 
   const isPhone = useMemo(

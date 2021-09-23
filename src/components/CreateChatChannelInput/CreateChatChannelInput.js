@@ -56,8 +56,7 @@ const CreateChatChannelInput = ({
   } = chat;
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group');
-    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+    if (users.length > 1 && chatType === 'single') { setChatType('group'); } else if (users.length <= 1 && chatType === 'group') { setChatType('single'); }
   }, [users, chatType]);
 
   const handleAutoComplete = useCallback((values) => {
@@ -67,11 +66,12 @@ const CreateChatChannelInput = ({
 
   const handleLoadOptions = useCallback(
     async (query) => {
-      if (query.trim() === '' || query.trim().length < 3)
-        return {
+      if (query.trim() === '' || query.trim().length < 3) {
+return {
           options: [],
           hasMore: false
         };
+}
 
       const users = await searchUsers({
         userId,
@@ -93,8 +93,8 @@ const CreateChatChannelInput = ({
         };
       });
       const ordered = options.sort((a, b) => {
-        if (a.relationship && !b.relationship) return -1;
-        if (!a.relationship && b.relationship) return 1;
+        if (a.relationship && !b.relationship) { return -1; }
+        if (!a.relationship && b.relationship) { return 1; }
         return 0;
       });
       return {
@@ -139,8 +139,7 @@ const CreateChatChannelInput = ({
   }, [users, chatType, client, name, onOpenChannel, type, createMessage]);
 
   const handleSubmit = useCallback(async () => {
-    if (users.length === 0) setError(true);
-    else {
+    if (users.length === 0) { setError(true); } else {
       setError(false);
       await onSubmit({ chatType, name, type, selectedUsers: users });
       setName('');

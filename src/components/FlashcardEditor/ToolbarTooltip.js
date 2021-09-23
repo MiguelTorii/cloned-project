@@ -132,8 +132,8 @@ const ToolbarTooltip = ({ toolbar }) => {
             ? el.parentElement.firstElementChild.firstElementChild
             : el;
 
-        if (name === 'list') name = k === 6 ? 'ordered' : 'unordered';
-        if (name === 'indent') name = k === 8 ? 'tab' : 'untab';
+        if (name === 'list') { name = k === 6 ? 'ordered' : 'unordered'; }
+        if (name === 'indent') { name = k === 8 ? 'tab' : 'untab'; }
 
         element.onmouseenter = () =>
           dispatch({ type: 'SHOW', params: { name } });
@@ -157,7 +157,7 @@ const ToolbarTooltip = ({ toolbar }) => {
   return (
     <div>
       {Object.keys(state).map((k) => {
-        if (!state[k].el) return null;
+        if (!state[k].el) { return null; }
         return (
           <Tooltip
             key={k}

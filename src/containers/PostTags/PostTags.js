@@ -62,12 +62,13 @@ class PostTags extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { tags, loading } = this.state;
 
-    if (loading)
-      return (
+    if (loading) {
+return (
         <div className={classes.loader}>
           <CircularProgress />
         </div>
       );
+}
 
     return (
       <div className={classes.root}>

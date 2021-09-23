@@ -171,7 +171,7 @@ const CreateQuestion = ({
   }, [questionId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (questionId && userId) loadData();
+    if (questionId && userId) { loadData(); }
     // const { classId, sectionId } = decypherClass()
     // setClassId(Number(classId))
     // setSectionId(Number(sectionId))
@@ -199,7 +199,7 @@ const CreateQuestion = ({
         sectionId
       });
 
-      if (!res.success) throw new Error('Couldnt update');
+      if (!res.success) { throw new Error('Couldnt update'); }
 
       enqueueSnackbar({
         notification: {
@@ -284,7 +284,7 @@ const CreateQuestion = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') { hasError = true; }
         });
         if (hasError || resClasses.length === 0) {
           setIsPosting(false);
@@ -353,8 +353,7 @@ const CreateQuestion = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (questionId) updateQuestion();
-      else createQuestion();
+      if (questionId) { updateQuestion(); } else { createQuestion(); }
     },
     [createQuestion, questionId, updateQuestion]
   );

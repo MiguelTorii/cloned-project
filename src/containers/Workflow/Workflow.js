@@ -203,7 +203,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const archiveTask = useCallback(
     async (task) => {
       const res = await archiveTodo({ id: task.id });
-      if (res?.id) dispatch({ type: 'ARCHIVE_TASK', index: task.index });
+      if (res?.id) { dispatch({ type: 'ARCHIVE_TASK', index: task.index }); }
     },
     [dispatch]
   );
@@ -244,14 +244,15 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           ...task,
           categoryId: dragCategoryId.current
         });
-        if (res?.points)
-          enqueueSnackbar(
+        if (res?.points) {
+enqueueSnackbar(
             createSnackbar(
               `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
               classes.snackbar,
               'success'
             )
           );
+}
       }
       dispatch({ type: 'DRAG_UPDATE', dragId });
     },
@@ -259,7 +260,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   );
 
   useEffect(() => {
-    if (dragId !== prevDragId && dragId === null) reorder();
+    if (dragId !== prevDragId && dragId === null) { reorder(); }
     setPrevDragId(dragId);
   }, [dragId, prevDragId, reorder]);
 
@@ -267,10 +268,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     try {
       const classList = {};
       userClasses.classList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0)
-          cl.section.forEach((s) => {
+        if (cl.section && cl.section.length > 0) {
+cl.section.forEach((s) => {
             classList[s.sectionId] = cl;
           });
+}
       });
       setClassList(classList);
     } finally {
@@ -289,7 +291,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   useEffect(() => {
     const invalidOrder = tasks.find((t) => t.order === -1);
-    if (invalidOrder) reorder();
+    if (invalidOrder) { reorder(); }
   }, [reorder, tasks]);
 
   const handleAddTask = useCallback(
@@ -326,14 +328,15 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
           handleExpand(1)(true);
 
-          if (res?.points)
-            enqueueSnackbar(
+          if (res?.points) {
+enqueueSnackbar(
               createSnackbar(
                 `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
                 classes.snackbar,
                 'success'
               )
             );
+}
         }
       } catch (e) {
         enqueueSnackbar(
@@ -401,14 +404,15 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             firstNotificationSeconds: reminder || 0,
             images
           });
-          if (res?.points)
-            enqueueSnackbar(
+          if (res?.points) {
+enqueueSnackbar(
               createSnackbar(
                 `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
                 classes.snackbar,
                 'success'
               )
             );
+}
         } else {
           enqueueSnackbar(
             createSnackbar('Failed to update task', classes.snackbar, 'error')

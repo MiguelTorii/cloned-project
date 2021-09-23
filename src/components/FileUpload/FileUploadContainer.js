@@ -87,12 +87,12 @@ const URIS = {
 };
 
 const getIconURL = (extension) => {
-  if (URIS[extension]) return URIS[extension];
+  if (URIS[extension]) { return URIS[extension]; }
   return URIS['other-default'];
 };
 
 const getFileContent = (extension) => {
-  if (fileContent[extension]) return fileContent[extension];
+  if (fileContent[extension]) { return fileContent[extension]; }
   return fileContent['other-default'];
 };
 

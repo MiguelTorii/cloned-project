@@ -142,7 +142,7 @@ const StudyRoomChat = ({
   const [tabs, setTabs] = useState(1);
 
   useEffect(() => {
-    if (typeof selectedTab === 'number') setTabs(selectedTab);
+    if (typeof selectedTab === 'number') { setTabs(selectedTab); }
   }, [selectedTab]);
   const channelId = useMemo(() => {
     const pathname = get(router, 'location.pathname');
@@ -224,7 +224,7 @@ const StudyRoomChat = ({
     [members, participantsIdList]
   );
 
-  if (!open) return null;
+  if (!open) { return null; }
   return (
     <ErrorBoundary>
       <ClickAwayListener onClickAway={handleClose}>

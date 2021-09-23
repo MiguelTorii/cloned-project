@@ -30,13 +30,12 @@ const GiveFeedback = ({ open, onClose, origin }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (!open) setFeedback('');
+    if (!open) { setFeedback(''); }
   }, [open]);
 
   const sendFeedback = useCallback(async () => {
     const res = await sendFeedbackAPI({ feedback, origin });
-    if (res?.success) onClose();
-    else setError('Failed to send Feedback');
+    if (res?.success) { onClose(); } else { setError('Failed to send Feedback'); }
   }, [feedback, onClose, origin]);
 
   return (

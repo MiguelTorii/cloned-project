@@ -128,7 +128,7 @@ const CommonBanner = ({ announcement }: Props) => {
   const replaceDuration = (text) =>
     text.replace(DURATION_REPLACE_TEXT, durationText);
 
-  if (timeOver) return null;
+  if (timeOver) { return null; }
 
   return (
     <div className={classes.body}>

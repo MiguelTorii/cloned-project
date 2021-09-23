@@ -51,7 +51,7 @@ export const signLMSUser = async ({
     });
     const { data = {} } = result;
 
-    if (data?.redirect_url) window.location = data.redirect_url;
+    if (data?.redirect_url) { window.location = data.redirect_url; }
     return userToCamelCase(data);
   } catch (err) {
     console.log(err);

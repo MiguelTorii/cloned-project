@@ -162,7 +162,7 @@ const RichTextEditor = ({
   useEffect(() => {
     if (rte.current) {
       const { editor } = rte.current;
-      if (setEditor) setEditor(editor);
+      if (setEditor) { setEditor(editor); }
       editor
         .getEditor()
         .getModule('toolbar')
@@ -219,18 +219,17 @@ const RichTextEditor = ({
           }
         });
 
-        if (handleImage) handleImage(readUrl);
-        else
-          rte.current.editor
+        if (handleImage) { handleImage(readUrl); } else {
+rte.current.editor
             .getEditor()
             .insertEmbed(range.index, 'image', readUrl);
+}
 
         rte.current.editor.getEditor().enable(true);
       } catch (err) {
-        if (rte.current && rte.current.editor)
-          rte.current.editor.getEditor().enable(true);
+        if (rte.current && rte.current.editor) { rte.current.editor.getEditor().enable(true); }
       } finally {
-        if (setLoadingImage) setLoadingImage(false);
+        if (setLoadingImage) { setLoadingImage(false); }
         setLoading(false);
       }
     },
@@ -246,7 +245,7 @@ const RichTextEditor = ({
       fileInput.current.files[0].size < 8000000
     ) {
       setLoading(true);
-      if (setLoadingImage) setLoadingImage(true);
+      if (setLoadingImage) { setLoadingImage(true); }
       const file = fileInput.current.files[0];
       const imageDataUrl = await readFile(file);
       setImageSrc(imageDataUrl);
@@ -265,9 +264,8 @@ const RichTextEditor = ({
     }
   }, [readFile, setLoadingImage, userId]);
 
-  if (isLoading) return <CircularProgress size={12} />;
-  if (userId === '' || error)
-    return 'Oops, there was an error loading your data, please try again.';
+  if (isLoading) { return <CircularProgress size={12} />; }
+  if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
   return (
     <>

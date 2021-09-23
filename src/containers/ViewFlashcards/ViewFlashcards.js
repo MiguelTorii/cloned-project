@@ -107,7 +107,7 @@ const ViewFlashcards = ({
   }, [flashcardId]);
 
   const handleBookmark = async () => {
-    if (!flashcards) return;
+    if (!flashcards) { return; }
     const { feedId, bookmarked } = flashcards;
     try {
       setFlashcards({ ...flashcards, bookmarked: !bookmarked });
@@ -133,8 +133,8 @@ const ViewFlashcards = ({
   const flashcardView = useMemo(() => {
     const sorted =
       flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount);
-    if (sorted)
-      return sorted.map((d, k) => {
+    if (sorted) {
+return sorted.map((d, k) => {
         const renderDivisor =
           k > 0 && sorted[k - 1].hardCount > 0 && d.hardCount === 0;
         return (
@@ -151,15 +151,17 @@ const ViewFlashcards = ({
           </div>
         );
       });
+}
     return null;
   }, [flashcards, classes]);
 
-  if (!flashcards)
-    return (
+  if (!flashcards) {
+return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+}
 
   const {
     feedId,

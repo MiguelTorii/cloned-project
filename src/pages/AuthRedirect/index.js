@@ -49,7 +49,7 @@ const AuthPage = ({
 
   // Check if there are parameters for masquerading
   useEffect(() => {
-    if (!isMasquerading) return;
+    if (!isMasquerading) { return; }
 
     dispatch(
       masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/'))

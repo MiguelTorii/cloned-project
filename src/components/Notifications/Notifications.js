@@ -48,7 +48,7 @@ class Notifications extends React.PureComponent<Props, State> {
 
     const handleClick = (e) => {
       onClick(e);
-      if (onNotificationClose) onNotificationClose();
+      if (onNotificationClose) { onNotificationClose(); }
     };
 
     const open = Boolean(anchorEl);
@@ -131,7 +131,7 @@ class Notifications extends React.PureComponent<Props, State> {
         {notificationPaper}
       </Popover>
     );
-    if (isPage) return notificationPaper;
+    if (isPage) { return notificationPaper; }
     return popper;
   }
 }

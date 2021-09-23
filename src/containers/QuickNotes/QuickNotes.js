@@ -87,8 +87,7 @@ const QuickNotes = ({
         !selectedClass ||
         !selectedClass.sectionId ||
         !selectedClass.classId
-      )
-        return;
+      ) { return; }
       setPrevContent(debouncedContent);
       if (!quicknoteId || currentClass) {
         await saveNoteAction({
@@ -136,7 +135,7 @@ const QuickNotes = ({
   const handleUpdate = useCallback(
     (text) => {
       setTimeout(() => {
-        if (selectedClass) setSavedState('saving');
+        if (selectedClass) { setSavedState('saving'); }
       }, 100);
       updateQuickNoteContent({ content: text });
     },
@@ -172,9 +171,8 @@ const QuickNotes = ({
   }, []);
 
   const renderSaved = useMemo(() => {
-    if (savedState === 'hidden') return null;
-    if (savedState === 'saving')
-      return <div className={classes.lastSaved}>Saving...</div>;
+    if (savedState === 'hidden') { return null; }
+    if (savedState === 'saving') { return <div className={classes.lastSaved}>Saving...</div>; }
     return (
       <Tooltip
         id={3499}

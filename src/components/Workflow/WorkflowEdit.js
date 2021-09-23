@@ -61,7 +61,7 @@ const getNotificationOptions = (seconds, updated, due) => {
     );
 
     const now = moment().valueOf();
-    if (now + optionSeconds * 1000 > dueValue) return null;
+    if (now + optionSeconds * 1000 > dueValue) { return null; }
 
     const option = Object.keys(remiderTime).reduce((prev, cur) => (Math.abs(cur - optionSeconds) < Math.abs(prev - optionSeconds)
         ? cur
@@ -103,7 +103,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
     setTitle(task.title);
     setDescription(task.description);
     setSectionId(task.sectionId);
-    if (task.images) setImages(task.images);
+    if (task.images) { setImages(task.images); }
 
     if (task.date) {
       if (typeof task.date.getMonth === 'function') {
@@ -156,7 +156,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
       reminder: getNotificationTime(notifications),
       images: imagesRef.current?.images
     });
-    if (title) onClose();
+    if (title) { onClose(); }
   }, [
     notifications,
     updateItem,
@@ -190,8 +190,7 @@ const WorkflowEdit = ({ task, onClose, openConfirmArchive, open }: Props) => {
 
   const updateClass = useCallback(
     (e) => {
-      if (e.target.value === 'new') handleOpenManageClass();
-      else setSectionId(e.target.value);
+      if (e.target.value === 'new') { handleOpenManageClass(); } else { setSectionId(e.target.value); }
     },
     [handleOpenManageClass]
   );

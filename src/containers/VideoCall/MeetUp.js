@@ -273,10 +273,11 @@ class MeetUp extends React.Component<Props, State> {
 
     const newClassList = {};
     classList.forEach((cl) => {
-      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-        cl.section.forEach((s) => {
+      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+cl.section.forEach((s) => {
           newClassList[s.sectionId] = cl;
         });
+}
     });
 
     const currentClassList = Object.keys(newClassList).map((sectionId) => ({
@@ -299,11 +300,11 @@ class MeetUp extends React.Component<Props, State> {
     if (participants.length > 1 && !this.pointsStarted) {
       this.pointsStarted = true;
       this.handleSession();
-    } else if (participants.length <= 1) this.pointsStarted = false;
+    } else if (participants.length <= 1) { this.pointsStarted = false; }
   };
 
   handleWindowClose = (ev) => {
-    if (ev) ev.preventDefault();
+    if (ev) { ev.preventDefault(); }
     const { videoRoom } = this.state;
     if (videoRoom?.name) {
       logEvent({
@@ -331,8 +332,7 @@ class MeetUp extends React.Component<Props, State> {
     if (
       this.handleSession.cancel &&
       typeof this.handleSession.cancel === 'function'
-    )
-      this.handleSession.cancel();
+    ) { this.handleSession.cancel(); }
   };
 
   handleChangeView = (viewMode) => {
@@ -407,7 +407,7 @@ class MeetUp extends React.Component<Props, State> {
 
       videoRoom.participants.forEach((participant) => {
         this.handleAddParticipant(participant);
-        if (!this.initiator) this.notInitiator = true;
+        if (!this.initiator) { this.notInitiator = true; }
       });
 
       videoRoom.on('participantConnected', async (participant) => {
@@ -428,9 +428,7 @@ class MeetUp extends React.Component<Props, State> {
             track.on('message', (data) => {
               const message = JSON.parse(data);
               const { type = '' } = message;
-              if (type === 'drawing') this.handleDataReceived(data);
-              else if (type === 'texting') this.handleDataReceived(data);
-              else if (type === 'cursor') this.handleDataReceived(data);
+              if (type === 'drawing') { this.handleDataReceived(data); } else if (type === 'texting') { this.handleDataReceived(data); } else if (type === 'cursor') { this.handleDataReceived(data); }
             });
           }
         });
@@ -482,9 +480,7 @@ class MeetUp extends React.Component<Props, State> {
           track.on('message', (data) => {
             const message = JSON.parse(data);
             const { type = '' } = message;
-            if (type === 'drawing') this.handleDataReceived(data);
-            else if (type === 'texting') this.handleDataReceived(data);
-            else if (type === 'cursor') this.handleDataReceived(data);
+            if (type === 'drawing') { this.handleDataReceived(data); } else if (type === 'texting') { this.handleDataReceived(data); } else if (type === 'cursor') { this.handleDataReceived(data); }
           });
         }
       });
@@ -505,8 +501,7 @@ class MeetUp extends React.Component<Props, State> {
       });
 
       videoRoom.on('dominantSpeakerChanged', (participant) => {
-        if (participant) this.setState({ dominantSpeaker: participant.sid });
-        else this.setState({ dominantSpeaker: '' });
+        if (participant) { this.setState({ dominantSpeaker: participant.sid }); } else { this.setState({ dominantSpeaker: '' }); }
       });
 
       videoRoom.on('disconnected', () => {
@@ -786,8 +781,7 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handleUnreadUpdate = (count) => {
-    if (!count) this.setState({ unread: 0 });
-    else this.setState(({ unread }) => ({ unread: unread + count }));
+    if (!count) { this.setState({ unread: 0 }); } else { this.setState(({ unread }) => ({ unread: unread + count })); }
   };
 
   handleDataReceived = (drawData) => {
@@ -873,7 +867,7 @@ class MeetUp extends React.Component<Props, State> {
         this.setState({ points: true });
       }
     }
-    if (this.pointsStarted) this.handleSession();
+    if (this.pointsStarted) { this.handleSession(); }
   };
 
   handleOpenClaimPoints = () => {
@@ -885,7 +879,7 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handleSelectedScreenSharing = (value) => {
-    if (value) this.setState({ selectedScreenShareId: value });
+    if (value) { this.setState({ selectedScreenShareId: value }); }
   };
 
   handlePointsSubmit = async ({
@@ -1024,7 +1018,7 @@ class MeetUp extends React.Component<Props, State> {
       const selectedCourse = userClasses.classList.find(
         (cl) => cl.classId === Number(classId)
       );
-      if (selectedCourse) return selectedCourse.courseDisplayName;
+      if (selectedCourse) { return selectedCourse.courseDisplayName; }
     }
     return '';
   };

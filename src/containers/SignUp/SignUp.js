@@ -247,7 +247,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     const { error, errorMessage, isLoading } = user;
     const { title, body } = errorMessage;
 
-    if (!school && !referralData) return <Redirect to="/auth" />;
+    if (!school && !referralData) { return <Redirect to="/auth" />; }
     const { emailDomain, emailRestriction } = school;
 
     return (

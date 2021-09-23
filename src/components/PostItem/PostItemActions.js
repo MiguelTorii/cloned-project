@@ -36,8 +36,8 @@ type Props = {
 class PostItemActions extends React.PureComponent<Props> {
   renderThanks = () => {
     const { thanked, isThanksLoading } = this.props;
-    if (isThanksLoading) return <CircularProgress size={24} />;
-    if (thanked) return <ThanksIcon />;
+    if (isThanksLoading) { return <CircularProgress size={24} />; }
+    if (thanked) { return <ThanksIcon />; }
     return <ThanksIcon />;
   };
 

@@ -76,7 +76,7 @@ class UploadImages extends React.PureComponent<Props, State> {
   componentWillReceiveProps = async (nextProps) => {
     const { handleUpdateImages, images } = this.props;
     const { firstLoad } = this.state;
-    if (!firstLoad) return;
+    if (!firstLoad) { return; }
     const { notes } = nextProps;
     notes.forEach((n) => {
       const url = n.fullNoteUrl;
@@ -214,8 +214,8 @@ class UploadImages extends React.PureComponent<Props, State> {
       }
     } = this.props;
     const { images } = this.props;
-    if (images.length === 0) throw new Error('no images');
-    if (images.length === 0) return [];
+    if (images.length === 0) { throw new Error('no images'); }
+    if (images.length === 0) { return []; }
     this.setImagesUploading();
     const fileNames = images.map((image) => image.id);
     const result = await getPresignedURLs({

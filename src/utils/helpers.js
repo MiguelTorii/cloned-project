@@ -15,7 +15,7 @@ export const isApiCalling = (type) => (state) =>
 export const getPastClassIds = (classList) =>
   classList
     .map((classEntry) => {
-      if (!classEntry.isCurrent) return classEntry.classId;
+      if (!classEntry.isCurrent) { return classEntry.classId; }
       return '';
     })
     .filter((item) => item);
@@ -65,7 +65,7 @@ export const arrElemToId = (array) => {
 };
 
 export const extractTextFromHtml = (html) => {
-  if (!html) return '';
+  if (!html) { return ''; }
   const tempDivElement = document.createElement('div');
   tempDivElement.innerHTML = html;
   const result = tempDivElement.textContent || tempDivElement.innerText || '';
@@ -73,7 +73,7 @@ export const extractTextFromHtml = (html) => {
 };
 
 export const englishIdFromNumber = (number) => {
-  if (number === 0) return 'A';
+  if (number === 0) { return 'A'; }
 
   const rem = [];
 
@@ -107,7 +107,7 @@ export const deepLinkCheck = (pathname) => {
 export const isMac = () => window.navigator.platform.includes('Mac');
 
 export const commandHotkeyText = (key) => {
-  if (isMac()) return `⌘${key}`;
+  if (isMac()) { return `⌘${key}`; }
 
   return `CTRL + ${key}`;
 };

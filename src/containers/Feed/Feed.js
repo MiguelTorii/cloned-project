@@ -125,8 +125,7 @@ class Feed extends React.PureComponent<Props, State> {
       if (
         this.handleFetchFeed.cancel &&
         typeof this.handleFetchFeed.cancel === 'function'
-      )
-        this.handleFetchFeed.cancel();
+      ) { this.handleFetchFeed.cancel(); }
     });
     window.addEventListener('online', () => {
       this.handleFetchFeed();
@@ -147,8 +146,7 @@ class Feed extends React.PureComponent<Props, State> {
     if (
       this.handleFetchFeed.cancel &&
       typeof this.handleFetchFeed.cancel === 'function'
-    )
-      this.handleFetchFeed.cancel();
+    ) { this.handleFetchFeed.cancel(); }
   };
 
   handleFetchFeed = async () => {
@@ -342,7 +340,7 @@ class Feed extends React.PureComponent<Props, State> {
       const selectedCourse = userClasses.classList.find(
         (cl) => cl.classId === Number(classId)
       );
-      if (selectedCourse) return selectedCourse.courseDisplayName;
+      if (selectedCourse) { return selectedCourse.courseDisplayName; }
     }
     return '';
   };

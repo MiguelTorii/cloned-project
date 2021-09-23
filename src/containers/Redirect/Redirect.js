@@ -93,7 +93,7 @@ class Redirect extends React.PureComponent<Props, State> {
   render() {
     const { classes, nonce } = this.props;
 
-    if (isBrowser) return <RouterRedirect to={`/canvas/${nonce}`} />;
+    if (isBrowser) { return <RouterRedirect to={`/canvas/${nonce}`} />; }
     // console.log()
     return (
       <div className={classes.root}>

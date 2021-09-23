@@ -6,7 +6,7 @@ import { getToken } from './utils';
 
 const searchClasses = async (query: stirng): Promise<Class> => {
   try {
-    if (query === '') return [];
+    if (query === '') { return []; }
 
     const token = await getToken();
 

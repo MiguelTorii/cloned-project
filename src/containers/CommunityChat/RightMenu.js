@@ -30,7 +30,7 @@ const RightMenu = ({ local, channel, isCommunityChat }) => {
     [channel, local]
   );
 
-  if (!channel || !localChannel) return null;
+  if (!channel || !localChannel) { return null; }
 
   return (
     <Box display="flex" flexDirection="column" className={classes.container}>

@@ -23,8 +23,7 @@ const ClassList = (props: Props) => {
   } = props;
 
   const renderButtonText = () => {
-    if (classList.length === 0)
-      return 'Click here to get started and to add your classes';
+    if (classList.length === 0) { return 'Click here to get started and to add your classes'; }
     return 'Add/Remove Classes';
   };
 

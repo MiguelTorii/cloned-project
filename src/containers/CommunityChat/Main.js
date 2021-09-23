@@ -104,7 +104,7 @@ const Main = ({
   const memberKeys = useMemo(() => Object.keys(members), [members]);
 
   const otherUser = useMemo(() => {
-    if (memberKeys.length !== 2) return null;
+    if (memberKeys.length !== 2) { return null; }
     return members[memberKeys.find((key) => key !== user.data.userId)];
   }, [memberKeys, members, user.data.userId]);
 
@@ -190,7 +190,7 @@ const Main = ({
           !chatData?.items?.length ||
           selectedChannelId === chatData?.items?.[0]?.channel?.sid
         ) {
-          if (!chatData.hasNextPage) startMessageLoading(false);
+          if (!chatData.hasNextPage) { startMessageLoading(false); }
           setMessages(chatData.items);
           setPaginator(chatData);
           setHasMore(!(chatData.items.length < 10));
@@ -220,7 +220,7 @@ const Main = ({
       }
     };
 
-    if (channel) init();
+    if (channel) { init(); }
     // eslint-disable-next-line
   }, [channel, selectedChannelId]);
 
@@ -269,7 +269,7 @@ const Main = ({
 
   const getRole = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) { return null; }
       const { role } = members[userId];
       return role;
     },
@@ -278,7 +278,7 @@ const Main = ({
 
   const getIsOnline = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) { return null; }
       const { isOnline } = members[userId];
       return isOnline;
     },
@@ -287,7 +287,7 @@ const Main = ({
 
   const getFullName = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) { return null; }
       const { firstName, lastName } = members[userId];
 
       return `${firstName} ${lastName}`;
@@ -364,7 +364,7 @@ const Main = ({
   const onSendMessage = useCallback(
     async (message) => {
       setScroll(true);
-      if (!channel) return;
+      if (!channel) { return; }
 
       logEvent({
         event: 'Chat- Send Message',
@@ -393,7 +393,7 @@ const Main = ({
           props: { Content: 'Text' }
         });
 
-        if (onSend) onSend();
+        if (onSend) { onSend(); }
       } catch (err) {
         setErrorLoadingMessage(true);
       } finally {
@@ -405,7 +405,7 @@ const Main = ({
   );
 
   const onTyping = useCallback(() => {
-    if (!channel) return;
+    if (!channel) { return; }
     try {
       channel.typing();
     } catch (err) {

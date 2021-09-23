@@ -73,10 +73,10 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
     init();
   }, [generateNewQuiz, isOpen]);
 
-  if (!quiz) return <div>Loading...</div>;
+  if (!quiz) { return <div>Loading...</div>; }
 
   const onAnswerChange = ({ currentAnswerId, newAnswerId, questionId }) => {
-    if (isQuizCompleted) return;
+    if (isQuizCompleted) { return; }
 
     const updatedAnswers = answers.map((a) => {
       if (a.id === currentAnswerId) {
@@ -278,7 +278,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
       }
 
       const onAnswerClicked = (answerId) => {
-        if (isQuizCompleted) return;
+        if (isQuizCompleted) { return; }
 
         const updatedMultiQuestions = multiQuestions.map((mq) => {
           if (mq.id === id) {

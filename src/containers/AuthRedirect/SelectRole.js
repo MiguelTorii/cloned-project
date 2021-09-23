@@ -155,15 +155,14 @@ const SelectRole = ({ setScreen, role, school, updateError, updateRole }) => {
 
   const onClick = useCallback(async () => {
     const redirect = await onChange(school);
-    if (!redirect) setScreen('login');
+    if (!redirect) { setScreen('login'); }
   }, [onChange, school, setScreen]);
 
   const handleChange = useCallback(
     async (e) => {
       if (e?.target?.value) {
         const { value } = e.target;
-        if (value === 'dk') setOpen(true);
-        else {
+        if (value === 'dk') { setOpen(true); } else {
           store.set('ROLE', value);
           updateRole({ role: value });
         }

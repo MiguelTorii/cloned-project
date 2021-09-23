@@ -227,7 +227,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
 
   const handleSetCurrentCardLevel = useCallback(
     (level) => {
-      if (level === currentLevel) return;
+      if (level === currentLevel) { return; }
 
       const card = currentCardList[currentCardIndex];
       const levelData = ANSWER_LEVELS.find((item) => item.level === level);

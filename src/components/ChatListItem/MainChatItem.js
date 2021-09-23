@@ -75,7 +75,7 @@ const MainChatItem = ({
   const initials = useCallback(getInitials(name), [name]);
 
   const onMouseEnter = useCallback(() => {
-    if (handleRemoveChannel && handleMuteChannel) setShowMenu(true);
+    if (handleRemoveChannel && handleMuteChannel) { setShowMenu(true); }
   }, [handleMuteChannel, handleRemoveChannel]);
 
   const onMouseLeave = useCallback(() => {
@@ -92,16 +92,17 @@ const MainChatItem = ({
   }, [handleClose]);
 
   const handleRemoveSubmit = useCallback(async () => {
-    if (roomId) await handleRemoveChannel({ sid: roomId });
+    if (roomId) { await handleRemoveChannel({ sid: roomId }); }
     handleRemoveClose();
   }, [handleRemoveChannel, roomId, handleRemoveClose]);
 
-  if (isLoading)
-    return (
+  if (isLoading) {
+return (
       <div className={classes.progress}>
         <CircularProgress size={20} color="secondary" />
       </div>
     );
+}
 
   return (
     <div

@@ -42,7 +42,7 @@ const CTA = ({ classes }: { classes: Object }) => {
     init();
   }, []);
 
-  if (!referralProgram || !referralProgram.is_visible) return null;
+  if (!referralProgram || !referralProgram.is_visible) { return null; }
 
   const {
     code,

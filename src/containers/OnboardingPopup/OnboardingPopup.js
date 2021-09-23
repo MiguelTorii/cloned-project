@@ -41,7 +41,7 @@ const OnboardingPopup = ({ open, userId, updateOnboarding }: Props) => {
 
   // If landing page is Chat, we put chat page to the last.
   const onboardingSteps = useMemo(() => {
-    if (campaign.chatLanding) return ONBOARDING_STEPS_FOR_CHAT_LANDING;
+    if (campaign.chatLanding) { return ONBOARDING_STEPS_FOR_CHAT_LANDING; }
     return ONBOARDING_STEPS;
   }, [campaign.chatLanding]);
 

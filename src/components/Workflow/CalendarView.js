@@ -101,7 +101,7 @@ const CalendarView = () => {
 
   const onViewChange = useCallback(
     (e) => {
-      if (e?.view?.type) setCurrentCalendarView(e?.view?.type);
+      if (e?.view?.type) { setCurrentCalendarView(e?.view?.type); }
     },
     [setCurrentCalendarView]
   );
@@ -140,7 +140,7 @@ const CalendarView = () => {
         setTimeout(() => setDoubleClick(null), 1000);
       }
 
-      if (doubleClick === dateStr) addTask();
+      if (doubleClick === dateStr) { addTask(); }
     },
     [addTask, doubleClick]
   );

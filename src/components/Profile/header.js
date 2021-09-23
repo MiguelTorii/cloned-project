@@ -110,7 +110,7 @@ class Header extends React.PureComponent<Props, State> {
     const { about } = this.props;
     const idx = _.findIndex(about, (item) => item.id === id);
 
-    if (idx < 0) return null;
+    if (idx < 0) { return null; }
 
     return about[idx].answer;
   };

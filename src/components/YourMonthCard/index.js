@@ -91,17 +91,18 @@ class YourMonthCard extends React.PureComponent<Props, State> {
     // eslint-disable-next-line no-script-url
     const dudUrl = 'javascript:;';
 
-    if (isLoading)
-      return (
+    if (isLoading) {
+return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
+}
     const newItems = items.map((item, index) => {
       const slot = data.slots.find((o) => o.slot === index);
-      if (slot) return { ...item, ...slot };
+      if (slot) { return { ...item, ...slot }; }
       return item;
     });
 

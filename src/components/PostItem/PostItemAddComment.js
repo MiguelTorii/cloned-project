@@ -53,8 +53,7 @@ const PostItemAddComment = ({
   }, []);
 
   const handleRTEChange = useCallback((updatedValue) => {
-    if (updatedValue.trim() === '<p><br></p>') setValue('');
-    else setValue(updatedValue);
+    if (updatedValue.trim() === '<p><br></p>') { setValue(''); } else { setValue(updatedValue); }
   }, []);
 
   const handleClick = useCallback(
@@ -68,7 +67,7 @@ const PostItemAddComment = ({
         if (quill) {
           quill.setText('');
         }
-        if (onCancelComment) onCancelComment();
+        if (onCancelComment) { onCancelComment(); }
       }
       setIsLoading(false);
     },

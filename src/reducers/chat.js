@@ -80,7 +80,7 @@ const defaultState = {
 const mergeObjects = (first, second) => {
   const merged = {};
   const keys = Object.keys(first);
-  if (keys.length === 0) return second;
+  if (keys.length === 0) { return second; }
   keys.forEach((l) => {
     merged[l] = { ...first[l], ...second[l] };
   });

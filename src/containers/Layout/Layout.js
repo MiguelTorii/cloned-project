@@ -152,7 +152,7 @@ const Layout = ({
 
   const renderChildren = useCallback(() => {
     const { data, isLoading } = user;
-    if (data.userId && !isLoading) return children;
+    if (data.userId && !isLoading) { return children; }
     return (
       <div className={classes.loader}>
         <CircularProgress />
@@ -178,7 +178,7 @@ const Layout = ({
   const unreadMessages = useMemo(() => {
     let unreadMessages = 0;
     Object.keys(local).forEach((l) => {
-      if (local[l]?.unread) unreadMessages += Number(local[l].unread);
+      if (local[l]?.unread) { unreadMessages += Number(local[l].unread); }
     });
     return unreadMessages;
   }, [local]);
@@ -200,10 +200,9 @@ const Layout = ({
   if (
     campaign.newClassExperience === null ||
     campaign.landingPageCampaign === null
-  )
-    return null;
+  ) { return null; }
 
-  if (isNaked) return renderChildren();
+  if (isNaked) { return renderChildren(); }
 
   return (
     <>

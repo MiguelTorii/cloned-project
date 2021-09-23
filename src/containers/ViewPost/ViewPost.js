@@ -74,7 +74,7 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
   }, [postId]);
 
   const handleBookmark = async () => {
-    if (!post) return;
+    if (!post) { return; }
     const { feedId, bookmarked } = post;
     try {
       setPost({ ...post, bookmarked: !bookmarked });
@@ -97,12 +97,13 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
     setDeletePost(false);
   };
 
-  if (!post)
-    return (
+  if (!post) {
+return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+}
 
   const {
     feedId,

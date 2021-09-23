@@ -179,7 +179,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const { sharelinkId } = this.props;
     const { editor } = this.state;
 
-    if (sharelinkId) this.loadData();
+    if (sharelinkId) { this.loadData(); }
 
     // const { classId, sectionId } = decypherClass()
     // this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
@@ -252,8 +252,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     if (
       this.updatePreview.cancel &&
       typeof this.updatePreview.cancel === 'function'
-    )
-      this.updatePreview.cancel();
+    ) { this.updatePreview.cancel(); }
   };
 
   updateSharelink = async () => {
@@ -277,7 +276,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sectionId
       });
 
-      if (!res.success) throw new Error(`Couldn't update`);
+      if (!res.success) { throw new Error(`Couldn't update`); }
 
       logEvent({
         event: 'Feed- Update Share Link',
@@ -388,7 +387,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       let hasError = false;
       if (this.canBatchPost()) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') { hasError = true; }
         });
         if (hasError || resClasses.length === 0) {
           this.setState({
@@ -491,13 +490,12 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { sharelinkId } = this.props;
-    if (sharelinkId) this.updateSharelink();
-    else this.createSharelink();
+    if (sharelinkId) { this.updateSharelink(); } else { this.createSharelink(); }
   };
 
   handleTextChange = (name) => (event) => {
     this.setState({ [name]: event.target.value, changed: true });
-    if (name === 'url') this.updatePreview(event.target.value);
+    if (name === 'url') { this.updatePreview(event.target.value); }
 
     if (localStorage.getItem('shareLink')) {
       const currentShareLink = JSON.parse(localStorage.getItem('shareLink'));

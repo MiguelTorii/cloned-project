@@ -39,7 +39,7 @@ const Banner = ({
     setBannerHeight({ bannerHeight: undefined === height ? 0 : height });
   }, [height, setBannerHeight]);
 
-  if (!announcement || expertMode) return null;
+  if (!announcement || expertMode) { return null; }
 
   return announcement.endDate ? (
     <CommonBanner announcement={announcement} />

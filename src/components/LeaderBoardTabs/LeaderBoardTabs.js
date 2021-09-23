@@ -129,8 +129,8 @@ const LeaderBoardTabs = ({
       borderRadius: 16
     };
 
-    if (window.innerWidth > 400)
-      return (
+    if (window.innerWidth > 400) {
+return (
         <div style={containerStyle}>
           {prizeImgs.map((img) => (
             <LoadImg key={img} url={img} style={imgStyle} />
@@ -141,6 +141,7 @@ const LeaderBoardTabs = ({
             ))}
         </div>
       );
+}
     return null;
   };
 

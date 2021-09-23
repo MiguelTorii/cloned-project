@@ -88,7 +88,7 @@ export default () => {
           historyList.splice(index, 1);
         }
         historyList.unshift(item);
-        if (historyList.length > historySize) historyList.pop();
+        if (historyList.length > historySize) { historyList.pop(); }
         try {
           localStorage.setItem(historyCacheKey, JSON.stringify(historyList));
         } catch (e) {

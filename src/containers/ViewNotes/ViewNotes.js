@@ -77,7 +77,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   }, [loadData, noteId]);
 
   const handleBookmark = async () => {
-    if (!photoNote) return;
+    if (!photoNote) { return; }
     const { feedId, bookmarked } = photoNote;
     try {
       setPhotoNote({ ...photoNote, bookmarked: !bookmarked });
@@ -106,12 +106,13 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
     setDeletePost(false);
   };
 
-  if (!photoNote)
-    return (
+  if (!photoNote) {
+return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+}
   const {
     feedId,
     postId,

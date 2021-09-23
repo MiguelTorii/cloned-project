@@ -492,7 +492,7 @@ export const handleInitChat =
     try {
       dispatch(startLoading());
 
-      if (curClient && curClient.connectionState === 'connected') return;
+      if (curClient && curClient.connectionState === 'connected') { return; }
       const accessToken = await renewTwilioToken({
         userId
       });
@@ -686,7 +686,7 @@ export const handleMuteChannel =
       } = getState();
       const { muted } = local[sid];
       const res = muted ? await unmuteChannel(sid) : await muteChannel(sid);
-      if (res && res.success) dispatch(muteChannelLocal({ sid }));
+      if (res && res.success) { dispatch(muteChannelLocal({ sid })); }
     };
 
 export const handleMarkAsRead =
@@ -715,7 +715,7 @@ export const handleRoomClick =
 
       const newState = update(openChannels, {
         $apply: (b) => {
-          if (availableSlots === 0) return [];
+          if (availableSlots === 0) { return []; }
           const index = b.findIndex((item) => item.sid === channel.sid);
           if (index > -1) {
             let newB = update(b, { $splice: [[index, 1]] });
@@ -747,7 +747,7 @@ export const updateOpenChannels =
         return;
       }
 
-      if (availableSlots === 0) dispatch(setOpenChannels({ openChannels: [] }));
+      if (availableSlots === 0) { dispatch(setOpenChannels({ openChannels: [] })); }
       const newState = update(openChannels, {
         $apply: (b) => {
           const newB = update(b, { $splice: [[availableSlots]] });

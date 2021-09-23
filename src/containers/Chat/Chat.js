@@ -172,7 +172,7 @@ const Chat = ({
           !local[l].twilioChannel.channelState?.attributes?.community_id
       )
       .sort((a, b) => {
-        if (local[a].lastMessage.message === '') return 0;
+        if (local[a].lastMessage.message === '') { return 0; }
         return (
           moment(local[b].lastMessage.date).valueOf() -
           moment(local[a].lastMessage.date).valueOf()
@@ -185,12 +185,10 @@ const Chat = ({
     if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0);
-        if (currentChannel) setLeftSpace(0);
-        else setLeftSpace(curSize);
+        if (currentChannel) { setLeftSpace(0); } else { setLeftSpace(curSize); }
       } else {
         setLeftSpace(curSize);
-        if (currentChannel) setRightSpace(3);
-        else setRightSpace(0);
+        if (currentChannel) { setRightSpace(3); } else { setRightSpace(0); }
       }
     }
 
@@ -198,8 +196,8 @@ const Chat = ({
   }, [prevWidth, width, curSize, currentChannel]);
 
   useEffect(() => {
-    if (currentChannel && width !== 'xs') setRightSpace(3);
-    if (!currentChannel) setRightSpace(0);
+    if (currentChannel && width !== 'xs') { setRightSpace(3); }
+    if (!currentChannel) { setRightSpace(0); }
   }, [currentChannel, width]);
 
   const handleBlock = useCallback(
@@ -298,8 +296,7 @@ const Chat = ({
           onOpenChannel={onOpenChannel}
           user={user}
           onSend={() => {
-            if (onboardingListVisible)
-              setTimeout(() => getOnboardingList(), 1000);
+            if (onboardingListVisible) { setTimeout(() => getOnboardingList(), 1000); }
           }}
         />
       </Grid>

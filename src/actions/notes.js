@@ -93,8 +93,7 @@ export const getNotes =
       dispatch(loadingAction({ loading: true }));
       const { notes } = await api.getNotes({ sectionId });
 
-      if (notes) dispatch(updateNotes({ notes: sortNotes(notes) }));
-      else dispatch(loadingAction({ loading: false }));
+      if (notes) { dispatch(updateNotes({ notes: sortNotes(notes) })); } else { dispatch(loadingAction({ loading: false })); }
       return notes;
     } catch (err) {
       dispatch(loadingAction({ loading: false }));
@@ -126,10 +125,9 @@ export const updateNote =
           ...note,
           lastModified: new Date()
         };
-        if (sectionId === note.sectionId)
-          dispatch(updateNotes({ notes: [newNote, ...filtered] }));
+        if (sectionId === note.sectionId) { dispatch(updateNotes({ notes: [newNote, ...filtered] })); }
         dispatch(loadingAction({ loading: false }));
-      } else dispatch(loadingAction({ loading: false }));
+      } else { dispatch(loadingAction({ loading: false })); }
     } catch (err) {
       dispatch(loadingAction({ loading: false }));
     }
@@ -175,20 +173,21 @@ export const saveNoteAction =
           sectionId,
           lastModified: new Date()
         };
-        if (curSectionId === sectionId)
-          dispatch(
+        if (curSectionId === sectionId) {
+dispatch(
             addNote({
               quicknoteId: quicknote ? noteId : null,
               notes: [newNote, ...notes]
             })
           );
-        else
-          dispatch(
+} else {
+dispatch(
             addNote({
               quicknoteId: quicknote ? noteId : null,
               notes
             })
           );
+}
       }
       dispatch(loadingAction({ loading: false }));
     } catch (err) {
@@ -233,7 +232,7 @@ export const deleteNoteAction =
       if (success) {
         const id = notes.findIndex((n) => n.id === note.id);
         dispatch(removeNote({ id }));
-      } else dispatch(loadingAction({ loading: false }));
+      } else { dispatch(loadingAction({ loading: false })); }
     } catch (err) {
       dispatch(loadingAction({ loading: false }));
     }

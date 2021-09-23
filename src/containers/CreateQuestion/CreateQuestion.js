@@ -119,7 +119,7 @@ const CreateQuestion = ({
   }, [questionId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (questionId && userId) loadData();
+    if (questionId && userId) { loadData(); }
     const { classId, sectionId } = decypherClass();
 
     setClassId(Number(classId));
@@ -148,7 +148,7 @@ const CreateQuestion = ({
         sectionId
       });
 
-      if (!res.success) throw new Error('Couldnt update');
+      if (!res.success) { throw new Error('Couldnt update'); }
 
       enqueueSnackbar({
         notification: {
@@ -217,7 +217,7 @@ const CreateQuestion = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') { hasError = true; }
         });
         if (hasError || resClasses.length === 0) {
           setLoading(false);
@@ -282,8 +282,7 @@ const CreateQuestion = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (questionId) updateQuestion();
-      else createQuestion();
+      if (questionId) { updateQuestion(); } else { createQuestion(); }
     },
     [createQuestion, questionId, updateQuestion]
   );
@@ -298,8 +297,7 @@ const CreateQuestion = ({
 
   const handleRTEChange = useCallback(
     (value) => {
-      if (changed === null) setChanged(false);
-      else setChanged(true);
+      if (changed === null) { setChanged(false); } else { setChanged(true); }
       setBody(value);
     },
     [changed]
@@ -308,13 +306,14 @@ const CreateQuestion = ({
   const handleClassChange = useCallback(
     ({ classId, sectionId }: { classId: number, sectionId: number }) => {
       const selected = userClasses.classList.find((c) => c.classId === classId);
-      if (selected)
-        setClassList([
+      if (selected) {
+setClassList([
           {
             ...selected,
             sectionId
           }
         ]);
+}
       setSectionId(sectionId);
       setClassId(classId);
     },

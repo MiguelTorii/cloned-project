@@ -55,7 +55,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
   const handleChange = useCallback(
     (value) => {
-      if (!value) return;
+      if (!value) { return; }
       const {
         lmsTypeId,
         launchType,

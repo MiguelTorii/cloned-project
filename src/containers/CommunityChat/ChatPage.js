@@ -44,7 +44,7 @@ const ChatPage = ({
   const [loading, setLoading] = useState(false);
 
   const fetchCommunityChannels = async (communities) => {
-    if (!communities?.length) return [];
+    if (!communities?.length) { return []; }
 
     try {
       const promises = communities.map(async (course) => {
@@ -108,7 +108,7 @@ const ChatPage = ({
       const channelList = Object.keys(local)
         .filter((l) => local[l].sid)
         .sort((a, b) => {
-          if (local[a].lastMessage.message === '') return 0;
+          if (local[a].lastMessage.message === '') { return 0; }
           return (
             moment(local[b].lastMessage.date).valueOf() -
             moment(local[a].lastMessage.date).valueOf()
@@ -151,7 +151,7 @@ const ChatPage = ({
       const targetCourse = communities.filter(
         (course) => course.community.id === currentCommunity.id
       );
-      if (targetCourse.length) setCurrentCommunity(targetCourse[0]?.community);
+      if (targetCourse.length) { setCurrentCommunity(targetCourse[0]?.community); }
     } else if (
       currentCommunityId &&
       !!communities?.length &&
@@ -160,8 +160,7 @@ const ChatPage = ({
       const targetCourseChannel = communities.filter(
         (community) => community.community.id === Number(currentCommunityId)
       );
-      if (targetCourseChannel.length)
-        setCurrentCommunity(targetCourseChannel[0].community);
+      if (targetCourseChannel.length) { setCurrentCommunity(targetCourseChannel[0].community); }
     }
   }, [
     currentCommunityId,
@@ -173,7 +172,7 @@ const ChatPage = ({
     campaign.chatLanding
   ]);
 
-  if (loading) return <LoadingSpin />;
+  if (loading) { return <LoadingSpin />; }
 
   return (
     <div className={classes.root}>

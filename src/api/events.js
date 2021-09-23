@@ -17,7 +17,7 @@ const createEvent = async ({
   objectId: string,
   type: string
 }): void => {
-  if (reduxStore.getState().user.isMasquerading) return;
+  if (reduxStore.getState().user.isMasquerading) { return; }
 
   try {
     const token = await getToken();

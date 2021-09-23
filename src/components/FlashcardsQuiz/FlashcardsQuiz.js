@@ -121,11 +121,11 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
     let result = 0;
 
     for (let i = quizData.match.qIds.length - 1; i >= 0; i -= 1) {
-      if (matchSelections[i] === undefined) result += 1;
+      if (matchSelections[i] === undefined) { result += 1; }
     }
 
     for (let i = quizData.choice.length - 1; i >= 0; i -= 1) {
-      if (choiceSelections[quizData.choice[i].qId] === undefined) result += 1;
+      if (choiceSelections[quizData.choice[i].qId] === undefined) { result += 1; }
     }
 
     return result;
@@ -133,8 +133,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   // Callbacks
   const initQuizData = useCallback((count) => {
-    if (count < 1)
-      throw new Error('Number of cards should be greater than zero');
+    if (count < 1) { throw new Error('Number of cards should be greater than zero'); }
 
     const matchCount = _.min([
       _.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]),
@@ -293,7 +292,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   );
 
   const renderImageIcon = (imageUrl) => {
-    if (!imageUrl) return null;
+    if (!imageUrl) { return null; }
 
     return (
       <img

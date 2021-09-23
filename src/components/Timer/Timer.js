@@ -63,8 +63,7 @@ const Timer = ({ defaultStatus }) => {
       if (
         defaultStatus === TIMER_STATUS.PAUSED &&
         (st === TIMER_STATUS.INITIALIZED || st === TIMER_STATUS.TIME_UP)
-      )
-        return st;
+      ) { return st; }
       return defaultStatus;
     });
   }, [defaultStatus]);
@@ -81,7 +80,7 @@ const Timer = ({ defaultStatus }) => {
     const intervalId = setInterval(() => {
       if (status === TIMER_STATUS.STARTED) {
         setCurrentSeconds((seconds) => {
-          if (seconds === 1) setStatus(TIMER_STATUS.TIME_UP);
+          if (seconds === 1) { setStatus(TIMER_STATUS.TIME_UP); }
           return seconds > 0 ? seconds - 1 : seconds;
         });
       }

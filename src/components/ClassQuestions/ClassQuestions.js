@@ -30,7 +30,7 @@ const ClassQuestions = ({ classId }) => {
   const [shareData, setShareData] = useState(null);
 
   const classData = useMemo(() => {
-    if (!classId) return null;
+    if (!classId) { return null; }
     return myClasses.find((item) => item.classId === classId);
   }, [myClasses, classId]);
 
@@ -64,7 +64,7 @@ const ClassQuestions = ({ classId }) => {
       );
       setFeedList((data) =>
         data.map((item) => {
-          if (item.feedId !== feedId) return item;
+          if (item.feedId !== feedId) { return item; }
           return {
             ...item,
             bookmarked: !bookmarked

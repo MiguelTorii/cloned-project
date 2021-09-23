@@ -55,8 +55,8 @@ class ProfilePosts extends React.PureComponent<Props> {
     } = this.props;
 
     if (posts.length === 0) {
-      if (isBookmarks)
-        return (
+      if (isBookmarks) {
+return (
           <div className={cx(classes.container, classes.nothing)}>
             <Typography variant="h6" color="textPrimary" align="center">
               It looks like you don't have any bookmarks yet. Once you find a
@@ -65,6 +65,7 @@ class ProfilePosts extends React.PureComponent<Props> {
             </Typography>
           </div>
         );
+}
 
       return (
         <div className={cx(classes.container, classes.nothing)}>

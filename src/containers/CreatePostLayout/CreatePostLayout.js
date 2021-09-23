@@ -163,10 +163,11 @@ const CreatePostLayout = ({
       const newClassList = {};
       const currentClassList = classList.filter((cl) => cl.isCurrent);
       currentClassList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-          cl.section.forEach((s) => {
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+cl.section.forEach((s) => {
             newClassList[s.sectionId] = cl;
           });
+}
       });
       return Object.keys(newClassList).map((sectionId) => ({
           ...newClassList[sectionId],

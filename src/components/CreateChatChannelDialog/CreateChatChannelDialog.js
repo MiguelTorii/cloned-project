@@ -40,8 +40,7 @@ const CreateChatChannelDialog = ({
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group');
-    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+    if (users.length > 1 && chatType === 'single') { setChatType('group'); } else if (users.length <= 1 && chatType === 'group') { setChatType('single'); }
   }, [users, chatType]);
 
   useEffect(() => {
@@ -61,16 +60,15 @@ const CreateChatChannelDialog = ({
     const ordered = users.options
       .filter((option) => !currentGroupMemberIds.includes(option.userId))
       .sort((a, b) => {
-        if (a.relationship && !b.relationship) return -1;
-        if (!a.relationship && b.relationship) return 1;
+        if (a.relationship && !b.relationship) { return -1; }
+        if (!a.relationship && b.relationship) { return 1; }
         return 0;
       });
     return { options: ordered, hasMore: false };
   };
 
   const handleSubmit = () => {
-    if (users.length === 0) setError(true);
-    else {
+    if (users.length === 0) { setError(true); } else {
       setError(false);
       onSubmit({ chatType, name, type, selectedUsers: users });
       setName('');

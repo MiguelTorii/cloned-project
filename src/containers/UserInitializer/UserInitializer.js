@@ -105,10 +105,8 @@ const UserInitializer = ({
   useEffect(() => {
     let timeoutId = null;
 
-    if (viewedOnboarding) setOnboardingPopupOpen(false);
-    else if (viewedOnboarding === false) {
-      if (!chatLanding) setOnboardingPopupOpen(true);
-      else {
+    if (viewedOnboarding) { setOnboardingPopupOpen(false); } else if (viewedOnboarding === false) {
+      if (!chatLanding) { setOnboardingPopupOpen(true); } else {
         // Since it is delayed 5 seconds, it shows up after 6 seconds to make it natural.
         timeoutId = setTimeout(() => {
           setOnboardingPopupOpen(true);
@@ -128,7 +126,7 @@ const UserInitializer = ({
       await import('./custom-widget.css');
     }
 
-    if (userId) loadStyle();
+    if (userId) { loadStyle(); }
   }, [userId]);
   useEffect(() => {
     setWidgetUrl(userId ? LOGGED_IN_WIDGET_URL : LOGGED_OUT_WIDGET_URL);
@@ -140,7 +138,7 @@ const UserInitializer = ({
     const oldScript = document.querySelector(
       `script[src="${userId ? LOGGED_OUT_WIDGET_URL : LOGGED_IN_WIDGET_URL}"]`
     );
-    if (oldScript) oldScript.remove();
+    if (oldScript) { oldScript.remove(); }
   }, [userId]);
 
   useEffect(() => {
@@ -184,12 +182,12 @@ const UserInitializer = ({
       })();
     }
 
-    if (!userId) window.FreshworksWidget('show', 'launcher');
+    if (!userId) { window.FreshworksWidget('show', 'launcher'); }
   }, [userId, status]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (userId) window.FreshworksWidget('hide', 'launcher');
+      if (userId) { window.FreshworksWidget('hide', 'launcher'); }
     }, 1000);
     return () => clearTimeout(timer);
   }, [userId]);
@@ -202,14 +200,14 @@ const UserInitializer = ({
     const {
       data: { updateProfile }
     } = user;
-    if (updateProfile.length > 0) setOpen(true);
+    if (updateProfile.length > 0) { setOpen(true); }
   }, [user]);
 
   useEffect(() => {
     const init = async () => {
       const loggedIn = await checkUserSession();
       if (loggedIn) {
-        if (userId !== '') handleCheckUpdate();
+        if (userId !== '') { handleCheckUpdate(); }
       }
 
       window.addEventListener('resize', updateDimensions);
@@ -221,7 +219,7 @@ const UserInitializer = ({
   }, []);
 
   useEffect(() => {
-    if (userId !== '') handleCheckUpdate();
+    if (userId !== '') { handleCheckUpdate(); }
   }, [handleCheckUpdate, userId]);
 
   useEffect(() => {
@@ -282,7 +280,7 @@ const UserInitializer = ({
     data: { updateProfile, segment }
   } = user;
 
-  if (userId === '' || campaign.landingPageCampaign === null) return null;
+  if (userId === '' || campaign.landingPageCampaign === null) { return null; }
 
   const renderForm = () => (
     <>

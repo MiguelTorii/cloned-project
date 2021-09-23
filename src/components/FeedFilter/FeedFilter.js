@@ -105,7 +105,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
       const selectedUserClasses = userClasses.map((uc) => {
         const { classId } = JSON.parse(uc);
         const sc = classList.find((c) => classId === c.classId);
-        if (!sc) return null;
+        if (!sc) { return null; }
         return {
           ...sc,
           sectionId: sc.section?.[0]?.sectionId
@@ -247,8 +247,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
   getFilterCount = () => {
     const { newClassExperience, userClasses, postTypes } = this.props;
     let count = 0;
-    if (!newClassExperience && userClasses.length > 0) count += 1;
-    if (postTypes.length > 0) count += 1;
+    if (!newClassExperience && userClasses.length > 0) { count += 1; }
+    if (postTypes.length > 0) { count += 1; }
     return count;
   };
 

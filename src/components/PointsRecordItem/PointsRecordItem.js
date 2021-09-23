@@ -24,10 +24,8 @@ const PointsRecordItem = ({ data }: Props) => {
       .duration(moment().diff(moment.utc(data.date)))
       .asMinutes();
 
-    if (minutes < 60)
-      return moment.duration(-minutes, 'minutes').humanize(true);
-    if (minutes < 60 * 24)
-      return moment.duration(-minutes / 60, 'hours').humanize(true);
+    if (minutes < 60) { return moment.duration(-minutes, 'minutes').humanize(true); }
+    if (minutes < 60 * 24) { return moment.duration(-minutes / 60, 'hours').humanize(true); }
     return moment.duration(-minutes / 1440, 'days').humanize(true);
   }, [data]);
 

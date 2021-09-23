@@ -18,9 +18,9 @@ import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../_styles/Workflow/WorkflowListItem';
 
 const getTitle = (downMd, downSm, downXs, title) => {
-  if (downXs) return title;
-  if (downSm) return title.substr(0, 45);
-  if (downMd) return title.substr(0, 75);
+  if (downXs) { return title; }
+  if (downSm) { return title.substr(0, 45); }
+  if (downMd) { return title.substr(0, 75); }
   return title;
 };
 

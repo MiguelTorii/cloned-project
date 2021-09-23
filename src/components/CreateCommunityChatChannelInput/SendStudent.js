@@ -63,8 +63,7 @@ const CreateChatChannelInput = ({
   // ONE_TOUCH_SEND_CHAT
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group');
-    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+    if (users.length > 1 && chatType === 'single') { setChatType('group'); } else if (users.length <= 1 && chatType === 'group') { setChatType('single'); }
   }, [users, chatType]);
 
   const isShow = useMemo(
@@ -107,8 +106,8 @@ const CreateChatChannelInput = ({
         };
       });
       const ordered = options.sort((a, b) => {
-        if (a.relationship && !b.relationship) return -1;
-        if (!a.relationship && b.relationship) return 1;
+        if (a.relationship && !b.relationship) { return -1; }
+        if (!a.relationship && b.relationship) { return 1; }
         return 0;
       });
       return {
@@ -168,8 +167,7 @@ const CreateChatChannelInput = ({
   ]);
 
   const handleSubmit = useCallback(async () => {
-    if (users.length === 0) setError(true);
-    else {
+    if (users.length === 0) { setError(true); } else {
       setError(false);
       await onSubmit({ chatType, name, type, selectedUsers: users });
       setName('');

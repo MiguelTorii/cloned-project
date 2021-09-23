@@ -71,16 +71,15 @@ const UserNotesEditor = ({
   useEffect(() => setDebouncedNote(note), [note, setDebouncedNote]);
 
   const renderSaved = useMemo(() => {
-    if (savedState === 'hidden') return null;
-    if (savedState === 'saving')
-      return <div className={classes.lastSaved}>Saving...</div>;
+    if (savedState === 'hidden') { return null; }
+    if (savedState === 'saving') { return <div className={classes.lastSaved}>Saving...</div>; }
     return <div className={classes.lastSaved}>Last Saved {lastSave}</div>;
   }, [classes.lastSaved, lastSave, savedState]);
 
   useEffect(() => {
     setLastSave(timeFromNow(currentNote));
     const interval = setInterval(() => {
-      if (currentNote) setLastSave(timeFromNow(curNoteRef.current));
+      if (currentNote) { setLastSave(timeFromNow(curNoteRef.current)); }
     }, 60000);
     return () => {
       clearInterval(interval);
@@ -241,7 +240,7 @@ const UserNotesEditor = ({
 
   const hasNote = useMemo(() => {
     const hasNote = currentNote !== null;
-    if (hasNote) setFormulasColor('Black');
+    if (hasNote) { setFormulasColor('Black'); }
     return hasNote;
   }, [currentNote]);
   // const [menuAnchor, setMenuAchor] = useState(null)

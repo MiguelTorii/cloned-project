@@ -28,11 +28,12 @@ class ChatChannelAddMembers extends React.PureComponent<Props, State> {
   };
 
   handleLoadOptions = async ({ query, from }) => {
-    if (query.trim() === '' || query.trim().length < 3)
-      return {
+    if (query.trim() === '' || query.trim().length < 3) {
+return {
         options: [],
         hasMore: false
       };
+}
     const {
       user: {
         data: { userId, schoolId }

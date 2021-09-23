@@ -82,7 +82,7 @@ const ViewShareLink = ({
   }, [sharelinkId]);
 
   const handleBookmark = async () => {
-    if (!shareLink) return;
+    if (!shareLink) { return; }
     const { feedId, bookmarked } = shareLink;
     try {
       setShareLink({ ...shareLink, bookmarked: !bookmarked });
@@ -105,12 +105,13 @@ const ViewShareLink = ({
     setDeletePost(false);
   };
 
-  if (!shareLink)
-    return (
+  if (!shareLink) {
+return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+}
 
   const {
     feedId,

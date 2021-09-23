@@ -20,7 +20,7 @@ const HomeGreetings = () => {
   }, []);
 
   const greetingData = useMemo(() => {
-    if (!data) return <Box />;
+    if (!data) { return <Box />; }
     return (
       <Box mr={2}>
         <Typography variant="h6" className={classes.greetingTitle} paragraph>

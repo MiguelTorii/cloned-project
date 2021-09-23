@@ -61,13 +61,11 @@ class Reminders extends React.PureComponent<Props, State> {
     if (
       this.handleFetchReminders.cancel &&
       typeof this.handleFetchReminders.cancel === 'function'
-    )
-      this.handleFetchReminders.cancel();
+    ) { this.handleFetchReminders.cancel(); }
     if (
       this.handleUpdateDB.cancel &&
       typeof this.handleUpdateDB.cancel === 'function'
-    )
-      this.handleUpdateDB.cancel();
+    ) { this.handleUpdateDB.cancel(); }
   };
 
   handlePoints = (res) => {
@@ -193,7 +191,7 @@ class Reminders extends React.PureComponent<Props, State> {
     this.setState({ loading: true });
     try {
       const res = await createReminder({ userId, title, label, dueDate });
-      if (onboardingListVisible) getOnboardingList();
+      if (onboardingListVisible) { getOnboardingList(); }
       this.handlePoints(res);
       await this.handleFetchReminders();
     } finally {
@@ -212,9 +210,8 @@ class Reminders extends React.PureComponent<Props, State> {
     } = this.props;
     const { list, loading, reminders } = this.state;
 
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
-      return 'Oops, there was an error loading your data, please try again.';
+    if (isLoading) { return <CircularProgress size={12} />; }
+    if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
     return (
       <div className={classes.root}>

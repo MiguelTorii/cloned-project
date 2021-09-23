@@ -86,7 +86,7 @@ const FlashcardsListEditor = ({
   );
 
   const handleGoToNextCard = useCallback(() => {
-    if (readOnly) return;
+    if (readOnly) { return; }
 
     const modalElement = document.getElementById('flashcards-edit-modal');
     const { index, card } = activeFlashcard;
@@ -123,12 +123,12 @@ const FlashcardsListEditor = ({
   }, [activeFlashcard, setActiveFlashcard, handleAddNewDeck, readOnly]);
 
   const handleGoToPrevCard = useCallback(() => {
-    if (readOnly) return;
+    if (readOnly) { return; }
 
     const modalElement = document.getElementById('flashcards-edit-modal');
     const { index, card } = activeFlashcard;
 
-    if (index === null) return;
+    if (index === null) { return; }
 
     if (card === EDITOR_TYPES.ANSWER) {
       setActiveFlashcard({
@@ -154,7 +154,7 @@ const FlashcardsListEditor = ({
   }, [activeFlashcard, setActiveFlashcard, readOnly]);
 
   const handleOutsideClick = useCallback(() => {
-    if (readOnly) return;
+    if (readOnly) { return; }
 
     setActiveFlashcard({
       index: null,

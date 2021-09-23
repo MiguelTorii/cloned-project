@@ -72,7 +72,7 @@ const ClassNotes = ({ classData, arrayIndex }) => {
   }, [sectionId, classData, createNewNote]);
 
   const renderNotes = useCallback(() => {
-    if (!expanded) return null;
+    if (!expanded) { return null; }
     if (loading) {
       return <LoadingSpin />;
     }

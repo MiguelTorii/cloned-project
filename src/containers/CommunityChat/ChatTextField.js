@@ -65,7 +65,7 @@ const ChatTextField = ({
   );
 
   const handleOpenInputFile = useCallback(() => {
-    if (fileInput.current) fileInput.current.click();
+    if (fileInput.current) { fileInput.current.click(); }
   }, []);
 
   const handleKeyDown = useCallback(

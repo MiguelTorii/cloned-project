@@ -109,7 +109,7 @@ const RichTextEditor = ({
       );
     }
 
-    if (readOnly) return null;
+    if (readOnly) { return null; }
 
     return <IconImage className={classes.imageIcon} />;
   };

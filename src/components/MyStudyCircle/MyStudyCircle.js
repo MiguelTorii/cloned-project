@@ -44,10 +44,10 @@ class MyStudyCircle extends React.PureComponent<Props> {
   renderContent = () => {
     const { classes, isLoading, circle } = this.props;
 
-    if (isLoading) return <CircularProgress />;
+    if (isLoading) { return <CircularProgress />; }
 
-    if (circle.length === 0)
-      return (
+    if (circle.length === 0) {
+return (
         <div className={classes.empty}>
           <Typography variant="h6" paragraph align="center">
             You haven’t added anyone to your study circle yet! Check back here
@@ -63,6 +63,7 @@ class MyStudyCircle extends React.PureComponent<Props> {
           </Button>
         </div>
       );
+}
 
     return (
       <List dense className={classes.list}>

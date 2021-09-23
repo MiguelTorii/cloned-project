@@ -14,7 +14,7 @@ const toEventData = (eventName: string, props: object): EventData => {
   let objectId = '';
   const customProps = {};
 
-  if (props.Length) customProps.duration_ms = parseInt(props.Length, 10) * 1000;
+  if (props.Length) { customProps.duration_ms = parseInt(props.Length, 10) * 1000; }
 
   if (category === LOG_EVENT_CATEGORIES.CHAT) {
     objectId = props['Channel SID'];

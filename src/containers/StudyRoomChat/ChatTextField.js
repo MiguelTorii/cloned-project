@@ -249,7 +249,7 @@ const ChatTextField = ({
   );
 
   const handleOpenInputFile = useCallback(() => {
-    if (fileInput.current) fileInput.current.click();
+    if (fileInput.current) { fileInput.current.click(); }
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -287,8 +287,8 @@ const ChatTextField = ({
   }, [userId, fileInput, showNotification, files]);
 
   const checkDisabled = useCallback(() => {
-    if (files.length > 0) return false;
-    if (!message && !input) return true;
+    if (files.length > 0) { return false; }
+    if (!message && !input) { return true; }
     return false;
   }, [files, message, input]);
 

@@ -59,7 +59,7 @@ class FeedList extends React.PureComponent<Props, State> {
   };
 
   componentDidUpdate = () => {
-    if (this.mounted && this.selectedRef) this.handleScrollToRef();
+    if (this.mounted && this.selectedRef) { this.handleScrollToRef(); }
   };
 
   componentWillUnmount = () => {
@@ -69,8 +69,8 @@ class FeedList extends React.PureComponent<Props, State> {
   getEmptyState = (pathname) => {
     const { classes, expertMode } = this.props;
 
-    if (expertMode)
-      return (
+    if (expertMode) {
+return (
         <Box
           justifyContent="center"
           alignItems="center"
@@ -102,22 +102,25 @@ class FeedList extends React.PureComponent<Props, State> {
           <LoadImg url={ExpertFeedEmpty} />
         </Box>
       );
+}
 
-    if (pathname === '/bookmarks')
-      return (
+    if (pathname === '/bookmarks') {
+return (
         <EmptyState
           imageUrl={EmptyBookmarks}
           title="When you bookmark posts you can search for them!"
         />
       );
+}
 
-    if (pathname === '/my_posts')
-      return (
+    if (pathname === '/my_posts') {
+return (
         <EmptyState imageUrl={EmptyMyPosts} title="Your posts will appear here">
           After posting, your study material will be here for you to view later
           for an exam
         </EmptyState>
       );
+}
 
     return (
       <EmptyState imageUrl={EmptyFeed} title="">
@@ -259,7 +262,7 @@ class FeedList extends React.PureComponent<Props, State> {
                   data={item}
                   handleShareClick={handleShare}
                   innerRef={(node) => {
-                    if (fromFeedId === item.feedId) this.selectedRef = node;
+                    if (fromFeedId === item.feedId) { this.selectedRef = node; }
                   }}
                   onPostClick={onPostClick}
                   newClassExperience={newClassExperience}

@@ -199,7 +199,7 @@ const RightMenu = ({
 
   const isStudent = useMemo(() => !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS), [permission]);
 
-  if (!channel || !localChannel) return null;
+  if (!channel || !localChannel) { return null; }
 
   return (
     <Grid

@@ -37,7 +37,7 @@ const Status = ({ classes }: { classes: Object }) => {
     init();
   }, []);
 
-  if (!referralStatus) return <div>Loading...</div>;
+  if (!referralStatus) { return <div>Loading...</div>; }
 
   const { subtitle, users } = referralStatus;
 

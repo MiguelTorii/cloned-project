@@ -66,8 +66,7 @@ class AccountForm extends React.PureComponent<Props, State> {
           if (
             value &&
             (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))
-          )
-            match = true;
+          ) { match = true; }
         }
         return match;
       }

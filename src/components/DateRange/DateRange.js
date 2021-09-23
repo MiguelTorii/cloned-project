@@ -68,7 +68,7 @@ class DateRange extends React.PureComponent<Props, State> {
     } else if (date.isAfter(from, 'day')) {
       if (date.isSame(moment(), 'day')) {
         this.setState({ to: moment().utc() });
-      } else this.setState({ to: date });
+      } else { this.setState({ to: date }); }
     }
   };
 

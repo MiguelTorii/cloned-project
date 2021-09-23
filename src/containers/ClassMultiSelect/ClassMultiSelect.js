@@ -45,14 +45,15 @@ const ClassMultiSelect = ({
   const classes = useStyles();
 
   const options = useMemo(() => {
-    if (externalOptions) return externalOptions;
+    if (externalOptions) { return externalOptions; }
     try {
       const classList = {};
       user.userClasses.classList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
-          cl.section.forEach((s) => {
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+cl.section.forEach((s) => {
             classList[s.sectionId] = cl;
           });
+}
       });
       return Object.keys(classList).map((sectionId) => ({
         ...classList[sectionId],
@@ -129,7 +130,7 @@ const ClassMultiSelect = ({
           </>
         )}
         renderTags={(value, getTagProps) => {
-          if (allSelected) return allLabel || 'All Classes Selected';
+          if (allSelected) { return allLabel || 'All Classes Selected'; }
           return value.map(
             (option, index) =>
               option && (

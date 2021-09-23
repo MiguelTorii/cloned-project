@@ -85,9 +85,9 @@ export const updateUser =
 
     let expertMode = false;
 
-    if (isExpert) expertMode = await apiGetExpertMode(user.userId);
+    if (isExpert) { expertMode = await apiGetExpertMode(user.userId); }
 
-    if (isTutor) expertMode = await apiSetExpertMode(user.userId, true);
+    if (isTutor) { expertMode = await apiSetExpertMode(user.userId, true); }
 
     dispatch(setUser({ user, isExpert, expertMode }));
 
@@ -122,14 +122,15 @@ export const signIn =
       const { response = {} } = err;
       const { data = {} } = response;
 
-      if (data.code === 401)
-        return dispatch(
+      if (data.code === 401) {
+return dispatch(
           setError({
             title: "Something doesn't look right",
             body: data.message,
             showSignup: true
           })
         );
+}
       return dispatch(
         setError({
           title: 'Hm, something’s wrong.',
@@ -144,20 +145,21 @@ export const samlLogin =
   async (dispatch: Dispatch) => {
     try {
       const user = await samlSignin(token, isGondor);
-      if (user.jwtToken) dispatch(updateUser({ user }));
+      if (user.jwtToken) { dispatch(updateUser({ user })); }
       return dispatch(push('/', { error: !user.jwtToken }));
     } catch (err) {
       const { response = {} } = err;
       const { data = {} } = response;
 
-      if (data.code === 401)
-        return dispatch(
+      if (data.code === 401) {
+return dispatch(
           setError({
             title: "Something doesn't look right",
             body: data.message,
             showSignup: true
           })
         );
+}
       return dispatch(
         setError({ title: 'Unknown error', body: 'Please contact us' })
       );

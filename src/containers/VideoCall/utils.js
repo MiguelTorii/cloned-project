@@ -126,7 +126,7 @@ export const removeParticipant = (state, participant) => update(state, {
     },
     lockedParticipant: {
       $apply: (b) => {
-        if (b === participant.sid) return '';
+        if (b === participant.sid) { return ''; }
         return b;
       }
     }
@@ -161,7 +161,7 @@ export const removeTrack = (state, participant, track, local = false) => update(
     lockedParticipant: {
       $apply: (b) => {
         const id = local ? track.id : track.sid;
-        if (b === id || b === participant.sid) return '';
+        if (b === id || b === participant.sid) { return ''; }
         return b;
       }
     }

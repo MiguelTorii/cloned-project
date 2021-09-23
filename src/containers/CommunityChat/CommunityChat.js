@@ -114,7 +114,7 @@ const CommunityChat = ({
       : null;
 
     if (targetSelectedChannel) {
-      if (['xs'].includes(width)) setLeftSpace(0);
+      if (['xs'].includes(width)) { setLeftSpace(0); }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel, width, isLoading]);
@@ -127,16 +127,14 @@ const CommunityChat = ({
   const handleOpenRightPanel = useCallback(() => {
     if (['xs', 'sm'].includes(width)) {
       setRightSpace(0);
-    } else if (!rightSpace) setRightSpace(3);
-    else setRightSpace(0);
+    } else if (!rightSpace) { setRightSpace(3); } else { setRightSpace(0); }
   }, [rightSpace, width]);
 
   useEffect(() => {
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
-        if (currentCommunityChannel) setLeftSpace(0);
-        else setLeftSpace(curSize);
+        if (currentCommunityChannel) { setLeftSpace(0); } else { setLeftSpace(curSize); }
       } else {
         setLeftSpace(curSize);
       }
@@ -146,8 +144,7 @@ const CommunityChat = ({
       currentCommunityChannel &&
       !isLoading &&
       !['xs', 'sm', 'md'].includes(width)
-    )
-      setRightSpace(3);
+    ) { setRightSpace(3); }
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);

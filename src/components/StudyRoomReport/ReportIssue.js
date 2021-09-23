@@ -76,7 +76,7 @@ const ReportIssue = ({
       const { report_reasons: reportReason = [] } = await getReasons(2);
       setReasonList(reportReason);
     };
-    if (open) loadData();
+    if (open) { loadData(); }
   }, [open]);
 
   const handleSubmit = useCallback(async () => {

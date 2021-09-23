@@ -47,8 +47,8 @@ const ForgotPassword = ({ updateError, signIn, search }) => {
     (field) => (e) => {
       if (e?.target) {
         const { value } = e.target;
-        if (field === 'password') setPassword(value);
-        if (field === 'confirm') setConfirm(value);
+        if (field === 'password') { setPassword(value); }
+        if (field === 'confirm') { setConfirm(value); }
       }
     },
     []

@@ -86,8 +86,8 @@ const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
     );
   }
 
-  if (expertMode)
-    return (
+  if (expertMode) {
+return (
       <Box
         justifyContent="center"
         className={classes.expertContainer}
@@ -120,6 +120,7 @@ const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
         <LoadImg url={ExpertEmptyChat} />
       </Box>
     );
+}
 
   return (
     <div className={classes.container}>

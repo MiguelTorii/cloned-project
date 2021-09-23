@@ -49,7 +49,7 @@ class ProfilePage extends React.Component<Props, State> {
         location: { search = {} }
       }
     } = this.props;
-    if (userId !== '') this.setState({ userId: String(userId) });
+    if (userId !== '') { this.setState({ userId: String(userId) }); }
 
     const values = queryString.parse(search);
     const { edit = false } = values;

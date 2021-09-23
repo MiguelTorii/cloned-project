@@ -139,7 +139,9 @@ const Recommendations = () => {
     loadRecommendations();
   }, [loadRecommendations]);
 
-  if (posts.length === 0) return null;
+  if (posts.length === 0) {
+    return null;
+  }
 
   return (
     <>

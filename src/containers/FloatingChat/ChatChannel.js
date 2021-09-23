@@ -173,14 +173,15 @@ class ChatChannel extends React.PureComponent<Props, State> {
           getCampaign({ campaignId: 9 })
         ]);
 
-        if (paginator)
-          this.setState({
+        if (paginator) {
+this.setState({
             messages: paginator.items,
             paginator,
             hasMore: !(paginator.items.length < 10),
             videoEnabled:
               campaign.variation_key && campaign.variation_key !== 'hidden'
           });
+}
       } catch (err) {
         console.log(err);
       }
@@ -193,7 +194,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       }
 
       channel.on('messageAdded', (message) => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
@@ -212,7 +213,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
 
       channel.on('typingStarted', (member) => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
 
         const memberId = member?.state?.identity;
         if (memberId) {
@@ -222,7 +223,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
 
       channel.on('typingEnded', () => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         this.setState({ typing: '' });
       });
 
@@ -236,7 +237,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
   };
 
   componentDidUpdate = () => {
-    if (this.mounted && this.end) this.handleScrollToBottom();
+    if (this.mounted && this.end) { this.handleScrollToBottom(); }
   };
 
   componentWillUnmount = () => {
@@ -323,7 +324,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onSend
     } = this.props;
-    if (newChannel) return;
+    if (newChannel) { return; }
 
     this.setState({ loading: true });
 

@@ -116,7 +116,7 @@ const Flashcard = ({
   };
 
   const Animation = ({ children }) => {
-    if (!isAnimating) return children;
+    if (!isAnimating) { return children; }
 
     const { x, y } = calculateOffset();
 

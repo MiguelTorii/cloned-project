@@ -97,9 +97,10 @@ class VideoCall extends React.Component<Props, State> {
 
   initialDevices = async () => {
     try {
-      if (navigator && navigator.mediaDevices)
-        navigator.mediaDevices.ondevicechange =
+      if (navigator && navigator.mediaDevices) {
+navigator.mediaDevices.ondevicechange =
           this.handleUpdateDeviceSelectionOptions;
+}
       const deviceSelectionOptions =
         (await this.handleUpdateDeviceSelectionOptions()) || {};
       for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
@@ -220,7 +221,7 @@ class VideoCall extends React.Component<Props, State> {
         selectedvideoinput: videoinput
       });
       client.on('tokenAboutToExpire', async () => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         const newToken = await renewTwilioToken({
           userId
         });
@@ -325,12 +326,13 @@ class VideoCall extends React.Component<Props, State> {
       }
     } = this.props;
     const { loading, errorDialog, errorTitle, errorBody } = this.state;
-    if (userId === '')
-      return (
+    if (userId === '') {
+return (
         <div className={classes.loading}>
           <CircularProgress />
         </div>
       );
+}
 
     return (
       <div className={classes.root}>

@@ -28,14 +28,15 @@ class QuestsCard extends React.PureComponent<Props, State> {
   render() {
     const { classes, userId, data, isLoading } = this.props;
 
-    if (isLoading)
-      return (
+    if (isLoading) {
+return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Paper>
       );
+}
 
     return (
       <Paper className={classes.root} elevation={1}>

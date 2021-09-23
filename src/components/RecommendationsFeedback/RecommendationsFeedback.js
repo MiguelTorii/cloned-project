@@ -104,7 +104,7 @@ const RecommendationsFeedback = ({ feedId }) => {
     );
   };
 
-  if (hidden) return null;
+  if (hidden) { return null; }
 
   return (
     <Paper elevation={0} className={classes.root}>

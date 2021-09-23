@@ -28,7 +28,7 @@ class CanvasPage extends React.Component<Props, State> {
         params: { nonce = '' }
       }
     } = this.props;
-    if (nonce !== '') this.setState({ nonce });
+    if (nonce !== '') { this.setState({ nonce }); }
   };
 
   render() {

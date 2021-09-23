@@ -139,8 +139,8 @@ function Option({
     isOnline = false
   } = data || {};
 
-  if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
-    return (
+  if (!noAvatar && (avatar !== '' || initials !== '' || school !== '')) {
+return (
       <ListItem
         alignItems="center"
         button
@@ -180,6 +180,7 @@ function Option({
         />
       </ListItem>
     );
+}
   return (
     <MenuItem
       buttonRef={innerRef}
@@ -234,8 +235,8 @@ function SingleValue({ selectProps, innerProps, children }) {
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
   const { classes, searchClassmate } = selectProps;
-  if (avatar !== '' || initials !== '')
-    return (
+  if (avatar !== '' || initials !== '') {
+return (
       <Chip
         avatar={
           !searchClassmate ? (
@@ -262,6 +263,7 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
         }
       />
     );
+}
   return (
     <Chip
       tabIndex={-1}
@@ -290,7 +292,7 @@ function Menu({ selectProps, children, innerProps }) {
     searchClassmate,
     classes
   } = selectProps;
-  if (options.length === 0 && inputValue === '') return null;
+  if (options.length === 0 && inputValue === '') { return null; }
   return (
     <Paper
       square
@@ -415,7 +417,7 @@ const SelectClassmates = ({
           isDisabled={isDisabled}
           cacheUniq={cacheUniq}
           noOptionsMessage={({ inputValue: input }) => {
-            if (input !== '') return 'No results, please try again';
+            if (input !== '') { return 'No results, please try again'; }
             return '';
           }}
           isSchoolSearch={isSchoolSearch}

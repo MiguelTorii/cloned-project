@@ -25,7 +25,7 @@ export const getReferralProgram = async (): Promise<Object> => {
       }
     });
 
-    if (result && result.data) return result.data;
+    if (result && result.data) { return result.data; }
 
     return null;
   } catch (err) {
@@ -42,7 +42,7 @@ export const getReferralStatus = async (): Promise<Object> => {
       }
     });
 
-    if (result && result.data) return result.data;
+    if (result && result.data) { return result.data; }
 
     return null;
   } catch (err) {

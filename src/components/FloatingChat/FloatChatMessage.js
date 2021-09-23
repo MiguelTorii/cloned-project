@@ -60,8 +60,7 @@ const ChatMessage = ({
       /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/gi;
     return text.replace(urlRegex, (url) => {
       const urlIndex = text.indexOf(url);
-      if (text.substr(urlIndex - 5, urlIndex - 1).indexOf('src') === -1)
-        return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
+      if (text.substr(urlIndex - 5, urlIndex - 1).indexOf('src') === -1) { return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`; }
       return url;
     });
   };

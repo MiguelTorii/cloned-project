@@ -64,8 +64,8 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const { value, selected, selectedDate } = this.state;
-    if (value.trim() === '') return;
-    if (!selectedDate._isValid) return;
+    if (value.trim() === '') { return; }
+    if (!selectedDate._isValid) { return; }
     onSubmit({
       title: value,
       dueDate: selectedDate.valueOf(),

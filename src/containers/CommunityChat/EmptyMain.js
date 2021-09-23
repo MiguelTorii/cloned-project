@@ -38,8 +38,8 @@ const EmptyMain = ({ newChannel, otherUser, expertMode }) => {
     );
   }
 
-  if (expertMode)
-    return (
+  if (expertMode) {
+return (
       <Box
         justifyContent="center"
         alignItems="center"
@@ -77,6 +77,7 @@ const EmptyMain = ({ newChannel, otherUser, expertMode }) => {
         </Box>
       </Box>
     );
+}
 
   return (
     <div className={classes.container}>

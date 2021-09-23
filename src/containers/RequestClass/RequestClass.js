@@ -54,7 +54,7 @@ class RequestClass extends React.PureComponent<Props, State> {
     const classes = ['class1', 'class2', 'class3', 'class4', 'class5'];
     const results = [];
     classes.forEach((item) => {
-      if (state[item].trim() !== '') results.push(state[item]);
+      if (state[item].trim() !== '') { results.push(state[item]); }
     });
     if (results.length > 0) {
       logEvent({
@@ -143,7 +143,7 @@ class RequestClass extends React.PureComponent<Props, State> {
     const { classes, open } = this.props;
     const { submited } = this.state;
 
-    if (!open) return null;
+    if (!open) { return null; }
 
     return (
       <ErrorBoundary>

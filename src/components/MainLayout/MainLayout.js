@@ -52,8 +52,7 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => {
       '/create/question',
       '/create/flashcards'
     ].includes(window.location.pathname)
-  )
-    document.title = 'CircleIn';
+  ) { document.title = 'CircleIn'; }
   return <RouterLink to={link} {...props} ref={ref} />;
 });
 
@@ -230,8 +229,7 @@ const MainLayout = ({
   }, []);
 
   const handleOpenHowEarnPoints = useCallback(() => {
-    if (!expertMode) window.open('https://support.circleinapp.com/', '_blank');
-    else window.open('https://tutors.circleinapp.com/home', '_blank');
+    if (!expertMode) { window.open('https://support.circleinapp.com/', '_blank'); } else { window.open('https://tutors.circleinapp.com/home', '_blank'); }
     // if (helpLink) {
     // window.open(helpLink, '_blank')
     // } else {

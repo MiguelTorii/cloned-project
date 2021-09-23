@@ -278,7 +278,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       noteId
     } = this.props;
     try {
-      if (!noteId) return;
+      if (!noteId) { return; }
       this.setState({ isEdit: true });
       const photoNote = await getNotes({
         userId,
@@ -385,7 +385,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         let hasError = false;
         if (this.canBatchPost() && resClasses) {
           resClasses.forEach((r) => {
-            if (r.status !== 'Success') hasError = true;
+            if (r.status !== 'Success') { hasError = true; }
           });
           if (hasError || resClasses.length === 0) {
             setIsPosting(false);
@@ -522,8 +522,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { noteId } = this.props;
-    if (noteId) this.updateNotes();
-    else this.createNotes();
+    if (noteId) { this.updateNotes(); } else { this.createNotes(); }
   };
 
   handleTextChange = (name) => (event) => {
@@ -569,7 +568,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const selected = user.userClasses.classList.find(
       (c) => c.classId === classId
     );
-    if (selected) this.setState({ classList: [selected] });
+    if (selected) { this.setState({ classList: [selected] }); }
     this.setState({ classId, sectionId });
   };
 
@@ -583,8 +582,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { summary } = this.state;
 
-    if (Number(this.getLeftCharts(summary)) <= 0) return null;
-    if (this.canBatchPost()) return <div />;
+    if (Number(this.getLeftCharts(summary)) <= 0) { return null; }
+    if (this.canBatchPost()) { return <div />; }
 
     return (
       <Typography

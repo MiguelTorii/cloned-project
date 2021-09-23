@@ -98,7 +98,7 @@ const ClassesSelector = ({
   const [openRequestClass, setOpenRequestClass] = useState(false);
 
   useEffect(() => {
-    if (classId && sectionId) setValue(JSON.stringify({ classId, sectionId }));
+    if (classId && sectionId) { setValue(JSON.stringify({ classId, sectionId })); }
   }, [classId, sectionId]);
 
   const handleLoadClasses = useCallback(async () => {
@@ -109,8 +109,7 @@ const ClassesSelector = ({
         segment
       });
       setUserClasses(userClasses);
-      if (classId && sectionId)
-        setValue(JSON.stringify({ classId, sectionId }));
+      if (classId && sectionId) { setValue(JSON.stringify({ classId, sectionId })); }
     } catch (err) {
       console.log(err);
     }
@@ -118,7 +117,7 @@ const ClassesSelector = ({
 
   useEffect(() => {
     const init = async () => {
-      if (pathname.includes('/edit')) setIsEdit(true);
+      if (pathname.includes('/edit')) { setIsEdit(true); }
       await handleLoadClasses();
     };
 
@@ -158,9 +157,8 @@ const ClassesSelector = ({
     setOpenRequestClass(false);
   }, []);
 
-  if (isLoading) return <CircularProgress size={12} />;
-  if (userId === '' || error)
-    return 'Oops, there was an error loading your data, please try again.';
+  if (isLoading) { return <CircularProgress size={12} />; }
+  if (userId === '' || error) { return 'Oops, there was an error loading your data, please try again.'; }
 
   return (
     <>

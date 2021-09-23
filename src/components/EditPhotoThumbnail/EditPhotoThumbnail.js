@@ -109,13 +109,14 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
 
   renderCreateIcon = () => {
     const { classes, loaded } = this.props;
-    if (loaded)
-      return (
+    if (loaded) {
+return (
         <DoneIcon
           className={cx(classes.icon, classes.green)}
           fontSize="small"
         />
       );
+}
     return <CreateIcon className={classes.icon} fontSize="small" />;
   };
 

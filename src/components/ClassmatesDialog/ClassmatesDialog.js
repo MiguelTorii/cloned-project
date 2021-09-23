@@ -44,7 +44,7 @@ const ClassmatesDialog = ({
   useEffect(() => {
     const initClassmates = async () => {
       const { classId, sectionId } = decypherClass();
-      if (!sectionId && !classId) return;
+      if (!sectionId && !classId) { return; }
       const res = await getClassmates({
         sectionId,
         classId
@@ -59,7 +59,7 @@ const ClassmatesDialog = ({
 
     const initStudents = async () => {
       const { classId, sectionId } = decypherClass();
-      if (!sectionId && !classId) return;
+      if (!sectionId && !classId) { return; }
       const res = await getClassmates({
         sectionId,
         classId
@@ -102,8 +102,7 @@ const ClassmatesDialog = ({
     const init = async () => {
       if (selectedClasses.length > 0) {
         initSelectedClassesClassmates();
-      } else if (state === 'classmate') initClassmates();
-      else initStudents();
+      } else if (state === 'classmate') { initClassmates(); } else { initStudents(); }
 
       const aCampaign = await getCampaign({ campaignId: 9 });
       setCampaign(aCampaign);
@@ -112,7 +111,7 @@ const ClassmatesDialog = ({
       setReferralProgram(res);
     };
 
-    if (state && !searchKey) init();
+    if (state && !searchKey) { init(); }
   }, [
     searchKey,
     selectedClasses,
@@ -122,10 +121,10 @@ const ClassmatesDialog = ({
     userId
   ]);
 
-  if (!campaign) return null;
+  if (!campaign) { return null; }
 
   const Invite = () => {
-    if (!referralProgram || !referralProgram.is_visible) return null;
+    if (!referralProgram || !referralProgram.is_visible) { return null; }
 
     const { code, img_url: imageUrl, title, subtitle } = referralProgram;
 

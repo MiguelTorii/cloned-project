@@ -12,7 +12,7 @@ const usePreloadImage = (imageToLoad) => {
   const mounted = useRef(true);
   const eventWrapper = useCallback(
     (methodToCall) => () => {
-      if (mounted.current) methodToCall(true);
+      if (mounted.current) { methodToCall(true); }
     },
     []
   );

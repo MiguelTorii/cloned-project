@@ -149,8 +149,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   }, [open, userId]);
 
   const handleButtonClick = async () => {
-    if (activeStep === 0) setActiveStep(activeStep + 1);
-    else updateOnboarding();
+    if (activeStep === 0) { setActiveStep(activeStep + 1); } else { updateOnboarding(); }
   };
 
   const currentStep = STEPS[activeStep];

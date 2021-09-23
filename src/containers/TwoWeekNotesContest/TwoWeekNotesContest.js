@@ -68,7 +68,7 @@ class TwoWeekNotesContest extends React.PureComponent<Props, State> {
       }
     } = this.props;
 
-    if (userId === '') return null;
+    if (userId === '') { return null; }
 
     const { open } = this.state;
 

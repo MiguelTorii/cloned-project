@@ -177,7 +177,7 @@ const SelectSchool = ({
 
   // Deep link to specific school
   useEffect(() => {
-    if (isDeepLink && school?.id) onClick();
+    if (isDeepLink && school?.id) { onClick(); }
   }, [school, isDeepLink, onClick]);
 
   const loginAsExternal = useCallback(() => {

@@ -227,7 +227,7 @@ const AddRemoveClasses = (props: Props) => {
   useEffect(() => {
     if (open) {
       fetchSubjects();
-      if (userId) fetchUserClasses();
+      if (userId) { fetchUserClasses(); }
     }
     // eslint-disable-next-line
   }, [userId, open]);

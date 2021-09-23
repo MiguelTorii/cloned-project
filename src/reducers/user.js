@@ -256,7 +256,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       });
     }
     case userActions.BOOKMARK_FLASHCARDS: {
-      if (!state.flashcards.ids.includes(action.meta.feedId)) return state;
+      if (!state.flashcards.ids.includes(action.meta.feedId)) { return state; }
       return update(state, {
         flashcards: {
           byId: {

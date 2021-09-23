@@ -24,7 +24,7 @@ export const getUserProfile = async ({
   userId: string
 }): Promise<Profile> => {
   try {
-    if (!userId) throw new Error('No userId specified');
+    if (!userId) { throw new Error('No userId specified'); }
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
       headers: {
@@ -147,7 +147,7 @@ export const searchUsers = async ({
 const getClassesCache = () => {
   try {
     const { result, expires } = JSON.parse(store.get('CLASSES_CACHE'));
-    if (moment().valueOf() > expires) return null;
+    if (moment().valueOf() > expires) { return null; }
     return result;
   } catch (e) {
     return null;
@@ -186,7 +186,7 @@ export const getUserClasses = async ({
         }
       );
       setClassesCache(result);
-    } else result = cache;
+    } else { result = cache; }
 
     const {
       data: { classes = [], permissions = {}, empty_state: empty = {} }

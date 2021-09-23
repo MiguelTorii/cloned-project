@@ -32,8 +32,7 @@ const DraggableCard = ({
   const [{ isOver }, dropRef] = useDrop({
     accept: DRAG_TYPE_CARD,
     drop: (item) => {
-      if (item.cardId === cardId) onCorrectDrop(item.index, index);
-      else onIncorrectDrop(item.index, index);
+      if (item.cardId === cardId) { onCorrectDrop(item.index, index); } else { onIncorrectDrop(item.index, index); }
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver()

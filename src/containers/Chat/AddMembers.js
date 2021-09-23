@@ -39,11 +39,12 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
 
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
-      if (query.trim() === '' || query.trim().length < 3)
-        return {
+      if (query.trim() === '' || query.trim().length < 3) {
+return {
           options: [],
           hasMore: false
         };
+}
 
       const users = await searchUsers({
         userId,

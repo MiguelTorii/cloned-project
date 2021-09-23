@@ -109,7 +109,7 @@ const EmptyFeed = ({
   };
 
   const openFileDialog = () => {
-    if (fileRef.current) fileRef.current.click();
+    if (fileRef.current) { fileRef.current.click(); }
   };
 
   useEffect(() => {
@@ -121,12 +121,11 @@ const EmptyFeed = ({
   }, [classList, classId]);
 
   useEffect(() => {
-    if (channels.length > 0) setChatStep(true);
+    if (channels.length > 0) { setChatStep(true); }
   }, [channels]);
 
   useEffect(() => {
-    if (items.length > 0) setHide(true);
-    else setHide(false);
+    if (items.length > 0) { setHide(true); } else { setHide(false); }
   }, [items]);
 
   const handleChannelCreated = ({ channel }) => handleRoomClick(channel);
@@ -143,7 +142,7 @@ const EmptyFeed = ({
       category: 'User',
       type: 'Invited'
     });
-    if (success) fetchClasses();
+    if (success) { fetchClasses(); }
   };
 
   const [moreAnchor, setMoreAnchor] = useState(null);
@@ -161,7 +160,7 @@ const EmptyFeed = ({
       category: 'FeedEmptyState',
       type: 'Removed'
     });
-    if (success) fetchClasses();
+    if (success) { fetchClasses(); }
     handleMenuClose();
     setRemove(true);
   };
@@ -193,8 +192,8 @@ const EmptyFeed = ({
     </Paper>
   );
 
-  if (remove) return null;
-  if (hide) return header;
+  if (remove) { return null; }
+  if (hide) { return header; }
 
   return (
     <Paper className={cx(classes.root, classes.marginBottom)} elevation={0}>

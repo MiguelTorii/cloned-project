@@ -131,7 +131,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       }
 
       channel.on('messageAdded', (message) => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
@@ -150,7 +150,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       });
 
       channel.on('typingStarted', (member) => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         member.getUser().then((user) => {
           const { state } = user;
           const { friendlyName } = state;
@@ -159,7 +159,7 @@ class VideoChatChannel extends React.Component<Props, State> {
       });
 
       channel.on('typingEnded', () => {
-        if (!this.mounted) return;
+        if (!this.mounted) { return; }
         this.setState({ typing: '' });
       });
 
@@ -173,7 +173,7 @@ class VideoChatChannel extends React.Component<Props, State> {
   };
 
   componentDidUpdate = (prevProps) => {
-    if (this.mounted && this.end) this.handleScrollToBottom();
+    if (this.mounted && this.end) { this.handleScrollToBottom(); }
     const { channel, open, onUnreadUpdate } = this.props;
     if (prevProps.open !== open && open === true) {
       console.log('update');

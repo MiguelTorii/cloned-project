@@ -13,8 +13,7 @@ const ScrollToTop = ({ scrollElement }) => {
 
   const monitorScroll = useCallback(() => {
     const scrolled = (scrollElement || document.documentElement).scrollTop;
-    if (scrolled > SCROLL_THRESHOLD) setVisible(true);
-    else setVisible(false);
+    if (scrolled > SCROLL_THRESHOLD) { setVisible(true); } else { setVisible(false); }
   }, [scrollElement]);
 
   const handleClick = useCallback(() => {

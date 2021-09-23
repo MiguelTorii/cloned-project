@@ -17,12 +17,13 @@ class AvailableRewards extends React.PureComponent<Props> {
   render() {
     const { classes, rewards, loading, onClick } = this.props;
 
-    if (loading)
-      return (
+    if (loading) {
+return (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       );
+}
 
     return (
       <div className={classes.root}>

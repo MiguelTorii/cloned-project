@@ -59,7 +59,7 @@ class OAuth extends React.Component<Props> {
         data: { userId }
       }
     } = this.props;
-    if (userId !== '') return <Redirect to="/" />;
+    if (userId !== '') { return <Redirect to="/" />; }
     return (
       <main className={classes.main}>
         <CircularProgress />

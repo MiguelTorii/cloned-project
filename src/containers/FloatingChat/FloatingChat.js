@@ -138,7 +138,7 @@ const FloatingChat = ({
 
   const showNotification = useCallback(
     (channel) => {
-      if (!pathname.includes('chat')) return false;
+      if (!pathname.includes('chat')) { return false; }
       if (currentCommunityId === 'chat' || !currentCommunityId) {
         return currentChannel?.sid === channel.sid;
       }
@@ -226,7 +226,7 @@ const FloatingChat = ({
             !local[l]?.twilioChannel?.channelState?.attributes?.community_id
         )
         .sort((a, b) => {
-          if (!local[a].lastMessage.message) return 0;
+          if (!local[a].lastMessage.message) { return 0; }
           return (
             moment(local[b].lastMessage.date).valueOf() -
             moment(local[a].lastMessage.date).valueOf()
@@ -234,7 +234,7 @@ const FloatingChat = ({
         });
       setChannelList(cl);
       cl.forEach((l) => {
-        if (local[l]?.unread) unread += local[l].unread;
+        if (local[l]?.unread) { unread += local[l].unread; }
       });
       setUnread(unread);
     }
@@ -302,7 +302,7 @@ const FloatingChat = ({
         });
       }
     };
-    if (newMessage && prevMessageId !== newMessage.sid) handleMessage();
+    if (newMessage && prevMessageId !== newMessage.sid) { handleMessage(); }
 
     // eslint-disable-next-line
   }, [newMessage, local, prevMessageId]);
@@ -317,8 +317,7 @@ const FloatingChat = ({
       if (
         updateOpenChannelsDebounce.cancel &&
         typeof updateOpenChannelsDebounce.cancel === 'function'
-      )
-        updateOpenChannelsDebounce.cancel();
+      ) { updateOpenChannelsDebounce.cancel(); }
     };
   }, [handleNewChannelClose, updateOpenChannels]);
 
@@ -334,15 +333,16 @@ const FloatingChat = ({
         data: { uuid: prevUuid }
       } = prevChat;
 
-      if (uuid !== prevUuid && uuid !== '') handleCreateChannelOpen('group');
+      if (uuid !== prevUuid && uuid !== '') { handleCreateChannelOpen('group'); }
 
       if (client && profileImage !== '') {
         try {
-          if (client.user.attributes.profileImageUrl !== profileImage)
-            client.user.updateAttributes({
+          if (client.user.attributes.profileImageUrl !== profileImage) {
+client.user.updateAttributes({
               ...client.user.attributes,
               profileImageUrl: profileImage
             });
+}
         } catch (err) {}
       }
     }
@@ -370,7 +370,7 @@ const FloatingChat = ({
         props: { 'Initiated From': 'Profile' }
       });
       const win = window.open(`/video-call/${channel.sid}`, '_blank');
-      if (win && win.focus) win.focus();
+      if (win && win.focus) { win.focus(); }
       if (!win || win.closed || typeof win.closed === 'undefined') {
         push(`/video-call/${channel.sid}`);
       }
@@ -381,7 +381,7 @@ const FloatingChat = ({
     setCreateChat(null);
   };
 
-  if (pathname === '/chat' || userId === '' || !client) return null;
+  if (pathname === '/chat' || userId === '' || !client) { return null; }
 
   return (
     <>
@@ -403,8 +403,7 @@ const FloatingChat = ({
               onRemove={handleRemoveChannel}
               onBlock={handleBlockUser}
               onSend={() => {
-                if (onboardingListVisible)
-                  setTimeout(() => getOnboardingList(), 1000);
+                if (onboardingListVisible) { setTimeout(() => getOnboardingList(), 1000); }
               }}
             />
           ))}

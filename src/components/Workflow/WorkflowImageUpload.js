@@ -124,8 +124,8 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
     }), []);
 
   const handleUploadImages = useCallback(async () => {
-    if (images.length === 0) throw new Error('no images');
-    if (images.length === 0) return false;
+    if (images.length === 0) { throw new Error('no images'); }
+    if (images.length === 0) { return false; }
     setImagesUploading();
     const fileNames = images.map((image) => image.id);
     const result = await getPresignedURLs({

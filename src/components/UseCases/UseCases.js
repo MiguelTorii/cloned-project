@@ -47,7 +47,7 @@ const UseCases = ({
     init();
   }, []);
 
-  if (!campaign) return null;
+  if (!campaign) { return null; }
 
   const videoEnabled =
     campaign.variation_key && campaign.variation_key !== 'hidden';
@@ -102,7 +102,7 @@ const UseCases = ({
 
   const onClickChat = () => {
     const newChat = document.getElementById('circlein-newchat');
-    if (newChat) newChat.click();
+    if (newChat) { newChat.click(); }
   };
 
   return (

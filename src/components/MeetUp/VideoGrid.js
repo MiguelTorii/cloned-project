@@ -47,7 +47,7 @@ const VideoGrid = ({
   const [selectedPage, setSelectedPage] = useState(1);
 
   useEffect(() => {
-    if (dominantSpeaker) setDominant(dominantSpeaker);
+    if (dominantSpeaker) { setDominant(dominantSpeaker); }
 
     const handleWindowResize = () => {
       setWindowWidth(window.innerWidth);
@@ -60,7 +60,7 @@ const VideoGrid = ({
   useEffect(() => {
     if (windowWidth < 700) {
       setPageSize(2);
-    } else setPageSize(12);
+    } else { setPageSize(12); }
   }, [windowWidth]);
 
   useEffect(() => {
@@ -69,10 +69,10 @@ const VideoGrid = ({
         setPageSize(12);
         break;
       case 'speaker-view':
-        if (sharingTrackIds.length) setPageSize(1);
+        if (sharingTrackIds.length) { setPageSize(1); }
         break;
       case 'side-by-side':
-        if (sharingTrackIds.length) setPageSize(1);
+        if (sharingTrackIds.length) { setPageSize(1); }
         break;
       default:
         break;
@@ -102,22 +102,21 @@ const VideoGrid = ({
           if (
             sharingTrackIds.indexOf(id) > -1 ||
             sharingTrackIds.indexOf(other) > -1
-          )
-            return true;
+          ) { return true; }
           return false;
         }
-        if (dominantSpeaker && dominantSpeaker === id) return true;
-        if (!dominantSpeaker && currentUserId === identity) return true;
+        if (dominantSpeaker && dominantSpeaker === id) { return true; }
+        if (!dominantSpeaker && currentUserId === identity) { return true; }
         return false;
       }
 
       if (lockedParticipant) {
-        if (lockedParticipant === (other || id)) return true;
+        if (lockedParticipant === (other || id)) { return true; }
         return false;
       }
 
       if (dominantView && dominant) {
-        if (dominant === id) return true;
+        if (dominant === id) { return true; }
         return false;
       }
 
@@ -139,11 +138,12 @@ const VideoGrid = ({
   );
 
   const currentPageParticipants = useMemo(() => {
-    if (viewMode === 'gallery-view')
-      return participants.slice(
+    if (viewMode === 'gallery-view') {
+return participants.slice(
         pageSize * (selectedPage - 1),
         pageSize * selectedPage
       );
+}
     if (sharingTrackIds.length) {
       const sharedParticipants = [];
       participants.forEach((item) => {
@@ -177,8 +177,8 @@ const VideoGrid = ({
 
   const setHighlight = useCallback(
     (id, audio) => {
-      if (dominantSpeaker === id) return true;
-      if (!dominantSpeaker && audio) return true;
+      if (dominantSpeaker === id) { return true; }
+      if (!dominantSpeaker && audio) { return true; }
       return false;
     },
     [dominantSpeaker]

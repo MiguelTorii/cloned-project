@@ -322,7 +322,7 @@ class Profile extends React.PureComponent<Props, State> {
       newBookmarks = newBookmarks.filter((item) => item.feedId !== feedId);
     } else {
       // If a bookmark is added, the post is added to the bookmarks. In this case, postIndex must exist.
-      if (postIndex < 0) throw new Error('Post must exist');
+      if (postIndex < 0) { throw new Error('Post must exist'); }
       newBookmarks = [feed[postIndex], ...bookmarks];
     }
 
@@ -544,13 +544,14 @@ class Profile extends React.PureComponent<Props, State> {
       isOnline
     } = userProfile;
 
-    if (isLoading)
-      return (
+    if (isLoading) {
+return (
         <div className={classes.loader}>
           <CircularProgress />
         </div>
       );
-    if (error) return <Redirect to="/" />;
+}
+    if (error) { return <Redirect to="/" />; }
     const seasons = processSeasons(userStatistics);
 
     return (

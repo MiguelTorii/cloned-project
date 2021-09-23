@@ -216,7 +216,7 @@ export const postEvent = async ({
   category: string,
   type: string
 }): Promise<Array<Object>> => {
-  if (reduxStore.getState().user.isMasquerading) return;
+  if (reduxStore.getState().user.isMasquerading) { return; }
 
   try {
     const token = await getToken();

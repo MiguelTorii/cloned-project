@@ -88,8 +88,7 @@ const FlashcardManager = ({
 
     orgFlashcards.forEach((card) => {
       const deck = previousDecks ? previousDecks[String(card.id)] : 'main';
-      if (deck) current[deck] = [...current[deck], card];
-      else current.main = [...current.main, card];
+      if (deck) { current[deck] = [...current[deck], card]; } else { current.main = [...current.main, card]; }
     });
 
     setDecks(current);
@@ -97,7 +96,7 @@ const FlashcardManager = ({
 
   const keyboardControl = useCallback(
     ({ keyCode }) => {
-      if (keyCode === 32) setFlipped(!flipped);
+      if (keyCode === 32) { setFlipped(!flipped); }
     },
     [flipped]
   );

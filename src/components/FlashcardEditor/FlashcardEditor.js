@@ -62,7 +62,7 @@ const FlashcardEditor = ({
   const [focus, setFocus] = useState('question');
 
   useEffect(() => {
-    if (isNew) setOpen(true);
+    if (isNew) { setOpen(true); }
   }, [isNew]);
 
   const handleDelete = useCallback(() => {
@@ -91,8 +91,7 @@ const FlashcardEditor = ({
 
   const handleTextChange = useCallback(
     (name) => (v) => {
-      if (name === 'question') setCurQuestion(v.replace('\t', ''));
-      else setCurAnswer(v.replace('\t', ''));
+      if (name === 'question') { setCurQuestion(v.replace('\t', '')); } else { setCurAnswer(v.replace('\t', '')); }
     },
     []
   );
@@ -151,8 +150,7 @@ const FlashcardEditor = ({
 
   const handleImage = useCallback(
     (name) => (url) => {
-      if (name === 'question') setCurQuestionImage(url);
-      else setCurAnswerImage(url);
+      if (name === 'question') { setCurQuestionImage(url); } else { setCurAnswerImage(url); }
     },
     []
   );
@@ -199,7 +197,7 @@ const FlashcardEditor = ({
           }
         };
         setTimeout(() => {
-          if (questionEditor) questionEditor.focus();
+          if (questionEditor) { questionEditor.focus(); }
         }, 100);
       } catch (e) {}
     }
@@ -213,8 +211,7 @@ const FlashcardEditor = ({
           if (k.code === 'Tab') {
             k.preventDefault();
             k.stopPropagation();
-            if (okRef && okRef.disabled) questionEditor.focus();
-            else okRef.focus();
+            if (okRef && okRef.disabled) { questionEditor.focus(); } else { okRef.focus(); }
           }
         };
         answerEditor.getEditor().root.onfocus = () => {

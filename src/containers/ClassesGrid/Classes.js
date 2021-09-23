@@ -163,7 +163,7 @@ const Classes = ({
                   }),
                 canLeave: cl.permissions.canLeave
               }));
-              if (classesInter.length > 0) return classesInter[0];
+              if (classesInter.length > 0) { return classesInter[0]; }
               return null;
             })
           );
@@ -193,7 +193,7 @@ const Classes = ({
   );
 
   const getFilteredList = () => {
-    if (!classList) return [];
+    if (!classList) { return []; }
 
     if (currentFilter === 'current') {
       return classList.filter((cl) => cl.isCurrent);

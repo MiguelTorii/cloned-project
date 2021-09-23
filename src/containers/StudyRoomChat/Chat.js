@@ -127,7 +127,7 @@ const StudyRoomChat = ({
 
   const onTyping = useCallback(() => {
     const twilioChannel = get(channel, 'twilioChannel');
-    if (!twilioChannel) return;
+    if (!twilioChannel) { return; }
     try {
       twilioChannel.typing();
     } catch (err) {
@@ -137,7 +137,7 @@ const StudyRoomChat = ({
 
   const getRole = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) { return null; }
       const { role } = members[userId];
       return role;
     },
@@ -166,7 +166,7 @@ const StudyRoomChat = ({
   const onSendMessage = useCallback(
     async (message, files) => {
       setScroll(true);
-      if (!channel) return;
+      if (!channel) { return; }
 
       logEvent({
         event: 'Chat- Send Message',
@@ -237,7 +237,7 @@ const StudyRoomChat = ({
       } catch (e) {}
     };
 
-    if (channel) init();
+    if (channel) { init(); }
   }, [channel, handleScrollToBottom]);
 
   const handleImageClick = useCallback((src) => {
@@ -323,7 +323,7 @@ const StudyRoomChat = ({
   const onSendInput = useCallback(
     async (file) => {
       setLoading(true);
-      if (!channel) return;
+      if (!channel) { return; }
 
       try {
         const result = await getPresignedURL({
@@ -373,7 +373,7 @@ const StudyRoomChat = ({
   const handleImageClose = useCallback(() => setImages([]), []);
 
   const uploadFile = useCallback(() => {
-    if (fileInput.current) fileInput.current.click();
+    if (fileInput.current) { fileInput.current.click(); }
   }, []);
 
   const onClose = useCallback(

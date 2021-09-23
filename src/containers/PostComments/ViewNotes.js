@@ -98,7 +98,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     parentCommentId: number,
     anonymous: boolean
   }) => {
-    if (comment.trim() === '') return;
+    if (comment.trim() === '') { return; }
     const {
       user: {
         data: { userId, firstName }
@@ -142,7 +142,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const { comments } = this.state;
     const { success } = await updateComment(commentId, newValue);
 
-    if (!success) return;
+    if (!success) { return; }
 
     const index = comments.comments.findIndex((item) => item.id === commentId);
 
@@ -271,7 +271,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
     const name = `${firstName} ${lastName}`;
 
-    if (!comments) return null;
+    if (!comments) { return null; }
 
     return (
       <>

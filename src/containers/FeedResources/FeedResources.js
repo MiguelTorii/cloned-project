@@ -101,7 +101,7 @@ const FeedResources = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [gridRef]);
 
-  if (['xs', 'sm'].includes(width)) return null;
+  if (['xs', 'sm'].includes(width)) { return null; }
 
   let top;
 

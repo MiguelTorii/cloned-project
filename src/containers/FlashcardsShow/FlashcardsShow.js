@@ -146,7 +146,7 @@ const FlashcardsShow = () => {
   const shouldRenderFeed = useMemo(() => {
     if (!lastLocation) {
       const query = new URLSearchParams(location.search);
-      if (query.get('source') === 'deck') return false;
+      if (query.get('source') === 'deck') { return false; }
       return true;
     }
     return lastLocation.pathname.includes('/feed');
@@ -155,13 +155,13 @@ const FlashcardsShow = () => {
   // Callbacks
   const reloadData = useCallback(
     (showLoading = false) => {
-      if (showLoading) setIsLoadingFlashcards(true);
+      if (showLoading) { setIsLoadingFlashcards(true); }
       getFlashcards({
         flashcardId,
         userId: me.userId
       }).then((rsp) => {
         setData(rsp);
-        if (showLoading) setIsLoadingFlashcards(false);
+        if (showLoading) { setIsLoadingFlashcards(false); }
       });
     },
     [flashcardId, setData, setIsLoadingFlashcards, me.userId]
@@ -241,13 +241,13 @@ const FlashcardsShow = () => {
   }, [dispatch]);
 
   const handlePrevDeck = useCallback(() => {
-    if (boardDeckIndex === 0) return;
+    if (boardDeckIndex === 0) { return; }
 
     setBoardDeckIndex(boardDeckIndex - 1);
   }, [boardDeckIndex]);
 
   const handleNextDeck = useCallback(() => {
-    if (boardDeckIndex >= data.deck.length - 1) return;
+    if (boardDeckIndex >= data.deck.length - 1) { return; }
 
     setBoardDeckIndex(boardDeckIndex + 1);
   }, [boardDeckIndex, data]);
@@ -355,7 +355,7 @@ const FlashcardsShow = () => {
   useHotkeys('Right', handleNextDeck, {}, [handleNextDeck]);
 
   // Rendering
-  if (_.isEmpty(data) || isLoadingFlashcards) return <LoadingSpin />;
+  if (_.isEmpty(data) || isLoadingFlashcards) { return <LoadingSpin />; }
 
   const renderBody = () => (
     <>

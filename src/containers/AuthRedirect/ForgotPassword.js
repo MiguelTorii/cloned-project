@@ -48,7 +48,7 @@ const ForgotPassword = ({ updateError }) => {
     (field) => (e) => {
       if (e?.target) {
         const { value } = e.target;
-        if (field === 'email') setEmail(value);
+        if (field === 'email') { setEmail(value); }
       }
     },
     []
@@ -80,8 +80,8 @@ const ForgotPassword = ({ updateError }) => {
     [email, updateError]
   );
 
-  if (step === 'email')
-    return (
+  if (step === 'email') {
+return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
           <Typography component="h1" variant="h5" align="center">
@@ -113,6 +113,7 @@ const ForgotPassword = ({ updateError }) => {
         </form>
       </div>
     );
+}
 
   return (
     <div className={classes.container}>

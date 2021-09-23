@@ -21,7 +21,7 @@ export const getTitle = (channel: Object, userId: string, members: array) => {
     }
     if (users) {
       const filter = members.filter((o) => {
-        if (o.userId) return o.userId.toString() !== userId.toString();
+        if (o.userId) { return o.userId.toString() !== userId.toString(); }
         return false;
       });
       if (filter.length > 0) {
@@ -29,8 +29,7 @@ export const getTitle = (channel: Object, userId: string, members: array) => {
           .map((user) => `${user.firstname} ${user.lastname}`)
           .join(', ');
       }
-    } else if (friendlyName !== '') return friendlyName;
-    else if (state && state.friendlyName !== '') return state.friendlyName;
+    } else if (friendlyName !== '') { return friendlyName; } else if (state && state.friendlyName !== '') { return state.friendlyName; }
     return 'NN';
   } catch (err) {
     console.log(err);
@@ -67,7 +66,7 @@ export const fetchAvatars = async (channel: Object) => {
 };
 
 const capitalize = (string) => {
-  if (typeof string !== 'string') return '';
+  if (typeof string !== 'string') { return ''; }
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -254,7 +253,7 @@ export const containsImage = (message: string) =>
     : parse(message));
 
 export const bytesToSize = (bytes, decimals = 1) => {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) { return '0 Bytes'; }
 
   const kb = 1000;
   const decimal = decimals < 0 ? 0 : decimals;

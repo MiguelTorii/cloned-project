@@ -113,8 +113,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }) => {
       !state.firstName;
 
     dispatch({ type: 'LOADING', loading: true });
-    if (hasError) dispatch({ type: 'UPDATE_ERROR' });
-    else {
+    if (hasError) { dispatch({ type: 'UPDATE_ERROR' }); } else {
       const result = await sendCode({ email: state.email });
 
       if (result.error) {

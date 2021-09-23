@@ -138,8 +138,8 @@ const FlashcardsDeckManager = ({
   }, []);
 
   const getContentFromRef = useCallback((ref) => {
-    if (!ref) return null;
-    if (typeof ref.getEditor !== 'function') return null;
+    if (!ref) { return null; }
+    if (typeof ref.getEditor !== 'function') { return null; }
     const editor = ref.getEditor();
     const unprivilegedEditor = ref.makeUnprivilegedEditor(editor);
     return unprivilegedEditor.getHTML();
@@ -150,8 +150,8 @@ const FlashcardsDeckManager = ({
       data.map((card) => {
         const question = getContentFromRef(editorRefs[`${card.id}-question`]);
         const answer = getContentFromRef(editorRefs[`${card.id}-answer`]);
-        if (question) card.question = question;
-        if (answer) card.answer = answer;
+        if (question) { card.question = question; }
+        if (answer) { card.answer = answer; }
         return card;
       }),
     [editorRefs]

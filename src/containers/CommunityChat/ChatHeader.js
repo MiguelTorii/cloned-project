@@ -171,11 +171,12 @@ const ChatHeader = ({
 
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
-      if (query.trim() === '' || query.trim().length < 3)
-        return {
+      if (query.trim() === '' || query.trim().length < 3) {
+return {
           options: [],
           hasMore: false
         };
+}
 
       const users = await searchUsers({
         userId,
@@ -264,14 +265,15 @@ const ChatHeader = ({
     () => (
       <List component="nav" aria-label="secondary mailbox folders">
         {members.map((member, index) => {
-          if (index > 2)
-            return (
+          if (index > 2) {
+return (
               <ListItem button key={member.userId}>
                 <ListItemText
                   primary={`${member.firstname} ${member.lastname}`}
                 />
               </ListItem>
             );
+}
           return null;
         })}
       </List>

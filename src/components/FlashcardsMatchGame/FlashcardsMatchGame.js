@@ -107,7 +107,7 @@ const FlashcardsMatchGame = ({
   const isFinished = useMemo(() => matchCards.length > 0 && correctCount * 2 === matchCards.length, [correctCount, matchCards.length]);
 
   const elapsedSeconds = useMemo(() => {
-    if (!matchStartTime || !lastRecordTime) return 0;
+    if (!matchStartTime || !lastRecordTime) { return 0; }
     return Math.floor(
       moment.duration(lastRecordTime.diff(matchStartTime)).as('seconds')
     );
@@ -390,7 +390,7 @@ const FlashcardsMatchGame = ({
   );
 
   const renderCard = (card, index) => {
-    if (!card.visible) return null;
+    if (!card.visible) { return null; }
 
     return (
       <DraggableCard

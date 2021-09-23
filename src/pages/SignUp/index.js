@@ -40,7 +40,7 @@ class SignUpPage extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     const { email, loading } = this.state;
-    if (loading) return null;
+    if (loading) { return null; }
 
     return (
       <main className={classes.main}>

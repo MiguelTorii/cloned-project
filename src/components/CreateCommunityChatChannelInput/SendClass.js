@@ -69,7 +69,7 @@ const CreateChatChannelInput = ({
   useEffect(() => {
     const getTemplateChannels = async () => {
       const channels = await getCommunityTemplates();
-      if (channels.length) setTemplateChannels(channels);
+      if (channels.length) { setTemplateChannels(channels); }
     };
     getTemplateChannels();
   }, []);

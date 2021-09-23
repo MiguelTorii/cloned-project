@@ -65,14 +65,12 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     if (
       this.handleDebouncePing.cancel &&
       typeof this.handleDebouncePing.cancel === 'function'
-    )
-      this.handleDebouncePing.cancel();
+    ) { this.handleDebouncePing.cancel(); }
     window.addEventListener('offline', () => {
       if (
         this.handleDebounceFetchNotifications.cancel &&
         typeof this.handleDebounceFetchNotifications.cancel === 'function'
-      )
-        this.handleDebounceFetchNotifications.cancel();
+      ) { this.handleDebounceFetchNotifications.cancel(); }
     });
     window.addEventListener('online', () => {
       this.handleDebounceFetchNotifications();
@@ -120,20 +118,18 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     if (
       this.handleDebouncePing.cancel &&
       typeof this.handleDebouncePing.cancel === 'function'
-    )
-      this.handleDebouncePing.cancel();
+    ) { this.handleDebouncePing.cancel(); }
     if (
       this.handleDebounceFetchNotifications.cancel &&
       typeof this.handleDebounceFetchNotifications.cancel === 'function'
-    )
-      this.handleDebounceFetchNotifications.cancel();
+    ) { this.handleDebounceFetchNotifications.cancel(); }
   };
 
   handleDebouncePing = async () => {
     try {
       await this.handlePing();
     } finally {
-      if (this.mounted) this.handleDebouncePing();
+      if (this.mounted) { this.handleDebouncePing(); }
     }
   };
 
@@ -141,7 +137,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     try {
       await this.handleFetchNotifications();
     } finally {
-      if (this.mounted) this.handleDebounceFetchNotifications();
+      if (this.mounted) { this.handleDebounceFetchNotifications(); }
     }
   };
 
@@ -164,7 +160,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
           userId,
           tab
         });
-        if (onUpdateUnreadCount) onUpdateUnreadCount(unreadCount);
+        if (onUpdateUnreadCount) { onUpdateUnreadCount(unreadCount); }
         this.setState({ notifications });
       } finally {
         this.setState({ loading: false });

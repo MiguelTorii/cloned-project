@@ -36,7 +36,7 @@ const useNotes = () => {
       classId
     });
 
-    if (!noteId) return;
+    if (!noteId) { return; }
 
     // Make a log
     logEventLocally({
@@ -73,7 +73,7 @@ const useNotes = () => {
   const updateNote = useCallback(async ({ note }) => {
     const res = await api.updateNote({ note });
 
-    if (!res.success) return;
+    if (!res.success) { return; }
 
     // Log event
     logEventLocally({
@@ -86,7 +86,7 @@ const useNotes = () => {
     setNotesBySectionId((data) => ({
       ...data,
       [note.sectionId]: (data[note.sectionId] || []).map((item) => {
-        if (item.id !== note.id) return item;
+        if (item.id !== note.id) { return item; }
         return {
           ...note,
           lastModified: new Date()
@@ -110,7 +110,7 @@ const useNotes = () => {
   const removeNote = useCallback(async () => {
     const { success } = await api.deleteNote({ note: noteToRemove });
 
-    if (!success) return;
+    if (!success) { return; }
 
     setNotesBySectionId((data) => ({
       ...data,

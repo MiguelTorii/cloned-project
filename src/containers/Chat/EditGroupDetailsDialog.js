@@ -142,7 +142,7 @@ const EditGroupDetailsDialog = ({
   }, [localChannel.title, onClose]);
 
   const updateChannelName = async () => {
-    if (name === channel.channelState.friendlyName) return;
+    if (name === channel.channelState.friendlyName) { return; }
 
     try {
       const res = await channel.updateFriendlyName(name);

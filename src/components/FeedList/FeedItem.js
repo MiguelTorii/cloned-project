@@ -176,11 +176,11 @@ const FeedItem = ({
     const { postId, typeId } = data;
 
     handleMenuClose();
-    if (typeId === 3) pushTo(`/edit/flashcards/${postId}`);
-    if (typeId === 4) pushTo(`/edit/notes/${postId}`);
-    if (typeId === 5) pushTo(`/edit/sharelink/${postId}`);
-    if (typeId === 6) pushTo(`/edit/question/${postId}`);
-    if (typeId === 8) pushTo(`/edit/post/${postId}`);
+    if (typeId === 3) { pushTo(`/edit/flashcards/${postId}`); }
+    if (typeId === 4) { pushTo(`/edit/notes/${postId}`); }
+    if (typeId === 5) { pushTo(`/edit/sharelink/${postId}`); }
+    if (typeId === 6) { pushTo(`/edit/question/${postId}`); }
+    if (typeId === 8) { pushTo(`/edit/post/${postId}`); }
   }, [data, handleMenuClose, pushTo]);
 
   const handleUserClick = useCallback(() => {
@@ -189,7 +189,7 @@ const FeedItem = ({
   }, [data, onUserClick]);
 
   const handleDescription = useCallback((typeId, body) => {
-    if (typeId === 6) return '';
+    if (typeId === 6) { return ''; }
 
     // eslint-disable-next-line
     const cleanBody = body.replace(/<[^>]*>/g, '').replace(/\&nbsp;/g, ' ');
