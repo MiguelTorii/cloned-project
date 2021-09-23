@@ -103,8 +103,7 @@ const FeedItem = ({
   user,
   toolbarPrefix,
   showComments,
-  showSimple, // This prop is to show a simple post or not. Simple post is like in recommendations
-  isCurrent
+  showSimple // This prop is to show a simple post or not. Simple post is like in recommendations
 }) => {
   const classes = useStyles({ showSimple });
   const currentUserId = useMemo(() => user.data.userId, [user.data.userId]);
@@ -112,6 +111,14 @@ const FeedItem = ({
   const [thanksCount, setThanksCount] = useState(0);
   const [thanked, setThanked] = useState(false);
   const classList = useSelector((state) => state.user.userClasses.classList);
+
+  const isCurrent = useMemo(() => {
+    const postClass = classList.find((classData) => classData.classId === data.classId);
+
+    if (!postClass) return false;
+
+    return !!postClass.isCurrent;
+  }, [data, classList]);
 
   const isMenuOpen = Boolean(moreAnchorEl);
 

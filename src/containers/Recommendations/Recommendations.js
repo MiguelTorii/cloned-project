@@ -18,7 +18,6 @@ const Recommendations = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const me = useSelector((state) => state.user.data);
-  const currentUser = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
   const newClassExperience = useSelector(
     (state) => state.campaign.newClassExperience
@@ -140,16 +139,6 @@ const Recommendations = () => {
     loadRecommendations();
   }, [loadRecommendations]);
 
-  const isCurrent = (classId) => {
-    const {
-      userClasses: { classList }
-    } = currentUser;
-    const filteredList = classList.filter((cl) => cl.classId === classId);
-    if (filteredList.length > 0) {
-      return filteredList[0].isCurrent;
-    }
-  };
-
   if (posts.length === 0) return null;
 
   return (
@@ -175,7 +164,6 @@ const Recommendations = () => {
                     pushTo={handlePushTo}
                     onDelete={handleDelete}
                     onReport={handleReport}
-                    isCurrent={isCurrent(post.classId)}
                   />
                 </Paper>
               </Grid>

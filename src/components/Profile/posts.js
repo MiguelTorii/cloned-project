@@ -38,14 +38,6 @@ class ProfilePosts extends React.PureComponent<Props> {
     this.newComments[feedId] = content;
   };
 
-  isCurrent = (classId) => {
-    const { classList } = this.props;
-    const filteredList = classList.filter((cl) => cl.classId === classId);
-    if (filteredList.length > 0) {
-      return filteredList[0].isCurrent;
-    }
-  };
-
   render() {
     const {
       classes,
@@ -107,7 +99,6 @@ class ProfilePosts extends React.PureComponent<Props> {
               setNewComments={this.setNewComments}
               newComments={this.newComments}
               toolbarPrefix={isBookmarks ? 'bookmark' : ''}
-              isCurrent={this.isCurrent(item.classId)}
             />
           ))}
         </Paper>
