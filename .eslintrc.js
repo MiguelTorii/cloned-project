@@ -9,27 +9,32 @@ module.exports = {
   ],
   plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
-    // 'prettier/prettier': 'warn',
-    'object-curly-spacing': 2,
+    // TODO turn this back on
+    // 'prettier/prettier': 'error',
+
+    'object-curly-spacing': 'error',
     'react/jsx-filename-extension': [
-      1,
+      'error',
       {
         extensions: ['.js', '.jsx']
       }
     ],
-    'react/prop-types': 0,
-    'no-underscore-dangle': 0,
+
+    // TODO turn this on once we can use typescript to generate the prop types
+    'react/prop-types': 'off',
+
+    // TODO turn this back on
+    'no-underscore-dangle': 'off',
 
     // TODO turn this back on
     // 'import/imports-first': ['error', 'absolute-first'],
 
-    'react/no-unescaped-entities': 0,
+    // TODO turn this back on
+    'react/no-unescaped-entities': 'off',
 
     // TODO turn this back on
-    // got null in chat/RightMenu.js
-    // need to resolve
-    // indent: ['error', 2],
-    indent: 'off',
+    indent: ['error', 2],
+    // indent: 'off',
 
     // TODO turn this back on
     'react/no-unused-state': 'off',
@@ -256,48 +261,57 @@ module.exports = {
     'import/extensions': ['error', 'never', { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }],
     'import/newline-after-import': 'error',
 
-    'import/no-unresolved': 0,
-    'import/prefer-default-export': 'off',
-    'no-trailing-spaces': 2,
-    'react-hooks/exhaustive-deps': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'no-shadow': 0,
+    // TODO turn this back on
+    'import/no-unresolved': 'off',
 
-    'flowtype/boolean-style': [2, 'boolean'],
-    'flowtype/define-flow-type': 1,
-    'flowtype/delimiter-dangle': [2, 'never'],
-    'flowtype/generic-spacing': [2, 'never'],
-    'flowtype/no-mixed': 2,
+    // TODO turn this back on
+    'import/prefer-default-export': 'off',
+
+    'no-trailing-spaces': 'error',
+
+    // TODO turn this back on
+    'react-hooks/exhaustive-deps': 'off',
+
+    'react-hooks/rules-of-hooks': 'error',
+
+    // TODO turn this back on
+    'no-shadow': 'off',
+
+    'flowtype/boolean-style': ['error', 'boolean'],
+    'flowtype/define-flow-type': 'error',
+    'flowtype/delimiter-dangle': ['error', 'never'],
+    'flowtype/generic-spacing': ['error', 'never'],
+    'flowtype/no-mixed': 'error',
 
     // TODO turn this back on (or switch to TS)
-    // 'flowtype/no-primitive-constructor-types': 2,
+    // 'flowtype/no-primitive-constructor-types': 'error',
     'flowtype/no-primitive-constructor-types': 'off',
 
-    'flowtype/no-types-missing-file-annotation': 2,
-    'flowtype/no-weak-types': 0,
-    'flowtype/object-type-delimiter': [2, 'comma'],
-    'flowtype/require-parameter-type': 0,
-    'flowtype/require-readonly-react-props': 0,
+    'flowtype/no-types-missing-file-annotation': 'error',
+    'flowtype/no-weak-types': 'off',
+    'flowtype/object-type-delimiter': ['error', 'comma'],
+    'flowtype/require-parameter-type': 'off',
+    'flowtype/require-readonly-react-props': 'off',
     'flowtype/require-return-type': [
-      0,
+      'off',
       'always',
       {
         annotateUndefined: 'never'
       }
     ],
-    'flowtype/require-valid-file-annotation': 2,
-    'flowtype/semi': [2, 'always'],
+    'flowtype/require-valid-file-annotation': 'error',
+    'flowtype/semi': ['error', 'always'],
 
-    // TODO turn this back on
-    // 'flowtype/space-after-type-colon': [2, 'always'],
+    // TODO turn this back on (or switch to TS)
+    // 'flowtype/space-after-type-colon': ['error', 'always'],
     'flowtype/space-after-type-colon': 'off',
 
-    'flowtype/space-before-generic-bracket': [2, 'never'],
-    'flowtype/space-before-type-colon': [2, 'never'],
-    'flowtype/type-id-match': [0, '^([A-Z][a-z0-9]+)+Type$'],
-    'flowtype/union-intersection-spacing': [2, 'always'],
-    'flowtype/use-flow-type': 1,
-    'flowtype/valid-syntax': 1
+    'flowtype/space-before-generic-bracket': ['error', 'never'],
+    'flowtype/space-before-type-colon': ['error', 'never'],
+    'flowtype/type-id-match': ['off', '^([A-Z][a-z0-9]+)+Type$'],
+    'flowtype/union-intersection-spacing': ['error', 'always'],
+    'flowtype/use-flow-type': 'error',
+    'flowtype/valid-syntax': 'error'
   },
   settings: {
     flowtype: {
