@@ -21,8 +21,7 @@ const MobileMenu = ({
   handleProfileMenuOpen,
   initials,
   userProfileUrl
-}) => {
-  return (
+}) => (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -60,6 +59,5 @@ const MobileMenu = ({
       </MenuItem>
     </Menu>
   );
-};
 
 export default memo(MobileMenu);

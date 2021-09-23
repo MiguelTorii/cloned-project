@@ -4,8 +4,8 @@ import { getCampaign } from 'api/campaign';
 import Chat from 'containers/Chat/Chat';
 import CommunityChat from 'containers/CommunityChat/ChatPage';
 import { SWITCH_CHAT_CAMPAIGN } from 'constants/campaigns';
-import FullScreenLoader from '../../components/FullScreenLoader/FullScreenLoader';
 import { useSelector } from 'react-redux';
+import FullScreenLoader from '../../components/FullScreenLoader/FullScreenLoader';
 
 const MainChat = () => {
   const [campaign, setCampaign] = useState(null);

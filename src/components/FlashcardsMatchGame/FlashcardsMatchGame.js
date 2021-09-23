@@ -6,8 +6,6 @@ import React, {
   useState
 } from 'react';
 import ReactDOM from 'react-dom';
-import withRoot from '../../withRoot';
-import useStyles from './styles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -20,17 +18,6 @@ import Link from '@material-ui/core/Link';
 import IconBack from '@material-ui/icons/ChevronLeft';
 import IconNote from '@material-ui/icons/LibraryBooks';
 import IconClose from '@material-ui/icons/Close';
-import SidebarCard from './SidebarCard';
-import DraggableCard from './DraggableCard';
-import reducer, {
-  dragCardCorrect,
-  dragCardIncorrect,
-  initializeGame,
-  initialState,
-  placeCards,
-  recordDraggedCards,
-  removeLogs
-} from './reducer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import StartupModal from 'components/FlashcardsMatchGame/StartupModal';
@@ -55,6 +42,19 @@ import Dialog from 'components/Dialog/Dialog';
 import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import IconUp from 'assets/svg/arrow-up-red.svg';
 import IconDown from 'assets/svg/arrow-green-down.svg';
+import reducer, {
+  dragCardCorrect,
+  dragCardIncorrect,
+  initializeGame,
+  initialState,
+  placeCards,
+  recordDraggedCards,
+  removeLogs
+} from './reducer';
+import DraggableCard from './DraggableCard';
+import SidebarCard from './SidebarCard';
+import useStyles from './styles';
+import withRoot from '../../withRoot';
 
 const ANIMATION_TYPES = {
   CORRECT: 'correct',
@@ -104,9 +104,7 @@ const FlashcardsMatchGame = ({
   } = state;
 
   // Memos
-  const isFinished = useMemo(() => {
-    return matchCards.length > 0 && correctCount * 2 === matchCards.length;
-  }, [correctCount, matchCards.length]);
+  const isFinished = useMemo(() => matchCards.length > 0 && correctCount * 2 === matchCards.length, [correctCount, matchCards.length]);
 
   const elapsedSeconds = useMemo(() => {
     if (!matchStartTime || !lastRecordTime) return 0;
@@ -433,7 +431,7 @@ const FlashcardsMatchGame = ({
       return <LoadingSpin />;
     }
 
-    let highScore = matchStat?.highScore || null;
+    const highScore = matchStat?.highScore || null;
 
     return (
       <Box padding={4} mt={4} className={clsx(!isFinished && classes.hidden)}>

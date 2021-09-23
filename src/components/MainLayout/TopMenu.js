@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
-import useStyles from '../_styles/MainLayout/TopMenu';
 import { useSelector } from 'react-redux';
+import useStyles from '../_styles/MainLayout/TopMenu';
 
 const TopMenu = ({
   anchorEl,

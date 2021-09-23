@@ -72,17 +72,13 @@ module.exports = {
     // TODO turn this back on
     'import/no-cycle': 'off',
 
-    // TODO turn this back on
-    'no-mixed-operators': 'off',
-
-    // TODO turn this back on
-    'jsx-quotes': 'off',
+    'no-mixed-operators': 'error',
+    'jsx-quotes': 'error',
 
     // TODO turn this back on
     'import/no-mutable-exports': 'off',
 
-    // TODO turn this back on
-    'no-multiple-empty-lines': 'off',
+    'no-multiple-empty-lines': 'error',
 
     // TODO turn this back on
     'react/button-has-type': 'off',
@@ -93,8 +89,7 @@ module.exports = {
     // TODO turn this back on
     'react/default-props-match-prop-types': 'off',
 
-    // TODO turn this back on
-    'import/order': 'off',
+    'import/order': 'error',
 
     // TODO turn this back on
     'react/jsx-closing-bracket-location': 'off',
@@ -143,7 +138,7 @@ module.exports = {
     // TODO turn this back on
     'wrap-iife': 'off',
 
-    // **** TODO turn this back on
+    // TODO turn this back on
     'react/jsx-key': 'off',
 
     // TODO turn this back on
@@ -152,17 +147,13 @@ module.exports = {
     // TODO turn this back on
     'react/jsx-props-no-spreading': 'off',
 
-    // TODO turn this back on
-    // 'arrow-body-style': ['error', 'as-needed'],
-    'arrow-body-style': 'off',
+    'arrow-body-style': ['error', 'as-needed'],
 
     // TODO turn this back on
     // 'max-len': ['error', 120],
     'max-len': 'off',
 
-    // TODO turn this back on
-    // 'comma-dangle': ['error', 'never'],
-    'comma-dangle': 'off',
+    'comma-dangle': ['error', 'never'],
 
     // TODO turn this back on
     'implicit-arrow-linebreak': 'off',
@@ -170,8 +161,7 @@ module.exports = {
     // TODO turn this back on
     'consistent-return': 'off',
 
-    // TODO turn this back on
-    'object-curly-newline': 'off',
+    'object-curly-newline': ["error", { "consistent": true }],
 
     // TODO turn this back on
     'import/no-named-as-default': 'off',
@@ -191,17 +181,11 @@ module.exports = {
     // TODO turn this back on
     'no-else-return': 'off',
 
-    // TODO do we care about this one?
-    'quote-props': 'off',
+    'quote-props': ["error", "as-needed"],
+    'quotes': ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
 
-    // TODO turn this back on
-    'quotes': 'off',
-
-    // TODO turn this back on
-    'no-tabs': 'off',
-
-    // TODO turn this back on
-    'spaced-comment': 'off',
+    'no-tabs': 'error',
+    'spaced-comment': 'error',
 
     // TODO turn this back on
     'react/jsx-fragments': 'off',
@@ -209,17 +193,13 @@ module.exports = {
     // TODO turn this back on
     'space-infix-ops': 'off',
 
-    // TODO turn this back on
-    'no-extra-boolean-cast': 'off',
+    'no-extra-boolean-cast': 'error',
 
     // TODO turn this back on
     'object-shorthand': 'off',
 
-    // TODO turn this back on
-    'prefer-const': 'off',
-
-    // TODO turn this back on
-    'one-var': 'off',
+    'prefer-const': 'error',
+    'one-var': ['error', 'never'],
 
     // TODO turn this back on
     'react/jsx-boolean-value': 'off',
@@ -239,26 +219,16 @@ module.exports = {
     // TODO turn this back on
     'react/jsx-curly-brace-presence': 'off',
 
-    // TODO turn this back on
-    'semi': 'off',
-
-    // TODO turn this back on
-    'eol-last': 'off',
-
-    // TODO turn this back on
-    'no-floating-decimal': 'off',
-
-    // TODO turn this back on
-    'dot-notation': 'off',
+    'semi': 'error',
+    'eol-last': 'error',
+    'no-floating-decimal': 'error',
+    'dot-notation': 'error',
 
     // TODO turn this back on
     'react/jsx-tag-spacing': 'off',
 
-    // TODO turn this back on
-    'no-return-assign': 'off',
-
-    // TODO turn this back on
-    'no-plusplus': 'off',
+    'no-return-assign': 'error',
+    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
 
     // TODO turn this back on
     'no-param-reassign': 'off',
@@ -266,8 +236,7 @@ module.exports = {
     // TODO turn this back on
     'no-restricted-properties': 'off',
 
-    // TODO turn this back on
-    'no-confusing-arrow': 'off',
+    'no-confusing-arrow': 'error',
 
     // TODO turn this back on
     'react/state-in-constructor': 'off',
@@ -284,13 +253,8 @@ module.exports = {
     // 'template-curly-spacing': ['error', 'always'],
     'template-curly-spacing': 'off',
 
-    // Turn this rule off because it will conflict with typescript
-    // (i.e. .ts extensions are not allowed in imports)
-    'import/extensions': 'off',
-
-    // TODO turn this back on
-    // 'import/newline-after-import': 'error',
-    'import/newline-after-import': 'off',
+    'import/extensions': ['error', 'never', { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }],
+    'import/newline-after-import': 'error',
 
     'import/no-unresolved': 0,
     'import/prefer-default-export': 'off',
@@ -306,13 +270,10 @@ module.exports = {
     'flowtype/no-mixed': 2,
 
     // TODO turn this back on (or switch to TS)
-    'flowtype/no-primitive-constructor-types': 'off',
     // 'flowtype/no-primitive-constructor-types': 2,
+    'flowtype/no-primitive-constructor-types': 'off',
 
-    // TODO turn this back on
-    'flowtype/no-types-missing-file-annotation': 'off',
-    // 'flowtype/no-types-missing-file-annotation': 2,
-
+    'flowtype/no-types-missing-file-annotation': 2,
     'flowtype/no-weak-types': 0,
     'flowtype/object-type-delimiter': [2, 'comma'],
     'flowtype/require-parameter-type': 0,

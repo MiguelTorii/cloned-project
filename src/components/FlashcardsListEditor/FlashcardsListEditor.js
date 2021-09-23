@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useCallback, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -5,12 +7,12 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { useHotkeys } from 'react-hotkeys-hook';
+import OutsideClickHandler from 'react-outside-click-handler';
 import useStyles from './styles';
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 import FlashcardEditor from './FlashcardEditor';
 import { FlashcardListContext, FlashcardListContextProvider } from './FlashcardListContext';
-import { useHotkeys } from 'react-hotkeys-hook';
-import OutsideClickHandler from 'react-outside-click-handler';
 
 export const EDITOR_TYPES = {
   QUESTION: 'question',
@@ -23,7 +25,7 @@ const FlashcardsListEditor = ({
   toolbarPrefix,
   onUpdate,
   onSetRef,
-  onUpdateFlashcardField,
+  onUpdateFlashcardField
 }: Props) => {
   // Hooks
   const classes = useStyles();
@@ -40,9 +42,9 @@ const FlashcardsListEditor = ({
           {
             id: maxId ? maxId + 1 : 1,
             question: '',
-            answer: '',
-          },
-        ],
+            answer: ''
+          }
+        ]
       })
     );
   }, [data, onUpdate]);
@@ -51,7 +53,7 @@ const FlashcardsListEditor = ({
     (index) => {
       onUpdate(
         update(data, {
-          $splice: [[index, 1]],
+          $splice: [[index, 1]]
         })
       );
     },
@@ -220,7 +222,7 @@ FlashcardsListEditor.propTypes = {
   onUpdateFlashcardField: PropTypes.func,
   onSetRef: PropTypes.func,
   readOnly: PropTypes.bool,
-  toolbarPrefix: PropTypes.string,
+  toolbarPrefix: PropTypes.string
 };
 
 FlashcardsListEditor.defaultProps = {
@@ -229,7 +231,7 @@ FlashcardsListEditor.defaultProps = {
   onUpdateFlashcardField: () => {},
   onSetRef: () => {},
   readOnly: false,
-  toolbarPrefix: '',
+  toolbarPrefix: ''
 };
 
 export default (props) => (

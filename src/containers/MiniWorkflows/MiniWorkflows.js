@@ -3,9 +3,9 @@ import { Paper, Typography, Grid, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 
+import ImgEmptyTask from 'assets/svg/empty-tasks.svg';
 import useStyles from './styles';
 import { getTodos } from '../../api/workflow';
-import ImgEmptyTask from 'assets/svg/empty-tasks.svg';
 import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import Task from './Task';
@@ -42,7 +42,7 @@ const MiniWorkflows = () => {
             </Typography>
           </Box>
         </Box>
-      )
+      );
     }
 
     if (tasks.length === 0) {
@@ -59,7 +59,7 @@ const MiniWorkflows = () => {
             Go to Workflow
           </GradientButton>
         </Box>
-      )
+      );
     }
 
     return (

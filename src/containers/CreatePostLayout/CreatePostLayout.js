@@ -105,14 +105,12 @@ const CreatePostLayout = ({
   const [images, setImages] = useState([]);
   const location = useLocation();
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       localStorage.removeItem('postSt');
       localStorage.removeItem('question');
       localStorage.removeItem('note');
       localStorage.removeItem('shareLink');
-    };
-  }, []);
+    }, []);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -170,12 +168,10 @@ const CreatePostLayout = ({
             newClassList[s.sectionId] = cl;
           });
       });
-      return Object.keys(newClassList).map((sectionId) => {
-        return {
+      return Object.keys(newClassList).map((sectionId) => ({
           ...newClassList[sectionId],
           sectionId: Number(sectionId)
-        };
-      });
+        }));
     } finally {
       /* NONE */
     }
@@ -224,7 +220,7 @@ const CreatePostLayout = ({
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid
-        justify="flex-start"
+        justifyContent="flex-start"
         className={classes.container}
         container
         spacing={2}

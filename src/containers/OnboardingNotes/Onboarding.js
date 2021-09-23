@@ -168,8 +168,7 @@ const OnboardingStep = ({
   DemoComponent,
   Title,
   Body
-}) => {
-  return (
+}) => (
     <div className={classes.step}>
       <div className={classes.actionPanel}>
         <Title />
@@ -203,7 +202,6 @@ const OnboardingStep = ({
       </div>
     </div>
   );
-};
 
 const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -231,7 +229,6 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         ariaDescribedBy="onboarding-description"
         className={classes.dialog}
         fullWidth
-        disableBackdropClick
         maxWidth="lg"
         disableEscapeKeyDown
         open={open}

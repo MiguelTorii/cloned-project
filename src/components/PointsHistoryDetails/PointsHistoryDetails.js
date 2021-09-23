@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import type { UserProfile } from 'types/models';
 import { Box } from '@material-ui/core';
@@ -16,8 +18,7 @@ type Props = {
   onGoBack: Function
 };
 
-const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
-  return (
+const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => (
     <div>
       <Link
         component="button"
@@ -47,23 +48,8 @@ const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => {
             </Grid>
           </Grid>
         </Grid>
-        {/*<Grid item xs={12} lg={4}>*/}
-        {/*  <Grid container spacing={3}>*/}
-        {/*    <Grid item xs={12}>*/}
-        {/*      <PointsReport*/}
-        {/*        userId={profile.userId}*/}
-        {/*        isMyProfile={isMyProfile}*/}
-        {/*        displayName={profile.firstName}*/}
-        {/*      />*/}
-        {/*    </Grid>*/}
-        {/*    <Grid item xs={12}>*/}
-        {/*      <StudyStats userId={profile.userId} />*/}
-        {/*    </Grid>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
       </Grid>
     </div>
   );
-};
 
 export default withRoot(PointsHistoryDetails);

@@ -4,8 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 
-import { useStyles } from '../_styles/MainLayout/DrawerItem';
 import clsx from 'clsx';
+import { useStyles } from '../_styles/MainLayout/DrawerItem';
 
 const DrawerItem = ({
   onClick = () => {},

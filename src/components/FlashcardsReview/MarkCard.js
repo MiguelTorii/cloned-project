@@ -1,10 +1,10 @@
 import React from 'react';
-import useStyles from './styles';
-import withRoot from '../../withRoot';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import withRoot from '../../withRoot';
+import useStyles from './styles';
 
 const MarkCard = ({ title, mark, markColor, active, ...props }) => {
   const classes = useStyles({ markColor });

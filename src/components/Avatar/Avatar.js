@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useMemo } from 'react';
 import { Avatar as MuiAvatar } from '@material-ui/core';
 import withRoot from '../../withRoot';

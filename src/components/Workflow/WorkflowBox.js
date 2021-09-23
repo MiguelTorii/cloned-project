@@ -104,7 +104,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
 
   return useMemo(
     () =>
-      listView ? (
+      (listView ? (
         <WorkflowListBox
           list={renderList}
           drop={drop}
@@ -123,7 +123,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
           categoryId={categoryId}
           tasks={tasks}
         />
-      ),
+      )),
     [
       bgcolor,
       buttonColor,

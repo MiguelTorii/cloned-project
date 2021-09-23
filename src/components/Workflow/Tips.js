@@ -23,11 +23,11 @@ const Tips = ({ open, close }) => {
         <Grid
           container
           spacing={2}
-          justify="center"
+          justifyContent="center"
           className={classes.borders}
           alignItems="center"
         >
-          <Grid item xs={6} container justify="center">
+          <Grid item xs={6} container justifyContent="center">
             <LoadImg
               className={classes.animation}
               alt="drag and drop tips animation"

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useCallback, forwardRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import TextField from '@material-ui/core/TextField';

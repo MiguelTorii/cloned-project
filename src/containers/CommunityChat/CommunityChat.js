@@ -25,7 +25,7 @@ type Props = {
   setCurrentCommunityChannel: Function,
   startMessageLoading: Function,
   setMainMessage: Function,
-  enqueueSnackbar: Function,
+  showNotification: Function,
   setCurrentChannelSidAction: Function,
   width: string
 };
@@ -35,7 +35,7 @@ const CommunityChat = ({
   startMessageLoading,
   setCurrentCommunityChannel,
   setCurrentChannelSidAction,
-  enqueueSnackbar,
+  showNotification,
   user,
   chat,
   width
@@ -230,7 +230,7 @@ const CommunityChat = ({
             setRightPanel={handleOpenRightPanel}
             user={user}
             rightSpace={rightSpace}
-            enqueueSnackbar={enqueueSnackbar}
+            showNotification={showNotification}
           />
         </Grid>
       )}
@@ -261,7 +261,7 @@ const mapStateToProps = ({ user, chat }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+      showNotification: notificationsActions.showNotification,
       setMainMessage: chatActions.setMainMessage,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       startMessageLoading: chatActions.startMessageLoading,

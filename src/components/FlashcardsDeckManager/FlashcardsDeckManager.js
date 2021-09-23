@@ -33,7 +33,7 @@ const FlashcardsDeckManager = ({
   submitText,
   isSubmitting,
   disableClass,
-  onSubmit,
+  onSubmit
 }) => {
   // Hooks
   const myClasses = useSelector((state) => state.user.userClasses.classList);
@@ -46,7 +46,7 @@ const FlashcardsDeckManager = ({
     title: null,
     summary: null,
     classId: null,
-    sectionId: null,
+    sectionId: null
   });
   const [deckData, setDeckData] = useState([]);
 
@@ -58,15 +58,15 @@ const FlashcardsDeckManager = ({
         title: data.title,
         summary: data.summary,
         classId: data.classId,
-        sectionId: data.sectionId,
+        sectionId: data.sectionId
       });
     } else {
       setDeckData([
         {
           id: 1,
           question: '',
-          answer: '',
-        },
+          answer: ''
+        }
       ]);
     }
   }, [data]);
@@ -93,7 +93,7 @@ const FlashcardsDeckManager = ({
         classData.section.forEach((section) => {
           result.push({
             value: `${classData.classId}_${section.sectionId}`,
-            text: `${section.subject} ${classData.className}: - ${section.section}`,
+            text: `${section.subject} ${classData.className}: - ${section.section}`
           });
         });
       }
@@ -114,7 +114,7 @@ const FlashcardsDeckManager = ({
   const handleUpdateField = useCallback((field, value) => {
     setFormData((data) =>
       update(data, {
-        [field]: { $set: value },
+        [field]: { $set: value }
       })
     );
   }, []);
@@ -124,8 +124,8 @@ const FlashcardsDeckManager = ({
       update(data, {
         [index]: (item) =>
           update(item, {
-            [field]: { $set: value },
-          }),
+            [field]: { $set: value }
+          })
       })
     );
   }, []);
@@ -133,7 +133,7 @@ const FlashcardsDeckManager = ({
   const handleSetRef = useCallback((id, type, ref) => {
     setEditorRefs((data) => ({
       ...data,
-      [`${id}-${type}`]: ref,
+      [`${id}-${type}`]: ref
     }));
   }, []);
 
@@ -163,7 +163,7 @@ const FlashcardsDeckManager = ({
       if (!disableClass) {
         store.set(STORAGE_KEYS.FLASHCARD_CACHE, {
           ...formData,
-          deck: mergeEditorData(deckData),
+          deck: mergeEditorData(deckData)
         });
       }
     }, 5 * INTERVAL.SECOND);
@@ -187,7 +187,7 @@ const FlashcardsDeckManager = ({
       dispatch(
         showNotification({
           message: 'You must have at least one flashcard to save the deck.',
-          variant: 'error',
+          variant: 'error'
         })
       );
       return;
@@ -197,7 +197,7 @@ const FlashcardsDeckManager = ({
       dispatch(
         showNotification({
           message: 'Flashcards should not be empty.',
-          variant: 'error',
+          variant: 'error'
         })
       );
       return;
@@ -205,7 +205,7 @@ const FlashcardsDeckManager = ({
 
     onSubmit({
       ...formData,
-      deck: data,
+      deck: data
     });
   }, [formData, deckData, onSubmit, dispatch, mergeEditorData]);
 
@@ -215,7 +215,7 @@ const FlashcardsDeckManager = ({
       setFormData(
         update(formData, {
           classId: { $set: Number(classId) },
-          sectionId: { $set: Number(sectionId) },
+          sectionId: { $set: Number(sectionId) }
         })
       );
     },
@@ -232,7 +232,7 @@ const FlashcardsDeckManager = ({
             fullWidth
             error={isValidated && !formData.title}
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             helperText={
               isValidated && !formData.title && 'Please input a title'
@@ -250,7 +250,7 @@ const FlashcardsDeckManager = ({
             select
             error={isValidated && !formData.classId}
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             label="Class"
             helperText={
@@ -272,7 +272,7 @@ const FlashcardsDeckManager = ({
           <TextField
             fullWidth
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
             label="Description"
             placeholder="Add a description"
@@ -333,7 +333,7 @@ FlashcardsDeckManager.propTypes = {
   data: PropTypes.object,
   isSubmitting: PropTypes.bool,
   disableClass: PropTypes.bool,
-  onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func
 };
 
 FlashcardsDeckManager.defaultProps = {
@@ -341,7 +341,7 @@ FlashcardsDeckManager.defaultProps = {
   data: null,
   isSubmitting: false,
   disableClass: false,
-  onSubmit: () => {},
+  onSubmit: () => {}
 };
 
 export default FlashcardsDeckManager;

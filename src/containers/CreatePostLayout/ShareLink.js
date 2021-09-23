@@ -11,14 +11,15 @@ import Dialog from '@material-ui/core/Dialog';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import { withRouter } from 'react-router';
 import { cypher } from 'utils/crypto';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
+import postingImage from 'assets/gif/loading-rocket.gif';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview/LinkPreview';
-import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import {
   updateShareURL,
@@ -30,7 +31,6 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
-import postingImage from 'assets/gif/loading-rocket.gif';
 
 const styles = (theme) => ({
   preview: {

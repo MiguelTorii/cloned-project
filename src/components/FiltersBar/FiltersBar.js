@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';

@@ -27,7 +27,6 @@ const Dialog = ({
   className,
   contentClassName,
   showBackIcon = false,
-  disableBackdropClick = false,
   disableActions = false,
   disableOk = false,
   disableEscapeKeyDown = false,
@@ -43,7 +42,7 @@ const Dialog = ({
   onOk = () => {},
   onSecondaryOk = () => {},
   onSecondaryRemove = () => {},
-  open,
+  open = false,
   showActions = false,
   showCancel = false,
   showHeader = true,
@@ -62,7 +61,6 @@ const Dialog = ({
   classes: Object,
   className: ?string,
   okButtonClass: ?string,
-  disableBackdropClick: ?boolean,
   showBackIcon: ?boolean,
   disableActions: ?boolean,
   disableEscapeKeyDown: ?boolean,
@@ -95,7 +93,6 @@ const Dialog = ({
         paper: className || classes.dialogPaper,
         container: classes.container
       }}
-      disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown={disableEscapeKeyDown}
       maxWidth={maxWidth}
       disableRestoreFocus

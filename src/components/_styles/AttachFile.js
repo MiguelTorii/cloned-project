@@ -34,6 +34,16 @@ export default (theme) => ({
       width: '100%'
     }
   },
+  imageThumbnail: {
+    width: 32,
+    marginRight: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: '100%'
+    }
+  },
   infoContainer: {
     display: 'flex',
     flexDirection: 'column',

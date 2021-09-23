@@ -14,6 +14,7 @@ import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
 import { decypherClass, cypher } from 'utils/crypto';
 import ClassMultiSelect from 'containers/ClassMultiSelect/ClassMultiSelect';
+import { PERMISSIONS } from 'constants/common';
 import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -35,7 +36,6 @@ import {
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { logEventLocally } from '../../api/analytics';
-import { PERMISSIONS } from 'constants/common';
 
 const styles = (theme) => ({
   stackbar: {
@@ -531,10 +531,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
     this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
   };
 
-  getLeftCharts = (field) => {
+  getLeftCharts = (field) =>
     // help ? 50 - help.length : 50;
-    return 50 - field.length >= 0 ? 50 - field.length : 0;
-  };
+     (50 - field.length >= 0 ? 50 - field.length : 0)
+  ;
 
   imageChange = () => {
     this.setState({ changed: true });
@@ -712,7 +712,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 item
                 xs={12}
                 md={10}
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
               >
                 <Grid item xs={2} md={2}>

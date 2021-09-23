@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import FileUpload from 'components/FileUpload/FileUploadContainer';
 import { bytesToSize } from 'utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
@@ -10,6 +11,8 @@ const AnyFileUpload = ({
   message,
   renderHtmlWithImage,
   files,
+  onImageClick,
+  onImageLoaded,
   smallChat = false
 }) => {
   const classes = useStyles();
@@ -26,34 +29,35 @@ const AnyFileUpload = ({
     </div>
   );
 
-  const splitHtmlStringByFiles = message.split('File Attachment');
-
-  if (splitHtmlStringByFiles.length > 1) {
-    const files = JSON.parse(
-      splitHtmlStringByFiles[splitHtmlStringByFiles.length - 1]
-    );
-    const fileHtml = files.map((file) => (
-      <FileUpload
-        name={file.name}
-        size={file.size}
-        url={file.url}
-        smallChat={smallChat}
-      />
-    ));
-    splitHtmlStringByFiles.splice(splitHtmlStringByFiles.length - 1, 1);
-    const html = splitHtmlStringByFiles.reduce((acc, cur) => acc + cur, '');
-    return renderMessage(html, fileHtml);
-  }
-
   if (files?.length) {
-    const fileHtml = files.map((file) => (
-      <FileUpload
-        name={file.fileName}
+    const fileHtml = files.map((file, index) => {
+      const { readUrl, fileName, fileType } = file;
+      if (fileType && fileType.includes('image')) {
+        return <div
+          className={classes.bodyWrapper}
+          key={readUrl}
+        >
+           <ButtonBase
+             onClick={() => onImageClick(readUrl)}
+          >
+            <img
+              className={classes.image}
+              src={readUrl}
+              alt="chat"
+              onLoad={onImageLoaded}
+            />
+          </ButtonBase>
+        </div>;
+      }
+
+      return <FileUpload
+        key={readUrl}
+        name={fileName}
         size={bytesToSize(file.fileSize)}
-        url={file.readUrl}
+        url={readUrl}
         smallChat={smallChat}
-      />
-    ));
+      />;
+    });
 
     return renderMessage(message, fileHtml);
   }

@@ -1,12 +1,12 @@
 import React from 'react';
 import Dialog from 'components/Dialog/Dialog';
 import withRoot from 'withRoot';
-import useStyles from './styles';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import GradientButton from 'components/Basic/Buttons/GradientButton';
 import ImgBook from 'assets/gif/magic-book.gif';
+import useStyles from './styles';
 
 const StartupModal = ({ open, onClose, onStart }) => {
   const classes = useStyles();

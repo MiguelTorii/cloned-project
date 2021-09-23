@@ -33,9 +33,7 @@ const Task = ({
 
   const classData = useMemo(() => {
     if (!sectionId) return null;
-    const matchedClass = classList.find((item) => {
-      return item.section.map((section) => section.section.sectionId).includes(sectionId);
-    });
+    const matchedClass = classList.find((item) => item.section.map((section) => section.section.sectionId).includes(sectionId));
 
     if (!matchedClass) return null;
 

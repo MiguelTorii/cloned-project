@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import Dialog from 'components/Dialog/Dialog';
-import Classmate from './Classmate';
 import LoadingImg from 'assets/svg/astro-shuttle.svg';
+import Classmate from './Classmate';
 import useStyles from './_styles/StudyRoomInvite';
 
 const StudyRoomInvite = ({
@@ -58,7 +58,7 @@ const StudyRoomInvite = ({
         (classmate) => Number(classmate.userId) !== Number(userId)
       );
       setClassmates(classmates);
-      setLoading(false)
+      setLoading(false);
     };
 
     if (classList.length > 0) {
@@ -75,9 +75,7 @@ const StudyRoomInvite = ({
     init();
   }, []);
 
-  const visiabled = useMemo(() => {
-    return campaign?.variation_key && campaign?.variation_key !== 'hidden';
-  }, [campaign]);
+  const visiabled = useMemo(() => campaign?.variation_key && campaign?.variation_key !== 'hidden', [campaign]);
 
   const handleChange = useCallback(
     (e) => {

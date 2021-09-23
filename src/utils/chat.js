@@ -226,12 +226,13 @@ export const processMessages = ({
   }
 };
 
-const getFileExtension = (filename) => filename.split('.').pop();
+export const getFileExtension = (filename) => filename.split('.').pop();
 
 export const getFileAttributes = (files) =>
   files.map((file) => ({
     file_name: file.name,
     file_size: file.size,
+    file_type: file.type,
     file_extension: getFileExtension(file.name),
     file_read_url: file.url
   }));
@@ -246,11 +247,11 @@ export const getInitials = (name: string = '') => {
 };
 
 export const containsImage = (message: string) =>
-  message.includes('<img')
+  (message.includes('<img')
     ? 'Uploaded a image'
     : message.includes('File Attachment')
     ? 'Uploaded a file'
-    : parse(message);
+    : parse(message));
 
 export const bytesToSize = (bytes, decimals = 1) => {
   if (bytes === 0) return '0 Bytes';

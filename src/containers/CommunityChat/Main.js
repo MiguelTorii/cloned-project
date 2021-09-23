@@ -56,7 +56,7 @@ type Props = {
   setRightPanel: Function,
   handleBlock: Function,
   handleUpdateGroupName: Function,
-  enqueueSnackbar: Function
+  showNotification: Function
 };
 
 const Main = ({
@@ -81,7 +81,7 @@ const Main = ({
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  enqueueSnackbar
+  showNotification
 }: Props) => {
   const classes = useStyles();
   const end = useRef(null);
@@ -281,6 +281,16 @@ const Main = ({
       if (!members[userId]) return null;
       const { isOnline } = members[userId];
       return isOnline;
+    },
+    [members]
+  );
+
+  const getFullName = useCallback(
+    (userId) => {
+      if (!members[userId]) return null;
+      const { firstName, lastName } = members[userId];
+
+      return `${firstName} ${lastName}`;
     },
     [members]
   );
@@ -563,9 +573,10 @@ const Main = ({
             setFiles={setFiles}
             files={files}
             focusMessageBox={focusMessageBox}
+            getFullName={getFullName}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
-            enqueueSnackbar={enqueueSnackbar}
+            showNotification={showNotification}
             setValue={setValue}
             handleClick={handleClick}
             onTyping={onTyping}

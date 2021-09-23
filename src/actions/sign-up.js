@@ -134,9 +134,7 @@ export const signUp =
 
 export const updateError =
   ({ title, body, action }: { title: string, body: string, action?: string }) =>
-  async (dispatch: Dispatch) => {
-    return dispatch(setError({ title, body, action }));
-  };
+  async (dispatch: Dispatch) => dispatch(setError({ title, body, action }));
 
 export const clearSignUpError = () => async (dispatch: Dispatch) =>
   dispatch(clearError());

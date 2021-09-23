@@ -69,7 +69,7 @@ const WorkflowBoardBox = ({
 
   const containerStyle = useMemo(
     () =>
-      announcementData ? classes.containerAnnouncement : classes.listContainer,
+      (announcementData ? classes.containerAnnouncement : classes.listContainer),
     [announcementData, classes.containerAnnouncement, classes.listContainer]
   );
 
@@ -83,7 +83,7 @@ const WorkflowBoardBox = ({
       >
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
           direction="column"
         >

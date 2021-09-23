@@ -259,10 +259,13 @@ const ChatMessage = ({
         </div>
       );
     }
+
     return (
       <AnyFileUpload
         files={files}
         message={message}
+        onImageClick={onImageClick}
+        onImageLoaded={onImageLoaded}
         renderHtmlWithImage={renderHtmlWithImage}
       />
     );

@@ -22,13 +22,13 @@ import moment from 'moment';
 // import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Tooltip from 'containers/Tooltip/Tooltip';
 import setFormulasColor from 'utils/quill';
-import EditorToolbar, { modules, formats } from './Toolbar';
 
 import { TIMEOUT } from 'constants/common';
 import { useIdleTimer } from 'react-idle-timer';
 import { logEvent } from 'api/analytics';
 import { differenceInMilliseconds } from 'date-fns';
 import { INTERVAL } from 'constants/app';
+import EditorToolbar, { modules, formats } from './Toolbar';
 
 import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
 import { useStyles } from '../_styles/UserNotesEditor/index';
@@ -307,7 +307,7 @@ const UserNotesEditor = ({
             </Toolbar>
           </AppBar>
           {hasNote && (
-            <Grid container justify="center" className={classes.editor}>
+            <Grid container justifyContent="center" className={classes.editor}>
               <div className={classes.editorToolbar}>
                 <EditorToolbar />
               </div>

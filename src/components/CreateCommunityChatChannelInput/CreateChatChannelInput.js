@@ -16,8 +16,8 @@ import { searchUsers } from 'api/user';
 import type { UserState } from 'reducers/user';
 import type { ChatState } from 'reducers/chat';
 import { getInitials } from 'utils/chat';
-import SelectClassmates from './SelectClassmates';
 import { CircularProgress } from '@material-ui/core';
+import SelectClassmates from './SelectClassmates';
 
 const styles = (theme) => ({
   validatorForm: {

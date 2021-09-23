@@ -11,14 +11,6 @@ const HomeGreetings = () => {
   const classes = useStyles();
   const me = useSelector((state) => state.user.data);
   const [data, setData] = useState(null);
-  // const greetingText = useMemo(() => {
-  //   const hour = moment().hour();
-  //
-  //   if (hour >= 17) return '🦉 Good evening';
-  //   if (hour >= 12) return '⏳️ Good afternoon';
-  //
-  //   return '☀️ Good morning';
-  // }, []);
 
   useEffect(() => {
     fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss'))
@@ -37,9 +29,6 @@ const HomeGreetings = () => {
         <Typography className={classes.quote} paragraph>
           {data.body}
         </Typography>
-        {/*<Typography className={classes.name}>*/}
-        {/*  - Anne Sweeney*/}
-        {/*</Typography>*/}
       </Box>
     );
   }, [me, data, classes]);

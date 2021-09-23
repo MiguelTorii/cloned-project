@@ -85,7 +85,6 @@ class AddMembers extends React.PureComponent<Props, State> {
     return (
       <Dialog
         className={classes.dialog}
-        disableBackdropClick={isLoading}
         disableEscapeKeyDown={isLoading}
         okTitle="Add"
         open={open}

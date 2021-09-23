@@ -19,7 +19,7 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
       await updateFlashcards({
         flashcardId,
         userId: me.userId,
-        ...updatedData,
+        ...updatedData
       });
 
       setIsSaving(false);
@@ -43,11 +43,11 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
 FlashcardsDeckEditor.propTypes = {
   flashcardId: PropTypes.number.isRequired,
   data: PropTypes.object.isRequired,
-  onAfterUpdate: PropTypes.func,
+  onAfterUpdate: PropTypes.func
 };
 
 FlashcardsDeckEditor.defaultProps = {
-  onAfterUpdate: () => {},
+  onAfterUpdate: () => {}
 };
 
 export default FlashcardsDeckEditor;

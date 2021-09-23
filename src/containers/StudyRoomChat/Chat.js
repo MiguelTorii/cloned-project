@@ -28,10 +28,7 @@ import { logEvent } from 'api/analytics';
 import axios from 'axios';
 import { getPresignedURL } from 'api/media';
 import cx from 'classnames';
-import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
-import { FILE_LIMIT_SIZE } from 'constants/chat';
 import * as notificationsActions from '../../actions/notifications';
-import { uploadMedia } from '../../actions/user';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
@@ -99,7 +96,7 @@ type Props = {
   classes: Object,
   user: Object,
   channel: Object,
-  enqueueSnackbar: Function
+  showNotification: Function
 };
 
 const StudyRoomChat = ({
@@ -107,7 +104,7 @@ const StudyRoomChat = ({
   user,
   channel,
   classes,
-  enqueueSnackbar
+  showNotification
 }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
@@ -119,7 +116,6 @@ const StudyRoomChat = ({
   const [images, setImages] = useState([]);
   const [paginator, setPaginator] = useState(null);
   const [input, setInput] = useState(null);
-  const [image, setImage] = useState(null);
   const [hasMore, setHasMore] = useState(false);
   const [mainMessage, setMainMessage] = useState('');
 
@@ -365,13 +361,10 @@ const StudyRoomChat = ({
           event: 'Chat- Send Message',
           props: { Content: 'Image' }
         });
-        // this.setState(({ count }) => ({ count: count + 1 }))
-        // this.handleMessageCount()
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
-        // this.setState({ loading: false })
       }
     },
     [channel, firstName, lastName, userId]
@@ -382,56 +375,6 @@ const StudyRoomChat = ({
   const uploadFile = useCallback(() => {
     if (fileInput.current) fileInput.current.click();
   }, []);
-
-  const handleInputChange = useCallback(async () => {
-    const file = fileInput.current.files[0];
-    const { type, name, size } = file;
-    if (size < FILE_LIMIT_SIZE) {
-      if (type.includes('image')) {
-        if (fileInput.current?.files?.length > 0) {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            if (fileInput.current?.files?.length > 0) {
-              setImage(event.target.result);
-              setInput(fileInput.current.files[0]);
-            }
-            if (fileInput.current) {
-              fileInput.current.value = '';
-            }
-          };
-
-          reader.readAsDataURL(fileInput.current.files[0]);
-        }
-      } else {
-        const result = await uploadMedia(userId, 1, file);
-
-        const { readUrl } = result;
-
-        const anyFile = {
-          type,
-          name,
-          url: readUrl,
-          size
-        };
-
-        setFiles([...files, anyFile]);
-      }
-    } else {
-      enqueueSnackbar({
-        notification: {
-          message: 'Upload File size is over 40 MB',
-          options: {
-            variant: 'warning',
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left'
-            },
-            autoHideDuration: 3000
-          }
-        }
-      });
-    }
-  }, [userId, fileInput, enqueueSnackbar]);
 
   const onClose = useCallback(
     (deleteFile) => {
@@ -469,30 +412,6 @@ const StudyRoomChat = ({
           </InfiniteScroll>
         )}
       </div>
-      <input
-        accept="*/*"
-        className={classes.input}
-        ref={fileInput}
-        onChange={handleInputChange}
-        type="file"
-      />
-      <Box display="flex" alignItems="center" justifyContent="flex-end">
-        <Tooltip
-          title="Upload File (max limit: 40 MB)"
-          aria-label="file"
-          arrow
-          placement="top"
-          classes={{
-            tooltip: classes.tooltip,
-            arrow: classes.tooltipArrow,
-            popper: classes.popper
-          }}
-        >
-          <Button className={classes.uploadButton} onClick={uploadFile}>
-            Upload &nbsp; <PaperClip />
-          </Button>
-        </Tooltip>
-      </Box>
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">
@@ -507,14 +426,14 @@ const StudyRoomChat = ({
           onSendMessage={onSendMessage}
           onTyping={onTyping}
           input={input}
-          image={image}
           setInput={setInput}
-          setImage={setImage}
           message={mainMessage}
           setMessage={setMainMessage}
           onSendInput={onSendInput}
+          userId={userId}
           setFiles={setFiles}
           files={files}
+          showNotification={showNotification}
           onClose={onClose}
         />
       )}
@@ -533,7 +452,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
+      showNotification: notificationsActions.showNotification
     },
     dispatch
   );

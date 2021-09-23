@@ -1,11 +1,13 @@
+// @flow
+
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import { setIntervalWithFirstCall } from 'utils/helpers';
 import { INTERVAL } from 'constants/app';
 import type { Announcement } from 'types/models';
-import HourlyGiveawayPopup from './HourlyGiveawayPopup';
 import { makeStyles } from '@material-ui/core';
+import HourlyGiveawayPopup from './HourlyGiveawayPopup';
 
 const useStyles = makeStyles((theme) => ({
   hourlyBody: {

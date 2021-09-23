@@ -4,10 +4,10 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import { useParams } from 'react-router';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import ViewFlashcards from '../../containers/ViewFlashcards/ViewFlashcards';
-import { useParams } from 'react-router';
 
 const styles = () => ({
   item: {

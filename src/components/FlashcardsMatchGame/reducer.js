@@ -81,8 +81,8 @@ const getCardPosition = (
   const randomX = Math.floor(Math.random() * containerWidth);
   const randomY = Math.floor(Math.random() * containerHeight);
   const size = _.max([containerWidth, containerHeight]);
-  let offsetX = 0,
-    offsetY = 0;
+  let offsetX = 0;
+  let offsetY = 0;
   let currentStepLength = 0;
   let currentStep = 0;
   let direction = dx.length - 1;
@@ -98,14 +98,12 @@ const getCardPosition = (
       cardY >= 0 &&
       cardY < containerHeight - cardHeight
     ) {
-      const intersectIndex = placedCards.findIndex((rect) => {
-        return intersectRect(rect, {
+      const intersectIndex = placedCards.findIndex((rect) => intersectRect(rect, {
           x: cardX - CARD_PLACE_OFFSET,
           y: cardY - CARD_PLACE_OFFSET,
           w: cardWidth + 2 * CARD_PLACE_OFFSET,
           h: cardHeight + 2 * CARD_PLACE_OFFSET
-        });
-      });
+        }));
 
       if (intersectIndex < 0) {
         return [cardX, cardY];
@@ -224,8 +222,10 @@ const reducer = (state, action) => {
 
       // If only one card is left, leave 2
       if (currentIndex === matchCards.length - 2) {
-        matchCards[currentIndex--].visible = false;
-        matchCards[currentIndex--].visible = false;
+        matchCards[currentIndex].visible = false;
+        currentIndex -= 1;
+        matchCards[currentIndex].visible = false;
+        currentIndex -= 1;
       }
 
       return update(state, {

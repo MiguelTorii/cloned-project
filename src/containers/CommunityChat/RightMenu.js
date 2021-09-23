@@ -37,7 +37,7 @@ const RightMenu = ({ local, channel, isCommunityChat }) => {
       <Grid
         container
         alignItems="flex-start"
-        justify="flex-start"
+        justifyContent="flex-start"
         classes={{
           root: classes.header
         }}

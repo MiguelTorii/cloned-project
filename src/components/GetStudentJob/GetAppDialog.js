@@ -12,8 +12,7 @@ type Props = {
   onClose: Function
 };
 
-const GetAppDialog = ({ open, onClose }: Props) => {
-  return (
+const GetAppDialog = ({ open, onClose }: Props) => (
     <Dialog maxWidth="md" onCancel={onClose} open={Boolean(open)}>
       <PdfComponent
         url={studentJobPdf}
@@ -23,6 +22,5 @@ const GetAppDialog = ({ open, onClose }: Props) => {
       />
     </Dialog>
   );
-};
 
 export default GetAppDialog;

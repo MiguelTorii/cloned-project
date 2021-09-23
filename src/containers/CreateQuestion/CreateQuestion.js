@@ -14,6 +14,7 @@ import AnonymousButton from 'components/AnonymousButton/AnonymousButton';
 import ClassMultiSelect from 'containers/ClassMultiSelect/ClassMultiSelect';
 import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
 import Tooltip from 'containers/Tooltip/Tooltip';
+import { PERMISSIONS } from 'constants/common';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
@@ -27,7 +28,6 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
-import { PERMISSIONS } from 'constants/common';
 
 const styles = (theme) => ({
   stackbar: {

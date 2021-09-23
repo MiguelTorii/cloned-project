@@ -9,6 +9,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import LoadImg from 'components/LoadImg/LoadImg';
 import InitialCommunityImage from 'assets/svg/community_first_time.svg';
 import { getInitials } from 'utils/chat';
+import { ReactComponent as CommunityGroupIcon } from 'assets/svg/community_chat_group.svg';
 import useStyles from './_styles/initialAlert';
 
 type Props = {
@@ -16,7 +17,6 @@ type Props = {
   channel: Object,
   userId: string,
   isCommunityChat: boolean,
-  selectedCourse: Object,
   selectedChannel: Object
 };
 
@@ -25,7 +25,6 @@ const InitialAlert = ({
   channel,
   userId,
   isCommunityChat,
-  selectedCourse,
   selectedChannel
 }: Props) => {
   const classes = useStyles();
@@ -53,14 +52,6 @@ const InitialAlert = ({
 
   const initials = useMemo(() => getInitials(name), [name]);
 
-  const initialCourseAvatarName = useMemo(
-    () =>
-      selectedCourse?.name
-        ? selectedCourse?.name.substring(0, 3).toUpperCase()
-        : '',
-    [selectedCourse]
-  );
-
   return isCommunityChat ? (
     local[channel?.sid]?.twilioChannel?.channelState
       ?.lastConsumedMessageIndex === null ? (
@@ -84,12 +75,7 @@ const InitialAlert = ({
       </Box>
     ) : (
       <Box className={classes.root}>
-        <Avatar
-          className={cx(classes.avatarProfile, classes.communityChannelProfile)}
-          src={thumbnail}
-        >
-          {initialCourseAvatarName}
-        </Avatar>
+        <CommunityGroupIcon />
         <Typography className={classes.members} variant="h5">
           #{selectedChannel?.chat_name}
         </Typography>

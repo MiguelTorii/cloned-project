@@ -6,15 +6,12 @@ import _ from 'lodash';
 import useStyles from './styles';
 import ClassQuestions from '../../components/ClassQuestions/ClassQuestions';
 
-
 const ClassmateQuestions = () => {
   const classes = useStyles();
   const myClasses = useSelector((state) => state.user.userClasses.classList);
   const [selectedClass, setSelectedClass] = useState('all');
 
-  const activeClasses = useMemo(() => {
-    return myClasses.filter((item) => item.isCurrent);
-  }, [myClasses]);
+  const activeClasses = useMemo(() => myClasses.filter((item) => item.isCurrent), [myClasses]);
 
   const handleChangeClass = useCallback((event, newClass) => {
     setSelectedClass(newClass);
@@ -54,11 +51,6 @@ const ClassmateQuestions = () => {
       {selectedClass && (
         <ClassQuestions classId={selectedClass === 'all' ? null : selectedClass} />
       )}
-      {/*{myClasses.map((classData) => (*/}
-      {/*  <Box hidden={classData.classId !== selectedClass} key={classData.classId}>*/}
-      {/*    <ClassQuestions classId={classData.classId} />*/}
-      {/*  </Box>*/}
-      {/*))}*/}
     </>
   );
 };

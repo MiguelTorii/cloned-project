@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+
 export const DEFAULT_AVATAR_SIZE = {
   desktop: 124,
   mobile: 60

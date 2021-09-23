@@ -93,14 +93,12 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
 
   const setImagesUploading = useCallback(() => {
     const newImages = update(images, {
-      $apply: (b) => {
-        return b.map((item) => ({
+      $apply: (b) => b.map((item) => ({
           ...item,
           loading: true,
           loaded: false,
           error: false
-        }));
-      }
+        }))
     });
     setDisabled(true);
     setImages(newImages);
@@ -109,25 +107,21 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
   const setImagesUploaded = useCallback(() => {
     setDisabled(false);
     const newImages = update(images, {
-      $apply: (b) => {
-        return b.map((item) => ({
+      $apply: (b) => b.map((item) => ({
           ...item,
           loading: false,
           loaded: true,
           error: false
-        }));
-      }
+        }))
     });
     setImages(newImages);
   }, [images]);
 
-  const uploadImageRequest = useCallback((url, image, type) => {
-    return axios.put(url, image, {
+  const uploadImageRequest = useCallback((url, image, type) => axios.put(url, image, {
       headers: {
         'Content-Type': type
       }
-    });
-  }, []);
+    }), []);
 
   const handleUploadImages = useCallback(async () => {
     if (images.length === 0) throw new Error('no images');
@@ -232,7 +226,7 @@ const WorkflowImageUpload = React.forwardRef(({ imagesProps }, ref) => {
                     <Grid
                       container
                       alignItems="center"
-                      justify="center"
+                      justifyContent="center"
                       spacing={2}
                       className={classes.uploadContainer}
                     >

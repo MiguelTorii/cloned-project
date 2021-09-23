@@ -157,7 +157,7 @@ const Login = ({ role, setScreen, school, signIn, isLoginAsExternalUser }) => {
       {['student', 'tutor'].includes(role) && (
         <div className={classes.scanContainer}>
           <LoadImg url={getappqrcode} className={classes.qr} />
-          <Grid container justify="space-around">
+          <Grid container justifyContent="space-around">
             <a href="https://apps.apple.com/us/app/circlein-circle-in-daily/id969803973">
               <LoadImg url={getappios} className={classes.image} />
             </a>

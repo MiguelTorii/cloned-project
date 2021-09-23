@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 import { decypherClass } from 'utils/crypto';
 
+import StudyRoomImg from 'assets/svg/video-chat-image.svg';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 
@@ -22,8 +23,6 @@ import {
 import { logEvent } from '../../api/analytics';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
-import StudyRoomImg from 'assets/svg/video-chat-image.svg';
 
 import styles from './_styles/index';
 
@@ -193,8 +192,8 @@ class StartVideo extends React.PureComponent<Props, State> {
     try {
       const users = selectedUsers.map((item) => Number(item.userId));
 
-      let chatId,
-        isNew = false;
+      let chatId;
+      let isNew = false;
       // Create New study room
       if (!channel) {
         const { chatId: newChatId, isNewChat } = await createChannel({

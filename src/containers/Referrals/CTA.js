@@ -58,14 +58,12 @@ const CTA = ({ classes }: { classes: Object }) => {
     <div className={classes.body}>
       <Typography className={classes.title}>{ctaTitle}</Typography>
       <Typography className={classes.text}>
-        {ctaBody.split('\n').map((item) => {
-          return (
+        {ctaBody.split('\n').map((item) => (
             <span key={Math.random()}>
               {item}
               <br />
             </span>
-          );
-        })}
+          ))}
       </Typography>
       <Button
         className={classes.button}

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useEffect, useState } from 'react';
 import withRoot from 'withRoot';
 import {
@@ -11,11 +13,11 @@ import {
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import update from 'immutability-helper';
-import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import { getPointsHistory } from 'actions/user';
-import GradientButton from '../Basic/Buttons/GradientButton';
 import { isApiCalling } from 'utils/helpers';
 import { userActions } from 'constants/action-types';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 
 import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 
@@ -54,8 +56,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderRecords = (isMobile) => {
-    return (
+  const renderRecords = (isMobile) => (
       <Grid container spacing={isMobile ? 2 : 3}>
         {records.map((record, index) => (
           <Grid key={index} item xs={12}>
@@ -64,7 +65,6 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
         ))}
       </Grid>
     );
-  };
 
   return (
     <Paper className={classes.root}>

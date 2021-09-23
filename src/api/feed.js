@@ -266,16 +266,12 @@ export const generateQuiz = async ({
   }
 };
 
-export const apiFetchFeeds = async (params) => {
-  return callApi({
+export const apiFetchFeeds = async (params) => callApi({
     url: API_ROUTES.FEED_V1_1,
     params
   });
-};
 
-export const apiDeleteFeed = async (userId, feedId) => {
-  return callApi({
+export const apiDeleteFeed = async (userId, feedId) => callApi({
     url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
     method: 'DELETE'
   });
-};

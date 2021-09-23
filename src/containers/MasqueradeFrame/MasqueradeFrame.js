@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles, Grid, Typography, Button, Box } from '@material-ui/core';
 import { DesktopMac, Stop } from '@material-ui/icons';
-import withRoot from '../../withRoot';
 import { useDispatch, useSelector } from 'react-redux';
+import withRoot from '../../withRoot';
 import { signOut } from '../../actions/sign-in';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +53,7 @@ const MasqueradeFrame = () => {
   return (
     <div className={classes.root}>
       <div className={classes.header}>
-        <Grid container justify="space-between" alignItems="center" spacing={2}>
+        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item>
             <Box display="flex" alignItems="center">
               <DesktopMac fontSize="small" />

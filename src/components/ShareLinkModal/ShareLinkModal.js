@@ -1,13 +1,15 @@
+// @flow
+
 import React, { useState } from 'react';
-import Dialog from '../Dialog/Dialog';
-import useStyles from './styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import IconLink from 'assets/svg/link.svg';
-import LoadImg from '../LoadImg/LoadImg';
-import GradientButton from '../Basic/Buttons/GradientButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import LoadImg from '../LoadImg/LoadImg';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import useStyles from './styles';
+import Dialog from '../Dialog/Dialog';
 import withRoot from '../../withRoot';
 
 type Props = {

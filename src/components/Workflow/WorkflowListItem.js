@@ -24,12 +24,10 @@ const getTitle = (downMd, downSm, downXs, title) => {
   return title;
 };
 
-const getStyles = (hide) => {
-  return {
+const getStyles = (hide) => ({
     opacity: hide ? 0 : 1,
     height: hide ? 0 : ''
-  };
-};
+  });
 
 const noOp = () => {};
 

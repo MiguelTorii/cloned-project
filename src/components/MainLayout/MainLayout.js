@@ -31,6 +31,7 @@ import clsx from 'clsx';
 import GetAppDialog from 'components/GetAppDialog/GetAppDialog';
 import GetStudentJob from 'components/GetStudentJob/GetAppDialog';
 import QuickNotes from 'containers/QuickNotes/QuickNotes';
+import { ReactComponent as HomeIcon } from 'assets/svg/home-inactive.svg';
 import logo from '../../assets/svg/circlein_logo.svg';
 import './currentRoute.css';
 import UseCases from '../UseCases/UseCases';
@@ -40,7 +41,6 @@ import GiveFeedback from '../../containers/GiveFeedback/GiveFeedback';
 import Tooltip from '../../containers/Tooltip/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements/AnnouncementBanner';
 import { styles } from '../_styles/MainLayout/index';
-import { ReactComponent as HomeIcon } from 'assets/svg/home-inactive.svg';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => {
   if (

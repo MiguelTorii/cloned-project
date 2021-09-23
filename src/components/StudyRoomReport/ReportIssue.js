@@ -1,3 +1,5 @@
+// @flow
+
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';

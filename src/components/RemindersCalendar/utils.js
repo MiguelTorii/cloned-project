@@ -4,8 +4,7 @@
 import moment from 'moment';
 import type { ToDos, CalendarEvents } from '../../types/models';
 
-export const getEvents = (items: ToDos): CalendarEvents => {
-  return items.map((item) => ({
+export const getEvents = (items: ToDos): CalendarEvents => items.map((item) => ({
     id: item.id,
     title: item.title,
     start: moment(item.due),
@@ -14,7 +13,6 @@ export const getEvents = (items: ToDos): CalendarEvents => {
     status: item.status,
     due: moment(item.due).format('ddd MMM DD @HH:mm')
   }));
-};
 
 export const navigate = {
   PREVIOUS: 'PREV',

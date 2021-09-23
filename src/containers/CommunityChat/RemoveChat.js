@@ -21,7 +21,7 @@ const RemoveChat = ({ channel, handleRemoveChannel }) => {
   return (
     <Grid
       container
-      justify="center"
+      justifyContent="center"
       classes={{
         root: classes.removeChannel
       }}

@@ -5,7 +5,7 @@ import {
   IconButton,
   Link,
   Paper,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import IconHelp from '@material-ui/icons/HelpOutline';
 

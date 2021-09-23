@@ -954,9 +954,7 @@ export const apiSetExpertMode = async (
 export const apiGetPointsHistory = async (
   userId: string,
   params: object
-): Promise<object> => {
-  return callApi({
+): Promise<object> => callApi({
     url: `${API_ROUTES.USER}/${userId}/points_history`,
     params
   });
-};

@@ -43,7 +43,7 @@ const FeedFlashcards = ({ deck }) => {
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="flex-start"
         >
           {questionImageUrl && (
@@ -65,7 +65,7 @@ const FeedFlashcards = ({ deck }) => {
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="flex-end"
         >
           {answerImageUrl && (

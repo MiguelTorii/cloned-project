@@ -21,8 +21,8 @@ import clsx from 'clsx';
 import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 import InviteIcon from 'assets/svg/invite-icon.svg';
 
-import useStyles from '../_styles/ClassmatesDialog/Classmate';
 import { getInitials } from 'utils/chat';
+import useStyles from '../_styles/ClassmatesDialog/Classmate';
 
 type ClassmateType = {
   userId: string,

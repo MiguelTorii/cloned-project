@@ -132,7 +132,7 @@ const Auth = ({ classes, pushTo, updateSchool }: Props) => {
 
   return (
     <main className={classes.main}>
-      <Grid container justify="space-around">
+      <Grid container justifyContent="space-around">
         <Grid item xs={12} lg={6}>
           <div className={classes.grid}>
             <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
