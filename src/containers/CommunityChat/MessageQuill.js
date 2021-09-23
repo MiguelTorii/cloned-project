@@ -17,6 +17,7 @@ import { uploadMedia } from 'actions/user';
 import EditorToolbar, { formats } from './Toolbar';
 
 import styles from './_styles/messageQuill';
+import { isMac } from '../../utils/helpers';
 
 const MessageQuill = ({
   classes,
@@ -52,6 +53,7 @@ const MessageQuill = ({
       emoji: {
         key: 'J',
         shortKey: true,
+        altKey: !isMac(),
         handler: () => {
           setEmojiPopupOpen(true);
           return true;

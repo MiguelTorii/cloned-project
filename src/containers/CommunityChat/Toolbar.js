@@ -10,7 +10,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
-import { commandHotkeyText } from '../../utils/helpers';
+import { commandHotkeyText, isMac } from '../../utils/helpers';
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
@@ -122,7 +122,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
         </button>
       </Tooltip>
       <Tooltip
-        title={`Emoji (${commandHotkeyText('J')})`}
+        title={`Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`}
         aria-label="emoji"
         arrow
         placement="top"
