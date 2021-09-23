@@ -43,9 +43,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
   getButtonLabel = () => {
     if (this.props.loading || !this.props.changed) {
       return 'Post';
-    } else {
-      return this.props.buttonLabel || 'Create';
     }
+      return this.props.buttonLabel || 'Create';
   }
 
   render() {
