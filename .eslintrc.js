@@ -2,27 +2,23 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'airbnb',
-    // 'prettier',
+    'prettier',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended'
   ],
   plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
-    // TODO turn this back on
-    // 'prettier/prettier': 'error',
-
-    indent: ['error', 2],
+    'prettier/prettier': 'error',
+    'indent': 'off',
     'no-multiple-empty-lines': 'error',
     curly: ["error", "all"],
-
     'brace-style': 'error',
     'no-nested-ternary': 'error',
     'function-call-argument-newline': ['error', 'consistent'],
     'object-curly-spacing': 'error',
     'prefer-rest-params': 'error',
     'arrow-body-style': ['error', 'as-needed'],
-    'no-confusing-arrow': 'error',
     'no-unused-expressions': 'error',
     'no-undef': 'error',
     'prefer-const': 'error',
@@ -43,23 +39,18 @@ module.exports = {
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     'no-tabs': 'error',
     'spaced-comment': 'error',
+    'no-else-return': 'error',
+    'space-infix-ops': 'error',
 
     // I turned these off because I don't have a strong preference
     // for any particular variation of these rules
     'nonblock-statement-body-position': 'off',
     'implicit-arrow-linebreak': 'off',
-
-    // TODO turn this back on
+    'operator-linebreak': 'off',
     'function-paren-newline': 'off',
-    // 'function-paren-newline': ["error", "consistent"],
-
-    // TODO turn this back on
-    // 'template-curly-spacing': ['error', 'always'],
-    'template-curly-spacing': 'off',
 
     // TODO turn these standard eslint rules back on
     'no-restricted-syntax': 'off',
-    'space-infix-ops': 'off',
     'object-shorthand': 'off',
     'no-console': 'off',
     'no-empty': 'off',
@@ -73,13 +64,11 @@ module.exports = {
     'prefer-arrow-callback': 'off',
     'consistent-return': 'off',
     'no-useless-catch': 'off',
-    'operator-linebreak': 'off',
     'no-unused-vars': 'off',
-    'no-else-return': 'off',
+    'no-confusing-arrow': 'off',
 
     // TODO turn this back on with exceptions for API
     camelcase: 'off',
-
 
     // TODO turn this back on
     // 'max-len': ['error', 120],

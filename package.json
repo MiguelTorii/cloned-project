@@ -140,9 +140,8 @@
   },
   "scripts": {
     "start": "ESLINT_NO_DEV_ERRORS='true' REACT_APP_STAGE=dev react-scripts start",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "format": "prettier --write 'src/**/**/**/**/*.js'",
+    "lint": "prettier --check 'src/**/**/**/**/*.js' && eslint src",
+    "lint:fix": "prettier --write 'src/**/**/**/**/*.js' && eslint src --fix",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build:production": "yarn install && ./build.sh production",
     "build:sourcemaps": "./build.sh",
