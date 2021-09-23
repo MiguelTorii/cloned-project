@@ -29,7 +29,7 @@ module.exports = {
     // got null in chat/RightMenu.js
     // need to resolve
     // indent: ['error', 2],
-    'indent': 'off',
+    indent: 'off',
 
     // TODO turn this back on
     'react/no-unused-state': 'off',
@@ -100,7 +100,7 @@ module.exports = {
     'no-console': 'off',
 
     // TODO turn this back on
-    'curly': 'off',
+    curly: 'off',
 
     // TODO turn this back on
     'react/forbid-prop-types': 'off',
@@ -161,7 +161,7 @@ module.exports = {
     // TODO turn this back on
     'consistent-return': 'off',
 
-    'object-curly-newline': ["error", { "consistent": true }],
+    'object-curly-newline': ['error', { consistent: true }],
 
     // TODO turn this back on
     'import/no-named-as-default': 'off',
@@ -176,13 +176,13 @@ module.exports = {
     'no-unused-vars': 'off',
 
     // TODO turn this back on with exceptions for API
-    'camelcase': 'off',
+    camelcase: 'off',
 
     // TODO turn this back on
     'no-else-return': 'off',
 
-    'quote-props': ["error", "as-needed"],
-    'quotes': ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    'quote-props': ['error', 'as-needed'],
+    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
 
     'no-tabs': 'error',
     'spaced-comment': 'error',
@@ -219,7 +219,7 @@ module.exports = {
     // TODO turn this back on
     'react/jsx-curly-brace-presence': 'off',
 
-    'semi': 'error',
+    semi: 'error',
     'eol-last': 'error',
     'no-floating-decimal': 'error',
     'dot-notation': 'error',
@@ -228,7 +228,7 @@ module.exports = {
     'react/jsx-tag-spacing': 'off',
 
     'no-return-assign': 'error',
-    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
     // TODO turn this back on
     'no-param-reassign': 'off',
@@ -322,5 +322,5 @@ module.exports = {
     Node: true,
     Image: true
   },
-  parser: 'babel-eslint'
+  parser: '@babel/eslint-parser'
 };
