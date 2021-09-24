@@ -44,7 +44,7 @@ const PostCreationHeader = () => {
   const dispatch = useDispatch();
 
   const handleGotoPostCreate = useCallback(
-    (e, value = 0) => {
+    (value = 0) => {
       dispatch(push(`/create_post?tab=${value}`));
     },
     [dispatch]
@@ -72,7 +72,7 @@ const PostCreationHeader = () => {
               <Button
                 fullWidth
                 className={classes.postAnyButton}
-                onClick={handleGotoPostCreate}
+                onClick={() => handleGotoPostCreate()}
               >
                 <Hidden smDown>
                   Create a new post, offer support or share useful links!
