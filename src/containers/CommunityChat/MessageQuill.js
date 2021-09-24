@@ -273,25 +273,6 @@ const MessageQuill = ({
             </div>
           )}
         </div>
-        {/* <div className={classes.postMessageAction}>
-          {value.trim() === '<p><br></p>' || value.trim() === '' || !value
-            ? <Button
-              classes={{
-                disabled: classes.disablePostMessage
-              }}
-              disabled
-            >
-              <b>SEND</b>
-              <SendMessageIcon className={classes.sendMessageIcon}/>
-            </Button>
-            : <Button
-              className={classes.postMessage}
-              onClick={handleClick(quill)}
-            >
-              <b>SEND</b>
-              <SendMessageIcon className={classes.sendMessageIcon} />
-            </Button>}
-        </div> */}
       </div>
       <Popover
         open={emojiPopupOpen}

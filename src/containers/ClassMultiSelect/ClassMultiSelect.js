@@ -65,8 +65,9 @@ const ClassMultiSelect = ({
 
   const onChange = useCallback(
     (_, value) => {
-      if (noEmpty && value.length === 0) return;
-      // const filteredList = value.filter((cl) => cl.isCurrent);
+      if (noEmpty && value.length === 0) {
+        onSelect(options);
+      }
       if (value.find((o) => o.value === 'all')) {
         onSelect(options);
       } else {
