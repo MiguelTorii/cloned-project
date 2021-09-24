@@ -31,7 +31,9 @@ import EditorToolbar, {
   formats
 } from 'containers/QuickNotes/QuickNoteToolbar';
 import Tooltip from 'containers/Tooltip/Tooltip';
+import { Picker } from 'emoji-mart';
 import useStyles from './_styles/style';
+import { isMac } from '../../utils/helpers';
 
 const QuickNotes = ({
   enqueueSnackbar,
@@ -46,6 +48,7 @@ const QuickNotes = ({
 }) => {
   const noteRef = useRef(null);
   const quillRef = useRef(null);
+  const inputFieldRef = useRef();
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
   const [selectedClass, setSelectedClass] = useState(null);
@@ -53,10 +56,26 @@ const QuickNotes = ({
   const [open, setOpen] = useState(false);
   const [savedState, setSavedState] = useState('hidden');
   const [debouncedContent, setDebouncedContent] = useDebounce('', 2000);
+  const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
 
   useEffect(
     () => setDebouncedContent(quicknoteContent),
     [quicknoteContent, setDebouncedContent]
+  );
+
+  const bindings = useMemo(
+    () => ({
+      emoji: {
+        key: 'J',
+        shortKey: true,
+        altKey: !isMac(),
+        handler: () => {
+          setEmojiPopupOpen(true);
+          return true;
+        }
+      }
+    }),
+    []
   );
 
   const saveContent = useCallback(
@@ -137,6 +156,20 @@ const QuickNotes = ({
     },
     [quillRef, handleUpdate]
   );
+
+  const handleSelectEmoji = useCallback(
+    (emoji) => {
+      const { native } = emoji;
+
+      insertEmoji(native);
+      setEmojiPopupOpen(false);
+    },
+    [insertEmoji]
+  );
+
+  const handleCloseEmojiPopup = useCallback(() => {
+    setEmojiPopupOpen(false);
+  }, []);
 
   const renderSaved = useMemo(() => {
     if (savedState === 'hidden') return null;
@@ -264,6 +297,7 @@ const QuickNotes = ({
           classes={{
             root: classes.quickNoteRoot
           }}
+          ref={inputFieldRef}
         >
           <Typography className={classes.title}>QuickNotes</Typography>
           <IconButton className={classes.closeIcon} onClick={handleClose}>
@@ -336,7 +370,12 @@ const QuickNotes = ({
             theme="snow"
             value={quicknoteContent}
             onChange={handleUpdate}
-            modules={modules}
+            modules={{
+              ...modules,
+              keyboard: {
+                bindings
+              }
+            }}
             formats={formats}
           />
           <div className={classes.savedContainer}>
@@ -353,6 +392,21 @@ const QuickNotes = ({
               Save
             </Button>
           </div>
+          <Popover
+            open={emojiPopupOpen}
+            onClose={handleCloseEmojiPopup}
+            anchorEl={inputFieldRef.current}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+          >
+            <Picker onSelect={handleSelectEmoji} />
+          </Popover>
         </Paper>
       </Popover>
     </Grid>

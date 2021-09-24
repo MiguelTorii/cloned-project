@@ -1,17 +1,22 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Picker } from 'emoji-mart';
+import Popover from '@material-ui/core/Popover';
 import styles from 'components/_styles/CreateCommunityChatChannelInput/messageQuill';
 import { uploadMedia } from '../../actions/user';
 import EditorToolbar, { formats } from './Toolbar';
+import { isMac } from '../../utils/helpers';
 
 const MessageQuill = ({ classes, onChange, setValue, userId }) => {
   const [loading, setLoading] = useState(false);
   const [pasteImageUrl, setPasteImageUrl] = useState('');
+  const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
+  const inputFieldRef = useRef();
 
   const imageHandler = useCallback(
     async (imageDataUrl, type, imageData) => {
@@ -33,6 +38,19 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
       toolbar: '#one-touch-send',
       imageDropAndPaste: {
         handler: imageHandler
+      },
+      keyboard: {
+        bindings: {
+          emoji: {
+            key: 'J',
+            shortKey: true,
+            altKey: !isMac(),
+            handler: () => {
+              setEmojiPopupOpen(true);
+              return true;
+            }
+          }
+        }
       }
     },
     scrollingContainer: 'editor',
@@ -40,6 +58,10 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
     placeholder: 'Start typing a message',
     preserveWhitespace: true
   });
+
+  const handleCloseEmojiPopup = useCallback(() => {
+    setEmojiPopupOpen(false);
+  }, []);
 
   if (Quill && !quill) {
     Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
@@ -137,9 +159,19 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
     [quill, setValue]
   );
 
+  const handleSelectEmoji = useCallback(
+    (emoji) => {
+      const { native } = emoji;
+
+      insertEmoji(native);
+      setEmojiPopupOpen(false);
+    },
+    [insertEmoji]
+  );
+
   return (
     <div className={classes.messageQuill}>
-      <div className={classes.editor}>
+      <div className={classes.editor} ref={inputFieldRef}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />
@@ -151,6 +183,21 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
             </div>
           )}
         </div>
+        <Popover
+          open={emojiPopupOpen}
+          onClose={handleCloseEmojiPopup}
+          anchorEl={inputFieldRef.current}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+        >
+          <Picker onSelect={handleSelectEmoji} />
+        </Popover>
       </div>
     </div>
   );

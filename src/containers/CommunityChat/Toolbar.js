@@ -10,7 +10,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import useStyles from './_styles/toolbar';
-import { commandHotkeyText, isMac } from '../../utils/helpers';
+import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
@@ -68,7 +68,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
   const renderCommonTools = () => (
     <>
       <Tooltip
-        title={`Bold (${commandHotkeyText('B')})`}
+        title={QUILL_TOOLBAR_SHORT_KEYS.BOLD}
         aria-label="bold"
         arrow
         placement="top"
@@ -81,7 +81,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
         <button type="button" className="ql-bold" />
       </Tooltip>
       <Tooltip
-        title={`Italic (${commandHotkeyText('I')})`}
+        title={QUILL_TOOLBAR_SHORT_KEYS.ITALIC}
         aria-label="italic"
         arrow
         placement="top"
@@ -94,7 +94,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
         <button type="button" className="ql-italic" />
       </Tooltip>
       <Tooltip
-        title={`Underline (${commandHotkeyText('U')})`}
+        title={QUILL_TOOLBAR_SHORT_KEYS.UNDERLINE}
         aria-label="underline"
         arrow
         placement="top"
@@ -122,7 +122,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
         </button>
       </Tooltip>
       <Tooltip
-        title={`Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`}
+        title={QUILL_TOOLBAR_SHORT_KEYS.EMOJI}
         aria-label="emoji"
         arrow
         placement="top"

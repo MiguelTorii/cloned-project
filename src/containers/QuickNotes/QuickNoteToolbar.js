@@ -8,6 +8,7 @@ import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import Tooltip from '@material-ui/core/Tooltip';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import useStyles from './_styles/toolbar';
+import { isMac } from '../../utils/helpers';
 
 const icons = Quill.import('ui/icons');
 const fontSizeStyle = Quill.import('attributors/style/size');
@@ -211,7 +212,7 @@ export const QuillToolbar = ({ open, insertEmoji }) => {
             <button type="button" className="ql-indent" value="+1" />
           </Tooltip>
           <Tooltip
-            title="EmoJi (⌘J)"
+            title={`Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`}
             aria-label="emoji"
             arrow
             placement="top"

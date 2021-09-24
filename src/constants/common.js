@@ -1,3 +1,5 @@
+import { commandHotkeyText, isMac } from '../utils/helpers';
+
 const collegeGrades = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
 const addSuffix = (grade) => {
   switch (grade) {
@@ -118,4 +120,12 @@ export const fileContent = {
   'binary-default': 'Binary File',
   'code-default': 'Code',
   'other-default': 'File'
+};
+
+export const QUILL_TOOLBAR_SHORT_KEYS = {
+  BOLD: `Bold (${commandHotkeyText('B')})`,
+  ITALIC: `Italic (${commandHotkeyText('I')})`,
+  UNDERLINE: `Underline (${commandHotkeyText('U')})`,
+  EMOJI: `Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`,
+  IMAGE: `Image (${commandHotkeyText('P')})`
 };

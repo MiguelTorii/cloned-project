@@ -8,6 +8,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import { useStyles } from '../_styles/PostItem/Toolbar';
+import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
 
 const Link = Quill.import('formats/link');
 Link.sanitize = function link(url) {
@@ -54,7 +55,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           </IconButton>
         </div>
         <Tooltip
-          title="Bold (⌘B)"
+          title={QUILL_TOOLBAR_SHORT_KEYS.BOLD}
           aria-label="bold"
           arrow
           placement="top"
@@ -66,7 +67,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <button type="button" className="ql-bold" />
         </Tooltip>
         <Tooltip
-          title="Italic (⌘I)"
+          title={QUILL_TOOLBAR_SHORT_KEYS.ITALIC}
           aria-label="italic"
           arrow
           placement="top"
@@ -78,7 +79,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <button type="button" className="ql-italic" />
         </Tooltip>
         <Tooltip
-          title="Underline (⌘U)"
+          title={QUILL_TOOLBAR_SHORT_KEYS.UNDERLINE}
           aria-label="underline"
           arrow
           placement="top"
@@ -90,7 +91,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <button type="button" className="ql-underline" />
         </Tooltip>
         <Tooltip
-          title="Image (⌘P)"
+          title={QUILL_TOOLBAR_SHORT_KEYS.IMAGE}
           aria-label="image"
           arrow
           placement="top"
@@ -114,7 +115,7 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <button type="button" className="ql-formula" />
         </Tooltip>
         <Tooltip
-          title="EmoJi (⌘J)"
+          title={QUILL_TOOLBAR_SHORT_KEYS.EMOJI}
           aria-label="emoji"
           arrow
           placement="top"
