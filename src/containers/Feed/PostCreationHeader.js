@@ -44,7 +44,7 @@ const PostCreationHeader = () => {
   const dispatch = useDispatch();
 
   const handleGotoPostCreate = useCallback(
-    (e, value = 0) => {
+    (value = 0) => {
       dispatch(push(`/create_post?tab=${value}`));
     },
     [dispatch]
