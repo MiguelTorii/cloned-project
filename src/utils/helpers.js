@@ -4,10 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { TIME_ZONE } from '../constants/app';
 
-export const getPointsText = (points: number) =>
-  (points < 1000
-    ? points.toLocaleString()
-    : `${Math.floor(points / 1000).toLocaleString()}K`);
+export const getPointsText = (points: number) => Math.floor(points).toLocaleString();
 
 export const momentWithTimezone = (date: string = undefined) =>
   moment(date).tz(TIME_ZONE);
