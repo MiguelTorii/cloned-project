@@ -127,12 +127,13 @@ const HeaderNavigation = ({
   const classes = useStyles();
 
   const handleFilters = useCallback(
-    (options) => {
-      setSelectedClasses(options);
-      const filters = options.map((o) =>
+    (classes) => {
+      const currentSelectedClasses = !classes.length ? options : classes;
+      setSelectedClasses(currentSelectedClasses);
+      const filters = currentSelectedClasses.map((classItem) =>
         JSON.stringify({
-          classId: o.classId,
-          sectionId: o.sectionId
+          classId: classItem?.classId,
+          sectionId: classItem?.sectionId
         })
       );
       if (prevFilters !== String(filters)) {
@@ -140,7 +141,7 @@ const HeaderNavigation = ({
         updateFeed(filters);
       }
     },
-    [prevFilters, setSelectedClasses, updateFeed]
+    [prevFilters, setSelectedClasses, updateFeed, options]
   );
 
   useEffect(() => {
@@ -249,8 +250,8 @@ const HeaderNavigation = ({
             classes.classTextField,
             allSelected && classes.allClasses
           )}
+          placeholder={!options.length ? 'Select Classes...' : ''}
           externalOptions={options}
-          placeholder="Select Classes..."
           selected={selectedClasses}
           schoolId={schoolId}
           onSelect={onSelect}
