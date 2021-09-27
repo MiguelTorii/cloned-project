@@ -123,7 +123,10 @@ const useStyles = makeStyles((theme) => ({
   videoAlertRoot: {
     minWidth: 275,
     backgroundColor: theme.circleIn.palette.appBar,
-    borderRadius: 20
+    borderRadius: 20,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: 220
+    }
   },
   bullet: {
     display: 'inline-block',
